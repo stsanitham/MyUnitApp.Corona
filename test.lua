@@ -1,3 +1,1 @@
-sampleautofd
-dgdfg
-dfhgdf
+test setting 1
