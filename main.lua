@@ -6,6 +6,8 @@ display.setStatusBar( display.HiddenStatusBar )
 local composer = require "composer"
 local newPanel = require "Utils.newPanel"
 local widget = require( "widget" )
+
+
 MainGroup = display.newGroup();
 
 local W,H = display.contentWidth, display.contentHeight;

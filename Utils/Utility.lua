@@ -1,7 +1,5 @@
-Utils={}
 
-
-
+Utils = {}
 
 Utils.convertHexToRGB = function(hexCode)
    assert(#hexCode == 7, "The hex value must be passed in the form of #XXXXXX");
@@ -18,3 +16,18 @@ Utils.emailValidation = function(email)
 	    return false                
 	end
 end
+
+Utils.getIpAddress = function ( )
+		local someRandomIP = "192.168.1.122" 
+		local someRandomPort = "3102" 
+		local mySocket = socket.udp() 
+		mySocket:setpeername(someRandomIP,someRandomPort) 
+		local myDevicesIpAddress, somePortChosenByTheOS = mySocket:getsockname()
+ 
+		print(myDevicesIpAddress,somePortChosenByTheOS)
+
+		return myDevicesIpAddress
+end
+
+
+return Utils

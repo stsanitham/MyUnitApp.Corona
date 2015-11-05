@@ -19,7 +19,7 @@ local W = display.contentWidth;H= display.contentHeight
 local Background,BgText
 
 
-local menuBtn
+local menuBtn,webView
 
 openPage="eventCalenderPage"
 
@@ -42,14 +42,17 @@ function scene:create( event )
 	menuBtn.anchorX=0
 	menuBtn.x=10;menuBtn.y=20;
 
-		BgText = display.newText(sceneGroup,"MyUnit App",0,0,native.systemFont,integer.TITLE_TEXT_SIZE)
+	BgText = display.newText(sceneGroup,"MyUnit App",0,0,native.systemFont,integer.TITLE_TEXT_SIZE)
 	BgText:setFillColor( Utils.convertHexToRGB(color.black))
 	BgText.x=menuBtn.x+menuBtn.contentWidth+15;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-	center = display.newText(sceneGroup,"Goals Page",0,0,native.systemFont,integer.TITLE_TEXT_SIZE)
-	center:setFillColor( Utils.convertHexToRGB(color.black))
-	center.x=W/2;center.y=H/2
+
+	webView = native.newWebView( display.contentCenterX, display.contentCenterY-30, W, H-45 )
+	webView:request( "sample.html", system.TemporaryDirctory )
+	sceneGroup:insert(webView)
+
+
 
 
 
