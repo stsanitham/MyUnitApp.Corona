@@ -17,7 +17,9 @@ local json = require("json")
 
 		for i=1,#response do
 
-			List_array[i] = response[i].MkRankLevel
+			List_array[i] = {}
+			List_array[i][1] = response[i].MkRankLevel
+			List_array[i][2] = response[i].MkRankId
 
 		end
 

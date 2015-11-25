@@ -29,6 +29,17 @@ openPage="eventCalenderPage"
 
 -----------------Function-------------------------
 
+local function closeDetails( event )
+	if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+	end
+
+return true
+
+end
 
 ------------------------------------------------------
 
@@ -36,22 +47,23 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	Background = display.newRect(sceneGroup,W/2,H/2,W,H)
+	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background.x=W/2;Background.y=H/2
 
-	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",30,30)
+	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+	tabBar.y=tabBar.contentHeight/2
+	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
 	menuBtn.x=10;menuBtn.y=20;
 
-	BgText = display.newText(sceneGroup,"MyUnit App",0,0,native.systemFont,integer.TITLE_TEXT_SIZE)
-	BgText:setFillColor( Utils.convertHexToRGB(color.black))
+	BgText = display.newText(sceneGroup,"MyUnit Buzz",0,0,native.systemFont,16)
+	BgText:setFillColor( Utils.convertHexToRGB(color.White))
 	BgText.x=menuBtn.x+menuBtn.contentWidth+15;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-	center = display.newText(sceneGroup,"Instagram Page",0,0,native.systemFont,integer.TITLE_TEXT_SIZE)
-	center:setFillColor( Utils.convertHexToRGB(color.black))
-	center.x=W/2;center.y=H/2
 
-	
 MainGroup:insert(sceneGroup)
 
 end

@@ -10,11 +10,11 @@ sp_commonLabel.textColor = color.Black
 -----------------EditBoxStyle---------------------------------
 
 EditBoxStyle={}
-EditBoxStyle.height = 40
+EditBoxStyle.height = 25
 EditBoxStyle.textSize = 15
 EditBoxStyle.textColor = color.Black
 EditBoxStyle.textColorHint = color.Black
-EditBoxStyle.background = "assert/"
+EditBoxStyle.background = "res/assert/arrow-line.png"
 
 ------------------CheckBoxStyle--------------------------------
 
@@ -93,7 +93,7 @@ HorizatalLine.background = color.sb__button_text_color
 SnackBar = {}
 SnackBar.padding = 12
 SnackBar.textStyle = "bold"
-SnackBar.textColor = color.sb__button_text_color
+SnackBar.textColor = color.White
 SnackBar.textSize = 14
 SnackBar.textAllCaps = true
 SnackBar.editable = false

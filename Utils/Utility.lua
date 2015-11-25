@@ -30,4 +30,20 @@ Utils.getIpAddress = function ( )
 end
 
 
+Utils.SnackBar = function ( snackString )
+		
+print("snack")
+
+SnankBg = display.newRect(snackGroup,display.contentWidth/2,display.contentHeight,display.contentWidth,35)
+SnankBg.y =display.contentHeight-SnankBg.contentHeight/2
+SnankBg:setFillColor(0,0,0,0.5)
+
+SnankText = display.newText(snackGroup,snackString,0,0,native.systemFontBold,SnackBar.textSize)
+SnankText.x=SnankBg.x;SnankText.y=SnankBg.y
+SnankText:setFillColor(Utils.convertHexToRGB(SnackBar.textColor))
+
+end
+
+
+
 return Utils

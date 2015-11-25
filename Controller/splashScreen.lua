@@ -40,10 +40,10 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	Background = display.newRect(sceneGroup,W/2,H/2,W,H)
+	Background = display.newImageRect(sceneGroup,"res/assert/bg-image.jpg",W,H)
+	Background.x=W/2;Background.y=H/2
 
-	BgText = display.newText(sceneGroup,"Splash Screen",0,0,native.systemFont,sp_commonLabel.textSize)
-	BgText:setFillColor( Utility.convertHexToRGB(sp_commonLabel.textColor))
+	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/2,81/2)
 	BgText.x=W/2;BgText.y=H/2
 
 	

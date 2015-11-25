@@ -13,6 +13,18 @@ color.subHeader="#000000"
 color.nAptHeader="#465736"
 color.White="#ffffff"
 color.checkBoxColor = "#181818"
+color.tabBarColor = "#F31D62"
+color.google_plus = "#DD4239"
+
+
+--Flap Menuz
+color.flapmenu = "#252931"
+color.flap_selected = "#727272"
+
+color.LtyGray = "#D2D2D4"
+color.Gray = "#767676"
+color.Transprent={1,1,1,0}
+
 
 
 return color

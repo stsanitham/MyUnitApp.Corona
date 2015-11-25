@@ -4,6 +4,8 @@ local socket = require "socket"
 local dispatch = require "Utils.dispatch"
 local http = require "socket.http"
 local ltn12 = require "ltn12"
+local dispatch1 = require("Utils.dispatch")
+
 TIMEOUT = 10
 local Runtime = Runtime
 local table = table
@@ -23,6 +25,8 @@ local function blockingRequest( httpRequest )
     local httpResponse = { 
         body = {},
     }
+
+   
     
     local result
     result, httpResponse.code, httpResponse.headers, httpResponse.status = http.request{
@@ -41,6 +45,7 @@ local function blockingRequest( httpRequest )
   print("enter")
 
         httpResponse.body = table.concat(httpResponse.body)
+
         return {
             isError = false,
             request = httpRequest,
@@ -57,10 +62,11 @@ local function blockingRequest( httpRequest )
 end
 
 local function asyncRequest( httpRequest, listener )
+        print("**********************************")
 
 	local handler = dispatch.newhandler("coroutine")
 	local running = true
-    
+    spinner_show()
 	handler:start(function()
     
 		local body
@@ -97,6 +103,7 @@ local function asyncRequest( httpRequest, listener )
 			}
 		end
 		running = false
+         spinner_hide()
         
 	end)
     
@@ -112,6 +119,7 @@ local function asyncRequest( httpRequest, listener )
     
 	function httpThread:cancel()
 		Runtime:removeEventListener("enterFrame", self)
+        --spinner_hide()
 		handler = nil
 	end
     
@@ -123,6 +131,7 @@ function M.xmlParser( httpRequest, listener )
 
 
     if listener then
+
         return asyncRequest(httpRequest, listener)
     else
 

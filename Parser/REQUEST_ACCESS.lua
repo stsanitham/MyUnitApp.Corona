@@ -11,7 +11,8 @@ local json = require("json")
 	response = response.response.body
 
 	response = json.decode(response)
- 	print("response"..response)
+
+ 	--print("response"..response)
 	
  	return response
  end
@@ -24,9 +25,10 @@ local json = require("json")
 
 	response = response.response.body
 
-	--response = json.decode(response)
+	response = json.decode(response)
 
- 	print("response"..response)
-	
+	--response = response.RequestAccessStatus
+
+	--print(json.encode(response))
  	return response
  end

@@ -6,7 +6,17 @@ display.setStatusBar( display.HiddenStatusBar )
 local composer = require "composer"
 local newPanel = require "Utils.newPanel"
 local widget = require( "widget" )
+local Utility = require( "Utils.Utility" )
+local stringValue = require( "res.value.color" )
+local sqlite3 = require( "sqlite3" )
 
+AppName = "CommonApp"
+
+if AppName == "DirectorApp" then
+	Unitnumber_value = "12345"
+else
+	Unitnumber_value = ""
+end
 
 MainGroup = display.newGroup();
 
@@ -14,13 +24,44 @@ local W,H = display.contentWidth, display.contentHeight;
 NavigationSpeed = 400;
 menuShowFlag = false;
 menuTransTime = 1000;
-openPage="eventCalenderPage"
-menuTitel = {"","Event Calender","Career Path","Goals","Resource","Image Library","Social Media","Facebook","Twitter","Instagram","Google+"}
-rowValues = {"","eventCalenderPage","careerPathPage","goalsPage","resourcePage","imageLibPage","","facebookPage","twitterPage","instagramPage","googlePlusPage"}
+openPage="main"
+menuTitel = {"Home","Event Calender","Career Path","Goals","Resource","Image Library","Social Media","Facebook","Twitter","Instagram","Google+"}
+rowValues = {"LandingPage","eventCalenderPage","careerPathPage","goalsPage","resourcePage","imageLibPage","","facebookPage","twitterPage","instagramPage","googlePlusPage"}
+snackGroup = display.newGroup()
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
 
 
+spinner = widget.newSpinner
+{
+    width = 50 ,
+    height = 50,
+    deltaAngle = 10,
+    incrementEvery = 20
+}
+
+spinner.x=W/2;spinner.y=H/2-50
+spinner.isVisible=false
 
 
+function spinner_show ()
+    spinner.isVisible=true
+    spinner:toFront()
+    spinner:start()
+end
+
+function spinner_hide ()
+
+    spinner.isVisible=false
+    spinner:toBack()
+    spinner:stop()
+end
+
+local tablesetup = [[DROP TABLE logindetails;]]
+db:exec( tablesetup )
+
+local tablesetup = [[CREATE TABLE IF NOT EXISTS logindetails (id INTEGER PRIMARY KEY autoincrement, UnitNumberOrDirector, EmailAddess, PhoneNumber, Status, UserId, GoogleUsername, GoogleToken, GoogleTokenSecret, GoogleUserId, FacebookUsername, FacebookAccessToken, TwitterUsername, TwitterToken, TwitterTokenSecret, ProfileImageUrl, AccessToken, ContactId);]]
+db:exec( tablesetup )
 
 local function panelTransDone( target )
 	if ( target.completeState ) then
@@ -63,183 +104,109 @@ function menuTouch( event )
 end
 
 
-local function menuTouch(event)
-	if event.phase == "began" then
-
-		display.getCurrentStage():setFocus( event.target )
-
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
-
-		local t = event.target;
-
-		print(t[2].text)
-
-		if(menuTitel[t.value] == "Social Media") then
-
-		else
-
-			for i = 1, panel.menuList:getNumRows() do
-
-				local tmpRow = panel.menuList:getRowAtIndex(i)
-
-				if(menuTitel[i] == "Social Media") then
-
-				else
-					tmpRow[1]:setFillColor( 0.1, 0.1, 0.1, 0.1)
-				end
-			end
-			
-
-			t[1]:setFillColor(21/255, 141/255, 233/255)
 
 
-			--if(menuTitel[row.index] == "Content Section" or menuTitel[row.index] == "Social Feed") then
-
-			--else
-
-
-			slideAction()
-
-			if openPage ~= event.target.id then
-
-				for j=MainGroup.numChildren, 1, -1 do 
-					display.remove(MainGroup[MainGroup.numChildren])
-					MainGroup[MainGroup.numChildren] = nil
-				end
-
-				composer.gotoScene( "Controller."..event.target.id )
-			end
-
-		end
-
-			--end
-		end
-		return true
-
-	end
-
-	local function onRowRender( event )
-	local phase = event.phase
-	local row = event.row
-
-	local groupContentHeight = row.contentHeight
+panel = widget.newPanel{
+location = "left",
+onComplete = panelTransDone,
+width = display.contentWidth * 0.8,
+height = H,
+speed = menuTransTime,
+inEasing = easing.outCubic,
+outEasing = easing.outCubic
+}
 
 
-	local rowRect = display.newRect(row,W/2,H/2,W,H)
-	rowRect:setFillColor(1,1,1,0)
 
 
-	local rowTitle
+--[[local function doesFileExist( fname, path )
 
-	if(menuTitel[row.index] == "Social Media") then
+    local results = false
 
-		rowTitle = display.newText( row, menuTitel[row.index], 0, 0, native.systemFontBold, 14 )
-		rowTitle.x = 5
-		rowTitle.anchorX = 0
-		rowTitle.id=menuTitel[row.index]
-		rowTitle.y = groupContentHeight * 0.5
+    -- Path for the file
+    local filePath = system.pathForFile( fname, path )
 
+    if ( filePath ) then
+        local file, errorString = io.open( filePath, "r" )
 
-	else
-		rowTitle = display.newText( row, menuTitel[row.index], 0, 0, native.systemFont, 14 )
-		rowTitle.x = 20
-		rowTitle.anchorX = 0
-		rowTitle.id=menuTitel[row.index]
-		rowTitle.y = groupContentHeight * 0.5
+        if not file then
+            -- Error occurred; output the cause
+            print( "File error: " .. errorString )
+        else
+            -- File exists!
+            print( "File found: " .. fname )
+            results = true
+            -- Close the file handle
+            file:close()
+        end
+    end
 
-
-	end
-	
-
-	local line = display.newLine(row,0, groupContentHeight, row.contentWidth, groupContentHeight )
-
-	row.id=rowValues[row.index]
-	row.value=row.index
-
-
-	row:addEventListener("touch",menuTouch)
-
+    return results
 end
 
-	-- Handle row updates
-	local function onRowUpdate( event )
-		local phase = event.phase
-		local row = event.row
-		--print( row.index, ": is now onscreen" )
-	end
-	
-	-- Handle touches on the row
-	local function onRowTouch( event )
-		local phase = event.phase
-		local row = event.target
+function copyFile( srcName, srcPath, dstName, dstPath, overwrite )
 
-		if( "press" == phase ) then
+    local results = false
 
-			transition.cancel()
+    local fileExists = doesFileExist( srcName, srcPath )
+    if ( fileExists == false ) then
+        return nil  -- nil = Source file not found
+    end
 
+    -- Check to see if destination file already exists
+    if not ( overwrite ) then
+        if ( fileLib.doesFileExist( dstName, dstPath ) ) then
+            return 1  -- 1 = File already exists (don't overwrite)
+        end
+    end
 
+    -- Copy the source file to the destination file
+    local rFilePath = system.pathForFile( srcName, srcPath )
+    local wFilePath = system.pathForFile( dstName, dstPath )
 
-			elseif ( "release" == phase ) then
+    local rfh = io.open( rFilePath, "rb" )
+   local wfh, errorString = io.open( wFilePath, "wb" )
 
+     if not ( wfh ) then
+        -- Error occurred; output the cause
+        print( "File error: " .. errorString )
+        return false
+    else
+        -- Read the file and write to the destination directory
+        local data = rfh:read( "*a" )
+        if not ( data ) then
+            print( "Read error!" )
+            return false
+        else
+            if not ( wfh:write( data ) ) then
+                print( "Write error!" )
+                return false
+            end
+        end
+    end
 
+    results = 2  -- 2 = File copied successfully!
 
-			end
-		end
-
-
-		panel = widget.newPanel{
-	location = "left",
-	onComplete = panelTransDone,
-	width = display.contentWidth * 0.8,
-	height = H,
-	speed = menuTransTime,
-	inEasing = easing.outCubic,
-	outEasing = easing.outCubic
-}
-
-panel.background = display.newRect( 0, 0, panel.width, panel.height )
-panel.background:setFillColor( 0, 0.25, 0.5 )
-panel:insert( panel.background )
-
-panel.menuList = widget.newTableView
-{
-	left = -(panel.contentWidth*0.5),
-	top = -(panel.contentHeight*0.5),
-	height = H,
-	width = panel.contentWidth,
-	onRowRender = onRowRender,
-   -- onRowTouch = onRowTouch,
-   hideBackground = true,
-   noLines = true,
-   isLocked = true
-
-}
+	--
 
 
-panel:insert( panel.menuList )
+    -- Close file handles
+    rfh:close()
+    wfh:close()
 
-for i = 1, #menuTitel do
-
-	local isCategory = false
-	local rowHeight = 40
-	local rowColor = {default={ 0.1, 0.1, 0.1, 0.1 },over = { 21/255, 141/255, 233/255 }}
-	if menuTitel[i] == "Social Media"then
-
-		isCategory = true
-		rowHeight = 30
-		rowColor = {default = {35/255, 188/255, 18/255},over = { 242/255, 242/255, 177/255,0 }}
-	end
-
-	panel.menuList :insertRow{
-
-	isCategory = isCategory,
-	rowHeight = rowHeight,
-	rowColor = rowColor
-
-}
+    return results
+    end]]
 
 
-end
+	--composer.gotoScene( "Controller.careerPathDetailPage")
 
-composer.gotoScene( "Controller.splashScreen")
+
+
+
+	composer.gotoScene( "Controller.flapMenu")
+
+
+--copyFile( "string.lua", system.DocumentsDirectory, "string.lua",system.ResourceDirectory, true )
+
+
+
