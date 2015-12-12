@@ -53,7 +53,7 @@ local function ImageDownload( event )
 			elseif ( event.phase == "ended" ) then
 			print( "Displaying response image file" )
 
-
+			spinner_hide()
 			myImage = display.newImageRect( event.response.filename, event.response.baseDirectory, W-80, H-150 )
 			myImage.alpha = 0
 			myImage.x=W/2;myImage.y=H/2
@@ -109,6 +109,8 @@ function scene:show( event )
 
 				local params = {}
 				params.progress = true
+
+				spinner_show()
 
 				imageDownload = network.download(
 					ApplicationConfig.IMAGE_BASE_URL..event.params.FilePath,

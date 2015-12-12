@@ -15,6 +15,11 @@ local widget = require( "widget" )
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 local totalFeeds=3
+require("Controller.facebookPage")
+require("Controller.twitterPage")
+require("Controller.googlePlusPage")
+
+
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -23,10 +28,16 @@ local Background,BgText,landing_feeds_list
 
 local menuBtn,tabBar,Banner
 local callback = {}
+local user_Name=""
 
-openPage="LandingPage"
+local groupArray={}
 
+local feedArray={}
+
+local RecentTab_Topvalue = H/2+10
+local scrollView
 local response_count = 0
+local list_count = 0
 
 local Feed_Icon_Array = {"facebook","twitter","google+"}
 local Feed_Title_Array = {"Facebook","Twitter","Google+"}
@@ -50,6 +61,17 @@ end
 
 
 -----------------Function-------------------------
+
+local function tabTouch( event )
+
+	if event.phase == "ended" then
+
+	print("tabBar")
+	composer.gotoScene( "Controller.singInPage" )
+end
+return true
+end
+
 local function makeTimeStamp(dateString)
 	local pattern = "(%d+)%-(%d+)%-(%d+)%a(%d+)%:(%d+)%:([%d%.]+)([Z%p])(%d*)%:?(%d*)";
 	local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern);
@@ -95,6 +117,8 @@ local function onRowRender_Landing( event )
     Bg = display.newImageRect(row,"res/assert/LandingPage/popbg.png",375/1.5,86)
     Bg.x=W/2+10;Bg.y = Icon.y+30
 
+
+
     title = display.newText(row,Feed_Title_Array[row.index],0,0,native.systemFont,16)
     title.x=Bg.x-Bg.contentWidth/2+15;title.y=Bg.y-Bg.contentHeight/2+10
     title.anchorX=0
@@ -121,8 +145,13 @@ local function onRowRender_Landing( event )
 
     	if facebookresponse[1] ~= nil then
     		time = makeTimeStamp(string.gsub( facebookresponse[1].created_time, "+0000", "Z" ))
+
     		content.text = facebookresponse[1].message or facebookresponse[1].story
     		date_time.text = tostring(os.date("%Y-%b-%d %H:%m %p",time ))
+
+
+    		
+
     	end
     	elseif Feed_Title_Array[row.index] == "Twitter" then
     		if twitterresponse[1] ~= nil then
@@ -130,7 +159,7 @@ local function onRowRender_Landing( event )
     			date_time.text = tostring(os.date("%Y-%b-%d %H:%m %p", twitterresponse[1].created_time))
     		end
 
-    		elseif Feed_Title_Array[row.index] == "Google+" then
+    	elseif Feed_Title_Array[row.index] == "Google+" then
 
 
     			if googleresponse[1] ~= nil then
@@ -138,9 +167,11 @@ local function onRowRender_Landing( event )
     				date_time.text = tostring(os.date("%Y-%b-%d %H:%m %p", makeTimeStamp(googleresponse[1].published)));
     			end
 
-    		end
+    	end
 
-
+    	if content.text:len() > 70 then
+    			content.text = content.text:sub(1,67).."..."
+    	end
 
     	end
 
@@ -148,7 +179,7 @@ local function onRowRender_Landing( event )
 
     	if Feed_Title_Array[row.index] == "Facebook" then
 
-    		if facebookresponse ~= nil then
+    		if facebookresponse[1] ~= nil then
     			Row_render()
     		else
     			row:removeSelf();row=nil
@@ -157,8 +188,7 @@ local function onRowRender_Landing( event )
 
 		return true
 	end
-else
-	Row_render()
+
 end
 
 if Feed_Title_Array[row.index] == "Twitter" then
@@ -175,8 +205,7 @@ if Feed_Title_Array[row.index] == "Twitter" then
 		row:removeSelf();row=nil
 		return true
 	end
-else
-	Row_render()
+
 end
 
 if Feed_Title_Array[row.index] == "Google+" then
@@ -201,8 +230,7 @@ if Feed_Title_Array[row.index] == "Google+" then
 		
 		return true
 	end
-else
-	Row_render()
+
 end
 
 end
@@ -229,7 +257,13 @@ local function getgoogleplus_stream( event )
 
 		print("here google")
 
-		landing_feeds_list:reloadData()
+		if list_count > 1 then
+			if landing_feeds_list then landing_feeds_list:reloadData() end
+		else
+			print("google")
+			googleplusCallback(googleresponse,scrollView)
+		end
+
 
 
 		
@@ -251,9 +285,13 @@ function callback.twitterSuccess( requestType, name, res )
 
 		twitterresponse = response
 
-		
+		if list_count > 1 then
+			if landing_feeds_list then landing_feeds_list:reloadData() end
+		else
+			print("twitterPage")
+			TwitterCallback(twitterresponse,scrollView)
+		end
 
-		landing_feeds_list:reloadData()
 
 		
 	end
@@ -266,6 +304,27 @@ function callback.twitterFailed()
 	print( "Failed: Invalid Token" )
 
 	native.showAlert( "Result", "Failed: Invalid Token", { "Ok" } )
+
+end
+
+local function feed_facebook( event )
+	if ( event.isError ) then
+	else
+
+		facebookresponse = json.decode( event.response )
+
+		facebookresponse = facebookresponse.data
+
+		response_count = response_count+1
+
+		print("here facebook") 
+		--landing_feeds_list:reloadData()
+
+		FacebookCallback(facebookresponse,scrollView)
+		
+
+		
+	end
 
 end
 
@@ -340,39 +399,36 @@ function scene:create( event )
 	SocialHead:setFillColor(Utils.convertHexToRGB(color.google_plus))
 
 
-	
-	landing_feeds_list = widget.newTableView
-	{
-	left = 0,
-	top = 0,
-	height = (H-H/2-40),
-	width = W,
-	onRowRender = onRowRender_Landing,
-	onRowTouch = onRowTouch_Landing,
-	hideBackground = true,
-	isBounceEnabled = false,
-	noLines = true,
-}
-landing_feeds_list.y=H/2+10
-landing_feeds_list.height = (H-landing_feeds_list.y)
-landing_feeds_list.anchorY=0
-for i = 1, totalFeeds do
-		    -- Insert a row into the tableView
-		    landing_feeds_list:insertRow{ rowHeight = 90,rowColor = 
-		    {
-		    default = { 1, 1, 1, 0 },
-		    over={ 1, 0.5, 0, 0 },
+	local response_Name = ""
 
-		    }}
+
+	if Facebook_userid ~= nil and Facebook_userid ~= "" then
+		response_Name = "facebook"
+		list_count = list_count +1
+	end
+	if googleUser_id ~= nil and googleUser_id ~= "" then
+		response_Name = "google"
+		list_count = list_count +1
+	end
+
+	if Twitter_UserName ~= "" then
+		response_Name = "twitter"
+		list_count = list_count +1
+
+	end
+
+	if list_count > 1 then
+		if Facebook_userid ~= nil and Facebook_userid ~= "" then
+			list_count = list_count +1
+			getFeeds = network.request( "https://graph.facebook.com/"..Facebook_userid.."/feed?access_token="..Facebook_asscesToken, "GET", feed_networkListener )
+		end
+		if googleUser_id ~= nil and googleUser_id ~= "" then
+			list_count = list_count +1
+			getgoogle_feed = network.request( "https://www.googleapis.com/plus/v1/people/"..googleUser_id.."/activities/public?key="..AccessApi, "GET", getgoogleplus_stream )
 		end
 
-		sceneGroup:insert(landing_feeds_list)
-
-
-		getFeeds = network.request( "https://graph.facebook.com/"..Facebook_userid.."/feed?access_token="..Facebook_asscesToken, "GET", feed_networkListener )
-		getgoogle_feed = network.request( "https://www.googleapis.com/plus/v1/people/"..googleUser_id.."/activities/public?key="..AccessApi, "GET", getgoogleplus_stream )
-
 		if Twitter_UserName ~= "" then
+			list_count = list_count +1
 			local params = {"users", "statuses/user_timeline.json", "GET",
 			{"screen_name", Twitter_UserName}, {"skip_status", "true"},
 			{"include_entities", "false"} }
@@ -383,58 +439,159 @@ for i = 1, totalFeeds do
 
 
 
+		landing_feeds_list = widget.newTableView
+		{
+		left = 0,
+		top = 0,
+		height = (H-H/2-40),
+		width = W,
+		onRowRender = onRowRender_Landing,
+		onRowTouch = onRowTouch_Landing,
+		hideBackground = true,
+		isBounceEnabled = false,
+		noLines = true,
+	}
+	landing_feeds_list.y=H/2+10
+	landing_feeds_list.height = (H-landing_feeds_list.y)
+	landing_feeds_list.anchorY=0
+	for i = 1, totalFeeds do
+						    -- Insert a row into the tableView
+						    landing_feeds_list:insertRow{ rowHeight = 90,rowColor = 
+						    {
+						    default = { 1, 1, 1, 0 },
+						    over={ 1, 0.5, 0, 0 },
+
+						    }}
+						end
+
+						sceneGroup:insert(landing_feeds_list)
+					else
+
+		--print("call"..response_Name)
+
+		scrollView = widget.newScrollView
+		{
+		top = RecentTab_Topvalue,
+		left = 0,
+		width = W,
+		height =H-RecentTab_Topvalue,
+		hideBackground = true,
+		isBounceEnabled=false,
+		horizontalScrollingDisabled = false,
+		verticalScrollingDisabled = false,
+
+	   -- listener = scrollListener
+	}
+
+	
+
+	sceneGroup:insert(scrollView)
+
+
+	if(response_Name == "facebook") then
+
+			--getFeeds = network.request( "https://graph.facebook.com/"..Facebook_userid.."/feed?access_token="..Facebook_asscesToken, "GET", feed_facebook )
+			spinner_show()
+			local function networkListener_intial( event )
+				if ( event.isError ) then
+				else
+					print ( "RESPONSE: " .. event.response )
+
+					local response = json.decode( event.response )
+
+					user_Name = response.name
+
+					getFeeds = network.request( "https://graph.facebook.com/"..Facebook_userid.."/feed?access_token="..Facebook_asscesToken, "GET", feed_facebook )
+
+
+
+				end
+			end
+
+-- Access Google over SSL:
+getAccess = network.request( "https://graph.facebook.com/"..Facebook_userid.."/?access_token="..Facebook_asscesToken, "GET", networkListener_intial )
+
+elseif(response_Name == "google") then
+
+	spinner_show()
+	if googleUser_id ~= nil and googleUser_id ~= "" then
+		getgoogle_feed = network.request( "https://www.googleapis.com/plus/v1/people/"..googleUser_id.."/activities/public?key="..AccessApi, "GET", getgoogleplus_stream )
+	end
+
+
+	elseif(response_Name == "twitter") then
+
+		
+		spinner_show()
+		if Twitter_UserName ~= "" then
+			local params = {"users", "statuses/user_timeline.json", "GET",
+			{"screen_name", Twitter_UserName}, {"skip_status", "true"},
+			{"include_entities", "false"} }
+			TwitterManager.tweet(callback, params)
+		else
+			response_count = response_count+1
+		end
+	end
+
+
+end
+
+
+MainGroup:insert(sceneGroup)
+
+end
+
+function scene:show( event )
+
+	local sceneGroup = self.view
+	local phase = event.phase
+
+	if phase == "will" then
+
+
+		elseif phase == "did" then
+
+			menuBtn:addEventListener("touch",menuTouch)
+			BgText:addEventListener("touch",menuTouch)
+			Banner:addEventListener("touch",tabTouch)
+
+
+		end	
 		MainGroup:insert(sceneGroup)
 
 	end
 
-	function scene:show( event )
+	function scene:hide( event )
 
 		local sceneGroup = self.view
 		local phase = event.phase
 
-		if phase == "will" then
+		if event.phase == "will" then
 
 
 			elseif phase == "did" then
+				menuBtn:removeEventListener("touch",menuTouch)
+				BgText:removeEventListener("touch",menuTouch)
 
-				menuBtn:addEventListener("touch",menuTouch)
-				BgText:addEventListener("touch",menuTouch)
-
+				
 
 			end	
-			MainGroup:insert(sceneGroup)
 
 		end
 
-		function scene:hide( event )
 
+		function scene:destroy( event )
 			local sceneGroup = self.view
-			local phase = event.phase
-
-			if event.phase == "will" then
-
-
-				elseif phase == "did" then
-					menuBtn:removeEventListener("touch",menuTouch)
-					BgText:removeEventListener("touch",menuTouch)
-
-				end	
-
-			end
-
-
-			function scene:destroy( event )
-				local sceneGroup = self.view
 
 
 
-			end
+		end
 
 
-			scene:addEventListener( "create", scene )
-			scene:addEventListener( "show", scene )
-			scene:addEventListener( "hide", scene )
-			scene:addEventListener( "destroy", scene )
+		scene:addEventListener( "create", scene )
+		scene:addEventListener( "show", scene )
+		scene:addEventListener( "hide", scene )
+		scene:addEventListener( "destroy", scene )
 
 
-			return scene
+		return scene

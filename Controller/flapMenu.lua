@@ -63,6 +63,8 @@ local function MenuTouchAction(event)
 
 			slideAction()
 
+			print("open page : "..openPage.."and "..event.target.id)
+
 			if openPage ~= event.target.id then
 
 				for j=MainGroup.numChildren, 1, -1 do 

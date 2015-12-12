@@ -9,9 +9,8 @@ local scene = composer.newScene()
 
 local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
-local Goals = require("Parser.GET_MYUNITAPP_GOALS")
-
-
+local widget = require( "widget" )
+local json = require('json')
 
 --------------- Initialization -------------------
 
@@ -25,6 +24,22 @@ local menuBtn,webView
 
 openPage="goalsPage"
 
+local RecentTab_Topvalue = 40
+
+local cleaner = {
+{ "&amp;", "&" },
+{ "&#151;", "-" },
+{ "&#146;", "'" },
+{ "&#160;", " " },
+{ "&nbsp;", " " },
+{ "&#39;", "'" },
+{ "<br />", "\n" },
+{ "</p>", "\n\n" },
+{ "(%b<>)", "\n" },
+{ "\n\n*", "\n" },
+{ "\n*$", "\n" },
+{ "^\n*", "\n" },
+}
 
 --------------------------------------------------
 
@@ -67,29 +82,76 @@ function scene:show( event )
 	if phase == "will" then
 
 
+
+
+
 		elseif phase == "did" then
 
+			goal_scrollview  = widget.newScrollView
+			{
+			top = RecentTab_Topvalue,
+			left = 0,
+			width = W,
+			height =H-70,
+			hideBackground = true,
+			isBounceEnabled=false,
+			horizontalScrollingDisabled = false,
+			verticalScrollingDisabled = false,
 
-			Request_response = Get_MYUNITAPP_GOALS()
+   -- listener = scrollListener
+}
 
-		--print("Request_response : "..Request_response)
+goal_scrollview.anchorY=0
+goal_scrollview.y=RecentTab_Topvalue+30
+goal_scrollview.x=W/2
 
-		if Request_response ~= nil then
 
-			GoalText = display.newText(sceneGroup,Request_response,0,0,W-30,H-40,native.systemFont,14)
-			GoalText.x=W/2;GoalText.y=60
-			GoalText.anchorY=0
-			GoalText:setFillColor(Utils.convertHexToRGB(color.Black))
+title = display.newText(sceneGroup,"Goals",0,0,native.systemFont,18)
+title.anchorX = 0 ;title.anchorY=0
+title.x=5;title.y = tabBar.y+tabBar.contentHeight/2+10
+title:setFillColor(0)
 
+
+
+
+
+function get_Goals(response)
+
+	if response.MyUnitBuzzGoals ~= nil then
+
+
+
+		local t = response.MyUnitBuzzGoals
+
+
+		for i=1, #cleaner do
+			local cleans = cleaner[i]
+			t = string.gsub( t, cleans[1], cleans[2] )
 		end
-		
-		
-		menuBtn:addEventListener("touch",menuTouch)
-		BgText:addEventListener("touch",menuTouch)
+
+		print(t)
 
 
-	end	
-	MainGroup:insert(sceneGroup)
+		GoalText = display.newText(t,0,0,W-30,t:len()/2.5,native.systemFont,14)
+		GoalText.anchorY=0
+		GoalText.x=W/2;GoalText.y=0
+		GoalText:setFillColor(Utils.convertHexToRGB(color.Black))
+		goal_scrollview:insert(GoalText)
+	end
+
+end
+Webservice.GET_MYUNITAPP_GOALS(get_Goals)
+
+
+sceneGroup:insert(goal_scrollview)
+
+
+menuBtn:addEventListener("touch",menuTouch)
+BgText:addEventListener("touch",menuTouch)
+
+
+end	
+MainGroup:insert(sceneGroup)
 
 end
 
@@ -102,6 +164,8 @@ function scene:hide( event )
 
 
 		elseif phase == "did" then
+
+			composer.removeHidden()
 
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)

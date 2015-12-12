@@ -9,113 +9,328 @@ local scene = composer.newScene()
 
 local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
-require( "Parser.GET_ACTIVE_TEAMMEMBERS" )
 local widget = require( "widget" )
 local Applicationconfig = require("Utils.ApplicationConfig")
 
+viewValue = "position"
 
+--position
 
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
 
-local Background,BgText
+local Background,BgText,listBg,list_Name,list_Position
 
 --Button
 
 local menuBtn
 
+local careerList_scrollview
+
 openPage="careerPathPage"
 
 
+local newtworkArray = {}
 
+local careerListArray = {}
+
+local List_array = {}
+
+local RecentTab_Topvalue = 65
+
+local header_value = ""
+
+local changeMenuGroup = display.newGroup();
 --------------------------------------------------
 
 
 -----------------Function-------------------------
 
+local function detailPageFun(event)
+	
+
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+
+		elseif ( event.phase == "moved" ) then
+			local dy = math.abs( ( event.y - event.yStart ) )
+
+			if ( dy > 10 ) then
+				display.getCurrentStage():setFocus( nil )
+				careerList_scrollview:takeFocus( event )
+			end
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+			local options = {
+			isModal = true,
+			effect = "slideLeft",
+			time = 300,
+			params = {
+			contactId = event.target.id
+		}
+	}
+
+	composer.showOverlay( "Controller.careerPathDetailPage", options )
+end
+
+return true
 
 
-local function onRowRender_CareerLib( event )
+end
 
- -- Get reference to the row group
- local row = event.row
+local function changeListmenuTouch(event)
+	
 
-    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
-    local rowHeight = row.contentHeight
-    local rowWidth = row.contentWidth
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+
+		elseif ( event.phase == "moved" ) then
+			local dy = math.abs( ( event.y - event.yStart ) )
+
+			if ( dy > 10 ) then
+				display.getCurrentStage():setFocus( nil )
+				careerList_scrollview:takeFocus( event )
+			end
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+			
+			if changeMenuGroup.isVisible == true then
+				changeMenuGroup.isVisible=false
+			else
+				changeMenuGroup.isVisible=true
+			end
+end
+
+return true
+
+
+end
+
+
+local function careePath_list( list )
+
+
+	for j=#careerListArray, 1, -1 do 
+		display.remove(careerListArray[#careerListArray])
+		careerListArray[#careerListArray] = nil
+	end
+
+	for i=1,#List_array do
+
+		if i == 1 then 
+			if viewValue == "position" then
+				header_value = List_array[i].CarrierProgress
+				parentFlag=true
+			else
+				header_value = List_array[i].Last_Name:sub(1,1)
+				parentFlag=true
+			end
+
+		else
+			if viewValue == "position" then
+				if(header_value ~= List_array[i].CarrierProgress) then
+					header_value = List_array[i].CarrierProgress
+					parentFlag=true
+				end
+			else
+				if(header_value:upper() ~= List_array[i].Last_Name:sub(1,1):upper()) then
+					header_value = List_array[i].Last_Name:sub(1,1)
+					parentFlag=true
+				end
+			end
+		end
+
+		careerListArray[#careerListArray+1] = display.newGroup()
+
+		local tempGroup = careerListArray[#careerListArray]
+
+		local Image 
+
+		local tempHeight = 0
+
+		local background = display.newRect(tempGroup,0,0,W,50)
+
+		if(careerListArray[#careerListArray-1]) ~= nil then
+			tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height+3
+		end
+
+		background.anchorY = 0
+		background.x=W/2;background.y=tempHeight
+		background.id=List_array[i].Contact_Id
+		background.alpha=0.01
+
+		if parentFlag == true then
+			parentFlag=false
 
 
 
-    local Image 
+			parentTitle = display.newRect(tempGroup,0,0,W,25)
+			if(careerListArray[#careerListArray-1]) ~= nil then
+				--here
+				tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height/2+10
+			end
 
-    if List_array[row.index].Image_Path ~= nil then
 
-    	print("Image Path :"..ApplicationConfig.IMAGE_BASE_URL..List_array[row.index].Image_Path)
-    	display.loadRemoteImage(ApplicationConfig.IMAGE_BASE_URL..List_array[row.index].Image_Path, "GET", 
-    		function ( img_event )
-    			if ( img_event.isError ) then
-    				print ( "Network error - download failed" )
-    			else
-    				img_event.target.alpha = 0
-    				transition.to( img_event.target, { alpha = 1.0 } )
-    				img_event.target.width=50
-    				img_event.target.height=50
-    				img_event.target.x=50;img_event.target.y=rowHeight/2
+			parentTitle.anchorY = 0
+			parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
+			parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
 
-    				event.row:insert(img_event.target)
+			if viewValue == "position" then
+				parent_centerText = display.newText(tempGroup,header_value,0,0,native.systemFontBold,14)
+			else
+				parent_centerText = display.newText(tempGroup,header_value:upper(),0,0,native.systemFontBold,14)
+
+			end
+
+			parent_centerText.x=5
+			parent_centerText.anchorX=0
+			parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
+
+			background.y=parentTitle.y+background.contentHeight/2
+
+			background:addEventListener("touch",detailPageFun)
+
+
+		end
+
+
+
+		if List_array[i].Image_Path ~= nil then
+
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
+
+			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..List_array[i].Image_Path,
+				"GET",
+				function ( img_event )
+					if ( img_event.isError ) then
+						print ( "Network error - download failed" )
+					else
+						Image:removeSelf();Image=nil
+						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+						Image.width=35;Image.height=35
+						Image.x=30;Image.y=background.y+background.contentHeight/2
+    				--event.row:insert(img_event.target)
     			end
 
-    			print ( "event.response.fullPath: ", img_event.response.fullPath )
-    			print ( "event.response.filename: ", img_event.response.filename )
-    			print ( "event.response.baseDirectory: ", img_event.response.baseDirectory )
-    			end, "career"..List_array[row.index].Contact_Id..".png", system.TemporaryDirectory, 5,5 )
-    else
-    	Image = display.newImageRect(row,"res/assert/twitter_placeholder.png",50,50)
-    	Image.x=50;Image.y=rowHeight/2
+    			end, "career"..List_array[i].Contact_Id..".png", system.TemporaryDirectory)
+		else
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
 
-    end
+		end
 
-    text = display.newText(row,List_array[row.index].Last_Name,0,0,native.systemFont,14)
-    text.x=80;text.y=rowHeight/2-15
-    text.anchorX=0
-    text:setFillColor(Utils.convertHexToRGB(color.Black))
+		local text = display.newText(tempGroup,List_array[i].Last_Name,0,0,native.systemFont,14)
+		text.x=60;text.y=background.y+background.height/2
+		text.anchorX=0
+		text:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-    role = display.newText(row,List_array[row.index].CarrierProgress,0,0,native.systemFont,14)
-    role.x=80;role.y=rowHeight/2+10
-    role.anchorX=0
-    role:setFillColor(Utils.convertHexToRGB(color.Black))
+		local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
+		right_img.anchorX=0
+		right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
 
-    row.Contact_Id = List_array[row.index].Contact_Id
+		local line = display.newRect(tempGroup,W/2,background.y,W,1)
+		line.y=background.y+background.contentHeight-line.contentHeight
+		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+		--[[role = display.newText(tempGroup,List_array[i].CarrierProgress,0,0,native.systemFont,14)
+		role.x=80;role.y=tempHeight
+		role.anchorX=0
+		role:setFillColor(Utils.convertHexToRGB(color.Black))]]
+
+		tempGroup.Contact_Id = List_array[i].Contact_Id
+
+		careerList_scrollview:insert(tempGroup)
+
+	end
 end
 
+local function change( event )
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
 
+		elseif ( event.phase == "moved" ) then
+			local dy = math.abs( ( event.y - event.yStart ) )
 
-local function onRowTouch_CareerLib( event )
-	local phase = event.phase
-	local row = event.target
+			if ( dy > 10 ) then
+				display.getCurrentStage():setFocus( nil )
+				careerList_scrollview:takeFocus( event )
+			end
+		elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
 
-	if( "release" == phase ) then
+				local function action()
 
+					if viewValue == "position" then
 
-		local options = {
-		isModal = true,
-		effect = "slideLeft",
-		time = 300,
-		params = {
-		contactId = row.Contact_Id
-	}
-}
+								function compare(a,b)
+									return a.CarrierProgress < b.CarrierProgress
+								end
 
-print("Contact id : "..row.Contact_Id)
+								table.sort(List_array, compare)
 
-composer.showOverlay( "Controller.careerPathDetailPage", options )
+								careePath_list(List_array)
 
--- By some method (a pause button, for example), show the overlay
+							else
 
+								function compare(a,b)
+									return a.Last_Name < b.Last_Name
+								end
+
+								table.sort(List_array, compare)
+
+								careePath_list(List_array)
+
+							end
+							
+					 --Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
+				end
+
+			if event.target.id == "bg" then
+
+			elseif event.target.id == "name" then
+				changeMenuGroup.isVisible=false
+				viewValue="name"
+				action()
+
+			elseif event.target.id == "position" then
+				changeMenuGroup.isVisible=false
+				viewValue="position"
+				action()
+
+			end
+		end
+	
+
+return true
 end
 
+function get_Activeteammember(response)
 
+	List_array=response
+
+							if viewValue == "position" then
+
+								function compare(a,b)
+									return a.CarrierProgress < b.CarrierProgress
+								end
+
+								table.sort(List_array, compare)
+
+								careePath_list(List_array)
+
+							else
+
+								function compare(a,b)
+									return a.Last_Name < b.Last_Name
+								end
+
+								table.sort(List_array, compare)
+
+								careePath_list(List_array)
+
+							end
 end
 ------------------------------------------------------
 
@@ -138,13 +353,61 @@ function scene:create( event )
 	BgText.anchorX=0
 
 
-	title = display.newText(sceneGroup,"Career Path",0,0,native.systemFontBold,18)
+	title = display.newText(sceneGroup,"Career Path",0,0,native.systemFont,18)
 	title.anchorX = 0 ;title.anchorY=0
 	title.x=5;title.y = tabBar.y+tabBar.contentHeight/2+10
 	title:setFillColor(0)
 
+	changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
+	changeList_order_icon.x=W-20;changeList_order_icon.y=title.y
+	changeList_order_icon.anchorY=0
 
-	MainGroup:insert(sceneGroup)
+	changeList_order_touch = display.newRect(sceneGroup,changeList_order_icon.x,changeList_order_icon.y+15,35,35)
+	changeList_order_touch.alpha=0.01
+	changeList_order_touch:addEventListener("touch",changeListmenuTouch)
+
+	careerList_scrollview = widget.newScrollView
+	{
+	top = RecentTab_Topvalue,
+	left = 0,
+	width = W,
+	height =H-60,
+	hideBackground = true,
+	isBounceEnabled=false,
+	horizontalScrollingDisabled = false,
+	verticalScrollingDisabled = false,
+
+   -- listener = scrollListener
+}
+
+--spinner_show()
+
+sceneGroup:insert(careerList_scrollview)
+
+--changeMenuGroup
+
+listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+60,100,80)
+listBg.strokeWidth = 1
+listBg:setStrokeColor( 0, 0, 0,0.3 )
+listBg.id="bg"
+list_Name = display.newText(changeMenuGroup,"By Name",0,0,native.systemFont,16)
+list_Name.x=listBg.x;list_Name.y=listBg.y-20
+list_Name:setFillColor(Utils.convertHexToRGB(color.Black))
+list_Name.id="name"
+
+list_Position = display.newText(changeMenuGroup,"By Position",0,0,native.systemFont,16)
+list_Position.x=listBg.x;list_Position.y=listBg.y+20
+list_Position:setFillColor(Utils.convertHexToRGB(color.Black))
+list_Position.id="position"
+changeMenuGroup.isVisible=false
+
+
+listBg:addEventListener("touch",change)
+list_Name:addEventListener("touch",change)
+list_Position:addEventListener("touch",change)
+
+sceneGroup:insert(changeMenuGroup)
+MainGroup:insert(sceneGroup)
 
 end
 
@@ -158,71 +421,89 @@ function scene:show( event )
 
 		elseif phase == "did" then
 
-			List_array = GetActiveTeammembers()
+			composer.removeHidden()
 
-			Career_Lib_list = widget.newTableView
-			{
-			left = -10,
-			top = 75,
-			height = H-45,
-			width = W+10,
-			onRowRender = onRowRender_CareerLib,
-			onRowTouch = onRowTouch_CareerLib,
-			hideBackground = true,
-			isBounceEnabled = false,
-			--noLines = true,
-		}
+			Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
+			--tempArray = {}
 
-		sceneGroup:insert(Career_Lib_list)
+			if viewValue == "position" then
 
-		for i = 1, #List_array do
-		    -- Insert a row into the tableView
-		    Career_Lib_list:insertRow{ rowHeight = 60,rowColor = 
-		    {
-		    default = { 1, 1, 1, 0 },
-		    over={ 1, 0.5, 0, 0 },
+				function compare(a,b)
+					return a.CarrierProgress < b.CarrierProgress
+				end
 
-		    }}
-		end
+				table.sort(List_array, compare)
 
-		menuBtn:addEventListener("touch",menuTouch)
-		BgText:addEventListener("touch",menuTouch)
+				careePath_list(List_array)
 
+			else
 
-	end	
-	MainGroup:insert(sceneGroup)
+				function compare(a,b)
+					return a.Last_Name < b.Last_Name
+				end
 
-end
+				table.sort(List_array, compare)
 
-function scene:hide( event )
+				careePath_list(List_array)
 
-	local sceneGroup = self.view
-	local phase = event.phase
+			end
 
-	if event.phase == "will" then
+			
 
 
-		elseif phase == "did" then
-			menuBtn:removeEventListener("touch",menuTouch)
-			BgText:removeEventListener("touch",menuTouch)
+
+
+			menuBtn:addEventListener("touch",menuTouch)
+			BgText:addEventListener("touch",menuTouch)
+
 
 		end	
+		MainGroup:insert(sceneGroup)
 
 	end
 
+	function scene:hide( event )
 
-	function scene:destroy( event )
 		local sceneGroup = self.view
+		local phase = event.phase
+
+		if event.phase == "will" then
+
+
+			elseif phase == "did" then
+
+				for i=1,#newtworkArray do
+
+					network.cancel(newtworkArray[i])
+				end
+
+				
+
+
+				for j=1,#careerListArray do 
+					if careerListArray[j] then careerListArray[j]:removeSelf();careerListArray[j] = nil	end
+				end
+
+				menuBtn:removeEventListener("touch",menuTouch)
+				BgText:removeEventListener("touch",menuTouch)
+
+			end	
+
+		end
+
+
+		function scene:destroy( event )
+			local sceneGroup = self.view
 
 
 
-	end
+		end
 
 
-	scene:addEventListener( "create", scene )
-	scene:addEventListener( "show", scene )
-	scene:addEventListener( "hide", scene )
-	scene:addEventListener( "destroy", scene )
+		scene:addEventListener( "create", scene )
+		scene:addEventListener( "show", scene )
+		scene:addEventListener( "hide", scene )
+		scene:addEventListener( "destroy", scene )
 
 
-	return scene
+		return scene

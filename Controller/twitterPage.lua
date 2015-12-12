@@ -24,7 +24,7 @@ local Background,BgText
 
 local menuBtn,UserName
 
-openPage="twitterPage"
+
 
 local groupArray={}
 local callback = {}
@@ -44,11 +44,13 @@ end
 
 -----------------Function-------------------------
 
-local function TwitterCallback(res)
+function TwitterCallback(res,scrollView)
 	--local feedArray = {{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"}}
 
 
 	feedArray = res
+
+	spinner_hide()
 
 	local function networkListener( event )
 		if ( event.isError ) then
@@ -71,7 +73,7 @@ local function TwitterCallback(res)
 					
 					local background = display.newRect(tempGroup,0,0,W,80)
 
-					local tempHeight = 50
+					local tempHeight = 0
 
 					if(groupArray[#groupArray-1]) then
 
@@ -209,7 +211,7 @@ end
 
 if "users" == requestType then
 
-	TwitterCallback(response)
+	TwitterCallback(response,scrollView)
 
 end
 
@@ -290,6 +292,8 @@ function scene:show( event )
 
 	local sceneGroup = self.view
 	local phase = event.phase
+
+	openPage="twitterPage"
 	
 	if phase == "will" then
 

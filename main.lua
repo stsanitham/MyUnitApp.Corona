@@ -12,6 +12,8 @@ local sqlite3 = require( "sqlite3" )
 
 AppName = "CommonApp"
 
+environment = system.getInfo( "environment" )
+
 if AppName == "DirectorApp" then
 	Unitnumber_value = "12345"
 else
@@ -32,15 +34,27 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
 
+local options = {
+    width = 32,
+    height = 32,
+    numFrames = 4,
+    sheetContentWidth = 64,
+    sheetContentHeight = 64
+}
+local spinnerSingleSheet = graphics.newImageSheet( "res/assert/circular-preloaders.png", options )
+
+
 spinner = widget.newSpinner
 {
     width = 50 ,
     height = 50,
     deltaAngle = 10,
+    sheet = spinnerSingleSheet,
+    startFrame = 1,
     incrementEvery = 20
 }
 
-spinner.x=W/2;spinner.y=H/2-50
+spinner.x=W/2;spinner.y=H/2-45
 spinner.isVisible=false
 
 
@@ -48,10 +62,10 @@ function spinner_show ()
     spinner.isVisible=true
     spinner:toFront()
     spinner:start()
+
 end
 
 function spinner_hide ()
-
     spinner.isVisible=false
     spinner:toBack()
     spinner:stop()
@@ -117,7 +131,22 @@ outEasing = easing.outCubic
 }
 
 
+ function onKeyEvent( event )
+        local phase = event.phase
+        local keyName = event.keyName
 
+        if(keyName=="back") then
+            if openPage == "signInPage" then
+                native.setKeyboardFocus(nil)
+            end
+        end
+        -- we handled the event, so return true.
+        -- for default behavior, return false.
+        return true
+     end
+
+    -- Add the key callback
+   Runtime:addEventListener( "key", onKeyEvent );
 
 --[[local function doesFileExist( fname, path )
 

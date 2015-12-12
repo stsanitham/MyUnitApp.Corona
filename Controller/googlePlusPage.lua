@@ -23,7 +23,7 @@ local Background,BgText
 
 local menuBtn
 
-openPage="googlePlusPage"
+
 
 --local User_id="101096891522352574060"
 local AccessApi = "AIzaSyCWHBLU9okAnzMk1Y_AP1XJKZZ0RCCsipQ";
@@ -41,7 +41,7 @@ for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 end
 
 
-local google_scrollView
+local scrollView
 local groupArray={}
 
 local feedArray={}
@@ -76,7 +76,9 @@ function makeTimeStamp(dateString)
 	return timestamp;
 end
 
-local function googleplusCallback( res )
+function googleplusCallback( res,scrollView )
+
+	spinner_hide()
 
 	for i=1,#groupArray do
 		groupArray[i]:removeSelf();groupArray[i]=nil
@@ -208,7 +210,7 @@ local function googleplusCallback( res )
 		end
 
 	end
-	google_scrollView:insert(tempGroup)
+	scrollView:insert(tempGroup)
 
 end
 end
@@ -239,7 +241,7 @@ local function getgoogleplus_stream( event )
 				if ( event.isError ) then
 					print ( "Network error - download failed" )
 				else
-					googleplusCallback(response)
+					googleplusCallback(response,scrollView)
 				end
 
 			end
@@ -299,13 +301,15 @@ function scene:show( event )
 
 	local sceneGroup = self.view
 	local phase = event.phase
+
+	openPage="googlePlusPage"
 	
 	if phase == "will" then
 
 
 		elseif phase == "did" then
 
-			google_scrollView = widget.newScrollView
+			scrollView = widget.newScrollView
 			{
 			top = RecentTab_Topvalue,
 			left = 0,
@@ -321,7 +325,7 @@ function scene:show( event )
 
 
 
-sceneGroup:insert(google_scrollView)
+sceneGroup:insert(scrollView)
 
 network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public?key="..AccessApi, "GET", getgoogleplus_stream )
 

@@ -112,22 +112,20 @@ function scene:show( event )
 
 		elseif phase == "did" then
 
+			function get_allDocument(response)
 
-			
+				List_array=response
 
-			List_array = Get_AllMyunitappdocument()
-
-
-			Document_Lib_list = widget.newTableView
-			{
-			left = -10,
-			top = 45,
-			height = H-45,
-			width = W+10,
-			onRowRender = onRowRender_DocLib,
-			onRowTouch = onRowTouch_DocLib,
-			hideBackground = true,
-			isBounceEnabled = false,
+				Document_Lib_list = widget.newTableView
+				{
+				left = -10,
+				top = 45,
+				height = H-45,
+				width = W+10,
+				onRowRender = onRowRender_DocLib,
+				onRowTouch = onRowTouch_DocLib,
+				hideBackground = true,
+				isBounceEnabled = false,
 			--noLines = true,
 		}
 
@@ -143,14 +141,21 @@ function scene:show( event )
 		    }}
 		end
 
+	end
 
-		menuBtn:addEventListener("touch",menuTouch)
-		BgText:addEventListener("touch",menuTouch)
+	List_array = Webservice.GET_ALL_MYUNITAPP_DOCUMENT(get_allDocument)
 
 
-	end	
 
-	MainGroup:insert(sceneGroup)
+
+
+	menuBtn:addEventListener("touch",menuTouch)
+	BgText:addEventListener("touch",menuTouch)
+
+
+end	
+
+MainGroup:insert(sceneGroup)
 
 end
 

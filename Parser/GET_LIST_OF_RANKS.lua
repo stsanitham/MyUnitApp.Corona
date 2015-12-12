@@ -2,12 +2,16 @@ require( "Webservice.ServiceManager" )
 local json = require("json")
 
 
- function GET_LIST_OF_RANKS()
+ function GET_LIST_OF_RANKS(postExecution)
  	local List_array = {}
 
-		response = Webservice.GET_LIST_OF_RANKS()
+function postExecution( response )
+	print("center : "..response)
+	return postExecution
+end
+		 Webservice.GET_LIST_OF_RANKS(postExecution)
 
-		response = response.response.body
+		--[[response = response.response.body
 
 		response = json.decode(response)
 
@@ -23,8 +27,6 @@ local json = require("json")
 
 		end
 
-		end
+		end]]
 
-
-	return List_array
  end

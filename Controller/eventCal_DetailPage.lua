@@ -150,25 +150,28 @@ function scene:show( event )
 
 				local timeGMT = makeTimeStamp( detail_value.date )
 
-				Details = GetTicklerEventById(detail_value.id)
+				function get_ticklereventByid(response)
 
-				----When----
+					print("123")
+					Details=response
 
-				titleBar_text.text = Details.title
+					----When----
 
-				
-				display_details[#display_details+1] = display.newText(sceneGroup,"When",0,0,native.systemFont,16)
-				display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-				display_details[#display_details].x=15;display_details[#display_details].y=titleBar.y+titleBar.contentHeight+30
-				display_details[#display_details].anchorX=0
+					titleBar_text.text = Details.title
 
 
-				display_details[#display_details+1] = display_details[#display_details+1]
-				display_details[#display_details] = display.newText(sceneGroup,os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFont,16)
-				display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-				display_details[#display_details].x=W/2-15;display_details[#display_details].y=titleBar.y+titleBar.contentHeight+30
-				display_details[#display_details].anchorX=0
-				display_details[#display_details].id="when"
+					display_details[#display_details+1] = display.newText(sceneGroup,"When",0,0,native.systemFont,16)
+					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
+					display_details[#display_details].x=15;display_details[#display_details].y=titleBar.y+titleBar.contentHeight+30
+					display_details[#display_details].anchorX=0
+
+
+					display_details[#display_details+1] = display_details[#display_details+1]
+					display_details[#display_details] = display.newText(sceneGroup,os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFont,16)
+					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
+					display_details[#display_details].x=W/2-15;display_details[#display_details].y=titleBar.y+titleBar.contentHeight+30
+					display_details[#display_details].anchorX=0
+					display_details[#display_details].id="when"
 
 				------------------
 
@@ -296,47 +299,44 @@ function scene:show( event )
 						display_details[#display_details]:addEventListener("touch",AttachmentDownload)
 					end
 				------------------
-
-
-
-
 			end
+			Webservice.Get_TicklerEventsById(detail_value.id,get_ticklereventByid)
+
+		end
+
+	end	
+
+	MainGroup:insert(sceneGroup)
+
+end
+
+function scene:hide( event )
+
+	local sceneGroup = self.view
+	local phase = event.phase
+
+	if event.phase == "will" then
+
+
+		elseif phase == "did" then
+			menuBtn:removeEventListener("touch",menuTouch)
+			BgText:removeEventListener("touch",menuTouch)
 
 		end	
 
-		MainGroup:insert(sceneGroup)
+	end
+
+
+	function scene:destroy( event )
+		local sceneGroup = self.view
 
 	end
 
-	function scene:hide( event )
 
-		local sceneGroup = self.view
-		local phase = event.phase
-
-		if event.phase == "will" then
-
-
-			elseif phase == "did" then
-				menuBtn:removeEventListener("touch",menuTouch)
-				BgText:removeEventListener("touch",menuTouch)
-
-			end	
-
-		end
+	scene:addEventListener( "create", scene )
+	scene:addEventListener( "show", scene )
+	scene:addEventListener( "hide", scene )
+	scene:addEventListener( "destroy", scene )
 
 
-		function scene:destroy( event )
-			local sceneGroup = self.view
-
-
-
-		end
-
-
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
-
-
-		return scene
+	return scene

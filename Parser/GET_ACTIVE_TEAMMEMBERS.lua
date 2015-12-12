@@ -13,7 +13,7 @@ function GetActiveTeammembers()
 
 	response = json.decode(response)
 
-		--print("GetActiveTeammembers"..response[1].Last_Name)
+		print("GetActiveTeammembers"..json.encode(response[1]))
 
 		return response
 
@@ -30,7 +30,7 @@ function GetActiveTeammembers()
 
 		--response = json.encode(response)
 
-		--print("GetActiveTeammemberDetails "..response)
+		print("GetActiveTeammemberDetails "..json.encode(response))
 
 
 		response = json.decode(response)

@@ -34,6 +34,14 @@ ApplicationConfig.GetTicklerEvents = ApplicationConfig.BASE_URL.."/MyUnitBuzzCal
 
 ApplicationConfig.GetTicklerEventById = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/GetTicklerEventById"
 
+ApplicationConfig.GetSearchByUnitNumberOrDirectorName = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetSearchByUnitNumberOrDirectorName"
+
+ApplicationConfig.ForgotPassword = ApplicationConfig.BASE_URL.."/MyUnitBuzz/ForgotPassword"
+
+
+
+
+
 
 
 

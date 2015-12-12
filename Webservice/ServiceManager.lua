@@ -1,5 +1,7 @@
 
 local M = require( "Webservice.xmlParser" )
+local request = require('Webservice.xmlParse')
+
 local Applicationconfig = require("Utils.ApplicationConfig")
 local Utility = require("Utils.Utility")
 Webservice = {}
@@ -35,14 +37,12 @@ function string.urlEncode( str )
 end
 
 
-function Webservice.GET_LIST_OF_RANKS()
-
+function Webservice.GET_LIST_OF_RANKS(postExecution)
 
 
 	local request_value = {}
 	local params = {}
 	local headers = {}
-	params.headers = headers
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 	headers["IpAddress"] = Utility.getIpAddress()
 	headers["UniqueId"] = system.getInfo("deviceID")
@@ -66,17 +66,19 @@ function Webservice.GET_LIST_OF_RANKS()
 	request_value.url=ApplicationConfig.GET_LIST_OF_RANKS..resbody
 	request_value.headers = headers
 	request_value.method = method
-	response = M.xmlParser( request_value )
-	print("list : "..json.encode(response))
-	return response
+	--response = M.xmlParser( request_value)
+	params={headers = headers}
+
+	request.new( ApplicationConfig.GET_LIST_OF_RANKS..resbody,method,params,postExecution)
+
+	return 
 end
 
-function Webservice.REQUEST_ACCESS(Name,Email,Phone,UnitNumber,MKRank,Comment)
+function Webservice.REQUEST_ACCESS(firstName,lastName,Email,Phone,UnitNumber,MKRank,Comment,postExecution)
 
 	local request_value = {}
 	local params = {}
 	local headers = {}
-	params.headers = headers
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 	headers["IpAddress"] = Utility.getIpAddress()
 	headers["UniqueId"] = system.getInfo("deviceID")
@@ -92,17 +94,15 @@ function Webservice.REQUEST_ACCESS(Name,Email,Phone,UnitNumber,MKRank,Comment)
 	headers["Authentication"] = authenticationkey
 
 
-	local v = "Name="..Name.."&EmailAddress="..string.urlEncode(Email).."&PhoneNumber="..Phone.."&MkRankId="..MKRank.."&Comments="..Comment.."&UnitNumber="..UnitNumber.."&RequestFrom=ANDROID&"
+	local v = "FirstName="..firstName.."&LastName="..lastName.."&EmailAddress="..string.urlEncode(Email).."&PhoneNumber="..Phone.."&MkRankId="..MKRank.."&Comments="..Comment.."&UnitNumber="..UnitNumber.."&RequestFrom=ANDROID&"
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
 	headers["Content-Length"]= string.len(v)
 
 
-	request_value.url=ApplicationConfig.REQUEST_ACCESS
-	request_value.headers = headers
-	request_value.body = v
+	params={headers = headers,body = v}
 
-	request_value.method = "POST"
-	response = M.xmlParser( request_value )
+
+	request.new( ApplicationConfig.REQUEST_ACCESS,method,params,postExecution)
 	
 
 	return response
@@ -110,12 +110,11 @@ function Webservice.REQUEST_ACCESS(Name,Email,Phone,UnitNumber,MKRank,Comment)
 end
 
 
-function Webservice.LOGIN_ACCESS(UnitNumber,UserName,Password)
+function Webservice.LOGIN_ACCESS(UnitNumber,UserName,Password,postExecution)
 
 	local request_value = {}
 	local params = {}
 	local headers = {}
-	params.headers = headers
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 	headers["IpAddress"] = Utility.getIpAddress()
 	headers["UniqueId"] = system.getInfo("deviceID")
@@ -130,25 +129,57 @@ function Webservice.LOGIN_ACCESS(UnitNumber,UserName,Password)
 	headers["Authentication"] = authenticationkey
 
 
-	local resbody = "emailAddress="..string.urlEncode(UserName).."&password="..string.urlEncode(Password).."&unitNumberOrDirectorName="..string.urlEncode(UnitNumber).."&"
-	request_value.url=ApplicationConfig.LOGIN_ACCESS.."?"..resbody
+	local resbody = "emailAddress="..string.urlEncode(UserName).."&password="..string.urlEncode(Password).."&unitNumberOrDirectorName="..string.urlEncode(UnitNumber)
+	params={headers = headers}
 
-	request_value.headers = headers
-	--request_value.body = resbody
-	request_value.method = method
-	response = M.xmlParser( request_value )
+
+
+print("url :"..ApplicationConfig.LOGIN_ACCESS.."?"..resbody)
 	
+	request.new( ApplicationConfig.LOGIN_ACCESS.."?"..resbody,method,params,postExecution)
+
+	return response
+
+end
+
+function Webservice.Forget_Password(UnitNumber,UserName,postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["UserAuthorization"]= ""
+	headers["Content-Type"] = "application/json"
+	method="GET"
+
+	local url = splitUrl(ApplicationConfig.ForgotPassword)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+	local resbody = "emailAddress="..string.urlEncode(UserName).."&uniNumber="..string.urlEncode(UnitNumber).."&languageId=1&countryId=1&"
+
+
+	params={headers = headers}
+
+	request.new( ApplicationConfig.ForgotPassword.."?"..resbody,method,params,postExecution)
+
 
 	return response
 
 end
 
 
-function Webservice.GET_ALL_MYUNITAPP_IMAGE()
+
+
+function Webservice.GET_ALL_MYUNITAPP_IMAGE(postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
-	params.headers = headers
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 	headers["IpAddress"] = Utility.getIpAddress()
 	headers["UniqueId"] = system.getInfo("deviceID")
@@ -176,23 +207,21 @@ function Webservice.GET_ALL_MYUNITAPP_IMAGE()
 
 	local resbody = "userid="..string.urlEncode(UserId)
 
-	request_value.url=ApplicationConfig.GetAllMyUnitAppImage.."?"..resbody
 
-	request_value.headers = headers
-	--request_value.body = resbody
-	request_value.method = method
-	response = M.xmlParser( request_value )
+	params={headers = headers}
+
+	request.new( ApplicationConfig.GetAllMyUnitAppImage.."?"..resbody,method,params,postExecution)
+
 	
 
 
 	return response
 end
 
-function Webservice.GET_ALL_MYUNITAPP_DOCUMENT()
+function Webservice.GET_ALL_MYUNITAPP_DOCUMENT(postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
-	params.headers = headers
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 	headers["IpAddress"] = Utility.getIpAddress()
 	headers["UniqueId"] = system.getInfo("deviceID")
@@ -220,24 +249,19 @@ function Webservice.GET_ALL_MYUNITAPP_DOCUMENT()
 	
 	local resbody = "userid="..string.urlEncode(UserId)
 
-	request_value.url=ApplicationConfig.GetAllMyUnitAppDocument.."?"..resbody
+	params={headers = headers}
 
-	request_value.headers = headers
-	--request_value.body = resbody
-	request_value.method = method
-	response = M.xmlParser( request_value )
-	
+	request.new(ApplicationConfig.GetAllMyUnitAppDocument.."?"..resbody,method,params,postExecution)
 
 
 	return response
 end
 
 
-function Webservice.GET_ACTIVE_TEAMMEMBERS()
+function Webservice.GET_ACTIVE_TEAMMEMBERS(postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
-	params.headers = headers
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 	headers["IpAddress"] = Utility.getIpAddress()
 	headers["UniqueId"] = system.getInfo("deviceID")
@@ -255,22 +279,17 @@ function Webservice.GET_ACTIVE_TEAMMEMBERS()
 		UserId = row.UserId
 		AccessToken = row.AccessToken
 		ContactId = row.ContactId
-
-
 	end
 
 	
-
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 	
 	local resbody = "userid="..string.urlEncode(UserId)
 
-	request_value.url=ApplicationConfig.GetActiveTeammembers.."?"..resbody
 
-	request_value.headers = headers
-	--request_value.body = resbody
-	request_value.method = method
-	response = M.xmlParser( request_value )
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetActiveTeammembers.."?"..resbody,method,params,postExecution)
 	
 
 
@@ -278,11 +297,10 @@ function Webservice.GET_ACTIVE_TEAMMEMBERS()
 end
 
 
-function Webservice.GET_ACTIVE_TEAMMEMBERDETAILS(contactId)
+function Webservice.GET_ACTIVE_TEAMMEMBERDETAILS(contactId,postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
-	params.headers = headers
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 	headers["IpAddress"] = Utility.getIpAddress()
 	headers["UniqueId"] = system.getInfo("deviceID")
@@ -305,14 +323,13 @@ function Webservice.GET_ACTIVE_TEAMMEMBERDETAILS(contactId)
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 	
-	local resbody = "contactId="..string.urlEncode(contactId)
 
-	request_value.url=ApplicationConfig.GetActiveTeammemberDetails.."?"..resbody
+	local resbody = "contactId="..contactId
 
-	request_value.headers = headers
-	--request_value.body = resbody
-	request_value.method = method
-	response = M.xmlParser( request_value )
+
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetActiveTeammemberDetails.."?"..resbody,method,params,postExecution)
 	
 
 
@@ -321,11 +338,10 @@ end
 
 
 
-function Webservice.GET_MYUNITAPP_GOALS()
+function Webservice.GET_MYUNITAPP_GOALS(postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
-	params.headers = headers
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 	headers["IpAddress"] = Utility.getIpAddress()
 	headers["UniqueId"] = system.getInfo("deviceID")
@@ -351,21 +367,19 @@ function Webservice.GET_MYUNITAPP_GOALS()
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 	local resbody = "userid="..string.urlEncode(UserId)
 
-	request_value.url=ApplicationConfig.GetMyUnitAppGoals.."?"..resbody
 
-	request_value.headers = headers
-	request_value.method = method
-	response = M.xmlParser( request_value )
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetMyUnitAppGoals.."?"..resbody,method,params,postExecution)
 	
-
-
 	return response
 end
-function Webservice.Get_All_MyCalendars()
+function Webservice.Get_All_MyCalendars(postExecution)
+
+
 local request_value = {}
 local params = {}
 local headers = {}
-params.headers = headers
 headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 headers["IpAddress"] = Utility.getIpAddress()
 headers["UniqueId"] = system.getInfo("deviceID")
@@ -388,31 +402,30 @@ for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
 end
 
+
 headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 local resbody = "userid="..string.urlEncode(UserId)
 
-request_value.url=ApplicationConfig.GetAllMyCalendars.."?"..resbody
 
-request_value.headers = headers
-request_value.method = method
-response = M.xmlParser( request_value )
+	params={headers = headers}
 
+	request.new(ApplicationConfig.GetAllMyCalendars.."?"..resbody,method,params,postExecution)
+	
 
 
 return response
 end
 
-function Webservice.Get_TicklerEvents(CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic)
+function Webservice.Get_TicklerEvents(CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic,postExecution)
 local request_value = {}
 local params = {}
 local headers = {}
-params.headers = headers
 headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 headers["IpAddress"] = Utility.getIpAddress()
 headers["UniqueId"] = system.getInfo("deviceID")
 headers["Accept"] = "application/json"
 headers["Content-Type"] = "application/json"
-method="GET"
+method="POST"
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 	print("UserId :"..row.UserId)
@@ -439,71 +452,116 @@ resbody = resbody.."IsShowCall="..IsShowCall.."&"
 resbody = resbody.."IsShowParty="..IsShowParty.."&"
 resbody = resbody.."IsShowTask="..IsShowTask.."&"
 resbody = resbody.."IsShowFamilyTime="..IsShowFamilyTime.."&"
-resbody = resbody.."IsPublic="..IsPublic.."&"
+resbody = resbody.."IsPublic="..IsPublic
 
-print("body : "..resbody)
+
 headers["Content-Type"] = "application/x-www-form-urlencoded"
-headers["Content-Length"]= string.len(resbody)
-
-request_value.url=ApplicationConfig.GetTicklerEvents
-request_value.body = resbody
-request_value.headers = headers
-request_value.method = method
-response = M.xmlParser( request_value )
+	headers["Content-Length"]= string.len(resbody)
 
 
+	params={headers = headers,body=resbody}
+
+	print(json.encode(params))
+
+--[[local options =
+{
+   to = { "malarkodi.sellamuthu@w3magix.com" },
+   subject = "response check",
+   body = json.encode(params),
+   
+}
+native.showPopup( "mail", options )]]
+
+	request.new(ApplicationConfig.GetTicklerEvents,method,params,postExecution)
 
 return response
 end
 
 
-function Webservice.Get_TicklerEventsById(Id)
-local request_value = {}
-local params = {}
-local headers = {}
-params.headers = headers
-headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-headers["IpAddress"] = Utility.getIpAddress()
-headers["UniqueId"] = system.getInfo("deviceID")
-headers["Accept"] = "application/json"
-headers["Content-Type"] = "application/json"
-method="GET"
+function Webservice.Get_TicklerEventsById(Id,postExecution)
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Typse"] = "application/json"
+	method="POST"
 
-for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-	print("UserId :"..row.UserId)
-	UserId = row.UserId
-	AccessToken = row.AccessToken
-	ContactId = row.ContactId
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
 
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	local url = splitUrl(ApplicationConfig.GetTicklerEventById)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+
+
+	local resbody = ""
+	resbody = resbody.."UserId="..UserId.."&"
+	resbody = resbody.."id="..Id
+
+		headers["Content-Type"] = "application/x-www-form-urlencoded"
+	headers["Content-Length"]= string.len(resbody)
+
+			
+	params={headers = headers,body=resbody}
+
+	print("request : "..json.encode(params))
+
+	--[[local options =
+{
+   to = { "malarkodi.sellamuthu@w3magix.com" },
+   subject = "response check",
+   body = json.encode(params),
+   
+}
+native.showPopup( "mail", options )]]
+
+	request.new(ApplicationConfig.GetTicklerEventById,method,params,postExecution)
+
+	return response
 end
+function Webservice.GET_SEARCHBY_UnitNumberOrDirectorName(search_value,postExecution)
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method="GET"
+	headers["UserAuthorization"]= ""
 
-headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	local url = splitUrl(ApplicationConfig.GetSearchByUnitNumberOrDirectorName)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
 
-local url = splitUrl(ApplicationConfig.GetTicklerEventById)
-local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-headers["Authentication"] = authenticationkey
-
-local resbody = ""
-resbody = resbody.."UserId="..UserId.."&"
-resbody = resbody.."id="..Id.."&"
-
-
-print("body : "..resbody)
-headers["Content-Type"] = "application/x-www-form-urlencoded"
-headers["Content-Length"]= string.len(resbody)
-
-request_value.url=ApplicationConfig.GetTicklerEventById
-request_value.body = resbody
-request_value.headers = headers
-request_value.method = method
-response = M.xmlParser( request_value )
+	local resbody = ""
+	resbody = "searchName="..search_value.."&"
 
 
+	print("body : "..resbody)
 
-return response
+
+	params={headers = headers}
+
+	request.new( ApplicationConfig.GetSearchByUnitNumberOrDirectorName.."?"..resbody,method,params,postExecution)
+
+	return response
 end
-
 
 
 

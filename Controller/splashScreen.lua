@@ -43,7 +43,7 @@ function scene:create( event )
 	Background = display.newImageRect(sceneGroup,"res/assert/bg-image.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/2,81/2)
+	BgText = display.newImageRect(sceneGroup,"res/assert/splashlogo.png",398/2,81/2)
 	BgText.x=W/2;BgText.y=H/2
 
 	

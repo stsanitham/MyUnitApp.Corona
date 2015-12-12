@@ -21,6 +21,8 @@ local json = require("json")
 
  	local response = 0
 
+ 	spinner_show()
+
  	response = Webservice.LOGIN_ACCESS(UnitNumber,UserName,Password)
 
 	response = response.response.body
@@ -29,6 +31,29 @@ local json = require("json")
 
 	--response = response.RequestAccessStatus
 
-	--print(json.encode(response))
+	print(json.encode(response))
+
+	spinner_hide()
  	return response
  end
+
+  function FORGET_PASSWORD(UnitNumber,UserName)
+
+ 	local response = 0
+
+ 	spinner_show()
+
+ 	response = Webservice.Forget_Password(UnitNumber,UserName,Password)
+
+	response = response.response.body
+
+	response = json.decode(response)
+
+	--response = response.RequestAccessStatus
+
+	print("forget : "..json.encode(response))
+
+	spinner_hide()
+ 	return response
+ end
+ 

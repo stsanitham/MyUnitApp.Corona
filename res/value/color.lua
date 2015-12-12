@@ -13,7 +13,7 @@ color.subHeader="#000000"
 color.nAptHeader="#465736"
 color.White="#ffffff"
 color.checkBoxColor = "#181818"
-color.tabBarColor = "#F31D62"
+color.tabBarColor = "#c1185b"
 color.google_plus = "#DD4239"
 
 

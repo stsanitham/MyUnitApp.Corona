@@ -302,4 +302,3 @@ function handlert.coroutine()
     end
     return base.setmetatable(dispatcher, cometat)
 end
-

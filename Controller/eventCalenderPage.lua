@@ -7,10 +7,11 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 local widget = require( "widget" )
+local json = require("json")
+
 
 local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
-require( "Parser.GET_ALL_MYCALENDARS" )
 
 
 --------------- Initialization -------------------
@@ -31,12 +32,11 @@ local DateWise_response = {}
 
 local defalutCalenderView = "agendaWeek" --"month","agendaDay"
 
-local groupArray = {}
+local event_groupArray = {}
 
 local scrollView
 
 local RecentTab_Topvalue = 70
-
 
 --------------------------------------------------
 
@@ -47,28 +47,28 @@ local function listTouch( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 
-	elseif ( event.phase == "moved" ) then
+		elseif ( event.phase == "moved" ) then
 			local dy = math.abs( ( event.y - event.yStart ) )
 
-        if ( dy > 10 ) then
-        	display.getCurrentStage():setFocus( nil )
-        	scrollView:takeFocus( event )
-        end
-    
-    elseif event.phase == "ended" then
-    display.getCurrentStage():setFocus( nil )
+			if ( dy > 10 ) then
+				display.getCurrentStage():setFocus( nil )
+				scrollView:takeFocus( event )
+			end
+
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
 
 
-    local options = {
-    isModal = true,
-    effect = "slideLeft",
-    time = 500,
-    params = {
-    details = event.target.value
-}
-}
+			local options = {
+			isModal = true,
+			effect = "slideLeft",
+			time = 500,
+			params = {
+			details = event.target.value
+		}
+	}
 
-composer.showOverlay( "Controller.eventCal_DetailPage", options )
+	composer.showOverlay( "Controller.eventCal_DetailPage", options )
 
 end
 
@@ -96,11 +96,10 @@ end
 
 local function display_calenderList(response)
 
-print("list : "..response.date)
 
-groupArray[#groupArray+1] = display.newGroup()
+event_groupArray[#event_groupArray+1] = display.newGroup()
 
-local tempGroup = groupArray[#groupArray]
+local tempGroup = event_groupArray[#event_groupArray]
 
 local bgheight = 45
 --os.date("!%Y-%m-%dT%H:%m:%S")
@@ -108,12 +107,14 @@ local timeGMT = makeTimeStamp( response.date )
 
 
 --date_value = os.date( "%A" , timeGMT )
-
+local tempHeight = 0 
 
 local background = display.newRect(tempGroup,0,0,W,bgheight)
-if(groupArray[#groupArray-1]) ~= nil then
+
+if(event_groupArray[#event_groupArray-1]) ~= nil then
 	--here
-	tempHeight = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height
+	tempHeight = event_groupArray[#event_groupArray-1][1].y + event_groupArray[#event_groupArray-1][1].height
+
 end
 
 
@@ -121,13 +122,15 @@ background.anchorY = 0
 background.x=W/2;background.y=tempHeight
 background.alpha=0.01
 
+local parentTitle;
+
 if ParentShow == true then
 	ParentShow = false
 
 	parentTitle = display.newRect(tempGroup,0,0,W,bgheight/2)
-	if(groupArray[#groupArray-1]) ~= nil then
+	if(event_groupArray[#event_groupArray-1]) ~= nil then
 	--here
-	tempHeight = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height-2
+	tempHeight = event_groupArray[#event_groupArray-1][1].y + event_groupArray[#event_groupArray-1][1].height-2
 end
 
 
@@ -135,15 +138,15 @@ parentTitle.anchorY = 0
 parentTitle.x=W/2;parentTitle.y=tempHeight
 parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
 
-parent_leftDraw = display.newImageRect(tempGroup,"res/assert/calendar.png",32/2,32/2)
+local parent_leftDraw = display.newImageRect(tempGroup,"res/assert/calendar.png",32/2,32/2)
 parent_leftDraw.x=parentTitle.x-parentTitle.contentWidth/2+15;parent_leftDraw.y=parentTitle.y+parentTitle.contentHeight/2
 
-parent_leftText = display.newText(tempGroup,os.date( "%A" , timeGMT ),0,0,native.systemFont,10)
+local parent_leftText = display.newText(tempGroup,os.date( "%A" , timeGMT ),0,0,native.systemFont,10)
 parent_leftText.x=parent_leftDraw.x+parent_leftDraw.contentWidth/2+2
 parent_leftText.y=parent_leftDraw.y
 parent_leftText.anchorX=0
 
-parent_centerText = display.newText(tempGroup,os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFontBold,14)
+local parent_centerText = display.newText(tempGroup,os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFontBold,14)
 parent_centerText.x=W/2
 parent_centerText.y=parent_leftDraw.y
 
@@ -162,7 +165,7 @@ local line = display.newRect(tempGroup,W/2,background.y,W,1)
 line.y=background.y+background.contentHeight-line.contentHeight
 line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
-time = display.newText(tempGroup,os.date( "%I:%M \n  %p" , timeGMT ),0,0,native.systemFontBold,14)
+local time = display.newText(tempGroup,os.date( "%I:%M \n  %p" , timeGMT ),0,0,native.systemFontBold,14)
 time.x=30
 time.y=background.y+background.contentHeight/2
 time:setFillColor(Utility.convertHexToRGB(color.Black))
@@ -206,7 +209,6 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 	
-
 	
 	MainGroup:insert(sceneGroup)
 
@@ -222,12 +224,9 @@ function scene:show( event )
 
 		elseif phase == "did" then
 
-			for j=#groupArray, 1, -1 do 
-				display.remove(groupArray[#groupArray])
-				groupArray[#groupArray] = nil
-			end
+			composer.removeHidden()
 
-
+			
 			scrollView = widget.newScrollView
 			{
 			top = RecentTab_Topvalue,
@@ -245,7 +244,8 @@ function scene:show( event )
 
 			sceneGroup:insert(scrollView)
 
-			response = GetAllMyCalendars()
+			function get_allCalender(response)
+
 
 			if response ~= nil then
 
@@ -323,7 +323,7 @@ function scene:show( event )
 
 			else
 
-				IsPublic="false"
+				IsPublic="true"
 
 			end
 
@@ -339,9 +339,11 @@ function scene:show( event )
 			local t = os.date( '*t' )
 
 
-			startdate = os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t ))
+			startdate = os.date( "!%m/%d/%YT%H:%m:%S %p" , os.time( t ))
 
-			Processingdate = dateSplit(startdate)
+			Processingdate = os.date( "!%Y-%m-%d" , os.time( t ))
+
+			startdate = dateSplit(startdate).." 12:00:00 AM"
 
 
 			if defalutCalenderView == "agendaWeek" then
@@ -351,45 +353,51 @@ function scene:show( event )
 			t.day = t.day + 7
 
 
-			enddate = os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t ))
+			enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
 
 			elseif defalutCalenderView == "month" then
 
 			ProcessingCount_total = 30
 
 			t.day = t.day + 30
+		--!%Y-%m-%dT%H:%m:%S
+
+		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
+
+		elseif defalutCalenderView == "agendaDay" then
+
+		ProcessingCount_total = 0
+
+		t.day = t.day
 
 
-			enddate = os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t ))
-
-			elseif defalutCalenderView == "agendaDay" then
-
-			ProcessingCount_total = 0
-
-			t.day = t.day
+		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
+	end
 
 
-			enddate = os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t ))
-		end
+	function get_TicklerEvents(response)
+		DateWise_response=response
 
-		print("second time")
-
-		DateWise_response = GetTicklerEvents(CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic)
+		date = dateSplit(DateWise_response[1].date)
 
 
 		for i = 1, #DateWise_response do
 
+
 			date = dateSplit(DateWise_response[i].date)
+
+
+			
 
 			local function eventCalen_display_process()
 
 				--print("Compare : "..Processingdate..":"..date)
 
+
+
 				if Processingdate == date then
 
 					--print("final : "..DateWise_response[i].title)
-
-					
 					
 
 					display_calenderList(DateWise_response[i])
@@ -418,12 +426,27 @@ function scene:show( event )
 
 		end
 
+	end
 
-		menuBtn:addEventListener("touch",menuTouch)
-		BgText:addEventListener("touch",menuTouch)
+	Webservice.Get_TicklerEvents(CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic,get_TicklerEvents)
+
+end	
+
+end
 
 
-	end	
+
+
+
+Webservice.Get_All_MyCalendars(get_allCalender)
+
+
+
+menuBtn:addEventListener("touch",menuTouch)
+BgText:addEventListener("touch",menuTouch)
+
+
+
 
 end
 
@@ -440,6 +463,15 @@ function scene:hide( event )
 
 
 		elseif phase == "did" then
+
+			for j=1,#event_groupArray do 
+				event_groupArray[j]:removeSelf()
+				event_groupArray[j] = nil
+			end
+
+			event_groupArray=nil
+
+
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 

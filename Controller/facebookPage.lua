@@ -25,7 +25,7 @@ local Background,BgText
 
 local menuBtn
 
-openPage="facebookPage"
+
 
 
 local http = require "socket.http"
@@ -85,12 +85,12 @@ function makeTimeStamp(dateString)
 	return timestamp;
 end
 
-local function FacebookCallback(res)
+function FacebookCallback(res,scrollView)
 
+	spinner_hide()
 
 	feedArray = res
 
-					--test_response.text = json.encode()
 					for j=#groupArray, 1, -1 do 
 						display.remove(groupArray[#groupArray])
 						groupArray[#groupArray] = nil
@@ -103,9 +103,7 @@ local function FacebookCallback(res)
 
 							for i=1,#feedArray do
 
-
 								if  feedArray[i].message ~= nil  or feedArray[i].story ~= nil then
-
 
 									groupArray[#groupArray+1] = display.newGroup()
 
@@ -125,76 +123,66 @@ local function FacebookCallback(res)
 										bgheight = bgheight+80
 									end
 
-
-									--[[local shadowSnapshot = display.newSnapshot(tempGroup, W, bgheight+5 )
-
-									local shadowRect = display.newRect( shadowSnapshot.group, 0, 0, W-18, bgheight+2 )
-									shadowRect:setFillColor( 149/255,149/255,149/255,0.6)]]
-
-
-
 									local background = display.newRect(tempGroup,0,0,W,bgheight)
 
 									local tempHeight = 0
 
 									if(groupArray[#groupArray-1]) ~= nil then
---here
-tempHeight = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height+3
-end
+										--here
+										tempHeight = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height+3
+									end
+
+									background.anchorY = 0
+									background.x=W/2;background.y=tempHeight
+									background:setFillColor(1)
+
+									profilePic = display.newImage("userfb.png", system.TemporaryDirectory)
+									if not profilePic then
+										profilePic = display.newImageRect("res/assert/twitter_placeholder.png",100,100)
+									end
+									profilePic.width=40;profilePic.height=40
+
+									tempGroup:insert(profilePic)
+
+
+									time = makeTimeStamp(string.gsub( feedArray[i].created_time, "+0000", "Z" ))
+
+									userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p",time )), 0, 0, native.systemFontBold, 11 )
+
+									userTime.anchorX = 0
+
+									userTime:setFillColor(125/255,125/255,125/255)
 
 
 
-background.anchorY = 0
-background.x=W/2;background.y=tempHeight
-background:setFillColor(1)
+									userName = display.newText( tempGroup,user_Name, 0, 0, native.systemFontBold, 14 )
 
-profilePic = display.newImage("userfb.png", system.TemporaryDirectory)
-if not profilePic then
-	profilePic = display.newImageRect("res/assert/twitter_placeholder.png",100,100)
-end
-profilePic.width=40;profilePic.height=40
+									userName.anchorX = 0
 
-tempGroup:insert(profilePic)
+									userName:setFillColor(41/255,129/255,203/255)
 
+									if feedArray[i].message == nil then
 
-time = makeTimeStamp(string.gsub( feedArray[i].created_time, "+0000", "Z" ))
+										rowTitle = display.newText( tempGroup," ", 0, 0,native.systemFontBold, 18 )
 
-userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p",time )), 0, 0, native.systemFontBold, 11 )
+									else
 
-userTime.anchorX = 0
-
-userTime:setFillColor(125/255,125/255,125/255)
-
-
-
-userName = display.newText( tempGroup,user_Name, 0, 0, native.systemFontBold, 14 )
-
-userName.anchorX = 0
-
-userName:setFillColor(41/255,129/255,203/255)
-
-if feedArray[i].message == nil then
-
-	rowTitle = display.newText( tempGroup," ", 0, 0,native.systemFontBold, 18 )
-
-else
-
-	local optionsread = {
-	text = feedArray[i].message,
-	x = display.contentCenterX,
-	y = display.contentCenterY,
-	fontSize = 11,
-	width = 210,
-	height = 0,
-	align = "left"
-}
+										local optionsread = {
+										text = feedArray[i].message,
+										x = display.contentCenterX,
+										y = display.contentCenterY,
+										fontSize = 11,
+										width = 210,
+										height = 0,
+										align = "left"
+									}
 
 
-rowTitle = display.newText( optionsread )
+									rowTitle = display.newText( optionsread )
 
-end
-tempGroup:insert(rowTitle)
-rowTitle.anchorX = 0
+								end
+								tempGroup:insert(rowTitle)
+								rowTitle.anchorX = 0
 
 
 								--rowTitle.y=profilePic.y-profilePic.contentHeight/2+userName.contentHeight/2+35
@@ -341,6 +329,8 @@ function scene:show( event )
 
 	local sceneGroup = self.view
 	local phase = event.phase
+
+	openPage="facebookPage"
 	
 	if phase == "will" then
 
@@ -374,7 +364,7 @@ local function feed_networkListener( event )
 		print ( "RESPONSE: " .. event.response )
 		spinner_hide()
 		local response = json.decode( event.response )
-		FacebookCallback(response.data)
+		FacebookCallback(response.data,scrollView)
 	end
 
 end
@@ -402,7 +392,7 @@ getAccess = network.request( "https://graph.facebook.com/"..userid.."/?access_to
 
 
 menuBtn:addEventListener("touch",menuTouch)
-		BgText:addEventListener("touch",menuTouch)
+BgText:addEventListener("touch",menuTouch)
 
 
 end	
