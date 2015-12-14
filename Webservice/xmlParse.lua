@@ -3,10 +3,8 @@ local json = require('json')
 
 local request = {}
 
-local function networkListener( event )
+local count ={}
 
-
-end
 
 local requestid
 
@@ -15,18 +13,17 @@ function request.new(url, method, params,listner)
 	spinner_show()
 	
 	
-
 	print("enter "..url)
 
-	network.cancel( requestid )
 	
-	requestid = network.request( url, method, function(event)  if ( event.isError ) then
+
+	requestId = network.request( url, method, function(event)  if ( event.isError ) then
 
 		print( "Network error!" )
 
 	else
 		
-		print ( "RESPONSE: " .. event.response )
+		--print ( "RESPONSE: " .. event.response )
 
 		response = json.decode(event.response)
 
@@ -37,6 +34,14 @@ function request.new(url, method, params,listner)
 
 
 		end end, params )
+
+	print("here "..url:sub(1,string.find(url,"?")-1))
+
+	--[[if(url:sub(1,string.find(url,"?")-1) == "http://api.myunitapp.dotnetethic.com/MyUnitBuzz/GetSearchByUnitNumberOrDirectorName") then
+
+		
+
+	end]]
 
 
 end
