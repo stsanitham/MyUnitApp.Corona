@@ -97,5 +97,13 @@ coronaWindowMovesWhenKeyboardAppears = true,
             { name = "android.hardware.location.gps", required = false },
             { name = "android.hardware.location.network", required = false }
         },
+
+         supportsScreens =
+        {
+            smallScreens  = true,
+            normalScreens = true,
+            largeScreens  = false,
+            xlargeScreens = false,
+        },
 	},
 }

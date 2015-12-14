@@ -35,8 +35,6 @@ local forgettBtn,signinBtn,requestBtn,unitnumer_list
 
 
 
-
-
 --------------------------------------------------
 
 openPage="signInPage"
@@ -622,11 +620,11 @@ function scene:show( event )
 		UserName.isVisible=true
 		Password.isVisible=true
 
-		--[[Unitnumber_field.text = "12345"
+		Unitnumber_field.text = "12345"
 		Unitnumber_field.value="12345"
 		UserName.text = "malarkodi.sellamuthu@w3magix.com"
 		Password.text = "123123"
-		Password.value = "123123"]]
+		Password.value = "123123"
 
 		elseif phase == "did" then
 
@@ -676,9 +674,6 @@ function scene:show( event )
 
 			function scene:destroy( event )
 				local sceneGroup = self.view
-
-
-
 			end
 
 
