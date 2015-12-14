@@ -42,6 +42,26 @@ openPage="signInPage"
 
 -----------------Function-------------------------
 
+
+local function scrollListener( event )
+
+    local phase = event.phase
+    if ( phase == "began" ) then print( "Scroll view was touched" )
+    elseif ( phase == "moved" ) then print( "Scroll view was moved" )
+
+    	native.setKeyboardFocus(nil)
+
+
+    elseif ( phase == "ended" ) then print( "Scroll view was released" )
+    end
+
+    if ( event.limitReached ) then
+     
+    end
+
+    return true
+end
+
 local function onRowRender_unitnumber( event )
 
     -- Get reference to the row group
@@ -88,7 +108,10 @@ local function onRowTouch_unitnumber( event )
 
 
 		elseif ( "release" == phase ) then
+			unitnumer_list.alpha=0
 
+			UserName.isVisible=true
+			Password.isVisible=true
 			native.setKeyboardFocus(nil)
 			Unitnumber_field.text = row.name
 			Unitnumber_field.value = row.id
@@ -288,13 +311,14 @@ local function onRowTouch_unitnumber( event )
 			current_textField = event.target;
 			elseif ( event.phase == "ended" or event.phase == "submitted" ) then
 			print("end")
-			
+		
+		        native.setKeyboardFocus( nil )
+		 
 
-
-			unitnumer_list.alpha=0
+			--[[unitnumer_list.alpha=0
 
 			UserName.isVisible=true
-			Password.isVisible=true
+			Password.isVisible=true]]
 
 			elseif ( event.phase == "editing" ) then
 

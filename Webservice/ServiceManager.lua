@@ -424,7 +424,7 @@ headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 headers["IpAddress"] = Utility.getIpAddress()
 headers["UniqueId"] = system.getInfo("deviceID")
 headers["Accept"] = "application/json"
-headers["Content-Type"] = "application/json"
+--headers["Content-Type"] = "application/json"
 method="POST"
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
@@ -455,7 +455,9 @@ resbody = resbody.."IsShowFamilyTime="..IsShowFamilyTime.."&"
 resbody = resbody.."IsPublic="..IsPublic
 
 
-headers["Content-Type"] = "application/x-www-form-urlencoded"
+
+
+	headers["Content-Type"] = "application/x-www-form-urlencoded"
 	headers["Content-Length"]= string.len(resbody)
 
 
@@ -463,14 +465,8 @@ headers["Content-Type"] = "application/x-www-form-urlencoded"
 
 	print(json.encode(params))
 
---[[local options =
-{
-   to = { "malarkodi.sellamuthu@w3magix.com" },
-   subject = "response check",
-   body = json.encode(params),
-   
-}
-native.showPopup( "mail", options )]]
+
+	print("Cal eve :"..ApplicationConfig.GetTicklerEvents)
 
 	request.new(ApplicationConfig.GetTicklerEvents,method,params,postExecution)
 

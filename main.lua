@@ -34,6 +34,8 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
 
+
+--changes from mac
 local options = {
     width = 32,
     height = 32,
