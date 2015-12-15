@@ -47,13 +47,14 @@ openPage="signInPage"
 local function scrollListener( event )
 
 	local phase = event.phase
-	if ( phase == "began" ) then print( "Scroll view was touched" )
-		elseif ( phase == "moved" ) then print( "Scroll view was moved" )
+	if ( phase == "began" ) then 
+
+		elseif ( phase == "moved" ) then 
 
 			native.setKeyboardFocus(nil)
 
 
-			elseif ( phase == "ended" ) then print( "Scroll view was released" )
+			elseif ( phase == "ended" ) then 
 		end
 
 		if ( event.limitReached ) then
@@ -176,7 +177,6 @@ local function onRowTouch_unitnumber( event )
 			else
 				Status=""
 			end
-			print("User id : "..Request_response.UserAccess.UserId)
 			if Request_response.UserAccess.UserId then
 				UserId = Request_response.UserAccess.UserId
 			else
@@ -265,18 +265,18 @@ local function onRowTouch_unitnumber( event )
 			local options = {
 			effect = "slideLeft",
 			time =500,
-			params = { Flag = "Login",value = Request_response }
 
 		}
 
 
 		composer.gotoScene( "Controller.eventCalenderPage", options )
+
 		elseif(Request_response.RequestAccessStatus == 6) then
 
 
 			--Utils.SnackBar(Request_response.FailStatus)
 
-			local alert = native.showAlert( "Login Failed","The details you have entered are incorrect. Check again and re-enter the valid details", { "OK" } )
+			local alert = native.showAlert( LoginPage.ErrorTitle,LoginPage.ErrorMessage, { CommonWords.ok } )
 
 
 		end
@@ -316,8 +316,6 @@ local function onRowTouch_unitnumber( event )
 	local function textfield( event )
 
 		if ( event.phase == "began" ) then
-
-			print("forget request")
 
 			event.target:setTextColor(color.black)
 
@@ -390,8 +388,6 @@ local function onRowTouch_unitnumber( event )
 
 		
 
-					print("editing "..#list_response )
-
 					if list_response ~= nil then
 
 						if #list_response == 0 then
@@ -443,7 +439,6 @@ local function onRowTouch_unitnumber( event )
 								local signinBtnRelease = function( event )
 
 								if event.phase == "began" then
-									print("123")
 									display.getCurrentStage():setFocus( event.target )
 									native.setKeyboardFocus(nil)
 									elseif event.phase == "ended" then
@@ -454,28 +449,27 @@ local function onRowTouch_unitnumber( event )
 									if AppName ~= "DirectorApp" then
 										if Unitnumber_field.text == "" or Unitnumber_field.text == Unitnumber_field.id or Unitnumber_field.text == "* Enter the Unit Number" then
 											validation=false
-											SetError("* Enter the valid Unit number or Director Name",Unitnumber_field)
+											SetError(LoginPage.setError_Unitnumber,Unitnumber_field)
 										end
 									end
 
-									if UserName.text == "" or UserName.text == UserName.id or UserName.text == "* Enter the Username" then
+									if UserName.text == "" or UserName.text == UserName.id or UserName.text == LoginPage.setError_UserName then
 										validation=false
-										SetError("* Enter the valid email address or Username",UserName)
+										SetError(LoginPage.setError_UserName,UserName)
 									else
 
 
 									end
 
-									if Password.text == "" or Password.text == Password.id or Password.text == "* Enter the password" or Password.text:len() < 6 then
+									if Password.text == "" or Password.text == Password.id or Password.text == LoginPage.setError_Password or Password.text:len() < 6 then
 										validation=false
-										SetError("* Enter the Password",Password)
+										SetError(LoginPage.setError_Password,Password)
 
 									end
 
 									
 
 									if(validation == true) then
-										print("sign in validation complete")
 
 										signInRequest()
 
@@ -554,7 +548,7 @@ function scene:create( event )
 	else
 		Unitnumber_field = native.newTextField(0, 0, W-100, EditBoxStyle.height)
 		Unitnumber_field.id = "Unit Number / Director name"
-		Unitnumber_field.placeholder = "Unit Number / Director Name"
+		Unitnumber_field.placeholder = LoginPage.Unitnumber_placeholder
 		Unitnumber_field.anchorX=0
 		Unitnumber_field.value=""
 		Unitnumber_field.hasBackground = false
@@ -569,7 +563,7 @@ function scene:create( event )
 
 	UserName =  native.newTextField(0, 0, W-100, EditBoxStyle.height)
 	UserName.id = "User name or Email address"
-	UserName.placeholder = "Email Address"
+	UserName.placeholder = LoginPage.UserName_placeholder
 	UserName.anchorX=0
 	UserName.value=""
 	UserName.hasBackground = false
@@ -586,7 +580,7 @@ function scene:create( event )
 	Password.id = "Password"
 	Password.anchorX=0
 	Password.value=""
-	Password.placeholder = "Password"
+	Password.placeholder = LoginPage.Password_placeholder
 	Password.isSecure = true;	
 	Password.hasBackground = false
 	sceneGroup:insert(Password)
@@ -651,11 +645,11 @@ function scene:show( event )
 		UserName.isVisible=true
 		Password.isVisible=true
 
-		--[[Unitnumber_field.text = "12345"
+		Unitnumber_field.text = "12345"
 		Unitnumber_field.value="12345"
 		UserName.text = "malarkodi.sellamuthu@w3magix.com"
 		Password.text = "123123"
-		Password.value = "123123"]]
+		Password.value = "123123"
 
 
 		function get_GetSearchByUnitNumberOrDirectorName(response)

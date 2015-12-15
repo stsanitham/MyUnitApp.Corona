@@ -81,6 +81,8 @@ local function AttachmentDownload( event )
 
 	return true
 end
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -103,7 +105,7 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-	PageTitle = display.newText(sceneGroup,"Event calendar",0,0,native.systemFont,18)
+	PageTitle = display.newText(sceneGroup,EventCalender.PageTitle,0,0,native.systemFont,18)
 	PageTitle.anchorX = 0 ;PageTitle.anchorY=0
 	PageTitle.x=8;PageTitle.y = tabBar.y+tabBar.contentHeight/2+10
 	PageTitle:setFillColor(0)
@@ -160,7 +162,7 @@ function scene:show( event )
 					titleBar_text.text = Details.title
 
 
-					display_details[#display_details+1] = display.newText(sceneGroup,"When",0,0,native.systemFont,16)
+					display_details[#display_details+1] = display.newText(sceneGroup,EventCalender.When,0,0,native.systemFont,16)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 					display_details[#display_details].x=15;display_details[#display_details].y=titleBar.y+titleBar.contentHeight+30
 					display_details[#display_details].anchorX=0
@@ -179,7 +181,7 @@ function scene:show( event )
 
 				if Details.Location ~= nil then
 
-					display_details[#display_details+1] = display.newText(sceneGroup,"Where",0,0,native.systemFont,16)
+					display_details[#display_details+1] = display.newText(sceneGroup,EventCalender.Where,0,0,native.systemFont,16)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 					display_details[#display_details].x=15
 					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
@@ -199,7 +201,7 @@ function scene:show( event )
 
 				if Details.Description ~= nil then
 
-					display_details[#display_details+1] = display.newText(sceneGroup,"Description",0,0,native.systemFont,16)
+					display_details[#display_details+1] = display.newText(sceneGroup,EventCalender.Description,0,0,native.systemFont,16)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 					display_details[#display_details].x=15
 					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
@@ -222,7 +224,7 @@ function scene:show( event )
 
 					local temp = Details.Contact
 
-					display_details[#display_details+1] = display.newText(sceneGroup,"Appointment With",0,0,native.systemFont,16)
+					display_details[#display_details+1] = display.newText(sceneGroup,EventCalender.Appointment_With,0,0,native.systemFont,16)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 					display_details[#display_details].x=15
 					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
@@ -242,14 +244,14 @@ function scene:show( event )
 
 					if Details.AppointmentPurpose ~= nil then
 
-						display_details[#display_details+1] = display.newText(sceneGroup,"Purpose",0,0,native.systemFont,16)
+						display_details[#display_details+1] = display.newText(sceneGroup,EventCalender.Purpose,0,0,native.systemFont,16)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 						display_details[#display_details].x=15
 						display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
 						display_details[#display_details].anchorX=0
 
 
-						display_details[#display_details+1] = display.newText(sceneGroup,Details.AppointmentPurpose,0,0,W-50,0,native.systemFont,16)
+						display_details[#display_details+1] = display.newText(sceneGroup,purpose_enum[Details.AppointmentPurpose],0,0,W-50,0,native.systemFont,16)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 						display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y-8
 						display_details[#display_details].anchorX=0
@@ -262,7 +264,7 @@ function scene:show( event )
 
 				if Details.Priority ~= nil then
 
-					display_details[#display_details+1] = display.newText(sceneGroup,"Priority",0,0,native.systemFont,16)
+					display_details[#display_details+1] = display.newText(sceneGroup,EventCalender.Priority,0,0,native.systemFont,16)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 					display_details[#display_details].x=15
 					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
@@ -282,7 +284,7 @@ function scene:show( event )
 
 					if Details.AttachmentName ~= nil then
 
-						display_details[#display_details+1] = display.newText(sceneGroup,"Attachment",0,0,native.systemFont,16)
+						display_details[#display_details+1] = display.newText(sceneGroup,EventCalender.Attachment,0,0,native.systemFont,16)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 						display_details[#display_details].x=15
 						display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
@@ -319,6 +321,7 @@ function scene:hide( event )
 
 
 		elseif phase == "did" then
+			event.parent:resumeGame()
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 

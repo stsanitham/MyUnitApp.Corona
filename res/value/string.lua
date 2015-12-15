@@ -1,10 +1,40 @@
+CommonWords = {}
+
+CommonWords.ok = "OK"
+CommonWords.submit = "Submit"
+
+
+
 LoginPage = {}
 
-
-LoginPage.Unitnumber_placeholder = "Unit Number / Director name"
-LoginPage.UserName_placeholder = "User Name or Email address"
+LoginPage.Unitnumber_placeholder = "Unit Number / Director Name"
+LoginPage.UserName_placeholder = "Email Address"
 LoginPage.Password_placeholder = "Password"
 LoginPage.Signin_Button = "Sign In"
 LoginPage.Forget_Button = "Forgot password?"
 LoginPage.Request_Button = "Request Access"
+LoginPage.ErrorMessage = "The details you have entered are incorrect. Check again and re-enter the valid details"
+LoginPage.ErrorTitle = "Login Failed"
+LoginPage.setError_Unitnumber = "* Enter the valid Unit number or Director Name"
+LoginPage.setError_UserName = "* Enter the valid email address or Username"
+LoginPage.setError_Password = "* Enter the Password"
+
+
+ForgotPassword = {}
+
+ForgotPassword.PageTitle = "Forgot Password"
+ForgotPassword.SuccessMsg = "Your Temporary Password is sent successfully"
+
+
+EventCalender = {}
+
+EventCalender.PageTitle = "Event Calender"
+EventCalender.When = "When"
+EventCalender.Where = "Where"
+EventCalender.Description = "Description"
+EventCalender.Appointment_With = "Appointment With"
+EventCalender.Purpose="Purpose"
+EventCalender.Priority ="Priority"
+EventCalender.Attachment = "Attachment"
+EventCalender.Today = "Today"
 

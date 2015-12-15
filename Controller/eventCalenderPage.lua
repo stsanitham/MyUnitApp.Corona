@@ -13,6 +13,10 @@ local json = require("json")
 local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 
+local Processingdate
+local ProcessingCount_total = 0
+local ProcessingCount = 0 
+
 
 --------------- Initialization -------------------
 
@@ -22,11 +26,11 @@ local Background,BgText
 
 --Button
 
-local menuBtn
+local menuBtn,topBg,topToday_btnBg,topToday_btnlabel,searchhBg,search,weekView,calenderView
 
 local ParentShow = true
 
-
+local CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic
 
 local DateWise_response = {}
 
@@ -38,10 +42,62 @@ local scrollView
 
 local RecentTab_Topvalue = 70
 
+local pickerWheel
+
+local labels = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }
+local monthArray={ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
+
+local days = {}
+local years = {}
+
+-- Populate the "days" table
+for d = 1, 31 do
+    days[d] = d
+end
+
+-- Populate the "years" table
+for y = 1, 48 do
+    years[y] = (os.date( "%Y" )-5) + y
+end
+
+print(os.date( "%d" ))
+
+-- Configure the picker wheel columns
+local columnData = 
+{
+    -- Months
+    { 
+        align = "right",
+        width = 140,
+        startIndex =tonumber(os.date( "%m" )),
+        labels = monthArray
+    },
+    -- Days
+    {
+        align = "center",
+        width = 60,
+        startIndex = tonumber(os.date( "%d" )),
+        labels = days
+    },
+    -- Years
+    {
+        align = "center",
+        width = 80,
+        startIndex = 5,
+        labels = years
+    }
+}
+
+
+
 --------------------------------------------------
 
 
 -----------------Function-------------------------
+
+function scene:resumeGame()
+    search.isVisible=true
+end
 
 local function listTouch( event )
 	if event.phase == "began" then
@@ -68,7 +124,9 @@ local function listTouch( event )
 		}
 	}
 
+	search.isVisible=false
 	composer.showOverlay( "Controller.eventCal_DetailPage", options )
+
 
 end
 
@@ -188,6 +246,136 @@ scrollView:insert(tempGroup)
 
 end
 
+
+
+
+local function eventList(  )
+	function get_TicklerEvents(response)
+		DateWise_response=response
+
+		date = dateSplit(DateWise_response[1].date)
+
+
+
+		for j=#event_groupArray, 1, -1 do 
+			display.remove(event_groupArray[#event_groupArray])
+			event_groupArray[#event_groupArray] = nil
+		end
+
+
+		for i = 1, #DateWise_response do
+
+
+			date = dateSplit(DateWise_response[i].date)
+
+	
+
+			local function eventCalen_display_process()
+
+				--print("Compare : "..Processingdate..":"..date)
+
+
+
+				if Processingdate == date then
+
+					--print("final : "..DateWise_response[i].title)
+					
+
+					display_calenderList(DateWise_response[i])
+
+				else
+
+					ProcessingCount = ProcessingCount+1
+
+					if ProcessingCount_total >= ProcessingCount then
+
+						ParentShow = true
+
+						local temp = os.date( '*t' )
+						temp.day=temp.day+ProcessingCount
+						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( temp )))
+						eventCalen_display_process()
+
+					else
+						print("finish")
+					end
+
+				end
+			end
+
+			eventCalen_display_process()
+
+		end
+
+	end
+
+	Webservice.Get_TicklerEvents(CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic,get_TicklerEvents)
+
+end
+
+
+local function calenderTouch( event )
+
+	if event.phase == "began" then
+
+	elseif event.phase == "ended" then
+
+		if pickerWheel.isVisible == true then
+			pickerWheel.isVisible=false
+
+		local values = pickerWheel:getValues()
+
+		-- Get the value for each column in the wheel (by column index)
+		local selectedMonth = values[1].value
+		local selectedDay = values[2].value
+		local selectedYear = values[3].value
+
+
+		selectedMonth = table.indexOf( monthArray, values[1].value )
+		selectedDay = values[2].value 
+		selectedYear = values[3].value
+
+		startdate =  selectedMonth.."/"..selectedDay.."/"..selectedYear.." 12:00:00 AM"
+		enddate = selectedMonth.."/"..selectedDay.."/"..selectedYear.." 11:59:59 PM"
+		print("start date : "..startdate )
+		Processingdate = selectedYear.."-"..selectedMonth.."-"..selectedDay
+
+		--dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
+		ParentShow=true
+		eventList()	
+
+		else
+			pickerWheel:toFront()
+			pickerWheel.isVisible=true
+		end
+
+	end
+
+	return true
+
+end 
+
+local function todayAction( event )
+
+	if event.phase == "began" then
+
+	elseif event.phase == "ended" then
+
+		local t = os.date( '*t' )
+
+		startdate = os.date( "!%m/%d/%Y" , os.time( t )).." 12:00:00 AM"
+		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
+		Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
+		ParentShow=true
+		eventList()
+
+	end
+
+	return true
+
+end 
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -209,8 +397,44 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 	
-	
+	topBg = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
+	topBg.anchorY=0
+	topBg:setFillColor(Utils.convertHexToRGB(color.Bggray))
+
+	topToday_btnBg = display.newRect(sceneGroup,topBg.x-topBg.contentWidth/2+10,topBg.y+topBg.contentHeight/2,60,22)
+	topToday_btnBg.anchorX=0
+	topToday_btnBg:setFillColor(Utils.convertHexToRGB(color.today_blue))
+
+	topToday_btnlabel = display.newText(sceneGroup,EventCalender.Today,0,0,native.systemFontBold,12)
+	topToday_btnlabel.x=topToday_btnBg.x+topToday_btnBg.contentWidth/2;topToday_btnlabel.y=topToday_btnBg.y
 	MainGroup:insert(sceneGroup)
+
+	searchhBg = display.newRect(sceneGroup,W/2+5,topToday_btnBg.y,180,22)
+	searchLeftDraw = display.newImageRect(sceneGroup,"res/assert/search(gray).png",16/1.2,18/1.2)
+	searchLeftDraw.x=searchhBg.x+searchhBg.contentWidth/2-searchLeftDraw.contentWidth
+	searchLeftDraw.y=searchhBg.y
+
+	search =  native.newTextField( searchhBg.x-searchhBg.contentWidth/2, searchhBg.y, searchhBg.contentWidth-25, 22 )
+	search.anchorX=0
+	search.hasBackground = false
+	sceneGroup:insert(search)
+
+	weekView = display.newImageRect(sceneGroup,"res/assert/list(gray).png",27/1.2,19/1.2)
+	weekView.x=searchhBg.x+searchhBg.contentWidth/2+20
+	weekView.y=searchhBg.y
+
+	calenderView = display.newImageRect(sceneGroup,"res/assert/calender(gray).png",24/1.2,24/1.2)
+	calenderView.x=weekView.x+weekView.contentWidth/2+18
+	calenderView.y=searchhBg.y
+
+	-- Create the widget
+pickerWheel = widget.newPickerWheel
+{
+    top = display.contentHeight - 222,
+    columns = columnData
+}
+pickerWheel.isVisible=false
+sceneGroup:insert(pickerWheel)
 
 end
 
@@ -265,10 +489,9 @@ function scene:show( event )
 
 			end
 
-			local CalendarId = response[1].CalendarId
-			local UserId = response[1].UserId 
+			CalendarId = response[1].CalendarId
+			UserId = response[1].UserId 
 
-			local IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic
 
 
 			if response[1].IsShowAppointment then
@@ -329,14 +552,6 @@ function scene:show( event )
 			end
 
 
-			local startdate
-			local enddate
-
-			local Processingdate
-			local ProcessingCount_total = 0
-			local ProcessingCount = 0 
-
-
 			local t = os.date( '*t' )
 
 
@@ -376,61 +591,9 @@ function scene:show( event )
 	end
 
 
-	function get_TicklerEvents(response)
-		DateWise_response=response
+	eventList()
 
-		date = dateSplit(DateWise_response[1].date)
-
-
-		for i = 1, #DateWise_response do
-
-
-			date = dateSplit(DateWise_response[i].date)
-
-
-			
-
-			local function eventCalen_display_process()
-
-				--print("Compare : "..Processingdate..":"..date)
-
-
-
-				if Processingdate == date then
-
-					--print("final : "..DateWise_response[i].title)
-					
-
-					display_calenderList(DateWise_response[i])
-
-				else
-
-					ProcessingCount = ProcessingCount+1
-
-					if ProcessingCount_total >= ProcessingCount then
-
-						ParentShow = true
-
-						local temp = os.date( '*t' )
-						temp.day=temp.day+ProcessingCount
-						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( temp )))
-						eventCalen_display_process()
-
-					else
-						print("finish")
-					end
-
-				end
-			end
-
-			eventCalen_display_process()
-
-		end
-
-	end
-
-	Webservice.Get_TicklerEvents(CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic,get_TicklerEvents)
-
+	
 end	
 
 end
@@ -445,8 +608,9 @@ Webservice.Get_All_MyCalendars(get_allCalender)
 
 menuBtn:addEventListener("touch",menuTouch)
 BgText:addEventListener("touch",menuTouch)
-
-
+topToday_btnBg:addEventListener("touch",todayAction)
+topToday_btnlabel:addEventListener("touch",todayAction)
+calenderView:addEventListener("touch",calenderTouch)
 
 
 end
@@ -462,25 +626,25 @@ function scene:hide( event )
 
 	if event.phase == "will" then
 
-			for j=1,#event_groupArray do 
-				event_groupArray[j]:removeSelf()
-				event_groupArray[j] = nil
-			end
+		for j=1,#event_groupArray do 
+			event_groupArray[j]:removeSelf()
+			event_groupArray[j] = nil
+		end
 
-			event_groupArray=nil
-
-
-			menuBtn:removeEventListener("touch",menuTouch)
-			BgText:removeEventListener("touch",menuTouch)
+		event_groupArray=nil
 
 
-			
+		menuBtn:removeEventListener("touch",menuTouch)
+		BgText:removeEventListener("touch",menuTouch)
 
-	elseif phase == "did" then
 
-		
 
-	end	
+
+		elseif phase == "did" then
+
+
+
+		end	
 
 	end
 

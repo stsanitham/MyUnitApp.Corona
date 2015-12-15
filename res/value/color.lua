@@ -25,6 +25,9 @@ color.LtyGray = "#D2D2D4"
 color.Gray = "#767676"
 color.Transprent={1,1,1,0}
 
+--Event Calender
+color.Bggray = "#B8B9BD"
+color.today_blue = "#5069f7"
 
 
 return color

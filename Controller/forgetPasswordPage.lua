@@ -102,9 +102,7 @@ local function onRowTouch_unitnumber( event )
 
 		if ( event.phase == "began" ) then
 
-			print("forget request")
-
-			
+		
 			event.target:setTextColor(color.black)
 
 			current_textField = event.target;
@@ -232,7 +230,7 @@ local function onRowTouch_unitnumber( event )
 
 								--Utils.SnackBar(Request_response)
 
-								local alert = native.showAlert( "Forgot Password","Your Temporary Password is sent successfully", { "OK" } )
+								local alert = native.showAlert( ForgotPassword.PageTitle,ForgotPassword.SuccessMsg, { CommonWords.ok } )
 
 								composer.gotoScene( "Controller.singInPage", "slideRight",500 )
 
@@ -241,11 +239,11 @@ local function onRowTouch_unitnumber( event )
 
 									--Utils.SnackBar("Invalid Unit Number")
 
-									local alert = native.showAlert( "Forgot Password","Enter your valid Unit Number/Director Name", { "OK" } )
+									local alert = native.showAlert(  ForgotPassword.PageTitle,LoginPage.setError_Unitnumber, { "OK" } )
 
 								else
 
-									local alert = native.showAlert( "Forgot Password","Enter the valid email address", { "OK" } )
+									local alert = native.showAlert(  ForgotPassword.PageTitle,LoginPage.setError_UserName, { "OK" } )
 									--Utils.SnackBar(Request_response)
 
 								end
@@ -271,7 +269,7 @@ local function onRowTouch_unitnumber( event )
 									Webservice.Forget_Password(Unitnumber_value,UserName.text,get_forgotpassword)
 
 								else
-									print("unit number : "..UnitnumberField.value)
+
 									Webservice.Forget_Password(UnitnumberField.value,UserName.text,get_forgotpassword)
 
 								end
@@ -335,18 +333,18 @@ local function onRowTouch_unitnumber( event )
 								if AppName ~= "DirectorApp" then
 									if UnitnumberField.text == "" then
 										validation=false
-										SetError("* Enter the valid Unit number or Director Name",UnitnumberField)
+										SetError(LoginPage.setError_Unitnumber,UnitnumberField)
 									end
 								end
 
 								if UserName.text == "" then
 									validation=false
-									SetError("* Enter the email",UserName)
+									SetError(LoginPage.setError_UserName,UserName)
 								else
 
 									if not Utils.emailValidation(UserName.text) then
 										validation=false
-										SetError("* Enter the valid email",UserName)
+										SetError(LoginPage.setError_UserName,UserName)
 
 									end
 								end
@@ -354,7 +352,6 @@ local function onRowTouch_unitnumber( event )
 
 
 								if(validation == true) then
-									print("sign in validation complete")
 
 									signInRequest()
 
@@ -410,7 +407,7 @@ function scene:create( event )
 	backBtn.x=20;backBtn.y=tabBar.y+tabBar.contentHeight+5
 	backBtn.xScale=-1
 
-	page_title = display.newText(sceneGroup,"Forgot Password",0,0,native.systemFont,18)
+	page_title = display.newText(sceneGroup,ForgotPassword.PageTitle,0,0,native.systemFont,18)
 	page_title.x=backBtn.x+18;page_title.y=backBtn.y
 	page_title.anchorX=0
 	page_title:setFillColor(Utils.convertHexToRGB(color.Black))
@@ -442,7 +439,7 @@ function scene:create( event )
 		UnitnumberField = native.newTextField(W/2, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth-50, UnitNumber_bg.contentHeight )
 		UnitnumberField.id = "Unit Number / Director name"
 		UnitnumberField.anchorX=0
-		UnitnumberField.placeholder="Unit Number / Director Name"
+		UnitnumberField.placeholder=LoginPage.Unitnumber_placeholder
 		UnitnumberField.value=""
 		sceneGroup:insert(UnitnumberField)
 		UnitnumberField.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+45;UnitnumberField.y=UnitNumber_bg.y
@@ -459,7 +456,7 @@ function scene:create( event )
 	UserName.id = "Username / Email"
 	UserName.anchorX=0
 	UserName.value=""
-	UserName.placeholder="Email Address"
+	UserName.placeholder=LoginPage.UserName_placeholder
 	sceneGroup:insert(UserName)
 	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+45;UserName.y=UserName_bg.y
 
@@ -470,7 +467,7 @@ function scene:create( event )
 	signinBtn.width = W-180
 	sceneGroup:insert(signinBtn)
 	signinBtn.id="signin"
-	signinBtn_text = display.newText(sceneGroup,"Submit",0,0,native.systemFont,16)
+	signinBtn_text = display.newText(sceneGroup,CommonWords.submit,0,0,native.systemFont,16)
 	signinBtn_text.x=signinBtn.x;signinBtn_text.y=signinBtn.y
 
 	signinBtn.action=true
