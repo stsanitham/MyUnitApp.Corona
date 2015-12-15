@@ -24,6 +24,8 @@ local menuArray_display = {}
 
 local space_value = 33
 
+local profilePic,UserEmail;
+
 
 --------------------------------------------------
 
@@ -47,35 +49,35 @@ local function MenuTouchAction(event)
 
 		display.getCurrentStage():setFocus( event.target )
 
-	elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
 
-			for i = 1, #menuArray_display do
+		for i = 1, #menuArray_display do
 
-				menuArray_display[i].alpha=0.01
-				
-				
-			end
+			menuArray_display[i].alpha=0.01
 
-			event.target.alpha=1
+
+		end
+
+		event.target.alpha=1
 		
 
-			slideAction()
+		slideAction()
 
-			print("open page : "..openPage.."and "..event.target.id)
+		print("open page : "..openPage.."and "..event.target.id)
 
-			if openPage ~= event.target.id then
+		if openPage ~= event.target.id then
 
-				for j=MainGroup.numChildren, 1, -1 do 
-					display.remove(MainGroup[MainGroup.numChildren])
-					MainGroup[MainGroup.numChildren] = nil
-				end
-				composer.removeHidden(true)
-				composer.gotoScene( "Controller."..event.target.id )
-				end
+			for j=MainGroup.numChildren, 1, -1 do 
+				display.remove(MainGroup[MainGroup.numChildren])
+				MainGroup[MainGroup.numChildren] = nil
+			end
+			composer.removeHidden(true)
+			composer.gotoScene( "Controller."..event.target.id )
+		end
 
-			
+
 
 			--end
 		end
@@ -110,8 +112,48 @@ function scene:show( event )
 			panel.flapTopBg.anchorY=0;panel.flapTopBg.y=-panel.width
 			panel:insert( panel.flapTopBg )
 
+
+			profilePic = display.newImageRect("res/assert/career-user.png",62,62)
+			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+20;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-35
+			profilePic.anchorY=0
+			profilePic.anchorX=0
+			panel:insert( profilePic )
+
+			profileName = display.newText("username",0,0,native.systemFont,16)
+			profileName.x=profilePic.x
+			profileName.anchorX=0
+			profileName.y=profilePic.y+profilePic.contentHeight+10
+			panel:insert( profileName )
+
+			--[[--HomePage
+
+			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
+			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+			menuArray_display[#menuArray_display].y=panel.flapTopBg.y+panel.flapTopBg.contentHeight
+			panel:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
+			menuArray_display[#menuArray_display].name = "Home"
+			menuArray_display[#menuArray_display].id="LandingPage"
+
+			Event_icon = display.newImageRect("res/assert/calen.png",15,15)
+			Event_icon.anchorX = 0
+			Event_icon.x=-panel.width/2+5
+			Event_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
+			panel:insert( Event_icon )
+
+			Event_text = display.newText("Home",0,0,"Open Sans Regular",16)
+			Event_text.anchorX = 0
+			Event_text.x=Event_icon.x+Event_icon.contentWidth+5
+			Event_text.y = Event_icon.y
+			
+			panel:insert( Event_text )
+
+			-----]]
+
 			--EventCalender
 
+			
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
@@ -136,7 +178,7 @@ function scene:show( event )
 
 			-----
 
-			--CareerPath
+			--[[--CareerPath
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
@@ -344,13 +386,13 @@ function scene:show( event )
 
 					panel:insert( Googl_text )
 
-			-----
+					-----]]
 
-			rect = display.newRect(0,0,panel.width,1)
-			rect.x = menuArray_display[#menuArray_display].x;
-			rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
-			rect:setFillColor(0)
-			panel:insert( rect )
+					rect = display.newRect(0,0,panel.width,1)
+					rect.x = menuArray_display[#menuArray_display].x;
+					rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
+					rect:setFillColor(0)
+					panel:insert( rect )
 
 					--Logout
 

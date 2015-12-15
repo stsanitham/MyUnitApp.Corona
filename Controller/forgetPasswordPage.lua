@@ -13,8 +13,6 @@ local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 require( "Webservice.ServiceManager" )
 
-local unitNumGroup = display.newGroup()
-local userNameGroup = display.newGroup()
 
 
 --------------- Initialization -------------------
@@ -27,7 +25,8 @@ local backBtn,UnitnumberField,UserName
 
 openPage="eventCalenderPage"
 
-
+local list_response_total = {}
+local list_response = {}
 
 --------------------------------------------------
 
@@ -36,13 +35,13 @@ openPage="eventCalenderPage"
 
 local function bgTouch( event )
 	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
-			native.setKeyboardFocus(nil)
+		display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+		native.setKeyboardFocus(nil)
 	end
 
-return true
+	return true
 end
 
 local function onRowRender_unitnumber( event )
@@ -99,235 +98,294 @@ local function onRowTouch_unitnumber( event )
 		end
 	end
 
-local function textfield( event )
+	local function textfield( event )
 
 		if ( event.phase == "began" ) then
 
 			print("forget request")
 
-			event.target.text=""
+			
 			event.target:setTextColor(color.black)
 
+			current_textField = event.target;
+
+			
+			current_textField.size=16	
+
+			if "*" == event.target.text:sub(1,1) then
+				event.target.text=""
+			end
 
 			elseif ( event.phase == "ended" or event.phase == "submitted" ) then
-		
+
 			if(current_textField.id ~= "Unit Number / Director name") then
 				current_textField.text=event.target.text
 			end
-			current_textField:setFillColor(0)
-			current_textField.size=16
-			if current_textField.text == "" then
-				current_textField.alpha = 0.5
-				current_textField.text = current_textField.id
-			end
+			
+
+			unitnumer_list.alpha=0
+
+			UserName.isVisible=true
+
+			elseif ( event.phase == "editing" ) then
+
+				if(current_textField.id == "Unit Number / Director name") then
+
+					if event.text:len() > 50 then
+
+						event.target.text = event.text:sub(1,50)
+
+					end
 
 
-        		unitnumer_list.alpha=0
-        		event.target:removeSelf();event.target = nil
+					unitnumer_list.alpha=1
 
-        		elseif ( event.phase == "editing" ) then
+					UserName.isVisible=false
 
-        			if(current_textField.id == "Unit Number / Director name") then
+					current_textField.value=0
 
-        				unitnumer_list.alpha=1
+					unitnumer_list:deleteAllRows()
 
-        				function get_GetSearchByUnitNumberOrDirectorName(response)
+					--list_response = list_response_total
 
-        					list_response = response
-        					unitnumer_list:deleteAllRows()
+					if #list_response ~= nil then
+						for i = #list_response,1,-1 do
+							table.remove(list_response,i)
+						end
+					end
 
-	        				if list_response ~= nil then
-
-	        					for i = 1, #list_response do
-						  	 		 -- Insert a row into the tableView
-						  	 		 unitnumer_list:insertRow{}
-
-						  	 	end
-						  	 end
-        				end
-
-        				
-        				list_response = Webservice.GET_SEARCHBY_UnitNumberOrDirectorName(event.text,get_GetSearchByUnitNumberOrDirectorName)
-     		
-
-
-					  	end
-
-					  end
+					for i = #list_response_total,1,-1 do
+						if string.find( list_response_total[i].DirectorName:upper(), event.text:upper() ) then
+							list_response[#list_response+1] = list_response_total[i]
+						end
+						
 					end
 
 
 
+					if list_response ~= nil then
 
-local function textfieldListener( event )
+						if #list_response == 0 then
 
+							UserName.isVisible=true
 
 
-	if ( event.phase == "began" ) then
-		native.setKeyboardFocus(nil)
-		target = event.target
+						else
+							UserName.isVisible=false
+						end
 
-		display.getCurrentStage():setFocus( event.target )
+						for i = 1, #list_response do
+						  	 		 -- Insert a row into the tableView
+						  	 		 unitnumer_list:insertRow{}
 
+						  	 		end
+						  	 	end
+						  	 end
 
-		elseif ( event.phase == "ended" ) then
-		display.getCurrentStage():setFocus( nil )
-		current_textField = target[2]
-		target[2].text=""			
-	
-			defalut = native.newTextField(target[1].x+20,target[1].y,target[1].contentWidth-40,target[1].contentHeight )
-			defalut.hasBackground = false
-			defalut:resizeFontToFitHeight()
 
-		if target[2].alpha >= 1 then
-			target[2]:setFillColor(0)
-			target[2].size=16
-		else
-			target[2].alpha=1
-		end
 
-		native.setKeyboardFocus( defalut )
+						  	end
 
-		defalut:addEventListener( "userInput", textfield )
+						  end
 
 
-	end
-	return true
-end 
 
+						  local function textfieldListener( event )
 
-local function forgotAction( Request_response )
-	if Request_response == "SUCCESS" then
 
-		Utils.SnackBar(Request_response)
 
-		composer.gotoScene( "Controller.singInPage", "slideRight",500 )
+						  	if ( event.phase == "began" ) then
+						  		native.setKeyboardFocus(nil)
+						  		target = event.target
 
+						  		display.getCurrentStage():setFocus( event.target )
 
-		elseif Request_response == "NOUNITNUMBER" then
 
-			Utils.SnackBar("Invalid Unit Number")
+						  		elseif ( event.phase == "ended" ) then
+						  		display.getCurrentStage():setFocus( nil )
+						  		current_textField = target[2]
+						  		target[2].text=""			
 
-		else
+						  		defalut = native.newTextField(target[1].x+20,target[1].y,target[1].contentWidth-40,target[1].contentHeight )
+						  		defalut.hasBackground = false
+						  		defalut:resizeFontToFitHeight()
 
-			Utils.SnackBar(Request_response)
+						  		if target[2].alpha >= 1 then
+						  			target[2]:setFillColor(0)
+						  			target[2].size=16
+						  		else
+						  			target[2].alpha=1
+						  		end
 
-		end
+						  		native.setKeyboardFocus( defalut )
 
-	end
-	local function signInRequest(  )
+						  		defalut:addEventListener( "userInput", textfield )
 
-		local Request_response
 
-		native.setKeyboardFocus(nil)
+						  	end
+						  	return true
+						  end 
 
-		function get_forgotpassword( response )
-			Request_response = response
-			forgotAction(Request_response)
-		end
 
-		if AppName == "DirectorApp" then
+						  local function forgotAction( Request_response )
+						  	if Request_response == "SUCCESS" then
 
-			Webservice.Forget_Password(Unitnumber_value,UserName.text,get_forgotpassword)
+								--Utils.SnackBar(Request_response)
 
-		else
-			print("unit number : "..UnitnumberField.value)
-			Webservice.Forget_Password(UnitnumberField.value,UserName.text,get_forgotpassword)
+								local alert = native.showAlert( "Forgot Password","Your Temporary Password is sent successfully", { "OK" } )
 
-		end
+								composer.gotoScene( "Controller.singInPage", "slideRight",500 )
 
-	end
 
-	local function SetError( displaystring, object )
+								elseif Request_response == "NOUNITNUMBER" then
 
-		if object.id == "password" then
-			object.isSecure = false
-		end
-		object.text=displaystring
-		object.size=10
-		object:setTextColor(1,0,0)
+									--Utils.SnackBar("Invalid Unit Number")
 
+									local alert = native.showAlert( "Forgot Password","Enter your valid Unit Number/Director Name", { "OK" } )
 
-	end
+								else
 
-	local function backAction( event )
-		if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-			elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
+									local alert = native.showAlert( "Forgot Password","Enter the valid email address", { "OK" } )
+									--Utils.SnackBar(Request_response)
 
+								end
 
-			composer.gotoScene( "Controller.singInPage", "slideRight",500 )
-		end
+							end
+							local function signInRequest(  )
 
-		return true
+								local Request_response
 
-	end
+								native.setKeyboardFocus(nil)
 
-	local signinBtnRelease = function( event )
+								function get_forgotpassword( response )
 
-	if event.phase == "began" then
-		print("123")
-		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
-		local validation = true
-		native.setKeyboardFocus(nil)
+									signinBtn.action=true
+									signinBtn_text.action=true
 
-		if AppName ~= "DirectorApp" then
-			if UnitnumberField.text == "" then
-				validation=false
-				SetError("* Enter the Unit Number",UnitnumberField)
-			end
-		end
+									Request_response = response
+									forgotAction(Request_response)
+								end
 
-		if UserName.text == "" then
-			validation=false
-			SetError("* Enter the email",UserName)
-		else
+								if AppName == "DirectorApp" then
 
-			if not Utils.emailValidation(UserName.text) then
-				validation=false
-				SetError("* Enter the valid email",UserName)
+									Webservice.Forget_Password(Unitnumber_value,UserName.text,get_forgotpassword)
 
-			end
-		end
+								else
+									print("unit number : "..UnitnumberField.value)
+									Webservice.Forget_Password(UnitnumberField.value,UserName.text,get_forgotpassword)
 
+								end
 
+							end
 
-		if(validation == true) then
-			print("sign in validation complete")
+							local function SetError( displaystring, object )
 
-			signInRequest()
+								if object.id == "password" then
+									object.isSecure = false
+								end
+								object.text=displaystring
+								object.size=10
+								object:setTextColor(1,0,0)
 
-		end
 
+							end
 
-	end
+							local function backAction( event )
+								if event.phase == "began" then
+									display.getCurrentStage():setFocus( event.target )
+									elseif event.phase == "ended" then
+									display.getCurrentStage():setFocus( nil )
 
 
+									composer.gotoScene( "Controller.singInPage", "slideRight",500 )
+								end
 
-	return true
-end
+								return true
 
-local function touchAction( event )
+							end
 
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
+							local signinBtnRelease = function( event )
 
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
+							if event.phase == "began" then
+								print("123")
 
-		if event.target.id == "request" then
+								display.getCurrentStage():setFocus( event.target )
 
-			composer.gotoScene( "Controller.request_Access_Page", "slideLeft", 800 )
 
-		end
+								if event.target.action == false then
 
-	end
+									display.getCurrentStage():setFocus( nil )
 
-	return true
-end 
+									return false
+
+								end
+
+								elseif event.phase == "ended" then
+								display.getCurrentStage():setFocus( nil )
+
+
+								print("enter")
+
+								signinBtn.action=false
+								signinBtn_text.action=false
+
+								local validation = true
+								native.setKeyboardFocus(nil)
+
+								if AppName ~= "DirectorApp" then
+									if UnitnumberField.text == "" then
+										validation=false
+										SetError("* Enter the valid Unit number or Director Name",UnitnumberField)
+									end
+								end
+
+								if UserName.text == "" then
+									validation=false
+									SetError("* Enter the email",UserName)
+								else
+
+									if not Utils.emailValidation(UserName.text) then
+										validation=false
+										SetError("* Enter the valid email",UserName)
+
+									end
+								end
+
+
+
+								if(validation == true) then
+									print("sign in validation complete")
+
+									signInRequest()
+
+								end
+
+
+							end
+
+
+
+							return true
+						end
+
+						local function touchAction( event )
+
+							if event.phase == "began" then
+								display.getCurrentStage():setFocus( event.target )
+
+								elseif event.phase == "ended" then
+								display.getCurrentStage():setFocus( nil )
+
+								if event.target.id == "request" then
+
+									composer.gotoScene( "Controller.request_Access_Page", "slideLeft", 800 )
+
+								end
+
+							end
+
+							return true
+						end 
 
 
 
@@ -352,17 +410,16 @@ function scene:create( event )
 	backBtn.x=20;backBtn.y=tabBar.y+tabBar.contentHeight+5
 	backBtn.xScale=-1
 
-	page_title = display.newText(sceneGroup,"Forget Password",0,0,native.systemFont,18)
+	page_title = display.newText(sceneGroup,"Forgot Password",0,0,native.systemFont,18)
 	page_title.x=backBtn.x+18;page_title.y=backBtn.y
 	page_title.anchorX=0
 	page_title:setFillColor(Utils.convertHexToRGB(color.Black))
 
 
-	sceneGroup:insert(unitNumGroup)
-	sceneGroup:insert(userNameGroup)
 
 
-	UnitNumber_bg = display.newRect(unitNumGroup, W/2, H/2-120, W-60, EditBoxStyle.height)
+
+	UnitNumber_bg = display.newRect(sceneGroup, W/2, H/2-120, W-60, EditBoxStyle.height)
 	UnitNumber_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,UnitNumber_bg.contentHeight)
 	UnitNumber_seprator.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+35;UnitNumber_seprator.y=UnitNumber_bg.y
 	UnitNumber_drawLeft = display.newImageRect(sceneGroup,"res/assert/unite-number.png",24/1.5,24/1.5)
@@ -370,7 +427,7 @@ function scene:create( event )
 
 
 
-	UserName_bg = display.newRect(userNameGroup, W/2, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth, UnitNumber_bg.contentHeight )
+	UserName_bg = display.newRect(sceneGroup, W/2, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth, UnitNumber_bg.contentHeight )
 
 	if AppName == "DirectorApp" then
 		UnitNumber_bg.isVisible=false
@@ -382,12 +439,12 @@ function scene:create( event )
 		UserName_bg.x=UnitNumber_bg.x;UserName_bg.y=UnitNumber_bg.y
 	else
 
-		UnitnumberField = display.newText(unitNumGroup,"Unit Number / Director name",0,0,native.systemFont,14 )
+		UnitnumberField = native.newTextField(W/2, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth-50, UnitNumber_bg.contentHeight )
 		UnitnumberField.id = "Unit Number / Director name"
 		UnitnumberField.anchorX=0
+		UnitnumberField.placeholder="Unit Number / Director Name"
 		UnitnumberField.value=""
-		UnitnumberField.alpha=0.5
-		UnitnumberField:setFillColor(0,0,0)
+		sceneGroup:insert(UnitnumberField)
 		UnitnumberField.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+45;UnitnumberField.y=UnitNumber_bg.y
 
 	end
@@ -398,23 +455,26 @@ function scene:create( event )
 	UserName_drawLeft = display.newImageRect(sceneGroup,"res/assert/user.png",24/1.5,24/1.5)
 	UserName_drawLeft.x=UserName_bg.x-UserName_bg.contentWidth/2+UserName_drawLeft.contentWidth;UserName_drawLeft.y=UserName_bg.y
 
-	UserName = display.newText(userNameGroup,"Username / Email",0,0,native.systemFont,14 )
+	UserName = native.newTextField( W/2, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth-50, UnitNumber_bg.contentHeight )
 	UserName.id = "Username / Email"
 	UserName.anchorX=0
 	UserName.value=""
-	UserName.alpha=0.5
-	UserName:setFillColor(0,0,0)
+	UserName.placeholder="Email Address"
+	sceneGroup:insert(UserName)
 	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+45;UserName.y=UserName_bg.y
 
 	
 
-	signinBtn = display.newImageRect(sceneGroup,"res/assert/signin.jpg",W-60,35)
+	signinBtn = display.newImageRect(sceneGroup,"res/assert/signin.jpg",W-120,30)
 	signinBtn.x=W/2;signinBtn.y = UserName_bg.y+48
-	signinBtn.width = W-60
+	signinBtn.width = W-180
 	sceneGroup:insert(signinBtn)
 	signinBtn.id="signin"
-	signinBtn_text = display.newText(sceneGroup,LoginPage.Signin_Button,0,0,native.systemFont,16)
+	signinBtn_text = display.newText(sceneGroup,"Submit",0,0,native.systemFont,16)
 	signinBtn_text.x=signinBtn.x;signinBtn_text.y=signinBtn.y
+
+	signinBtn.action=true
+	signinBtn_text.action=true
 
 
 	requestBtn = display.newText(sceneGroup,LoginPage.Request_Button,0,0,native.systemFont,16)
@@ -422,6 +482,7 @@ function scene:create( event )
 	requestBtn.y=signinBtn.y+signinBtn.contentHeight/2+20
 	requestBtn:setFillColor(Utils.convertHexToRGB(color.blue))
 	requestBtn.id="request"
+	requestBtn.isVisible=false
 
 	MainGroup:insert(sceneGroup)
 
@@ -435,14 +496,14 @@ function scene:show( event )
 	if phase == "will" then
 
 		unitnumer_list = widget.newTableView
-			{
-			left = 0,
-			top = 0,
-			height = 130,
-			width = UnitNumber_bg.contentWidth,
-			noLines = true,
-			onRowRender = onRowRender_unitnumber,
-			onRowTouch = onRowTouch_unitnumber,
+		{
+		left = 0,
+		top = 0,
+		height = 130,
+		width = UnitNumber_bg.contentWidth,
+		noLines = true,
+		onRowRender = onRowRender_unitnumber,
+		onRowTouch = onRowTouch_unitnumber,
 			--backgroundColor = { 0.8, 0.8, 0.8 },
 			hideBackground=true,
 			listener = scrollListener
@@ -454,18 +515,31 @@ function scene:show( event )
 
 		unitnumer_list.alpha=0
 
+		UserName.isVisible=true
+
+
+		function get_GetSearchByUnitNumberOrDirectorName(response)
+
+			list_response_total = response
+
+			
+		end
+
+		Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)
 
 		elseif phase == "did" then
 
 			composer.removeHidden(true)
 			Background:addEventListener("touch",bgTouch)
-			unitNumGroup:addEventListener("touch",textfieldListener)
-			userNameGroup:addEventListener("touch",textfieldListener)
+			UnitnumberField:addEventListener( "userInput", textfield )
+			UserName:addEventListener( "userInput", textfield )
+			--userNameGroup:addEventListener("touch",textfieldListener)
 			requestBtn:addEventListener("touch",touchAction)
 			signinBtn:addEventListener("touch",signinBtnRelease)
 			signinBtn_text:addEventListener("touch",signinBtnRelease)
 			backBtn:addEventListener("touch",backAction)
 			page_title:addEventListener("touch",backAction)
+
 			composer.removeHidden()
 
 		end	

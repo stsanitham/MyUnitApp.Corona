@@ -121,7 +121,7 @@ function Webservice.LOGIN_ACCESS(UnitNumber,UserName,Password,postExecution)
 	headers["Accept"] = "application/json"
 	headers["UserAuthorization"]= ""
 	headers["Content-Type"] = "application/json"
-	method="GET"
+	method="POST"
 
 	local url = splitUrl(ApplicationConfig.LOGIN_ACCESS)
 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
@@ -129,14 +129,19 @@ function Webservice.LOGIN_ACCESS(UnitNumber,UserName,Password,postExecution)
 	headers["Authentication"] = authenticationkey
 
 
-	local resbody = "emailAddress="..string.urlEncode(UserName).."&password="..string.urlEncode(Password).."&unitNumberOrDirectorName="..string.urlEncode(UnitNumber)
-	params={headers = headers}
+	local resbody = "EmailAddress="..string.urlEncode(UserName).."&Password="..string.urlEncode(Password).."&UnitNumber="..UnitNumber
+
+
+	headers["Content-Type"] = "application/x-www-form-urlencoded"
+	headers["Content-Length"]= string.len(resbody)
+
+	params={headers = headers,body = resbody}
 
 
 
-print("url :"..ApplicationConfig.LOGIN_ACCESS.."?"..resbody)
+	print("url :"..json.encode(params))
 	
-	request.new( ApplicationConfig.LOGIN_ACCESS.."?"..resbody,method,params,postExecution)
+	request.new( ApplicationConfig.LOGIN_ACCESS,method,params,postExecution)
 
 	return response
 
@@ -153,20 +158,23 @@ function Webservice.Forget_Password(UnitNumber,UserName,postExecution)
 	headers["Accept"] = "application/json"
 	headers["UserAuthorization"]= ""
 	headers["Content-Type"] = "application/json"
-	method="GET"
+	method="POST"
 
 	local url = splitUrl(ApplicationConfig.ForgotPassword)
 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
+	local country = "LanguageId=1&CountryId=1"
+	local resbody = "EmailAddress="..string.urlEncode(UserName).."&UnitNumber="..string.urlEncode(UnitNumber).."&TypeLanguageCountry="..country
 
-	local resbody = "emailAddress="..string.urlEncode(UserName).."&uniNumber="..string.urlEncode(UnitNumber).."&languageId=1&countryId=1&"
+	headers["Content-Type"] = "application/x-www-form-urlencoded"
+	headers["Content-Length"]= string.len(resbody)
 
 
-	params={headers = headers}
+	params={headers = headers,body = resbody}
 
-	request.new( ApplicationConfig.ForgotPassword.."?"..resbody,method,params,postExecution)
+	request.new( ApplicationConfig.ForgotPassword,method,params,postExecution)
 
 
 	return response
@@ -545,16 +553,16 @@ function Webservice.GET_SEARCHBY_UnitNumberOrDirectorName(search_value,postExecu
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
-	local resbody = ""
-	resbody = "searchName="..search_value.."&"
+	--local resbody = ""
+	--resbody = "searchName="..search_value.."&"
 
 
-	print("body : "..resbody)
+	--print("body : "..resbody)
 
 
 	params={headers = headers}
 
-	request.new( ApplicationConfig.GetSearchByUnitNumberOrDirectorName.."?"..resbody,method,params,postExecution)
+	request.new( ApplicationConfig.GetSearchByUnitNumberOrDirectorName,method,params,postExecution)
 
 	return response
 end

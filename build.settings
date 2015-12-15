@@ -58,6 +58,20 @@ settings =
 				"Icon-Small-50@2x.png",
 			},
 
+			 NSAppTransportSecurity =
+       {
+
+        NSAllowsArbitraryLoads = true,
+        NSExceptionDomains =
+         {
+          ["example.com"] =
+           {
+            NSIncludesSubdomains = true,
+            NSThirdPartyExceptionAllowsInsecureHTTPLoads = true
+           },
+         },
+       },
+
 			--[[
 			-- iOS app URL schemes:
 			CFBundleURLTypes =

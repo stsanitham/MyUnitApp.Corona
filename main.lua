@@ -14,6 +14,8 @@ AppName = "CommonApp"
 
 environment = system.getInfo( "environment" )
 
+Director_Name = ""
+
 if AppName == "DirectorApp" then
 	Unitnumber_value = "12345"
 else
@@ -27,8 +29,15 @@ NavigationSpeed = 400;
 menuShowFlag = false;
 menuTransTime = 1000;
 openPage="main"
+
+--menuTitel = {"Home","Event Calender","Career Path","Goals","Resource","Image Library","Social Media","Facebook","Twitter","Instagram","Google+"}
+--rowValues = {"LandingPage","eventCalenderPage","careerPathPage","goalsPage","resourcePage","imageLibPage","","facebookPage","twitterPage","instagramPage","googlePlusPage"}
+
+
 menuTitel = {"Home","Event Calender","Career Path","Goals","Resource","Image Library","Social Media","Facebook","Twitter","Instagram","Google+"}
 rowValues = {"LandingPage","eventCalenderPage","careerPathPage","goalsPage","resourcePage","imageLibPage","","facebookPage","twitterPage","instagramPage","googlePlusPage"}
+
+
 snackGroup = display.newGroup()
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )

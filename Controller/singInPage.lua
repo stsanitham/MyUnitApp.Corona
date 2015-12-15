@@ -34,7 +34,8 @@ local Unitnumber_field,UserName,Password
 local forgettBtn,signinBtn,requestBtn,unitnumer_list
 
 
-
+local list_response_total = {}
+local list_response = {}
 --------------------------------------------------
 
 openPage="signInPage"
@@ -45,24 +46,24 @@ openPage="signInPage"
 
 local function scrollListener( event )
 
-    local phase = event.phase
-    if ( phase == "began" ) then print( "Scroll view was touched" )
-    elseif ( phase == "moved" ) then print( "Scroll view was moved" )
+	local phase = event.phase
+	if ( phase == "began" ) then print( "Scroll view was touched" )
+		elseif ( phase == "moved" ) then print( "Scroll view was moved" )
 
-    	native.setKeyboardFocus(nil)
+			native.setKeyboardFocus(nil)
 
 
-    elseif ( phase == "ended" ) then print( "Scroll view was released" )
-    end
+			elseif ( phase == "ended" ) then print( "Scroll view was released" )
+		end
 
-    if ( event.limitReached ) then
-     
-    end
+		if ( event.limitReached ) then
 
-    return true
-end
+		end
 
-local function onRowRender_unitnumber( event )
+		return true
+	end
+
+	local function onRowRender_unitnumber( event )
 
     -- Get reference to the row group
     local row = event.row
@@ -126,7 +127,7 @@ local function onRowTouch_unitnumber( event )
 
 			elseif event.phase == "ended" then
 
-			--native.setKeyboardFocus(nil)
+			native.setKeyboardFocus(nil)
 
 		end
 		return true
@@ -136,11 +137,20 @@ local function onRowTouch_unitnumber( event )
 
 		if Request_response.RequestAccessStatus == 5 then
 
-
 			local UnitNumberOrDirectorName,EmailAddess,PhoneNumber,Status,UserId,GoogleUsername,GoogleTokenSecret,GoogleUserId,AccessToken
 			local FacebookUsername,FacebookAccessToken
 			local TwitterUsername,TwitterToken,TwitterTokenSecret
 			local profileImageUrl,ContactId
+
+			if Request_response.MyUnitBuzzContacts.FirstName then
+
+			Director_Name = Request_response.MyUnitBuzzContacts.FirstName
+
+			elseif Request_response.MyUnitBuzzContacts.LastName then
+
+				Director_Name = Director_Name.." "..Request_response.MyUnitBuzzContacts.LastName
+			end
+
 
 			if Request_response.UnitNumberOrDirectorName then
 				UnitNumberOrDirectorName = Request_response.UnitNumberOrDirectorName
@@ -256,14 +266,17 @@ local function onRowTouch_unitnumber( event )
 			effect = "slideLeft",
 			time =500,
 			params = { Flag = "Login",value = Request_response }
+
 		}
 
 
-		composer.gotoScene( "Controller.LandingPage", options )
+		composer.gotoScene( "Controller.eventCalenderPage", options )
 		elseif(Request_response.RequestAccessStatus == 6) then
 
 
-			Utils.SnackBar(Request_response.FailStatus)
+			--Utils.SnackBar(Request_response.FailStatus)
+
+			local alert = native.showAlert( "Login Failed","The details you have entered are incorrect. Check again and re-enter the valid details", { "OK" } )
 
 
 		end
@@ -309,11 +322,20 @@ local function onRowTouch_unitnumber( event )
 			event.target:setTextColor(color.black)
 
 			current_textField = event.target;
+
+
+			current_textField.size=16	
+
+			if "*" == event.target.text:sub(1,1) then
+				event.target.text=""
+			end
+
+
 			elseif ( event.phase == "ended" or event.phase == "submitted" ) then
 			print("end")
-		
-		        native.setKeyboardFocus( nil )
-		 
+
+			
+
 
 			--[[unitnumer_list.alpha=0
 
@@ -321,8 +343,19 @@ local function onRowTouch_unitnumber( event )
 			Password.isVisible=true]]
 
 			elseif ( event.phase == "editing" ) then
+				
 
-				if(current_textField.id == "Unit Number / Director name") then
+				if(current_textField.id == "Password") then
+
+					current_textField.isSecure=true
+
+					if event.text:len() > 12 then
+
+						event.target.text = event.text:sub(1,12)
+
+					end
+
+				elseif(current_textField.id == "Unit Number / Director name") then
 
 					unitnumer_list.alpha=1
 
@@ -331,18 +364,40 @@ local function onRowTouch_unitnumber( event )
 
 					current_textField.value=0
 
-					function get_GetSearchByUnitNumberOrDirectorName(response)
 
-						list_response = response
 
-						unitnumer_list:deleteAllRows()
+					unitnumer_list:deleteAllRows()
 
-						if list_response ~= nil then
+					--list_response = list_response_total
 
-							if #list_response == 0 then
+					if #list_response ~= nil then
+						for i = #list_response,1,-1 do
+							table.remove(list_response,i)
+						end
+					end
 
-								UserName.isVisible=true
-								Password.isVisible=true
+					for i = 1,#list_response_total do
+
+						print( list_response_total[i].DirectorName, event.text)
+
+						if string.find( list_response_total[i].DirectorName:upper() , event.text:upper() ) ~= nil then
+
+							list_response[#list_response+1] = list_response_total[i]
+
+						end
+						
+					end
+
+		
+
+					print("editing "..#list_response )
+
+					if list_response ~= nil then
+
+						if #list_response == 0 then
+
+							UserName.isVisible=true
+							Password.isVisible=true
 
 							elseif #list_response == 1 then
 
@@ -353,7 +408,7 @@ local function onRowTouch_unitnumber( event )
 								Password.isVisible=false
 							end
 
-								for i = 1, #list_response do
+							for i = 1, #list_response do
 						  	 		 -- Insert a row into the tableView
 						  	 		 unitnumer_list:insertRow{}
 
@@ -362,64 +417,13 @@ local function onRowTouch_unitnumber( event )
 						  	 end
 
 
-						  	 list_response = Webservice.GET_SEARCHBY_UnitNumberOrDirectorName(event.text,get_GetSearchByUnitNumberOrDirectorName)
-
-
 
 						  	end
 
 						  end
-						end
 
 
 
-
-						--[[local function textListener( event )
-
-							if ( event.phase == "began" ) then
-
-								print("key")
-								native.setKeyboardFocus(nil)
-
-								display.getCurrentStage():setFocus( event.target )
-								target = event.target
-
-								elseif ( event.phase == "ended" ) then
-
-								display.getCurrentStage():setFocus( nil )
-
-								current_textField = target[2]
-
-								defalut = native.newTextField(target[1].x+20,target[1].y,target[1].contentWidth-40,target[1].contentHeight )
-								defalut.hasBackground = false
-								defalut.id=target[2].id
-								signInGroup:insert(defalut)
-								defalut:resizeFontToFitHeight()
-
-								if target[2].id == "Password" then
-									scroll(-100)
-									defalut.isSecure = true
-									elseif target[2].id == "User name or Email address" then
-										scroll(-100)
-									end
-
-									target[2].text=""	
-
-									if target[2].alpha >= 1 then
-										target[2]:setFillColor(0)
-										target[2].size=14
-									else
-										target[2].alpha=1
-									end
-
-									native.setKeyboardFocus( defalut )
-
-								defalut:addEventListener( "userInput", textfield )
-
-
-
-								end
-								end]]
 
 
 								local function SetError( displaystring, object )
@@ -450,23 +454,25 @@ local function onRowTouch_unitnumber( event )
 									if AppName ~= "DirectorApp" then
 										if Unitnumber_field.text == "" or Unitnumber_field.text == Unitnumber_field.id or Unitnumber_field.text == "* Enter the Unit Number" then
 											validation=false
-											SetError("* Enter the Unit Number",Unitnumber_field)
+											SetError("* Enter the valid Unit number or Director Name",Unitnumber_field)
 										end
 									end
 
 									if UserName.text == "" or UserName.text == UserName.id or UserName.text == "* Enter the Username" then
 										validation=false
-										SetError("* Enter the Username",UserName)
+										SetError("* Enter the valid email address or Username",UserName)
 									else
 
 
 									end
 
-									if Password.text == "" or Password.text == Password.id or Password.text == "* Enter the password" then
+									if Password.text == "" or Password.text == Password.id or Password.text == "* Enter the password" or Password.text:len() < 6 then
 										validation=false
-										SetError("* Enter the password",Password)
+										SetError("* Enter the Password",Password)
 
 									end
+
+									
 
 									if(validation == true) then
 										print("sign in validation complete")
@@ -563,7 +569,7 @@ function scene:create( event )
 
 	UserName =  native.newTextField(0, 0, W-100, EditBoxStyle.height)
 	UserName.id = "User name or Email address"
-	UserName.placeholder = "User name or Email address"
+	UserName.placeholder = "Email Address"
 	UserName.anchorX=0
 	UserName.value=""
 	UserName.hasBackground = false
@@ -609,6 +615,7 @@ function scene:create( event )
 	requestBtn.y=signinBtn.y+signinBtn.contentHeight/2+20
 	requestBtn:setFillColor(Utils.convertHexToRGB(color.blue))
 	requestBtn.id="request"
+	requestBtn.isVisible=false
 
 	signInGroup:insert(sceneGroup)
 end
@@ -644,11 +651,21 @@ function scene:show( event )
 		UserName.isVisible=true
 		Password.isVisible=true
 
-		Unitnumber_field.text = "12345"
+		--[[Unitnumber_field.text = "12345"
 		Unitnumber_field.value="12345"
 		UserName.text = "malarkodi.sellamuthu@w3magix.com"
 		Password.text = "123123"
-		Password.value = "123123"
+		Password.value = "123123"]]
+
+
+		function get_GetSearchByUnitNumberOrDirectorName(response)
+
+			list_response_total = response
+
+			
+		end
+
+		Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)
 
 		elseif phase == "did" then
 
@@ -657,7 +674,7 @@ function scene:show( event )
 			UserName:addEventListener("touch",textListener)
 			Password:addEventListener("touch",textListener)]]
 
-			
+			composer.removeHidden()
 			Unitnumber_field:addEventListener( "userInput", textfield )
 			UserName:addEventListener( "userInput", textfield )
 			Password:addEventListener( "userInput", textfield )
@@ -685,7 +702,7 @@ function scene:show( event )
 
 				elseif phase == "did" then
 
-					composer.removeHidden()
+					
 
 					forgettBtn:removeEventListener("touch",touchAction)
 					requestBtn:removeEventListener("touch",touchAction)

@@ -26,7 +26,7 @@ local menuBtn
 
 local ParentShow = true
 
-openPage="eventCalenderPage"
+
 
 local DateWise_response = {}
 
@@ -221,6 +221,7 @@ function scene:show( event )
 	
 	if phase == "will" then
 
+		openPage="eventCalenderPage"
 
 		elseif phase == "did" then
 
@@ -461,9 +462,6 @@ function scene:hide( event )
 
 	if event.phase == "will" then
 
-
-		elseif phase == "did" then
-
 			for j=1,#event_groupArray do 
 				event_groupArray[j]:removeSelf()
 				event_groupArray[j] = nil
@@ -475,7 +473,14 @@ function scene:hide( event )
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 
-		end	
+
+			
+
+	elseif phase == "did" then
+
+		
+
+	end	
 
 	end
 
