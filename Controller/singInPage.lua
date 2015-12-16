@@ -143,15 +143,27 @@ local function onRowTouch_unitnumber( event )
 			local TwitterUsername,TwitterToken,TwitterTokenSecret
 			local profileImageUrl,ContactId
 
+
+			print("Last name : "..Request_response.MyUnitBuzzContacts.LastName)
+
 			if Request_response.MyUnitBuzzContacts.FirstName then
 
 			Director_Name = Request_response.MyUnitBuzzContacts.FirstName
 
-			elseif Request_response.MyUnitBuzzContacts.LastName then
-
-				Director_Name = Director_Name.." "..Request_response.MyUnitBuzzContacts.LastName
 			end
 
+			Director_Name = Director_Name.." "..Request_response.MyUnitBuzzContacts.LastName
+			
+
+			profileName.text=Director_Name
+
+			if Request_response.MyUnitBuzzContacts.EmailAddress then
+
+			profileEmail.text = Request_response.MyUnitBuzzContacts.EmailAddress
+
+			end
+
+			
 
 			if Request_response.UnitNumberOrDirectorName then
 				UnitNumberOrDirectorName = Request_response.UnitNumberOrDirectorName
@@ -259,6 +271,12 @@ local function onRowTouch_unitnumber( event )
 			end
 
 
+			local tablesetup = [[DROP TABLE logindetails;]]
+			db:exec( tablesetup )
+
+			local tablesetup = [[CREATE TABLE IF NOT EXISTS logindetails (id INTEGER PRIMARY KEY autoincrement, UnitNumberOrDirector, EmailAddess, PhoneNumber, Status, UserId, GoogleUsername, GoogleToken, GoogleTokenSecret, GoogleUserId, FacebookUsername, FacebookAccessToken, TwitterUsername, TwitterToken, TwitterTokenSecret, ProfileImageUrl, AccessToken, ContactId);]]
+			db:exec( tablesetup )
+
 			local insertQuery = [[INSERT INTO logindetails VALUES (NULL, ']]..UnitNumberOrDirectorName..[[',']]..EmailAddess..[[',']]..PhoneNumber..[[',']]..Status..[[',']]..UserId..[[',']]..GoogleUsername..[[',']]..GoogleToken..[[',']]..GoogleTokenSecret..[[',']]..GoogleUserId..[[',']]..FacebookUsername..[[',']]..FacebookAccessToken..[[',']]..TwitterUsername..[[',']]..TwitterToken..[[',']]..TwitterTokenSecret..[[',']]..profileImageUrl..[[',']]..AccessToken..[[',']]..ContactId..[[');]]
 			db:exec( insertQuery )
 
@@ -322,7 +340,7 @@ local function onRowTouch_unitnumber( event )
 			current_textField = event.target;
 
 
-			current_textField.size=16	
+			current_textField.size=14
 
 			if "*" == event.target.text:sub(1,1) then
 				event.target.text=""
@@ -330,10 +348,10 @@ local function onRowTouch_unitnumber( event )
 
 
 			elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+
 			print("end")
 
-			
-
+			native.setKeyboardFocus( nil )
 
 			--[[unitnumer_list.alpha=0
 
@@ -368,7 +386,10 @@ local function onRowTouch_unitnumber( event )
 
 					--list_response = list_response_total
 
+
+
 					if #list_response ~= nil then
+
 						for i = #list_response,1,-1 do
 							table.remove(list_response,i)
 						end
@@ -377,6 +398,14 @@ local function onRowTouch_unitnumber( event )
 					for i = 1,#list_response_total do
 
 						print( list_response_total[i].DirectorName, event.text)
+
+						local temp = event.text
+
+						local tempvalue = temp:sub(temp:len(),temp:len())
+
+						if(tempvalue == "(") then
+							event.text = event.text:sub( 1, event.text:len()-1)
+						end
 
 						if string.find( list_response_total[i].DirectorName:upper() , event.text:upper() ) ~= nil then
 
@@ -390,29 +419,42 @@ local function onRowTouch_unitnumber( event )
 
 					if list_response ~= nil then
 
-						if #list_response == 0 then
+						print("adding.."..#list_response)
 
-							UserName.isVisible=true
-							Password.isVisible=true
+							if #list_response == 0 then
 
-							elseif #list_response == 1 then
-
+								UserName.isVisible=true
 								Password.isVisible=true
 
-							else
-								UserName.isVisible=false
-								Password.isVisible=false
-							end
+								unitnumer_list.alpha=0
 
-							for i = 1, #list_response do
-						  	 		 -- Insert a row into the tableView
-						  	 		 unitnumer_list:insertRow{}
+								elseif #list_response == 1 then
 
-						  	 		end
+									Password.isVisible=true
+
+
+								else
+									UserName.isVisible=false
+									Password.isVisible=false
+								end
+
+								for i = 1, #list_response do
+							  	 		 -- Insert a row into the tableView
+							  	 		 unitnumer_list:insertRow{}
+
+							  	 end
 						  	 	end
 						  	 end
 
+						 local dotFlag = string.find(event.text,"%.")
 
+						if event.text == "" or dotFlag then
+							
+							unitnumer_list.alpha=0
+							UserName.isVisible=true
+							Password.isVisible=true
+
+						end
 
 						  	end
 
@@ -493,12 +535,24 @@ local function onRowTouch_unitnumber( event )
 
 									if event.target.id == "forget" then
 
-										composer.gotoScene( "Controller.forgetPasswordPage", "slideLeft", 800 )
+										local options = {
+										    effect = "slideLeft",
+										    time = 600,
+										    params = { responseValue=list_response_total}
+										}
+
+										composer.gotoScene( "Controller.forgetPasswordPage", options )
 
 
 										elseif event.target.id == "request" then
 
-											composer.gotoScene( "Controller.request_Access_Page", "slideLeft", 800 )
+											local options = {
+										    effect = "slideLeft",
+										    time = 600,
+										    params = { responseValue=list_response_total}
+										}
+
+											composer.gotoScene( "Controller.request_Access_Page", options)
 
 										end
 
@@ -550,6 +604,7 @@ function scene:create( event )
 		Unitnumber_field.id = "Unit Number / Director name"
 		Unitnumber_field.placeholder = LoginPage.Unitnumber_placeholder
 		Unitnumber_field.anchorX=0
+		Unitnumber_field.size=14	
 		Unitnumber_field.value=""
 		Unitnumber_field.hasBackground = false
 		Unitnumber_field.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+45;Unitnumber_field.y=UnitNumber_bg.y
@@ -565,6 +620,7 @@ function scene:create( event )
 	UserName.id = "User name or Email address"
 	UserName.placeholder = LoginPage.UserName_placeholder
 	UserName.anchorX=0
+	UserName.size=14
 	UserName.value=""
 	UserName.hasBackground = false
 	sceneGroup:insert(UserName)
@@ -574,11 +630,13 @@ function scene:create( event )
 	Password_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,Password_bg.contentHeight)
 	Password_seprator.x=Password_bg.x-Password_bg.contentWidth/2+35;Password_seprator.y=Password_bg.y
 	Password_drawLeft = display.newImageRect(sceneGroup,"res/assert/psw.png",24/1.5,24/1.5)
+
 	Password_drawLeft.x=Password_bg.x-Password_bg.contentWidth/2+Password_drawLeft.contentWidth;Password_drawLeft.y=Password_bg.y
 
 	Password = native.newTextField(0, 0, W-100, EditBoxStyle.height)
 	Password.id = "Password"
 	Password.anchorX=0
+	Password.size=14
 	Password.value=""
 	Password.placeholder = LoginPage.Password_placeholder
 	Password.isSecure = true;	
@@ -645,21 +703,28 @@ function scene:show( event )
 		UserName.isVisible=true
 		Password.isVisible=true
 
-		Unitnumber_field.text = "12345"
+		if event.params then
+			list_response_total = event.params.responseValue
+		end
+
+		--[[Unitnumber_field.text = "12345"
 		Unitnumber_field.value="12345"
 		UserName.text = "malarkodi.sellamuthu@w3magix.com"
 		Password.text = "123123"
-		Password.value = "123123"
+		Password.value = "123123"]]
 
 
-		function get_GetSearchByUnitNumberOrDirectorName(response)
+		--[[function get_GetSearchByUnitNumberOrDirectorName(response)
 
 			list_response_total = response
 
 			
 		end
 
-		Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)
+
+		Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)]]
+
+
 
 		elseif phase == "did" then
 
@@ -669,6 +734,8 @@ function scene:show( event )
 			Password:addEventListener("touch",textListener)]]
 
 			composer.removeHidden()
+
+
 			Unitnumber_field:addEventListener( "userInput", textfield )
 			UserName:addEventListener( "userInput", textfield )
 			Password:addEventListener( "userInput", textfield )
@@ -693,6 +760,8 @@ function scene:show( event )
 		if event.phase == "will" then
 
 				--if defalut ~= nil then defalut:removeSelf();defalut=nil end
+
+				if unitnumer_list then unitnumer_list:removeSelf( );unitnumer_list=nil end
 
 				elseif phase == "did" then
 

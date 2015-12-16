@@ -90,7 +90,8 @@ local function onRowTouch_unitnumber( event )
 
 
 		elseif ( "release" == phase ) then
-
+			unitnumer_list.alpha=0
+			UserName.isVisible=true
 			native.setKeyboardFocus(nil)
 			UnitnumberField.text = row.name
 			UnitnumberField.value = row.id
@@ -116,14 +117,9 @@ local function onRowTouch_unitnumber( event )
 
 			elseif ( event.phase == "ended" or event.phase == "submitted" ) then
 
-			if(current_textField.id ~= "Unit Number / Director name") then
-				current_textField.text=event.target.text
-			end
-			
 
-			unitnumer_list.alpha=0
 
-			UserName.isVisible=true
+		native.setKeyboardFocus( nil )
 
 			elseif ( event.phase == "editing" ) then
 
@@ -153,6 +149,14 @@ local function onRowTouch_unitnumber( event )
 					end
 
 					for i = #list_response_total,1,-1 do
+						local temp = event.text
+
+						local tempvalue = temp:sub(temp:len(),temp:len())
+
+						if(tempvalue == "(") then
+							event.text = event.text:sub( 1, event.text:len()-1)
+						end
+
 						if string.find( list_response_total[i].DirectorName:upper(), event.text:upper() ) then
 							list_response[#list_response+1] = list_response_total[i]
 						end
@@ -239,11 +243,11 @@ local function onRowTouch_unitnumber( event )
 
 									--Utils.SnackBar("Invalid Unit Number")
 
-									local alert = native.showAlert(  ForgotPassword.PageTitle,LoginPage.setError_Unitnumber, { "OK" } )
+									local alert = native.showAlert(  ForgotPassword.PageTitle,LoginPage.ErrorMessage, { "OK" } )
 
 								else
 
-									local alert = native.showAlert(  ForgotPassword.PageTitle,LoginPage.setError_UserName, { "OK" } )
+									local alert = native.showAlert(  ForgotPassword.PageTitle,LoginPage.ErrorMessage, { "OK" } )
 									--Utils.SnackBar(Request_response)
 
 								end
@@ -295,7 +299,13 @@ local function onRowTouch_unitnumber( event )
 									display.getCurrentStage():setFocus( nil )
 
 
-									composer.gotoScene( "Controller.singInPage", "slideRight",500 )
+										local options = {
+										    effect = "slideRight",
+										    time = 600,
+										    params = { responseValue=list_response_total}
+										}
+
+									composer.gotoScene( "Controller.singInPage", options )
 								end
 
 								return true
@@ -374,6 +384,8 @@ local function onRowTouch_unitnumber( event )
 								display.getCurrentStage():setFocus( nil )
 
 								if event.target.id == "request" then
+
+
 
 									composer.gotoScene( "Controller.request_Access_Page", "slideLeft", 800 )
 
@@ -515,14 +527,21 @@ function scene:show( event )
 		UserName.isVisible=true
 
 
-		function get_GetSearchByUnitNumberOrDirectorName(response)
+		--[[function get_GetSearchByUnitNumberOrDirectorName(response)
 
 			list_response_total = response
 
 			
 		end
 
-		Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)
+		Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)]]
+
+
+		if event.params.responseValue then
+
+			list_response_total = event.params.responseValue
+
+		end
 
 		elseif phase == "did" then
 
@@ -551,8 +570,8 @@ function scene:show( event )
 		local phase = event.phase
 
 		if event.phase == "will" then
-
-			elseif phase == "did" then
+			if unitnumer_list then unitnumer_list:removeSelf( );unitnumer_list=nil end
+		elseif phase == "did" then
 
 
 			end	

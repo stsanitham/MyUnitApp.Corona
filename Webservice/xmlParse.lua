@@ -1,5 +1,7 @@
 local network = require('network')
 local json = require('json')
+local Applicationconfig = require("Utils.ApplicationConfig")
+
 
 local request = {}
 
@@ -8,6 +10,11 @@ local count ={}
 
 local requestid
 
+local function splitUrl( URL )
+	return URL:gsub(ApplicationConfig.BASE_URL,"")	
+end
+
+
 function request.new(url, method, params,listner)
 
 	spinner_show()
@@ -15,7 +22,9 @@ function request.new(url, method, params,listner)
 	
 	print("enter "..url)
 
-	
+	if  splitUrl(url) == "/MyUnitBuzz/GetAllUnitNumber" then
+		spinner_hide()
+	end
 
 	requestId = network.request( url, method, function(event)  if ( event.isError ) then
 

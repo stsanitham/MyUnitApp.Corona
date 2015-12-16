@@ -8,10 +8,7 @@ application =
         xAlign = "center",
         yAlign = "center",
 
-        imageSuffix =
-        {
-            ["@2x"] = 1.5
-        }
+       
 	},
 
 

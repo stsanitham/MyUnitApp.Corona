@@ -53,6 +53,39 @@ local function MenuTouchAction(event)
 		display.getCurrentStage():setFocus( nil )
 
 
+		if event.target.id == "logout" then
+			print("Logout")
+
+
+
+						local function onComplete( event )
+					   if event.action == "clicked" then
+					        local i = event.index
+					        if i == 1 then
+
+					        	slideAction()
+								for j=MainGroup.numChildren, 1, -1 do 
+									display.remove(MainGroup[MainGroup.numChildren])
+									MainGroup[MainGroup.numChildren] = nil
+								end
+
+					            local options = {
+								    params = { responseValue=UnitnumberList}
+								}
+
+
+							composer.gotoScene( "Controller.singInPage", options )
+			        elseif i == 2 then
+			            --cancel
+			        end
+			    end
+			end
+
+		-- Show alert with two buttons
+		local alert = native.showAlert( "Log out", "Are you sure you want to log out?", { "OK", "Cancel" }, onComplete )	
+			return
+		end
+
 		for i = 1, #menuArray_display do
 
 			menuArray_display[i].alpha=0.01
@@ -114,16 +147,23 @@ function scene:show( event )
 
 
 			profilePic = display.newImageRect("res/assert/career-user.png",62,62)
-			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+20;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-35
+			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-40
 			profilePic.anchorY=0
 			profilePic.anchorX=0
 			panel:insert( profilePic )
 
-			profileName = display.newText("username",0,0,native.systemFont,16)
+			profileName = display.newText("",0,0,245,0,native.systemFont,15)
 			profileName.x=profilePic.x
 			profileName.anchorX=0
 			profileName.y=profilePic.y+profilePic.contentHeight+10
 			panel:insert( profileName )
+
+			profileEmail = display.newText("",0,0,250,0,native.systemFont,15)
+			profileEmail.x=profilePic.x
+			profileEmail.anchorX=0
+			profileEmail.anchorY=0
+			profileEmail.y=profileName.y+profileName.contentHeight-5
+			panel:insert( profileEmail )
 
 			--[[--HomePage
 
@@ -157,7 +197,7 @@ function scene:show( event )
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
-			menuArray_display[#menuArray_display].y=panel.flapTopBg.y+panel.flapTopBg.contentHeight
+			menuArray_display[#menuArray_display].y=panel.flapTopBg.y+panel.flapTopBg.contentHeight-5
 			panel:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "EventCalender"
@@ -394,6 +434,9 @@ function scene:show( event )
 					rect:setFillColor(0)
 					panel:insert( rect )
 
+					rect.isVisible=false
+
+
 					--Logout
 
 					menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
@@ -402,7 +445,7 @@ function scene:show( event )
 					menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 					menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight+5
 					panel:insert( menuArray_display[#menuArray_display] )
-					--menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
+					menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 					menuArray_display[#menuArray_display].name = "Logout"
 					menuArray_display[#menuArray_display].id="logout"
 
@@ -440,10 +483,9 @@ function scene:show( event )
 		if event.phase == "will" then
 
 
-			elseif phase == "did" then
+		elseif phase == "did" then
 
-
-			end	
+		end	
 
 		end
 

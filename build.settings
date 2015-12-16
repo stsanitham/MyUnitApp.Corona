@@ -1,16 +1,10 @@
---
--- For more information on build.settings see the Corona SDK Build Guide at:
--- http://docs.coronalabs.com/guide/distribution/buildSettings/index.html
---
 
 settings =
 {
 	
 	orientation =
 	{
-		-- Supported values for orientation:
-		-- portrait, portraitUpsideDown, landscapeLeft, landscapeRight
-
+		
 		default = "portrait",
 		supported = { "portrait", }
 	},
@@ -34,9 +28,11 @@ settings =
 	{
 		plist =
 		{
+		
+			CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, 
-			--UIApplicationExitsOnSuspend = true, 
+			--UIApplicationExitsOnSuspend = true,
 			CoronaWindowMovesWhenKeyboardAppears = true,
 			CFBundleIconFiles =
 			{
@@ -64,7 +60,7 @@ settings =
         NSAllowsArbitraryLoads = true,
         NSExceptionDomains =
          {
-          ["example.com"] =
+          ["com.MyUnitBuzz"] =
            {
             NSIncludesSubdomains = true,
             NSThirdPartyExceptionAllowsInsecureHTTPLoads = true

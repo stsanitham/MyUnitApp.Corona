@@ -10,6 +10,8 @@ local Utility = require( "Utils.Utility" )
 local stringValue = require( "res.value.color" )
 local sqlite3 = require( "sqlite3" )
 
+
+
 AppName = "CommonApp"
 
 environment = system.getInfo( "environment" )
@@ -21,6 +23,8 @@ if AppName == "DirectorApp" then
 else
 	Unitnumber_value = ""
 end
+
+UnitnumberList = {}
 
 MainGroup = display.newGroup();
 
@@ -115,6 +119,7 @@ end
 function menuTouch( event )
 
 	if(event.phase == "began") then
+        
 		display.getCurrentStage():setFocus( event.target )
 
 		elseif(event.phase == "ended") then
@@ -140,6 +145,15 @@ speed = menuTransTime,
 inEasing = easing.outCubic,
 outEasing = easing.outCubic
 }
+
+
+--[[local fonts = native.getFontNames()
+local fontsNames = ''
+for i,fontname in ipairs(fonts) do
+    fontsNames = fontname .. ',' .. fontsNames
+    print(fontname)
+end]]
+
 
 
  function onKeyEvent( event )

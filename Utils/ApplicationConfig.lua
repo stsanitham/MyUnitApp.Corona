@@ -1,10 +1,18 @@
 ApplicationConfig = {}
 
 
+----------Dev---------------
 
-ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
+--ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
+--ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
 
-ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
+------Stagging--------
+
+ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
+ApplicationConfig.IMAGE_BASE_URL = "http://c.spanunit.com/"
+
+
+
 
 ApplicationConfig.API_PUBLIC_KEY = "Or2tf5TjnfLObg5qZ1VfLOd"
 

@@ -21,6 +21,7 @@ local Background,BgText
 
 local Splash_TimeOut = 500
 
+require( "Webservice.ServiceManager" )
 
 
 --------------------------------------------------
@@ -31,7 +32,7 @@ local Splash_TimeOut = 500
 local function SplashTimeOut( event )
 	timer.cancel(event.source)
 
-	composer.gotoScene( "Controller.singInPage", "slideLeft", Splash_TimeOut )
+	
 end
 
 ------------------------------------------------------
@@ -57,7 +58,28 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		timer.performWithDelay( 2000, SplashTimeOut )
+		--timer.performWithDelay( 2000, SplashTimeOut )
+
+		function get_GetSearchByUnitNumberOrDirectorName(response)
+
+			--list_response_total = response
+
+			UnitnumberList = response
+
+			local options = {
+			    effect = "slideLeft",
+			    time = Splash_TimeOut,
+			    params = { responseValue=response}
+			}
+
+
+			composer.gotoScene( "Controller.singInPage", options )
+			
+		end
+
+		Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)
+
+
 
 	elseif phase == "did" then
 

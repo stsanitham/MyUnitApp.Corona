@@ -165,7 +165,10 @@ function Webservice.Forget_Password(UnitNumber,UserName,postExecution)
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
-	local country = "LanguageId=1&CountryId=1"
+	local country = {}
+
+	country="LanguageId=1&CountryId=1"
+
 	local resbody = "EmailAddress="..string.urlEncode(UserName).."&UnitNumber="..string.urlEncode(UnitNumber).."&TypeLanguageCountry="..country
 
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
@@ -173,6 +176,8 @@ function Webservice.Forget_Password(UnitNumber,UserName,postExecution)
 
 
 	params={headers = headers,body = resbody}
+
+	print("url :"..json.encode(params))
 
 	request.new( ApplicationConfig.ForgotPassword,method,params,postExecution)
 

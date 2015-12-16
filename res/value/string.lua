@@ -2,6 +2,7 @@ CommonWords = {}
 
 CommonWords.ok = "OK"
 CommonWords.submit = "Submit"
+CommonWords.done = "Done"
 
 
 
@@ -33,8 +34,12 @@ EventCalender.When = "When"
 EventCalender.Where = "Where"
 EventCalender.Description = "Description"
 EventCalender.Appointment_With = "Appointment With"
+EventCalender.Call_With = "Call With"
+EventCalender.Hostess = "Hostess"
+EventCalender.Linked_to = "Linked to"
 EventCalender.Purpose="Purpose"
 EventCalender.Priority ="Priority"
-EventCalender.Attachment = "Attachment"
+EventCalender.Attachment = "Attachments"
 EventCalender.Today = "Today"
+EventCalender.Phone = "Phone"
 

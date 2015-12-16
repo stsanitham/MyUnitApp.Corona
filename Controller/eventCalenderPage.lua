@@ -17,6 +17,8 @@ local Processingdate
 local ProcessingCount_total = 0
 local ProcessingCount = 0 
 
+local pickerGroup = display.newGroup( )
+
 
 --------------- Initialization -------------------
 
@@ -42,7 +44,7 @@ local scrollView
 
 local RecentTab_Topvalue = 70
 
-local pickerWheel
+local pickerWheel,picker_btnBg,picker_Done
 
 local labels = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }
 local monthArray={ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
@@ -212,7 +214,7 @@ background.y=parentTitle.y+background.contentHeight/2
 
 end
 
-local title = display.newText( tempGroup,response.title, background.x+10, background.y,180,0, native.systemFontBold, 11 )
+local title = display.newText( tempGroup,response.title, background.x+20, background.y,180,0, native.systemFontBold, 11 )
 --title.anchorY=0
 title:setFillColor(Utility.convertHexToRGB(color.tabBarColor))
 
@@ -223,12 +225,16 @@ local line = display.newRect(tempGroup,W/2,background.y,W,1)
 line.y=background.y+background.contentHeight-line.contentHeight
 line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
-local time = display.newText(tempGroup,os.date( "%I:%M \n  %p" , timeGMT ),0,0,native.systemFontBold,14)
-time.x=30
+local time = display.newText(tempGroup,os.date( "%I:%M \n  %p" , timeGMT ),0,0,80,0,native.systemFontBold,12)
+time.x=45
 time.y=background.y+background.contentHeight/2
 time:setFillColor(Utility.convertHexToRGB(color.Black))
 
-local leftDraw_line = display.newRect(tempGroup,background.x-100,background.y-2,2,background.contentHeight+2)
+if response.allDay == true then
+	time.text="ALL DAY"
+end
+
+local leftDraw_line = display.newRect(tempGroup,background.x-90,background.y-2,2,background.contentHeight+2)
 leftDraw_line:setFillColor(Utility.convertHexToRGB(color.tabBarColor))
 leftDraw_line.anchorY=0
 
@@ -250,17 +256,33 @@ end
 
 
 local function eventList(  )
+
+	NoEvent.isVisible=false
+
 	function get_TicklerEvents(response)
 		DateWise_response=response
-
-		date = dateSplit(DateWise_response[1].date)
-
 
 
 		for j=#event_groupArray, 1, -1 do 
 			display.remove(event_groupArray[#event_groupArray])
 			event_groupArray[#event_groupArray] = nil
 		end
+
+
+		if #DateWise_response == 0 then
+
+			NoEvent.isVisible=true
+
+
+			--return false
+		else
+
+		end
+		date = dateSplit(DateWise_response[1].date)
+
+
+
+		
 
 
 		for i = 1, #DateWise_response do
@@ -317,11 +339,57 @@ end
 local function calenderTouch( event )
 
 	if event.phase == "began" then
-
+		display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+		if pickerGroup.isVisible == true then
+	
 
-		if pickerWheel.isVisible == true then
-			pickerWheel.isVisible=false
+		else
+			pickerGroup:toFront()
+			pickerGroup.isVisible=true
+		end
+
+	end
+
+	return true
+
+end 
+
+local function todayAction( event )
+
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+		local t = os.date( '*t' )
+
+
+		--pickerWheel._view._columns[1]:scrollToIndex( tonumber(os.date( "%m" )) )
+		--pickerWheel._view._didTap = true
+        --startIndex = tonumber(os.date( "%d" )),
+
+       -- startIndex = 5,
+
+
+		startdate = os.date( "!%m/%d/%Y" , os.time( t )).." 12:00:00 AM"
+		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
+		Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
+		ParentShow=true
+		eventList()
+
+	end
+
+	return true
+
+end 
+local function calenderAction( event )
+
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+			pickerGroup.isVisible=false
 
 		local values = pickerWheel:getValues()
 
@@ -344,36 +412,12 @@ local function calenderTouch( event )
 		ParentShow=true
 		eventList()	
 
-		else
-			pickerWheel:toFront()
-			pickerWheel.isVisible=true
-		end
-
 	end
 
 	return true
 
 end 
 
-local function todayAction( event )
-
-	if event.phase == "began" then
-
-	elseif event.phase == "ended" then
-
-		local t = os.date( '*t' )
-
-		startdate = os.date( "!%m/%d/%Y" , os.time( t )).." 12:00:00 AM"
-		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
-		Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
-		ParentShow=true
-		eventList()
-
-	end
-
-	return true
-
-end 
 
 
 ------------------------------------------------------
@@ -396,6 +440,17 @@ function scene:create( event )
 	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
+
+	menuTouch_s = display.newRect( sceneGroup, 0, BgText.y, 135, 40 )
+	menuTouch_s.anchorX=0
+	menuTouch_s.alpha=0.01
+
+
+
+	NoEvent = display.newText( sceneGroup, "No events to show", 0,0,0,0,native.systemFontBold,16)
+	NoEvent.x=W/2;NoEvent.y=H/2
+	NoEvent.isVisible=false
+	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 	
 	topBg = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
 	topBg.anchorY=0
@@ -408,6 +463,8 @@ function scene:create( event )
 	topToday_btnlabel = display.newText(sceneGroup,EventCalender.Today,0,0,native.systemFontBold,12)
 	topToday_btnlabel.x=topToday_btnBg.x+topToday_btnBg.contentWidth/2;topToday_btnlabel.y=topToday_btnBg.y
 	MainGroup:insert(sceneGroup)
+
+
 
 	searchhBg = display.newRect(sceneGroup,W/2+5,topToday_btnBg.y,180,22)
 	searchLeftDraw = display.newImageRect(sceneGroup,"res/assert/search(gray).png",16/1.2,18/1.2)
@@ -423,18 +480,34 @@ function scene:create( event )
 	weekView.x=searchhBg.x+searchhBg.contentWidth/2+20
 	weekView.y=searchhBg.y
 
+	searchLeftDraw.isVisible=false
+	searchhBg.isVisible=false
+	search.isVisible=false
+	weekView.isVisible=false
+
 	calenderView = display.newImageRect(sceneGroup,"res/assert/calender(gray).png",24/1.2,24/1.2)
 	calenderView.x=weekView.x+weekView.contentWidth/2+18
 	calenderView.y=searchhBg.y
 
+	calenderView_bg = display.newRect( sceneGroup, calenderView.x, calenderView.y, 35, 35 )
+	calenderView_bg.alpha=0.01
+
+sceneGroup:insert( pickerGroup )
+pickerGroup.isVisible=false
 	-- Create the widget
 pickerWheel = widget.newPickerWheel
 {
     top = display.contentHeight - 222,
     columns = columnData
 }
-pickerWheel.isVisible=false
-sceneGroup:insert(pickerWheel)
+
+pickerGroup:insert(pickerWheel)
+
+picker_btnBg = display.newRect( pickerGroup, W/2, pickerWheel.y-pickerWheel.contentHeight/2-15, W, 30 )
+
+picker_Done = display.newText( pickerGroup, CommonWords.done, 0, 0, native.systemFont, 20 )
+picker_Done:setFillColor(Utils.convertHexToRGB(color.today_blue))
+picker_Done.x=picker_btnBg.x+100;picker_Done.y=picker_btnBg.y
 
 end
 
@@ -608,10 +681,11 @@ Webservice.Get_All_MyCalendars(get_allCalender)
 
 menuBtn:addEventListener("touch",menuTouch)
 BgText:addEventListener("touch",menuTouch)
+menuTouch_s:addEventListener("touch",menuTouch)
 topToday_btnBg:addEventListener("touch",todayAction)
 topToday_btnlabel:addEventListener("touch",todayAction)
-calenderView:addEventListener("touch",calenderTouch)
-
+calenderView_bg:addEventListener("touch",calenderTouch)
+picker_Done:addEventListener( "touch", calenderAction )
 
 end
 
@@ -636,6 +710,8 @@ function scene:hide( event )
 
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
+		menuTouch_s:removeEventListener("touch",menuTouch)
+
 
 
 
