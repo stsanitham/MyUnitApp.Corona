@@ -22,7 +22,20 @@ end
 
 
 local function splitUrl( URL )
-	return URL:gsub(ApplicationConfig.BASE_URL,"")	
+
+	local Url
+
+	if IsLive then
+
+		Url = ApplicationConfig.Version..URL:gsub(ApplicationConfig.BASE_URL,"")
+
+	else
+		Url = URL:gsub(ApplicationConfig.BASE_URL,"")	
+
+	end
+
+
+	return Url
 end
 
 
@@ -54,8 +67,17 @@ function Webservice.GET_LIST_OF_RANKS(postExecution)
 	
 	method="GET"
 
+	local canonicalizedHeaderString
+
 	local url = splitUrl(ApplicationConfig.GET_LIST_OF_RANKS)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	print("Url : "..url)
+
+
+
+		canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
@@ -554,7 +576,11 @@ function Webservice.GET_SEARCHBY_UnitNumberOrDirectorName(search_value,postExecu
 	headers["UserAuthorization"]= ""
 
 	local url = splitUrl(ApplicationConfig.GetSearchByUnitNumberOrDirectorName)
+
 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	print("canonicalizedHeaderString : "..canonicalizedHeaderString)
+
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 

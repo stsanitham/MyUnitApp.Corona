@@ -278,7 +278,12 @@ local function eventList(  )
 		else
 
 		end
+
+		if DateWise_response[1] then
+
 		date = dateSplit(DateWise_response[1].date)
+
+	end
 
 
 

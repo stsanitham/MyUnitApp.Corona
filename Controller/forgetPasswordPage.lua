@@ -453,6 +453,7 @@ function scene:create( event )
 		UnitnumberField.anchorX=0
 		UnitnumberField.placeholder=LoginPage.Unitnumber_placeholder
 		UnitnumberField.value=""
+		UnitnumberField.hasBackground=false
 		sceneGroup:insert(UnitnumberField)
 		UnitnumberField.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+45;UnitnumberField.y=UnitNumber_bg.y
 
@@ -467,6 +468,7 @@ function scene:create( event )
 	UserName = native.newTextField( W/2, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth-50, UnitNumber_bg.contentHeight )
 	UserName.id = "Username / Email"
 	UserName.anchorX=0
+	UserName.hasBackground=false
 	UserName.value=""
 	UserName.placeholder=LoginPage.UserName_placeholder
 	sceneGroup:insert(UserName)
