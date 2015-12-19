@@ -22,7 +22,7 @@ local menuBtn
 
 local menuArray_display = {}
 
-local space_value = 33
+local space_value = 30
 
 local profilePic,UserEmail;
 
@@ -165,12 +165,12 @@ function scene:show( event )
 			profileEmail.y=profileName.y+profileName.contentHeight-5
 			panel:insert( profileEmail )
 
-			--[[--HomePage
+		--[[	--HomePage
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
-			menuArray_display[#menuArray_display].y=panel.flapTopBg.y+panel.flapTopBg.contentHeight
+			menuArray_display[#menuArray_display].y=panel.flapTopBg.y+panel.flapTopBg.contentHeight-5
 			panel:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "Home"
@@ -187,9 +187,9 @@ function scene:show( event )
 			Event_text.x=Event_icon.x+Event_icon.contentWidth+5
 			Event_text.y = Event_icon.y
 			
-			panel:insert( Event_text )
+			panel:insert( Event_text )]]
 
-			-----]]
+			
 
 			--EventCalender
 
@@ -218,7 +218,7 @@ function scene:show( event )
 
 			-----
 
-			--[[--CareerPath
+			--CareerPath
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
@@ -274,7 +274,7 @@ function scene:show( event )
 
 			-----
 
-			--Resource
+			--[[--Resource
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
@@ -426,7 +426,7 @@ function scene:show( event )
 
 					panel:insert( Googl_text )
 
-					-----]]
+					]]
 
 					rect = display.newRect(0,0,panel.width,1)
 					rect.x = menuArray_display[#menuArray_display].x;
@@ -434,7 +434,7 @@ function scene:show( event )
 					rect:setFillColor(0)
 					panel:insert( rect )
 
-					rect.isVisible=false
+					--rect.isVisible=false
 
 
 					--Logout
@@ -443,7 +443,7 @@ function scene:show( event )
 					menuArray_display[#menuArray_display].anchorY=0
 					menuArray_display[#menuArray_display].alpha=0.01
 					menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
-					menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight+5
+					menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight
 					panel:insert( menuArray_display[#menuArray_display] )
 					menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 					menuArray_display[#menuArray_display].name = "Logout"

@@ -63,27 +63,7 @@ local GET_USER_INFO="self"
 
 
 -----------------Function-------------------------
-function makeTimeStamp(dateString)
-	local pattern = "(%d+)%-(%d+)%-(%d+)%a(%d+)%:(%d+)%:([%d%.]+)([Z%p])(%d*)%:?(%d*)";
-	local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern);
 
-	local timestamp = os.time({year=year, month=month, day=day, hour=hour, min=minute, sec=seconds});
-	local offset = 0;
-
-	if (tzoffset) then
-		if ((tzoffset == "+") or (tzoffset == "-")) then  -- we have a timezone!
-			offset = offsethour * 60 + offsetmin;
-			
-			if (tzoffset == "-") then
-				offset = offset * -1;
-			end
-			
-			timestamp = timestamp + offset;
-		end
-	end
-
-	return timestamp;
-end
 
 function FacebookCallback(res,scrollView)
 
@@ -125,15 +105,16 @@ function FacebookCallback(res,scrollView)
 
 									local background = display.newRect(tempGroup,0,0,W,bgheight)
 
-									local tempHeight = 0
+									local Initial_Height = 0
 
 									if(groupArray[#groupArray-1]) ~= nil then
-										--here
-										tempHeight = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height+3
+
+										Initial_Height = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height+3
+
 									end
 
 									background.anchorY = 0
-									background.x=W/2;background.y=tempHeight
+									background.x=W/2;background.y=Initial_Height
 									background:setFillColor(1)
 
 									profilePic = display.newImage("userfb.png", system.TemporaryDirectory)
@@ -145,21 +126,18 @@ function FacebookCallback(res,scrollView)
 									tempGroup:insert(profilePic)
 
 
-									time = makeTimeStamp(string.gsub( feedArray[i].created_time, "+0000", "Z" ))
+									time = Utils.makeTimeStamp(string.gsub( feedArray[i].created_time, "+0000", "Z" ))
 
 									userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p",time )), 0, 0, native.systemFontBold, 11 )
-
 									userTime.anchorX = 0
-
-									userTime:setFillColor(125/255,125/255,125/255)
+									Utils.CssforTextView(userTime,sp_Date_Time)
+									
 
 
 
 									userName = display.newText( tempGroup,user_Name, 0, 0, native.systemFontBold, 14 )
-
 									userName.anchorX = 0
-
-									userName:setFillColor(41/255,129/255,203/255)
+									Utils.CssforTextView(userName,sp_socialHeaderFb)
 
 									if feedArray[i].message == nil then
 
@@ -183,14 +161,11 @@ function FacebookCallback(res,scrollView)
 								end
 								tempGroup:insert(rowTitle)
 								rowTitle.anchorX = 0
-
-
-								--rowTitle.y=profilePic.y-profilePic.contentHeight/2+userName.contentHeight/2+35
-								rowTitle:setFillColor(0)
+								Utils.CssforTextView(rowTitle,sp_socialText)
 
 								background.height = background.height+rowTitle.height/1.5
 
-								background.x=W/2;background.y=tempHeight
+								background.x=W/2;background.y=Initial_Height
 
 
 								profilePic.x=background.x-background.contentWidth/2+profilePic.contentWidth/2+5
@@ -232,7 +207,7 @@ function FacebookCallback(res,scrollView)
 							rowStory.anchorX = 0
 							rowStory.x=profilePic.x-profilePic.contentWidth/2
 							rowStory.y=profilePic.y+profilePic.height/2+5+rowStory.height/2
-							rowStory:setFillColor(0)
+							Utils.CssforTextView(rowStory,sp_socialText)
 
 							local function postedimg_position( event )
 								if ( event.isError ) then
@@ -337,6 +312,7 @@ function scene:show( event )
 
 		elseif phase == "did" then
 
+			composer.removeHidden()
 
 			scrollView = widget.newScrollView
 			{

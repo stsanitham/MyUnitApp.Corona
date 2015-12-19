@@ -33,11 +33,13 @@ openPage="careerPathPage"
 
 local newtworkArray = {}
 
+local NameArray = {}
+
 local careerListArray = {}
 
 local List_array = {}
 
-local RecentTab_Topvalue = 65
+local RecentTab_Topvalue = 70
 
 local header_value = ""
 
@@ -52,7 +54,7 @@ local function detailPageFun(event)
 
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
-
+		print("touch began")
 		elseif ( event.phase == "moved" ) then
 			local dy = math.abs( ( event.y - event.yStart ) )
 
@@ -160,10 +162,10 @@ local function careePath_list( list )
 		background.x=W/2;background.y=tempHeight
 		background.id=List_array[i].Contact_Id
 		background.alpha=0.01
+		background:addEventListener("touch",detailPageFun)
 
 		if parentFlag == true then
 			parentFlag=false
-
 
 
 			parentTitle = display.newRect(tempGroup,0,0,W,25)
@@ -190,12 +192,12 @@ local function careePath_list( list )
 
 			background.y=parentTitle.y+background.contentHeight/2
 
-			background:addEventListener("touch",detailPageFun)
+			
 
 
 		end
 
-
+		
 
 		if List_array[i].Image_Path ~= nil then
 
@@ -246,7 +248,7 @@ local function careePath_list( list )
 	end
 end
 
-local function change( event )
+local function listPosition_change( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 
@@ -310,6 +312,26 @@ function get_Activeteammember(response)
 
 	List_array=response
 
+	if response ~= nil and #response ~= 0 then
+
+
+		--[[	for i=1,#response do
+					local function titleCase( first, rest )
+					   return first:upper()..rest:lower()
+					end
+
+					
+
+					characterName = response[i]:gsub( "(%a)([%w_']*)", titleCase )
+
+
+					if ContactDisplay ==  1 or ContactDisplay == nil then
+
+						nameString = 
+
+					--NameArray
+
+			end]]
 							if viewValue == "position" then
 
 								function compare(a,b)
@@ -331,6 +353,11 @@ function get_Activeteammember(response)
 								careePath_list(List_array)
 
 							end
+	else
+
+		NoEvent.isVisible=true
+
+	end
 end
 ------------------------------------------------------
 
@@ -365,6 +392,13 @@ function scene:create( event )
 	changeList_order_touch = display.newRect(sceneGroup,changeList_order_icon.x,changeList_order_icon.y+15,35,35)
 	changeList_order_touch.alpha=0.01
 	changeList_order_touch:addEventListener("touch",changeListmenuTouch)
+
+	NoEvent = display.newText( sceneGroup, "No Team Members to show", 0,0,0,0,native.systemFontBold,16)
+	NoEvent.x=W/2;NoEvent.y=H/2
+	NoEvent.isVisible=false
+	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+	
 
 	careerList_scrollview = widget.newScrollView
 	{
@@ -402,9 +436,9 @@ list_Position.id="position"
 changeMenuGroup.isVisible=false
 
 
-listBg:addEventListener("touch",change)
-list_Name:addEventListener("touch",change)
-list_Position:addEventListener("touch",change)
+listBg:addEventListener("touch",listPosition_change)
+list_Name:addEventListener("touch",listPosition_change)
+list_Position:addEventListener("touch",listPosition_change)
 
 sceneGroup:insert(changeMenuGroup)
 MainGroup:insert(sceneGroup)

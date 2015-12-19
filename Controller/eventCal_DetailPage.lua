@@ -474,7 +474,7 @@ function scene:show( event )
 
 
 
-						display_details[#display_details+1] = display.newText(getPurpose(purpose_enum[Details.AppointmentPurpose]),0,0,150,0,native.systemFont,14)
+						display_details[#display_details+1] = display.newText(getPurpose(purpose_enum[Details.AppointmentPurpose+1]),0,0,150,0,native.systemFont,14)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 						display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y-8
 						display_details[#display_details].anchorX=0

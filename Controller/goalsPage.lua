@@ -39,6 +39,7 @@ local cleaner = {
 { "\n\n*", "\n" },
 { "\n*$", "\n" },
 { "^\n*", "\n" },
+{ "&quot;", "'" },
 }
 
 --------------------------------------------------
@@ -87,6 +88,8 @@ function scene:show( event )
 
 		elseif phase == "did" then
 
+			composer.removeHidden()
+
 			goal_scrollview  = widget.newScrollView
 			{
 			top = RecentTab_Topvalue,
@@ -132,7 +135,7 @@ function get_Goals(response)
 		print(t)
 
 
-		GoalText = display.newText(t,0,0,W-30,t:len()/2.5,native.systemFont,14)
+		GoalText = display.newText(t,0,0,W-20,t:len()/2.2,native.systemFont,14)
 		GoalText.anchorY=0
 		GoalText.x=W/2;GoalText.y=0
 		GoalText:setFillColor(Utils.convertHexToRGB(color.Black))

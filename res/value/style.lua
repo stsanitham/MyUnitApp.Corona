@@ -14,7 +14,7 @@ sp_header.Font_Weight=native.systemFontBold
 sp_header.Font_Size_android=18
 sp_header.Font_Size_ios=18
 sp_header.Text_Color="#333333"
-sp_header.Text_Alignment="Left"
+sp_header.Text_Alignment="left"
 sp_header.Hint_Color=nil
 sp_header.Border_Color=nil
 sp_header.Background_Color="#767676"
@@ -68,7 +68,7 @@ sp_subHeader.Font_Weight=native.systemFont
 sp_subHeader.Font_Size_android=18
 sp_subHeader.Font_Size_ios=18
 sp_subHeader.Text_Color="#ffffff"
-sp_subHeader.Text_Alignment="Left"
+sp_subHeader.Text_Alignment="left"
 sp_subHeader.Hint_Color=nil
 sp_subHeader.Border_Color=nil
 sp_subHeader.Background_Color="Clear Color"
@@ -81,7 +81,7 @@ sp_labelName.Font_Weight=native.systemFontBold
 sp_labelName.Font_Size_android=14
 sp_labelName.Font_Size_ios=14
 sp_labelName.Text_Color="#737373"
-sp_labelName.Text_Alignment="Left"
+sp_labelName.Text_Alignment="left"
 sp_labelName.Hint_Color=nil
 sp_labelName.Border_Color=nil
 sp_labelName.Background_Color="Clear Color"
@@ -95,7 +95,7 @@ sp_fieldValue.Font_Weight=native.systemFont
 sp_fieldValue.Font_Size_android=14
 sp_fieldValue.Font_Size_ios=14
 sp_fieldValue.Text_Color="#2a2a2a"
-sp_fieldValue.Text_Alignment="Left"
+sp_fieldValue.Text_Alignment="left"
 sp_fieldValue.Hint_Color=nil
 sp_fieldValue.Border_Color=nil
 sp_fieldValue.Background_Color="Clear Color"
@@ -108,7 +108,7 @@ sp_labelName_small.Font_Weight="italic"
 sp_labelName_small.Font_Size_android=13
 sp_labelName_small.Font_Size_ios=13
 sp_labelName_small.Text_Color="#c2185b"
-sp_labelName_small.Text_Alignment="Right"
+sp_labelName_small.Text_Alignment="right"
 sp_labelName_small.Hint_Color=nil
 sp_labelName_small.Border_Color=nil
 sp_labelName_small.Background_Color="Clear Color"
@@ -134,7 +134,7 @@ sp_helpText.Font_Weight="italic"
 sp_helpText.Font_Size_android=11
 sp_helpText.Font_Size_ios=11
 sp_helpText.Text_Color="#c2185b"
-sp_helpText.Text_Alignment="Left"
+sp_helpText.Text_Alignment="left"
 sp_helpText.Hint_Color=nil
 sp_helpText.Border_Color=nil
 sp_helpText.Background_Color="Clear Color"
@@ -382,59 +382,98 @@ sp_horizantalLine.Text_Color=
 sp_horizantalLine.Text_Alignment=
 sp_horizantalLine.Hint_Color=
 sp_horizantalLine.Border_Color=
-sp_horizantalLine.Background_Color=
+sp_horizantalLine.Background_Color=]]
 
 ----sp_socialHeader--------
 
 sp_socialHeader = {}
-sp_socialHeader.Font_Family=
-sp_socialHeader.Font_Weight=
-sp_socialHeader.Font_Size_android=
-sp_socialHeader.Font_Size_ios=
-sp_socialHeader.Text_Color=
-sp_socialHeader.Text_Alignment=
-sp_socialHeader.Hint_Color=
-sp_socialHeader.Border_Color=
-sp_socialHeader.Background_Color=
+sp_socialHeader.Font_Family="Open Sans"
+sp_socialHeader.Font_Weight=native.systemFont
+sp_socialHeader.Font_Size_android=18
+sp_socialHeader.Font_Size_ios=18
+sp_socialHeader.Text_Color="#2a2a2a"
+sp_socialHeader.Text_Alignment="left"
+sp_socialHeader.Hint_Color=nil
+sp_socialHeader.Border_Color=nil
+sp_socialHeader.Background_Color=nil
 
 ----sp_socialHeaderFb--------
 
 sp_socialHeaderFb = {}
-sp_socialHeaderFb.Font_Family=
-sp_socialHeaderFb.Font_Weight=
-sp_socialHeaderFb.Font_Size_android=
-sp_socialHeaderFb.Font_Size_ios=
-sp_socialHeaderFb.Text_Color=
-sp_socialHeaderFb.Text_Alignment=
-sp_socialHeaderFb.Hint_Color=
-sp_socialHeaderFb.Border_Color=
-sp_socialHeaderFb.Background_Color=
+sp_socialHeaderFb.Font_Family="Open Sans"
+sp_socialHeaderFb.Font_Weight=native.systemFont
+sp_socialHeaderFb.Font_Size_android=16
+sp_socialHeaderFb.Font_Size_ios=16
+sp_socialHeaderFb.Text_Color="#0071c0"
+sp_socialHeaderFb.Text_Alignment="left"
+sp_socialHeaderFb.Hint_Color=nil
+sp_socialHeaderFb.Border_Color=nil
+sp_socialHeaderFb.Background_Color=nil
 
 ----sp_socialHeaderTw--------
 
 sp_socialHeaderTw = {}
-sp_socialHeaderTw.Font_Family=
-sp_socialHeaderTw.Font_Weight=
-sp_socialHeaderTw.Font_Size_android=
-sp_socialHeaderTw.Font_Size_ios=
-sp_socialHeaderTw.Text_Color=
-sp_socialHeaderTw.Text_Alignment=
-sp_socialHeaderTw.Hint_Color=
-sp_socialHeaderTw.Border_Color=
-sp_socialHeaderTw.Background_Color=
+sp_socialHeaderTw.Font_Family="Open Sans"
+sp_socialHeaderTw.Font_Weight=native.systemFont
+sp_socialHeaderTw.Font_Size_android=16
+sp_socialHeaderTw.Font_Size_ios=16
+sp_socialHeaderTw.Text_Color="#2ca9e1"
+sp_socialHeaderTw.Text_Alignment="left"
+sp_socialHeaderTw.Hint_Color=nil
+sp_socialHeaderTw.Border_Color=nil
+sp_socialHeaderTw.Background_Color=nil
 
 ----sp_socialHeaderGp--------
 
 sp_socialHeaderGp = {}
-sp_socialHeaderGp.Font_Family=nil
-sp_socialHeaderGp.Font_Weight=nil
-sp_socialHeaderGp.Font_Size_android=nil
-sp_socialHeaderGp.Font_Size_ios=nil
-sp_socialHeaderGp.Text_Color=nil
-sp_socialHeaderGp.Text_Alignment=nil
+sp_socialHeaderGp.Font_Family="Open Sans"
+sp_socialHeaderGp.Font_Weight=native.systemFont
+sp_socialHeaderGp.Font_Size_android=16
+sp_socialHeaderGp.Font_Size_ios=16
+sp_socialHeaderGp.Text_Color="#d64136"
+sp_socialHeaderGp.Text_Alignment="left"
 sp_socialHeaderGp.Hint_Color=nil
 sp_socialHeaderGp.Border_Color=nil
-sp_socialHeaderGp.Background_Color=nil]]
+sp_socialHeaderGp.Background_Color=nil
+
+----sp_socialText--------
+
+sp_socialText = {}
+sp_socialText.Font_Family="Open Sans"
+sp_socialText.Font_Weight=native.systemFont
+sp_socialText.Font_Size_android=12
+sp_socialText.Font_Size_ios=12
+sp_socialText.Text_Color="#2a2a2a"
+sp_socialText.Text_Alignment="left"
+sp_socialText.Hint_Color=nil
+sp_socialText.Border_Color=nil
+sp_socialText.Background_Color=nil
+
+----sp_Date_Time--------
+
+sp_Date_Time = {}
+sp_Date_Time.Font_Family="Open Sans"
+sp_Date_Time.Font_Weight=native.systemFont
+sp_Date_Time.Font_Size_android=10
+sp_Date_Time.Font_Size_ios=10
+sp_Date_Time.Text_Color="#c2185b"
+sp_Date_Time.Text_Alignment="right"
+sp_Date_Time.Hint_Color=nil
+sp_Date_Time.Border_Color=nil
+sp_Date_Time.Background_Color=nil
+
+----sp_readMore--------
+
+sp_readMore = {}
+sp_readMore.Font_Family="Open Sans"
+sp_readMore.Font_Weight=native.systemFont
+sp_readMore.Font_Size_android=10
+sp_readMore.Font_Size_ios=10
+sp_readMore.Text_Color="#c2185b"
+sp_readMore.Text_Alignment="right"
+sp_readMore.Hint_Color=nil
+sp_readMore.Border_Color=nil
+sp_readMore.Background_Color=nil
 
 -----------------EditBoxStyle---------------------------------
 

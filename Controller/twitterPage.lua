@@ -299,7 +299,7 @@ function scene:show( event )
 
 
 		elseif phase == "did" then
-
+			composer.removeHidden()
 			menuBtn:addEventListener("touch",menuTouch)
 			BgText:addEventListener("touch",menuTouch)
 

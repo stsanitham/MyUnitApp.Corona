@@ -8,6 +8,8 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
+local widget = require( "widget" )
+
 
 
 
@@ -35,11 +37,25 @@ local mapGroup = display.newGroup()
 
 local phoneNum = ""
 
+local RecentTab_Topvalue
+
+local ProfileImage,careerDetail_scrollview
+
 --------------------------------------------------
 
 
 -----------------Function-------------------------
 
+makeTimeStamp_career = function ( dateString )
+
+	local pattern = "(%d+)%/(%d+)%/(%d+)T(%d+):(%d+):(%d+)"
+
+	local month, day, year , hour, minute, seconds, tzoffset, offsethour, offsetmin =
+	dateString:match(pattern)
+	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false} )
+
+	return timestamp;
+end
 
 
 local function bgTouch( event )
@@ -52,6 +68,101 @@ local function bgTouch( event )
 	return true
 
 end
+
+
+local function observableScroll( event )
+
+    local phase = event.phase
+    if ( phase == "began" ) then print( "Scroll view was touched" )
+    elseif ( phase == "moved" ) then 
+
+    	if event.direction ~= nil then
+
+    	-- print("Direction : "..event.direction)
+
+    	 	if event.direction == "up" then
+
+    	 		if TrasitionBar.yScale >= 0.2 then
+
+
+    	 			event.target:scrollTo( "top" , { time=0})
+
+    	 			--display.getCurrentStage():setFocus(nil)
+
+    	 			--ProfileImage.yScale=ProfileImage.yScale-0.05
+
+    	 			TrasitionBar.yScale=TrasitionBar.yScale-0.05
+
+    	 			TrasitionBar.alpha=TrasitionBar.alpha+0.08
+
+
+    	 			careerDetail_scrollview.y=TrasitionBar.y+TrasitionBar.contentHeight
+
+    	 			local temp = RecentTab_Topvalue - careerDetail_scrollview.y
+
+    	 			print("Height : "..temp)
+
+  	 			
+
+    	 		else
+
+
+    	 		end
+
+    	 	elseif event.direction == "down" then
+
+    	 			if TrasitionBar.yScale <= 1 then
+
+
+    	 			event.target:scrollTo( "top" , { time=0})
+
+    	 			--display.getCurrentStage():setFocus(nil)
+
+    	 			--ProfileImage.yScale=ProfileImage.yScale+0.05
+
+
+    	 			careerDetail_scrollview.y=TrasitionBar.y+TrasitionBar.contentHeight
+
+    	 			TrasitionBar.yScale=TrasitionBar.yScale+0.05
+
+    	 			TrasitionBar.alpha=TrasitionBar.alpha-0.08
+
+    	 			local temp = RecentTab_Topvalue - careerDetail_scrollview.y
+
+    	 			print("Height : "..temp)
+
+  	 			
+
+    	 		else
+
+
+    	 		end
+
+    	 	end
+
+
+    	end
+
+
+  
+
+    elseif ( phase == "ended" ) then print( "Scroll view was released" )
+    end
+
+   
+  	 -- In the event a scroll limit is reached...
+    if ( event.limitReached ) then
+        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+        elseif ( event.direction == "left" ) then print( "Reached right limit" )
+        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+        end
+    end
+    return true
+end
+
+
+
 
 local function phoneCallFunction( event )
 	if event.phase == "began" then
@@ -144,23 +255,45 @@ function scene:show( event )
 
 			--contactId= "321239"
 			function get_avtiveTeammemberDetails( response)
+
 				Details = response
-				pageTitle = display.newText(sceneGroup,"Career Path",0,0,native.systemFont,18)
-				pageTitle.anchorX = 0 ;pageTitle.anchorY=0
-				pageTitle.x=leftPadding;pageTitle.y = tabBar.y+tabBar.contentHeight/2+10
-				pageTitle:setFillColor(0)
+						
 
-				
-
-				titleBar = display.newRect(sceneGroup,W/2,pageTitle.y+pageTitle.contentHeight+5,W,30)
+				titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
 				titleBar.anchorY=0
+				titleBar.isVisible=false
+
 				titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
+
+								
+
+				if Details.ImagePath ~= nil then
+					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
+
+				end
+
+				if not ProfileImage then
+					ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
+				end
+
+				ProfileImage.width = W;ProfileImage.height = 180
+				ProfileImage.x=W/2;ProfileImage.y=titleBar.y
+				ProfileImage.anchorY=0
+
+				TrasitionBar = display.newRect(sceneGroup,ProfileImage.x,ProfileImage.y,ProfileImage.width,ProfileImage.height)
+				TrasitionBar.anchorY=0
+				TrasitionBar.alpha=0
+				TrasitionBar:setFillColor(Utils.convertHexToRGB("#B6B6B6"))
+
 				titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
-				titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+10
+				titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+15
 				titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
 				titleBar_icon.anchorY=0
 				titleBar_icon:addEventListener("touch",closeDetails)
+
+
+
 
 				if(Details.FirstName ~= nil ) then
 
@@ -175,154 +308,199 @@ function scene:show( event )
 				Details_Display[#Details_Display].name = "userName"
 				Details_Display[#Details_Display]:addEventListener("touch",closeDetails)
 
+
+
+				RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight
+
+					careerDetail_scrollview = widget.newScrollView
+					{
+					top = 0,
+					left = 0,
+					width = W,
+					height =H-RecentTab_Topvalue+ProfileImage.contentHeight,
+					--hideBackground = true,
+					isBounceEnabled=false,
+					horizontalScrollingDisabled = true,
+					verticalScrollingDisabled = false,
+					listener = observableScroll
+				}
+
+				--spinner_show()
+				careerDetail_scrollview.y=RecentTab_Topvalue
+				careerDetail_scrollview.x=W/2
+				careerDetail_scrollview.anchorY=0
+				sceneGroup:insert(careerDetail_scrollview)
+
+
+
 				if(Details.DateOfBirth ~= nil) then
 
-					local birthday_icon = display.newImageRect(sceneGroup,"res/assert/user.png",15,15)
+					local birthday_icon = display.newImageRect("res/assert/birthday.png",22,24)
 					birthday_icon.anchorX = 0 ;birthday_icon.anchorY=0
-					birthday_icon.x=25
-					birthday_icon.y=titleBar.y+titleBar.contentHeight+10
+					birthday_icon.x=leftPadding
+					birthday_icon.y=20
+					careerDetail_scrollview:insert( birthday_icon )
 
-					Details_Display[#Details_Display+1] = display.newText(sceneGroup,Details.DateOfBirth,0,0,native.systemFont,18)
+					local timeGMT = makeTimeStamp_career(Details.DateOfBirth.."T00:00:00")
+
+					Details_Display[#Details_Display+1] = display.newText(os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=birthday_icon.x+birthday_icon.contentWidth+5
 					Details_Display[#Details_Display].y = birthday_icon.y
 					Details_Display[#Details_Display]:setFillColor(0)
 					Details_Display[#Details_Display].name = "birthDay"
+					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
 				if(Details.AnniversariesDate ~= nil) then
 
-					local anniversari_icon = display.newImageRect(sceneGroup,"res/assert/user.png",15,15)
+					local anniversari_icon = display.newImageRect("res/assert/anniversary.png",22,18)
 					anniversari_icon.anchorX = 0 ;anniversari_icon.anchorY=0
-					anniversari_icon.x=Details_Display[#Details_Display].x-anniversari_icon.contentWidth-5
+					anniversari_icon.x=leftPadding
 					anniversari_icon.y=Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+15
+					careerDetail_scrollview:insert( anniversari_icon )
 
+					local timeGMT = makeTimeStamp_career(Details.AnniversariesDate.."T00:00:00")
 
-					Details_Display[#Details_Display+1] = display.newText(sceneGroup,Details.AnniversariesDate,0,0,native.systemFont,18)
+					Details_Display[#Details_Display+1] = display.newText(os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=anniversari_icon.x+anniversari_icon.contentWidth+5
 					Details_Display[#Details_Display].y = anniversari_icon.y
 					Details_Display[#Details_Display]:setFillColor(0)
 					Details_Display[#Details_Display].name = "Anniversarie"
+					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
+
+
+			
+				-----------Details_Display---------
+
 				if(Details.RecruitedDate ~= nil) then
 
-					local RecruitedDate = display.newText(sceneGroup,"When Recruited",0,0,150,0,native.systemFont,16)
+					local RecruitedDate = display.newText("When Recruited",0,0,150,0,native.systemFont,16)
 					RecruitedDate.anchorX = 0 ;RecruitedDate.anchorY=0
 					RecruitedDate:setFillColor(0)
 					RecruitedDate.x=leftPadding
-					RecruitedDate.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+30
+					RecruitedDate.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					careerDetail_scrollview:insert( RecruitedDate )
 
-					Details_Display[#Details_Display+1] = display.newText(sceneGroup,Details.RecruitedDate,0,0,160,0,native.systemFont,18)
+
+
+					local timeGMT = Utils.makeTimeStamp(Details.RecruitedDate)
+
+					Details_Display[#Details_Display+1] = display.newText(os.date( "%B %d, %Y" , timeGMT ),0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].size = 16
 					Details_Display[#Details_Display].y = RecruitedDate.y 
 					Details_Display[#Details_Display]:setFillColor(0)
 					Details_Display[#Details_Display].name = "RecruitedDate"
+					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
 				if(Details.ConsultantNumber ~= nil) then
 
-					local ConsultantNumber = display.newText(sceneGroup,"Consultant No",0,0,150,0,native.systemFont,16)
+					local ConsultantNumber = display.newText("Consultant No",0,0,150,0,native.systemFont,16)
 					ConsultantNumber.anchorX = 0 ;ConsultantNumber.anchorY=0
 					ConsultantNumber:setFillColor(0)
 					ConsultantNumber.x=leftPadding
 					ConsultantNumber.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					careerDetail_scrollview:insert( ConsultantNumber )
 
-					Details_Display[#Details_Display+1] = display.newText(sceneGroup,Details.ConsultantNumber,0,0,160,0,native.systemFont,18)
+					Details_Display[#Details_Display+1] = display.newText(Details.ConsultantNumber,0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = ConsultantNumber.y
 					Details_Display[#Details_Display]:setFillColor(0)
 					Details_Display[#Details_Display].size = 16
 					Details_Display[#Details_Display].name = "ConsultantNumber"
+					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
 				if(Details.UnitNumber ~= nil) then
 
 					
-					local UnitNumber = display.newText(sceneGroup,"Unit No",0,0,150,0,native.systemFont,16)
+					local UnitNumber = display.newText("Unit No",0,0,150,0,native.systemFont,16)
 					UnitNumber.anchorX = 0 ;UnitNumber.anchorY=0
 					UnitNumber:setFillColor(0)
 					UnitNumber.x=leftPadding
 					UnitNumber.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					careerDetail_scrollview:insert( UnitNumber )
 
-					Details_Display[#Details_Display+1] = display.newText(sceneGroup,Details.UnitNumber,0,0,160,0,native.systemFont,18)
+					Details_Display[#Details_Display+1] = display.newText(Details.UnitNumber,0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = UnitNumber.y
 					Details_Display[#Details_Display]:setFillColor(0)
 					Details_Display[#Details_Display].size = 16
 					Details_Display[#Details_Display].name = "UnitNumber"
+					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
 				if(Details.RecruiterNumber ~= nil) then
 
-					local RecruiterNumber = display.newText(sceneGroup,"Recruiter No",0,0,150,0,native.systemFont,16)
+					local RecruiterNumber = display.newText("Recruiter No",0,0,150,0,native.systemFont,16)
 					RecruiterNumber.anchorX = 0 ;RecruiterNumber.anchorY=0
 					RecruiterNumber:setFillColor(0)
 					RecruiterNumber.x=leftPadding
 					RecruiterNumber.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					careerDetail_scrollview:insert( RecruiterNumber )
 
 
-					Details_Display[#Details_Display+1] = display.newText(sceneGroup,Details.RecruiterNumber,0,0,160,0,native.systemFont,18)
+					Details_Display[#Details_Display+1] = display.newText(Details.RecruiterNumber,0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = RecruiterNumber.y 
 					Details_Display[#Details_Display]:setFillColor(0)
 					Details_Display[#Details_Display].size = 16
 					Details_Display[#Details_Display].name = "RecruiterNumber"
+					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
 				if(Details.RecruiterName ~= nil) then
 
-					local RecruiterName = display.newText(sceneGroup,"Recruiter Name",0,0,150,0,native.systemFont,16)
+					local RecruiterName = display.newText("Recruiter Name",0,0,150,0,native.systemFont,16)
 					RecruiterName.anchorX = 0 ;RecruiterName.anchorY=0
 					RecruiterName:setFillColor(0)
 					RecruiterName.x=leftPadding
 					RecruiterName.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					careerDetail_scrollview:insert( RecruiterName )
 
-					Details_Display[#Details_Display+1] = display.newText(sceneGroup,Details.RecruiterName,0,0,160,0,native.systemFont,18)
+					Details_Display[#Details_Display+1] = display.newText(Details.RecruiterName,0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = RecruiterName.y
 					Details_Display[#Details_Display]:setFillColor(0)
 					Details_Display[#Details_Display].size = 16
 					Details_Display[#Details_Display].name = "RecruiterName"
+					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
 				if(Details.CareerProgress ~= nil) then
 
-					local CareerProgress = display.newText(sceneGroup,"Career Progress",0,0,150,0,native.systemFont,16)
+					local CareerProgress = display.newText("Career Progress",0,0,150,0,native.systemFont,16)
 					CareerProgress.anchorX = 0 ;CareerProgress.anchorY=0
 					CareerProgress:setFillColor(0)
 					CareerProgress.x=leftPadding
 					CareerProgress.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					careerDetail_scrollview:insert( CareerProgress )
 
 
-					Details_Display[#Details_Display+1] = display.newText(sceneGroup,Details.CareerProgress,0,0,160,0,native.systemFont,18)
+					Details_Display[#Details_Display+1] = display.newText(Details.CareerProgress,0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = CareerProgress.y 
 					Details_Display[#Details_Display]:setFillColor(0)
 					Details_Display[#Details_Display].size = 16
 					Details_Display[#Details_Display].name = "CareerProgress"
+					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
 
-				if Details.ImagePath ~= nil then
-					Image = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
-
-				end
-
-				if not Image then
-					Image = display.newImageRect(sceneGroup,"res/assert/twitter_placeholder.png",80,80)
-				end
-
-				Image.width = 60;Image.height = 60
-				Image.x=W/2+100;Image.y=H/2-100
-
+				Details_Display[#Details_Display+1] = display.newRect( W/2, Details_Display[#Details_Display].y+30, W, 5)
+				Details_Display[#Details_Display].isVisible=false
+				careerDetail_scrollview:insert( Details_Display[#Details_Display] )
+				
 
 				below_tab = display.newRect(sceneGroup,W/2,H-30,W,30)
 				below_tab.anchorY=0
@@ -401,6 +579,7 @@ function scene:show( event )
 				sceneGroup:insert(mapGroup)
 				mapGroup.isVisible=false
 			end
+
 
 			Background:addEventListener("touch",bgTouch)
 			menuBtn:addEventListener("touch",menuTouch)

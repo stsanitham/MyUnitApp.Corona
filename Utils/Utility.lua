@@ -65,6 +65,26 @@ SnackTimer = timer.performWithDelay(3000, SnackFun )
 
 end
 
+Utils.makeTimeStamp = function ( dateString )
+
+	local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
+	local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin =
+	dateString:match(pattern)
+	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false} )
+
+	return timestamp;
+end
+
+Utils.CssforTextView = function ( Object,Style )
+
+if Style.Font_Family then Object.font = Style.Font_Family end
+if Style.Font_Size_ios then Object.fontSize = Style.Font_Size_ios end
+if Style.Text_Color then Object:setFillColor( Utils.convertHexToRGB( Style.Text_Color ))  end
+if Style.Text_Alignment then Object.align = Style.Text_Alignment   end
+
+
+end
+
 
 
 return Utils

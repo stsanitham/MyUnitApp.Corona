@@ -112,6 +112,8 @@ function scene:show( event )
 
 		elseif phase == "did" then
 
+			composer.removeHidden()
+
 			function get_allDocument(response)
 
 				List_array=response

@@ -28,7 +28,7 @@ local Background,BgText
 
 --Button
 
-local menuBtn,topBg,topToday_btnBg,topToday_btnlabel,searchhBg,search,weekView,calenderView
+local menuBtn,topBg,topToday_btnBg,topToday_btnlabel,searchhBg,search,weekView,calenderView,calenderView_bg,pickerWheel,picker_btnBg,picker_Done,menuTouch_s
 
 local ParentShow = true
 
@@ -163,7 +163,7 @@ local tempGroup = event_groupArray[#event_groupArray]
 
 local bgheight = 45
 --os.date("!%Y-%m-%dT%H:%m:%S")
-local timeGMT = makeTimeStamp( response.date )
+local timeGMT = Utils.makeTimeStamp( response.date )
 
 
 --date_value = os.date( "%A" , timeGMT )
@@ -716,8 +716,6 @@ function scene:hide( event )
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
 		menuTouch_s:removeEventListener("touch",menuTouch)
-
-
 
 
 

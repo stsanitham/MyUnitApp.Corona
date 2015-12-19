@@ -248,7 +248,7 @@ function scene:show( event )
 
 		elseif phase == "did" then
 
-			composer.removeScene( "Controller.imageSlideView" )
+			composer.removeHidden()
 
 			function get_Allimage(response)
 				List_array = response

@@ -43,3 +43,8 @@ EventCalender.Attachment = "Attachments"
 EventCalender.Today = "Today"
 EventCalender.Phone = "Phone"
 
+
+CareerPath = {}
+
+CareerPath.PageTitle="Career Path"
+

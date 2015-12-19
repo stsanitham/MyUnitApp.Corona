@@ -54,27 +54,7 @@ local User_name=""
 
 
 -----------------Function-------------------------
-function makeTimeStamp(dateString)
-	local pattern = "(%d+)%-(%d+)%-(%d+)%a(%d+)%:(%d+)%:([%d%.]+)([Z%p])(%d*)%:?(%d*)";
-	local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern);
 
-	local timestamp = os.time({year=year, month=month, day=day, hour=hour, min=minute, sec=seconds});
-	local offset = 0;
-
-	if (tzoffset) then
-		if ((tzoffset == "+") or (tzoffset == "-")) then  -- we have a timezone!
-			offset = offsethour * 60 + offsetmin;
-			
-			if (tzoffset == "-") then
-				offset = offset * -1;
-			end
-			
-			timestamp = timestamp + offset;
-		end
-	end
-
-	return timestamp;
-end
 
 function googleplusCallback( res,scrollView )
 
@@ -127,7 +107,7 @@ function googleplusCallback( res,scrollView )
 		
 
 
-		local time = tostring(os.date("%Y-%b-%d %H:%m %p", makeTimeStamp(feedArray[i].published)));
+		local time = tostring(os.date("%Y-%b-%d %H:%m %p", Utils.makeTimeStamp(feedArray[i].published)));
 
 
 
@@ -308,6 +288,8 @@ function scene:show( event )
 
 
 		elseif phase == "did" then
+
+			composer.removeHidden()
 
 			scrollView = widget.newScrollView
 			{
