@@ -142,24 +142,23 @@ local function onRowTouch_unitnumber( event )
 			local FacebookUsername,FacebookAccessToken
 			local TwitterUsername,TwitterToken,TwitterTokenSecret
 			local profileImageUrl,ContactId
+			local ContactDisplay,LanguageId,CountryId
 
 
-			print("Last name : "..Request_response.MyUnitBuzzContacts.LastName)
+		
 
-			if Request_response.MyUnitBuzzContacts.FirstName then
-
-			Director_Name = Request_response.MyUnitBuzzContacts.FirstName
-
-			end
-
-			Director_Name = Director_Name.." "..Request_response.MyUnitBuzzContacts.LastName
-			
-
-			profileName.text=Director_Name
 
 			if Request_response.MyUnitBuzzContacts.EmailAddress then
 
-			profileEmail.text = Request_response.MyUnitBuzzContacts.EmailAddress
+				local EmailTxt = Request_response.MyUnitBuzzContacts.EmailAddress
+
+					if EmailTxt:len() > 28 then
+
+						EmailTxt= EmailTxt:sub(1,28).."..."
+
+					end
+
+			profileEmail.text = EmailTxt
 
 			end
 
@@ -270,14 +269,64 @@ local function onRowTouch_unitnumber( event )
 				profileImageUrl=""
 			end
 
+				if Request_response.MyUnitBuzzUserSetting.ContactDisplay ~= nil then
+				ContactDisplay = Request_response.MyUnitBuzzUserSetting.ContactDisplay
+			else
+				ContactDisplay=""
+			end
+
+			if Request_response.MyUnitBuzzUserSetting.LanguageId ~= nil then
+				LanguageId = Request_response.MyUnitBuzzUserSetting.LanguageId
+			else
+				LanguageId=""
+			end
+
+			if Request_response.MyUnitBuzzUserSetting.CountryId ~= nil then
+				CountryId = Request_response.MyUnitBuzzUserSetting.CountryId
+			else
+				CountryId=""
+			end
+
+
+			print("Last name : "..Request_response.MyUnitBuzzContacts.LastName)
+
+			
+
+			FirstName = Request_response.MyUnitBuzzContacts.FirstName
+
+
+			Director_Name = Request_response.MyUnitBuzzContacts.LastName
+			
+			if ContactDisplay == 1 or ContactDisplay == nil then
+
+				if Request_response.MyUnitBuzzContacts.FirstName then
+
+					Director_Name = Request_response.MyUnitBuzzContacts.LastName..","..Request_response.MyUnitBuzzContacts.FirstName
+
+				end
+
+			elseif ContactDisplay == 2 then
+
+				if Request_response.MyUnitBuzzContacts.FirstName then
+
+					Director_Name = Request_response.MyUnitBuzzContacts.FirstName.." "..Request_response.MyUnitBuzzContacts.LastName
+
+				end
+
+			end
+
+			print(Director_Name:len())
+
+			profileName.text=Director_Name
+
 
 			local tablesetup = [[DROP TABLE logindetails;]]
 			db:exec( tablesetup )
 
-			local tablesetup = [[CREATE TABLE IF NOT EXISTS logindetails (id INTEGER PRIMARY KEY autoincrement, UnitNumberOrDirector, EmailAddess, PhoneNumber, Status, UserId, GoogleUsername, GoogleToken, GoogleTokenSecret, GoogleUserId, FacebookUsername, FacebookAccessToken, TwitterUsername, TwitterToken, TwitterTokenSecret, ProfileImageUrl, AccessToken, ContactId);]]
+			local tablesetup = [[CREATE TABLE IF NOT EXISTS logindetails (id INTEGER PRIMARY KEY autoincrement, UnitNumberOrDirector, EmailAddess, PhoneNumber, Status, UserId, GoogleUsername, GoogleToken, GoogleTokenSecret, GoogleUserId, FacebookUsername, FacebookAccessToken, TwitterUsername, TwitterToken, TwitterTokenSecret, ProfileImageUrl, AccessToken, ContactId, ContactDisplay, LanguageId, CountryId );]]
 			db:exec( tablesetup )
 
-			local insertQuery = [[INSERT INTO logindetails VALUES (NULL, ']]..UnitNumberOrDirectorName..[[',']]..EmailAddess..[[',']]..PhoneNumber..[[',']]..Status..[[',']]..UserId..[[',']]..GoogleUsername..[[',']]..GoogleToken..[[',']]..GoogleTokenSecret..[[',']]..GoogleUserId..[[',']]..FacebookUsername..[[',']]..FacebookAccessToken..[[',']]..TwitterUsername..[[',']]..TwitterToken..[[',']]..TwitterTokenSecret..[[',']]..profileImageUrl..[[',']]..AccessToken..[[',']]..ContactId..[[');]]
+			local insertQuery = [[INSERT INTO logindetails VALUES (NULL, ']]..UnitNumberOrDirectorName..[[',']]..EmailAddess..[[',']]..PhoneNumber..[[',']]..Status..[[',']]..UserId..[[',']]..GoogleUsername..[[',']]..GoogleToken..[[',']]..GoogleTokenSecret..[[',']]..GoogleUserId..[[',']]..FacebookUsername..[[',']]..FacebookAccessToken..[[',']]..TwitterUsername..[[',']]..TwitterToken..[[',']]..TwitterTokenSecret..[[',']]..profileImageUrl..[[',']]..AccessToken..[[',']]..ContactId..[[',']]..ContactDisplay..[[',']]..LanguageId..[[',']]..CountryId..[[');]]
 			db:exec( insertQuery )
 
 			local options = {
@@ -470,7 +519,7 @@ local function onRowTouch_unitnumber( event )
 										object.isSecure = false
 									end
 									object.text=displaystring
-									object.size=11
+									object.size=9
 									object.alpha=1
 									object:setTextColor(1,0,0)
 
@@ -578,10 +627,9 @@ function scene:create( event )
 	signinBanner_text = display.newImageRect(sceneGroup,"res/assert/signin-page-logo.png",278/2,62/2)
 	signinBanner_text.x=signinBanner.x;signinBanner_text.y=signinBanner.y
 
-	signin_lbl = display.newText(sceneGroup,"Sign In",0,0,native.systemFont,sp_commonLabel.textSize)
+	signin_lbl = display.newText(sceneGroup,LoginPage.Signin_Button,0,0,native.systemFont,sp_commonLabel.textSize)
 	signin_lbl.x=signin_lbl.contentWidth/2+30;signin_lbl.y=signinBanner.y+signinBanner.contentHeight/2+30
-	signin_lbl:setFillColor( Utility.convertHexToRGB(sp_commonLabel.textColor))
-	
+	Utils.CssforTextView(signin_lbl,sp_header)	
 
 	UnitNumber_bg = display.newRect(sceneGroup, W/2, H/2, W-60, EditBoxStyle.height)
 	UnitNumber_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,UnitNumber_bg.contentHeight)
@@ -606,8 +654,11 @@ function scene:create( event )
 		Unitnumber_field.anchorX=0
 		Unitnumber_field.size=14	
 		Unitnumber_field.value=""
+		--Utils.CssforTextField(Unitnumber_field,sp_fieldValue)	
+
+
 		Unitnumber_field.hasBackground = false
-		Unitnumber_field.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+45;Unitnumber_field.y=UnitNumber_bg.y
+		Unitnumber_field.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+40;Unitnumber_field.y=UnitNumber_bg.y
 		sceneGroup:insert(Unitnumber_field)
 	end
 
@@ -624,7 +675,7 @@ function scene:create( event )
 	UserName.value=""
 	UserName.hasBackground = false
 	sceneGroup:insert(UserName)
-	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+45;UserName.y=UserName_bg.y
+	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+40;UserName.y=UserName_bg.y
 
 	Password_bg = display.newRect(sceneGroup, W/2, UserName_bg.y+UserName_bg.contentHeight/2+24, UnitNumber_bg.contentWidth, UnitNumber_bg.contentHeight)
 	Password_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,Password_bg.contentHeight)
@@ -642,24 +693,27 @@ function scene:create( event )
 	Password.isSecure = true;	
 	Password.hasBackground = false
 	sceneGroup:insert(Password)
-	Password.x=Password_bg.x-Password_bg.contentWidth/2+45;Password.y=Password_bg.y
+	Password.x=Password_bg.x-Password_bg.contentWidth/2+40;Password.y=Password_bg.y
 
 	forgettBtn = display.newText(sceneGroup,LoginPage.Forget_Button,0,0,native.systemFont,12)
 	forgettBtn.x=Password_bg.x+Password_bg.contentWidth/2-forgettBtn.contentWidth/2-5
 	forgettBtn.y=Password_bg.y+Password_bg.contentHeight/2+10
-	forgettBtn:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	Utils.CssforTextView(forgettBtn,sp_labelName_small)	
+
 	forgettBtn.id="forget"
 	forgettBtn_drawLeft	= display.newImageRect(sceneGroup,"res/assert/forgot-psw.png",14,14)
 	forgettBtn_drawLeft.x=forgettBtn.x-forgettBtn.contentWidth/2-forgettBtn_drawLeft.contentWidth/2-3;forgettBtn_drawLeft.y=forgettBtn.y
 
 
-	signinBtn = display.newImageRect(sceneGroup,"res/assert/signin.jpg",W-60,35)
+	signinBtn = display.newRect(sceneGroup,0,0,W-60,35)
 	signinBtn.x=W/2;signinBtn.y = forgettBtn.y+38
 	signinBtn.width = W-60
-	sceneGroup:insert(signinBtn)
+	signinBtn:setFillColor( Utils.convertHexToRGB(sp_primarybutton.Background_Color) )
 	signinBtn.id="signin"
+
 	signinBtn_text = display.newText(sceneGroup,LoginPage.Signin_Button,0,0,native.systemFont,16)
 	signinBtn_text.x=signinBtn.x;signinBtn_text.y=signinBtn.y
+	Utils.CssforTextView(signinBtn_text,sp_primarybutton)	
 
 
 	requestBtn = display.newText(sceneGroup,LoginPage.Request_Button,0,0,native.systemFont,16)
@@ -707,11 +761,11 @@ function scene:show( event )
 			list_response_total = event.params.responseValue
 		end
 
-		Unitnumber_field.text = "123"
-		Unitnumber_field.value="123"
+		--[[Unitnumber_field.text = "12345"
+		Unitnumber_field.value="12345"
 		UserName.text = "malarkodi.sellamuthu@w3magix.com"
 		Password.text = "123123"
-		Password.value = "123123"
+		Password.value = "123123"]]
 
 
 		--[[function get_GetSearchByUnitNumberOrDirectorName(response)

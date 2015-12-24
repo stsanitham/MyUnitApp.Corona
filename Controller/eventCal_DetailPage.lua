@@ -217,10 +217,11 @@ function scene:create( event )
 	menuTouch_s.alpha=0.01
 
 
-	PageTitle = display.newText(sceneGroup,EventCalender.PageTitle,0,0,sp_header.Font_Weight,sp_header.Font_Size_ios)
+	PageTitle = display.newText(sceneGroup,EventCalender.PageTitle,0,0,native.systemFont,0)
 	PageTitle.anchorX = 0 ;PageTitle.anchorY=0
 	PageTitle.x=8;PageTitle.y = tabBar.y+tabBar.contentHeight/2+3
-	PageTitle:setFillColor(Utils.convertHexToRGB(sp_header.Text_Color))
+	Utils.CssforTextView(PageTitle,sp_header)
+
 
 	titleBar = display.newRect(sceneGroup,W/2,PageTitle.y+PageTitle.contentHeight+5,W,30)
 	titleBar.anchorY=0
@@ -231,11 +232,11 @@ function scene:create( event )
 	titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
 	titleBar_icon.anchorY=0
 
-	titleBar_text = display.newText(sceneGroup," ",0,0,sp_subHeader.Font_Weight,sp_subHeader.Font_Size_ios)
+	titleBar_text = display.newText(sceneGroup," ",0,0,native.systemFont,0)
 	titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
 	titleBar_text.y=titleBar.y+titleBar.contentHeight/2-titleBar_text.contentHeight/2
 	titleBar_text.anchorX=0;titleBar_text.anchorY=0
-	titleBar_text:setFillColor(Utils.convertHexToRGB(sp_subHeader.Text_Color))
+	Utils.CssforTextView(titleBar_text,sp_subHeader)
 	MainGroup:insert(sceneGroup)
 
 end

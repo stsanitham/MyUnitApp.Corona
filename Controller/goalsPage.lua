@@ -140,6 +140,11 @@ function get_Goals(response)
 		GoalText.x=W/2;GoalText.y=0
 		GoalText:setFillColor(Utils.convertHexToRGB(color.Black))
 		goal_scrollview:insert(GoalText)
+
+	else
+	NoEvent = display.newText( sceneGroup, "There are no goals to view as of now", 0,0,0,0,native.systemFontBold,16)
+	NoEvent.x=W/2;NoEvent.y=H/2
+	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 	end
 
 end

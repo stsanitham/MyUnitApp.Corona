@@ -12,12 +12,12 @@ LoginPage.Unitnumber_placeholder = "Unit Number / Director Name"
 LoginPage.UserName_placeholder = "Email Address"
 LoginPage.Password_placeholder = "Password"
 LoginPage.Signin_Button = "Sign In"
-LoginPage.Forget_Button = "Forgot password?"
+LoginPage.Forget_Button = "Forgot Password?"
 LoginPage.Request_Button = "Request Access"
 LoginPage.ErrorMessage = "The details you have entered are incorrect. Check again and re-enter the valid details"
 LoginPage.ErrorTitle = "Login Failed"
 LoginPage.setError_Unitnumber = "* Enter the valid Unit number or Director Name"
-LoginPage.setError_UserName = "* Enter the valid email address or Username"
+LoginPage.setError_UserName = "* Enter the valid Email Address"
 LoginPage.setError_Password = "* Enter the Password"
 
 
@@ -47,4 +47,5 @@ EventCalender.Phone = "Phone"
 CareerPath = {}
 
 CareerPath.PageTitle="Career Path"
+CareerPath.Location="Location"
 

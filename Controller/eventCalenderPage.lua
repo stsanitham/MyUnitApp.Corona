@@ -17,9 +17,17 @@ local Processingdate
 local ProcessingCount_total = 0
 local ProcessingCount = 0 
 
+local weekViewShow = "false"
+
+local weekViewGroup = display.newGroup( )
+
 local pickerGroup = display.newGroup( )
 
+local weekCalendertimimgs = {}
 
+local parentPosition = {}
+
+local currentweek=0
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -42,13 +50,15 @@ local event_groupArray = {}
 
 local scrollView
 
+local week = display.newGroup( )
+
 local RecentTab_Topvalue = 70
 
 local pickerWheel,picker_btnBg,picker_Done
 
 local labels = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }
 local monthArray={ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
-
+local weekLbl = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"}
 local days = {}
 local years = {}
 
@@ -61,8 +71,6 @@ end
 for y = 1, 48 do
     years[y] = (os.date( "%Y" )-5) + y
 end
-
-print(os.date( "%d" ))
 
 -- Configure the picker wheel columns
 local columnData = 
@@ -152,7 +160,73 @@ local function dateSplit(date)
 
 end
 
+local function dayTouch(event)
+	if event.phase == "ended" then
 
+
+
+		if parentPosition[event.target.id] ~= "null" then
+						scrollView:scrollToPosition
+				{
+				   -- x = scrollView.x,
+				    y = -parentPosition[event.target.id],
+				    time = 800,
+				    --onComplete = onScrollComplete
+				}
+
+						for i=1,week.numChildren do
+
+			Utils.CssforTextView(week[i][1],sp_labelName)
+	
+
+		end
+
+		event.target[1]:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+		end
+	end
+return true
+
+end
+
+local function creatWeek( weekfirstDay )
+	--todaydate =  os.date( "!%m/%d/%Y" , os.time( t ) )
+
+	for j=week.numChildren, 1, -1 do 
+    display.remove(week[week.numChildren])
+    week[week.numChildren] = nil
+end 
+
+
+weekViewGroup:insert( week )
+
+weekfirstDay.day = weekfirstDay.day - 1
+	
+	weekStartX = weekView_leftArrow.x
+
+
+	for i=1,7 do
+
+		local Week_Group = display.newGroup( )
+
+		weekfirstDay.day = weekfirstDay.day + 1
+		local day = display.newText(Week_Group,weekLbl[i],0,0,native.systemFont,12)
+		weekStartX = weekStartX +35
+		day.x = weekStartX;day.y=weekView_bg.y+weekView_bg.contentHeight/2-10
+		Utils.CssforTextView(day,sp_labelName)
+
+
+		local date = display.newText(Week_Group,os.date( "!%d" , os.time( weekfirstDay ) ),0,0,native.systemFont,12)
+		date.x = day.x;date.y=day.y+17
+		Utils.CssforTextView(date,sp_fieldValue)
+
+		Week_Group.id=i
+
+		Week_Group:addEventListener( "touch", dayTouch )
+		week:insert( Week_Group )
+	end
+
+end
 
 local function display_calenderList(response)
 
@@ -191,9 +265,9 @@ if ParentShow == true then
 	if(event_groupArray[#event_groupArray-1]) ~= nil then
 	--here
 	tempHeight = event_groupArray[#event_groupArray-1][1].y + event_groupArray[#event_groupArray-1][1].height-2
-end
+	end
 
-
+parentPosition[#parentPosition+1] = tempHeight
 parentTitle.anchorY = 0
 parentTitle.x=W/2;parentTitle.y=tempHeight
 parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
@@ -204,19 +278,21 @@ parent_leftDraw.x=parentTitle.x-parentTitle.contentWidth/2+15;parent_leftDraw.y=
 local parent_leftText = display.newText(tempGroup,os.date( "%A" , timeGMT ),0,0,native.systemFont,10)
 parent_leftText.x=parent_leftDraw.x+parent_leftDraw.contentWidth/2+2
 parent_leftText.y=parent_leftDraw.y
+Utils.CssforTextView(parent_leftText,sp_fieldValue_small)
 parent_leftText.anchorX=0
 
-local parent_centerText = display.newText(tempGroup,os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFontBold,14)
+local parent_centerText = display.newText(tempGroup,os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFont,14)
 parent_centerText.x=W/2
 parent_centerText.y=parent_leftDraw.y
+Utils.CssforTextView(parent_centerText,sp_subHeader)
 
 background.y=parentTitle.y+background.contentHeight/2
 
 end
 
-local title = display.newText( tempGroup,response.title, background.x+20, background.y,180,0, native.systemFontBold, 11 )
---title.anchorY=0
-title:setFillColor(Utility.convertHexToRGB(color.tabBarColor))
+local title = display.newText( tempGroup,response.title, background.x-60, background.y,180,0, native.systemFont, 11 )
+title.anchorX=0
+Utils.CssforTextView(title,sp_CommonTitle)
 
 background.height = background.contentHeight+title.height
 title.y=background.y+background.contentHeight/2
@@ -225,21 +301,25 @@ local line = display.newRect(tempGroup,W/2,background.y,W,1)
 line.y=background.y+background.contentHeight-line.contentHeight
 line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
+
+local leftDraw_line = display.newImageRect(tempGroup,"res/assert/eventSeprator.png",22,63)
+leftDraw_line.anchorY=0
+leftDraw_line.x=W/4;leftDraw_line.y=background.y-5
+
+
 local time = display.newText(tempGroup,os.date( "%I:%M \n  %p" , timeGMT ),0,0,80,0,native.systemFontBold,12)
-time.x=45
+time.x=W/6
 time.y=background.y+background.contentHeight/2
-time:setFillColor(Utility.convertHexToRGB(color.Black))
+Utils.CssforTextView(time,sp_Date_Time)
+
 
 if response.allDay == true then
 	time.text="ALL DAY"
 end
 
-local leftDraw_line = display.newRect(tempGroup,background.x-90,background.y-2,2,background.contentHeight+2)
-leftDraw_line:setFillColor(Utility.convertHexToRGB(color.tabBarColor))
-leftDraw_line.anchorY=0
 
-local leftDraw_img = display.newImageRect(tempGroup,"res/assert/arrow(calen-page).png",30,25)
-leftDraw_img.x=leftDraw_line.x;leftDraw_img.y=leftDraw_line.y+leftDraw_line.contentHeight/2
+--[[local leftDraw_img = display.newImageRect(tempGroup,"res/assert/arrow(calen-page).png",22,19)
+leftDraw_img.x=leftDraw_line.x+5;leftDraw_img.y=leftDraw_line.y+leftDraw_line.contentHeight/2]]
 
 local right_img = display.newImageRect(tempGroup,"res/assert/right-arrow(gray-).png",15/2,30/2)
 right_img.anchorX=0
@@ -255,26 +335,36 @@ end
 
 
 
-local function eventList(  )
+local function eventList( timeValue )
 
 	NoEvent.isVisible=false
+
 
 	function get_TicklerEvents(response)
 		DateWise_response=response
 
+		
+		ProcessingCount =0 
 
 		for j=#event_groupArray, 1, -1 do 
 			display.remove(event_groupArray[#event_groupArray])
 			event_groupArray[#event_groupArray] = nil
 		end
 
+		
 
+		if  DateWise_response == nil then
+
+			NoEvent.isVisible=true
+
+			return false
+		end
 		if #DateWise_response == 0 then
 
 			NoEvent.isVisible=true
 
 
-			--return false
+			return false
 		else
 
 		end
@@ -287,40 +377,68 @@ local function eventList(  )
 
 
 
-		
+		if Processingdate ~= date then
 
+			parentPosition[#parentPosition+1] = "null"
+
+		end
+
+
+		--timeValue.day = timeValue.day+currentweek
 
 		for i = 1, #DateWise_response do
 
 
 			date = dateSplit(DateWise_response[i].date)
 
-	
+
+			processCount = 0
 
 			local function eventCalen_display_process()
 
 				--print("Compare : "..Processingdate..":"..date)
 
+				processCount = processCount+1
+
+				if processCount >= 3 then
+
+					parentPosition[#parentPosition+1] = "null"
+
+				end
+
+			
 
 
 				if Processingdate == date then
 
-					--print("final : "..DateWise_response[i].title)
-					
+					processCount=0
 
 					display_calenderList(DateWise_response[i])
 
 				else
 
+					
+
+					
+
 					ProcessingCount = ProcessingCount+1
 
 					if ProcessingCount_total >= ProcessingCount then
 
+
 						ParentShow = true
 
-						local temp = os.date( '*t' )
-						temp.day=temp.day+ProcessingCount
-						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( temp )))
+						print("before"..timeValue.day)
+
+						timeValue.day=timeValue.day+1
+
+						print("after"..timeValue.day)
+
+
+						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( timeValue )))
+
+						--print(Processingdate,ProcessingCount,timeValue.day)
+
 						eventCalen_display_process()
 
 					else
@@ -333,6 +451,8 @@ local function eventList(  )
 			eventCalen_display_process()
 
 		end
+
+scrollView:scrollTo( "top",{ time=200 } )
 
 	end
 
@@ -370,24 +490,120 @@ local function todayAction( event )
 		local t = os.date( '*t' )
 
 
-		--pickerWheel._view._columns[1]:scrollToIndex( tonumber(os.date( "%m" )) )
-		--pickerWheel._view._didTap = true
-        --startIndex = tonumber(os.date( "%d" )),
-
-       -- startIndex = 5,
-
-
 		startdate = os.date( "!%m/%d/%Y" , os.time( t )).." 12:00:00 AM"
 		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
 		Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
 		ParentShow=true
-		eventList()
+		eventList(t)
 
 	end
 
 	return true
 
-end 
+end
+
+
+
+
+
+local function weekViewSwipe( event )
+
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+
+		if event.target.id  == "leftSwipe" then
+
+			if currentweek > 0 then
+
+			local weekViewSwipevalue_left = os.date( '*t' )
+
+			weekViewSwipevalue_left.day = weekViewSwipevalue_left.day - os.date( "%w" ) 
+
+			currentweek = currentweek -1 
+
+			weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-(7*currentweek)
+
+			--weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-7
+
+			startdate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 12:00:00 AM"
+
+			weekViewSwipevalue_left.day = weekViewSwipevalue_left.day+7
+
+			enddate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 11:59:59 PM"
+
+			weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-7
+
+			Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue_left )))
+
+			ParentShow=true
+
+
+
+
+			--print("date"..startdate,enddate,weekViewSwipevalue_left.day,Processingdate )
+
+		
+
+			--weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-7
+
+			
+
+			
+	creatWeek(weekViewSwipevalue_left)
+
+	eventList(weekViewSwipevalue_left)
+			
+
+
+			end
+
+		elseif event.target.id == "rightSwipe" then
+
+			local weekViewSwipevalue = os.date( '*t' )
+
+			weekViewSwipevalue.day = weekViewSwipevalue.day - os.date( "%w" ) 
+
+			currentweek = currentweek +1 
+
+			weekViewSwipevalue.day = weekViewSwipevalue.day+(7*currentweek)
+
+
+
+			startdate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue )).." 12:00:00 AM"
+
+			weekViewSwipevalue.day = weekViewSwipevalue.day+7
+
+			enddate = os.date( "!%m/%d/%Y" , os.time( tempValue )).." 11:59:59 PM"
+
+			weekViewSwipevalue.day = weekViewSwipevalue.day-7
+
+			Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue )))
+
+			ParentShow=true
+
+			eventList(weekViewSwipevalue)
+
+			creatWeek(weekViewSwipevalue)
+
+		end
+
+		--[[local t = os.date( '*t' )
+
+		startdate = os.date( "!%m/%d/%Y" , os.time( t )).." 12:00:00 AM"
+		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
+		Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
+		ParentShow=true
+		eventList()]]
+
+	end
+
+	return true
+
+end
+
+
 local function calenderAction( event )
 
 	if event.phase == "began" then
@@ -415,7 +631,9 @@ local function calenderAction( event )
 
 		--dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
 		ParentShow=true
-		eventList()	
+
+		local temp = os.date( '*t' )
+		eventList(temp)	
 
 	end
 
@@ -463,10 +681,11 @@ function scene:create( event )
 
 	topToday_btnBg = display.newRect(sceneGroup,topBg.x-topBg.contentWidth/2+10,topBg.y+topBg.contentHeight/2,60,22)
 	topToday_btnBg.anchorX=0
-	topToday_btnBg:setFillColor(Utils.convertHexToRGB(color.today_blue))
+	topToday_btnBg:setFillColor(Utils.convertHexToRGB(sp_Calender_btn.Background_Color))
 
 	topToday_btnlabel = display.newText(sceneGroup,EventCalender.Today,0,0,native.systemFontBold,12)
 	topToday_btnlabel.x=topToday_btnBg.x+topToday_btnBg.contentWidth/2;topToday_btnlabel.y=topToday_btnBg.y
+	Utils.CssforTextView(topToday_btnlabel,sp_Calender_btn)
 	MainGroup:insert(sceneGroup)
 
 
@@ -481,17 +700,12 @@ function scene:create( event )
 	search.hasBackground = false
 	sceneGroup:insert(search)
 
-	weekView = display.newImageRect(sceneGroup,"res/assert/list(gray).png",27/1.2,19/1.2)
-	weekView.x=searchhBg.x+searchhBg.contentWidth/2+20
-	weekView.y=searchhBg.y
-
 	searchLeftDraw.isVisible=false
 	searchhBg.isVisible=false
 	search.isVisible=false
-	weekView.isVisible=false
 
 	calenderView = display.newImageRect(sceneGroup,"res/assert/calender(gray).png",24/1.2,24/1.2)
-	calenderView.x=weekView.x+weekView.contentWidth/2+18
+	calenderView.x=W-25
 	calenderView.y=searchhBg.y
 
 	calenderView_bg = display.newRect( sceneGroup, calenderView.x, calenderView.y, 35, 35 )
@@ -532,7 +746,7 @@ function scene:show( event )
 			
 			scrollView = widget.newScrollView
 			{
-			top = RecentTab_Topvalue,
+			top = 0,
 			left = 0,
 			width = W,
 			height =H-RecentTab_Topvalue,
@@ -546,6 +760,10 @@ function scene:show( event )
 			}
 
 			sceneGroup:insert(scrollView)
+			scrollView.anchorY=0
+			scrollView.y = RecentTab_Topvalue
+
+
 
 			function get_allCalender(response)
 
@@ -570,7 +788,7 @@ function scene:show( event )
 			CalendarId = response[1].CalendarId
 			UserId = response[1].UserId 
 
-
+				--defalutCalenderView = "agendaDay"
 
 			if response[1].IsShowAppointment then
 
@@ -633,9 +851,14 @@ function scene:show( event )
 			local t = os.date( '*t' )
 
 
+			t.day = t.day - os.date( "%w" ) 
+
 			startdate = os.date( "!%m/%d/%YT%H:%m:%S %p" , os.time( t ))
 
 			Processingdate = os.date( "!%Y-%m-%d" , os.time( t ))
+
+
+
 
 			startdate = dateSplit(startdate).." 12:00:00 AM"
 
@@ -644,12 +867,18 @@ function scene:show( event )
 
 			ProcessingCount_total = 7
 
-			t.day = t.day + 7
+
+			
+
+			t.day = t.day + 6
 
 
 			enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
 
 			elseif defalutCalenderView == "month" then
+
+
+
 
 			ProcessingCount_total = 30
 
@@ -668,8 +897,11 @@ function scene:show( event )
 		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
 	end
 
+local temp = os.date( '*t' )
+temp.day = temp.day - os.date( "%w" ) 
 
-	eventList()
+
+	eventList(temp)
 
 	
 end	
@@ -683,6 +915,31 @@ end
 Webservice.Get_All_MyCalendars(get_allCalender)
 
 
+sceneGroup:insert( weekViewGroup )
+
+
+weekView_bg = display.newRect( weekViewGroup,W/2,topBg.y+topBg.contentHeight,W,50)
+weekView_bg.anchorY=0
+weekView_bg:setFillColor( 0.9,0.7,0.8 )
+
+weekView_leftArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
+weekView_leftArrow.xScale=-1
+weekView_leftArrow.x=weekView_bg.x-weekView_bg.contentWidth/2+20
+weekView_leftArrow.y=weekView_bg.y+weekView_bg.contentHeight/2
+weekView_leftArrow.id = "leftSwipe"
+weekView_leftArrow:addEventListener( "touch", weekViewSwipe )
+
+weekView_rightArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
+weekView_rightArrow.x=weekView_bg.x+weekView_bg.contentWidth/2-20
+weekView_rightArrow.y=weekView_bg.y+weekView_bg.contentHeight/2
+weekView_rightArrow.id = "rightSwipe"
+weekView_rightArrow:addEventListener( "touch", weekViewSwipe )
+
+local weekscroll = os.date( '*t' )
+weekscroll.day = weekscroll.day - os.date( "%w" ) 
+creatWeek(weekscroll)
+
+weekViewGroup.alpha=0
 
 menuBtn:addEventListener("touch",menuTouch)
 BgText:addEventListener("touch",menuTouch)
@@ -691,6 +948,7 @@ topToday_btnBg:addEventListener("touch",todayAction)
 topToday_btnlabel:addEventListener("touch",todayAction)
 calenderView_bg:addEventListener("touch",calenderTouch)
 picker_Done:addEventListener( "touch", calenderAction )
+
 
 end
 

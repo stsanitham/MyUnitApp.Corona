@@ -12,9 +12,17 @@ local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 local Applicationconfig = require("Utils.ApplicationConfig")
 
-viewValue = "position"
+local viewValue = "position"
 
---position
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
+
+local ContactDisplay
+for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+
+	ContactDisplay = row.ContactDisplay
+	
+end
 
 --------------- Initialization -------------------
 
@@ -39,11 +47,16 @@ local careerListArray = {}
 
 local List_array = {}
 
-local RecentTab_Topvalue = 70
+local RecentTab_Topvalue = 75
 
 local header_value = ""
 
 local changeMenuGroup = display.newGroup();
+
+local byNameArray = {}
+
+
+local byPositionArray = {}
 --------------------------------------------------
 
 
@@ -119,26 +132,29 @@ local function careePath_list( list )
 		careerListArray[#careerListArray] = nil
 	end
 
-	for i=1,#List_array do
+	print("calling"..#list)
+
+	for i=1,#list do
+
 
 		if i == 1 then 
 			if viewValue == "position" then
-				header_value = List_array[i].CarrierProgress
+				header_value = list[i].CarrierProgress
 				parentFlag=true
 			else
-				header_value = List_array[i].Last_Name:sub(1,1)
+				header_value = list[i].Name:sub(1,1)
 				parentFlag=true
 			end
 
 		else
 			if viewValue == "position" then
-				if(header_value ~= List_array[i].CarrierProgress) then
-					header_value = List_array[i].CarrierProgress
+				if(header_value ~= list[i].CarrierProgress) then
+					header_value = list[i].CarrierProgress
 					parentFlag=true
 				end
 			else
-				if(header_value:upper() ~= List_array[i].Last_Name:sub(1,1):upper()) then
-					header_value = List_array[i].Last_Name:sub(1,1)
+				if(header_value:upper() ~= list[i].Name:sub(1,1):upper()) then
+					header_value = list[i].Name:sub(1,1)
 					parentFlag=true
 				end
 			end
@@ -150,7 +166,7 @@ local function careePath_list( list )
 
 		local Image 
 
-		local tempHeight = 0
+		local tempHeight = -10
 
 		local background = display.newRect(tempGroup,0,0,W,50)
 
@@ -160,7 +176,7 @@ local function careePath_list( list )
 
 		background.anchorY = 0
 		background.x=W/2;background.y=tempHeight
-		background.id=List_array[i].Contact_Id
+		background.id=list[i].Contact_Id
 		background.alpha=0.01
 		background:addEventListener("touch",detailPageFun)
 
@@ -199,35 +215,48 @@ local function careePath_list( list )
 
 		
 
-		if List_array[i].Image_Path ~= nil then
+		if list[i].Image_Path ~= nil then
 
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2
 
-			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..List_array[i].Image_Path,
+			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
 				"GET",
 				function ( img_event )
 					if ( img_event.isError ) then
 						print ( "Network error - download failed" )
 					else
 						Image:removeSelf();Image=nil
+
+						print(img_event.response.filename)
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
 						Image.width=35;Image.height=35
 						Image.x=30;Image.y=background.y+background.contentHeight/2
     				--event.row:insert(img_event.target)
     			end
 
-    			end, "career"..List_array[i].Contact_Id..".png", system.TemporaryDirectory)
+    			end, "career"..list[i].Contact_Id..".png", system.TemporaryDirectory)
 		else
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2
 
 		end
 
-		local text = display.newText(tempGroup,List_array[i].Last_Name,0,0,native.systemFont,14)
-		text.x=60;text.y=background.y+background.height/2
-		text.anchorX=0
-		text:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+			
+
+
+
+		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,native.systemFont,14)
+		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
+		Name_txt.anchorX=0
+		Utils.CssforTextView(Name_txt,sp_labelName)
+		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+		local Position_txt = display.newText(tempGroup,list[i].CarrierProgress,0,0,native.systemFont,14)
+		Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
+		Position_txt.anchorX=0
+		Utils.CssforTextView(Position_txt,sp_fieldValue)
 
 		local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
 		right_img.anchorX=0
@@ -241,7 +270,7 @@ local function careePath_list( list )
 		role.anchorX=0
 		role:setFillColor(Utils.convertHexToRGB(color.Black))]]
 
-		tempGroup.Contact_Id = List_array[i].Contact_Id
+		tempGroup.Contact_Id = list[i].Contact_Id
 
 		careerList_scrollview:insert(tempGroup)
 
@@ -270,23 +299,23 @@ local function listPosition_change( event )
 									return a.CarrierProgress < b.CarrierProgress
 								end
 
-								table.sort(List_array, compare)
+								table.sort(byNameArray, compare)
 
-								careePath_list(List_array)
+								careePath_list(byNameArray)
 
 							else
 
+			
+			
 								function compare(a,b)
-									return a.Last_Name < b.Last_Name
+									return a.Name:upper( ) < b.Name:upper( )
 								end
 
-								table.sort(List_array, compare)
+								table.sort(byNameArray, compare)
 
-								careePath_list(List_array)
+								careePath_list(byNameArray)
 
 							end
-							
-					 --Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 				end
 
 			if event.target.id == "bg" then
@@ -315,42 +344,68 @@ function get_Activeteammember(response)
 	if response ~= nil and #response ~= 0 then
 
 
-		--[[	for i=1,#response do
-					local function titleCase( first, rest )
-					   return first:upper()..rest:lower()
-					end
+		
+							
+--NameArray
 
-					
+						for i=1,#List_array do
 
-					characterName = response[i]:gsub( "(%a)([%w_']*)", titleCase )
+							local list_Name = List_array[i].Last_Name
+
+							if ContactDisplay == 1 or ContactDisplay == nil then
+
+								if List_array[i].First_Name then
+
+									list_Name = List_array[i].Last_Name..","..List_array[i].First_Name
+
+								end
+
+							elseif ContactDisplay == 2 then
+
+								if List_array[i].First_Name then
+
+									list_Name = List_array[i].First_Name.." "..List_array[i].Last_Name
+
+								end
+
+							end
+
+							print(list_Name)
+
+							local temp = {}
+
+							temp.Name = list_Name
+							temp.CarrierProgress = List_array[i].CarrierProgress
+							temp.Image_Path = List_array[i].Image_Path
+							temp.Contact_Id = List_array[i].Contact_Id
+
+							byNameArray[#byNameArray+1] = temp
 
 
-					if ContactDisplay ==  1 or ContactDisplay == nil then
+						end
 
-						nameString = 
 
-					--NameArray
-
-			end]]
 							if viewValue == "position" then
 
 								function compare(a,b)
 									return a.CarrierProgress < b.CarrierProgress
 								end
 
-								table.sort(List_array, compare)
+								table.sort(byNameArray, compare)
 
-								careePath_list(List_array)
+								careePath_list(byNameArray)
 
 							else
 
+			
+			
 								function compare(a,b)
-									return a.Last_Name < b.Last_Name
+									return a.Name:upper( ) < b.Name:upper( )
 								end
 
-								table.sort(List_array, compare)
+								table.sort(byNameArray, compare)
 
-								careePath_list(List_array)
+								careePath_list(byNameArray)
 
 							end
 	else
@@ -405,7 +460,7 @@ function scene:create( event )
 	top = RecentTab_Topvalue,
 	left = 0,
 	width = W,
-	height =H-60,
+	height =H-RecentTab_Topvalue,
 	hideBackground = true,
 	isBounceEnabled=false,
 	horizontalScrollingDisabled = false,
@@ -425,12 +480,14 @@ listBg.strokeWidth = 1
 listBg:setStrokeColor( 0, 0, 0,0.3 )
 listBg.id="bg"
 list_Name = display.newText(changeMenuGroup,"By Name",0,0,native.systemFont,16)
-list_Name.x=listBg.x;list_Name.y=listBg.y-20
+list_Name.x=listBg.x-listBg.contentWidth/2+5;list_Name.y=listBg.y-20
+list_Name.anchorX=0
 list_Name:setFillColor(Utils.convertHexToRGB(color.Black))
 list_Name.id="name"
 
 list_Position = display.newText(changeMenuGroup,"By Position",0,0,native.systemFont,16)
-list_Position.x=listBg.x;list_Position.y=listBg.y+20
+list_Position.x=listBg.x-listBg.contentWidth/2+5;list_Position.y=listBg.y+20
+list_Position.anchorX=0
 list_Position:setFillColor(Utils.convertHexToRGB(color.Black))
 list_Position.id="position"
 changeMenuGroup.isVisible=false
@@ -460,7 +517,7 @@ function scene:show( event )
 			Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 			--tempArray = {}
 
-			if viewValue == "position" then
+			--[[if viewValue == "position" then
 
 				function compare(a,b)
 					return a.CarrierProgress < b.CarrierProgress
@@ -480,7 +537,7 @@ function scene:show( event )
 
 				careePath_list(List_array)
 
-			end
+			end]]
 
 			
 

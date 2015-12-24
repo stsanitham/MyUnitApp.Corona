@@ -9,11 +9,7 @@ settings =
 		supported = { "portrait", }
 	},
 
-	plugins =
-   {
-      ["plugin.openssl"] = { publisherId = "com.coronalabs", },
-   },
-	
+		
 	excludeFiles =
 	{
 		-- Include only the necessary icon files on each platform

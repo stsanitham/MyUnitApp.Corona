@@ -7,6 +7,7 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 
+local stringValue = require( "res.value.style" )
 local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 
@@ -138,7 +139,7 @@ function scene:show( event )
 		elseif phase == "did" then
 			print("flap")
 			panel.background = display.newRect( 0, 0, panel.width, panel.height )
-			panel.background:setFillColor( Utils.convertHexToRGB(color.flapmenu ) )
+			panel.background:setFillColor( Utils.convertHexToRGB(sp_Flatmenu_HeaderBg.Background_Color) )
 			panel:insert( panel.background )
 
 			panel.flapTopBg = display.newImageRect("res/assert/flapTopBg.jpg",panel.width,150)
@@ -146,7 +147,7 @@ function scene:show( event )
 			panel:insert( panel.flapTopBg )
 
 
-			profilePic = display.newImageRect("res/assert/career-user.png",62,62)
+			profilePic = display.newImageRect("res/assert/career-user.png",62,56)
 			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-40
 			profilePic.anchorY=0
 			profilePic.anchorX=0
@@ -156,12 +157,16 @@ function scene:show( event )
 			profileName.x=profilePic.x
 			profileName.anchorX=0
 			profileName.y=profilePic.y+profilePic.contentHeight+10
+			Utils.CssforTextView(profileName,sp_Flatmenu_labelName)
 			panel:insert( profileName )
 
+	
+			
 			profileEmail = display.newText("",0,0,250,0,native.systemFont,15)
 			profileEmail.x=profilePic.x
 			profileEmail.anchorX=0
 			profileEmail.anchorY=0
+			Utils.CssforTextView(profileEmail,sp_Flatmenu_fieldValue)
 			profileEmail.y=profileName.y+profileName.contentHeight-5
 			panel:insert( profileEmail )
 
@@ -186,7 +191,7 @@ function scene:show( event )
 			Event_text.anchorX = 0
 			Event_text.x=Event_icon.x+Event_icon.contentWidth+5
 			Event_text.y = Event_icon.y
-			
+			Utils.CssforTextView(Event_text,sp_Flatmenu_subHeader)
 			panel:insert( Event_text )]]
 
 			
@@ -213,7 +218,7 @@ function scene:show( event )
 			Event_text.anchorX = 0
 			Event_text.x=Event_icon.x+Event_icon.contentWidth+5
 			Event_text.y = Event_icon.y
-			
+			Utils.CssforTextView(Event_text,sp_Flatmenu_subHeader)
 			panel:insert( Event_text )
 
 			-----
@@ -241,7 +246,7 @@ function scene:show( event )
 			Career_text.anchorX = 0
 			Career_text.x=Career_icon.x+Career_icon.contentWidth+5
 			Career_text.y = Career_icon.y
-			
+			Utils.CssforTextView(Career_text,sp_Flatmenu_subHeader)
 			panel:insert( Career_text )
 
 			-----
@@ -267,6 +272,7 @@ function scene:show( event )
 
 			Goals_text = display.newText("Goals",0,0,"Open Sans Regular",16)
 			Goals_text.anchorX = 0
+			Utils.CssforTextView(Goals_text,sp_Flatmenu_subHeader)
 			Goals_text.x=Goals_icon.x+Goals_icon.contentWidth+5
 			Goals_text.y = Goals_icon.y
 			
@@ -274,7 +280,7 @@ function scene:show( event )
 
 			-----
 
-			--[[--Resource
+		--[[	--Resource
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
@@ -284,6 +290,7 @@ function scene:show( event )
 			panel:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "Resource"
+
 			menuArray_display[#menuArray_display].id="resourcePage"
 
 
@@ -297,7 +304,7 @@ function scene:show( event )
 			Resource_text.anchorX = 0
 			Resource_text.x=Resource_icon.x+Resource_icon.contentWidth+5
 			Resource_text.y = Resource_icon.y
-			
+			Utils.CssforTextView(Resource_text,sp_Flatmenu_subHeader)
 			panel:insert( Resource_text )
 
 			-----
@@ -345,7 +352,7 @@ function scene:show( event )
 
 
 
-			--Facebook
+		--Facebook
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
@@ -458,8 +465,10 @@ function scene:show( event )
 
 					Logout_text = display.newText("Logout",0,0,"Open Sans Regular",16)
 					Logout_text.anchorX = 0
+					Utils.CssforTextView(Logout_text,sp_Flatmenu_subHeader)
 					Logout_text.x=Logout_icon.x+Logout_icon.contentWidth+5
 					Logout_text.y = Logout_icon.y
+
 
 					panel:insert( Logout_text )
 

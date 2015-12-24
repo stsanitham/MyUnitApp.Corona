@@ -27,6 +27,8 @@ local Details_Display = {}
 
 openPage="careerPathPage"
 
+local Career_Username
+
 local leftPadding = 10
 
 local myMap,map_close
@@ -52,6 +54,8 @@ makeTimeStamp_career = function ( dateString )
 
 	local month, day, year , hour, minute, seconds, tzoffset, offsethour, offsetmin =
 	dateString:match(pattern)
+
+	
 	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false} )
 
 	return timestamp;
@@ -68,6 +72,26 @@ local function bgTouch( event )
 	return true
 
 end
+
+local function emailTouch( event )
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+
+		local careerMail =
+			{
+			  to = event.target.value,
+			}
+ 
+		native.showPopup( "mail", careerMail )
+
+	end
+
+	return true
+
+end
+
 
 
 local function observableScroll( event )
@@ -98,9 +122,16 @@ local function observableScroll( event )
 
     	 			careerDetail_scrollview.y=TrasitionBar.y+TrasitionBar.contentHeight
 
-    	 			local temp = RecentTab_Topvalue - careerDetail_scrollview.y
+	   	 			if Career_Username.y >= tabBar.y+30 then
 
-    	 			print("Height : "..temp)
+    	 				Career_Username.y=Career_Username.y-8.8
+
+
+    	 				Career_Username.xScale = Career_Username.xScale - 0.018
+    	 				Career_Username.yScale = Career_Username.yScale - 0.018
+    	 				Career_Username.x=Career_Username.x+0.8
+
+    	 			end
 
   	 			
 
@@ -119,6 +150,15 @@ local function observableScroll( event )
     	 			--display.getCurrentStage():setFocus(nil)
 
     	 			--ProfileImage.yScale=ProfileImage.yScale+0.05
+    	 			if Career_Username.y <= ProfileImage.y+ProfileImage.contentHeight-Career_Username.contentHeight/2-25 then
+
+    	 				Career_Username.y=Career_Username.y+8.8
+
+    	 				Career_Username.xScale = Career_Username.xScale + 0.018
+    	 				Career_Username.yScale = Career_Username.yScale + 0.018
+    	 				Career_Username.x=Career_Username.x-0.8
+
+    	 			end
 
 
     	 			careerDetail_scrollview.y=TrasitionBar.y+TrasitionBar.contentHeight
@@ -129,9 +169,7 @@ local function observableScroll( event )
 
     	 			local temp = RecentTab_Topvalue - careerDetail_scrollview.y
 
-    	 			print("Height : "..temp)
-
-  	 			
+ 	 			
 
     	 		else
 
@@ -252,8 +290,6 @@ function scene:show( event )
 				contactId = event.params.contactId
 
 	
-
-			--contactId= "321239"
 			function get_avtiveTeammemberDetails( response)
 
 				Details = response
@@ -297,16 +333,17 @@ function scene:show( event )
 
 				if(Details.FirstName ~= nil ) then
 
-					Details_Display[#Details_Display+1] = display.newText(sceneGroup,Details.FirstName.." "..Details.LastName,0,0,native.systemFont,18)
+					Career_Username = display.newText(sceneGroup,Details.FirstName.." "..Details.LastName,0,0,native.systemFont,24)
 
 				else
-					Details_Display[#Details_Display+1] = display.newText(sceneGroup,Details.LastName,0,0,native.systemFont,18)
+					Career_Username = display.newText(sceneGroup,Details.LastName,0,0,native.systemFont,24)
 				end
-				Details_Display[#Details_Display].x=titleBar_icon.x+titleBar_icon.contentWidth+5
-				Details_Display[#Details_Display].y=titleBar.y+titleBar.contentHeight/2-Details_Display[#Details_Display].contentHeight/2
-				Details_Display[#Details_Display].anchorX=0;Details_Display[#Details_Display].anchorY=0
-				Details_Display[#Details_Display].name = "userName"
-				Details_Display[#Details_Display]:addEventListener("touch",closeDetails)
+				Career_Username.x=leftPadding
+				Career_Username.y=ProfileImage.y+ProfileImage.contentHeight-Career_Username.contentHeight/2-20
+				Career_Username.anchorX=0;Career_Username.anchorY=0
+				Career_Username.name = "userName"
+				Career_Username.fontSize=24
+				Career_Username:addEventListener("touch",closeDetails)
 
 
 
@@ -332,6 +369,11 @@ function scene:show( event )
 				sceneGroup:insert(careerDetail_scrollview)
 
 
+				Details_Display[#Details_Display+1] = display.newText("",0,0,native.systemFont,18)
+				Details_Display[#Details_Display].x=leftPadding
+				Details_Display[#Details_Display].y = -10
+				Details_Display[#Details_Display]:setFillColor( 0 )
+				careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 
 				if(Details.DateOfBirth ~= nil) then
 
@@ -341,13 +383,14 @@ function scene:show( event )
 					birthday_icon.y=20
 					careerDetail_scrollview:insert( birthday_icon )
 
-					local timeGMT = makeTimeStamp_career(Details.DateOfBirth.."T00:00:00")
+					--local timeGMT = makeTimeStamp_career(Details.DateOfBirth.."T00:00:00")
 
-					Details_Display[#Details_Display+1] = display.newText(os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFont,18)
+					Details_Display[#Details_Display+1] = display.newText(Details.DateOfBirth,0,0,native.systemFont,18)
+--					Details_Display[#Details_Display+1] = display.newText(os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=birthday_icon.x+birthday_icon.contentWidth+5
 					Details_Display[#Details_Display].y = birthday_icon.y
-					Details_Display[#Details_Display]:setFillColor(0)
+					Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
 					Details_Display[#Details_Display].name = "birthDay"
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
@@ -360,13 +403,14 @@ function scene:show( event )
 					anniversari_icon.y=Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+15
 					careerDetail_scrollview:insert( anniversari_icon )
 
-					local timeGMT = makeTimeStamp_career(Details.AnniversariesDate.."T00:00:00")
+					--local timeGMT = makeTimeStamp_career(Details.AnniversariesDate.."T00:00:00")
 
-					Details_Display[#Details_Display+1] = display.newText(os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFont,18)
+					--Details_Display[#Details_Display+1] = display.newText(os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFont,18)
+					Details_Display[#Details_Display+1] = display.newText(Details.AnniversariesDate,0,0,native.systemFont,18)
+					Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=anniversari_icon.x+anniversari_icon.contentWidth+5
 					Details_Display[#Details_Display].y = anniversari_icon.y
-					Details_Display[#Details_Display]:setFillColor(0)
 					Details_Display[#Details_Display].name = "Anniversarie"
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
@@ -379,9 +423,9 @@ function scene:show( event )
 
 					local RecruitedDate = display.newText("When Recruited",0,0,150,0,native.systemFont,16)
 					RecruitedDate.anchorX = 0 ;RecruitedDate.anchorY=0
-					RecruitedDate:setFillColor(0)
 					RecruitedDate.x=leftPadding
 					RecruitedDate.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					Utils.CssforTextView(RecruitedDate,sp_labelName)
 					careerDetail_scrollview:insert( RecruitedDate )
 
 
@@ -391,10 +435,9 @@ function scene:show( event )
 					Details_Display[#Details_Display+1] = display.newText(os.date( "%B %d, %Y" , timeGMT ),0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
-					Details_Display[#Details_Display].size = 16
 					Details_Display[#Details_Display].y = RecruitedDate.y 
-					Details_Display[#Details_Display]:setFillColor(0)
 					Details_Display[#Details_Display].name = "RecruitedDate"
+					Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
@@ -402,18 +445,17 @@ function scene:show( event )
 
 					local ConsultantNumber = display.newText("Consultant No",0,0,150,0,native.systemFont,16)
 					ConsultantNumber.anchorX = 0 ;ConsultantNumber.anchorY=0
-					ConsultantNumber:setFillColor(0)
 					ConsultantNumber.x=leftPadding
 					ConsultantNumber.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					Utils.CssforTextView(ConsultantNumber,sp_labelName)
 					careerDetail_scrollview:insert( ConsultantNumber )
 
 					Details_Display[#Details_Display+1] = display.newText(Details.ConsultantNumber,0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = ConsultantNumber.y
-					Details_Display[#Details_Display]:setFillColor(0)
-					Details_Display[#Details_Display].size = 16
 					Details_Display[#Details_Display].name = "ConsultantNumber"
+					Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
@@ -422,7 +464,7 @@ function scene:show( event )
 					
 					local UnitNumber = display.newText("Unit No",0,0,150,0,native.systemFont,16)
 					UnitNumber.anchorX = 0 ;UnitNumber.anchorY=0
-					UnitNumber:setFillColor(0)
+					Utils.CssforTextView(UnitNumber,sp_labelName)
 					UnitNumber.x=leftPadding
 					UnitNumber.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
 					careerDetail_scrollview:insert( UnitNumber )
@@ -431,9 +473,8 @@ function scene:show( event )
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = UnitNumber.y
-					Details_Display[#Details_Display]:setFillColor(0)
-					Details_Display[#Details_Display].size = 16
 					Details_Display[#Details_Display].name = "UnitNumber"
+					Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
@@ -441,18 +482,17 @@ function scene:show( event )
 
 					local RecruiterNumber = display.newText("Recruiter No",0,0,150,0,native.systemFont,16)
 					RecruiterNumber.anchorX = 0 ;RecruiterNumber.anchorY=0
-					RecruiterNumber:setFillColor(0)
 					RecruiterNumber.x=leftPadding
 					RecruiterNumber.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					Utils.CssforTextView(RecruiterNumber,sp_labelName)
 					careerDetail_scrollview:insert( RecruiterNumber )
 
 
 					Details_Display[#Details_Display+1] = display.newText(Details.RecruiterNumber,0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
-					Details_Display[#Details_Display].y = RecruiterNumber.y 
-					Details_Display[#Details_Display]:setFillColor(0)
-					Details_Display[#Details_Display].size = 16
+					Details_Display[#Details_Display].y = RecruiterNumber.y
+					Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
 					Details_Display[#Details_Display].name = "RecruiterNumber"
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
@@ -461,18 +501,17 @@ function scene:show( event )
 
 					local RecruiterName = display.newText("Recruiter Name",0,0,150,0,native.systemFont,16)
 					RecruiterName.anchorX = 0 ;RecruiterName.anchorY=0
-					RecruiterName:setFillColor(0)
 					RecruiterName.x=leftPadding
 					RecruiterName.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					Utils.CssforTextView(RecruiterName,sp_labelName)
 					careerDetail_scrollview:insert( RecruiterName )
 
 					Details_Display[#Details_Display+1] = display.newText(Details.RecruiterName,0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = RecruiterName.y
-					Details_Display[#Details_Display]:setFillColor(0)
-					Details_Display[#Details_Display].size = 16
 					Details_Display[#Details_Display].name = "RecruiterName"
+					Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
@@ -480,9 +519,9 @@ function scene:show( event )
 
 					local CareerProgress = display.newText("Career Progress",0,0,150,0,native.systemFont,16)
 					CareerProgress.anchorX = 0 ;CareerProgress.anchorY=0
-					CareerProgress:setFillColor(0)
 					CareerProgress.x=leftPadding
 					CareerProgress.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					Utils.CssforTextView(CareerProgress,sp_labelName)
 					careerDetail_scrollview:insert( CareerProgress )
 
 
@@ -490,9 +529,8 @@ function scene:show( event )
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = CareerProgress.y 
-					Details_Display[#Details_Display]:setFillColor(0)
-					Details_Display[#Details_Display].size = 16
 					Details_Display[#Details_Display].name = "CareerProgress"
+					Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
@@ -502,12 +540,24 @@ function scene:show( event )
 				careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				
 
-				below_tab = display.newRect(sceneGroup,W/2,H-30,W,30)
-				below_tab.anchorY=0
+				local totalLenth_count = 0
 
-				below_mail = display.newImageRect(sceneGroup,"res/assert/mail.png",33/2,25/2)
-				below_mail.x=below_tab.x-90
-				below_mail.y=below_tab.y+below_tab.contentHeight/2
+				local MapDisplayArray = {}
+
+				maptap = display.newRect(sceneGroup,W/2,H-30,W,30)
+				maptap.anchorY=0
+				maptap:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
+
+				if Details.EmailAddress ~= nil then
+
+				MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/mail.png",33/2,25/2)
+				MapDisplayArray[#MapDisplayArray].x=W/4
+				MapDisplayArray[#MapDisplayArray].id="email"
+				MapDisplayArray[#MapDisplayArray].value = Details.EmailAddress
+				MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
+				MapDisplayArray[#MapDisplayArray]:addEventListener( "touch", emailTouch )
+
+				end
 
 				
 				if Details.HomePhoneNumber ~= nil then
@@ -521,32 +571,136 @@ function scene:show( event )
 				end
 
 				if phoneNum ~= "" then
-					below_call = display.newImageRect(sceneGroup,"res/assert/phone.png",32/2,32/2)
-					below_call.x=below_tab.x
-					below_call.y=below_tab.y+below_tab.contentHeight/2
-					below_call.id=phoneNum
-					below_call:addEventListener("touch",phoneCallFunction)
+					MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/phone.png",32/2,32/2)
+
+					if MapDisplayArray[#MapDisplayArray-1] ~= nil then
+						MapDisplayArray[#MapDisplayArray].x=W/2
+					else
+						MapDisplayArray[#MapDisplayArray].x=W/4
+					end
+					MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
+					MapDisplayArray[#MapDisplayArray].id=phoneNum
+					MapDisplayArray[#MapDisplayArray]:addEventListener("touch",phoneCallFunction)
 				end	
 
 				if Details.ContactsAddress ~= nil then
 
-					below_map = display.newImageRect(sceneGroup,"res/assert/map.png",20/2,32/2)
-					below_map.x=below_tab.x+90
-					below_map.y=below_tab.y+below_tab.contentHeight/2
-					below_map.id = "map"
-					below_map:addEventListener("touch",MapShowing)
+					MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/map.png",20/2,32/2)
 
+					if MapDisplayArray[#MapDisplayArray-1] ~= nil then
 
+						MapDisplayArray[#MapDisplayArray].x=W/2+(W/2)/2
 
-					if environment == "simulator" then
-						myMap = display.newRect(mapGroup,20, 20, 280, 300)
-						myMap.x = display.contentCenterX
-						myMap.y = display.contentCenterY+50
 					else
 
-						myMap = native.newMapView( display.contentCenterX, display.contentCenterY+50, 280, 300 )
+						MapDisplayArray[#MapDisplayArray].x=W/2
+
+					end
+
+
+					
+
+					MapDisplayArray[#MapDisplayArray].x=maptap.x+90
+					MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
+					MapDisplayArray[#MapDisplayArray].id = "map"
+					MapDisplayArray[#MapDisplayArray]:addEventListener("touch",MapShowing)
+
+
+
+						myMap_rect = display.newRect(mapGroup,20, 20, 280, 360)
+						myMap_rect.x = display.contentCenterX
+						myMap_rect.y = display.contentCenterY-myMap_rect.contentHeight/2
+						myMap_rect.strokeWidth = 1
+						myMap_rect:setStrokeColor( 0.5 )
+						myMap_rect.anchorY=0
+
+							map_title = display.newText(mapGroup,CareerPath.Location,0,0,native.systemFont,16)
+				map_title.x=myMap_rect.x-myMap_rect.contentWidth/2+10
+				map_title.y=myMap_rect.y+15
+				map_title.anchorX=0
+				Utils.CssforTextView(map_title,sp_labelName)
+
+				local location =""
+
+				if Details.ContactsAddress.Address1 ~= nil then
+
+					if location:len() > 0  then
+
+						location = location..","
+
+					end
+
+					location = location..Details.ContactsAddress.Address1
+
+				end
+				if Details.ContactsAddress.Address2 ~= nil then
+
+					if location:len() > 0  then
+
+						location = location..","
+
+					end
+
+					location = location..Details.ContactsAddress.Address2
+					
+				end
+				if Details.ContactsAddress.City ~= nil then
+					if location:len() > 0  then
+
+						location = location..","
+
+					end
+					location = location..Details.ContactsAddress.City
+					
+				end
+				if Details.ContactsAddress.State ~= nil then
+					if location:len() > 0  then
+
+						location = location..","
+
+					end
+					location = location..Details.ContactsAddress.State
+					
+				end
+				if Details.ContactsAddress.Country ~= nil then
+					if location:len() > 0  then
+
+						location = location..","
+
+					end
+					location = location..Details.ContactsAddress.Country
+					
+				end
+				if Details.ContactsAddress.Zip ~= nil then
+					if location:len() > 0  then
+
+						location = location..","
+
+					end
+					location = location..Details.ContactsAddress.Zip	
+					
+				end
+
+				map_location= display.newText(mapGroup,location,0,0,220,0,native.systemFont,14)
+				map_location.x=myMap_rect.x-myMap_rect.contentWidth/2+10
+				map_location.y=myMap_rect.y+25
+				map_location.anchorY=0
+				map_location.anchorX=0
+				Utils.CssforTextView(map_location,sp_fieldValue)
+
+
+				map_close = display.newImageRect(mapGroup,"res/assert/cancel.png",20,20)
+				map_close.x=myMap_rect.x+myMap_rect.contentWidth/2-15
+				map_close.y=myMap_rect.y+15
+				map_close.id="close"
+				map_close:addEventListener("touch",MapShowing)
+			
+
+						myMap = native.newMapView( display.contentCenterX, display.contentCenterY+50, 280, 270 )
 						mapGroup:insert(myMap)
 						myMap.isVisible=false
+						myMap.anchorY=0
+						myMap.y=map_location.y+map_location.contentHeight+15
 
 						local function locationHandler( event )
 
@@ -567,20 +721,21 @@ function scene:show( event )
 
 					end
 
-					myMap:requestLocation( "1900 Embarcadero Road, Palo Alto, CA", locationHandler )
-				end
+					myMap:requestLocation( location, locationHandler )
+		
+				print(#MapDisplayArray)
 
-				map_close = display.newImageRect(mapGroup,"res/assert/psw.png",30,30)
-				map_close.x=myMap.x+myMap.contentWidth/2+10
-				map_close.y=myMap.y-myMap.contentHeight/2-10
-				map_close.id="close"
-				map_close:addEventListener("touch",MapShowing)
+			
+			end
+
+	if #MapDisplayArray == 1 then
+
+						MapDisplayArray[#MapDisplayArray].x=W/2
+
+				end
 
 				sceneGroup:insert(mapGroup)
 				mapGroup.isVisible=false
-			end
-
-
 			Background:addEventListener("touch",bgTouch)
 			menuBtn:addEventListener("touch",menuTouch)
 			BgText:addEventListener("touch",menuTouch)

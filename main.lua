@@ -56,13 +56,13 @@ local options = {
     sheetContentWidth = 64,
     sheetContentHeight = 64
 }
-local spinnerSingleSheet = graphics.newImageSheet( "res/assert/circular-preloaders.png", options )
+local spinnerSingleSheet = graphics.newImageSheet( "res/assert/processer.png", options )
 
 
 spinner = widget.newSpinner
 {
-    width = 50 ,
-    height = 50,
+    width = 106/4 ,
+    height = 111/4,
     deltaAngle = 10,
     sheet = spinnerSingleSheet,
     startFrame = 1,
@@ -89,7 +89,7 @@ end
 local tablesetup = [[DROP TABLE logindetails;]]
 db:exec( tablesetup )
 
-local tablesetup = [[CREATE TABLE IF NOT EXISTS logindetails (id INTEGER PRIMARY KEY autoincrement, UnitNumberOrDirector, EmailAddess, PhoneNumber, Status, UserId, GoogleUsername, GoogleToken, GoogleTokenSecret, GoogleUserId, FacebookUsername, FacebookAccessToken, TwitterUsername, TwitterToken, TwitterTokenSecret, ProfileImageUrl, AccessToken, ContactId);]]
+local tablesetup = [[CREATE TABLE IF NOT EXISTS logindetails (id INTEGER PRIMARY KEY autoincrement, UnitNumberOrDirector, EmailAddess, PhoneNumber, Status, UserId, GoogleUsername, GoogleToken, GoogleTokenSecret, GoogleUserId, FacebookUsername, FacebookAccessToken, TwitterUsername, TwitterToken, TwitterTokenSecret, ProfileImageUrl, AccessToken, ContactId, ContactDisplay, LanguageId, CountryId);]]
 db:exec( tablesetup )
 
 local function panelTransDone( target )

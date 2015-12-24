@@ -190,7 +190,7 @@ sp_amount_fieldValue.Text_Color=
 sp_amount_fieldValue.Text_Alignment=
 sp_amount_fieldValue.Hint_Color=
 sp_amount_fieldValue.Border_Color=
-sp_amount_fieldValue.Background_Color=
+sp_amount_fieldValue.Background_Color=]]
 
 
 --------------Button Style---------------------
@@ -198,18 +198,18 @@ sp_amount_fieldValue.Background_Color=
 ----sp_primarybutton--------
 
 sp_primarybutton = {}
-sp_primarybutton.Font_Family=
-sp_primarybutton.Font_Weight=
-sp_primarybutton.Font_Size_android=
-sp_primarybutton.Font_Size_ios=
-sp_primarybutton.Text_Color=
-sp_primarybutton.Text_Alignment=
-sp_primarybutton.Hint_Color=
-sp_primarybutton.Border_Color=
-sp_primarybutton.Background_Color=
+sp_primarybutton.Font_Family="OpenSans"
+sp_primarybutton.Font_Weight=native.systemFont
+sp_primarybutton.Font_Size_android=16
+sp_primarybutton.Font_Size_ios=16
+sp_primarybutton.Text_Color="#FFFFFF"
+sp_primarybutton.Text_Alignment="Center"
+sp_primarybutton.Hint_Color=nil
+sp_primarybutton.Border_Color=nil
+sp_primarybutton.Background_Color="#c2185b"
 
 
-----sp_secondarybutton--------
+--[[----sp_secondarybutton--------
 
 sp_secondarybutton = {}
 sp_secondarybutton.Font_Family=
@@ -456,7 +456,7 @@ sp_Date_Time.Font_Family="Open Sans"
 sp_Date_Time.Font_Weight=native.systemFont
 sp_Date_Time.Font_Size_android=10
 sp_Date_Time.Font_Size_ios=10
-sp_Date_Time.Text_Color="#c2185b"
+sp_Date_Time.Text_Color="#333333"
 sp_Date_Time.Text_Alignment="right"
 sp_Date_Time.Hint_Color=nil
 sp_Date_Time.Border_Color=nil
@@ -483,6 +483,96 @@ EditBoxStyle.textSize = 15
 EditBoxStyle.textColor = color.Black
 EditBoxStyle.textColorHint = color.Black
 EditBoxStyle.background = "res/assert/arrow-line.png"
+
+-------------------sp_Calender_btn-------------
+
+sp_Calender_btn = {}
+sp_Calender_btn.Font_Family="Open Sans"
+sp_Calender_btn.Font_Weight=native.systemFontBold
+sp_Calender_btn.Font_Size_android=14
+sp_Calender_btn.Font_Size_ios=14
+sp_Calender_btn.Text_Color="#FFFFFF"
+sp_Calender_btn.Text_Alignment="Left"
+sp_Calender_btn.Hint_Color=nil
+sp_Calender_btn.Border_Color=nil
+sp_Calender_btn.Background_Color="#536DFE"
+
+----------sp_CommonTitle-------------------
+
+sp_CommonTitle = {}
+sp_CommonTitle.Font_Family="Open Sans"
+sp_CommonTitle.Font_Weight=native.systemFont
+sp_CommonTitle.Font_Size_android=14
+sp_CommonTitle.Font_Size_ios=14
+sp_CommonTitle.Text_Color="#c2185b"
+sp_CommonTitle.Text_Alignment="Left"
+sp_CommonTitle.Hint_Color=nil
+sp_CommonTitle.Border_Color=nil
+sp_CommonTitle.Background_Color=nil
+
+----------sp_Flatmenu_Header-------------------
+
+sp_Flatmenu_Header = {}
+sp_Flatmenu_Header.Font_Family="Open Sans"
+sp_Flatmenu_Header.Font_Weight=native.systemFont
+sp_Flatmenu_Header.Font_Size_android=16
+sp_Flatmenu_Header.Font_Size_ios=16
+sp_Flatmenu_Header.Text_Color="#9da2aa"
+sp_Flatmenu_Header.Text_Alignment="Left"
+sp_Flatmenu_Header.Hint_Color=nil
+sp_Flatmenu_Header.Border_Color=nil
+sp_Flatmenu_Header.Background_Color=nil
+
+
+
+----------sp_Flatmenu_subHeader-------------------
+
+sp_Flatmenu_subHeader = {}
+sp_Flatmenu_subHeader.Font_Family="Open Sans"
+sp_Flatmenu_subHeader.Font_Weight=native.systemFont
+sp_Flatmenu_subHeader.Font_Size_android=18
+sp_Flatmenu_subHeader.Font_Size_ios=18
+sp_Flatmenu_subHeader.Text_Color="#FFFFFF"
+sp_Flatmenu_subHeader.Text_Alignment="Left"
+sp_Flatmenu_subHeader.Hint_Color="#727272"
+sp_Flatmenu_subHeader.Border_Color=nil
+sp_Flatmenu_subHeader.Background_Color="#252931"
+
+
+----------sp_Flatmenu_labelName-------------------
+
+sp_Flatmenu_labelName = {}
+sp_Flatmenu_labelName.Font_Family="Open Sans"
+sp_Flatmenu_labelName.Font_Weight=native.systemFontBold
+sp_Flatmenu_labelName.Font_Size_android=14
+sp_Flatmenu_labelName.Font_Size_ios=14
+sp_Flatmenu_labelName.Text_Color="#FFFFFF"
+sp_Flatmenu_labelName.Text_Alignment="Left"
+sp_Flatmenu_labelName.Hint_Color=nil
+sp_Flatmenu_labelName.Border_Color=nil
+sp_Flatmenu_labelName.Background_Color=nil
+
+
+
+----------sp_Flatmenu_fieldValue-------------------
+
+sp_Flatmenu_fieldValue = {}
+sp_Flatmenu_fieldValue.Font_Family="Open Sans"
+sp_Flatmenu_fieldValue.Font_Weight=native.systemFont
+sp_Flatmenu_fieldValue.Font_Size_android=14
+sp_Flatmenu_fieldValue.Font_Size_ios=14
+sp_Flatmenu_fieldValue.Text_Color="#FFFFFF"
+sp_Flatmenu_fieldValue.Text_Alignment="Left"
+sp_Flatmenu_fieldValue.Hint_Color=nil
+sp_Flatmenu_fieldValue.Border_Color=nil
+sp_Flatmenu_fieldValue.Background_Color=nil
+
+
+----------sp_Flatmenu_HeaderBg-------------------
+
+sp_Flatmenu_HeaderBg = {}
+
+sp_Flatmenu_HeaderBg.Background_Color="#252931"
 
 
 ------------------------SnackBar--------------------------------

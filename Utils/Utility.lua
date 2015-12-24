@@ -80,7 +80,19 @@ Utils.CssforTextView = function ( Object,Style )
 if Style.Font_Family then Object.font = Style.Font_Family end
 if Style.Font_Size_ios then Object.fontSize = Style.Font_Size_ios end
 if Style.Text_Color then Object:setFillColor( Utils.convertHexToRGB( Style.Text_Color ))  end
-if Style.Text_Alignment then Object.align = Style.Text_Alignment   end
+
+--if Style.Font_Weight then Object:setFillColor( Utils.convertHexToRGB( Style.Text_Color ))  end
+
+--if Style.Text_Alignment then Object.align = Style.Text_Alignment   end
+
+
+end
+
+Utils.CssforTextField= function ( Object,Style )
+
+if Style.Font_Family then Object.font = Style.Font_Family end
+if Style.Font_Size_ios then Object.fontSize = Style.Font_Size_ios end
+--if Style.Text_Alignment then Object.align = Style.Text_Alignment   end
 
 
 end

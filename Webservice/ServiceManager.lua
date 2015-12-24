@@ -1,7 +1,5 @@
 
-local M = require( "Webservice.xmlParser" )
 local request = require('Webservice.xmlParse')
-
 local Applicationconfig = require("Utils.ApplicationConfig")
 local Utility = require("Utils.Utility")
 Webservice = {}
@@ -439,6 +437,7 @@ end
 
 
 headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
 local resbody = "userid="..string.urlEncode(UserId)
 
 
@@ -498,10 +497,7 @@ resbody = resbody.."IsPublic="..IsPublic
 
 	params={headers = headers,body=resbody}
 
-	print(json.encode(params))
-
-
-	print("Cal eve :"..ApplicationConfig.GetTicklerEvents)
+	print("Request :"..json.encode(params))
 
 	request.new(ApplicationConfig.GetTicklerEvents,method,params,postExecution)
 

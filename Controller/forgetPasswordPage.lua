@@ -236,7 +236,12 @@ local function onRowTouch_unitnumber( event )
 
 								local alert = native.showAlert( ForgotPassword.PageTitle,ForgotPassword.SuccessMsg, { CommonWords.ok } )
 
-								composer.gotoScene( "Controller.singInPage", "slideRight",500 )
+								local options = {
+										    effect = "slideRight",
+										    time = 600,
+										    params = { responseValue=list_response_total}
+										}
+								composer.gotoScene( "Controller.singInPage", options )
 
 
 								elseif Request_response == "NOUNITNUMBER" then
@@ -455,7 +460,7 @@ function scene:create( event )
 		UnitnumberField.value=""
 		UnitnumberField.hasBackground=false
 		sceneGroup:insert(UnitnumberField)
-		UnitnumberField.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+45;UnitnumberField.y=UnitNumber_bg.y
+		UnitnumberField.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+40;UnitnumberField.y=UnitNumber_bg.y
 
 	end
 	
@@ -472,7 +477,7 @@ function scene:create( event )
 	UserName.value=""
 	UserName.placeholder=LoginPage.UserName_placeholder
 	sceneGroup:insert(UserName)
-	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+45;UserName.y=UserName_bg.y
+	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+40;UserName.y=UserName_bg.y
 
 	
 
