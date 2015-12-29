@@ -28,6 +28,10 @@ UnitnumberList = {}
 
 MainGroup = display.newGroup();
 
+
+
+
+
 local W,H = display.contentWidth, display.contentHeight;
 NavigationSpeed = 400;
 menuShowFlag = false;

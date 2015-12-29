@@ -921,6 +921,7 @@ function scene:show( event )
 
 		openPage="eventCalenderPage"
 
+
 		elseif phase == "did" then
 
 			composer.removeHidden()
