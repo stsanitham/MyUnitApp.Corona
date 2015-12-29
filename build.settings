@@ -9,6 +9,14 @@ settings =
 		supported = { "portrait", }
 	},
 
+	 plugins =
+    {
+        ["CoronaProvider.native.popup.social"] =
+        {
+            publisherId = "com.coronalabs"
+        },
+    },
+
 		
 	excludeFiles =
 	{

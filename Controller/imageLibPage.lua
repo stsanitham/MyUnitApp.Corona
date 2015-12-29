@@ -9,7 +9,6 @@ local scene = composer.newScene()
 
 local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
-require( "Parser.GET_ALL_MYUNITAPP_IMAGE" )
 local widget = require( "widget" )
 
 
@@ -30,80 +29,124 @@ openPage="imageLibPage"
 
 
 -----------------Function-------------------------
-local function listTouchAction( event)
+
+
+
+local function downloadAction(filename)
+
+			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+						
+					local path = system.pathForFile("/storage/sdcard1/"..filename)                         -- Change this path to the path of an image on your computer
+					------------------------------------------------------------------------
+					--------------------------- Read ----------------------------
+						local file, reason = io.open( localpath, "r" )                               -- Open the image in read mode
+						local contents
+						if file then
+						    contents = file:read( "*a" )                                        -- Read contents
+						    io.close( file )                                                    -- Close the file (Important!)
+						else
+						    print("Invalid path")
+						    return
+						end
+
+					--------------------------- Write ----------------------------
 	
-	local function share()
-		local isAvailable = native.canShowPopup( "social", "facebook" )
-
-    -- If it is possible to show the popup
-    if isAvailable then
-    	local listener = {}
-    	function listener:popup( event )
-    	end
-
-        -- Show the popup
-        native.showPopup( "social",
-        {
-            service = "facebook", -- The service key is ignored on Android.
-            message = "Images share test",
-            listener = listener,
-            image = 
-            {
-            { filename = "imageLib.png", baseDir = system.TemporaryDirectory },
-            },
-            
-            })
-    else
-    	if environment == "simulator" then
-    		native.showAlert( "Build for device", "This plugin is not supported on the Corona Simulator, please build for an iOS/Android device or the Xcode simulator", { "OK" } )
-    	else
-            -- Popup isn't available.. Show error message
-            native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
-        end
-    end
+						local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+		
+							if file then
+							    file:write(contents)                                                -- Writes the contents to a file
+							    io.close(file)                                                      -- Close the file (Important!)
+							else
+								path = system.pathForFile("/storage/sdcard0/"..filename)
+								local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+								if file then
+								    file:write(contents)                                                -- Writes the contents to a file
+								    io.close(file)                                                      -- Close the file (Important!)
+								else
+								   path = system.pathForFile("/storage/sdcard/"..filename)
+									local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+									if file then
+										file:write(contents)                                                -- Writes the contents to a file
+										io.close(file)                                                      -- Close the file (Important!)
+									else
+									    print("Error")
+									    return
+									 end
+								 end
+							end
 
 end
 
-local function networkListener( downloan_event )
-	if ( downloan_event.isError ) then
-		elseif ( downloan_event.phase == "began" ) then
-			elseif ( downloan_event.phase == "ended" ) then
-			spinner_hide()
-			if event.id == "share" then
-				print("share")
-				share()
-				elseif event.id =="download" then
-					print("download")
-					local sdImg = display.newImage( "imageLib.png",system.TemporaryDirectory )
-					sdImg.alpha = 0.01
-					sdImg.x=W/2;sdImg.y=H/2
+	local function share(fileName)
+		local isAvailable = native.canShowPopup( "social", "share" )
 
-					local function captureWithDelay()
-						local capture = display.capture( sdImg )
-						sdImg:removeSelf();sdImg=nil
-						--capture:removeSelf();capture=nil
+		    -- If it is possible to show the popup
+		    if isAvailable then
+		    	local listener = {}
+		    	function listener:popup( event )
+		    	end
+
+		        -- Show the popup
+		        native.showPopup( "social",
+		        {
+		            service = "share", -- The service key is ignored on Android.
+		            message = "Images share test",
+		            listener = listener,
+		            image = 
+		            {
+		            { filename = fileName, baseDir = system.TemporaryDirectory },
+		            },
+		            
+		            })
+		    else
+		 
+		            native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
+		       
+		    end
+
+end
+
+local function listTouchAction( event)
+	
+	print( event.value )
+
+
+local tempreverse = string.find(string.reverse( event.value ),"%.")
+fileExt = event.value:sub( event.value:len()-tempreverse+2,event.value:len())
+
+print( "file ext : "..fileExt )
+
+			local function networkListener( downloan_event )
+			if ( downloan_event.isError ) then
+				elseif ( downloan_event.phase == "began" ) then
+					elseif ( downloan_event.phase == "ended" ) then
+					spinner_hide()
+
+					print( "file name : "..downloan_event.response.filename )
+					if event.id == "share" then
+						share(downloan_event.response.filename)
+						elseif event.id =="download" then
+							downloadAction(downloan_event.response.filename)
+
+
+						end
+
+
 					end
-
-					timer.performWithDelay( 100, captureWithDelay )
-
-
 				end
 
-
-			end
-		end
-
 		spinner_show()
-		print(event.value)
 
 local destDir = system.TemporaryDirectory  -- Location where the file is stored
-local result, reason = os.remove( system.pathForFile( "imageLib.png", destDir ) )
+local result, reason = os.remove( system.pathForFile( event.filename , destDir ) )
+
+print( event.value )
 
 network.download(
 	event.value,
 	"GET",
 	networkListener,
-	"imageLib.png",
+	event.filename.."."..fileExt,
 	system.TemporaryDirectory
 	)
 
@@ -156,28 +199,45 @@ local function onRowRender_ImageLib( event )
     shareImg_bg.id="share"
     shareImg_bg.alpha=0.01
     shareImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
+    shareImg_bg.filename = List_array[row.index].ImageFileName
 
     local shareImg = display.newImageRect(row,"res/assert/upload.png",15,15)
     shareImg.x=seprate_bg.x+25;shareImg.y=seprate_bg.y
     shareImg.id="share"
     shareImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
+    shareImg.filename = List_array[row.index].ImageFileName
 
+    if isAndroid then
 
     local downImg_bg = display.newRect(row,0,0,25,25)
     downImg_bg.x=shareImg.x+30;downImg_bg.y=seprate_bg.y
     downImg_bg.id="download"
     downImg_bg.alpha=0.01
     downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
+    downImg_bg.filename = List_array[row.index].ImageFileName
 
     local downImg = display.newImageRect(row,"res/assert/download.png",15,15)
     downImg.x=shareImg.x+30;downImg.y=seprate_bg.y
     downImg.id="download"
     downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
+    downImg.filename = List_array[row.index].ImageFileName
+    downImg:addEventListener("touch",listTouch)
+    downImg_bg:addEventListener("touch",listTouch)
+
+	else
+
+		seprate_bg.width = seprate_bg.contentWidth/2
+		seprate_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
+		shareImg_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
+		shareImg.x=seprate_bg.x+seprate_bg.contentWidth/2
+
+	end
+
 
     shareImg:addEventListener("touch",listTouch)
-    downImg:addEventListener("touch",listTouch)
+   
     shareImg_bg:addEventListener("touch",listTouch)
-    downImg_bg:addEventListener("touch",listTouch)
+   
 
     row.ImageId = List_array[row.index].ImageId
     row.FilePath = List_array[row.index].FilePath

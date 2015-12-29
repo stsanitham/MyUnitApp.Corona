@@ -83,7 +83,7 @@ local function MenuTouchAction(event)
 			end
 
 		-- Show alert with two buttons
-		local alert = native.showAlert( "Log out", "Are you sure you want to log out?", { "OK", "Cancel" }, onComplete )	
+		local alert = native.showAlert( "Log out", "Are you sure you want to log out?", { "LOG OUT", "CANCEL" }, onComplete )	
 			return
 		end
 
@@ -280,7 +280,7 @@ function scene:show( event )
 
 			-----
 
-		--[[	--Resource
+			--Resource
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
@@ -335,7 +335,7 @@ function scene:show( event )
 			
 			panel:insert( img_lib_text )
 
-			-----
+		--[[	-----
 
 			rect = display.newRect(0,0,panel.width,1)
 			rect.x = menuArray_display[#menuArray_display].x;
@@ -463,7 +463,7 @@ function scene:show( event )
 					Logout_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 					panel:insert( Logout_icon )
 
-					Logout_text = display.newText("Logout",0,0,"Open Sans Regular",16)
+					Logout_text = display.newText("Log Out",0,0,"Open Sans Regular",16)
 					Logout_text.anchorX = 0
 					Utils.CssforTextView(Logout_text,sp_Flatmenu_subHeader)
 					Logout_text.x=Logout_icon.x+Logout_icon.contentWidth+5

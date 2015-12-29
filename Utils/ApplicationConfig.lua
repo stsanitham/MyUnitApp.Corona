@@ -65,6 +65,8 @@ ApplicationConfig.GetSearchByUnitNumberOrDirectorName = ApplicationConfig.BASE_U
 
 ApplicationConfig.ForgotPassword = ApplicationConfig.BASE_URL.."/MyUnitBuzz/ForgotPassword"
 
+ApplicationConfig.GetUpComingEvents = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/GetUpComingEvents"
+
 
 
 

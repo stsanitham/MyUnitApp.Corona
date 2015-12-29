@@ -622,7 +622,7 @@ function scene:show( event )
 
 				local location =""
 
-				if Details.ContactsAddress.Address1 ~= nil then
+				if Details.ContactsAddress.Address1 ~= nil and Details.ContactsAddress.Address1 ~= "" then
 
 					if location:len() > 0  then
 
@@ -633,7 +633,7 @@ function scene:show( event )
 					location = location..Details.ContactsAddress.Address1
 
 				end
-				if Details.ContactsAddress.Address2 ~= nil then
+				if Details.ContactsAddress.Address2 ~= nil and Details.ContactsAddress.Address2 ~= "" then
 
 					if location:len() > 0  then
 
@@ -644,7 +644,7 @@ function scene:show( event )
 					location = location..Details.ContactsAddress.Address2
 					
 				end
-				if Details.ContactsAddress.City ~= nil then
+				if Details.ContactsAddress.City ~= nil and Details.ContactsAddress.City ~= "" then
 					if location:len() > 0  then
 
 						location = location..","
@@ -653,7 +653,7 @@ function scene:show( event )
 					location = location..Details.ContactsAddress.City
 					
 				end
-				if Details.ContactsAddress.State ~= nil then
+				if Details.ContactsAddress.State ~= nil and Details.ContactsAddress.State ~= "" then
 					if location:len() > 0  then
 
 						location = location..","
@@ -662,7 +662,7 @@ function scene:show( event )
 					location = location..Details.ContactsAddress.State
 					
 				end
-				if Details.ContactsAddress.Country ~= nil then
+				if Details.ContactsAddress.Country ~= nil and Details.ContactsAddress.Country ~= "" then
 					if location:len() > 0  then
 
 						location = location..","
@@ -671,7 +671,7 @@ function scene:show( event )
 					location = location..Details.ContactsAddress.Country
 					
 				end
-				if Details.ContactsAddress.Zip ~= nil then
+				if Details.ContactsAddress.Zip ~= nil and Details.ContactsAddress.Zip ~= "" then
 					if location:len() > 0  then
 
 						location = location..","

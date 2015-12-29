@@ -415,6 +415,7 @@ function scene:show( event )
 					display_details[#display_details].x=15
 					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
 					display_details[#display_details].anchorX=0
+					display_details[#display_details].anchorY=0
 										display_details[#display_details].anchorY=0
 
 
@@ -470,6 +471,7 @@ function scene:show( event )
 						display_details[#display_details].x=15
 						display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
 						display_details[#display_details].anchorX=0
+						display_details[#display_details].anchorY=0
 						scrollView:insert( display_details[#display_details] )
 
 
@@ -477,7 +479,7 @@ function scene:show( event )
 
 						display_details[#display_details+1] = display.newText(getPurpose(purpose_enum[Details.AppointmentPurpose+1]),0,0,150,0,native.systemFont,14)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-						display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y-8
+						display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y
 						display_details[#display_details].anchorX=0
 						display_details[#display_details].anchorY=0
 						display_details[#display_details].id="Purpose"
@@ -498,12 +500,13 @@ function scene:show( event )
 					display_details[#display_details].x=15
 					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
 					display_details[#display_details].anchorX=0
+					display_details[#display_details].anchorY=0
 					scrollView:insert( display_details[#display_details] )
 
 
 					display_details[#display_details+1] = display.newText(prority_enum[Details.Priority+1],0,0,180,0,native.systemFont,14)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-					display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y-8
+					display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y
 					display_details[#display_details].anchorX=0
 					display_details[#display_details].anchorY=0
 					display_details[#display_details].id="Priority"
@@ -520,12 +523,13 @@ function scene:show( event )
 						display_details[#display_details].x=15
 						display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
 						display_details[#display_details].anchorX=0
+						display_details[#display_details].anchorY=0
 						scrollView:insert( display_details[#display_details] )
 
 
 						display_details[#display_details+1] = display.newText(Details.AttachmentName,0,0,180,0,native.systemFont,14)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.blue))
-						display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y-8
+						display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y
 						display_details[#display_details].anchorX=0
 						display_details[#display_details].anchorY=0
 						display_details[#display_details].value = Details.MuUnitBuzzAttachmentPath
@@ -548,6 +552,7 @@ function scene:show( event )
 						display_details[#display_details].x=15
 						display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
 						display_details[#display_details].anchorX=0
+						
 						scrollView:insert( display_details[#display_details] )
 						display_details[#display_details].isVisible=false
 			end

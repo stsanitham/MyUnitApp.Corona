@@ -761,11 +761,11 @@ function scene:show( event )
 			list_response_total = event.params.responseValue
 		end
 
-		--[[Unitnumber_field.text = "12345"
+		Unitnumber_field.text = "12345"
 		Unitnumber_field.value="12345"
 		UserName.text = "malarkodi.sellamuthu@w3magix.com"
 		Password.text = "123123"
-		Password.value = "123123"]]
+		Password.value = "123123"
 
 
 		--[[function get_GetSearchByUnitNumberOrDirectorName(response)
@@ -781,11 +781,6 @@ function scene:show( event )
 
 
 		elseif phase == "did" then
-
-
-			--[[Unitnumber_field:addEventListener("touch",textListener)
-			UserName:addEventListener("touch",textListener)
-			Password:addEventListener("touch",textListener)]]
 
 			composer.removeHidden()
 
@@ -820,9 +815,14 @@ function scene:show( event )
 				elseif phase == "did" then
 
 					
+					Background:removeEventListener("touch",touchBg)
 
 					forgettBtn:removeEventListener("touch",touchAction)
 					requestBtn:removeEventListener("touch",touchAction)
+
+					signinBtn:removeEventListener("touch",signinBtnRelease)
+					signinBtn_text:removeEventListener("touch",signinBtnRelease)
+
 
 
 				end	

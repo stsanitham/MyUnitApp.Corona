@@ -17,7 +17,7 @@ local Processingdate
 local ProcessingCount_total = 0
 local ProcessingCount = 0 
 
-local weekViewShow = "false"
+local weekViewTouchFlag = false
 
 local weekViewGroup = display.newGroup( )
 
@@ -28,6 +28,9 @@ local weekCalendertimimgs = {}
 local parentPosition = {}
 
 local currentweek=0
+
+local weekView_bg,weekView_leftArrow,weekView_rightArrow,weekView_header
+
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -144,9 +147,12 @@ return true
 end
 
 function makeTimeStamp(dateString)
-	local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
-	local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin =
+
+
+	local pattern = "(%d+)%/(%d+)%/(%d+)"
+	local month,day,year,hour,minute,seconds, tzoffset =
 	dateString:match(pattern)
+
 	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false} )
 	return timestamp
 end
@@ -160,76 +166,10 @@ local function dateSplit(date)
 
 end
 
-local function dayTouch(event)
-	if event.phase == "ended" then
 
 
-
-		if parentPosition[event.target.id] ~= "null" then
-						scrollView:scrollToPosition
-				{
-				   -- x = scrollView.x,
-				    y = -parentPosition[event.target.id],
-				    time = 800,
-				    --onComplete = onScrollComplete
-				}
-
-						for i=1,week.numChildren do
-
-			Utils.CssforTextView(week[i][1],sp_labelName)
-	
-
-		end
-
-		event.target[1]:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-
-		end
-	end
-return true
-
-end
-
-local function creatWeek( weekfirstDay )
-	--todaydate =  os.date( "!%m/%d/%Y" , os.time( t ) )
-
-	for j=week.numChildren, 1, -1 do 
-    display.remove(week[week.numChildren])
-    week[week.numChildren] = nil
-end 
-
-
-weekViewGroup:insert( week )
-
-weekfirstDay.day = weekfirstDay.day - 1
-	
-	weekStartX = weekView_leftArrow.x
-
-
-	for i=1,7 do
-
-		local Week_Group = display.newGroup( )
-
-		weekfirstDay.day = weekfirstDay.day + 1
-		local day = display.newText(Week_Group,weekLbl[i],0,0,native.systemFont,12)
-		weekStartX = weekStartX +35
-		day.x = weekStartX;day.y=weekView_bg.y+weekView_bg.contentHeight/2-10
-		Utils.CssforTextView(day,sp_labelName)
-
-
-		local date = display.newText(Week_Group,os.date( "!%d" , os.time( weekfirstDay ) ),0,0,native.systemFont,12)
-		date.x = day.x;date.y=day.y+17
-		Utils.CssforTextView(date,sp_fieldValue)
-
-		Week_Group.id=i
-
-		Week_Group:addEventListener( "touch", dayTouch )
-		week:insert( Week_Group )
-	end
-
-end
 
 local function display_calenderList(response)
-
 
 event_groupArray[#event_groupArray+1] = display.newGroup()
 
@@ -332,18 +272,17 @@ scrollView:insert(tempGroup)
 
 end
 
+local function createEventlist(respone,timeValue)
 
 
+DateWise_response=response
 
-local function eventList( timeValue )
+		local function onTimer( event )
+			   weekViewTouchFlag=false
+		end
 
-	NoEvent.isVisible=false
-
-
-	function get_TicklerEvents(response)
-		DateWise_response=response
-
-		
+		weekswipeTimer = timer.performWithDelay( 600, onTimer )
+			
 		ProcessingCount =0 
 
 		for j=#event_groupArray, 1, -1 do 
@@ -368,23 +307,7 @@ local function eventList( timeValue )
 		else
 
 		end
-
-		if DateWise_response[1] then
-
-		date = dateSplit(DateWise_response[1].date)
-
-	end
-
-
-
-		if Processingdate ~= date then
-
-			parentPosition[#parentPosition+1] = "null"
-
-		end
-
-
-		--timeValue.day = timeValue.day+currentweek
+	
 
 		for i = 1, #DateWise_response do
 
@@ -392,22 +315,9 @@ local function eventList( timeValue )
 			date = dateSplit(DateWise_response[i].date)
 
 
-			processCount = 0
-
 			local function eventCalen_display_process()
 
-				--print("Compare : "..Processingdate..":"..date)
-
-				processCount = processCount+1
-
-				if processCount >= 3 then
-
-					parentPosition[#parentPosition+1] = "null"
-
-				end
-
-			
-
+				print(Processingdate,date)
 
 				if Processingdate == date then
 
@@ -419,8 +329,6 @@ local function eventList( timeValue )
 
 					
 
-					
-
 					ProcessingCount = ProcessingCount+1
 
 					if ProcessingCount_total >= ProcessingCount then
@@ -428,12 +336,8 @@ local function eventList( timeValue )
 
 						ParentShow = true
 
-						print("before"..timeValue.day)
 
 						timeValue.day=timeValue.day+1
-
-						print("after"..timeValue.day)
-
 
 						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( timeValue )))
 
@@ -443,6 +347,7 @@ local function eventList( timeValue )
 
 					else
 						print("finish")
+						
 					end
 
 				end
@@ -452,12 +357,264 @@ local function eventList( timeValue )
 
 		end
 
-scrollView:scrollTo( "top",{ time=200 } )
+
+		scrollView:scrollTo( "top",{ time=200 } )
+
+
+end
+
+
+local function searchEventlist(respone,timeValue,searchText)
+
+
+DateWise_response=response
+
+					
+		ProcessingCount =0 
+
+		for j=#event_groupArray, 1, -1 do 
+			display.remove(event_groupArray[#event_groupArray])
+			event_groupArray[#event_groupArray] = nil
+		end
+
+		
+
+		if  DateWise_response == nil then
+
+			NoEvent.isVisible=true
+
+			return false
+		end
+		if #DateWise_response == 0 then
+
+			NoEvent.isVisible=true
+
+
+			return false
+		else
+
+		end
+	
+
+		for i = 1, #DateWise_response do
+
+			local parentHave = false
+
+			date = dateSplit(DateWise_response[i].date)
+
+			local timeGMT = Utils.makeTimeStamp( DateWise_response[i].date )
+
+			if string.find( os.date( "%B %d, %Y" , timeGMT ):upper( ), searchText:upper( )) ~= nil then
+
+				parentHave = true
+
+			end
+
+			local function eventCalen_display_process()
+
+				print(Processingdate,date)
+
+				if Processingdate == date then
+
+					processCount=0
+
+						
+						if parentHave == true then
+
+							display_calenderList(DateWise_response[i])
+
+						else
+
+							if parentHave then
+
+								display_calenderList(DateWise_response[i])
+
+							else
+
+								if string.find( DateWise_response[i].title:upper( ), searchText:upper( )) ~= nil then
+
+									display_calenderList(DateWise_response[i])
+																		
+								end
+
+							
+
+							end
+							
+
+						end
+
+
+				else
+
+					
+					ProcessingCount = ProcessingCount+1
+
+					if ProcessingCount_total >= ProcessingCount then
+
+
+						ParentShow = true
+
+
+						timeValue.day=timeValue.day+1
+
+						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( timeValue )))
+
+						--print(Processingdate,ProcessingCount,timeValue.day)
+
+						eventCalen_display_process()
+
+					else
+						print("finish")
+						
+					end
+
+				end
+			end
+
+			eventCalen_display_process()
+
+		end
+
+
+		scrollView:scrollTo( "top",{ time=200 } )
+
+
+end
+
+
+local function eventList( timeValue )
+
+	NoEvent.isVisible=false
+
+
+	function get_TicklerEvents(response)
+
+
+		createEventlist(response,timeValue)
+
+
 
 	end
 
 	Webservice.Get_TicklerEvents(CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic,get_TicklerEvents)
 
+end
+
+local function dayTouch(event)
+	if event.phase == "ended" then
+
+		
+
+		for i=1,week.numChildren do
+
+			Utils.CssforTextView(week[i][1],sp_labelName)
+		end
+
+
+		event.target[1]:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+
+		
+		startdate = event.target.startdate
+		enddate = event.target.enddate
+		Processingdate = event.target.Processingdate
+		ParentShow=true
+		weekViewTouchFlag = true
+		eventList(event.target.value)
+
+	
+	end
+return true
+
+end
+
+local function creatWeek( weekfirstDay,flagValue )
+	--todaydate =  os.date( "!%m/%d/%Y" , os.time( t ) )
+
+	for j=week.numChildren, 1, -1 do 
+    display.remove(week[week.numChildren])
+    week[week.numChildren] = nil
+end 
+
+
+weekViewGroup:insert( week )
+
+weekView_header.text = os.date( "%b %d, %Y" , os.time( weekfirstDay ) ).." - "
+
+weekfirstDay.day = weekfirstDay.day - 1
+	
+	weekStartX = weekView_leftArrow.x
+
+	
+
+	for i=1,7 do
+
+		local Week_Group = display.newGroup( )
+
+		weekfirstDay.day = weekfirstDay.day + 1
+		local day = display.newText(Week_Group,weekLbl[i],0,0,native.systemFont,12)
+		weekStartX = weekStartX +35
+		day.x = weekStartX;day.y=weekView_bg.y+weekView_bg.contentHeight/2
+		Utils.CssforTextView(day,sp_labelName)
+
+
+		local date = display.newText(Week_Group,os.date( "!%d" , os.time( weekfirstDay ) ),0,0,native.systemFont,12)
+		date.x = day.x;date.y=day.y+17
+		Utils.CssforTextView(date,sp_fieldValue)
+
+		Week_Group.id=i
+
+
+
+		Week_Group.startdate = os.date( "!%m/%d/%Y" , os.time( weekfirstDay )).." 12:00:00 AM"
+		Week_Group.enddate = os.date( "!%m/%d/%Y" , os.time( weekfirstDay )).." 11:59:59 PM"
+		Week_Group.Processingdate  = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekfirstDay )))
+		Week_Group.value =  weekfirstDay 
+
+		
+		if i == 7 then
+			weekView_header.text = weekView_header.text..os.date( "%b %d, %Y" , os.time( weekfirstDay ) )
+
+		end
+
+		Week_Group:addEventListener( "touch", dayTouch )
+
+	
+		week:insert( Week_Group )
+	end
+	weekfirstDay.day=weekfirstDay.day-7
+
+	if flagValue then
+		eventList(weekfirstDay)
+	end
+
+end
+local function searchListener( event )
+
+    if ( event.phase == "began" ) then
+        -- user begins editing defaultField
+        print( event.text )
+
+    elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+        -- do something with defaultField text
+        print( event.target.text )
+
+    elseif ( event.phase == "editing" ) then
+
+ 				local searchweektime = os.date( '*t' )
+
+				searchweektime.day = searchweektime.day - os.date( "%w" ) 
+
+				searchweektime.day = searchweektime.day+(7*currentweek)
+
+				Processingdate = os.date( "!%Y-%m-%d" , os.time( searchweektime ))
+
+				ParentShow = true
+
+    			searchEventlist(DateWise_response,searchweektime,event.text)
+
+    end
 end
 
 
@@ -487,14 +644,27 @@ local function todayAction( event )
 		display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
-		local t = os.date( '*t' )
 
-
-		startdate = os.date( "!%m/%d/%Y" , os.time( t )).." 12:00:00 AM"
-		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
-		Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
+		local temp = os.date( '*t' )
+		temp.day = temp.day - os.date( "%w" ) 
+		weekViewTouchFlag=true
+		Processingdate = os.date( "!%Y-%m-%d" , os.time( t ))
 		ParentShow=true
-		eventList(t)
+		currentweek = 0
+		creatWeek(temp,false)
+
+	local function get_GetUpComingEvents( response )
+
+		local Upcoming = os.date( '*t' )
+		Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( Upcoming )))
+		ParentShow=true
+		weekViewTouchFlag = true
+		print("Processingdate : "..Processingdate)
+		createEventlist(response,Upcoming)
+	end
+
+
+	Webservice.Get_GetUpComingEvents(get_GetUpComingEvents)
 
 	end
 
@@ -512,90 +682,91 @@ local function weekViewSwipe( event )
 		display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
+		print("currentweek .. "..currentweek)
+	
 
-		if event.target.id  == "leftSwipe" then
+		if weekViewTouchFlag == false then
 
-			if currentweek > 0 then
+			print("calling")
 
-			local weekViewSwipevalue_left = os.date( '*t' )
+					if event.target.id  == "leftSwipe" then
 
-			weekViewSwipevalue_left.day = weekViewSwipevalue_left.day - os.date( "%w" ) 
-
-			currentweek = currentweek -1 
-
-			weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-(7*currentweek)
-
-			--weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-7
-
-			startdate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 12:00:00 AM"
-
-			weekViewSwipevalue_left.day = weekViewSwipevalue_left.day+7
-
-			enddate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 11:59:59 PM"
-
-			weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-7
-
-			Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue_left )))
-
-			ParentShow=true
-
-
-
-
-			--print("date"..startdate,enddate,weekViewSwipevalue_left.day,Processingdate )
+						if currentweek >= 1 then
 
 		
+						weekViewTouchFlag = true
 
-			--weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-7
+						local weekViewSwipevalue_left = os.date( '*t' )
 
-			
+						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day - os.date( "%w" ) 
 
-			
-	creatWeek(weekViewSwipevalue_left)
+						currentweek = currentweek - 1 
 
-	eventList(weekViewSwipevalue_left)
-			
+						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day+(7*currentweek)
 
+						--weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-7
+
+						startdate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 12:00:00 AM"
+
+						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day+7
+
+						enddate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 11:59:59 PM"
+
+						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-7
+
+						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue_left )))
+
+						ParentShow=true
+
+				
+				
+						creatWeek(weekViewSwipevalue_left,true)
+
+						
+
+						end
+					
+
+					elseif event.target.id == "rightSwipe" then
+
+
+						
+						weekViewTouchFlag = true
+
+						local weekViewSwipevalue = os.date( '*t' )
+
+						weekViewSwipevalue.day = weekViewSwipevalue.day - os.date( "%w" ) 
+
+						currentweek = currentweek +1 
+
+						weekViewSwipevalue.day = weekViewSwipevalue.day+(7*currentweek)
+
+
+
+						startdate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue )).." 12:00:00 AM"
+
+						weekViewSwipevalue.day = weekViewSwipevalue.day+7
+
+						enddate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue )).." 11:59:59 PM"
+
+						weekViewSwipevalue.day = weekViewSwipevalue.day-7
+
+						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue )))
+
+						ParentShow=true
+
+						--eventList(weekViewSwipevalue)
+
+						print(startdate,enddate)
+
+						creatWeek(weekViewSwipevalue,true)
+
+						
+
+					end
 
 			end
 
-		elseif event.target.id == "rightSwipe" then
-
-			local weekViewSwipevalue = os.date( '*t' )
-
-			weekViewSwipevalue.day = weekViewSwipevalue.day - os.date( "%w" ) 
-
-			currentweek = currentweek +1 
-
-			weekViewSwipevalue.day = weekViewSwipevalue.day+(7*currentweek)
-
-
-
-			startdate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue )).." 12:00:00 AM"
-
-			weekViewSwipevalue.day = weekViewSwipevalue.day+7
-
-			enddate = os.date( "!%m/%d/%Y" , os.time( tempValue )).." 11:59:59 PM"
-
-			weekViewSwipevalue.day = weekViewSwipevalue.day-7
-
-			Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue )))
-
-			ParentShow=true
-
-			eventList(weekViewSwipevalue)
-
-			creatWeek(weekViewSwipevalue)
-
-		end
-
-		--[[local t = os.date( '*t' )
-
-		startdate = os.date( "!%m/%d/%Y" , os.time( t )).." 12:00:00 AM"
-		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
-		Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
-		ParentShow=true
-		eventList()]]
 
 	end
 
@@ -620,20 +791,33 @@ local function calenderAction( event )
 		local selectedYear = values[3].value
 
 
-		selectedMonth = table.indexOf( monthArray, values[1].value )
-		selectedDay = values[2].value 
-		selectedYear = values[3].value
+		selectedMonth = tostring(table.indexOf( monthArray, values[1].value ))
+		selectedDay = tostring(values[2].value)
+		selectedYear = tostring(values[3].value)
 
-		startdate =  selectedMonth.."/"..selectedDay.."/"..selectedYear.." 12:00:00 AM"
-		enddate = selectedMonth.."/"..selectedDay.."/"..selectedYear.." 11:59:59 PM"
-		print("start date : "..startdate )
-		Processingdate = selectedYear.."-"..selectedMonth.."-"..selectedDay
+		if selectedMonth:len() == 1 then
+			selectedMonth = "0"..selectedMonth
+		end
+		if selectedDay:len() == 1 then
+			selectedDay = "0"..selectedDay
+		end
 
-		--dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
-		ParentShow=true
+		if startdate ~= selectedMonth.."/"..selectedDay.."/"..selectedYear.." 12:00:00 AM" then
+				startdate =  selectedMonth.."/"..selectedDay.."/"..selectedYear.." 12:00:00 AM"
+				enddate = selectedMonth.."/"..selectedDay.."/"..selectedYear.." 11:59:59 PM"
+				print("start date : "..startdate )
+				Processingdate = selectedYear.."-"..selectedMonth.."-"..selectedDay
+				print("Processingdate : "..Processingdate )
+				--dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
+				ParentShow=true
 
-		local temp = os.date( '*t' )
-		eventList(temp)	
+				local temp = os.date( '*t' )
+
+
+
+				eventList(temp)	
+
+		end
 
 	end
 
@@ -679,18 +863,18 @@ function scene:create( event )
 	topBg.anchorY=0
 	topBg:setFillColor(Utils.convertHexToRGB(color.Bggray))
 
-	topToday_btnBg = display.newRect(sceneGroup,topBg.x-topBg.contentWidth/2+10,topBg.y+topBg.contentHeight/2,60,22)
+	topToday_btnBg = display.newRect(sceneGroup,topBg.x-topBg.contentWidth/2+10,topBg.y+topBg.contentHeight/2,80,22)
 	topToday_btnBg.anchorX=0
 	topToday_btnBg:setFillColor(Utils.convertHexToRGB(sp_Calender_btn.Background_Color))
 
-	topToday_btnlabel = display.newText(sceneGroup,EventCalender.Today,0,0,native.systemFontBold,12)
+	topToday_btnlabel = display.newText(sceneGroup,EventCalender.Upcoming,0,0,native.systemFontBold,12)
 	topToday_btnlabel.x=topToday_btnBg.x+topToday_btnBg.contentWidth/2;topToday_btnlabel.y=topToday_btnBg.y
 	Utils.CssforTextView(topToday_btnlabel,sp_Calender_btn)
 	MainGroup:insert(sceneGroup)
 
 
 
-	searchhBg = display.newRect(sceneGroup,W/2+5,topToday_btnBg.y,180,22)
+	searchhBg = display.newRect(sceneGroup,W/2+25,topToday_btnBg.y,180,22)
 	searchLeftDraw = display.newImageRect(sceneGroup,"res/assert/search(gray).png",16/1.2,18/1.2)
 	searchLeftDraw.x=searchhBg.x+searchhBg.contentWidth/2-searchLeftDraw.contentWidth
 	searchLeftDraw.y=searchhBg.y
@@ -700,9 +884,7 @@ function scene:create( event )
 	search.hasBackground = false
 	sceneGroup:insert(search)
 
-	searchLeftDraw.isVisible=false
-	searchhBg.isVisible=false
-	search.isVisible=false
+
 
 	calenderView = display.newImageRect(sceneGroup,"res/assert/calender(gray).png",24/1.2,24/1.2)
 	calenderView.x=W-25
@@ -749,7 +931,7 @@ function scene:show( event )
 			top = 0,
 			left = 0,
 			width = W,
-			height =H-RecentTab_Topvalue,
+			height =H-RecentTab_Topvalue-60,
 			hideBackground = true,
 			isBounceEnabled=false,
 			horizontalScrollingDisabled = false,
@@ -761,7 +943,7 @@ function scene:show( event )
 
 			sceneGroup:insert(scrollView)
 			scrollView.anchorY=0
-			scrollView.y = RecentTab_Topvalue
+			scrollView.y = RecentTab_Topvalue+60
 
 
 
@@ -853,7 +1035,14 @@ function scene:show( event )
 
 			t.day = t.day - os.date( "%w" ) 
 
+
+			ProcessingCount_total = 7
+
+
+
 			startdate = os.date( "!%m/%d/%YT%H:%m:%S %p" , os.time( t ))
+
+			t.day = t.day + 7
 
 			Processingdate = os.date( "!%Y-%m-%d" , os.time( t ))
 
@@ -862,46 +1051,15 @@ function scene:show( event )
 
 			startdate = dateSplit(startdate).." 12:00:00 AM"
 
-
-			if defalutCalenderView == "agendaWeek" then
-
-			ProcessingCount_total = 7
+			enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
 
 
 			
 
-			t.day = t.day + 6
-
-
-			enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
-
-			elseif defalutCalenderView == "month" then
-
-
-
-
-			ProcessingCount_total = 30
-
-			t.day = t.day + 30
-		--!%Y-%m-%dT%H:%m:%S
-
-		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
-
-		elseif defalutCalenderView == "agendaDay" then
-
-		ProcessingCount_total = 0
-
-		t.day = t.day
-
-
-		enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
-	end
-
 local temp = os.date( '*t' )
 temp.day = temp.day - os.date( "%w" ) 
-
-
-	eventList(temp)
+weekViewTouchFlag=true
+creatWeek(temp,true)
 
 	
 end	
@@ -918,29 +1076,28 @@ Webservice.Get_All_MyCalendars(get_allCalender)
 sceneGroup:insert( weekViewGroup )
 
 
-weekView_bg = display.newRect( weekViewGroup,W/2,topBg.y+topBg.contentHeight,W,50)
+weekView_bg = display.newRect( weekViewGroup,W/2,topBg.y+topBg.contentHeight,W,60)
 weekView_bg.anchorY=0
 weekView_bg:setFillColor( 0.9,0.7,0.8 )
+
+weekView_header = display.newText( weekViewGroup,"", 0, 0, native.systemFont, 14 )
+weekView_header.x=W/2;weekView_header.y=weekView_bg.y+10
+Utils.CssforTextView(weekView_header,sp_helpText)
 
 weekView_leftArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
 weekView_leftArrow.xScale=-1
 weekView_leftArrow.x=weekView_bg.x-weekView_bg.contentWidth/2+20
-weekView_leftArrow.y=weekView_bg.y+weekView_bg.contentHeight/2
+weekView_leftArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5	
 weekView_leftArrow.id = "leftSwipe"
 weekView_leftArrow:addEventListener( "touch", weekViewSwipe )
 
 weekView_rightArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
 weekView_rightArrow.x=weekView_bg.x+weekView_bg.contentWidth/2-20
-weekView_rightArrow.y=weekView_bg.y+weekView_bg.contentHeight/2
+weekView_rightArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5
 weekView_rightArrow.id = "rightSwipe"
 weekView_rightArrow:addEventListener( "touch", weekViewSwipe )
 
-local weekscroll = os.date( '*t' )
-weekscroll.day = weekscroll.day - os.date( "%w" ) 
-creatWeek(weekscroll)
-
-weekViewGroup.alpha=0
-
+	
 menuBtn:addEventListener("touch",menuTouch)
 BgText:addEventListener("touch",menuTouch)
 menuTouch_s:addEventListener("touch",menuTouch)
@@ -948,6 +1105,7 @@ topToday_btnBg:addEventListener("touch",todayAction)
 topToday_btnlabel:addEventListener("touch",todayAction)
 calenderView_bg:addEventListener("touch",calenderTouch)
 picker_Done:addEventListener( "touch", calenderAction )
+search:addEventListener( "userInput", searchListener )
 
 
 end

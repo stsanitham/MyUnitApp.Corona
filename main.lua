@@ -34,9 +34,21 @@ menuShowFlag = false;
 menuTransTime = 1000;
 openPage="main"
 
---menuTitel = {"Home","Event Calender","Career Path","Goals","Resource","Image Library","Social Media","Facebook","Twitter","Instagram","Google+"}
---rowValues = {"LandingPage","eventCalenderPage","careerPathPage","goalsPage","resourcePage","imageLibPage","","facebookPage","twitterPage","instagramPage","googlePlusPage"}
+isSimulator=false
+isAndroid = false
+isIos = false
 
+local plateform = system.getInfo( "platformName" )
+
+print(plateform)
+
+if plateform == "Mac OS X" or plateform == "Win" then
+    isSimulator=true
+elseif plateform == "iPhone OS" then
+    isIos=true
+elseif plateform == "Android" then
+    isAndroid=true
+end
 
 menuTitel = {"Home","Event Calender","Career Path","Goals","Resource","Image Library","Social Media","Facebook","Twitter","Instagram","Google+"}
 rowValues = {"LandingPage","eventCalenderPage","careerPathPage","goalsPage","resourcePage","imageLibPage","","facebookPage","twitterPage","instagramPage","googlePlusPage"}
