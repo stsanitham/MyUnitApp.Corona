@@ -125,43 +125,43 @@ local function onRowTouch_unitnumber( event )
 
 				if(current_textField.id == "Unit Number / Director name") then
 
-					if event.text:len() > 50 then
+						if event.text:len() > 50 then
 
-						event.target.text = event.text:sub(1,50)
+							event.target.text = event.text:sub(1,50)
 
-					end
-
-
-					unitnumer_list.alpha=1
-
-					UserName.isVisible=false
-
-					current_textField.value=0
-
-					unitnumer_list:deleteAllRows()
-
-					--list_response = list_response_total
-
-					if #list_response ~= nil then
-						for i = #list_response,1,-1 do
-							table.remove(list_response,i)
-						end
-					end
-
-					for i = #list_response_total,1,-1 do
-						local temp = event.text
-
-						local tempvalue = temp:sub(temp:len(),temp:len())
-
-						if(tempvalue == "(") then
-							event.text = event.text:sub( 1, event.text:len()-1)
 						end
 
-						if string.find( list_response_total[i].DirectorName:upper(), event.text:upper() ) then
-							list_response[#list_response+1] = list_response_total[i]
+
+						unitnumer_list.alpha=1
+
+						UserName.isVisible=false
+
+						current_textField.value=0
+
+						unitnumer_list:deleteAllRows()
+
+						--list_response = list_response_total
+
+						if #list_response ~= nil then
+							for i = #list_response,1,-1 do
+								table.remove(list_response,i)
+							end
 						end
-						
-					end
+
+						for i = #list_response_total,1,-1 do
+							local temp = event.text
+
+							local tempvalue = temp:sub(temp:len(),temp:len())
+
+							if(tempvalue == "(") then
+								event.text = event.text:sub( 1, event.text:len()-1)
+							end
+
+							if string.find( list_response_total[i].DirectorName:upper(), event.text:upper() ) then
+								list_response[#list_response+1] = list_response_total[i]
+							end
+							
+						end
 
 
 
@@ -177,12 +177,23 @@ local function onRowTouch_unitnumber( event )
 						end
 
 						for i = 1, #list_response do
-						  	 		 -- Insert a row into the tableView
-						  	 		 unitnumer_list:insertRow{}
+						  	-- Insert a row into the tableView
+						  	unitnumer_list:insertRow{}
 
-						  	 		end
-						  	 	end
-						  	 end
+						end
+
+						local dotFlag = string.find(event.text,"%.")
+
+						if event.text == "" or dotFlag then
+							
+							unitnumer_list.alpha=0
+
+							UserName.isVisible=true
+
+						end
+
+					end
+				end
 
 
 

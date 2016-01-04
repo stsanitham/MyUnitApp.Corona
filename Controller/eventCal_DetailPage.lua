@@ -7,7 +7,6 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 local json = require("json")
-local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 local Applicationconfig = require("Utils.ApplicationConfig")
 local widget = require( "widget" )
@@ -216,14 +215,19 @@ function scene:create( event )
 	menuTouch_s.anchorX=0
 	menuTouch_s.alpha=0.01
 
-
-	PageTitle = display.newText(sceneGroup,EventCalender.PageTitle,0,0,native.systemFont,0)
-	PageTitle.anchorX = 0 ;PageTitle.anchorY=0
-	PageTitle.x=8;PageTitle.y = tabBar.y+tabBar.contentHeight/2+3
-	Utils.CssforTextView(PageTitle,sp_header)
+			title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
 
-	titleBar = display.newRect(sceneGroup,W/2,PageTitle.y+PageTitle.contentHeight+5,W,30)
+	title = display.newText(sceneGroup,EventCalender.PageTitle,0,0,native.systemFont,18)
+	title.anchorX = 0
+	title.x=5;title.y = title_bg.y
+	title:setFillColor(0)
+
+
+
+	titleBar = display.newRect(sceneGroup,W/2,title_bg.y+title_bg.contentHeight/2,W,30)
 	titleBar.anchorY=0
 	titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
@@ -287,9 +291,16 @@ function scene:show( event )
 
 				local timeGMT = makeTimeStamp( detail_value.date )
 
+
+
 				function get_ticklereventByid(response)
 
 					Details=response
+
+					local leftAllign = 10
+
+					local start_timeGMT = makeTimeStamp( Details.startdate )
+					local end_timeGMT = makeTimeStamp( Details.enddate )
 
 					----When----
 
@@ -298,14 +309,14 @@ function scene:show( event )
 
 					display_details[#display_details+1] = display.newText(EventCalender.When,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-					display_details[#display_details].x=15;display_details[#display_details].y=titleBar.y-45
+					display_details[#display_details].x=leftAllign;display_details[#display_details].y=titleBar.y-45
 					display_details[#display_details].anchorX=0
 					scrollView:insert( display_details[#display_details] )
 
 					display_details[#display_details+1] = display_details[#display_details+1]
-					display_details[#display_details] = display.newText(os.date( "%B %d, %Y" , timeGMT ),0,0,180,0,sp_fieldValue.Font_Weight,sp_fieldValue.Font_Size_ios)
+					display_details[#display_details] = display.newText(os.date( "%b %d, %Y" , start_timeGMT ).." to "..os.date( "%b %d, %Y" , end_timeGMT ),0,0,220,0,sp_fieldValue.Font_Weight,sp_fieldValue.Font_Size_ios)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_fieldValue.Text_Color))
-					display_details[#display_details].x=W/2-15;display_details[#display_details].y=titleBar.y-45
+					display_details[#display_details].x=W/2-28;display_details[#display_details].y=titleBar.y-45
 					display_details[#display_details].anchorX=0
 					scrollView:insert( display_details[#display_details] )
 					display_details[#display_details].id="when"
@@ -315,11 +326,7 @@ function scene:show( event )
 				-----Timings-----
 
 				
-
-					print("allday false")
-
-					local start_timeGMT = makeTimeStamp( Details.startdate )
-					local end_timeGMT = makeTimeStamp( Details.enddate )
+	
 
 					local time 
 
@@ -335,7 +342,7 @@ function scene:show( event )
 
 					display_details[#display_details+1] = display.newText(time,0,0,180,0,native.systemFont,14)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-					display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y+20
+					display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y+20
 					display_details[#display_details].anchorX=0
 					display_details[#display_details].id="time"
 					scrollView:insert( display_details[#display_details] )
@@ -353,7 +360,7 @@ function scene:show( event )
 
 					display_details[#display_details+1] = display.newText(EventCalender.Where,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-					display_details[#display_details].x=15
+					display_details[#display_details].x=leftAllign
 					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
 					display_details[#display_details].anchorX=0
 					scrollView:insert( display_details[#display_details] )
@@ -361,7 +368,7 @@ function scene:show( event )
 
 					display_details[#display_details+1] = display.newText("",0,0,180,0,native.systemFont,14)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-					display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y
+					display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y
 					display_details[#display_details].anchorX=0
 					display_details[#display_details].id="where"
 					scrollView:insert( display_details[#display_details] )
@@ -387,7 +394,7 @@ function scene:show( event )
 
 					display_details[#display_details+1] = display.newText(EventCalender.Description,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-					display_details[#display_details].x=15
+					display_details[#display_details].x=leftAllign
 					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
 					display_details[#display_details].anchorX=0
 					scrollView:insert( display_details[#display_details] )
@@ -395,7 +402,7 @@ function scene:show( event )
 
 					display_details[#display_details+1] = display.newText(Details.Description,0,0,W-30,0,native.systemFont,14)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-					display_details[#display_details].x=15;display_details[#display_details].y=display_details[#display_details-1].y+15
+					display_details[#display_details].x=leftAllign;display_details[#display_details].y=display_details[#display_details-1].y+15
 					display_details[#display_details].anchorX=0
 					display_details[#display_details].anchorY=0
 					display_details[#display_details].id="Description"
@@ -412,12 +419,19 @@ function scene:show( event )
 
 					display_details[#display_details+1] = display.newText(EventCalender.Appointment_With,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-					display_details[#display_details].x=15
-					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
+					display_details[#display_details].x=leftAllign
+					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+20
 					display_details[#display_details].anchorX=0
 					display_details[#display_details].anchorY=0
-										display_details[#display_details].anchorY=0
 
+					if display_details[#display_details-1].id == "Description" then
+
+						if display_details[#display_details-1].height > 60 then
+
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height-25
+						end
+
+					end
 
 
 					if Details.TicklerType == 1 then
@@ -451,11 +465,14 @@ function scene:show( event )
 
 					display_details[#display_details+1] = display.newText(name,0,0,180,0,native.systemFont,14)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-					display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y
+					display_details[#display_details].x=W/2-28
+					display_details[#display_details].y=display_details[#display_details-1].y
 					display_details[#display_details].anchorX=0
 					display_details[#display_details].anchorY=0
 					display_details[#display_details].id="app_with"
 					scrollView:insert( display_details[#display_details] )
+
+
 				end
 				------------------
 
@@ -468,18 +485,28 @@ function scene:show( event )
 
 						display_details[#display_details+1] = display.newText(EventCalender.Purpose,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-						display_details[#display_details].x=15
-						display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
+						display_details[#display_details].x=leftAllign
+						display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+20
 						display_details[#display_details].anchorX=0
 						display_details[#display_details].anchorY=0
 						scrollView:insert( display_details[#display_details] )
+
+
+					if display_details[#display_details-1].id == "Description" then
+
+						if display_details[#display_details-1].height > 60 then
+
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height-30
+						end
+
+					end
 
 
 
 
 						display_details[#display_details+1] = display.newText(getPurpose(purpose_enum[Details.AppointmentPurpose+1]),0,0,150,0,native.systemFont,14)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-						display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y
+						display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y
 						display_details[#display_details].anchorX=0
 						display_details[#display_details].anchorY=0
 						display_details[#display_details].id="Purpose"
@@ -497,16 +524,26 @@ function scene:show( event )
 
 					display_details[#display_details+1] = display.newText(EventCalender.Priority,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-					display_details[#display_details].x=15
-					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
+					display_details[#display_details].x=leftAllign
+					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+20
 					display_details[#display_details].anchorX=0
 					display_details[#display_details].anchorY=0
 					scrollView:insert( display_details[#display_details] )
 
 
+					if display_details[#display_details-1].id == "Description" then
+
+						if display_details[#display_details-1].height > 60 then
+
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height-30
+						end
+
+					end
+
+
 					display_details[#display_details+1] = display.newText(prority_enum[Details.Priority+1],0,0,180,0,native.systemFont,14)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-					display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y
+					display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y
 					display_details[#display_details].anchorX=0
 					display_details[#display_details].anchorY=0
 					display_details[#display_details].id="Priority"
@@ -520,16 +557,26 @@ function scene:show( event )
 
 						display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-						display_details[#display_details].x=15
-						display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
+						display_details[#display_details].x=leftAllign
+						display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+20
 						display_details[#display_details].anchorX=0
 						display_details[#display_details].anchorY=0
 						scrollView:insert( display_details[#display_details] )
 
 
+					if display_details[#display_details-1].id == "Description" then
+
+						if display_details[#display_details-1].height > 60 then
+
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height-30
+						end
+
+					end
+
+
 						display_details[#display_details+1] = display.newText(Details.AttachmentName,0,0,180,0,native.systemFont,14)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.blue))
-						display_details[#display_details].x=W/2-15;display_details[#display_details].y=display_details[#display_details-1].y
+						display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y
 						display_details[#display_details].anchorX=0
 						display_details[#display_details].anchorY=0
 						display_details[#display_details].value = Details.MuUnitBuzzAttachmentPath
@@ -549,9 +596,19 @@ function scene:show( event )
 
 						display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-						display_details[#display_details].x=15
-						display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
+						display_details[#display_details].x=leftAllign
+						display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+20
 						display_details[#display_details].anchorX=0
+
+
+					if display_details[#display_details-1].id == "Description" then
+
+						if display_details[#display_details-1].height > 60 then
+
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height-30
+						end
+
+					end
 						
 						scrollView:insert( display_details[#display_details] )
 						display_details[#display_details].isVisible=false

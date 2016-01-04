@@ -7,11 +7,12 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 
-local stringValue = require( "res.value.style" )
-local stringValue = require( "res.value.string" )
+require( "res.value.style" )
+--require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 
-
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
 
 --------------- Initialization -------------------
 
@@ -74,6 +75,11 @@ local function MenuTouchAction(event)
 								    params = { responseValue=UnitnumberList}
 								}
 
+
+
+
+								local tablesetup = [[DROP TABLE logindetails;]]
+								db:exec( tablesetup )
 
 							composer.gotoScene( "Controller.singInPage", options )
 			        elseif i == 2 then
@@ -475,8 +481,7 @@ function scene:show( event )
 			-----
 
 
-
-			composer.gotoScene( "Controller.splashScreen", options )
+			composer.gotoScene( "Controller.splashScreen" )
 			--composer.gotoScene( "Controller.careerPathDetailPage", options )
 		end	
 

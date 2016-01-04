@@ -6,8 +6,6 @@
 
 local composer = require( "composer" )
 local scene = composer.newScene()
-local stringValue = require( "res.value.string" )
-
 
 require( "Controller.flapMenu" )
 

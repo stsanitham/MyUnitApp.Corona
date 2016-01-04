@@ -7,7 +7,6 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 
-local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 local json = require('json')
@@ -90,7 +89,7 @@ function scene:show( event )
 
 			composer.removeHidden()
 
-			goal_scrollview  = widget.newScrollView
+			--[[goal_scrollview  = widget.newScrollView
 			{
 			top = RecentTab_Topvalue,
 			left = 0,
@@ -106,12 +105,16 @@ function scene:show( event )
 
 goal_scrollview.anchorY=0
 goal_scrollview.y=RecentTab_Topvalue+30
-goal_scrollview.x=W/2
+goal_scrollview.x=W/2]]
+
+title_bg = display.newRect(sceneGroup,0,0,W,30)
+title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
 
 title = display.newText(sceneGroup,"Goals",0,0,native.systemFont,18)
-title.anchorX = 0 ;title.anchorY=0
-title.x=5;title.y = tabBar.y+tabBar.contentHeight/2+10
+title.anchorX = 0
+title.x=5;title.y = title_bg.y
 title:setFillColor(0)
 
 
@@ -127,31 +130,53 @@ function get_Goals(response)
 		local t = response.MyUnitBuzzGoals
 
 
-		for i=1, #cleaner do
+		--[[for i=1, #cleaner do
 			local cleans = cleaner[i]
 			t = string.gsub( t, cleans[1], cleans[2] )
-		end
+		end]]
 
 		print(t)
 
+		local saveData = t
 
-		GoalText = display.newText(t,0,0,W-20,t:len()/2.2,native.systemFont,14)
-		GoalText.anchorY=0
-		GoalText.x=W/2;GoalText.y=0
-		GoalText:setFillColor(Utils.convertHexToRGB(color.Black))
-		goal_scrollview:insert(GoalText)
+		-- Path for the file to write
+		local path = system.pathForFile( "goals.html", system.DocumentsDirectory )
 
+		-- Open the file handle
+		local file, errorString = io.open( path, "w" )
+
+		if not file then
+		    -- Error occurred; output the cause
+		    print( "File error: " .. errorString )
+		else
+		    -- Write data to file
+		    file:write( saveData )
+		    -- Close the file handle
+		    io.close( file )
+		end
+
+		file = nil
+
+		local webView = native.newWebView( display.contentCenterX, 70, W, H-80 )
+		webView.anchorY=0
+		webView:request( "goals.html", system.DocumentsDirectory )
+		sceneGroup:insert( webView )
+
+		--[[
+				GoalText = display.newText(t,0,0,W-20,t:len()/2.2,native.systemFont,14)
+				GoalText.anchorY=0
+				GoalText.x=W/2;GoalText.y=0
+				GoalText:setFillColor(Utils.convertHexToRGB(color.Black))
+				goal_scrollview:insert(GoalText)
+				]]
 	else
-	NoEvent = display.newText( sceneGroup, "There are no goals to view as of now", 0,0,0,0,native.systemFontBold,16)
-	NoEvent.x=W/2;NoEvent.y=H/2
-	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+		NoEvent = display.newText( sceneGroup, "There are no goals to view as of now", 0,0,0,0,native.systemFontBold,16)
+		NoEvent.x=W/2;NoEvent.y=H/2
+		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 	end
 
 end
 Webservice.GET_MYUNITAPP_GOALS(get_Goals)
-
-
-sceneGroup:insert(goal_scrollview)
 
 
 menuBtn:addEventListener("touch",menuTouch)

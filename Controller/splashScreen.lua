@@ -10,7 +10,7 @@ local scene = composer.newScene()
 local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 local style = require("res.value.style")
-local string = require("res.value.string")
+--local string = require("res.value.string")
 
 
 --------------- Initialization -------------------
@@ -22,6 +22,9 @@ local Background,BgText
 local Splash_TimeOut = 500
 
 require( "Webservice.ServiceManager" )
+
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
 
 
 --------------------------------------------------
@@ -66,15 +69,75 @@ function scene:show( event )
 
 			UnitnumberList = response
 
-			local options = {
-			    effect = "slideLeft",
-			    time = Splash_TimeOut,
-			    params = { responseValue=response}
-			}
+
+			local Director_Name,EmailAddress
+
+			local loginFlag = false
+
+			local found=false
+			db:exec([[select * from sqlite_master where name='logindetails';]],
+			function(...) found=true return 0 end)
+
+			if found then 
+				print('table exists!')
+				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+
+					loginFlag=true
+
+					Director_Name = row.MemberName
+
+					EmailAddress = row.MemberEmail
+					
+				end
+
+				profileName.text=Director_Name
+
+					if EmailAddress ~= nil then
+
+							local EmailTxt = EmailAddress
+
+								if EmailTxt:len() > 26 then
+
+									EmailTxt= EmailTxt:sub(1,26).."..."
+
+								end
+
+						profileEmail.text = EmailTxt
+
+						end
 
 
-			composer.gotoScene( "Controller.singInPage", options )
+
+					local options = {
+						effect = "slideLeft",
+						time =500,
+
+					}
+
+
+				composer.gotoScene( "Controller.eventCalenderPage", options )
+
+			else
+				print('not table exists!')
+
+				local options = {
+						    effect = "slideLeft",
+						    time = Splash_TimeOut,
+						    params = { responseValue=response}
+						}
+
+
+						composer.gotoScene( "Controller.singInPage", options )
+
+			end
+
+
+
+	
+
+
 			
+
 		end
 
 		Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)

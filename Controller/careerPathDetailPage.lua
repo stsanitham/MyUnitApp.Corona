@@ -6,7 +6,6 @@
 
 local composer = require( "composer" )
 local scene = composer.newScene()
-local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 
@@ -432,7 +431,7 @@ function scene:show( event )
 
 					local timeGMT = Utils.makeTimeStamp(Details.RecruitedDate)
 
-					Details_Display[#Details_Display+1] = display.newText(os.date( "%B %d, %Y" , timeGMT ),0,0,160,0,native.systemFont,18)
+					Details_Display[#Details_Display+1] = display.newText(os.date( "%b %d, %Y" , timeGMT ),0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = RecruitedDate.y 
@@ -644,44 +643,35 @@ function scene:show( event )
 					location = location..Details.ContactsAddress.Address2
 					
 				end
+
+				if location:len() > 0  then
+
+						location = location.."\n"
+
+				end
+
 				if Details.ContactsAddress.City ~= nil and Details.ContactsAddress.City ~= "" then
-					if location:len() > 0  then
-
-						location = location..","
-
-					end
-					location = location..Details.ContactsAddress.City
+				
+					location = location..Details.ContactsAddress.City..","
 					
 				end
 				if Details.ContactsAddress.State ~= nil and Details.ContactsAddress.State ~= "" then
-					if location:len() > 0  then
-
-						location = location..","
-
-					end
-					location = location..Details.ContactsAddress.State
+				
+					location = location..Details.ContactsAddress.State..","
 					
 				end
-				if Details.ContactsAddress.Country ~= nil and Details.ContactsAddress.Country ~= "" then
-					if location:len() > 0  then
-
-						location = location..","
-
-					end
-					location = location..Details.ContactsAddress.Country
-					
-				end
+				
 				if Details.ContactsAddress.Zip ~= nil and Details.ContactsAddress.Zip ~= "" then
-					if location:len() > 0  then
-
-						location = location..","
-
-					end
+				
 					location = location..Details.ContactsAddress.Zip	
 					
 				end
 
-				map_location= display.newText(mapGroup,location,0,0,220,0,native.systemFont,14)
+				if location:sub( location:len() ,location:len()) == "," then
+					location = location:sub( 1 ,location:len()-1)
+				end
+
+				map_location= display.newText(mapGroup,location,0,0,320,0,native.systemFont,14)
 				map_location.x=myMap_rect.x-myMap_rect.contentWidth/2+10
 				map_location.y=myMap_rect.y+25
 				map_location.anchorY=0

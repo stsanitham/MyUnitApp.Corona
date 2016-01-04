@@ -7,7 +7,7 @@ local composer = require "composer"
 local newPanel = require "Utils.newPanel"
 local widget = require( "widget" )
 local Utility = require( "Utils.Utility" )
-local stringValue = require( "res.value.color" )
+EventCalender = require( "res.value.color" )
 local sqlite3 = require( "sqlite3" )
 
 
@@ -102,11 +102,7 @@ function spinner_hide ()
     spinner:stop()
 end
 
-local tablesetup = [[DROP TABLE logindetails;]]
-db:exec( tablesetup )
 
-local tablesetup = [[CREATE TABLE IF NOT EXISTS logindetails (id INTEGER PRIMARY KEY autoincrement, UnitNumberOrDirector, EmailAddess, PhoneNumber, Status, UserId, GoogleUsername, GoogleToken, GoogleTokenSecret, GoogleUserId, FacebookUsername, FacebookAccessToken, TwitterUsername, TwitterToken, TwitterTokenSecret, ProfileImageUrl, AccessToken, ContactId, ContactDisplay, LanguageId, CountryId);]]
-db:exec( tablesetup )
 
 local function panelTransDone( target )
 	if ( target.completeState ) then

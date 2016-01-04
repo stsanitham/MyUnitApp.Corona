@@ -29,6 +29,8 @@ color.Transprent={1,1,1,0}
 color.Bggray = "#B8B9BD"
 color.today_blue = "#5069f7"
 
+color.tabbar = "#B6B6B6"
+
 
 return color
 

@@ -6,6 +6,9 @@ CommonWords.done = "Done"
 CommonWords.search = "Search"
 
 
+RequestAccess = {}
+
+
 Weekdays = {}
 
 Weekdays.Monday = "Monday"
@@ -15,9 +18,6 @@ Weekdays.Thursday = "Thursday"
 Weekdays.Friday = "Friday"
 Weekdays.Saturday = "Saturday"
 Weekdays.Sunday = "Sunday"
-
-RequestAccess = {}
-
 
 
 LoginPage = {}
@@ -43,20 +43,20 @@ ForgotPassword.SuccessMsg = "Your Temporary Password is sent successfully"
 
 EventCalender = {}
 
-EventCalender.PageTitle = "Event Calender"
-EventCalender.When = "When"
-EventCalender.Where = "Where"
+EventCalender.PageTitle = "Calendrier des événements"
+EventCalender.When = "Quand"
+EventCalender.Where = "Où"
 EventCalender.Description = "Description"
-EventCalender.Appointment_With = "Appointment With"
-EventCalender.Call_With = "Call With"
-EventCalender.Hostess = "Hostess"
-EventCalender.Linked_to = "Linked to"
-EventCalender.Purpose="Purpose"
-EventCalender.Priority ="Priority"
-EventCalender.Attachment = "Attachments"
-EventCalender.Today = "Today"
-EventCalender.Upcoming = "UpComing"
-EventCalender.Phone = "Phone"
+EventCalender.Appointment_With = "Rendez-vous avec"
+EventCalender.Call_With = "appelez Avec"
+EventCalender.Hostess = "Hôtesse"
+EventCalender.Linked_to = "Lié à"
+EventCalender.Purpose="Objectif"
+EventCalender.Priority ="Priorité"
+EventCalender.Attachment = "Pièces jointes"
+EventCalender.Today = "Aujourd'hui"
+EventCalender.Upcoming = "Prochain"
+EventCalender.Phone = "Téléphone"
 
 
 CareerPath = {}

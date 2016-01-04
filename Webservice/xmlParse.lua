@@ -17,13 +17,19 @@ end
 
 function request.new(url, method, params,listner)
 
-	spinner_show()
+	
 	
 	
 	print("enter "..url)
 
-	if  splitUrl(url) == "/MyUnitBuzz/GetAllUnitNumber" then
+	if  splitUrl(url) == "/MyUnitBuzz/GetAllUnitNumber" or string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") then
+
 		spinner_hide()
+
+	else
+
+		spinner_show()
+
 	end
 
 	requestId = network.request( url, method, function(event)  if ( event.isError ) then
@@ -32,7 +38,7 @@ function request.new(url, method, params,listner)
 
 	else
 		
-		--print ( "RESPONSE: " .. event.response )
+		print ( "RESPONSE: " .. event.response )
 
 		response = json.decode(event.response)
 

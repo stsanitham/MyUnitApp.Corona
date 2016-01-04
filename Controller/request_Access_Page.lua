@@ -11,7 +11,7 @@ require( "Webservice.ServiceManager" )
 local scene = composer.newScene()
 require( "Utils.Utility" )
 local style = require("res.value.style")
-local string = require("res.value.string")
+require("res.value.string")
 local List_array = {}
 local mkRank_id=0
 local current_textField,defalut
@@ -32,6 +32,10 @@ local H= display.contentHeight
 
 local Background,BgText
 
+
+local list_response_total = {}
+local list_response = {}
+
 --Button
 local sumbitBtn,scrollView
 
@@ -50,8 +54,6 @@ local listFlag= false
 
 local unitnumer_list
 
-local list_response = {}
-
 
 --------------------------------------------------
 
@@ -66,6 +68,14 @@ local function rankToptouch( event )
 
 		if event.target.id == "close" then
 			rankGroup.isVisible=falses
+
+				FirstName.isVisible=true
+				Name.isVisible=true
+				Email.isVisible=true
+				Phone.isVisible=true
+				UnitNumber.isVisible=true
+				Comment.isVisible=true
+
 		end
 
 	end
@@ -91,7 +101,14 @@ local function backAction( event )
 			display.getCurrentStage():setFocus( nil )
 
 
-			composer.gotoScene( "Controller.singInPage", "slideRight",500 )
+				local options = {
+								effect = "slideRight",
+								time = 600,
+								params = { responseValue=list_response_total}
+								}
+				composer.gotoScene( "Controller.singInPage", options )
+
+			
 		end
 
 		return true
@@ -148,6 +165,11 @@ local function onRowTouch_unitnumber_request( event )
 		elseif ( "release" == phase ) then
 
 			native.setKeyboardFocus(nil)
+
+			unitnumer_list.alpha=0
+
+			Comment.isVisible=true
+
 			UnitNumber.text = row.name
 			UnitNumber.value = row.id
 
@@ -168,54 +190,94 @@ local function onRowTouch_unitnumber_request( event )
 
 	local function scroll(scroll_value)
 
-		scrollView:scrollToPosition
+		--[[scrollView:scrollToPosition
 		{
 
 		y = scroll_value,
 		time = 400,
-	}
+	}]]
 
 end
 
 local function RequestProcess()
 
-	
+	submit_spinner.isVisible=true
+			sumbitBtn.width = sumbitBtn.width+20
+			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
+			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
+			submit_spinner:start( )
+
+
+
 	function get_requestAccess(response)
 
 		Request_response = response
 
-		if Request_response == "REQUEST"  then
-
-			Utils.SnackBar("Already Requested")
-
-			elseif Request_response == "FIRSTREQUEST" then
-
-				composer.gotoScene( "Controller.singInPage", "slideRight",500 )
-
-				Utils.SnackBar("FIRSTREQUEST")
-
-				elseif Request_response == "OPEN" then
+			submit_spinner.isVisible=false
+			sumbitBtn.width = sumbitBtn.width-20
+			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
+			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
+			submit_spinner:stop( )
+			
+		local function alertFun(value)
 
 
-						Utils.SnackBar("OPEN")
-						
-					composer.gotoScene( "Controller.singInPage", "slideRight",500 )
-
-
-					elseif Request_response == "GRANT" then
-
-						Utils.SnackBar("GRANT")
-
-						composer.gotoScene( "Controller.singInPage", "slideRight",500 )
-
-
-						elseif Request_response == "NOUNITNUMBER" then
-
-							SetError("* Enter the Valid UnitNumber",UnitNumber)
-
+					local function onComplete( event )
+						   if event.action == "clicked" then
+						        local i = event.index
+						        if i == 1 then   
+						        	local options = {
+										effect = "slideRight",
+										time = 600,
+										params = { responseValue=list_response_total}
+										}
+									composer.gotoScene( "Controller.singInPage", options )
+						        end
+						    end
 						end
 
-					end
+
+			local alert = native.showAlert( "Request Access", value, { "OK" }, onComplete )
+
+			end	
+
+									
+
+		if Request_response == "REQUEST"  then
+
+			alertFun("Request already sent")
+
+		elseif Request_response == "FIRSTREQUEST" then
+
+			alertFun("Your Request Access has been sent successfully")
+
+		elseif Request_response == "OPEN" then
+
+			alertFun("Request Access sent")
+						
+		elseif Request_response == "GRANT" then
+
+			alertFun("Access already granted")
+
+		elseif Request_response == "NOUNITNUMBER" then
+
+			SetError("* Enter the Valid UnitNumber",UnitNumber)
+
+		elseif Request_response == "BLOCK"  then
+
+			alertFun("Access denied already")
+
+
+		elseif Request_response == "DENY" then
+
+			alertFun("Access denied already")
+
+		elseif Request_response == "FAIL" then
+
+			alertFun("Enter Valid credentials")
+		end
+
+	end
 					if FirstName.text == FirstName.id then
 						FirstName.text=""
 					end
@@ -233,63 +295,162 @@ local function RequestProcess()
 
 					if ( event.phase == "began" ) then
 
-						print("key request")
+					
+							event.target:setTextColor(color.black)
 
-						event.target.text=""
-						event.target:setTextColor(color.black)
-
-						elseif ( event.phase == "ended" or event.phase == "submitted" ) then
-						print("id :"..current_textField.id)
-
-						scroll(0)
-						if(current_textField.id ~= "Unit Number / Director name") then
-							current_textField.text=event.target.text
-						end
-						current_textField:setFillColor(0)
-						current_textField.size=16
-						if current_textField.text == "" then
-							current_textField.alpha = 0.5
-							current_textField.text = current_textField.id
-						end
+							current_textField = event.target;
 
 
-        		--event.target:removeEventListener( "userInput", textfield )
-        		unitnumer_list.alpha=0
-        		event.target:removeSelf();event.target = nil
+							current_textField.size=14
 
-        		elseif ( event.phase == "editing" ) then
+							if "*" == event.target.text:sub(1,1) then
+								event.target.text=""
+							end
+
+
+					elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+
+					       			
+
+        			elseif ( event.phase == "editing" ) then
+
+
+	       				if(current_textField.id == "Comments") then
+        					if event.text:len() > 160 then
+
+								event.target.text = event.text:sub(1,160)
+
+							end
+
+						elseif(current_textField.id =="Phone") then
+
+							local tempvalue = event.target.text:sub(1,1)
+
+							if (event.text:len() == 3) then
+
+								if (tempvalue ~= "(") then
+
+
+									event.target.text = "("..event.text..") "
+
+								else
+
+									event.target.text = event.text:sub(2,event.target.text:len())
+
+
+								end
+							elseif event.text:len() == 5 and (tempvalue == "(") then
+
+								if event.text:sub(5,5) ~= ")" then
+
+									event.target.text = event.text:sub(1,4)..") "..event.text:sub(5,5)
+				
+								end
+
+
+							elseif event.text:len() == 9 and not string.find(event.text,"-") then
+
+								event.target.text = event.target.text.."- "
+
+							elseif event.text:len() == 10 then
+
+								if string.find(event.text,"-") then
+
+									event.target.text = event.text:sub(1,9)
+								else
+
+									event.target.text = event.text:sub(1,9).."- "..event.text:sub(10,10)
+								end
+
+							end
+
+							if event.text:len() > 15 then
+
+								event.target.text = event.text:sub(1,15)
+
+							end
+
+							--(123) 654- 8901
+        				end
 
         			if(current_textField.id == "Unit Number / Director name") then
 
         				unitnumer_list.alpha=1
 
-        				function get_GetSearchByUnitNumberOrDirectorName(response)
+        					if event.text:len() > 50 then
 
-        					list_response = response
+							event.target.text = event.text:sub(1,50)
 
-        					print("empty")
-        					
-        					unitnumer_list:deleteAllRows()
+						end
 
-        					if list_response ~= nil then
 
-        						for i = 1, #list_response do
-						  	 	 -- Insert a row into the tableView
-						  	 	 unitnumer_list:insertRow{rowColor = { default={1,1,1}, over={ 243/255,29/255,98/255} }
-						  	 	}
+						unitnumer_list.alpha=1
 
-						  	 end
-						  	 if(#list_response == 0 )then
-						  	 	unitnumer_list.isVisible=false
-						  	 else
-						  	 	unitnumer_list.isVisible=true
-						  	 end
+						---UserName.isVisible=false
 
-						  	end
-						  end
+						current_textField.value=0
 
-						  list_response = Webservice.GET_SEARCHBY_UnitNumberOrDirectorName(event.text,get_GetSearchByUnitNumberOrDirectorName)
+						unitnumer_list:deleteAllRows()
 
+						--list_response = list_response_total
+
+						if #list_response ~= nil then
+							for i = #list_response,1,-1 do
+								table.remove(list_response,i)
+							end
+						end
+
+						for i = #list_response_total,1,-1 do
+							local temp = event.text
+
+							local tempvalue = temp:sub(temp:len(),temp:len())
+
+							if(tempvalue == "(") then
+								event.text = event.text:sub( 1, event.text:len()-1)
+							end
+
+							if string.find( list_response_total[i].DirectorName:upper(), event.text:upper() ) then
+								list_response[#list_response+1] = list_response_total[i]
+							end
+							
+						end
+
+
+
+					if list_response ~= nil then
+
+						print( #list_response )
+
+						if #list_response == 0 then
+
+							Comment.isVisible=true
+
+							unitnumer_list.alpha=0
+
+
+						else
+
+							Comment.isVisible=false
+						end
+
+						for i = 1, #list_response do
+						  	-- Insert a row into the tableView
+						  	unitnumer_list:insertRow{}
+
+						end
+					else
+						Comment.isVisible=true
+
+					end
+
+ 				local dotFlag = string.find(event.text,"%.")
+
+						if event.text == "" or dotFlag then
+							
+							unitnumer_list.alpha=0
+							Comment.isVisible=true
+
+						end
 
 
 
@@ -299,74 +460,7 @@ local function RequestProcess()
 				end
 
 
-				local function textfieldListener( event )
-
-
-
-					if ( event.phase == "began" ) then
-						native.setKeyboardFocus(nil)
-						target = event.target
-						if rankGroup then
-							rankGroup.isVisible=false
-						end
-						display.getCurrentStage():setFocus( event.target )
-
-			--current_textField=nil
-
-			elseif event.phase == "moved" then
-				local dx = math.abs( event.x - event.xStart )
-				local dy = math.abs( event.y - event.yStart )
-	        -- if finger drags button more than 5 pixels, pass focus to scrollView
-	        if dx > 5 or dy > 5 then
-	        	print("enter")
-	        	display.getCurrentStage():setFocus( nil )
-	        	native.setKeyboardFocus(nil)
-	        	scrollView:takeFocus( event )
-	        end
-
-	        elseif ( event.phase == "ended" ) then
-	        print(target[2].id)
-	        display.getCurrentStage():setFocus( nil )
-	        current_textField = target[2]
-	        target[2].text=""			
-	        if target[2].id == "Comments" then
-	        	defalut = native.newTextBox(target[1].x,target[1].y,target[1].contentWidth,target[1].contentHeight )
-	        	defalut.hasBackground = false
-	        	defalut.isEditable=true
-	        	defalut.size=16
-	        	scroll(-150)
-
-	        else
-	        	defalut = native.newTextField(target[1].x,target[1].y,target[1].contentWidth,target[1].contentHeight )
-	        	defalut.hasBackground = false
-	        	defalut:resizeFontToFitHeight()
-
-	        end
-
-
-	        if target[2].alpha >= 1 then
-	        	target[2]:setFillColor(0)
-	        	target[2].size=16
-	        else
-	        	target[2].alpha=1
-	        end
-
-
-
-	        scrollView:insert(defalut)
-
-	        native.setKeyboardFocus( defalut )
-
-
-
-
-
-	        defalut:addEventListener( "userInput", textfield )
-
-
-	    end
-	    return true
-	end 
+			
 
 
 
@@ -389,10 +483,10 @@ local function RequestProcess()
     rowTitle.y = rowHeight * 0.5
 
 
-    local line = display.newLine( 0,row.contentHeight,row.contentWidth,row.contentHeight )
+   --[[ local line = display.newLine( 0,row.contentHeight,row.contentWidth,row.contentHeight )
     row:insert(line)
     line:setStrokeColor( 0, 0, 0, 1 )
-    line.strokeWidth = 0.5
+    line.strokeWidth = 0.8]]
 
     row.rowValue = List_array[row.index][2]
 
@@ -406,14 +500,32 @@ local function onRowTouch( event )
 
 	if( "press" == phase ) then
 
+		--work
+
 		MKRank.text =row.text
+
+		if MKRank.text:len() > 36 then
+
+						MKRank.text= MKRank.text:sub(1,36).."..."
+
+		end
+
+		
 
 		mkRank_id = row.rowValue
 
 		elseif ( "release" == phase ) then
 			
 			if rankGroup then
+
 				rankGroup.isVisible=false
+
+				FirstName.isVisible=true
+				Name.isVisible=true
+				Email.isVisible=true
+				Phone.isVisible=true
+				UnitNumber.isVisible=true
+				Comment.isVisible=true
 
 			end
 
@@ -423,52 +535,68 @@ local function onRowTouch( event )
 
 
 	local sumbitBtnRelease = function( event )
-	
-	local validation = true
-	native.setKeyboardFocus(nil)
 
-	if Name.text == "" or Name.text == Name.id  then
-		validation=false
-		SetError("* Enter the Last Name",Name)
-	end
-	if Email.text == "" or Email.text == Email.id then
-		validation=false
-		SetError("* Enter the Email",Email)
-	else
+		if event.phase == "began" then
 
-		if not Utils.emailValidation(Email.text) then
-			validation=false
-			SetError("* Enter the valid email",Email)
 
-		end
+
+		elseif event.phase == "ended" then
+			local validation = true
+			native.setKeyboardFocus(nil)
+
+			if FirstName.text == "" or FirstName.text == FirstName.id  then
+				--validation=false
+				--SetError("* Enter the First Name",FirstName)
+
+				--FirstName.text = " "
+			end
+
+			if Name.text == "" or Name.text == Name.id  then
+				validation=false
+				SetError("* Enter the Last Name",Name)
+			end
+			if Email.text == "" or Email.text == Email.id then
+				validation=false
+				SetError("* Enter the Email",Email)
+			else
+
+				if not Utils.emailValidation(Email.text) then
+					validation=false
+					SetError("* Enter the valid email",Email)
+
+				end
+
+			end
+			if Phone.text == "" or Phone.text == Phone.id then
+				validation=false
+				SetError("* Enter the Phone Number",Phone)
+			end
+			if AppName ~= "DirectorApp" then
+				if UnitNumber.value == "" or UnitNumber.value == UnitNumber.id then
+					validation=false
+					SetError("* Enter the Unit Number",UnitNumber)
+				end
+			end
+			if MKRank.text == "" then
+				validation=false
+				SetError("* Select MKRank",MKRank)
+			end
+			if Comment.text == "" or Comment.text == Comment.id then
+				--validation=false
+				--SetError("* Enter the Comment",Comment)
+				--Comment.text = " "
+			end
+
+			if(validation == true) then
+
+				print("request validation complete")
+				
+				RequestProcess()
+
+			end
 
 	end
-	if Phone.text == "" or Phone.text == Phone.id then
-		validation=false
-		SetError("* Enter the Phone Number",Phone)
-	end
-	if AppName ~= "DirectorApp" then
-		if UnitNumber.value == "" or UnitNumber.value == UnitNumber.id then
-			validation=false
-			SetError("* Enter the UnitNumber",UnitNumber)
-		end
-	end
-	if MKRank.text == "" then
-		validation=false
-		SetError("* Select MKRank",MKRank)
-	end
-	if Comment.text == "" or Comment.text == Comment.id then
-		validation=false
-		SetError("* Enter the Comment",Comment)
-	end
-
-	if(validation == true) then
-
-		print("request validation complete")
-		
-		RequestProcess()
-
-	end
+return true
 
 end
 
@@ -477,16 +605,21 @@ local function rankTouch( event )
 	if event.phase == "began" then
 
 		print("1234")
+		display.getCurrentStage():setFocus( event.target )
+
 		elseif event.phase == "moved" then
 			local dx = math.abs( event.x - event.xStart )
 			local dy = math.abs( event.y - event.yStart )
         -- if finger drags button more than 5 pixels, pass focus to scrollView
         if dx > 5 or dy > 5 then
         	print("enter")
+        	display.getCurrentStage():setFocus( nil )
         	native.setKeyboardFocus(nil)
-        	scrollView:takeFocus( event )
+        	--scrollView:takeFocus( event )
         end
         elseif event.phase == "ended" then
+        display.getCurrentStage():setFocus( nil )
+
         if event.target.id == "MKrank" then
         	native.setKeyboardFocus( nil )
 
@@ -494,7 +627,12 @@ local function rankTouch( event )
         		listFlag=true
         		if rankGroup then
         			rankGroup.isVisible=true
-
+	        		FirstName.isVisible=false
+					Name.isVisible=false
+					Email.isVisible=false
+					Phone.isVisible=false
+					UnitNumber.isVisible=false
+					Comment.isVisible=false
         		end
 
         		elseif listFlag == true then
@@ -531,181 +669,170 @@ function scene:create( event )
 	BgText.x=5;BgText.y=20
 	BgText.anchorX=0
 
-	PageTitle = display.newText(sceneGroup,"",0,0,native.systemFont,sp_commonLabel.textSize)
-	PageTitle:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-	PageTitle.x=BgText.x;PageTitle.y=BgText.y+15
-	PageTitle.anchorX=0
 
 
-	scrollView = widget.newScrollView
-	{
-	top = H/2,
-	left = 0,
-	width = 320,
-	height = H-40,
-	scrollWidth = 320,
-	scrollHeight = 1200,
-	horizontalScrollDisabled = true,
-		    backgroundColor = {255,255,255,0}  -- r,g,b, alpha
-		}
-
-
-
-	scrollView.x=W/2;scrollView.y=H/2+20
-
-	backBtn = display.newImageRect("res/assert/right-arrow(gray-).png",15/2,30/2)
-	backBtn.x=20;backBtn.y=PageTitle.y-20
+	backBtn = display.newImageRect(sceneGroup,"res/assert/right-arrow(gray-).png",15/2,30/2)
+	backBtn.x=20;backBtn.y=BgText.y+BgText.contentHeight/2+20
 	backBtn.xScale=-1
 	backBtn.anchorY=0
 
-	page_title = display.newText("Request Access",0,0,native.systemFont,18)
+	page_title = display.newText(sceneGroup,"Request Access",0,0,native.systemFont,18)
 	page_title.x=backBtn.x+18;page_title.y=backBtn.y+8
 	page_title.anchorX=0
 	page_title:setFillColor(Utils.convertHexToRGB(color.Black))
-	scrollView:insert(backBtn)
-	scrollView:insert(page_title)
+	
 
 
 
-		FirstName_bg = display.newRect(W/2, PageTitle.y+25, W-20, 30)
+		FirstName_bg = display.newRect(W/2, page_title.y+35, W-20, 28)
 		FirstnameGroup:insert(FirstName_bg)
 
-		FirstName = display.newText("First Name",0,0,native.systemFont,16 )
-		FirstName.x=FirstName_bg.x-FirstName_bg.contentWidth/2+3;FirstName.y=FirstName_bg.y
-		FirstName.anchorX=0
+		FirstName = native.newTextField(W/2, page_title.y+35, W-20, 28)
 		FirstName.id="First Name"
-		FirstName.alpha=0.5
+		FirstName.size=14	
+		FirstName.placeholder="First Name"
 		FirstnameGroup:insert(FirstName)
-		FirstName:setFillColor(0,0,0)
 
-		scrollView:insert(FirstnameGroup)
+		sceneGroup:insert(FirstnameGroup)
 
-		Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+15, W-20, 30)
+		Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+10, W-20, 28)
 		nameGroup:insert(Name_bg)
 
-		Name = display.newText("Last Name",0,0,native.systemFont,16 )
-		Name.x=Name_bg.x-Name_bg.contentWidth/2+3;Name.y=Name_bg.y
-		Name.anchorX=0
+		Name = native.newTextField( W/2, FirstName_bg.y+FirstName_bg.height+10, W-20, 28)
 		Name.id="Last Name"
-		Name.alpha=0.5
+		Name.size=14	
+		Name.placeholder="Last Name"
 		nameGroup:insert(Name)
-		Name:setFillColor(0,0,0)
-
-		scrollView:insert(nameGroup)
+		sceneGroup:insert(nameGroup)
 
 
-		Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+15, W-20, 30 )
+		Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+10, W-20, 28 )
 		emailGroup:insert(Email_bg)
 
-		Email = display.newText("Email",0,0,native.systemFont,16 )
-		Email.anchorX=0
-		Email.alpha=0.5
+		Email = native.newTextField(W/2, Name_bg.y+Name_bg.height+10, W-20, 28 )
 		Email.id="Email"
-		Email:setFillColor(0,0,0)
-		Email.x=Email_bg.x-Email_bg.contentWidth/2+3;Email.y=Email_bg.y
-
+		Email.size=14	
+		Email.placeholder="Email Address"
 		emailGroup:insert(Email)
+		sceneGroup:insert(emailGroup)
 
-		scrollView:insert(emailGroup)
 
-
-		Phone_bg = display.newRect(W/2, Email_bg.y+Email_bg.height+15, W-20, 30)
+		Phone_bg = display.newRect(W/2, Email_bg.y+Email_bg.height+10, W-20, 28)
 		phoneGroup:insert(Phone_bg)
 
 
-		Phone = display.newText("Phone",0,0,native.systemFont,16 )
-		Phone.anchorX=0
-		Phone.alpha=0.5
+		Phone = native.newTextField(W/2, Email_bg.y+Email_bg.height+10, W-20, 28)
 		Phone.id="Phone"
-
-		Phone:setFillColor(0,0,0)
-		Phone.x=Phone_bg.x-Phone_bg.contentWidth/2+3;Phone.y=Phone_bg.y
+		Phone.size=14	
+		Phone.placeholder="Phone"
+		Phone.inputType = "number"
 		phoneGroup:insert(Phone)
 
 
-		scrollView:insert(phoneGroup)
+		sceneGroup:insert(phoneGroup)
 
 
 
 		if AppName ~= "DirectorApp" then
-			UnitNumber_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+15, W-20, 30)
+			UnitNumber_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+10, W-20, 28)
 			unitnumberGroup:insert(UnitNumber_bg)
 
-			UnitNumber = display.newText("Unit Number / Director name",0,0,native.systemFont,16 )
+			UnitNumber = native.newTextField(W/2, Phone_bg.y+Phone_bg.height+10, W-20, 28 )
 			UnitNumber.id = "Unit Number / Director name"
-			UnitNumber.anchorX=0
 			UnitNumber.value=""
-			UnitNumber.alpha=0.5
-			UnitNumber:setFillColor(0,0,0)
-			UnitNumber.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+3;UnitNumber.y=UnitNumber_bg.y
+			UnitNumber.size=14	
+			UnitNumber.placeholder="Unit Number / Director Name"
 			unitnumberGroup:insert(UnitNumber)
 
-			scrollView:insert(unitnumberGroup)
+			sceneGroup:insert(unitnumberGroup)
 
-			MKRank_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+15, W-20, 30)
+			MKRank_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+10, W-20, 28)
 
 		else
-			MKRank_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+15, W-20, 30)
+			MKRank_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+10, W-20, 28)
 
 		end
 
 		MKRank_bg.id="MKrank"
-		scrollView:insert(MKRank_bg)
+		sceneGroup:insert(MKRank_bg)
 
 
 
-		MKRank = display.newText("",MKRank_bg.x+10,MKRank_bg.y,MKRank_bg.contentWidth,MKRank_bg.height,native.systemFont,16 )
+		MKRank = display.newText("",MKRank_bg.x+10,MKRank_bg.y,MKRank_bg.contentWidth,MKRank_bg.height,native.systemFont,14 )
 		MKRank.text = "-Select MK Rank-"
 		MKRank.id="MKrank"
 		MKRank.alpha=0.7
 		MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-		MKRank.y=MKRank_bg.y+8
+		MKRank.y=MKRank_bg.y+5
 	--MKRank.size=20
-	scrollView:insert(MKRank)
+	sceneGroup:insert(MKRank)
+
+	  		rankText_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
+	  		rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth/2-15
+	  		rankText_icon.y=MKRank_bg.y
 
 
 
-	Comment_bg = display.newRect( W/2, 0, W-20, 130)
+
+	Comment_bg = display.newRect( W/2, 0, W-20, 100)
 	Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
 	commentGroup:insert(Comment_bg)
 
 
-	Comment = display.newText("Comments",0,0,Comment_bg.contentWidth-10,Comment_bg.contentHeight-10,native.systemFont,16 )
+	Comment = native.newTextField( W/2, Comment_bg.y, W-20, 100 )
 	Comment.id = "Comments"
-	Comment.anchorX=0
-	Comment.anchorY=0
-	Comment.alpha=0.5
-
-	Comment:setFillColor(0,0,0)
-	Comment.x=Comment_bg.x-Comment_bg.contentWidth/2+8;Comment.y=Comment_bg.y-Comment_bg.height/2+8
+	Comment.size=14	
+	Comment.placeholder="Enter your comment here"
 	commentGroup:insert(Comment)
 
-	scrollView:insert(commentGroup)
+	sceneGroup:insert(commentGroup)
 
 
 
-	sumbitBtn = widget.newButton
-	{
-	defaultFile = "res/assert/signin.jpg",
-	overFile = "res/assert/signin.jpg",
-	label = "Submit",
-	labelColor = 
-	{ 
-	default = { 1 },
-	},
-	emboss = true,
-	onRelease = sumbitBtnRelease,
-}
 
+sumbitBtn = display.newRect( 0,0,0,0 )
 sumbitBtn.x=W/2;sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+25
 sumbitBtn.width=80
 sumbitBtn.height=35
-scrollView:insert(sumbitBtn)
+sumbitBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+sceneGroup:insert(sumbitBtn)
 sumbitBtn.id="Submit"
 
-sceneGroup:insert(scrollView)
 
 
+sumbitBtn_lbl = display.newText( sceneGroup,CommonWords.submit,0,0,native.systemFont,16 )
+sumbitBtn_lbl.x = sumbitBtn.x-sumbitBtn.contentWidth/2+15;sumbitBtn_lbl.y=sumbitBtn.y
+sumbitBtn_lbl.anchorX=0
+
+local options = {
+    width = 25,
+    height = 25,
+    numFrames = 4,
+    sheetContentWidth = 50,
+    sheetContentHeight = 50
+}
+
+local submit_spinnerSingleSheet = graphics.newImageSheet( "res/assert/requestProcess.png", options )
+
+submit_spinner = widget.newSpinner
+{
+    width = 25,
+    height = 25,
+    deltaAngle = 10,
+    sheet = submit_spinnerSingleSheet,
+    startFrame = 1,
+    incrementEvery = 20
+}
+
+
+submit_spinner.isVisible=false
+submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
+submit_spinner.y=sumbitBtn.y
+
+
+
+
+sumbitBtn:addEventListener( "touch", sumbitBtnRelease )
 
 
 MainGroup:insert(sceneGroup)
@@ -740,10 +867,16 @@ function scene:show( event )
 		}
 
 		unitnumer_list.x=UnitNumber_bg.x
-		unitnumer_list.y=UnitNumber_bg.y+UnitNumber_bg.height+25
+		unitnumer_list.y=UnitNumber_bg.y+UnitNumber_bg.height/2
 		unitnumer_list.anchorY=0
 
 		unitnumer_list.alpha=0
+
+		if event.params.responseValue then
+
+			list_response_total = event.params.responseValue
+
+		end
 
 		
 		sceneGroup:insert(unitnumer_list)
@@ -751,13 +884,13 @@ function scene:show( event )
 		MKRank_bg:addEventListener( "touch", rankTouch )
 		MKRank:addEventListener( "touch", rankTouch )
 
-
-		FirstnameGroup:addEventListener( "touch", textfieldListener )
-		nameGroup:addEventListener( "touch", textfieldListener )
-		emailGroup:addEventListener( "touch", textfieldListener )
-		phoneGroup:addEventListener( "touch", textfieldListener )
-		unitnumberGroup:addEventListener( "touch", textfieldListener )
-		commentGroup:addEventListener( "touch", textfieldListener )
+		FirstName:addEventListener( "userInput", textfield )
+		Name:addEventListener( "userInput", textfield )
+		Email:addEventListener( "userInput", textfield )
+		Phone:addEventListener( "userInput", textfield )
+		UnitNumber:addEventListener( "userInput", textfield )
+		Comment:addEventListener( "userInput", textfield )
+		
 					Background:addEventListener("touch",touchBg)
 
 
@@ -772,11 +905,12 @@ function scene:show( event )
 
 			end
   		---Listview---
-  		rankTop = display.newRect(rankGroup,W/2,H/2-200,300,30)
+  		rankTop = display.newRect(rankGroup,W/2,H/2-160,300,30)
   		rankTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
   		rankText = display.newText(rankGroup,"-Select MK Rank-",0,0,native.systemFont,16)
   		rankText.x=rankTop.x;rankText.y=rankTop.y
+
 
   		rankClose = display.newImageRect(rankGroup,"res/assert/cancel.png",19,19)
   		rankClose.x=rankTop.x+rankTop.contentWidth/2-15;rankClose.y=rankTop.y
@@ -792,7 +926,7 @@ function scene:show( event )
   		{
   		left = 0,
   		top = -50,
-  		height = 350,
+  		height = 290,
   		width = 300,
   		onRowRender = onRowRender,
   		onRowTouch = onRowTouch,
@@ -829,6 +963,8 @@ end
 
 	Webservice.GET_LIST_OF_RANKS(GetListArray)
 
+		
+
 		backBtn:addEventListener("touch",backAction)
 		page_title:addEventListener("touch",backAction)
 
@@ -854,11 +990,6 @@ elseif phase == "did" then
 
 	MKRank_bg:removeEventListener( "touch", rankTouch )
 	MKRank:removeEventListener( "touch", rankTouch )
-	nameGroup:removeEventListener( "touch", textfieldListener )
-	emailGroup:removeEventListener( "touch", textfieldListener )
-	phoneGroup:removeEventListener( "touch", textfieldListener )
-	unitnumberGroup:removeEventListener( "touch", textfieldListener )
-	commentGroup:removeEventListener( "touch", textfieldListener )
 	rankTop:removeEventListener("touch",rankToptouch)
 	rankText:removeEventListener("touch",rankToptouch)
 	rankClose:removeEventListener("touch",rankToptouch)

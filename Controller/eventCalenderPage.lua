@@ -10,7 +10,6 @@ local widget = require( "widget" )
 local json = require("json")
 
 
-local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 
 local Processingdate
@@ -31,7 +30,42 @@ local currentweek=0
 
 local weekView_bg,weekView_leftArrow,weekView_rightArrow,weekView_header
 
+local langid,countryid
+
 --------------- Initialization -------------------
+
+
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
+
+
+for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+
+		langid = row.LanguageId
+		countryid = row.CountryId
+
+		
+
+end
+
+
+if langid == "2"  and countryid == "1" then
+
+	require( "res.value.string_es_Us" )
+
+elseif langid == "3"  and countryid == "2" then
+
+	require( "res.value.string_fr_Ca" )
+
+elseif langid == "4" and countryid == "2" then
+
+	require( "res.value.string_en_Ca" )
+
+else
+
+	require( "res.value.string")
+
+end
 
 local W = display.contentWidth;H= display.contentHeight
 
@@ -59,7 +93,7 @@ local RecentTab_Topvalue = 70
 
 local pickerWheel,picker_btnBg,picker_Done
 
-local labels = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }
+local labels = { Weekdays.Monday, Weekdays.Tuesday, Weekdays.Wednesday, Weekdays.Thursday, Weekdays.Friday, Weekdays.Saturday, Weekdays.Sunday }
 local monthArray={ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
 local weekLbl = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"}
 local days = {}
@@ -215,7 +249,7 @@ parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))
 local parent_leftDraw = display.newImageRect(tempGroup,"res/assert/calendar.png",32/2,32/2)
 parent_leftDraw.x=parentTitle.x-parentTitle.contentWidth/2+15;parent_leftDraw.y=parentTitle.y+parentTitle.contentHeight/2
 
-local parent_leftText = display.newText(tempGroup,os.date( "%A" , timeGMT ),0,0,native.systemFont,10)
+local parent_leftText = display.newText(tempGroup,os.date( "%A" , timeGMT ),0,0,native.systemFont,11)
 parent_leftText.x=parent_leftDraw.x+parent_leftDraw.contentWidth/2+2
 parent_leftText.y=parent_leftDraw.y
 Utils.CssforTextView(parent_leftText,sp_fieldValue_small)
@@ -307,6 +341,16 @@ DateWise_response=response
 		else
 
 		end
+
+			
+
+
+
+			Processingdate = dateSplit(DateWise_response[1].date)
+
+
+			print( "Compare with start : "..startdate,Processingdate )
+	
 	
 
 		for i = 1, #DateWise_response do
@@ -317,7 +361,6 @@ DateWise_response=response
 
 			local function eventCalen_display_process()
 
-				print(Processingdate,date)
 
 				if Processingdate == date then
 
@@ -327,8 +370,7 @@ DateWise_response=response
 
 				else
 
-					
-
+			
 					ProcessingCount = ProcessingCount+1
 
 					if ProcessingCount_total >= ProcessingCount then
@@ -339,9 +381,7 @@ DateWise_response=response
 
 						timeValue.day=timeValue.day+1
 
-						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( timeValue )))
-
-						--print(Processingdate,ProcessingCount,timeValue.day)
+						Processingdate = dateSplit(DateWise_response[i].date)
 
 						eventCalen_display_process()
 
@@ -394,6 +434,10 @@ DateWise_response=response
 		else
 
 		end
+
+			--Processingdate = dateSplit(DateWise_response[1].date)
+	
+		print( "check search "..Processingdate,dateSplit(DateWise_response[1].date) )
 	
 
 		for i = 1, #DateWise_response do
@@ -412,7 +456,6 @@ DateWise_response=response
 
 			local function eventCalen_display_process()
 
-				print(Processingdate,date)
 
 				if Processingdate == date then
 
@@ -458,7 +501,7 @@ DateWise_response=response
 
 						timeValue.day=timeValue.day+1
 
-						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( timeValue )))
+						Processingdate = dateSplit(DateWise_response[i].date)
 
 						--print(Processingdate,ProcessingCount,timeValue.day)
 
@@ -599,6 +642,8 @@ local function searchListener( event )
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
         print( event.target.text )
+
+        native.setKeyboardFocus( nil )
 
     elseif ( event.phase == "editing" ) then
 
@@ -854,7 +899,7 @@ function scene:create( event )
 
 
 
-	NoEvent = display.newText( sceneGroup, "No events to show", 0,0,0,0,native.systemFontBold,16)
+	NoEvent = display.newText( sceneGroup, "There are no Events to show", 0,0,0,0,native.systemFontBold,16)
 	NoEvent.x=W/2;NoEvent.y=H/2
 	NoEvent.isVisible=false
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
@@ -881,6 +926,8 @@ function scene:create( event )
 
 	search =  native.newTextField( searchhBg.x-searchhBg.contentWidth/2, searchhBg.y, searchhBg.contentWidth-25, 22 )
 	search.anchorX=0
+	search:setReturnKey( "search" )
+	search.placeholder = CommonWords.search
 	search.hasBackground = false
 	sceneGroup:insert(search)
 
@@ -1046,8 +1093,6 @@ function scene:show( event )
 			t.day = t.day + 7
 
 			Processingdate = os.date( "!%Y-%m-%d" , os.time( t ))
-
-
 
 
 			startdate = dateSplit(startdate).." 12:00:00 AM"

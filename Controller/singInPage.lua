@@ -152,9 +152,9 @@ local function onRowTouch_unitnumber( event )
 
 				local EmailTxt = Request_response.MyUnitBuzzContacts.EmailAddress
 
-					if EmailTxt:len() > 28 then
+					if EmailTxt:len() > 26 then
 
-						EmailTxt= EmailTxt:sub(1,28).."..."
+						EmailTxt= EmailTxt:sub(1,26).."..."
 
 					end
 
@@ -315,18 +315,18 @@ local function onRowTouch_unitnumber( event )
 
 			end
 
-			print(Director_Name:len())
 
 			profileName.text=Director_Name
+
 
 
 			local tablesetup = [[DROP TABLE logindetails;]]
 			db:exec( tablesetup )
 
-			local tablesetup = [[CREATE TABLE IF NOT EXISTS logindetails (id INTEGER PRIMARY KEY autoincrement, UnitNumberOrDirector, EmailAddess, PhoneNumber, Status, UserId, GoogleUsername, GoogleToken, GoogleTokenSecret, GoogleUserId, FacebookUsername, FacebookAccessToken, TwitterUsername, TwitterToken, TwitterTokenSecret, ProfileImageUrl, AccessToken, ContactId, ContactDisplay, LanguageId, CountryId );]]
+			local tablesetup = [[CREATE TABLE IF NOT EXISTS logindetails (id INTEGER PRIMARY KEY autoincrement, UnitNumberOrDirector, EmailAddess, PhoneNumber, Status, UserId, GoogleUsername, GoogleToken, GoogleTokenSecret, GoogleUserId, FacebookUsername, FacebookAccessToken, TwitterUsername, TwitterToken, TwitterTokenSecret, ProfileImageUrl, AccessToken, ContactId, ContactDisplay, LanguageId, CountryId, MemberName, MemberEmail );]]
 			db:exec( tablesetup )
 
-			local insertQuery = [[INSERT INTO logindetails VALUES (NULL, ']]..UnitNumberOrDirectorName..[[',']]..EmailAddess..[[',']]..PhoneNumber..[[',']]..Status..[[',']]..UserId..[[',']]..GoogleUsername..[[',']]..GoogleToken..[[',']]..GoogleTokenSecret..[[',']]..GoogleUserId..[[',']]..FacebookUsername..[[',']]..FacebookAccessToken..[[',']]..TwitterUsername..[[',']]..TwitterToken..[[',']]..TwitterTokenSecret..[[',']]..profileImageUrl..[[',']]..AccessToken..[[',']]..ContactId..[[',']]..ContactDisplay..[[',']]..LanguageId..[[',']]..CountryId..[[');]]
+			local insertQuery = [[INSERT INTO logindetails VALUES (NULL, ']]..UnitNumberOrDirectorName..[[',']]..EmailAddess..[[',']]..PhoneNumber..[[',']]..Status..[[',']]..UserId..[[',']]..GoogleUsername..[[',']]..GoogleToken..[[',']]..GoogleTokenSecret..[[',']]..GoogleUserId..[[',']]..FacebookUsername..[[',']]..FacebookAccessToken..[[',']]..TwitterUsername..[[',']]..TwitterToken..[[',']]..TwitterTokenSecret..[[',']]..profileImageUrl..[[',']]..AccessToken..[[',']]..ContactId..[[',']]..ContactDisplay..[[',']]..LanguageId..[[',']]..CountryId..[[',']]..Director_Name..[[',']]..Request_response.MyUnitBuzzContacts.EmailAddress..[[');]]
 			db:exec( insertQuery )
 
 			local options = {
@@ -690,7 +690,7 @@ function scene:create( event )
 	Password.size=14
 	Password.value=""
 	Password.placeholder = LoginPage.Password_placeholder
-	Password.isSecure = true;	
+	--Password.isSecure = true;	
 	Password.hasBackground = false
 	sceneGroup:insert(Password)
 	Password.x=Password_bg.x-Password_bg.contentWidth/2+40;Password.y=Password_bg.y
@@ -716,12 +716,12 @@ function scene:create( event )
 	Utils.CssforTextView(signinBtn_text,sp_primarybutton)	
 
 
-	requestBtn = display.newText(sceneGroup,LoginPage.Request_Button,0,0,native.systemFont,16)
+	requestBtn = display.newText(sceneGroup,LoginPage.Request_Button,0,0,native.systemFont,14)
 	requestBtn.x=W/2
 	requestBtn.y=signinBtn.y+signinBtn.contentHeight/2+20
 	requestBtn:setFillColor(Utils.convertHexToRGB(color.blue))
 	requestBtn.id="request"
-	requestBtn.isVisible=false
+	--requestBtn.isVisible=false
 
 	signInGroup:insert(sceneGroup)
 end
@@ -761,8 +761,8 @@ function scene:show( event )
 			list_response_total = event.params.responseValue
 		end
 
-		Unitnumber_field.text = "12345"
-		Unitnumber_field.value="12345"
+		Unitnumber_field.text = "123"
+		Unitnumber_field.value="123"
 		UserName.text = "malarkodi.sellamuthu@w3magix.com"
 		Password.text = "123123"
 		Password.value = "123123"

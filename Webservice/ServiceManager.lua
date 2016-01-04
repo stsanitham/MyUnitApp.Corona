@@ -11,13 +11,6 @@ local http = require("socket.http")
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
-local UserId
-for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-	print("UserId :"..UserId)
-	UserId = row.UserId
-	
-end
-
 
 local function splitUrl( URL )
 

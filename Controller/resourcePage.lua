@@ -36,10 +36,10 @@ local function downloadAction(filename)
 
 			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
 						
-					local path = system.pathForFile("/storage/sdcard1/"..filename)                         -- Change this path to the path of an image on your computer
-					------------------------------------------------------------------------
+					local path = system.pathForFile("/storage/sdcard1/"..filename)    
+
 					--------------------------- Read ----------------------------
-						local file, reason = io.open( localpath, "r" )                               -- Open the image in read mode
+						local file, reason = io.open( localpath, "r" )                              
 						local contents
 						if file then
 						    contents = file:read( "*a" )                                        -- Read contents
@@ -74,6 +74,8 @@ local function downloadAction(filename)
 									 end
 								 end
 							end
+
+							native.showAlert( filename, "Saved to Device Memory", { "OK"} )
 
 end
 
@@ -121,7 +123,6 @@ local function networkListener( downloan_event )
 
 				if event.id =="download" then
 					
-					print("String :"..downloan_event.response.filename)				
 
 							downloadAction(downloan_event.response.filename)
 
@@ -142,7 +143,6 @@ local function networkListener( downloan_event )
 local destDir = system.TemporaryDirectory 
 local result, reason = os.remove( system.pathForFile( "imageLib.png", destDir ) )
 
-print("String :"..event.filename.."."..fileExt)		
 
 network.download(
 	event.value,
@@ -180,7 +180,41 @@ local function onRowRender_DocLib( event )
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
 
-    local Lefticon = display.newImageRect(row,"res/assert/user.png",15,15)
+    local tempValue = ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
+
+    local tempreverse = string.find(string.reverse( tempValue ),"%.")
+
+	fileExt = tempValue:sub( tempValue:len()-tempreverse+2,tempValue:len())
+
+	print( "file ext : "..fileExt )
+
+	if fileExt == "png" or fileExt == "jpg" or fileExt == "jpeg" or fileExt == "gif" or fileExt == "bmp" or fileExt == "tif" then
+
+		tempValue="res/assert/image-active.png"
+
+	elseif fileExt == "doc" or fileExt == "docx" or fileExt == "txt" or fileExt == "xls"  or fileExt == "xlsx" or fileExt == "ppt"  or fileExt == "pptx"  or fileExt == "xps"  or fileExt == "pps" or fileExt == "wma" or fileExt == "pub" or fileExt == "js" or fileExt == "swf" or fileExt == "xml" or fileExt == "html" or fileExt == "htm" or fileExt == "rtf"  then
+
+			tempValue="res/assert/word-active.png"
+
+	elseif fileExt == "pdf" then
+
+			tempValue="res/assert/pdf-active.png"
+
+	elseif fileExt == "mpg" or fileExt == "au" or fileExt == "aac" or fileExt == "aif" or fileExt == "gsm" or fileExt == "mid" or fileExt == "mp3" or fileExt == "rm"  or fileExt == "wav" then
+
+		tempValue="res/assert/audio.png"
+	
+	elseif fileExt == "mpeg" or fileExt == "avi" then
+
+		tempValue="res/assert/video.png"
+
+	else
+
+		tempValue="res/assert/image-active.png"
+
+	end
+
+    local Lefticon = display.newImageRect(row,tempValue,25,25)
     Lefticon.x=30;Lefticon.y=rowHeight/2
 
 
@@ -247,7 +281,6 @@ local function onRowRender_DocLib( event )
 	   shareImg_bg:addEventListener("touch",listTouch)
     shareImg:addEventListener("touch",listTouch)
 
-	 print("List_array[row.index].DocumentFileName  "..List_array[row.index].DocumentFileName)
     row.ImageId = List_array[row.index].DocumentCategoryId
     row.FilePath = List_array[row.index].FilePath
     row.fileName = List_array[row.index].DocumentFileName
@@ -295,10 +328,16 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-	title = display.newText(sceneGroup,"Resourse Library",0,0,native.systemFont,18)
-	title.anchorX = 0 ;title.anchorY=0
-	title.x=5;title.y = tabBar.y+tabBar.contentHeight/2+10
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+
+
+	title = display.newText(sceneGroup,"Resource Library",0,0,native.systemFont,18)
+	title.anchorX = 0
+	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
+
 	
 	MainGroup:insert(sceneGroup)
 
@@ -334,6 +373,12 @@ function scene:show( event )
 		}
 
 		sceneGroup:insert(Document_Lib_list)
+
+		if #List_array == 0  then
+				NoEvent = display.newText( sceneGroup, "No documents are found to view", 0,0,0,0,native.systemFontBold,16)
+				NoEvent.x=W/2;NoEvent.y=H/2
+				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+		end
 
 		for i = 1, #List_array do
 		    -- Insert a row into the tableView

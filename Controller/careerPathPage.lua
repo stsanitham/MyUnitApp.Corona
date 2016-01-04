@@ -6,8 +6,6 @@
 
 local composer = require( "composer" )
 local scene = composer.newScene()
-
-local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 local Applicationconfig = require("Utils.ApplicationConfig")

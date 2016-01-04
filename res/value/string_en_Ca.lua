@@ -6,6 +6,8 @@ CommonWords.done = "Done"
 CommonWords.search = "Search"
 
 
+RequestAccess = {}
+
 Weekdays = {}
 
 Weekdays.Monday = "Monday"
@@ -15,9 +17,6 @@ Weekdays.Thursday = "Thursday"
 Weekdays.Friday = "Friday"
 Weekdays.Saturday = "Saturday"
 Weekdays.Sunday = "Sunday"
-
-RequestAccess = {}
-
 
 
 LoginPage = {}

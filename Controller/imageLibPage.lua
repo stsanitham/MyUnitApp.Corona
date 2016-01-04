@@ -7,7 +7,6 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 
-local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 
@@ -112,6 +111,7 @@ local function listTouchAction( event)
 
 
 local tempreverse = string.find(string.reverse( event.value ),"%.")
+
 fileExt = event.value:sub( event.value:len()-tempreverse+2,event.value:len())
 
 print( "file ext : "..fileExt )
@@ -175,7 +175,7 @@ local function onRowRender_ImageLib( event )
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
 
-    local Lefticon = display.newImageRect(row,"res/assert/user.png",15,15)
+    local Lefticon = display.newImageRect(row,"res/assert/image-active.png",25,25)
     Lefticon.x=30;Lefticon.y=rowHeight/2
 
     local text = display.newText(row,List_array[row.index].ImageFileName,0,0,native.systemFont,16)
@@ -258,7 +258,7 @@ local function onRowTouch_ImageLib( event )
 			local options = {
 			effect = "flip",
 			time =100,
-			params = { FilePath = row.FilePath }
+			params = { ImageList = List_array,count = row.index }
 		}
 
 		composer.showOverlay( "Controller.imageSlideView", options )
@@ -289,9 +289,14 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
+		title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+
+
 	title = display.newText(sceneGroup,"Image Library",0,0,native.systemFont,18)
-	title.anchorX = 0 ;title.anchorY=0
-	title.x=5;title.y = tabBar.y+tabBar.contentHeight/2+10
+	title.anchorX = 0
+	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
 
 	MainGroup:insert(sceneGroup)
@@ -327,6 +332,13 @@ function scene:show( event )
 			}
 
 			sceneGroup:insert(Image_Lib_list)
+
+			if #List_array == 0  then
+				NoEvent = display.newText( sceneGroup, "No Images are found to view", 0,0,0,0,native.systemFontBold,16)
+				NoEvent.x=W/2;NoEvent.y=H/2
+				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+			end
+
 
 			for i = 1, #List_array do
 		    -- Insert a row into the tableView
