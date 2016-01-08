@@ -75,6 +75,17 @@ Utils.makeTimeStamp = function ( dateString )
 	return timestamp;
 end
 
+Utils.GetMonth = function ( monthString)
+
+monthString = monthString:lower()
+
+if monthString == "jan" then monthString = Month[monthString] end
+
+
+
+return monthString
+end
+
 Utils.CssforTextView = function ( Object,Style )
 
 if Style.Font_Family then Object.font = Style.Font_Family end

@@ -9,7 +9,7 @@ local widget = require( "widget" )
 local Utility = require( "Utils.Utility" )
 EventCalender = require( "res.value.color" )
 local sqlite3 = require( "sqlite3" )
-
+MyUnitBuzzString = require( "res.value.string" )
 
 
 AppName = "CommonApp"
@@ -269,7 +269,7 @@ function copyFile( srcName, srcPath, dstName, dstPath, overwrite )
 
 
 
-	composer.gotoScene( "Controller.flapMenu")
+	composer.gotoScene( "Controller.splashScreen")
 
 
 --copyFile( "string.lua", system.DocumentsDirectory, "string.lua",system.ResourceDirectory, true )

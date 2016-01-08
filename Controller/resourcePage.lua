@@ -6,8 +6,6 @@
 
 local composer = require( "composer" )
 local scene = composer.newScene()
-
-local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 local lfs = require("lfs")
@@ -75,15 +73,52 @@ local function downloadAction(filename)
 								 end
 							end
 
-							native.showAlert( filename, "Saved to Device Memory", { "OK"} )
+							native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
 
 end
+
+local function showShare(fileNameString)
+
+				print( "fileNameString : "..fileNameString )
+
+			    local popupName = "activity"
+			    local isAvailable = native.canShowPopup( popupName )
+			    local isSimulator = "simulator" == system.getInfo( "environment" )
+
+			    local items =
+			{
+			    { type = "image", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
+			     --{ type = "UIActivityTypePostToFacebook", value = "UIActivityTypePostToFacebook" },
+			      { type = "string", value = "test" },
+
+			}
+						    -- If it is possible to show the popup
+			    if isAvailable then
+			        local listener = {}
+			        function listener:popup( event )
+			            print( "name(" .. event.name .. ") type(" .. event.type .. ") activity(" .. tostring(event.activity) .. ") action(" .. tostring(event.action) .. ")" )
+			        end
+
+			        -- Show the popup
+			        native.showPopup( popupName,
+			        {
+			            items = items,
+			            -- excludedActivities = { "UIActivityTypeCopyToPasteboard", },
+			            listener = listener,
+			            permittedArrowDirections={ "up", "down" }
+			        })
+			    else
+			  
+			            native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
+			        
+			    end
+			end
 
 local function share(fileName)
 		local isAvailable = native.canShowPopup( "social", "share" )
 
 		    -- If it is possible to show the popup
-		    if isAvailable then
+		  --[[  if isAvailable then
 		    	local listener = {}
 		    	function listener:popup( event )
 		    	end
@@ -92,7 +127,7 @@ local function share(fileName)
 		        native.showPopup( "social",
 		        {
 		            service = "share", -- The service key is ignored on Android.
-		            message = "Images share test",
+		            --message = "Images share test",
 		            listener = listener,
 		            image = 
 		            {
@@ -102,9 +137,9 @@ local function share(fileName)
 		            })
 		    else
 		 
-		            native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
+		            --native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
 		       
-		    end
+		    end]]
 
 end
 
@@ -129,8 +164,7 @@ local function networkListener( downloan_event )
 
 				elseif event.id =="share" then
 
-						print("share")
-						share(downloan_event.response.filename)
+						showShare(downloan_event.response.filename)
 
 				end
 
@@ -333,7 +367,7 @@ function scene:create( event )
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
 
-	title = display.newText(sceneGroup,"Resource Library",0,0,native.systemFont,18)
+	title = display.newText(sceneGroup,ResourceLibrary.PageTitle,0,0,native.systemFont,18)
 	title.anchorX = 0
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
@@ -375,7 +409,7 @@ function scene:show( event )
 		sceneGroup:insert(Document_Lib_list)
 
 		if #List_array == 0  then
-				NoEvent = display.newText( sceneGroup, "No documents are found to view", 0,0,0,0,native.systemFontBold,16)
+				NoEvent = display.newText( sceneGroup, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
 				NoEvent.x=W/2;NoEvent.y=H/2
 				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 		end

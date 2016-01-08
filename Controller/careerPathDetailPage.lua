@@ -62,6 +62,7 @@ end
 
 
 local function bgTouch( event )
+
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 		elseif event.phase == "ended" then
@@ -96,7 +97,7 @@ end
 local function observableScroll( event )
 
     local phase = event.phase
-    if ( phase == "began" ) then print( "Scroll view was touched" )
+    if ( phase == "began" ) then 
     elseif ( phase == "moved" ) then 
 
     	if event.direction ~= nil then
@@ -183,16 +184,16 @@ local function observableScroll( event )
 
   
 
-    elseif ( phase == "ended" ) then print( "Scroll view was released" )
+    elseif ( phase == "ended" ) then 
     end
 
    
   	 -- In the event a scroll limit is reached...
     if ( event.limitReached ) then
-        if ( event.direction == "up" ) then print( "Reached bottom limit" )
-        elseif ( event.direction == "down" ) then print( "Reached top limit" )
-        elseif ( event.direction == "left" ) then print( "Reached right limit" )
-        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+        if ( event.direction == "up" ) then 
+        elseif ( event.direction == "down" ) then 
+        elseif ( event.direction == "left" ) then 
+        elseif ( event.direction == "right" ) then 
         end
     end
     return true
@@ -206,7 +207,15 @@ local function phoneCallFunction( event )
 		display.getCurrentStage():setFocus( event.target )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
-		system.openURL( "tel:"..event.target.id )
+
+		callFlag = system.openURL( "tel:"..event.target.id )
+
+		if callFlag then
+
+		else
+			native.showAlert( "Call", "Your device does not have call option", { "OK" } )
+
+		end
 	end
 
 	return true
@@ -420,7 +429,7 @@ function scene:show( event )
 
 				if(Details.RecruitedDate ~= nil) then
 
-					local RecruitedDate = display.newText("When Recruited",0,0,150,0,native.systemFont,16)
+					local RecruitedDate = display.newText(CareerPath.When,0,0,150,0,native.systemFont,16)
 					RecruitedDate.anchorX = 0 ;RecruitedDate.anchorY=0
 					RecruitedDate.x=leftPadding
 					RecruitedDate.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
@@ -431,7 +440,9 @@ function scene:show( event )
 
 					local timeGMT = Utils.makeTimeStamp(Details.RecruitedDate)
 
-					Details_Display[#Details_Display+1] = display.newText(os.date( "%b %d, %Y" , timeGMT ),0,0,160,0,native.systemFont,18)
+					local month = Utils.GetMonth(os.date( "%b" , timeGMT ))
+
+					Details_Display[#Details_Display+1] = display.newText(os.date( month.." %d, %Y" , timeGMT ),0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = RecruitedDate.y 
@@ -442,7 +453,7 @@ function scene:show( event )
 
 				if(Details.ConsultantNumber ~= nil) then
 
-					local ConsultantNumber = display.newText("Consultant No",0,0,150,0,native.systemFont,16)
+					local ConsultantNumber = display.newText(CareerPath.Consultant_No,0,0,150,0,native.systemFont,16)
 					ConsultantNumber.anchorX = 0 ;ConsultantNumber.anchorY=0
 					ConsultantNumber.x=leftPadding
 					ConsultantNumber.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
@@ -461,7 +472,7 @@ function scene:show( event )
 				if(Details.UnitNumber ~= nil) then
 
 					
-					local UnitNumber = display.newText("Unit No",0,0,150,0,native.systemFont,16)
+					local UnitNumber = display.newText(CareerPath.Unit_No,0,0,150,0,native.systemFont,16)
 					UnitNumber.anchorX = 0 ;UnitNumber.anchorY=0
 					Utils.CssforTextView(UnitNumber,sp_labelName)
 					UnitNumber.x=leftPadding
@@ -479,7 +490,7 @@ function scene:show( event )
 
 				if(Details.RecruiterNumber ~= nil) then
 
-					local RecruiterNumber = display.newText("Recruiter No",0,0,150,0,native.systemFont,16)
+					local RecruiterNumber = display.newText(CareerPath.Recruiter_No,0,0,150,0,native.systemFont,16)
 					RecruiterNumber.anchorX = 0 ;RecruiterNumber.anchorY=0
 					RecruiterNumber.x=leftPadding
 					RecruiterNumber.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
@@ -498,7 +509,7 @@ function scene:show( event )
 
 				if(Details.RecruiterName ~= nil) then
 
-					local RecruiterName = display.newText("Recruiter Name",0,0,150,0,native.systemFont,16)
+					local RecruiterName = display.newText(CareerPath.Recruiter_Name,0,0,150,0,native.systemFont,16)
 					RecruiterName.anchorX = 0 ;RecruiterName.anchorY=0
 					RecruiterName.x=leftPadding
 					RecruiterName.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
@@ -516,7 +527,7 @@ function scene:show( event )
 
 				if(Details.CareerProgress ~= nil) then
 
-					local CareerProgress = display.newText("Career Progress",0,0,150,0,native.systemFont,16)
+					local CareerProgress = display.newText(CareerPath.Career_Progress,0,0,150,0,native.systemFont,16)
 					CareerProgress.anchorX = 0 ;CareerProgress.anchorY=0
 					CareerProgress.x=leftPadding
 					CareerProgress.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
@@ -698,12 +709,12 @@ function scene:show( event )
 								print( "Map Error: " .. event.errorMessage )
 							else
 								print( "The specified string is at: " .. event.latitude .. "," .. event.longitude )
-								myMap:setCenter( event.latitude, event.longitude )
+								if myMap then myMap:setCenter( event.latitude, event.longitude ) end
 
 								local options = 
 								{ 
-								title = "Location", 
-								subtitle = "Loc", 
+								title = CareerPath.Location, 
+								subtitle = location, 
 								imageFile =  "res/assert/map.png",
 							}
 							local result, errorMessage = myMap:addMarker( event.latitude, event.longitude , options )
@@ -713,8 +724,6 @@ function scene:show( event )
 
 					myMap:requestLocation( location, locationHandler )
 		
-				print(#MapDisplayArray)
-
 			
 			end
 

@@ -7,7 +7,6 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 
-local stringValue = require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 local style = require("res.value.style")
 --local string = require("res.value.string")
@@ -90,7 +89,7 @@ function scene:show( event )
 					
 				end
 
-				profileName.text=Director_Name
+				--[[profileName.text=Director_Name
 
 					if EmailAddress ~= nil then
 
@@ -105,7 +104,7 @@ function scene:show( event )
 						profileEmail.text = EmailTxt
 
 						end
-
+]]
 
 
 					local options = {
@@ -115,7 +114,9 @@ function scene:show( event )
 					}
 
 
-				composer.gotoScene( "Controller.eventCalenderPage", options )
+				--composer.gotoScene( "Controller.eventCalenderPage", options )
+
+				composer.gotoScene( "Controller.flapMenu" )
 
 			else
 				print('not table exists!')

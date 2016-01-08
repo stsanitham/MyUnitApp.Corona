@@ -71,12 +71,53 @@ local function downloadAction(filename)
 								 end
 							end
 
+								native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
+
 end
+			local function showShare(fileNameString)
+
+				print( "fileNameString : "..fileNameString )
+
+			    local popupName = "activity"
+			    local isAvailable = native.canShowPopup( popupName )
+			    local isSimulator = "simulator" == system.getInfo( "environment" )
+
+			    local items =
+			{
+			    { type = "image", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
+			     --{ type = "UIActivityTypePostToFacebook", value = "UIActivityTypePostToFacebook" },
+			      { type = "string", value = "test" },
+
+			}
+						    -- If it is possible to show the popup
+			    if isAvailable then
+			        local listener = {}
+			        function listener:popup( event )
+			            print( "name(" .. event.name .. ") type(" .. event.type .. ") activity(" .. tostring(event.activity) .. ") action(" .. tostring(event.action) .. ")" )
+			        end
+
+			        -- Show the popup
+			        native.showPopup( popupName,
+			        {
+			            items = items,
+			            -- excludedActivities = { "UIActivityTypeCopyToPasteboard", },
+			            listener = listener,
+			            permittedArrowDirections={ "up", "down" }
+			        })
+			    else
+			  
+			            native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
+			        
+			    end
+			end
 
 	local function share(fileName)
 
 		print( "fileName : "..fileName )
-		local isAvailable = native.canShowPopup( "social", "share" )
+
+		showShare(fileName)
+
+		--[[local isAvailable = native.canShowPopup( "social", "share" )
 
 		    -- If it is possible to show the popup
 		    if isAvailable then
@@ -84,11 +125,13 @@ end
 		    	function listener:popup( event )
 		    	end
 
+		    	
+
 		        -- Show the popup
 		        native.showPopup( "social",
 		        {
-		            service = "share", -- The service key is ignored on Android.
-		            message = "Images share",
+		            service = "facebook", -- The service key is ignored on Android.
+		            --message = "Images share",
 		            listener = listener,
 		            image = 
 		            {
@@ -98,9 +141,9 @@ end
 		            })
 		    else
 		 
-		            native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
+		            --native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
 		       
-		    end
+		    end]]
 
 end
 
@@ -123,28 +166,32 @@ if event.phase == "began" then
 
 	elseif event.phase == "ended" then
 
-			
+			title_playBtn:removeSelf( );title_playBtn  = nil
 
 			if event.target.value == "pause" then
 
 				title_playBtn = display.newImageRect( "res/assert/play.png", 22/1.5,26/1.5)
 				title_playBtn.value = "play"
-				timer.pause( SliderTimer )
+				event.target.value =  "play"
+				if SliderTimer then timer.pause( SliderTimer ) end
+
 
 			else
+
+				print( "start play" )
+
 				title_playBtn = display.newImageRect( "res/assert/pause.png", 22/1.5,26/1.5)
 				title_playBtn.value = "pause"
+				event.target.value =  "pause"
 				timer.resume( SliderTimer )
 
 			end
 
-			event.target:removeSelf( );event.target  = nil
 
-			
 			title_playBtn.x=W-25
 			title_playBtn.y=title_bg.y
 
-			 title_playBtn:addEventListener( "touch", PausePlayAction )
+			 --title_playBtn:addEventListener( "touch", PausePlayAction )
 
 	end
 	return true
@@ -164,12 +211,10 @@ local function listTouch( event )
 
 				fileExt = event.value:sub( event.value:len()-tempreverse+2,event.value:len())
 
-				print( "file ext : "..fileExt )
-
-			
+				
 
 						if event.id == "share" then
-							share(event.filename..fileExt)
+							share(event.filename.."."..fileExt)
 						elseif event.id =="download" then
 							downloadAction(event.filename.."."..fileExt)
 
@@ -189,18 +234,21 @@ local function slideShow(filename)
 
 						spinner_hide()
 
-						if myImage then myImage:removeSelf( );myImage=nil end
+						if myImage ~= nil then myImage:removeSelf( );myImage=nil end
 
 							shareImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
    							shareImg_bg.filename = ImageList[indexValue].ImageFileName
    							shareImg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
     						shareImg.filename = ImageList[indexValue].ImageFileName
 
+    						if downImg_bg then
+
     						downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
   							downImg_bg.filename = ImageList[indexValue].ImageFileName
  							downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
    							downImg.filename = ImageList[indexValue].ImageFileName
 
+   						end
 
 
 						myImage = display.newImage( filename, system.TemporaryDirectory )
@@ -273,22 +321,30 @@ function scene:create( event )
 	
 
 
-	title = display.newText(sceneGroup,"Image Library",0,0,native.systemFont,18)
+	title = display.newText(sceneGroup,ImageLibrary.PageTitle,0,0,native.systemFont,18)
 	title.anchorX = 0
 	title.x=BackBtn.x+BackBtn.contentWidth/2+5;title.y = BackBtn.y
 	title:setFillColor(0)
 
-	title_playBtn = display.newImageRect( sceneGroup, "res/assert/pause.png", 22/1.5,26/1.5)
+
+	title_playbg = display.newRect(sceneGroup,0,0,50,30)
+    title_playbg.x=W-25
+    title_playbg.y=title_bg.y
+    title_playbg.id="share"
+    title_playbg.alpha=0.01
+    title_playbg.value="play"
+
+	title_playBtn = display.newImageRect( sceneGroup, "res/assert/play.png", 22/1.5,26/1.5)
 	title_playBtn.x=W-25
 	title_playBtn.y=title_bg.y
-	title_playBtn.value="pause"
+	
 
 
 	imageslider_bg = display.newRect(sceneGroup,0,0,W,30)
 	imageslider_bg.x=W/2;imageslider_bg.y = title_bg.y+title_bg.contentHeight
 	imageslider_bg:setFillColor( 0 )
 
-	imageName = display.newText( sceneGroup, "123", 0, 0, native.systemFont, 14 )
+	imageName = display.newText( sceneGroup, " ", 0, 0, native.systemFont, 14 )
 	imageName.x=10;imageName.y=imageslider_bg.y
 	imageName.anchorX=0
 
@@ -297,7 +353,7 @@ function scene:create( event )
     seprate_bg.x=W/2+80;seprate_bg.y=imageslider_bg.y
     seprate_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
- 	shareImg_bg = display.newRect(sceneGroup,0,0,25,25)
+ 	shareImg_bg = display.newRect(sceneGroup,0,0,30,30)
     shareImg_bg.x=seprate_bg.x+25;shareImg_bg.y=seprate_bg.y
     shareImg_bg.id="share"
     shareImg_bg.alpha=0.01
@@ -308,7 +364,7 @@ function scene:create( event )
     shareImg.id="share"
 
 
-   if not isAndroid then
+   if isAndroid then
 
     downImg_bg = display.newRect(sceneGroup,0,0,25,25)
     downImg_bg.x=shareImg.x+30;downImg_bg.y=seprate_bg.y
@@ -335,7 +391,7 @@ function scene:create( event )
 	shareImg:addEventListener("touch",listTouch)
     shareImg_bg:addEventListener("touch",listTouch)
 
-    title_playBtn:addEventListener( "touch", PausePlayAction )
+    title_playbg:addEventListener( "touch", PausePlayAction )
 
 	sceneGroup:insert( imageGroup )
 	MainGroup:insert(sceneGroup)
@@ -364,13 +420,23 @@ function scene:show( event )
 					print( "Network error - download failed" )
 					elseif ( event.phase == "began" ) then
 						elseif ( event.phase == "ended" ) then
+						print( "12323123" )
+						SliderTimer = timer.performWithDelay( 5000, onSlideTimer )
+
+						if title_playbg.value == "play" then
+							timer.pause( SliderTimer )
+						end
 
 						slideShow(event.response.filename)
+
+							
+
 					end
 		end		
 
 					
 		local function downloadAction( )
+
 					spinner_show()
 
 					imageName.text = ImageList[indexValue].ImageFileName
@@ -379,7 +445,13 @@ function scene:show( event )
 					local fhd = io.open( path )
 
 					if fhd then
+						SliderTimer = timer.performWithDelay( 5000, onSlideTimer )
+
+						if title_playbg.value == "play" then
+							timer.pause( SliderTimer )
+						end
 					  slideShow(ImageList[indexValue].ImageFileName..".png")
+
 					   fhd:close()
 					else
 						imageDownload = network.download(
@@ -392,13 +464,13 @@ function scene:show( event )
 
 					
 
+					
+
 		end
 
 
-		local function onSlideTimer( event )
+		function onSlideTimer( event )
 		  	
-		  	print( "index value : ".. indexValue )
-
 		  	indexValue = indexValue + 1 
 
 		  	if #ImageList < indexValue then
@@ -409,9 +481,10 @@ function scene:show( event )
 
 		end
 
-		SliderTimer = timer.performWithDelay( 3000, onSlideTimer,-1 )
+		
 
-					
+		
+						
 		downloadAction()
 					
 
@@ -439,7 +512,7 @@ function scene:show( event )
 
 			elseif phase == "did" then
 
-
+				spinner_hide()
 				
 
 				if imageTrans then transition.cancel( imageTrans );imageTrans=nil end

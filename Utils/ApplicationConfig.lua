@@ -1,7 +1,9 @@
 ApplicationConfig = {}
 
 
-	----------Dev---------------
+----------Dev---------------
+
+--[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -10,7 +12,11 @@ ApplicationConfig.API_PUBLIC_KEY = "Or2tf5TjnfLObg5qZ1VfLOd"
 
 ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28"
 
---[[------Stagging--------
+
+--]]
+
+-----Stagging--------
+--[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -18,13 +24,15 @@ ApplicationConfig.IMAGE_BASE_URL = "http://c.spanunit.com/"
 
 ApplicationConfig.API_PUBLIC_KEY = "Or2tf5TjnfLObg5qZ1VfLOd"
 
-ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28"]]
+ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28"
 
---[[---------Live----------------
+--]]
+
+----[[---------Live----------------
 
 IsLive = true
 
-ApplicationConfig.Version = "/Android/1.0.0"
+ApplicationConfig.Version = "/iOS/1.0.1"    --1.0.1
 
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.com/"..ApplicationConfig.Version
 
@@ -33,8 +41,8 @@ ApplicationConfig.IMAGE_BASE_URL = "http://c.unitwise.com/"
 
 ApplicationConfig.API_PUBLIC_KEY = "pS41tCI3ASAdaswRG7G4tUb"
 
-ApplicationConfig.API_PRIVATE_KEY = "oyLvQ7ia7r2SsQMXjPJprzYeNBNK4azemXBYPwTHjLU"]]
-
+ApplicationConfig.API_PRIVATE_KEY = "oyLvQ7ia7r2SsQMXjPJprzYeNBNK4azemXBYPwTHjLU"
+--]]
 
 
 ApplicationConfig.testUrl = ApplicationConfig.BASE_URL.."/Therapy/List"

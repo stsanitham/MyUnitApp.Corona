@@ -43,29 +43,11 @@ for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
 		langid = row.LanguageId
 		countryid = row.CountryId
-
 		
 
 end
 
 
-if langid == "2"  and countryid == "1" then
-
-	require( "res.value.string_es_Us" )
-
-elseif langid == "3"  and countryid == "2" then
-
-	require( "res.value.string_fr_Ca" )
-
-elseif langid == "4" and countryid == "2" then
-
-	require( "res.value.string_en_Ca" )
-
-else
-
-	require( "res.value.string")
-
-end
 
 local W = display.contentWidth;H= display.contentHeight
 
@@ -93,7 +75,6 @@ local RecentTab_Topvalue = 70
 
 local pickerWheel,picker_btnBg,picker_Done
 
-local labels = { Weekdays.Monday, Weekdays.Tuesday, Weekdays.Wednesday, Weekdays.Thursday, Weekdays.Friday, Weekdays.Saturday, Weekdays.Sunday }
 local monthArray={ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
 local weekLbl = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"}
 local days = {}
@@ -159,6 +140,7 @@ local function listTouch( event )
 			end
 
 			elseif event.phase == "ended" then
+			native.setKeyboardFocus( nil )
 			display.getCurrentStage():setFocus( nil )
 
 
@@ -255,11 +237,15 @@ parent_leftText.y=parent_leftDraw.y
 Utils.CssforTextView(parent_leftText,sp_fieldValue_small)
 parent_leftText.anchorX=0
 
-local parent_centerText = display.newText(tempGroup,os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFont,14)
+local parent_centerText = display.newText(tempGroup,os.date( "%b %d, %Y" , timeGMT ),0,0,native.systemFont,14)
 parent_centerText.x=W/2
 parent_centerText.y=parent_leftDraw.y
 Utils.CssforTextView(parent_centerText,sp_subHeader)
 
+
+local month = Utils.GetMonth(os.date( "%b" , timeGMT ))
+
+parent_centerText.text = os.date( month.." %d, %Y" , timeGMT )
 background.y=parentTitle.y+background.contentHeight/2
 
 end
@@ -547,7 +533,7 @@ end
 local function dayTouch(event)
 	if event.phase == "ended" then
 
-		
+		native.setKeyboardFocus( nil )
 
 		for i=1,week.numChildren do
 
@@ -583,7 +569,9 @@ end
 
 weekViewGroup:insert( week )
 
-weekView_header.text = os.date( "%b %d, %Y" , os.time( weekfirstDay ) ).." - "
+local month = Utils.GetMonth(os.date( "%b" , os.time( weekfirstDay ) ))
+
+weekView_header.text = os.date( month.." %d, %Y" , os.time( weekfirstDay ) ).." - "
 
 weekfirstDay.day = weekfirstDay.day - 1
 	
@@ -617,7 +605,10 @@ weekfirstDay.day = weekfirstDay.day - 1
 
 		
 		if i == 7 then
-			weekView_header.text = weekView_header.text..os.date( "%b %d, %Y" , os.time( weekfirstDay ) )
+
+			local month = Utils.GetMonth(os.date( "%b" , os.time( weekfirstDay ) ))
+
+			weekView_header.text = weekView_header.text..os.date( month.." %d, %Y" , os.time( weekfirstDay ) )
 
 		end
 
@@ -669,6 +660,7 @@ local function calenderTouch( event )
 		display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
+		native.setKeyboardFocus( nil )
 		if pickerGroup.isVisible == true then
 	
 
@@ -689,6 +681,7 @@ local function todayAction( event )
 		display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
+		native.setKeyboardFocus( nil )
 
 		local temp = os.date( '*t' )
 		temp.day = temp.day - os.date( "%w" ) 
@@ -728,7 +721,7 @@ local function weekViewSwipe( event )
 	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 		print("currentweek .. "..currentweek)
-	
+		native.setKeyboardFocus( nil )
 
 		if weekViewTouchFlag == false then
 
@@ -736,7 +729,15 @@ local function weekViewSwipe( event )
 
 					if event.target.id  == "leftSwipe" then
 
+
+						if currentweek <= 1 then
+							weekView_leftArrow.alpha = 0.5
+						else
+							weekView_leftArrow.alpha = 1
+						end
+
 						if currentweek >= 1 then
+
 
 		
 						weekViewTouchFlag = true
@@ -768,13 +769,14 @@ local function weekViewSwipe( event )
 						creatWeek(weekViewSwipevalue_left,true)
 
 						
+							
 
 						end
 					
 
 					elseif event.target.id == "rightSwipe" then
 
-
+						weekView_leftArrow.alpha = 1
 						
 						weekViewTouchFlag = true
 
@@ -826,6 +828,7 @@ local function calenderAction( event )
 		display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
+		native.setKeyboardFocus( nil )
 			pickerGroup.isVisible=false
 
 		local values = pickerWheel:getValues()
@@ -870,13 +873,51 @@ local function calenderAction( event )
 
 end 
 
+local function unrequire( m )
+ print( "unrequire" )
+ package.loaded[m] = nil
+    _G[m] = nil
+ 	package.loaded["res.value.string_es_Us"] = nil
 
+  return true
+end
 
 ------------------------------------------------------
 
 function scene:create( event )
 
 	local sceneGroup = self.view
+
+		MyUnitBuzzString = nil
+
+	print( langid,countryid )
+
+	--("res.value.string")
+
+	if package.loaded["res.value.string_es_Us"] then print( "spani finish" ) unrequire("res.value.string_es_Us") end
+	if package.loaded["res.value.string_fr_Ca"] then print( "string_fr_Ca finish" ) unrequire("res.value.string_fr_Ca") end
+	if package.loaded["res.value.string_en_Ca"] then print( "string_en_Ca finish" ) unrequire("res.value.string_en_Ca") end
+	if package.loaded["res.value.string"] then print( "string finish" ) unrequire("res.value.string") end
+	
+
+	if langid == "2"  and countryid == "1" then
+
+		MyUnitBuzzString = require( "res.value.string_es_Us" )
+
+	elseif langid == "3"  and countryid == "2" then
+
+		MyUnitBuzzString = require( "res.value.string_fr_Ca" )
+
+	elseif langid == "4" and countryid == "2" then
+
+		MyUnitBuzzString = require( "res.value.string_en_Ca" )
+
+	else
+
+		MyUnitBuzzString = require( "res.value.string")
+
+	end
+
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
@@ -899,7 +940,7 @@ function scene:create( event )
 
 
 
-	NoEvent = display.newText( sceneGroup, "There are no Events to show", 0,0,0,0,native.systemFontBold,16)
+	NoEvent = display.newText( sceneGroup, EventCalender.NoEvent , 0,0,0,0,native.systemFontBold,16)
 	NoEvent.x=W/2;NoEvent.y=H/2
 	NoEvent.isVisible=false
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
@@ -1130,18 +1171,33 @@ weekView_header = display.newText( weekViewGroup,"", 0, 0, native.systemFont, 14
 weekView_header.x=W/2;weekView_header.y=weekView_bg.y+10
 Utils.CssforTextView(weekView_header,sp_helpText)
 
+
+weekView_leftArrow_bg = display.newRect( weekViewGroup, 0,0,30,45 )
+weekView_leftArrow_bg.x= weekView_bg.x-weekView_bg.contentWidth/2+20
+weekView_leftArrow_bg.y = weekView_bg.y+weekView_bg.contentHeight/2
+weekView_leftArrow_bg.alpha=0.01
+weekView_leftArrow_bg.id = "leftSwipe"
+weekView_leftArrow_bg:addEventListener( "touch", weekViewSwipe )
+
+
 weekView_leftArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
 weekView_leftArrow.xScale=-1
+weekView_leftArrow.alpha=0.5
 weekView_leftArrow.x=weekView_bg.x-weekView_bg.contentWidth/2+20
 weekView_leftArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5	
-weekView_leftArrow.id = "leftSwipe"
-weekView_leftArrow:addEventListener( "touch", weekViewSwipe )
+
+
+weekView_rightArrow_bg = display.newRect( weekViewGroup, 0,0,30,45 )
+weekView_rightArrow_bg.x=weekView_bg.x+weekView_bg.contentWidth/2-20
+weekView_rightArrow_bg.y=weekView_bg.y+weekView_bg.contentHeight/2
+weekView_rightArrow_bg.alpha=0.01
+weekView_rightArrow_bg.id = "rightSwipe"
+weekView_rightArrow_bg:addEventListener( "touch", weekViewSwipe )
 
 weekView_rightArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
 weekView_rightArrow.x=weekView_bg.x+weekView_bg.contentWidth/2-20
 weekView_rightArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5
-weekView_rightArrow.id = "rightSwipe"
-weekView_rightArrow:addEventListener( "touch", weekViewSwipe )
+
 
 	
 menuBtn:addEventListener("touch",menuTouch)

@@ -39,6 +39,7 @@ local with_enum = {
         "FAMY",
         "NONE"
     }
+    
 openPage="eventCalenderPage"
 
 local display_details = {}
@@ -313,8 +314,12 @@ function scene:show( event )
 					display_details[#display_details].anchorX=0
 					scrollView:insert( display_details[#display_details] )
 
+					local monthstart = Utils.GetMonth(os.date( "%b" , start_timeGMT ))
+					local monthend = Utils.GetMonth(os.date( "%b" , end_timeGMT ))
+
+
 					display_details[#display_details+1] = display_details[#display_details+1]
-					display_details[#display_details] = display.newText(os.date( "%b %d, %Y" , start_timeGMT ).." to "..os.date( "%b %d, %Y" , end_timeGMT ),0,0,220,0,sp_fieldValue.Font_Weight,sp_fieldValue.Font_Size_ios)
+					display_details[#display_details] = display.newText(monthstart..os.date( " %d, %Y" , start_timeGMT ).." to "..monthend..os.date( " %d, %Y" , end_timeGMT ),0,0,220,0,sp_fieldValue.Font_Weight,sp_fieldValue.Font_Size_ios)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_fieldValue.Text_Color))
 					display_details[#display_details].x=W/2-28;display_details[#display_details].y=titleBar.y-45
 					display_details[#display_details].anchorX=0
@@ -428,7 +433,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height-25
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
 						end
 
 					end
@@ -496,7 +501,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height-30
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
 						end
 
 					end
@@ -535,7 +540,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height-30
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
 						end
 
 					end
@@ -568,7 +573,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height-30
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
 						end
 
 					end
@@ -605,7 +610,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height-30
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
 						end
 
 					end

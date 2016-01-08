@@ -10,7 +10,6 @@ local scene = composer.newScene()
 local outerGroup = display.newGroup()
 local Utility = require( "Utils.Utility" )
 local style = require("res.value.style")
-require("res.value.string")
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 require( "Webservice.ServiceManager" )
@@ -114,7 +113,7 @@ local function onRowTouch_unitnumber( event )
 
 			UserName.isVisible=true
 			Password.isVisible=true
-			native.setKeyboardFocus(nil)
+			native.setKeyboardFocus( UserName )
 			Unitnumber_field.text = row.name
 			Unitnumber_field.value = row.id
 			Unitnumber_field.alpha=1
@@ -158,25 +157,26 @@ local function onRowTouch_unitnumber( event )
 
 					end
 
-			profileEmail.text = EmailTxt
 
 			end
 
 			
 
-			if Request_response.UnitNumberOrDirectorName then
-				UnitNumberOrDirectorName = Request_response.UnitNumberOrDirectorName
+			if Request_response.UnitNumber then
+				UnitNumberOrDirectorName = Request_response.UnitNumber
 			else
 				UnitNumberOrDirectorName=""
 			end
 
 
 
-			if Request_response.MyUnitBuzzContacts.EmailAddess then
-				EmailAddess = Request_response.MyUnitBuzzContacts.EmailAddess
+			if Request_response.MyUnitBuzzContacts.EmailAddress then
+
+				EmailAddess = Request_response.MyUnitBuzzContacts.EmailAddress
 			else
 				EmailAddess=""
 			end
+
 
 			if Request_response.MyUnitBuzzContacts.PhoneNumber then
 				PhoneNumber = Request_response.MyUnitBuzzContacts.PhoneNumber
@@ -207,67 +207,101 @@ local function onRowTouch_unitnumber( event )
 				ContactId=""
 			end
 
+		if Request_response.GoogleSettings ~= nil then
 
+			if Request_response.GoogleSettings.GoogleUsername ~= nil then
 
-			if Request_response.GoogleSettings ~= nil then
 				GoogleUsername = Request_response.GoogleSettings.GoogleUsername
+
 			else
 				GoogleUsername=""
 			end
 
-			if Request_response.GoogleSettings ~= nil then
+			if Request_response.GoogleSettings.GoogleToken ~= nil then
 				GoogleToken = Request_response.GoogleSettings.GoogleToken
 			else
 				GoogleToken=""
 			end
 
-			if Request_response.GoogleSettings ~= nil then
+			if Request_response.GoogleSettings.GoogleTokenSecret ~= nil then
 				GoogleTokenSecret = Request_response.GoogleSettings.GoogleTokenSecret
 			else
 				GoogleTokenSecret=""
 			end
 
-			if Request_response.GoogleSettings ~= nil then
+			if Request_response.GoogleSettings.GoogleUserId ~= nil then
+
 				GoogleUserId = Request_response.GoogleSettings.GoogleUserId
 			else
 				GoogleUserId=""
 			end
 
-			if Request_response.FacebookSettings ~= nil then
+	else
+
+		GoogleUsername=""
+		GoogleToken=""
+		GoogleTokenSecret=""
+		GoogleUserId=""
+
+	end
+	if Request_response.FacebookSettings then
+
+
+			if Request_response.FacebookSettings.FacebookUsername ~= nil then
 				FacebookUsername = Request_response.FacebookSettings.FacebookUsername
 			else
 				FacebookUsername=""
 			end
 
-			if Request_response.FacebookSettings ~= nil then
+			if Request_response.FacebookSettings.FacebookAccessToken ~= nil then
 				FacebookAccessToken = Request_response.FacebookSettings.FacebookAccessToken
 			else
 				FacebookAccessToken=""
 			end
+	else
 
-			if Request_response.TwitterSettings ~= nil then
+		FacebookUsername=""
+		FacebookAccessToken=""
+
+	end
+
+	if Request_response.TwitterSettings then
+			if Request_response.TwitterSettings.TwitterUsername ~= nil then
 				TwitterUsername = Request_response.TwitterSettings.TwitterUsername
 			else
 				TwitterUsername=""
 			end
 
-			if Request_response.TwitterSettings ~= nil then
+			if Request_response.TwitterSettings.TwitterToken ~= nil then
 				TwitterToken = Request_response.TwitterSettings.TwitterToken
 			else
 				TwitterToken=""
 			end
 
-			if Request_response.TwitterSettings ~= nil then
+			if Request_response.TwitterSettings.TwitterTokenSecret ~= nil then
 				TwitterTokenSecret = Request_response.TwitterSettings.TwitterTokenSecret
 			else
 				TwitterTokenSecret=""
 			end
+
+	else
+
+		TwitterUsername=""
+		TwitterToken=""
+		TwitterTokenSecret=""
+
+	end
+
+	if Request_response.Profile then
 
 			if Request_response.Profile.profileImageUrl ~= nil then
 				profileImageUrl = Request_response.Profile.profileImageUrl
 			else
 				profileImageUrl=""
 			end
+	else
+				profileImageUrl=""
+	end
 
 				if Request_response.MyUnitBuzzUserSetting.ContactDisplay ~= nil then
 				ContactDisplay = Request_response.MyUnitBuzzUserSetting.ContactDisplay
@@ -316,8 +350,9 @@ local function onRowTouch_unitnumber( event )
 			end
 
 
-			profileName.text=Director_Name
 
+
+Director_Name = string.gsub( Director_Name, "'", "''" )
 
 
 			local tablesetup = [[DROP TABLE logindetails;]]
@@ -336,7 +371,7 @@ local function onRowTouch_unitnumber( event )
 		}
 
 
-		composer.gotoScene( "Controller.eventCalenderPage", options )
+		composer.gotoScene( "Controller.flapMenu" )
 
 		elseif(Request_response.RequestAccessStatus == 6) then
 
@@ -395,24 +430,47 @@ local function onRowTouch_unitnumber( event )
 				event.target.text=""
 			end
 
+			if(current_textField.id == "Password") then
+
+				
+						current_textField.isSecure=true
+
+
+			end
+
 
 			elseif ( event.phase == "ended" or event.phase == "submitted" ) then
 
-			print("end")
-
-			native.setKeyboardFocus( nil )
+			--native.setKeyboardFocus( nil )
 
 			--[[unitnumer_list.alpha=0
 
 			UserName.isVisible=true
 			Password.isVisible=true]]
+		if current_textField.id == "Unit Number / Director name" then
+
+			native.setKeyboardFocus( nil )
+
+		elseif current_textField.id == "User name or Email address" then
+
+			native.setKeyboardFocus( Password )
+
+		elseif current_textField.id == "Password" then
+
+			native.setKeyboardFocus( nil )
+
+		end
+
+
+
+	
 
 			elseif ( event.phase == "editing" ) then
 				
 
 				if(current_textField.id == "Password") then
 
-					current_textField.isSecure=true
+					
 
 					if event.text:len() > 12 then
 
@@ -477,6 +535,8 @@ local function onRowTouch_unitnumber( event )
 
 								unitnumer_list.alpha=0
 
+
+
 								elseif #list_response == 1 then
 
 									Password.isVisible=true
@@ -485,14 +545,16 @@ local function onRowTouch_unitnumber( event )
 								else
 									UserName.isVisible=false
 									Password.isVisible=false
-								end
+							end
 
 								for i = 1, #list_response do
 							  	 		 -- Insert a row into the tableView
 							  	 		 unitnumer_list:insertRow{}
 
 							  	 end
-						  	 	end
+					else
+						unitnumer_list.alpha=0
+					end
 						  	 end
 
 						 local dotFlag = string.find(event.text,"%.")
@@ -538,7 +600,7 @@ local function onRowTouch_unitnumber( event )
 
 
 									if AppName ~= "DirectorApp" then
-										if Unitnumber_field.text == "" or Unitnumber_field.text == Unitnumber_field.id or Unitnumber_field.text == "* Enter the Unit Number" then
+										if Unitnumber_field.text == "" or Unitnumber_field.text == Unitnumber_field.id or Unitnumber_field.text == LoginPage.setError_Unitnumber or Unitnumber_field.value == 0 then
 											validation=false
 											SetError(LoginPage.setError_Unitnumber,Unitnumber_field)
 										end
@@ -547,8 +609,16 @@ local function onRowTouch_unitnumber( event )
 									if UserName.text == "" or UserName.text == UserName.id or UserName.text == LoginPage.setError_UserName then
 										validation=false
 										SetError(LoginPage.setError_UserName,UserName)
+
+
 									else
 
+										if not Utils.emailValidation(UserName.text) then
+										print( "here validation" )
+										validation=false
+										SetError(LoginPage.setError_UserName,UserName)
+
+									end
 
 									end
 
@@ -654,6 +724,7 @@ function scene:create( event )
 		Unitnumber_field.anchorX=0
 		Unitnumber_field.size=14	
 		Unitnumber_field.value=""
+		Unitnumber_field:setReturnKey( "go" )
 		--Utils.CssforTextField(Unitnumber_field,sp_fieldValue)	
 
 
@@ -673,6 +744,7 @@ function scene:create( event )
 	UserName.anchorX=0
 	UserName.size=14
 	UserName.value=""
+	UserName:setReturnKey( "next" )
 	UserName.hasBackground = false
 	sceneGroup:insert(UserName)
 	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+40;UserName.y=UserName_bg.y
@@ -689,6 +761,7 @@ function scene:create( event )
 	Password.anchorX=0
 	Password.size=14
 	Password.value=""
+	Password:setReturnKey( "done" )
 	Password.placeholder = LoginPage.Password_placeholder
 	--Password.isSecure = true;	
 	Password.hasBackground = false
@@ -761,11 +834,11 @@ function scene:show( event )
 			list_response_total = event.params.responseValue
 		end
 
-		Unitnumber_field.text = "123"
+		--[[Unitnumber_field.text = "123"
 		Unitnumber_field.value="123"
 		UserName.text = "malarkodi.sellamuthu@w3magix.com"
 		Password.text = "123123"
-		Password.value = "123123"
+		Password.value = "123123"]]
 
 
 		--[[function get_GetSearchByUnitNumberOrDirectorName(response)
@@ -811,6 +884,9 @@ function scene:show( event )
 				--if defalut ~= nil then defalut:removeSelf();defalut=nil end
 
 				if unitnumer_list then unitnumer_list:removeSelf( );unitnumer_list=nil end
+
+				
+
 
 				elseif phase == "did" then
 

@@ -8,7 +8,6 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 
 require( "res.value.style" )
---require( "res.value.string" )
 local Utility = require( "Utils.Utility" )
 
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
@@ -34,10 +33,19 @@ local profilePic,UserEmail;
 
 -----------------Function-------------------------
 
+local function unrequire( m )
+     print( "unrequire" )
+     package.loaded[m] = nil
+        _G[m] = nil
+        package.loaded["res.value.string_es_Us"] = nil
+
+      return true
+end
+
 local function closeDetails( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
+	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
 	end
@@ -56,11 +64,7 @@ local function MenuTouchAction(event)
 
 
 		if event.target.id == "logout" then
-			print("Logout")
-
-
-
-						local function onComplete( event )
+				local function onComplete( event )
 					   if event.action == "clicked" then
 					        local i = event.index
 					        if i == 1 then
@@ -89,7 +93,7 @@ local function MenuTouchAction(event)
 			end
 
 		-- Show alert with two buttons
-		local alert = native.showAlert( "Log out", "Are you sure you want to log out?", { "LOG OUT", "CANCEL" }, onComplete )	
+		local alert = native.showAlert( "Log out", FlapMenu.Alert, { FlapMenu.LOG_OUT , FlapMenu.CANCEL }, onComplete )	
 			return
 		end
 
@@ -105,7 +109,6 @@ local function MenuTouchAction(event)
 
 		slideAction()
 
-		print("open page : "..openPage.."and "..event.target.id)
 
 		if openPage ~= event.target.id then
 
@@ -130,6 +133,62 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
+
+
+    local found=false
+    db:exec([[select * from sqlite_master where name='logindetails';]],
+    function(...) found=true return 0 end)
+
+    if found then
+
+        for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+
+        langid = row.LanguageId
+        countryid = row.CountryId
+
+        loginFlag=true
+
+					Director_Name = row.MemberName
+
+					EmailAddress = row.MemberEmail
+        
+
+        end
+
+    if package.loaded["res.value.string_es_Us"] then print( "spani finish" ) unrequire("res.value.string_es_Us") end
+    if package.loaded["res.value.string_fr_Ca"] then print( "string_fr_Ca finish" ) unrequire("res.value.string_fr_Ca") end
+    if package.loaded["res.value.string_en_Ca"] then print( "string_en_Ca finish" ) unrequire("res.value.string_en_Ca") end
+    if package.loaded["res.value.string"] then print( "string finish" ) unrequire("res.value.string") end
+    
+
+    if langid == "2"  and countryid == "1" then
+
+        MyUnitBuzzString = require( "res.value.string_es_Us" )
+
+    elseif langid == "3"  and countryid == "2" then
+
+        MyUnitBuzzString = require( "res.value.string_fr_Ca" )
+
+    elseif langid == "4" and countryid == "2" then
+
+        MyUnitBuzzString = require( "res.value.string_en_Ca" )
+
+    else
+
+        MyUnitBuzzString = require( "res.value.string")
+
+    end
+
+
+
+    else
+
+        MyUnitBuzzString = require( "res.value.string" )
+
+    end
+
+
+
 	MainGroup:insert(sceneGroup)
 
 end
@@ -143,7 +202,6 @@ function scene:show( event )
 
 
 		elseif phase == "did" then
-			print("flap")
 			panel.background = display.newRect( 0, 0, panel.width, panel.height )
 			panel.background:setFillColor( Utils.convertHexToRGB(sp_Flatmenu_HeaderBg.Background_Color) )
 			panel:insert( panel.background )
@@ -159,7 +217,7 @@ function scene:show( event )
 			profilePic.anchorX=0
 			panel:insert( profilePic )
 
-			profileName = display.newText("",0,0,245,0,native.systemFont,15)
+			profileName = display.newText(Director_Name,0,0,245,0,native.systemFont,15)
 			profileName.x=profilePic.x
 			profileName.anchorX=0
 			profileName.y=profilePic.y+profilePic.contentHeight+10
@@ -175,6 +233,23 @@ function scene:show( event )
 			Utils.CssforTextView(profileEmail,sp_Flatmenu_fieldValue)
 			profileEmail.y=profileName.y+profileName.contentHeight-5
 			panel:insert( profileEmail )
+
+			
+
+			if EmailAddress ~= nil then
+
+							local EmailTxt = EmailAddress
+
+								if EmailTxt:len() > 26 then
+
+									EmailTxt= EmailTxt:sub(1,26).."..."
+
+								end
+
+						profileEmail.text = EmailTxt
+
+						end
+
 
 		--[[	--HomePage
 
@@ -193,7 +268,7 @@ function scene:show( event )
 			Event_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			panel:insert( Event_icon )
 
-			Event_text = display.newText("Home",0,0,"Open Sans Regular",16)
+			Event_text = display.newText(FlapMenu.Home,0,0,"Open Sans Regular",16)
 			Event_text.anchorX = 0
 			Event_text.x=Event_icon.x+Event_icon.contentWidth+5
 			Event_text.y = Event_icon.y
@@ -220,7 +295,7 @@ function scene:show( event )
 			Event_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			panel:insert( Event_icon )
 
-			Event_text = display.newText("Event Calendar",0,0,"Open Sans Regular",16)
+			Event_text = display.newText(EventCalender.PageTitle,0,0,"Open Sans Regular",16)
 			Event_text.anchorX = 0
 			Event_text.x=Event_icon.x+Event_icon.contentWidth+5
 			Event_text.y = Event_icon.y
@@ -248,7 +323,7 @@ function scene:show( event )
 			Career_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			panel:insert( Career_icon )
 
-			Career_text = display.newText("Career Path",0,0,"Open Sans Regular",16)
+			Career_text = display.newText(CareerPath.PageTitle,0,0,"Open Sans Regular",16)
 			Career_text.anchorX = 0
 			Career_text.x=Career_icon.x+Career_icon.contentWidth+5
 			Career_text.y = Career_icon.y
@@ -276,7 +351,7 @@ function scene:show( event )
 			Goals_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			panel:insert( Goals_icon )
 
-			Goals_text = display.newText("Goals",0,0,"Open Sans Regular",16)
+			Goals_text = display.newText(Goals.PageTitle,0,0,"Open Sans Regular",16)
 			Goals_text.anchorX = 0
 			Utils.CssforTextView(Goals_text,sp_Flatmenu_subHeader)
 			Goals_text.x=Goals_icon.x+Goals_icon.contentWidth+5
@@ -306,7 +381,7 @@ function scene:show( event )
 			Resource_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			panel:insert( Resource_icon )
 
-			Resource_text = display.newText("Resource",0,0,"Open Sans Regular",16)
+			Resource_text = display.newText(ResourceLibrary.PageTitle ,0,0,"Open Sans Regular",16)
 			Resource_text.anchorX = 0
 			Resource_text.x=Resource_icon.x+Resource_icon.contentWidth+5
 			Resource_text.y = Resource_icon.y
@@ -334,7 +409,7 @@ function scene:show( event )
 			img_lib_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			panel:insert( img_lib_icon )
 
-			img_lib_text = display.newText("Image Library",0,0,"Open Sans Regular",16)
+			img_lib_text = display.newText(ImageLibrary.PageTitle ,0,0,"Open Sans Regular",16)
 			img_lib_text.anchorX = 0
 			img_lib_text.x=img_lib_icon.x+img_lib_icon.contentWidth+5
 			img_lib_text.y = img_lib_icon.y
@@ -349,7 +424,7 @@ function scene:show( event )
 			rect:setFillColor(0)
 			panel:insert( rect )
 
-			socilaLbl = display.newText("Social Media",0,0,panel.contentWidth,0,"Open Sans Regular",16)
+			socilaLbl = display.newText(FlapMenu.Social_Media,0,0,panel.contentWidth,0,"Open Sans Regular",16)
 			socilaLbl.anchorX = 0
 			socilaLbl.x=-panel.width/2+5
 			socilaLbl.y= rect.y+15
@@ -377,7 +452,7 @@ function scene:show( event )
 			Facebook_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			panel:insert( Facebook_icon )
 
-			Facebook_text = display.newText("Facebook",0,0,"Open Sans Regular",16)
+			Facebook_text = display.newText(Facebook.PageTitle,0,0,"Open Sans Regular",16)
 			Facebook_text.anchorX = 0
 			Facebook_text.x=Facebook_icon.x+Facebook_icon.contentWidth+5
 			Facebook_text.y = Facebook_icon.y
@@ -404,7 +479,7 @@ function scene:show( event )
 			Twitter_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			panel:insert( Twitter_icon )
 
-			Twitter_text = display.newText("Twitter",0,0,"Open Sans Regular",16)
+			Twitter_text = display.newText(Twitter.PageTitle,0,0,"Open Sans Regular",16)
 			Twitter_text.anchorX = 0
 			Twitter_text.x=Twitter_icon.x+Twitter_icon.contentWidth+5
 			Twitter_text.y = Twitter_icon.y
@@ -432,7 +507,7 @@ function scene:show( event )
 					Google_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 					panel:insert( Google_icon )
 
-					Googl_text = display.newText("Google +",0,0,"Open Sans Regular",16)
+					Googl_text = display.newText(Google_Plus.PageTitle,0,0,"Open Sans Regular",16)
 					Googl_text.anchorX = 0
 					Googl_text.x=Google_icon.x+Google_icon.contentWidth+5
 					Googl_text.y = Google_icon.y
@@ -469,7 +544,7 @@ function scene:show( event )
 					Logout_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 					panel:insert( Logout_icon )
 
-					Logout_text = display.newText("Log Out",0,0,"Open Sans Regular",16)
+					Logout_text = display.newText(FlapMenu.PageTitle,0,0,"Open Sans Regular",16)
 					Logout_text.anchorX = 0
 					Utils.CssforTextView(Logout_text,sp_Flatmenu_subHeader)
 					Logout_text.x=Logout_icon.x+Logout_icon.contentWidth+5
@@ -481,7 +556,7 @@ function scene:show( event )
 			-----
 
 
-			composer.gotoScene( "Controller.splashScreen" )
+			composer.gotoScene( "Controller.eventCalenderPage" )
 			--composer.gotoScene( "Controller.careerPathDetailPage", options )
 		end	
 

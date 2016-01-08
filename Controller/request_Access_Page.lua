@@ -7,53 +7,45 @@
 local composer = require( "composer" )
 local widget = require( "widget" )
 require( "Webservice.ServiceManager" )
-
 local scene = composer.newScene()
 require( "Utils.Utility" )
 local style = require("res.value.style")
-require("res.value.string")
 local List_array = {}
 local mkRank_id=0
 local current_textField,defalut
-local FirstnameGroup = display.newGroup()
-local nameGroup = display.newGroup()
-local emailGroup = display.newGroup()
-local phoneGroup = display.newGroup()
-local unitnumberGroup = display.newGroup()
-local commentGroup = display.newGroup()
 local rankGroup = display.newGroup()
 
---malarkodi.sellamuthu@w3magix.com
 
 --------------- Initialization -------------------
 
 local W = display.contentWidth;
 local H= display.contentHeight
 
-local Background,BgText
+--Display Object
+local Background,BgText,tabBar,backBtn,page_title,MKRank,rankText_icon,sumbitBtn_lbl
 
+--EditText Background
+local FirstName_bg,Name_bg,Email_bg,Phone_bg,MKRank_bg,Comment_bg
 
+--EditText
+local FirstName,Name,Email,Phone,UnitNumber,Comment
+
+--Spinner
+local submit_spinner
+
+--List Array
 local list_response_total = {}
 local list_response = {}
+local unitnumer_list
 
 --Button
 local sumbitBtn,scrollView
 
---TexView
-local PageTitle;
-
---rank
+--Rank group
 local rankList,rankTop,rankClose,rankText
 
---Edittext
-local PageTitle,Name_bg,Name,Email_bg,Email,Phone_bg,Phone,UnitNumber_bg,UnitNumber,MKRank_bg,MKRank,Comment_bg,Comment
-
-openPage="request_Access_Page"
-
+--Bollean
 local listFlag= false
-
-local unitnumer_list
-
 
 --------------------------------------------------
 
@@ -83,44 +75,45 @@ local function rankToptouch( event )
 	return true
 end
 
-	local function touchBg( event )
+local function touchBg( event )
 		if event.phase == "began" then
 
-			elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 
 				native.setKeyboardFocus(nil)
 
 		end
 		return true
-	end
+end
 
 local function backAction( event )
 		if event.phase == "began" then
+
 			display.getCurrentStage():setFocus( event.target )
-			elseif event.phase == "ended" then
+
+		elseif event.phase == "ended" then
+
 			display.getCurrentStage():setFocus( nil )
-
-
-				local options = {
+			local options = {
 								effect = "slideRight",
 								time = 600,
 								params = { responseValue=list_response_total}
 								}
-				composer.gotoScene( "Controller.singInPage", options )
+			composer.gotoScene( "Controller.singInPage", options )
 
 			
 		end
 
 		return true
 
-	end
+end
 
 local function onRowRender_unitnumber_request( event )
 
-    -- Get reference to the row group
     local row = event.row
 
-    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
+
+
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
 
@@ -188,20 +181,38 @@ local function onRowTouch_unitnumber_request( event )
 
 	end
 
-	local function scroll(scroll_value)
+	local function alertFun(value,flag)
 
-		--[[scrollView:scrollToPosition
-		{
 
-		y = scroll_value,
-		time = 400,
-	}]]
+					local function onComplete( event )
+						   if event.action == "clicked" then
+						        local i = event.index
+						        if i == 1 then  
 
-end
+						        	if flag == 1 then
 
+							        	local options = {
+											effect = "slideRight",
+											time = 600,
+											params = { responseValue=list_response_total}
+											}
+										composer.gotoScene( "Controller.singInPage", options )
+
+									end
+									
+						        end
+						    end
+						end
+
+
+			local alert = native.showAlert( RequestAccess.PageTitle , value, { CommonWords.ok }, onComplete )
+
+	end	
+
+	
 local function RequestProcess()
 
-	submit_spinner.isVisible=true
+			submit_spinner.isVisible=true
 			sumbitBtn.width = sumbitBtn.width+20
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
@@ -211,7 +222,7 @@ local function RequestProcess()
 
 	function get_requestAccess(response)
 
-		Request_response = response
+			Request_response = response
 
 			submit_spinner.isVisible=false
 			sumbitBtn.width = sumbitBtn.width-20
@@ -219,68 +230,44 @@ local function RequestProcess()
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
 			submit_spinner:stop( )
 			
-		local function alertFun(value)
-
-
-					local function onComplete( event )
-						   if event.action == "clicked" then
-						        local i = event.index
-						        if i == 1 then   
-						        	local options = {
-										effect = "slideRight",
-										time = 600,
-										params = { responseValue=list_response_total}
-										}
-									composer.gotoScene( "Controller.singInPage", options )
-						        end
-						    end
-						end
-
-
-			local alert = native.showAlert( "Request Access", value, { "OK" }, onComplete )
-
-			end	
-
-									
+								
 
 		if Request_response == "REQUEST"  then
 
-			alertFun("Request already sent")
+			alertFun(RequestAccess.REQUEST,0)
 
 		elseif Request_response == "FIRSTREQUEST" then
 
-			alertFun("Your Request Access has been sent successfully")
+			alertFun(RequestAccess.FIRSTREQUEST,1)
 
 		elseif Request_response == "OPEN" then
 
-			alertFun("Request Access sent")
+			alertFun(RequestAccess.OPEN,1)
 						
 		elseif Request_response == "GRANT" then
 
-			alertFun("Access already granted")
+			alertFun(RequestAccess.GRANT,1)
 
 		elseif Request_response == "NOUNITNUMBER" then
 
-			SetError("* Enter the Valid UnitNumber",UnitNumber)
+			SetError("* "..RequestAccess.NOUNITNUMBER,UnitNumber)
 
 		elseif Request_response == "BLOCK"  then
 
-			alertFun("Access denied already")
+			alertFun(RequestAccess.BLOCK,0)
 
 
 		elseif Request_response == "DENY" then
 
-			alertFun("Access denied already")
+			alertFun(RequestAccess.DENY,0)
 
 		elseif Request_response == "FAIL" then
 
-			alertFun("Enter Valid credentials")
+			alertFun(RequestAccess.FAIL,0)
 		end
 
 	end
-					if FirstName.text == FirstName.id then
-						FirstName.text=""
-					end
+					
 					if AppName == "DirectorApp" then
 
 						Webservice.REQUEST_ACCESS(FirstName.text,Name.text,Email.text,Phone.text,Unitnumber_value,mkRank_id,Comment.text,get_requestAccess)
@@ -291,12 +278,19 @@ local function RequestProcess()
 				end
 
 
+				local function scrollTo( position )
+					MainGroup.y = position
+				end
+
+
 				local function textfield( event )
 
 					if ( event.phase == "began" ) then
 
 					
 							event.target:setTextColor(color.black)
+
+							current_textField = nil
 
 							current_textField = event.target;
 
@@ -307,70 +301,127 @@ local function RequestProcess()
 								event.target.text=""
 							end
 
+							if(current_textField.id == "Comments") then
+
+								print( "here" )
+
+								current_textField.text = ""
+
+								scrollTo( -100 )
+
+							end
+
 
 					elseif ( event.phase == "ended" or event.phase == "submitted" ) then
 
-					       			
+					       			--native.setKeyboardFocus( nil )
+					       			if(current_textField.id == "Comments") then
+
+										current_textField.text = event.text
+
+										native.setKeyboardFocus( nil )
+
+										scrollTo( 0 )
+
+									elseif(current_textField.id == "First Name") then
+
+										native.setKeyboardFocus(Name)
+
+									elseif(current_textField.id == "Last Name") then
+										native.setKeyboardFocus(Email)
+
+									elseif(current_textField.id == "Email") then
+										native.setKeyboardFocus(Phone)
+
+									elseif(current_textField.id == "Phone") then
+
+										native.setKeyboardFocus(UnitNumber)
+
+									elseif(current_textField.id == "Unit Number / Director name") then
+																
+										native.setKeyboardFocus( nil )
+
+									end
+
+
+
+
+
+
+
 
         			elseif ( event.phase == "editing" ) then
+        				if current_textField.id ~= "Comments" then
+        					if event.text:len() > 50 then
 
+								event.target.text = event.target.text:sub(1,50)
+
+							end
+
+						end
 
 	       				if(current_textField.id == "Comments") then
         					if event.text:len() > 160 then
 
-								event.target.text = event.text:sub(1,160)
+								event.target.text = event.target.text:sub(1,160)
 
 							end
 
 						elseif(current_textField.id =="Phone") then
 
+							
+
+
 							local tempvalue = event.target.text:sub(1,1)
 
-							if (event.text:len() == 3) then
+							if (event.target.text:len() == 3) then
 
 								if (tempvalue ~= "(") then
 
 
-									event.target.text = "("..event.text..") "
+									event.target.text = "("..event.target.text..") "
+
+									
 
 								else
 
-									event.target.text = event.text:sub(2,event.target.text:len())
+									event.target.text = event.target.text:sub(2,event.target.text:len())
 
 
 								end
-							elseif event.text:len() == 5 and (tempvalue == "(") then
+							elseif event.target.text:len() == 5 and (tempvalue == "(") then
 
-								if event.text:sub(5,5) ~= ")" then
+								if event.target.text:sub(5,5) ~= ")" then
 
-									event.target.text = event.text:sub(1,4)..") "..event.text:sub(5,5)
+									event.target.text = event.text:sub(1,4)..") "..event.target.text:sub(5,5)
 				
 								end
 
 
-							elseif event.text:len() == 9 and not string.find(event.text,"-") then
+							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
 
 								event.target.text = event.target.text.."- "
 
-							elseif event.text:len() == 10 then
+							elseif event.target.text:len() == 10 then
 
-								if string.find(event.text,"-") then
+								if string.find(event.target.text,"-") then
 
-									event.target.text = event.text:sub(1,9)
+									event.target.text = event.target.text:sub(1,9)
 								else
 
-									event.target.text = event.text:sub(1,9).."- "..event.text:sub(10,10)
+									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
 								end
 
 							end
 
-							if event.text:len() > 15 then
+							if event.target.text:len() > 15 then
 
-								event.target.text = event.text:sub(1,15)
+								event.target.text = event.target.text:sub(1,15)
 
 							end
 
-							--(123) 654- 8901
+						
+
         				end
 
         			if(current_textField.id == "Unit Number / Director name") then
@@ -386,13 +437,10 @@ local function RequestProcess()
 
 						unitnumer_list.alpha=1
 
-						---UserName.isVisible=false
-
 						current_textField.value=0
 
 						unitnumer_list:deleteAllRows()
 
-						--list_response = list_response_total
 
 						if #list_response ~= nil then
 							for i = #list_response,1,-1 do
@@ -461,16 +509,10 @@ local function RequestProcess()
 
 
 			
-
-
-
-
 	local function onRowRender( event )
 
-    -- Get reference to the row group
     local row = event.row
 
-    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
 
@@ -542,54 +584,46 @@ local function onRowTouch( event )
 
 		elseif event.phase == "ended" then
 			local validation = true
+
 			native.setKeyboardFocus(nil)
-
-			if FirstName.text == "" or FirstName.text == FirstName.id  then
-				--validation=false
-				--SetError("* Enter the First Name",FirstName)
-
-				--FirstName.text = " "
-			end
 
 			if Name.text == "" or Name.text == Name.id  then
 				validation=false
-				SetError("* Enter the Last Name",Name)
+				SetError("* "..RequestAccess.Name_error,Name)
 			end
 			if Email.text == "" or Email.text == Email.id then
 				validation=false
-				SetError("* Enter the Email",Email)
+				SetError("* "..RequestAccess.Email_error,Email)
 			else
 
 				if not Utils.emailValidation(Email.text) then
 					validation=false
-					SetError("* Enter the valid email",Email)
+					SetError("* "..RequestAccess.EmailValidation_error,Email)
 
 				end
 
 			end
-			if Phone.text == "" or Phone.text == Phone.id then
+			if Phone.text == "" or Phone.text == Phone.id or Phone.text:len() < 15  then
 				validation=false
-				SetError("* Enter the Phone Number",Phone)
+				SetError("* "..RequestAccess.Phone_error,Phone)
 			end
+
 			if AppName ~= "DirectorApp" then
-				if UnitNumber.value == "" or UnitNumber.value == UnitNumber.id then
+				if UnitNumber.value == "" or UnitNumber.value == UnitNumber.id or UnitNumber.value == 0 then
 					validation=false
-					SetError("* Enter the Unit Number",UnitNumber)
+					SetError("* "..RequestAccess.UnitNumber_error,UnitNumber)
 				end
 			end
-			if MKRank.text == "" then
+
+
+			if MKRank.text == "" or MKRank.text == MKRank.value then
 				validation=false
-				SetError("* Select MKRank",MKRank)
+				--SetError("* Select MKRank",MKRank)
 			end
-			if Comment.text == "" or Comment.text == Comment.id then
-				--validation=false
-				--SetError("* Enter the Comment",Comment)
-				--Comment.text = " "
-			end
+		
 
 			if(validation == true) then
 
-				print("request validation complete")
 				
 				RequestProcess()
 
@@ -604,15 +638,12 @@ end
 local function rankTouch( event )
 	if event.phase == "began" then
 
-		print("1234")
 		display.getCurrentStage():setFocus( event.target )
 
-		elseif event.phase == "moved" then
+	elseif event.phase == "moved" then
 			local dx = math.abs( event.x - event.xStart )
 			local dy = math.abs( event.y - event.yStart )
-        -- if finger drags button more than 5 pixels, pass focus to scrollView
         if dx > 5 or dy > 5 then
-        	print("enter")
         	display.getCurrentStage():setFocus( nil )
         	native.setKeyboardFocus(nil)
         	--scrollView:takeFocus( event )
@@ -657,6 +688,8 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
+	display.setDefault( "background", 1, 1, 1 )
+
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 
@@ -676,7 +709,7 @@ function scene:create( event )
 	backBtn.xScale=-1
 	backBtn.anchorY=0
 
-	page_title = display.newText(sceneGroup,"Request Access",0,0,native.systemFont,18)
+	page_title = display.newText(sceneGroup,RequestAccess.PageTitle,0,0,native.systemFont,18)
 	page_title.x=backBtn.x+18;page_title.y=backBtn.y+8
 	page_title.anchorX=0
 	page_title:setFillColor(Utils.convertHexToRGB(color.Black))
@@ -685,66 +718,67 @@ function scene:create( event )
 
 
 		FirstName_bg = display.newRect(W/2, page_title.y+35, W-20, 28)
-		FirstnameGroup:insert(FirstName_bg)
+		sceneGroup:insert(FirstName_bg)
 
 		FirstName = native.newTextField(W/2, page_title.y+35, W-20, 28)
 		FirstName.id="First Name"
 		FirstName.size=14	
-		FirstName.placeholder="First Name"
-		FirstnameGroup:insert(FirstName)
+		FirstName.hasBackground = false
+		FirstName:setReturnKey( "next" )
+		FirstName.placeholder=RequestAccess.FirstName_placeholder
+		sceneGroup:insert(FirstName)
 
-		sceneGroup:insert(FirstnameGroup)
 
 		Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+10, W-20, 28)
-		nameGroup:insert(Name_bg)
+		sceneGroup:insert(Name_bg)
 
 		Name = native.newTextField( W/2, FirstName_bg.y+FirstName_bg.height+10, W-20, 28)
 		Name.id="Last Name"
-		Name.size=14	
-		Name.placeholder="Last Name"
-		nameGroup:insert(Name)
-		sceneGroup:insert(nameGroup)
+		Name.size=14
+		Name:setReturnKey( "next" )
+		Name.hasBackground = false	
+		Name.placeholder = RequestAccess.LastName_placeholder
+		sceneGroup:insert(Name)
 
 
 		Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+10, W-20, 28 )
-		emailGroup:insert(Email_bg)
+		sceneGroup:insert(Email_bg)
 
 		Email = native.newTextField(W/2, Name_bg.y+Name_bg.height+10, W-20, 28 )
 		Email.id="Email"
 		Email.size=14	
-		Email.placeholder="Email Address"
-		emailGroup:insert(Email)
-		sceneGroup:insert(emailGroup)
+		Email:setReturnKey( "next" )
+		Email.hasBackground = false
+		Email.placeholder=RequestAccess.EmailAddress_placeholder
+		sceneGroup:insert(Email)
 
 
 		Phone_bg = display.newRect(W/2, Email_bg.y+Email_bg.height+10, W-20, 28)
-		phoneGroup:insert(Phone_bg)
+		sceneGroup:insert(Phone_bg)
 
 
 		Phone = native.newTextField(W/2, Email_bg.y+Email_bg.height+10, W-20, 28)
 		Phone.id="Phone"
 		Phone.size=14	
-		Phone.placeholder="Phone"
+		Phone:setReturnKey( "next" )
+		Phone.hasBackground = false
+		Phone.placeholder=RequestAccess.Phone_placeholder
 		Phone.inputType = "number"
-		phoneGroup:insert(Phone)
-
-
-		sceneGroup:insert(phoneGroup)
-
+		sceneGroup:insert(Phone)
 
 
 		if AppName ~= "DirectorApp" then
 			UnitNumber_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+10, W-20, 28)
-			unitnumberGroup:insert(UnitNumber_bg)
+			sceneGroup:insert(UnitNumber_bg)
 
 			UnitNumber = native.newTextField(W/2, Phone_bg.y+Phone_bg.height+10, W-20, 28 )
 			UnitNumber.id = "Unit Number / Director name"
 			UnitNumber.value=""
 			UnitNumber.size=14	
-			UnitNumber.placeholder="Unit Number / Director Name"
-			unitnumberGroup:insert(UnitNumber)
-
-			sceneGroup:insert(unitnumberGroup)
+			UnitNumber:setReturnKey( "go" )
+			UnitNumber.hasBackground = false
+			UnitNumber.placeholder=LoginPage.Unitnumber_placeholder
+			sceneGroup:insert(UnitNumber)
 
 			MKRank_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+10, W-20, 28)
 
@@ -759,7 +793,8 @@ function scene:create( event )
 
 
 		MKRank = display.newText("",MKRank_bg.x+10,MKRank_bg.y,MKRank_bg.contentWidth,MKRank_bg.height,native.systemFont,14 )
-		MKRank.text = "-Select MK Rank-"
+		MKRank.text = RequestAccess.MKRank_placeholder
+		MKRank.value = "-Select MK Rank-"
 		MKRank.id="MKrank"
 		MKRank.alpha=0.7
 		MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -776,27 +811,27 @@ function scene:create( event )
 
 	Comment_bg = display.newRect( W/2, 0, W-20, 100)
 	Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
-	commentGroup:insert(Comment_bg)
+	sceneGroup:insert(Comment_bg)
 
 
-	Comment = native.newTextField( W/2, Comment_bg.y, W-20, 100 )
+	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 100 )
 	Comment.id = "Comments"
 	Comment.size=14	
-	Comment.placeholder="Enter your comment here"
-	commentGroup:insert(Comment)
+	Comment:setReturnKey( "done" )
+	Comment.hasBackground = false
+	Comment.isEditable = true
+	Comment.placeholder=RequestAccess.Comment_placeholder
+	sceneGroup:insert(Comment)
 
-	sceneGroup:insert(commentGroup)
 
 
-
-
-sumbitBtn = display.newRect( 0,0,0,0 )
-sumbitBtn.x=W/2;sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+25
-sumbitBtn.width=80
-sumbitBtn.height=35
-sumbitBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-sceneGroup:insert(sumbitBtn)
-sumbitBtn.id="Submit"
+	sumbitBtn = display.newRect( 0,0,0,0 )
+	sumbitBtn.x=W/2;sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+25
+	sumbitBtn.width=80
+	sumbitBtn.height=35
+	sumbitBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+	sceneGroup:insert(sumbitBtn)
+	sumbitBtn.id="Submit"
 
 
 
@@ -829,11 +864,7 @@ submit_spinner.isVisible=false
 submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
 submit_spinner.y=sumbitBtn.y
 
-
-
-
 sumbitBtn:addEventListener( "touch", sumbitBtnRelease )
-
 
 MainGroup:insert(sceneGroup)
 
@@ -908,7 +939,7 @@ function scene:show( event )
   		rankTop = display.newRect(rankGroup,W/2,H/2-160,300,30)
   		rankTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-  		rankText = display.newText(rankGroup,"-Select MK Rank-",0,0,native.systemFont,16)
+  		rankText = display.newText(rankGroup,RequestAccess.MKRank_placeholder,0,0,native.systemFont,16)
   		rankText.x=rankTop.x;rankText.y=rankTop.y
 
 
@@ -983,19 +1014,16 @@ function scene:hide( event )
 	if event.phase == "will" then
 
 
+	elseif phase == "did" then
 
---MUB_Android_Dev_V1.0.0_11042015_b1.apk
-
-elseif phase == "did" then
-
-	MKRank_bg:removeEventListener( "touch", rankTouch )
-	MKRank:removeEventListener( "touch", rankTouch )
-	rankTop:removeEventListener("touch",rankToptouch)
-	rankText:removeEventListener("touch",rankToptouch)
-	rankClose:removeEventListener("touch",rankToptouch)
+		MKRank_bg:removeEventListener( "touch", rankTouch )
+		MKRank:removeEventListener( "touch", rankTouch )
+		rankTop:removeEventListener("touch",rankToptouch)
+		rankText:removeEventListener("touch",rankToptouch)
+		rankClose:removeEventListener("touch",rankToptouch)
 
 
-	composer.removeHidden()
+		composer.removeHidden()
 
 
 

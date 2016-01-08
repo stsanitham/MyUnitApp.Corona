@@ -73,13 +73,51 @@ local function downloadAction(filename)
 									 end
 								 end
 							end
-
+	native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
 end
+
+local function showShare(fileNameString)
+
+				print( "fileNameString : "..fileNameString )
+				
+			    local popupName = "activity"
+			    local isAvailable = native.canShowPopup( popupName )
+			    local isSimulator = "simulator" == system.getInfo( "environment" )
+
+			    local items =
+			{
+			    { type = "image", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
+			     --{ type = "UIActivityTypePostToFacebook", value = "UIActivityTypePostToFacebook" },
+			      { type = "string", value = "test" },
+
+			}
+						    -- If it is possible to show the popup
+			    if isAvailable then
+			        local listener = {}
+			        function listener:popup( event )
+			            print( "name(" .. event.name .. ") type(" .. event.type .. ") activity(" .. tostring(event.activity) .. ") action(" .. tostring(event.action) .. ")" )
+			        end
+
+			        -- Show the popup
+			        native.showPopup( popupName,
+			        {
+			            items = items,
+			            -- excludedActivities = { "UIActivityTypeCopyToPasteboard", },
+			            listener = listener,
+			            permittedArrowDirections={ "up", "down" }
+			        })
+			    else
+			  
+			            native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
+			        
+			    end
+			end
+
 
 	local function share(fileName)
 		local isAvailable = native.canShowPopup( "social", "share" )
 
-		    -- If it is possible to show the popup
+		  --[[  -- If it is possible to show the popup
 		    if isAvailable then
 		    	local listener = {}
 		    	function listener:popup( event )
@@ -89,7 +127,7 @@ end
 		        native.showPopup( "social",
 		        {
 		            service = "share", -- The service key is ignored on Android.
-		            message = "Images share test",
+		           -- message = "Images share test",
 		            listener = listener,
 		            image = 
 		            {
@@ -99,9 +137,11 @@ end
 		            })
 		    else
 		 
-		            native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
+		            --native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
 		       
-		    end
+		    end]]
+
+		    	showShare(fileName)
 
 end
 
@@ -122,9 +162,8 @@ print( "file ext : "..fileExt )
 					elseif ( downloan_event.phase == "ended" ) then
 					spinner_hide()
 
-					print( "file name : "..downloan_event.response.filename )
 					if event.id == "share" then
-						share(downloan_event.response.filename)
+						showShare(downloan_event.response.filename)
 						elseif event.id =="download" then
 							downloadAction(downloan_event.response.filename)
 
@@ -139,8 +178,6 @@ print( "file ext : "..fileExt )
 
 local destDir = system.TemporaryDirectory  -- Location where the file is stored
 local result, reason = os.remove( system.pathForFile( event.filename , destDir ) )
-
-print( event.value )
 
 network.download(
 	event.value,
@@ -194,7 +231,7 @@ local function onRowRender_ImageLib( event )
     line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
 
-    local shareImg_bg = display.newRect(row,0,0,25,25)
+    local shareImg_bg = display.newRect(row,0,0,35,35)
     shareImg_bg.x=seprate_bg.x+25;shareImg_bg.y=seprate_bg.y
     shareImg_bg.id="share"
     shareImg_bg.alpha=0.01
@@ -250,10 +287,7 @@ local function onRowTouch_ImageLib( event )
 
 	if( "press" == phase ) then
 
-		
-
-		elseif ( "release" == phase ) then
-			print("FilePath : "..row.FilePath)
+	elseif ( "release" == phase ) then
 
 			local options = {
 			effect = "flip",
@@ -294,7 +328,7 @@ function scene:create( event )
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
 
-	title = display.newText(sceneGroup,"Image Library",0,0,native.systemFont,18)
+	title = display.newText(sceneGroup,ImageLibrary.PageTitle,0,0,native.systemFont,18)
 	title.anchorX = 0
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
@@ -334,7 +368,7 @@ function scene:show( event )
 			sceneGroup:insert(Image_Lib_list)
 
 			if #List_array == 0  then
-				NoEvent = display.newText( sceneGroup, "No Images are found to view", 0,0,0,0,native.systemFontBold,16)
+				NoEvent = display.newText( sceneGroup, ImageLibrary.NoImage, 0,0,0,0,native.systemFontBold,16)
 				NoEvent.x=W/2;NoEvent.y=H/2
 				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 			end

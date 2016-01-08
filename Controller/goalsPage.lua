@@ -112,7 +112,7 @@ title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
 
-title = display.newText(sceneGroup,"Goals",0,0,native.systemFont,18)
+title = display.newText(sceneGroup,Goals.PageTitle,0,0,native.systemFont,18)
 title.anchorX = 0
 title.x=5;title.y = title_bg.y
 title:setFillColor(0)
@@ -157,7 +157,7 @@ function get_Goals(response)
 
 		file = nil
 
-		local webView = native.newWebView( display.contentCenterX, 70, W, H-80 )
+		local webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
 		webView.anchorY=0
 		webView:request( "goals.html", system.DocumentsDirectory )
 		sceneGroup:insert( webView )

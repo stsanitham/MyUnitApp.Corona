@@ -65,7 +65,6 @@ local function detailPageFun(event)
 
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
-		print("touch began")
 		elseif ( event.phase == "moved" ) then
 			local dy = math.abs( ( event.y - event.yStart ) )
 
@@ -130,8 +129,6 @@ local function careePath_list( list )
 		careerListArray[#careerListArray] = nil
 	end
 
-	print("calling"..#list)
-
 	for i=1,#list do
 
 
@@ -164,7 +161,7 @@ local function careePath_list( list )
 
 		local Image 
 
-		local tempHeight = -10
+		local tempHeight = -14
 
 		local background = display.newRect(tempGroup,0,0,W,50)
 
@@ -263,10 +260,7 @@ local function careePath_list( list )
 		local line = display.newRect(tempGroup,W/2,background.y,W,1)
 		line.y=background.y+background.contentHeight-line.contentHeight
 		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-		--[[role = display.newText(tempGroup,List_array[i].CarrierProgress,0,0,native.systemFont,14)
-		role.x=80;role.y=tempHeight
-		role.anchorX=0
-		role:setFillColor(Utils.convertHexToRGB(color.Black))]]
+	
 
 		tempGroup.Contact_Id = list[i].Contact_Id
 
@@ -350,15 +344,7 @@ function get_Activeteammember(response)
 
 							local list_Name = List_array[i].Last_Name
 
-							if ContactDisplay == 1 or ContactDisplay == nil then
-
-								if List_array[i].First_Name then
-
-									list_Name = List_array[i].Last_Name..","..List_array[i].First_Name
-
-								end
-
-							elseif ContactDisplay == 2 then
+							
 
 								if List_array[i].First_Name then
 
@@ -366,7 +352,7 @@ function get_Activeteammember(response)
 
 								end
 
-							end
+							
 
 							print(list_Name)
 
@@ -432,21 +418,25 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
+		title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-	title = display.newText(sceneGroup,"Career Path",0,0,native.systemFont,18)
-	title.anchorX = 0 ;title.anchorY=0
-	title.x=5;title.y = tabBar.y+tabBar.contentHeight/2+10
+
+	title = display.newText(sceneGroup,CareerPath.PageTitle,0,0,native.systemFont,18)
+	title.anchorX = 0
+	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
 
 	changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
-	changeList_order_icon.x=W-20;changeList_order_icon.y=title.y
+	changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10
 	changeList_order_icon.anchorY=0
 
 	changeList_order_touch = display.newRect(sceneGroup,changeList_order_icon.x,changeList_order_icon.y+15,35,35)
 	changeList_order_touch.alpha=0.01
 	changeList_order_touch:addEventListener("touch",changeListmenuTouch)
 
-	NoEvent = display.newText( sceneGroup, "No Team Members to show", 0,0,0,0,native.systemFontBold,16)
+	NoEvent = display.newText( sceneGroup, CareerPath.NoMember, 0,0,0,0,native.systemFontBold,16)
 	NoEvent.x=W/2;NoEvent.y=H/2
 	NoEvent.isVisible=false
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
@@ -455,10 +445,10 @@ function scene:create( event )
 
 	careerList_scrollview = widget.newScrollView
 	{
-	top = RecentTab_Topvalue,
+	top = RecentTab_Topvalue-5,
 	left = 0,
 	width = W,
-	height =H-RecentTab_Topvalue,
+	height =H-RecentTab_Topvalue+5,
 	hideBackground = true,
 	isBounceEnabled=false,
 	horizontalScrollingDisabled = false,
@@ -477,13 +467,13 @@ listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+60,100,
 listBg.strokeWidth = 1
 listBg:setStrokeColor( 0, 0, 0,0.3 )
 listBg.id="bg"
-list_Name = display.newText(changeMenuGroup,"By Name",0,0,native.systemFont,16)
+list_Name = display.newText(changeMenuGroup,CareerPath.By_Name,0,0,native.systemFont,16)
 list_Name.x=listBg.x-listBg.contentWidth/2+5;list_Name.y=listBg.y-20
 list_Name.anchorX=0
 list_Name:setFillColor(Utils.convertHexToRGB(color.Black))
 list_Name.id="name"
 
-list_Position = display.newText(changeMenuGroup,"By Position",0,0,native.systemFont,16)
+list_Position = display.newText(changeMenuGroup,CareerPath.By_Position,0,0,native.systemFont,16)
 list_Position.x=listBg.x-listBg.contentWidth/2+5;list_Position.y=listBg.y+20
 list_Position.anchorX=0
 list_Position:setFillColor(Utils.convertHexToRGB(color.Black))
@@ -513,33 +503,6 @@ function scene:show( event )
 			composer.removeHidden()
 
 			Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
-			--tempArray = {}
-
-			--[[if viewValue == "position" then
-
-				function compare(a,b)
-					return a.CarrierProgress < b.CarrierProgress
-				end
-
-				table.sort(List_array, compare)
-
-				careePath_list(List_array)
-
-			else
-
-				function compare(a,b)
-					return a.Last_Name < b.Last_Name
-				end
-
-				table.sort(List_array, compare)
-
-				careePath_list(List_array)
-
-			end]]
-
-			
-
-
 
 
 			menuBtn:addEventListener("touch",menuTouch)
