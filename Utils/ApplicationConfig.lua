@@ -3,7 +3,7 @@ ApplicationConfig = {}
 
 ----------Dev---------------
 
---[[
+----[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -28,7 +28,7 @@ ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28
 
 --]]
 
-----[[---------Live----------------
+--[[---------Live----------------
 
 IsLive = true
 

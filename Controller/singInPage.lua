@@ -834,11 +834,11 @@ function scene:show( event )
 			list_response_total = event.params.responseValue
 		end
 
-		--[[Unitnumber_field.text = "123"
+		Unitnumber_field.text = "123"
 		Unitnumber_field.value="123"
 		UserName.text = "malarkodi.sellamuthu@w3magix.com"
 		Password.text = "123123"
-		Password.value = "123123"]]
+		Password.value = "123123"
 
 
 		--[[function get_GetSearchByUnitNumberOrDirectorName(response)

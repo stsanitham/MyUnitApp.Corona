@@ -202,6 +202,7 @@ function scene:show( event )
 
 
 		elseif phase == "did" then
+			
 			panel.background = display.newRect( 0, 0, panel.width, panel.height )
 			panel.background:setFillColor( Utils.convertHexToRGB(sp_Flatmenu_HeaderBg.Background_Color) )
 			panel:insert( panel.background )
