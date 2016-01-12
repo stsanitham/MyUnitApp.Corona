@@ -9,14 +9,21 @@ settings =
 		supported = { "portrait", }
 	},
 
-	 plugins =
+	build =
     {
-        ["CoronaProvider.native.popup.activity"] =
+        neverStripDebugInfo = true
+    },
+
+
+
+    plugins =
+    {
+        ["CoronaProvider.native.popup.social"] =
         {
-            publisherId = "com.coronalabs",
-           -- supportedPlatforms = { iphone=true, ["iphone-sim"]=true },
+            publisherId = "com.coronalabs"
         },
     },
+    
 
 		
 	excludeFiles =

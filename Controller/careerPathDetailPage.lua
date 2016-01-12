@@ -442,7 +442,19 @@ function scene:show( event )
 
 					local month = Utils.GetMonth(os.date( "%b" , timeGMT ))
 
-					Details_Display[#Details_Display+1] = display.newText(os.date( month.." %d, %Y" , timeGMT ),0,0,160,0,native.systemFont,18)
+					local value
+					
+					if CommonWords.language == "Canada English" then
+
+						value = os.date( " %d " , timeGMT )..month..os.date( ", %Y" , timeGMT  )
+
+					else
+
+						value = month..os.date( " %d, %Y" , timeGMT)
+
+					end
+
+					Details_Display[#Details_Display+1] = display.newText(value,0,0,160,0,native.systemFont,18)
 					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
 					Details_Display[#Details_Display].x=W/2
 					Details_Display[#Details_Display].y = RecruitedDate.y 

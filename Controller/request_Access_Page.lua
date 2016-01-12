@@ -16,6 +16,8 @@ local current_textField,defalut
 local rankGroup = display.newGroup()
 
 
+
+
 --------------- Initialization -------------------
 
 local W = display.contentWidth;
@@ -209,7 +211,12 @@ local function onRowTouch_unitnumber_request( event )
 
 	end	
 
-	
+	local function createField()
+		input = native.newTextField(W/2, Email_bg.y+Email_bg.height+10, W-20, 28)
+		
+		return input
+	end
+
 local function RequestProcess()
 
 			submit_spinner.isVisible=true
@@ -278,7 +285,7 @@ local function RequestProcess()
 				end
 
 
-				local function scrollTo( position )
+				function scrollTo( position )
 					MainGroup.y = position
 				end
 
@@ -305,15 +312,16 @@ local function RequestProcess()
 
 								print( "here" )
 
-								current_textField.text = ""
+								--current_textField.text = ""
 
 								scrollTo( -100 )
 
 							end
 
 
-					elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+					elseif ( event.phase == "submitted" ) then
 
+							if current_textField then
 					       			--native.setKeyboardFocus( nil )
 					       			if(current_textField.id == "Comments") then
 
@@ -344,11 +352,15 @@ local function RequestProcess()
 									end
 
 
+								end
 
+								scrollTo( 0 )
 
+					elseif event.phase == "ended" then
 
+						scrollTo( 0 )
 
-
+						native.setKeyboardFocus( nil )
 
         			elseif ( event.phase == "editing" ) then
         				if current_textField.id ~= "Comments" then
@@ -379,7 +391,27 @@ local function RequestProcess()
 								if (tempvalue ~= "(") then
 
 
-									event.target.text = "("..event.target.text..") "
+									--event.target.text = "("..event.target.text..") "
+
+									local previousText=event.target.text
+
+									event.target:removeSelf( );event.target.text=nil
+
+									Phone = createField()
+									Phone.id="Phone"
+									Phone.size=14	
+									Phone:setReturnKey( "next" )
+									Phone.hasBackground = false
+									Phone.placeholder=RequestAccess.Phone_placeholder
+									Phone.inputType = "number"
+									MainGroup:insert( Phone )
+
+									Phone.text="("..previousText..") "
+
+
+									Phone:addEventListener( "userInput", textfield )
+
+									native.setKeyboardFocus(Phone)
 
 									
 
@@ -400,7 +432,28 @@ local function RequestProcess()
 
 							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
 
-								event.target.text = event.target.text.."- "
+
+									local previousText=event.target.text
+
+									event.target:removeSelf( );event.target.text=nil
+
+									Phone = createField()
+									Phone.id="Phone"
+									Phone.size=14	
+									Phone:setReturnKey( "next" )
+									Phone.hasBackground = false
+									Phone.placeholder=RequestAccess.Phone_placeholder
+									Phone.inputType = "number"
+									MainGroup:insert( Phone )
+
+									Phone.text=previousText.."- "
+
+
+									Phone:addEventListener( "userInput", textfield )
+
+									native.setKeyboardFocus(Phone)
+
+
 
 							elseif event.target.text:len() == 10 then
 
@@ -518,11 +571,11 @@ local function RequestProcess()
 
 
 
-    local rowTitle = display.newText(row, List_array[row.index][1], 0, 0, nil, 14 )
+    local rowTitle = display.newText(row, List_array[row.index][1], 0, 0,280,38, nil, 14 )
     rowTitle:setFillColor( 0 )
     rowTitle.anchorX = 0
     rowTitle.x = 5
-    rowTitle.y = rowHeight * 0.5
+    rowTitle.y = rowHeight * 0.5+5
 
 
    --[[ local line = display.newLine( 0,row.contentHeight,row.contentWidth,row.contentHeight )
@@ -616,11 +669,11 @@ local function onRowTouch( event )
 			end
 
 
-			if MKRank.text == "" or MKRank.text == MKRank.value then
+			--[[if MKRank.text == "" or MKRank.text == MKRank.value then
 				validation=false
 				--SetError("* Select MKRank",MKRank)
 			end
-		
+		]]
 
 			if(validation == true) then
 
@@ -883,6 +936,8 @@ function scene:show( event )
 
 			composer.removeHidden()
 
+			openPage="requestAccess Page"
+
 			unitnumer_list = widget.newTableView
 			{
 			left = 0,
@@ -936,6 +991,10 @@ function scene:show( event )
 
 			end
   		---Listview---
+
+  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+3, 331 )
+  		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
   		rankTop = display.newRect(rankGroup,W/2,H/2-160,300,30)
   		rankTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
@@ -984,7 +1043,7 @@ function scene:show( event )
 
 		for i = 1, #List_array do
 			    -- Insert a row into the tableView
-			    rankList:insertRow{ rowHeight = 30,
+			    rankList:insertRow{ rowHeight = 35,
 			    rowColor = { default={ 1,1,1}, over={ 0, 0, 0, 0.1 } }
 
 			}
@@ -998,6 +1057,27 @@ end
 
 		backBtn:addEventListener("touch",backAction)
 		page_title:addEventListener("touch",backAction)
+
+		 local function RequestonKeyEvent( event )
+		        local phase = event.phase
+		        local keyName = event.keyName
+
+
+		       if ( "back" == keyName ) then
+
+		        		scrollTo( 0 )
+		                native.setKeyboardFocus(nil)
+		          
+		        end
+		        -- we handled the event, so return true.
+		        -- for default behavior, return false.
+		        return true
+   		end
+
+    -- Add the key callback
+   Runtime:addEventListener( "key", RequestonKeyEvent );
+
+		 
 
 end	
 
@@ -1013,6 +1093,10 @@ function scene:hide( event )
 
 	if event.phase == "will" then
 
+		for j=MainGroup.numChildren, 1, -1 do 
+									display.remove(MainGroup[MainGroup.numChildren])
+									MainGroup[MainGroup.numChildren] = nil
+								end
 
 	elseif phase == "did" then
 

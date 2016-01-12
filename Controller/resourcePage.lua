@@ -79,7 +79,6 @@ end
 
 local function showShare(fileNameString)
 
-				print( "fileNameString : "..fileNameString )
 
 			    local popupName = "activity"
 			    local isAvailable = native.canShowPopup( popupName )
@@ -109,7 +108,7 @@ local function showShare(fileNameString)
 			        })
 			    else
 			  
-			            native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
+			            --native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
 			        
 			    end
 			end
@@ -117,10 +116,13 @@ local function showShare(fileNameString)
 local function share(fileName)
 		local isAvailable = native.canShowPopup( "social", "share" )
 
+		print( "fileName : "..fileName )
+
 		    -- If it is possible to show the popup
-		  --[[  if isAvailable then
+		  if isAvailable then
 		    	local listener = {}
 		    	function listener:popup( event )
+		    		 native.setKeyboardFocus(nil)
 		    	end
 
 		        -- Show the popup
@@ -139,7 +141,7 @@ local function share(fileName)
 		 
 		            --native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
 		       
-		    end]]
+		    end
 
 end
 
@@ -164,7 +166,15 @@ local function networkListener( downloan_event )
 
 				elseif event.id =="share" then
 
-						showShare(downloan_event.response.filename)
+						if isAndroid then
+
+							share(downloan_event.response.filename)
+							
+						else
+
+							showShare(downloan_event.response.filename)
+
+						end
 
 				end
 
@@ -172,7 +182,7 @@ local function networkListener( downloan_event )
 			end
 		end
 
-		--spinner_show()
+		spinner_show()
 
 local destDir = system.TemporaryDirectory 
 local result, reason = os.remove( system.pathForFile( "imageLib.png", destDir ) )
@@ -182,7 +192,7 @@ network.download(
 	event.value,
 	"GET",
 	networkListener,
-	event.filename.."."..fileExt,
+	event.filename,
 	system.TemporaryDirectory
 	)
 

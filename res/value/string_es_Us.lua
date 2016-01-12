@@ -1,5 +1,6 @@
 CommonWords = {}
 
+CommonWords.language = "Spanish"
 CommonWords.ok = "Okay"
 CommonWords.submit = "Enviar"
 CommonWords.done = "Hecho"
@@ -11,26 +12,37 @@ Month = {}
 Month["jan"] = "ene"
 Month["feb"]= "feb"
 Month["mar"]= "mar"
-Month["April"]= "abr"
-Month["May"]= "May"
-Month["June"]= "jun"
-Month["July"]= "jul"
-Month["August"]= "ago"
-Month["September"]= "sep"
-Month["October"]= "oct"
-Month["November"]= "nov"
-Month["December"]= "dic"
+Month["apr"]= "abr"
+Month["may"]= "May"
+Month["jun"]= "jun"
+Month["jul"]= "jul"
+Month["aug"]= "ago"
+Month["sep"]= "sep"
+Month["oct"]= "oct"
+Month["nov"]= "nov"
+Month["dec"]= "dic"
 
 
 Week = {}
 
-Week["Sunday"]="dom"
-Week["Monday"]="lun"
-Week["Tuesday"]="mar"
-Week["Wednesday"]="mié"
-Week["Thursday"]="jue"
-Week["Friday"]="vie"
-Week["Saturday"]="sáb"
+Week["sunday"]="domingo"
+Week["monday"]="Monti"
+Week["tuesday"]="Tuectay"
+Week["wednesday"]="Vetnecti"
+Week["thursday"]="Turcti"
+Week["friday"]="viernes"
+Week["saturday"]="Square"
+Week["sun"]="dom"
+Week["mon"]="Mon"
+Week["tue"]="Tue"
+Week["wed"]="Vet"
+Week["thu"]="Thr"
+Week["fri"]="vie"
+Week["sat"]="Squ"
+
+Week["am"] = "A.M"
+Week["pm"] = "P.M"
+
 
 
 RequestAccess = {}
@@ -55,6 +67,7 @@ RequestAccess.EmailAddress_placeholder= "Dirección de correo electrónico"
 RequestAccess.Phone_placeholder = "Teléfono"
 RequestAccess.MKRank_placeholder = "-Seleccione MK Rank-"
 RequestAccess.Comment_placeholder= "Escriba su comentario aquí"
+EventCalender.NoRecord="No se encontrarón archivos"
 
 
 LoginPage = {}
@@ -94,7 +107,7 @@ EventCalender.PageTitle = "Calendario de eventos"
 EventCalender.When = "Cuando"
 EventCalender.Where = "Donde"
 EventCalender.Description = "Descripción"
-EventCalender.Appointment_With = "Appointment With"
+EventCalender.Appointment_With = "Cita con"
 EventCalender.Call_With = "Cita con"
 EventCalender.Hostess = "Anfitriona"
 EventCalender.Linked_to = "Vinculado a"
@@ -105,12 +118,35 @@ EventCalender.Today = "Este Dia"
 EventCalender.Upcoming = "PRÓXIMOS"
 EventCalender.Phone = "Teléfono"
 EventCalender.NoEvent = "No hay eventos para mostrar"
+EventCalender.High="Alto"
+EventCalender.Normal="Normal"
+EventCalender.Low="Bajo"
+EventCalender["FACIAL"]="Facial"
+EventCalender["ON_THE_GO"]="Muy activo"
+EventCalender["DOUBLE_FACIAL"]="doble facial"
+EventCalender["CLASS"]="Clase"
+EventCalender["TEAM_BUILDING"]="Trabajo en Equipo"
+EventCalender["TRAINING"]="Formación"
+EventCalender["SHOW"]="mostrar"
+EventCalender["MEETING"]="Cita"
+EventCalender["FOLLOW_UP"]="Seguir"
+EventCalender["CUSTOMER_SERVICE"]="Servicio al cliente"
+EventCalender["TWO_DAY_FOLLOWUP"]="2 Día de Seguimiento"
+EventCalender["TWO_WEEK_FOLLOWUP"]="2 semanas de seguimiento"
+EventCalender["TWO_MONTH_FOLLOWUP"]="2 meses de seguimiento"
+EventCalender["OTHER"]="Otro"
+EventCalender["COLOR_APPT"]="color de la cita"
+EventCalender["FAMILY"]="Tiempo de familia"
+EventCalender["BOOKING"]="Reserva"
+EventCalender["INIT_APPT"]="Nombramiento inicial"
+EventCalender["RESCHEDULE"]="Reprogramar"
+EventCalender["FULLCIRCLE"]="Círculo completo"
 
 
 
 CareerPath = {}
 
-CareerPath.PageTitle="Trayectoria profesional"
+CareerPath.PageTitle="Sendero Unidad Carrera"
 CareerPath.NoMember = "No hay miembros del equipo para mostrar"
 CareerPath.Location="Localización"
 CareerPath.By_Name="Por nombre"
@@ -125,7 +161,8 @@ CareerPath.Career_Progress="El progreso de la carrera"
 
 Goals = {}
 
-Goals.PageTitle = "Objetivos"
+Goals.PageTitle = "Metas de la unidad"
+Goals.NoGolas = "No hay metas para ver a partir de ahora"
 
 ResourceLibrary = {}
 

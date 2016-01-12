@@ -3,7 +3,7 @@ ApplicationConfig = {}
 
 ----------Dev---------------
 
-----[[
+--[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -21,18 +21,33 @@ ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.spanunit.com/"
-
 ApplicationConfig.API_PUBLIC_KEY = "Or2tf5TjnfLObg5qZ1VfLOd"
-
 ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28"
 
 --]]
 
---[[---------Live----------------
+----[[---------Android Live----------------
 
 IsLive = true
 
-ApplicationConfig.Version = "/iOS/1.0.1"    --1.0.1
+ApplicationConfig.Version = "/Android/1.1.0"	    --1.0.1
+
+ApplicationConfig.BASE_URL = "http://api.myunitbuzz.com/"..ApplicationConfig.Version
+
+
+ApplicationConfig.IMAGE_BASE_URL = "http://c.unitwise.com/"
+
+ApplicationConfig.API_PUBLIC_KEY = "gVbPxZHlEcnaM5LLEQ7j7Wc"
+
+ApplicationConfig.API_PRIVATE_KEY = "5Doh1kteJKYZbSemCipRTGZiyzRAAhkSKEDhAf5TPcY"
+--]]
+
+
+--[[---------IOS Live----------------
+
+IsLive = true
+
+ApplicationConfig.Version = "/Android/1.1.0"	    --1.0.1
 
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.com/"..ApplicationConfig.Version
 
@@ -74,6 +89,10 @@ ApplicationConfig.GetSearchByUnitNumberOrDirectorName = ApplicationConfig.BASE_U
 ApplicationConfig.ForgotPassword = ApplicationConfig.BASE_URL.."/MyUnitBuzz/ForgotPassword"
 
 ApplicationConfig.GetUpComingEvents = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/GetUpComingEvents"
+
+ApplicationConfig.GetLatestVersionCommonAppForAndroid = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetLatestVersionCommonAppForAndroid"
+
+ApplicationConfig.GetLatestVersionCommonAppForIos = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetLatestVersionCommonAppForIos"
 
 
 

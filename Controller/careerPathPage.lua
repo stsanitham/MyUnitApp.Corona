@@ -92,6 +92,37 @@ return true
 
 end
 
+local function BgTouch(event)
+	
+
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+
+		elseif ( event.phase == "moved" ) then
+			local dy = math.abs( ( event.y - event.yStart ) )
+
+			if ( dy > 10 ) then
+				display.getCurrentStage():setFocus( nil )
+				careerList_scrollview:takeFocus( event )
+			end
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+			
+			if event.target.id == "hide" then
+
+				if changeMenuGroup.isVisible == true then
+					changeMenuGroup.isVisible=false
+				else
+					changeMenuGroup.isVisible=true
+				end
+
+			end
+end
+
+return true
+
+
+end
 local function changeListmenuTouch(event)
 	
 
@@ -121,6 +152,8 @@ return true
 end
 
 
+
+
 local function careePath_list( list )
 
 
@@ -137,7 +170,12 @@ local function careePath_list( list )
 				header_value = list[i].CarrierProgress
 				parentFlag=true
 			else
+
+
 				header_value = list[i].Name:sub(1,1)
+
+				print( "header_value "..list[i].Name,header_value )
+
 				parentFlag=true
 			end
 
@@ -287,19 +325,19 @@ local function listPosition_change( event )
 
 					if viewValue == "position" then
 
-								function compare(a,b)
-									return a.CarrierProgress < b.CarrierProgress
+								local function compare(a,b)
+									return a.CarrierProgress:upper( ) < b.CarrierProgress:upper( )
 								end
 
 								table.sort(byNameArray, compare)
 
 								careePath_list(byNameArray)
 
-							else
+					else
 
 			
 			
-								function compare(a,b)
+								local function compare(a,b)
 									return a.Name:upper( ) < b.Name:upper( )
 								end
 
@@ -357,6 +395,10 @@ function get_Activeteammember(response)
 							print(list_Name)
 
 							local temp = {}
+
+							if list_Name:sub(1,1) == " " then
+								list_Name = list_Name:sub( 2,list_Name:len())
+							end
 
 							temp.Name = list_Name
 							temp.CarrierProgress = List_array[i].CarrierProgress
@@ -462,11 +504,17 @@ function scene:create( event )
 sceneGroup:insert(careerList_scrollview)
 
 --changeMenuGroup
+listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
+listTouch_bg.alpha=0.01
+listTouch_bg.id = "hide"
 
 listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+60,100,80)
 listBg.strokeWidth = 1
+listBg.id = "show"
 listBg:setStrokeColor( 0, 0, 0,0.3 )
 listBg.id="bg"
+
+
 list_Name = display.newText(changeMenuGroup,CareerPath.By_Name,0,0,native.systemFont,16)
 list_Name.x=listBg.x-listBg.contentWidth/2+5;list_Name.y=listBg.y-20
 list_Name.anchorX=0
@@ -484,6 +532,9 @@ changeMenuGroup.isVisible=false
 listBg:addEventListener("touch",listPosition_change)
 list_Name:addEventListener("touch",listPosition_change)
 list_Position:addEventListener("touch",listPosition_change)
+
+listTouch_bg:addEventListener("touch",BgTouch)
+listBg:addEventListener("touch",BgTouch)
 
 sceneGroup:insert(changeMenuGroup)
 MainGroup:insert(sceneGroup)

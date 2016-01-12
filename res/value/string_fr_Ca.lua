@@ -1,90 +1,104 @@
 CommonWords = {}
 
-CommonWords.ok = "OK"
-CommonWords.submit = "Submit"
-CommonWords.done = "Done"
-CommonWords.search = "Search"
+CommonWords.language = "French"
+CommonWords.ok = "bien"
+CommonWords.submit = "Proposer"
+CommonWords.done = "Fini"
+CommonWords.search = "Recherche"
 
 Month = {}
 
-Month.January = "Jan"
-Month.February= "Feb"
-Month.March= "Mar"
-Month.April= "Apr"
-Month.May= "May"
-Month.June= "Jun"
-Month.July= "Jul"
-Month.August= "Aug"
-Month.September= "Sep"
-Month.October= "Oct"
-Month.November= "Nov"
-Month.December= "Dec"
+Month["jan"] = "jan"
+Month["feb"]= "fév"
+Month["mar"]= "Mar"
+Month["apr"]= "avr"
+Month["may"]= "Mai"
+Month["jun"]= "jui"
+Month["jul"]= "juil"
+Month["aug"]= "aoû"
+Month["sep"]= "sep"
+Month["oct"]= "oct"
+Month["nov"]= "nov"
+Month["dec"]= "déc"
 
 
 Week = {}
 
-Week.Sunday="Sun"
-Week.Monday="Mon"
-Week.Tuesday="Tue"
-Week.Wednesday="Wed"
-Week.Thursday="Thu"
-Week.Friday="Fri"
-Week.Saturday="Sat"
+Week["sunday"]="dimanche"
+Week["monday"]="Lundi"
+Week["tuesday"]="Mardi"
+Week["wednesday"]="Mercredi"
+Week["thursday"]="Jeudi"
+Week["friday"]="Vendredi"
+Week["saturday"]="samedi"
+
+Week["sun"]="dim"
+Week["mon"]="Lun"
+Week["tue"]="Mar"
+Week["wed"]="Mer"
+Week["thu"]="Jeu"
+Week["fri"]="Ven"
+Week["sat"]="sam"
+
+Week["am"] = "UN M"
+Week["pm"] = "PM"
 
 
 RequestAccess = {}
 
-RequestAccess.PageTitle = "Request Access"
-RequestAccess.REQUEST = "Request already sent"
-RequestAccess.FIRSTREQUEST = "Your Request Access has been sent successfully"
-RequestAccess.OPEN = "Request Access sent"
-RequestAccess.GRANT = "Access already granted"
-RequestAccess.NOUNITNUMBER = "Enter the Valid UnitNumber"
-RequestAccess.BLOCK = "Access denied already"
-RequestAccess.DENY = "Access denied already"
-RequestAccess.FAIL = "Enter Valid credentials"
-RequestAccess.Name_error = "Enter the Last Name"
-RequestAccess.Email_error = "Enter the Email"
-RequestAccess.EmailValidation_error = "Enter the valid email"
-RequestAccess.Phone_error = "Enter the Phone Number"
-RequestAccess.UnitNumber_error = "Enter the Unit Number"
-RequestAccess.FirstName_placeholder = "First Name"
-RequestAccess.LastName_placeholder = "Last Name"
-RequestAccess.EmailAddress_placeholder= "Email Address"
-RequestAccess.Phone_placeholder = "Phone"
-RequestAccess.MKRank_placeholder = "-Select MK Rank-"
-RequestAccess.Comment_placeholder= "Enter your comment here"
+RequestAccess.PageTitle = "Demande d'accès"
+RequestAccess.REQUEST = "Demande déjà envoyée"
+RequestAccess.FIRSTREQUEST = "Votre demande d'accès a été envoyé avec succès"
+RequestAccess.OPEN = "Demande d'accès envoyé"
+RequestAccess.GRANT = "Accès déjà accordé"
+RequestAccess.NOUNITNUMBER = "Entrez le XHTML Numéro d'unité"
+RequestAccess.BLOCK = "Accès refusé déjà"
+RequestAccess.DENY = "Accès refusé déjà"
+RequestAccess.FAIL = "Entrez les informations d'identification valides"
+RequestAccess.Name_error = "Entrez le Nom"
+RequestAccess.Email_error = "Entrez le e-mail"
+RequestAccess.EmailValidation_error = "Entrez le e-mail valide"
+RequestAccess.Phone_error = "Entrez le numéro de téléphone"
+RequestAccess.UnitNumber_error = "Entrez le numéro d'unité"
+RequestAccess.FirstName_placeholder = "Prénom"
+RequestAccess.LastName_placeholder = "Nom de famille"
+RequestAccess.EmailAddress_placeholder= "Adresse e-mail"
+RequestAccess.Phone_placeholder = "Téléphone"
+RequestAccess.MKRank_placeholder = "-Sélectionnez MK Rang-"
+RequestAccess.Comment_placeholder= "Entrez vos commentaires) ici"
 
 
 LoginPage = {}
 
-LoginPage.Unitnumber_placeholder = "Unit Number / Director Name"
-LoginPage.UserName_placeholder = "Email Address"
-LoginPage.Password_placeholder = "Password"
-LoginPage.Signin_Button = "Sign In"
-LoginPage.Forget_Button = "Forgot Password?"
-LoginPage.Request_Button = "Don't have an access? Click here"
-LoginPage.ErrorMessage = "The details you have entered are incorrect. Check again and re-enter the valid details"
-LoginPage.ErrorTitle = "Login Failed"
-LoginPage.setError_Unitnumber = "* Enter the valid Unit number or Director Name"
-LoginPage.setError_UserName = "* Enter the valid Email Address"
-LoginPage.setError_Password = "* Enter the Password"
+LoginPage.Unitnumber_placeholder = "Numéro d'unité / Nom Directeur"
+LoginPage.UserName_placeholder = "Adresse e-mail"
+LoginPage.Password_placeholder = "Mot de passe"
+LoginPage.Signin_Button = "Se connecter"
+LoginPage.Forget_Button = "Mot de passe oublié?"
+LoginPage.Request_Button = "Ne pas avoir un accès? Cliquez ici"
+LoginPage.ErrorMessage = "Les informations que vous avez saisies sont incorrectes. Vérifiez à nouveau et re-saisir les informations valides"
+LoginPage.ErrorTitle = "Échec de la connexion"
+LoginPage.setError_Unitnumber = "* Entrez le numéro de valable Unité / Directeur Nom"
+LoginPage.setError_UserName = "* Entrez le adresse email valide"
+LoginPage.setError_Password = "* Entrez le mot de passe"
 
 
 ForgotPassword = {}
 
-ForgotPassword.PageTitle = "Forgot Password"
-ForgotPassword.SuccessMsg = "Your Temporary Password is sent successfully"
+ForgotPassword.PageTitle = "Mot de passe oublié"
+ForgotPassword.SuccessMsg = "Votre mot de passe temporaire est envoyé avec succès"
+ForgotPassword.InvalidUser = "Vous essayez avec une adresse e-mail non enregistrée"
 
 
 FlapMenu = {}
 
-FlapMenu.PageTitle="Log Out"
-FlapMenu.Alert="Are you sure you want to log out?"
-FlapMenu.LOG_OUT="LOG OUT"
-FlapMenu.CANCEL="CANCEL"
-FlapMenu.Home="Home"
-FlapMenu.Social_Media="Social Media"
+FlapMenu.PageTitle="Se déconnecter"
+FlapMenu.Alert="Êtes-vous sûr de vouloir vous déconnecter?"
+FlapMenu.LOG_OUT="SE DÉCONNECTER"
+FlapMenu.CANCEL="ANNULER"
+FlapMenu.Home="Accueil"
+FlapMenu.Social_Media="Média social"
+
 
 
 EventCalender = {}
@@ -103,38 +117,64 @@ EventCalender.Attachment = "Pièces jointes"
 EventCalender.Today = "Aujourd'hui"
 EventCalender.Upcoming = "Prochain"
 EventCalender.Phone = "Téléphone"
-EventCalender.NoEvent = "There are no Events to show"
+EventCalender.NoEvent = "Il n'y a pas des événements pour montrer"
+EventCalender.High="Haut"
+EventCalender.Normal="Ordinaire"
+EventCalender.Low="Bas"
+EventCalender["FACIAL"]="soin du visage"
+EventCalender["ON_THE_GO"]="Pret à partir"
+EventCalender["DOUBLE_FACIAL"]="Double visage"
+EventCalender["CLASS"]="Classe"
+EventCalender["TEAM_BUILDING"]="Construction d'équipe"
+EventCalender["TRAINING"]="l'entraînement"
+EventCalender["SHOW"]="Afficher"
+EventCalender["MEETING"]="Rencontre"
+EventCalender["FOLLOW_UP"]="Suivre"
+EventCalender["CUSTOMER_SERVICE"]="Service Clients"
+EventCalender["TWO_DAY_FOLLOWUP"]="Jour 2 Suivi"
+EventCalender["TWO_WEEK_FOLLOWUP"]="2 Semaine Suivi"
+EventCalender["TWO_MONTH_FOLLOWUP"]="2 mois de suivi"
+EventCalender["OTHER"]="Autre"
+EventCalender["COLOR_APPT"]="Nomination couleur"
+EventCalender["FAMILY"]="Du temps en famille"
+EventCalender["BOOKING"]="Réservation"
+EventCalender["INIT_APPT"]="Nomination initiale"
+EventCalender["RESCHEDULE"]="rééchelonner"
+EventCalender["FULLCIRCLE"]="Cercle complet"
+EventCalender.NoRecord="Aucun enregistrement trouvé"
+
 
 
 CareerPath = {}
 
-CareerPath.PageTitle="Career Path"
-CareerPath.NoMember = "No Team Members to show"
-CareerPath.Location="Location"
-CareerPath.By_Name="By Name"
-CareerPath.By_Position="By Position"
-CareerPath.When="When Recruited"
-CareerPath.Consultant_No="Consultant No"
-CareerPath.Unit_No="Unit No"
-CareerPath.Recruiter_No="Recruiter No"
-CareerPath.Recruiter_Name="Recruiter Name"
-CareerPath.Career_Progress="Career Progress"
+CareerPath.PageTitle="Chemin Unité Carrière"
+CareerPath.NoMember = "Aucun Membres de l'équipe de montrer"
+CareerPath.Location="Lieu"
+CareerPath.By_Name="De nom"
+CareerPath.By_Position="en Position"
+CareerPath.When="Lors de l'embauche"
+CareerPath.Consultant_No="Consultant Non"
+CareerPath.Unit_No="Aucune unité"
+CareerPath.Recruiter_No="recruteur Non"
+CareerPath.Recruiter_Name="recruteur Nom"
+CareerPath.Career_Progress="Progress Career"
 
 
 Goals = {}
 
-Goals.PageTitle = "Goals"
+Goals.PageTitle = "Objectifs unitaires"
+Goals.NoGolas = "Il n'y a pas de buts à voir dès maintenant"
 
 ResourceLibrary = {}
 
-ResourceLibrary.PageTitle = "Resource Library"
-ResourceLibrary.Download_alert="Saved to Device Memory"
-ResourceLibrary.NoDocument="No documents are found to view"
+ResourceLibrary.PageTitle = "Ressource"
+ResourceLibrary.Download_alert="Enregistré dans la mémoire du terminal"
+ResourceLibrary.NoDocument="Aucun document se trouvent à voir"
 
 ImageLibrary = {}
 
-ImageLibrary.PageTitle = "Image Library"
-ImageLibrary.NoImage = "No Images are found to view"
+ImageLibrary.PageTitle = "Bibliothèque d'images"
+ImageLibrary.NoImage = "No Images se retrouvent pour voir"
 
 Facebook = {}
 
@@ -147,3 +187,5 @@ Twitter.PageTitle = "Twitter"
 Google_Plus = {}
 
 Google_Plus.PageTitle = "Google+"
+
+

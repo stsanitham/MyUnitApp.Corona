@@ -28,6 +28,16 @@ local imageTrans,SliderTimer,myImage
 
 -----------------Function-------------------------
 
+local function BgTouch( event )
+	if event.phase == "ended" then
+
+
+	end
+
+return true
+end
+
+
 local function downloadAction(filename)
 
 			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
@@ -71,7 +81,7 @@ local function downloadAction(filename)
 								 end
 							end
 
-								native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
+								native.showAlert( imageName.text, ResourceLibrary.Download_alert, { CommonWords.ok} )
 
 end
 			local function showShare(fileNameString)
@@ -106,32 +116,31 @@ end
 			        })
 			    else
 			  
-			            native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
+			           -- native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
 			        
 			    end
 			end
 
+
+
 	local function share(fileName)
 
-		print( "fileName : "..fileName )
-
-		showShare(fileName)
-
-		--[[local isAvailable = native.canShowPopup( "social", "share" )
+		local isAvailable = native.canShowPopup( "social", "share" )
 
 		    -- If it is possible to show the popup
 		    if isAvailable then
 		    	local listener = {}
 		    	function listener:popup( event )
-		    	end
 
-		    	
+		    		 native.setKeyboardFocus(nil)
+
+		       	end
 
 		        -- Show the popup
 		        native.showPopup( "social",
 		        {
-		            service = "facebook", -- The service key is ignored on Android.
-		            --message = "Images share",
+		            service = "share", -- The service key is ignored on Android.
+		           -- message = "Images share test",
 		            listener = listener,
 		            image = 
 		            {
@@ -143,7 +152,8 @@ end
 		 
 		            --native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
 		       
-		    end]]
+		    end
+
 
 end
 
@@ -170,7 +180,7 @@ if event.phase == "began" then
 
 			if event.target.value == "pause" then
 
-				title_playBtn = display.newImageRect( "res/assert/play.png", 22/1.5,26/1.5)
+				title_playBtn = display.newImageRect(MainGroup,"res/assert/play.png", 22/1.5,26/1.5)
 				title_playBtn.value = "play"
 				event.target.value =  "play"
 				if SliderTimer then timer.pause( SliderTimer ) end
@@ -180,7 +190,7 @@ if event.phase == "began" then
 
 				print( "start play" )
 
-				title_playBtn = display.newImageRect( "res/assert/pause.png", 22/1.5,26/1.5)
+				title_playBtn = display.newImageRect(MainGroup,"res/assert/pause.png", 22/1.5,26/1.5)
 				title_playBtn.value = "pause"
 				event.target.value =  "pause"
 				timer.resume( SliderTimer )
@@ -207,16 +217,20 @@ local function listTouch( event )
 			event = event.target
 
 
-				local tempreverse = string.find(string.reverse( event.value ),"%.")
-
-				fileExt = event.value:sub( event.value:len()-tempreverse+2,event.value:len())
-
-				
+					
 
 						if event.id == "share" then
-							share(event.filename.."."..fileExt)
+							if isAndroid then
+
+								share(event.filename..".png")
+								
+							else
+
+								showShare(event.filename..".png")
+
+							end
 						elseif event.id =="download" then
-							downloadAction(event.filename.."."..fileExt)
+							downloadAction(event.filename..".png")
 
 
 						end
@@ -392,6 +406,7 @@ function scene:create( event )
     shareImg_bg:addEventListener("touch",listTouch)
 
     title_playbg:addEventListener( "touch", PausePlayAction )
+    Background:addEventListener( "touch", BgTouch )
 
 	sceneGroup:insert( imageGroup )
 	MainGroup:insert(sceneGroup)
@@ -415,33 +430,23 @@ function scene:show( event )
 				indexValue = event.params.count
 
 
-		local function ImageDownload( event )
-				if ( event.isError ) then
-					print( "Network error - download failed" )
-					elseif ( event.phase == "began" ) then
-						elseif ( event.phase == "ended" ) then
-						print( "12323123" )
-						SliderTimer = timer.performWithDelay( 5000, onSlideTimer )
-
-						if title_playbg.value == "play" then
-							timer.pause( SliderTimer )
-						end
-
-						slideShow(event.response.filename)
-
-							
-
-					end
-		end		
+		
 
 					
 		local function downloadAction( )
 
 					spinner_show()
 
-					imageName.text = ImageList[indexValue].ImageFileName
+				local fileNameString 
 
-					local path = system.pathForFile( ImageList[indexValue].ImageFileName..".png", system.TemporaryDirectory )
+
+					fileNameString = ImageList[indexValue].ImageFileName..".png"
+
+			
+
+					imageName.text = fileNameString
+
+					local path = system.pathForFile( fileNameString, system.TemporaryDirectory )
 					local fhd = io.open( path )
 
 					if fhd then
@@ -450,15 +455,35 @@ function scene:show( event )
 						if title_playbg.value == "play" then
 							timer.pause( SliderTimer )
 						end
-					  slideShow(ImageList[indexValue].ImageFileName..".png")
+					  slideShow(fileNameString)
 
 					   fhd:close()
 					else
+
+
+				
 						imageDownload = network.download(
 						ApplicationConfig.IMAGE_BASE_URL..ImageList[indexValue].FilePath,
 						"GET",
-						ImageDownload,
-						ImageList[indexValue].ImageFileName..".png",
+						function ( event )
+						if ( event.isError ) then
+							print( "Network error - download failed" )
+							elseif ( event.phase == "began" ) then
+								elseif ( event.phase == "ended" ) then
+								print( "12323123" )
+								SliderTimer = timer.performWithDelay( 5000, onSlideTimer )
+
+								if title_playbg.value == "play" then
+									timer.pause( SliderTimer )
+								end
+
+							slideShow(event.response.filename)
+
+							
+
+					end
+		end		,
+						fileNameString,
 						system.TemporaryDirectory)
 					end
 

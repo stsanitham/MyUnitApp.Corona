@@ -79,12 +79,25 @@ Utils.GetMonth = function ( monthString)
 
 monthString = monthString:lower()
 
-if monthString == "jan" then monthString = Month[monthString] end
+monthString = Month[monthString]
 
 
 
 return monthString
 end
+
+
+Utils.GetWeek = function ( weekString)
+
+weekString = weekString:lower()
+
+ weekString = Week[weekString] 
+
+
+
+return weekString
+end
+
 
 Utils.CssforTextView = function ( Object,Style )
 

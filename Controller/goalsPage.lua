@@ -21,6 +21,8 @@ local GoalText
 
 local menuBtn,webView
 
+local webView
+
 openPage="goalsPage"
 
 local RecentTab_Topvalue = 40
@@ -157,7 +159,7 @@ function get_Goals(response)
 
 		file = nil
 
-		local webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
+		webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
 		webView.anchorY=0
 		webView:request( "goals.html", system.DocumentsDirectory )
 		sceneGroup:insert( webView )
@@ -170,7 +172,7 @@ function get_Goals(response)
 				goal_scrollview:insert(GoalText)
 				]]
 	else
-		NoEvent = display.newText( sceneGroup, "There are no goals to view as of now", 0,0,0,0,native.systemFontBold,16)
+		NoEvent = display.newText( sceneGroup, Goals.NoGolas, 0,0,0,0,native.systemFontBold,16)
 		NoEvent.x=W/2;NoEvent.y=H/2
 		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 	end
@@ -199,6 +201,8 @@ function scene:hide( event )
 		elseif phase == "did" then
 
 			composer.removeHidden()
+
+			if webView then webView:removeSelf( );webView=nil end
 
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)

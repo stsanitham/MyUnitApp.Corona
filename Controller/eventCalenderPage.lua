@@ -1,4 +1,4 @@
-----------------------------------------------------------------------------------
+	----------------------------------------------------------------------------------
 --
 -- event Calender Screen
 --
@@ -140,6 +140,8 @@ local function listTouch( event )
 			end
 
 			elseif event.phase == "ended" then
+			search.text = ""
+			NoEvent.text = EventCalender.NoEvent
 			native.setKeyboardFocus( nil )
 			display.getCurrentStage():setFocus( nil )
 
@@ -231,7 +233,8 @@ parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))
 local parent_leftDraw = display.newImageRect(tempGroup,"res/assert/calendar.png",32/2,32/2)
 parent_leftDraw.x=parentTitle.x-parentTitle.contentWidth/2+15;parent_leftDraw.y=parentTitle.y+parentTitle.contentHeight/2
 
-local parent_leftText = display.newText(tempGroup,os.date( "%A" , timeGMT ),0,0,native.systemFont,11)
+
+local parent_leftText = display.newText(tempGroup,Utils.GetWeek(os.date( "%A" , timeGMT )),0,0,native.systemFont,11)
 parent_leftText.x=parent_leftDraw.x+parent_leftDraw.contentWidth/2+2
 parent_leftText.y=parent_leftDraw.y
 Utils.CssforTextView(parent_leftText,sp_fieldValue_small)
@@ -244,8 +247,19 @@ Utils.CssforTextView(parent_centerText,sp_subHeader)
 
 
 local month = Utils.GetMonth(os.date( "%b" , timeGMT ))
+ 
+if CommonWords.language == "Canada English" then
 
-parent_centerText.text = os.date( month.." %d, %Y" , timeGMT )
+	parent_centerText.text = os.date( " %d " , timeGMT )..month..os.date( ", %Y" , timeGMT )
+
+else
+
+	parent_centerText.text = month..os.date( " %d, %Y" , timeGMT )
+
+end
+
+
+
 background.y=parentTitle.y+background.contentHeight/2
 
 end
@@ -266,8 +280,9 @@ local leftDraw_line = display.newImageRect(tempGroup,"res/assert/eventSeprator.p
 leftDraw_line.anchorY=0
 leftDraw_line.x=W/4;leftDraw_line.y=background.y-5
 
+local TimeZone = Utils.GetWeek(os.date( "%p" , timeGMT ))
 
-local time = display.newText(tempGroup,os.date( "%I:%M \n  %p" , timeGMT ),0,0,80,0,native.systemFontBold,12)
+local time = display.newText(tempGroup,os.date( "%I:%M \n  "..TimeZone , timeGMT ),0,0,80,0,native.systemFontBold,12)
 time.x=W/6
 time.y=background.y+background.contentHeight/2
 Utils.CssforTextView(time,sp_Date_Time)
@@ -392,6 +407,7 @@ end
 
 local function searchEventlist(respone,timeValue,searchText)
 
+HaveField = false
 
 DateWise_response=response
 
@@ -421,9 +437,8 @@ DateWise_response=response
 
 		end
 
-			--Processingdate = dateSplit(DateWise_response[1].date)
-	
-		print( "check search "..Processingdate,dateSplit(DateWise_response[1].date) )
+		
+		
 	
 
 		for i = 1, #DateWise_response do
@@ -450,17 +465,23 @@ DateWise_response=response
 						
 						if parentHave == true then
 
+							HaveField = true
+
 							display_calenderList(DateWise_response[i])
 
 						else
 
 							if parentHave then
 
+								HaveField = true
+
 								display_calenderList(DateWise_response[i])
 
 							else
 
 								if string.find( DateWise_response[i].title:upper( ), searchText:upper( )) ~= nil then
+
+									HaveField = true
 
 									display_calenderList(DateWise_response[i])
 																		
@@ -501,10 +522,24 @@ DateWise_response=response
 				end
 			end
 
+
+
 			eventCalen_display_process()
 
 		end
 
+			if HaveField == false then
+
+				NoEvent.isVisible=true
+
+				NoEvent.text = EventCalender.NoRecord
+
+
+			else
+				NoEvent.text = EventCalender.NoEvent
+
+				NoEvent.isVisible=false
+			end
 
 		scrollView:scrollTo( "top",{ time=200 } )
 
@@ -532,18 +567,29 @@ end
 
 local function dayTouch(event)
 	if event.phase == "ended" then
-
+		search.text = ""
+		NoEvent.text = EventCalender.NoEvent
 		native.setKeyboardFocus( nil )
 
 		for i=1,week.numChildren do
 
-			Utils.CssforTextView(week[i][1],sp_labelName)
+			if week[i].Processingdate == os.date( "!%Y-%m-%d" ,os.time(os.date( '*t' ))) then
+
+			else
+				Utils.CssforTextView(week[i][1],sp_labelName)
+
+			end
+
 		end
 
 
 		event.target[1]:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
+		print("checking : ".. event.target.Processingdate,os.date( "!%Y-%m-%d" ,os.time(os.date( '*t' ))) )
 
+		if event.target.Processingdate == os.date( "!%Y-%m-%d" ,os.time(os.date( '*t' ))) then
+			event.target[1]:setFillColor( 0,0,1 )
+		end
 		
 		startdate = event.target.startdate
 		enddate = event.target.enddate
@@ -571,7 +617,17 @@ weekViewGroup:insert( week )
 
 local month = Utils.GetMonth(os.date( "%b" , os.time( weekfirstDay ) ))
 
-weekView_header.text = os.date( month.." %d, %Y" , os.time( weekfirstDay ) ).." - "
+if CommonWords.language == "Canada English" then
+
+	weekView_header.text = os.date( " %d " , os.time( weekfirstDay )  )..month..os.date( ", %Y" , os.time( weekfirstDay )  ).." - "
+
+else
+
+	weekView_header.text = month..os.date( " %d, %Y" , os.time( weekfirstDay ) ).." - "
+
+end
+
+
 
 weekfirstDay.day = weekfirstDay.day - 1
 	
@@ -583,8 +639,9 @@ weekfirstDay.day = weekfirstDay.day - 1
 
 		local Week_Group = display.newGroup( )
 
+
 		weekfirstDay.day = weekfirstDay.day + 1
-		local day = display.newText(Week_Group,weekLbl[i],0,0,native.systemFont,12)
+		local day = display.newText(Week_Group,Utils.GetWeek(weekLbl[i]),0,0,native.systemFont,12)
 		weekStartX = weekStartX +35
 		day.x = weekStartX;day.y=weekView_bg.y+weekView_bg.contentHeight/2
 		Utils.CssforTextView(day,sp_labelName)
@@ -593,6 +650,10 @@ weekfirstDay.day = weekfirstDay.day - 1
 		local date = display.newText(Week_Group,os.date( "!%d" , os.time( weekfirstDay ) ),0,0,native.systemFont,12)
 		date.x = day.x;date.y=day.y+17
 		Utils.CssforTextView(date,sp_fieldValue)
+
+		if os.date( "!%m/%d/%Y" , os.time( weekfirstDay )) == os.date( "!%m/%d/%Y" ,os.time(os.date( '*t' ))) then
+			day:setFillColor( 0,0,1 )
+		end
 
 		Week_Group.id=i
 
@@ -608,7 +669,18 @@ weekfirstDay.day = weekfirstDay.day - 1
 
 			local month = Utils.GetMonth(os.date( "%b" , os.time( weekfirstDay ) ))
 
-			weekView_header.text = weekView_header.text..os.date( month.." %d, %Y" , os.time( weekfirstDay ) )
+			if CommonWords.language == "Canada English" then
+
+				weekView_header.text =  weekView_header.text..os.date( " %d " , os.time( weekfirstDay )  )..month..os.date( ", %Y" , os.time( weekfirstDay )  )
+
+			else
+
+				weekView_header.text = weekView_header.text..os.date( month.." %d, %Y" , os.time( weekfirstDay ) )
+
+			end
+
+
+			
 
 		end
 
@@ -633,7 +705,8 @@ local function searchListener( event )
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
         print( event.target.text )
-
+        search.text = ""
+        NoEvent.text = EventCalender.NoEvent
         native.setKeyboardFocus( nil )
 
     elseif ( event.phase == "editing" ) then
@@ -660,6 +733,8 @@ local function calenderTouch( event )
 		display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
+		search.text = ""
+		NoEvent.text = EventCalender.NoEvent
 		native.setKeyboardFocus( nil )
 		if pickerGroup.isVisible == true then
 	
@@ -681,6 +756,8 @@ local function todayAction( event )
 		display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
+		search.text = ""
+		NoEvent.text = EventCalender.NoEvent
 		native.setKeyboardFocus( nil )
 
 		local temp = os.date( '*t' )
@@ -691,7 +768,10 @@ local function todayAction( event )
 		currentweek = 0
 		creatWeek(temp,false)
 
+		NoEvent.isVisible=false
+
 	local function get_GetUpComingEvents( response )
+
 
 		local Upcoming = os.date( '*t' )
 		Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( Upcoming )))
@@ -721,6 +801,8 @@ local function weekViewSwipe( event )
 	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 		print("currentweek .. "..currentweek)
+		search.text = ""
+		NoEvent.text = EventCalender.NoEvent
 		native.setKeyboardFocus( nil )
 
 		if weekViewTouchFlag == false then
@@ -754,11 +836,11 @@ local function weekViewSwipe( event )
 
 						startdate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 12:00:00 AM"
 
-						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day+7
+						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day+6
 
 						enddate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 11:59:59 PM"
 
-						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-7
+						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-6	
 
 						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue_left )))
 
@@ -792,11 +874,11 @@ local function weekViewSwipe( event )
 
 						startdate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue )).." 12:00:00 AM"
 
-						weekViewSwipevalue.day = weekViewSwipevalue.day+7
+						weekViewSwipevalue.day = weekViewSwipevalue.day+6
 
 						enddate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue )).." 11:59:59 PM"
 
-						weekViewSwipevalue.day = weekViewSwipevalue.day-7
+						weekViewSwipevalue.day = weekViewSwipevalue.day-6
 
 						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue )))
 
@@ -828,6 +910,8 @@ local function calenderAction( event )
 		display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
+		search.text = ""
+		NoEvent.text = EventCalender.NoEvent
 		native.setKeyboardFocus( nil )
 			pickerGroup.isVisible=false
 
@@ -1131,7 +1215,7 @@ function scene:show( event )
 
 			startdate = os.date( "!%m/%d/%YT%H:%m:%S %p" , os.time( t ))
 
-			t.day = t.day + 7
+			t.day = t.day + 6
 
 			Processingdate = os.date( "!%Y-%m-%d" , os.time( t ))
 

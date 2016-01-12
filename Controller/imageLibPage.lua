@@ -19,6 +19,7 @@ local Background,BgText
 
 local menuBtn
 local  List_array = {}
+local imageArray = {}
 
 openPage="imageLibPage"
 
@@ -31,7 +32,10 @@ openPage="imageLibPage"
 
 
 
-local function downloadAction(filename)
+local function downloadAction(filename,file)
+
+
+	native.showAlert( file, ResourceLibrary.Download_alert, { CommonWords.ok} )
 
 			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
 						
@@ -73,13 +77,12 @@ local function downloadAction(filename)
 									 end
 								 end
 							end
-	native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
+	
 end
 
 local function showShare(fileNameString)
 
-				print( "fileNameString : "..fileNameString )
-				
+			
 			    local popupName = "activity"
 			    local isAvailable = native.canShowPopup( popupName )
 			    local isSimulator = "simulator" == system.getInfo( "environment" )
@@ -108,19 +111,25 @@ local function showShare(fileNameString)
 			        })
 			    else
 			  
-			            native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
+			            --native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
 			        
 			    end
 			end
 
 
 	local function share(fileName)
+
+
+
+		print( "fileName : "..fileName )
+
 		local isAvailable = native.canShowPopup( "social", "share" )
 
-		  --[[  -- If it is possible to show the popup
+		    -- If it is possible to show the popup
 		    if isAvailable then
 		    	local listener = {}
 		    	function listener:popup( event )
+		    		 native.setKeyboardFocus(nil)
 		    	end
 
 		        -- Show the popup
@@ -139,51 +148,58 @@ local function showShare(fileNameString)
 		 
 		            --native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
 		       
-		    end]]
+		    end
 
-		    	showShare(fileName)
+		    	--showShare(fileName)
 
 end
 
 local function listTouchAction( event)
 	
-	print( event.value )
+	print( event.filename )
 
 
-local tempreverse = string.find(string.reverse( event.value ),"%.")
+local function networkListener( downloan_event )
+	if ( downloan_event.isError ) then
+		elseif ( downloan_event.phase == "began" ) then
+			elseif ( downloan_event.phase == "ended" ) then
+			spinner_hide()
 
-fileExt = event.value:sub( event.value:len()-tempreverse+2,event.value:len())
+				if event.id =="download" then
+					
+							downloadAction(downloan_event.response.filename,event.filename)
 
-print( "file ext : "..fileExt )
 
-			local function networkListener( downloan_event )
-			if ( downloan_event.isError ) then
-				elseif ( downloan_event.phase == "began" ) then
-					elseif ( downloan_event.phase == "ended" ) then
-					spinner_hide()
+				elseif event.id =="share" then
 
-					if event.id == "share" then
-						showShare(downloan_event.response.filename)
-						elseif event.id =="download" then
-							downloadAction(downloan_event.response.filename)
+						if isAndroid then
 
+							share(downloan_event.response.filename)
+							
+						else
+
+							showShare(downloan_event.response.filename)
 
 						end
 
-
-					end
 				end
 
-		spinner_show()
 
-local destDir = system.TemporaryDirectory  -- Location where the file is stored
-local result, reason = os.remove( system.pathForFile( event.filename , destDir ) )
+			end
+		end
+
+
+local destDir = system.TemporaryDirectory 
+local result, reason = os.remove( system.pathForFile( "imageLib.png", destDir ) )
+
+
+spinner_show()
 
 network.download(
 	event.value,
 	"GET",
 	networkListener,
-	event.filename.."."..fileExt,
+	event.value:match( "([^/]+)$" ),
 	system.TemporaryDirectory
 	)
 
@@ -191,13 +207,15 @@ network.download(
 
 
 end
+
 local function listTouch( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+			listTouchAction(event.target)
 
-		listTouchAction(event.target)
+
 
 	end
 
@@ -212,8 +230,42 @@ local function onRowRender_ImageLib( event )
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
 
-    local Lefticon = display.newImageRect(row,"res/assert/image-active.png",25,25)
-    Lefticon.x=30;Lefticon.y=rowHeight/2
+    --local Lefticon = display.newImageRect(row,"res/assert/image-active.png",25,25)
+    --Lefticon.x=30;Lefticon.y=rowHeight/2
+
+    local Lefticon
+
+    if List_array[row.index].FilePath ~= nil then
+
+			Lefticon = display.newImageRect(row,"res/assert/twitter_placeholder.png",35,35)
+			Lefticon.x=30;Lefticon.y=rowHeight/2
+			print( List_array[row.index].ImageFileName )
+
+
+
+			imageArray[#imageArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath,
+				"GET",
+				function ( img_event )
+					if ( img_event.isError ) then
+						print ( "Network error - download failed" )
+					else
+						if Lefticon then Lefticon:removeSelf();Lefticon=nil end
+
+						print("response file "..img_event.response.filename)
+						Lefticon = display.newImage(row,img_event.response.filename,system.TemporaryDirectory)
+						Lefticon.width=35;Lefticon.height=35
+						Lefticon.x=30;Lefticon.y=rowHeight/2
+    				--event.row:insert(img_event.target)
+    			end
+
+    			end, List_array[row.index].FilePath:match( "([^/]+)$" ), system.TemporaryDirectory)
+		else
+			Lefticon = display.newImageRect(row,"res/assert/twitter_placeholder.png",35,35)
+			Lefticon.x=30;Lefticon.y=rowHeight/2
+
+		end
+
+
 
     local text = display.newText(row,List_array[row.index].ImageFileName,0,0,native.systemFont,16)
     text.x=Lefticon.x+Lefticon.contentWidth+10;text.y=rowHeight/2
@@ -257,6 +309,8 @@ local function onRowRender_ImageLib( event )
     downImg.x=shareImg.x+30;downImg.y=seprate_bg.y
     downImg.id="download"
     downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
+
+    --work
     downImg.filename = List_array[row.index].ImageFileName
     downImg:addEventListener("touch",listTouch)
     downImg_bg:addEventListener("touch",listTouch)

@@ -24,7 +24,7 @@ local detail_value = {}
 
 local RecentTab_Topvalue = 105
 
-local prority_enum = {"High","Normal","Low"}
+local prority_enum = {EventCalender.High,EventCalender.Normal,EventCalender.Low}
 
 local purpose_enum = {"FACIAL","ON_THE_GO","DOUBLE_FACIAL","CLASS","TEAM_BUILDING","TRAINING","SHOW","MEETING","FOLLOW_UP","CUSTOMER_SERVICE","TWO_DAY_FOLLOWUP","TWO_WEEK_FOLLOWUP","TWO_MONTH_FOLLOWUP","OTHER","COLOR_APPT","FAMILY","BOOKING","INIT_APPT","RESCHEDULE","FULLCIRCLE"}
 
@@ -46,94 +46,8 @@ local display_details = {}
 
 local function getPurpose( stringValue )
 
-	local value = ""
+	local value = EventCalender[stringValue]
 	
-	if stringValue == "FACIAL" then
-
-		value = "Facial"
-
-	elseif stringValue == "ON_THE_GO" then
-
-		value = "On the Go"
-
-	elseif stringValue == "DOUBLE_FACIAL" then
-
-		value = "Double Facial"
-
-	elseif stringValue == "CLASS" then
-
-		value = "Class"
-
-	elseif stringValue == "TEAM_BUILDING" then
-
-		value = "Team Building"
-
-	elseif stringValue == "TRAINING" then
-
-		value = "Training"
-
-	elseif stringValue == "SHOW" then
-
-		value = "Show"
-
-	elseif stringValue == "MEETING" then
-
-		value = "Meeting"
-
-	elseif stringValue == "FOLLOW_UP" then
-
-		value = "Follow Up"
-
-	elseif stringValue == "CUSTOMER_SERVICE" then
-
-		value = "Customer Service"
-
-	elseif stringValue == "TWO_DAY_FOLLOWUP" then
-
-		value = "2 Day Follow up"
-
-	elseif stringValue == "TWO_WEEK_FOLLOWUP" then
-
-		value = "2 Week Follow up"
-
-	elseif stringValue == "TWO_MONTH_FOLLOWUP" then
-
-		value = "2 Month Follow up"
-
-	elseif stringValue == "OTHER" then
-
-		value = "Other"
-
-	elseif stringValue == "COLOR_APPT" then
-
-		value = "Color Appointment"
-
-	elseif stringValue == "FAMILY" then
-
-		value = "Family Time"
-
-	elseif stringValue == "BOOKING" then
-
-		value = "Booking"
-
-	elseif stringValue == "INIT_APPT" then
-
-		value = "Initial Appointment"
-
-	elseif stringValue == "RESCHEDULE" then
-
-		value = "Reschedule"
-
-	elseif stringValue == "FULLCIRCLE" then
-
-		value = "Full Circle"
-
-
-	end
-
-
-
-
 
 return value
 end
@@ -317,9 +231,19 @@ function scene:show( event )
 					local monthstart = Utils.GetMonth(os.date( "%b" , start_timeGMT ))
 					local monthend = Utils.GetMonth(os.date( "%b" , end_timeGMT ))
 
+					local value 
+					if CommonWords.language == "Canada English" then
+
+						value = os.date( " %d " , start_timeGMT )..monthstart..os.date( ", %Y" , start_timeGMT).." to ".. os.date( "%d " , start_timeGMT )..monthend..os.date( ", %Y" , start_timeGMT)
+
+					else
+
+						value = monthstart..os.date( " %d, %Y" , start_timeGMT ).." to "..monthend..os.date( " %d, %Y" , end_timeGMT )
+
+					end
 
 					display_details[#display_details+1] = display_details[#display_details+1]
-					display_details[#display_details] = display.newText(monthstart..os.date( " %d, %Y" , start_timeGMT ).." to "..monthend..os.date( " %d, %Y" , end_timeGMT ),0,0,220,0,sp_fieldValue.Font_Weight,sp_fieldValue.Font_Size_ios)
+					display_details[#display_details] = display.newText(value,0,0,220,0,sp_fieldValue.Font_Weight,sp_fieldValue.Font_Size_ios)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_fieldValue.Text_Color))
 					display_details[#display_details].x=W/2-28;display_details[#display_details].y=titleBar.y-45
 					display_details[#display_details].anchorX=0
@@ -337,7 +261,11 @@ function scene:show( event )
 
 					if Details.allDay == false then
 
-					time = "( "..os.date( "%I:%M %p" , start_timeGMT ).." to "..os.date( "%I:%M %p" , end_timeGMT ).." )"
+						local TimeZone_start = Utils.GetWeek(os.date( "%p" , start_timeGMT ))
+						local TimeZone_end = Utils.GetWeek(os.date( "%p" , end_timeGMT ))
+
+
+					time = "( "..os.date( "%I:%M " , start_timeGMT )..TimeZone_start.." to "..os.date( "%I:%M " , end_timeGMT )..TimeZone_end.." )"
 
 					else
 
@@ -580,7 +508,20 @@ function scene:show( event )
 
 
 						display_details[#display_details+1] = display.newText(Details.AttachmentName,0,0,180,0,native.systemFont,14)
-						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.blue))
+						local AttachName
+						if display_details[#display_details].width > 35 then
+
+							AttachName = Details.AttachmentName:sub( 1,12 ).."..."..Details.AttachmentName:sub( Details.AttachmentName:len()-4,Details.AttachmentName:len() )
+						
+						else
+
+							AttachName = Details.AttachmentName
+							
+						end
+
+						display_details[#display_details].text = AttachName
+
+							display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.blue))
 						display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y
 						display_details[#display_details].anchorX=0
 						display_details[#display_details].anchorY=0
@@ -588,8 +529,9 @@ function scene:show( event )
 						display_details[#display_details].id="Attachment"
 						scrollView:insert( display_details[#display_details] )
 						display_details[#display_details]:addEventListener("touch",AttachmentDownload)
+						
 
-						sample = display.newText(Details.AttachmentName,0,0,native.systemFont,14)
+						sample = display.newText(AttachName,0,0,native.systemFont,14)
 						sample.isVisible=false
 
 						local line = display.newLine(  display_details[#display_details].x, display_details[#display_details].y+15, display_details[#display_details].x+sample.contentWidth, display_details[#display_details].y+15  )
@@ -598,6 +540,8 @@ function scene:show( event )
 						scrollView:insert( line )
 					end
 				------------------
+
+
 
 						display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 						display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))

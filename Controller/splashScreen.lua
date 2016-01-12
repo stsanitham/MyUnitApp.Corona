@@ -132,18 +132,68 @@ function scene:show( event )
 
 			end
 
-
-
 	
-
-
-			
 
 		end
 
-		Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)
+
+		function get_versionFromWeb(response)
+
+					
+
+					if system.getInfo( "environment" ) == "device" then
+
+							--local alert = native.showAlert( response,system.getInfo( "appVersionString" ), { CommonWords.ok } )
+
+							local responseVersion = string.gsub( response, "%.", "", 3 )
+							local installedVersion = string.gsub( system.getInfo( "appVersionString" ), "%.", "", 3 )
 
 
+							if (tonumber(responseVersion)<=tonumber(installedVersion)) then
+
+								Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)
+
+							else
+
+								if isAndroid then 
+
+									system.openURL( "https://play.google.com/store/apps/details?id=com.spanenterprises.myunitbuzz" )
+
+									os.exit()
+
+								elseif isIos then
+									system.openURL( "https://itunes.apple.com/in/app/myunitbuzz/id1068478993?mt=8" )
+								end
+
+							end
+					else
+
+						Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)
+
+					end
+
+
+				
+
+		end
+
+
+		
+
+		if isAndroid then
+
+			Webservice.GetLatestVersionCommonApp("android",get_versionFromWeb)
+
+		elseif isIos then
+
+			Webservice.GetLatestVersionCommonApp("ios",get_versionFromWeb)
+		else
+
+			Webservice.GetLatestVersionCommonApp("android",get_versionFromWeb)
+
+		end
+
+		
 
 	elseif phase == "did" then
 

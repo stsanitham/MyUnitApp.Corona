@@ -35,7 +35,7 @@ MainGroup = display.newGroup();
 local W,H = display.contentWidth, display.contentHeight;
 NavigationSpeed = 400;
 menuShowFlag = false;
-menuTransTime = 1000;
+menuTransTime = 600;
 openPage="main"
 
 isSimulator=false
@@ -173,8 +173,12 @@ end]]
         local keyName = event.keyName
 
         if(keyName=="back") then
-            if openPage == "signInPage" then
+
+           
+
+            if openPage == "signInPage" or openPage == "requestAccess Page" then
                 native.setKeyboardFocus(nil)
+                scrollTo(0)
             end
         end
         -- we handled the event, so return true.
@@ -184,6 +188,23 @@ end]]
 
     -- Add the key callback
    Runtime:addEventListener( "key", onKeyEvent );
+
+   function onSystemEvent( event )
+
+   if ( event.type == "applicationExit" ) then
+      
+
+   elseif ( event.type == "applicationOpen" ) then
+
+         native.setKeyboardFocus(nil)
+
+   elseif (event.type == "applicationSuspend") then
+
+        native.setKeyboardFocus(nil)
+
+   end
+end
+Runtime:addEventListener( "system", onSystemEvent )
 
 --[[local function doesFileExist( fname, path )
 

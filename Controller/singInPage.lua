@@ -320,10 +320,6 @@ local function onRowTouch_unitnumber( event )
 			else
 				CountryId=""
 			end
-
-
-			print("Last name : "..Request_response.MyUnitBuzzContacts.LastName)
-
 			
 
 			FirstName = Request_response.MyUnitBuzzContacts.FirstName
@@ -331,15 +327,7 @@ local function onRowTouch_unitnumber( event )
 
 			Director_Name = Request_response.MyUnitBuzzContacts.LastName
 			
-			if ContactDisplay == 1 or ContactDisplay == nil then
-
-				if Request_response.MyUnitBuzzContacts.FirstName then
-
-					Director_Name = Request_response.MyUnitBuzzContacts.LastName..","..Request_response.MyUnitBuzzContacts.FirstName
-
-				end
-
-			elseif ContactDisplay == 2 then
+			
 
 				if Request_response.MyUnitBuzzContacts.FirstName then
 
@@ -347,7 +335,7 @@ local function onRowTouch_unitnumber( event )
 
 				end
 
-			end
+			
 
 
 
@@ -439,27 +427,25 @@ Director_Name = string.gsub( Director_Name, "'", "''" )
 			end
 
 
-			elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+			elseif  event.phase == "ended"  then
 
-			--native.setKeyboardFocus( nil )
 
-			--[[unitnumer_list.alpha=0
+			elseif event.phase == "submitted" then
 
-			UserName.isVisible=true
-			Password.isVisible=true]]
-		if current_textField.id == "Unit Number / Director name" then
 
-			native.setKeyboardFocus( nil )
+				if current_textField.id == "Unit Number / Director name" then
 
-		elseif current_textField.id == "User name or Email address" then
+					native.setKeyboardFocus( nil )
 
-			native.setKeyboardFocus( Password )
+				elseif current_textField.id == "User name or Email address" then
 
-		elseif current_textField.id == "Password" then
+					native.setKeyboardFocus( Password )
 
-			native.setKeyboardFocus( nil )
+				elseif current_textField.id == "Password" then
 
-		end
+					native.setKeyboardFocus( nil )
+
+				end
 
 
 
@@ -504,8 +490,6 @@ Director_Name = string.gsub( Director_Name, "'", "''" )
 
 					for i = 1,#list_response_total do
 
-						print( list_response_total[i].DirectorName, event.text)
-
 						local temp = event.text
 
 						local tempvalue = temp:sub(temp:len(),temp:len())
@@ -525,8 +509,6 @@ Director_Name = string.gsub( Director_Name, "'", "''" )
 		
 
 					if list_response ~= nil then
-
-						print("adding.."..#list_response)
 
 							if #list_response == 0 then
 
@@ -614,7 +596,6 @@ Director_Name = string.gsub( Director_Name, "'", "''" )
 									else
 
 										if not Utils.emailValidation(UserName.text) then
-										print( "here validation" )
 										validation=false
 										SetError(LoginPage.setError_UserName,UserName)
 
@@ -834,11 +815,13 @@ function scene:show( event )
 			list_response_total = event.params.responseValue
 		end
 
-		Unitnumber_field.text = "123"
+		--[[Unitnumber_field.text = "123"
 		Unitnumber_field.value="123"
 		UserName.text = "malarkodi.sellamuthu@w3magix.com"
 		Password.text = "123123"
-		Password.value = "123123"
+		Password.value = "123123"]]
+
+		
 
 
 		--[[function get_GetSearchByUnitNumberOrDirectorName(response)

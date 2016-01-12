@@ -1,5 +1,5 @@
 CommonWords = {}
-
+CommonWords.language = "Canada English"
 CommonWords.ok = "OK"
 CommonWords.submit = "Submit"
 CommonWords.done = "Done"
@@ -7,29 +7,39 @@ CommonWords.search = "Search"
 
 Month = {}
 
-Month.January = "Jan"
-Month.February= "Feb"
-Month.March= "Mar"
-Month.April= "Apr"
-Month.May= "May"
-Month.June= "Jun"
-Month.July= "Jul"
-Month.August= "Aug"
-Month.September= "Sep"
-Month.October= "Oct"
-Month.November= "Nov"
-Month.December= "Dec"
+Month["jan"] = "Jan"
+Month["feb"]= "Feb"
+Month["mar"]= "Mar"
+Month["apr"]= "Apr"
+Month["may"]= "May"
+Month["jun"]= "Jun"
+Month["jul"]= "Jul"
+Month["aug"]= "Aug"
+Month["sap"]= "Sep"
+Month["oct"]= "Oct"
+Month["nov"]= "Nov"
+Month["dec"]= "Dec"
 
 
 Week = {}
 
-Week.Sunday="Sun"
-Week.Monday="Mon"
-Week.Tuesday="Tue"
-Week.Wednesday="Wed"
-Week.Thursday="Thu"
-Week.Friday="Fri"
-Week.Saturday="Sat"
+Week["sunday"]="Sunday"
+Week["monday"]="Monday"
+Week["tuesday"]="Tuesday"
+Week["wednesday"]="Wednesday"
+Week["thursday"]="Thursday"
+Week["friday"]="Friday"
+Week["saturday"]="Saturday"
+Week["sun"]="Sun"
+Week["mon"]="Mon"
+Week["tue"]="Tue"
+Week["wed"]="Wed"
+Week["thu"]="Thu"
+Week["fri"]="Fri"
+Week["sat"]="Sat"
+
+Week["am"] = "AM"
+Week["pm"] = "PM"
 
 
 RequestAccess = {}
@@ -53,7 +63,7 @@ RequestAccess.LastName_placeholder = "Last Name"
 RequestAccess.EmailAddress_placeholder= "Email Address"
 RequestAccess.Phone_placeholder = "Phone"
 RequestAccess.MKRank_placeholder = "-Select MK Rank-"
-RequestAccess.Comment_placeholder= "Enter your comment here"
+RequestAccess.Comment_placeholder= "Enter your comment(s) here"
 
 
 LoginPage = {}
@@ -66,7 +76,7 @@ LoginPage.Forget_Button = "Forgot Password?"
 LoginPage.Request_Button = "Don't have an access? Click here"
 LoginPage.ErrorMessage = "The details you have entered are incorrect. Check again and re-enter the valid details"
 LoginPage.ErrorTitle = "Login Failed"
-LoginPage.setError_Unitnumber = "* Enter the valid Unit number or Director Name"
+LoginPage.setError_Unitnumber = "* Enter the valid Unit number/Director Name"
 LoginPage.setError_UserName = "* Enter the valid Email Address"
 LoginPage.setError_Password = "* Enter the Password"
 
@@ -75,6 +85,7 @@ ForgotPassword = {}
 
 ForgotPassword.PageTitle = "Forgot Password"
 ForgotPassword.SuccessMsg = "Your Temporary Password is sent successfully"
+ForgotPassword.InvalidUser = "You’re trying with an unregistered email address"
 
 
 FlapMenu = {}
@@ -105,13 +116,36 @@ EventCalender.Today = "Today"
 EventCalender.Upcoming = "Upcoming"
 EventCalender.Phone = "Phone"
 EventCalender.NoEvent = "There are no Events to show"
-
+EventCalender.High="High"
+EventCalender.Normal="Normal"
+EventCalender.Low="Low"
+EventCalender["FACIAL"]="Facial"
+EventCalender["ON_THE_GO"]="On the Go"
+EventCalender["DOUBLE_FACIAL"]="Double Facial"
+EventCalender["CLASS"]="Class"
+EventCalender["TEAM_BUILDING"]="Team Building"
+EventCalender["TRAINING"]="Training"
+EventCalender["SHOW"]="Show"
+EventCalender["MEETING"]="Meeting"
+EventCalender["FOLLOW_UP"]="Follow Up"
+EventCalender["CUSTOMER_SERVICE"]="Customer Service"
+EventCalender["TWO_DAY_FOLLOWUP"]="2 Day Follow up"
+EventCalender["TWO_WEEK_FOLLOWUP"]="2 Week Follow up"
+EventCalender["TWO_MONTH_FOLLOWUP"]="2 Month Follow up"
+EventCalender["OTHER"]="Other"
+EventCalender["COLOR_APPT"]="Color Appointment"
+EventCalender["FAMILY"]="Family Time"
+EventCalender["BOOKING"]="Booking"
+EventCalender["INIT_APPT"]="Initial Appointment"
+EventCalender["RESCHEDULE"]="Reschedule"
+EventCalender["FULLCIRCLE"]="Full Circle"
+EventCalender.NoRecord="No records found"
 
 
 
 CareerPath = {}
 
-CareerPath.PageTitle="Career Path"
+CareerPath.PageTitle="Unit Career Path"
 CareerPath.NoMember = "No Team Members to show"
 CareerPath.Location="Location"
 CareerPath.By_Name="By Name"
@@ -126,7 +160,8 @@ CareerPath.Career_Progress="Career Progress"
 
 Goals = {}
 
-Goals.PageTitle = "Goals"
+Goals.PageTitle = "Unit Goals"
+Goals.NoGolas = "There are no goals to view as of now"
 
 ResourceLibrary = {}
 
@@ -150,4 +185,5 @@ Twitter.PageTitle = "Twitter"
 Google_Plus = {}
 
 Google_Plus.PageTitle = "Google+"
+
 

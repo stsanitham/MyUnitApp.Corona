@@ -1,5 +1,5 @@
 CommonWords = {}
-
+CommonWords.language = "English"
 CommonWords.ok = "OK"
 CommonWords.submit = "Submit"
 CommonWords.done = "Done"
@@ -10,33 +10,38 @@ Month = {}
 Month["jan"] = "Jan"
 Month["feb"]= "Feb"
 Month["mar"]= "Mar"
-Month["April"]= "Apr"
-Month["May"]= "May"
-Month["June"]= "Jun"
-Month["July"]= "Jul"
-Month["August"]= "Aug"
-Month["September"]= "Sep"
-Month["October"]= "Oct"
-Month["November"]= "Nov"
-Month["December"]= "Dec"
+Month["apr"]= "Apr"
+Month["may"]= "May"
+Month["jun"]= "Jun"
+Month["jul"]= "Jul"
+Month["aug"]= "Aug"
+Month["sep"]= "Sep"
+Month["oct"]= "Oct"
+Month["nov"]= "Nov"
+Month["dec"]= "Dec"
+
+
 
 
 Week = {}
 
-Week["Sunday"]="Sun"
-Week["Monday"]="Mon"
-Week["Tuesday"]="Tue"
-Week["Wednesday"]="Wed"
-Week["Thursday"]="Thu"
-Week["Friday"]="Fri"
-Week["Saturday"]="Sat"
+Week["sunday"]="Sunday"
+Week["monday"]="Monday"
+Week["tuesday"]="Tuesday"
+Week["wednesday"]="Wednesday"
+Week["thursday"]="Thursday"
+Week["friday"]="Friday"
+Week["saturday"]="Saturday"
 Week["sun"]="Sun"
 Week["mon"]="Mon"
-Week["tues"]="Tue"
+Week["tue"]="Tue"
 Week["wed"]="Wed"
 Week["thu"]="Thu"
 Week["fri"]="Fri"
 Week["sat"]="Sat"
+
+Week["am"] = "AM"
+Week["pm"] = "PM"
 
 
 RequestAccess = {}
@@ -113,6 +118,31 @@ EventCalender.Today = "Today"
 EventCalender.Upcoming = "Upcoming"
 EventCalender.Phone = "Phone"
 EventCalender.NoEvent = "There are no Events to show"
+EventCalender.High="High"
+EventCalender.Normal="Normal"
+EventCalender.Low="Low"
+EventCalender["FACIAL"]="Facial"
+EventCalender["ON_THE_GO"]="On the Go"
+EventCalender["DOUBLE_FACIAL"]="Double Facial"
+EventCalender["CLASS"]="Class"
+EventCalender["TEAM_BUILDING"]="Team Building"
+EventCalender["TRAINING"]="Training"
+EventCalender["SHOW"]="Show"
+EventCalender["MEETING"]="Meeting"
+EventCalender["FOLLOW_UP"]="Follow Up"
+EventCalender["CUSTOMER_SERVICE"]="Customer Service"
+EventCalender["TWO_DAY_FOLLOWUP"]="2 Day Follow up"
+EventCalender["TWO_WEEK_FOLLOWUP"]="2 Week Follow up"
+EventCalender["TWO_MONTH_FOLLOWUP"]="2 Month Follow up"
+EventCalender["OTHER"]="Other"
+EventCalender["COLOR_APPT"]="Color Appointment"
+EventCalender["FAMILY"]="Family Time"
+EventCalender["BOOKING"]="Booking"
+EventCalender["INIT_APPT"]="Initial Appointment"
+EventCalender["RESCHEDULE"]="Reschedule"
+EventCalender["FULLCIRCLE"]="Full Circle"
+EventCalender.NoRecord="No records found"
+
 
 
 
@@ -134,6 +164,7 @@ CareerPath.Career_Progress="Career Progress"
 Goals = {}
 
 Goals.PageTitle = "Unit Goals"
+Goals.NoGolas = "There are no goals to view as of now"
 
 ResourceLibrary = {}
 
