@@ -38,7 +38,7 @@ function request.new(url, method, params,listner)
 
 	else
 		
-		print ( "RESPONSE: " .. event.response )
+		--print ( "RESPONSE: " .. event.response )
 
 		response = json.decode(event.response)
 

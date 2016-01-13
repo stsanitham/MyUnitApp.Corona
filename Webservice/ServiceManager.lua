@@ -539,14 +539,7 @@ function Webservice.Get_TicklerEventsById(Id,postExecution)
 
 	print("request : "..json.encode(params))
 
-	--[[local options =
-{
-   to = { "malarkodi.sellamuthu@w3magix.com" },
-   subject = "response check",
-   body = json.encode(params),
-   
-}
-native.showPopup( "mail", options )]]
+
 
 	request.new(ApplicationConfig.GetTicklerEventById,method,params,postExecution)
 
@@ -572,12 +565,6 @@ function Webservice.GET_SEARCHBY_UnitNumberOrDirectorName(search_value,postExecu
 
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
-
-	--local resbody = ""
-	--resbody = "searchName="..search_value.."&"
-
-
-	--print("body : "..resbody)
 
 
 	params={headers = headers}

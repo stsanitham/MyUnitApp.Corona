@@ -47,7 +47,7 @@ ApplicationConfig.API_PRIVATE_KEY = "5Doh1kteJKYZbSemCipRTGZiyzRAAhkSKEDhAf5TPcY
 
 IsLive = true
 
-ApplicationConfig.Version = "/Android/1.1.0"	    --1.0.1
+ApplicationConfig.Version = "/iOS/1.1.0"	    --1.0.1
 
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.com/"..ApplicationConfig.Version
 

@@ -22,6 +22,15 @@ settings =
         {
             publisherId = "com.coronalabs"
         },
+        ["plugin.OneSignal"] =
+	    {
+	        publisherId = "com.onesignal",
+	    },
+	    ["plugin.google.play.services"] =
+	    {
+	        publisherId = "com.coronalabs",
+	        supportedPlatforms = { android=true, ["android-kindle"]=true },
+	    },
     },
     
 
@@ -42,10 +51,13 @@ settings =
 		{
 		
 			--CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
+			CFBundleIdentifier="com.spanenterprises.MUBDev",
+	
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, 
 			--UIApplicationExitsOnSuspend = true,
 			CoronaWindowMovesWhenKeyboardAppears = true,
+			UIBackgroundModes = {"remote-notification"},
 			CFBundleIconFiles =
 			{
 				"Icon.png",

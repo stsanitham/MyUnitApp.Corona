@@ -772,7 +772,7 @@ function scene:create( event )
 
 	requestBtn = display.newText(sceneGroup,LoginPage.Request_Button,0,0,native.systemFont,14)
 	requestBtn.x=W/2
-	requestBtn.y=signinBtn.y+signinBtn.contentHeight/2+20
+	requestBtn.y=signinBtn.y+signinBtn.contentHeight/2+40
 	requestBtn:setFillColor(Utils.convertHexToRGB(color.blue))
 	requestBtn.id="request"
 	--requestBtn.isVisible=false
@@ -814,6 +814,27 @@ function scene:show( event )
 		if event.params then
 			list_response_total = event.params.responseValue
 		end
+
+		local Version = system.getInfo( "appVersionString" )
+
+		local path = system.pathForFile( "version.txt", system.DocumentsDirectory )
+
+
+		local file, errorString = io.open( path, "w" )
+
+		if not file then
+		    -- Error occurred; output the cause
+		    print( "File error: " .. errorString )
+		else
+		    -- Write data to file
+		    file:write( Version )
+		    -- Close the file handle
+		    io.close( file )
+		end
+
+		file = nil
+
+
 
 		--[[Unitnumber_field.text = "123"
 		Unitnumber_field.value="123"

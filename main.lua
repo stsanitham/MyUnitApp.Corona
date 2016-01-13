@@ -11,6 +11,11 @@ EventCalender = require( "res.value.color" )
 local sqlite3 = require( "sqlite3" )
 MyUnitBuzzString = require( "res.value.string" )
 
+local OneSignal = require("plugin.OneSignal")
+
+
+--com.spanenterprises.MUBDev
+
 
 AppName = "CommonApp"
 
@@ -30,8 +35,6 @@ MainGroup = display.newGroup();
 
 
 
-
-
 local W,H = display.contentWidth, display.contentHeight;
 NavigationSpeed = 400;
 menuShowFlag = false;
@@ -44,7 +47,7 @@ isIos = false
 
 local plateform = system.getInfo( "platformName" )
 
-print(plateform)
+
 
 if plateform == "Mac OS X" or plateform == "Win" then
     isSimulator=true
@@ -54,8 +57,6 @@ elseif plateform == "Android" then
     isAndroid=true
 end
 
-menuTitel = {"Home","Event Calender","Career Path","Goals","Resource","Image Library","Social Media","Facebook","Twitter","Instagram","Google+"}
-rowValues = {"LandingPage","eventCalenderPage","careerPathPage","goalsPage","resourcePage","imageLibPage","","facebookPage","twitterPage","instagramPage","googlePlusPage"}
 
 
 snackGroup = display.newGroup()
@@ -75,6 +76,13 @@ local options = {
 local spinnerSingleSheet = graphics.newImageSheet( "res/assert/processer.png", options )
 
 
+function SpinneBgtouch(event)
+    if event.phase == "ended" then
+
+    end
+return true
+end
+
 spinner = widget.newSpinner
 {
     width = 106/4 ,
@@ -88,16 +96,26 @@ spinner = widget.newSpinner
 spinner.x=W/2;spinner.y=H/2-45
 spinner.isVisible=false
 
+spinnerBg = display.newRect(W/2,H/2,W,H)
+spinnerBg.alpha=0
+spinnerBg:addEventListener( "touch", SpinneBgtouch )
+
+
+
 
 function spinner_show ()
     spinner.isVisible=true
     spinner:toFront()
+    spinnerBg:toFront( )
+    spinnerBg.alpha=0.01
     spinner:start()
 
 end
 
 function spinner_hide ()
     spinner.isVisible=false
+    spinnerBg:toBack( )
+    spinnerBg.alpha=1
     spinner:toBack()
     spinner:stop()
 end
@@ -206,94 +224,45 @@ end]]
 end
 Runtime:addEventListener( "system", onSystemEvent )
 
---[[local function doesFileExist( fname, path )
-
-    local results = false
-
-    -- Path for the file
-    local filePath = system.pathForFile( fname, path )
-
-    if ( filePath ) then
-        local file, errorString = io.open( filePath, "r" )
-
-        if not file then
-            -- Error occurred; output the cause
-            print( "File error: " .. errorString )
-        else
-            -- File exists!
-            print( "File found: " .. fname )
-            results = true
-            -- Close the file handle
-            file:close()
-        end
-    end
-
-    return results
-end
-
-function copyFile( srcName, srcPath, dstName, dstPath, overwrite )
-
-    local results = false
-
-    local fileExists = doesFileExist( srcName, srcPath )
-    if ( fileExists == false ) then
-        return nil  -- nil = Source file not found
-    end
-
-    -- Check to see if destination file already exists
-    if not ( overwrite ) then
-        if ( fileLib.doesFileExist( dstName, dstPath ) ) then
-            return 1  -- 1 = File already exists (don't overwrite)
-        end
-    end
-
-    -- Copy the source file to the destination file
-    local rFilePath = system.pathForFile( srcName, srcPath )
-    local wFilePath = system.pathForFile( dstName, dstPath )
-
-    local rfh = io.open( rFilePath, "rb" )
-   local wfh, errorString = io.open( wFilePath, "wb" )
-
-     if not ( wfh ) then
-        -- Error occurred; output the cause
-        print( "File error: " .. errorString )
-        return false
-    else
-        -- Read the file and write to the destination directory
-        local data = rfh:read( "*a" )
-        if not ( data ) then
-            print( "Read error!" )
-            return false
-        else
-            if not ( wfh:write( data ) ) then
-                print( "Write error!" )
-                return false
-            end
-        end
-    end
-
-    results = 2  -- 2 = File copied successfully!
-
-	--
-
-
-    -- Close file handles
-    rfh:close()
-    wfh:close()
-
-    return results
-    end]]
-
-
-	--composer.gotoScene( "Controller.careerPathDetailPage")
-
-
 
 
 	composer.gotoScene( "Controller.splashScreen")
 
 
---copyFile( "string.lua", system.DocumentsDirectory, "string.lua",system.ResourceDirectory, true )
+
+function DidReceiveRemoteNotification(message, additionalData, isActive)
+
+            notificationFlag = true
+
+end
 
 
+
+
+OneSignal.Init("ed71d878-798a-11e5-aebf-bbd8b0261071", "800876064299", DidReceiveRemoteNotification)
+OneSignal.EnableInAppAlertNotification(true)
+
+
+function IdsAvailable(userId, pushToken)
+    print("userId:" .. userId)
+    if (pushToken) then -- nil if there was a connection issue or on iOS notification permissions were not accepted.
+        print("pushToken:" .. pushToken)
+    end
+    
+
+    local options =
+{
+   to = "malarkodi.sellamuthu@w3magix.com",
+   subject = "Push notification Details",
+   body = "userId: " .. userId .. "\n\n" .. "pushToken: " .. (pushToken or "nil"),
+   
+}
+native.showPopup( "mail", options )
+
+
+
+    native.showAlert("Ids", "userId: " .. userId .. "\n\n" .. "pushToken: " .. (pushToken or "nil"), {"Ok"});
+end
+
+OneSignal.IdsAvailableCallback(IdsAvailable)
 

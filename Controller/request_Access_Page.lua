@@ -879,7 +879,7 @@ function scene:create( event )
 
 
 	sumbitBtn = display.newRect( 0,0,0,0 )
-	sumbitBtn.x=W/2;sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+25
+	sumbitBtn.x=W/2;sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+35
 	sumbitBtn.width=80
 	sumbitBtn.height=35
 	sumbitBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )

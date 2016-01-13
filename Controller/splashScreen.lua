@@ -73,13 +73,19 @@ function scene:show( event )
 
 			local loginFlag = false
 
-			local found=false
+			local tablefound=false
 			db:exec([[select * from sqlite_master where name='logindetails';]],
-			function(...) found=true return 0 end)
+			function(...) tablefound=true return 0 end)
 
-			if found then 
+			if tablefound then 
 				print('table exists!')
-				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+
+
+				--local tablesetup = [[DROP TABLE logindetails;]]
+			--	db:exec( tablesetup )
+
+
+			for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
 					loginFlag=true
 
@@ -89,22 +95,6 @@ function scene:show( event )
 					
 				end
 
-				--[[profileName.text=Director_Name
-
-					if EmailAddress ~= nil then
-
-							local EmailTxt = EmailAddress
-
-								if EmailTxt:len() > 26 then
-
-									EmailTxt= EmailTxt:sub(1,26).."..."
-
-								end
-
-						profileEmail.text = EmailTxt
-
-						end
-]]
 
 
 					local options = {
@@ -118,7 +108,9 @@ function scene:show( event )
 
 				composer.gotoScene( "Controller.flapMenu" )
 
+
 			else
+
 				print('not table exists!')
 
 				local options = {
@@ -147,6 +139,46 @@ function scene:show( event )
 
 							local responseVersion = string.gsub( response, "%.", "", 3 )
 							local installedVersion = string.gsub( system.getInfo( "appVersionString" ), "%.", "", 3 )
+
+							local contents = " "
+							-- Path for the file to read
+							local path = system.pathForFile( "version.txt", system.DocumentsDirectory )
+
+							-- Open the file handle
+							local file, errorString = io.open( path, "r" )
+
+							if not file then
+							    -- Error occurred; output the cause
+							    print( "File error: " .. errorString )
+							else
+							    -- Read data from file
+							    contents = file:read( "*a" )
+							    -- Output the file contents
+							    -- Close the file handle
+							    io.close( file )
+							end
+
+							file = nil
+
+
+							local storedContent = string.gsub( contents, "%.", "", 3 )
+
+							if storedContent < installedVersion then
+
+								local found=false
+								db:exec([[select * from sqlite_master where name='logindetails';]],
+								function(...) found=true return 0 end)
+
+								if found then 
+									print('table exists!')
+
+
+									local tablesetup = [[DROP TABLE logindetails;]]
+									db:exec( tablesetup )
+
+								end
+
+							end
 
 
 							if (tonumber(responseVersion)<=tonumber(installedVersion)) then
