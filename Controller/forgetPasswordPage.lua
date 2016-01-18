@@ -16,12 +16,10 @@ require( "Webservice.ServiceManager" )
 
 local W = display.contentWidth;H= display.contentHeight
 
-local Background,BgText,unitnumer_list
+local Background,BgText
 
 local backBtn,UnitnumberField,UserName
 
-local list_response_total = {}
-local list_response = {}
 
 --------------------------------------------------
 
@@ -39,60 +37,19 @@ local function bgTouch( event )
 	return true
 end
 
-local function onRowRender_unitnumber( event )
+local function SetError( displaystring, object )
 
-    -- Get reference to the row group
-    local row = event.row
+			if object.id == "password" then
+				object.isSecure = false
+			end
 
-    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
-    local rowHeight = row.contentHeight
-    local rowWidth = row.contentWidth
-
-    local rect = display.newRect(row,0,0,row.width,rowHeight)
-    rect.anchorX = 0
-    rect.x = 0
-    rect.y=rowHeight * 0.5
-    rect:setFillColor(0,0,0,0.1)
-    rect.strokeWidth = 1
-    rect:setStrokeColor( 0, 0, 0,0.3 ) 
-    local rowTitle
-
-
-    if (list_response[row.index]) ~= nil then
-    	rowTitle = display.newText( row, list_response[row.index].DirectorName, 0, 0, nil, 14 )
-    else
-    	rowTitle = display.newText( row, "", 0, 0, nil, 14 )
-
-    end
-    rowTitle:setFillColor( 0 )
-
-    -- Align the label left and vertically centered
-    rowTitle.anchorX = 0
-    rowTitle.x = 10
-    rowTitle.y = rowHeight * 0.5
-
-    row.name = rowTitle.text
-    row.id = list_response[row.index].UnitNumber
-end
-
-
-local function onRowTouch_unitnumber( event )
-
-	local phase = event.phase
-	local row = event.target
-
-	if( "press" == phase ) then
-
-
-		elseif ( "release" == phase ) then
-			unitnumer_list.alpha=0
-			UserName.isVisible=true
-			native.setKeyboardFocus(UserName)
-			UnitnumberField.text = row.name
-			UnitnumberField.value = row.id
+			object.text=displaystring
+			object.size=10
+			object:setTextColor(1,0,0)
 
 		end
-	end
+
+
 
 	local function textfield( event )
 
@@ -110,9 +67,20 @@ local function onRowTouch_unitnumber( event )
 				event.target.text=""
 			end
 
-		elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+		elseif ( event.phase == "ended" ) then
+
+
+		elseif (event.phase == "submitted" ) then
+
+			if(current_textField.id == "Unit Number / Director name") then
+
+				native.setKeyboardFocus( UserName )
+
+			else
 
 				native.setKeyboardFocus( nil )
+
+			end
 			
 
 		elseif ( event.phase == "editing" ) then
@@ -125,24 +93,6 @@ local function onRowTouch_unitnumber( event )
 
 						end
 
-
-						unitnumer_list.alpha=1
-
-						UserName.isVisible=false
-
-						current_textField.value=0
-
-						unitnumer_list:deleteAllRows()
-
-						--list_response = list_response_total
-
-						if #list_response ~= nil then
-							for i = #list_response,1,-1 do
-								table.remove(list_response,i)
-							end
-						end
-
-						for i = #list_response_total,1,-1 do
 							local temp = event.text
 
 							local tempvalue = temp:sub(temp:len(),temp:len())
@@ -151,47 +101,11 @@ local function onRowTouch_unitnumber( event )
 								event.text = event.text:sub( 1, event.text:len()-1)
 							end
 
-							if string.find( list_response_total[i].DirectorName:upper(), event.text:upper() ) then
-								list_response[#list_response+1] = list_response_total[i]
-							end
-							
+
+
+						
+					
 						end
-
-
-
-					if list_response ~= nil then
-
-						if #list_response == 0 then
-
-							UserName.isVisible=true
-							print( "empty" )
-							unitnumer_list.alpha=0
-
-						else
-							UserName.isVisible=false
-						end
-
-						for i = 1, #list_response do
-						  	-- Insert a row into the tableView
-						  	unitnumer_list:insertRow{}
-
-						end
-
-						local dotFlag = string.find(event.text,"%.")
-
-						if event.text == "" or dotFlag then
-							
-							unitnumer_list.alpha=0
-
-							UserName.isVisible=true
-
-						end
-
-					else
-						print( "empty" )
-						unitnumer_list.alpha=0
-					end
-				end
 
 
 
@@ -216,7 +130,10 @@ local function onRowTouch_unitnumber( event )
 
 				elseif Request_response == "NOUNITNUMBER" then
 
-					local alert = native.showAlert(  ForgotPassword.PageTitle,LoginPage.ErrorMessage, { "OK" } )
+					--local alert = native.showAlert(  ForgotPassword.PageTitle,LoginPage.ErrorMessage, { "OK" } )
+
+					SetError(LoginPage.setError_Unitnumber,UnitnumberField)
+
 
 				else
 
@@ -246,23 +163,13 @@ local function onRowTouch_unitnumber( event )
 
 			else
 
-				Webservice.Forget_Password(UnitnumberField.value,UserName.text,get_forgotpassword)
+				Webservice.Forget_Password(UnitnumberField.text,UserName.text,get_forgotpassword)
 
 			end
 
 		end
 
-		local function SetError( displaystring, object )
-
-			if object.id == "password" then
-				object.isSecure = false
-			end
-
-			object.text=displaystring
-			object.size=10
-			object:setTextColor(1,0,0)
-
-		end
+		
 
 		local function backAction( event )
 			if event.phase == "began" then
@@ -274,7 +181,7 @@ local function onRowTouch_unitnumber( event )
 					local options = {
 										    effect = "slideRight",
 										    time = 600,
-										    params = { responseValue=list_response_total}
+										  
 										}
 
 				composer.gotoScene( "Controller.singInPage", options )
@@ -307,7 +214,7 @@ local function onRowTouch_unitnumber( event )
 
 				if AppName ~= "DirectorApp" then
 
-					if UnitnumberField.text == "" or UnitnumberField.value == 0 then
+					if UnitnumberField.text == "" or UnitnumberField.text == nil then
 						validation=false
 						SetError(LoginPage.setError_Unitnumber,UnitnumberField)
 					end
@@ -317,15 +224,12 @@ local function onRowTouch_unitnumber( event )
 
 				if UserName.text == "" then
 
-					print( "here validation" )
 
 					validation=false
 					SetError(LoginPage.setError_UserName,UserName)
 				else
 
-					print( UserName.text )
 					if not Utils.emailValidation(UserName.text) then
-						print( "here validation" )
 						validation=false
 						SetError(LoginPage.setError_UserName,UserName)
 
@@ -358,7 +262,6 @@ local function onRowTouch_unitnumber( event )
 					local options = {
 						    effect = "slideLeft",
 						    time = 600,
-						    params = { responseValue=list_response_total}
 							}
 
 				composer.gotoScene( "Controller.request_Access_Page", options)
@@ -479,48 +382,11 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		unitnumer_list = widget.newTableView
-		{
-		left = 0,
-		top = 0,
-		height = 130,
-		width = UnitNumber_bg.contentWidth,
-		noLines = true,
-		onRowRender = onRowRender_unitnumber,
-		onRowTouch = onRowTouch_unitnumber,
-			--backgroundColor = { 0.8, 0.8, 0.8 },
-			hideBackground=true,
-			listener = scrollListener
-		}
-
-		unitnumer_list.x=UnitNumber_bg.x
-		unitnumer_list.y=UnitNumber_bg.y+UnitNumber_bg.contentHeight/2
-		unitnumer_list.anchorY=0
-
-		unitnumer_list.alpha=0
-
-		UserName.isVisible=true
 
 
-		--[[function get_GetSearchByUnitNumberOrDirectorName(response)
-
-			list_response_total = response
-
-			
-		end
-
-		Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)]]
-
-
-		if event.params.responseValue then
-
-			list_response_total = event.params.responseValue
-
-		end
-
+	
 		elseif phase == "did" then
 
-			composer.removeHidden(true)
 			Background:addEventListener("touch",bgTouch)
 			UnitnumberField:addEventListener( "userInput", textfield )
 			UserName:addEventListener( "userInput", textfield )
@@ -544,7 +410,6 @@ function scene:show( event )
 		local phase = event.phase
 
 		if event.phase == "will" then
-			if unitnumer_list then unitnumer_list:removeSelf( );unitnumer_list=nil end
 		elseif phase == "did" then
 
 

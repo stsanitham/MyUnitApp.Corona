@@ -19,7 +19,6 @@ require( "Webservice.ServiceManager" )
 
 local W = display.contentWidth;
 local H = display.contentHeight
-local signInGroup = display.newGroup()
 --Display object--
 local Background,BgText
 
@@ -30,96 +29,14 @@ local Snack;
 local Unitnumber_field,UserName,Password
 
 --Button--
-local forgettBtn,signinBtn,requestBtn,unitnumer_list
+local forgettBtn,signinBtn,requestBtn
 
-
-local list_response_total = {}
-local list_response = {}
 --------------------------------------------------
 
 openPage="signInPage"
 
 
 -----------------Function-------------------------
-
-
-local function scrollListener( event )
-
-	local phase = event.phase
-	if ( phase == "began" ) then 
-
-		elseif ( phase == "moved" ) then 
-
-			native.setKeyboardFocus(nil)
-
-
-			elseif ( phase == "ended" ) then 
-		end
-
-		if ( event.limitReached ) then
-
-		end
-
-		return true
-	end
-
-	local function onRowRender_unitnumber( event )
-
-    -- Get reference to the row group
-    local row = event.row
-
-    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
-    local rowHeight = row.contentHeight
-    local rowWidth = row.contentWidth
-
-    local rect = display.newRect(row,0,0,row.width,rowHeight)
-    rect.anchorX = 0
-    rect.x = 0
-    rect.y=rowHeight * 0.5
-    rect:setFillColor(0,0,0,0.1)
-    rect.strokeWidth = 1
-    rect:setStrokeColor( 0, 0, 0,0.3 ) 
-    local rowTitle
-
-
-    if (list_response[row.index]) ~= nil then
-    	rowTitle = display.newText( row, list_response[row.index].DirectorName, 0, 0, nil, 14 )
-    else
-    	rowTitle = display.newText( row, "", 0, 0, nil, 14 )
-
-    end
-    rowTitle:setFillColor( 0 )
-
-    -- Align the label left and vertically centered
-    rowTitle.anchorX = 0
-    rowTitle.x = 10
-    rowTitle.y = rowHeight * 0.5
-
-    row.name = rowTitle.text
-    row.id = list_response[row.index].UnitNumber
-end
-
-
-local function onRowTouch_unitnumber( event )
-
-	local phase = event.phase
-	local row = event.target
-
-	if( "press" == phase ) then
-
-
-		elseif ( "release" == phase ) then
-			unitnumer_list.alpha=0
-
-			UserName.isVisible=true
-			Password.isVisible=true
-			native.setKeyboardFocus( UserName )
-			Unitnumber_field.text = row.name
-			Unitnumber_field.value = row.id
-			Unitnumber_field.alpha=1
-
-		end
-	end
 
 
 	local function touchBg( event )
@@ -144,9 +61,6 @@ local function onRowTouch_unitnumber( event )
 			local ContactDisplay,LanguageId,CountryId
 
 
-		
-
-
 			if Request_response.MyUnitBuzzContacts.EmailAddress then
 
 				local EmailTxt = Request_response.MyUnitBuzzContacts.EmailAddress
@@ -160,7 +74,7 @@ local function onRowTouch_unitnumber( event )
 
 			end
 
-			
+		
 
 			if Request_response.UnitNumber then
 				UnitNumberOrDirectorName = Request_response.UnitNumber
@@ -340,7 +254,7 @@ local function onRowTouch_unitnumber( event )
 
 
 
-Director_Name = string.gsub( Director_Name, "'", "''" )
+			Director_Name = string.gsub( Director_Name, "'", "''" )
 
 
 			local tablesetup = [[DROP TABLE logindetails;]]
@@ -356,15 +270,13 @@ Director_Name = string.gsub( Director_Name, "'", "''" )
 			effect = "slideLeft",
 			time =500,
 
-		}
+			}
 
 
 		composer.gotoScene( "Controller.flapMenu" )
 
 		elseif(Request_response.RequestAccessStatus == 6) then
 
-
-			--Utils.SnackBar(Request_response.FailStatus)
 
 			local alert = native.showAlert( LoginPage.ErrorTitle,LoginPage.ErrorMessage, { CommonWords.ok } )
 
@@ -386,22 +298,26 @@ Director_Name = string.gsub( Director_Name, "'", "''" )
 
 		end
 
+
+		local Device_OS = system.getInfo("platformName")
+		local Unique_Id = system.getInfo("deviceID")
+		--local Manufacturer = system.getInfo("targetAppStore")
+		local Model = system.getInfo("model")
+		local Version = system.getInfo("appVersionString")
+		local GCM = GCMValue
+
+
 		if AppName == "DirectorApp" then
 
-			Webservice.LOGIN_ACCESS(Unitnumber_value,UserName.text,Password.text,get_loginresponse)
+			Webservice.LOGIN_ACCESS(Device_OS,Unique_Id,Model,Version,GCM,Unitnumber_value,UserName.text,Password.text,get_loginresponse)
 		else
-			Webservice.LOGIN_ACCESS(Unitnumber_field.value,UserName.text,Password.text,get_loginresponse)
+			Webservice.LOGIN_ACCESS(Device_OS,Unique_Id,Model,Version,GCM,Unitnumber_field.text,UserName.text,Password.text,get_loginresponse)
 		end
 
 
 
 	end
 
-	local function scroll(scroll_value)
-
-		--signInGroup.y=signInGroup.y+scroll_value
-
-	end
 
 	local function textfield( event )
 
@@ -435,7 +351,7 @@ Director_Name = string.gsub( Director_Name, "'", "''" )
 
 				if current_textField.id == "Unit Number / Director name" then
 
-					native.setKeyboardFocus( nil )
+					native.setKeyboardFocus( UserName )
 
 				elseif current_textField.id == "User name or Email address" then
 
@@ -464,89 +380,14 @@ Director_Name = string.gsub( Director_Name, "'", "''" )
 
 					end
 
-				elseif(current_textField.id == "Unit Number / Director name") then
-
-					unitnumer_list.alpha=1
-
-					UserName.isVisible=false
-					Password.isVisible=false
-
-					current_textField.value=0
-
-
-
-					unitnumer_list:deleteAllRows()
-
-					--list_response = list_response_total
-
-
-
-					if #list_response ~= nil then
-
-						for i = #list_response,1,-1 do
-							table.remove(list_response,i)
-						end
-					end
-
-					for i = 1,#list_response_total do
-
-						local temp = event.text
-
-						local tempvalue = temp:sub(temp:len(),temp:len())
-
-						if(tempvalue == "(") then
-							event.text = event.text:sub( 1, event.text:len()-1)
-						end
-
-						if string.find( list_response_total[i].DirectorName:upper() , event.text:upper() ) ~= nil then
-
-							list_response[#list_response+1] = list_response_total[i]
-
-						end
-						
-					end
-
 		
 
-					if list_response ~= nil then
+				end
 
-							if #list_response == 0 then
-
-								UserName.isVisible=true
-								Password.isVisible=true
-
-								unitnumer_list.alpha=0
-
-
-
-								elseif #list_response == 1 then
-
-									Password.isVisible=true
-
-
-								else
-									UserName.isVisible=false
-									Password.isVisible=false
-							end
-
-								for i = 1, #list_response do
-							  	 		 -- Insert a row into the tableView
-							  	 		 unitnumer_list:insertRow{}
-
-							  	 end
-					else
-						unitnumer_list.alpha=0
-					end
-						  	 end
-
-						 local dotFlag = string.find(event.text,"%.")
+						local dotFlag = string.find(event.text,"%.")
 
 						if event.text == "" or dotFlag then
-							
-							unitnumer_list.alpha=0
-							UserName.isVisible=true
-							Password.isVisible=true
-
+						
 						end
 
 						  	end
@@ -638,7 +479,6 @@ Director_Name = string.gsub( Director_Name, "'", "''" )
 										local options = {
 										    effect = "slideLeft",
 										    time = 600,
-										    params = { responseValue=list_response_total}
 										}
 
 										composer.gotoScene( "Controller.forgetPasswordPage", options )
@@ -649,7 +489,6 @@ Director_Name = string.gsub( Director_Name, "'", "''" )
 											local options = {
 										    effect = "slideLeft",
 										    time = 600,
-										    params = { responseValue=list_response_total}
 										}
 
 											composer.gotoScene( "Controller.request_Access_Page", options)
@@ -777,7 +616,6 @@ function scene:create( event )
 	requestBtn.id="request"
 	--requestBtn.isVisible=false
 
-	signInGroup:insert(sceneGroup)
 end
 
 function scene:show( event )
@@ -787,30 +625,7 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		unitnumer_list = widget.newTableView
-		{
-		left = 0,
-		top = 0,
-		height = 130,
-		width = UnitNumber_bg.contentWidth,
-		noLines = true,
-		isBounceEnabled=false,
-		onRowRender = onRowRender_unitnumber,
-		onRowTouch = onRowTouch_unitnumber,
-			--backgroundColor = { 0.8, 0.8, 0.8 },
-			hideBackground=true,
-			listener = scrollListener
-		}
-
-		unitnumer_list.x=UnitNumber_bg.x
-		unitnumer_list.y=UnitNumber_bg.y+UnitNumber_bg.contentHeight/2
-		unitnumer_list.anchorY=0
-
-		unitnumer_list.alpha=0
-
-		UserName.isVisible=true
-		Password.isVisible=true
-
+	
 		if event.params then
 			list_response_total = event.params.responseValue
 		end
@@ -834,29 +649,6 @@ function scene:show( event )
 
 		file = nil
 
-
-
-		--[[Unitnumber_field.text = "123"
-		Unitnumber_field.value="123"
-		UserName.text = "malarkodi.sellamuthu@w3magix.com"
-		Password.text = "123123"
-		Password.value = "123123"]]
-
-		
-
-
-		--[[function get_GetSearchByUnitNumberOrDirectorName(response)
-
-			list_response_total = response
-
-			
-		end
-
-
-		Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)]]
-
-
-
 		elseif phase == "did" then
 
 			composer.removeHidden()
@@ -875,7 +667,6 @@ function scene:show( event )
 			signinBtn_text:addEventListener("touch",signinBtnRelease)
 
 		end	
-		signInGroup:insert(sceneGroup)
 	end
 
 	function scene:hide( event )
@@ -883,14 +674,7 @@ function scene:show( event )
 		local sceneGroup = self.view
 		local phase = event.phase
 
-		if event.phase == "will" then
-
-				--if defalut ~= nil then defalut:removeSelf();defalut=nil end
-
-				if unitnumer_list then unitnumer_list:removeSelf( );unitnumer_list=nil end
-
-				
-
+				if event.phase == "will" then
 
 				elseif phase == "did" then
 

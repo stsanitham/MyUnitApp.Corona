@@ -60,14 +60,7 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		--timer.performWithDelay( 2000, SplashTimeOut )
-
-		function get_GetSearchByUnitNumberOrDirectorName(response)
-
-			--list_response_total = response
-
-			UnitnumberList = response
-
+	local function AfterVersionCheck()
 
 			local Director_Name,EmailAddress
 
@@ -124,10 +117,9 @@ function scene:show( event )
 
 			end
 
-	
 
-		end
 
+	end
 
 		function get_versionFromWeb(response)
 
@@ -183,7 +175,8 @@ function scene:show( event )
 
 							if (tonumber(responseVersion)<=tonumber(installedVersion)) then
 
-								Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)
+			
+									AfterVersionCheck()
 
 							else
 
@@ -200,8 +193,8 @@ function scene:show( event )
 							end
 					else
 
-						Webservice.GET_SEARCHBY_UnitNumberOrDirectorName("1",get_GetSearchByUnitNumberOrDirectorName)
-
+						AfterVersionCheck()
+					
 					end
 
 

@@ -70,7 +70,7 @@ RequestAccess.Comment_placeholder= "Entrez vos commentaires) ici"
 
 LoginPage = {}
 
-LoginPage.Unitnumber_placeholder = "Numéro d'unité / Nom Directeur"
+LoginPage.Unitnumber_placeholder = "Numéro d'unité "
 LoginPage.UserName_placeholder = "Adresse e-mail"
 LoginPage.Password_placeholder = "Mot de passe"
 LoginPage.Signin_Button = "Se connecter"
@@ -78,7 +78,7 @@ LoginPage.Forget_Button = "Mot de passe oublié?"
 LoginPage.Request_Button = "Ne pas avoir un accès? Cliquez ici"
 LoginPage.ErrorMessage = "Les informations que vous avez saisies sont incorrectes. Vérifiez à nouveau et re-saisir les informations valides"
 LoginPage.ErrorTitle = "Échec de la connexion"
-LoginPage.setError_Unitnumber = "* Entrez le numéro de valable Unité / Directeur Nom"
+LoginPage.setError_Unitnumber = "* Entrez le numéro de valable Unité "
 LoginPage.setError_UserName = "* Entrez le adresse email valide"
 LoginPage.setError_Password = "* Entrez le mot de passe"
 

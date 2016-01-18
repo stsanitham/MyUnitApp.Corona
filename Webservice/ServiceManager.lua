@@ -123,7 +123,7 @@ function Webservice.REQUEST_ACCESS(firstName,lastName,Email,Phone,UnitNumber,MKR
 end
 
 
-function Webservice.LOGIN_ACCESS(UnitNumber,UserName,Password,postExecution)
+function Webservice.LOGIN_ACCESS(Device_OS,Unique_Id,Model,Version,GCM,UnitNumber,UserName,Password,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -142,17 +142,43 @@ function Webservice.LOGIN_ACCESS(UnitNumber,UserName,Password,postExecution)
 	headers["Authentication"] = authenticationkey
 
 
-	local resbody = "EmailAddress="..string.urlEncode(UserName).."&Password="..string.urlEncode(Password).."&UnitNumber="..UnitNumber
+
+Version="1.1.0"
+
+local resbody =
+[[
+{
+	"EmailAddress": "]] .. UserName .. [[",
+	"Password": "]] .. Password .. [[",
+	"UnitNumber": "]] .. UnitNumber .. [[",
+
+	"MobDevice":
+	{
+		"DOS": "]] .. Device_OS .. [[",
+		"UQId": "]] .. Unique_Id .. [[",
+		"MOD": "]] .. Model .. [[",
+		"DN": "]] .. Model .. [[",
+		"Ver": "]] .. Version .. [[",
+		"GCMUQId": "]] .. GCM .. [[",
+		
+	},
+}
+]]
 
 
-	headers["Content-Type"] = "application/x-www-form-urlencoded"
-	headers["Content-Length"]= string.len(resbody)
+
+	--local resbody = "EmailAddress="..string.urlEncode(UserName).."&Password="..string.urlEncode(Password).."&UnitNumber="..UnitNumber.."&MobDevice="..pushInfo
+
+
+	--headers["Content-Type"] = "application/x-www-form-urlencoded"
+	--headers["Content-Length"]= string.len(resbody)
+
 
 	params={headers = headers,body = resbody}
 
 
 
-	print("url :"..json.encode(params))
+	print("url :"..resbody)
 	
 	request.new( ApplicationConfig.LOGIN_ACCESS,method,params,postExecution)
 
@@ -664,6 +690,41 @@ local request_value = {}
 
 
 	request.new( VerionUrl,method,params,postExecution)
+
+	return response
+end
+
+function Webservice.LogOut(logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId,postExecution)
+
+
+local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method="GET"
+	headers["UserAuthorization"]= ""
+
+	local url = splitUrl(ApplicationConfig.SignOut)
+
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	print("canonicalizedHeaderString : "..canonicalizedHeaderString)
+
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+	print( authenticationkey )
+	params={headers = headers}
+
+	local resbody = "userId="..string.urlEncode(logout_Userid).."&contactId="..string.urlEncode(logout_ContactId).."&accessToken="..string.urlEncode(logout_AccessToken).."&uniqueId="..string.urlEncode(logout_uniqueId)
+
+
+	request.new( ApplicationConfig.SignOut.."?"..resbody,method,params,postExecution)
 
 	return response
 end

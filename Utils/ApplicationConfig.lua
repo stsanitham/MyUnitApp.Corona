@@ -3,7 +3,7 @@ ApplicationConfig = {}
 
 ----------Dev---------------
 
---[[
+----[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -26,7 +26,7 @@ ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28
 
 --]]
 
-----[[---------Android Live----------------
+--[[---------Android Live----------------
 
 IsLive = true
 
@@ -94,7 +94,7 @@ ApplicationConfig.GetLatestVersionCommonAppForAndroid = ApplicationConfig.BASE_U
 
 ApplicationConfig.GetLatestVersionCommonAppForIos = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetLatestVersionCommonAppForIos"
 
-
+ApplicationConfig.SignOut = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SignOut"
 
 
 

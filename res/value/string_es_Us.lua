@@ -72,7 +72,7 @@ EventCalender.NoRecord="No se encontrarón archivos"
 
 LoginPage = {}
 
-LoginPage.Unitnumber_placeholder = "Número de unidad / director Nombre"
+LoginPage.Unitnumber_placeholder = "Número de unidad"
 LoginPage.UserName_placeholder = "Dirección de correo electrónico"
 LoginPage.Password_placeholder = "Clave"
 LoginPage.Signin_Button = "Ingresar"
@@ -80,7 +80,7 @@ LoginPage.Forget_Button = "¿Se te olvidó tu contraseña?"
 LoginPage.Request_Button = "¿No tienes una conexión? haga clic aquí"
 LoginPage.ErrorMessage = "Los datos que ha introducido son incorrectos. Compruebe de nuevo y volver a entrar en los detalles válidos"
 LoginPage.ErrorTitle = "Error de inicio de sesion"
-LoginPage.setError_Unitnumber = "* Introduce el número de unidad válida o director Nombre"
+LoginPage.setError_Unitnumber = "* Introduce el número de unidad válida"
 LoginPage.setError_UserName = "* Introduzca la dirección de correo electrónico válida"
 LoginPage.setError_Password = "* Introduzca la contraseña"
 

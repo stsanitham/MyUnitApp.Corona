@@ -35,10 +35,6 @@ local FirstName,Name,Email,Phone,UnitNumber,Comment
 --Spinner
 local submit_spinner
 
---List Array
-local list_response_total = {}
-local list_response = {}
-local unitnumer_list
 
 --Button
 local sumbitBtn,scrollView
@@ -110,66 +106,6 @@ local function backAction( event )
 
 end
 
-local function onRowRender_unitnumber_request( event )
-
-    local row = event.row
-
-
-
-    local rowHeight = row.contentHeight
-    local rowWidth = row.contentWidth
-
-    local rect = display.newRect(row,0,0,row.width,rowHeight)
-    rect.anchorX = 0
-    rect.x = 0
-    rect.y=rowHeight * 0.5
-    rect:setFillColor(0,0,0,0.1)
-    rect.strokeWidth = 1
-    rect:setStrokeColor( 0, 0, 0,0.3 ) 
-    local rowTitle
-
-
-    if (list_response[row.index]) ~= nil then
-    	rowTitle = display.newText( row, list_response[row.index].DirectorName, 0, 0, nil, 14 )
-    else
-    	rowTitle = display.newText( row, "", 0, 0, nil, 14 )
-
-    end
-    rowTitle:setFillColor( 0 )
-
-    -- Align the label left and vertically centered
-    rowTitle.anchorX = 0
-    rowTitle.x = 10
-    rowTitle.y = rowHeight * 0.5
-
-    row.name = rowTitle.text
-    if list_response[row.index].UnitNumber then
-    	row.id = list_response[row.index].UnitNumber
-    end
-end
-
-
-local function onRowTouch_unitnumber_request( event )
-
-	local phase = event.phase
-	local row = event.target
-
-	if( "press" == phase ) then
-
-
-		elseif ( "release" == phase ) then
-
-			native.setKeyboardFocus(nil)
-
-			unitnumer_list.alpha=0
-
-			Comment.isVisible=true
-
-			UnitNumber.text = row.name
-			UnitNumber.value = row.id
-
-		end
-	end
 
 	local function SetError( displaystring, object )
 
@@ -279,7 +215,7 @@ local function RequestProcess()
 
 						Webservice.REQUEST_ACCESS(FirstName.text,Name.text,Email.text,Phone.text,Unitnumber_value,mkRank_id,Comment.text,get_requestAccess)
 					else
-						Webservice.REQUEST_ACCESS(FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.value,mkRank_id,Comment.text,get_requestAccess)
+						Webservice.REQUEST_ACCESS(FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,mkRank_id,Comment.text,get_requestAccess)
 					end
 
 				end
@@ -360,7 +296,7 @@ local function RequestProcess()
 
 						scrollTo( 0 )
 
-						native.setKeyboardFocus( nil )
+						--native.setKeyboardFocus( nil )
 
         			elseif ( event.phase == "editing" ) then
         				if current_textField.id ~= "Comments" then
@@ -477,86 +413,7 @@ local function RequestProcess()
 
         				end
 
-        			if(current_textField.id == "Unit Number / Director name") then
-
-        				unitnumer_list.alpha=1
-
-        					if event.text:len() > 50 then
-
-							event.target.text = event.text:sub(1,50)
-
-						end
-
-
-						unitnumer_list.alpha=1
-
-						current_textField.value=0
-
-						unitnumer_list:deleteAllRows()
-
-
-						if #list_response ~= nil then
-							for i = #list_response,1,-1 do
-								table.remove(list_response,i)
-							end
-						end
-
-						for i = #list_response_total,1,-1 do
-							local temp = event.text
-
-							local tempvalue = temp:sub(temp:len(),temp:len())
-
-							if(tempvalue == "(") then
-								event.text = event.text:sub( 1, event.text:len()-1)
-							end
-
-							if string.find( list_response_total[i].DirectorName:upper(), event.text:upper() ) then
-								list_response[#list_response+1] = list_response_total[i]
-							end
-							
-						end
-
-
-
-					if list_response ~= nil then
-
-						print( #list_response )
-
-						if #list_response == 0 then
-
-							Comment.isVisible=true
-
-							unitnumer_list.alpha=0
-
-
-						else
-
-							Comment.isVisible=false
-						end
-
-						for i = 1, #list_response do
-						  	-- Insert a row into the tableView
-						  	unitnumer_list:insertRow{}
-
-						end
-					else
-						Comment.isVisible=true
-
-					end
-
- 				local dotFlag = string.find(event.text,"%.")
-
-						if event.text == "" or dotFlag then
-							
-							unitnumer_list.alpha=0
-							Comment.isVisible=true
-
-						end
-
-
-
-						end
-
+        			
 					end
 				end
 
@@ -662,7 +519,7 @@ local function onRowTouch( event )
 			end
 
 			if AppName ~= "DirectorApp" then
-				if UnitNumber.value == "" or UnitNumber.value == UnitNumber.id or UnitNumber.value == 0 then
+				if UnitNumber.text == "" or UnitNumber.text == nil then
 					validation=false
 					SetError("* "..RequestAccess.UnitNumber_error,UnitNumber)
 				end
@@ -676,7 +533,6 @@ local function onRowTouch( event )
 		]]
 
 			if(validation == true) then
-
 				
 				RequestProcess()
 
@@ -938,34 +794,6 @@ function scene:show( event )
 
 			openPage="requestAccess Page"
 
-			unitnumer_list = widget.newTableView
-			{
-			left = 0,
-			top = 0,
-			height = 130,
-			width = 300,
-			noLines = true,
-			onRowRender = onRowRender_unitnumber_request,
-			onRowTouch = onRowTouch_unitnumber_request,
-			--backgroundColor = { 0.8, 0.8, 0.8 },
-			--hideBackground=true,
-			listener = scrollListener
-		}
-
-		unitnumer_list.x=UnitNumber_bg.x
-		unitnumer_list.y=UnitNumber_bg.y+UnitNumber_bg.height/2
-		unitnumer_list.anchorY=0
-
-		unitnumer_list.alpha=0
-
-		if event.params.responseValue then
-
-			list_response_total = event.params.responseValue
-
-		end
-
-		
-		sceneGroup:insert(unitnumer_list)
 
 		MKRank_bg:addEventListener( "touch", rankTouch )
 		MKRank:addEventListener( "touch", rankTouch )

@@ -12,6 +12,7 @@ local sqlite3 = require( "sqlite3" )
 MyUnitBuzzString = require( "res.value.string" )
 
 local OneSignal = require("plugin.OneSignal")
+GCMValue = 0
 
 
 --com.spanenterprises.MUBDev
@@ -56,7 +57,6 @@ elseif plateform == "iPhone OS" then
 elseif plateform == "Android" then
     isAndroid=true
 end
-
 
 
 snackGroup = display.newGroup()
@@ -177,14 +177,6 @@ outEasing = easing.outCubic
 }
 
 
---[[local fonts = native.getFontNames()
-local fontsNames = ''
-for i,fontname in ipairs(fonts) do
-    fontsNames = fontname .. ',' .. fontsNames
-    print(fontname)
-end]]
-
-
 
  function onKeyEvent( event )
         local phase = event.phase
@@ -207,24 +199,6 @@ end]]
     -- Add the key callback
    Runtime:addEventListener( "key", onKeyEvent );
 
-   function onSystemEvent( event )
-
-   if ( event.type == "applicationExit" ) then
-      
-
-   elseif ( event.type == "applicationOpen" ) then
-
-         native.setKeyboardFocus(nil)
-
-   elseif (event.type == "applicationSuspend") then
-
-        native.setKeyboardFocus(nil)
-
-   end
-end
-Runtime:addEventListener( "system", onSystemEvent )
-
-
 
 	composer.gotoScene( "Controller.splashScreen")
 
@@ -234,34 +208,28 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 
             notificationFlag = true
 
+            native.showAlert("MyUnitBuzz", message, { "OK" } )
+
 end
 
 
 
 
 OneSignal.Init("ed71d878-798a-11e5-aebf-bbd8b0261071", "800876064299", DidReceiveRemoteNotification)
+
 OneSignal.EnableInAppAlertNotification(true)
 
 
 function IdsAvailable(userId, pushToken)
     print("userId:" .. userId)
+    if userId ~= nil then
+        GCMValue = userId
+    end
+
     if (pushToken) then -- nil if there was a connection issue or on iOS notification permissions were not accepted.
         print("pushToken:" .. pushToken)
     end
-    
 
-    local options =
-{
-   to = "malarkodi.sellamuthu@w3magix.com",
-   subject = "Push notification Details",
-   body = "userId: " .. userId .. "\n\n" .. "pushToken: " .. (pushToken or "nil"),
-   
-}
-native.showPopup( "mail", options )
-
-
-
-    native.showAlert("Ids", "userId: " .. userId .. "\n\n" .. "pushToken: " .. (pushToken or "nil"), {"Ok"});
 end
 
 OneSignal.IdsAvailableCallback(IdsAvailable)

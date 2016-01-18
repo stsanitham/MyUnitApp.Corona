@@ -9,7 +9,7 @@ local scene = composer.newScene()
 
 require( "res.value.style" )
 local Utility = require( "Utils.Utility" )
-
+require( "Webservice.ServiceManager" )
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
@@ -26,6 +26,8 @@ local menuArray_display = {}
 local space_value = 30
 
 local profilePic,UserEmail;
+
+
 
 
 --------------------------------------------------
@@ -65,27 +67,51 @@ local function MenuTouchAction(event)
 
 		if event.target.id == "logout" then
 				local function onComplete( event )
-					   if event.action == "clicked" then
+					if event.action == "clicked" then
 					        local i = event.index
-					        if i == 1 then
+					    if i == 1 then
 
-					        	slideAction()
-								for j=MainGroup.numChildren, 1, -1 do 
-									display.remove(MainGroup[MainGroup.numChildren])
-									MainGroup[MainGroup.numChildren] = nil
-								end
+					        	function get_logout(response)
 
-					            local options = {
-								    params = { responseValue=UnitnumberList}
-								}
+					        		if response == 5 then
 
 
+							        	slideAction()
+										for j=MainGroup.numChildren, 1, -1 do 
+											display.remove(MainGroup[MainGroup.numChildren])
+											MainGroup[MainGroup.numChildren] = nil
+										end
+
+							            
+										local tablesetup = [[DROP TABLE logindetails;]]
+										db:exec( tablesetup )
+
+									composer.gotoScene( "Controller.singInPage" )
+
+									else
+
+										slideAction()
+
+					        		end
 
 
-								local tablesetup = [[DROP TABLE logindetails;]]
-								db:exec( tablesetup )
+					        	end
+					     local logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId
 
-							composer.gotoScene( "Controller.singInPage", options )
+					    for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+
+			  				logout_Userid = row.UserId
+			  				logout_ContactId = row.ContactId
+			  				logout_AccessToken = row.AccessToken
+			  				logout_uniqueId = system.getInfo("deviceID")
+			  				
+			  				
+        
+
+      					end
+
+	        			Webservice.LogOut(logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId,get_logout)
+
 			        elseif i == 2 then
 			            --cancel
 			        end

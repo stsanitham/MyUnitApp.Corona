@@ -1,5 +1,5 @@
 CommonWords = {}
-CommonWords.language = "Canada English"
+CommonWords.language = "English"
 CommonWords.ok = "OK"
 CommonWords.submit = "Submit"
 CommonWords.done = "Done"
@@ -15,10 +15,12 @@ Month["may"]= "May"
 Month["jun"]= "Jun"
 Month["jul"]= "Jul"
 Month["aug"]= "Aug"
-Month["sap"]= "Sep"
+Month["sep"]= "Sep"
 Month["oct"]= "Oct"
 Month["nov"]= "Nov"
 Month["dec"]= "Dec"
+
+
 
 
 Week = {}
@@ -68,7 +70,7 @@ RequestAccess.Comment_placeholder= "Enter your comment(s) here"
 
 LoginPage = {}
 
-LoginPage.Unitnumber_placeholder = "Unit Number / Director Name"
+LoginPage.Unitnumber_placeholder = "Unit Number"
 LoginPage.UserName_placeholder = "Email Address"
 LoginPage.Password_placeholder = "Password"
 LoginPage.Signin_Button = "Sign In"
@@ -76,7 +78,7 @@ LoginPage.Forget_Button = "Forgot Password?"
 LoginPage.Request_Button = "Don't have an access? Click here"
 LoginPage.ErrorMessage = "The details you have entered are incorrect. Check again and re-enter the valid details"
 LoginPage.ErrorTitle = "Login Failed"
-LoginPage.setError_Unitnumber = "* Enter the valid Unit number/Director Name"
+LoginPage.setError_Unitnumber = "* Enter the valid Unit number"
 LoginPage.setError_UserName = "* Enter the valid Email Address"
 LoginPage.setError_Password = "* Enter the Password"
 
@@ -140,6 +142,7 @@ EventCalender["INIT_APPT"]="Initial Appointment"
 EventCalender["RESCHEDULE"]="Reschedule"
 EventCalender["FULLCIRCLE"]="Full Circle"
 EventCalender.NoRecord="No records found"
+
 
 
 
