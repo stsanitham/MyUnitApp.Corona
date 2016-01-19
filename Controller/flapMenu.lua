@@ -105,9 +105,6 @@ local function MenuTouchAction(event)
 			  				logout_AccessToken = row.AccessToken
 			  				logout_uniqueId = system.getInfo("deviceID")
 			  				
-			  				
-        
-
       					end
 
 	        			Webservice.LogOut(logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId,get_logout)

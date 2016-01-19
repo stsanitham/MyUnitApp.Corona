@@ -251,9 +251,6 @@ openPage="signInPage"
 
 			
 
-
-
-
 			Director_Name = string.gsub( Director_Name, "'", "''" )
 
 
@@ -269,7 +266,6 @@ openPage="signInPage"
 			local options = {
 			effect = "slideLeft",
 			time =500,
-
 			}
 
 
@@ -429,13 +425,12 @@ openPage="signInPage"
 										end
 									end
 
+
 									if UserName.text == "" or UserName.text == UserName.id or UserName.text == LoginPage.setError_UserName then
 										validation=false
 										SetError(LoginPage.setError_UserName,UserName)
 
-
 									else
-
 										if not Utils.emailValidation(UserName.text) then
 										validation=false
 										SetError(LoginPage.setError_UserName,UserName)
@@ -443,6 +438,7 @@ openPage="signInPage"
 									end
 
 									end
+
 
 									if Password.text == "" or Password.text == Password.id or Password.text == LoginPage.setError_Password or Password.text:len() < 6 then
 										validation=false

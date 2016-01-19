@@ -175,14 +175,15 @@ local function SetError( displaystring, object )
 			if event.phase == "began" then
 
 				display.getCurrentStage():setFocus( event.target )
+
 			elseif event.phase == "ended" then
+			
 				display.getCurrentStage():setFocus( nil )
 
 					local options = {
-										    effect = "slideRight",
-										    time = 600,
-										  
-										}
+									effect = "slideRight",
+									time = 600,	  
+									}
 
 				composer.gotoScene( "Controller.singInPage", options )
 			end
