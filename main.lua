@@ -10,6 +10,7 @@ local Utility = require( "Utils.Utility" )
 EventCalender = require( "res.value.color" )
 local sqlite3 = require( "sqlite3" )
 MyUnitBuzzString = require( "res.value.string" )
+local Applicationconfig = require("Utils.ApplicationConfig")
 
 local OneSignal = require("plugin.OneSignal")
 GCMValue = 0

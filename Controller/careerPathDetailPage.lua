@@ -735,7 +735,7 @@ function scene:show( event )
 								print( "Map Error: " .. event.errorMessage )
 							else
 								print( "The specified string is at: " .. event.latitude .. "," .. event.longitude )
-								if myMap then myMap:setCenter( event.latitude, event.longitude ) end
+								if myMap then myMap:setCenter( event.latitude, event.longitude ) 
 
 								local options = 
 								{ 
@@ -744,6 +744,8 @@ function scene:show( event )
 								imageFile =  "res/assert/map.png",
 							}
 							local result, errorMessage = myMap:addMarker( event.latitude, event.longitude , options )
+
+							end
 						end
 
 					end
