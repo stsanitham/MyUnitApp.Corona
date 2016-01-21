@@ -13,7 +13,7 @@ MyUnitBuzzString = require( "res.value.string" )
 
 local OneSignal = require("plugin.OneSignal")
 GCMValue = 0
-
+ga = require("Utils.GoogleAnalytics.ga")
 
 --com.spanenterprises.MUBDev
 
@@ -33,6 +33,7 @@ end
 UnitnumberList = {}
 
 MainGroup = display.newGroup();
+PushGroup = display.newGroup();
 
 
 
@@ -176,7 +177,7 @@ inEasing = easing.outCubic,
 outEasing = easing.outCubic
 }
 
-
+local BackFlag = false
 
  function onKeyEvent( event )
         local phase = event.phase
@@ -184,7 +185,14 @@ outEasing = easing.outCubic
 
         if(keyName=="back") then
 
-           
+            if BackFlag then
+                BackFlag=false
+                os.exit( )
+            end
+
+            --BackFlag=true
+
+
 
             if openPage == "signInPage" or openPage == "requestAccess Page" then
                 native.setKeyboardFocus(nil)
@@ -203,34 +211,54 @@ outEasing = easing.outCubic
 	composer.gotoScene( "Controller.splashScreen")
 
 
+    --composer.gotoScene( "Controller.pushNotificationPage")
 
 function DidReceiveRemoteNotification(message, additionalData, isActive)
 
             notificationFlag = true
 
-            native.showAlert("MyUnitBuzz", message, { "OK" } )
+            -- if (additionalData) then
+                
+            --   local options = {
+            --     isModal = true,
+            --     effect = "fade",
+            --     time = 400,
+            --     params = {
+
+            --         additionalValue = additionalData,
+            --         Message = message
+
+            --     }
+            -- }
+
+            -- -- By some method (a pause button, for example), show the overlay
+            -- composer.showOverlay( "Controller.pushNotificationPage", options )
+
+            -- else
+
+              native.showAlert("MyUnitBuzz", message, { "OK" } )
+
+           -- end
 
 end
 
 
 
 
-OneSignal.Init("ed71d878-798a-11e5-aebf-bbd8b0261071", "800876064299", DidReceiveRemoteNotification)
+OneSignal.Init(ApplicationConfig.OneSignal_Appid, ApplicationConfig.ProjectNumber, DidReceiveRemoteNotification)
 
 OneSignal.EnableInAppAlertNotification(true)
 
 
-function IdsAvailable(userId, pushToken)
-    print("userId:" .. userId)
-    if userId ~= nil then
-        GCMValue = userId
-    end
+---------Google Analytics-------
 
-    if (pushToken) then -- nil if there was a connection issue or on iOS notification permissions were not accepted.
-        print("pushToken:" .. pushToken)
-    end
+ga.init({ -- Only initialize once, not in every file
+    isLive = false, -- REQUIRED
+    testTrackingID = "UA-51545075-4", -- REQUIRED Tracking ID from Google -- Dev UA-51545075-5
+    debug = true, -- Recomended when starting
+})
 
-end
 
-OneSignal.IdsAvailableCallback(IdsAvailable)
+
+
 

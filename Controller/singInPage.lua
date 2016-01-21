@@ -50,6 +50,20 @@ openPage="signInPage"
 		return true
 	end
 
+	local function SetError( displaystring, object )
+
+									if object.id == "Password" then
+										object.isSecure = false
+									end
+									object.text=displaystring
+									object.size=9
+									object.alpha=1
+									object:setTextColor(1,0,0)
+
+
+	end
+
+
 	local function loginProcess( Request_response )
 
 		if Request_response.RequestAccessStatus == 5 then
@@ -278,7 +292,20 @@ openPage="signInPage"
 		elseif(Request_response.RequestAccessStatus == 6) then
 
 
-			local alert = native.showAlert( LoginPage.ErrorTitle,LoginPage.ErrorMessage, { CommonWords.ok } )
+
+			if Request_response.FailStatus == "NOUNITNUMBER" then
+
+					--local alert = native.showAlert(  ForgotPassword.PageTitle,LoginPage.ErrorMessage, { "OK" } )
+
+					SetError(LoginPage.setError_Unitnumber,Unitnumber_field)
+
+
+			else
+
+
+				local alert = native.showAlert( LoginPage.ErrorTitle,LoginPage.ErrorMessage, { CommonWords.ok } )
+
+			end
 
 
 		end
@@ -351,9 +378,13 @@ openPage="signInPage"
 
 				if current_textField.id == "Unit Number / Director name" then
 
+					native.setKeyboardFocus( nil )
+
 					native.setKeyboardFocus( UserName )
 
 				elseif current_textField.id == "User name or Email address" then
+
+					native.setKeyboardFocus( nil )
 
 					native.setKeyboardFocus( Password )
 
@@ -398,18 +429,7 @@ openPage="signInPage"
 
 
 
-								local function SetError( displaystring, object )
-
-									if object.id == "Password" then
-										object.isSecure = false
-									end
-									object.text=displaystring
-									object.size=9
-									object.alpha=1
-									object:setTextColor(1,0,0)
-
-
-								end
+								
 
 
 								local signinBtnRelease = function( event )
@@ -544,7 +564,7 @@ function scene:create( event )
 		Unitnumber_field.anchorX=0
 		Unitnumber_field.size=14	
 		Unitnumber_field.value=""
-		Unitnumber_field:setReturnKey( "go" )
+		Unitnumber_field:setReturnKey( "next" )
 		--Utils.CssforTextField(Unitnumber_field,sp_fieldValue)	
 
 
@@ -566,6 +586,7 @@ function scene:create( event )
 	UserName.value=""
 	UserName:setReturnKey( "next" )
 	UserName.hasBackground = false
+	UserName.inputType = "email"
 	sceneGroup:insert(UserName)
 	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+40;UserName.y=UserName_bg.y
 
@@ -648,6 +669,8 @@ function scene:show( event )
 		end
 
 		file = nil
+
+		ga.enterScene("SignIn")
 
 		elseif phase == "did" then
 

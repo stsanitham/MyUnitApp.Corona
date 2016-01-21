@@ -105,10 +105,7 @@ local function MenuTouchAction(event)
 			  				logout_AccessToken = row.AccessToken
 			  				logout_uniqueId = system.getInfo("deviceID")
 			  				
-			  				
-        
-
-      					end
+						end
 
 	        			Webservice.LogOut(logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId,get_logout)
 
@@ -120,6 +117,7 @@ local function MenuTouchAction(event)
 
 		-- Show alert with two buttons
 		local alert = native.showAlert( "Log out", FlapMenu.Alert, { FlapMenu.LOG_OUT , FlapMenu.CANCEL }, onComplete )	
+		
 			return
 		end
 

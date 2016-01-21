@@ -194,7 +194,7 @@ event_groupArray[#event_groupArray+1] = display.newGroup()
 local tempGroup = event_groupArray[#event_groupArray]
 
 local bgheight = 45
---os.date("!%Y-%m-%dT%H:%m:%S")
+--os.date("%Y-%m-%dT%H:%m:%S")
 local timeGMT = Utils.makeTimeStamp( response.date )
 
 
@@ -573,7 +573,7 @@ local function dayTouch(event)
 
 		for i=1,week.numChildren do
 
-			if week[i].Processingdate == os.date( "!%Y-%m-%d" ,os.time(os.date( '*t' ))) then
+			if week[i].Processingdate == os.date( "%Y-%m-%d" ,os.time(os.date( '*t' ))) then
 
 			else
 				Utils.CssforTextView(week[i][1],sp_labelName)
@@ -585,9 +585,9 @@ local function dayTouch(event)
 
 		event.target[1]:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-		print("checking : ".. event.target.Processingdate,os.date( "!%Y-%m-%d" ,os.time(os.date( '*t' ))) )
+		print("checking : ".. event.target.Processingdate,os.date( "%Y-%m-%d" ,os.time(os.date( '*t' ))) )
 
-		if event.target.Processingdate == os.date( "!%Y-%m-%d" ,os.time(os.date( '*t' ))) then
+		if event.target.Processingdate == os.date( "%Y-%m-%d" ,os.time(os.date( '*t' ))) then
 			event.target[1]:setFillColor( 0,0,1 )
 		end
 		
@@ -605,7 +605,7 @@ return true
 end
 
 local function creatWeek( weekfirstDay,flagValue )
-	--todaydate =  os.date( "!%m/%d/%Y" , os.time( t ) )
+	--todaydate =  os.date( "%m/%d/%Y" , os.time( t ) )
 
 	for j=week.numChildren, 1, -1 do 
     display.remove(week[week.numChildren])
@@ -647,11 +647,11 @@ weekfirstDay.day = weekfirstDay.day - 1
 		Utils.CssforTextView(day,sp_labelName)
 
 
-		local date = display.newText(Week_Group,os.date( "!%d" , os.time( weekfirstDay ) ),0,0,native.systemFont,12)
+		local date = display.newText(Week_Group,os.date( "%d" , os.time( weekfirstDay ) ),0,0,native.systemFont,12)
 		date.x = day.x;date.y=day.y+17
 		Utils.CssforTextView(date,sp_fieldValue)
 
-		if os.date( "!%m/%d/%Y" , os.time( weekfirstDay )) == os.date( "!%m/%d/%Y" ,os.time(os.date( '*t' ))) then
+		if os.date( "%m/%d/%Y" , os.time( weekfirstDay )) == os.date( "%m/%d/%Y" ,os.time(os.date( '*t' ))) then
 			day:setFillColor( 0,0,1 )
 		end
 
@@ -659,9 +659,9 @@ weekfirstDay.day = weekfirstDay.day - 1
 
 
 
-		Week_Group.startdate = os.date( "!%m/%d/%Y" , os.time( weekfirstDay )).." 12:00:00 AM"
-		Week_Group.enddate = os.date( "!%m/%d/%Y" , os.time( weekfirstDay )).." 11:59:59 PM"
-		Week_Group.Processingdate  = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekfirstDay )))
+		Week_Group.startdate = os.date( "%m/%d/%Y" , os.time( weekfirstDay )).." 12:00:00 AM"
+		Week_Group.enddate = os.date( "%m/%d/%Y" , os.time( weekfirstDay )).." 11:59:59 PM"
+		Week_Group.Processingdate  = dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( weekfirstDay )))
 		Week_Group.value =  weekfirstDay 
 
 		
@@ -717,7 +717,7 @@ local function searchListener( event )
 
 				searchweektime.day = searchweektime.day+(7*currentweek)
 
-				Processingdate = os.date( "!%Y-%m-%d" , os.time( searchweektime ))
+				Processingdate = os.date( "%Y-%m-%d" , os.time( searchweektime ))
 
 				ParentShow = true
 
@@ -763,7 +763,7 @@ local function todayAction( event )
 		local temp = os.date( '*t' )
 		temp.day = temp.day - os.date( "%w" ) 
 		weekViewTouchFlag=true
-		Processingdate = os.date( "!%Y-%m-%d" , os.time( t ))
+		Processingdate = os.date( "%Y-%m-%d" , os.time( t ))
 		ParentShow=true
 		currentweek = 0
 		creatWeek(temp,false)
@@ -774,7 +774,7 @@ local function todayAction( event )
 
 
 		local Upcoming = os.date( '*t' )
-		Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( Upcoming )))
+		Processingdate = dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( Upcoming )))
 		ParentShow=true
 		weekViewTouchFlag = true
 		print("Processingdate : "..Processingdate)
@@ -834,15 +834,15 @@ local function weekViewSwipe( event )
 
 						--weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-7
 
-						startdate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 12:00:00 AM"
+						startdate = os.date( "%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 12:00:00 AM"
 
 						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day+6
 
-						enddate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 11:59:59 PM"
+						enddate = os.date( "%m/%d/%Y" , os.time( weekViewSwipevalue_left )).." 11:59:59 PM"
 
 						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-6	
 
-						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue_left )))
+						Processingdate = dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue_left )))
 
 						ParentShow=true
 
@@ -872,15 +872,15 @@ local function weekViewSwipe( event )
 
 
 
-						startdate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue )).." 12:00:00 AM"
+						startdate = os.date( "%m/%d/%Y" , os.time( weekViewSwipevalue )).." 12:00:00 AM"
 
 						weekViewSwipevalue.day = weekViewSwipevalue.day+6
 
-						enddate = os.date( "!%m/%d/%Y" , os.time( weekViewSwipevalue )).." 11:59:59 PM"
+						enddate = os.date( "%m/%d/%Y" , os.time( weekViewSwipevalue )).." 11:59:59 PM"
 
 						weekViewSwipevalue.day = weekViewSwipevalue.day-6
 
-						Processingdate = dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue )))
+						Processingdate = dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue )))
 
 						ParentShow=true
 
@@ -940,7 +940,7 @@ local function calenderAction( event )
 				print("start date : "..startdate )
 				Processingdate = selectedYear.."-"..selectedMonth.."-"..selectedDay
 				print("Processingdate : "..Processingdate )
-				--dateSplit(os.date( "!%Y-%m-%dT%H:%m:%S" , os.time( t )))
+				--dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( t )))
 				ParentShow=true
 
 				local temp = os.date( '*t' )
@@ -1093,6 +1093,8 @@ function scene:show( event )
 
 		openPage="eventCalenderPage"
 
+		ga.enterScene("EventCalender")
+
 
 		elseif phase == "did" then
 
@@ -1213,16 +1215,16 @@ function scene:show( event )
 
 
 
-			startdate = os.date( "!%m/%d/%YT%H:%m:%S %p" , os.time( t ))
+			startdate = os.date( "%m/%d/%YT%H:%m:%S %p" , os.time( t ))
 
 			t.day = t.day + 6
 
-			Processingdate = os.date( "!%Y-%m-%d" , os.time( t ))
+			Processingdate = os.date( "%Y-%m-%d" , os.time( t ))
 
 
 			startdate = dateSplit(startdate).." 12:00:00 AM"
 
-			enddate = os.date( "!%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
+			enddate = os.date( "%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
 
 
 			

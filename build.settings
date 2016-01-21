@@ -31,6 +31,9 @@ settings =
 	        publisherId = "com.coronalabs",
 	        supportedPlatforms = { android=true, ["android-kindle"]=true },
 	    },
+	       
+	    
+	   
     },
     
 
@@ -50,11 +53,12 @@ settings =
 		plist =
 		{
 		
-			--CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
-			CFBundleIdentifier="com.spanenterprises.MUBDev",
+			CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
+			--CFBundleIdentifier="com.spanenterprises.MUBDev",
 	
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, 
+			UIFileSharingEnabled=true,
 			--UIApplicationExitsOnSuspend = true,
 			CoronaWindowMovesWhenKeyboardAppears = true,
 			UIBackgroundModes = {"remote-notification"},

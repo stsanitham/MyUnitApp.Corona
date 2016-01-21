@@ -86,9 +86,9 @@ local function showShare(fileNameString)
 
 			    local items =
 			{
-			    { type = "image", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
+			    { type = "url", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
 			     --{ type = "UIActivityTypePostToFacebook", value = "UIActivityTypePostToFacebook" },
-			      { type = "string", value = "test" },
+			      { type = "string", value = " " },
 
 			}
 						    -- If it is possible to show the popup

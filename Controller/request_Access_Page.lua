@@ -155,6 +155,8 @@ end
 
 local function RequestProcess()
 
+	if  sumbitBtn.width == 80 then
+
 			submit_spinner.isVisible=true
 			sumbitBtn.width = sumbitBtn.width+20
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
@@ -218,7 +220,8 @@ local function RequestProcess()
 						Webservice.REQUEST_ACCESS(FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,mkRank_id,Comment.text,get_requestAccess)
 					end
 
-				end
+end
+end
 
 
 				function scrollTo( position )
@@ -246,10 +249,11 @@ local function RequestProcess()
 
 							if(current_textField.id == "Comments") then
 
-								print( "here" )
+							
 
-								--current_textField.text = ""
+									current_textField.text = ""
 
+								
 								scrollTo( -100 )
 
 							end
@@ -261,20 +265,20 @@ local function RequestProcess()
 					       			--native.setKeyboardFocus( nil )
 					       			if(current_textField.id == "Comments") then
 
-										current_textField.text = event.text
+										scrollTo( 0 )
 
 										native.setKeyboardFocus( nil )
-
-										scrollTo( 0 )
 
 									elseif(current_textField.id == "First Name") then
 
 										native.setKeyboardFocus(Name)
 
 									elseif(current_textField.id == "Last Name") then
+
 										native.setKeyboardFocus(Email)
 
 									elseif(current_textField.id == "Email") then
+
 										native.setKeyboardFocus(Phone)
 
 									elseif(current_textField.id == "Phone") then
@@ -296,6 +300,14 @@ local function RequestProcess()
 
 						scrollTo( 0 )
 
+						if(current_textField.id == "Comments") then
+
+										scrollTo( 0 )
+										
+										native.setKeyboardFocus( nil )
+
+						end
+
 						--native.setKeyboardFocus( nil )
 
         			elseif ( event.phase == "editing" ) then
@@ -313,6 +325,10 @@ local function RequestProcess()
 
 								event.target.text = event.target.text:sub(1,160)
 
+							end
+
+							if (event.newCharacters=="\n") then
+								native.setKeyboardFocus( nil )
 							end
 
 						elseif(current_textField.id =="Phone") then
@@ -726,8 +742,8 @@ function scene:create( event )
 	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 100 )
 	Comment.id = "Comments"
 	Comment.size=14	
-	Comment:setReturnKey( "done" )
 	Comment.hasBackground = false
+	Comment:setReturnKey( "done" )
 	Comment.isEditable = true
 	Comment.placeholder=RequestAccess.Comment_placeholder
 	sceneGroup:insert(Comment)
@@ -834,9 +850,15 @@ function scene:show( event )
   		rankClose.x=rankTop.x+rankTop.contentWidth/2-15;rankClose.y=rankTop.y
   		rankClose.id="close"
 
+  		rankClose_bg = display.newRect(rankGroup,0,0,30,30)
+  		rankClose_bg.x=rankTop.x+rankTop.contentWidth/2-15;rankClose_bg.y=rankTop.y
+  		rankClose_bg.id="close"
+  		rankClose_bg.alpha=0.01
+
+
   		rankTop:addEventListener("touch",rankToptouch)
   		rankText:addEventListener("touch",rankToptouch)
-  		rankClose:addEventListener("touch",rankToptouch)
+  		rankClose_bg:addEventListener("touch",rankToptouch)
 
   		
 
@@ -922,21 +944,20 @@ function scene:hide( event )
 	if event.phase == "will" then
 
 		for j=MainGroup.numChildren, 1, -1 do 
-									display.remove(MainGroup[MainGroup.numChildren])
-									MainGroup[MainGroup.numChildren] = nil
-								end
+			display.remove(MainGroup[MainGroup.numChildren])
+			MainGroup[MainGroup.numChildren] = nil
+		end
+
+		MKRank_bg:removeEventListener( "touch", rankTouch )
+		MKRank:removeEventListener( "touch", rankTouch ) 
+		if rankTop then rankTop:removeEventListener("touch",rankToptouch) end
+		if rankText then rankText:removeEventListener("touch",rankToptouch) end 
+		if rankClose_bg then rankClose_bg:removeEventListener("touch",rankToptouch) end
+
 
 	elseif phase == "did" then
 
-		MKRank_bg:removeEventListener( "touch", rankTouch )
-		MKRank:removeEventListener( "touch", rankTouch )
-		rankTop:removeEventListener("touch",rankToptouch)
-		rankText:removeEventListener("touch",rankToptouch)
-		rankClose:removeEventListener("touch",rankToptouch)
-
-
-		composer.removeHidden()
-
+		
 
 
 end	

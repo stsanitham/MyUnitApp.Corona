@@ -9,6 +9,7 @@ local scene = composer.newScene()
 
 local Utility = require( "Utils.Utility" )
 local style = require("res.value.style")
+local OneSignal = require("plugin.OneSignal")
 --local string = require("res.value.string")
 
 
@@ -106,14 +107,46 @@ function scene:show( event )
 
 				print('not table exists!')
 
-				local options = {
-						    effect = "slideLeft",
-						    time = Splash_TimeOut,
-						    params = { responseValue=response}
-						}
+				
+
+						function IdsAvailable(userId, pushToken)
+						    print("userId:" .. userId)
+
+						   -- native.showAlert("userId", userId, { "OK" } )
+						     
+						   
+						        GCMValue = userId
+
+						        local options = {
+								    effect = "slideLeft",
+								    time = Splash_TimeOut,
+								    params = { responseValue=response}
+								}
 
 
-						composer.gotoScene( "Controller.singInPage", options )
+								composer.gotoScene( "Controller.singInPage", options )
+						   
+						    if (pushToken) then -- nil if there was a connection issue or on iOS notification permissions were not accepted.
+						        print("pushToken:" .. pushToken)
+						    end
+
+						end
+
+						OneSignal.IdsAvailableCallback(IdsAvailable)
+
+						if isSimulator then
+
+
+						        local options = {
+								    effect = "slideLeft",
+								    time = Splash_TimeOut,
+								    params = { responseValue=response}
+								}
+
+
+								composer.gotoScene( "Controller.singInPage", options )
+
+						end
 
 			end
 
@@ -187,7 +220,9 @@ function scene:show( event )
 									os.exit()
 
 								elseif isIos then
+
 									system.openURL( "https://itunes.apple.com/in/app/myunitbuzz/id1068478993?mt=8" )
+									
 								end
 
 							end
