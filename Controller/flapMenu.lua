@@ -75,7 +75,6 @@ local function MenuTouchAction(event)
 
 					        		if response == 5 then
 
-
 							        	slideAction()
 										for j=MainGroup.numChildren, 1, -1 do 
 											display.remove(MainGroup[MainGroup.numChildren])
