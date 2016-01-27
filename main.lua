@@ -16,6 +16,10 @@ local OneSignal = require("plugin.OneSignal")
 GCMValue = 0
 ga = require("Utils.GoogleAnalytics.ga")
 
+pushArray = {}
+
+notificationFlag=false
+
 --com.spanenterprises.MUBDev
 
 
@@ -34,7 +38,6 @@ end
 UnitnumberList = {}
 
 MainGroup = display.newGroup();
-PushGroup = display.newGroup();
 
 
 
@@ -197,7 +200,7 @@ local BackFlag = false
 
             if openPage == "signInPage" or openPage == "requestAccess Page" then
                 native.setKeyboardFocus(nil)
-                scrollTo(0)
+                
             end
         end
         -- we handled the event, so return true.
@@ -208,55 +211,57 @@ local BackFlag = false
     -- Add the key callback
    Runtime:addEventListener( "key", onKeyEvent );
 
-
 	composer.gotoScene( "Controller.splashScreen")
 
 
-    --composer.gotoScene( "Controller.pushNotificationPage")
+   
+--composer.gotoScene( "Controller.pushNotificationPage")
+
+
 
 function DidReceiveRemoteNotification(message, additionalData, isActive)
 
             notificationFlag = true
 
-            -- if (additionalData) then
+            if (additionalData) then
                 
-            --   local options = {
-            --     isModal = true,
-            --     effect = "fade",
-            --     time = 400,
-            --     params = {
+              local options = {
+                isModal = true,
+                effect = "fade",
+                time = 400,
+                params = {
 
-            --         additionalValue = additionalData,
-            --         Message = message
+                    additionalValue = additionalData,
+                    Message = message
 
-            --     }
-            -- }
+                }
+            }
 
-            -- -- By some method (a pause button, for example), show the overlay
-            -- composer.showOverlay( "Controller.pushNotificationPage", options )
+            -- By some method (a pause button, for example), show the overlay
+            composer.showOverlay( "Controller.pushNotificationPage", options )
 
-            -- else
+            else
 
               native.showAlert("MyUnitBuzz", message, { "OK" } )
 
-           -- end
+            end
 
 end
 
 
 
-
 OneSignal.Init(ApplicationConfig.OneSignal_Appid, ApplicationConfig.ProjectNumber, DidReceiveRemoteNotification)
 
-OneSignal.EnableInAppAlertNotification(true)
+OneSignal.EnableInAppAlertNotification(false)
 
 
 ---------Google Analytics-------
 
 ga.init({ -- Only initialize once, not in every file
-    isLive = false, -- REQUIRED
-    testTrackingID = "UA-51545075-4", -- REQUIRED Tracking ID from Google -- Dev UA-51545075-5
-    debug = true, -- Recomended when starting
+    isLive = IsLive, -- REQUIRED
+    testTrackingID = ApplicationConfig.Analysic_TrackId, -- REQUIRED Tracking ID from Google -- Dev UA-51545075-5
+    productionTrackingID = ApplicationConfig.Analysic_TrackId,
+    debug = false, -- Recomended when starting
 })
 
 

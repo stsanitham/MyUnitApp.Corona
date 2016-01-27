@@ -293,6 +293,8 @@ function scene:show( event )
 
 	openPage="twitterPage"
 	
+	ga.enterScene("Twitter")
+	
 	if phase == "will" then
 
 

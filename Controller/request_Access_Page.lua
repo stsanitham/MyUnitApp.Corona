@@ -627,7 +627,9 @@ function scene:create( event )
 	BgText.x=5;BgText.y=20
 	BgText.anchorX=0
 
-
+	backBtn_bg = display.newRect(sceneGroup,0,0,40,30)
+	backBtn_bg.x=25;backBtn_bg.y=BgText.y+BgText.contentHeight/2+26
+	backBtn_bg.alpha=0.01
 
 	backBtn = display.newImageRect(sceneGroup,"res/assert/right-arrow(gray-).png",15/2,30/2)
 	backBtn.x=20;backBtn.y=BgText.y+BgText.contentHeight/2+20
@@ -700,7 +702,7 @@ function scene:create( event )
 			UnitNumber.id = "Unit Number / Director name"
 			UnitNumber.value=""
 			UnitNumber.size=14	
-			UnitNumber:setReturnKey( "go" )
+			UnitNumber:setReturnKey( "next" )
 			UnitNumber.hasBackground = false
 			UnitNumber.placeholder=LoginPage.Unitnumber_placeholder
 			sceneGroup:insert(UnitNumber)
@@ -810,6 +812,8 @@ function scene:show( event )
 
 			openPage="requestAccess Page"
 
+			ga.enterScene("Request Access")
+
 
 		MKRank_bg:addEventListener( "touch", rankTouch )
 		MKRank:addEventListener( "touch", rankTouch )
@@ -905,7 +909,7 @@ end
 
 		
 
-		backBtn:addEventListener("touch",backAction)
+		backBtn_bg:addEventListener("touch",backAction)
 		page_title:addEventListener("touch",backAction)
 
 		 local function RequestonKeyEvent( event )

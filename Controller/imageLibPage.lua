@@ -403,6 +403,8 @@ function scene:show( event )
 
 			composer.removeHidden()
 
+			ga.enterScene("Image Library")
+
 			function get_Allimage(response)
 				List_array = response
 

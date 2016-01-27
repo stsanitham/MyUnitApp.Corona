@@ -520,6 +520,19 @@ openPage="signInPage"
 									return true
 								end 
 
+			local pushTest = function( event )
+			    if notificationFlag == false then
+			    	Unitnumber_field.isVisible=true
+					UserName.isVisible=true
+					Password.isVisible=true
+			    else
+			    	Unitnumber_field.isVisible=false
+					UserName.isVisible=false
+					Password.isVisible=false
+
+			    end
+			end
+
 
 ------------------------------------------------------
 
@@ -689,6 +702,11 @@ function scene:show( event )
 			signinBtn:addEventListener("touch",signinBtnRelease)
 			signinBtn_text:addEventListener("touch",signinBtnRelease)
 
+
+		
+			Runtime:addEventListener( "enterFrame", pushTest )
+
+
 		end	
 	end
 
@@ -699,7 +717,11 @@ function scene:show( event )
 
 				if event.phase == "will" then
 
+
+
 				elseif phase == "did" then
+
+					Runtime:removeEventListener( "enterFrame", pushTest )
 
 					
 					Background:removeEventListener("touch",touchBg)

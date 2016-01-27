@@ -3,7 +3,7 @@ ApplicationConfig = {}
 
 ----------Dev---------------
 
---[[
+----[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -12,9 +12,11 @@ ApplicationConfig.API_PUBLIC_KEY = "Or2tf5TjnfLObg5qZ1VfLOd"
 ApplicationConfig.OneSignal_Appid ="ed71d878-798a-11e5-aebf-bbd8b0261071"
 ApplicationConfig.ProjectNumber = "800876064299"
 ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28"
+ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 
 --]]
+
 
 -----Stagging--------
 --[[
@@ -26,6 +28,7 @@ ApplicationConfig.API_PUBLIC_KEY = "Or2tf5TjnfLObg5qZ1VfLOd"
 ApplicationConfig.OneSignal_Appid ="ed71d878-798a-11e5-aebf-bbd8b0261071"
 ApplicationConfig.ProjectNumber = "800876064299"
 ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28"
+ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 --]]
 
@@ -46,10 +49,13 @@ ApplicationConfig.API_PUBLIC_KEY = "gVbPxZHlEcnaM5LLEQ7j7Wc"
 ApplicationConfig.ProjectNumber = "464801321790"
 
 ApplicationConfig.API_PRIVATE_KEY = "5Doh1kteJKYZbSemCipRTGZiyzRAAhkSKEDhAf5TPcY"
+
+ApplicationConfig.Analysic_TrackId = "UA-51545075-4"
+
 --]]
 
 
-----[[---------IOS Live----------------
+--[[---------IOS Live----------------
 
 IsLive = true
 
@@ -66,6 +72,9 @@ ApplicationConfig.API_PUBLIC_KEY = "1WpGzpHPab445FJgxSpo8NJ"
 ApplicationConfig.ProjectNumber = "464801321790"
 
 ApplicationConfig.API_PRIVATE_KEY = "i67cHiLg5p7XkrnLrW2L6x4xNsqpNworZgboKHGHpdc"
+
+ApplicationConfig.Analysic_TrackId = "UA-51545075-4"
+
 --]]
 
 

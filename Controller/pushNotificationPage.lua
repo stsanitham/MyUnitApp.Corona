@@ -6,7 +6,7 @@
 
 local composer = require( "composer" )
 local scene = composer.newScene()
-
+local style = require("res.value.style")
 local Utility = require( "Utils.Utility" )
 local json = require("json")
 
@@ -26,28 +26,212 @@ openPage="Push Notification Page"
 
 
 
+local Background,PushNotification_bg,PushNotification_title_bg,PushNotification_title,PushNotification_msg,playBtn,playBtn_text,downloadBtn,downloadBtn_text,PushNotification_close_bg,PushNotification_close,webView
+
+
+
 --------------------------------------------------
 
 
 -----------------Function-------------------------
+
+
+local function AudioPush(  )
+	local function networkListener( audio_event )
+
+				spinner_hide()
+
+			if ( audio_event.isError ) then
+			elseif ( audio_event.phase == "began" ) then
+			elseif ( audio_event.phase == "ended" ) then
+
+						local isChannel1Playing = audio.isChannelPlaying( 1 )
+						if isChannel1Playing then
+						    audio.stop( 1 ); audio.dispose( 1 )
+						end
+
+						local laserSound = audio.loadSound( audio_event.response.filename,system.TemporaryDirectory )
+						local backgroundMusicChannel = audio.play( laserSound, { channel=1, loops=-1 } )							
+
+			end
+	end
+
+				
+
+
+	local path = system.pathForFile( additionalDate.audio:match( "([^/]+)$" ), system.TemporaryDirectory )
+	local fhd = io.open( path )
+
+				-- Determine if file exists
+		if fhd then
+
+			local isChannel1Playing = audio.isChannelPlaying( 1 )
+			if isChannel1Playing then
+			    audio.stop( 1 ); audio.dispose( 1 )
+			end
+
+			local laserSound = audio.loadSound(  additionalDate.audio:match( "([^/]+)$" ),system.TemporaryDirectory )
+	 		local backgroundMusicChannel = audio.play( laserSound, { channel=1, loops=-1 } )	
+		else
+			spinner_show()
+		    network.download(
+				additionalDate.audio,
+				"GET",
+				networkListener,
+				additionalDate.audio:match( "([^/]+)$" ),
+				system.TemporaryDirectory
+									)
+		end
+
+
+									
+
+end
+
+local function downloadAction(filename)
+
+			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+						
+					local path = system.pathForFile("/storage/sdcard1/"..filename)    
+
+					--------------------------- Read ----------------------------
+						local file, reason = io.open( localpath, "r" )                              
+						local contents
+						if file then
+						    contents = file:read( "*a" )                                        -- Read contents
+						    io.close( file )                                                    -- Close the file (Important!)
+						else
+						    print("Invalid path")
+						    return
+						end
+
+					--------------------------- Write ----------------------------
+	
+						local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+		
+							if file then
+							    file:write(contents)                                                -- Writes the contents to a file
+							    io.close(file)                                                      -- Close the file (Important!)
+							else
+								path = system.pathForFile("/storage/sdcard0/"..filename)
+								local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+								if file then
+								    file:write(contents)                                                -- Writes the contents to a file
+								    io.close(file)                                                      -- Close the file (Important!)
+								else
+								   path = system.pathForFile("/storage/sdcard/"..filename)
+									local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+									if file then
+										file:write(contents)                                                -- Writes the contents to a file
+										io.close(file)                                                      -- Close the file (Important!)
+									else
+									    print("Error")
+									    return
+									 end
+								 end
+							end
+
+							native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
+
+end
+
+local function DownloadPush(  )
+	local function DownloadPush_networkListener( audio_event )
+
+				spinner_hide()
+
+			if ( audio_event.isError ) then
+			elseif ( audio_event.phase == "began" ) then
+			elseif ( audio_event.phase == "ended" ) then
+
+				print( audio_event.response.filename )
+					downloadAction(audio_event.response.filename)					
+
+			end
+	end
+
+				
+	print( additionalDate.audio:match( "([^/]+)$" ) )
+
+	local path = system.pathForFile( additionalDate.audio:match( "([^/]+)$" ), system.TemporaryDirectory )
+	local fhd = io.open( path )
+
+				-- Determine if file exists
+		if fhd then
+			downloadAction(additionalDate.audio:match( "([^/]+)$" ))
+		else
+			spinner_show()
+		    network.download(
+				additionalDate.audio,
+				"GET",
+				DownloadPush_networkListener,
+				additionalDate.audio:match( "([^/]+)$" ),
+				system.TemporaryDirectory
+									)
+		end
+									
+
+end
 
 local function closeDetails( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
-			composer.hideOverlay()
 
-			local isChannel1Playing = audio.isChannelPlaying( 1 )
-			if isChannel1Playing then
-			    audio.pause( 1 )
-			    audio.dispose( 1 )
-			end
-						
+			
 
-			for j=PushGroup.numChildren, 1, -1 do 
-											display.remove(PushGroup[PushGroup.numChildren])
-											PushGroup[PushGroup.numChildren] = nil
+
+			if event.target.id == "Play" then
+
+				if additionalDate.audio:match( "([^/]+)$" ) ~= nil then
+
+					AudioPush()
+
+				end
+
+			elseif event.target.id == "Downlaod" then
+
+				if additionalDate.audio:match( "([^/]+)$" ) ~= nil then
+
+					DownloadPush()
+
+				end
+
+			else
+				
+
+
+				local isChannel1Playing = audio.isChannelPlaying( 1 )
+				if isChannel1Playing then
+				    audio.pause( 1 )
+				    audio.dispose( 1 )
+				end
+				if #pushArray <= 1 then
+
+					notificationFlag=false
+
+				end
+				if pushArray[#pushArray] ~= nil then
+
+					print( "close" )
+
+				
+					for j=pushArray[#pushArray].numChildren, 1, -1 do 
+						display.remove(pushArray[#pushArray][pushArray[#pushArray].numChildren])
+						pushArray[#pushArray][pushArray[#pushArray].numChildren] = nil
+					end
+
+					display.remove(pushArray[#pushArray]);pushArray[#pushArray]=nil
+
+					composer.hideOverlay()
+
+				end
+
+				
+
+				
+
 			end
 
 	end
@@ -77,9 +261,34 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 
+
+
+
+
+end
+
+function scene:show( event )
+
+	local sceneGroup = self.view
+	local phase = event.phase
+
+	--display.setDefault( "background", 1, 1, 1)
+	
+	if phase == "will" then
+
+
+	elseif phase == "did" then
+
+		 pushArray[#pushArray+1] = display.newGroup( )
+
+	 PushGroup = pushArray[#pushArray]
+
 	additionalDate= event.params.additionalValue
 	message = event.params.Message
+	print( "enter" )
 
+	--additionalDate= {video="http://sports.yahoo.com/video/manning-return-next-season-195505478.html"}
+	--message = "Lorem Ipsum is simply dummy t--ext of the printing and typesetting industry. Lorem Ipsum has been the industry's st  text of the printing and typesetting industry. Lorem Ipsum has been the industry's st  text of the printing and typesetting industry. Lorem Ipsum has been the industry's st"
 
 	--Mail
 
@@ -96,81 +305,299 @@ function scene:create( event )
 	Background = display.newImageRect(PushGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 	Background.alpha=0.01
+	Background:addEventListener( "touch", bgTouch )
 
 
-	PushNotification_bg = display.newRoundedRect( PushGroup, W/2,H/2, W-50, H/3, 3 )
-	PushNotification_bg:setFillColor(Utility.convertHexToRGB(color.tabBarColor))	
+	PushNotification_bg = display.newRect( PushGroup, W/2,H/2, W-50, H/3 )
+	PushNotification_bg:setFillColor(1)	
+	PushNotification_bg.strokeWidth=3
+	PushNotification_bg.anchorY=0
+	PushNotification_bg.y=H/2-PushNotification_bg.contentHeight/2
+	PushNotification_bg:setStrokeColor( Utils.convertHexToRGB(sp_Flatmenu_HeaderBg.Background_Color))
 
-	PushNotification_title = display.newText( PushGroup, "Notification", 0, 0, 0,0,native.systemFont,20 )
-	PushNotification_title.x= W/2
-	PushNotification_title.anchorY=0
-	PushNotification_title.y= PushNotification_bg.y-PushNotification_bg.contentHeight/2+10
+	
 
-	PushNotification_msg = display.newText( PushGroup, message,0,0,PushNotification_bg.contentWidth-50, 0,native.systemFont,16 )
+	--PushNotification_bg:setFillColor(Utility.convertHexToRGB(color.tabBarColor))	
+
+	PushNotification_title_bg = display.newRect( PushGroup, W/2,0, PushNotification_bg.contentWidth, 40 )
+	PushNotification_title_bg.y=PushNotification_bg.y+PushNotification_title_bg.contentHeight/2
+	PushNotification_title_bg:setFillColor(Utils.convertHexToRGB(sp_Flatmenu_HeaderBg.Background_Color))
+
+
+	PushNotification_title = display.newText( PushGroup, "Notification", 0, 0, 0,0,native.systemFontBold,16 )
+	PushNotification_title.x= PushNotification_title_bg.x-PushNotification_title_bg.contentWidth/2+15
+	PushNotification_title.anchorX=0
+	PushNotification_title.y= PushNotification_title_bg.y
+
+
+	if message:len() > 160 then
+
+		message = message:sub(1,160)
+
+	end
+
+	PushNotification_msg = display.newText( PushGroup, "Message : "..message,0,0,PushNotification_title_bg.contentWidth-20, 0,native.systemFont,14 )
 	PushNotification_msg.x= W/2
+	PushNotification_msg:setFillColor( 0 )
 	--PushNotification_msg.anchorX=0
-	--PushNotification_msg.anchorY=0
-	PushNotification_msg.y= PushNotification_bg.y
+	PushNotification_msg.anchorY=0
+	PushNotification_msg.y= PushNotification_title_bg.y+PushNotification_title_bg.contentHeight/2+10
+
+	if additionalDate.video or additionalDate.image then
+
+		PushNotification_bg.height = PushNotification_bg.height+PushNotification_msg.height+30
+		PushNotification_bg.y=H/2-PushNotification_bg.contentHeight/2
+		PushNotification_title_bg.y=PushNotification_bg.y+PushNotification_title_bg.contentHeight/2
+		PushNotification_title.y= PushNotification_title_bg.y
+		PushNotification_msg.y= PushNotification_title_bg.y+PushNotification_title_bg.contentHeight/2+10
+
+	elseif additionalDate.audio then
+
+		PushNotification_bg.height = PushNotification_msg.height+100
+		PushNotification_bg.y=H/2-PushNotification_bg.contentHeight/2
+		PushNotification_title_bg.y=PushNotification_bg.y+PushNotification_title_bg.contentHeight/2
+		PushNotification_title.y= PushNotification_title_bg.y
+		PushNotification_msg.y= PushNotification_title_bg.y+PushNotification_title_bg.contentHeight/2+10
 
 
-	PushNotification_close = display.newText( PushGroup, "Close", 0, 0, 0,0,native.systemFont,20 )
-	PushNotification_close.x= W/2
-	PushNotification_close.y= PushNotification_bg.y+PushNotification_bg.contentHeight/2-20
+		playBtn = display.newRect(PushGroup,0,0,85,30)
+		playBtn.x=PushNotification_bg.contentWidth/3;playBtn.y = PushNotification_bg.y+PushNotification_bg.contentHeight-playBtn.contentHeight
+		playBtn:setFillColor(  Utils.convertHexToRGB(sp_Flatmenu_HeaderBg.Background_Color) )
+		playBtn.id="Play"
 
-	if additionalDate.audio then
+		playBtn_text = display.newText(PushGroup,"Play",0,0,native.systemFont,16)
+		playBtn_text.x=playBtn.x;playBtn_text.y=playBtn.y
+		Utils.CssforTextView(playBtn_text,sp_primarybutton)	
 
-		--local destDir = system.TemporaryDirectory  -- Location where the file is stored
-		--local result, reason = os.remove( system.pathForFile( "notification.wav", destDir ) )
-		--local result, reason = os.remove( system.pathForFile( "notification.mp3", destDir ) )
+		--isIos=true
 
-	local function networkListener( audio_event )
+		if isIos ~= true then
 
-		spinner_hide()
+		downloadBtn = display.newRect(PushGroup,0,0,85,30)
+		downloadBtn.x=PushNotification_bg.contentWidth/2+PushNotification_bg.contentWidth/3;downloadBtn.y = PushNotification_bg.y+PushNotification_bg.contentHeight-downloadBtn.contentHeight
+		downloadBtn:setFillColor(  Utils.convertHexToRGB(sp_Flatmenu_HeaderBg.Background_Color))
+		downloadBtn.id="Downlaod"
 
-	if ( audio_event.isError ) then
-		elseif ( audio_event.phase == "began" ) then
-			elseif ( audio_event.phase == "ended" ) then
-				
+		downloadBtn_text = display.newText(PushGroup,"Download",0,0,native.systemFont,16)
+		downloadBtn_text.x=downloadBtn.x;downloadBtn_text.y=downloadBtn.y
+		Utils.CssforTextView(downloadBtn_text,sp_primarybutton)	
 
-				--local laserSound = audio.loadSound( audio_event.response.filename,system.TemporaryDirectory )
-				--local backgroundMusicChannel = audio.play( laserSound, { channel=1, loops=-1 } )
+		downloadBtn:addEventListener( "touch", closeDetails )
 
-					
+		else
 
-			end
+			playBtn.x=PushNotification_bg.x
+			playBtn_text.x=playBtn.x;playBtn_text.y=playBtn.y
+
 		end
 
-		spinner_show()
-
-			network.download(
-			additionalDate.audio,
-			"GET",
-			networkListener,
-			additionalDate.audio:match( "([^/]+)$" ),
-			system.TemporaryDirectory
-			)
-
-
+		playBtn:addEventListener( "touch", closeDetails )
 		
+
+	else
+
+		PushNotification_bg.height = PushNotification_msg.height+60
+		PushNotification_bg.y=H/2-PushNotification_bg.contentHeight/2
+		PushNotification_title_bg.y=PushNotification_bg.y+PushNotification_title_bg.contentHeight/2
+		PushNotification_title.y= PushNotification_title_bg.y
+		PushNotification_msg.y= PushNotification_title_bg.y+PushNotification_title_bg.contentHeight/2+10
+
 
 	end
 
 
+	PushNotification_close_bg = display.newRect( PushGroup, PushNotification_bg.x, PushNotification_bg.y, 40,40 )
+	PushNotification_close_bg.x=PushNotification_bg.x+PushNotification_bg.contentWidth/2-PushNotification_close_bg.contentWidth/2-5
+	PushNotification_close_bg.y =PushNotification_bg.y+PushNotification_close_bg.contentHeight/2
+	PushNotification_close_bg:setFillColor(0.4,0.6,0.1)
+	PushNotification_close_bg.alpha=0.01
 
-end
+	PushNotification_close = display.newImageRect( PushGroup, "res/assert/icon-close.png",25,25 )
+	PushNotification_close.x=PushNotification_close_bg.x
+	PushNotification_close.y= PushNotification_close_bg.y
 
-function scene:show( event )
+	PushNotification_close_bg:addEventListener( "touch", closeDetails )
 
-	local sceneGroup = self.view
-	local phase = event.phase
-	
-	if phase == "will" then
+	if additionalDate.video then
 
 
-	elseif phase == "did" then
+		
 
-		Background:addEventListener( "touch", bgTouch )
-		PushNotification_close:addEventListener( "touch", closeDetails )
+		 local Url
+
+		if string.find(additionalDate.video:lower( ),"youtube") then
+
+		 if string.find(additionalDate.video,"v=") ~= nil then
+
+		 	local videoId = string.sub(additionalDate.video,string.find(additionalDate.video,"v=")+2,additionalDate.video:len())
+
+		 		local path = system.pathForFile( "story.html", system.TemporaryDirectory )
+				local fh, errStr = io.open( path, "w" )
+
+		        if fh then
+		            print( "Created file" )
+		            fh:write("<!doctype html>\n<html>\n<head>\n<meta charset=\"utf-8\">")
+		            fh:write("<meta name=\"viewport\" content=\"width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\"/>\n")
+		            fh:write("<style type=\"text/css\">\n html { -webkit-text-size-adjust: none; font-family: HelveticaNeue-Light, Helvetica, Droid-Sans, Arial, san-serif; font-size: 1.0em; } h1 {font-size:1.25em;} p {font-size:0.9em; } </style>")
+		            fh:write("</head>\n<body>\n")
+		        
+		           
+		                Url = "http://www.youtube.com/embed/" .. videoId
+		                local height = math.floor(display.contentWidth / 16 * 9)
+		                fh:write([[<iframe width="100%" height="]] .. height .. [[" src="]]..Url..[[?html5=1" frameborder="0" allowfullscreen></iframe>]])
+		         
+		            fh:write( "\n</body>\n</html>\n" )
+		            io.close( fh )
+		        else
+		            print( "Create file failed!" )
+		        end
+		    else
+
+		    	Url = additionalDate.video
+
+
+		    end
+
+		elseif string.find(additionalDate.video:lower( ),"facebook") then
+
+			if string.find(additionalDate.video,"videos") ~= nil then
+
+		 	local videoId = string.sub(additionalDate.video,string.find(additionalDate.video,"videos")+7,additionalDate.video:len()-1)
+
+		 		local path = system.pathForFile( "story.html", system.TemporaryDirectory )
+				local fh, errStr = io.open( path, "w" )
+
+		        if fh then
+		            print( "Created file" )
+		            fh:write("<!doctype html>\n<html>\n<head>\n<meta charset=\"utf-8\">")
+		            fh:write("<meta name=\"viewport\" content=\"width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\"/>\n")
+		            fh:write("<style type=\"text/css\">\n html { -webkit-text-size-adjust: none; font-family: HelveticaNeue-Light, Helvetica, Droid-Sans, Arial, san-serif; font-size: 1.0em; } h1 {font-size:1.25em;} p {font-size:0.9em; } </style>")
+		            fh:write("</head>\n<body>\n")
+		        
+		           
+		                Url = "https://www.facebook.com/video/embed?video_id=" .. videoId
+		                local height = math.floor(display.contentWidth / 16 * 9)
+		                fh:write([[<iframe width="100%" height="]] .. height .. [[" src="]]..Url..[[?html5=1" frameborder="0" allowfullscreen></iframe>]])
+		         
+		            fh:write( "\n</body>\n</html>\n" )
+		            io.close( fh )
+		        else
+		            print( "Create file failed!" )
+		        end
+		    else
+
+		    	Url = additionalDate.video
+
+
+		    end
+
+		 elseif string.find(additionalDate.video:lower( ),"vimeo") then
+
+			if string.find(additionalDate.video,"vimeo.com") ~= nil then
+
+		 	local videoId = string.sub(additionalDate.video,string.find(additionalDate.video,"vimeo.com")+10,additionalDate.video:len())
+
+		 		local path = system.pathForFile( "story.html", system.TemporaryDirectory )
+				local fh, errStr = io.open( path, "w" )
+
+		        if fh then
+		            print( "Created file" )
+		            fh:write("<!doctype html>\n<html>\n<head>\n<meta charset=\"utf-8\">")
+		            fh:write("<meta name=\"viewport\" content=\"width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\"/>\n")
+		            fh:write("<style type=\"text/css\">\n html { -webkit-text-size-adjust: none; font-family: HelveticaNeue-Light, Helvetica, Droid-Sans, Arial, san-serif; font-size: 1.0em; } h1 {font-size:1.25em;} p {font-size:0.9em; } </style>")
+		            fh:write("</head>\n<body>\n")
+		        
+		           
+		                Url = "http://player.vimeo.com/video/" .. videoId
+		                local height = math.floor(display.contentWidth / 16 * 9)
+		                fh:write([[<iframe width="100%" height="]] .. height .. [[" src="]]..Url..[[?html5=1" frameborder="0" allowfullscreen></iframe>]])
+		         
+		            fh:write( "\n</body>\n</html>\n" )
+		            io.close( fh )
+		        else
+		            print( "Create file failed!" )
+		        end
+		    else
+
+		    	Url = additionalDate.video
+
+
+		    end
+
+		else
+
+		    	Url = additionalDate.video
+
+
+		end 
+
+		        webView = native.newWebView(display.contentCenterX, display.contentCenterY, PushNotification_bg.contentWidth-20, 130 )
+		        webView.y=PushNotification_msg.y+PushNotification_msg.contentHeight+5
+		        webView.anchorY  = 0
+		        PushGroup:insert( webView)
+
+		        --webView:request("story.html", system.TemporaryDirectory)
+		     	webView:request( Url )
+
+		  
+
+    elseif additionalDate.image then
+
+		--
+
+			local function ImagePush_networkListener( img_event )
+
+				spinner_hide()
+
+			if ( img_event.isError ) then
+			elseif ( img_event.phase == "began" ) then
+			elseif ( img_event.phase == "ended" ) then
+
+				print( img_event.response.filename )
+			PushImage = display.newImage( additionalDate.image:match( "([^/]+)$" ), system.TemporaryDirectory  )  
+			PushImage.width = PushNotification_bg.contentWidth-20
+				PushImage.height = 130
+				PushImage.x=W/2
+			PushImage.y=PushNotification_msg.y+PushNotification_msg.contentHeight+5
+	        PushImage.anchorY  = 0
+	        PushGroup:insert( PushImage)			
+
+			end
+	end
+
+	if additionalDate.image:match( "([^/]+)$" ) ~= nil then
+
+		print( additionalDate.image:match( "([^/]+)$" ) )
+
+		local path = system.pathForFile( additionalDate.image:match( "([^/]+)$" ), system.TemporaryDirectory )
+		local fhd = io.open( path )
+
+					-- Determine if file exists
+			if fhd then
+				PushImage = display.newImage( additionalDate.image:match( "([^/]+)$" ), system.TemporaryDirectory  )  
+				PushImage.width = PushNotification_bg.contentWidth-20
+				PushImage.height = 130
+				PushImage.x=W/2
+				PushImage.y=PushNotification_msg.y+PushNotification_msg.contentHeight+5
+		        PushImage.anchorY  = 0
+		        PushGroup:insert( PushImage)
+			else
+				spinner_show()
+			    network.download(
+					additionalDate.image,
+					"GET",
+					ImagePush_networkListener,
+					additionalDate.image:match( "([^/]+)$" ),
+					system.TemporaryDirectory
+										)
+			end
+
+	end
+
+		
+
+	end
+		
 	
 	end	
 	

@@ -2,7 +2,6 @@ local network = require('network')
 local json = require('json')
 local Applicationconfig = require("Utils.ApplicationConfig")
 
-
 local request = {}
 
 local count ={}
@@ -22,7 +21,7 @@ function request.new(url, method, params,listner)
 	
 	print("enter "..url)
 
-	if  splitUrl(url) == "/MyUnitBuzz/GetAllUnitNumber" or string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") then
+	if   string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") then
 
 		spinner_hide()
 

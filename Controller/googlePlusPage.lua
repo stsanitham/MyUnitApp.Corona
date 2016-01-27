@@ -285,6 +285,7 @@ function scene:show( event )
 	
 	if phase == "will" then
 
+		ga.enterScene("Google +")
 
 		elseif phase == "did" then
 

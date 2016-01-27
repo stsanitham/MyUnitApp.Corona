@@ -305,6 +305,8 @@ function scene:show( event )
 	local phase = event.phase
 
 	openPage="facebookPage"
+
+	ga.enterScene("Facebook")
 	
 	if phase == "will" then
 

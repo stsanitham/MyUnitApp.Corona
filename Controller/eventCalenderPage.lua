@@ -711,6 +711,8 @@ local function searchListener( event )
 
     elseif ( event.phase == "editing" ) then
 
+    			search:resizeFontToFitHeight()
+
  				local searchweektime = os.date( '*t' )
 
 				searchweektime.day = searchweektime.day - os.date( "%w" ) 
@@ -1049,8 +1051,10 @@ function scene:create( event )
 	searchLeftDraw.x=searchhBg.x+searchhBg.contentWidth/2-searchLeftDraw.contentWidth
 	searchLeftDraw.y=searchhBg.y
 
-	search =  native.newTextField( searchhBg.x-searchhBg.contentWidth/2, searchhBg.y, searchhBg.contentWidth-25, 22 )
+	search =  native.newTextField( searchhBg.x-searchhBg.contentWidth/2, searchhBg.y, searchhBg.contentWidth-25, 26 )
 	search.anchorX=0
+	search.size=20
+	search:resizeFontToFitHeight()
 	search:setReturnKey( "search" )
 	search.placeholder = CommonWords.search
 	search.hasBackground = false

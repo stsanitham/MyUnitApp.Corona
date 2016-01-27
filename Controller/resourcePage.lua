@@ -80,7 +80,7 @@ end
 local function showShare(fileNameString)
 
 
-			    local popupName = "activity"
+			    local popupName = "quickLook"
 			    local isAvailable = native.canShowPopup( popupName )
 			    local isSimulator = "simulator" == system.getInfo( "environment" )
 
@@ -93,25 +93,28 @@ local function showShare(fileNameString)
 			}
 						    -- If it is possible to show the popup
 			    if isAvailable then
-			        local listener = {}
-			        function listener:popup( event )
-			            print( "name(" .. event.name .. ") type(" .. event.type .. ") activity(" .. tostring(event.activity) .. ") action(" .. tostring(event.action) .. ")" )
-			        end
+			        
 
-			        -- Show the popup
-			        native.showPopup( popupName,
-			        {
-			            items = items,
-			            -- excludedActivities = { "UIActivityTypeCopyToPasteboard", },
-			            listener = listener,
-			            permittedArrowDirections={ "up", "down" }
-			        })
+			        local popupOptions = 
+						    {
+						        files =  -- Files you wish to load into the quick look preview
+						        { 
+						            { filename=fileNameString, baseDir=system.TemporaryDirectory },
+						      
+						        },
+						        startIndex = 1,  -- The file you wish to start the preview at; default is 1
+						        listener = quickLookListener  -- Callback listener
+						    }
+
+						    -- Show the quick look popup
+						    native.showPopup( "quickLook", popupOptions )
+
 			    else
 			  
 			            --native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
 			        
 			    end
-			end
+end
 
 local function share(fileName)
 		local isAvailable = native.canShowPopup( "social", "share" )
@@ -399,6 +402,8 @@ function scene:show( event )
 
 			composer.removeHidden()
 
+			ga.enterScene("Resource Library")
+
 			function get_allDocument(response)
 
 				List_array=response
@@ -444,6 +449,9 @@ function scene:show( event )
 
 	menuBtn:addEventListener("touch",menuTouch)
 	BgText:addEventListener("touch",menuTouch)
+
+
+
 
 
 end	

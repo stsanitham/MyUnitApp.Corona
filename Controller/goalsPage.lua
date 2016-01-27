@@ -85,7 +85,7 @@ function scene:show( event )
 
 
 
-
+		ga.enterScene("Unit Goals")
 
 		elseif phase == "did" then
 
@@ -125,7 +125,8 @@ title:setFillColor(0)
 
 function get_Goals(response)
 
-	if response.MyUnitBuzzGoals ~= nil then
+
+	if response.MyUnitBuzzGoals ~= nil and response.MyUnitBuzzGoals ~= "" then
 
 
 
