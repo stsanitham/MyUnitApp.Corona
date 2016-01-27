@@ -250,7 +250,6 @@ function Webservice.GET_ALL_MYUNITAPP_IMAGE(postExecution)
 		AccessToken = row.AccessToken
 		ContactId = row.ContactId
 
-
 	end
 
 	
@@ -269,6 +268,7 @@ function Webservice.GET_ALL_MYUNITAPP_IMAGE(postExecution)
 
 	return response
 end
+
 
 function Webservice.GET_ALL_MYUNITAPP_DOCUMENT(postExecution)
 	local request_value = {}
@@ -383,8 +383,6 @@ function Webservice.GET_ACTIVE_TEAMMEMBERDETAILS(contactId,postExecution)
 
 	request.new(ApplicationConfig.GetActiveTeammemberDetails.."?"..resbody,method,params,postExecution)
 	
-
-
 	return response
 end
 
@@ -426,6 +424,8 @@ function Webservice.GET_MYUNITAPP_GOALS(postExecution)
 	
 	return response
 end
+
+
 function Webservice.Get_All_MyCalendars(postExecution)
 
 
@@ -464,10 +464,9 @@ local resbody = "userid="..string.urlEncode(UserId)
 
 	request.new(ApplicationConfig.GetAllMyCalendars.."?"..resbody,method,params,postExecution)
 	
-
-
 return response
 end
+
 
 function Webservice.Get_TicklerEvents(CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic,postExecution)
 local request_value = {}

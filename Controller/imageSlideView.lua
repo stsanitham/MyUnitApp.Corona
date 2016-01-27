@@ -429,10 +429,7 @@ function scene:show( event )
 				ImageList = event.params.ImageList
 				indexValue = event.params.count
 
-
-		
-
-					
+	
 		local function downloadAction( )
 
 					spinner_show()

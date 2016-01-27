@@ -18,17 +18,15 @@ end
 function request.new(url, method, params,listner)
 
 	
-	
-	
 	print("enter "..url)
 
-	if  splitUrl(url) == "/MyUnitBuzz/GetAllUnitNumber" or string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") then
+	if  splitUrl(url) == "/Therapy/List" or string.find(url,"/Therapy/List") then
 
-		spinner_hide()
+		spinner_show()
 
 	else
 
-		spinner_show()
+		spinner_hide()
 
 	end
 

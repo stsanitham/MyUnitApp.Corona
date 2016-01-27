@@ -287,7 +287,6 @@ openPage="signInPage"
 		--native.setKeyboardFocus(nil)
 
 
-
 		function get_loginresponse(response)
 
 			loginProcess(response)
