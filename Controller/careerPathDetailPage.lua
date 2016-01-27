@@ -334,7 +334,14 @@ function scene:show( event )
 				titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+15
 				titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
 				titleBar_icon.anchorY=0
-				titleBar_icon:addEventListener("touch",closeDetails)
+
+				titleBar_icon_bg = display.newRect(sceneGroup,0,0,25,28)
+				titleBar_icon_bg.x=titleBar.x-titleBar.contentWidth/2+20
+				titleBar_icon_bg.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon_bg.contentWidth+10
+				titleBar_icon_bg.anchorY=0
+				titleBar_icon_bg.alpha=0.01
+
+				titleBar_icon_bg:addEventListener("touch",closeDetails)
 
 
 
@@ -706,7 +713,14 @@ function scene:show( event )
 				map_close.x=myMap_rect.x+myMap_rect.contentWidth/2-15
 				map_close.y=myMap_rect.y+15
 				map_close.id="close"
-				map_close:addEventListener("touch",MapShowing)
+
+				map_close_bg = display.newImageRect(mapGroup,"res/assert/cancel.png",35,35)
+				map_close_bg.x=myMap_rect.x+myMap_rect.contentWidth/2-15
+				map_close_bg.y=myMap_rect.y+15
+				map_close_bg.id="close"
+				map_close_bg.alpha=0.01
+
+				map_close_bg:addEventListener("touch",MapShowing)
 			
 
 						myMap = native.newMapView( display.contentCenterX, display.contentCenterY+50, 280, 270 )
@@ -721,7 +735,7 @@ function scene:show( event )
 								print( "Map Error: " .. event.errorMessage )
 							else
 								print( "The specified string is at: " .. event.latitude .. "," .. event.longitude )
-								if myMap then myMap:setCenter( event.latitude, event.longitude ) end
+								if myMap then myMap:setCenter( event.latitude, event.longitude ) 
 
 								local options = 
 								{ 
@@ -730,6 +744,8 @@ function scene:show( event )
 								imageFile =  "res/assert/map.png",
 							}
 							local result, errorMessage = myMap:addMarker( event.latitude, event.longitude , options )
+
+							end
 						end
 
 					end
@@ -753,6 +769,9 @@ function scene:show( event )
 
 
 		end	
+
+
+		ga.enterScene("Unit Career Path")
 
 		MainGroup:insert(sceneGroup)
 

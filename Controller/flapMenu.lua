@@ -106,6 +106,7 @@ local function MenuTouchAction(event)
 			  				
       					end
 
+
 	        			Webservice.LogOut(logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId,get_logout)
 
 			        elseif i == 2 then
@@ -116,6 +117,7 @@ local function MenuTouchAction(event)
 
 		-- Show alert with two buttons
 		local alert = native.showAlert( "Log out", FlapMenu.Alert, { FlapMenu.LOG_OUT , FlapMenu.CANCEL }, onComplete )	
+		
 			return
 		end
 

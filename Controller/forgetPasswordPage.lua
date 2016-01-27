@@ -290,9 +290,15 @@ function scene:create( event )
 	BgText.x=5;BgText.y=20
 	BgText.anchorX=0
 
+	backBtn_bg = display.newRect(sceneGroup,0,0,40,30)
+	backBtn_bg.x=25;backBtn_bg.y=tabBar.y+tabBar.contentHeight+5
+	backBtn_bg.alpha=0.01
+
 	backBtn = display.newImageRect(sceneGroup,"res/assert/right-arrow(gray-).png",15/2,30/2)
 	backBtn.x=20;backBtn.y=tabBar.y+tabBar.contentHeight+5
 	backBtn.xScale=-1
+
+
 
 	page_title = display.newText(sceneGroup,ForgotPassword.PageTitle,0,0,native.systemFont,18)
 	page_title.x=backBtn.x+18;page_title.y=backBtn.y
@@ -384,7 +390,7 @@ function scene:show( event )
 	if phase == "will" then
 
 
-
+		ga.enterScene("ForgotPassword")
 	
 		elseif phase == "did" then
 
@@ -394,7 +400,7 @@ function scene:show( event )
 			requestBtn:addEventListener("touch",touchAction)
 			signinBtn:addEventListener("touch",signinBtnRelease)
 			signinBtn_text:addEventListener("touch",signinBtnRelease)
-			backBtn:addEventListener("touch",backAction)
+			backBtn_bg:addEventListener("touch",backAction)
 			page_title:addEventListener("touch",backAction)
 
 			composer.removeHidden()

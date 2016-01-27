@@ -91,7 +91,7 @@ local function showShare(fileNameString)
 			{
 			    { type = "image", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
 			     --{ type = "UIActivityTypePostToFacebook", value = "UIActivityTypePostToFacebook" },
-			      { type = "string", value = "test" },
+			      { type = "string", value = " " },
 
 			}
 						    -- If it is possible to show the popup
@@ -402,6 +402,8 @@ function scene:show( event )
 		elseif phase == "did" then
 
 			composer.removeHidden()
+
+			ga.enterScene("Image Library")
 
 			function get_Allimage(response)
 				List_array = response

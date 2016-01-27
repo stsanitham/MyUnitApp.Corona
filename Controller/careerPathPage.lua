@@ -326,7 +326,7 @@ local function listPosition_change( event )
 					if viewValue == "position" then
 
 								local function compare(a,b)
-									return a.CarrierProgress:upper( ) < b.CarrierProgress:upper( )
+									return a.DisplayPosition < b.DisplayPosition
 								end
 
 								table.sort(byNameArray, compare)
@@ -404,6 +404,7 @@ function get_Activeteammember(response)
 							temp.CarrierProgress = List_array[i].CarrierProgress
 							temp.Image_Path = List_array[i].Image_Path
 							temp.Contact_Id = List_array[i].Contact_Id
+							temp.DisplayPosition = List_array[i].DisplayPosition
 
 							byNameArray[#byNameArray+1] = temp
 
@@ -414,7 +415,7 @@ function get_Activeteammember(response)
 							if viewValue == "position" then
 
 								function compare(a,b)
-									return a.CarrierProgress < b.CarrierProgress
+									return a.DisplayPosition < b.DisplayPosition
 								end
 
 								table.sort(byNameArray, compare)

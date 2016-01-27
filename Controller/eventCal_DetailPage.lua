@@ -275,8 +275,9 @@ function scene:show( event )
 
 					display_details[#display_details+1] = display.newText(time,0,0,180,0,native.systemFont,14)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-					display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y+20
+					display_details[#display_details].x=W/2-30;display_details[#display_details].y=display_details[#display_details-1].y+16
 					display_details[#display_details].anchorX=0
+					display_details[#display_details].anchorY=0
 					display_details[#display_details].id="time"
 					scrollView:insert( display_details[#display_details] )
 
@@ -289,7 +290,7 @@ function scene:show( event )
 
 				----Where----
 
-				if Details.Location ~= nil or Details.PhoneNumber ~= nil then
+				if Details.Location ~= nil or Details.PhoneNumber ~= nil or Details.Location ~= "" then
 
 					display_details[#display_details+1] = display.newText(EventCalender.Where,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))

@@ -415,7 +415,7 @@ function Webservice.GET_MYUNITAPP_GOALS(postExecution)
 	end
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
-	local resbody = "userid="..string.urlEncode(UserId)
+	local resbody = "userid="..UserId
 
 
 	params={headers = headers}
@@ -666,6 +666,7 @@ function Webservice.GetLatestVersionCommonApp( platform,postExecution)
 local request_value = {}
 	local params = {}
 	local headers = {}
+
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 	headers["IpAddress"] = Utility.getIpAddress()
 	headers["UniqueId"] = system.getInfo("deviceID")

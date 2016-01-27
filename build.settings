@@ -31,6 +31,9 @@ settings =
 	        publisherId = "com.coronalabs",
 	        supportedPlatforms = { android=true, ["android-kindle"]=true },
 	    },
+	    
+	     
+	   
     },
     
 
@@ -55,6 +58,7 @@ settings =
 	
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, 
+			UIFileSharingEnabled=true,
 			--UIApplicationExitsOnSuspend = true,
 			CoronaWindowMovesWhenKeyboardAppears = true,
 			UIBackgroundModes = {"remote-notification"},
@@ -115,6 +119,11 @@ settings =
 
 coronaWindowMovesWhenKeyboardAppears = true,
 
+ 		permissions =
+        {
+            { name = ".permission.C2D_MESSAGE", protectionLevel = "signature" },
+        },
+
 		usesPermissions =
 		{
 
@@ -123,6 +132,9 @@ coronaWindowMovesWhenKeyboardAppears = true,
             "android.permission.ACCESS_COARSE_LOCATION",
             "android.permission.CALL_PHONE",
             "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.RECEIVE_BOOT_COMPLETED",
+            "com.google.android.c2dm.permission.RECEIVE",
+            ".permission.C2D_MESSAGE",
 		},
 		 usesFeatures =
         {
