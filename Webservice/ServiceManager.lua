@@ -675,7 +675,7 @@ function Webservice.Get_SocialMediaTokens(postExecution)
 
 
 	local resbody = ""
-	resbody = resbody.."userId="..UserId.."&"
+	resbody = resbody.."userId="..UserId.."&contactId="..ContactId
 
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
 	headers["Content-Length"]= string.len(resbody)

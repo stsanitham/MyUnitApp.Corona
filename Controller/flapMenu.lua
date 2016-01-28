@@ -291,9 +291,9 @@ function scene:show( event )
 						if profilePic then profilePic:removeSelf( );profilePic=nil end
 
 						print("response file "..img_event.response.filename)
-						profilePic = display.newImageRect(img_event.response.filename,system.TemporaryDirectory,80,80)
+						profilePic = display.newImageRect(img_event.response.filename,system.TemporaryDirectory,80,65)
 						--profilePic.width=65;profilePic.height=65
-						profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-50
+						profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-40
 						profilePic.anchorY=0
 						profilePic.anchorX=0
 
@@ -311,7 +311,7 @@ function scene:show( event )
 
     			end, profilePic_path:match( "([^/]+)$" ), system.TemporaryDirectory)
 		else
-			profilePic = display.newImageRect("res/assert/career-user.png",65,65)
+			profilePic = display.newImageRect("res/assert/career-user.png",65,60)
 			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-40
 			profilePic.anchorY=0
 			profilePic.anchorX=0

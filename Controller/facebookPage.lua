@@ -102,9 +102,9 @@ function FacebookCallback(res,scrollView)
 										bgheight = bgheight+80
 									end
 
-									local background = display.newRect(tempGroup,0,0,W,bgheight)
+									local background = display.newRect(tempGroup,0,0,W-80,bgheight)
 
-									local Initial_Height = 0
+									local Initial_Height = 50
 
 									if(groupArray[#groupArray-1]) ~= nil then
 
@@ -113,7 +113,7 @@ function FacebookCallback(res,scrollView)
 									end
 
 									background.anchorY = 0
-									background.x=W/2;background.y=Initial_Height
+									background.x=W/2+30;background.y=Initial_Height
 									background:setFillColor(1)
 
 									profilePic = display.newImage("userfb.png", system.TemporaryDirectory)
@@ -127,8 +127,9 @@ function FacebookCallback(res,scrollView)
 
 									time = Utils.makeTimeStamp(string.gsub( feedArray[i].created_time, "+0000", "Z" ))
 
-									userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p",time )), 0, 0, native.systemFontBold, 11 )
+									userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p",time )), 0, 0, native.systemFont, 10 )
 									userTime.anchorX = 0
+									userTime.anchorY = 0
 									Utils.CssforTextView(userTime,sp_Date_Time)
 									
 
@@ -136,6 +137,7 @@ function FacebookCallback(res,scrollView)
 
 									userName = display.newText( tempGroup,user_Name, 0, 0, native.systemFontBold, 14 )
 									userName.anchorX = 0
+									userName.anchorY = 0
 									Utils.CssforTextView(userName,sp_socialHeaderFb)
 
 									if feedArray[i].message == nil then
@@ -160,24 +162,26 @@ function FacebookCallback(res,scrollView)
 								end
 								tempGroup:insert(rowTitle)
 								rowTitle.anchorX = 0
+								rowTitle.anchorY = 0
 								Utils.CssforTextView(rowTitle,sp_socialText)
 
-								background.height = background.height+rowTitle.height/1.5
+								background.height = background.height+rowTitle.height/1.3
 
-								background.x=W/2;background.y=Initial_Height
+								background.y=Initial_Height
 
 
-								profilePic.x=background.x-background.contentWidth/2+profilePic.contentWidth/2+5
-								profilePic.y=background.y+profilePic.height/2+15
+								profilePic.x=background.x-background.contentWidth/2-profilePic.contentWidth
+								profilePic.y=background.y+profilePic.height/2
 
-								userTime.x=background.contentWidth-userTime.contentWidth
-								userTime.y=profilePic.y-profilePic.height/2-5
+								userTime.x=background.x+background.contentWidth/2-userTime.contentWidth-5
+								userTime.y=background.y+5
 
-								userName.x=profilePic.x+profilePic.contentWidth/2+10
-								userName.y=profilePic.y-profilePic.height/2+userName.height/2
+								userName.x=background.x-background.contentWidth/2+5
+								userName.y=background.y+5
 
-								rowTitle.x=profilePic.x+profilePic.contentWidth/2+10
-								rowTitle.y=profilePic.y+rowTitle.height/2
+								rowTitle.x=userName.x
+								rowTitle.y=background.y+25
+
 								local rowStory
 
 
@@ -204,8 +208,9 @@ function FacebookCallback(res,scrollView)
 
 							tempGroup:insert(rowStory)
 							rowStory.anchorX = 0
-							rowStory.x=profilePic.x-profilePic.contentWidth/2
-							rowStory.y=profilePic.y+profilePic.height/2+5+rowStory.height/2
+							rowStory.anchorY = 0
+							rowStory.x=userName.x
+							rowStory.y=background.y+25
 							Utils.CssforTextView(rowStory,sp_socialText)
 
 							local function postedimg_position( event )
@@ -216,6 +221,8 @@ function FacebookCallback(res,scrollView)
 									event.target.width=200
 									event.target.height=100
 
+									event.target.y = rowStory.y+rowStory.contentHeight+10
+
 									tempGroup:insert(event.target)
 								end
 
@@ -224,7 +231,7 @@ function FacebookCallback(res,scrollView)
 
 								local img = feedArray[i].picture
 
-								local shared_img = display.loadRemoteImage(img, "GET", postedimg_position, "facebook"..i..".png", system.TemporaryDirectory,100+profilePic.x-profilePic.contentWidth/2,rowStory.y+rowStory.height/2+55 )
+								local shared_img = display.loadRemoteImage(img, "GET", postedimg_position, "facebook"..i..".png", system.TemporaryDirectory,userName.x+105,rowStory.y+rowStory.height+10 )
 
 
 							end

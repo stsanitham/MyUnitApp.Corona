@@ -89,7 +89,110 @@ function scene:show( event )
 					
 			end
 
+			local profileImageUrl,GoogleUsername,GoogleToken,GoogleTokenSecret,GoogleUserId,FacebookUsername,FacebookAccessToken,TwitterUsername,TwitterToken,TwitterTokenSecret
+
 			function get_userSocialSetting(response)
+
+				if response.GoogleSettings ~= nil then
+
+					if response.GoogleSettings.GoogleUsername ~= nil then
+
+					GoogleUsername = response.GoogleSettings.GoogleUsername
+
+					else
+						GoogleUsername=""
+					end
+
+					if response.GoogleSettings.GoogleToken ~= nil then
+						GoogleToken = response.GoogleSettings.GoogleToken
+					else
+						GoogleToken=""
+					end
+
+					if response.GoogleSettings.GoogleTokenSecret ~= nil then
+						GoogleTokenSecret = response.GoogleSettings.GoogleTokenSecret
+					else
+						GoogleTokenSecret=""
+					end
+
+					if response.GoogleSettings.GoogleUserId ~= nil then
+
+						GoogleUserId = response.GoogleSettings.GoogleUserId
+					else
+						GoogleUserId=""
+					end
+
+				else
+
+					GoogleUsername=""
+					GoogleToken=""
+					GoogleTokenSecret=""
+					GoogleUserId=""	
+				end
+
+				if response.FacebookSettings ~= nil then
+
+					if response.FacebookSettings.FacebookUsername ~= nil then
+				FacebookUsername = response.FacebookSettings.FacebookUsername
+					else
+						FacebookUsername=""
+					end
+
+					if response.FacebookSettings.FacebookAccessToken ~= nil then
+						FacebookAccessToken = response.FacebookSettings.FacebookAccessToken
+					else
+						FacebookAccessToken=""
+					end
+				else
+
+					FacebookUsername=""
+					FacebookAccessToken=""
+
+				end
+
+				if response.TwitterSettings ~= nil then
+
+					if response.TwitterSettings.TwitterUsername ~= nil then
+					TwitterUsername = response.TwitterSettings.TwitterUsername
+					else
+							TwitterUsername=""
+					end
+
+					if response.TwitterSettings.TwitterToken ~= nil then
+						TwitterToken = response.TwitterSettings.TwitterToken
+					else
+						TwitterToken=""
+					end
+
+					if response.TwitterSettings.TwitterTokenSecret ~= nil then
+						TwitterTokenSecret = response.TwitterSettings.TwitterTokenSecret
+					else
+						TwitterTokenSecret=""
+					end
+
+				else
+
+					TwitterUsername=""
+					TwitterToken=""
+					TwitterTokenSecret=""
+
+				end
+
+				if response.MyUnitBuzzContacts then
+
+			if response.MyUnitBuzzContacts.ImagePath ~= nil then
+						profileImageUrl = response.MyUnitBuzzContacts.ImagePath
+					else
+						profileImageUrl=""
+					end
+			else
+						profileImageUrl=""
+			end
+
+
+
+				local q = [[UPDATE logindetails SET ProfileImageUrl=']]..profileImageUrl..[[',GoogleUsername=']]..GoogleUsername..[[',GoogleToken=']]..GoogleToken..[[',GoogleTokenSecret=']]..GoogleTokenSecret..[[',GoogleUserId=']]..GoogleUserId..[[',FacebookUsername=']]..FacebookUsername..[[',FacebookAccessToken=']]..FacebookAccessToken..[[',TwitterUsername=']]..TwitterUsername..[[',TwitterToken=']]..TwitterToken..[[',TwitterTokenSecret=']]..TwitterTokenSecret..[[' WHERE id=1;]]
+				db:exec( q )
 				
 				composer.gotoScene( "Controller.flapMenu" )
 
