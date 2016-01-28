@@ -354,7 +354,7 @@ function scene:show( event )
 					display_details[#display_details+1] = display.newText(EventCalender.Appointment_With,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 					display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 					display_details[#display_details].x=leftAllign
-					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height
+					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+20
 					display_details[#display_details].anchorX=0
 					display_details[#display_details].anchorY=0
 
@@ -362,7 +362,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
 						end
 
 					end
@@ -430,7 +430,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
 						end
 
 					end
@@ -469,7 +469,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
 						end
 
 					end
@@ -502,7 +502,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
 						end
 
 					end
@@ -555,7 +555,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
 						end
 
 					end
@@ -585,8 +585,7 @@ function scene:hide( event )
 			event.parent:resumeGame()
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
-					menuTouch_s:removeEventListener("touch",menuTouch)
-
+			menuTouch_s:removeEventListener("touch",menuTouch)
 
 		end	
 
