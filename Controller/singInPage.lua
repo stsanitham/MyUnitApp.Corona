@@ -218,12 +218,12 @@ openPage="signInPage"
 		TwitterToken=""
 		TwitterTokenSecret=""
 
-	end
+	end  
 
-	if Request_response.Profile then
+	if Request_response.MyUnitBuzzContacts then
 
-			if Request_response.Profile.profileImageUrl ~= nil then
-				profileImageUrl = Request_response.Profile.profileImageUrl
+			if Request_response.MyUnitBuzzContacts.ImagePath ~= nil then
+				profileImageUrl = Request_response.MyUnitBuzzContacts.ImagePath
 			else
 				profileImageUrl=""
 			end

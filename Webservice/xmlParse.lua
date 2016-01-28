@@ -22,11 +22,11 @@ function request.new(url, method, params,listner)
 
 	if   string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") then
 
-		spinner_show()
+		spinner_hide()
 
 	else
 
-		spinner_hide()
+		spinner_show()
 
 	end
 
@@ -36,7 +36,7 @@ function request.new(url, method, params,listner)
 
 	else
 		
-		print ( "RESPONSE: " .. event.response )
+		--print ( "RESPONSE: " .. event.response )
 
 		response = json.decode(event.response)
 

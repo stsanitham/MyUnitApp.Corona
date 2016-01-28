@@ -27,6 +27,8 @@ local space_value = 30
 
 local profilePic,UserEmail;
 
+local profilePic_path
+
 
 
 
@@ -169,6 +171,8 @@ function scene:create( event )
         langid = row.LanguageId
         countryid = row.CountryId
 
+        profilePic_path = row.ProfileImageUrl
+
         loginFlag=true
 
 					Director_Name = row.MemberName
@@ -264,13 +268,60 @@ function scene:show( event )
 			panel.flapTopBg = display.newImageRect("res/assert/flapTopBg.jpg",panel.width,150)
 			panel.flapTopBg.anchorY=0;panel.flapTopBg.y=-panel.width
 			panel:insert( panel.flapTopBg )
+ 
+
+		local profilePic 
 
 
-			profilePic = display.newImageRect("res/assert/career-user.png",62,56)
+			profilePic = display.newImageRect("res/assert/career-user.png",65,65)
 			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-40
 			profilePic.anchorY=0
 			profilePic.anchorX=0
 			panel:insert( profilePic )
+
+		if profilePic_path ~= nil then 
+
+			local downloadid = network.download(ApplicationConfig.IMAGE_BASE_URL..""..profilePic_path,
+				"GET",
+				function ( img_event )
+					if ( img_event.isError ) then
+						print ( "Network error - download failed" )
+					else
+
+						if profilePic then profilePic:removeSelf( );profilePic=nil end
+
+						print("response file "..img_event.response.filename)
+						profilePic = display.newImageRect(img_event.response.filename,system.TemporaryDirectory,80,80)
+						--profilePic.width=65;profilePic.height=65
+						profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-50
+						profilePic.anchorY=0
+						profilePic.anchorX=0
+
+						local mask = graphics.newMask( "res/assert/mask1.png" )
+
+						profilePic:setMask( mask )
+
+						--profilePic.maskX = profilePic.x
+						--profilePic.maskY = profilePic.y
+
+						panel:insert( profilePic )
+						
+    				--event.row:insert(img_event.target)
+    			end
+
+    			end, profilePic_path:match( "([^/]+)$" ), system.TemporaryDirectory)
+		else
+			profilePic = display.newImageRect("res/assert/career-user.png",65,65)
+			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-40
+			profilePic.anchorY=0
+			profilePic.anchorX=0
+			panel:insert( profilePic )
+
+		end
+
+	
+
+
 
 			profileName = display.newText(Director_Name,0,0,245,0,native.systemFont,15)
 			profileName.x=profilePic.x

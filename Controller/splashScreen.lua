@@ -87,20 +87,17 @@ function scene:show( event )
 
 					EmailAddress = row.MemberEmail
 					
-				end
+			end
 
-
-
-					local options = {
-						effect = "slideLeft",
-						time =500,
-
-					}
-
-
-				--composer.gotoScene( "Controller.eventCalenderPage", options )
-
+			function get_userSocialSetting(response)
+				
 				composer.gotoScene( "Controller.flapMenu" )
+
+			end		
+
+				
+			Webservice.Get_SocialMediaTokens(get_userSocialSetting)
+		
 
 
 			else

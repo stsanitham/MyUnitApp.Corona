@@ -114,6 +114,7 @@ ApplicationConfig.GetLatestVersionCommonAppForIos = ApplicationConfig.BASE_URL..
 
 ApplicationConfig.SignOut = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SignOut"
 
+ApplicationConfig.GetSocialMediaTokens = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetSocialMediaTokens"
 
 
 
