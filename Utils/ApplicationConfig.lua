@@ -1,9 +1,13 @@
 ApplicationConfig = {}
 
 
+
+---Malar working----
+
+
 ----------Dev---------------
 
-----[[
+--[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -19,7 +23,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 
 -----Stagging--------
---[[
+----[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
