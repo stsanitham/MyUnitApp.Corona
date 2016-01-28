@@ -20,13 +20,13 @@ function request.new(url, method, params,listner)
 	print("enter "..url)
 
 
-	if   string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") then
+	if string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") then
 
-		spinner_show()
+		spinner_hide()
 
 	else
 
-		spinner_hide()
+		spinner_show()
 
 	end
 
