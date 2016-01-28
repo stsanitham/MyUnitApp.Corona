@@ -158,7 +158,6 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 
-
     local found=false
     db:exec([[select * from sqlite_master where name='logindetails';]],
     function(...) found=true return 0 end)
@@ -175,6 +174,34 @@ function scene:create( event )
 					Director_Name = row.MemberName
 
 					EmailAddress = row.MemberEmail
+
+
+					---Check Facebook , Twitter and Google+----
+
+					if row.GoogleUsername ~="" and row.GoogleToken ~="" and row.GoogleTokenSecret ~="" and row.GoogleUserId ~="" then
+
+						isGoogle=true
+
+					end
+
+					if row.FacebookUsername ~="" and row.FacebookAccessToken ~="" then
+
+						isFacebook=true
+
+					end
+
+
+					if row.TwitterUsername ~="" and row.TwitterToken ~="" and row.TwitterTokenSecret ~="" then
+
+						isTwitter=true
+
+					end
+
+
+
+
+
+					------------------
         
 
         end
@@ -226,6 +253,9 @@ function scene:show( event )
 
 
 		elseif phase == "did" then
+
+
+
 			
 			panel.background = display.newRect( 0, 0, panel.width, panel.height )
 			panel.background:setFillColor( Utils.convertHexToRGB(sp_Flatmenu_HeaderBg.Background_Color) )
@@ -441,7 +471,7 @@ function scene:show( event )
 			
 			panel:insert( img_lib_text )
 
-		--[[	-----
+			-----
 
 			rect = display.newRect(0,0,panel.width,1)
 			rect.x = menuArray_display[#menuArray_display].x;
@@ -449,12 +479,35 @@ function scene:show( event )
 			rect:setFillColor(0)
 			panel:insert( rect )
 
-			socilaLbl = display.newText(FlapMenu.Social_Media,0,0,panel.contentWidth,0,"Open Sans Regular",16)
-			socilaLbl.anchorX = 0
-			socilaLbl.x=-panel.width/2+5
-			socilaLbl.y= rect.y+15
-			socilaLbl.alpha=0.6
-			panel:insert( socilaLbl )
+
+		if isGoogle == true or isFacebook == true or isTwitter == true then
+
+
+			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
+			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].alpha=0.01
+			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+			menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight
+			panel:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display].name = "Social"
+			menuArray_display[#menuArray_display].id="social"
+
+
+
+				socilaLbl = display.newText(FlapMenu.Social_Media,0,0,panel.contentWidth,0,"Open Sans Regular",16)
+				socilaLbl.anchorX = 0
+				socilaLbl.x=-panel.width/2+5
+				socilaLbl.y= rect.y+15
+				socilaLbl.alpha=0.6
+				panel:insert( socilaLbl )
+
+
+		end
+
+
+		if isFacebook == true then
+
+			
 
 
 
@@ -485,6 +538,11 @@ function scene:show( event )
 			panel:insert( Facebook_text )
 
 			-----
+
+
+		end
+
+		if isTwitter == true then
 			--Twitter
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
@@ -512,6 +570,9 @@ function scene:show( event )
 			panel:insert( Twitter_text )
 
 			-----
+		end
+
+		if isGoogle == true then
 
 					--Google +
 
@@ -539,7 +600,8 @@ function scene:show( event )
 
 					panel:insert( Googl_text )
 
-					]]
+			end
+
 
 					rect = display.newRect(0,0,panel.width,1)
 					rect.x = menuArray_display[#menuArray_display].x;
@@ -548,6 +610,8 @@ function scene:show( event )
 					panel:insert( rect )
 
 					--rect.isVisible=false
+
+
 
 
 					--Logout

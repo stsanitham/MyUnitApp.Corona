@@ -16,6 +16,7 @@ local OneSignal = require("plugin.OneSignal")
 GCMValue = 0
 ga = require("Utils.GoogleAnalytics.ga")
 
+
 pushArray = {}
 
 notificationFlag=false
@@ -50,6 +51,9 @@ openPage="main"
 isSimulator=false
 isAndroid = false
 isIos = false
+isFacebook = false
+isTwitter = false
+isGoogle = false
 
 local plateform = system.getInfo( "platformName" )
 
