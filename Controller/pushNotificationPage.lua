@@ -223,6 +223,25 @@ local function closeDetails( event )
 					end
 
 					display.remove(pushArray[#pushArray]);pushArray[#pushArray]=nil
+					
+				if pushArray[#pushArray] ~= nil then
+
+					if pushArray[#pushArray].id == "video" then
+
+						for j=pushArray[#pushArray].numChildren, 1, -1 do 
+						
+							if pushArray[#pushArray][pushArray[#pushArray].numChildren].id == "video" then
+
+								pushArray[#pushArray][pushArray[#pushArray].numChildren].isVisible=true
+
+
+							end
+						end
+
+
+					end
+				end
+
 
 					composer.hideOverlay()
 
@@ -279,9 +298,30 @@ function scene:show( event )
 
 	elseif phase == "did" then
 
-		 pushArray[#pushArray+1] = display.newGroup( )
+	if pushArray[#pushArray] then
+
+		if pushArray[#pushArray].id == "video" then
+
+			for j=pushArray[#pushArray].numChildren, 1, -1 do 
+						
+						if pushArray[#pushArray][pushArray[#pushArray].numChildren].id == "video" then
+
+							pushArray[#pushArray][pushArray[#pushArray].numChildren].isVisible=false
+
+
+						end
+			end
+
+
+		end
+
+	end
+
+	
+	pushArray[#pushArray+1] = display.newGroup( )
 
 	 PushGroup = pushArray[#pushArray]
+	 PushGroup.id=""
 
 	additionalDate= event.params.additionalValue
 	message = event.params.Message
@@ -421,7 +461,7 @@ function scene:show( event )
 	if additionalDate.video then
 
 
-		
+		PushGroup.id="video"
 
 		 local Url
 
@@ -531,9 +571,15 @@ function scene:show( event )
 
 		end 
 
+		     	webView_rect = display.newRect(display.contentCenterX, display.contentCenterY, PushNotification_bg.contentWidth-20, 130 )
+		        webView_rect.y=PushNotification_msg.y+PushNotification_msg.contentHeight+5
+		        webView_rect.anchorY  = 0
+		        PushGroup:insert( webView_rect)
+
 		        webView = native.newWebView(display.contentCenterX, display.contentCenterY, PushNotification_bg.contentWidth-20, 130 )
 		        webView.y=PushNotification_msg.y+PushNotification_msg.contentHeight+5
 		        webView.anchorY  = 0
+		        webView.id="video"
 		        PushGroup:insert( webView)
 
 		        --webView:request("story.html", system.TemporaryDirectory)

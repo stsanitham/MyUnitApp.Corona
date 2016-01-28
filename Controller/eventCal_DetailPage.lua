@@ -360,11 +360,6 @@ function scene:show( event )
 
 					if display_details[#display_details-1].id == "Description" then
 
-						if display_details[#display_details-1].height > 30 and display_details[#display_details-1].height < 60 then
-
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 20
-						end
-
 						if display_details[#display_details-1].height > 60 then
 
 							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
@@ -435,7 +430,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
 						end
 
 					end
@@ -474,7 +469,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
 						end
 
 					end
@@ -507,7 +502,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
 						end
 
 					end
@@ -560,7 +555,7 @@ function scene:show( event )
 
 						if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+10
+							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
 						end
 
 					end
