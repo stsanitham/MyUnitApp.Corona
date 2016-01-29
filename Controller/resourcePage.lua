@@ -557,6 +557,7 @@ local function ResourceGrid_list( gridlist)
 				tempGroup:insert(rect)
 
                 circle_bg = display.newCircle(tempGroup,Background.x,Background.y+ 45, 35 )
+                circle_bg.height = 60
 				circle_bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
 
 				print("response file "..tempValue)
