@@ -265,6 +265,26 @@ ga.init({ -- Only initialize once, not in every file
 })
 
 
+-----Runtime Error------
+
+local releaseBuild = true   -- Set to true to suppress popup message
+
+-- Error handler
+local function myUnhandledErrorListener( event )
+
+    if releaseBuild then
+        print( "Handling the unhandled error >>>\n", event.errorMessage )
+    else
+        print( "Not handling the unhandled error >>>\n", event.errorMessage )
+    end
+    
+    return releaseBuild
+end
+
+Runtime:addEventListener("unhandledError", myUnhandledErrorListener)
+
+
+
 
 
 
