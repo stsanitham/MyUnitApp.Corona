@@ -82,6 +82,9 @@ function FacebookCallback(res,scrollView)
 
 							for i=1,#feedArray do
 
+								print(i)
+
+
 								if  feedArray[i].message ~= nil  or feedArray[i].story ~= nil then
 
 									groupArray[#groupArray+1] = display.newGroup()
@@ -92,7 +95,7 @@ function FacebookCallback(res,scrollView)
 
 									if feedArray[i].picture ~= nil then
 
-										bgheight = 90
+										bgheight = 100
 
 									end
 
@@ -117,7 +120,7 @@ function FacebookCallback(res,scrollView)
 									background:setFillColor(Utils.convertHexToRGB("#d2d3d4"))
 									--background.alpha=0.5
 
-									profilePic = display.newImageRect("userfb.png", system.TemporaryDirectory,55,45)
+									local profilePic = display.newImageRect("userfb.png", system.TemporaryDirectory,55,45)
 
 									if not profilePic then
 										profilePic = display.newImageRect("res/assert/twitter_placeholder.png",55,45)
@@ -133,18 +136,26 @@ function FacebookCallback(res,scrollView)
 
 									time = Utils.makeTimeStamp(string.gsub( feedArray[i].created_time, "+0000", "Z" ))
 
-									userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p",time )), 0, 0, native.systemFont, 10 )
+									local userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p",time )), 0, 0, native.systemFont, 10 )
 									userTime.anchorX = 0
 									userTime.anchorY = 0
 									Utils.CssforTextView(userTime,sp_Date_Time)
+									userTime:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 									
 
 
 
-									userName = display.newText( tempGroup,user_Name, 0, 0, native.systemFontBold, 14 )
+									local userName = display.newText( tempGroup,user_Name, 0, 0, native.systemFont, 12 )
 									userName.anchorX = 0
 									userName.anchorY = 0
 									Utils.CssforTextView(userName,sp_socialHeaderFb)
+
+
+									local line = display.newRect( tempGroup, 0, 0, background.contentWidth-10, 1 )
+									line:setFillColor( Utils.convertHexToRGB(color.Gray) )
+									line.x=background.x;line.y=background.y+20							
+
+									local rowTitle
 
 									if feedArray[i].message == nil and feedArray[i].story == nil  then
 
@@ -175,7 +186,7 @@ function FacebookCallback(res,scrollView)
 
 								background.y=Initial_Height
 
-								background_arrow = display.newImageRect( tempGroup, "res/assert/arrow3.png", 11,20 )
+								local background_arrow = display.newImageRect( tempGroup, "res/assert/arrow3.png", 11,20 )
 								background_arrow.x=background.x-background.contentWidth/2-background_arrow.contentWidth/2+1
 								background_arrow.y=background.y+background_arrow.contentHeight/2+5
 								background.alpha=0.8
@@ -205,10 +216,9 @@ function FacebookCallback(res,scrollView)
 
 									event.target.width=200
 									event.target.height=100
+									print( "here.."..i )													
 
-													
-
-									event.target.y = rowTitle.y+rowTitle.height+10
+									event.target.y = rowTitle.y+rowTitle.contentHeight+event.target.contentHeight/2+5
 
 									tempGroup:insert(event.target)
 								end
@@ -328,6 +338,7 @@ function scene:show( event )
 			isBounceEnabled=false,
 			horizontalScrollingDisabled = false,
 			verticalScrollingDisabled = false,
+			 bottomPadding = 60
 
    -- listener = scrollListener
 }

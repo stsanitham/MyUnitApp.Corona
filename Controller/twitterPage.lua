@@ -29,7 +29,7 @@ local callback = {}
 local TwiiteAction,scrollView
 local feedArray = {}
 
-local RecentTab_Topvalue = 40
+local RecentTab_Topvalue = 70
 
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
@@ -48,9 +48,12 @@ function TwitterCallback(res,scrollView)
 
 	feedArray = res
 
-	spinner_hide()
+	
 
 	local function networkListener( event )
+
+		spinner_hide()
+		
 		if ( event.isError ) then
 			print ( "Network error - download failed" )
 		else
@@ -68,10 +71,21 @@ function TwitterCallback(res,scrollView)
 
 					local tempGroup = groupArray[#groupArray]
 
-					
-					local background = display.newRect(tempGroup,0,0,W,80)
+						local bgheight = 0
 
-					local tempHeight = 0
+							if feedArray[i].picture ~= nil then
+	
+								bgheight = 100
+
+							end
+		
+							bgheight = bgheight+20
+
+
+					
+					local background = display.newRect(tempGroup,0,0,W-80,bgheight)
+
+					local tempHeight = 20
 
 					if(groupArray[#groupArray-1]) then
 
@@ -79,40 +93,49 @@ function TwitterCallback(res,scrollView)
 					end
 
 					background.anchorY = 0
-
-					background.x=W/2;background.y=tempHeight
-					background:setFillColor(1)
+					background.x=W/2+30;background.y=Initial_Height
+					background:setFillColor(Utils.convertHexToRGB("#d2d3d4"))
 
 					profilePic = display.newImage("userPhoto.png", system.TemporaryDirectory)
 					if not profilePic then
 						profilePic = display.newImageRect("assert/twitter_placeholder.png",100,100)
 					end
-					profilePic.width=40;profilePic.height=40
+					profilePic.width=55;profilePic.height=50
+
+					local mask = graphics.newMask( "res/assert/mask2.png" )
+
+					profilePic:setMask( mask )
 
 					tempGroup:insert(profilePic)
 					
 
-					userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p", feedArray[i].created_time)), 0, 0, native.systemFontBold, 11 )
-
+					userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p", feedArray[i].created_time)), 0, 0, native.systemFont, 11 )
 					userTime.anchorX = 0
-					
-					userTime:setFillColor(125/255,125/255,125/255)
+					userTime.anchorY = 0
+					Utils.CssforTextView(userTime,sp_Date_Time)
+					userTime:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
 					if not feedArray[i].user then
 
-						rowTitle = display.newText( tempGroup,"test", 0, 0,native.systemFontBold, 18 )
+						rowTitle = display.newText( tempGroup,"", 0, 0,native.systemFontBold, 18 )
 
 					else
 
 						local userArray = feedArray[i].user
 
 
-						rowTitle = display.newText( tempGroup, userArray.name.." @"..userArray.screen_name, 0, 0, native.systemFontBold, 14 )
+						rowTitle = display.newText( tempGroup, userArray.name.." @"..userArray.screen_name, 50, 0,100,0, native.systemFont, 12 )
 
 					end
 					rowTitle.anchorX = 0
+					rowTitle.anchorY = 0
 					
 					rowTitle:setFillColor(41/255,129/255,203/255)
 
+
+					local line = display.newRect( tempGroup, 0, 0, background.contentWidth-10, 1 )
+					line:setFillColor( Utils.convertHexToRGB(color.Gray) )
+					line.anchorY = 0
 
 
 					local rowStory
@@ -125,45 +148,51 @@ function TwitterCallback(res,scrollView)
 					else 
 
 
+										local optionsread = {
+										text = feedArray[i].text,
+										x = display.contentCenterX,
+										y = rowTitle.y+rowTitle.contentHeight+5,
+										fontSize = 11,
+										width = 210,
+										height = 0,
+										align = "left"
+									}
 
-						local options = {
-						text = feedArray[i].text,
-						x = display.contentCenterX,
-						y = display.contentCenterY,
-						fontSize = 11,
-						width = 250,
-						height = 100,
-						align = "left"
-					}
+					rowStory = display.newText( optionsread )
 
-
-					rowStory = display.newText( options )
-
-				end
+					end
 
 
 				rowStory:setFillColor( 0 )
 				tempGroup:insert(rowStory)
 				rowStory.anchorX = 0
+				rowStory.anchorY = 0
 
 
-				background.height = background.height+rowStory.contentHeight/1.5
+				background.height = background.height+rowStory.height+rowTitle.height
 
-				background.x=W/2;background.y=tempHeight
+								background.y=tempHeight
 
-
-				profilePic.x=background.x-background.contentWidth/2+profilePic.contentWidth/2+5
-				profilePic.y=background.y+profilePic.contentHeight/2+15
-
-				userTime.x=background.contentWidth-userTime.contentWidth
-				userTime.y=profilePic.y-profilePic.contentHeight/2-5
-
-				rowTitle.x=profilePic.x+profilePic.contentWidth/2+10
-				rowTitle.y=profilePic.y-profilePic.contentHeight/2+rowTitle.contentHeight/2
+								local background_arrow = display.newImageRect( tempGroup, "res/assert/arrow3.png", 11,20 )
+								background_arrow.x=background.x-background.contentWidth/2-background_arrow.contentWidth/2+1
+								background_arrow.y=background.y+background_arrow.contentHeight/2+5
+								background.alpha=0.8
 
 
+								profilePic.x=background.x-background.contentWidth/2-profilePic.contentWidth/2-10
+								profilePic.y=background.y+profilePic.height/2-5
+
+								userTime.x=background.x+background.contentWidth/2-userTime.contentWidth-5
+								userTime.y=background.y+5
+
+								rowTitle.x=background.x-background.contentWidth/2+5
+								rowTitle.y=background.y+5
+
+													line.x=background.x;line.y=rowTitle.y+rowTitle.contentHeight+3
 				rowStory.x = rowTitle.x
-				rowStory.y = rowTitle.y+60
+				rowStory.y = rowTitle.y+rowTitle.contentHeight+8
+
+
 
 				scrollView:insert(tempGroup)
 
@@ -172,6 +201,8 @@ function TwitterCallback(res,scrollView)
 
 	end
 end
+
+spinner_show()
 
 network.download(
 	feedArray[1].user.profile_image_url,
@@ -262,6 +293,18 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
+
+		title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+
+
+	title = display.newText(sceneGroup,Twitter.PageTitle,0,0,native.systemFont,18)
+	title.anchorX = 0
+	title.x=5;title.y = title_bg.y
+	title:setFillColor(0)
+
+
 	scrollView = widget.newScrollView
 	{
 	top = RecentTab_Topvalue,
@@ -272,7 +315,7 @@ function scene:create( event )
 	isBounceEnabled=false,
 	horizontalScrollingDisabled = false,
 	verticalScrollingDisabled = false,
-
+			bottomPadding=20
    -- listener = scrollListener
 }
 

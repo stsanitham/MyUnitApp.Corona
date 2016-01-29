@@ -75,14 +75,14 @@ function googleplusCallback( res,scrollView )
 
 		if feedArray[i].object.attachments then
 
-			bgsize = 200
+			bgsize = 150
 		else
-			bgsize = 100
+			bgsize = 60
 		end
 
 
 
-		local background = display.newRect(tempGroup,0,0,W,bgsize)
+		local background = display.newRect(tempGroup,0,0,W-80,bgsize)
 
 		local tempHeight = 0
 
