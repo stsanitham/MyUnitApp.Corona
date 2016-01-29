@@ -45,7 +45,7 @@ local groupArray={}
 
 local feedArray={}
 
-local RecentTab_Topvalue = 40
+local RecentTab_Topvalue = 70
 
 local User_name=""
 
@@ -77,30 +77,36 @@ function googleplusCallback( res,scrollView )
 
 			bgsize = 150
 		else
-			bgsize = 60
+			bgsize = 40
 		end
 
 
 
 		local background = display.newRect(tempGroup,0,0,W-80,bgsize)
 
-		local tempHeight = 0
+		local tempHeight = 20
 
 		if(groupArray[#groupArray-1]) then
 
 			tempHeight = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].contentHeight+5
 		end
 
-		background.x=W/2;background.y=tempHeight
+		background.x=W/2+30;background.y=tempHeight
 		background.anchorY = 0
-		background:setFillColor(1)
+		background:setFillColor(Utils.convertHexToRGB("#d2d3d4"))
 
 
 		profilePic = display.newImage("usergoogleplus.png", system.TemporaryDirectory)
 		if not profilePic then
 			profilePic = display.newImageRect("assert/twitter_placeholder.png",100,100)
 		end
-		profilePic.width=40;profilePic.height=40
+		profilePic.width=55;profilePic.height=50
+
+					tempGroup:insert(profilePic)
+
+									local mask = graphics.newMask( "res/assert/mask2.png" )
+
+									profilePic:setMask( mask )
 
 		tempGroup:insert(profilePic)
 		
@@ -110,23 +116,24 @@ function googleplusCallback( res,scrollView )
 
 
 
-		userTime = display.newText( tempGroup, time, 0, 0, native.systemFontBold, 11 )
-
+		userTime = display.newText( tempGroup, time, 0, 0, native.systemFont, 11 )
 		userTime.anchorX = 0
-		
-		userTime:setFillColor(125/255,125/255,125/255)
+		userTime.anchorY = 0
+		Utils.CssforTextView(userTime,sp_Date_Time)
+		userTime:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 
-		username = display.newText( tempGroup, User_name, 0, 0, native.systemFontBold, 18 )
+		username = display.newText( tempGroup, User_name, 0, 0,100,0, native.systemFont, 14 )
 
 		username.anchorX = 0
+		username.anchorY = 0
 		
 		username:setFillColor(41/255,129/255,203/255)
 
 
 		if not feedArray[i].title then
 
-			rowTitle = display.newText( tempGroup," ", 0, 0,native.systemFontBold, 18 )
+			rowTitle = display.newText( tempGroup," ", 0, 0,native.systemFont, 18 )
 
 		else
 
@@ -148,24 +155,35 @@ function googleplusCallback( res,scrollView )
 
 	rowTitle:setFillColor(0)
 
+
 	
 
-	background.height = background.height+rowTitle.contentHeight/1.5
+	background.height = background.height+rowTitle.height
 
-	background.x=W/2;background.y=tempHeight
+								background.y=tempHeight
+
+								local background_arrow = display.newImageRect( tempGroup, "res/assert/arrow3.png", 11,20 )
+								background_arrow.x=background.x-background.contentWidth/2-background_arrow.contentWidth/2+1
+								background_arrow.y=background.y+background_arrow.contentHeight/2+5
+								background.alpha=0.8
 
 
-	profilePic.x=background.x-background.contentWidth/2+profilePic.contentWidth/2+5
-	profilePic.y=background.y+profilePic.contentHeight/2+15
+	profilePic.x=background.x-background.contentWidth/2-profilePic.contentWidth/2-10
+								profilePic.y=background.y+profilePic.height/2-5
 
-	userTime.x=background.contentWidth-userTime.contentWidth
-	userTime.y=profilePic.y-profilePic.contentHeight/2-5
+	username.x=profilePic.x+profilePic.contentWidth/2+15
+	username.y=profilePic.y-profilePic.contentHeight/2+username.contentHeight/2-8
 
-	username.x=profilePic.x+profilePic.contentWidth/2+10
-	username.y=profilePic.y-profilePic.contentHeight/2+username.contentHeight/2
+	userTime.x=background.x+background.contentWidth/2-userTime.contentWidth-5
+	userTime.y=background.y+5
 
-	rowTitle.x=profilePic.x-profilePic.contentWidth/2
-	rowTitle.y=profilePic.y+rowTitle.contentHeight/2+25
+	local line = display.newRect( tempGroup, 0, 0, background.contentWidth-10, 1 )
+									line:setFillColor( Utils.convertHexToRGB(color.Gray) )
+									line.x=background.x;line.y=username.y+username.contentHeight+4
+
+	rowTitle.anchorY=0
+	rowTitle.x=username.x
+								rowTitle.y=username.y+username.contentHeight+5
 
 
 	local function postedimg_position( event )
@@ -185,7 +203,7 @@ function googleplusCallback( res,scrollView )
 
 		local img = feedArray[i].object.attachments
 		if(img[1].image ~= nil ) then
-			local shared_img = display.loadRemoteImage(img[1].image.url, "GET", postedimg_position, i..".png", system.TemporaryDirectory,100+profilePic.x-profilePic.contentWidth/2,rowTitle.y+rowTitle.contentHeight+55 )
+			local shared_img = display.loadRemoteImage(img[1].image.url, "GET", postedimg_position, i..".png", system.TemporaryDirectory,100+rowTitle.x,rowTitle.y+rowTitle.contentHeight+55 )
 		end
 
 	end
@@ -269,6 +287,16 @@ function scene:create( event )
 	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
+
+		title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+
+
+	title = display.newText(sceneGroup,Google_Plus.PageTitle,0,0,native.systemFont,18)
+	title.anchorX = 0
+	title.x=5;title.y = title_bg.y
+	title:setFillColor(0)
 
 
 	
