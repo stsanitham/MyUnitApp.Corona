@@ -617,7 +617,7 @@ local function ResourceGrid_list( gridlist)
 				tempGroup:insert(shareImage)
 
 
-				--if isAndroid then
+				if isAndroid then
 
 				downImg_bg = display.newRect(image_bg.x,image_bg.y,27,25)
 				downImg_bg.x=shareImage.x+30
@@ -639,16 +639,16 @@ local function ResourceGrid_list( gridlist)
 				downImg:addEventListener("touch",listTouch)
 				downImg_bg:addEventListener("touch",listTouch)
 
-				-- else
+				else
 
-				-- seperate_imagebg.width = seperate_imagebg.contentWidth/2
-				-- seperate_imagebg.x=image_bg.x-image_bg.contentWidth/2+ 110
-				-- shareImage_bg.x=seperate_imagebg.x+seperate_imagebg.contentWidth/2
-				-- shareImage_bg.x=seperate_imagebg.x+seperate_imagebg.contentWidth/2
-				-- shareImage.x=shareImage_bg.x+2
-				-- shareImage.y=shareImage_bg.y
+				seperate_imagebg.width = seperate_imagebg.contentWidth/2
+				seperate_imagebg.x=image_bg.x-image_bg.contentWidth/2+ 112
+				shareImage_bg.x=seperate_imagebg.x+seperate_imagebg.contentWidth/2
+				shareImage_bg.x=seperate_imagebg.x+seperate_imagebg.contentWidth/2
+				shareImage.x=shareImage_bg.x+2
+				shareImage.y=shareImage_bg.y
 
-				-- end
+				end
 
 				shareImage:addEventListener("touch",listTouch)
 			    shareImage_bg:addEventListener("touch",listTouch)
