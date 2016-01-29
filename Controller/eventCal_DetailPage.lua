@@ -358,11 +358,16 @@ function scene:show( event )
 					display_details[#display_details].anchorX=0
 					display_details[#display_details].anchorY=0
 
-					if display_details[#display_details-1].id == "Description" then
 
-						if display_details[#display_details-1].height > 60 then
+					if isAndroid then 
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
+						if display_details[#display_details-1].id == "Description" then
+
+							if display_details[#display_details-1].height > 60 then
+
+								display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
+							end
+
 						end
 
 					end
@@ -425,12 +430,15 @@ function scene:show( event )
 						display_details[#display_details].anchorY=0
 						scrollView:insert( display_details[#display_details] )
 
+					if isAndroid then
 
-					if display_details[#display_details-1].id == "Description" then
+						if display_details[#display_details-1].id == "Description" then
 
-						if display_details[#display_details-1].height > 60 then
+							if display_details[#display_details-1].height > 60 then
 
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
+								display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
+							end
+
 						end
 
 					end
@@ -465,6 +473,8 @@ function scene:show( event )
 					scrollView:insert( display_details[#display_details] )
 
 
+				if isAndroid then
+
 					if display_details[#display_details-1].id == "Description" then
 
 						if display_details[#display_details-1].height > 60 then
@@ -473,6 +483,7 @@ function scene:show( event )
 						end
 
 					end
+				end
 
 
 					display_details[#display_details+1] = display.newText(prority_enum[Details.Priority+1],0,0,180,0,native.systemFont,14)
@@ -497,6 +508,7 @@ function scene:show( event )
 						display_details[#display_details].anchorY=0
 						scrollView:insert( display_details[#display_details] )
 
+				if isAndroid then
 
 					if display_details[#display_details-1].id == "Description" then
 
@@ -506,6 +518,8 @@ function scene:show( event )
 						end
 
 					end
+
+				end
 
 
 						display_details[#display_details+1] = display.newText(Details.AttachmentName,0,0,180,0,native.systemFont,14)
@@ -551,6 +565,8 @@ function scene:show( event )
 						display_details[#display_details].anchorX=0
 
 
+				if isAndroid then
+
 					if display_details[#display_details-1].id == "Description" then
 
 						if display_details[#display_details-1].height > 60 then
@@ -559,6 +575,8 @@ function scene:show( event )
 						end
 
 					end
+
+				end
 						
 						scrollView:insert( display_details[#display_details] )
 						display_details[#display_details].isVisible=false

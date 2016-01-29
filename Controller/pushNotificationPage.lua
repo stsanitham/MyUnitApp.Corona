@@ -24,7 +24,9 @@ local additionalDate={}
 
 openPage="Push Notification Page"
 
+local laserSound,backgroundMusicChannel
 
+local PushGroup
 
 local Background,PushNotification_bg,PushNotification_title_bg,PushNotification_title,PushNotification_msg,playBtn,playBtn_text,downloadBtn,downloadBtn_text,PushNotification_close_bg,PushNotification_close,webView
 
@@ -36,10 +38,12 @@ local Background,PushNotification_bg,PushNotification_title_bg,PushNotification_
 -----------------Function-------------------------
 
 
-local function AudioPush(  )
+local function AudioPush(value)
 	local function networkListener( audio_event )
 
 				spinner_hide()
+
+				print( "touched" )
 
 			if ( audio_event.isError ) then
 			elseif ( audio_event.phase == "began" ) then
@@ -47,11 +51,17 @@ local function AudioPush(  )
 
 						local isChannel1Playing = audio.isChannelPlaying( 1 )
 						if isChannel1Playing then
-						    audio.stop( 1 ); audio.dispose( 1 )
+						   audio.pause( 1 ); audio.stop( 1 ); audio.dispose( 1 )
+
+						    laserSound=nil
+							backgroundMusicChannel=nil
+
 						end
 
-						local laserSound = audio.loadSound( audio_event.response.filename,system.TemporaryDirectory )
-						local backgroundMusicChannel = audio.play( laserSound, { channel=1, loops=-1 } )							
+						print( "playing	" )
+
+						 laserSound = audio.loadSound( audio_event.response.filename,system.TemporaryDirectory )
+						 backgroundMusicChannel = audio.play( laserSound, { channel=1, loops=-1 } )							
 
 			end
 	end
@@ -59,31 +69,17 @@ local function AudioPush(  )
 				
 
 
-	local path = system.pathForFile( additionalDate.audio:match( "([^/]+)$" ), system.TemporaryDirectory )
-	local fhd = io.open( path )
-
-				-- Determine if file exists
-		if fhd then
-
-			local isChannel1Playing = audio.isChannelPlaying( 1 )
-			if isChannel1Playing then
-			    audio.stop( 1 ); audio.dispose( 1 )
-			end
-
-			local laserSound = audio.loadSound(  additionalDate.audio:match( "([^/]+)$" ),system.TemporaryDirectory )
-	 		local backgroundMusicChannel = audio.play( laserSound, { channel=1, loops=-1 } )	
-		else
-			spinner_show()
-		    network.download(
-				additionalDate.audio,
-				"GET",
-				networkListener,
-				additionalDate.audio:match( "([^/]+)$" ),
-				system.TemporaryDirectory
-									)
-		end
-
-
+		
+					spinner_show()
+				    network.download(
+						value,
+						"GET",
+						networkListener,
+						value:match( "([^/]+)$" ),
+						system.TemporaryDirectory
+											)
+				
+		
 									
 
 end
@@ -184,9 +180,9 @@ local function closeDetails( event )
 
 			if event.target.id == "Play" then
 
-				if additionalDate.audio:match( "([^/]+)$" ) ~= nil then
+				if event.target.value:match( "([^/]+)$" ) ~= nil then
 
-					AudioPush()
+					AudioPush(event.target.value)
 
 				end
 
@@ -205,7 +201,10 @@ local function closeDetails( event )
 				local isChannel1Playing = audio.isChannelPlaying( 1 )
 				if isChannel1Playing then
 				    audio.pause( 1 )
+				    audio.stop( 1 )
 				    audio.dispose( 1 )
+				     laserSound=nil
+							backgroundMusicChannel=nil
 				end
 				if #pushArray <= 1 then
 
@@ -298,6 +297,8 @@ function scene:show( event )
 
 	elseif phase == "did" then
 
+
+
 	if pushArray[#pushArray] then
 
 		if pushArray[#pushArray].id == "video" then
@@ -327,7 +328,7 @@ function scene:show( event )
 	message = event.params.Message
 	print( "enter" )
 
-	--additionalDate= {video="http://sports.yahoo.com/video/manning-return-next-season-195505478.html"}
+	--additionalDate= {audio="http://c.spanunit.com/000217/Audios/218/loop4_1_.wav"}
 	--message = "Lorem Ipsum is simply dummy t--ext of the printing and typesetting industry. Lorem Ipsum has been the industry's st  text of the printing and typesetting industry. Lorem Ipsum has been the industry's st  text of the printing and typesetting industry. Lorem Ipsum has been the industry's st"
 
 	--Mail
@@ -404,6 +405,8 @@ function scene:show( event )
 		playBtn.x=PushNotification_bg.contentWidth/3;playBtn.y = PushNotification_bg.y+PushNotification_bg.contentHeight-playBtn.contentHeight
 		playBtn:setFillColor(  Utils.convertHexToRGB(sp_Flatmenu_HeaderBg.Background_Color) )
 		playBtn.id="Play"
+		playBtn.value=additionalDate.audio
+
 
 		playBtn_text = display.newText(PushGroup,"Play",0,0,native.systemFont,16)
 		playBtn_text.x=playBtn.x;playBtn_text.y=playBtn.y
@@ -592,6 +595,8 @@ function scene:show( event )
 
 		--
 
+		local PushImage
+
 			local function ImagePush_networkListener( img_event )
 
 				spinner_hide()
@@ -615,6 +620,7 @@ function scene:show( event )
 	if additionalDate.image:match( "([^/]+)$" ) ~= nil then
 
 		print( additionalDate.image:match( "([^/]+)$" ) )
+
 
 		local path = system.pathForFile( additionalDate.image:match( "([^/]+)$" ), system.TemporaryDirectory )
 		local fhd = io.open( path )
