@@ -377,7 +377,7 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-		title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 

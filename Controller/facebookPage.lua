@@ -33,7 +33,7 @@ local groupArray={}
 
 local feedArray={}
 
-local RecentTab_Topvalue = 40
+local RecentTab_Topvalue = 70
 
 local user_Name=""
 
@@ -104,7 +104,7 @@ function FacebookCallback(res,scrollView)
 
 									local background = display.newRect(tempGroup,0,0,W-80,bgheight)
 
-									local Initial_Height = 50
+									local Initial_Height = 20
 
 									if(groupArray[#groupArray-1]) ~= nil then
 
@@ -114,15 +114,22 @@ function FacebookCallback(res,scrollView)
 
 									background.anchorY = 0
 									background.x=W/2+30;background.y=Initial_Height
+									background.strokeWidth = 1
+									background:setStrokeColor( 0.8, 0.8, 0.8 )
 									background:setFillColor(1)
 
-									profilePic = display.newImage("userfb.png", system.TemporaryDirectory)
+									profilePic = display.newImageRect("userfb.png", system.TemporaryDirectory,55,45)
+
 									if not profilePic then
-										profilePic = display.newImageRect("res/assert/twitter_placeholder.png",100,100)
+										profilePic = display.newImageRect("res/assert/twitter_placeholder.png",55,45)
 									end
-									profilePic.width=40;profilePic.height=40
+									profilePic.width=55;profilePic.height=50
 
 									tempGroup:insert(profilePic)
+
+									local mask = graphics.newMask( "res/assert/mask2.png" )
+
+									profilePic:setMask( mask )
 
 
 									time = Utils.makeTimeStamp(string.gsub( feedArray[i].created_time, "+0000", "Z" ))
@@ -170,8 +177,8 @@ function FacebookCallback(res,scrollView)
 								background.y=Initial_Height
 
 
-								profilePic.x=background.x-background.contentWidth/2-profilePic.contentWidth
-								profilePic.y=background.y+profilePic.height/2
+								profilePic.x=background.x-background.contentWidth/2-profilePic.contentWidth/2-10
+								profilePic.y=background.y+profilePic.height/2-15
 
 								userTime.x=background.x+background.contentWidth/2-userTime.contentWidth-5
 								userTime.y=background.y+5
@@ -300,7 +307,15 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
+
+	title = display.newText(sceneGroup,Facebook.PageTitle,0,0,native.systemFont,18)
+	title.anchorX = 0
+	title.x=5;title.y = title_bg.y
+	title:setFillColor(0)
 	
 	MainGroup:insert(sceneGroup)
 
