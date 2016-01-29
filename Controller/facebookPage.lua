@@ -96,11 +96,9 @@ function FacebookCallback(res,scrollView)
 
 									end
 
-									if  feedArray[i].story ~= nil then
-										bgheight = bgheight+110
-									else
-										bgheight = bgheight+80
-									end
+									
+										bgheight = bgheight+40
+									
 
 									local background = display.newRect(tempGroup,0,0,W-80,bgheight)
 
@@ -108,15 +106,16 @@ function FacebookCallback(res,scrollView)
 
 									if(groupArray[#groupArray-1]) ~= nil then
 
-										Initial_Height = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height+3
+										Initial_Height = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height+10
 
 									end
 
 									background.anchorY = 0
 									background.x=W/2+30;background.y=Initial_Height
-									background.strokeWidth = 1
-									background:setStrokeColor( 0.8, 0.8, 0.8 )
-									background:setFillColor(1)
+									--background.strokeWidth = 1
+									--background:setStrokeColor( 0.8, 0.8, 0.8 )
+									background:setFillColor(Utils.convertHexToRGB("#d2d3d4"))
+									--background.alpha=0.5
 
 									profilePic = display.newImageRect("userfb.png", system.TemporaryDirectory,55,45)
 
@@ -147,14 +146,14 @@ function FacebookCallback(res,scrollView)
 									userName.anchorY = 0
 									Utils.CssforTextView(userName,sp_socialHeaderFb)
 
-									if feedArray[i].message == nil then
+									if feedArray[i].message == nil and feedArray[i].story == nil  then
 
 										rowTitle = display.newText( tempGroup," ", 0, 0,native.systemFontBold, 18 )
 
 									else
 
 										local optionsread = {
-										text = feedArray[i].message,
+										text = feedArray[i].message or feedArray[i].story,
 										x = display.contentCenterX,
 										y = display.contentCenterY,
 										fontSize = 11,
@@ -172,13 +171,18 @@ function FacebookCallback(res,scrollView)
 								rowTitle.anchorY = 0
 								Utils.CssforTextView(rowTitle,sp_socialText)
 
-								background.height = background.height+rowTitle.height/1.3
+								background.height = background.height+rowTitle.height
 
 								background.y=Initial_Height
 
+								background_arrow = display.newImageRect( tempGroup, "res/assert/arrow3.png", 11,20 )
+								background_arrow.x=background.x-background.contentWidth/2-background_arrow.contentWidth/2+1
+								background_arrow.y=background.y+background_arrow.contentHeight/2+5
+								background.alpha=0.8
+
 
 								profilePic.x=background.x-background.contentWidth/2-profilePic.contentWidth/2-10
-								profilePic.y=background.y+profilePic.height/2-15
+								profilePic.y=background.y+profilePic.height/2-5
 
 								userTime.x=background.x+background.contentWidth/2-userTime.contentWidth-5
 								userTime.y=background.y+5
@@ -189,36 +193,10 @@ function FacebookCallback(res,scrollView)
 								rowTitle.x=userName.x
 								rowTitle.y=background.y+25
 
-								local rowStory
+						
+			
 
-
-								if feedArray[i].story == nil then
-
-									rowStory = display.newText( tempGroup, "", 0, 0, native.systemFont, 11 )
-
-								else 
-
-									local options = {
-									text = feedArray[i].story,
-									x = display.contentCenterX,
-									y = display.contentCenterY,
-									fontSize = 11,
-									width = 250,
-									height = 60,
-									align = "left"
-								}
-
-
-								rowStory = display.newText( options )
-
-							end
-
-							tempGroup:insert(rowStory)
-							rowStory.anchorX = 0
-							rowStory.anchorY = 0
-							rowStory.x=userName.x
-							rowStory.y=background.y+25
-							Utils.CssforTextView(rowStory,sp_socialText)
+							
 
 							local function postedimg_position( event )
 								if ( event.isError ) then
@@ -228,7 +206,9 @@ function FacebookCallback(res,scrollView)
 									event.target.width=200
 									event.target.height=100
 
-									event.target.y = rowStory.y+rowStory.contentHeight+10
+													
+
+									event.target.y = rowTitle.y+rowTitle.height+10
 
 									tempGroup:insert(event.target)
 								end
@@ -238,9 +218,10 @@ function FacebookCallback(res,scrollView)
 
 								local img = feedArray[i].picture
 
-								local shared_img = display.loadRemoteImage(img, "GET", postedimg_position, "facebook"..i..".png", system.TemporaryDirectory,userName.x+105,rowStory.y+rowStory.height+10 )
+								
+									local shared_img = display.loadRemoteImage(img, "GET", postedimg_position, "facebook"..i..".png", system.TemporaryDirectory,userName.x+105,rowTitle.y+rowTitle.contentHeight+10)
 
-
+							
 							end
 							scrollView:insert(tempGroup)
 

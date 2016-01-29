@@ -173,7 +173,7 @@ local function DownloadPush(  )
 
 end
 
-local function closeDetails( event )
+local function closeDetailsPush( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
@@ -422,7 +422,7 @@ function scene:show( event )
 		downloadBtn_text.x=downloadBtn.x;downloadBtn_text.y=downloadBtn.y
 		Utils.CssforTextView(downloadBtn_text,sp_primarybutton)	
 
-		downloadBtn:addEventListener( "touch", closeDetails )
+		downloadBtn:addEventListener( "touch", closeDetailsPush )
 
 		else
 
@@ -431,7 +431,7 @@ function scene:show( event )
 
 		end
 
-		playBtn:addEventListener( "touch", closeDetails )
+		playBtn:addEventListener( "touch", closeDetailsPush )
 		
 
 	else
@@ -456,7 +456,7 @@ function scene:show( event )
 	PushNotification_close.x=PushNotification_close_bg.x
 	PushNotification_close.y= PushNotification_close_bg.y
 
-	PushNotification_close_bg:addEventListener( "touch", closeDetails )
+	PushNotification_close_bg:addEventListener( "touch", closeDetailsPush )
 
 	if additionalDate.video then
 
