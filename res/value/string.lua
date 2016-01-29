@@ -176,6 +176,8 @@ ImageLibrary = {}
 
 ImageLibrary.PageTitle = "Image Library"
 ImageLibrary.NoImage = "No Images are found to view"
+ImageLibrary.List="List"
+ImageLibrary.Grid="Grid"
 
 Facebook = {}
 

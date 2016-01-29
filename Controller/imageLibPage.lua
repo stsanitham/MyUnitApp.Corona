@@ -19,9 +19,20 @@ local Background,BgText
 
 local menuBtn
 local  List_array = {}
+local position_array = {}
 local imageArray = {}
 
+local ImageLibListArray = {}
+
 openPage="imageLibPage"
+
+local changeMenuGroup = display.newGroup();
+
+local RecentTab_Topvalue = 70
+
+local viewValue = "list" , tabBar ,title_bg
+
+local gridArray = {}
 
 
 
@@ -215,12 +226,11 @@ local function listTouch( event )
 			display.getCurrentStage():setFocus( nil )
 			listTouchAction(event.target)
 
-
-
 	end
 
 	return true
 end
+
 local function onRowRender_ImageLib( event )
 
  -- Get reference to the row group
@@ -358,6 +368,356 @@ end
 
 ------------------------------------------------------
 
+local function BgTouch(event)
+	
+
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+
+		elseif ( event.phase == "moved" ) then
+			local dy = math.abs( ( event.y - event.yStart ) )
+
+			if ( dy > 10 ) then
+				display.getCurrentStage():setFocus( nil )
+				careerList_scrollview:takeFocus( event )
+			end
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+			
+			if event.target.id == "hide" then
+
+				if changeMenuGroup.isVisible == true then
+					changeMenuGroup.isVisible=false
+				else
+					changeMenuGroup.isVisible=true
+				end
+
+			end
+end
+
+return true
+
+
+end
+
+
+local function changeListmenuTouch(event)
+	
+
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+
+		elseif ( event.phase == "moved" ) then
+			local dy = math.abs( ( event.y - event.yStart ) )
+
+			if ( dy > 10 ) then
+				display.getCurrentStage():setFocus( nil )
+				careerList_scrollview:takeFocus( event )
+			end
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+			changeMenuGroup:toFront()
+			
+			if changeMenuGroup.isVisible == true then
+				changeMenuGroup.isVisible=false
+			else
+				changeMenuGroup.isVisible=true
+			end
+end
+
+return true
+
+end
+
+
+
+local function imageDetail(event)
+
+	local phase = event.phase
+
+	if ( "began" == phase ) then 
+
+ 	elseif ( phase == "moved" ) then
+
+        local dy = math.abs(( event.y - event.yStart ))
+
+        if ( dy > 10 ) then
+
+            careerList_scrollview:takeFocus( event )
+    end
+
+	elseif ( "ended" == phase )  then
+
+	  local imagecount
+
+			imagecount = event.target.value
+
+			print("imagecount ", imagecount)
+			
+			local options = {
+			effect = "flip",
+			time =100,
+			params = { ImageList = List_array,count = imagecount }
+		}
+
+		composer.showOverlay( "Controller.imageSlideView", options )
+
+	end
+
+	return true
+
+end
+
+
+
+local function Grid_list( gridlist)
+
+	local rect_bg
+
+	for j=1,#gridArray do 
+
+	if gridArray[j] then gridArray[j]:removeSelf();gridArray[j] = nil	end
+
+	end
+
+	local processCount = 0
+
+	tempYPos = 5
+
+    for i=1,#List_array do
+
+    	gridArray[#gridArray+1] = display.newGroup()
+
+		local tempGroup = gridArray[#gridArray]
+
+		local Background = display.newRect(tempGroup,0,0,149,115)
+		Background.x = W/2;
+		Background.anchorY = 0
+		Background.alpha = 0.01
+
+		
+		if processCount < 2  then
+
+				
+		else
+
+			tempYPos = gridArray[#gridArray-1][1].y + gridArray[#gridArray-1][1].contentHeight + 9
+			processCount=0
+
+		end
+		processCount= processCount +1 
+
+		Background.y = tempYPos
+
+
+         local rect, Lefticonimage, image_bg, image_name , seperate_imagebg, shareImage_bg, shareImage, downImg_bg, downImg
+
+         if List_array[i].FilePath ~= nil then
+
+
+			imageArray[#imageArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath,
+				"GET",
+				function ( img_event )
+					if ( img_event.isError ) then
+						print ( "Network error - download failed" )
+					else
+
+				if i%2 == 0 then
+
+					Background.x= W/2+W/4
+
+					--Background.y = tempYPos - gridArray[#gridArray-1][1].contentHeight - 20
+				else
+				
+					Background.x=W/4
+				end
+
+						rect = display.newRect(Background.x, Background.y + Background.contentHeight/2, 150, 115)
+						rect:setFillColor(1,1,1,0) 
+						rect:setStrokeColor(0.7) 
+						rect.strokeWidth = 3
+						tempGroup:insert(rect)
+
+						print("response file "..img_event.response.filename)
+						Lefticonimage = display.newImageRect(img_event.response.filename,system.TemporaryDirectory,150,115)
+						tempGroup:insert(Lefticonimage)
+						Lefticonimage.width=150;Lefticonimage.height=115
+						Lefticonimage.x=Background.x;Lefticonimage.y=Background.y + Background.contentHeight/2 	
+						Lefticonimage.value = i	
+		                Lefticonimage:addEventListener("touch",imageDetail)
+
+						image_bg = display.newRect( Lefticonimage.x, Lefticonimage.y+40, Lefticonimage.width, Lefticonimage.height-90)
+						image_bg:setFillColor( 0,0,0 )
+						image_bg.alpha = 0.4
+						image_bg.x = Lefticonimage.x
+						image_bg.y = Lefticonimage.y+Lefticonimage.contentHeight/2-image_bg.contentHeight/2
+						tempGroup:insert(image_bg)
+
+						print(List_array[i].ImageFileName)
+
+						local image_nameString = List_array[i].ImageFileName
+
+						 if string.len(List_array[i].ImageFileName) > 5 then
+
+					    image_nameString=string.sub(List_array[i].ImageFileName, 1, 5).."..."
+
+					    end
+
+					    image_name = display.newText(image_nameString,0,0,native.systemFont,16)
+					    image_name.x=image_bg.x-image_bg.contentWidth/2+ 5;image_name.y=image_bg.y
+					    image_name.anchorX=0
+					    image_name:setFillColor(Utils.convertHexToRGB(color.White))
+					    tempGroup:insert(image_name)
+
+					    seperate_imagebg = display.newRect(image_bg.x,image_bg.y,Lefticonimage.width- 70, image_bg.height)
+						seperate_imagebg.anchorX=0
+						seperate_imagebg.x=image_bg.x-image_bg.contentWidth/2+ 70
+						seperate_imagebg.y=image_bg.y
+						seperate_imagebg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+						tempGroup:insert(seperate_imagebg)
+
+						shareImage_bg = display.newRect(image_bg.x,image_bg.y,27,25)
+						shareImage_bg.x=seperate_imagebg.x+25;shareImage_bg.y=seperate_imagebg.y
+						shareImage_bg.id="share"
+						shareImage_bg.alpha=0.01
+						shareImage_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
+						shareImage_bg.filename = List_array[i].ImageFileName
+						tempGroup:insert(shareImage_bg)
+
+						shareImage = display.newImageRect("res/assert/upload.png",17,17)
+						shareImage.x=shareImage_bg.x
+						shareImage.y=shareImage_bg.y
+						shareImage.id="share"
+						shareImage:setFillColor(Utils.convertHexToRGB(color.White))
+						shareImage.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
+						shareImage.filename = List_array[i].ImageFileName
+						tempGroup:insert(shareImage)
+
+
+						--if isAndroid then
+
+						downImg_bg = display.newRect(image_bg.x,image_bg.y,27,25)
+						downImg_bg.x=shareImage.x+30
+						downImg_bg.y=seperate_imagebg.y
+						downImg_bg.id="download"
+						downImg_bg.alpha=0.01
+						downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
+						downImg_bg.filename = List_array[i].ImageFileName
+						tempGroup:insert(downImg_bg)
+
+						downImg = display.newImageRect("res/assert/download.png",17,17)
+						downImg.x=shareImage_bg.x+30
+						downImg.y=shareImage_bg.y
+						downImg.id="download"
+						downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
+						downImg.filename = List_array[i].ImageFileName
+						tempGroup:insert(downImg)
+
+						downImg:addEventListener("touch",listTouch)
+						downImg_bg:addEventListener("touch",listTouch)
+
+						-- else
+
+						-- seperate_imagebg.width = seperate_imagebg.contentWidth/2
+						-- seperate_imagebg.x=image_bg.x-image_bg.contentWidth/2+ 110
+						-- shareImage_bg.x=seperate_imagebg.x+seperate_imagebg.contentWidth/2
+						-- shareImage_bg.x=seperate_imagebg.x+seperate_imagebg.contentWidth/2
+						-- shareImage.x=shareImage_bg.x+2
+						-- shareImage.y=shareImage_bg.y
+
+						-- end
+
+						shareImage:addEventListener("touch",listTouch)
+   						shareImage_bg:addEventListener("touch",listTouch)
+
+    			end
+
+    			end, List_array[i].FilePath:match( "([^/]+)$" ), system.TemporaryDirectory)
+
+		    else
+
+			Lefticonimage = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",150,115)
+			Lefticonimage.x=display.contentWidth/2;Lefticonimage.y=Background.y + Background.contentHeight/2 
+
+		end
+
+    careerList_scrollview:insert(tempGroup)
+
+	end
+
+end
+
+
+
+
+local function listPosition_change( event )
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+
+		elseif ( event.phase == "moved" ) then
+			local dy = math.abs( ( event.y - event.yStart ) )
+
+			if ( dy > 10 ) then
+				display.getCurrentStage():setFocus( nil )
+				careerList_scrollview:takeFocus( event )
+			end
+		elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+				local function action()
+
+					if viewValue == "list" then
+
+							for j=1,#gridArray do 
+							if gridArray[j] then gridArray[j]:removeSelf();gridArray[j] = nil	end
+							end
+
+							Image_Lib_list:deleteAllRows()
+
+							Image_Lib_list:toFront()
+
+							for i = 1, #List_array do
+						    -- Insert a row into the tableView
+						    Image_Lib_list:insertRow{ rowHeight = 40,rowColor = 
+						    {
+						    default = { 1, 1, 1, 0 },
+						    over={ 1, 0.5, 0, 0 },
+
+						    }}
+		end
+
+					else    
+
+						    careerList_scrollview:toFront()
+
+							Image_Lib_list:deleteAllRows()
+
+							Grid_list(List_array)		
+
+					end
+				end
+
+			if event.target.id == "bg" then
+
+			elseif event.target.id == "list" then
+				changeMenuGroup.isVisible=false
+				viewValue="list"
+				action()
+
+			elseif event.target.id == "grid" then
+				changeMenuGroup.isVisible=false
+				viewValue="grid"
+				action()
+
+			end
+		end
+	
+
+return true
+end
+
+
 function scene:create( event )
 
 	local sceneGroup = self.view
@@ -377,15 +737,70 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-		title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-
 
 	title = display.newText(sceneGroup,ImageLibrary.PageTitle,0,0,native.systemFont,18)
 	title.anchorX = 0
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
+
+	changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
+	changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10
+	changeList_order_icon.anchorY=0
+
+	changeList_order_touch = display.newRect(sceneGroup,changeList_order_icon.x,changeList_order_icon.y+15,35,35)
+	changeList_order_touch.alpha=0.01
+	changeList_order_touch:addEventListener("touch",changeListmenuTouch)
+
+	careerList_scrollview = widget.newScrollView
+	{
+	top = RecentTab_Topvalue,
+	left = 0,
+	width = W,
+	height =H-RecentTab_Topvalue,
+	hideBackground = true,
+	isBounceEnabled=false,
+	bottomPadding = 10,
+	--horizontalScrollingDisabled = false,
+	--verticalScrollingDisabled = false,
+	}
+
+
+    sceneGroup:insert(careerList_scrollview)
+
+	listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
+	listTouch_bg.alpha=0.01
+	listTouch_bg.id = "hide"
+
+	listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+65,100,80)
+	listBg.strokeWidth = 1
+	listBg.id = "show"
+	listBg:setStrokeColor( 0, 0, 0 , 0.3)
+	listBg.id="bg"
+
+
+	list_Bylist = display.newText(changeMenuGroup,ImageLibrary.List,0,0,native.systemFont,16)
+	list_Bylist.x=listBg.x-listBg.contentWidth/2+5;list_Bylist.y=listBg.y-20
+	list_Bylist.anchorX=0
+	list_Bylist:setFillColor(Utils.convertHexToRGB(color.Black))
+	list_Bylist.id="list"
+
+	list_ByGrid = display.newText(changeMenuGroup,ImageLibrary.Grid,0,0,native.systemFont,16)
+	list_ByGrid.x=listBg.x-listBg.contentWidth/2+5;list_ByGrid.y=listBg.y+20
+	list_ByGrid.anchorX=0
+	list_ByGrid:setFillColor(Utils.convertHexToRGB(color.Black))
+	list_ByGrid.id="grid"
+	changeMenuGroup.isVisible=false
+
+	listBg:addEventListener("touch",listPosition_change)
+	list_Bylist:addEventListener("touch",listPosition_change)
+	list_ByGrid:addEventListener("touch",listPosition_change)
+
+	listTouch_bg:addEventListener("touch",BgTouch)
+
+	sceneGroup:insert(changeMenuGroup)
 
 	MainGroup:insert(sceneGroup)
 
@@ -404,6 +819,7 @@ function scene:show( event )
 			composer.removeHidden()
 
 			ga.enterScene("Image Library")
+
 
 			function get_Allimage(response)
 				List_array = response

@@ -439,8 +439,6 @@ function scene:show( event )
 
 					fileNameString = ImageList[indexValue].ImageFileName..".png"
 
-			
-
 					imageName.text = fileNameString
 
 					local path = system.pathForFile( fileNameString, system.TemporaryDirectory )
