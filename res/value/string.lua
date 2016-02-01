@@ -78,9 +78,9 @@ LoginPage.Forget_Button = "Forgot Password?"
 LoginPage.Request_Button = "Don't have an access? Click here"
 LoginPage.ErrorMessage = "The details you have entered are incorrect. Check again and re-enter the valid details"
 LoginPage.ErrorTitle = "Login Failed"
-LoginPage.setError_Unitnumber = " * Enter the valid Unit number"
-LoginPage.setError_UserName = " * Enter the valid Email Address"
-LoginPage.setError_Password = " * Enter the Password"
+LoginPage.setError_Unitnumber = "* Enter the valid Unit number"
+LoginPage.setError_UserName = "* Enter the valid Email Address"
+LoginPage.setError_Password = "* Enter the Password"
 
 
 ForgotPassword = {}
