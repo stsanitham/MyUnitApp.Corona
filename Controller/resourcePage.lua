@@ -39,52 +39,6 @@ local resourceGridArray = {}
 -----------------Function-------------------------
 
 
-local function downloadAction(filename)
-
-			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
-						
-					local path = system.pathForFile("/storage/sdcard1/"..filename)    
-
-					--------------------------- Read ----------------------------
-						local file, reason = io.open( localpath, "r" )                              
-						local contents
-						if file then
-						    contents = file:read( "*a" )                                        -- Read contents
-						    io.close( file )                                                    -- Close the file (Important!)
-						else
-						    print("Invalid path")
-						    return
-						end
-
-					--------------------------- Write ----------------------------
-	
-						local file = io.open( path, "w" )                                    -- Open the destination path in write mode
-		
-							if file then
-							    file:write(contents)                                                -- Writes the contents to a file
-							    io.close(file)                                                      -- Close the file (Important!)
-							else
-								path = system.pathForFile("/storage/sdcard0/"..filename)
-								local file = io.open( path, "w" )                                    -- Open the destination path in write mode
-								if file then
-								    file:write(contents)                                                -- Writes the contents to a file
-								    io.close(file)                                                      -- Close the file (Important!)
-								else
-								   path = system.pathForFile("/storage/sdcard/"..filename)
-									local file = io.open( path, "w" )                                    -- Open the destination path in write mode
-									if file then
-										file:write(contents)                                                -- Writes the contents to a file
-										io.close(file)                                                      -- Close the file (Important!)
-									else
-									    print("Error")
-									    return
-									 end
-								 end
-							end
-
-							native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
-
-end
 
 local function showShare(fileNameString)
 
@@ -171,11 +125,71 @@ local function networkListener( downloan_event )
 
 
 				if event.id =="download" then
+
+					local function onComplete( event )
+
+				if event.action == "clicked" then
+
+				local i = event.index
+
+				if i == 1 then
+
+				filename = downloan_event.response.filename
+
+			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+						
+					local path = system.pathForFile("/storage/sdcard1/"..filename)    --External (SD Card)
+
+					--------------------------- Read ----------------------------
+						local file, reason = io.open( localpath, "r" )                              
+						local contents
+						if file then
+						    contents = file:read( "*a" )                                        -- Read contents
+						    io.close( file )                                                    -- Close the file (Important!)
+						else
+						    print("Invalid path")
+						    return
+						end
+
+					--------------------------- Write ----------------------------
+	
+						local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+		
+							if file then
+							    file:write(contents)                                                -- Writes the contents to a file
+							    io.close(file)                                                      -- Close the file (Important!)
+							else
+								path = system.pathForFile("/storage/sdcard0/"..filename) -- internal
+								local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+								if file then
+								    file:write(contents)                                                -- Writes the contents to a file
+								    io.close(file)                                                      -- Close the file (Important!)
+								else
+								   path = system.pathForFile("/storage/sdcard/"..filename)
+									local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+									if file then
+										file:write(contents)                                                -- Writes the contents to a file
+										io.close(file)                                                      -- Close the file (Important!)
+									else
+									    print("Error")
+									    return
+									 end
+								 end
+								end
+
+							native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
+							-- native.showAlert( filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
+
+end
+
+end
+
+end
+
+
+
+				native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 					
-
-							downloadAction(downloan_event.response.filename)
-
-
 				elseif event.id =="share" then
 
 						if isAndroid then
@@ -324,6 +338,7 @@ local function onRowRender_DocLib( event )
 
     downImg:addEventListener("touch",listTouch)
     downImg_bg:addEventListener("touch",listTouch)
+    
 	else
 
 		seprate_bg.width = seprate_bg.contentWidth/2

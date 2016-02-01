@@ -336,7 +336,6 @@ local display_details = {}
 		scrollView:insert( display_details[#display_details] )
 
 
-
 		display_details[#display_details+1] = display.newText(Details.Description,0,0,W-30,0,native.systemFont,14)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 		display_details[#display_details].x=leftAllign;display_details[#display_details].y=display_details[#display_details-1].y+15
@@ -348,22 +347,9 @@ local display_details = {}
 		------------------
 
 
-<<<<<<< HEAD
 		----With----
 
 		if Details.Contact ~= nil then
-=======
-					if isAndroid then 
-
-						if display_details[#display_details-1].id == "Description" then
-
-							if display_details[#display_details-1].height > 60 then
-
-								display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
-							end
-
-						end
->>>>>>> MUB_iV1.1.4
 
 		local temp = Details.Contact
 
@@ -423,25 +409,11 @@ local display_details = {}
 		scrollView:insert( display_details[#display_details] )
 
 
-<<<<<<< HEAD
 		end
 		------------------
 
 		if Details.TicklerType ~= 4 then
 
-
-=======
-					if isAndroid then
-
-						if display_details[#display_details-1].id == "Description" then
-
-							if display_details[#display_details-1].height > 60 then
-
-								display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
-							end
-
-						end
->>>>>>> MUB_iV1.1.4
 
 		----Purpose----
 
@@ -476,18 +448,11 @@ local display_details = {}
 			display_details[#display_details].id="Purpose"
 			scrollView:insert( display_details[#display_details] )
 
-<<<<<<< HEAD
-=======
-				if isAndroid then
-
-					if display_details[#display_details-1].id == "Description" then
->>>>>>> MUB_iV1.1.4
 
 		end
 
 		end
 		------------------
-
 
 		----Priority----
 
@@ -501,16 +466,8 @@ local display_details = {}
 		display_details[#display_details].anchorY=0
 		scrollView:insert( display_details[#display_details] )
 
-<<<<<<< HEAD
 
 		if display_details[#display_details-1].id == "Description" then
-=======
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
-						end
-
-					end
-				end
->>>>>>> MUB_iV1.1.4
 
 			if display_details[#display_details-1].height > 60 then
 
@@ -530,13 +487,10 @@ local display_details = {}
 		end
 		------------------
 
-				if isAndroid then
-
 		----Attachment----
 
 		if Details.AttachmentName ~= nil then
 
-<<<<<<< HEAD
 			display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 			display_details[#display_details].x=leftAllign
@@ -544,18 +498,9 @@ local display_details = {}
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			scrollView:insert( display_details[#display_details] )
-=======
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
-						end
->>>>>>> MUB_iV1.1.4
 
 
-<<<<<<< HEAD
 		if display_details[#display_details-1].id == "Description" then
-=======
-				end
-
->>>>>>> MUB_iV1.1.4
 
 			if display_details[#display_details-1].height > 60 then
 
@@ -608,30 +553,11 @@ local display_details = {}
 			display_details[#display_details].anchorX=0
 
 
-<<<<<<< HEAD
 		if display_details[#display_details-1].id == "Description" then
-=======
-				if isAndroid then
 
-					if display_details[#display_details-1].id == "Description" then
->>>>>>> MUB_iV1.1.4
-
-
-<<<<<<< HEAD
 			if display_details[#display_details-1].height > 60 then
 
 				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
-=======
-							display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
-						end
-
-					end
-
-				end
-						
-						scrollView:insert( display_details[#display_details] )
-						display_details[#display_details].isVisible=false
->>>>>>> MUB_iV1.1.4
 			end
 
 		end
@@ -660,18 +586,11 @@ local display_details = {}
 
 
 		elseif phase == "did" then
-<<<<<<< HEAD
 
 		event.parent:resumeGame()
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
 		menuTouch_s:removeEventListener("touch",menuTouch)
-=======
-			event.parent:resumeGame()
-			menuBtn:removeEventListener("touch",menuTouch)
-			BgText:removeEventListener("touch",menuTouch)
-			menuTouch_s:removeEventListener("touch",menuTouch)
->>>>>>> MUB_iV1.1.4
 
 		end	
 

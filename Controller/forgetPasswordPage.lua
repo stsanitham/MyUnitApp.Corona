@@ -215,22 +215,19 @@ local function SetError( displaystring, object )
 
 				if AppName ~= "DirectorApp" then
 
-					if UnitnumberField.text == "" or UnitnumberField.text == nil  or UserName.text == "" or not Utils.emailValidation(UserName.text) then
+					if UnitnumberField.text == "" or UnitnumberField.text == nil then
 						validation=false
 						SetError(LoginPage.setError_Unitnumber,UnitnumberField)
-						SetError(LoginPage.setError_UserName,UserName)
-
 					end
 				end
 
 
 
-				if UserName.text == "" or UnitnumberField.text == "" or UnitnumberField.text == nil then
+				if UserName.text == "" then
 
 
 					validation=false
 					SetError(LoginPage.setError_UserName,UserName)
-					SetError(LoginPage.setError_Unitnumber,UnitnumberField)
 				else
 
 					if not Utils.emailValidation(UserName.text) then

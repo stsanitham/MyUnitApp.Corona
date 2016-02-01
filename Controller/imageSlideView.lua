@@ -230,7 +230,72 @@ local function listTouch( event )
 
 							end
 						elseif event.id =="download" then
-							downloadAction(event.filename..".png")
+
+							--downloadAction(event.filename..".png")
+
+
+			local function onComplete( event )
+
+			if event.action == "clicked" then
+
+			local i = event.index
+
+			if i == 1 then
+
+			filename = event.filename..".png"
+
+			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+						
+					local path = system.pathForFile("/storage/sdcard1/"..filename)    --External (SD Card)
+
+					--------------------------- Read ----------------------------
+						local file, reason = io.open( localpath, "r" )                              
+						local contents
+						if file then
+						    contents = file:read( "*a" )                                        -- Read contents
+						    io.close( file )                                                    -- Close the file (Important!)
+						else
+						    print("Invalid path")
+						    return
+						end
+
+					--------------------------- Write ----------------------------
+	
+						local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+		
+							if file then
+							    file:write(contents)                                                -- Writes the contents to a file
+							    io.close(file)                                                      -- Close the file (Important!)
+							else
+								path = system.pathForFile("/storage/sdcard0/"..filename) -- internal
+								local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+								if file then
+								    file:write(contents)                                                -- Writes the contents to a file
+								    io.close(file)                                                      -- Close the file (Important!)
+								else
+								   path = system.pathForFile("/storage/sdcard/"..filename)
+									local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+									if file then
+										file:write(contents)                                                -- Writes the contents to a file
+										io.close(file)                                                      -- Close the file (Important!)
+									else
+									    print("Error")
+									    return
+									 end
+								 end
+								end
+
+							native.showAlert( event.filename..".png", ResourceLibrary.Download_alert, { CommonWords.ok} )
+							-- native.showAlert( filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
+
+end
+
+end
+
+end
+
+
+								native.showAlert( event.filename..".png", ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
 
 						end
@@ -378,7 +443,7 @@ function scene:create( event )
     shareImg.id="share"
 
 
-   if isAndroid then
+    if isAndroid then
 
     downImg_bg = display.newRect(sceneGroup,0,0,25,25)
     downImg_bg.x=shareImg.x+30;downImg_bg.y=seprate_bg.y
@@ -390,7 +455,7 @@ function scene:create( event )
     downImg.x=shareImg.x+30;downImg.y=seprate_bg.y
     downImg.id="download"
 
-   downImg:addEventListener("touch",listTouch)
+    downImg:addEventListener("touch",listTouch)
     downImg_bg:addEventListener("touch",listTouch)
 
 	else
