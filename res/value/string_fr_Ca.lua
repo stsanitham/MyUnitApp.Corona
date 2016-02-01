@@ -4,6 +4,7 @@ CommonWords.language = "French"
 CommonWords.ok = "bien"
 CommonWords.submit = "Proposer"
 CommonWords.done = "Fini"
+CommonWords.cancel = "Annuler"
 CommonWords.search = "Recherche"
 
 Month = {}
@@ -172,6 +173,7 @@ ResourceLibrary = {}
 ResourceLibrary.PageTitle = "Ressource"
 ResourceLibrary.Download_alert="Enregistré dans la mémoire du terminal"
 ResourceLibrary.NoDocument="Aucun document se trouvent à voir"
+ResourceLibrary.SaveOptions_alert = "Etes-vous sûr que vous voulez télécharger gratuitement ?"
 
 ImageLibrary = {}
 

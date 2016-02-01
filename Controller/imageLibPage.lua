@@ -178,7 +178,71 @@ local function networkListener( downloan_event )
 
 				if event.id =="download" then
 					
-							downloadAction(downloan_event.response.filename,event.filename)
+							--downloadAction(downloan_event.response.filename,event.filename)
+
+			local function onComplete( event )
+
+			if event.action == "clicked" then
+
+			local i = event.index
+
+			if i == 1 then
+
+			file = event.filename
+
+			filename = downloan_event.response.filename
+
+			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+						
+					local path = system.pathForFile("/storage/sdcard1/"..filename)    --External (SD Card)
+
+					--------------------------- Read ----------------------------
+						local file, reason = io.open( localpath, "r" )                              
+						local contents
+						if file then
+						    contents = file:read( "*a" )                                        -- Read contents
+						    io.close( file )                                                    -- Close the file (Important!)
+						else
+						    print("Invalid path")
+						    return
+						end
+
+					--------------------------- Write ----------------------------
+	
+						local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+		
+							if file then
+							    file:write(contents)                                                -- Writes the contents to a file
+							    io.close(file)                                                      -- Close the file (Important!)
+							else
+								path = system.pathForFile("/storage/sdcard0/"..filename) -- internal
+								local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+								if file then
+								    file:write(contents)                                                -- Writes the contents to a file
+								    io.close(file)                                                      -- Close the file (Important!)
+								else
+								   path = system.pathForFile("/storage/sdcard/"..filename)
+									local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+									if file then
+										file:write(contents)                                                -- Writes the contents to a file
+										io.close(file)                                                      -- Close the file (Important!)
+									else
+									    print("Error")
+									    return
+									 end
+								 end
+								end
+
+							native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
+							-- native.showAlert( filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
+
+end
+
+end
+
+end
+
+				native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
 
 				elseif event.id =="share" then
@@ -306,7 +370,7 @@ local function onRowRender_ImageLib( event )
     shareImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
     shareImg.filename = List_array[row.index].ImageFileName
 
-    if isAndroid then
+  --  if isAndroid then
 
     local downImg_bg = display.newRect(row,0,0,25,25)
     downImg_bg.x=shareImg.x+30;downImg_bg.y=seprate_bg.y
@@ -325,14 +389,14 @@ local function onRowRender_ImageLib( event )
     downImg:addEventListener("touch",listTouch)
     downImg_bg:addEventListener("touch",listTouch)
 
-	else
+	-- else
 
-		seprate_bg.width = seprate_bg.contentWidth/2
-		seprate_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
-		shareImg_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
-		shareImg.x=seprate_bg.x+seprate_bg.contentWidth/2
+	-- 	seprate_bg.width = seprate_bg.contentWidth/2
+	-- 	seprate_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
+	-- 	shareImg_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
+	-- 	shareImg.x=seprate_bg.x+seprate_bg.contentWidth/2
 
-	end
+	-- end
 
 
     shareImg:addEventListener("touch",listTouch)

@@ -3,6 +3,7 @@ CommonWords = {}
 CommonWords.language = "Spanish"
 CommonWords.ok = "Okay"
 CommonWords.submit = "Enviar"
+CommonWords.cancel = "Cancelar"
 CommonWords.done = "Hecho"
 CommonWords.search = "Buscar"
 
@@ -171,6 +172,7 @@ ResourceLibrary = {}
 ResourceLibrary.PageTitle = "Biblioteca de recursos"
 ResourceLibrary.Download_alert="Guardado en Memoria del dispositivo"
 ResourceLibrary.NoDocument="No hay documentos se encuentran para ver"
+ResourceLibrary.SaveOptions_alert ="¿Seguro que deseas descargar?"
 
 ImageLibrary = {}
 

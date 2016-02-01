@@ -3,6 +3,7 @@ CommonWords.language = "English"
 CommonWords.ok = "OK"
 CommonWords.submit = "Submit"
 CommonWords.done = "Done"
+CommonWords.cancel = "Cancel"
 CommonWords.search = "Search"
 
 Month = {}
@@ -171,6 +172,7 @@ ResourceLibrary = {}
 
 ResourceLibrary.PageTitle = "Resource"
 ResourceLibrary.Download_alert="Saved to Device Memory"
+ResourceLibrary.SaveOptions_alert = "Are you sure you want to download?"
 ResourceLibrary.NoDocument="No documents are found to view"
 
 ImageLibrary = {}
