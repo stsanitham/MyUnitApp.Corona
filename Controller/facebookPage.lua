@@ -24,6 +24,8 @@ local Background,BgText
 
 local menuBtn
 
+local FeedNextUrl
+
 
 
 
@@ -64,16 +66,25 @@ local GET_USER_INFO="self"
 -----------------Function-------------------------
 
 
-function FacebookCallback(res,scrollView)
+function FacebookCallback(res,scrollView,flag)
 
 	spinner_hide()
 
 	feedArray = res
 
+				if flag == true then
+
+
 					for j=#groupArray, 1, -1 do 
 						display.remove(groupArray[#groupArray])
 						groupArray[#groupArray] = nil
 					end
+
+				else
+
+
+
+				end
 
 					local function networkListener( event )
 						if ( event.isError ) then
@@ -82,10 +93,6 @@ function FacebookCallback(res,scrollView)
 
 							for i=1,#feedArray do
 
-								print(i)
-
-
-								if  feedArray[i].message ~= nil  or feedArray[i].story ~= nil then
 
 									groupArray[#groupArray+1] = display.newGroup()
 
@@ -164,7 +171,7 @@ function FacebookCallback(res,scrollView)
 									else
 
 										local optionsread = {
-										text = feedArray[i].message or feedArray[i].story,
+										text = feedArray[i].message or feedArray[i].story or "",
 										x = display.contentCenterX,
 										y = display.contentCenterY,
 										fontSize = 11,
@@ -205,31 +212,25 @@ function FacebookCallback(res,scrollView)
 								rowTitle.y=background.y+25
 
 						
-			
+							if feedArray[i].picture ~= nil then
 
-							
+								local img = feedArray[i].picture
 
-							local function postedimg_position( event )
+								
+									local shared_img = display.loadRemoteImage(img, "GET", function ( event )
 								if ( event.isError ) then
 									print ( "Network error - download failed" )
 								else
 
 									event.target.width=200
 									event.target.height=100
-									print( "here.."..i )													
 
 									event.target.y = rowTitle.y+rowTitle.contentHeight+event.target.contentHeight/2+5
 
 									tempGroup:insert(event.target)
 								end
 
-							end
-							if feedArray[i].picture ~= nil then
-
-								local img = feedArray[i].picture
-
-								
-									local shared_img = display.loadRemoteImage(img, "GET", postedimg_position, "facebook"..i..".png", system.TemporaryDirectory,userName.x+105,rowTitle.y+rowTitle.contentHeight+10)
+							end, "facebook"..i..".png", system.TemporaryDirectory,userName.x+105,rowTitle.y+rowTitle.contentHeight+10)
 
 							
 							end
@@ -238,7 +239,7 @@ function FacebookCallback(res,scrollView)
 						end
 					end
 
-				end
+				
 			end
 
 				--test_response.text = tostring(feedArray[1].id)
@@ -248,21 +249,7 @@ function FacebookCallback(res,scrollView)
 				local tempvalue = string.find( temp, "_" )
 				temp = temp:sub(1,tempvalue-1)
 
-				local function get_username( event )
-					if ( event.isError ) then
-
-						print("error")
-
-					else
-
-						print("user : "..event.response )
-						local response = json.decode( event.response )
-
-					end
-				end
-
-				getuser = network.request( "https://graph.facebook.com/"..temp, "GET", get_username )
-
+			
 
 				network.download(
 					"https://graph.facebook.com/"..temp.."/picture",
@@ -275,6 +262,74 @@ function FacebookCallback(res,scrollView)
 
 
 			end
+
+local function feed_Load( event )
+	if ( event.isError ) then
+	else
+		print ( "RESPONSE: " .. event.response )
+		spinner_hide()
+		local response = json.decode( event.response )
+
+		if response.paging.next ~= nil then
+
+			FeedNextUrl = response.paging.next
+
+		else
+
+			FeedNextUrl=nil
+
+		end
+		FacebookCallback(response.data,scrollView,false)
+	end
+
+end
+
+local function feed_networkListener( event )
+	if ( event.isError ) then
+	else
+		print ( "RESPONSE: " .. event.response )
+		spinner_hide()
+		local response = json.decode( event.response )
+
+		FeedNextUrl = response.paging.next
+		FacebookCallback(response.data,scrollView,true)
+	end
+
+end
+
+
+	local function Facebook_scrollListener( event )
+
+		    local phase = event.phase
+		    if ( phase == "began" ) then 
+		    elseif ( phase == "moved" ) then 
+		    elseif ( phase == "ended" ) then 
+		    end
+
+		    -- In the event a scroll limit is reached...
+		    if ( event.limitReached ) then
+		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+
+		        	if FeedNextUrl ~= nil then
+		        		spinner_show()
+						getFeeds = network.request( FeedNextUrl, "GET", feed_Load )
+
+					end
+
+
+		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+
+		        	spinner_show()
+
+        			getFeeds = network.request( "https://graph.facebook.com/"..userid.."/feed?access_token="..asscesToken, "GET", feed_networkListener )
+
+		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
+		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		        end
+		    end
+
+		    return true
+	end
 
 
 ------------------------------------------------------
@@ -335,12 +390,11 @@ function scene:show( event )
 			width = W,
 			height =H-RecentTab_Topvalue,
 			hideBackground = true,
-			isBounceEnabled=false,
-			horizontalScrollingDisabled = false,
-			verticalScrollingDisabled = false,
-			 bottomPadding = 60
-
-   -- listener = scrollListener
+			isBounceEnabled=true,
+			horizontalScrollDisabled = true,
+	   		scrollWidth = W,
+			bottomPadding = 60,
+   			listener = Facebook_scrollListener,
 }
 
 spinner_show()
@@ -349,16 +403,7 @@ sceneGroup:insert(scrollView)
 
 
 
-local function feed_networkListener( event )
-	if ( event.isError ) then
-	else
-		print ( "RESPONSE: " .. event.response )
-		spinner_hide()
-		local response = json.decode( event.response )
-		FacebookCallback(response.data,scrollView)
-	end
 
-end
 
 
 local function networkListener( event )

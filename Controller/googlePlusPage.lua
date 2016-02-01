@@ -49,23 +49,37 @@ local RecentTab_Topvalue = 70
 
 local User_name=""
 
+local feedProcess = 10
+
+local feedCount=0
+
+
 --------------------------------------------------
 
 
 -----------------Function-------------------------
 
 
-function googleplusCallback( res,scrollView )
+function googleplusCallback( res,scrollView,flag )
 
 	spinner_hide()
 
-	for i=1,#groupArray do
-		groupArray[i]:removeSelf();groupArray[i]=nil
+	if flag == true then
+
+		for i=1,#groupArray do
+			groupArray[i]:removeSelf();groupArray[i]=nil
+		end
+
 	end
+
+
+
 	feedArray=res
 	print(#feedArray)
 
-	for i=1,#feedArray do
+	for i=1,10 do
+
+		feedCount = feedCount+1 
 
 		groupArray[#groupArray+1] = display.newGroup()
 
@@ -73,11 +87,13 @@ function googleplusCallback( res,scrollView )
 
 		local bgsize
 
-		if feedArray[i].object.attachments then
+	if feedArray[feedCount] ~= nil then
 
-			bgsize = 150
+		if feedArray[feedCount].object.attachments then
+
+			bgsize = 160
 		else
-			bgsize = 40
+			bgsize = 50
 		end
 
 
@@ -112,7 +128,7 @@ function googleplusCallback( res,scrollView )
 		
 
 
-		local time = tostring(os.date("%Y-%b-%d %H:%m %p", Utils.makeTimeStamp(feedArray[i].published)));
+		local time = tostring(os.date("%Y-%b-%d %H:%m %p", Utils.makeTimeStamp(feedArray[feedCount].published)));
 
 
 
@@ -131,14 +147,14 @@ function googleplusCallback( res,scrollView )
 		username:setFillColor(41/255,129/255,203/255)
 
 
-		if not feedArray[i].title then
+		if not feedArray[feedCount].title then
 
 			rowTitle = display.newText( tempGroup," ", 0, 0,native.systemFont, 18 )
 
 		else
 
 			local optionsread = {
-			text = feedArray[i].title,
+			text = feedArray[feedCount].title,
 			x = display.contentCenterX,
 			y = display.contentCenterY,
 			fontSize = 11,
@@ -172,7 +188,7 @@ function googleplusCallback( res,scrollView )
 								profilePic.y=background.y+profilePic.height/2-5
 
 	username.x=profilePic.x+profilePic.contentWidth/2+15
-	username.y=profilePic.y-profilePic.contentHeight/2+username.contentHeight/2-8
+	username.y=background.y+5
 
 	userTime.x=background.x+background.contentWidth/2-userTime.contentWidth-5
 	userTime.y=background.y+5
@@ -183,7 +199,7 @@ function googleplusCallback( res,scrollView )
 
 	rowTitle.anchorY=0
 	rowTitle.x=username.x
-								rowTitle.y=username.y+username.contentHeight+5
+								rowTitle.y=username.y+username.contentHeight+8
 
 
 	local function postedimg_position( event )
@@ -199,16 +215,17 @@ function googleplusCallback( res,scrollView )
 
 	end
 
-	if feedArray[i].object.attachments then
+	if feedArray[feedCount].object.attachments then
 
-		local img = feedArray[i].object.attachments
+		local img = feedArray[feedCount].object.attachments
 		if(img[1].image ~= nil ) then
-			local shared_img = display.loadRemoteImage(img[1].image.url, "GET", postedimg_position, i..".png", system.TemporaryDirectory,100+rowTitle.x,rowTitle.y+rowTitle.contentHeight+55 )
+			local shared_img = display.loadRemoteImage(img[1].image.url, "GET", postedimg_position, feedCount..".png", system.TemporaryDirectory,100+rowTitle.x,rowTitle.y+rowTitle.contentHeight+55 )
 		end
 
 	end
 	scrollView:insert(tempGroup)
 
+end
 end
 end
 
@@ -238,7 +255,15 @@ local function getgoogleplus_stream( event )
 				if ( event.isError ) then
 					print ( "Network error - download failed" )
 				else
-					googleplusCallback(response,scrollView)
+
+					if feedCount == 0 then
+
+						googleplusCallback(response,scrollView,true)
+
+					else
+
+						googleplusCallback(response,scrollView,false)
+					end
 				end
 
 			end
@@ -256,16 +281,41 @@ local function getgoogleplus_stream( event )
 end
 
 
-local function getFeed()
+local function Google_scrollListener( event )
 
+		    local phase = event.phase
+		    if ( phase == "began" ) then 
+		    elseif ( phase == "moved" ) then 
+		    elseif ( phase == "ended" ) then 
+		    end
 
+		    -- In the event a scroll limit is reached...
+		    if ( event.limitReached ) then
+		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
 
-	User_id = tostring(defaultField.text)
-	
- --User_id = "2154857409"
- network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public?key="..AccessApi, "GET", getgoogleplus_stream )
+		        	spinner_show()
 
-end
+		        	feedProcess = feedProcess + 10
+
+		        	 network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
+		   
+
+		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+
+		        		feedProcess = 10
+
+		        		feedCount = 0
+
+		        		spinner_show()
+
+ 			        	 network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
+		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
+		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		        end
+		    end
+
+		    return true
+	end
 
 ------------------------------------------------------
 
@@ -326,18 +376,18 @@ function scene:show( event )
 			width = W,
 			height =H-RecentTab_Topvalue,
 			hideBackground = true,
-			isBounceEnabled=false,
-			horizontalScrollingDisabled = false,
-			verticalScrollingDisabled = false,
-
-   -- listener = scrollListener
+			isBounceEnabled=true,
+			horizontalScrollDisabled = true,
+	   		scrollWidth = W,
+			bottomPadding=20,
+   			listener = Google_scrollListener,
 }
 
 
 
 sceneGroup:insert(scrollView)
 
-network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public?key="..AccessApi, "GET", getgoogleplus_stream )
+ network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
 
 menuBtn:addEventListener("touch",menuTouch)
 BgText:addEventListener("touch",menuTouch)

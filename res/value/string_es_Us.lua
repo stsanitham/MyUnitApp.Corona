@@ -157,6 +157,8 @@ CareerPath.Unit_No="Unidad No"
 CareerPath.Recruiter_No="reclutador No"
 CareerPath.Recruiter_Name="reclutador Nombre"
 CareerPath.Career_Progress="El progreso de la carrera"
+CareerPath.NoSim = "Su dispositivo no tiene opción de compra"
+
 
 
 Goals = {}

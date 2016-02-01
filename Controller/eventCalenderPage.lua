@@ -30,7 +30,13 @@ local currentweek=0
 
 local weekView_bg,weekView_leftArrow,weekView_rightArrow,weekView_header
 
+local Header_parentTitle,Header_parent_leftDraw,Header_parent_leftText,Header_parent_centerText
+
 local langid,countryid
+
+local HeaderDetails = {}
+
+local headerGroup = display.newGroup( )
 
 --------------- Initialization -------------------
 
@@ -189,6 +195,15 @@ end
 
 local function display_calenderList(response)
 
+
+for j=#headerGroup, 1, -1 do 
+			display.remove(headerGroup[#headerGroup])
+			headerGroup[#headerGroup] = nil
+end
+
+		
+
+
 event_groupArray[#event_groupArray+1] = display.newGroup()
 
 local tempGroup = event_groupArray[#event_groupArray]
@@ -219,12 +234,15 @@ local parentTitle;
 if ParentShow == true then
 	ParentShow = false
 
+
 	parentTitle = display.newRect(tempGroup,0,0,W,bgheight/2)
 	if(event_groupArray[#event_groupArray-1]) ~= nil then
 	--here
 	tempHeight = event_groupArray[#event_groupArray-1][1].y + event_groupArray[#event_groupArray-1][1].height-2
 	end
-
+HeaderDetails[#HeaderDetails+1] = {}
+HeaderDetails[#HeaderDetails].Position = tempHeight
+HeaderDetails[#HeaderDetails].Time = timeGMT
 parentPosition[#parentPosition+1] = tempHeight
 parentTitle.anchorY = 0
 parentTitle.x=W/2;parentTitle.y=tempHeight
@@ -261,6 +279,49 @@ end
 
 
 background.y=parentTitle.y+background.contentHeight/2
+
+
+---Header----
+
+if tempHeight == 0 then
+
+	Header_parentTitle = display.newRect(headerGroup,0,0,W,bgheight/2)
+	Header_parentTitle.anchorY = 0
+	Header_parentTitle.x=W/2;Header_parentTitle.y=weekView_bg.y+weekView_bg.contentHeight
+	Header_parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))
+
+	Header_parent_leftDraw = display.newImageRect(headerGroup,"res/assert/calendar.png",32/2,32/2)
+	Header_parent_leftDraw.x=Header_parentTitle.x-Header_parentTitle.contentWidth/2+15;Header_parent_leftDraw.y=Header_parentTitle.y+Header_parentTitle.contentHeight/2
+
+	Header_parent_leftText = display.newText(headerGroup,Utils.GetWeek(os.date( "%A" , timeGMT )),0,0,native.systemFont,11)
+	Header_parent_leftText.x=Header_parent_leftDraw.x+Header_parent_leftDraw.contentWidth/2+2
+	Header_parent_leftText.y=Header_parent_leftDraw.y
+	Utils.CssforTextView(Header_parent_leftText,sp_fieldValue_small)
+	Header_parent_leftText.anchorX=0
+
+	Header_parent_centerText = display.newText(headerGroup,os.date( "%b %d, %Y" , timeGMT ),0,0,native.systemFont,14)
+	Header_parent_centerText.x=W/2
+	Header_parent_centerText.y=Header_parent_leftDraw.y
+	Utils.CssforTextView(Header_parent_centerText,sp_subHeader)
+
+	local month = Utils.GetMonth(os.date( "%b" , timeGMT ))
+ 
+	if CommonWords.language == "Canada English" then
+
+		Header_parent_centerText.text = os.date( " %d " , timeGMT )..month..os.date( ", %Y" , timeGMT )
+
+	else
+
+		Header_parent_centerText.text = month..os.date( " %d, %Y" , timeGMT )
+
+	end
+
+	headerGroup.alpha=0
+
+
+end
+
+----
 
 end
 
@@ -967,6 +1028,64 @@ local function unrequire( m )
   return true
 end
 
+
+	local function EventCalender_scrollListener( event )
+
+		    local phase = event.phase
+
+
+		    print( "here" )
+		    if ( phase == "began" ) then 
+		    elseif ( phase == "moved" ) then
+			
+				headerGroup.alpha=1
+		
+
+				for i=1,#HeaderDetails do
+
+					if HeaderDetails[i-1] ~= nil then
+
+					local xView, yView = scrollView:getContentPosition()
+
+					print( yView,HeaderDetails[i].Position)
+
+					if -(yView) < tonumber(HeaderDetails[i].Position) then
+
+						print( -(yView),HeaderDetails[i].Position )
+
+							Header_parent_leftText.text = Utils.GetWeek(os.date( "%A" , HeaderDetails[i-1].Time ))
+
+							Header_parent_centerText.text = os.date( "%b %d, %Y" , HeaderDetails[i-1].Time )
+
+
+						return true
+
+					end
+
+				end
+
+				end
+
+
+		    elseif ( phase == "ended" ) then 
+		    end
+
+		    -- In the event a scroll limit is reached...
+		    if ( event.limitReached ) then
+		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+
+		        	
+		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+
+		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
+		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		        end
+		    end
+
+		    return true
+	end
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -1115,15 +1234,15 @@ function scene:show( event )
 			horizontalScrollingDisabled = false,
 			verticalScrollingDisabled = false,
 			hideScrollBar=true,
-
-			   -- listener = scrollListener
+			friction = .3,
+			listener = EventCalender_scrollListener
 			}
 
 			sceneGroup:insert(scrollView)
 			scrollView.anchorY=0
 			scrollView.y = RecentTab_Topvalue+60
 
-
+			sceneGroup:insert( headerGroup )
 
 			function get_allCalender(response)
 
@@ -1317,7 +1436,12 @@ function scene:hide( event )
 			event_groupArray[j] = nil
 		end
 
+		for j=#headerGroup, 1, -1 do 
+			display.remove(headerGroup[#headerGroup])
+			headerGroup[#headerGroup] = nil
+		end
 		event_groupArray=nil
+		headerGroup=nil
 
 
 		menuBtn:removeEventListener("touch",menuTouch)

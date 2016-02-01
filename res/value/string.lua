@@ -159,6 +159,7 @@ CareerPath.Unit_No="Unit No"
 CareerPath.Recruiter_No="Recruiter No"
 CareerPath.Recruiter_Name="Recruiter Name"
 CareerPath.Career_Progress="Career Progress"
+CareerPath.NoSim = "Your device does not have call option"
 
 
 Goals = {}

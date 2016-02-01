@@ -208,12 +208,12 @@ local function phoneCallFunction( event )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
-		callFlag = system.openURL( "tel:"..event.target.id )
+		local callFlag = system.openURL( "tel:"..event.target.id )
 
-		if callFlag then
+		if callFlag == true  then
 
 		else
-			native.showAlert( "Call", "Your device does not have call option", { "OK" } )
+			native.showAlert( "Call", CareerPath.NoSim, { CommonWords.ok } )
 
 		end
 	end

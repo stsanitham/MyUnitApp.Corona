@@ -31,6 +31,12 @@ local feedArray = {}
 
 local RecentTab_Topvalue = 70
 
+local FeedCount = 0
+
+local FeedProcess = 10
+
+local TwitterFlag = true
+
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 	print(row.TwitterToken)
@@ -58,14 +64,21 @@ function TwitterCallback(res,scrollView)
 			print ( "Network error - download failed" )
 		else
 
-			for j=#groupArray, 1, -1 do 
-				display.remove(groupArray[#groupArray])
-				groupArray[#groupArray] = nil
+			if TwitterFlag == true then
+
+				for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+				end
+
 			end
 
-			for i=1,#feedArray do
+			for i=1,10 do
 
-				if feedArray[i].text and feedArray[i].text ~= nil   then
+				FeedCount = FeedCount + 1
+
+				if feedArray[FeedCount] ~= nil then
+
 
 					groupArray[#groupArray+1] = display.newGroup()
 
@@ -73,7 +86,7 @@ function TwitterCallback(res,scrollView)
 
 						local bgheight = 0
 
-							if feedArray[i].picture ~= nil then
+							if feedArray[FeedCount].picture ~= nil then
 	
 								bgheight = 100
 
@@ -109,24 +122,20 @@ function TwitterCallback(res,scrollView)
 					tempGroup:insert(profilePic)
 					
 
-					userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p", feedArray[i].created_time)), 0, 0, native.systemFont, 11 )
+					userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p", feedArray[FeedCount].created_time)), 0, 0, native.systemFont, 11 )
 					userTime.anchorX = 0
 					userTime.anchorY = 0
 					Utils.CssforTextView(userTime,sp_Date_Time)
 					userTime:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-					if not feedArray[i].user then
+				
 
-						rowTitle = display.newText( tempGroup,"", 0, 0,native.systemFontBold, 18 )
-
-					else
-
-						local userArray = feedArray[i].user
+						local userArray = feedArray[FeedCount].user or ""
 
 
 						rowTitle = display.newText( tempGroup, userArray.name.." @"..userArray.screen_name, 50, 0,100,0, native.systemFont, 12 )
 
-					end
+					
 					rowTitle.anchorX = 0
 					rowTitle.anchorY = 0
 					
@@ -141,15 +150,10 @@ function TwitterCallback(res,scrollView)
 					local rowStory
 
 
-					if not feedArray[i].text then
-
-						rowStory = display.newText( tempGroup, "", 0, 0, native.systemFont, 11 )
-
-					else 
-
+				
 
 										local optionsread = {
-										text = feedArray[i].text,
+										text = feedArray[FeedCount].text or "",
 										x = display.contentCenterX,
 										y = rowTitle.y+rowTitle.contentHeight+5,
 										fontSize = 11,
@@ -160,7 +164,7 @@ function TwitterCallback(res,scrollView)
 
 					rowStory = display.newText( optionsread )
 
-					end
+			
 
 
 				rowStory:setFillColor( 0 )
@@ -171,7 +175,7 @@ function TwitterCallback(res,scrollView)
 
 				background.height = background.height+rowStory.height+rowTitle.height
 
-								background.y=tempHeight
+				background.y=tempHeight
 
 								local background_arrow = display.newImageRect( tempGroup, "res/assert/arrow3.png", 11,20 )
 								background_arrow.x=background.x-background.contentWidth/2-background_arrow.contentWidth/2+1
@@ -188,9 +192,9 @@ function TwitterCallback(res,scrollView)
 								rowTitle.x=background.x-background.contentWidth/2+5
 								rowTitle.y=background.y+5
 
-													line.x=background.x;line.y=rowTitle.y+rowTitle.contentHeight+3
-				rowStory.x = rowTitle.x
-				rowStory.y = rowTitle.y+rowTitle.contentHeight+8
+								line.x=background.x;line.y=rowTitle.y+rowTitle.contentHeight+3
+								rowStory.x = rowTitle.x
+								rowStory.y = rowTitle.y+rowTitle.contentHeight+8
 
 
 
@@ -266,10 +270,55 @@ local function recent_tweet()
 	if UserName ~= "" then
 		local params = {"users", "statuses/user_timeline.json", "GET",
 		{"screen_name", UserName}, {"skip_status", "true"},
-		{"include_entities", "false"} }
+		{"include_entities", "false"},{"count",tostring(FeedProcess)} }
 		TwitterManager.tweet(callback, params)
 	end
 end
+
+	local function Twitter_scrollListener( event )
+
+		    local phase = event.phase
+		    if ( phase == "began" ) then 
+
+
+
+
+		    elseif ( phase == "moved" ) then 
+		    elseif ( phase == "ended" ) then 
+		    end
+
+		    -- In the event a scroll limit is reached...
+		    if ( event.limitReached ) then
+		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+
+		        	TwitterFlag = false
+
+		        	local params = {"users", "statuses/user_timeline.json", "GET",
+					{"screen_name", UserName}, {"skip_status", "true"},
+					{"include_entities", "false"},{"count",tostring(FeedCount+FeedProcess)} }
+					TwitterManager.tweet(callback, params)
+
+		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+
+		        	TwitterFlag = true
+
+			    	FeedCount = 0
+
+			    	FeedProcess = 10
+
+		        	local params = {"users", "statuses/user_timeline.json", "GET",
+					{"screen_name", UserName}, {"skip_status", "true"},
+					{"include_entities", "false"},{"count",tostring(FeedCount+FeedProcess)} }
+					TwitterManager.tweet(callback, params)
+
+
+		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
+		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		        end
+		    end
+
+		    return true
+	end
 
 
 ------------------------------------------------------
@@ -312,11 +361,12 @@ function scene:create( event )
 	width = W,
 	height =H-RecentTab_Topvalue,
 	hideBackground = true,
-	isBounceEnabled=false,
-	horizontalScrollingDisabled = false,
-	verticalScrollingDisabled = false,
-			bottomPadding=20
-   -- listener = scrollListener
+	isBounceEnabled=true,
+	horizontalScrollDisabled = true,
+	scrollWidth = W,
+	bottomPadding=20,
+    listener = Twitter_scrollListener,
+
 }
 
 

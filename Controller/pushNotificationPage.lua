@@ -297,11 +297,7 @@ function scene:show( event )
 
 	elseif phase == "did" then
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> MUB_iV1.1.4
 	if pushArray[#pushArray] then
 
 		if pushArray[#pushArray].id == "video" then
@@ -580,10 +576,7 @@ function scene:show( event )
 		     	webView_rect = display.newRect(display.contentCenterX, display.contentCenterY, PushNotification_bg.contentWidth-20, 130 )
 		        webView_rect.y=PushNotification_msg.y+PushNotification_msg.contentHeight+5
 		        webView_rect.anchorY  = 0
-<<<<<<< HEAD
-=======
 		        webView_rect:setFillColor( 0 )
->>>>>>> MUB_iV1.1.4
 		        PushGroup:insert( webView_rect)
 
 		        webView = native.newWebView(display.contentCenterX, display.contentCenterY, PushNotification_bg.contentWidth-20, 130 )

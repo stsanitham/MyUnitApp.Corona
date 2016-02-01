@@ -544,11 +544,10 @@ function scene:show( event )
 
 
 
-				socilaLbl = display.newText(FlapMenu.Social_Media,0,0,panel.contentWidth,0,"Open Sans Regular",16)
+				socilaLbl = display.newText(FlapMenu.Social_Media,0,0,panel.contentWidth,0,native.systemFontBold,16)
 				socilaLbl.anchorX = 0
 				socilaLbl.x=-panel.width/2+5
 				socilaLbl.y= rect.y+15
-				socilaLbl.alpha=0.6
 				panel:insert( socilaLbl )
 
 
