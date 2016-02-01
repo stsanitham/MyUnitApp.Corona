@@ -127,7 +127,6 @@ local function MenuTouchAction(event)
 
 			menuArray_display[i].alpha=0.01
 
-
 		end
 
 		event.target.alpha=1

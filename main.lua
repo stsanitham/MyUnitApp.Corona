@@ -265,8 +265,28 @@ ga.init({ -- Only initialize once, not in every file
     isLive = IsLive, -- REQUIRED
     testTrackingID = ApplicationConfig.Analysic_TrackId, -- REQUIRED Tracking ID from Google -- Dev UA-51545075-5
     productionTrackingID = ApplicationConfig.Analysic_TrackId,
-    debug = false, -- Recomended when starting
+    debug = true, -- Recomended when starting
 })
+
+
+-----Runtime Error------
+
+local releaseBuild = true   -- Set to true to suppress popup message
+
+-- Error handler
+local function myUnhandledErrorListener( event )
+
+    if releaseBuild then
+        print( "Handling the unhandled error >>>\n", event.errorMessage )
+    else
+        print( "Not handling the unhandled error >>>\n", event.errorMessage )
+    end
+    
+    return releaseBuild
+end
+
+Runtime:addEventListener("unhandledError", myUnhandledErrorListener)
+
 
 
 
