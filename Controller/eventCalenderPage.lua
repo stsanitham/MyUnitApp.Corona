@@ -32,9 +32,12 @@ local weekView_bg,weekView_leftArrow,weekView_rightArrow,weekView_header
 
 local Header_parentTitle,Header_parent_leftDraw,Header_parent_leftText,Header_parent_centerText
 
+local addEventBtn
+
 local langid,countryid
 
 local HeaderDetails = {}
+
 
 local headerGroup = display.newGroup( )
 
@@ -133,6 +136,8 @@ function scene:resumeGame()
     search.isVisible=true
 end
 
+
+
 local function listTouch( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -151,18 +156,40 @@ local function listTouch( event )
 			native.setKeyboardFocus( nil )
 			display.getCurrentStage():setFocus( nil )
 
+			if event.target.id == "addEvent" then
 
-			local options = {
-			isModal = true,
-			effect = "slideLeft",
-			time = 500,
-			params = {
-			details = event.target.value
-		}
-	}
+				print( "add event" )
 
-	search.isVisible=false
-	composer.showOverlay( "Controller.eventCal_DetailPage", options )
+				print( os.date( "%m/%d/%Y" ,  event.target.value )) 
+
+				local options = {
+					isModal = true,
+					effect = "slideLeft",
+					time = 500,
+					params = {
+					details = event.target.value
+				}
+			}
+
+			search.isVisible=false
+			composer.showOverlay( "Controller.addEventPage", options )
+
+
+			else
+
+					local options = {
+					isModal = true,
+					effect = "slideLeft",
+					time = 500,
+					params = {
+					details = event.target.value
+				}
+			}
+
+			search.isVisible=false
+			composer.showOverlay( "Controller.eventCal_DetailPage", options )
+
+			end
 
 
 end
@@ -365,7 +392,7 @@ tempGroup.value = response
 tempGroup:addEventListener("touch",listTouch)
 
 scrollView:insert(tempGroup)
-
+addEventBtn:toFront( )
 end
 
 local function createEventlist(respone,timeValue)
@@ -657,7 +684,18 @@ local function dayTouch(event)
 		Processingdate = event.target.Processingdate
 		ParentShow=true
 		weekViewTouchFlag = true
+
+		print( os.date( "%m/%d/%Y" ,  os.time(event.target.value) )) 
+
 		eventList(event.target.value)
+
+		local timeGMT = makeTimeStamp( startdate )
+
+		addEventBtn.value = timeGMT
+
+		
+
+		
 
 	
 	end
@@ -714,6 +752,8 @@ weekfirstDay.day = weekfirstDay.day - 1
 
 		if os.date( "%m/%d/%Y" , os.time( weekfirstDay )) == os.date( "%m/%d/%Y" ,os.time(os.date( '*t' ))) then
 			day:setFillColor( 0,0,1 )
+			addEventBtn.value = os.time(weekfirstDay)
+
 		end
 
 		Week_Group.id=i
@@ -1204,6 +1244,10 @@ picker_Done = display.newText( pickerGroup, CommonWords.done, 0, 0, native.syste
 picker_Done:setFillColor(Utils.convertHexToRGB(color.today_blue))
 picker_Done.x=picker_btnBg.x+100;picker_Done.y=picker_btnBg.y
 
+addEventBtn = display.newImageRect( sceneGroup, "res/assert/plus.png", 45,40 )
+addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
+
+
 end
 
 function scene:show( event )
@@ -1416,6 +1460,7 @@ topToday_btnlabel:addEventListener("touch",todayAction)
 calenderView_bg:addEventListener("touch",calenderTouch)
 picker_Done:addEventListener( "touch", calenderAction )
 search:addEventListener( "userInput", searchListener )
+addEventBtn:addEventListener( "touch", listTouch )
 
 
 end

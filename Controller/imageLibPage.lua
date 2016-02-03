@@ -370,7 +370,7 @@ local function onRowRender_ImageLib( event )
     shareImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
     shareImg.filename = List_array[row.index].ImageFileName
 
-  --  if isAndroid then
+    if isAndroid then
 
     local downImg_bg = display.newRect(row,0,0,25,25)
     downImg_bg.x=shareImg.x+30;downImg_bg.y=seprate_bg.y
@@ -389,14 +389,14 @@ local function onRowRender_ImageLib( event )
     downImg:addEventListener("touch",listTouch)
     downImg_bg:addEventListener("touch",listTouch)
 
-	-- else
+	else
 
-	-- 	seprate_bg.width = seprate_bg.contentWidth/2
-	-- 	seprate_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
-	-- 	shareImg_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
-	-- 	shareImg.x=seprate_bg.x+seprate_bg.contentWidth/2
+		seprate_bg.width = seprate_bg.contentWidth/2
+		seprate_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
+		shareImg_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
+		shareImg.x=seprate_bg.x+seprate_bg.contentWidth/2
 
-	-- end
+	end
 
 
     shareImg:addEventListener("touch",listTouch)

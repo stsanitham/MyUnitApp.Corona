@@ -654,10 +654,11 @@ function scene:show( event )
 		
 	
 	end	
-	
 
 
 end
+
+
 
 	function scene:hide( event )
 
