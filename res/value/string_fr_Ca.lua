@@ -180,6 +180,14 @@ ImageLibrary = {}
 ImageLibrary.PageTitle = "Bibliothèque d'images"
 ImageLibrary.NoImage = "No Images se retrouvent pour voir"
 
+
+Message = {}
+
+Message.PageTitle = "Message"
+Message.NoImage = "Pas de messages sont trouvés pour la voir"
+Message.Message_placeholder = "Entrez votre message de moins de 160 caractères"
+Message.SendButton = "Envoyer maintenant"
+
 Facebook = {}
 
 Facebook.PageTitle = "Facebook"

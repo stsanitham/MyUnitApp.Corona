@@ -87,6 +87,7 @@ function Webservice.GET_LIST_OF_RANKS(postExecution)
 	return 
 end
 
+
 function Webservice.REQUEST_ACCESS(firstName,lastName,Email,Phone,UnitNumber,MKRank,Comment,postExecution)
 
 	local request_value = {}
@@ -121,6 +122,71 @@ function Webservice.REQUEST_ACCESS(firstName,lastName,Email,Phone,UnitNumber,MKR
 	return response
 
 end
+
+
+
+
+
+function Webservice.SEND_MESSAGE(message,pushmethod,postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	
+	method="POST"
+
+	local url = splitUrl(ApplicationConfig.SEND_MESSAGE)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	--headers["Authentication"] = "Or2tf5TjnfLObg5qZ1VfLOd:7jzSWXG+0oRq9skt1lNESuiZcTSQLVurPn3eZaqMk84="
+
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+		EmailAddess = row.EmailAddess
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	--local v = "MyUnitBuzzMessageId=1&MyUnitBuzzMessage="..message.."&MessageStatus="..pushmethod.."&UserId="..UserId.."&EmailAddress="..EmailAddess.."&MessageDate="..headers["Timestamp"].."&TimeZone=Eastern Standard Time"
+--02/02/2016 9:21:48 PM
+--local time = os.date("%I")
+local v = [[
+
+{
+  "MyUnitBuzzMessage": "]]..message..[[",
+  "MessageStatus": "]]..pushmethod..[[",
+  "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
+   "UserId": "]]..UserId..[[",
+   "EmailAddress": "]]..EmailAddess..[[",
+   "TimeZone": "Eastern Standard Time",
+}
+]]
+
+
+	params={headers = headers,body = v}
+
+	print("Send Message Request :"..json.encode(params))
+
+	request.new( ApplicationConfig.SEND_MESSAGE,method,params,postExecution)
+	
+	return response
+
+end
+
+
+
 
 
 function Webservice.LOGIN_ACCESS(Device_OS,Unique_Id,Model,Version,GCM,UnitNumber,UserName,Password,postExecution)

@@ -143,6 +143,8 @@ local function MenuTouchAction(event)
 			end
 			composer.removeHidden(true)
 			composer.gotoScene( "Controller."..event.target.id )
+
+			print(event.target.id)
 		end
 
 
@@ -522,6 +524,42 @@ function scene:show( event )
 			panel:insert( img_lib_text )
 
 			-----
+
+
+
+			--Message
+
+			if IsOwner == true then
+
+			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
+			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].alpha=0.01
+			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
+			panel:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
+			menuArray_display[#menuArray_display].name = "Message"
+			menuArray_display[#menuArray_display].id="messagePage"
+
+
+			message_icon = display.newImageRect("res/assert/socal-media.png",15,15)
+			message_icon.anchorX = 0
+			message_icon:setFillColor(1,1,1)
+			message_icon.x=-panel.width/2+5
+			message_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
+			panel:insert( message_icon )
+
+			message_text = display.newText(Message.PageTitle ,0,0,"Open Sans Regular",16)
+			message_text.anchorX = 0
+			message_text.x=message_icon.x+message_icon.contentWidth+5
+			message_text.y = message_icon.y
+			
+			panel:insert( message_text )
+
+			end
+
+			-----
+
 
 			rect = display.newRect(0,0,panel.width,1)
 			rect.x = menuArray_display[#menuArray_display].x;

@@ -942,11 +942,11 @@ function scene:hide( event )
 
 	if event.phase == "will" then
 
-
-		elseif phase == "did" then
-
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
+
+
+		elseif phase == "did" then
 
 		end	
 

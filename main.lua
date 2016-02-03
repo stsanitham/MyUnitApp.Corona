@@ -21,6 +21,10 @@ pushArray = {}
 
 notificationFlag=false
 
+IsOwner = false
+
+TimeZone = ""
+
 --com.spanenterprises.MUBDev
 
 

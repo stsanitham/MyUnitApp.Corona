@@ -103,6 +103,23 @@ function scene:show( event )
 						GoogleUsername=""
 					end
 
+
+					if response.MyUnitBuzzContacts.IsOwner ~= nil then
+
+						IsOwner = response.MyUnitBuzzContacts.IsOwner
+      				else
+      					IsOwner = " "
+      				end
+
+
+      				if response.MyUnitBuzzContacts.TimeZone ~= nil then
+
+						TimeZone = response.MyUnitBuzzContacts.TimeZone
+      				else
+      					TimeZone = " "
+      				end
+
+
 					if response.GoogleSettings.GoogleToken ~= nil then
 						GoogleToken = response.GoogleSettings.GoogleToken
 					else
