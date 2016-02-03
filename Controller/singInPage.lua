@@ -222,6 +222,20 @@ openPage="signInPage"
 
 	if Request_response.MyUnitBuzzContacts then
 
+		if Request_response.MyUnitBuzzContacts.IsOwner ~= nil then
+				IsOwner = Request_response.MyUnitBuzzContacts.IsOwner
+			else
+				IsOwner=""
+		end
+
+		if Request_response.MyUnitBuzzContacts.TimeZone ~= nil then
+				TimeZone = Request_response.MyUnitBuzzContacts.TimeZone
+			else
+				TimeZone=""
+		end
+
+
+
 			if Request_response.MyUnitBuzzContacts.ImagePath ~= nil then
 				profileImageUrl = Request_response.MyUnitBuzzContacts.ImagePath
 			else

@@ -83,6 +83,8 @@ ApplicationConfig.GET_LIST_OF_RANKS = ApplicationConfig.BASE_URL.."/MyUnitBuzz/G
 
 ApplicationConfig.REQUEST_ACCESS = ApplicationConfig.BASE_URL.."/MyUnitBuzz/MyUnitBuzzRequestAccess"
 
+ApplicationConfig.SEND_MESSAGE = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SaveMyUnitBuzzMessages"
+
 ApplicationConfig.LOGIN_ACCESS = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SignIn"
 
 ApplicationConfig.GetMyUnitAppGoals = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMyUnitBuzzGoalsbyUserId"
