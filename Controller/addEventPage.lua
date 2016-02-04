@@ -24,8 +24,13 @@ openPage="eventCalenderPage"
 local eventTime = 0
 
 local EventnameGroup = display.newGroup( )
+
 local EventnameFlag = false
+
+
 local EventnameArray = {"Appointment","Call","Party","Task","Family Time"}
+
+local priorityArray = {"Low","Normal","High"}
 
 local purposeArray = {"Booking","Color Appointment","Customer Service","Double Facial","Facial","Follow Up","Full Circle","Initial Appointment","On the Go","Training","Team Building","Reschedule","2 Day Follow up","2 Week Follow up","2 Month Follow up","Other"}
 
@@ -110,9 +115,33 @@ local function onRowTouch(event)
 
 		List.textFiled.text = row.name
 
-		List.textFiled.value = row.index
+		List.textFiled.value = row.index - 1
 
     end
+end
+
+local function CreateList(event)
+	List_bg.isVisible = true
+					List_bg.x = event.target.x
+					List_bg.y = event.target.y+event.target.contentHeight
+					List_bg.width =event.target.contentWidth+2
+					List_bg.height = List.contentHeight+2
+
+
+					List:deleteAllRows()
+
+					for i = 1, #List.arrayName do
+
+					    -- Insert a row into the tableView
+					    List:insertRow(
+					        {
+					            isCategory = false,
+					            rowHeight = 36,
+					            rowColor = { default={1}, over={0.8} },
+					        }
+					    )
+					end
+
 end
 
 local function get_CreateTickler( response )
@@ -187,31 +216,31 @@ local function TouchAction( event )
 					List.arrayName = purposeArray
 					List.textFiled = PurposeLbl
 					
-
-					List_bg.isVisible = true
-					List_bg.x = event.target.x
-					List_bg.y = event.target.y+event.target.contentHeight
-					List_bg.width =event.target.contentWidth+2
-					List_bg.height = List.contentHeight+2
-
-
-					List:deleteAllRows()
-
-					for i = 1, #List.arrayName do
-
-					    -- Insert a row into the tableView
-					    List:insertRow(
-					        {
-					            isCategory = false,
-					            rowHeight = 36,
-					            rowColor = { default={1}, over={0.8} },
-					        }
-					    )
-					end
+					CreateList(event)
+					
 				else
 					List_bg.isVisible = false
 					List:deleteAllRows()
 					List.isVisible = false
+
+				end
+
+			elseif event.target.id == "priority" then
+
+				if List.isVisible == false then
+						List.isVisible = true
+						List.x = event.target.x
+						List.y = event.target.y+event.target.contentHeight+1.3
+						List.width =event.target.contentWidth
+						List.arrayName = priorityArray
+						List.textFiled = PriorityLbl
+						
+						CreateList(event)
+						
+				else
+						List_bg.isVisible = false
+						List:deleteAllRows()
+						List.isVisible = false
 
 				end
 
@@ -648,6 +677,7 @@ function scene:show( event )
 		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
 		PriorityLbl = display.newText(AddeventGroup,"Priority",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )

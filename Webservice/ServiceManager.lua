@@ -849,7 +849,7 @@ function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerSta
 	headers["UniqueId"] = system.getInfo("deviceID")
 	headers["Accept"] = "application/json"
 	headers["Content-Type"] = "application/json"
-	method="GET"
+	method="POST"
 
 	local url = splitUrl(ApplicationConfig.CreateTickler)
 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
@@ -885,7 +885,8 @@ function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerSta
   "Description": ]]..Description..[[,
   "AppointmentPurpose": ]]..AppointmentPurpose..[[,,
   "Priority": 0,
-  "TimeZone": "Eastern Standard Time"
+  "TimeZone": "Eastern Standard Time",
+  "ColorCode": "#BCA9F5",
  
 }]]
 
