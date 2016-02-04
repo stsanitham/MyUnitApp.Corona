@@ -275,9 +275,9 @@ local display_details = {}
 
 		end
 
-		display_details[#display_details+1] = display.newText(time,0,0,200,0,native.systemFont,14)
+		display_details[#display_details+1] = display.newText(time,0,0,210,0,native.systemFont,14)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-30;display_details[#display_details].y=display_details[#display_details-1].y+16
+		display_details[#display_details].x=W/2-35;display_details[#display_details].y=display_details[#display_details-1].y+16
 		display_details[#display_details].anchorX=0
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="time"

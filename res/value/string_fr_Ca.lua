@@ -187,6 +187,15 @@ Message.PageTitle = "Message"
 Message.NoImage = "Pas de messages sont trouvés pour la voir"
 Message.Message_placeholder = "Entrez votre message de moins de 160 caractères"
 Message.SendButton = "Envoyer maintenant"
+Message.YoutubeUrlError = "Entrez une URL YouTube valide"
+Message.VimeoUrlError = "Entrez une URL Vimeo valide"
+Message.FacebookUrlError = "Entrez une URL Facebook valide"
+Message.YahooUrlError = "Entrez une URL Yahoo valide"
+Message.AlertTitle = "URL invalide"
+Message.SuccessMsg = "un message de succès"
+Message.SuccessContent = "Votre message a été envoyé avec succès"
+Message.ErrorTitle = "Envoi échoué"
+Message.ErrorMessage = "Entrez un message ou ajouter une quelconque de l'option donnée pour d'autres procédures"
 
 Facebook = {}
 

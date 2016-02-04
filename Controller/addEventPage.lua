@@ -365,7 +365,66 @@ function scene:create( event )
 	  	SelectEvent_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	SelectEvent_icon.y=SelectEvent.y
 
-	  	--------
+
+		  	---Event name---
+
+	  		EventnameTop_bg = display.newRect( EventnameGroup, SelectEvent_bg.x, H/2-5, 202, 206 )
+	  		EventnameTop_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+	  		EventnameTop = display.newRect(EventnameGroup,W/2,H/2-160,200,30)
+	  		EventnameTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	  		EventnameTop.y=EventnameTop_bg.y-EventnameTop_bg.contentHeight/2+EventnameTop.contentHeight/2
+
+	  		EventnameText = display.newText(EventnameGroup,"Select Event Name",0,0,native.systemFont,16)
+	  		EventnameText.x=EventnameTop.x;EventnameText.y=EventnameTop.y
+
+
+	  		EventnameClose = display.newImageRect(EventnameGroup,"res/assert/cancel.png",19,19)
+	  		EventnameClose.x=EventnameTop.x+EventnameTop.contentWidth/2-15;EventnameClose.y=EventnameTop.y
+	  		EventnameClose.id="close"
+
+	  		EventnameClose_bg = display.newRect(EventnameGroup,0,0,30,30)
+	  		EventnameClose_bg.x=EventnameTop.x+EventnameTop.contentWidth/2-15;EventnameClose_bg.y=EventnameTop.y
+	  		EventnameClose_bg.id="close_eventname"
+	  		EventnameClose_bg.alpha=0.01
+
+
+	  	EventnameList = widget.newTableView
+	  		{
+	  		left = 0,
+	  		top = -50,
+	  		height = 150,
+	  		width = 200,
+	  		onRowRender = Eventname_Render,
+	  		onRowTouch = Eventname_Touch,
+	  		--hideBackground = true,
+	  		noLines=true,
+	  		hideScrollBar=true,
+	  		isBounceEnabled=false,
+
+	  	}
+
+	  	EventnameList.x=SelectEvent_bg.x
+	  	EventnameList.y=EventnameTop.y+EventnameTop.height/2
+	  	EventnameList.height = 200
+	  	EventnameList.width = SelectEvent_bg.contentWidth
+	  	EventnameList.anchorY=0
+	  	EventnameGroup.isVisible=false
+
+	  	EventnameGroup:insert(EventnameList)
+		
+
+	---------------
+
+			for i = 1, #EventnameArray do
+				    -- Insert a row into the tableView
+				    EventnameList:insertRow{ rowHeight = 35,
+				    rowColor = { default={ 1,1,1}, over={ 0, 0, 0, 0.1 } }
+
+				}
+			end
+
+		------------------
 
 	
 scrollView:insert( AddeventGroup)

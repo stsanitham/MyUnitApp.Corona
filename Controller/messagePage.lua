@@ -6,6 +6,7 @@
 
 local composer = require( "composer" )
 local scene = composer.newScene()
+local widget = require("widget")
 local style = require("res.value.style")
 local Utility = require( "Utils.Utility" )
 local json = require("json")
@@ -23,6 +24,10 @@ local menuBtn
 
 openPage="messagePage"
 
+local VideoUrlGroup = display.newGroup( )
+
+local VideoTypeArray = {"YouTube","Vimeo","Facebook","Yahoo"}
+
 local messageGroup
 
 ---------------------------------------------------
@@ -31,24 +36,227 @@ local messageGroup
 ---------------------Function----------------------
 
 
+
+local function closeDetails( event )
+	if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+	end
+
+return true
+
+end
+
+
+local function onTouchAction( event )
+
+	if event.phase == "began" then
+
+			display.getCurrentStage():setFocus( event.target )
+
+			print("target message")
+
+	elseif event.phase == "ended" then
+
+			display.getCurrentStage():setFocus( nil )
+
+            if event.target.id == "eventname" then
+
+            	print("target message 111")
+
+				if VideoUrlGroup.isVisible == true then
+
+					VideoUrlGroup.isVisible = false
+
+					feed_url.isVisible = false
+
+				--	feed_url_bg.isVisible = false
+
+				else
+
+					VideoUrlGroup.isVisible = true
+
+					feed_url.isVisible = true
+
+				--	feed_url_bg.isVisible = true
+
+				end
+
+		   print( "event name" )
+
+		end
+	end
+
+return true
+
+end
+
+
+
+
+local function VideoType_Render( event )
+
+    local row = event.row
+
+    local rowHeight = row.contentHeight
+    local rowWidth = row.contentWidth
+
+    local rowTitle = display.newText(row, VideoTypeArray[row.index], 0, 0, nil, 14 )
+    rowTitle:setFillColor(0)
+    rowTitle.anchorX = 0
+    rowTitle.x = 5
+    rowTitle.y = rowHeight * 0.5
+
+    row.name=VideoTypeArray[row.index]
+
+    print("row name ",row.name)
+
+end
+
+
+
+local function VideoType_Touch( event )
+	local phase = event.phase
+	local row = event.target
+
+	if( "press" == phase ) then
+
+		elseif ( "release" == phase ) then
+			
+			if  VideoUrlGroup.isVisible == true then
+
+				VideoUrlGroup.isVisible=false
+
+				url_dropdown.text = row.name
+
+			end
+
+		end
+	end
+
+
+
+local function textfield( event )
+
+		if ( event.phase == "began" ) then
+
+			print("event.target", event.target)
+
+			event.target:setTextColor(color.black)
+
+			current_textField = event.target;
+
+			current_textField.size=16	
+
+			if "*" == event.target.text:sub(1,1) then
+
+				print("event.target 111", event.target.text:sub(1,1))
+
+				print("event.target 222", event.target.text)
+
+				event.target.text=" "
+			end
+
+
+		elseif (event.phase == "submitted" ) then
+
+			if(current_textField.id == "video url") then
+
+				native.setKeyboardFocus( feed_url )
+
+			else
+
+				native.setKeyboardFocus( nil )
+
+			end
+
+		elseif ( event.phase == "editing" ) then
+		
+			end
+
+		end
+
+
+
+	local function SetError( displaystring, object )
+
+		object.text=displaystring
+		object.size=11
+		object:setTextColor(1,0,0)
+
+	end
+
+
+
 	local function MessageLimitation( event )
 
 	   if event.phase == "began" then
 
-	   elseif event.phase == "ended" then
+	   elseif event.phase == "submitted" then
 
-	print( event.target.text )
+	  --  if(event.target.id == "messagecontent") then
+										
+			-- native.setKeyboardFocus( nil )
+
+	  --  end
+
+	   if event.target.id =="messagecontent" then
+
+	   	native.setKeyboardFocus( feed_url )
+
+	   end
 
 	   elseif event.phase == "editing" then
 
-	if (string.len(event.target.text) > 160) then
+	   	native.setKeyboardFocus( event.target)
 
-	       event.target.text = event.target.text:sub(1, 160)
+		if (string.len(event.target.text) > 160) then
+
+		       event.target.text = event.target.text:sub(1, 160)
+		end
+
+	    if (event.target.newCharacters=="\n") then
+			
+			native.setKeyboardFocus( nil )
+
+		end
+
 	end
 
-	    end
+end
 
-	end
+
+
+	-- local function urlSelection(event)
+
+ --      if event.phase == "began" then
+
+	--    elseif event.phase == "ended" then
+
+	--     print( url_dropdown.text )
+
+	--     if url_dropdown.text == "YouTube" then
+
+	--    	    if feed_url.text:match("http://www.youtube.com/watch?") or feed_url.text:match("https://www.youtube.com/watch?") then
+
+	--    		print("SUCCESS")
+
+	--    	    else
+
+	--    		feed_url.text = ""
+
+	--    		local alert = native.showAlert( Message.AlertTitle, Message.YoutubeUrlError, { CommonWords.ok } )
+
+	--     end
+
+	--    end
+
+ --      end
+
+	-- end
+
 
 
 	local function bgTouch( event )
@@ -66,7 +274,6 @@ local messageGroup
 	end
 
 
-
 ---------------------------------------------------
 
 
@@ -74,13 +281,23 @@ local messageGroup
 
 	print("response after sending message ",Request_response)
 
-
 	end
+
 
 
 	function get_messageresponse(response)
 
 		MessageSending(response)
+
+		print("SuccessMessage")
+
+		local sentalert = native.showAlert( Message.SuccessMsg, Message.SuccessContent, { CommonWords.ok })
+
+		Message_content.text = ""
+
+		feed_url.text = ""
+
+		url_dropdown.text = "YouTube"
 
 	end
 
@@ -88,10 +305,16 @@ local messageGroup
 
     local function sendMessage( method )
 
-		Webservice.SEND_MESSAGE(Message_content.text,method,get_messageresponse)
+		    if Message_content.text == nil  then
+
+		    	Message_content.text = ""
+
+		    end
+
+
+		Webservice.SEND_MESSAGE(Message_content.text,feed_url.text,method,get_messageresponse)
 
     end
-
 
 
 
@@ -103,24 +326,191 @@ local messageGroup
 
     		display.getCurrentStage():setFocus( event.target )
 
-			native.setKeyboardFocus(nil)
+		
 
     	elseif phase=="ended" then
 
+    	    local validation = false
+
+  	    	native.setKeyboardFocus(nil)
+
     	    display.getCurrentStage():setFocus( nil )
 
-    	    sendMessage("SEND")
+
+			if Message_content.text == "" or Message_content.text == nil and feed_url.text == "" or feed_url.text == nil then
+
+					if url_dropdown.text == "YouTube" or url_dropdown.text == "Vimeo" or url_dropdown.text == "Facebook" or url_dropdown.text == "Yahoo" then
+
+					local alert = native.showAlert( Message.ErrorTitle, Message.ErrorMessage, { CommonWords.ok } )
+
+				    else
+
+			    	--sendMessage("SEND")
+
+			        end
+
+	        end
+
+
+
+    	    if url_dropdown.text == "YouTube" then
+
+    	    	local youtube_textentry = feed_url.text
+
+    	    	if youtube_textentry ~= nil and youtube_textentry ~= "" then
+
+    	    		print("youtube selection")
+
+    	    		local Url = "http://www.youtube.com/watch?"
+    	    		local Url1 = "https://www.youtube.com/watch?"
+
+    	    		if string.find(youtube_textentry,Url) or string.find(youtube_textentry,Url1) then
+
+    	    			 sendMessage("SEND")			
+
+    	    	    else
+
+    	    	    	validation = false
+
+    	    	    	SetError("* "..Message.YoutubeUrlError,feed_url)
+
+    	    	    	return false
+
+    	    	    end
+
+    	    	 else
+
+    	    	 	 sendMessage("SEND")
+
+    	    end
+
+		 end
+
+
+
+		--     	if url_dropdown.text == "Vimeo" or Message_content.text ~= nil then
+
+  --   	    	local vimeo_textentry = feed_url.text
+
+  --   	    	if string.find(vimeo_textentry:lower( ),"vimeo") then
+
+  --   	    		print("vimeo selection")
+
+  --   	    		local vimeourl = "http://vimeo.com/"
+  --   	    		local vimeourl1 = "https://vimeo.com/"
+
+  --   	    		if string.find(vimeo_textentry,vimeourl) or string.find(vimeo_textentry,vimeourl1) then
+
+  --   	    			sendMessage("SEND")
+
+  --   	    	    else
+
+  --   	    	    	validation = false
+
+  --   	    	    	SetError("* "..Message.VimeoUrlError,feed_url)
+
+  --   	    	    end
+
+		--         else
+		-- 				--SetError("* "..Message.VimeoUrlError,feed_url)
+
+		--         end
+
+		--         sendMessage("SEND")
+
+		--     end
+
+
+
+		--     	if url_dropdown.text == "Facebook" or Message_content.text ~= nil then
+
+  --   	    	local facebook_textentry = feed_url.text
+
+  --   	    	if string.find(facebook_textentry:lower( ),"facebook") then
+
+  --   	    		print("facebook selection")
+
+  --   	    		local Url = "http://www.facebook.com/video"
+  --   	    		local Url1 = "https://www.facebook.com/video"
+  --   	    		local Url2 = "http://www.facebook.com/photo"
+  --   	    		local Url3 = "https://www.facebook.com/photo"
+
+  --   	    		if string.find(facebook_textentry,Url) or string.find(facebook_textentry,Url1)
+
+  --   	    		or string.find(facebook_textentry,Url2)or string.find(facebook_textentry,Url3) then
+
+  --   	    			sendMessage("SEND")
+
+  --   	    	    else
+
+  --   	    	    	validation = false
+
+  --   	    	    	SetError("* "..Message.FacebookUrlError,feed_url)
+
+  --   	    	    end
+
+		--     else
+
+		-- 	--SetError("* "..Message.FacebookUrlError,feed_url)
+
+		--     end
+
+		--     sendMessage("SEND")
+
+		-- end
+
+
+
+		--     	if url_dropdown.text == "Yahoo" or Message_content.text ~= nil then
+
+  --   	    	local yahoo_textentry = feed_url.text
+
+  --   	    	if string.find(yahoo_textentry:lower( ),"yahoo") then
+
+  --   	    		print("yahoo selection")
+
+  --   	    		local Url = "http://video.yahoo.com/watch"
+  --   	    		local Url1 = "https://video.yahoo.com/watch"
+  --   	    		local Url2 = "http://comedy.video.yahoo.com"
+  --   	    		local Url3 = "https://comedy.video.yahoo.com"
+  --   	    		local Url4 = "http://animalvideos.yahoo.com"
+  --   	    		local Url5 = "https://animalvideos.yahoo.com"
+  --   	    		local Url6 = "http://video.yahoo.com/watchmojo"
+  --   	    		local Url7 = "https://video.yahoo.com/watchmojo"
+  --   	    		local Url8 = "http://video.yahoo.com/momentsofmotherhood"
+  --   	    		local Url9 = "https://video.yahoo.com/momentsofmotherhood"
+  --   	    		local Url10 = "http://video.yahoo.com/tlc"
+  --   	    		local Url11 = "https://video.yahoo.com/tlc"
+  --   	    		local Url12 = "http://video.yahoo.com/inthedressingroomwithcatdeeley"
+  --   	    		local Url13 = "https://video.yahoo.com/inthedressingroomwithcatdeeley"
+
+  --   	    		if string.find(yahoo_textentry,Url) or string.find(yahoo_textentry,Url1) or string.find(yahoo_textentry,Url2) or string.find(yahoo_textentry,Url3)  or string.find(yahoo_textentry,Url4)   
+
+		-- 			or string.find(yahoo_textentry,Url5) or string.find(yahoo_textentry,Url6) or string.find(yahoo_textentry,Ur7) or string.find(yahoo_textentry,Url8) or string.find(yahoo_textentry,Url9) 
+
+		-- 			or string.find(yahoo_textentry,Url10) or string.find(yahoo_textentry,Url11)or string.find(yahoo_textentry,Url12) or string.find(yahoo_textentry,Url13)  then
+
+  --   	    			sendMessage("SEND")
+
+  --   	    	    else
+
+  --   	    	    	validation = false
+
+  --   	    	    	SetError("* "..Message.YahooUrlError,feed_url)
+
+  --   	    	    end
+
+		--     else
+
+		-- 	--SetError("* "..Message.YahooUrlError,feed_url)
+
+		--     end
+
+		--     sendMessage("SEND")
+
+		-- end
 
     	end
-
-    end
-
-
-    function messageResponse(content,response)
-
-    	print("send message response: ", response)
-
-    	print("message content ",content)
 
     end
 
@@ -144,6 +534,32 @@ local messageGroup
 
 		end
 
+	end
+
+
+	local pushTest = function( event )
+
+	    if notificationFlag == false then
+
+	    	feed_url.isVisible=true
+
+	    --	feed_url_bg.isVisible = false
+
+	    	Message_content_bg.isVisible = false
+
+	    	Message_content.isVisible = true
+		
+	    elseif notificationFlag == true then
+
+	    	feed_url.isVisible=false
+
+	    --	feed_url_bg.isVisible = true
+
+	    	Message_content.isVisible = false
+
+	    	Message_content_bg.isVisible = true
+		
+	    end
 	end
 
 
@@ -183,11 +599,18 @@ local messageGroup
 	Message_content.isEditable = true
 	Message_content.size=14
 	Message_content.value=""
+	Message_content.id = "messagecontent"
 	Message_content.hasBackground = true
+	Message_content:setReturnKey( "done" )
 	Message_content.inputType = "default"
 	sceneGroup:insert(Message_content)
 	Message_content.x=title_bg.x-title_bg.contentWidth/2+160;Message_content.y=title_bg.y+ title_bg.contentHeight/2+55
-	Message_content:addEventListener( "userInput", MessageLimitation )
+
+	Message_content_bg = display.newRect( sceneGroup, Message_content.x , Message_content.y , W-19, EditBoxStyle.height+70)
+  	Message_content_bg:setStrokeColor(0,0,0,0.4)
+  	Message_content_bg.x = Message_content.x
+  	Message_content_bg.hasBackground = true
+	Message_content_bg.strokeWidth = 1
 
 
     --------------url dropdown for selection-------
@@ -195,6 +618,7 @@ local messageGroup
 
 	url_dropdown_bg = display.newRect( W/2, Message_content.y+Message_content.height-35, W-20, EditBoxStyle.height+10)
 	url_dropdown_bg.id="eventname"
+	url_dropdown_bg.x = W/2
 	url_dropdown_bg.anchorY=0
 	url_dropdown_bg:setStrokeColor(0,0,0,0.4)
 	url_dropdown_bg.strokeWidth = 1
@@ -204,15 +628,16 @@ local messageGroup
 
     -------------dropdown contents---------------
 
-	url_dropdown = display.newText("",url_dropdown_bg.x-url_dropdown_bg.contentWidth/2+10,url_dropdown_bg.y,native.systemFont,14 )
+	url_dropdown = display.newText("",url_dropdown_bg.x-url_dropdown_bg.contentWidth/2+10,url_dropdown_bg.y,native.systemFont,14)
 	url_dropdown.text = "YouTube"
 	url_dropdown.value = "optionname"
 	url_dropdown.id="optionname"
-	url_dropdown.alpha=0.7
+	url_dropdown.alpha=0.8
 	url_dropdown:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 	url_dropdown.y=url_dropdown_bg.y+url_dropdown_bg.contentHeight/2
 	url_dropdown.anchorX=0
 	sceneGroup:insert(url_dropdown)
+
 
 	url_dropdown_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
 	url_dropdown_icon.x=url_dropdown_bg.x+url_dropdown_bg.contentWidth/2-15
@@ -233,10 +658,16 @@ local messageGroup
 	feed_url.value=""
 	feed_url.hasBackground = true
 	feed_url.inputType = "url"
-	feed_url.isVisible = true
+	feed_url.isVisible = false
 	sceneGroup:insert(feed_url)
 	feed_url.x=title_bg.x-title_bg.contentWidth/2+10
 	feed_url.y=url_textcontent.y+ url_textcontent.contentHeight/2+25
+
+	-- feed_url_bg = display.newRect( sceneGroup, feed_url.x+ 10 , feed_url.y , W-60, EditBoxStyle.height+10)
+ --  	feed_url_bg:setStrokeColor(0,0,0,0.4)
+ --  	feed_url_bg.x = feed_url.x
+ --  	feed_url_bg.hasBackground = true
+	-- feed_url_bg.strokeWidth = 1
 
 
 	----------cancel button------------------
@@ -251,11 +682,11 @@ local messageGroup
 
 	------------example text for url---------
 
-	urlhelp_text = display.newText(sceneGroup,"Ex.http://www.youtube.com/watch?v=qOmDoZCuFtM", 0, 0,W,0,native.systemFontBold, 13 )
+	urlhelp_text = display.newText(sceneGroup,"Ex.http://www.youtube.com/watch?v=qOmDoZCuFtM", 0, 0,native.systemFontBold, 11)
 	urlhelp_text.x = display.contentCenterX
 	urlhelp_text.width = W
 	urlhelp_text.align = "center"
-	urlhelp_text.y = feed_url.y-feed_url.contentHeight/2+ 50 
+	urlhelp_text.y = feed_url.y-feed_url.contentHeight/2+ 45 
 	urlhelp_text:setFillColor( 0, 0, 0 )
 
 
@@ -273,9 +704,10 @@ local messageGroup
 	send_button_text.y=send_button.y
 	Utils.CssforTextView(send_button_text,sp_primarybutton)
 
-	MainGroup:insert(sceneGroup)
 
-	end
+ MainGroup:insert(sceneGroup)
+
+end
 
 
 
@@ -287,17 +719,59 @@ local messageGroup
 
 	if phase == "will" then
 
+  		EventnameTop_bg = display.newRect( VideoUrlGroup, url_dropdown_bg.x , H/2+44, url_dropdown_bg.contentWidth, 125)
+  		EventnameTop_bg:setFillColor(0,0,0)
+
+
+  	    VideoTypeList = widget.newTableView
+  		{
+  		left = 0,
+  		top = -50,
+  		height = 100,
+  		width = url_dropdown_bg.contentWidth-2,
+  		onRowRender = VideoType_Render,
+  		onRowTouch = VideoType_Touch,
+  		noLines=true,
+  		hideScrollBar=true,
+  		isBounceEnabled=false,
+
+  	}
+
+		VideoTypeList.x=url_dropdown_bg.x
+		VideoTypeList.y= url_dropdown_bg.y+url_dropdown_bg.height/2+17.5
+	--	VideoTypeList.y=EventnameTop.y+EventnameTop.height/2
+		VideoTypeList.height = 150
+		VideoTypeList.width = url_dropdown_bg.contentWidth-2
+		VideoTypeList.anchorY=0
+		VideoUrlGroup.isVisible=false
+
+		VideoUrlGroup:insert(VideoTypeList)
+		
+
+---------------
+
+		for i = 1, #VideoTypeArray do
+
+		    VideoTypeList:insertRow{ rowHeight = 30,
+
+		    -- rowColor = 
+		    -- { 
+		    -- default={ 1,1,1}, over={ 0, 0, 0, 0.1 } }
+		     }
+		end
+
 
 	elseif phase == "did" then
 
-
 	send_button:addEventListener("touch",onSendButtonTouch)	
 	feed_cancelbutton:addEventListener("touch",onCancelButtonTouch)
-
-	composer.removeHidden()
-
+	Message_content:addEventListener( "userInput", MessageLimitation )
+	--url_dropdown_bg:addEventListener("touch",urlSelection)
+	feed_url:addEventListener("userInput",textfield)
+	url_dropdown_bg:addEventListener("touch",onTouchAction)
 	menuBtn:addEventListener("touch",menuTouch)
     BgText:addEventListener("touch",menuTouch)
+    Runtime:addEventListener( "enterFrame", pushTest )
 
 	end	
 
@@ -315,13 +789,19 @@ local messageGroup
 
 	if event.phase == "will" then
 
+	Runtime:removeEventListener( "enterFrame", pushTest )
+	feed_cancelbutton:removeEventListener("touch",onCancelButtonTouch)
+	url_dropdown_bg:removeEventListener("touch",onTouchAction)
 	menuBtn:removeEventListener("touch",menuTouch)
 	BgText:removeEventListener("touch",menuTouch)
-	Message_content:removeEventListener( "userInput", MessageLimit )
-
-	send_button:removeEventListener("touch",onButtonTouch)	
+	Message_content:removeEventListener( "userInput", MessageLimitation )
+	--url_dropdown_bg:removeEventListener("touch",urlSelection)
+	feed_url:removeEventListener("userInput",textfield)
+	send_button:removeEventListener("touch",onSendButtonTouch)	
 
 	elseif phase == "did" then
+
+	composer.removeHidden()
 
 	end	
 
@@ -382,3 +862,22 @@ local messageGroup
  --    url_options = display.newImage(sceneGroup,"res/assert/arrow2.png", 0, 0, 15,15 )
  --    url_options.x = url_dropdown.width + 20
  --    url_options.y = url_dropdown.y
+
+
+
+  		-- EventnameTop = display.newRect(VideoUrlGroup,W/2,H/2-160,200,30)
+  		-- EventnameTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+  		-- EventnameTop.y=EventnameTop_bg.y-EventnameTop_bg.contentHeight/2+EventnameTop.contentHeight/2
+
+  		-- EventnameText = display.newText(VideoUrlGroup,"Select Video Type",0,0,native.systemFont,16)
+  		-- EventnameText.x=EventnameTop.x;EventnameText.y=EventnameTop.y
+
+  		-- EventnameClose = display.newImageRect(VideoUrlGroup,"res/assert/cancel.png",20,20)
+  		-- EventnameClose.x=EventnameTop.x+EventnameTop.contentWidth/2-15;EventnameClose.y=EventnameTop.y
+  		-- EventnameClose.id="close"
+
+  		-- EventnameClose_bg = display.newRect(VideoUrlGroup,0,0,30,30)
+  		-- EventnameClose_bg.x=EventnameTop.x+EventnameTop.contentWidth/2-15
+  		-- EventnameClose_bg.y=EventnameTop.y
+  		-- EventnameClose_bg.id="close_videotype"
+  		-- EventnameClose_bg.alpha=0.01
