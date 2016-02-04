@@ -839,4 +839,68 @@ local request_value = {}
 	return response
 end
 
+function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,postExecution)
+	
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method="GET"
 
+	local url = splitUrl(ApplicationConfig.CreateTickler)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	
+
+	local resbody = [[
+	{
+   "UserId": ]]..UserId..[[,
+  "TicklerId": 0,
+  "CalendarId": ]]..CalendarId..[[,
+  "CalendarName": ]]..CalendarName..[[,
+  "TicklerType": ]]..TicklerType..[[,
+  "TicklerStatus": ]]..TicklerStatus..[[,
+  "title": ]]..title..[[,
+  "startdate": ]]..startdate..[[,
+  "enddate": ]]..enddate..[[,
+  "starttime": ]]..starttime..[[,
+  "endtime": ]]..endtime..[[,
+  "allDay": ]]..tostring(allDay)..[[,
+  "Location": ]]..Location..[[,
+  "Description": ]]..Description..[[,
+  "AppointmentPurpose": ]]..AppointmentPurpose..[[,,
+  "Priority": 0,
+  "TimeZone": "Eastern Standard Time"
+ 
+}]]
+
+
+--  "AppointmentPurposeOther": ]]..AppointmentPurposeOther..[[,
+
+
+	params={headers = headers,body = resbody}
+
+		print("request : "..json.encode(params))
+
+
+
+	request.new(ApplicationConfig.CreateTickler,method,params,postExecution)
+	
+	return response
+
+end

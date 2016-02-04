@@ -117,7 +117,7 @@ ApplicationConfig.SignOut = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SignOut"
 
 ApplicationConfig.GetSocialMediaTokens = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetSocialMediaTokens"
 
-
+ApplicationConfig.CreateTickler = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/CreateTickler"
 
 
 

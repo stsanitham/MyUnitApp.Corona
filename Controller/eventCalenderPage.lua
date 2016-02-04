@@ -68,7 +68,7 @@ local menuBtn,topBg,topToday_btnBg,topToday_btnlabel,searchhBg,search,weekView,c
 
 local ParentShow = true
 
-local CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic
+local CalendarName,CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic
 
 local DateWise_response = {}
 
@@ -167,7 +167,9 @@ local function listTouch( event )
 					effect = "slideLeft",
 					time = 500,
 					params = {
-					details = event.target.value
+					details = event.target.value,
+					calendarId = CalendarId,
+					calendarName = CalendarName,
 				}
 			}
 
@@ -1309,7 +1311,8 @@ function scene:show( event )
 			end
 
 			CalendarId = response[1].CalendarId
-			UserId = response[1].UserId 
+			UserId = response[1].UserId
+			CalendarName = response[1].CalendarName
 
 				--defalutCalenderView = "agendaDay"
 
