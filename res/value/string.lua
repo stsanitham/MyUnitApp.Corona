@@ -188,6 +188,16 @@ Message.PageTitle = "Message"
 Message.NoImage = "No Messages are found to view"
 Message.Message_placeholder = "Enter your message with less than 160 characters"
 Message.SendButton = "Send Now"
+Message.YoutubeUrlError = "Enter a valid YouTube url"
+Message.VimeoUrlError = "Enter a valid Vimeo url"
+Message.FacebookUrlError = "Enter a valid Facebook url"
+Message.YahooUrlError = "Enter a valid Yahoo url"
+Message.AlertTitle = "Invalid Url"
+Message.SuccessMsg = "Success Message"
+Message.SuccessContent = "Your Message has been Sent Successfully"
+Message.ErrorTitle = "Sending Failed"
+Message.ErrorMessage = "Enter a message or add any one of the given option for further proceedings."
+
 
 Facebook = {}
 

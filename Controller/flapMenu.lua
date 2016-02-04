@@ -526,7 +526,6 @@ function scene:show( event )
 			-----
 
 
-
 			--Message
 
 			if IsOwner == true then
@@ -541,8 +540,7 @@ function scene:show( event )
 			menuArray_display[#menuArray_display].name = "Message"
 			menuArray_display[#menuArray_display].id="messagePage"
 
-
-			message_icon = display.newImageRect("res/assert/socal-media.png",15,15)
+			message_icon = display.newImageRect("res/assert/message.png",15,15)
 			message_icon.anchorX = 0
 			message_icon:setFillColor(1,1,1)
 			message_icon.x=-panel.width/2+5

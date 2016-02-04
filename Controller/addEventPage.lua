@@ -246,9 +246,6 @@ function scene:create( event )
 	  		EventnameClose_bg.alpha=0.01
 
 
-
-	  		
-
 	  	EventnameList = widget.newTableView
 	  		{
 	  		left = 0,

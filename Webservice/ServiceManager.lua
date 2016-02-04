@@ -127,7 +127,7 @@ end
 
 
 
-function Webservice.SEND_MESSAGE(message,pushmethod,postExecution)
+function Webservice.SEND_MESSAGE(message,videopath,pushmethod,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -166,6 +166,7 @@ local v = [[
 
 {
   "MyUnitBuzzMessage": "]]..message..[[",
+  "VideoFilePath": "]]..videopath..[[",
   "MessageStatus": "]]..pushmethod..[[",
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
    "UserId": "]]..UserId..[[",
