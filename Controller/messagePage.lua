@@ -232,7 +232,7 @@ local function MessageLimitation( event )
 			   	--native.setKeyboardFocus( feed_url )
 			   	native.setKeyboardFocus( nil )
 
-			   end`
+			   end
 
 	   elseif event.phase == "editing" then
 
