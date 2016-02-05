@@ -50,11 +50,28 @@ return true
 end
 
 
+
+local function FocusComplete( event )
+
+	if event.phase == "began" then
+
+		native.setKeyboardFocus(nil)
+
+	elseif event.phase == "ended" then
+
+	end
+	
+end 
+
+
+
 local function onTouchAction( event )
 
 	if event.phase == "began" then
 
 			display.getCurrentStage():setFocus( event.target )
+
+			native.setKeyboardFocus(nil)
 
 			print("target message")
 
@@ -68,19 +85,23 @@ local function onTouchAction( event )
 
 				if VideoUrlGroup.isVisible == true then
 
+					print("feedurl  visible")
+
 					VideoUrlGroup.isVisible = false
-
-					feed_url.isVisible = false
-
-				--	feed_url_bg.isVisible = false
-
-				else
-
-					VideoUrlGroup.isVisible = true
 
 					feed_url.isVisible = true
 
-				--	feed_url_bg.isVisible = true
+					feed_url_bg.isVisible = false
+
+				else
+
+					print("feedurl not visible")
+
+					VideoUrlGroup.isVisible = true
+
+					feed_url.isVisible = false
+
+					feed_url_bg.isVisible = true
 
 				end
 
@@ -121,6 +142,8 @@ local function VideoType_Touch( event )
 	local phase = event.phase
 	local row = event.target
 
+	native.setKeyboardFocus(nil)
+
 	if( "press" == phase ) then
 
 		elseif ( "release" == phase ) then
@@ -130,6 +153,10 @@ local function VideoType_Touch( event )
 				VideoUrlGroup.isVisible=false
 
 				url_dropdown.text = row.name
+
+				feed_url.isVisible = true
+
+				feed_url_bg.isVisible = false
 
 			end
 
@@ -156,19 +183,27 @@ local function textfield( event )
 
 				print("event.target 222", event.target.text)
 
-				event.target.text=" "
+				event.target.text=""
+
 			end
 
 
 		elseif (event.phase == "submitted" ) then
 
-		
+			if(current_textField.id == "video url") then
+
+			-- 	native.setKeyboardFocus( feed_url )
+
+			-- else
+
 
 				native.setKeyboardFocus( nil )
 
 			
 
 		elseif ( event.phase == "editing" ) then
+
+			native.setKeyboardFocus( feed_url )
 		
 			end
 
@@ -186,18 +221,19 @@ local function textfield( event )
 
 
 
-	local function MessageLimitation( event )
+local function MessageLimitation( event )
 
 	   if event.phase == "began" then
 
 	   elseif event.phase == "submitted" then
 
-	  --  if(event.target.id == "messagecontent") then
-										
-			-- native.setKeyboardFocus( nil )
+			   if event.target.id =="messagecontent" or event.target.newCharacters=="\n" then
 
-	  --  end
+			   	print("here is the focus")
+			   	--native.setKeyboardFocus( feed_url )
+			   	native.setKeyboardFocus( nil )
 
+			   end
 		   if event.target.id =="messagecontent" then
 
 		   		native.setKeyboardFocus( feed_url )
@@ -214,6 +250,10 @@ local function textfield( event )
 		end
 
 	    if (event.target.newCharacters=="\n") then
+
+	    	print( event.newCharacters )
+
+	    	print("new line")
 			
 			native.setKeyboardFocus( nil )
 
@@ -222,37 +262,6 @@ local function textfield( event )
 	end
 
 end
-
-
-
-	-- local function urlSelection(event)
-
- --      if event.phase == "began" then
-
-	--    elseif event.phase == "ended" then
-
-	--     print( url_dropdown.text )
-
-	--     if url_dropdown.text == "YouTube" then
-
-	--    	    if feed_url.text:match("http://www.youtube.com/watch?") or feed_url.text:match("https://www.youtube.com/watch?") then
-
-	--    		print("SUCCESS")
-
-	--    	    else
-
-	--    		feed_url.text = ""
-
-	--    		local alert = native.showAlert( Message.AlertTitle, Message.YoutubeUrlError, { CommonWords.ok } )
-
-	--     end
-
-	--    end
-
- --      end
-
-	-- end
-
 
 
 	local function bgTouch( event )
@@ -291,6 +300,8 @@ end
 
 		Message_content.text = ""
 
+		feed_url.isVisible = true
+
 		feed_url.text = ""
 
 		url_dropdown.text = "YouTube"
@@ -322,8 +333,7 @@ end
 
     		display.getCurrentStage():setFocus( event.target )
 
-		
-
+	
     	elseif phase=="ended" then
 
     	    local validation = false
@@ -333,11 +343,14 @@ end
     	    display.getCurrentStage():setFocus( nil )
 
 
-			if Message_content.text == "" or Message_content.text == nil and feed_url.text == "" or feed_url.text == nil then
+			if (Message_content.text == "" or Message_content.text == nil) and (feed_url.text == "" or feed_url.text == nil) then
+
 
 					if url_dropdown.text == "YouTube" or url_dropdown.text == "Vimeo" or url_dropdown.text == "Facebook" or url_dropdown.text == "Yahoo" then
 
 					local alert = native.showAlert( Message.ErrorTitle, Message.ErrorMessage, { CommonWords.ok } )
+
+					return false
 
 				    else
 
@@ -347,24 +360,28 @@ end
 
 	        end
 
-
-
     	    if url_dropdown.text == "YouTube" then
 
     	    	local youtube_textentry = feed_url.text
 
     	    	if youtube_textentry ~= nil and youtube_textentry ~= "" then
 
-    	    		print("youtube selection")
+    	    		print("youtube selection  ; "..youtube_textentry)
 
     	    		local Url = "http://www.youtube.com/watch?"
     	    		local Url1 = "https://www.youtube.com/watch?"
 
     	    		if string.find(youtube_textentry,Url) or string.find(youtube_textentry,Url1) then
+    	      	    		
+    	    			 print("message")
 
-    	    			 sendMessage("SEND")			
+    	    			 sendMessage("SEND")	
+
+    	    			 return false
 
     	    	    else
+
+    	    	    	print ( "error message")
 
     	    	    	validation = false
 
@@ -376,135 +393,152 @@ end
 
     	    	 else
 
+    	    	 	print("success loop")
+
+    	    	 	 sendMessage("SEND")
+
+    	    end
+
+	
+ 		elseif url_dropdown.text == "Vimeo" then
+
+    	    	local youtube_textentry = feed_url.text
+
+    	    	if youtube_textentry ~= nil and youtube_textentry ~= "" then
+
+    	    		print("viemo selection  ; "..youtube_textentry)
+
+    	    		local Url = "http://vimeo.com/"
+    	    		local Url1 = "https://vimeo.com/"
+
+    	    		if string.find(youtube_textentry,Url) or string.find(youtube_textentry,Url1) then
+    	      	    		
+    	    			 print("message")
+
+    	    			 sendMessage("SEND")	
+
+    	    			 return false
+
+    	    	    else
+
+    	    	    	print ( "error message")
+
+    	    	    	validation = false
+
+    	    	    	SetError("* "..Message.VimeoUrlError,feed_url)
+
+    	    	    	return false
+
+    	    	    end
+
+    	    	 else
+
+    	    	 	print("success loop")
+
+    	    	 	 sendMessage("SEND")
+
+    	    end
+
+    	elseif url_dropdown.text == "Facebook" then
+
+    	    	local facebook_textentry = feed_url.text
+
+    	    	if facebook_textentry ~= nil and facebook_textentry ~= "" then
+
+    	    		print("facebook selection  ; "..facebook_textentry)
+
+    	    		local Url = "http://www.facebook.com/video"
+    	    		local Url1 = "https://www.facebook.com/video"
+    	    		local Url2 = "http://www.facebook.com/photo"
+    	    		local Url3 = "https://www.facebook.com/photo"
+
+    	    		if string.find(facebook_textentry,Url) or string.find(facebook_textentry,Url1)
+
+    	    		or string.find(facebook_textentry,Ur2) or string.find(facebook_textentry,Url3) then
+    	      	    		
+    	    			 print("message")
+
+    	    			 sendMessage("SEND")	
+
+    	    			 return false
+
+    	    	    else
+
+    	    	    	print ( "error message")
+
+    	    	    	validation = false
+
+    	    	    	SetError("* "..Message.FacebookUrlError,feed_url)
+
+    	    	    	return false
+
+    	    	    end
+
+    	    	 else
+
+    	    	 	print("success loop")
+
+    	    	 	 sendMessage("SEND")
+
+    	    end
+
+    	    elseif url_dropdown.text == "Yahoo" then
+
+    	    	local yahoo_textentry = feed_url.text
+
+    	    	if yahoo_textentry ~= nil and yahoo_textentry ~= "" then
+
+    	    		print("yahoo selection  ; "..yahoo_textentry)
+
+    	    		local Url = "http://video.yahoo.com/watch?"
+    	    		local Url1 = "http://comedy.video.yahoo.com"
+    	    		local Url2 = "http://animalvideos.yahoo.com"
+    	    		local Url3 = "http://video.yahoo.com/watchmojo"
+    	    		local Url4 = "http://video.yahoo.com/momentsofmotherhood" 
+    	    		local Url5 = "http://video.yahoo.com/tlc"
+    	    		local Url6 = "https://video.yahoo.com/watch?"
+    	    		local Url7 = "https://comedy.video.yahoo.com"
+    	    		local Url8 = "https://animalvideos.yahoo.com"
+    	    		local Url9 = "https://video.yahoo.com/watchmojo"
+    	    		local Url10 = "https://video.yahoo.com/momentsofmotherhood"
+    	    		local Url11 = "https://video.yahoo.com/tlc"
+
+
+    	    		if string.find(yahoo_textentry,Url) or string.find(yahoo_textentry,Url1) or string.find(yahoo_textentry,Url2)
+
+    	    		or string.find(yahoo_textentry,Url3) or string.find(yahoo_textentry,Url4) or string.find(yahoo_textentry,Url5) or string.find(yahoo_textentry,Url6) 
+
+    	    		or string.find(yahoo_textentry,Url7) or string.find(yahoo_textentry,Url8) or string.find(yahoo_textentry,Url9) 
+
+    	    		or string.find(yahoo_textentry,Url10) or string.find(yahoo_textentry,Url11) then
+    	      	    		
+    	    			 print("message")
+
+    	    			 sendMessage("SEND")	
+
+    	    			 return false
+
+    	    	    else
+
+    	    	    	print ( "error message")
+
+    	    	    	validation = false
+
+    	    	    	SetError("* "..Message.YahooUrlError,feed_url)
+
+    	    	    	return false
+
+    	    	    end
+
+    	    	 else
+
+    	    	 	print("success loop")
+
     	    	 	 sendMessage("SEND")
 
     	    end
 
 		 end
-
-
-
-		--     	if url_dropdown.text == "Vimeo" or Message_content.text ~= nil then
-
-  --   	    	local vimeo_textentry = feed_url.text
-
-  --   	    	if string.find(vimeo_textentry:lower( ),"vimeo") then
-
-  --   	    		print("vimeo selection")
-
-  --   	    		local vimeourl = "http://vimeo.com/"
-  --   	    		local vimeourl1 = "https://vimeo.com/"
-
-  --   	    		if string.find(vimeo_textentry,vimeourl) or string.find(vimeo_textentry,vimeourl1) then
-
-  --   	    			sendMessage("SEND")
-
-  --   	    	    else
-
-  --   	    	    	validation = false
-
-  --   	    	    	SetError("* "..Message.VimeoUrlError,feed_url)
-
-  --   	    	    end
-
-		--         else
-		-- 				--SetError("* "..Message.VimeoUrlError,feed_url)
-
-		--         end
-
-		--         sendMessage("SEND")
-
-		--     end
-
-
-
-		--     	if url_dropdown.text == "Facebook" or Message_content.text ~= nil then
-
-  --   	    	local facebook_textentry = feed_url.text
-
-  --   	    	if string.find(facebook_textentry:lower( ),"facebook") then
-
-  --   	    		print("facebook selection")
-
-  --   	    		local Url = "http://www.facebook.com/video"
-  --   	    		local Url1 = "https://www.facebook.com/video"
-  --   	    		local Url2 = "http://www.facebook.com/photo"
-  --   	    		local Url3 = "https://www.facebook.com/photo"
-
-  --   	    		if string.find(facebook_textentry,Url) or string.find(facebook_textentry,Url1)
-
-  --   	    		or string.find(facebook_textentry,Url2)or string.find(facebook_textentry,Url3) then
-
-  --   	    			sendMessage("SEND")
-
-  --   	    	    else
-
-  --   	    	    	validation = false
-
-  --   	    	    	SetError("* "..Message.FacebookUrlError,feed_url)
-
-  --   	    	    end
-
-		--     else
-
-		-- 	--SetError("* "..Message.FacebookUrlError,feed_url)
-
-		--     end
-
-		--     sendMessage("SEND")
-
-		-- end
-
-
-
-		--     	if url_dropdown.text == "Yahoo" or Message_content.text ~= nil then
-
-  --   	    	local yahoo_textentry = feed_url.text
-
-  --   	    	if string.find(yahoo_textentry:lower( ),"yahoo") then
-
-  --   	    		print("yahoo selection")
-
-  --   	    		local Url = "http://video.yahoo.com/watch"
-  --   	    		local Url1 = "https://video.yahoo.com/watch"
-  --   	    		local Url2 = "http://comedy.video.yahoo.com"
-  --   	    		local Url3 = "https://comedy.video.yahoo.com"
-  --   	    		local Url4 = "http://animalvideos.yahoo.com"
-  --   	    		local Url5 = "https://animalvideos.yahoo.com"
-  --   	    		local Url6 = "http://video.yahoo.com/watchmojo"
-  --   	    		local Url7 = "https://video.yahoo.com/watchmojo"
-  --   	    		local Url8 = "http://video.yahoo.com/momentsofmotherhood"
-  --   	    		local Url9 = "https://video.yahoo.com/momentsofmotherhood"
-  --   	    		local Url10 = "http://video.yahoo.com/tlc"
-  --   	    		local Url11 = "https://video.yahoo.com/tlc"
-  --   	    		local Url12 = "http://video.yahoo.com/inthedressingroomwithcatdeeley"
-  --   	    		local Url13 = "https://video.yahoo.com/inthedressingroomwithcatdeeley"
-
-  --   	    		if string.find(yahoo_textentry,Url) or string.find(yahoo_textentry,Url1) or string.find(yahoo_textentry,Url2) or string.find(yahoo_textentry,Url3)  or string.find(yahoo_textentry,Url4)   
-
-		-- 			or string.find(yahoo_textentry,Url5) or string.find(yahoo_textentry,Url6) or string.find(yahoo_textentry,Ur7) or string.find(yahoo_textentry,Url8) or string.find(yahoo_textentry,Url9) 
-
-		-- 			or string.find(yahoo_textentry,Url10) or string.find(yahoo_textentry,Url11)or string.find(yahoo_textentry,Url12) or string.find(yahoo_textentry,Url13)  then
-
-  --   	    			sendMessage("SEND")
-
-  --   	    	    else
-
-  --   	    	    	validation = false
-
-  --   	    	    	SetError("* "..Message.YahooUrlError,feed_url)
-
-  --   	    	    end
-
-		--     else
-
-		-- 	--SetError("* "..Message.YahooUrlError,feed_url)
-
-		--     end
-
-		--     sendMessage("SEND")
-
-		-- end
 
     	end
 
@@ -520,13 +554,13 @@ end
 
 			display.getCurrentStage():setFocus( event.target )
 
-			native.setKeyboardFocus(nil)
+			--native.setKeyboardFocus(nil)
 
 		elseif phase=="ended" then
 
 			display.getCurrentStage():setFocus( nil )
 
-			feed_url.text = " "
+			feed_url.text = ""
 
 		end
 
@@ -537,9 +571,9 @@ end
 
 	    if notificationFlag == false then
 
-	    	feed_url.isVisible=true
+	    	--feed_url.isVisible=true
 
-	    --	feed_url_bg.isVisible = false
+	    	feed_url_bg.isVisible = true
 
 	    	Message_content_bg.isVisible = false
 
@@ -549,7 +583,7 @@ end
 
 	    	feed_url.isVisible=false
 
-	    --	feed_url_bg.isVisible = true
+	    	feed_url_bg.isVisible = true
 
 	    	Message_content.isVisible = false
 
@@ -651,6 +685,7 @@ end
 	url_textcontent.y = url_dropdown_bg.y + url_dropdown_bg.contentHeight+15
 	url_textcontent:setFillColor( 0, 0, 0 )
 
+
 	feed_url = native.newTextField(0, 0, W-60 , EditBoxStyle.height+10)
 	feed_url.id = "video url"
 	feed_url.anchorX=0
@@ -658,16 +693,16 @@ end
 	feed_url.value=""
 	feed_url.hasBackground = true
 	feed_url.inputType = "url"
-	feed_url.isVisible = false
+	feed_url.isVisible = true
 	sceneGroup:insert(feed_url)
 	feed_url.x=title_bg.x-title_bg.contentWidth/2+10
 	feed_url.y=url_textcontent.y+ url_textcontent.contentHeight/2+25
 
-	-- feed_url_bg = display.newRect( sceneGroup, feed_url.x+ 10 , feed_url.y , W-60, EditBoxStyle.height+10)
- --  	feed_url_bg:setStrokeColor(0,0,0,0.4)
- --  	feed_url_bg.x = feed_url.x
- --  	feed_url_bg.hasBackground = true
-	-- feed_url_bg.strokeWidth = 1
+	feed_url_bg = display.newRect( sceneGroup, W/2, feed_url.y, W-60, EditBoxStyle.height+10)
+  	feed_url_bg:setStrokeColor(0,0,0,0.2)
+  	feed_url_bg.x = display.contentWidth/2- 20
+  	feed_url_bg.hasBackground = true
+	feed_url_bg.strokeWidth = 1
 
 
 	----------cancel button------------------
@@ -682,7 +717,7 @@ end
 
 	------------example text for url---------
 
-	urlhelp_text = display.newText(sceneGroup,"Ex.http://www.youtube.com/watch?v=qOmDoZCuFtM", 0, 0,native.systemFontBold, 11)
+	urlhelp_text = display.newText(sceneGroup,"Ex.https://www.youtube.com/watch?v=qOmDoZCuFtM", 0, 0,native.systemFontBold, 11)
 	urlhelp_text.x = display.contentCenterX
 	urlhelp_text.width = W
 	urlhelp_text.align = "center"
@@ -772,6 +807,7 @@ end
 	menuBtn:addEventListener("touch",menuTouch)
     BgText:addEventListener("touch",menuTouch)
     Runtime:addEventListener( "enterFrame", pushTest )
+    Background:addEventListener("touch",FocusComplete)
 
 	end	
 
@@ -798,6 +834,7 @@ end
 	--url_dropdown_bg:removeEventListener("touch",urlSelection)
 	feed_url:removeEventListener("userInput",textfield)
 	send_button:removeEventListener("touch",onSendButtonTouch)	
+	Background:removeEventListener("touch",FocusComplete)
 
 	elseif phase == "did" then
 
