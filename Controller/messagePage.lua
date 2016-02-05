@@ -197,17 +197,18 @@ local function textfield( event )
 			-- else
 
 
-				native.setKeyboardFocus( nil )
+			native.setKeyboardFocus( nil )
 
+			end
 			
 
 		elseif ( event.phase == "editing" ) then
 
-			native.setKeyboardFocus( feed_url )
+			
 		
-			end
-
 		end
+
+end
 
 
 
@@ -225,6 +226,8 @@ local function MessageLimitation( event )
 
 	   if event.phase == "began" then
 
+	   	print( "123" )
+
 	   elseif event.phase == "submitted" then
 
 			   if event.target.id =="messagecontent" or event.target.newCharacters=="\n" then
@@ -235,6 +238,8 @@ local function MessageLimitation( event )
 
 			   end
 		   if event.target.id =="messagecontent" then
+
+		   		native.setKeyboardFocus( nil )
 
 		   		native.setKeyboardFocus( feed_url )
 
@@ -249,14 +254,10 @@ local function MessageLimitation( event )
 		       event.target.text = event.target.text:sub(1, 160)
 		end
 
-	    if (event.target.newCharacters=="\n") then
+		print( event.newCharacters )
 
-	    	print( event.newCharacters )
-
-	    	print("new line")
-			
+	    if (event.newCharacters=="\n") then
 			native.setKeyboardFocus( nil )
-
 		end
 
 	end
@@ -454,7 +455,7 @@ end
 
     	    		if string.find(facebook_textentry,Url) or string.find(facebook_textentry,Url1)
 
-    	    		or string.find(facebook_textentry,Ur2) or string.find(facebook_textentry,Url3) then
+    	    		or string.find(facebook_textentry,Url2) or string.find(facebook_textentry,Url3) then
     	      	    		
     	    			 print("message")
 
@@ -797,6 +798,8 @@ end
 
 
 	elseif phase == "did" then
+
+		composer.removeHidden()
 
 	send_button:addEventListener("touch",onSendButtonTouch)	
 	feed_cancelbutton:addEventListener("touch",onCancelButtonTouch)
