@@ -196,9 +196,10 @@ local function textfield( event )
 
 			-- else
 
+
 				native.setKeyboardFocus( nil )
 
-			end
+			
 
 		elseif ( event.phase == "editing" ) then
 
@@ -233,10 +234,15 @@ local function MessageLimitation( event )
 			   	native.setKeyboardFocus( nil )
 
 			   end
+		   if event.target.id =="messagecontent" then
+
+		   		native.setKeyboardFocus( feed_url )
+
+		   end
 
 	   elseif event.phase == "editing" then
 
-	   	native.setKeyboardFocus( event.target)
+	  
 
 		if (string.len(event.target.text) > 160) then
 
@@ -618,6 +624,14 @@ end
 
 	--------------textbox for message--------------
 
+	Message_content_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+70)
+  	Message_content_bg:setStrokeColor(0,0,0,0.4)
+  	Message_content_bg.x = title_bg.x-title_bg.contentWidth/2+160
+  	Message_content_bg.y =title_bg.y+ title_bg.contentHeight/2+55
+  	Message_content_bg.hasBackground = true
+	Message_content_bg.strokeWidth = 1
+
+
 	Message_content = native.newTextBox( 0, 0, W-20, EditBoxStyle.height+70)
 	Message_content.placeholder = Message.Message_placeholder 
 	Message_content.isEditable = true
@@ -630,11 +644,7 @@ end
 	sceneGroup:insert(Message_content)
 	Message_content.x=title_bg.x-title_bg.contentWidth/2+160;Message_content.y=title_bg.y+ title_bg.contentHeight/2+55
 
-	Message_content_bg = display.newRect( sceneGroup, Message_content.x , Message_content.y , W-19, EditBoxStyle.height+70)
-  	Message_content_bg:setStrokeColor(0,0,0,0.4)
-  	Message_content_bg.x = Message_content.x
-  	Message_content_bg.hasBackground = true
-	Message_content_bg.strokeWidth = 1
+	
 
 
     --------------url dropdown for selection-------
@@ -646,7 +656,7 @@ end
 	url_dropdown_bg.anchorY=0
 	url_dropdown_bg:setStrokeColor(0,0,0,0.4)
 	url_dropdown_bg.strokeWidth = 1
-	url_dropdown_bg.hasBackground = true
+	url_dropdown_bg.hasBackground = false
 	sceneGroup:insert(url_dropdown_bg)
 
 

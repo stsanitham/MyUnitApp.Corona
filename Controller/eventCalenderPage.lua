@@ -68,7 +68,7 @@ local menuBtn,topBg,topToday_btnBg,topToday_btnlabel,searchhBg,search,weekView,c
 
 local ParentShow = true
 
-local CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic
+local CalendarName,CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic
 
 local DateWise_response = {}
 
@@ -167,7 +167,9 @@ local function listTouch( event )
 					effect = "slideLeft",
 					time = 500,
 					params = {
-					details = event.target.value
+					details = event.target.value,
+					calendarId = CalendarId,
+					calendarName = CalendarName,
 				}
 			}
 
@@ -1244,7 +1246,7 @@ picker_Done = display.newText( pickerGroup, CommonWords.done, 0, 0, native.syste
 picker_Done:setFillColor(Utils.convertHexToRGB(color.today_blue))
 picker_Done.x=picker_btnBg.x+100;picker_Done.y=picker_btnBg.y
 
-addEventBtn = display.newImageRect( sceneGroup, "res/assert/plus.png", 45,40 )
+addEventBtn = display.newImageRect( sceneGroup, "res/assert/add.png", 66/1.5,66/1.7 )
 addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 
 
@@ -1309,7 +1311,8 @@ function scene:show( event )
 			end
 
 			CalendarId = response[1].CalendarId
-			UserId = response[1].UserId 
+			UserId = response[1].UserId
+			CalendarName = response[1].CalendarName
 
 				--defalutCalenderView = "agendaDay"
 
