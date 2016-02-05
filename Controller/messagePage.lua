@@ -156,7 +156,7 @@ local function VideoType_Touch( event )
 
 				feed_url.isVisible = true
 
-				feed_url.bg.isVisible = false
+				feed_url_bg.isVisible = false
 
 			end
 
@@ -226,8 +226,9 @@ local function MessageLimitation( event )
 
 	   elseif event.phase == "submitted" then
 
-			   if event.target.id =="messagecontent" then
+			   if event.target.id =="messagecontent" or event.target.newCharacters=="\n" then
 
+			   	print("here is the focus")
 			   	--native.setKeyboardFocus( feed_url )
 			   	native.setKeyboardFocus( nil )
 
@@ -243,6 +244,8 @@ local function MessageLimitation( event )
 		end
 
 	    if (event.target.newCharacters=="\n") then
+
+	    	print( event.newCharacters )
 
 	    	print("new line")
 			
