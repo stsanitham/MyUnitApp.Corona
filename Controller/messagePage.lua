@@ -30,6 +30,8 @@ local VideoTypeArray = {"YouTube","Vimeo","Facebook","Yahoo"}
 
 local messageGroup
 
+local PHOTO_FUNCTION = media.PhotoLibrary 	
+
 ---------------------------------------------------
 
 
@@ -192,14 +194,10 @@ local function textfield( event )
 
 			if(current_textField.id == "video url") then
 
-			-- 	native.setKeyboardFocus( feed_url )
-
-			-- else
-
-
 				native.setKeyboardFocus( nil )
 
-			
+			end
+
 
 		elseif ( event.phase == "editing" ) then
 
@@ -322,6 +320,60 @@ end
 		Webservice.SEND_MESSAGE(Message_content.text,feed_url.text,method,get_messageresponse)
 
     end
+
+
+
+-- local function selectionComplete ( event )
+ 
+--         local photo = event.target
+
+--         local baseDir = system.DocumentsDirectory
+
+--         if photo then
+
+--         	print(photo.fileSize)
+
+--         display.save(photo, "photo.jpg", baseDir)
+
+--         photo:removeSelf()
+
+--         photo = nil
+
+--         photoname = "photo.jpg"
+
+-- 	else
+
+-- 	end
+
+-- end
+
+
+
+ --    function onImageButtonTouch( event )
+
+ --    	local phase = event.phase
+
+ --    	if phase=="began" then
+
+ --    		display.getCurrentStage():setFocus( event.target )
+
+	
+ --    	elseif phase=="ended" then
+
+ --    	--sendMessage("SEND")
+
+ --    if media.hasSource( PHOTO_FUNCTION  ) then
+	-- timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+	-- end )
+
+ --    end
+	
+	-- return true
+
+
+ --    end
+
+ --    end
 
 
 
@@ -740,6 +792,19 @@ end
 	Utils.CssforTextView(send_button_text,sp_primarybutton)
 
 
+	upload_button = display.newRect(sceneGroup,0,0,W-60,30)
+	upload_button.x=Message_content.x
+	upload_button.y = Message_content.y+300
+	upload_button.width = W-170
+	upload_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
+	upload_button.id="upload"
+
+	upload_button_text = display.newText(sceneGroup,"Image Upload",0,0,native.systemFont,16)
+	upload_button_text.x=upload_button.x
+	upload_button_text.y=upload_button.y
+	Utils.CssforTextView(upload_button_text,sp_primarybutton)
+
+
  MainGroup:insert(sceneGroup)
 
 end
@@ -799,6 +864,7 @@ end
 	elseif phase == "did" then
 
 	send_button:addEventListener("touch",onSendButtonTouch)	
+	--upload_button:addEventListener("touch",onImageButtonTouch)
 	feed_cancelbutton:addEventListener("touch",onCancelButtonTouch)
 	Message_content:addEventListener( "userInput", MessageLimitation )
 	--url_dropdown_bg:addEventListener("touch",urlSelection)
@@ -826,6 +892,7 @@ end
 	if event.phase == "will" then
 
 	Runtime:removeEventListener( "enterFrame", pushTest )
+	--upload_button:removeEventListener("touch",onImageButtonTouch)
 	feed_cancelbutton:removeEventListener("touch",onCancelButtonTouch)
 	url_dropdown_bg:removeEventListener("touch",onTouchAction)
 	menuBtn:removeEventListener("touch",menuTouch)
