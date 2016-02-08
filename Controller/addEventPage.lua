@@ -34,6 +34,8 @@ local priorityArray = {"Low","Normal","High"}
 
 local purposeArray = {"Booking","Color Appointment","Customer Service","Double Facial","Facial","Follow Up","Full Circle","Initial Appointment","On the Go","Training","Team Building","Reschedule","2 Day Follow up","2 Week Follow up","2 Month Follow up","Other"}
 
+local repeatList = {"Does not repeat","Daily","Every weekday (Mon-Fri)","Every Mon., Wed., and Fri","Every Tues., and Thurs.","Weekly","Monthly","Yearly"}
+
 local leftPadding = 10
 
 local AddeventGroup = display.newGroup( )
@@ -224,6 +226,28 @@ local function TouchAction( event )
 
 				end
 				timePicker.getTimeValue(getValue)
+			elseif event.target.id =="repeat" then
+
+				if List.isVisible == false then
+					List.isVisible = true
+					List.x = event.target.x
+					List.y = event.target.y+event.target.contentHeight+1.3
+					List.width =event.target.contentWidth
+					List.arrayName = repeatList
+					List.textFiled = repeatLbl
+					Where.isVisible = false
+					Description.isVisible = false
+					
+					CreateList(event)
+					
+				else
+					Where.isVisible = true
+					Description.isVisible = true
+					List_bg.isVisible = false
+					List:deleteAllRows()
+					List.isVisible = false
+
+				end
 
 			elseif event.target.id == "purpose" then
 
@@ -549,6 +573,7 @@ function scene:show( event )
 		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
 		repeatLbl = display.newText(AddeventGroup,"Repeat",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
@@ -557,7 +582,7 @@ function scene:show( event )
 		repeatLbl.x=leftPadding+5
 		repeatLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
-		Repeat = display.newText(AddeventGroup,"Does not repeat",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Repeat = display.newText(AddeventGroup,repeatList[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		Repeat.alpha=0.7
 		Repeat.anchorX=0
 		Repeat:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -796,6 +821,8 @@ end
 
 		if event.phase == "will" then
 
+			if List then List:removeSelf( );List=nil end
+			if scrollView then scrollView:removeSelf( );scrollView=nil end
 
 
 		elseif phase == "did" then
