@@ -194,9 +194,11 @@ local function textfield( event )
 
 			if(current_textField.id == "video url") then
 
+
 				native.setKeyboardFocus( nil )
 
 			end
+
 
 		elseif ( event.phase == "editing" ) then
 
