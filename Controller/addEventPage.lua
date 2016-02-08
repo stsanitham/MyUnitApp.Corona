@@ -34,6 +34,8 @@ local priorityArray = {"Low","Normal","High"}
 
 local purposeArray = {"Booking","Color Appointment","Customer Service","Double Facial","Facial","Follow Up","Full Circle","Initial Appointment","On the Go","Training","Team Building","Reschedule","2 Day Follow up","2 Week Follow up","2 Month Follow up","Other"}
 
+local repeatList = {"Does not repeat","Daily","Every weekday (Mon-Fri)","Every Mon., Wed., and Fri","Every Tues., and Thurs.","Weekly","Monthly","Yearly"}
+
 local leftPadding = 10
 
 local AddeventGroup = display.newGroup( )
@@ -146,6 +148,16 @@ end
 
 local function get_CreateTickler( response )
 	print("event Added")
+
+	if response.TicklerId ~= nil then
+
+		if response.TicklerId > 0 then
+
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event Added", { "OK" } )
+
+		end
+
+	end
 end
 
 
@@ -164,17 +176,26 @@ local function TouchAction( event )
 
 			elseif event.target.id == "save" then
 
+				if allDay == true then
 
-				local startdate = Event_from_date.text.." "..Event_from_time.text
-				local enddate = Event_to_date.text.." "..Event_to_time.text
+					EventFrom_time = "00:00"
+					EventTo_time = "00:00"
+				else
+					EventFrom_time = Event_from_time.text
+					EventTo_time = Event_to_time.text
+				end
+
+				local startdate = Event_from_date.text.." "..EventFrom_time
+				local enddate = Event_to_date.text.." "..EventTo_time
 
 
 				print( startdate) 
 
 
 				--CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority
+				print( "PriorityLbl : "..PriorityLbl.value )
 
-				Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,Event_from_time.text,Event_to_time.text,allDay,Where.text,Description.text,PurposeLbl.value,"","Low",get_CreateTickler)
+				Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,"",PriorityLbl.value,get_CreateTickler)
 
 
 			elseif event.target.id == "fromTime" then
@@ -205,6 +226,28 @@ local function TouchAction( event )
 
 				end
 				timePicker.getTimeValue(getValue)
+			elseif event.target.id =="repeat" then
+
+				if List.isVisible == false then
+					List.isVisible = true
+					List.x = event.target.x
+					List.y = event.target.y+event.target.contentHeight+1.3
+					List.width =event.target.contentWidth
+					List.arrayName = repeatList
+					List.textFiled = repeatLbl
+					Where.isVisible = false
+					Description.isVisible = false
+					
+					CreateList(event)
+					
+				else
+					Where.isVisible = true
+					Description.isVisible = true
+					List_bg.isVisible = false
+					List:deleteAllRows()
+					List.isVisible = false
+
+				end
 
 			elseif event.target.id == "purpose" then
 
@@ -331,7 +374,7 @@ function scene:create( event )
 			width = W,
 			height =H-RecentTab_Topvalue,
 			hideBackground = true,
-			isBounceEnabled=true,
+			isBounceEnabled=false,
 			horizontalScrollDisabled = true,
 			bottomPadding = 200,
    			--listener = Facebook_scrollListener,
@@ -366,65 +409,7 @@ function scene:create( event )
 	  	SelectEvent_icon.y=SelectEvent.y
 
 
-		  	---Event name---
 
-	  		EventnameTop_bg = display.newRect( EventnameGroup, SelectEvent_bg.x, H/2-5, 202, 206 )
-	  		EventnameTop_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-
-	  		EventnameTop = display.newRect(EventnameGroup,W/2,H/2-160,200,30)
-	  		EventnameTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-	  		EventnameTop.y=EventnameTop_bg.y-EventnameTop_bg.contentHeight/2+EventnameTop.contentHeight/2
-
-	  		EventnameText = display.newText(EventnameGroup,"Select Event Name",0,0,native.systemFont,16)
-	  		EventnameText.x=EventnameTop.x;EventnameText.y=EventnameTop.y
-
-
-	  		EventnameClose = display.newImageRect(EventnameGroup,"res/assert/cancel.png",19,19)
-	  		EventnameClose.x=EventnameTop.x+EventnameTop.contentWidth/2-15;EventnameClose.y=EventnameTop.y
-	  		EventnameClose.id="close"
-
-	  		EventnameClose_bg = display.newRect(EventnameGroup,0,0,30,30)
-	  		EventnameClose_bg.x=EventnameTop.x+EventnameTop.contentWidth/2-15;EventnameClose_bg.y=EventnameTop.y
-	  		EventnameClose_bg.id="close_eventname"
-	  		EventnameClose_bg.alpha=0.01
-
-
-	  	EventnameList = widget.newTableView
-	  		{
-	  		left = 0,
-	  		top = -50,
-	  		height = 150,
-	  		width = 200,
-	  		onRowRender = Eventname_Render,
-	  		onRowTouch = Eventname_Touch,
-	  		--hideBackground = true,
-	  		noLines=true,
-	  		hideScrollBar=true,
-	  		isBounceEnabled=false,
-
-	  	}
-
-	  	EventnameList.x=SelectEvent_bg.x
-	  	EventnameList.y=EventnameTop.y+EventnameTop.height/2
-	  	EventnameList.height = 200
-	  	EventnameList.width = SelectEvent_bg.contentWidth
-	  	EventnameList.anchorY=0
-	  	EventnameGroup.isVisible=false
-
-	  	EventnameGroup:insert(EventnameList)
-		
-
-	---------------
-
-			for i = 1, #EventnameArray do
-				    -- Insert a row into the tableView
-				    EventnameList:insertRow{ rowHeight = 35,
-				    rowColor = { default={ 1,1,1}, over={ 0, 0, 0, 0.1 } }
-
-				}
-			end
-
-		------------------
 
 	
 scrollView:insert( AddeventGroup)
@@ -588,6 +573,7 @@ function scene:show( event )
 		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
 		repeatLbl = display.newText(AddeventGroup,"Repeat",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
@@ -596,7 +582,7 @@ function scene:show( event )
 		repeatLbl.x=leftPadding+5
 		repeatLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
-		Repeat = display.newText(AddeventGroup,"Does not repeat",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Repeat = display.newText(AddeventGroup,repeatList[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		Repeat.alpha=0.7
 		Repeat.anchorX=0
 		Repeat:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -733,14 +719,16 @@ function scene:show( event )
 		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="priority"
 		AddeventArray[#AddeventArray].anchorY=0
+		AddeventArray[#AddeventArray].value = 0
 		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
-		PriorityLbl = display.newText(AddeventGroup,"Priority",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PriorityLbl = display.newText(AddeventGroup,"Low",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
+		PriorityLbl.value=0
 		PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		PriorityLbl.x=leftPadding+5
 		PriorityLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
@@ -833,6 +821,8 @@ end
 
 		if event.phase == "will" then
 
+			if List then List:removeSelf( );List=nil end
+			if scrollView then scrollView:removeSelf( );scrollView=nil end
 
 
 		elseif phase == "did" then

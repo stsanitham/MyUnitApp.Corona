@@ -204,16 +204,21 @@ local BackFlag = false
 
             --BackFlag=true
 
-
-
             if openPage == "signInPage" or openPage == "requestAccess Page" then
                 native.setKeyboardFocus(nil)
                 
             end
+
+            return true
+        else
+
+            return false
+
         end
+
         -- we handled the event, so return true.
         -- for default behavior, return false.
-        return true
+        
      end
 
     -- Add the key callback

@@ -868,29 +868,32 @@ function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerSta
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 	
 
-	local resbody = [[
-	{
-   "UserId": ]]..UserId..[[,
-  "TicklerId": 0,
-  "CalendarId": ]]..CalendarId..[[,
-  "CalendarName": ]]..CalendarName..[[,
-  "TicklerType": ]]..TicklerType..[[,
-  "TicklerStatus": ]]..TicklerStatus..[[,
-  "title": ]]..title..[[,
-  "startdate": ]]..startdate..[[,
-  "enddate": ]]..enddate..[[,
-  "starttime": ]]..starttime..[[,
-  "endtime": ]]..endtime..[[,
-  "allDay": ]]..tostring(allDay)..[[,
-  "Location": ]]..Location..[[,
-  "Description": ]]..Description..[[,
-  "AppointmentPurpose": ]]..AppointmentPurpose..[[,,
-  "Priority": 0,
-  "TimeZone": "Eastern Standard Time",
-  "ColorCode": "#BCA9F5",
- 
-}]]
+print( "AppointmentPurpose = "..AppointmentPurpose )
 
+local resbody = [[
+
+{"UserId": ]]..UserId..[[,
+"TicklerId": 0,
+"CalendarId": ]]..CalendarId..[[,
+"CalendarName":  ']]..CalendarName..[[',
+"TicklerType": ']]..TicklerType..[[',
+"TicklerStatus": "OPEN",
+"title": ']]..title..[[',
+"startdate": ']]..startdate..[[',
+"enddate": ']]..enddate..[[',
+"starttime": ']]..starttime..[[',
+"endtime": ']]..endtime..[[',
+"allDay": ]]..tostring(allDay)..[[,
+"Location": ']]..Location..[[',
+"Description": ']]..Description..[[',
+"AppointmentPurpose":  ]]..AppointmentPurpose..[[,
+"Priority":  ]]..Priority..[[,
+"TimeZone": "Eastern Standard Time",
+"ColorCode":"#BCA9F5",
+"EventAccess":"PUBLIC"
+}
+
+]]
 
 --  "AppointmentPurposeOther": ]]..AppointmentPurposeOther..[[,
 
