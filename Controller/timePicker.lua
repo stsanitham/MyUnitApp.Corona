@@ -6,7 +6,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Min = {}
 	local Hour = {}
-	for i = 1,60 do Min[i] = i end
+	for i = 1,60 do Min[i] = (string.format("%02d",i)) end
 	for j = 1,12 do Hour[j] = j end
 
 	local columnData = { 
