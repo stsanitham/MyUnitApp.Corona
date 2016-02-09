@@ -206,12 +206,7 @@ local function textfield( event )
 
 			if(current_textField.id == "video url") then
 
-<<<<<<< HEAD
 			native.setKeyboardFocus( nil )
-=======
-
-				native.setKeyboardFocus( nil )
->>>>>>> 2da4aff945bee641a70e8dc555b4d86c7222d8e6
 
 			end
 
