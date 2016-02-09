@@ -49,7 +49,7 @@ RequestAccess = {}
 
 RequestAccess.PageTitle = "Request Access"
 RequestAccess.REQUEST = "Request already sent"
-RequestAccess.FIRSTREQUEST = "Your Request Access has been sent successfully"
+RequestAccess.FIRSTREQUEST = "Your Request for Access has been sent successfully"
 RequestAccess.OPEN = "Request Access sent"
 RequestAccess.GRANT = "Access already granted"
 RequestAccess.NOUNITNUMBER = "Enter the Valid UnitNumber"
@@ -66,7 +66,7 @@ RequestAccess.LastName_placeholder = "Last Name"
 RequestAccess.EmailAddress_placeholder= "Email Address"
 RequestAccess.Phone_placeholder = "Phone"
 RequestAccess.MKRank_placeholder = "-Select MK Rank-"
-RequestAccess.Comment_placeholder= "Enter your comment(s) here"
+RequestAccess.Comment_placeholder= "Enter your comments here"
 
 
 LoginPage = {}
@@ -186,7 +186,7 @@ Message = {}
 
 Message.PageTitle = "Message"
 Message.NoImage = "No Messages are found to view"
-Message.Message_placeholder = "Enter your message with less than 160 characters"
+Message.Message_placeholder = "Enter your notification message with less than 160 characters"
 Message.SendButton = "Send Now"
 Message.YoutubeUrlError = "Enter a valid YouTube url"
 Message.VimeoUrlError = "Enter a valid Vimeo url"
@@ -197,6 +197,8 @@ Message.SuccessMsg = "Success Message"
 Message.SuccessContent = "Your Message has been Sent Successfully"
 Message.ErrorTitle = "Sending Failed"
 Message.ErrorMessage = "Enter a message or add any one of the given option for further proceedings."
+Message.SuccessMsgForImage = "Image Upload"
+Message.SuccessContentForImage = "Your Image has been Uploaded Successfully"
 
 
 Facebook = {}
