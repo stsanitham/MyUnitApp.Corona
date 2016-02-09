@@ -314,6 +314,12 @@ end
 
 		feed_url.text = ""
 
+		Imagepath = ""
+
+		Imagename = ""
+
+		Imagesize = ""
+
 		url_dropdown.text = "YouTube"
 
 	end
@@ -349,10 +355,6 @@ end
 		print( "content : "..response.Abspath )
 
 		local sentalert = native.showAlert( Message.SuccessMsgForImage, Message.SuccessContentForImage, { CommonWords.ok })
-
-		--local mailcontent = json.encode(response)
-
-		--print("mailcontent : "..mailcontent)
 
 		Imagepath = response.Abspath
 
@@ -438,7 +440,6 @@ end
 
        photo = nil
 
-        
 
         path = system.pathForFile( photoname, baseDir)
 
@@ -466,6 +467,33 @@ end
 
 
 
+local function onComplete(event)
+
+	if "clicked"==event.action then
+
+		local i = event.index 
+
+		if 1 == i then
+
+		if media.hasSource( PHOTO_FUNCTION  ) then
+		timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+		end )
+	    end
+
+		elseif 2 == i then
+
+		if media.hasSource( media.Camera ) then
+        timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+		end )
+	    end
+
+		end
+
+end
+
+end
+
+
     function onImageButtonTouch( event )
 
     	local phase = event.phase
@@ -481,72 +509,19 @@ end
 
     	--sendMessage("SEND")
 
-    if media.hasSource( PHOTO_FUNCTION  ) then
-	timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
-	end )
-
-    end
-	
-	return true
-
-
-    end
-
-    end
-
-
-
--- local function selectionComplete ( event )
- 
---         local photo = event.target
-
---         local baseDir = system.DocumentsDirectory
-
---         if photo then
-
---         	print(photo.fileSize)
-
---         display.save(photo, "photo.jpg", baseDir)
-
---         photo:removeSelf()
-
---         photo = nil
-
---         photoname = "photo.jpg"
-
--- 	else
-
--- 	end
-
--- end
-
-
-
- --    function onImageButtonTouch( event )
-
- --    	local phase = event.phase
-
- --    	if phase=="began" then
-
- --    		display.getCurrentStage():setFocus( event.target )
-
-	
- --    	elseif phase=="ended" then
-
- --    	--sendMessage("SEND")
+        local alert = native.showAlert("Select File", "Select the source from where you want to pick the photo", {"From Gallery","Take Photo","Cancel"} , onComplete)
 
  --    if media.hasSource( PHOTO_FUNCTION  ) then
 	-- timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
 	-- end )
 
- --    end
+    --end
 	
-	-- return true
+	return true
 
+    end
 
- --    end
-
- --    end
+    end
 
 
 
@@ -870,13 +845,48 @@ end
 	sceneGroup:insert(Message_content)
 	Message_content.x=title_bg.x-title_bg.contentWidth/2+160;Message_content.y=title_bg.y+ title_bg.contentHeight/2+55
 
-	
+
+	image_content_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+15)
+  	image_content_bg:setStrokeColor(0,0,0,0.4)
+  	image_content_bg.x = Message_content_bg.x
+  	image_content_bg.y = Message_content_bg.y + Message_content.contentHeight/2 + 30
+  	image_content_bg.hasBackground = true
+	image_content_bg.strokeWidth = 1
+
+	-----------------upload button------------------
+
+	upload_button = display.newRect(sceneGroup,0,0,W,25)
+	upload_button.x=image_content_bg.x-image_content_bg.contentWidth/2 + 65
+	upload_button.y = image_content_bg.y
+	upload_button.width = W-210
+	upload_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
+	upload_button.id="upload"
+
+	upload_button_text = display.newText(sceneGroup,"Add Image",0,0,native.systemFont,16)
+	upload_button_text.x=upload_button.x + 10
+	upload_button_text.y=upload_button.y
+	Utils.CssforTextView(upload_button_text,sp_primarybutton)
+
+	upload_icon = display.newImageRect("res/assert/upload.png",18,17)
+	upload_icon.id = "image upload"
+	sceneGroup:insert(upload_icon)
+	upload_icon.x= upload_button_text.x - 50
+	upload_icon.y=upload_button.y
+
+	-- upload_text = display.newText("UnitWise allows upto 10MB files for each upload. Enjoy!",image_content_bg.x-image_content_bg.contentWidth/2+ 150,image_content_bg.y,native.systemFont,11)
+	-- --upload_text.text = "YouTube"
+	-- upload_text.value = "uploadtext"
+	-- upload_text.id="uploadtext"
+	-- upload_text.alpha=0.8
+	-- upload_text:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+	-- upload_text.y=image_content_bg.y
+	-- upload_text.anchorX=0
+	-- sceneGroup:insert(upload_text)
 
 
     --------------url dropdown for selection-------
 
-
-	url_dropdown_bg = display.newRect( W/2, Message_content.y+Message_content.height-35, W-20, EditBoxStyle.height+10)
+	url_dropdown_bg = display.newRect( W/2, Message_content.y+Message_content.height+25, W-20, EditBoxStyle.height+10)
 	url_dropdown_bg.id="eventname"
 	url_dropdown_bg.x = W/2
 	url_dropdown_bg.anchorY=0
@@ -943,7 +953,7 @@ end
 
 	------------example text for url---------
 
-	urlhelp_text = display.newText(sceneGroup,"Ex.https://www.youtube.com/watch?v=qOmDoZCuFtM", 0, 0,native.systemFontBold, 11)
+	urlhelp_text = display.newText(sceneGroup,"Eg.https://www.youtube.com/watch?v=qOmDoZCuFtM", 0, 0,native.systemFontBold, 11)
 	urlhelp_text.x = display.contentCenterX
 	urlhelp_text.width = W
 	urlhelp_text.align = "center"
@@ -955,8 +965,8 @@ end
 
 	send_button = display.newRect(sceneGroup,0,0,W-60,30)
 	send_button.x=Message_content.x
-	send_button.y = Message_content.y+230
-	send_button.width = W-170
+	send_button.y = Message_content.y+280
+	send_button.width = W-190
 	send_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
 	send_button.id="send"
 
@@ -964,28 +974,6 @@ end
 	send_button_text.x=send_button.x
 	send_button_text.y=send_button.y
 	Utils.CssforTextView(send_button_text,sp_primarybutton)
-
-
-    -----------upload button--------------------
-
-	upload_button = display.newRect(sceneGroup,0,0,W-60,30)
-	upload_button.x=Message_content.x
-	upload_button.y = Message_content.y+280
-	upload_button.width = W-170
-	upload_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
-	upload_button.id="upload"
-
-	upload_button_text = display.newText(sceneGroup,"Image Upload",0,0,native.systemFont,16)
-	upload_button_text.x=upload_button.x + 10
-	upload_button_text.y=upload_button.y
-	Utils.CssforTextView(upload_button_text,sp_primarybutton)
-
-	upload_icon = display.newImageRect("res/assert/upload.png",18,18)
-	upload_icon.id = "image upload"
-	--upload_icon.anchorX=0
-	sceneGroup:insert(upload_icon)
-	upload_icon.x= upload_button_text.x - 65
-	upload_icon.y=upload_button.y
 
 
     MainGroup:insert(sceneGroup)

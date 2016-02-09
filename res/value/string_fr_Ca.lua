@@ -66,7 +66,7 @@ RequestAccess.LastName_placeholder = "Nom de famille"
 RequestAccess.EmailAddress_placeholder= "Adresse e-mail"
 RequestAccess.Phone_placeholder = "Téléphone"
 RequestAccess.MKRank_placeholder = "-Sélectionnez MK Rang-"
-RequestAccess.Comment_placeholder= "Entrez vos commentaires) ici"
+RequestAccess.Comment_placeholder= "Entrez vos commentaires ici"
 
 
 LoginPage = {}

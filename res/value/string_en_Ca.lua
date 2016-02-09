@@ -49,7 +49,7 @@ RequestAccess = {}
 
 RequestAccess.PageTitle = "Request Access"
 RequestAccess.REQUEST = "Request already sent"
-RequestAccess.FIRSTREQUEST = "Your Request Access has been sent successfully"
+RequestAccess.FIRSTREQUEST = "Your Request for Access has been sent successfully"
 RequestAccess.OPEN = "Request Access sent"
 RequestAccess.GRANT = "Access already granted"
 RequestAccess.NOUNITNUMBER = "Enter the Valid UnitNumber"
@@ -66,7 +66,7 @@ RequestAccess.LastName_placeholder = "Last Name"
 RequestAccess.EmailAddress_placeholder= "Email Address"
 RequestAccess.Phone_placeholder = "Phone"
 RequestAccess.MKRank_placeholder = "-Select MK Rank-"
-RequestAccess.Comment_placeholder= "Enter your comment(s) here"
+RequestAccess.Comment_placeholder= "Enter your comments here"
 
 
 LoginPage = {}

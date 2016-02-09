@@ -50,7 +50,7 @@ RequestAccess = {}
 
 RequestAccess.PageTitle = "Solicitar acceso"
 RequestAccess.REQUEST = "Solicite ya ha sido enviada"
-RequestAccess.FIRSTREQUEST = "su solicitud de acceso ha sido enviado con éxito"
+RequestAccess.FIRSTREQUEST = "Su solicitud de acceso ha sido enviado con éxito"
 RequestAccess.OPEN = "Envió Petición de acceso"
 RequestAccess.GRANT = "Acceso ya concedidas"
 RequestAccess.NOUNITNUMBER = "Introduzca la Válido UnitNumber"
@@ -67,7 +67,7 @@ RequestAccess.LastName_placeholder = "Apellido"
 RequestAccess.EmailAddress_placeholder= "Dirección de correo electrónico"
 RequestAccess.Phone_placeholder = "Teléfono"
 RequestAccess.MKRank_placeholder = "-Seleccione MK Rank-"
-RequestAccess.Comment_placeholder= "Escriba su comentario aquí"
+RequestAccess.Comment_placeholder= "Ingrese sus comentarios aquí"
 EventCalender.NoRecord="No se encontrarón archivos"
 
 
