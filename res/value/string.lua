@@ -186,7 +186,7 @@ Message = {}
 
 Message.PageTitle = "Message"
 Message.NoImage = "No Messages are found to view"
-Message.Message_placeholder = "Enter your notification message with less than 160 characters"
+Message.Message_placeholder = "Enter your notification message with less than 160 characters and the sent message can be viewed by your Team Members"
 Message.SendButton = "Send Now"
 Message.YoutubeUrlError = "Enter a valid YouTube url"
 Message.VimeoUrlError = "Enter a valid Vimeo url"
