@@ -127,7 +127,7 @@ end
 
 
 
-function Webservice.SEND_MESSAGE(message,videopath,pushmethod,postExecution)
+function Webservice.SEND_MESSAGE(message,videopath,imagepath,imagename,imagesize,pushmethod,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -162,6 +162,11 @@ function Webservice.SEND_MESSAGE(message,videopath,pushmethod,postExecution)
 	--local v = "MyUnitBuzzMessageId=1&MyUnitBuzzMessage="..message.."&MessageStatus="..pushmethod.."&UserId="..UserId.."&EmailAddress="..EmailAddess.."&MessageDate="..headers["Timestamp"].."&TimeZone=Eastern Standard Time"
 --02/02/2016 9:21:48 PM
 --local time = os.date("%I")
+
+
+-- if message ~="" then
+
+-- 	v = v.."MyUnitBuzzMessage": "]]..message..[["
 local v = [[
 
 {
@@ -171,6 +176,9 @@ local v = [[
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
    "UserId": "]]..UserId..[[",
    "EmailAddress": "]]..EmailAddess..[[",
+	"ImageFilePath": "]]..imagepath..[[",
+	 "ImageFileName": "]]..imagename..[[",
+	  "ImageFileSize": "]]..imagesize..[[",
    "TimeZone": "Eastern Standard Time",
 }
 ]]
@@ -181,6 +189,62 @@ local v = [[
 	print("Send Message Request :"..json.encode(params))
 
 	request.new( ApplicationConfig.SEND_MESSAGE,method,params,postExecution)
+	
+	return response
+
+end
+
+
+
+
+function Webservice.DOCUMENT_UPLOAD(file_inbytearray,filename,filetype,postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	
+	method="POST"
+
+	local url = splitUrl(ApplicationConfig.DOCUMENT_UPLOAD)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+		EmailAddess = row.EmailAddess
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+local v = [[
+
+{
+  "UserId": "]]..UserId..[[",
+  "File": "]]..file_inbytearray..[[",
+  "FileName": "]]..filename..[[",
+  "FileType": "]]..filetype..[[",
+}
+]]
+
+ -- "IsOverwrite": "true",
+ --  "IsResize": "true",
+
+	params={headers = headers,body = v}
+
+	print("Send Message Request :"..json.encode(params))
+
+	request.new( ApplicationConfig.DOCUMENT_UPLOAD,method,params,postExecution)
 	
 	return response
 

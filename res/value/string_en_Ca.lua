@@ -196,6 +196,8 @@ Message.SuccessMsg = "Success Message"
 Message.SuccessContent = "Your Message has been Sent Successfully"
 Message.ErrorTitle = "Sending Failed"
 Message.ErrorMessage = "Enter a message or add any one of the given option for further proceedings."
+Message.SuccessMsgForImage = "Image Upload"
+Message.SuccessContentForImage = "Your Image has been Uploaded Successfully"
 
 Facebook = {}
 

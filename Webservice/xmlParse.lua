@@ -36,9 +36,10 @@ function request.new(url, method, params,listner)
 
 	else
 		
-		print ( "RESPONSE: " .. event.response )
+		--print ( "RESPONSE: " .. event.response )
 
 		response = json.decode(event.response)
+
 
 
 		spinner_hide()
@@ -50,7 +51,6 @@ function request.new(url, method, params,listner)
 
 
 	--[[if(url:sub(1,string.find(url,"?")-1) == "http://api.myunitapp.dotnetethic.com/MyUnitBuzz/GetSearchByUnitNumberOrDirectorName") then
-
 		
 
 	end]]

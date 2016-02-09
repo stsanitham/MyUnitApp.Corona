@@ -119,5 +119,7 @@ ApplicationConfig.GetSocialMediaTokens = ApplicationConfig.BASE_URL.."/MyUnitBuz
 
 ApplicationConfig.CreateTickler = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/CreateTickler"
 
+ApplicationConfig.DOCUMENT_UPLOAD = ApplicationConfig.BASE_URL.."/MyUnitBuzz/DocumentUpload"
+
 
 

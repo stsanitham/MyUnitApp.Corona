@@ -7,6 +7,8 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 local widget = require("widget")
+local lfs = require ("lfs")
+local mime = require("mime")
 local style = require("res.value.style")
 local Utility = require( "Utils.Utility" )
 local json = require("json")
@@ -24,11 +26,21 @@ local menuBtn
 
 openPage="messagePage"
 
+local Imagepath = ""
+
+local Imagesize = "" 
+
+local Imagename = ""
+
+local Message_content = ""
+
+local feedurl = ""
+
 local VideoUrlGroup = display.newGroup( )
 
 local VideoTypeArray = {"YouTube","Vimeo","Facebook","Yahoo"}
 
-local messageGroup
+local messageGroup , photo
 
 ---------------------------------------------------
 
@@ -192,11 +204,6 @@ local function textfield( event )
 
 			if(current_textField.id == "video url") then
 
-			-- 	native.setKeyboardFocus( feed_url )
-
-			-- else
-
-
 			native.setKeyboardFocus( nil )
 
 			end
@@ -205,7 +212,6 @@ local function textfield( event )
 		elseif ( event.phase == "editing" ) then
 
 			
-		
 		end
 
 end
@@ -280,18 +286,19 @@ end
 	end
 
 
----------------------------------------------------
+--------------------------------------------------- message sending functions----------------------------------------
 
 
 	function MessageSending( Request_response )
 
 	print("response after sending message ",Request_response)
 
+
 	end
 
 
 
-	function get_messageresponse(response)
+	function get_messagemodel(response)
 
 		MessageSending(response)
 
@@ -311,7 +318,7 @@ end
 
 
 
-    local function sendMessage( method )
+    local function sendMessage ( method )
 
 		    if Message_content.text == nil  then
 
@@ -320,7 +327,168 @@ end
 		    end
 
 
-		Webservice.SEND_MESSAGE(Message_content.text,feed_url.text,method,get_messageresponse)
+		Webservice.SEND_MESSAGE(Message_content.text,feed_url.text,Imagepath,Imagename,Imagesize,method,get_messagemodel)
+
+    end
+
+    ----------------------------------------------------------------
+
+
+
+-------------------image sending functions------------------------------
+
+  
+
+
+	function get_imagemodel(response)
+
+		print("SuccessMessage")
+
+		print( "content : "..response.Abspath )
+
+		local sentalert = native.showAlert( Message.SuccessMsgForImage, Message.SuccessContentForImage, { CommonWords.ok })
+
+		--local mailcontent = json.encode(response)
+
+		--print("mailcontent : "..mailcontent)
+
+		Imagepath = response.Abspath
+
+		Imagename = response.FileName
+
+		Imagesize = size
+
+   --          local options =
+			-- {
+			--    to = { "anitha.mani@w3magix.com" },
+			--    subject = "Corona Mail",
+			--     body = "content : "..response.Abspath,
+			   
+			-- }
+   --          native.showPopup("mail", options)
+
+	end
+
+
+
+    local function sendImage( )
+
+	Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+    end
+
+-----------------------------------------------------------------------
+
+    function formatSizeUnits(event)
+
+      if (event>=1073741824) then 
+
+      	size=(event/1073741824)..' GB'
+
+      print("size of the image11 ",size)
+
+
+       elseif (event>=1048576) then   
+
+       	size=(event/1048576)..' MB'
+
+      print("size of the image 22",size)
+
+
+      elseif (event>=1024)  then   
+
+      	size = (event/1024)..' KB'
+
+       print("size of the image 33",size)
+
+
+      else      
+
+  end
+
+end
+
+
+
+
+
+     local function selectionComplete ( event )
+
+        print(event.target)
+ 
+        local photo = event.target
+
+        local baseDir = system.DocumentsDirectory
+
+        if photo then
+
+        photo.x = display.contentCenterX
+		photo.y = display.contentCenterY
+		local w = photo.width
+		local h = photo.height
+		print( "w,h = ".. w .."," .. h )
+
+		photoname = "photo.jpg"
+
+        display.save(photo,photoname,system.DocumentsDirectory)
+
+       photo:removeSelf()
+
+       photo = nil
+
+        
+
+        path = system.pathForFile( photoname, baseDir)
+
+        local size = lfs.attributes (path, "size")
+
+		local fileHandle = io.open(path, "rb")
+
+		file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+		io.close( fileHandle )
+
+            print("mime conversion ",file_inbytearray)
+
+        	print("bbb ",size)
+
+        	formatSizeUnits(size)
+
+        	sendImage()
+
+	else
+
+	end
+
+end
+
+
+
+    function onImageButtonTouch( event )
+
+    	local phase = event.phase
+
+    	if phase=="began" then
+
+    		display.getCurrentStage():setFocus( event.target )
+
+	
+    	elseif phase=="ended" then
+
+    	display.getCurrentStage():setFocus( nil )
+
+    	--sendMessage("SEND")
+
+    if media.hasSource( PHOTO_FUNCTION  ) then
+	timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+	end )
+
+    end
+	
+	return true
+
+
+    end
 
     end
 
@@ -344,7 +512,7 @@ end
     	    display.getCurrentStage():setFocus( nil )
 
 
-			if (Message_content.text == "" or Message_content.text == nil) and (feed_url.text == "" or feed_url.text == nil) then
+			if (Message_content.text == "" or Message_content.text == nil) and (feed_url.text == "" or feed_url.text == nil) and (Imagepath == "" or Imagepath == nil) then
 
 
 					if url_dropdown.text == "YouTube" or url_dropdown.text == "Vimeo" or url_dropdown.text == "Facebook" or url_dropdown.text == "Yahoo" then
@@ -360,6 +528,7 @@ end
 			        end
 
 	        end
+
 
     	    if url_dropdown.text == "YouTube" then
 
@@ -741,7 +910,29 @@ end
 	Utils.CssforTextView(send_button_text,sp_primarybutton)
 
 
- MainGroup:insert(sceneGroup)
+    -----------upload button--------------------
+
+	upload_button = display.newRect(sceneGroup,0,0,W-60,30)
+	upload_button.x=Message_content.x
+	upload_button.y = Message_content.y+280
+	upload_button.width = W-170
+	upload_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
+	upload_button.id="upload"
+
+	upload_button_text = display.newText(sceneGroup,"Image Upload",0,0,native.systemFont,16)
+	upload_button_text.x=upload_button.x + 10
+	upload_button_text.y=upload_button.y
+	Utils.CssforTextView(upload_button_text,sp_primarybutton)
+
+	upload_icon = display.newImageRect("res/assert/upload.png",18,18)
+	upload_icon.id = "image upload"
+	--upload_icon.anchorX=0
+	sceneGroup:insert(upload_icon)
+	upload_icon.x= upload_button_text.x - 65
+	upload_icon.y=upload_button.y
+
+
+    MainGroup:insert(sceneGroup)
 
 end
 
@@ -802,6 +993,7 @@ end
 		composer.removeHidden()
 
 	send_button:addEventListener("touch",onSendButtonTouch)	
+	upload_button:addEventListener("touch",onImageButtonTouch)
 	feed_cancelbutton:addEventListener("touch",onCancelButtonTouch)
 	Message_content:addEventListener( "userInput", MessageLimitation )
 	--url_dropdown_bg:addEventListener("touch",urlSelection)
@@ -829,6 +1021,7 @@ end
 	if event.phase == "will" then
 
 	Runtime:removeEventListener( "enterFrame", pushTest )
+	upload_button:removeEventListener("touch",onImageButtonTouch)
 	feed_cancelbutton:removeEventListener("touch",onCancelButtonTouch)
 	url_dropdown_bg:removeEventListener("touch",onTouchAction)
 	menuBtn:removeEventListener("touch",menuTouch)
@@ -921,3 +1114,25 @@ end
   		-- EventnameClose_bg.y=EventnameTop.y
   		-- EventnameClose_bg.id="close_videotype"
   		-- EventnameClose_bg.alpha=0.01
+
+
+
+        	-- print( "target: ", event.target._properties)
+
+        	-- -- local bytearray = json.encode(photo)
+
+        	-- -- print("bytearray ",bytearray)
+
+         --   file_inbytearray = mime.b64(tostring(photo))
+
+         --    --photoencode = json.encode(photo)
+
+         --    print(file_inbytearray)
+
+         --    --file_inbytearray = mime.b64(tostring(photoencode))
+
+        	-- -- length1 = string.len("L1VzZXJzL3NhbmplZXZ0L0xpYnJhcnkvQXBwbGljYXRpb24gU3VwcG9ydC9Db3JvbmEgU2ltdWxhdG9yL015VW5pdEFwcC5Db3JvbmEtMjBFRUE4NURFRjFCRkUyOUZDRTI4QzM4OEQ4RTVEREQvRG9jdW1lbnRzL3Bob3RvLmpwZw==")
+
+         --    --    print(length1)
+
+
