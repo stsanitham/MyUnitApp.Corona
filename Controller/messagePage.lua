@@ -873,32 +873,31 @@ end
 	upload_icon.x= upload_button_text.x - 50
 	upload_icon.y=upload_button.y
 
-	-- upload_text = display.newText("UnitWise allows upto 10MB files for each upload. Enjoy!",image_content_bg.x-image_content_bg.contentWidth/2+ 150,image_content_bg.y,native.systemFont,11)
-	-- --upload_text.text = "YouTube"
-	-- upload_text.value = "uploadtext"
-	-- upload_text.id="uploadtext"
-	-- upload_text.alpha=0.8
-	-- upload_text:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-	-- upload_text.y=image_content_bg.y
-	-- upload_text.anchorX=0
-	-- sceneGroup:insert(upload_text)
+	upload_text = display.newText("Upload your Image here",image_content_bg.x-image_content_bg.contentWidth/2+ 140,image_content_bg.y,native.systemFont,13)
+	upload_text.value = "uploadtext"
+	upload_text.id="uploadtext"
+	--upload_text.alpha=0.8
+	upload_text:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+	upload_text.y=image_content_bg.y
+	upload_text.anchorX=0
+	sceneGroup:insert(upload_text)
 
 
     --------------url dropdown for selection-------
 
-	url_dropdown_bg = display.newRect( W/2, Message_content.y+Message_content.height+25, W-20, EditBoxStyle.height+10)
+	url_dropdown_bg = display.newRect(sceneGroup,W/2, image_content_bg.y+30, W-20, EditBoxStyle.height+10)
 	url_dropdown_bg.id="eventname"
 	url_dropdown_bg.x = W/2
 	url_dropdown_bg.anchorY=0
 	url_dropdown_bg:setStrokeColor(0,0,0,0.4)
 	url_dropdown_bg.strokeWidth = 1
 	url_dropdown_bg.hasBackground = false
-	sceneGroup:insert(url_dropdown_bg)
+	--sceneGroup:insert(url_dropdown_bg)
 
 
     -------------dropdown contents---------------
 
-	url_dropdown = display.newText("",url_dropdown_bg.x-url_dropdown_bg.contentWidth/2+10,url_dropdown_bg.y,native.systemFont,14)
+	url_dropdown = display.newText(sceneGroup,"",url_dropdown_bg.x-url_dropdown_bg.contentWidth/2+10,url_dropdown_bg.y,native.systemFont,14)
 	url_dropdown.text = "YouTube"
 	url_dropdown.value = "optionname"
 	url_dropdown.id="optionname"
@@ -906,7 +905,7 @@ end
 	url_dropdown:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 	url_dropdown.y=url_dropdown_bg.y+url_dropdown_bg.contentHeight/2
 	url_dropdown.anchorX=0
-	sceneGroup:insert(url_dropdown)
+	--sceneGroup:insert(url_dropdown)
 
 
 	url_dropdown_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
@@ -975,7 +974,6 @@ end
 	send_button_text.y=send_button.y
 	Utils.CssforTextView(send_button_text,sp_primarybutton)
 
-
     MainGroup:insert(sceneGroup)
 
 end
@@ -990,7 +988,7 @@ end
 
 	if phase == "will" then
 
-  		EventnameTop_bg = display.newRect( VideoUrlGroup, url_dropdown_bg.x , H/2+44, url_dropdown_bg.contentWidth, 125)
+  		EventnameTop_bg = display.newRect( VideoUrlGroup, url_dropdown_bg.x , H/2+91.5, url_dropdown_bg.contentWidth, 125)
   		EventnameTop_bg:setFillColor(0,0,0)
 
 
@@ -998,7 +996,7 @@ end
   		{
   		left = 0,
   		top = -50,
-  		height = 100,
+  		height = 97,
   		width = url_dropdown_bg.contentWidth-2,
   		onRowRender = VideoType_Render,
   		onRowTouch = VideoType_Touch,
@@ -1009,7 +1007,7 @@ end
   	}
 
 		VideoTypeList.x=url_dropdown_bg.x
-		VideoTypeList.y= url_dropdown_bg.y+url_dropdown_bg.height/2+17.5
+		VideoTypeList.y= image_content_bg.y+image_content_bg.contentHeight+25
 	--	VideoTypeList.y=EventnameTop.y+EventnameTop.height/2
 		VideoTypeList.height = 150
 		VideoTypeList.width = url_dropdown_bg.contentWidth-2
@@ -1017,6 +1015,8 @@ end
 		VideoUrlGroup.isVisible=false
 
 		VideoUrlGroup:insert(VideoTypeList)
+
+		sceneGroup:insert(VideoUrlGroup)
 		
 
 ---------------
