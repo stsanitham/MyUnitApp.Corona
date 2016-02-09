@@ -20,7 +20,7 @@ function request.new(url, method, params,listner)
 	print("enter "..url)
 
 
-	if string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess")  then
+	if string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") or string.find(url,"/MyUnitBuzzCalendar/CreateQuickcContact")  then
 
 		spinner_hide()
 

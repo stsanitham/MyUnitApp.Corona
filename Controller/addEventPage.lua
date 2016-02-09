@@ -8,6 +8,8 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 local widget = require( "widget" )
 local Utility = require( "Utils.Utility" )
+local lfs = require ("lfs")
+local mime = require("mime")
 local timePicker = require( "Controller.timePicker" )
 
 
@@ -28,7 +30,7 @@ local EventnameGroup = display.newGroup( )
 local EventnameFlag = false
 
 
-local EventnameArray = {"Appointment","Call","Party","Task","Family Time"}
+local EventnameArray = {"Appointment","Call","Party","Task"}
 
 local priorityArray = {"Low","Normal","High"}
 
@@ -37,6 +39,8 @@ local purposeArray = {"Booking","Color Appointment","Customer Service","Double F
 local selectContactGroup = {"--Select Contact Group--"}
 
 local contactgroup = {"Contact","Lead","Customer","Team Member"}
+
+local taskStatus = {"Not Started","In-Progress","Completed","Deferred"}
 
 local leftPadding = 10
 
@@ -83,17 +87,95 @@ return true
 
 end
 
-local function AddAttachmentLbl( event )
-	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
+
+function formatSizeUnits(event)
+
+      if (event>=1073741824) then 
+
+      	size=(event/1073741824)..' GB'
+
+      print("size of the image11 ",size)
+
+
+       elseif (event>=1048576) then   
+
+       	size=(event/1048576)..' MB'
+
+      print("size of the image 22",size)
+
+
+      elseif (event>=1024)  then   
+
+      	size = (event/1024)..' KB'
+
+       print("size of the image 33",size)
+
+
+      else      
+
+  	  end
+
+end
+
+
+	function get_imagemodel(response)
+
+		--MessageSending(response)
+
+		AddAttachmentLbl.text = "Image Uploaded !"
+
+		print("SuccessMessage")
 
 
 
 	end
 
-return true
+local function selectionComplete ( event )
+
+ 
+        local photo = event.target
+
+        local baseDir = system.DocumentsDirectory
+
+        if photo then
+
+		        photo.x = display.contentCenterX
+				photo.y = display.contentCenterY
+				local w = photo.width
+				local h = photo.height
+				print( "w,h = ".. w .."," .. h )
+
+				photoname = "eventAttach.jpg"
+
+		        display.save(photo,photoname,system.DocumentsDirectory)
+
+		       photo:removeSelf()
+
+		       photo = nil
+
+
+		        path = system.pathForFile( photoname, baseDir)
+
+		        local size = lfs.attributes (path, "size")
+
+				local fileHandle = io.open(path, "rb")
+
+				file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+				io.close( fileHandle )
+
+		            print("mime conversion ",file_inbytearray)
+
+		        	print("bbb ",size)
+
+		        	formatSizeUnits(size)
+
+
+					Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+    
+
+	end
 
 end
 
@@ -188,6 +270,32 @@ local function onRowTouch(event)
 		QuickContactList.isVisible = false
 		List.textFiled.text = row.name
 		List.textFiled.value = row.index - 1
+
+		if List.textFiled.text:lower( ) == "party" then
+
+			AppintmentWith.placeholder="Hostess"
+
+			PurposeLbl.text = "Purpose"
+
+		elseif List.textFiled.text:lower( ) == "appointment" then
+
+			AppintmentWith.placeholder="Appointment With"
+
+			PurposeLbl.text = "Purpose"
+
+		elseif List.textFiled.text:lower( ) == "task" then
+
+			AppintmentWith.placeholder="Linked To"
+
+			PurposeLbl.text = "Status"
+
+		elseif List.textFiled.text:lower( ) == "call" then
+
+			AppintmentWith.placeholder="Call With"
+
+			PurposeLbl.text = "Purpose"
+
+		end
 
 
 
@@ -349,6 +457,10 @@ local function Ap_scrollAction( event )
 return true
 end
 
+local function AddAttachment( event )
+	
+end
+
 local function TouchAction( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
@@ -472,8 +584,19 @@ local function TouchAction( event )
 					List.x = event.target.x
 					List.y = event.target.y+event.target.contentHeight+1.3
 					List.width =event.target.contentWidth
+
+					print( PurposeLbl.text:lower( ) )
+					if SelectEvent.text:lower( ) == "task" then
+
+						List.arrayName = taskStatus
+						List.textFiled = PurposeLbl
+
+					else
+
 					List.arrayName = purposeArray
 					List.textFiled = PurposeLbl
+
+					end
 					List_bg.isVisible = true
 					CreateList(event,List,List_bg)
 					
@@ -505,7 +628,13 @@ local function TouchAction( event )
 
 			elseif event.target.id == "addattachment" then
 
-					AddAttachment(event.target)
+					if media.hasSource( PHOTO_FUNCTION  ) then
+					timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+					end )
+
+					end
+
+
 			elseif event.target.id == "eventtype" then
 
 				if List.isVisible == false then
@@ -557,6 +686,7 @@ end
 
 function get_Contact( response )
 
+if response ~= nil then
 
 	for i=1,#response do
 
@@ -575,6 +705,8 @@ function get_Contact( response )
 		
 	end
 
+end
+
 			
 end
 
@@ -584,7 +716,7 @@ local function searchfunction( event )
         -- user begins editing defaultField
         print( event.text )
 
-        if event.taget.id == "appintmentwith" then
+        if event.target.id == "appintmentwith" then
 
         	Addinvitees.isVisible = false
 
@@ -677,7 +809,6 @@ end
 
 			local x, y = scrollView:getContentPosition()
 
-			print(y)
 			if y > -40 then
 				What.isVisible = true
 			else
@@ -777,6 +908,7 @@ function scene:create( event )
 
 		SelectEventLbl = display.newText(AddeventGroup,"Event Type",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		SelectEventLbl.anchorX=0
+		SelectEventLbl.id="eventtype"
 		SelectEventLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		SelectEventLbl.x=leftPadding
 		SelectEventLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
@@ -1030,6 +1162,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="Addinvitees"
 		AddeventArray[#AddeventArray].anchorY=0
+		AppintmentWith:addEventListener( "userInput", searchfunction )
 		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
