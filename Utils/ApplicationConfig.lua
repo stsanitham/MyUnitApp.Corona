@@ -123,3 +123,5 @@ ApplicationConfig.DOCUMENT_UPLOAD = ApplicationConfig.BASE_URL.."/MyUnitBuzz/Doc
 
 ApplicationConfig.GetContactsWithLead = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetContactsWithLeadAutoComplete"
 
+ApplicationConfig.CreateQuickcContact = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/CreateQuickcContact"
+
