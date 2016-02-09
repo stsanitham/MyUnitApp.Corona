@@ -966,23 +966,16 @@ end
 	Utils.CssforTextView(send_button_text,sp_primarybutton)
 
 
-<<<<<<< HEAD
     -----------upload button--------------------
 
 	upload_button = display.newRect(sceneGroup,0,0,W-60,30)
 	upload_button.x=Message_content.x
 	upload_button.y = Message_content.y+280
-=======
-	upload_button = display.newRect(sceneGroup,0,0,W-60,30)
-	upload_button.x=Message_content.x
-	upload_button.y = Message_content.y+300
->>>>>>> 2da4aff945bee641a70e8dc555b4d86c7222d8e6
 	upload_button.width = W-170
 	upload_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
 	upload_button.id="upload"
 
 	upload_button_text = display.newText(sceneGroup,"Image Upload",0,0,native.systemFont,16)
-<<<<<<< HEAD
 	upload_button_text.x=upload_button.x + 10
 	upload_button_text.y=upload_button.y
 	Utils.CssforTextView(upload_button_text,sp_primarybutton)
@@ -996,14 +989,6 @@ end
 
 
     MainGroup:insert(sceneGroup)
-=======
-	upload_button_text.x=upload_button.x
-	upload_button_text.y=upload_button.y
-	Utils.CssforTextView(upload_button_text,sp_primarybutton)
-
-
- MainGroup:insert(sceneGroup)
->>>>>>> 2da4aff945bee641a70e8dc555b4d86c7222d8e6
 
 end
 
@@ -1064,11 +1049,7 @@ end
 		composer.removeHidden()
 
 	send_button:addEventListener("touch",onSendButtonTouch)	
-<<<<<<< HEAD
 	upload_button:addEventListener("touch",onImageButtonTouch)
-=======
-	--upload_button:addEventListener("touch",onImageButtonTouch)
->>>>>>> 2da4aff945bee641a70e8dc555b4d86c7222d8e6
 	feed_cancelbutton:addEventListener("touch",onCancelButtonTouch)
 	Message_content:addEventListener( "userInput", MessageLimitation )
 	--url_dropdown_bg:addEventListener("touch",urlSelection)
@@ -1096,11 +1077,7 @@ end
 	if event.phase == "will" then
 
 	Runtime:removeEventListener( "enterFrame", pushTest )
-<<<<<<< HEAD
 	upload_button:removeEventListener("touch",onImageButtonTouch)
-=======
-	--upload_button:removeEventListener("touch",onImageButtonTouch)
->>>>>>> 2da4aff945bee641a70e8dc555b4d86c7222d8e6
 	feed_cancelbutton:removeEventListener("touch",onCancelButtonTouch)
 	url_dropdown_bg:removeEventListener("touch",onTouchAction)
 	menuBtn:removeEventListener("touch",menuTouch)
