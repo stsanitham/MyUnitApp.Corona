@@ -60,6 +60,8 @@ local searchArraytotal = {}
 
 local searchList
 
+local QuickContactList = {}
+
 local appointmentGroup = display.newGroup()
 --------------------------------------------------
 
@@ -151,7 +153,7 @@ local function onRowRender( event )
 
     -- Align the label left and vertically centered
     rowTitle.anchorX = 0
-    rowTitle.x = row.x + 5 
+    rowTitle.x = W-rowWidth
     rowTitle.y = rowHeight * 0.5
 
 
@@ -177,44 +179,75 @@ local function onRowTouch(event)
     if event.phase == 'tap' or event.phase == 'release' then
 
     	Where.isVisible = true
+    	What.isVisible = true
 		Description.isVisible = true
     	List_bg.isVisible = false
 		List:deleteAllRows()
+		QuickContactList:deleteAllRows()
 		List.isVisible = false
-
+		QuickContactList.isVisible = false
 		List.textFiled.text = row.name
-
 		List.textFiled.value = row.index - 1
+
+
 
     end
 end
 
-local function CreateList(event)
-	List_bg.isVisible = true
+local function QuickTouch(event) 
+    print(event.phase)
 
-					List_bg.x = event.target.x
-					List_bg.y = event.target.y+event.target.contentHeight
-					List_bg.width =event.target.contentWidth+2
-					List_bg.height = List.contentHeight+2
+    local row = event.row
+
+    if event.phase == 'tap' or event.phase == 'release' then
+
+    	
+		QuickContactList:deleteAllRows()
+		QuickContactList:deleteAllRows()
+		QuickContactList.isVisible = false
+		QuickContactList.isVisible = false
+		List.textFiled.text = row.name
+		List.textFiled.value = row.index - 1
 
 
-					List:deleteAllRows()
+
+    end
+end
+
+local function CreateList(event,list,bg)
+					
+
+					list.x = event.target.x
+					list.y = event.target.y+event.target.contentHeight
+					list.width =event.target.contentWidth+2
+
+					bg.x = event.target.x
+					bg.y = event.target.y+event.target.contentHeight
+					bg.width =event.target.contentWidth+2
+					bg.height =list.contentHeight+2
+
+
+				
+
+
+					list:deleteAllRows()
 
 				
 
 					for i = 1, #List.arrayName do
 
 					    -- Insert a row into the tableView
-					    List:insertRow(
+					    list:insertRow(
 					        {
 					            isCategory = false,
 					            rowHeight = 36,
-					            rowColor = { default={1}, over={0.8} },
+					            rowColor = { default={0.9}, over={0.8} },
 					        }
 					    )
 					end
 
-					AddeventGroup:toFront()
+
+
 
 end
 
@@ -232,6 +265,14 @@ local function get_CreateTickler( response )
 	end
 end
 
+local function saveQuickcontact()
+	
+	function get_saveQuickcontact( response )
+		
+	end
+	Webservice.CreateQuickcContact(Ap_firstName.text,Ap_lastName.text,Ap_email.text,Ap_phone.text,Ap_contactLbl.text,get_saveQuickcontact)
+end
+
 
 local function Ap_scrollAction( event )
 		if event.phase == "began" then
@@ -243,44 +284,44 @@ local function Ap_scrollAction( event )
 
 			elseif event.target.id == "save" then
 
+				saveQuickcontact()
 
 			elseif event.target.id == "selectcontact" then
 
-				if List.isVisible == false then
-					List.isVisible = true
-					List.x = event.target.x
-					List.y = event.target.y+event.target.contentHeight-10
-					List.width =event.target.contentWidth
+				if QuickContactList.isVisible == false then
+
+					QuickContactList.isVisible = true
 					List.arrayName = selectContactGroup
 					List.textFiled = Ap_selectcontactLbl
-					
-					CreateList(event)
-				
-	
+					QuickContactList_bg.isVisible = false
+					CreateList(event,QuickContactList,QuickContactList_bg)
+			
 				else
-					List_bg.isVisible = false
-					List:deleteAllRows()
-					List.isVisible = false
+
+					QuickContactList_bg.isVisible = false
+					QuickContactList:deleteAllRows()
+					QuickContactList.isVisible = false
 
 				end
 
+
 			elseif event.target.id == "contact" then
 
-				if List.isVisible == false then
-					List.isVisible = true
+				if QuickContactList.isVisible == false then
+					QuickContactList.isVisible = true
 
-					List.x = event.target.x
-					List.y = event.target.y
-					List.width =event.target.contentWidth
+					QuickContactList.x = event.target.x
+					QuickContactList.y = event.target.y
+					QuickContactList.width =event.target.contentWidth
 					List.arrayName = contactgroup
 					List.textFiled = Ap_contactLbl
-
-				CreateList(event)
+					QuickContactList_bg.isVisible = false
+				CreateList(event,QuickContactList,QuickContactList_bg)
 					
 				else
-					List_bg.isVisible = false
-					List:deleteAllRows()
-					List.isVisible = false
+					QuickContactList.isVisible = false
+					QuickContactList:deleteAllRows()
+					QuickContactList.isVisible = false
 
 				end
 
@@ -433,8 +474,8 @@ local function TouchAction( event )
 					List.width =event.target.contentWidth
 					List.arrayName = purposeArray
 					List.textFiled = PurposeLbl
-					
-					CreateList(event)
+					List_bg.isVisible = true
+					CreateList(event,List,List_bg)
 					
 				else
 					List_bg.isVisible = false
@@ -452,8 +493,8 @@ local function TouchAction( event )
 						List.width =event.target.contentWidth
 						List.arrayName = priorityArray
 						List.textFiled = PriorityLbl
-						
-						CreateList(event)
+						List_bg.isVisible = true
+						CreateList(event,List,List_bg)
 						
 				else
 						List_bg.isVisible = false
@@ -464,8 +505,28 @@ local function TouchAction( event )
 
 			elseif event.target.id == "addattachment" then
 
-					AddAttachment(event.target)			
+					AddAttachment(event.target)
+			elseif event.target.id == "eventtype" then
 
+				if List.isVisible == false then
+
+						What.isVisible = false
+						List.isVisible = true
+						List.x = event.target.x
+						List.y = event.target.y+event.target.contentHeight+1.3
+						List.width =event.target.contentWidth
+						List.arrayName = EventnameArray
+						List.textFiled = SelectEvent
+						List_bg.isVisible = true
+						CreateList(event,List,List_bg)
+						
+				else
+						What.isVisible = true
+						List_bg.isVisible = false
+						List:deleteAllRows()
+						List.isVisible = false
+
+				end
 			end
 
 	end
@@ -711,6 +772,7 @@ function scene:create( event )
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
 		SelectEventLbl = display.newText(AddeventGroup,"Event Type",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
@@ -1134,7 +1196,9 @@ function scene:show( event )
 
 	  	----------------
 
-	  	
+  	
+
+
 
 	  	AddeventGroup:insert( List )
 	  	AddeventGroup:insert( searchList )
@@ -1161,7 +1225,6 @@ function scene:show( event )
 		Ap_firstName.anchorY=0
 		Ap_firstName.x=appoitmentAdd_bg.x
 		Ap_firstName.y = appoitmentAdd_header.y+appoitmentAdd_header.contentHeight/2+20
-		Ap_firstName.hasBackground = false
 		Ap_firstName:setReturnKey( "next" )
 		Ap_firstName.placeholder="First Name"
 		appointmentGroup:insert(Ap_firstName)
@@ -1172,7 +1235,6 @@ function scene:show( event )
 		Ap_lastName.anchorY=0
 		Ap_lastName.x=appoitmentAdd_bg.x
 		Ap_lastName.y = Ap_firstName.y+Ap_firstName.contentHeight+10
-		Ap_lastName.hasBackground = false
 		Ap_lastName:setReturnKey( "next" )
 		Ap_lastName.placeholder="Last Name"
 		appointmentGroup:insert(Ap_lastName)
@@ -1183,7 +1245,6 @@ function scene:show( event )
 		Ap_email.anchorY=0
 		Ap_email.x=appoitmentAdd_bg.x
 		Ap_email.y = Ap_lastName.y+Ap_lastName.contentHeight+10
-		Ap_email.hasBackground = false
 		Ap_email:setReturnKey( "next" )
 		Ap_email.placeholder="Email Address"
 		appointmentGroup:insert(Ap_email)
@@ -1194,7 +1255,6 @@ function scene:show( event )
 		Ap_phone.anchorY=0
 		Ap_phone.x=appoitmentAdd_bg.x
 		Ap_phone.y = Ap_email.y+Ap_email.contentHeight+10
-		Ap_phone.hasBackground = false
 		Ap_phone:setReturnKey( "next" )
 		Ap_phone.placeholder="Cell"
 		appointmentGroup:insert(Ap_phone)
@@ -1208,7 +1268,7 @@ function scene:show( event )
 		selectcontactGroup_bg.y = Ap_phone.y+Ap_phone.contentHeight+10
 		selectcontactGroup_bg.id="selectcontact"
 		appointmentGroup:insert(selectcontactGroup_bg)
-		--selectcontactGroup_bg:addEventListener( "touch", Ap_scrollAction )
+		selectcontactGroup_bg:addEventListener( "touch", Ap_scrollAction )
 
 
 		Ap_selectcontactLbl = display.newText(appointmentGroup,"Select Contact Group",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
@@ -1233,7 +1293,7 @@ function scene:show( event )
 		contactGroup_bg.y = selectcontactGroup_bg.y+selectcontactGroup_bg.contentHeight+10
 		contactGroup_bg.id="contact"
 		appointmentGroup:insert(contactGroup_bg)
-	--	contactGroup_bg:addEventListener( "touch", Ap_scrollAction )
+		contactGroup_bg:addEventListener( "touch", Ap_scrollAction )
 
 
 		Ap_contactLbl = display.newText(appointmentGroup,"Contact",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
@@ -1272,6 +1332,40 @@ function scene:show( event )
 	  	Ap_cancelBtntxt = display.newText(appointmentGroup,"Cancel",0,0,native.systemFont,16)
 	  	Ap_cancelBtntxt.x = Ap_cancelBtn.x+Ap_cancelBtn.contentWidth/2
 	  	Ap_cancelBtntxt.y = Ap_cancelBtn.y
+
+
+	  		  		---QuickContactList---
+
+	  	QuickContactList_bg = display.newRect( appointmentGroup, 200, 200, 104, 304 )
+		QuickContactList_bg:setFillColor( 0 )
+		QuickContactList_bg.anchorY = 0
+		QuickContactList_bg.isVisible=false
+
+
+	  	QuickContactList = widget.newTableView(
+		    {
+		        left = 200,
+		        top = 200,
+		        height = 100,
+		        width = 300,
+		        onRowRender = onRowRender,
+		        onRowTouch = QuickTouch,
+		        hideBackground = true,
+		        isBounceEnabled = false,
+		        noLines = true,
+
+		       -- listener = scrollListener
+		    }
+		)
+	  	--QuickContactList.anchorX=0
+	  	QuickContactList.anchorY=0
+	  	QuickContactList.isVisible = false
+
+	 -- 	QuickContactList.anchorX = 0
+	  	QuickContactList.isVisible = false
+
+	  	appointmentGroup:insert(QuickContactList)
+	  	----------------
 
 
 		Ap_firstName.isVisible = false

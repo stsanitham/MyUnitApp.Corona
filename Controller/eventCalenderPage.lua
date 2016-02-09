@@ -1454,6 +1454,10 @@ weekView_rightArrow.x=weekView_bg.x+weekView_bg.contentWidth/2-20
 weekView_rightArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5
 
 
+if IsOwner == false then
+	addEventBtn.alpha=0
+end
+
 	
 menuBtn:addEventListener("touch",menuTouch)
 BgText:addEventListener("touch",menuTouch)
