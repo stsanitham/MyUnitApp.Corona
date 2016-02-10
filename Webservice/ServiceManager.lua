@@ -1058,13 +1058,13 @@ local resbody = [[{
   "GroupId": 0,
   ]]
 
-	params={headers = headers}
+	params={headers = headers,body = resbody}
 
 		print("request : "..json.encode(params))
 
 
 
-	request.new(ApplicationConfig.CreateQuickcContact.."?"..resbody,method,params,postExecution)
+	request.new(ApplicationConfig.CreateQuickcContact,method,params,postExecution)
 	
 	return response
 

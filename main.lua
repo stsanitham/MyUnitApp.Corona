@@ -12,6 +12,9 @@ local sqlite3 = require( "sqlite3" )
 MyUnitBuzzString = require( "res.value.string" )
 local Applicationconfig = require("Utils.ApplicationConfig")
 
+
+widget.setTheme( "widget_theme_ios" )
+
 local OneSignal = require("plugin.OneSignal")
 GCMValue = 0
 ga = require("Utils.GoogleAnalytics.ga")
