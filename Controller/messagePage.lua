@@ -322,6 +322,15 @@ end
 
 		url_dropdown.text = "YouTube"
 
+			image_name_png.text = ""
+
+			upload_button.isVisible = true
+
+			image_content_bg.isVisible = true
+
+			image_name_close.isVisible = false
+
+			upload_text.isVisible = true
 
 	end
 
