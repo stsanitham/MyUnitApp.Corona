@@ -93,6 +93,14 @@ function scene:show( event )
 
 			function get_userSocialSetting(response)
 
+				if response.MyUnitBuzzContacts.IsOwner ~= nil then
+
+						IsOwner = response.MyUnitBuzzContacts.IsOwner
+      			else
+      					IsOwner = " "
+      			end
+
+
 				if response.GoogleSettings ~= nil then
 
 					if response.GoogleSettings.GoogleUsername ~= nil then
@@ -103,13 +111,6 @@ function scene:show( event )
 						GoogleUsername=""
 					end
 
-
-					if response.MyUnitBuzzContacts.IsOwner ~= nil then
-
-						IsOwner = response.MyUnitBuzzContacts.IsOwner
-      				else
-      					IsOwner = " "
-      				end
 
 
       				if response.MyUnitBuzzContacts.TimeZone ~= nil then
