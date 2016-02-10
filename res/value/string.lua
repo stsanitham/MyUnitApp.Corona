@@ -67,7 +67,8 @@ RequestAccess.EmailAddress_placeholder= "Email Address"
 RequestAccess.Phone_placeholder = "Phone"
 RequestAccess.MKRank_placeholder = "-Select MK Rank-"
 RequestAccess.Comment_placeholder= "Enter your comments here"
-
+RequestAccess.DirectorName_placeholder = "Director Name"
+RequestAccess.DirectorEmail_placeholder = "Director Email"
 
 LoginPage = {}
 

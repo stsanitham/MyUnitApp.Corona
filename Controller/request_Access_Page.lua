@@ -27,10 +27,10 @@ local H= display.contentHeight
 local Background,BgText,tabBar,backBtn,page_title,MKRank,rankText_icon,sumbitBtn_lbl
 
 --EditText Background
-local FirstName_bg,Name_bg,Email_bg,Phone_bg,MKRank_bg,Comment_bg
+local FirstName_bg,Name_bg,Email_bg,Phone_bg,MKRank_bg,Comment_bg,DirectorName_bg,DirectorEmail_bg
 
 --EditText
-local FirstName,Name,Email,Phone,UnitNumber,Comment
+local FirstName,Name,Email,Phone,UnitNumber,Comment,DirectorName,DirectorEmail
 
 --Spinner
 local submit_spinner
@@ -65,6 +65,8 @@ local function rankToptouch( event )
 				Phone.isVisible=true
 				UnitNumber.isVisible=true
 				Comment.isVisible=true
+				DirectorName.isVisible = true
+				DirectorEmail.isVisible = true
 
 		end
 
@@ -87,7 +89,7 @@ end
 local function backAction( event )
 		if event.phase == "began" then
 
-			display.getCurrentStage():setFocus( event.target )
+			display.getCurrentStage():setFocus( event.tagret )
 
 		elseif event.phase == "ended" then
 
@@ -288,6 +290,8 @@ end
 									elseif(current_textField.id == "Unit Number / Director name") then
 																
 										native.setKeyboardFocus( nil )
+
+										if(UnitNumber.text)
 
 									end
 
@@ -494,6 +498,8 @@ local function onRowTouch( event )
 				Phone.isVisible=true
 				UnitNumber.isVisible=true
 				Comment.isVisible=true
+				DirectorName.isVisible = true
+				DirectorEmail.isVisible = true
 
 			end
 
@@ -589,12 +595,13 @@ local function rankTouch( event )
 					Phone.isVisible=false
 					UnitNumber.isVisible=false
 					Comment.isVisible=false
+					DirectorName.isVisible = false
+					DirectorEmail.isVisible = false
         		end
 
         		elseif listFlag == true then
 
         			rankGroup.isVisible=false
-
 
         			listFlag=false
 
@@ -643,11 +650,51 @@ function scene:create( event )
 	
 
 
+	if AppName ~= "DirectorApp" then
+			UnitNumber_bg = display.newRect( W/2, page_title.y+35, W-20, 25)
+			sceneGroup:insert(UnitNumber_bg)
 
-		FirstName_bg = display.newRect(W/2, page_title.y+35, W-20, 28)
+			UnitNumber = native.newTextField(W/2, page_title.y+35, W-20, 25 )
+			UnitNumber.id = "Unit Number / Director name"
+			UnitNumber.value=""
+			UnitNumber.size=14	
+			UnitNumber:setReturnKey( "next" )
+			UnitNumber.hasBackground = false
+			UnitNumber.placeholder=LoginPage.Unitnumber_placeholder
+			sceneGroup:insert(UnitNumber)
+
+    end
+
+
+    	DirectorName_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
+		sceneGroup:insert(DirectorName_bg)
+
+		DirectorName = native.newTextField(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
+		DirectorName.id="Director Name"
+		DirectorName.size=14	
+		DirectorName.hasBackground = false
+		DirectorName:setReturnKey( "next" )
+		DirectorName.placeholder=RequestAccess.DirectorName_placeholder
+		sceneGroup:insert(DirectorName)
+
+
+		DirectorEmail_bg = display.newRect(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
+		sceneGroup:insert(DirectorEmail_bg)
+
+		DirectorEmail = native.newTextField(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
+		DirectorEmail.id="Director Email"
+		DirectorEmail.size=14	
+		DirectorEmail.hasBackground = false
+		DirectorEmail:setReturnKey( "next" )
+		DirectorEmail.placeholder=RequestAccess.DirectorEmail_placeholder
+		sceneGroup:insert(DirectorEmail)
+
+--------------------------------------changes will occur----------------------------------------------
+
+		FirstName_bg = display.newRect(W/2, DirectorEmail_bg.y+DirectorEmail_bg.height+7, W-20, 25)
 		sceneGroup:insert(FirstName_bg)
 
-		FirstName = native.newTextField(W/2, page_title.y+35, W-20, 28)
+		FirstName = native.newTextField(W/2, DirectorEmail_bg.y+DirectorEmail_bg.height+7, W-20, 25)
 		FirstName.id="First Name"
 		FirstName.size=14	
 		FirstName.hasBackground = false
@@ -656,10 +703,10 @@ function scene:create( event )
 		sceneGroup:insert(FirstName)
 
 
-		Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+10, W-20, 28)
+		Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 		sceneGroup:insert(Name_bg)
 
-		Name = native.newTextField( W/2, FirstName_bg.y+FirstName_bg.height+10, W-20, 28)
+		Name = native.newTextField( W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 		Name.id="Last Name"
 		Name.size=14
 		Name:setReturnKey( "next" )
@@ -668,10 +715,10 @@ function scene:create( event )
 		sceneGroup:insert(Name)
 
 
-		Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+10, W-20, 28 )
+		Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+7, W-20, 25 )
 		sceneGroup:insert(Email_bg)
 
-		Email = native.newTextField(W/2, Name_bg.y+Name_bg.height+10, W-20, 28 )
+		Email = native.newTextField(W/2, Name_bg.y+Name_bg.height+7, W-20, 25 )
 		Email.id="Email"
 		Email.size=14	
 		Email:setReturnKey( "next" )
@@ -680,11 +727,11 @@ function scene:create( event )
 		sceneGroup:insert(Email)
 
 
-		Phone_bg = display.newRect(W/2, Email_bg.y+Email_bg.height+10, W-20, 28)
+		Phone_bg = display.newRect(W/2, Email_bg.y+Email_bg.height+7, W-20, 25)
 		sceneGroup:insert(Phone_bg)
 
 
-		Phone = native.newTextField(W/2, Email_bg.y+Email_bg.height+10, W-20, 28)
+		Phone = native.newTextField(W/2, Email_bg.y+Email_bg.height+7, W-20, 25)
 		Phone.id="Phone"
 		Phone.size=14	
 		Phone:setReturnKey( "next" )
@@ -695,22 +742,11 @@ function scene:create( event )
 
 
 		if AppName ~= "DirectorApp" then
-			UnitNumber_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+10, W-20, 28)
-			sceneGroup:insert(UnitNumber_bg)
 
-			UnitNumber = native.newTextField(W/2, Phone_bg.y+Phone_bg.height+10, W-20, 28 )
-			UnitNumber.id = "Unit Number / Director name"
-			UnitNumber.value=""
-			UnitNumber.size=14	
-			UnitNumber:setReturnKey( "next" )
-			UnitNumber.hasBackground = false
-			UnitNumber.placeholder=LoginPage.Unitnumber_placeholder
-			sceneGroup:insert(UnitNumber)
-
-			MKRank_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+10, W-20, 28)
+			MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 
 		else
-			MKRank_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+10, W-20, 28)
+			MKRank_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 
 		end
 
@@ -726,8 +762,8 @@ function scene:create( event )
 		MKRank.alpha=0.7
 		MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		MKRank.y=MKRank_bg.y+5
-	--MKRank.size=20
-	sceneGroup:insert(MKRank)
+	    --MKRank.size=20
+	    sceneGroup:insert(MKRank)
 
 	  		rankText_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
 	  		rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth/2-15
@@ -736,12 +772,12 @@ function scene:create( event )
 
 
 
-	Comment_bg = display.newRect( W/2, 0, W-20, 100)
+	Comment_bg = display.newRect( W/2, 0, W-20, 80)
 	Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
 	sceneGroup:insert(Comment_bg)
 
 
-	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 100 )
+	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 80 )
 	Comment.id = "Comments"
 	Comment.size=14	
 	Comment.hasBackground = false
@@ -751,15 +787,13 @@ function scene:create( event )
 	sceneGroup:insert(Comment)
 
 
-
 	sumbitBtn = display.newRect( 0,0,0,0 )
-	sumbitBtn.x=W/2;sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+35
+	sumbitBtn.x=W/2;sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+30
 	sumbitBtn.width=80
-	sumbitBtn.height=35
+	sumbitBtn.height=30
 	sumbitBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 	sceneGroup:insert(sumbitBtn)
 	sumbitBtn.id="Submit"
-
 
 
 sumbitBtn_lbl = display.newText( sceneGroup,CommonWords.submit,0,0,native.systemFont,16 )
@@ -840,7 +874,7 @@ function scene:show( event )
 			end
   		---Listview---
 
-  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+3, 331 )
+  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+3, 311 )
   		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
   		rankTop = display.newRect(rankGroup,W/2,H/2-160,300,30)
@@ -883,7 +917,7 @@ function scene:show( event )
 
   	rankList.x=MKRank_bg.x
   	rankList.y=rankTop.y+rankTop.height/2
-  	rankList.height = 300
+  	rankList.height = 290
   	rankList.width = MKRank_bg.contentWidth
   	rankList.anchorY=0
   	rankGroup.isVisible=false
