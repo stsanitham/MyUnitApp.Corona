@@ -322,6 +322,7 @@ end
 
 		url_dropdown.text = "YouTube"
 
+
 	end
 
 
@@ -354,13 +355,25 @@ end
 
 		print( "content : "..response.Abspath )
 
-		local sentalert = native.showAlert( Message.SuccessMsgForImage, Message.SuccessContentForImage, { CommonWords.ok })
+		--local sentalert = native.showAlert( Message.SuccessMsgForImage, Message.SuccessContentForImage, { CommonWords.ok })
 
 		Imagepath = response.Abspath
 
 		Imagename = response.FileName
 
 		Imagesize = size
+
+			image_name_png.isVisible = true
+
+			image_name_png.text = Imagename
+
+			image_content_bg.isVisible = true
+
+			upload_button.isVisible = false
+
+			upload_text.isVisible = false
+
+			image_name_close.isVisible = true
 
    --          local options =
 			-- {
@@ -473,14 +486,14 @@ local function onComplete(event)
 
 		local i = event.index 
 
-		if 1 == i then
+	if 1 == i then
 
 		if media.hasSource( PHOTO_FUNCTION  ) then
 		timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
 		end )
 	    end
 
-		elseif 2 == i then
+	elseif 2 == i then
 
 		if media.hasSource( media.Camera ) then
         timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
@@ -509,13 +522,8 @@ end
 
     	--sendMessage("SEND")
 
-        local alert = native.showAlert("Select File", "Select the source from where you want to pick the photo", {"From Gallery","Take Photo","Cancel"} , onComplete)
+        local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
 
- --    if media.hasSource( PHOTO_FUNCTION  ) then
-	-- timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
-	-- end )
-
-    --end
 	
 	return true
 
@@ -768,6 +776,43 @@ end
 	end
 
 
+
+	function ImageClose(event)
+
+	    local phase = event.phase
+
+		if phase=="began" then
+
+			display.getCurrentStage():setFocus( event.target )
+
+			--native.setKeyboardFocus(nil)
+
+		elseif phase=="ended" then
+
+			display.getCurrentStage():setFocus( nil )
+
+			image_name_png.text = ""
+
+			upload_button.isVisible = true
+
+			image_content_bg.isVisible = true
+
+			image_name_close.isVisible = false
+
+			upload_text.isVisible = true
+
+			print("imagepath..........................",Imagepath)
+
+			os.remove( Imagepath )
+
+            print("imagepath removal..........................",os.remove( Imagepath ))
+
+		end
+
+	end
+
+
+
 	local pushTest = function( event )
 
 	    if notificationFlag == false then
@@ -846,14 +891,15 @@ end
 	Message_content.x=title_bg.x-title_bg.contentWidth/2+160;Message_content.y=title_bg.y+ title_bg.contentHeight/2+55
 
 
+
+	-----------------upload button------------------
+
 	image_content_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+15)
   	image_content_bg:setStrokeColor(0,0,0,0.4)
   	image_content_bg.x = Message_content_bg.x
   	image_content_bg.y = Message_content_bg.y + Message_content.contentHeight/2 + 30
   	image_content_bg.hasBackground = true
 	image_content_bg.strokeWidth = 1
-
-	-----------------upload button------------------
 
 	upload_button = display.newRect(sceneGroup,0,0,W,25)
 	upload_button.x=image_content_bg.x-image_content_bg.contentWidth/2 + 65
@@ -880,7 +926,29 @@ end
 	upload_text:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 	upload_text.y=image_content_bg.y
 	upload_text.anchorX=0
+	upload_text.isVisible = true
 	sceneGroup:insert(upload_text)
+
+
+	--------------image name & image name cancel-------------------------
+
+	image_name_png = display.newText(sceneGroup,"",Message_content_bg.x,Message_content_bg.y + Message_content.contentHeight/2 + 30,native.systemFont,14)
+	image_name_png.text = ""
+	image_name_png.value = "imagenamepng"
+	image_name_png.id="imagenamepng"
+	image_name_png:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
+	image_name_png.x = Message_content_bg.x - 100
+	image_name_png.y=Message_content_bg.y + Message_content.contentHeight/2 +30
+	image_name_png.isVisible = false
+	--image_name_png.anchorX=0
+
+	image_name_close = display.newImageRect("res/assert/icon-close.png",20,20)
+	image_name_close.id = "image close"
+	image_name_close.anchorX=0
+	sceneGroup:insert(image_name_close)
+	image_name_close.x= Message_content_bg.x + 125
+	image_name_close.isVisible = false
+	image_name_close.y=Message_content_bg.y + Message_content.contentHeight/2 +30
 
 
     --------------url dropdown for selection-------
@@ -915,7 +983,7 @@ end
 
 	----------url textfield-------------------
 
-	url_textcontent = display.newText(sceneGroup,"Copy URL on clicking share in YouTube", 0, 0, native.systemFontBold, 13 )
+	url_textcontent = display.newText(sceneGroup,"Enter the URL to be sent", 0, 0, native.systemFontBold, 13 )
 	url_textcontent.x = display.contentCenterX
 	url_textcontent.y = url_dropdown_bg.y + url_dropdown_bg.contentHeight+15
 	url_textcontent:setFillColor( 0, 0, 0 )
@@ -1047,6 +1115,7 @@ end
     BgText:addEventListener("touch",menuTouch)
     Runtime:addEventListener( "enterFrame", pushTest )
     Background:addEventListener("touch",FocusComplete)
+    image_name_close:addEventListener( "touch", ImageClose )
 
 	end	
 
@@ -1075,6 +1144,7 @@ end
 	feed_url:removeEventListener("userInput",textfield)
 	send_button:removeEventListener("touch",onSendButtonTouch)	
 	Background:removeEventListener("touch",FocusComplete)
+	image_name_close:removeEventListener( "touch", ImageClose )
 
 	elseif phase == "did" then
 
