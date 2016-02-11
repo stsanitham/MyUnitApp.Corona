@@ -127,4 +127,5 @@ ApplicationConfig.CreateQuickcContact = ApplicationConfig.BASE_URL.."/MyUnitBuzz
 
 ApplicationConfig.DeleteTicklerEvent = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/DeleteTicklerEvent"
 
+ApplicationConfig.GetUnitWiseRegister = ApplicationConfig.BASE_URL.."/MyUnitBuzz/CheckNotInUnitWiseRegister"
 

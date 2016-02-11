@@ -69,7 +69,7 @@ function Webservice.GET_LIST_OF_RANKS(postExecution)
 
 	local url = splitUrl(ApplicationConfig.GET_LIST_OF_RANKS)
 
-	print("Url : "..url)
+--	print("Url : "..url)
 
 
 
@@ -79,7 +79,7 @@ function Webservice.GET_LIST_OF_RANKS(postExecution)
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
-	print("time : "..headers["Timestamp"])
+--	print("time : "..headers["Timestamp"])
 
 	resbody =  "?languageId=1&countryId=1&"
 
@@ -95,7 +95,7 @@ function Webservice.GET_LIST_OF_RANKS(postExecution)
 end
 
 
-function Webservice.REQUEST_ACCESS(firstName,lastName,Email,Phone,UnitNumber,MKRank,Comment,postExecution)
+function Webservice.REQUEST_ACCESS(requestFromStatus,directorName,directorEmail,firstName,lastName,Email,Phone,UnitNumber,MKRank,Comment,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -104,6 +104,8 @@ function Webservice.REQUEST_ACCESS(firstName,lastName,Email,Phone,UnitNumber,MKR
 	headers["IpAddress"] = Utility.getIpAddress()
 	headers["UniqueId"] = system.getInfo("deviceID")
 	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+
 	headers["UserAuthorization"]= ""
 
 	
@@ -114,14 +116,33 @@ function Webservice.REQUEST_ACCESS(firstName,lastName,Email,Phone,UnitNumber,MKR
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
+local v = 
 
-	local v = "FirstName="..firstName.."&LastName="..lastName.."&EmailAddress="..string.urlEncode(Email).."&PhoneNumber="..Phone.."&MkRankId="..MKRank.."&Comments="..Comment.."&UnitNumber="..UnitNumber.."&RequestFrom=ANDROID&"
-	headers["Content-Type"] = "application/x-www-form-urlencoded"
-	headers["Content-Length"]= string.len(v)
+[[{
 
+  "FirstName": "]]..firstName..[[",
+  "LastName": "]]..lastName..[[",
+  "EmailAddress": "]]..Email..[[",
+  "PhoneNumber": "]]..Phone..[[",
+  "Comments": "]]..Comment..[[",
+  "UnitNumber": "]]..UnitNumber..[[",
+  "DirectorName": "]]..directorName..[[",
+  "RequestAccessStatus": "]]..requestFromStatus..[[",
+  "DirectorEmailAddress": "]]..directorEmail..[[",
+  "MkRankId": "]]..MKRank..[[",
+  "TypeLanguageCountry": {
+    "LanguageId": 1,
+    "CountryId": 1,
+  },
+}]]
+
+	--headers["Content-Type"] = "application/x-www-form-urlencoded"
+	--headers["Content-Length"]= string.len(v)
 
 	params={headers = headers,body = v}
 
+
+	print("Send Message Request :"..json.encode(params))
 
 	request.new( ApplicationConfig.REQUEST_ACCESS,method,params,postExecution)
 	
@@ -562,6 +583,7 @@ function Webservice.GET_MYUNITAPP_GOALS(postExecution)
 	
 	return response
 end
+
 
 
 function Webservice.Get_All_MyCalendars(postExecution)
@@ -1094,19 +1116,28 @@ local resbody = [[{
   "GroupId": 0,
   ]]
 
-	params={headers = headers,body = resbody}
+	params={headers = headers}
 
 		print("request : "..json.encode(params))
 
 
 
-	request.new(ApplicationConfig.CreateQuickcContact,method,params,postExecution)
+	request.new(ApplicationConfig.CreateQuickcContact.."?"..resbody,method,params,postExecution)
 	
 	return response
 
 end
 
+<<<<<<< HEAD
 function Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,postExecution)
+=======
+
+
+
+function Webservice.GET_UNITWISE_REGISTER(unitnumber,postExecution)
+
+	--print(unitnumber)
+>>>>>>> 5ce112616797d575447d7392fc5b5a006ea4ce8e
 
 	local request_value = {}
 	local params = {}
@@ -1116,6 +1147,7 @@ function Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,post
 	headers["UniqueId"] = system.getInfo("deviceID")
 	headers["Accept"] = "application/json"
 	headers["Content-Type"] = "application/json"
+<<<<<<< HEAD
 	method="POST"
 
 	local url = splitUrl(ApplicationConfig.DeleteTicklerEvent)
@@ -1155,3 +1187,28 @@ local resbody = [[{
 
 
 end
+=======
+	method="GET"
+
+	headers["UserAuthorization"]= ""
+
+	local url = splitUrl(ApplicationConfig.GetUnitWiseRegister)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	--print("canonicalizedHeaderString : "..canonicalizedHeaderString)
+
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	--print( authenticationkey )
+	params={headers = headers}
+
+	local resbody =  "unitNumber="..unitnumber
+
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetUnitWiseRegister.."?"..resbody,method,params,postExecution)
+	
+	return response
+end
+>>>>>>> 5ce112616797d575447d7392fc5b5a006ea4ce8e

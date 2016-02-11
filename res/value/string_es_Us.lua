@@ -69,6 +69,11 @@ RequestAccess.Phone_placeholder = "Teléfono"
 RequestAccess.MKRank_placeholder = "-Seleccione MK Rank-"
 RequestAccess.Comment_placeholder= "Ingrese sus comentarios aquí"
 EventCalender.NoRecord="No se encontrarón archivos"
+RequestAccess.DirectorName_placeholder = "Nombre director"
+RequestAccess.DirectorEmail_placeholder = "Directora de correo electrónico"
+RequestAccess.DirectorName_error = "Introduzca el Nombre de director"
+RequestAccess.DirectorEmail_error = "Introduzca el Director Dirección de correo electrónico"
+RequestAccess.DirectorEmailValidation_error = "Introduzca la dirección de correo electrónico válida director"
 
 
 LoginPage = {}
