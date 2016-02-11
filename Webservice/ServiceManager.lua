@@ -28,6 +28,13 @@ local function splitUrl( URL )
 
 	return Url
 end
+local function check(value)
+	if value == nil then
+		value=""
+	else
+	end
+return value
+end
 
 
 function string.urlEncode( str )
@@ -904,8 +911,10 @@ local request_value = {}
 	return response
 end
 
-function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,postExecution)
-	
+function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection,postExecution)
+
+--CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,PhoneNumber,AccessCode,IsConference,CallDirection
+
 	local request_value = {}
 	local params = {}
 	local headers = {}
@@ -922,7 +931,6 @@ function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerSta
 	headers["Authentication"] = authenticationkey
 
 	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
 		UserId = row.UserId
 		AccessToken = row.AccessToken
 		ContactId = row.ContactId
@@ -932,32 +940,60 @@ function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerSta
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 	
 
-print( "AppointmentPurpose = "..AppointmentPurpose )
 
-local resbody = [[
+local contactInfo = ""
+local invitees = ""
 
-{"UserId": ]]..UserId..[[,
-"TicklerId": 0,
-"CalendarId": ]]..CalendarId..[[,
-"CalendarName":  ']]..CalendarName..[[',
-"TicklerType": ']]..TicklerType..[[',
-"TicklerStatus": "OPEN",
-"title": ']]..title..[[',
-"startdate": ']]..startdate..[[',
-"enddate": ']]..enddate..[[',
-"starttime": ']]..starttime..[[',
-"endtime": ']]..endtime..[[',
-"allDay": ]]..tostring(allDay)..[[,
-"Location": ']]..Location..[[',
-"Description": ']]..Description..[[',
-"AppointmentPurpose":  ]]..AppointmentPurpose..[[,
-"Priority":  ]]..Priority..[[,
-"TimeZone": "Eastern Standard Time",
-"ColorCode":"#BCA9F5",
-"EventAccess":"PUBLIC"
-}
 
-]]
+
+if Invitees.name ~= nil or Invitees ~= "" then
+
+		invitees = json.encode(Invitees)
+
+end
+
+
+if Contact.name ~= nil or Contact ~= "" then
+
+	contactInfo = json.encode(Contact)
+
+end
+
+		resbody = [[
+		{
+		"UserId": ]]..UserId..[[,
+		"TicklerId": 0,
+		"CalendarId": ]]..CalendarId..[[,
+		"CalendarName":  ']]..CalendarName..[[',
+		"TicklerType": ']]..TicklerType..[[',
+		"TicklerStatus": "OPEN",
+		"title": ']]..title..[[',
+		"startdate": ']]..startdate..[[',
+		"enddate": ']]..enddate..[[',
+		"starttime": ']]..starttime..[[',
+		"endtime": ']]..endtime..[[',
+		"allDay": ]]..tostring(allDay)..[[,
+		"Location": ']]..Location..[[',
+		"Description": ']]..Description..[[',
+		"AppointmentPurpose":  ]]..check(AppointmentPurpose)..[[,
+		"AppointmentPurposeOther":  ]]..AppointmentPurposeOther..[[,
+		"Priority":  ]]..Priority..[[,
+		"TimeZone": ']]..TimeZone..[[',
+		"ColorCode":"#BCA9F5",
+		"EventAccess":"PUBLIC",
+		"AttachmentName": ']]..check(AttachmentName)..[[',
+		"AttachmentPath": ']]..check(AttachmentPath)..[[',
+		"Attachment":  ']]..check(Attachment)..[[',
+		"Contact":]]..contactInfo..[[,
+		"Invitees":]]..invitees..[[,
+		"PhoneNumber":]]..PhoneNumber..[[,
+		"AccessCode":]]..AccessCode..[[,
+		"IsConference":]]..tostring(IsConference)..[[,
+		"CallDirection":]]..tostring(CallDirection)..[[,
+	
+		}
+		]]
+
 
 
 	params={headers = headers,body = resbody}
@@ -1067,5 +1103,55 @@ local resbody = [[{
 	request.new(ApplicationConfig.CreateQuickcContact,method,params,postExecution)
 	
 	return response
+
+end
+
+function Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method="POST"
+
+	local url = splitUrl(ApplicationConfig.DeleteTicklerEvent)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	
+
+
+local resbody = [[{
+  "UserId": ']]..UserId..[[',
+  "TicklerId": ']]..TicklerId..[[',
+  "TimeZone": ']]..TimeZone..[[',
+  "CalendarId": ']]..CalendarId..[[',
+  "id": ']]..id..[[',
+  
+  ]]
+
+	params={headers = headers,body = resbody}
+
+		print("request : "..json.encode(params))
+
+
+
+	request.new(ApplicationConfig.DeleteTicklerEvent,method,params,postExecution)
+	
+
 
 end

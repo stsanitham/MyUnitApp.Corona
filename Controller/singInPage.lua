@@ -531,11 +531,11 @@ openPage="signInPage"
 
 			local pushTest = function( event )
 			    if notificationFlag == false then
-			    	Unitnumber_field.isVisible=true
+			    	if Unitnumber_field then Unitnumber_field.isVisible=true end
 					UserName.isVisible=true
 					Password.isVisible=true
 			    else
-			    	Unitnumber_field.isVisible=false
+			    	if Unitnumber_field then Unitnumber_field.isVisible=false end
 					UserName.isVisible=false
 					Password.isVisible=false
 
@@ -699,7 +699,7 @@ function scene:show( event )
 			composer.removeHidden()
 
 
-			Unitnumber_field:addEventListener( "userInput", textfield )
+			if Unitnumber_field then Unitnumber_field:addEventListener( "userInput", textfield ) end
 			UserName:addEventListener( "userInput", textfield )
 			Password:addEventListener( "userInput", textfield )
 

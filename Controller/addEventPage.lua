@@ -11,6 +11,7 @@ local Utility = require( "Utils.Utility" )
 local lfs = require ("lfs")
 local mime = require("mime")
 local timePicker = require( "Controller.timePicker" )
+local datePicker = require( "Controller.datePicker" )
 
 
 --------------- Initialization -------------------
@@ -34,7 +35,8 @@ local EventnameArray = {"Appointment","Call","Party","Task"}
 
 local priorityArray = {"Low","Normal","High"}
 
-local purposeArray = {"Booking","Color Appointment","Customer Service","Double Facial","Facial","Follow Up","Full Circle","Initial Appointment","On the Go","Training","Team Building","Reschedule","2 Day Follow up","2 Week Follow up","2 Month Follow up","Other"}
+local purposeArray = {"Facial","On the Go","Double Facial","Class","Team Building","Training","Show","Meeting","Follow Up","Customer Service","2 Day Follow up","2 Week Follow up","2 Month Follow up","Other","Color Appointment","Family","Booking","Initial Appointment","Reschedule","Full Circle"}
+
 
 local selectContactGroup = {"--Select Contact Group--"}
 
@@ -48,7 +50,7 @@ local AddeventGroup = display.newGroup( )
 
 local AddeventArray = {}
 
-local saveBtn
+local saveBtn,AttachmentName,AttachmentPath,Attachment
 
 local CalendarId,allDay
 
@@ -63,6 +65,10 @@ local searchArray = {}
 local searchArraytotal = {}
 
 local searchList
+
+local callGroup = display.newGroup( )
+
+local belowGroup = display.newGroup( )
 
 local QuickContactList = {}
 
@@ -85,6 +91,11 @@ local function closeDetails( event )
 
 return true
 
+end
+
+
+local function radioSwitchListener( event )
+	print(event.target.id .. "\nswitch.isOn = " .. tostring( event.target.isOn ))
 end
 
 
@@ -115,6 +126,8 @@ function formatSizeUnits(event)
 
   	  end
 
+  	 
+
 end
 
 
@@ -125,6 +138,9 @@ end
 		AddAttachmentLbl.text = "Image Uploaded !"
 
 		print("SuccessMessage")
+
+		AttachmentName = response.FileName
+		AttachmentPath = response.Abspath
 
 
 
@@ -143,9 +159,10 @@ local function selectionComplete ( event )
 				photo.y = display.contentCenterY
 				local w = photo.width
 				local h = photo.height
-				print( "w,h = ".. w .."," .. h )
 
 				photoname = "eventAttach.jpg"
+
+
 
 		        display.save(photo,photoname,system.DocumentsDirectory)
 
@@ -161,6 +178,8 @@ local function selectionComplete ( event )
 				local fileHandle = io.open(path, "rb")
 
 				file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+				 Attachment = file_inbytearray
 
 				io.close( fileHandle )
 
@@ -191,7 +210,7 @@ local function searchRender( event )
     local rowWidth = row.contentWidth
 
 
-    local rowTitle = display.newText( row, searchArray[row.index], 0, 0, nil, 14 )
+    local rowTitle = display.newText( row, searchArray[row.index].name, 0, 0, nil, 14 )
     rowTitle:setFillColor( 0 )
 
     -- Align the label left and vertically centered
@@ -199,7 +218,8 @@ local function searchRender( event )
     rowTitle.x = 25
     rowTitle.y = rowHeight * 0.5
 
-	row.name = searchArray[row.index]
+	row.name = searchArray[row.index].name
+	row.value = searchArray[row.index]
 end
 
 local function searchTouch(event) 
@@ -215,6 +235,8 @@ local function searchTouch(event)
 		searchList.textFiled.text = row.name
 
 		searchList.textFiled.value = row.index - 1
+
+		searchList.textFiled.contactinfo = row.value
 
 		native.setKeyboardFocus( nil )
 
@@ -277,11 +299,32 @@ local function onRowTouch(event)
 
 			PurposeLbl.text = "Purpose"
 
+			TicklerType = "PARTY"
+
+			callGroup.isVisible = false
+
+			belowGroup.y=-W/2+50
+
+			Phone.isVisible = false
+
+			AccessCode.isVisible = false
+
 		elseif List.textFiled.text:lower( ) == "appointment" then
 
 			AppintmentWith.placeholder="Appointment With"
 
 			PurposeLbl.text = "Purpose"
+
+			TicklerType = "APPT"
+
+			callGroup.isVisible = false
+			
+			belowGroup.y=-W/2+50
+
+			Phone.isVisible = false
+
+			AccessCode.isVisible = false
+
 
 		elseif List.textFiled.text:lower( ) == "task" then
 
@@ -289,11 +332,31 @@ local function onRowTouch(event)
 
 			PurposeLbl.text = "Status"
 
+			TicklerType = "TASK"
+
+			callGroup.isVisible = false
+			
+			belowGroup.y=-W/2+50
+
+			Phone.isVisible = false
+
+			AccessCode.isVisible = false
+
 		elseif List.textFiled.text:lower( ) == "call" then
 
 			AppintmentWith.placeholder="Call With"
 
 			PurposeLbl.text = "Purpose"
+
+			TicklerType = "CALL"
+
+			callGroup.isVisible = true
+			
+			belowGroup.y=-W/2+160
+
+			Phone.isVisible = true
+
+			AccessCode.isVisible = true
 
 		end
 
@@ -326,11 +389,11 @@ local function CreateList(event,list,bg)
 					
 
 					list.x = event.target.x
-					list.y = event.target.y+event.target.contentHeight
+					--list.y = event.target.y+event.target.contentHeight
 					list.width =event.target.contentWidth+2
 
 					bg.x = event.target.x
-					bg.y = event.target.y+event.target.contentHeight
+					--bg.y = event.target.y+event.target.contentHeight
 					bg.width =event.target.contentWidth+2
 					bg.height =list.contentHeight+2
 
@@ -457,9 +520,6 @@ local function Ap_scrollAction( event )
 return true
 end
 
-local function AddAttachment( event )
-	
-end
 
 local function TouchAction( event )
 	if event.phase == "began" then
@@ -505,10 +565,20 @@ local function TouchAction( event )
 				print( startdate) 
 
 
-				--CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,
-				print( "PriorityLbl : "..PriorityLbl.value )
+				--CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection
 
-				Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,"",PriorityLbl.value,get_CreateTickler)
+				if Out_bound.isOn == "true" then
+
+					CallDirection = "0"
+
+				else
+
+					CallDirection = "1"
+
+				end
+
+
+				Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,"",PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
 
 				
 			elseif event.target.id == "AppintmentWith_plus" then
@@ -549,6 +619,7 @@ local function TouchAction( event )
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
 					Description.isVisible = false
+					Addinvitees.isVisible = false
 				
 				function getValue(time)
 
@@ -556,8 +627,10 @@ local function TouchAction( event )
 					AppintmentWith.isVisible = true
 					Where.isVisible = true
 					Description.isVisible = true
+					Addinvitees.isVisible = true
 
 				end
+
 				timePicker.getTimeValue(getValue)
 
 			elseif event.target.id == "totime" then
@@ -565,6 +638,7 @@ local function TouchAction( event )
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
 					Description.isVisible = false
+					Addinvitees.isVisible = false
 				
 				function getValue(time)
 
@@ -572,9 +646,47 @@ local function TouchAction( event )
 					AppintmentWith.isVisible = true
 					Where.isVisible = true
 					Description.isVisible = true
+					Addinvitees.isVisible = true
 
 				end
 				timePicker.getTimeValue(getValue)
+
+			elseif event.target.id == "fromdate" then
+
+					AppintmentWith.isVisible = false
+					Where.isVisible = false
+					Description.isVisible = false
+					Addinvitees.isVisible = false
+				
+				function getValue(time)
+
+					Event_from_date.text = time
+					AppintmentWith.isVisible = true
+					Where.isVisible = true
+					Description.isVisible = true
+					Addinvitees.isVisible = true
+
+				end
+
+				datePicker.getTimeValue(getValue)
+
+			elseif event.target.id == "todate" then
+
+					AppintmentWith.isVisible = false
+					Where.isVisible = false
+					Description.isVisible = false
+					Addinvitees.isVisible = false
+				
+				function getValue(time)
+
+					Event_to_date.text = time
+					AppintmentWith.isVisible = true
+					Where.isVisible = true
+					Description.isVisible = true
+					Addinvitees.isVisible = true
+
+				end
+				datePicker.getTimeValue(getValue)
 			
 
 			elseif event.target.id == "purpose" then
@@ -642,7 +754,8 @@ local function TouchAction( event )
 						What.isVisible = false
 						List.isVisible = true
 						List.x = event.target.x
-						List.y = event.target.y+event.target.contentHeight+1.3
+						List.y = event.target.y+event.target.contentHeight+1.3+110
+						List_bg.y = List.y
 						List.width =event.target.contentWidth
 						List.arrayName = EventnameArray
 						List.textFiled = SelectEvent
@@ -688,17 +801,23 @@ function get_Contact( response )
 
 if response ~= nil then
 
-	for i=1,#response do
+	searchArraytotal = response
 
-		if response[i].FirstName ~= nil then
-			searchArray[#searchArray+1] = response[i].FirstName.." "..response[i].LastName
-			searchArraytotal[#searchArraytotal+1] = response[i].FirstName.." "..response[i].LastName
+	for i=1,#searchArraytotal do
+
+
+
+		if searchArraytotal[i].FirstName ~= nil then
+
+			searchArraytotal[i].name = searchArraytotal[i].FirstName.." "..searchArraytotal[i].LastName
+
+			searchArray[#searchArray+1] = searchArraytotal[i]
+
+		elseif searchArraytotal[i].LastName ~= nil then
 			
-		elseif response[i].LastName ~= nil then
+			searchArraytotal[i].name = searchArraytotal[i].FirstName.." "..searchArraytotal[i].LastName
 
-			searchArray[#searchArray+1] = response[i].LastName
-			searchArraytotal[#searchArraytotal+1] = response[i].FirstName.." "..response[i].LastName
-
+			searchArray[#searchArray+1] = searchArraytotal[i]
 
 		end
 
@@ -713,16 +832,7 @@ end
 local function searchfunction( event )
 
     if ( event.phase == "began" ) then
-        -- user begins editing defaultField
-        print( event.text )
-
-        if event.target.id == "appintmentwith" then
-
-        	Addinvitees.isVisible = false
-
-        end
-
-
+  
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
         print( event.target.text )
@@ -730,6 +840,12 @@ local function searchfunction( event )
         Addinvitees.isVisible = true
 
     elseif ( event.phase == "editing" ) then
+
+    	if event.target.id == "appintmentwith" then
+
+        	Addinvitees.isVisible = false
+
+        end
 
     	if event.text:len() == 1 then
     		print("len")
@@ -748,9 +864,8 @@ local function searchfunction( event )
 
 		else
 
-			Addinvitees.isVisible = false
+			
 
-			print(#searchArray)
 			for i=1,#searchArray do
 				searchArray[i]=nil
 			end
@@ -758,9 +873,9 @@ local function searchfunction( event )
 			for i=1,#searchArraytotal do
 	
 
-				if string.find(searchArraytotal[i]:lower(),event.text:lower()) ~= nil then
+				if string.find(searchArraytotal[i].name:lower(),event.text:lower()) ~= nil then
 
-					print("here  "..searchArraytotal[i],event.text)
+					print("here  "..searchArraytotal[i].name,event.text)
 
 					searchArray[#searchArray+1] = searchArraytotal[i]
 
@@ -798,6 +913,49 @@ local function searchfunction( event )
 
     	--searchArray
     end
+end
+
+local function usertextField( event )
+
+    if ( event.phase == "began" ) then
+        -- user begins editing defaultField
+        print( event.text )
+
+
+
+    elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+        -- do something with defaultField text
+        print( event.target.text )
+
+    elseif ( event.phase == "editing" ) then
+    
+
+    	if string.find( event.text,"\n" ) ~= nil then
+
+    		print( "find!!!!!!!!!!!" )
+
+    		local temp = string.sub( event.text, string.find( event.text,"\n",-42), event.text:len() )
+
+    		print( temp:len(),temp)
+
+    		if temp:len() > 40 then
+
+    			temp = 0
+
+	       		Description.text = event.text.."\n"
+
+	       	end
+
+    	else
+	       if event.text:len() > 40 then
+
+	       	Description.text = event.text.."\n"
+
+	       end
+	    end
+
+
+    end 
 end
 
 	local function addevent_scrollListener(event )
@@ -873,9 +1031,7 @@ function scene:create( event )
 
 
 		saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 50, 20 )
-		saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-		saveBtn_BG:setStrokeColor( 0.4 )
-		saveBtn_BG.strokeWidth=1
+		saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 		saveBtn_BG.id = "save"
 		saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
 
@@ -890,8 +1046,8 @@ function scene:create( event )
 			hideBackground = true,
 			isBounceEnabled=false,
 			horizontalScrollDisabled = true,
-			bottomPadding = 150,
-			friction = .3,
+			bottomPadding = 220,
+			friction = .6,
    			listener = addevent_scrollListener,
 }
 	sceneGroup:insert( scrollView )
@@ -1019,6 +1175,7 @@ function scene:show( event )
 
 		Event_from_datebg = display.newRect(AddeventGroup,0,0,W/2,30)
 		Event_from_datebg.anchorX=0
+		Event_from_datebg.id="fromdate"
 		Event_from_datebg.x=Event_fromLbl.x+Event_fromLbl.contentWidth+5
 		Event_from_datebg.y= Event_fromLbl.y
 
@@ -1033,9 +1190,9 @@ function scene:show( event )
 		Event_from_timebg.id="fromTime"
 		Event_from_timebg.x= Event_from_datebg.x+Event_from_datebg.contentWidth+5;Event_from_timebg.y= Event_from_datebg.y
 
-		local TimeZone = Utils.GetWeek(os.date( "%p" , eventTime ))
+		local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
 
-		Event_from_time = display.newText(AddeventGroup,os.date( "%I:%M "..TimeZone , eventTime ),0,0,native.systemFont,14)
+		Event_from_time = display.newText(AddeventGroup,os.date( "%I:%M "..TimeZonevalue , eventTime ),0,0,native.systemFont,14)
 		Event_from_time.anchorX=0
 		Event_from_time:setFillColor( 0 )
 		Event_from_time.x= Event_from_timebg.x+5;Event_from_time.y= Event_from_timebg.y
@@ -1059,6 +1216,7 @@ function scene:show( event )
 
 		Event_to_datebg = display.newRect(AddeventGroup,0,0,W/2,30)
 		Event_to_datebg.anchorX=0
+		Event_to_datebg.id="todate"
 		Event_to_datebg.x=Event_from_datebg.x
 		Event_to_datebg.y= Event_toLbl.y
 
@@ -1073,15 +1231,20 @@ function scene:show( event )
 		Event_to_timebg.id="totime"
 		Event_to_timebg.x= Event_to_datebg.x+Event_to_datebg.contentWidth+5;Event_to_timebg.y= Event_to_datebg.y
 
-		local TimeZone = Utils.GetWeek(os.date( "%p" , eventTime ))
+		local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
 
-		Event_to_time = display.newText(AddeventGroup,os.date( "%I:%M "..TimeZone , eventTime ),0,0,native.systemFont,14)
+		Event_to_time = display.newText(AddeventGroup,os.date( "%I:%M "..TimeZonevalue , eventTime ),0,0,native.systemFont,14)
 		Event_to_time.anchorX=0
 		Event_to_time:setFillColor( 0 )
 		Event_to_time.x= Event_to_timebg.x+5;Event_to_time.y= Event_to_timebg.y
 
 		-----------------------------------
 
+		local timeZone = display.newText(AddeventGroup,"( "..TimeZone.." )",0,0,native.systemFont,12)
+		timeZone.x=leftPadding
+		timeZone.anchorX = 0
+		timeZone:setFillColor( 0.2 )
+		timeZone.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight+15
 		
 	  	----Where----
 
@@ -1089,7 +1252,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].id="where"
 		AddeventArray[#AddeventArray].anchorY=0
 		--AddeventArray[#AddeventArray].alpha=0.01
-		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+35
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
 		Where = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
@@ -1104,6 +1267,133 @@ function scene:show( event )
 
 	  	----------
 
+	  	---Phone-----
+
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+		AddeventArray[#AddeventArray].id="phone"
+		AddeventArray[#AddeventArray].anchorY=0
+		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		callGroup:insert(AddeventArray[#AddeventArray])
+
+		Phone = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
+		Phone.id="phone"
+		Phone.size=14
+		Phone.anchorY=0
+		Phone.hasBackground = false
+		Phone:setReturnKey( "next" )
+		Phone.placeholder="Phone"
+		callGroup:insert(Phone)
+
+
+	  	--------
+
+
+	  	---AccessCode-----
+
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+		AddeventArray[#AddeventArray].id="accesscode"
+		AddeventArray[#AddeventArray].anchorY=0
+		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		callGroup:insert(AddeventArray[#AddeventArray])
+
+		AccessCode = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
+		AccessCode.id="accesscode"
+		AccessCode.size=14
+		AccessCode.anchorY=0
+		AccessCode.hasBackground = false
+		AccessCode:setReturnKey( "next" )
+		AccessCode.placeholder="Access Code"
+		callGroup:insert(AccessCode)
+
+
+	  	--------
+
+	  	---Bounds-----
+
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+		AddeventArray[#AddeventArray].id="bounds"
+		AddeventArray[#AddeventArray].anchorY=0
+		AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		callGroup:insert(AddeventArray[#AddeventArray])
+
+
+
+	
+	Out_bound = widget.newSwitch {
+	    left = 25,
+	    top = 180,
+	    style = "radio",
+	    id = "outbound",
+	    initialSwitchState = true,
+	    onPress = radioSwitchListener,
+	}
+	callGroup:insert( Out_bound )
+	Out_bound.width=20;Out_bound.height=20
+	Out_bound.x = leftPadding
+	Out_bound.anchorX = 0
+	Out_bound.y = AddeventArray[#AddeventArray].y+10
+
+	Out_bound_txt = display.newText( callGroup,"Out bound",0,0,native.systemFont,14 )
+	Out_bound_txt.x = Out_bound.x+24;Out_bound_txt.y = Out_bound.y
+	Out_bound_txt.anchorX = 0
+	Out_bound_txt:setFillColor( 0 )
+	
+
+	
+	Inbound = widget.newSwitch {
+	    left = 25,
+	    top = 180,
+	    style = "radio",
+	    id = "outbound",
+	    initialSwitchState = false,
+	    onPress = radioSwitchListener,
+	}
+	callGroup:insert( Inbound )
+	Inbound.width=20;Inbound.height=20
+	Inbound.x = Out_bound_txt.x+Out_bound_txt.contentWidth+10
+	Inbound.anchorX = 0
+	Inbound.y = AddeventArray[#AddeventArray].y+10
+
+	In_bound_txt = display.newText( callGroup,"Out bound",0,0,native.systemFont,14 )
+	In_bound_txt.x = Inbound.x+24;In_bound_txt.y = Inbound.y
+	In_bound_txt.anchorX = 0
+	In_bound_txt:setFillColor( 0 )
+
+
+	Conference = widget.newSwitch {
+	    left = 25,
+	    top = 180,
+	    style = "checkbox",
+	    id = "outbound",
+	    initialSwitchState = false,
+	    onPress = radioSwitchListener,
+	}
+	callGroup:insert( Conference )
+	Conference.width=20;Conference.height=20
+	Conference.x = In_bound_txt.x+In_bound_txt.contentWidth+10
+	Conference.anchorX = 0
+	Conference.y = AddeventArray[#AddeventArray].y+10
+
+	Conference_txt = display.newText( callGroup,"Conference?",0,0,native.systemFont,14 )
+	Conference_txt.x = Conference.x+24;Conference_txt.y = Conference.y
+	Conference_txt.anchorX = 0
+	Conference_txt:setFillColor( 0 )
+	
+	
+
+
+	  	--------
+
+
+		AddeventGroup:insert( belowGroup )
+		AddeventGroup:insert( callGroup )
+
+		callGroup.isVisible = false
+		belowGroup.y=-W/2+50
+
 	  	----Description----
 
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 80)
@@ -1111,7 +1401,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].anchorY=0
 		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		belowGroup:insert(AddeventArray[#AddeventArray])
 
 		Description = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
 		Description.id="description"
@@ -1120,8 +1410,8 @@ function scene:show( event )
 		Description.hasBackground = false
 		Description:setReturnKey( "next" )
 		Description.placeholder="Description"
-		AddeventGroup:insert(Description)
-
+		belowGroup:insert(Description)
+		Description:addEventListener( "userInput", usertextField )
 
 	  	----------
 
@@ -1132,7 +1422,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].anchorY=0
 		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		belowGroup:insert(AddeventArray[#AddeventArray])
 
 
 	
@@ -1144,17 +1434,19 @@ function scene:show( event )
 		AppintmentWith.x=leftPadding
 		AppintmentWith.hasBackground = false
 		AppintmentWith:setReturnKey( "next" )
-		AppintmentWith.placeholder="Appintment With"
-		AddeventGroup:insert(AppintmentWith)
+		AppintmentWith.placeholder="Appointment With"
+		belowGroup:insert(AppintmentWith)
+		AppintmentWith.contactinfo=""
 		AppintmentWith:addEventListener( "userInput", searchfunction )
 		
 
+	  	--[[ --stage 2
 	  	AppintmentWith_icon = display.newImageRect(AddeventGroup,"res/assert/icon-close.png",30/1.5,30/1.5 )
 	  	AppintmentWith_icon.rotation=45
 	  	AppintmentWith_icon.id="AppintmentWith_plus"
 	  	AppintmentWith_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	AppintmentWith_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
-	  	AppintmentWith_icon:addEventListener( "touch", TouchAction )
+	  	AppintmentWith_icon:addEventListener( "touch", TouchAction )]]
 	  	--------
 
 	  	--Addinvitees---
@@ -1165,7 +1457,7 @@ function scene:show( event )
 		AppintmentWith:addEventListener( "userInput", searchfunction )
 		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		belowGroup:insert(AddeventArray[#AddeventArray])
 
 
 		Addinvitees = native.newTextField(0, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-30, AddeventArray[#AddeventArray].contentHeight)
@@ -1175,17 +1467,19 @@ function scene:show( event )
 		Addinvitees.anchorX=0
 		Addinvitees.x=leftPadding
 		Addinvitees.hasBackground = false
+		Addinvitees.contactinfo=""
 		Addinvitees:setReturnKey( "next" )
 		Addinvitees.placeholder="Add Invitees"
-		AddeventGroup:insert(Addinvitees)
+		belowGroup:insert(Addinvitees)
 		Addinvitees:addEventListener( "userInput", searchfunction )
 
 		
 
+	  	--[[ --stage 2
 	  	Addinvitees_icon = display.newImageRect(AddeventGroup,"res/assert/icon-close.png",30/1.5,30/1.5 )
 	  	Addinvitees_icon.rotation=45
 	  	Addinvitees_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
-	  	Addinvitees_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+	  	Addinvitees_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2]]
 
 	  	--------
 
@@ -1196,11 +1490,11 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].anchorY=0
 		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		belowGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
-		PurposeLbl = display.newText(AddeventGroup,"Purpose",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PurposeLbl = display.newText(belowGroup,"Purpose",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PurposeLbl.anchorX=0
 		PurposeLbl.value=0
 		PurposeLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -1209,7 +1503,7 @@ function scene:show( event )
 
 		
 
-	  	Purpose_icon = display.newImageRect(AddeventGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	Purpose_icon = display.newImageRect(belowGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	Purpose_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Purpose_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
@@ -1223,11 +1517,11 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].value = 0
 		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		belowGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
-		PriorityLbl = display.newText(AddeventGroup,"Low",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PriorityLbl = display.newText(belowGroup,"Low",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
 		PriorityLbl.value=0
 		PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -1236,7 +1530,7 @@ function scene:show( event )
 
 		
 
-	  	Priority_icon = display.newImageRect(AddeventGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	Priority_icon = display.newImageRect(belowGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	Priority_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Priority_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
@@ -1250,11 +1544,11 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].anchorY=0
 		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		belowGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
-		AddAttachmentLbl = display.newText(AddeventGroup,"Add Attachment",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		AddAttachmentLbl = display.newText(belowGroup,"Add Attachment",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		AddAttachmentLbl.anchorX=0
 		AddAttachmentLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		AddAttachmentLbl.x=leftPadding+5
@@ -1262,16 +1556,17 @@ function scene:show( event )
 
 		
 
-	  	AddAttachment_icon = display.newImageRect(AddeventGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	AddAttachment_icon = display.newImageRect(belowGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	AddAttachment_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	AddAttachment_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 	  	--------
 
+	  	AddeventGroup:insert(belowGroup)
 
 	  	---Common List---
 
-	  	List_bg = display.newRect( AddeventGroup, 200, 200, 104, 304 )
+	  	List_bg = display.newRect( belowGroup, 200, 200, 104, 304 )
 		List_bg:setFillColor( 0 )
 
 
@@ -1300,7 +1595,7 @@ function scene:show( event )
 
 	---searchList---
 
-	  	searchList_bg = display.newRect( AddeventGroup, 200, 200, 104, 304 )
+	  	searchList_bg = display.newRect( belowGroup, 200, 200, 104, 304 )
 		searchList_bg:setFillColor( 0 )
 		searchList_bg.anchorY = 0
 
@@ -1333,8 +1628,8 @@ function scene:show( event )
 
 
 
-	  	AddeventGroup:insert( List )
-	  	AddeventGroup:insert( searchList )
+	  	belowGroup:insert( List )
+	  	belowGroup:insert( searchList )
 
 	  	appoitmentAdd_Background = display.newRect(appointmentGroup,W/2,H/2,W,H)
 	  	appoitmentAdd_Background.id="bg";appoitmentAdd_Background.alpha=0.01
@@ -1515,6 +1810,8 @@ function scene:show( event )
 
 		Event_from_timebg:addEventListener("touch",TouchAction)
 		Event_to_timebg:addEventListener("touch",TouchAction)
+		Event_from_datebg:addEventListener("touch",TouchAction)
+		Event_to_datebg:addEventListener("touch",TouchAction)
 		saveBtn_BG:addEventListener("touch",TouchAction)
 		
 	end	

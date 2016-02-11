@@ -30,6 +30,8 @@ TimeZone = ""
 
 --com.spanenterprises.MUBDev
 
+--CommonApp/DirectorApp
+
 
 AppName = "CommonApp"
 
@@ -38,7 +40,7 @@ environment = system.getInfo( "environment" )
 Director_Name = ""
 
 if AppName == "DirectorApp" then
-	Unitnumber_value = "12345"
+	Unitnumber_value = "123"
 else
 	Unitnumber_value = ""
 end

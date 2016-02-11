@@ -11,7 +11,7 @@ local Utility = require( "Utils.Utility" )
 local Applicationconfig = require("Utils.ApplicationConfig")
 local widget = require( "widget" )
 
-
+local status = "normal"
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -22,13 +22,15 @@ local menuBtn
 
 local detail_value = {}
 
+local TicklerId,CalendarId,CalendarName,id
+
 local RecentTab_Topvalue = 105
 
 local prority_enum = {EventCalender.High,EventCalender.Normal,EventCalender.Low}
 
 local purpose_enum = {"FACIAL","ON_THE_GO","DOUBLE_FACIAL","CLASS","TEAM_BUILDING","TRAINING","SHOW","MEETING","FOLLOW_UP","CUSTOMER_SERVICE","TWO_DAY_FOLLOWUP","TWO_WEEK_FOLLOWUP","TWO_MONTH_FOLLOWUP","OTHER","COLOR_APPT","FAMILY","BOOKING","INIT_APPT","RESCHEDULE","FULLCIRCLE"}
 
-
+local deleteEvent_icon
 
 local with_enum = {
         "CALENDAR",
@@ -57,7 +59,7 @@ local display_details = {}
 
 -----------------Function-------------------------
 
-		function makeTimeStamp(dateString)
+		local function makeTimeStamp(dateString)
 		local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
 		local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin =
 		dateString:match(pattern)
@@ -75,6 +77,9 @@ local display_details = {}
 
 		return true
 		end
+
+
+
 		local function closeDetails( event )
 		if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -82,13 +87,47 @@ local display_details = {}
 		display.getCurrentStage():setFocus( nil )
 		composer.hideOverlay( "slideRight", 300 )
 
+		end
+
+		return true
+
+		end
+
+		function get_DeleteTicklerEvent( response )
+			
+			if response.OperationStatus == 0 then
+
+				status = "deleted"
+
+				composer.hideOverlay( "slideRight", 300 )
+
+			else
+
+			end
+
+		end
+
+
+	local function deleteEvent( event )
+
+		if event.phase == "began" then
+
+			print( "*****" )
+			display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+			print( "@@@@@" )
+			Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,get_DeleteTicklerEvent)
+			--composer.hideOverlay( "slideRight", 300 )
 
 
 		end
 
 		return true
 
-		end
+	end
+
+		
 
 		local function AttachmentDownload( event )
 		if event.phase == "began" then
@@ -158,6 +197,17 @@ local display_details = {}
 		Utils.CssforTextView(titleBar_text,sp_subHeader)
 		MainGroup:insert(sceneGroup)
 
+		deleteEvent_icon = display.newImageRect( sceneGroup, "res/assert/delete.png", 20,16 )
+		deleteEvent_icon.x=titleBar.x+titleBar.contentWidth/2-20
+		deleteEvent_icon.y=titleBar.y+titleBar.contentHeight/2
+		deleteEvent_icon:addEventListener( "touch", deleteEvent )
+
+		if not IsOwner then
+
+			deleteEvent_icon.isVisible = false
+
+		end
+
 		end
 
 
@@ -218,6 +268,11 @@ local display_details = {}
 
 		local start_timeGMT = makeTimeStamp( Details.startdate )
 		local end_timeGMT = makeTimeStamp( Details.enddate )
+
+		TicklerId = Details.TicklerId
+		CalendarId = Details.CalendarId
+		CalendarName = Details.CalendarName
+		id = Details.id
 
 		----When----
 
@@ -571,6 +626,9 @@ local display_details = {}
 
 		end	
 
+
+		
+
 		MainGroup:insert(sceneGroup)
 
 		end
@@ -587,7 +645,7 @@ local display_details = {}
 
 		elseif phase == "did" then
 
-		event.parent:resumeGame()
+		event.parent:resumeGame(status)
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
 		menuTouch_s:removeEventListener("touch",menuTouch)

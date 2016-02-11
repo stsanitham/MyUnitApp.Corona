@@ -49,7 +49,7 @@ RequestAccess = {}
 
 RequestAccess.PageTitle = "Request Access"
 RequestAccess.REQUEST = "Request already sent"
-RequestAccess.FIRSTREQUEST = "Your Request for Access has been sent successfully"
+RequestAccess.FIRSTREQUEST = "Your request for access has been sent successfully"
 RequestAccess.OPEN = "Request Access sent"
 RequestAccess.GRANT = "Access already granted"
 RequestAccess.NOUNITNUMBER = "Enter the Valid UnitNumber"

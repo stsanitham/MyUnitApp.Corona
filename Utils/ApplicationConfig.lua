@@ -125,3 +125,6 @@ ApplicationConfig.GetContactsWithLead = ApplicationConfig.BASE_URL.."/MyUnitBuzz
 
 ApplicationConfig.CreateQuickcContact = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/CreateQuickcContact"
 
+ApplicationConfig.DeleteTicklerEvent = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/DeleteTicklerEvent"
+
+

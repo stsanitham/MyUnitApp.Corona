@@ -132,9 +132,7 @@ local columnData =
 
 -----------------Function-------------------------
 
-function scene:resumeGame()
-    search.isVisible=true
-end
+
 
 
 
@@ -368,6 +366,7 @@ line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
 local leftDraw_line = display.newImageRect(tempGroup,"res/assert/eventSeprator.png",22,63)
 leftDraw_line.anchorY=0
+leftDraw_line.height = background.height+5
 leftDraw_line.x=W/4;leftDraw_line.y=background.y-5
 
 local TimeZone = Utils.GetWeek(os.date( "%p" , timeGMT ))
@@ -1252,6 +1251,23 @@ addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 
 end
 
+function scene:resumeGame(value)
+    search.isVisible=true
+
+    if value == "deleted" then
+
+local temp = os.date( '*t' )
+temp.day = temp.day - os.date( "%w" ) 
+weekViewTouchFlag=true
+ParentShow=true
+creatWeek(temp,true)
+
+		
+    end
+
+
+end
+
 function scene:show( event )
 
 	local sceneGroup = self.view
@@ -1280,7 +1296,7 @@ function scene:show( event )
 			horizontalScrollingDisabled = false,
 			verticalScrollingDisabled = false,
 			hideScrollBar=true,
-			friction = .3,
+			friction = .6,
 			listener = EventCalender_scrollListener
 			}
 

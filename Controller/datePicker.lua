@@ -1,42 +1,57 @@
 
-timePicker = {}
+datePicker = {}
 local widget = require( "widget" )
 local W = display.contentWidth;H= display.contentHeight
 
+local monthArray={ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
+local weekLbl = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"}
+local days = {}
+local years = {}
 
-local Min = {}
-	local Hour = {}
-	for i = 1,60 do Min[i] = (string.format("%02d",i)) end
-	for j = 1,12 do Hour[j] = (string.format("%02d",j)) end
+-- Populate the "days" table
+for d = 1, 31 do
+    days[d] = string.format("%02d",d)
 
-	local columnData = { 
-		{
-			align = "right",
-			width = 125,
-			startIndex = 5,
-			labels = Hour,
-		},
-		{
-			align = "center",
-			width = 70,
-			startIndex = 18,
-			labels = Min,
-		},
-		{
-			align = "center",
-			width = 65,
-			startIndex = 2,
-			labels = {"AM","PM"},
-		},
-	}
+    print( days[d] )
+end
 
+-- Populate the "years" table
+for y = 1, 48 do
+    years[y] = (os.date( "%Y" )-5) + y
+end
+
+-- Configure the picker wheel columns
+local columnData = 
+{
+    -- Months
+    { 
+        align = "right",
+        width = 140,
+        startIndex =tonumber(os.date( "%m" )),
+        labels = monthArray
+    },
+    -- Days
+    {
+        align = "center",
+        width = 60,
+        startIndex = tonumber(os.date( "%d" )),
+        labels = days
+    },
+    -- Years
+    {
+        align = "center",
+        width = 80,
+        startIndex = 5,
+        labels = years
+    }
+}
 
 
 	
 
 
 
-timePicker.getTimeValue = function(listner)
+datePicker.getTimeValue = function(listner)
 
 
 	local getValuesButton,pickerWheel,doneBg
@@ -56,12 +71,12 @@ local function showValues( event )
 		display.remove(doneBg);doneBg=nil
 		display.remove(getValuesButton);getValuesButton=nil
 		display.remove(pickerWheel);pickerWheel=nil
-		listner(values[1].value..":"..values[2].value.." "..values[3].value)
+		listner(string.format("%02d",values[1].index).."/"..values[2].value.."/"..values[3].value)
 		
 		return true
 	end
 
-
+print( "############" )
 
 	pickerWheel = widget.newPickerWheel {
 		top = display.contentHeight-200,
@@ -79,7 +94,8 @@ local function showValues( event )
 	getValuesButton:addEventListener( "touch", showValues )
 
 
+
 end
 
 
-return timePicker
+return datePicker
