@@ -57,6 +57,8 @@ RequestAccess.BLOCK = "Access denied already"
 RequestAccess.DENY = "Access denied already"
 RequestAccess.FAIL = "Enter Valid credentials"
 RequestAccess.Name_error = "Enter the Last Name"
+RequestAccess.DirectorName_error = "Enter the Director Name"
+RequestAccess.DirectorEmail_error = "Enter the Director Email Address"
 RequestAccess.Email_error = "Enter the Email"
 RequestAccess.EmailValidation_error = "Enter the valid email"
 RequestAccess.Phone_error = "Enter the Phone Number"
@@ -69,6 +71,7 @@ RequestAccess.MKRank_placeholder = "-Select MK Rank-"
 RequestAccess.Comment_placeholder= "Enter your comments here"
 RequestAccess.DirectorName_placeholder = "Director Name"
 RequestAccess.DirectorEmail_placeholder = "Director Email"
+RequestAccess.DirectorEmailValidation_error = "Enter the valid Director Email Address"
 
 LoginPage = {}
 

@@ -125,3 +125,5 @@ ApplicationConfig.GetContactsWithLead = ApplicationConfig.BASE_URL.."/MyUnitBuzz
 
 ApplicationConfig.CreateQuickcContact = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/CreateQuickcContact"
 
+ApplicationConfig.GetUnitWiseRegister = ApplicationConfig.BASE_URL.."/MyUnitBuzz/CheckNotInUnitWiseRegister"
+

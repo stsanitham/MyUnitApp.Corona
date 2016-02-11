@@ -14,7 +14,8 @@ local List_array = {}
 local mkRank_id=0
 local current_textField,defalut
 local rankGroup = display.newGroup()
-
+local RequestFromStatus = ""
+local unitnumberflag = false
 
 
 
@@ -57,7 +58,7 @@ local function rankToptouch( event )
 		display.getCurrentStage():setFocus( nil )
 
 		if event.target.id == "close" then
-			rankGroup.isVisible=falses
+			rankGroup.isVisible=false
 
 				FirstName.isVisible=true
 				Name.isVisible=true
@@ -89,7 +90,7 @@ end
 local function backAction( event )
 		if event.phase == "began" then
 
-			display.getCurrentStage():setFocus( event.tagret )
+			display.getCurrentStage():setFocus( event.target )
 
 		elseif event.phase == "ended" then
 
@@ -147,13 +148,17 @@ end
 
 			local alert = native.showAlert( RequestAccess.PageTitle , value, { CommonWords.ok }, onComplete )
 
-	end	
+			end	
+
+
 
 	local function createField()
-		input = native.newTextField(W/2, Email_bg.y+Email_bg.height+10, W-20, 28)
+		input = native.newTextField(W/2, Email_bg.y+Email_bg.height+7, W-20, 25)
 		
 		return input
 	end
+
+
 
 local function RequestProcess()
 
@@ -171,14 +176,18 @@ local function RequestProcess()
 
 			Request_response = response
 
+			print("response after unit number validation ",Request_response)
+
 			submit_spinner.isVisible=false
 			sumbitBtn.width = sumbitBtn.width-20
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
 			submit_spinner:stop( )
+
+
+			print("********************************************************** ",Request_response)
 			
 								
-
 		if Request_response == "REQUEST"  then
 
 			alertFun(RequestAccess.REQUEST,0)
@@ -194,6 +203,10 @@ local function RequestProcess()
 		elseif Request_response == "GRANT" then
 
 			alertFun(RequestAccess.GRANT,1)
+
+		elseif Request_response == "SUCCESS" then
+
+			alertFun(RequestAccess.FIRSTREQUEST,1)
 
 		elseif Request_response == "NOUNITNUMBER" then
 
@@ -217,9 +230,10 @@ local function RequestProcess()
 					
 					if AppName == "DirectorApp" then
 
-						Webservice.REQUEST_ACCESS(FirstName.text,Name.text,Email.text,Phone.text,Unitnumber_value,mkRank_id,Comment.text,get_requestAccess)
+						Webservice.REQUEST_ACCESS(RequestFromStatus,"","",FirstName.text,Name.text,Email.text,Phone.text,Unitnumber_value,mkRank_id,Comment.text,get_requestAccess)
 					else
-						Webservice.REQUEST_ACCESS(FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,mkRank_id,Comment.text,get_requestAccess)
+						Webservice.REQUEST_ACCESS(RequestFromStatus,DirectorName.text,DirectorEmail.text,FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,mkRank_id,Comment.text,get_requestAccess)
+						
 					end
 
 end
@@ -231,11 +245,134 @@ end
 				end
 
 
+
+
+
+			function NO_UNITNUMBER_FUNCTION(responseUnitValue)
+
+					print("inside the function of 'has no unit number' ")
+
+					DirectorName_bg.isVisible = true
+					DirectorName.isVisible = true
+					DirectorEmail.isVisible = true
+					DirectorEmail_bg.isVisible = true
+
+					DirectorName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
+					DirectorName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
+					DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
+					DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
+					FirstName_bg.y = DirectorEmail_bg.y+DirectorEmail_bg.height+7
+					FirstName.y = DirectorEmail_bg.y+DirectorEmail_bg.height+7
+					Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
+					Name.y = FirstName_bg.y+FirstName_bg.height+7
+					Email_bg.y = Name_bg.y+Name_bg.height+7
+					Email.y = Name_bg.y+Name_bg.height+7
+					Phone_bg.y = Email_bg.y+Email_bg.height+7
+					Phone.y = Email_bg.y+Email_bg.height+7
+					MKRank_bg.y = Phone_bg.y+Phone_bg.height+7
+					--MKRank.y = Phone_bg.y+Phone_bg.height+7
+					MKRank.y=MKRank_bg.y+5
+					rankText_icon.y=MKRank_bg.y
+					Comment_bg.y = MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
+					Comment.y = Comment_bg.y
+					sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+30
+					sumbitBtn_lbl.y=sumbitBtn.y
+					submit_spinner.y=sumbitBtn.y
+
+	              --  validationCheck()
+
+	              if responseUnitValue == "NOTINUNITWISE" then
+
+					if (DirectorName.id == "Director Name") then
+
+					native.setKeyboardFocus( nil )
+
+				    end
+
+				end
+
+			end
+
+
+
+			function HAS_UNITNUMBER_FUNCTION(responseUnitValue)
+
+					print("inside the function of 'has unit number'")
+
+					DirectorName_bg.isVisible = false
+					DirectorName.isVisible = false
+					DirectorEmail.isVisible = false
+					DirectorEmail_bg.isVisible = false
+
+					FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
+					FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
+					Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
+					Name.y = FirstName_bg.y+FirstName_bg.height+7
+					Email_bg.y = Name_bg.y+Name_bg.height+7
+					Email.y = Name_bg.y+Name_bg.height+7
+					Phone_bg.y = Email_bg.y+Email_bg.height+7
+					Phone.y = Email_bg.y+Email_bg.height+7
+					MKRank_bg.y = Phone_bg.y+Phone_bg.height+7
+					MKRank.y=MKRank_bg.y+5
+					rankText_icon.y=MKRank_bg.y
+					Comment_bg.y = MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
+					Comment.y = Comment_bg.y
+					sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+30
+					sumbitBtn_lbl.y=sumbitBtn.y
+					submit_spinner.y=sumbitBtn.y
+
+					 if responseUnitValue == "UNITNOEXIST" then
+
+						if (UnitNumber.id == "Unit Number / Director name") then
+
+					  native.setKeyboardFocus( FirstName )
+
+				     end
+
+
+				end
+
+
+				
+	            --validationCheck()
+
+			end
+
+
+
+	function getunitnumberresponse(response)
+
+			Request_response = response
+
+			print("************************Request_response unitnumber initial*************************** ",Request_response)
+
+			RequestFromStatus = Request_response
+
+
+			if Request_response == "NOTINUNITWISE" then
+
+				NO_UNITNUMBER_FUNCTION(RequestFromStatus)
+				unitnumberflag = true
+
+			elseif Request_response == "UNITNOEXIST" then
+
+				HAS_UNITNUMBER_FUNCTION(RequestFromStatus)
+				unitnumberflag = false
+
+			end
+
+
+	end
+
+
+
+
 				local function textfield( event )
 
 					if ( event.phase == "began" ) then
 
-					
+							testflag = true
+
 							event.target:setTextColor(color.black)
 
 							current_textField = nil
@@ -250,12 +387,9 @@ end
 							end
 
 							if(current_textField.id == "Comments") then
-
 							
-
 									current_textField.text = ""
-
-								
+							
 								scrollTo( -100 )
 
 							end
@@ -264,7 +398,7 @@ end
 					elseif ( event.phase == "submitted" ) then
 
 							if current_textField then
-					       			--native.setKeyboardFocus( nil )
+
 					       			if(current_textField.id == "Comments") then
 
 										scrollTo( 0 )
@@ -287,22 +421,23 @@ end
 
 										native.setKeyboardFocus(UnitNumber)
 
-									elseif(current_textField.id == "Unit Number / Director name") then
-																
-										native.setKeyboardFocus( nil )
+							   elseif (current_textField.id == "Director Name") then
 
-										if(UnitNumber.text)
+								native.setKeyboardFocus( DirectorEmail )
+
+							    elseif (current_textField.id == "Director Email") then
+
+								native.setKeyboardFocus( FirstName )
 
 									end
-
 
 								end
 
 								scrollTo( 0 )
 
-					elseif event.phase == "ended" then
+						elseif event.phase == "ended" then
 
-						scrollTo( 0 )
+							scrollTo( 0 )
 
 						if(current_textField.id == "Comments") then
 
@@ -312,9 +447,9 @@ end
 
 						end
 
-						--native.setKeyboardFocus( nil )
 
         			elseif ( event.phase == "editing" ) then
+
         				if current_textField.id ~= "Comments" then
         					if event.text:len() > 50 then
 
@@ -368,15 +503,13 @@ end
 									Phone:addEventListener( "userInput", textfield )
 
 									native.setKeyboardFocus(Phone)
-
-									
-
+							
 								else
 
 									event.target.text = event.target.text:sub(2,event.target.text:len())
 
-
 								end
+
 							elseif event.target.text:len() == 5 and (tempvalue == "(") then
 
 								if event.target.text:sub(5,5) ~= ")" then
@@ -435,6 +568,21 @@ end
 
         			
 					end
+
+						if event.phase == "ended" or event.phase=="submitted" then
+
+					if testflag == true then
+
+						testflag = false
+
+						if(current_textField.id == "Unit Number / Director name") then
+																	
+							Webservice.GET_UNITWISE_REGISTER(UnitNumber.text, getunitnumberresponse)
+
+						end
+					end
+
+				   end
 				end
 
 
@@ -498,8 +646,14 @@ local function onRowTouch( event )
 				Phone.isVisible=true
 				UnitNumber.isVisible=true
 				Comment.isVisible=true
-				DirectorName.isVisible = true
-				DirectorEmail.isVisible = true
+
+				if unitnumberflag == true then
+
+					DirectorName.isVisible = true
+					DirectorEmail.isVisible = true
+
+				end
+
 
 			end
 
@@ -508,31 +662,56 @@ local function onRowTouch( event )
 
 
 
+
 	local sumbitBtnRelease = function( event )
 
-		if event.phase == "began" then
+	if event.phase == "began" then
 
 
 
-		elseif event.phase == "ended" then
-			local validation = true
+elseif event.phase == "ended" then
+local validation = true
 
-			native.setKeyboardFocus(nil)
+native.setKeyboardFocus(nil)
 
-			if Name.text == "" or Name.text == Name.id  then
-				validation=false
-				SetError("* "..RequestAccess.Name_error,Name)
+if Name.text == "" or Name.text == Name.id then
+validation=false
+SetError("* "..RequestAccess.Name_error,Name)
+end
+
+
+if unitnumberflag == true then
+
+if DirectorName.text == "" or DirectorName.text == DirectorName.id then
+validation=false
+SetError("* "..RequestAccess.DirectorName_error,DirectorName)
+end
+
+		if DirectorEmail.text == "" or DirectorEmail.text == DirectorEmail.id then
+		validation=false
+		SetError("* "..RequestAccess.DirectorEmail_error,DirectorEmail)
+		else
+
+			if not Utils.emailValidation(DirectorEmail.text) then
+			validation=false
+			SetError("* "..RequestAccess.DirectorEmailValidation_error,DirectorEmail)
+
 			end
-			if Email.text == "" or Email.text == Email.id then
-				validation=false
-				SetError("* "..RequestAccess.Email_error,Email)
-			else
+		end
 
-				if not Utils.emailValidation(Email.text) then
-					validation=false
-					SetError("* "..RequestAccess.EmailValidation_error,Email)
+end
 
-				end
+
+if Email.text == "" or Email.text == Email.id then
+validation=false
+SetError("* "..RequestAccess.Email_error,Email)
+else
+
+if not Utils.emailValidation(Email.text) then
+validation=false
+SetError("* "..RequestAccess.EmailValidation_error,Email)
+
+end
 
 			end
 			if Phone.text == "" or Phone.text == Phone.id or Phone.text:len() < 15  then
@@ -558,12 +737,36 @@ local function onRowTouch( event )
 				
 				RequestProcess()
 
+				if Request_response == "UNITNOEXIST" then
+
+							UnitNumber.text = ""
+							FirstName.text = ""
+							Name.text = ""
+							Email.text = ""
+							Phone.text = ""
+							MKRank.value = "-Select MK Rank-"
+							Comment.text = ""
+
+				elseif Request_response == "NOTINUNITWISE" then
+
+							UnitNumber.text = ""
+							DirectorName.text = ""
+							DirectorEmail.text = ""
+							FirstName.text = ""
+							Name.text = ""
+							Email.text = ""
+							Phone.text = ""
+							MKRank.value = "-Select MK Rank-"
+							Comment.text = ""
+
+				end
+
 			end
 
 	end
 return true
-
 end
+
 
 
 local function rankTouch( event )
@@ -595,9 +798,15 @@ local function rankTouch( event )
 					Phone.isVisible=false
 					UnitNumber.isVisible=false
 					Comment.isVisible=false
+
+				if unitnumberflag == true then
+
 					DirectorName.isVisible = false
 					DirectorEmail.isVisible = false
-        		end
+
+				end
+
+        	end
 
         		elseif listFlag == true then
 
@@ -624,7 +833,6 @@ function scene:create( event )
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
-
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.height/2
@@ -667,36 +875,46 @@ function scene:create( event )
 
 
     	DirectorName_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
+    	DirectorName_bg.isVisible = false
+    	DirectorName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
 		sceneGroup:insert(DirectorName_bg)
 
 		DirectorName = native.newTextField(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
 		DirectorName.id="Director Name"
 		DirectorName.size=14	
+		DirectorName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
 		DirectorName.hasBackground = false
 		DirectorName:setReturnKey( "next" )
+		DirectorName.isVisible = false
 		DirectorName.placeholder=RequestAccess.DirectorName_placeholder
 		sceneGroup:insert(DirectorName)
 
 
 		DirectorEmail_bg = display.newRect(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
+		DirectorEmail_bg.isVisible = false
+		DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
 		sceneGroup:insert(DirectorEmail_bg)
 
 		DirectorEmail = native.newTextField(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
 		DirectorEmail.id="Director Email"
 		DirectorEmail.size=14	
+		DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
 		DirectorEmail.hasBackground = false
+		DirectorEmail.isVisible = false
 		DirectorEmail:setReturnKey( "next" )
 		DirectorEmail.placeholder=RequestAccess.DirectorEmail_placeholder
 		sceneGroup:insert(DirectorEmail)
 
 --------------------------------------changes will occur----------------------------------------------
 
-		FirstName_bg = display.newRect(W/2, DirectorEmail_bg.y+DirectorEmail_bg.height+7, W-20, 25)
+		FirstName_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
+		FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
 		sceneGroup:insert(FirstName_bg)
 
-		FirstName = native.newTextField(W/2, DirectorEmail_bg.y+DirectorEmail_bg.height+7, W-20, 25)
+		FirstName = native.newTextField(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
 		FirstName.id="First Name"
 		FirstName.size=14	
+		FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
 		FirstName.hasBackground = false
 		FirstName:setReturnKey( "next" )
 		FirstName.placeholder=RequestAccess.FirstName_placeholder
@@ -704,10 +922,12 @@ function scene:create( event )
 
 
 		Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
+		Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
 		sceneGroup:insert(Name_bg)
 
 		Name = native.newTextField( W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 		Name.id="Last Name"
+		Name.y = FirstName_bg.y+FirstName_bg.height+7
 		Name.size=14
 		Name:setReturnKey( "next" )
 		Name.hasBackground = false	
@@ -858,8 +1078,10 @@ function scene:show( event )
 		Phone:addEventListener( "userInput", textfield )
 		UnitNumber:addEventListener( "userInput", textfield )
 		Comment:addEventListener( "userInput", textfield )
+		DirectorName:addEventListener( "userInput", textfield )
+		DirectorEmail:addEventListener( "userInput", textfield )
 		
-					Background:addEventListener("touch",touchBg)
+		Background:addEventListener("touch",touchBg)
 
 
 		function GetListArray(response)
