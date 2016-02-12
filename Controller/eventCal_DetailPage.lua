@@ -108,27 +108,28 @@ local display_details = {}
 		end
 
 
-	local function deleteEvent( event )
+		local function deleteEvent( event )
 
-		if event.phase == "began" then
+			local function onComplete( event )
+			if event.action == "clicked" then
 
-			print( "*****" )
-			display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
-			print( "@@@@@" )
-			Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,get_DeleteTicklerEvent)
-			--composer.hideOverlay( "slideRight", 300 )
+			    local i = event.index
+			    if i == 1 then
 
+			    	Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,get_DeleteTicklerEvent)
+			       
+			    elseif i == 2 then
+
+			    end
+			end
+			end
+
+					local alert = native.showAlert(EventCalender.DeleteTitle, EventCalender.DeleteAlert , { CommonWords.ok , CommonWords.cancel }, onComplete )
 
 		end
-
-		return true
-
-	end
+				
 
 		
-
 		local function AttachmentDownload( event )
 		if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )

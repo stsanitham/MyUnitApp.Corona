@@ -898,6 +898,8 @@ local request_value = {}
 	return response
 end
 
+
+
 function Webservice.LogOut(logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId,postExecution)
 
 
@@ -932,6 +934,8 @@ local request_value = {}
 
 	return response
 end
+
+
 
 function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection,postExecution)
 
@@ -1030,6 +1034,8 @@ end
 
 end
 
+
+
 function Webservice.GetContact(searchString,postExecution)
 	
 	local request_value = {}
@@ -1073,6 +1079,8 @@ local resbody = "userId="..UserId.."&searchString="..searchString
 	return response
 
 end
+
+
 
 
 function Webservice.CreateQuickcContact(Ap_firstName,Ap_lastName,Ap_email,Ap_phone,Ap_contactLbl,postExecution)
@@ -1129,8 +1137,8 @@ local resbody = [[{
 end
 
 
-function Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,postExecution)
 
+function Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,postExecution)
 
 
 	local request_value = {}
@@ -1174,12 +1182,12 @@ local resbody = [[{
 		print("request : "..json.encode(params))
 
 
-
 	request.new(ApplicationConfig.DeleteTicklerEvent,method,params,postExecution)
 	
-
-
 end
+
+
+
 function Webservice.GET_UNITWISE_REGISTER(unitnumber,postExecution)
 
 		local request_value = {}
@@ -1190,6 +1198,7 @@ function Webservice.GET_UNITWISE_REGISTER(unitnumber,postExecution)
 	headers["UniqueId"] = system.getInfo("deviceID")
 	headers["Accept"] = "application/json"
 	headers["Content-Type"] = "application/json"
+
 	method="GET"
 
 	headers["UserAuthorization"]= ""

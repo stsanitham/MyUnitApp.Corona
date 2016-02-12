@@ -588,8 +588,9 @@ end
 
     	    		local Url = "http://www.youtube.com/watch?"
     	    		local Url1 = "https://www.youtube.com/watch?"
+    	    		local Url2 = "https://youtu.be/"
 
-    	    		if string.find(youtube_textentry,Url) or string.find(youtube_textentry,Url1) then
+    	    		if string.find(youtube_textentry,Url) or string.find(youtube_textentry,Url1) or string.find(youtube_textentry,Url2) then
     	      	    		
     	    			 print("message")
 
@@ -720,6 +721,7 @@ end
     	    		local Url9 = "https://video.yahoo.com/watchmojo"
     	    		local Url10 = "https://video.yahoo.com/momentsofmotherhood"
     	    		local Url11 = "https://video.yahoo.com/tlc"
+    	    		local Url12 = "https://news.yahoo.com/video"
 
 
     	    		if string.find(yahoo_textentry,Url) or string.find(yahoo_textentry,Url1) or string.find(yahoo_textentry,Url2)
@@ -728,7 +730,7 @@ end
 
     	    		or string.find(yahoo_textentry,Url7) or string.find(yahoo_textentry,Url8) or string.find(yahoo_textentry,Url9) 
 
-    	    		or string.find(yahoo_textentry,Url10) or string.find(yahoo_textentry,Url11) then
+    	    		or string.find(yahoo_textentry,Url10) or string.find(yahoo_textentry,Url11) or string.find(yahoo_textentry,Url12) then
     	      	    		
     	    			 print("message")
 
