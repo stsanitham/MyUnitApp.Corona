@@ -201,6 +201,24 @@ end
 
 
 
+-- function onFindServiceComplete(response)
+--     -- Indicates the carrier support. 0 - unknown (network error/timeout), 1 - available, 2 - unavailable
+--     local q1 = response.serviceStatus
+
+--     print("response.serviceStatus"..q1)
+
+--     -- Service ID
+--     local q2 =response.serviceId
+
+--     print("response.serviceId"..q2)
+
+--     if response.serviceStatus == fortumo.SERVICE_STATUS_AVAILABLE then
+--         -- more code...
+--     end
+-- end
+
+
+
 
 local function phoneCallFunction( event )
 	if event.phase == "began" then
@@ -208,12 +226,17 @@ local function phoneCallFunction( event )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
-		local callFlag = system.openURL( "tel:"..event.target.id )
+		 local callFlag = system.openURL( "tel:"..event.target.id )
 
-		if callFlag == true  then
+		 print(callFlag)
 
-		else
-			native.showAlert( "Call", CareerPath.NoSim, { CommonWords.ok } )
+		 if callFlag == true  then 
+
+			--fortumo.findService({callFlag}, onFindServiceComplete)
+
+		 else
+
+		 	native.showAlert( "Call", CareerPath.NoSim, { CommonWords.ok } )
 
 		end
 	end

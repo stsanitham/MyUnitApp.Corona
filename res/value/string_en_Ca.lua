@@ -48,7 +48,9 @@ Week["pm"] = "PM"
 RequestAccess = {}
 
 RequestAccess.PageTitle = "Request Access"
+--RequestAccess.MUBNOTAGREE = "Oops!!! It seems that your Director has not yet given access to you. Please send the access request to your Director"
 RequestAccess.REQUEST = "Request already sent"
+RequestAccess.MUBNOTAGREE = "Your request for access has been sent successfully"
 RequestAccess.FIRSTREQUEST = "Your Request for Access has been sent successfully"
 RequestAccess.OPEN = "Request Access sent"
 RequestAccess.GRANT = "Access already granted"
@@ -208,6 +210,10 @@ Message.ErrorTitle = "Sending Failed"
 Message.ErrorMessage = "Enter a message or add any one of the given option for further proceedings."
 Message.SuccessMsgForImage = "Image Upload"
 Message.SuccessContentForImage = "Your Image has been Uploaded Successfully"
+Message.UrlHelpText = "Copy/paste the Video URL in the given field to proceed further"
+Message.UploadImageText = "Upload your Image here"
+Message.UploadButtonText = "Add Image"
+
 
 Facebook = {}
 

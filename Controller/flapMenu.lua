@@ -312,7 +312,7 @@ function scene:show( event )
 
     			end, profilePic_path:match( "([^/]+)$" ), system.TemporaryDirectory)
 		else
-			profilePic = display.newImageRect("res/assert/career-user.png",65,60)
+			profilePic = display.newImageRect("res/assert/usericon.png",65,60)
 			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-40
 			profilePic.anchorY=0
 			profilePic.anchorX=0

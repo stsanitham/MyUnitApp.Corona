@@ -48,8 +48,10 @@ Week["pm"] = "PM"
 RequestAccess = {}
 
 RequestAccess.PageTitle = "Demande d'accès"
+--RequestAccess.MUBNOTAGREE = "Oops!!! It seems that your Director has not yet given access to you. Please send the access request to your Director"
 RequestAccess.REQUEST = "Demande déjà envoyée"
 RequestAccess.FIRSTREQUEST = "Votre demande d'accès a été envoyé avec succès"
+RequestAccess.MUBNOTAGREE = "Votre demande d'accès a été envoyé avec succès"
 RequestAccess.OPEN = "Demande d'accès envoyé"
 RequestAccess.GRANT = "Accès déjà accordé"
 RequestAccess.NOUNITNUMBER = "Entrez le XHTML Numéro d'unité"
@@ -210,6 +212,10 @@ Message.ErrorTitle = "Envoi échoué"
 Message.ErrorMessage = "Entrez un message ou ajouter une quelconque de l'option donnée pour d'autres procédures"
 Message.SuccessMsgForImage = "image Télécharger"
 Message.SuccessContentForImage = "Votre image a été téléchargé avec succès"
+Message.UrlHelpText = "Copiez / collez le URL de vidéo dans le domaine donné d'aller plus loin"
+Message.UploadImageText = "Téléchargez votre photo ici"
+Message.UploadButtonText = "Ajouter une image"
+
 
 Facebook = {}
 
