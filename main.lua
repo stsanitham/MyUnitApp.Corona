@@ -82,6 +82,10 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
 
+   function scrollTo( position )
+        MainGroup.y = position
+    end
+
 
 --changes from mac
 local options = {

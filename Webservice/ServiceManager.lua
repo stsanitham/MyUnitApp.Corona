@@ -1128,16 +1128,10 @@ local resbody = [[{
 
 end
 
-<<<<<<< HEAD
+
 function Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,postExecution)
-=======
 
 
-
-function Webservice.GET_UNITWISE_REGISTER(unitnumber,postExecution)
-
-	--print(unitnumber)
->>>>>>> 5ce112616797d575447d7392fc5b5a006ea4ce8e
 
 	local request_value = {}
 	local params = {}
@@ -1147,7 +1141,6 @@ function Webservice.GET_UNITWISE_REGISTER(unitnumber,postExecution)
 	headers["UniqueId"] = system.getInfo("deviceID")
 	headers["Accept"] = "application/json"
 	headers["Content-Type"] = "application/json"
-<<<<<<< HEAD
 	method="POST"
 
 	local url = splitUrl(ApplicationConfig.DeleteTicklerEvent)
@@ -1187,7 +1180,16 @@ local resbody = [[{
 
 
 end
-=======
+function Webservice.GET_UNITWISE_REGISTER(unitnumber,postExecution)
+
+		local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
 	method="GET"
 
 	headers["UserAuthorization"]= ""
@@ -1211,4 +1213,3 @@ end
 	
 	return response
 end
->>>>>>> 5ce112616797d575447d7392fc5b5a006ea4ce8e

@@ -230,7 +230,12 @@ local function searchTouch(event)
     if event.phase == 'tap' or event.phase == 'release' then
 
 		searchList:deleteAllRows()
+
 		searchList.isVisible = false
+
+		Description.isVisible = true
+
+		AppintmentWith.isVisible = true
 
 		searchList.textFiled.text = row.name
 
@@ -709,6 +714,7 @@ local function TouchAction( event )
 					List.textFiled = PurposeLbl
 
 					end
+					List_bg.y = List.y
 					List_bg.isVisible = true
 					CreateList(event,List,List_bg)
 					
@@ -728,6 +734,7 @@ local function TouchAction( event )
 						List.width =event.target.contentWidth
 						List.arrayName = priorityArray
 						List.textFiled = PriorityLbl
+						List_bg.y = List.y
 						List_bg.isVisible = true
 						CreateList(event,List,List_bg)
 						
@@ -754,7 +761,12 @@ local function TouchAction( event )
 						What.isVisible = false
 						List.isVisible = true
 						List.x = event.target.x
-						List.y = event.target.y+event.target.contentHeight+1.3+110
+						if TicklerType == "CALL" then
+							List.y = event.target.y+event.target.contentHeight+1.3
+						else
+							List.y = event.target.y+event.target.contentHeight+1.3+110
+
+						end
 						List_bg.y = List.y
 						List.width =event.target.contentWidth
 						List.arrayName = EventnameArray
@@ -832,18 +844,36 @@ end
 local function searchfunction( event )
 
     if ( event.phase == "began" ) then
+
+    	 local function onTimer( timeevent )
+				print( "here" )
+
+	        	native.setKeyboardFocus( nil )
+	            scrollView:takeFocus( event )
+       
+		end
+
+		-- Assign the timer to a variable "tm"
+		local tm = timer.performWithDelay( 500, onTimer )
   
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
         print( event.target.text )
 
-        Addinvitees.isVisible = true
+      --  Description.isVisible = true
 
     elseif ( event.phase == "editing" ) then
 
     	if event.target.id == "appintmentwith" then
 
-        	Addinvitees.isVisible = false
+        	Description.isVisible = false
+
+        elseif event.target.id == "addinvitees" then
+
+
+			Description.isVisible = false
+
+			AppintmentWith.isVisible = false
 
         end
 
@@ -858,7 +888,10 @@ local function searchfunction( event )
 
 		elseif event.text:len() == 0 then
 
-				Addinvitees.isVisible = true
+				Description.isVisible = false
+
+				AppintmentWith.isVisible = false
+
 				searchList:deleteAllRows()
 
 
@@ -903,7 +936,7 @@ local function searchfunction( event )
 
 		searchList.isVisible = true
 		searchList.x = event.target.x
-		searchList.y = event.target.y+event.target.contentHeight+1.3
+		searchList.y = event.target.y-event.target.contentHeight+25
 		searchList.width =event.target.contentWidth
 
 
@@ -917,42 +950,27 @@ end
 
 local function usertextField( event )
 
+
     if ( event.phase == "began" ) then
         -- user begins editing defaultField
         print( event.text )
 
+        scrollTo(-100)
 
+       
 
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
         print( event.target.text )
 
+        scrollTo(0)
+
     elseif ( event.phase == "editing" ) then
     
 
-    	if string.find( event.text,"\n" ) ~= nil then
-
-    		print( "find!!!!!!!!!!!" )
-
-    		local temp = string.sub( event.text, string.find( event.text,"\n",-42), event.text:len() )
-
-    		print( temp:len(),temp)
-
-    		if temp:len() > 40 then
-
-    			temp = 0
-
-	       		Description.text = event.text.."\n"
-
-	       	end
-
-    	else
-	       if event.text:len() > 40 then
-
-	       	Description.text = event.text.."\n"
-
-	       end
-	    end
+    	if (event.newCharacters=="\n") then
+			native.setKeyboardFocus( nil )
+		end
 
 
     end 
@@ -1046,7 +1064,7 @@ function scene:create( event )
 			hideBackground = true,
 			isBounceEnabled=false,
 			horizontalScrollDisabled = true,
-			bottomPadding = 220,
+			bottomPadding = 230,
 			friction = .6,
    			listener = addevent_scrollListener,
 }
@@ -1146,14 +1164,42 @@ function scene:show( event )
 		alldayLbl.x=leftPadding
 		alldayLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
+		local options = {
+			    frames = {
+			        { x=0, y=0, width=160, height=44 },
+			        { x=0, y=45, width=42, height=42 },
+			        { x=44, y=45, width=42, height=42 },
+			        { x=88, y=44, width=96, height=44 }
+			    },
+			    sheetContentWidth = 184,
+			    sheetContentHeight = 88
+			}
+			local onOffSwitchSheet = graphics.newImageSheet( "res/assert/onoffswitch.png", options )
+
 			local allday_onOffSwitch = widget.newSwitch {
 				style = "onOff",
 				initialSwitchState = false,
 				 onPress = onSwitchPress,
+				    sheet = onOffSwitchSheet,
+
+        onOffBackgroundFrame = 1,
+        onOffBackgroundWidth = 160,
+        onOffBackgroundHeight = 44,
+       -- onOffMask = "widget-on-off-mask.png",
+
+        onOffHandleDefaultFrame = 2,
+        onOffHandleOverFrame = 3,
+
+        onOffOverlayFrame = 4,
+        onOffOverlayWidth = 96,
+        onOffOverlayHeight = 44
 			}
 			allDay=false
-			allday_onOffSwitch.x=alldayLbl.x+alldayLbl.contentWidth+allday_onOffSwitch.contentWidth/2+5
+			allday_onOffSwitch.x=alldayLbl.x+alldayLbl.contentWidth+allday_onOffSwitch.contentWidth/2-40
 			allday_onOffSwitch.y = alldayLbl.y
+
+			allday_onOffSwitch.width = 70
+			allday_onOffSwitch.height  = 25
 			AddeventGroup:insert( allday_onOffSwitch )
 
 	  	--------------
@@ -1308,6 +1354,11 @@ function scene:show( event )
 		callGroup:insert(AccessCode)
 
 
+
+			Phone.isVisible = false
+
+			AccessCode.isVisible = false
+
 	  	--------
 
 	  	---Bounds-----
@@ -1403,13 +1454,13 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		belowGroup:insert(AddeventArray[#AddeventArray])
 
-		Description = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
+		Description = native.newTextBox(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
 		Description.id="description"
 		Description.size=14
 		Description.anchorY=0
 		Description.hasBackground = false
-		Description:setReturnKey( "next" )
 		Description.placeholder="Description"
+		Description.isEditable = true
 		belowGroup:insert(Description)
 		Description:addEventListener( "userInput", usertextField )
 
@@ -1618,7 +1669,7 @@ function scene:show( event )
 	  	searchList.anchorX=0
 	  	searchList.anchorY=0
 	  	searchList.isVisible = false
-
+	  	searchList.anchorY = 1
 	  	searchList_bg.anchorX = 0
 	  	searchList_bg.isVisible = false
 

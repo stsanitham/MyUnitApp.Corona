@@ -240,9 +240,7 @@ end
 end
 
 
-				function scrollTo( position )
-					MainGroup.y = position
-				end
+			
 
 
 

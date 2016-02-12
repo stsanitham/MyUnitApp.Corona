@@ -158,7 +158,7 @@ function googleplusCallback( res,scrollView,flag )
 			x = display.contentCenterX,
 			y = display.contentCenterY,
 			fontSize = 11,
-			width = 280,
+			width = 220,
 			height = 0,
 			align = "left"
 		}
