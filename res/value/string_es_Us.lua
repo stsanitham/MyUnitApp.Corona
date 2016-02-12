@@ -147,6 +147,9 @@ EventCalender["BOOKING"]="Reserva"
 EventCalender["INIT_APPT"]="Nombramiento inicial"
 EventCalender["RESCHEDULE"]="Reprogramar"
 EventCalender["FULLCIRCLE"]="Círculo completo"
+EventCalender.DeleteAlert = "¿Está seguro de que desea borrar los detalles de este evento?"
+EventCalender.DeleteTitle = "eliminar detalles"
+
 
 
 

@@ -148,6 +148,9 @@ EventCalender["INIT_APPT"]="Nomination initiale"
 EventCalender["RESCHEDULE"]="rééchelonner"
 EventCalender["FULLCIRCLE"]="Cercle complet"
 EventCalender.NoRecord="Aucun enregistrement trouvé"
+EventCalender.DeleteAlert = "Êtes-vous sûr de vouloir supprimer les détails de cet événement?"
+EventCalender.DeleteTitle = "supprimer Détails"
+
 
 
 

@@ -148,7 +148,8 @@ EventCalender["INIT_APPT"]="Initial Appointment"
 EventCalender["RESCHEDULE"]="Reschedule"
 EventCalender["FULLCIRCLE"]="Full Circle"
 EventCalender.NoRecord="No records found"
-
+EventCalender.DeleteAlert = "Are you sure you want to delete the details of this event?"
+EventCalender.DeleteTitle = "Delete Details"
 
 
 
