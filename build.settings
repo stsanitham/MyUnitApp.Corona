@@ -57,7 +57,7 @@ settings =
 	{
 		plist =
 		{
-		
+
 			--CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
 			CFBundleIdentifier="com.spanenterprises.MUBDev",
 	

@@ -274,8 +274,7 @@ function scene:show( event )
 
 		local profilePic 
 
-
-			profilePic = display.newImageRect("res/assert/career-user.png",65,65)
+			profilePic = display.newImageRect("res/assert/usericon.png",65,65)
 			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-40
 			profilePic.anchorY=0
 			profilePic.anchorX=0
