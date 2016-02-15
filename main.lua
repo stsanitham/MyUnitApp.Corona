@@ -2,7 +2,7 @@
 -- MainActivity
 --------------------------------------------------------
 
-display.setStatusBar( display.HiddenStatusBar )
+display.setStatusBar( display.DefaultStatusBar )
 local composer = require "composer"
 local newPanel = require "Utils.newPanel"
 local widget = require( "widget" )

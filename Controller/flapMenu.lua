@@ -120,7 +120,8 @@ local function MenuTouchAction(event)
 		-- Show alert with two buttons
 		local alert = native.showAlert( "Log out", FlapMenu.Alert, { FlapMenu.LOG_OUT , FlapMenu.CANCEL }, onComplete )	
 		
-			return
+			return true
+			
 		end
 
 		for i = 1, #menuArray_display do
