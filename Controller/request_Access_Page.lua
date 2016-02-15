@@ -170,7 +170,6 @@ local function RequestProcess()
 			submit_spinner:start( )
 
 
-
 	function get_requestAccess(response)
 
 			Request_response = response
@@ -219,7 +218,6 @@ local function RequestProcess()
 
 			alertFun(RequestAccess.BLOCK,0)
 
-
 		elseif Request_response == "DENY" then
 
 			alertFun(RequestAccess.DENY,0)
@@ -229,23 +227,19 @@ local function RequestProcess()
 			alertFun(RequestAccess.FAIL,0)
 		end
 
-	end
+		end
 					
-					if AppName == "DirectorApp" then
+				if AppName == "DirectorApp" then
 
 						Webservice.REQUEST_ACCESS(RequestFromStatus,"","",FirstName.text,Name.text,Email.text,Phone.text,Unitnumber_value,mkRank_id,Comment.text,get_requestAccess)
-					else
+				else
 						Webservice.REQUEST_ACCESS(RequestFromStatus,DirectorName.text,DirectorEmail.text,FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,mkRank_id,Comment.text,get_requestAccess)
 						
-					end
+				end
 
-end
-end
+		end
 
-
-			
-
-
+		end
 
 
 
@@ -355,10 +349,40 @@ end
 				NO_UNITNUMBER_FUNCTION(RequestFromStatus)
 				unitnumberflag = true
 
+						if (FirstName.text~=nil or FirstName.text ~="") or (Name.text ~=nil or Name.text ~="")
+
+						or (Email.text~=nil or Email.text ~="") or (DirectorName.text ~=nil or DirectorName.text ~="") or (DirectorEmail.text ~=nil or DirectorEmail.text ~="") then
+
+						FirstName.text = ""
+
+						Name.text = ""
+
+						Email.text = ""
+
+						DirectorName.text = ""
+
+						DirectorEmail.text = ""
+
+						end	
+
 			elseif Request_response == "UNITNOEXIST" then
 
 				HAS_UNITNUMBER_FUNCTION(RequestFromStatus)
 				unitnumberflag = false
+
+
+				if (FirstName.text~=nil or FirstName.text ~="") or (Name.text ~=nil or Name.text ~="")
+
+						or (Email.text~=nil or Email.text ~="") then
+
+						FirstName.text = ""
+
+						Name.text = ""
+
+						Email.text = ""
+
+						end	
+
 
 			end
 
@@ -653,6 +677,7 @@ local function onRowTouch( event )
 					DirectorName.isVisible = true
 					DirectorEmail.isVisible = true
 
+
 				end
 
 
@@ -669,24 +694,23 @@ local function onRowTouch( event )
 	if event.phase == "began" then
 
 
+		elseif event.phase == "ended" then
+		local validation = true
 
-elseif event.phase == "ended" then
-local validation = true
+		native.setKeyboardFocus(nil)
 
-native.setKeyboardFocus(nil)
-
-if Name.text == "" or Name.text == Name.id then
-validation=false
-SetError("* "..RequestAccess.Name_error,Name)
-end
+		if Name.text == "" or Name.text == Name.id then
+		validation=false
+		SetError("* "..RequestAccess.Name_error,Name)
+		end
 
 
-if unitnumberflag == true then
+		if unitnumberflag == true then
 
-if DirectorName.text == "" or DirectorName.text == DirectorName.id then
-validation=false
-SetError("* "..RequestAccess.DirectorName_error,DirectorName)
-end
+		if DirectorName.text == "" or DirectorName.text == DirectorName.id then
+		validation=false
+		SetError("* "..RequestAccess.DirectorName_error,DirectorName)
+		end
 
 		if DirectorEmail.text == "" or DirectorEmail.text == DirectorEmail.id then
 		validation=false
@@ -700,21 +724,22 @@ end
 			end
 		end
 
-end
+		end
 
 
-if Email.text == "" or Email.text == Email.id then
-validation=false
-SetError("* "..RequestAccess.Email_error,Email)
-else
+		if Email.text == "" or Email.text == Email.id then
+			validation=false
+		SetError("* "..RequestAccess.Email_error,Email)
+		else
 
-if not Utils.emailValidation(Email.text) then
-validation=false
-SetError("* "..RequestAccess.EmailValidation_error,Email)
+		if not Utils.emailValidation(Email.text) then
+		validation=false
+		SetError("* "..RequestAccess.EmailValidation_error,Email)
 
-end
+		end
 
-			end
+		end
+
 			if Phone.text == "" or Phone.text == Phone.id or Phone.text:len() < 15  then
 				validation=false
 				SetError("* "..RequestAccess.Phone_error,Phone)
@@ -745,7 +770,7 @@ end
 							Name.text = ""
 							Email.text = ""
 							Phone.text = ""
-							MKRank.value = "-Select MK Rank-"
+							MKRank.text = "-Select MK Rank-"
 							Comment.text = ""
 
 				elseif Request_response == "NOTINUNITWISE" then
@@ -757,9 +782,18 @@ end
 							Name.text = ""
 							Email.text = ""
 							Phone.text = ""
-							MKRank.value = "-Select MK Rank-"
+							MKRank.text = "-Select MK Rank-"
 							Comment.text = ""
 
+				elseif Request_response == "MUBNOTAGREE" then
+
+							UnitNumber.text = ""
+							FirstName.text = ""
+							Name.text = ""
+							Email.text = ""
+							Phone.text = ""
+							MKRank.text = "-Select MK Rank-"
+							Comment.text = ""
 				end
 
 			end
