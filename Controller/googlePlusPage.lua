@@ -58,7 +58,12 @@ local feedCount=0
 
 
 -----------------Function-------------------------
-
+local function linkTouch( event )
+	if event.phase == "ended" then
+		system.openURL( event.target.value )
+	end
+return true
+end
 
 function googleplusCallback( res,scrollView,flag )
 
@@ -75,7 +80,6 @@ function googleplusCallback( res,scrollView,flag )
 
 
 	feedArray=res
-	print(#feedArray)
 
 	for i=1,10 do
 
@@ -91,9 +95,9 @@ function googleplusCallback( res,scrollView,flag )
 
 		if feedArray[feedCount].object.attachments then
 
-			bgsize = 160
+			bgsize = 180
 		else
-			bgsize = 50
+			bgsize = 65
 		end
 
 
@@ -102,9 +106,11 @@ function googleplusCallback( res,scrollView,flag )
 
 		local tempHeight = 20
 
-		if(groupArray[#groupArray-1]) then
+		if groupArray[#groupArray-1] ~= nil then
 
-			tempHeight = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].contentHeight+5
+				tempHeight = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].contentHeight+5
+
+			
 		end
 
 		background.x=W/2+30;background.y=tempHeight
@@ -128,7 +134,7 @@ function googleplusCallback( res,scrollView,flag )
 		
 
 
-		local time = tostring(os.date("%Y-%b-%d %H:%m %p", Utils.makeTimeStamp(feedArray[feedCount].published)));
+		local time = tostring(os.date("%Y-%b-%d %I:%M %p", Utils.makeTimeStamp(feedArray[feedCount].published)));
 
 
 
@@ -211,6 +217,8 @@ function googleplusCallback( res,scrollView,flag )
 			event.target.height=100
 
 			tempGroup:insert(event.target)
+
+			
 		end
 
 	end
@@ -220,9 +228,35 @@ function googleplusCallback( res,scrollView,flag )
 		local img = feedArray[feedCount].object.attachments
 		if(img[1].image ~= nil ) then
 			local shared_img = display.loadRemoteImage(img[1].image.url, "GET", postedimg_position, feedCount..".png", system.TemporaryDirectory,100+rowTitle.x,rowTitle.y+rowTitle.contentHeight+55 )
+			
+			
+		else
+
+			background.height = background.height-110
+
 		end
 
 	end
+
+				local link = display.newText(tempGroup,feedArray[feedCount].url,0,0,native.systemFont,12)
+				link:setFillColor( 0,0,1 )
+				link.anchorX = 0
+				link.anchorY = 0
+				link.value = feedArray[feedCount].url
+				link.x = username.x
+				link.y =  background.y+background.contentHeight-20
+				link:addEventListener( "touch", linkTouch )
+
+				if link.text:len() > 35 then
+					link.text = string.sub( link.text,1,35).."..."
+				end
+
+
+			local line = display.newLine( link.x, background.y+background.contentHeight-5, link.x+link.contentWidth,  background.y+background.contentHeight-5  )
+			line:setStrokeColor( Utils.convertHexToRGB(color.blue) )
+			line.strokeWidth = 1
+			tempGroup:insert( line )
+
 	scrollView:insert(tempGroup)
 
 end

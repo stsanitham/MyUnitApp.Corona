@@ -93,7 +93,7 @@ settings =
         NSAllowsArbitraryLoads = true,
         NSExceptionDomains =
          {
-          ["com.MyUnitBuzz"] =
+          ["com.spanenterprises.MUBDev"] =
            {
             NSIncludesSubdomains = true,
             NSThirdPartyExceptionAllowsInsecureHTTPLoads = true
