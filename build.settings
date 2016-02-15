@@ -30,8 +30,7 @@ settings =
 	    {
 	        publisherId = "com.coronalabs",
 	        supportedPlatforms = { android=true, ["android-kindle"]=true },
-	    },
-
+	    },    
 	 
 	["CoronaProvider.native.popup.quickLook"] =
     {
@@ -141,6 +140,7 @@ coronaWindowMovesWhenKeyboardAppears = true,
             "android.permission.RECORD_AUDIO",
             "android.permission.WRITE_EXTERNAL_STORAGE",
             "android.permission.RECEIVE_BOOT_COMPLETED",
+            "android.permission.READ_PHONE_STATE",
             "com.google.android.c2dm.permission.RECEIVE",
             ".permission.C2D_MESSAGE",
 		},

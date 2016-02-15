@@ -119,8 +119,8 @@ end
 		object.size=10
 		object:setTextColor(1,0,0)
 
-
 	end
+
 
 	local function alertFun(value,flag)
 
@@ -142,13 +142,12 @@ end
 									end
 									
 						        end
-						    end
-						end
-
+						   end
+					end
 
 			local alert = native.showAlert( RequestAccess.PageTitle , value, { CommonWords.ok }, onComplete )
 
-			end	
+		end	
 
 
 
@@ -195,6 +194,10 @@ local function RequestProcess()
 		elseif Request_response == "FIRSTREQUEST" then
 
 			alertFun(RequestAccess.FIRSTREQUEST,1)
+
+		elseif Request_response == "MUBNOTAGREE" then
+
+			alertFun(RequestAccess.MUBNOTAGREE,1)	
 
 		elseif Request_response == "OPEN" then
 

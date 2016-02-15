@@ -265,7 +265,6 @@ local function onRowRender( event )
     rowTitle.x = W-rowWidth
     rowTitle.y = rowHeight * 0.5
 
-
     local tick = display.newImageRect( row, "res/assert/tick.png", 20,20 )
     tick.x = rowWidth - 30
     tick.y = rowHeight * 0.5
@@ -833,13 +832,13 @@ if response ~= nil then
 
 		end
 
-		
 	end
 
 end
-
-			
+		
 end
+
+
 
 local function searchfunction( event )
 
@@ -859,7 +858,6 @@ local function searchfunction( event )
         	Description.isVisible = false
 
         elseif event.target.id == "addinvitees" then
-
 
 			Description.isVisible = false
 
@@ -884,29 +882,27 @@ local function searchfunction( event )
 
 				searchList:deleteAllRows()
 
-
 		else
 
-			
-
 			for i=1,#searchArray do
+
 				searchArray[i]=nil
-			end
-
-			for i=1,#searchArraytotal do
-	
-
-				if string.find(searchArraytotal[i].name:lower(),event.text:lower()) ~= nil then
-
-					print("here  "..searchArraytotal[i].name,event.text)
-
-					searchArray[#searchArray+1] = searchArraytotal[i]
-
-				end
 
 			end
+
+		for i=1,#searchArraytotal do
+
+
+			if string.find(searchArraytotal[i].name:lower(),event.text:lower()) ~= nil then
+
+				print("here  "..searchArraytotal[i].name,event.text)
+
+				searchArray[#searchArray+1] = searchArraytotal[i]
+
+			end
+
+		end
 		
-
 				searchList:deleteAllRows()
 
 					for i = 1, #searchArray do
@@ -929,10 +925,7 @@ local function searchfunction( event )
 		searchList.y = event.target.y-event.target.contentHeight+25
 		searchList.width =event.target.contentWidth
 
-
-			searchList.textFiled = event.target
-
-	
+		searchList.textFiled = event.target
 
     	--searchArray
     end
@@ -956,7 +949,21 @@ local function usertextField( event )
         scrollTo(0)
 
     elseif ( event.phase == "editing" ) then
-    
+
+    	current_textField = event.target
+
+		current_textField.size=14
+
+    	if(current_textField.id == "description") then
+
+				if event.text:len() > 160 then
+
+					event.target.text = event.target.text:sub(1,160)
+
+				end
+
+		end
+
 
     	if (event.newCharacters=="\n") then
 			native.setKeyboardFocus( nil )
@@ -1515,7 +1522,6 @@ function scene:show( event )
 		Addinvitees:addEventListener( "userInput", searchfunction )
 
 		
-
 	  	--[[ --stage 2
 	  	Addinvitees_icon = display.newImageRect(AddeventGroup,"res/assert/icon-close.png",30/1.5,30/1.5 )
 	  	Addinvitees_icon.rotation=45

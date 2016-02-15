@@ -919,7 +919,7 @@ end
 	upload_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
 	upload_button.id="upload"
 
-	upload_button_text = display.newText(sceneGroup,"Add Image",0,0,native.systemFont,16)
+	upload_button_text = display.newText(sceneGroup,Message.UploadButtonText,0,0,native.systemFont,16)
 	upload_button_text.x=upload_button.x + 10
 	upload_button_text.y=upload_button.y
 	Utils.CssforTextView(upload_button_text,sp_primarybutton)
@@ -930,7 +930,7 @@ end
 	upload_icon.x= upload_button_text.x - 50
 	upload_icon.y=upload_button.y
 
-	upload_text = display.newText("Upload your Image here",image_content_bg.x-image_content_bg.contentWidth/2+ 140,image_content_bg.y,native.systemFont,13)
+	upload_text = display.newText(Message.UploadImageText,image_content_bg.x-image_content_bg.contentWidth/2+ 140,image_content_bg.y,native.systemFont,13)
 	upload_text.value = "uploadtext"
 	upload_text.id="uploadtext"
 	--upload_text.alpha=0.8
@@ -994,7 +994,7 @@ end
 
 	----------url textfield-------------------
 
-	url_textcontent = display.newText(sceneGroup,"Enter the URL to be sent", 0, 0, native.systemFontBold, 13 )
+	url_textcontent = display.newText(sceneGroup,Message.UrlHelpText, 0, 0, native.systemFontBold, 10.5)
 	url_textcontent.x = display.contentCenterX
 	url_textcontent.y = url_dropdown_bg.y + url_dropdown_bg.contentHeight+15
 	url_textcontent:setFillColor( 0, 0, 0 )
