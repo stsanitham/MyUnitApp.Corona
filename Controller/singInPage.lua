@@ -228,8 +228,8 @@ openPage="signInPage"
 				IsOwner=""
 		end
 
-		if Request_response.MyUnitBuzzContacts.TimeZone ~= nil then
-				TimeZone = Request_response.MyUnitBuzzContacts.TimeZone
+		if Request_response.MyUnitBuzzUserSetting.TimeZone ~= nil then
+				TimeZone = Request_response.MyUnitBuzzUserSetting.TimeZone
 			else
 				TimeZone=""
 		end
