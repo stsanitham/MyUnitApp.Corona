@@ -845,16 +845,6 @@ local function searchfunction( event )
 
     if ( event.phase == "began" ) then
 
-    	 local function onTimer( timeevent )
-				print( "here" )
-
-	        	native.setKeyboardFocus( nil )
-	            scrollView:takeFocus( event )
-       
-		end
-
-		-- Assign the timer to a variable "tm"
-		local tm = timer.performWithDelay( 500, onTimer )
   
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text

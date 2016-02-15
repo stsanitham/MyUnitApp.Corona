@@ -207,8 +207,15 @@ local function phoneCallFunction( event )
 		display.getCurrentStage():setFocus( event.target )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
+		--work
+		
+		local callFlag 
 
-		local callFlag = system.openURL( "tel:"..event.target.id )
+		print( "Call : "..event.target.id )
+
+		system.openURL( "tel:"..event.target.id )
+
+		callFlag = system.openURL( "tel:"..event.target.id )
 
 		if callFlag == true  then
 
