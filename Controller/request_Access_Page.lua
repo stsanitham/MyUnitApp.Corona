@@ -763,38 +763,38 @@ local function onRowTouch( event )
 				
 				RequestProcess()
 
-				if Request_response == "UNITNOEXIST" then
+				-- if Request_response == "UNITNOEXIST" then
 
-							UnitNumber.text = ""
-							FirstName.text = ""
-							Name.text = ""
-							Email.text = ""
-							Phone.text = ""
-							MKRank.text = "-Select MK Rank-"
-							Comment.text = ""
+				-- 			UnitNumber.text = ""
+				-- 			FirstName.text = ""
+				-- 			Name.text = ""
+				-- 			Email.text = ""
+				-- 			Phone.text = ""
+				-- 			MKRank.text = "-Select MK Rank-"
+				-- 			Comment.text = ""
 
-				elseif Request_response == "NOTINUNITWISE" then
+				-- elseif Request_response == "NOTINUNITWISE" then
 
-							UnitNumber.text = ""
-							DirectorName.text = ""
-							DirectorEmail.text = ""
-							FirstName.text = ""
-							Name.text = ""
-							Email.text = ""
-							Phone.text = ""
-							MKRank.text = "-Select MK Rank-"
-							Comment.text = ""
+				-- 			UnitNumber.text = ""
+				-- 			DirectorName.text = ""
+				-- 			DirectorEmail.text = ""
+				-- 			FirstName.text = ""
+				-- 			Name.text = ""
+				-- 			Email.text = ""
+				-- 			Phone.text = ""
+				-- 			MKRank.text = "-Select MK Rank-"
+				-- 			Comment.text = ""
 
-				elseif Request_response == "MUBNOTAGREE" then
+				-- elseif Request_response == "MUBNOTAGREE" then
 
-							UnitNumber.text = ""
-							FirstName.text = ""
-							Name.text = ""
-							Email.text = ""
-							Phone.text = ""
-							MKRank.text = "-Select MK Rank-"
-							Comment.text = ""
-				end
+				-- 			UnitNumber.text = ""
+				-- 			FirstName.text = ""
+				-- 			Name.text = ""
+				-- 			Email.text = ""
+				-- 			Phone.text = ""
+				-- 			MKRank.text = "-Select MK Rank-"
+				-- 			Comment.text = ""
+				-- end
 
 			end
 

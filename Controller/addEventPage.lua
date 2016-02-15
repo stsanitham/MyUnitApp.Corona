@@ -1035,8 +1035,7 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-	
-	titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
+		titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
 		titleBar.anchorY=0
 		titleBar:setFillColor(Utils.convertHexToRGB(color.tabbar))
 
@@ -1061,8 +1060,7 @@ function scene:create( event )
 		saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
 
 
-
-				scrollView = widget.newScrollView
+		scrollView = widget.newScrollView
 			{
 			top = RecentTab_Topvalue,
 			left = 0,
@@ -1074,8 +1072,9 @@ function scene:create( event )
 			bottomPadding = 230,
 			friction = .6,
    			listener = addevent_scrollListener,
-}
-	sceneGroup:insert( scrollView )
+		}
+
+		sceneGroup:insert( scrollView )
 	
 		--Form Design---
 
@@ -1085,7 +1084,6 @@ function scene:create( event )
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
-
 
 		SelectEventLbl = display.newText(AddeventGroup,"Event Type",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		SelectEventLbl.anchorX=0
@@ -1101,20 +1099,17 @@ function scene:create( event )
 		SelectEvent.x=W/2
 		SelectEvent.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
-
 	  	SelectEvent_icon = display.newImageRect(AddeventGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	SelectEvent_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	SelectEvent_icon.y=SelectEvent.y
 
+		BottomImage = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImage.x=W/2;BottomImage.y=SelectEvent.y+SelectEvent.contentHeight
 
+		scrollView:insert( AddeventGroup)
 
+		MainGroup:insert(sceneGroup)
 
-	
-scrollView:insert( AddeventGroup)
-
-
-
-MainGroup:insert(sceneGroup)
 end
 
 function scene:show( event )
@@ -1140,7 +1135,7 @@ function scene:show( event )
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="what"
 		AddeventArray[#AddeventArray].anchorY=0
-		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
@@ -1151,8 +1146,11 @@ function scene:show( event )
 		What.hasBackground = false
 		What:setReturnKey( "next" )
 		What.placeholder="What"
-		AddeventGroup:insert(What)
 
+		BottomImageWhat = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImageWhat.x=W/2;BottomImageWhat.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight
+
+		AddeventGroup:insert(What)
 
 	  	----------
 
@@ -1183,11 +1181,11 @@ function scene:show( event )
 			}
 			local onOffSwitchSheet = graphics.newImageSheet( "res/assert/onoffswitch.png", options )
 
-			local allday_onOffSwitch = widget.newSwitch {
-				style = "onOff",
-				initialSwitchState = false,
-				 onPress = onSwitchPress,
-				    sheet = onOffSwitchSheet,
+		local allday_onOffSwitch = widget.newSwitch {
+			style = "onOff",
+			initialSwitchState = false,
+			onPress = onSwitchPress,
+			sheet = onOffSwitchSheet,
 
         onOffBackgroundFrame = 1,
         onOffBackgroundWidth = 160,
@@ -1229,6 +1227,7 @@ function scene:show( event )
 		Event_from_datebg = display.newRect(AddeventGroup,0,0,W/2,30)
 		Event_from_datebg.anchorX=0
 		Event_from_datebg.id="fromdate"
+		Event_from_datebg.alpha = 0.01
 		Event_from_datebg.x=Event_fromLbl.x+Event_fromLbl.contentWidth+5
 		Event_from_datebg.y= Event_fromLbl.y
 
@@ -1240,6 +1239,7 @@ function scene:show( event )
 
 		Event_from_timebg = display.newRect(AddeventGroup,0,0,80,30)
 		Event_from_timebg.anchorX=0
+		Event_from_timebg.alpha = 0.01
 		Event_from_timebg.id="fromTime"
 		Event_from_timebg.x= Event_from_datebg.x+Event_from_datebg.contentWidth+5;Event_from_timebg.y= Event_from_datebg.y
 
@@ -1249,6 +1249,9 @@ function scene:show( event )
 		Event_from_time.anchorX=0
 		Event_from_time:setFillColor( 0 )
 		Event_from_time.x= Event_from_timebg.x+5;Event_from_time.y= Event_from_timebg.y
+
+		BottomImageWhen = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImageWhen.x=W/2;BottomImageWhen.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight
 
 		-----------------------------------
 
@@ -1270,6 +1273,7 @@ function scene:show( event )
 		Event_to_datebg = display.newRect(AddeventGroup,0,0,W/2,30)
 		Event_to_datebg.anchorX=0
 		Event_to_datebg.id="todate"
+		Event_to_datebg.alpha = 0.01
 		Event_to_datebg.x=Event_from_datebg.x
 		Event_to_datebg.y= Event_toLbl.y
 
@@ -1282,6 +1286,7 @@ function scene:show( event )
 		Event_to_timebg = display.newRect(AddeventGroup,0,0,80,30)
 		Event_to_timebg.anchorX=0
 		Event_to_timebg.id="totime"
+		Event_to_timebg.alpha = 0.01
 		Event_to_timebg.x= Event_to_datebg.x+Event_to_datebg.contentWidth+5;Event_to_timebg.y= Event_to_datebg.y
 
 		local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
@@ -1298,13 +1303,17 @@ function scene:show( event )
 		timeZone.anchorX = 0
 		timeZone:setFillColor( 0.2 )
 		timeZone.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight+15
+
+		BottomImageTo = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImageTo.x=W/2;BottomImageTo.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight
+
 		
 	  	----Where----
 
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="where"
 		AddeventArray[#AddeventArray].anchorY=0
-		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+35
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
@@ -1317,6 +1326,9 @@ function scene:show( event )
 		Where.placeholder="Where"
 		AddeventGroup:insert(Where)
 
+		BottomImageWhere = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImageWhere.x=W/2;BottomImageWhere.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight
+
 
 	  	----------
 
@@ -1325,7 +1337,7 @@ function scene:show( event )
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="phone"
 		AddeventArray[#AddeventArray].anchorY=0
-		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		callGroup:insert(AddeventArray[#AddeventArray])
 
@@ -1338,6 +1350,10 @@ function scene:show( event )
 		Phone.placeholder="Phone"
 		callGroup:insert(Phone)
 
+		BottomImagePhone= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImagePhone.x=W/2;BottomImagePhone.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		callGroup:insert(BottomImagePhone)
+
 
 	  	--------
 
@@ -1347,7 +1363,7 @@ function scene:show( event )
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="accesscode"
 		AddeventArray[#AddeventArray].anchorY=0
-		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		callGroup:insert(AddeventArray[#AddeventArray])
 
@@ -1359,6 +1375,10 @@ function scene:show( event )
 		AccessCode:setReturnKey( "next" )
 		AccessCode.placeholder="Access Code"
 		callGroup:insert(AccessCode)
+
+		BottomImageAccessCode= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImageAccessCode.x=W/2;BottomImageAccessCode.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		callGroup:insert(BottomImageAccessCode)
 
 
 
@@ -1457,7 +1477,10 @@ function scene:show( event )
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 80)
 		AddeventArray[#AddeventArray].id="description"
 		AddeventArray[#AddeventArray].anchorY=0
-		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray]:setStrokeColor(0,0,0,0.4)
+		AddeventArray[#AddeventArray].strokeWidth = 1
+		AddeventArray[#AddeventArray].hasBackground = true
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		belowGroup:insert(AddeventArray[#AddeventArray])
 
@@ -1465,7 +1488,8 @@ function scene:show( event )
 		Description.id="description"
 		Description.size=14
 		Description.anchorY=0
-		Description.hasBackground = false
+		Description.y =AddeventArray[#AddeventArray].y 
+		Description.hasBackground = true
 		Description.placeholder="Description"
 		Description.isEditable = true
 		belowGroup:insert(Description)
@@ -1478,7 +1502,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="appintmentwith"
 		AddeventArray[#AddeventArray].anchorY=0
-		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		belowGroup:insert(AddeventArray[#AddeventArray])
 
@@ -1496,6 +1520,10 @@ function scene:show( event )
 		belowGroup:insert(AppintmentWith)
 		AppintmentWith.contactinfo=""
 		AppintmentWith:addEventListener( "userInput", searchfunction )
+
+		BottomImageAppintmentWith = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImageAppintmentWith.x=W/2;BottomImageAppintmentWith.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		belowGroup:insert(BottomImageAppintmentWith)
 		
 
 	  	--[[ --stage 2
@@ -1513,7 +1541,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].id="Addinvitees"
 		AddeventArray[#AddeventArray].anchorY=0
 		AppintmentWith:addEventListener( "userInput", searchfunction )
-		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		belowGroup:insert(AddeventArray[#AddeventArray])
 
@@ -1531,6 +1559,11 @@ function scene:show( event )
 		belowGroup:insert(Addinvitees)
 		Addinvitees:addEventListener( "userInput", searchfunction )
 
+		BottomImageAddinvitees = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImageAddinvitees.x=W/2;BottomImageAddinvitees.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		belowGroup:insert(BottomImageAddinvitees)
+
+
 		
 	  	--[[ --stage 2
 	  	Addinvitees_icon = display.newImageRect(AddeventGroup,"res/assert/icon-close.png",30/1.5,30/1.5 )
@@ -1545,7 +1578,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="purpose"
 		AddeventArray[#AddeventArray].anchorY=0
-		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		belowGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
@@ -1564,6 +1597,11 @@ function scene:show( event )
 	  	Purpose_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Purpose_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
+	  	BottomImagePurpose = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImagePurpose.x=W/2;BottomImagePurpose.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		belowGroup:insert(BottomImagePurpose)
+
+
 	  	--------
 
 	  	--Priority---
@@ -1572,7 +1610,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].id="priority"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].value = 0
-		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		belowGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
@@ -1591,6 +1629,10 @@ function scene:show( event )
 	  	Priority_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Priority_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
+	  	BottomImagePriority = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImagePriority.x=W/2;BottomImagePriority.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		belowGroup:insert(BottomImagePriority)
+
 	  	--------
 
 
@@ -1599,7 +1641,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="addattachment"
 		AddeventArray[#AddeventArray].anchorY=0
-		--AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		belowGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
@@ -1616,6 +1658,10 @@ function scene:show( event )
 	  	AddAttachment_icon = display.newImageRect(belowGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	AddAttachment_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	AddAttachment_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+
+	  	BottomImageAddAttachment= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImageAddAttachment.x=W/2;BottomImageAddAttachment.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		belowGroup:insert(BottomImageAddAttachment)
 
 	  	--------
 
