@@ -227,13 +227,22 @@ local function phoneCallFunction( event )
 		display.getCurrentStage():setFocus( nil )
 		--work
 		
-		local callFlag 
+		local callFlag
 
-		print( "Call : "..event.target.id )
+		local number = string.gsub(event.target.id, "%s+", "")
 
-		system.openURL( "tel:"..event.target.id )
+		
 
-		callFlag = system.openURL( "tel:"..event.target.id )
+			number = string.gsub(number,"%(" , "")
+			number = string.gsub(number,"%)" , "")
+			number = string.gsub(number,"%-" , "")
+
+
+		print( "Call : "..number )
+
+		system.openURL( "tel:"..number)
+
+		callFlag = system.openURL( "tel:"..number )
 
 		 if callFlag == true  then 
 

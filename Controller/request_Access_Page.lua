@@ -183,8 +183,20 @@ local function RequestProcess()
 			submit_spinner:stop( )
 
 
-			print("********************************************************** ",Request_response)
+
+
+							UnitNumber.text = ""
+							DirectorName.text = ""
+							DirectorEmail.text = ""
+							FirstName.text = ""
+							Name.text = ""
+							Email.text = ""
+							Phone.text = ""
+							MKRank.value = "-Select MK Rank-"
+							Comment.text = ""
+
 			
+
 								
 		if Request_response == "REQUEST"  then
 
@@ -763,38 +775,7 @@ local function onRowTouch( event )
 				
 				RequestProcess()
 
-				-- if Request_response == "UNITNOEXIST" then
 
-				-- 			UnitNumber.text = ""
-				-- 			FirstName.text = ""
-				-- 			Name.text = ""
-				-- 			Email.text = ""
-				-- 			Phone.text = ""
-				-- 			MKRank.text = "-Select MK Rank-"
-				-- 			Comment.text = ""
-
-				-- elseif Request_response == "NOTINUNITWISE" then
-
-				-- 			UnitNumber.text = ""
-				-- 			DirectorName.text = ""
-				-- 			DirectorEmail.text = ""
-				-- 			FirstName.text = ""
-				-- 			Name.text = ""
-				-- 			Email.text = ""
-				-- 			Phone.text = ""
-				-- 			MKRank.text = "-Select MK Rank-"
-				-- 			Comment.text = ""
-
-				-- elseif Request_response == "MUBNOTAGREE" then
-
-				-- 			UnitNumber.text = ""
-				-- 			FirstName.text = ""
-				-- 			Name.text = ""
-				-- 			Email.text = ""
-				-- 			Phone.text = ""
-				-- 			MKRank.text = "-Select MK Rank-"
-				-- 			Comment.text = ""
-				-- end
 
 			end
 

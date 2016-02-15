@@ -97,7 +97,7 @@ function googleplusCallback( res,scrollView,flag )
 
 			bgsize = 180
 		else
-			bgsize = 65
+			bgsize = 68
 		end
 
 
@@ -229,6 +229,10 @@ function googleplusCallback( res,scrollView,flag )
 		if(img[1].image ~= nil ) then
 			local shared_img = display.loadRemoteImage(img[1].image.url, "GET", postedimg_position, feedCount..".png", system.TemporaryDirectory,100+rowTitle.x,rowTitle.y+rowTitle.contentHeight+55 )
 			
+
+			if rowTitle.text == " " then
+				rowTitle.text = img[1].image.displayName
+			end
 			
 		else
 
@@ -237,6 +241,8 @@ function googleplusCallback( res,scrollView,flag )
 		end
 
 	end
+
+
 
 				local link = display.newText(tempGroup,feedArray[feedCount].url,0,0,native.systemFont,12)
 				link:setFillColor( 0,0,1 )
