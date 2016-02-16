@@ -30,6 +30,8 @@ local EventnameGroup = display.newGroup( )
 
 local EventnameFlag = false
 
+local BackFlag = false
+
 
 local EventnameArray = {"Appointment","Call","Party","Task"}
 
@@ -1003,6 +1005,37 @@ end
 		    return true
 	end
 
+
+
+	local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+local function onKeyEvent( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" then
+
+            composer.hideOverlay()
+            
+        end
+
+    end
+
+        return false
+ end
+
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -1906,6 +1939,8 @@ function scene:show( event )
 		Event_from_datebg:addEventListener("touch",TouchAction)
 		Event_to_datebg:addEventListener("touch",TouchAction)
 		saveBtn_BG:addEventListener("touch",TouchAction)
+
+		Runtime:addEventListener( "key", onKeyEvent )
 		
 	end	
 	
@@ -1930,6 +1965,8 @@ end
 		elseif phase == "did" then
 
 			composer.removeHidden()
+
+			Runtime:removeEventListener( "key", onKeyEvent )
 
 		end	
 

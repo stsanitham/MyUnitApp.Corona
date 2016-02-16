@@ -22,6 +22,8 @@ local menuBtn
 
 openPage="resourcePage"
 
+local BackFlag = false
+
 local ResourceListArray = {}
 
 local changeMenuGroup = display.newGroup();
@@ -745,6 +747,46 @@ return true
 end
 
 
+local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+local function onKeyEvent( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" then
+
+        	if BackFlag == false then
+
+        		Utils.SnackBar("Press again to exit")
+
+        		BackFlag = true
+
+        		timer.performWithDelay( 3000, onTimer )
+
+                return true
+
+            elseif BackFlag == true then
+
+			 os.exit() 
+
+            end
+            
+        end
+
+    end
+
+        return false
+ end
 
 
 function scene:create( event )
@@ -891,6 +933,8 @@ function scene:show( event )
 	menuBtn:addEventListener("touch",menuTouch)
 	BgText:addEventListener("touch",menuTouch)
 
+	Runtime:addEventListener( "key", onKeyEvent )
+
 end	
 
 MainGroup:insert(sceneGroup)
@@ -908,6 +952,8 @@ function scene:hide( event )
 		elseif phase == "did" then
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
+
+			Runtime:removeEventListener( "key", onKeyEvent )
 
 		end	
 

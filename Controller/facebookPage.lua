@@ -21,6 +21,7 @@ local H= display.contentHeight
 
 local Background,BgText
 
+local BackFlag = false
 
 local menuBtn
 
@@ -332,6 +333,49 @@ end
 	end
 
 
+	local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+local function onKeyEvent( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" then
+
+        	if BackFlag == false then
+
+        		Utils.SnackBar("Press again to exit")
+
+        		BackFlag = true
+
+        		timer.performWithDelay( 3000, onTimer )
+
+                return true
+
+            elseif BackFlag == true then
+
+			 os.exit() 
+
+            end
+            
+        end
+
+    end
+
+        return false
+ end
+
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -430,6 +474,8 @@ getAccess = network.request( "https://graph.facebook.com/"..userid.."/?access_to
 menuBtn:addEventListener("touch",menuTouch)
 BgText:addEventListener("touch",menuTouch)
 
+Runtime:addEventListener( "key", onKeyEvent )
+
 
 end	
 MainGroup:insert(sceneGroup)
@@ -454,6 +500,8 @@ function scene:hide( event )
 
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
+
+			Runtime:removeEventListener( "key", onKeyEvent )
 
 		end	
 

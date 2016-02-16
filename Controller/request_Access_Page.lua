@@ -838,6 +838,40 @@ local function rankTouch( event )
     end 
 
 
+local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+local function onKeyEvent( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+         if keyName=="back" then
+
+			 	local options = {
+									effect = "slideRight",
+									time = 600,	  
+									}
+
+				composer.gotoScene( "Controller.singInPage", options )
+
+            end
+            
+        end
+
+        return false
+ end
+
+
+
 
 ------------------------------------------------------
 
@@ -1184,24 +1218,7 @@ end
 		backBtn_bg:addEventListener("touch",backAction)
 		page_title:addEventListener("touch",backAction)
 
-		 local function RequestonKeyEvent( event )
-		        local phase = event.phase
-		        local keyName = event.keyName
-
-
-		       if ( "back" == keyName ) then
-
-		        		scrollTo( 0 )
-		                native.setKeyboardFocus(nil)
-		          
-		        end
-		        -- we handled the event, so return true.
-		        -- for default behavior, return false.
-		        return true
-   		end
-
-    -- Add the key callback
-   Runtime:addEventListener( "key", RequestonKeyEvent );
+		Runtime:addEventListener( "key", onKeyEvent )
 
 		 
 
@@ -1226,6 +1243,9 @@ function scene:hide( event )
 
 		MKRank_bg:removeEventListener( "touch", rankTouch )
 		MKRank:removeEventListener( "touch", rankTouch ) 
+
+		Runtime:removeEventListener( "key", onKeyEvent )
+
 		if rankTop then rankTop:removeEventListener("touch",rankToptouch) end
 		if rankText then rankText:removeEventListener("touch",rankToptouch) end 
 		if rankClose_bg then rankClose_bg:removeEventListener("touch",rankToptouch) end

@@ -31,6 +31,8 @@ local Unitnumber_field,UserName,Password
 --Button--
 local forgettBtn,signinBtn,requestBtn
 
+local BackFlag = false
+
 --------------------------------------------------
 
 openPage="signInPage"
@@ -451,6 +453,7 @@ openPage="signInPage"
 									local validation = true
 
 
+
 									if AppName ~= "DirectorApp" then
 										if Unitnumber_field.text == "" or Unitnumber_field.text == Unitnumber_field.id or Unitnumber_field.text == LoginPage.setError_Unitnumber or Unitnumber_field.value == 0 then
 											validation=false
@@ -541,6 +544,50 @@ openPage="signInPage"
 
 			    end
 			end
+
+
+
+local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+
+ local function onKeyEvent( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" then
+
+        	if BackFlag == false then
+
+        		Utils.SnackBar("Press again to exit")
+
+        		BackFlag = true
+
+        		timer.performWithDelay( 3000, onTimer )
+
+                return true
+
+            elseif BackFlag == true then
+
+			 os.exit() 
+
+            end
+            
+        end
+
+    end
+
+        return false
+ end
 
 
 ------------------------------------------------------
@@ -698,26 +745,23 @@ function scene:show( event )
 
 			composer.removeHidden()
 
-
 			if Unitnumber_field then Unitnumber_field:addEventListener( "userInput", textfield ) end
+
 			UserName:addEventListener( "userInput", textfield )
 			Password:addEventListener( "userInput", textfield )
 
 			Background:addEventListener("touch",touchBg)
-
 			forgettBtn:addEventListener("touch",touchAction)
 			requestBtn:addEventListener("touch",touchAction)
-
 			signinBtn:addEventListener("touch",signinBtnRelease)
 			signinBtn_text:addEventListener("touch",signinBtnRelease)
 
-
-		
 			Runtime:addEventListener( "enterFrame", pushTest )
-
+            Runtime:addEventListener( "key", onKeyEvent )
 
 		end	
 	end
+
 
 	function scene:hide( event )
 
@@ -731,13 +775,11 @@ function scene:show( event )
 				elseif phase == "did" then
 
 					Runtime:removeEventListener( "enterFrame", pushTest )
+					Runtime:removeEventListener( "key", onKeyEvent )
 
-					
 					Background:removeEventListener("touch",touchBg)
-
 					forgettBtn:removeEventListener("touch",touchAction)
 					requestBtn:removeEventListener("touch",touchAction)
-
 					signinBtn:removeEventListener("touch",signinBtnRelease)
 					signinBtn_text:removeEventListener("touch",signinBtnRelease)
 
@@ -760,3 +802,5 @@ function scene:show( event )
 
 
 			return scene
+
+

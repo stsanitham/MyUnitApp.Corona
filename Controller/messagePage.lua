@@ -26,6 +26,8 @@ local menuBtn
 
 openPage="messagePage"
 
+local BackFlag = false
+
 local Imagepath = ""
 
 local Imagesize = "" 
@@ -850,6 +852,48 @@ end
 	end
 
 
+local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+local function onKeyEvent( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" then
+
+        	if BackFlag == false then
+
+        		Utils.SnackBar("Press again to exit")
+
+        		BackFlag = true
+
+        		timer.performWithDelay( 3000, onTimer )
+
+                return true
+
+            elseif BackFlag == true then
+
+			 os.exit() 
+
+            end
+            
+        end
+
+    end
+
+        return false
+ end
+
+
 
 	function scene:create( event )
 
@@ -1128,6 +1172,8 @@ end
     Background:addEventListener("touch",FocusComplete)
     image_name_close:addEventListener( "touch", ImageClose )
 
+    Runtime:addEventListener( "key", onKeyEvent )
+
 	end	
 
 	MainGroup:insert(sceneGroup)
@@ -1156,6 +1202,8 @@ end
 	send_button:removeEventListener("touch",onSendButtonTouch)	
 	Background:removeEventListener("touch",FocusComplete)
 	image_name_close:removeEventListener( "touch", ImageClose )
+
+	Runtime:removeEventListener( "key", onKeyEvent )
 
 	elseif phase == "did" then
 

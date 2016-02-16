@@ -18,6 +18,8 @@ local ProcessingCount = 0
 
 local weekViewTouchFlag = false
 
+local BackFlag = false
+
 local weekViewGroup = display.newGroup( )
 
 local pickerGroup = display.newGroup( )
@@ -134,6 +136,50 @@ local columnData =
 
 
 
+local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+	local function onKeyEvent( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" or keyName =="a" then
+
+        	print(keyName)
+
+        	if BackFlag == false then
+
+        		Utils.SnackBar("Press again to exit")
+
+        		BackFlag = true
+
+        		timer.performWithDelay( 2000, onTimer )
+
+                return true
+
+            elseif BackFlag == true then
+
+			 os.exit() 
+
+            end
+            
+        end
+
+    end
+
+        return false
+ end
+
+
 
 
 local function listTouch( event )
@@ -187,6 +233,9 @@ local function listTouch( event )
 			}
 
 			search.isVisible=false
+
+			Runtime:removeEventListener( "key", onKeyEvent )
+
 			composer.showOverlay( "Controller.eventCal_DetailPage", options )
 
 			end
@@ -196,6 +245,7 @@ end
 
 return true
 end
+
 
 function makeTimeStamp(dateString)
 
@@ -1251,7 +1301,11 @@ addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 
 end
 
+
 function scene:resumeGame(value)
+
+	Runtime:addEventListener( "key", onKeyEvent )
+
     search.isVisible=true
 
     if value == "deleted" then
@@ -1265,8 +1319,9 @@ creatWeek(temp,true)
 		
     end
 
-
 end
+
+
 
 function scene:show( event )
 
@@ -1485,6 +1540,8 @@ picker_Done:addEventListener( "touch", calenderAction )
 search:addEventListener( "userInput", searchListener )
 addEventBtn:addEventListener( "touch", listTouch )
 
+Runtime:addEventListener( "key", onKeyEvent )
+
 
 end
 
@@ -1515,6 +1572,8 @@ function scene:hide( event )
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
 		menuTouch_s:removeEventListener("touch",menuTouch)
+
+		Runtime:removeEventListener( "key", onKeyEvent )
 
 
 

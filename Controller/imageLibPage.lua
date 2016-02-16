@@ -26,6 +26,8 @@ local ImageLibListArray = {}
 
 openPage="imageLibPage"
 
+local BackFlag = false
+
 local changeMenuGroup = display.newGroup();
 
 local RecentTab_Topvalue = 70
@@ -40,6 +42,52 @@ local gridArray = {}
 
 
 -----------------Function-------------------------
+
+
+local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+local function onKeyEvent( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" or keyName=="a"  then
+
+        	if BackFlag == false then
+
+        		print("(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((")
+
+        		Utils.SnackBar("Press again to exit")
+
+        		BackFlag = true
+
+        		timer.performWithDelay( 2000, onTimer )
+
+                return true
+
+            elseif BackFlag == true then
+
+			 os.exit() 
+
+            end
+            
+        end
+
+    end
+
+        return false
+ end
+
+
 
 
 
@@ -423,10 +471,18 @@ local function onRowTouch_ImageLib( event )
 			params = { ImageList = List_array,count = row.index }
 		}
 
+        Runtime:removeEventListener( "key", onKeyEvent )
+
 		composer.showOverlay( "Controller.imageSlideView", options )
 
 
 	end
+
+end
+
+function scene:resumeGame()
+
+Runtime:addEventListener( "key", onKeyEvent )
 
 end
 
@@ -524,6 +580,8 @@ local function imageDetail(event)
 			time =100,
 			params = { ImageList = List_array,count = imagecount }
 		}
+
+Runtime:removeEventListener( "key", onKeyEvent )
 
 		composer.showOverlay( "Controller.imageSlideView", options )
 
@@ -928,6 +986,8 @@ function scene:show( event )
 	menuBtn:addEventListener("touch",menuTouch)
 	BgText:addEventListener("touch",menuTouch)
 
+	 Runtime:addEventListener( "key", onKeyEvent )
+
 
 end	
 
@@ -944,6 +1004,8 @@ function scene:hide( event )
 
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
+
+			 Runtime:removeEventListener( "key", onKeyEvent )
 
 
 		elseif phase == "did" then
