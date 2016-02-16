@@ -46,7 +46,7 @@ local contactgroup = {"Contact","Lead","Customer","Team Member"}
 
 local taskStatus = {"Not Started","In-Progress","Completed","Deferred"}
 
-local leftPadding = 10
+local leftPadding = 15
 
 local AddeventGroup = display.newGroup( )
 
@@ -553,6 +553,13 @@ local function TouchAction( event )
 
 				composer.hideOverlay()
 
+			elseif event.target.id == "description" then
+
+				
+				Description.isVisible = true
+
+				native.setKeyboardFocus( Description )
+
 			elseif event.target.id == "save" then
 
 				if allDay == true then
@@ -567,8 +574,6 @@ local function TouchAction( event )
 				local startdate = Event_from_date.text.." "..EventFrom_time
 				local enddate = Event_to_date.text.." "..EventTo_time
 
-
-				print( startdate) 
 
 
 				--CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection
@@ -703,7 +708,6 @@ local function TouchAction( event )
 					List.y = event.target.y+event.target.contentHeight+1.3
 					List.width =event.target.contentWidth
 
-					print( PurposeLbl.text:lower( ) )
 					if SelectEvent.text:lower( ) == "task" then
 
 						List.arrayName = taskStatus
@@ -939,8 +943,11 @@ local function usertextField( event )
     if ( event.phase == "began" ) then
         -- user begins editing defaultField
         print( event.text )
+        current_textField = event.target
+        if(current_textField.id == "description") then
 
-        scrollTo(-100)
+     	   scrollTo(-100)
+     	end
 
        
 
@@ -950,9 +957,15 @@ local function usertextField( event )
 
         scrollTo(0)
 
+        if(current_textField.id == "description") then
+
+        	current_textField.isVisible = false
+
+        end
+
     elseif ( event.phase == "editing" ) then
 
-    	current_textField = event.target
+    	
 
 		current_textField.size=14
 
@@ -961,6 +974,15 @@ local function usertextField( event )
 				if event.text:len() > 160 then
 
 					event.target.text = event.target.text:sub(1,160)
+
+				end
+
+		else
+
+
+				if event.text:len() > 100 then
+
+					event.target.text = event.target.text:sub(1,100)
 
 				end
 
@@ -1092,7 +1114,7 @@ function scene:create( event )
 			hideBackground = true,
 			isBounceEnabled=false,
 			horizontalScrollDisabled = true,
-			bottomPadding = 230,
+			bottomPadding = 265,
 			friction = .6,
    			listener = addevent_scrollListener,
 		}
@@ -1101,7 +1123,7 @@ function scene:create( event )
 	
 		--Form Design---
 
-		AddeventArray[#AddeventArray+1] = display.newRect( W/2, 0, W-20, 28)
+		AddeventArray[#AddeventArray+1] = display.newRect( W/2, 15, W-20, 28)
 		AddeventArray[#AddeventArray].id="eventtype"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
@@ -1127,7 +1149,7 @@ function scene:create( event )
 	  	SelectEvent_icon.y=SelectEvent.y
 
 		BottomImage = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImage.x=W/2;BottomImage.y=SelectEvent.y+SelectEvent.contentHeight
+		BottomImage.x=W/2;BottomImage.y=SelectEvent.y+SelectEvent.contentHeight-8
 
 		scrollView:insert( AddeventGroup)
 
@@ -1159,19 +1181,21 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].id="what"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
-		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+15
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
-		What = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
+		What = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
 		What.id="What"
 		What.size=14
 		What.anchorY=0
 		What.hasBackground = false
 		What:setReturnKey( "next" )
 		What.placeholder="What"
+		What:addEventListener( "userInput", usertextField )
+
 
 		BottomImageWhat = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageWhat.x=W/2;BottomImageWhat.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight
+		BottomImageWhat.x=W/2;BottomImageWhat.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-10
 
 		AddeventGroup:insert(What)
 
@@ -1183,10 +1207,10 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].id="allday"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
-		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
-		alldayLbl = display.newText(AddeventGroup,"All Day",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		alldayLbl = display.newText(AddeventGroup,"All Day",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,12 )
 		alldayLbl.anchorX=0
 		alldayLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		alldayLbl.x=leftPadding
@@ -1223,11 +1247,11 @@ function scene:show( event )
         onOffOverlayHeight = 44
 			}
 			allDay=false
-			allday_onOffSwitch.x=alldayLbl.x+alldayLbl.contentWidth+allday_onOffSwitch.contentWidth/2-40
+			allday_onOffSwitch.x=alldayLbl.x+alldayLbl.contentWidth+allday_onOffSwitch.contentWidth/2-55
 			allday_onOffSwitch.y = alldayLbl.y
 
-			allday_onOffSwitch.width = 70
-			allday_onOffSwitch.height  = 25
+			allday_onOffSwitch.width = 50
+			allday_onOffSwitch.height  = 15
 			AddeventGroup:insert( allday_onOffSwitch )
 
 	  	--------------
@@ -1238,7 +1262,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].id="when"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
-		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+15
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
 		Event_fromLbl = display.newText(AddeventGroup,"When",0,0,0,0,native.systemFont,14)
@@ -1274,7 +1298,7 @@ function scene:show( event )
 		Event_from_time.x= Event_from_timebg.x+5;Event_from_time.y= Event_from_timebg.y
 
 		BottomImageWhen = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageWhen.x=W/2;BottomImageWhen.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight
+		BottomImageWhen.x=W/2;BottomImageWhen.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-5
 
 		-----------------------------------
 
@@ -1328,43 +1352,44 @@ function scene:show( event )
 		timeZone.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight+15
 
 		BottomImageTo = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageTo.x=W/2;BottomImageTo.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight
+		BottomImageTo.x=W/2;BottomImageTo.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-5
 
 		
 	  	----Where----
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+15, W-20, 28)
 		AddeventArray[#AddeventArray].id="where"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+35
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
-		Where = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
-		Where.id="where"
+		Where = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
+		Where.id="Where"
 		Where.size=14
 		Where.anchorY=0
 		Where.hasBackground = false
 		Where:setReturnKey( "next" )
 		Where.placeholder="Where"
+		Where:addEventListener( "userInput", usertextField )
 		AddeventGroup:insert(Where)
 
 		BottomImageWhere = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageWhere.x=W/2;BottomImageWhere.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight
+		BottomImageWhere.x=W/2;BottomImageWhere.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-12
 
 
 	  	----------
 
 	  	---Phone-----
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+15, W-20, 28)
 		AddeventArray[#AddeventArray].id="phone"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		callGroup:insert(AddeventArray[#AddeventArray])
 
-		Phone = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
+		Phone = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
 		Phone.id="phone"
 		Phone.size=14
 		Phone.anchorY=0
@@ -1374,7 +1399,7 @@ function scene:show( event )
 		callGroup:insert(Phone)
 
 		BottomImagePhone= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImagePhone.x=W/2;BottomImagePhone.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		BottomImagePhone.x=W/2;BottomImagePhone.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-12
 		callGroup:insert(BottomImagePhone)
 
 
@@ -1383,14 +1408,14 @@ function scene:show( event )
 
 	  	---AccessCode-----
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+15, W-20, 28)
 		AddeventArray[#AddeventArray].id="accesscode"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		callGroup:insert(AddeventArray[#AddeventArray])
 
-		AccessCode = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
+		AccessCode = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
 		AccessCode.id="accesscode"
 		AccessCode.size=14
 		AccessCode.anchorY=0
@@ -1400,7 +1425,7 @@ function scene:show( event )
 		callGroup:insert(AccessCode)
 
 		BottomImageAccessCode= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageAccessCode.x=W/2;BottomImageAccessCode.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		BottomImageAccessCode.x=W/2;BottomImageAccessCode.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-12
 		callGroup:insert(BottomImageAccessCode)
 
 
@@ -1500,21 +1525,24 @@ function scene:show( event )
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 80)
 		AddeventArray[#AddeventArray].id="description"
 		AddeventArray[#AddeventArray].anchorY=0
-		AddeventArray[#AddeventArray].alpha=0.01
+		--AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray]:setStrokeColor(0,0,0,0.4)
 		AddeventArray[#AddeventArray].strokeWidth = 1
+		AddeventArray[#AddeventArray]:setFillColor( 0,0,0,0.01 )
 		AddeventArray[#AddeventArray].hasBackground = true
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		belowGroup:insert(AddeventArray[#AddeventArray])
+		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 		Description = native.newTextBox(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
 		Description.id="description"
 		Description.size=14
 		Description.anchorY=0
 		Description.y =AddeventArray[#AddeventArray].y 
-		Description.hasBackground = true
+		Description.hasBackground = false
 		Description.placeholder="Description"
 		Description.isEditable = true
+		Description.isVisible = false
 		belowGroup:insert(Description)
 		Description:addEventListener( "userInput", usertextField )
 
@@ -1627,6 +1655,37 @@ function scene:show( event )
 
 	  	--------
 
+	  		  	--Other---
+
+		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+		AddeventArray[#AddeventArray].id="Other"
+		AddeventArray[#AddeventArray].anchorY=0
+		AppintmentWith:addEventListener( "userInput", searchfunction )
+		AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		belowGroup:insert(AddeventArray[#AddeventArray])
+
+
+		Other = native.newTextField(0, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-30, AddeventArray[#AddeventArray].contentHeight)
+		Other.id="Other"
+		Other.size=14
+		Other.anchorY=0
+		Other.anchorX=0
+		Other.x=leftPadding
+		Other.hasBackground = false
+		Other.contactinfo=""
+		Other:setReturnKey( "next" )
+		Other.placeholder="Other"
+		belowGroup:insert(Other)
+		Other:addEventListener( "userInput", searchfunction )
+
+		BottomImageAddinvitees = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImageAddinvitees.x=W/2;BottomImageAddinvitees.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		belowGroup:insert(BottomImageAddinvitees)
+
+		---
+
+
 	  	--Priority---
 
 		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
@@ -1657,6 +1716,8 @@ function scene:show( event )
 		belowGroup:insert(BottomImagePriority)
 
 	  	--------
+
+
 
 
 	  	--Add Attachment---

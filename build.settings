@@ -162,19 +162,6 @@ coronaWindowMovesWhenKeyboardAppears = true,
 
         },
 
-        compatibleScreens = 
-        {
-          {screenSize="small",screenDensity="ldpi"},
-          {screenSize="small",screenDensity="mdpi"},
-           {screenSize="small",screenDensity="hdpi"},
-          {screenSize="small",screenDensity="xhdpi"},
-          {screenSize="small",screenDensity="xxhdpi"},
-            {screenSize="normal",screenDensity="ldpi"},
-          {screenSize="normal",screenDensity="mdpi"},
-           {screenSize="normal",screenDensity="hdpi"},
-          {screenSize="normal",screenDensity="xhdpi"},
-          {screenSize="normal",screenDensity="xxhdpi"},
        
-        },
 	},
 }
