@@ -49,6 +49,8 @@ local RecentTab_Topvalue = 75
 
 local header_value = ""
 
+local BackFlag = false
+
 local changeMenuGroup = display.newGroup();
 
 local byNameArray = {}
@@ -59,6 +61,52 @@ local byPositionArray = {}
 
 
 -----------------Function-------------------------
+
+
+
+local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+local function onKeyEvent( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" or keyName=="a" then
+
+        	if BackFlag == false then
+
+        		Utils.SnackBar("Press again to exit")
+
+        		BackFlag = true
+
+        		timer.performWithDelay( 3000, onTimer )
+
+                return true
+
+            elseif BackFlag == true then
+
+			 os.exit() 
+
+            end
+            
+        end
+
+    end
+
+        return false
+ end
+
+
+
 
 local function detailPageFun(event)
 	
@@ -83,6 +131,8 @@ local function detailPageFun(event)
 			contactId = event.target.id
 		}
 	}
+
+	Runtime:removeEventListener( "key", onKeyEvent )
 
 	composer.showOverlay( "Controller.careerPathDetailPage", options )
 end
@@ -442,6 +492,9 @@ function get_Activeteammember(response)
 
 	end
 end
+
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -543,6 +596,14 @@ MainGroup:insert(sceneGroup)
 
 end
 
+
+function scene:resumeGame()
+
+	Runtime:addEventListener( "key", onKeyEvent )
+
+end
+
+
 function scene:show( event )
 
 	local sceneGroup = self.view
@@ -560,6 +621,8 @@ function scene:show( event )
 
 			menuBtn:addEventListener("touch",menuTouch)
 			BgText:addEventListener("touch",menuTouch)
+
+			Runtime:addEventListener( "key", onKeyEvent )
 
 
 		end	
@@ -591,6 +654,8 @@ function scene:show( event )
 
 				menuBtn:removeEventListener("touch",menuTouch)
 				BgText:removeEventListener("touch",menuTouch)
+
+				Runtime:removeEventListener( "key", onKeyEvent )
 
 			end	
 

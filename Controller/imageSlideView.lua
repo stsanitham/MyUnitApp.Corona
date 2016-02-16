@@ -367,6 +367,26 @@ local function slideShow(filename)
 
 end
 
+
+local function onKeyEventDetail( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" or keyName=="a" then
+
+        	composer.hideOverlay( "slideRight", 300 )
+            
+        end
+
+    end
+
+        return false
+ end
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -580,6 +600,9 @@ function scene:show( event )
 			BgText:addEventListener("touch",menuTouch)
 			title:addEventListener("touch",BackTouch)
 			BackBtn:addEventListener("touch",BackTouch)
+
+   			Runtime:addEventListener("key",onKeyEventDetail)
+
 		end	
 
 		MainGroup:insert(sceneGroup)
@@ -598,6 +621,8 @@ function scene:show( event )
 			elseif phase == "did" then
 
 				spinner_hide()
+
+				event.parent:resumeGame()
 				
 
 				if imageTrans then transition.cancel( imageTrans );imageTrans=nil end
@@ -607,6 +632,9 @@ function scene:show( event )
 					--if myImage then myImage:removeSelf();myImage=nil end
 					menuBtn:removeEventListener("touch",menuTouch)
 					BgText:removeEventListener("touch",menuTouch)
+
+					Runtime:removeEventListener("key",onKeyEventDetail)
+
 					network.cancel(imageDownload)
 
 				end	

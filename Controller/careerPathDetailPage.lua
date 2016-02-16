@@ -295,6 +295,26 @@ local function MapShowing( event )
 
 end
 
+
+local function onKeyEventDetail( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" or keyName=="a" then
+
+        	composer.hideOverlay( "slideRight", 300 )
+            
+        end
+
+    end
+
+        return false
+ end
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -758,6 +778,8 @@ function scene:show( event )
 				map_close_bg.alpha=0.01
 
 				map_close_bg:addEventListener("touch",MapShowing)
+
+			    Runtime:addEventListener("key",onKeyEventDetail)
 			
 
 						myMap = native.newMapView( display.contentCenterX, display.contentCenterY+50, 280, 270 )
@@ -804,7 +826,6 @@ function scene:show( event )
 			menuBtn:addEventListener("touch",menuTouch)
 			BgText:addEventListener("touch",menuTouch)
 
-
 		end	
 
 
@@ -831,8 +852,12 @@ function scene:hide( event )
 
 		elseif phase == "did" then
 
+			event.parent:resumeGame()
+
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
+
+			Runtime:removeEventListener("key",onKeyEventDetail)
 
 
 		end	

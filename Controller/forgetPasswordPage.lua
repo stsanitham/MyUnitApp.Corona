@@ -273,6 +273,42 @@ local function SetError( displaystring, object )
 
 
 
+
+	local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+local function onKeyEvent( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" then
+
+			 	local options = {
+									effect = "slideRight",
+									time = 600,	  
+									}
+
+				composer.gotoScene( "Controller.singInPage", options )
+
+            end
+            
+        end
+
+        return false
+ end
+
+
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -403,6 +439,9 @@ function scene:show( event )
 			backBtn_bg:addEventListener("touch",backAction)
 			page_title:addEventListener("touch",backAction)
 
+			Runtime:addEventListener( "key", onKeyEvent )
+
+
 			composer.removeHidden()
 
 		end	
@@ -419,6 +458,7 @@ function scene:show( event )
 		if event.phase == "will" then
 		elseif phase == "did" then
 
+			Runtime:removeEventListener( "key", onKeyEvent )
 
 			end	
 

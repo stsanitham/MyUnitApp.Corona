@@ -257,12 +257,8 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-
 		elseif phase == "did" then
 
-
-
-			
 			panel.background = display.newRect( 0, 0, panel.width, panel.height )
 			panel.background:setFillColor( Utils.convertHexToRGB(sp_Flatmenu_HeaderBg.Background_Color) )
 			panel:insert( panel.background )
@@ -320,10 +316,6 @@ function scene:show( event )
 
 		end
 
-	
-
-
-
 			profileName = display.newText(Director_Name,0,0,245,0,native.systemFont,15)
 			profileName.x=profilePic.x
 			profileName.anchorX=0
@@ -331,8 +323,6 @@ function scene:show( event )
 			Utils.CssforTextView(profileName,sp_Flatmenu_labelName)
 			panel:insert( profileName )
 
-	
-			
 			profileEmail = display.newText("",0,0,250,0,native.systemFont,15)
 			profileEmail.x=profilePic.x
 			profileEmail.anchorX=0
@@ -341,7 +331,6 @@ function scene:show( event )
 			profileEmail.y=profileName.y+profileName.contentHeight-5
 			panel:insert( profileEmail )
 
-			
 
 			if EmailAddress ~= nil then
 
@@ -355,7 +344,7 @@ function scene:show( event )
 
 						profileEmail.text = EmailTxt
 
-						end
+			end
 
 
 		--[[	--HomePage

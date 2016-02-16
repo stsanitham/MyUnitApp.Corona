@@ -198,13 +198,10 @@ inEasing = easing.outCubic,
 outEasing = easing.outCubic
 }
 
-local BackFlag = false
 
- 
 
-    -- Add the key callback
 
-	composer.gotoScene( "Controller.splashScreen")
+composer.gotoScene( "Controller.splashScreen")
 
 
    

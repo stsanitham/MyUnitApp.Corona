@@ -28,6 +28,8 @@ local laserSound,backgroundMusicChannel
 
 local PushGroup
 
+local BackFlag = false
+
 local Background,PushNotification_bg,PushNotification_title_bg,PushNotification_title,PushNotification_msg,playBtn,playBtn_text,downloadBtn,downloadBtn_text,PushNotification_close_bg,PushNotification_close,webView
 
 
@@ -169,34 +171,8 @@ local function DownloadPush(  )
 
 end
 
-local function closeDetailsPush( event )
-	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
 
-			
-
-
-			if event.target.id == "Play" then
-
-				if event.target.value:match( "([^/]+)$" ) ~= nil then
-
-					AudioPush(event.target.value)
-
-				end
-
-			elseif event.target.id == "Downlaod" then
-
-				if additionalDate.audio:match( "([^/]+)$" ) ~= nil then
-
-					DownloadPush()
-
-				end
-
-			else
-				
-
+local function closeAction(  )
 
 				local isChannel1Playing = audio.isChannelPlaying( 1 )
 				if isChannel1Playing then
@@ -241,22 +217,50 @@ local function closeDetailsPush( event )
 					end
 				end
 
-
 					composer.hideOverlay()
+	
+end
+
+
+local function closeDetailsPush( event )
+	if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+			
+
+
+			if event.target.id == "Play" then
+
+				if event.target.value:match( "([^/]+)$" ) ~= nil then
+
+					AudioPush(event.target.value)
 
 				end
 
+			elseif event.target.id == "Downlaod" then
+
+				if additionalDate.audio:match( "([^/]+)$" ) ~= nil then
+
+					DownloadPush()
+
+				end
+
+			else
 				
+			closeAction()
 
-				
+				end
 
-			end
-
+		end
 	end
 
 return true
 
 end
+
+
 
 local function bgTouch( event )
 	if event.phase == "began" then
@@ -269,6 +273,49 @@ local function bgTouch( event )
 return true
 
 end
+
+
+
+local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+local function onKeyEvent( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" then
+
+        	if BackFlag == false then
+
+        		Utils.SnackBar("Press again to exit")
+
+        		BackFlag = true
+
+        		timer.performWithDelay( 3000, onTimer )
+
+                return true
+
+            elseif BackFlag == true then
+
+			 closeAction(  )
+
+            end
+            
+        end
+
+    end
+
+        return false
+ end
 
 
 
@@ -459,6 +506,8 @@ function scene:show( event )
 	PushNotification_close.y= PushNotification_close_bg.y
 
 	PushNotification_close_bg:addEventListener( "touch", closeDetailsPush )
+
+	Runtime:addEventListener( "key", onKeyEvent )
 
 	if additionalDate.video then
 
@@ -669,6 +718,8 @@ end
 
 
 			elseif phase == "did" then
+
+				Runtime:removeEventListener( "key", onKeyEvent )
 
 
 			end	

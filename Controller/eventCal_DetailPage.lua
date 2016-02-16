@@ -22,6 +22,8 @@ local menuBtn
 
 local detail_value = {}
 
+local BackFlag = false
+
 local TicklerId,CalendarId,CalendarName,id
 
 local RecentTab_Topvalue = 105
@@ -144,6 +146,26 @@ local display_details = {}
 		end
 
 
+
+	local function onKeyEventDetail( event )
+
+        local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" or keyName=="a" then
+
+        	composer.hideOverlay( "slideRight", 300 )
+            
+        end
+
+    end
+
+        return false
+ end
+
+
 		------------------------------------------------------
 
 		function scene:create( event )
@@ -250,6 +272,8 @@ local display_details = {}
 		menuTouch_s:addEventListener("touch",menuTouch)
 
 		BgText:addEventListener("touch",menuTouch)
+
+		Runtime:addEventListener("key",onKeyEventDetail)
 
 		if event.params then
 
@@ -650,6 +674,8 @@ local display_details = {}
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
 		menuTouch_s:removeEventListener("touch",menuTouch)
+
+		Runtime:removeEventListener( "key", onKeyEventDetail )
 
 		end	
 
