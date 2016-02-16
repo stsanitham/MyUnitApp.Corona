@@ -985,6 +985,8 @@ if Contact.name ~= nil or Contact ~= "" then
 
 end
 
+print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
+
 		resbody = [[
 		{
 		"UserId": ]]..UserId..[[,
@@ -1002,7 +1004,7 @@ end
 		"Location": ']]..Location..[[',
 		"Description": ']]..Description..[[',
 		"AppointmentPurpose":  ]]..check(AppointmentPurpose)..[[,
-		"AppointmentPurposeOther":  ]]..AppointmentPurposeOther..[[,
+		"AppointmentPurposeOther":  ']]..AppointmentPurposeOther..[[',
 		"Priority":  ]]..Priority..[[,
 		"TimeZone": ']]..TimeZone..[[',
 		"ColorCode":"#BCA9F5",

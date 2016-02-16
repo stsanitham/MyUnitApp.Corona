@@ -212,7 +212,28 @@ function scene:show( event )
 				local q = [[UPDATE logindetails SET ProfileImageUrl=']]..profileImageUrl..[[',GoogleUsername=']]..GoogleUsername..[[',GoogleToken=']]..GoogleToken..[[',GoogleTokenSecret=']]..GoogleTokenSecret..[[',GoogleUserId=']]..GoogleUserId..[[',FacebookUsername=']]..FacebookUsername..[[',FacebookAccessToken=']]..FacebookAccessToken..[[',TwitterUsername=']]..TwitterUsername..[[',TwitterToken=']]..TwitterToken..[[',TwitterTokenSecret=']]..TwitterTokenSecret..[[' WHERE id=1;]]
 				db:exec( q )
 				
-				composer.gotoScene( "Controller.flapMenu" )
+				--composer.gotoScene( "Controller.flapMenu" )
+
+						function IdsAvailable(userId, pushToken)
+
+							    GCMValue = userId
+
+						        composer.gotoScene( "Controller.flapMenu" )
+						   
+						    if (pushToken) then -- nil if there was a connection issue or on iOS notification permissions were not accepted.
+						        print("pushToken:" .. pushToken)
+						    end
+
+						end
+
+						OneSignal.IdsAvailableCallback(IdsAvailable)
+
+						if isSimulator then
+
+
+						        composer.gotoScene( "Controller.flapMenu" )
+
+						end
 
 			end		
 
@@ -228,6 +249,8 @@ function scene:show( event )
 				
 
 						function IdsAvailable(userId, pushToken)
+
+
 						    print("userId:" .. userId)
 
 						   -- native.showAlert("userId", userId, { "OK" } )

@@ -200,38 +200,9 @@ outEasing = easing.outCubic
 
 local BackFlag = false
 
- function onKeyEvent( event )
-        local phase = event.phase
-        local keyName = event.keyName
-
-        if(keyName=="back") then
-
-            if BackFlag then
-                BackFlag=false
-                os.exit( )
-            end
-
-            --BackFlag=true
-
-            if openPage == "signInPage" or openPage == "requestAccess Page" then
-                native.setKeyboardFocus(nil)
-                
-            end
-
-            return true
-        else
-
-            return false
-
-        end
-
-        -- we handled the event, so return true.
-        -- for default behavior, return false.
-        
-     end
+ 
 
     -- Add the key callback
-   Runtime:addEventListener( "key", onKeyEvent );
 
 	composer.gotoScene( "Controller.splashScreen")
 

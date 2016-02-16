@@ -13,7 +13,6 @@ local mime = require("mime")
 local timePicker = require( "Controller.timePicker" )
 local datePicker = require( "Controller.datePicker" )
 
-
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -70,9 +69,13 @@ local callGroup = display.newGroup( )
 
 local belowGroup = display.newGroup( )
 
+local belowOtherGroup = display.newGroup( )
+
 local QuickContactList = {}
 
 local appointmentGroup = display.newGroup()
+
+local status = "normal"
 --------------------------------------------------
 
 
@@ -159,6 +162,42 @@ local function selectionComplete ( event )
 				photo.y = display.contentCenterY
 				local w = photo.width
 				local h = photo.height
+				--photo:scale(0.5,0.5)
+
+				local function rescale()
+					
+					if photo.width > W or photo.height > H then
+
+						photo.width = photo.width/2
+						photo.height = photo.height/2
+
+						intiscale()
+
+					else
+
+						return false
+
+					end
+				end
+
+				function intiscale()
+					
+					if photo.width > W or photo.height > H then
+
+						photo.width = photo.width/2
+						photo.height = photo.height/2
+
+						rescale()
+
+					else
+
+						return false
+
+					end
+
+				end
+
+				intiscale()
 
 				photoname = "eventAttach.jpg"
 
@@ -233,8 +272,6 @@ local function searchTouch(event)
 
 		searchList.isVisible = false
 
-		Description.isVisible = true
-
 		AppintmentWith.isVisible = true
 
 		searchList.textFiled.text = row.name
@@ -288,7 +325,6 @@ local function onRowTouch(event)
 
     	Where.isVisible = true
     	What.isVisible = true
-		Description.isVisible = true
     	List_bg.isVisible = false
 		List:deleteAllRows()
 		QuickContactList:deleteAllRows()
@@ -364,7 +400,20 @@ local function onRowTouch(event)
 
 		end
 
+		if List.textFiled.text:lower( ) == "other" then
 
+			AddeventArray[List.textFiled.count+1].isVisible = false
+			Other.isVisible = true
+			BottomOther.isVisible = true
+			belowOtherGroup.y = 0
+
+		else
+		--AddeventArray[PriorityLbl.count]
+			Other.isVisible = false
+			BottomOther.isVisible = false
+			belowOtherGroup.y = -40
+
+		end
 
     end
 end
@@ -426,20 +475,56 @@ local function CreateList(event,list,bg)
 
 end
 
+
+local function onComplete(event)
+
+	if "clicked"==event.action then
+
+		
+		status = "deleted"
+
+		composer.hideOverlay()
+
+	end
+
+end
 local function get_CreateTickler( response )
 	print("event Added")
 
 	if response.TicklerId ~= nil then
 
-		if response.TicklerId > 0 then
+	
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event Added", { "OK" } )
+		if response.TicklerId > 0 then
+		
+
+			What.text=""
+			Where.text=""
+			Phone.text=""
+			AccessCode.text=""
+			Description.text=""
+			Description_lbl.text=""
+			AppintmentWith.text=""
+			Addinvitees.text=""
+			PurposeLbl.text="Purpose"
+			Other.text=""
+			PriorityLbl.text="Low"
+
+
+
+			local baseDir = system.DocumentsDirectory
+
+
+			local path = system.pathForFile( "eventAttach.jpg" , baseDir )
+
+			os.remove(path)
+
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event Added", { "OK" },onComplete )
 
 		end
 
 	end
 end
-
 local function saveQuickcontact()
 	
 	function get_saveQuickcontact( response )
@@ -523,12 +608,23 @@ local function Ap_scrollAction( event )
 
 return true
 end
+local function SetError( displaystring, object )
+
+									
+									object.text=displaystring
+									object.size=9
+									object.alpha=1
+									object:setTextColor(1,0,0)
+
+
+end
 
 
 local function TouchAction( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
 
+			native.setKeyboardFocus( nil )
 
 	 elseif ( event.phase == "moved" ) then
         local dy = math.abs( ( event.y - event.yStart ) )
@@ -555,6 +651,8 @@ local function TouchAction( event )
 
 				
 				Description.isVisible = true
+
+				Description_lbl.isVisible = false
 
 				native.setKeyboardFocus( Description )
 
@@ -586,9 +684,24 @@ local function TouchAction( event )
 
 				end
 
+				if PurposeLbl.text:lower( ) == "other" then
 
-				Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,"",PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+					if Other.text == "" then
 
+						SetError("* Enter other Reason",Other)
+
+					else
+
+						Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+
+					end
+				else
+
+					Other.text =  ""
+
+					Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+
+				end
 				
 			elseif event.target.id == "AppintmentWith_plus" then
 
@@ -596,7 +709,6 @@ local function TouchAction( event )
 
 					What.isVisible = true
 					Where.isVisible = true
-					Description.isVisible = true
 					AppintmentWith.isVisible = true
 					Addinvitees.isVisible = true
 
@@ -610,7 +722,6 @@ local function TouchAction( event )
 
 					What.isVisible = false
 					Where.isVisible = false
-					Description.isVisible = false
 					AppintmentWith.isVisible = false
 					Addinvitees.isVisible = false
 
@@ -627,7 +738,6 @@ local function TouchAction( event )
 			elseif event.target.id == "fromTime" then
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
-					Description.isVisible = false
 					Addinvitees.isVisible = false
 				
 				function getValue(time)
@@ -635,7 +745,6 @@ local function TouchAction( event )
 					Event_from_time.text = time
 					AppintmentWith.isVisible = true
 					Where.isVisible = true
-					Description.isVisible = true
 					Addinvitees.isVisible = true
 
 				end
@@ -646,7 +755,6 @@ local function TouchAction( event )
 
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
-					Description.isVisible = false
 					Addinvitees.isVisible = false
 				
 				function getValue(time)
@@ -654,7 +762,6 @@ local function TouchAction( event )
 					Event_to_time.text = time
 					AppintmentWith.isVisible = true
 					Where.isVisible = true
-					Description.isVisible = true
 					Addinvitees.isVisible = true
 
 				end
@@ -664,7 +771,6 @@ local function TouchAction( event )
 
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
-					Description.isVisible = false
 					Addinvitees.isVisible = false
 				
 				function getValue(time)
@@ -672,7 +778,6 @@ local function TouchAction( event )
 					Event_from_date.text = time
 					AppintmentWith.isVisible = true
 					Where.isVisible = true
-					Description.isVisible = true
 					Addinvitees.isVisible = true
 
 				end
@@ -683,7 +788,6 @@ local function TouchAction( event )
 
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
-					Description.isVisible = false
 					Addinvitees.isVisible = false
 				
 				function getValue(time)
@@ -691,7 +795,6 @@ local function TouchAction( event )
 					Event_to_date.text = time
 					AppintmentWith.isVisible = true
 					Where.isVisible = true
-					Description.isVisible = true
 					Addinvitees.isVisible = true
 
 				end
@@ -705,6 +808,7 @@ local function TouchAction( event )
 					List.x = event.target.x
 					List.y = event.target.y+event.target.contentHeight+1.3
 					List.width =event.target.contentWidth
+
 
 					if SelectEvent.text:lower( ) == "task" then
 
@@ -720,8 +824,14 @@ local function TouchAction( event )
 					List_bg.y = List.y
 					List_bg.isVisible = true
 					CreateList(event,List,List_bg)
-					
+					Other.isVisible = false
 				else
+
+					if PurposeLbl.text:lower( ) == "other" then
+
+						Other.isVisible = true
+
+					end
 					List_bg.isVisible = false
 					List:deleteAllRows()
 					List.isVisible = false
@@ -750,11 +860,37 @@ local function TouchAction( event )
 
 			elseif event.target.id == "addattachment" then
 
-					if media.hasSource( PHOTO_FUNCTION  ) then
-					timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
-					end )
 
-					end
+
+						local function onComplete(event)
+
+							if "clicked"==event.action then
+
+								local i = event.index 
+
+							if 1 == i then
+
+								if media.hasSource( PHOTO_FUNCTION  ) then
+								timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+								end )
+							    end
+
+							elseif 2 == i then
+
+								if media.hasSource( media.Camera ) then
+						        timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+								end )
+							    end
+
+								end
+
+						end
+
+						end
+
+
+				        local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
+
 
 
 			elseif event.target.id == "eventtype" then
@@ -848,6 +984,10 @@ local function searchfunction( event )
 
     if ( event.phase == "began" ) then
 
+    	current_textField = event.target;
+
+
+
   
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
@@ -859,33 +999,32 @@ local function searchfunction( event )
 
     	if event.target.id == "appintmentwith" then
 
-        	Description.isVisible = false
 
         elseif event.target.id == "addinvitees" then
-
-			Description.isVisible = false
 
 			AppintmentWith.isVisible = false
 
         end
 
     	if event.text:len() == 1 then
-    		print("len")
 
     		for i=1,#searchArraytotal do
 				searchArraytotal[i]=nil
 			end
 
+			if event.target.id == "addinvitees" then
+
+				AppintmentWith.isVisible = true
+
+        	end
+
 			Webservice.GetContact(event.text,get_Contact)
 
 		elseif event.text:len() == 0 then
 
-				Description.isVisible = false
+			searchList:deleteAllRows()
 
-				AppintmentWith.isVisible = false
-
-				searchList:deleteAllRows()
-
+			
 		else
 
 			for i=1,#searchArray do
@@ -899,13 +1038,37 @@ local function searchfunction( event )
 
 			if string.find(searchArraytotal[i].name:lower(),event.text:lower()) ~= nil then
 
-				print("here  "..searchArraytotal[i].name,event.text)
-
 				searchArray[#searchArray+1] = searchArraytotal[i]
 
 			end
 
 		end
+
+		if #searchArray == 0 then
+
+			if event.target.id == "addinvitees" then
+
+				AppintmentWith.isVisible = true
+
+        	end
+
+			searchList.isVisible = false
+
+		
+
+		else
+
+			if event.target.id == "addinvitees" then
+
+				AppintmentWith.isVisible = false
+
+        	end
+
+			searchList.isVisible = true
+
+		end
+
+
 		
 				searchList:deleteAllRows()
 
@@ -922,17 +1085,48 @@ local function searchfunction( event )
 					end
 
 
+				
+
 		end
 
-		searchList.isVisible = true
 		searchList.x = event.target.x
 		searchList.y = event.target.y-event.target.contentHeight+25
 		searchList.width =event.target.contentWidth
 
 		searchList.textFiled = event.target
 
+
+		searchList.height = #searchArray*36
+
+		if #searchArray >= 3 then
+			searchList.height = 3*36
+		end
+
+		print( #searchArray,searchList.height )
+
     	--searchArray
     end
+end
+
+local function scrollTo(position)
+
+scrollView:scrollToPosition
+{
+    y = position,
+    time = 400,
+}
+
+if position == 0 then
+
+	What.isVisible = true
+
+else
+
+	What.isVisible = false
+
+end
+
+
 end
 
 local function usertextField( event )
@@ -940,34 +1134,57 @@ local function usertextField( event )
 
     if ( event.phase == "began" ) then
         -- user begins editing defaultField
-        print( event.text )
-        current_textField = event.target
-        if(current_textField.id == "description") then
+		   if(event.target.id == "description") then
 
      	   scrollTo(-100)
+
      	end
-
-       
-
+	
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
-        print( event.target.text )
+        print( "entered text : "..current_textField.text )
 
         scrollTo(0)
 
-        if(current_textField.id == "description") then
+        if(event.target.id == "description") then
 
-        	current_textField.isVisible = false
+        	event.target.isVisible = false
+
+        	Description_lbl.isVisible = true
+
+        	if Description.text == "" then
+
+        		Description_lbl.alpha = 0.5
+        		Description_lbl:setFillColor( 0.5 )
+        		Description_lbl.text = "Description"
+
+        	else
+
+        		Description_lbl.alpha = 1
+        		Description_lbl:setFillColor( 0 )
+        		Description_lbl.text = Description.text
+
+        	end
+
+        	
 
         end
 
     elseif ( event.phase == "editing" ) then
 
-    	
+    	event.target:setTextColor(color.black)
 
-		current_textField.size=14
 
-    	if(current_textField.id == "description") then
+        current_textField = event.target
+     
+
+     	current_textField.size=14
+
+			if "*" == event.target.text:sub(1,1) then
+				event.target.text=""
+			end
+
+    	if(event.target.id == "description") then
 
 				if event.text:len() > 160 then
 
@@ -1008,6 +1225,12 @@ end
 				What.isVisible = true
 			else
 				What.isVisible = false
+			end
+
+			if y > -225 then
+				Where.isVisible = true
+			else
+				Where.isVisible = false
 			end
 
 		    elseif ( phase == "ended" ) then 
@@ -1090,7 +1313,7 @@ function scene:create( event )
 	
 		--Form Design---
 
-		AddeventArray[#AddeventArray+1] = display.newRect( W/2, 15, W-20, 28)
+		AddeventArray[#AddeventArray+1] = display.newRect( W/2, 5, W-20, 28)
 		AddeventArray[#AddeventArray].id="eventtype"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
@@ -1116,7 +1339,7 @@ function scene:create( event )
 	  	SelectEvent_icon.y=SelectEvent.y
 
 		BottomImage = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImage.x=W/2;BottomImage.y=SelectEvent.y+SelectEvent.contentHeight-8
+		BottomImage.x=W/2;BottomImage.y=SelectEvent.y+SelectEvent.contentHeight-5
 
 		scrollView:insert( AddeventGroup)
 
@@ -1144,7 +1367,7 @@ function scene:show( event )
 
 		----What----
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+15, W-20, 28)
 		AddeventArray[#AddeventArray].id="what"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
@@ -1162,7 +1385,7 @@ function scene:show( event )
 
 
 		BottomImageWhat = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageWhat.x=W/2;BottomImageWhat.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-10
+		BottomImageWhat.x=W/2;BottomImageWhat.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-5
 
 		AddeventGroup:insert(What)
 
@@ -1170,11 +1393,11 @@ function scene:show( event )
 
 	  	----AllDay----
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+25, W-20, 28)
 		AddeventArray[#AddeventArray].id="allday"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
-		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+15
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
 		alldayLbl = display.newText(AddeventGroup,"All Day",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,12 )
@@ -1229,7 +1452,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].id="when"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
-		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+15
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+5
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
 		Event_fromLbl = display.newText(AddeventGroup,"When",0,0,0,0,native.systemFont,14)
@@ -1342,7 +1565,7 @@ function scene:show( event )
 		AddeventGroup:insert(Where)
 
 		BottomImageWhere = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageWhere.x=W/2;BottomImageWhere.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-12
+		BottomImageWhere.x=W/2;BottomImageWhere.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-5
 
 
 	  	----------
@@ -1366,7 +1589,7 @@ function scene:show( event )
 		callGroup:insert(Phone)
 
 		BottomImagePhone= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImagePhone.x=W/2;BottomImagePhone.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-12
+		BottomImagePhone.x=W/2;BottomImagePhone.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
 		callGroup:insert(BottomImagePhone)
 
 
@@ -1392,7 +1615,7 @@ function scene:show( event )
 		callGroup:insert(AccessCode)
 
 		BottomImageAccessCode= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageAccessCode.x=W/2;BottomImageAccessCode.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-12
+		BottomImageAccessCode.x=W/2;BottomImageAccessCode.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
 		callGroup:insert(BottomImageAccessCode)
 
 
@@ -1513,6 +1736,16 @@ function scene:show( event )
 		belowGroup:insert(Description)
 		Description:addEventListener( "userInput", usertextField )
 
+		Description_lbl = display.newText("Description",0,0,Description.contentWidth,Description.contentHeight,native.systemFont,14)
+		Description_lbl.x=Description.x+5
+		Description_lbl.y=Description.y
+		Description_lbl.anchorY=0
+		Description_lbl.alpha=0.5
+		belowGroup:insert(Description_lbl)
+		Description_lbl:setFillColor( 0.5 )
+
+
+
 	  	----------
 
 	  	--AppintmentWith---
@@ -1540,7 +1773,7 @@ function scene:show( event )
 		AppintmentWith:addEventListener( "userInput", searchfunction )
 
 		BottomImageAppintmentWith = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageAppintmentWith.x=W/2;BottomImageAppintmentWith.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		BottomImageAppintmentWith.x=W/2;BottomImageAppintmentWith.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
 		belowGroup:insert(BottomImageAppintmentWith)
 		
 
@@ -1578,7 +1811,7 @@ function scene:show( event )
 		Addinvitees:addEventListener( "userInput", searchfunction )
 
 		BottomImageAddinvitees = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageAddinvitees.x=W/2;BottomImageAddinvitees.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		BottomImageAddinvitees.x=W/2;BottomImageAddinvitees.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
 		belowGroup:insert(BottomImageAddinvitees)
 
 
@@ -1600,11 +1833,12 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		belowGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
-
+		AddeventArray[#AddeventArray].count = #AddeventArray
 
 		PurposeLbl = display.newText(belowGroup,"Purpose",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PurposeLbl.anchorX=0
 		PurposeLbl.value=0
+		PurposeLbl.count = #AddeventArray
 		PurposeLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		PurposeLbl.x=leftPadding+5
 		PurposeLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
@@ -1616,13 +1850,13 @@ function scene:show( event )
 	  	Purpose_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 	  	BottomImagePurpose = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImagePurpose.x=W/2;BottomImagePurpose.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
+		BottomImagePurpose.x=W/2;BottomImagePurpose.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
 		belowGroup:insert(BottomImagePurpose)
 
 
 	  	--------
 
-	  		  	--Other---
+	  	--Other---
 
 		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="Other"
@@ -1644,13 +1878,19 @@ function scene:show( event )
 		Other:setReturnKey( "next" )
 		Other.placeholder="Other"
 		belowGroup:insert(Other)
-		Other:addEventListener( "userInput", searchfunction )
+		Other.count = #AddeventArray
+		Other:addEventListener( "userInput", usertextField )
 
-		BottomImageAddinvitees = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageAddinvitees.x=W/2;BottomImageAddinvitees.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
-		belowGroup:insert(BottomImageAddinvitees)
+		BottomOther = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomOther.x=W/2;BottomOther.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
+		belowGroup:insert(BottomOther)
+
+		AddeventArray[#AddeventArray].isVisible = false
+		Other.isVisible = false
+		BottomOther.isVisible = false
 
 		---
+
 
 
 	  	--Priority---
@@ -1661,26 +1901,27 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].value = 0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		belowGroup:insert(AddeventArray[#AddeventArray])
+		belowOtherGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
-		PriorityLbl = display.newText(belowGroup,"Low",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PriorityLbl = display.newText(belowOtherGroup,"Low",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
 		PriorityLbl.value=0
+		PriorityLbl.count = #AddeventArray
 		PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		PriorityLbl.x=leftPadding+5
 		PriorityLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 		
 
-	  	Priority_icon = display.newImageRect(belowGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	Priority_icon = display.newImageRect(belowOtherGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	Priority_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Priority_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 	  	BottomImagePriority = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImagePriority.x=W/2;BottomImagePriority.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
-		belowGroup:insert(BottomImagePriority)
+		BottomImagePriority.x=W/2;BottomImagePriority.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
+		belowOtherGroup:insert(BottomImagePriority)
 
 	  	--------
 
@@ -1694,11 +1935,11 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		belowGroup:insert(AddeventArray[#AddeventArray])
+		belowOtherGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
-		AddAttachmentLbl = display.newText(belowGroup,"Add Attachment",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		AddAttachmentLbl = display.newText(belowOtherGroup,"Add Attachment",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		AddAttachmentLbl.anchorX=0
 		AddAttachmentLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		AddAttachmentLbl.x=leftPadding+5
@@ -1706,15 +1947,19 @@ function scene:show( event )
 
 		
 
-	  	AddAttachment_icon = display.newImageRect(belowGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	AddAttachment_icon = display.newImageRect(belowOtherGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	AddAttachment_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	AddAttachment_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 	  	BottomImageAddAttachment= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageAddAttachment.x=W/2;BottomImageAddAttachment.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight
-		belowGroup:insert(BottomImageAddAttachment)
+		BottomImageAddAttachment.x=W/2;BottomImageAddAttachment.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
+		belowOtherGroup:insert(BottomImageAddAttachment)
 
 	  	--------
+
+	  	belowGroup:insert( belowOtherGroup )
+
+	  	belowOtherGroup.y = belowOtherGroup.y - 40
 
 	  	AddeventGroup:insert(belowGroup)
 
@@ -1765,6 +2010,8 @@ function scene:show( event )
 		        hideBackground = true,
 		        isBounceEnabled = false,
 		        noLines = true,
+		      --  bottomPadding = 5,
+
 
 		       -- listener = scrollListener
 		    }
@@ -1981,8 +2228,9 @@ end
 
 		if event.phase == "will" then
 
-			composer.removeHidden()
 
+
+			event.parent:resumeGame(status)
 			if List then List:removeSelf( );List=nil end
 			if searchList then searchList:removeSelf( );searchList=nil end
 			if scrollView then scrollView:removeSelf( );scrollView=nil end
