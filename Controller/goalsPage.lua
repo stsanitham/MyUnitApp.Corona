@@ -233,12 +233,14 @@ BgText:addEventListener("touch",menuTouch)
 
  --Runtime:addEventListener( "key", onKeyEvent )
 
-
-
 end	
+
 MainGroup:insert(sceneGroup)
 
 end
+
+
+
 
 function scene:hide( event )
 
