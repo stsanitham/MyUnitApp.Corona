@@ -219,6 +219,41 @@ Message.DraftButton = "Enregistrer comme brouillon"
 Message.DraftContent = "Votre message a été enregistré en tant que brouillon succès"
 
 
+AddeventPage = {}
+AddeventPage.EventnameArray = {"rendez-vous","appel","partie","tâche"}
+AddeventPage.priorityArray = {"faible","normal","haut"}
+AddeventPage.purposeArray = {"soin du visage","On the Go","Double visage","classe","Team Building","formation","spectacle","réunion","suivre","service à la clientèle","2 Jour Suivi","2 Semaine Suivi","2 mois de suivi","autre","Nomination couleur","famille","réservation","Nomination initiale","rééchelonner","Full Circle"}
+AddeventPage.selectContactGroup = {"--Select Contactez Group--"}
+AddeventPage.contactgroup = {"Contact","Lead","client","membre de l'équipe"}
+AddeventPage.taskStatus = {"non commencé","En cours","terminé","différée"}
+AddeventPage.ImageUploaded="Image Télécharger!"
+AddeventPage.Event_Added="événement Ajouté"
+AddeventPage.other_purpose="* Entrez autres fins"
+AddeventPage.Description="description"
+AddeventPage.New_Event="un nouvel événement"
+AddeventPage.Event_Type="Type d'événement"
+AddeventPage.What="Quoi"
+AddeventPage.All_Day="toute la journée"
+AddeventPage.When="When"
+AddeventPage.To="To"
+AddeventPage.Where="Where"
+AddeventPage.Phone="Phone"
+AddeventPage.Access_Code="Access Code"
+AddeventPage.Out_bound="Out bound"
+AddeventPage.In_bound="In bound"
+AddeventPage.Conference="Conference?"
+AddeventPage.Appointment_With="Appointment With"
+AddeventPage.Add_Invitees="Add Invitees"
+AddeventPage.Purpose="Purpose"
+AddeventPage.Other="Other"
+AddeventPage.Priority="Priority"
+AddeventPage.Add_Attachment="Add Attachment"
+AddeventPage.Add_Quick_Customer="Add Quick Customer"
+AddeventPage.Select_Contact_Group="Select Contact Group"
+AddeventPage.Contact="Contact"
+AddeventPage.Save="Save"
+AddeventPage.Cancel="annuler"
+
 Facebook = {}
 
 Facebook.PageTitle = "Facebook"

@@ -32,18 +32,17 @@ local EventnameFlag = false
 local BackFlag = false
 
 
-local EventnameArray = {"Appointment","Call","Party","Task"}
+local EventnameArray = AddeventPage.EventnameArray
 
-local priorityArray = {"Low","Normal","High"}
+local priorityArray = AddeventPage.priorityArray
 
-local purposeArray = {"Facial","On the Go","Double Facial","Class","Team Building","Training","Show","Meeting","Follow Up","Customer Service","2 Day Follow up","2 Week Follow up","2 Month Follow up","Other","Color Appointment","Family","Booking","Initial Appointment","Reschedule","Full Circle"}
+local purposeArray = AddeventPage.purposeArray
 
+local selectContactGroup = AddeventPage.selectContactGroup
 
-local selectContactGroup = {"--Select Contact Group--"}
+local contactgroup = AddeventPage.contactgroup
 
-local contactgroup = {"Contact","Lead","Customer","Team Member"}
-
-local taskStatus = {"Not Started","In-Progress","Completed","Deferred"}
+local taskStatus =AddeventPage.taskStatus
 
 local leftPadding = 15
 
@@ -122,7 +121,6 @@ local function onKeyEventADDevent( event )
 
 
 local function radioSwitchListener( event )
-	print(event.target.id .. "\nswitch.isOn = " .. tostring( event.target.isOn ))
 end
 
 
@@ -132,22 +130,13 @@ function formatSizeUnits(event)
 
       	size=(event/1073741824)..' GB'
 
-      print("size of the image11 ",size)
-
-
        elseif (event>=1048576) then   
 
        	size=(event/1048576)..' MB'
 
-      print("size of the image 22",size)
-
-
       elseif (event>=1024)  then   
 
       	size = (event/1024)..' KB'
-
-       print("size of the image 33",size)
-
 
       else      
 
@@ -162,7 +151,7 @@ end
 
 		--MessageSending(response)
 
-		AddAttachmentLbl.text = "Image Uploaded !"
+		AddAttachmentLbl.text = AddeventPage.ImageUploaded
 
 		AttachmentFlag = true
 
@@ -242,15 +231,11 @@ local function selectionComplete ( event )
 
 				file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
 
-				 Attachment = file_inbytearray
+				Attachment = file_inbytearray
 
 				io.close( fileHandle )
 
-		            print("mime conversion ",file_inbytearray)
-
-		        	print("bbb ",size)
-
-		        	formatSizeUnits(size)
+		        formatSizeUnits(size)
 
 
 					Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
@@ -567,7 +552,7 @@ local function get_CreateTickler( response )
 									Description_lbl.text=""
 									AppintmentWith.text=""
 									Addinvitees.text=""
-									PurposeLbl.text="Purpose"
+									PurposeLbl.text=""
 									Other.text=""
 									PriorityLbl.text="Low"
 
@@ -582,7 +567,7 @@ local function get_CreateTickler( response )
 
 									os.remove(path)
 
-									local alert = native.showAlert(  EventCalender.PageTitle,"Event Added", { "OK" },onComplete )
+									local alert = native.showAlert(  EventCalender.PageTitle,AddeventPage.Event_Added, { CommonWords.ok },onComplete )
 
 							
 				end
@@ -758,7 +743,7 @@ local function TouchAction( event )
 
 					if Other.text == "" then
 
-						SetError("* Enter other Reason",Other)
+						SetError(AddeventPage.other_purpose,Other)
 
 					else
 
@@ -1014,7 +999,6 @@ end
 
 local function onSwitchPress( event )
     local switch = event.target
-    print( "Switch with ID '"..switch.id.."' is on: "..tostring(switch.isOn) )
     if switch.isOn == false then
 
     	allDay=true
@@ -1240,7 +1224,7 @@ local function usertextField( event )
 
         		Description_lbl.alpha = 0.5
         		Description_lbl:setFillColor( 0.5 )
-        		Description_lbl.text = "Description"
+        		Description_lbl.text = AddeventPage.Description
 
         	else
 
@@ -1378,7 +1362,7 @@ function scene:create( event )
 		titleBar_icon.anchorY=0
 		titleBar_icon.id="back"
 
-		titleBar_text = display.newText(sceneGroup,"New Event",0,0,native.systemFont,0)
+		titleBar_text = display.newText(sceneGroup,AddeventPage.New_Event,0,0,native.systemFont,0)
 		titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
 		titleBar_text.y=titleBar.y+titleBar.contentHeight/2-titleBar_text.contentHeight/2
 		titleBar_text.anchorX=0;titleBar_text.anchorY=0
@@ -1418,14 +1402,14 @@ function scene:create( event )
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
-		SelectEventLbl = display.newText(AddeventGroup,"Event Type",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		SelectEventLbl = display.newText(AddeventGroup,AddeventPage.Event_Type,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		SelectEventLbl.anchorX=0
 		SelectEventLbl.id="eventtype"
 		SelectEventLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		SelectEventLbl.x=leftPadding
 		SelectEventLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
-		SelectEvent = display.newText(AddeventGroup,"Appointment",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		SelectEvent = display.newText(AddeventGroup,AddeventPage.EventnameArray[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		SelectEvent.alpha=0.7
 		SelectEvent.anchorX=0
 		SelectEvent:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -1478,7 +1462,7 @@ function scene:show( event )
 		What.anchorY=0
 		What.hasBackground = false
 		What:setReturnKey( "next" )
-		What.placeholder="What"
+		What.placeholder=AddeventPage.What
 		What:addEventListener( "userInput", usertextField )
 
 
@@ -1498,7 +1482,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+15
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
-		alldayLbl = display.newText(AddeventGroup,"All Day",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,12 )
+		alldayLbl = display.newText(AddeventGroup,AddeventPage.All_Day,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,12 )
 		alldayLbl.anchorX=0
 		alldayLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		alldayLbl.x=leftPadding
@@ -1553,7 +1537,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+5
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
-		Event_fromLbl = display.newText(AddeventGroup,"When",0,0,0,0,native.systemFont,14)
+		Event_fromLbl = display.newText(AddeventGroup,AddeventPage.When,0,0,0,0,native.systemFont,14)
 		Event_fromLbl.anchorX=0
 		Event_fromLbl.x=leftPadding
 		Event_fromLbl.y = AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
@@ -1600,7 +1584,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
-		Event_toLbl = display.newText(AddeventGroup,"To",0,0,0,0,native.systemFont,14)
+		Event_toLbl = display.newText(AddeventGroup,AddeventPage.To,0,0,0,0,native.systemFont,14)
 		Event_toLbl.anchorX=0
 		Event_toLbl.x=leftPadding;Event_toLbl.y = AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 		Event_toLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -1658,7 +1642,7 @@ function scene:show( event )
 		Where.anchorY=0
 		Where.hasBackground = false
 		Where:setReturnKey( "next" )
-		Where.placeholder="Where"
+		Where.placeholder=AddeventPage.Where
 		Where:addEventListener( "userInput", usertextField )
 		AddeventGroup:insert(Where)
 
@@ -1683,7 +1667,7 @@ function scene:show( event )
 		Phone.anchorY=0
 		Phone.hasBackground = false
 		Phone:setReturnKey( "next" )
-		Phone.placeholder="Phone"
+		Phone.placeholder=AddeventPage.Phone
 		callGroup:insert(Phone)
 
 		BottomImagePhone= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
@@ -1709,7 +1693,7 @@ function scene:show( event )
 		AccessCode.anchorY=0
 		AccessCode.hasBackground = false
 		AccessCode:setReturnKey( "next" )
-		AccessCode.placeholder="Access Code"
+		AccessCode.placeholder=AddeventPage.Access_Code
 		callGroup:insert(AccessCode)
 
 		BottomImageAccessCode= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
@@ -1750,7 +1734,7 @@ function scene:show( event )
 	Out_bound.anchorX = 0
 	Out_bound.y = AddeventArray[#AddeventArray].y+10
 
-	Out_bound_txt = display.newText( callGroup,"Out bound",0,0,native.systemFont,14 )
+	Out_bound_txt = display.newText( callGroup,AddeventPage.Out_bound,0,0,native.systemFont,14 )
 	Out_bound_txt.x = Out_bound.x+24;Out_bound_txt.y = Out_bound.y
 	Out_bound_txt.anchorX = 0
 	Out_bound_txt:setFillColor( 0 )
@@ -1771,7 +1755,7 @@ function scene:show( event )
 	Inbound.anchorX = 0
 	Inbound.y = AddeventArray[#AddeventArray].y+10
 
-	In_bound_txt = display.newText( callGroup,"Out bound",0,0,native.systemFont,14 )
+	In_bound_txt = display.newText( callGroup,AddeventPage.In_bound,0,0,native.systemFont,14 )
 	In_bound_txt.x = Inbound.x+24;In_bound_txt.y = Inbound.y
 	In_bound_txt.anchorX = 0
 	In_bound_txt:setFillColor( 0 )
@@ -1791,7 +1775,7 @@ function scene:show( event )
 	Conference.anchorX = 0
 	Conference.y = AddeventArray[#AddeventArray].y+10
 
-	Conference_txt = display.newText( callGroup,"Conference?",0,0,native.systemFont,14 )
+	Conference_txt = display.newText( callGroup,AddeventPage.Conference,0,0,native.systemFont,14 )
 	Conference_txt.x = Conference.x+24;Conference_txt.y = Conference.y
 	Conference_txt.anchorX = 0
 	Conference_txt:setFillColor( 0 )
@@ -1828,13 +1812,13 @@ function scene:show( event )
 		Description.anchorY=0
 		Description.y =AddeventArray[#AddeventArray].y 
 		Description.hasBackground = false
-		Description.placeholder="Description"
+		Description.placeholder=AddeventPage.Description
 		Description.isEditable = true
 		Description.isVisible = false
 		belowGroup:insert(Description)
 		Description:addEventListener( "userInput", usertextField )
 
-		Description_lbl = display.newText("Description",0,0,Description.contentWidth,Description.contentHeight,native.systemFont,14)
+		Description_lbl = display.newText(AddeventPage.Description,0,0,Description.contentWidth,Description.contentHeight,native.systemFont,14)
 		Description_lbl.x=Description.x+5
 		Description_lbl.y=Description.y
 		Description_lbl.anchorY=0
@@ -1865,7 +1849,7 @@ function scene:show( event )
 		AppintmentWith.x=leftPadding
 		AppintmentWith.hasBackground = false
 		AppintmentWith:setReturnKey( "next" )
-		AppintmentWith.placeholder="Appointment With"
+		AppintmentWith.placeholder="AddeventPage.Appointment_With"
 		belowGroup:insert(AppintmentWith)
 		AppintmentWith.contactinfo=""
 		AppintmentWith:addEventListener( "userInput", searchfunction )
@@ -1904,7 +1888,7 @@ function scene:show( event )
 		Addinvitees.hasBackground = false
 		Addinvitees.contactinfo=""
 		Addinvitees:setReturnKey( "next" )
-		Addinvitees.placeholder="Add Invitees"
+		Addinvitees.placeholder=AddeventPage.Add_Invitees
 		belowGroup:insert(Addinvitees)
 		Addinvitees:addEventListener( "userInput", searchfunction )
 
@@ -1934,7 +1918,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].count = #AddeventArray
 
 
-		Purposetxt = display.newText(belowGroup,"Purpose",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Purposetxt = display.newText(belowGroup,AddeventPage.Purpose,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		Purposetxt.anchorX=0
 		Purposetxt.value=0
 		Purposetxt.count = #AddeventArray
@@ -1984,7 +1968,7 @@ function scene:show( event )
 		Other.hasBackground = false
 		Other.contactinfo=""
 		Other:setReturnKey( "next" )
-		Other.placeholder="Other"
+		Other.placeholder=AddeventPage.Other
 		belowGroup:insert(Other)
 		Other.count = #AddeventArray
 		Other:addEventListener( "userInput", usertextField )
@@ -2012,7 +1996,7 @@ function scene:show( event )
 		belowOtherGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
-		Prioritytxt = display.newText(belowOtherGroup,"Priority",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Prioritytxt = display.newText(belowOtherGroup,AddeventPage.Priority,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		Prioritytxt.anchorX=0
 		Prioritytxt.value=0
 		Prioritytxt.count = #AddeventArray
@@ -2021,7 +2005,7 @@ function scene:show( event )
 		Prioritytxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 
-		PriorityLbl = display.newText(belowOtherGroup,"Low",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PriorityLbl = display.newText(belowOtherGroup,AddeventPage.priorityArray[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
 		PriorityLbl.value=0
 		PriorityLbl.count = #AddeventArray
@@ -2055,7 +2039,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
-		AddAttachmentLbl = display.newText(belowOtherGroup,"Add Attachment",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		AddAttachmentLbl = display.newText(belowOtherGroup,AddeventPage.Add_Attachment,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		AddAttachmentLbl.anchorX=0
 		AddAttachmentLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		AddAttachmentLbl.x=leftPadding+5
@@ -2160,7 +2144,7 @@ function scene:show( event )
 		appoitmentAdd_header.y=appoitmentAdd_bg.y-appoitmentAdd_bg.contentHeight/2+appoitmentAdd_header.contentHeight/2
 		appoitmentAdd_header:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-		appoitmentAdd_headertitle = display.newText(appointmentGroup,"Add Quick Customer",0,0,native.systemFont,16)
+		appoitmentAdd_headertitle = display.newText(appointmentGroup,"",0,0,native.systemFont,16)
 		appoitmentAdd_headertitle.x=appoitmentAdd_header.x;appoitmentAdd_headertitle.y=appoitmentAdd_header.y
 
 
@@ -2171,7 +2155,7 @@ function scene:show( event )
 		Ap_firstName.x=appoitmentAdd_bg.x
 		Ap_firstName.y = appoitmentAdd_header.y+appoitmentAdd_header.contentHeight/2+20
 		Ap_firstName:setReturnKey( "next" )
-		Ap_firstName.placeholder="First Name"
+		Ap_firstName.placeholder=RequestAccess.FirstName_placeholder
 		appointmentGroup:insert(Ap_firstName)
 
 		Ap_lastName = native.newTextField(0,0,W-100,30)
@@ -2181,7 +2165,7 @@ function scene:show( event )
 		Ap_lastName.x=appoitmentAdd_bg.x
 		Ap_lastName.y = Ap_firstName.y+Ap_firstName.contentHeight+10
 		Ap_lastName:setReturnKey( "next" )
-		Ap_lastName.placeholder="Last Name"
+		Ap_lastName.placeholder=RequestAccess.LastName_placeholder
 		appointmentGroup:insert(Ap_lastName)
 
 		Ap_email = native.newTextField(0,0,W-100,30)
@@ -2191,7 +2175,7 @@ function scene:show( event )
 		Ap_email.x=appoitmentAdd_bg.x
 		Ap_email.y = Ap_lastName.y+Ap_lastName.contentHeight+10
 		Ap_email:setReturnKey( "next" )
-		Ap_email.placeholder="Email Address"
+		Ap_email.placeholder=RequestAccess.EmailAddress_placeholder
 		appointmentGroup:insert(Ap_email)
 
 		Ap_phone = native.newTextField(0,0,W-100,30)
@@ -2201,7 +2185,7 @@ function scene:show( event )
 		Ap_phone.x=appoitmentAdd_bg.x
 		Ap_phone.y = Ap_email.y+Ap_email.contentHeight+10
 		Ap_phone:setReturnKey( "next" )
-		Ap_phone.placeholder="Cell"
+		Ap_phone.placeholder=RequestAccess.Phone_placeholder
 		appointmentGroup:insert(Ap_phone)
 
 
@@ -2216,7 +2200,7 @@ function scene:show( event )
 		selectcontactGroup_bg:addEventListener( "touch", Ap_scrollAction )
 
 
-		Ap_selectcontactLbl = display.newText(appointmentGroup,"Select Contact Group",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Ap_selectcontactLbl = display.newText(appointmentGroup,AddeventPage.Select_Contact_Group,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		Ap_selectcontactLbl.anchorX=0
 		Ap_selectcontactLbl.value=0
 		Ap_selectcontactLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -2241,7 +2225,7 @@ function scene:show( event )
 		contactGroup_bg:addEventListener( "touch", Ap_scrollAction )
 
 
-		Ap_contactLbl = display.newText(appointmentGroup,"Contact",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Ap_contactLbl = display.newText(appointmentGroup,AddeventPage.Contact,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		Ap_contactLbl.anchorX=0
 		Ap_contactLbl.value=0
 		Ap_contactLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -2262,7 +2246,7 @@ function scene:show( event )
 	  	Ap_saveBtn:setFillColor(0,1,0)
 	  	Ap_saveBtn:addEventListener("touch",Ap_scrollAction)
 
-	  	Ap_saveBtntxt = display.newText(appointmentGroup,"Save",0,0,native.systemFont,16)
+	  	Ap_saveBtntxt = display.newText(appointmentGroup,AddeventPage.Save,0,0,native.systemFont,16)
 	  	Ap_saveBtntxt.x = Ap_saveBtn.x+Ap_saveBtn.contentWidth/2
 	  	Ap_saveBtntxt.y = Ap_saveBtn.y
 
@@ -2274,7 +2258,7 @@ function scene:show( event )
 	  	Ap_cancelBtn:setFillColor(1,0,0)
 	  	Ap_cancelBtn:addEventListener("touch",Ap_scrollAction)
 
-	  	Ap_cancelBtntxt = display.newText(appointmentGroup,"Cancel",0,0,native.systemFont,16)
+	  	Ap_cancelBtntxt = display.newText(appointmentGroup,AddeventPage.Cancel,0,0,native.systemFont,16)
 	  	Ap_cancelBtntxt.x = Ap_cancelBtn.x+Ap_cancelBtn.contentWidth/2
 	  	Ap_cancelBtntxt.y = Ap_cancelBtn.y
 
