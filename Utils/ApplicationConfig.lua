@@ -3,7 +3,7 @@ ApplicationConfig = {}
 
 ----------Dev---------------
 
-----[[
+--[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -18,7 +18,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 --]]
 
 -----Stagging--------
---[[
+----[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -128,4 +128,7 @@ ApplicationConfig.CreateQuickcContact = ApplicationConfig.BASE_URL.."/MyUnitBuzz
 ApplicationConfig.DeleteTicklerEvent = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/DeleteTicklerEvent"
 
 ApplicationConfig.GetUnitWiseRegister = ApplicationConfig.BASE_URL.."/MyUnitBuzz/CheckNotInUnitWiseRegister"
+
+ApplicationConfig.SaveAttachmentDetails = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/SaveAttachmentDetails"
+
 

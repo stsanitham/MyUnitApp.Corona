@@ -172,7 +172,7 @@ local function DownloadPush(  )
 end
 
 
-local function closeAction(  )
+local function closeAction()
 
 				local isChannel1Playing = audio.isChannelPlaying( 1 )
 				if isChannel1Playing then
@@ -217,6 +217,8 @@ local function closeAction(  )
 					end
 				end
 
+			end
+
 					composer.hideOverlay()
 	
 end
@@ -249,12 +251,12 @@ local function closeDetailsPush( event )
 
 			else
 				
-			closeAction()
+				closeAction()
 
-				end
+			end
 
 		end
-	end
+	
 
 return true
 
@@ -372,8 +374,6 @@ function scene:show( event )
 
 	additionalDate= event.params.additionalValue
 	message = event.params.Message
-	print( "enter" )
-
 	--additionalDate= {audio="http://c.spanunit.com/000217/Audios/218/loop4_1_.wav"}
 	--message = "Lorem Ipsum is simply dummy t--ext of the printing and typesetting industry. Lorem Ipsum has been the industry's st  text of the printing and typesetting industry. Lorem Ipsum has been the industry's st  text of the printing and typesetting industry. Lorem Ipsum has been the industry's st"
 

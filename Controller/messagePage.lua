@@ -961,20 +961,21 @@ local function onKeyEvent( event )
 	--------------textbox for message--------------
 
 	Message_content_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+70)
-  	Message_content_bg:setStrokeColor(0,0,0,0.4)
+  	Message_content_bg:setStrokeColor(0,0,0,0.7)
+  	Message_content_bg:setFillColor( 0,0,0,0 )
   	Message_content_bg.x = title_bg.x-title_bg.contentWidth/2+160
   	Message_content_bg.y =title_bg.y+ title_bg.contentHeight/2+55
   	Message_content_bg.hasBackground = true
 	Message_content_bg.strokeWidth = 1
 
 
-	Message_content = native.newTextBox( 0, 0, W-20, EditBoxStyle.height+70)
+	Message_content = native.newTextBox( Message_content_bg.width,Message_content_bg.height,W-20, EditBoxStyle.height+70)
 	Message_content.placeholder = Message.Message_placeholder 
 	Message_content.isEditable = true
 	Message_content.size=14
 	Message_content.value=""
 	Message_content.id = "messagecontent"
-	Message_content.hasBackground = true
+	Message_content.hasBackground = false
 	Message_content:setReturnKey( "done" )
 	Message_content.inputType = "default"
 	sceneGroup:insert(Message_content)

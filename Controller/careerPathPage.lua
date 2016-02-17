@@ -80,7 +80,7 @@ local function onKeyEvent( event )
 
         if phase == "up" then
 
-        if keyName=="back" or keyName=="a" then
+        if keyName=="back" then
 
         	if BackFlag == false then
 
