@@ -456,6 +456,41 @@ end
 		local h = photo.height
 		print( "w,h = ".. w .."," .. h )
 
+		local function rescale()
+					
+					if photo.width > W or photo.height > H then
+
+						photo.width = photo.width/2
+						photo.height = photo.height/2
+
+						intiscale()
+
+					else
+               
+						return false
+
+					end
+				end
+
+				function intiscale()
+					
+					if photo.width > W or photo.height > H then
+
+						photo.width = photo.width/2
+						photo.height = photo.height/2
+
+						rescale()
+
+					else
+
+						return false
+
+					end
+
+				end
+
+				intiscale()
+
 		photoname = "photo.jpg"
 
         display.save(photo,photoname,system.DocumentsDirectory)

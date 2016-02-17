@@ -200,6 +200,7 @@ outEasing = easing.outCubic
 
 
 
+
 composer.gotoScene( "Controller.splashScreen")
 
 
