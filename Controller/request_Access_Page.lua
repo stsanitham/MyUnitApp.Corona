@@ -66,8 +66,13 @@ local function rankToptouch( event )
 				Phone.isVisible=true
 				UnitNumber.isVisible=true
 				Comment.isVisible=true
+
+				if unitnumberflag == true then
+
 				DirectorName.isVisible = true
 				DirectorEmail.isVisible = true
+
+			    end
 
 		end
 
@@ -192,6 +197,7 @@ local function RequestProcess()
 							Name.text = ""
 							Email.text = ""
 							Phone.text = ""
+							MKRank.text = "-Select MK Rank-"
 							MKRank.value = "-Select MK Rank-"
 							Comment.text = ""
 
