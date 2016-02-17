@@ -1082,7 +1082,7 @@ local function onKeyEvent( event )
 	Message_content.size=14
 	Message_content.value=""
 	Message_content.id = "messagecontent"
-	Message_content.hasBackground = false
+	Message_content.hasBackground = true
 	Message_content:setReturnKey( "done" )
 	Message_content.inputType = "default"
 	sceneGroup:insert(Message_content)
@@ -1126,12 +1126,12 @@ local function onKeyEvent( event )
   	inner_imgcontent_bg.hasBackground = false
 	inner_imgcontent_bg.strokeWidth = 1
 
-	upload_text = display.newText(Message.UploadImageText,image_content_bg.x-image_content_bg.contentWidth/2+ 127,image_content_bg.y,native.systemFont,11.5)
+	upload_text = display.newText(Message.UploadImageText,image_content_bg.x-image_content_bg.contentWidth/2+ 127,image_content_bg.y,native.systemFont,12)
 	upload_text.value = "uploadtext"
 	upload_text.id="uploadtext"
 	--upload_text.alpha=0.8
 	upload_text:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-	upload_text.y=image_content_bg.y - 12
+	upload_text.y=image_content_bg.y - 12.5
 	upload_text.anchorX=0
 	upload_text.isVisible = true
 	sceneGroup:insert(upload_text)
@@ -1149,7 +1149,7 @@ local function onKeyEvent( event )
 	upload_defaultimage = display.newImageRect("res/assert/img.png",28,19)
 	upload_defaultimage.id = "default image"
 	sceneGroup:insert(upload_defaultimage)
-	upload_defaultimage.x= upload_text.x +upload_text.contentWidth+ 26
+	upload_defaultimage.x= upload_text.x +upload_text.contentWidth+ 23
 	upload_defaultimage.y=upload_button.y
 
 	upload_defaulttext = display.newText("MyUnitBuzz allows upto 10MB files for each upload. Enjoy!",image_content_bg.x-image_content_bg.contentWidth/2 + 10,image_content_bg.y+ 30,W-40,0,native.systemFont,11.5)
@@ -1263,9 +1263,9 @@ local function onKeyEvent( event )
   	video_defaultimg_bg:setStrokeColor(0,0,0,0.15)
   	video_defaultimg_bg:setFillColor(0,0,0,0.2)
   	video_defaultimg_bg.x = feed_url_bg.x+feed_url_bg.contentWidth/2+15
-  	video_defaultimg_bg.y = image_content_bg.y+ image_content_bg.contentHeight + 55
+  	video_defaultimg_bg.y = image_content_bg.y+ image_content_bg.contentHeight + 56
   	video_defaultimg_bg.hasBackground = true
-	video_defaultimg_bg.strokeWidth = 1
+	--video_defaultimg_bg.strokeWidth = 1
 
 	video_defaultimage = display.newImageRect("res/assert/video.png",28,19)
 	video_defaultimage.id = "video image"
@@ -1293,7 +1293,7 @@ local function onKeyEvent( event )
 
 	------------example text for url---------
 
-	urlhelp_text = display.newText(sceneGroup,"Eg.https://www.youtube.com/watch?v=qOmDoZCuFtM tuyert ertertert erterter", 0, 0,W-30,0,native.systemFont, 11)
+	urlhelp_text = display.newText(sceneGroup,"Eg.https://www.youtube.com/watch?v=qOmDoZCuFtM", 0, 0,W-30,0,native.systemFont, 11)
 	urlhelp_text.x = url_dropdown_bg.x + 5
 	urlhelp_text.width = W - 30
 	--urlhelp_text.align = "center"
@@ -1305,7 +1305,7 @@ local function onKeyEvent( event )
 
 	send_button = display.newRect(sceneGroup,0,0,W-60,26)
 	send_button.x=Message_content.x-70
-	send_button.y = Message_content.y+310
+	send_button.y = Message_content.y+320
 	send_button.width = W-190
 	send_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
 	send_button.id="send"
