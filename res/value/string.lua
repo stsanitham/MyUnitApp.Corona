@@ -216,6 +216,44 @@ Message.DraftButton = "Save as Draft"
 Message.DraftContent = "Your Message has been Saved as Draft Successfully"
 
 
+AddeventPage = {}
+AddeventPage.EventnameArray = {"Appointment","Call","Party","Task"}
+AddeventPage.priorityArray = {"Low","Normal","High"}
+AddeventPage.purposeArray = {"Facial","On the Go","Double Facial","Class","Team Building","Training","Show","Meeting","Follow Up","Customer Service","2 Day Follow up","2 Week Follow up","2 Month Follow up","Other","Color Appointment","Family","Booking","Initial Appointment","Reschedule","Full Circle"}
+AddeventPage.selectContactGroup = {"--Select Contact Group--"}
+AddeventPage.contactgroup = {"Contact","Lead","Customer","Team Member"}
+AddeventPage.taskStatus = {"Not Started","In-Progress","Completed","Deferred"}
+AddeventPage.ImageUploaded="Image Uploaded !"
+AddeventPage.Event_Added="Event Added"
+AddeventPage.other_purpose="* Enter other purpose"
+AddeventPage.Description="Description"
+AddeventPage.New_Event="New Event"
+AddeventPage.Event_Type="Event Type"
+AddeventPage.What="What"
+AddeventPage.All_Day="All Day"
+AddeventPage.When="When"
+AddeventPage.To="To"
+AddeventPage.Where="Where"
+AddeventPage.Phone="Phone"
+AddeventPage.Access_Code="Access Code"
+AddeventPage.Out_bound="Out bound"
+AddeventPage.In_bound="In bound"
+AddeventPage.Conference="Conference?"
+AddeventPage.Appointment_With="Appointment With"
+AddeventPage.Add_Invitees="Add Invitees"
+AddeventPage.Purpose="Purpose"
+AddeventPage.Other="Other"
+AddeventPage.Priority="Priority"
+AddeventPage.Add_Attachment="Add Attachment"
+AddeventPage.Add_Quick_Customer="Add Quick Customer"
+AddeventPage.Select_Contact_Group="Select Contact Group"
+AddeventPage.Contact="Contact"
+AddeventPage.Save="Save"
+AddeventPage.Cancel="Cancel"
+
+
+
+
 Facebook = {}
 
 Facebook.PageTitle = "Facebook"

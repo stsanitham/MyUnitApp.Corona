@@ -1298,7 +1298,7 @@ picker_Done = display.newText( pickerGroup, CommonWords.done, 0, 0, native.syste
 picker_Done:setFillColor(Utils.convertHexToRGB(color.today_blue))
 picker_Done.x=picker_btnBg.x+100;picker_Done.y=picker_btnBg.y
 
-addEventBtn = display.newImageRect( sceneGroup, "res/assert/add.png", 66/1.5,66/1.7 )
+addEventBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
 addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 
 

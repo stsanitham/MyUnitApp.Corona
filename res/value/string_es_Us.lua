@@ -217,7 +217,40 @@ Message.UploadButtonText = "Añadir imagen"
 Message.DraftButton = "Guardar como borrador"
 Message.DraftContent = "Su mensaje se ha guardado como borrador con éxito"
 
-
+AddeventPage = {}
+AddeventPage.EventnameArray = {"cita","llamada","partido","tarea"}
+AddeventPage.priorityArray = {"bajo","normal","alto"}
+AddeventPage.purposeArray = {"facial","En los desplazamientos","doble facial","clase","La formación de equipos","formación","espectáculo","reunión","Seguimiento","Servicio al cliente","Día 2 Seguimiento","Semana 2 Seguimiento","2 meses de seguimiento","otro","Color de la cita","familia","reserva","El nombramiento inicial","reprogramar","Full Circle"}
+AddeventPage.selectContactGroup = {"--select Contacto Group--"}
+AddeventPage.contactgroup = {"contacto","conducir","cliente","miembro del equipo"}
+AddeventPage.taskStatus = {"no se ha iniciado","En progreso","terminado","diferido"}
+AddeventPage.ImageUploaded="Sube la imagen!"
+AddeventPage.Event_Added="evento Agregado"
+AddeventPage.other_purpose="* Ingrese demás propósito"
+AddeventPage.Description="descripción"
+AddeventPage.New_Event="nuevo Evento"
+AddeventPage.Event_Type="Tipo de evento"
+AddeventPage.What="¿Qué"
+AddeventPage.All_Day="Todo el día"
+AddeventPage.When="cuando"
+AddeventPage.To="a"
+AddeventPage.Where="donde"
+AddeventPage.Phone="teléfono"
+AddeventPage.Access_Code="Código de acceso"
+AddeventPage.Out_bound="saliente"
+AddeventPage.In_bound="en Bound"
+AddeventPage.Conference="Conferencia?"
+AddeventPage.Appointment_With="Con cita"
+AddeventPage.Add_Invitees="Agregar invitados"
+AddeventPage.Purpose="propósito"
+AddeventPage.Other="otro"
+AddeventPage.Priority="prioridad"
+AddeventPage.Add_Attachment="Archivo adjunto"
+AddeventPage.Add_Quick_Customer="Añadir al cliente rápida"
+AddeventPage.Select_Contact_Group="Seleccione Grupo de Contacto"
+AddeventPage.Contact="contacto"
+AddeventPage.Save="Guardar"
+AddeventPage.Cancel="cancelar"
 
 Facebook = {}
 
