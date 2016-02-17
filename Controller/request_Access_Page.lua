@@ -188,8 +188,6 @@ local function RequestProcess()
 			submit_spinner:stop( )
 
 
-
-
 							UnitNumber.text = ""
 							DirectorName.text = ""
 							DirectorEmail.text = ""
@@ -201,9 +199,7 @@ local function RequestProcess()
 							MKRank.value = "-Select MK Rank-"
 							Comment.text = ""
 
-			
-
-								
+						
 		if Request_response == "REQUEST"  then
 
 			alertFun(RequestAccess.REQUEST,0)
