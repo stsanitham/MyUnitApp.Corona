@@ -154,7 +154,7 @@ end
 
         if keyName=="back" or keyName =="a" then
 
-        	print(keyName)
+        	print("keyName....")
 
         	if BackFlag == false then
 
@@ -218,6 +218,9 @@ local function listTouch( event )
 			}
 
 			search.isVisible=false
+
+			Runtime:removeEventListener( "key", onKeyEvent )
+
 			composer.showOverlay( "Controller.addEventPage", options )
 
 
@@ -1304,17 +1307,19 @@ end
 
 function scene:resumeGame(value)
 
+	print( "!@#@$#$%$^%" )
+
 	Runtime:addEventListener( "key", onKeyEvent )
 
     search.isVisible=true
 
     if value == "deleted" then
 
-local temp = os.date( '*t' )
-temp.day = temp.day - os.date( "%w" ) 
-weekViewTouchFlag=true
-ParentShow=true
-creatWeek(temp,true)
+		local temp = os.date( '*t' )
+		temp.day = temp.day - os.date( "%w" ) 
+		weekViewTouchFlag=true
+		ParentShow=true
+		creatWeek(temp,true)
 
 		
     end

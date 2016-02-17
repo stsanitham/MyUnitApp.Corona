@@ -78,6 +78,8 @@ local QuickContactList = {}
 local appointmentGroup = display.newGroup()
 
 local status = "normal"
+
+local AttachmentFlag = false
 --------------------------------------------------
 
 
@@ -97,6 +99,26 @@ local function closeDetails( event )
 return true
 
 end
+
+local function onKeyEventADDevent( event )
+
+     local phase = event.phase
+        local keyName = event.keyName
+
+        if phase == "up" then
+
+        if keyName=="back" or keyName=="a" then
+
+        	composer.hideOverlay( "slideRight", 300 )
+
+             return true
+
+        end
+
+    end
+
+        return false
+ end
 
 
 local function radioSwitchListener( event )
@@ -142,7 +164,7 @@ end
 
 		AddAttachmentLbl.text = "Image Uploaded !"
 
-		print("SuccessMessage")
+		AttachmentFlag = true
 
 		AttachmentName = response.FileName
 		AttachmentPath = response.Abspath
@@ -512,6 +534,8 @@ local function get_CreateTickler( response )
 			Other.text=""
 			PriorityLbl.text="Low"
 
+			AttachmentFlag=false
+
 
 
 			local baseDir = system.DocumentsDirectory
@@ -694,15 +718,30 @@ local function TouchAction( event )
 
 					else
 
-						Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+						if AttachmentFlag == true then
 
+							--Webservice.SaveAttachmentDetails(AttachmentName,AttachmentPath,Attachment,get_)
+
+						
+						 else
+
+							Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+
+						end
 					end
 				else
 
 					Other.text =  ""
 
-					Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+					if AttachmentFlag == true then
 
+						--Webservice.SaveAttachmentDetails(AttachmentName,AttachmentPath,Attachment)
+
+					else
+
+						Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+
+					end
 				end
 				
 			elseif event.target.id == "AppintmentWith_plus" then
@@ -1144,7 +1183,6 @@ local function usertextField( event )
 	
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
-        print( "entered text : "..current_textField.text )
 
         scrollTo(0)
 
@@ -1251,33 +1289,8 @@ end
 	end
 
 
+	
 
-	local function onTimer ( event )
-
-	print( "event time completion" )
-
-	BackFlag = false
-
-end
-
-
-local function onKeyEvent( event )
-
-        local phase = event.phase
-        local keyName = event.keyName
-
-        if phase == "up" then
-
-        if keyName=="back" then
-
-            composer.hideOverlay()
-            
-        end
-
-    end
-
-        return false
- end
 
 
 
@@ -2248,7 +2261,7 @@ function scene:show( event )
 		Event_to_datebg:addEventListener("touch",TouchAction)
 		saveBtn_BG:addEventListener("touch",TouchAction)
 
-		Runtime:addEventListener( "key", onKeyEvent )
+		Runtime:addEventListener( "key", onKeyEventADDevent )
 		
 	end	
 	
@@ -2264,8 +2277,7 @@ end
 		if event.phase == "will" then
 
 
-
-			event.parent:resumeGame(status)
+			
 			if List then List:removeSelf( );List=nil end
 			if searchList then searchList:removeSelf( );searchList=nil end
 			if scrollView then scrollView:removeSelf( );scrollView=nil end
@@ -2273,9 +2285,10 @@ end
 
 		elseif phase == "did" then
 
-			composer.removeHidden()
+			event.parent:resumeGame(status)
 
-			Runtime:removeEventListener( "key", onKeyEvent )
+			Runtime:removeEventListener( "key", onKeyEventADDevent )
+
 
 		end	
 

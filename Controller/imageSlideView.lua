@@ -378,6 +378,8 @@ local function onKeyEventDetail( event )
         if keyName=="back" or keyName=="a" then
 
         	composer.hideOverlay( "slideRight", 300 )
+
+        	 return true
             
         end
 
