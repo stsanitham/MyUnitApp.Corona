@@ -1072,13 +1072,13 @@ local function onKeyEvent( event )
 	Message_content_bg.strokeWidth = 1
 
 
-	Message_content = native.newTextBox( 0, 0, W-20, EditBoxStyle.height+70)
+	Message_content = native.newTextBox( Message_content_bg.width,Message_content_bg.height,W-20, EditBoxStyle.height+70)
 	Message_content.placeholder = Message.Message_placeholder 
 	Message_content.isEditable = true
 	Message_content.size=14
 	Message_content.value=""
 	Message_content.id = "messagecontent"
-	Message_content.hasBackground = true
+	Message_content.hasBackground = false
 	Message_content:setReturnKey( "done" )
 	Message_content.inputType = "default"
 	sceneGroup:insert(Message_content)

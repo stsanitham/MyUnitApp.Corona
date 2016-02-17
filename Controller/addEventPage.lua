@@ -107,7 +107,7 @@ local function onKeyEventADDevent( event )
 
         if phase == "up" then
 
-        if keyName=="back" or keyName=="a" then
+        if keyName=="back" then
 
         	composer.hideOverlay( "slideRight", 300 )
 
@@ -424,7 +424,7 @@ local function onRowTouch(event)
 
 		end
 
-		if List.textFiled.text:lower( ) == "other" then
+		if PurposeLbl.text:lower( ) == "other" then
 
 			AddeventArray[List.textFiled.count+1].isVisible = false
 			Other.isVisible = true
@@ -512,17 +512,11 @@ local function onComplete(event)
 	end
 
 end
-local function get_CreateTickler( response )
-	print("event Added")
 
-	if response.TicklerId ~= nil then
+function get_SaveAttachmentDetails(response)
 
-	
 
-		if response.TicklerId > 0 then
-		
-
-			What.text=""
+What.text=""
 			Where.text=""
 			Phone.text=""
 			AccessCode.text=""
@@ -547,6 +541,54 @@ local function get_CreateTickler( response )
 
 			local alert = native.showAlert(  EventCalender.PageTitle,"Event Added", { "OK" },onComplete )
 
+end
+
+local function get_CreateTickler( response )
+	print("event Added")
+
+	if response.TicklerId ~= nil then
+
+	
+
+		if response.TicklerId > 0 then
+		
+
+				if AttachmentFlag == true then
+
+							Webservice.SaveAttachmentDetails(response.id,AttachmentName,AttachmentPath,Attachment,get_SaveAttachmentDetails)
+
+				else
+
+						What.text=""
+									Where.text=""
+									Phone.text=""
+									AccessCode.text=""
+									Description.text=""
+									Description_lbl.text=""
+									AppintmentWith.text=""
+									Addinvitees.text=""
+									PurposeLbl.text="Purpose"
+									Other.text=""
+									PriorityLbl.text="Low"
+
+									AttachmentFlag=false
+
+
+
+									local baseDir = system.DocumentsDirectory
+
+
+									local path = system.pathForFile( "eventAttach.jpg" , baseDir )
+
+									os.remove(path)
+
+									local alert = native.showAlert(  EventCalender.PageTitle,"Event Added", { "OK" },onComplete )
+
+							
+				end
+
+
+			
 		end
 
 	end
@@ -646,6 +688,8 @@ local function SetError( displaystring, object )
 end
 
 
+
+
 local function TouchAction( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
@@ -718,30 +762,20 @@ local function TouchAction( event )
 
 					else
 
-						if AttachmentFlag == true then
-
-							--Webservice.SaveAttachmentDetails(AttachmentName,AttachmentPath,Attachment,get_)
-
-						
-						 else
+					
 
 							Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
 
-						end
 					end
 				else
 
 					Other.text =  ""
 
-					if AttachmentFlag == true then
-
-						--Webservice.SaveAttachmentDetails(AttachmentName,AttachmentPath,Attachment)
-
-					else
+				
 
 						Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
 
-					end
+					
 				end
 				
 			elseif event.target.id == "AppintmentWith_plus" then
@@ -884,7 +918,16 @@ local function TouchAction( event )
 				if List.isVisible == false then
 						List.isVisible = true
 						List.x = event.target.x
-						List.y = event.target.y+event.target.contentHeight+1.3
+
+						if PurposeLbl.text:lower( ) == "other" then
+
+							List.y = event.target.y+event.target.contentHeight+1.3
+
+						else
+
+							List.y = event.target.y+event.target.contentHeight+1.3-40
+
+						end
 						List.width =event.target.contentWidth
 						List.arrayName = priorityArray
 						List.textFiled = PriorityLbl
@@ -1034,12 +1077,13 @@ local function searchfunction( event )
         -- do something with defaultField text
         print( event.target.text )
 
-      --  Description.isVisible = true
+      Addinvitees.isVisible = true
 
     elseif ( event.phase == "editing" ) then
 
     	if event.target.id == "appintmentwith" then
 
+    		Addinvitees.isVisible = false
 
         elseif event.target.id == "addinvitees" then
 
@@ -1209,6 +1253,14 @@ local function usertextField( event )
         	
 
         end
+
+        if(event.target.id == "What") then
+
+        	native.setKeyboardFocus( Where )
+
+        end
+
+
 
     elseif ( event.phase == "editing" ) then
 
@@ -1881,12 +1933,22 @@ function scene:show( event )
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 		AddeventArray[#AddeventArray].count = #AddeventArray
 
-		PurposeLbl = display.newText(belowGroup,"Purpose",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+
+		Purposetxt = display.newText(belowGroup,"Purpose",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Purposetxt.anchorX=0
+		Purposetxt.value=0
+		Purposetxt.count = #AddeventArray
+		Purposetxt:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+		Purposetxt.x=leftPadding+5
+		Purposetxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+
+
+		PurposeLbl = display.newText(belowGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PurposeLbl.anchorX=0
 		PurposeLbl.value=0
 		PurposeLbl.count = #AddeventArray
 		PurposeLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-		PurposeLbl.x=leftPadding+5
+		PurposeLbl.x=W/2
 		PurposeLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 		
@@ -1950,13 +2012,21 @@ function scene:show( event )
 		belowOtherGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
+		Prioritytxt = display.newText(belowOtherGroup,"Priority",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Prioritytxt.anchorX=0
+		Prioritytxt.value=0
+		Prioritytxt.count = #AddeventArray
+		Prioritytxt:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+		Prioritytxt.x=leftPadding+5
+		Prioritytxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+
 
 		PriorityLbl = display.newText(belowOtherGroup,"Low",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
 		PriorityLbl.value=0
 		PriorityLbl.count = #AddeventArray
 		PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-		PriorityLbl.x=leftPadding+5
+		PriorityLbl.x=W/2
 		PriorityLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 		

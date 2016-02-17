@@ -129,3 +129,6 @@ ApplicationConfig.DeleteTicklerEvent = ApplicationConfig.BASE_URL.."/MyUnitBuzzC
 
 ApplicationConfig.GetUnitWiseRegister = ApplicationConfig.BASE_URL.."/MyUnitBuzz/CheckNotInUnitWiseRegister"
 
+ApplicationConfig.SaveAttachmentDetails = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/SaveAttachmentDetails"
+
+
