@@ -299,6 +299,8 @@ local function onKeyEvent( event )
 
 				composer.gotoScene( "Controller.singInPage", options )
 
+				 return true
+
             end
             
         end

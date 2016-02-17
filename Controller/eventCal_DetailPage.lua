@@ -158,6 +158,8 @@ local display_details = {}
 
         	composer.hideOverlay( "slideRight", 300 )
             
+            return true
+            
         end
 
     end
