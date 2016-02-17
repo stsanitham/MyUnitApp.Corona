@@ -386,6 +386,8 @@ end
 
 			image_name_png.isVisible = true
 
+			photodetail_bg.isVisible = true
+
 			image_name_png.text = Imagename
 
 			image_content_bg.isVisible = true
@@ -951,13 +953,15 @@ end
 
 			image_name_close.isVisible = false
 
+			photodetail_bg.isVisible = false
+
 			upload_text.isVisible = true
 
 			print("imagepath..........................",Imagepath)
 
-			os.remove( Imagepath )
+			os.remove( path )
 
-            print("imagepath removal..........................",os.remove( Imagepath ))
+            print("imagepath removal..........................",os.remove( path ))
 
 		end
 
@@ -1148,15 +1152,25 @@ local function onKeyEvent( event )
 	upload_defaultimage.x= upload_text.x +upload_text.contentWidth+ 26
 	upload_defaultimage.y=upload_button.y
 
-	upload_defaulttext = display.newText("MyUnitBuzz allows upto 10MB files for each upload.\nEnjoy!",image_content_bg.x-image_content_bg.contentWidth/2 + 10,image_content_bg.y+ 30,native.systemFont,11.5)
+	upload_defaulttext = display.newText("MyUnitBuzz allows upto 10MB files for each upload. Enjoy!",image_content_bg.x-image_content_bg.contentWidth/2 + 10,image_content_bg.y+ 30,W-40,0,native.systemFont,11.5)
 	upload_defaulttext.value = "defaulttext"
 	upload_defaulttext.id="defaulttext"
-	upload_defaulttext:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+	upload_defaulttext:setFillColor( 0,0,0,0.5)
 	upload_defaulttext.x=image_content_bg.x-image_content_bg.contentWidth/2 + 10
 	upload_defaulttext.y=image_content_bg.y +18
 	upload_defaulttext.anchorX=0
-	upload_defaulttext.isVisible = true
+	upload_defaulttext.isVisible = true	
 	sceneGroup:insert(upload_defaulttext)
+
+
+	photodetail_bg = display.newRect( sceneGroup, 0,0 , W/2+92, EditBoxStyle.height)
+  	photodetail_bg:setStrokeColor(0,0,0,0.12)
+  	photodetail_bg.x = image_content_bg.x-image_content_bg.contentWidth/2+ 134
+  	photodetail_bg.y = upload_button.y
+  	photodetail_bg.isVisible=false
+  	photodetail_bg.hasBackground = false
+	photodetail_bg.strokeWidth = 1
+
 
 
 	--------------image name & image name cancel-------------------------
@@ -1166,8 +1180,8 @@ local function onKeyEvent( event )
 	image_name_png.value = "imagenamepng"
 	image_name_png.id="imagenamepng"
 	image_name_png:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
-	image_name_png.x = Message_content_bg.x - 100
-	image_name_png.y=Message_content_bg.y + Message_content.contentHeight/2 +30
+	image_name_png.x = photodetail_bg.x - 75
+	image_name_png.y=photodetail_bg.y 
 	image_name_png.isVisible = false
 	--image_name_png.anchorX=0
 
@@ -1175,19 +1189,19 @@ local function onKeyEvent( event )
 	image_name_close.id = "image close"
 	image_name_close.anchorX=0
 	sceneGroup:insert(image_name_close)
-	image_name_close.x= Message_content_bg.x + 125
+	image_name_close.x= photodetail_bg.x + photodetail_bg.contentWidth/2 - 30
 	image_name_close.isVisible = false
-	image_name_close.y=Message_content_bg.y + Message_content.contentHeight/2 +30
+	image_name_close.y=Message_content_bg.y + Message_content.contentHeight/2 +27
 
 
     --------------url dropdown for selection-------
 
 
-    video_outer_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+115)
+    video_outer_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+130)
   	video_outer_bg:setStrokeColor(0,0,0,0.4)
   	--video_outer_bg:setFillColor(0,0,0,0.2)
   	video_outer_bg.x = image_content_bg.x
-  	video_outer_bg.y = image_content_bg.y+image_content_bg.contentHeight+39
+  	video_outer_bg.y = image_content_bg.y+image_content_bg.contentHeight+48
   	video_outer_bg.hasBackground = true
 	video_outer_bg.strokeWidth = 1
 
@@ -1222,10 +1236,10 @@ local function onKeyEvent( event )
 
 	----------url textfield-------------------
 
-	url_textcontent = display.newText(sceneGroup,Message.UrlHelpText, 0, 0, native.systemFontBold, 10)
-	url_textcontent.x = display.contentCenterX
-	url_textcontent.y = url_dropdown_bg.y + url_dropdown_bg.contentHeight+12
-	url_textcontent:setFillColor( 0, 0, 0 )
+	url_textcontent = display.newText(sceneGroup,Message.UrlHelpText, 0, 0,W-28,0, native.systemFont, 11)
+	url_textcontent.x = url_dropdown_bg.x + 5
+	url_textcontent.y = url_dropdown_bg.y + url_dropdown_bg.contentHeight+17
+	url_textcontent:setFillColor( 0, 0, 0 ,0.7)
 
 	feed_url = native.newTextField(0, 0, W-70 , EditBoxStyle.height)
 	feed_url.id = "video url"
@@ -1249,7 +1263,7 @@ local function onKeyEvent( event )
   	video_defaultimg_bg:setStrokeColor(0,0,0,0.15)
   	video_defaultimg_bg:setFillColor(0,0,0,0.2)
   	video_defaultimg_bg.x = feed_url_bg.x+feed_url_bg.contentWidth/2+15
-  	video_defaultimg_bg.y = image_content_bg.y+ image_content_bg.contentHeight + 42.5
+  	video_defaultimg_bg.y = image_content_bg.y+ image_content_bg.contentHeight + 55
   	video_defaultimg_bg.hasBackground = true
 	video_defaultimg_bg.strokeWidth = 1
 
@@ -1268,7 +1282,7 @@ local function onKeyEvent( event )
   	feed_cancelbutton:setFillColor(0,0,0,0.45)
   	feed_cancelbutton.cornerRadius = 2
   	feed_cancelbutton.x = feed_url_bg.x+feed_url_bg.contentWidth/2
-  	feed_cancelbutton.y = image_content_bg.y+ image_content_bg.contentHeight + 88
+  	feed_cancelbutton.y = image_content_bg.y+ image_content_bg.contentHeight + 105
   	feed_cancelbutton.hasBackground = true
 	feed_cancelbutton.strokeWidth = 1
 
@@ -1279,12 +1293,12 @@ local function onKeyEvent( event )
 
 	------------example text for url---------
 
-	urlhelp_text = display.newText(sceneGroup,"Eg.https://www.youtube.com/watch?v=qOmDoZCuFtM", 0, 0,native.systemFontBold, 11)
-	urlhelp_text.x = display.contentCenterX
-	urlhelp_text.width = W
-	urlhelp_text.align = "center"
-	urlhelp_text.y = feed_url.y-feed_url.contentHeight/2+ 35 
-	urlhelp_text:setFillColor( 0, 0, 0 )
+	urlhelp_text = display.newText(sceneGroup,"Eg.https://www.youtube.com/watch?v=qOmDoZCuFtM tuyert ertertert erterter", 0, 0,W-30,0,native.systemFont, 11)
+	urlhelp_text.x = url_dropdown_bg.x + 5
+	urlhelp_text.width = W - 30
+	--urlhelp_text.align = "center"
+	urlhelp_text.y = feed_url.y-feed_url.contentHeight/2+ 40 
+	urlhelp_text:setFillColor( 0, 0, 0 , 0.7)
 
 
 	--------send button----------------------
@@ -1327,6 +1341,16 @@ local function onKeyEvent( event )
 	sceneGroup:insert(draft_icon)
 	draft_icon.x= draft_button_text.x - 60
 	draft_icon.y=draft_button.y
+
+
+	-- photodetail_bg = display.newRect( sceneGroup, 0,0 , W/2+90, EditBoxStyle.height)
+ --  	photodetail_bg:setStrokeColor(0,0,0,0.12)
+ --  	photodetail_bg.x = image_content_bg.x-image_content_bg.contentWidth/2+ 134
+ --  	photodetail_bg.y = upload_button.y
+ --  	photodetail_bg.isVisible=false
+ --  	photodetail_bg.hasBackground = false
+	-- photodetail_bg.strokeWidth = 1
+
 
     MainGroup:insert(sceneGroup)
 
