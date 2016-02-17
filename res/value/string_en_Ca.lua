@@ -213,6 +213,8 @@ Message.SuccessContentForImage = "Your Image has been Uploaded Successfully"
 Message.UrlHelpText = "Copy/paste the Video URL in the given field to proceed further"
 Message.UploadImageText = "Upload your Image here"
 Message.UploadButtonText = "Add Image"
+Message.DraftButton = "Save as Draft"
+Message.DraftContent = "Your Message has been Saved as Draft Successfully"
 
 
 Facebook = {}

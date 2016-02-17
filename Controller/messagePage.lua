@@ -308,7 +308,17 @@ end
 
 		print("SuccessMessage")
 
+		if response.MessageStatus == "SEND" then
+
 		local sentalert = native.showAlert( Message.SuccessMsg, Message.SuccessContent, { CommonWords.ok })
+
+	    elseif response.MessageStatus == "DRAFT" then
+
+		local sentalert = native.showAlert( Message.SuccessMsg, Message.DraftContent, { CommonWords.ok })
+
+		else
+
+		end
 
 		Message_content.text = ""
 
@@ -579,6 +589,7 @@ end
 
 
 
+
     function onSendButtonTouch(event)
 
     	local phase = event.phase
@@ -589,6 +600,8 @@ end
 
 	
     	elseif phase=="ended" then
+
+
 
     	    local validation = false
 
@@ -631,7 +644,17 @@ end
     	      	    		
     	    			 print("message")
 
+    	    			 if event.target.id == "send" then
+
     	    			 sendMessage("SEND")	
+
+    	    			 elseif event.target.id == "draft" then
+
+    	    			 sendMessage("DRAFT")
+
+    	    			 else	
+
+    	    			 end
 
     	    			 return false
 
@@ -651,7 +674,17 @@ end
 
     	    	 	print("success loop")
 
-    	    	 	 sendMessage("SEND")
+    	    	 	  if event.target.id == "send" then
+
+    	    			 sendMessage("SEND")	
+
+    	    			 elseif event.target.id == "draft" then
+
+    	    			 sendMessage("DRAFT")
+
+    	    			 else	
+
+    	    		end
 
     	    end
 
@@ -671,7 +704,19 @@ end
     	      	    		
     	    			 print("message")
 
+    	    			-- sendMessage("SEND")	
+
+    	    			 if event.target.id == "send" then
+
     	    			 sendMessage("SEND")	
+
+    	    			 elseif event.target.id == "draft" then
+
+    	    			 sendMessage("DRAFT")
+
+    	    			 else	
+
+    	    			 end
 
     	    			 return false
 
@@ -691,7 +736,19 @@ end
 
     	    	 	print("success loop")
 
-    	    	 	 sendMessage("SEND")
+    	    	 	-- sendMessage("SEND")
+
+    	    	 	 if event.target.id == "send" then
+
+    	    			 sendMessage("SEND")	
+
+    	    			 elseif event.target.id == "draft" then
+
+    	    			 sendMessage("DRAFT")
+
+    	    			 else	
+
+    	    	    end
 
     	    end
 
@@ -714,7 +771,19 @@ end
     	      	    		
     	    			 print("message")
 
+    	    			 --sendMessage("SEND")	
+
+    	    			  if event.target.id == "send" then
+
     	    			 sendMessage("SEND")	
+
+    	    			 elseif event.target.id == "draft" then
+
+    	    			 sendMessage("DRAFT")
+
+    	    			 else	
+
+    	    			 end
 
     	    			 return false
 
@@ -734,7 +803,19 @@ end
 
     	    	 	print("success loop")
 
-    	    	 	 sendMessage("SEND")
+    	    	 	 --sendMessage("SEND")
+
+    	    	 	  if event.target.id == "send" then
+
+    	    			 sendMessage("SEND")	
+
+    	    			 elseif event.target.id == "draft" then
+
+    	    			 sendMessage("DRAFT")
+
+    	    			 else	
+
+    	    		end
 
     	    end
 
@@ -771,7 +852,19 @@ end
     	      	    		
     	    			 print("message")
 
+    	    			-- sendMessage("SEND")	
+
+    	    			 if event.target.id == "send" then
+
     	    			 sendMessage("SEND")	
+
+    	    			 elseif event.target.id == "draft" then
+
+    	    			 sendMessage("DRAFT")
+
+    	    			 else	
+
+    	    			 end
 
     	    			 return false
 
@@ -791,7 +884,18 @@ end
 
     	    	 	print("success loop")
 
-    	    	 	 sendMessage("SEND")
+    	    	 	-- sendMessage("SEND")
+    	    	 	 if event.target.id == "send" then
+
+    	    			 sendMessage("SEND")	
+
+    	    			 elseif event.target.id == "draft" then
+
+    	    			 sendMessage("DRAFT")
+
+    	    			 else	
+
+    	    		 end
 
     	    end
 
@@ -960,7 +1064,7 @@ local function onKeyEvent( event )
 
 	--------------textbox for message--------------
 
-	Message_content_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+70)
+	Message_content_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+60)
   	Message_content_bg:setStrokeColor(0,0,0,0.4)
   	Message_content_bg.x = title_bg.x-title_bg.contentWidth/2+160
   	Message_content_bg.y =title_bg.y+ title_bg.contentHeight/2+55
@@ -984,40 +1088,75 @@ local function onKeyEvent( event )
 
 	-----------------upload button------------------
 
-	image_content_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+15)
+	image_content_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+45)
   	image_content_bg:setStrokeColor(0,0,0,0.4)
   	image_content_bg.x = Message_content_bg.x
-  	image_content_bg.y = Message_content_bg.y + Message_content.contentHeight/2 + 30
+  	image_content_bg.y = Message_content_bg.y + Message_content.contentHeight/2 + 40
   	image_content_bg.hasBackground = true
 	image_content_bg.strokeWidth = 1
 
 	upload_button = display.newRect(sceneGroup,0,0,W,25)
-	upload_button.x=image_content_bg.x-image_content_bg.contentWidth/2 + 65
-	upload_button.y = image_content_bg.y
+	upload_button.x=image_content_bg.x-image_content_bg.contentWidth/2 + 64
+	upload_button.y = image_content_bg.y - 13
 	upload_button.width = W-210
 	upload_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
 	upload_button.id="upload"
 
-	upload_button_text = display.newText(sceneGroup,Message.UploadButtonText,0,0,native.systemFont,16)
+	upload_button_text = display.newText(sceneGroup,Message.UploadButtonText,0,0,native.systemFont,14)
 	upload_button_text.x=upload_button.x + 10
 	upload_button_text.y=upload_button.y
 	Utils.CssforTextView(upload_button_text,sp_primarybutton)
 
-	upload_icon = display.newImageRect("res/assert/upload.png",18,17)
+	upload_icon = display.newImageRect("res/assert/upload.png",16,15)
 	upload_icon.id = "image upload"
 	sceneGroup:insert(upload_icon)
 	upload_icon.x= upload_button_text.x - 50
 	upload_icon.y=upload_button.y
 
-	upload_text = display.newText(Message.UploadImageText,image_content_bg.x-image_content_bg.contentWidth/2+ 140,image_content_bg.y,native.systemFont,13)
+------------------------border for inner upload text and default image------------------------------
+
+	inner_imgcontent_bg = display.newRect( sceneGroup, 0,0 , W/2-18, EditBoxStyle.height-2)
+  	inner_imgcontent_bg:setStrokeColor(0,0,0,0.12)
+  	inner_imgcontent_bg.x = image_content_bg.x-image_content_bg.contentWidth/2+ 190
+  	inner_imgcontent_bg.y = upload_button.y
+  	inner_imgcontent_bg.hasBackground = false
+	inner_imgcontent_bg.strokeWidth = 1
+
+	upload_text = display.newText(Message.UploadImageText,image_content_bg.x-image_content_bg.contentWidth/2+ 127,image_content_bg.y,native.systemFont,11.5)
 	upload_text.value = "uploadtext"
 	upload_text.id="uploadtext"
 	--upload_text.alpha=0.8
 	upload_text:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-	upload_text.y=image_content_bg.y
+	upload_text.y=image_content_bg.y - 12
 	upload_text.anchorX=0
 	upload_text.isVisible = true
 	sceneGroup:insert(upload_text)
+
+	----------------------border for default image----------------------------------------------------
+
+	inner_default_bg = display.newRect( sceneGroup, 0,0 , 30, EditBoxStyle.height-2)
+  	inner_default_bg:setStrokeColor(0,0,0,0.15)
+  	inner_default_bg:setFillColor(0,0,0,0.2)
+  	inner_default_bg.x = inner_imgcontent_bg.x+inner_imgcontent_bg.contentWidth/2+15
+  	inner_default_bg.y = upload_button.y
+  	inner_default_bg.hasBackground = true
+	inner_default_bg.strokeWidth = 1
+
+	upload_defaultimage = display.newImageRect("res/assert/img.png",28,19)
+	upload_defaultimage.id = "default image"
+	sceneGroup:insert(upload_defaultimage)
+	upload_defaultimage.x= upload_text.x +upload_text.contentWidth+ 26
+	upload_defaultimage.y=upload_button.y
+
+	upload_defaulttext = display.newText("MyUnitBuzz allows upto 10MB files for each upload.\nEnjoy!",image_content_bg.x-image_content_bg.contentWidth/2 + 10,image_content_bg.y+ 30,native.systemFont,11.5)
+	upload_defaulttext.value = "defaulttext"
+	upload_defaulttext.id="defaulttext"
+	upload_defaulttext:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+	upload_defaulttext.x=image_content_bg.x-image_content_bg.contentWidth/2 + 10
+	upload_defaulttext.y=image_content_bg.y +18
+	upload_defaulttext.anchorX=0
+	upload_defaulttext.isVisible = true
+	sceneGroup:insert(upload_defaulttext)
 
 
 	--------------image name & image name cancel-------------------------
@@ -1043,9 +1182,19 @@ local function onKeyEvent( event )
 
     --------------url dropdown for selection-------
 
-	url_dropdown_bg = display.newRect(sceneGroup,W/2, image_content_bg.y+30, W-20, EditBoxStyle.height+10)
+
+    video_outer_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+115)
+  	video_outer_bg:setStrokeColor(0,0,0,0.4)
+  	--video_outer_bg:setFillColor(0,0,0,0.2)
+  	video_outer_bg.x = image_content_bg.x
+  	video_outer_bg.y = image_content_bg.y+image_content_bg.contentHeight+39
+  	video_outer_bg.hasBackground = true
+	video_outer_bg.strokeWidth = 1
+
+	url_dropdown_bg = display.newRect(sceneGroup,W/2, image_content_bg.y+30, W-37, EditBoxStyle.height)
 	url_dropdown_bg.id="eventname"
 	url_dropdown_bg.x = W/2
+	url_dropdown_bg.y = image_content_bg.y+ image_content_bg.contentHeight/2 + 15
 	url_dropdown_bg.anchorY=0
 	url_dropdown_bg:setStrokeColor(0,0,0,0.4)
 	url_dropdown_bg.strokeWidth = 1
@@ -1073,13 +1222,12 @@ local function onKeyEvent( event )
 
 	----------url textfield-------------------
 
-	url_textcontent = display.newText(sceneGroup,Message.UrlHelpText, 0, 0, native.systemFontBold, 10.5)
+	url_textcontent = display.newText(sceneGroup,Message.UrlHelpText, 0, 0, native.systemFontBold, 10)
 	url_textcontent.x = display.contentCenterX
-	url_textcontent.y = url_dropdown_bg.y + url_dropdown_bg.contentHeight+15
+	url_textcontent.y = url_dropdown_bg.y + url_dropdown_bg.contentHeight+12
 	url_textcontent:setFillColor( 0, 0, 0 )
 
-
-	feed_url = native.newTextField(0, 0, W-60 , EditBoxStyle.height+10)
+	feed_url = native.newTextField(0, 0, W-70 , EditBoxStyle.height)
 	feed_url.id = "video url"
 	feed_url.anchorX=0
 	feed_url.size=14
@@ -1088,25 +1236,46 @@ local function onKeyEvent( event )
 	feed_url.inputType = "url"
 	feed_url.isVisible = true
 	sceneGroup:insert(feed_url)
-	feed_url.x=title_bg.x-title_bg.contentWidth/2+10
-	feed_url.y=url_textcontent.y+ url_textcontent.contentHeight/2+25
+	feed_url.x=title_bg.x-title_bg.contentWidth/2+20
+	feed_url.y=url_textcontent.y+ url_textcontent.contentHeight/2+20
 
-	feed_url_bg = display.newRect( sceneGroup, W/2, feed_url.y, W-60, EditBoxStyle.height+10)
-  	feed_url_bg:setStrokeColor(0,0,0,0.2)
-  	feed_url_bg.x = display.contentWidth/2- 20
+	feed_url_bg = display.newRect( sceneGroup, W/2+10, feed_url.y, W-70, EditBoxStyle.height)
+  	feed_url_bg:setStrokeColor(0,0,0,0.12)
+  	feed_url_bg.x = display.contentWidth/2- 15
   	feed_url_bg.hasBackground = true
 	feed_url_bg.strokeWidth = 1
+
+	video_defaultimg_bg = display.newRect( sceneGroup, 0,0 , 30, EditBoxStyle.height)
+  	video_defaultimg_bg:setStrokeColor(0,0,0,0.15)
+  	video_defaultimg_bg:setFillColor(0,0,0,0.2)
+  	video_defaultimg_bg.x = feed_url_bg.x+feed_url_bg.contentWidth/2+15
+  	video_defaultimg_bg.y = image_content_bg.y+ image_content_bg.contentHeight + 42.5
+  	video_defaultimg_bg.hasBackground = true
+	video_defaultimg_bg.strokeWidth = 1
+
+	video_defaultimage = display.newImageRect("res/assert/video.png",28,19)
+	video_defaultimage.id = "video image"
+	video_defaultimage.anchorX=0
+	sceneGroup:insert(video_defaultimage)
+	video_defaultimage.x= feed_url.width+22
+	video_defaultimage.y=video_defaultimg_bg.y+ video_defaultimg_bg.contentHeight/2 - 13
 
 
 	----------cancel button------------------
 
-	feed_cancelbutton = display.newImageRect("res/assert/button_cancel_22.png",20,20)
-	feed_cancelbutton.id = "url cancel"
-	feed_cancelbutton.anchorX=0
-	feed_cancelbutton:setFillColor(0,0,0,0.7)
-	sceneGroup:insert(feed_cancelbutton)
-	feed_cancelbutton.x= feed_url.width+25
-	feed_cancelbutton.y=url_textcontent.y+ url_textcontent.contentHeight/2+25
+	feed_cancelbutton = display.newRect( sceneGroup, 0,0 , 60, EditBoxStyle.height-3)
+  	feed_cancelbutton:setStrokeColor(0,0,0,0.15)
+  	feed_cancelbutton:setFillColor(0,0,0,0.45)
+  	feed_cancelbutton.cornerRadius = 2
+  	feed_cancelbutton.x = feed_url_bg.x+feed_url_bg.contentWidth/2
+  	feed_cancelbutton.y = image_content_bg.y+ image_content_bg.contentHeight + 88
+  	feed_cancelbutton.hasBackground = true
+	feed_cancelbutton.strokeWidth = 1
+
+	feed_cancelbutton_text = display.newText(sceneGroup,"Clear",0,0,native.systemFont,14)
+	feed_cancelbutton_text.x=feed_cancelbutton.x
+	feed_cancelbutton_text.y=feed_cancelbutton.y
+	Utils.CssforTextView(feed_cancelbutton_text,sp_primarybutton)
 
 	------------example text for url---------
 
@@ -1114,23 +1283,50 @@ local function onKeyEvent( event )
 	urlhelp_text.x = display.contentCenterX
 	urlhelp_text.width = W
 	urlhelp_text.align = "center"
-	urlhelp_text.y = feed_url.y-feed_url.contentHeight/2+ 45 
+	urlhelp_text.y = feed_url.y-feed_url.contentHeight/2+ 35 
 	urlhelp_text:setFillColor( 0, 0, 0 )
 
 
 	--------send button----------------------
 
-	send_button = display.newRect(sceneGroup,0,0,W-60,30)
-	send_button.x=Message_content.x
-	send_button.y = Message_content.y+280
+	send_button = display.newRect(sceneGroup,0,0,W-60,26)
+	send_button.x=Message_content.x-70
+	send_button.y = Message_content.y+310
 	send_button.width = W-190
 	send_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
 	send_button.id="send"
 
 	send_button_text = display.newText(sceneGroup,Message.SendButton,0,0,native.systemFont,16)
-	send_button_text.x=send_button.x
+	send_button_text.x=send_button.x+10
 	send_button_text.y=send_button.y
 	Utils.CssforTextView(send_button_text,sp_primarybutton)
+
+	send_icon = display.newImageRect("res/assert/send.png",16,14)
+	send_icon.id = "send icon"
+	sceneGroup:insert(send_icon)
+	send_icon.x= send_button_text.x - 50
+	send_icon.y=send_button.y
+
+
+	--------draft button----------------------
+
+	draft_button = display.newRect(sceneGroup,0,0,W-60,26)
+	draft_button.x=Message_content.x+70
+	draft_button.y =send_button.y 
+	draft_button.width = W-190
+	draft_button:setFillColor( 0,0,0,0.7 )
+	draft_button.id="draft"
+
+	draft_button_text = display.newText(sceneGroup,Message.DraftButton,0,0,native.systemFont,16)
+	draft_button_text.x=draft_button.x+10
+	draft_button_text.y=draft_button.y
+	Utils.CssforTextView(draft_button_text,sp_primarybutton)
+
+	draft_icon = display.newImageRect("res/assert/draft.png",16,14)
+	draft_icon.id = "draft icon"
+	sceneGroup:insert(draft_icon)
+	draft_icon.x= draft_button_text.x - 60
+	draft_icon.y=draft_button.y
 
     MainGroup:insert(sceneGroup)
 
@@ -1146,9 +1342,8 @@ end
 
 	if phase == "will" then
 
-  		EventnameTop_bg = display.newRect( VideoUrlGroup, url_dropdown_bg.x , H/2+91.5, url_dropdown_bg.contentWidth, 125)
+  		EventnameTop_bg = display.newRect( VideoUrlGroup, url_dropdown_bg.x , H/2+111.5, url_dropdown_bg.contentWidth, 125)
   		EventnameTop_bg:setFillColor(0,0,0)
-
 
   	    VideoTypeList = widget.newTableView
   		{
@@ -1165,7 +1360,7 @@ end
   	}
 
 		VideoTypeList.x=url_dropdown_bg.x
-		VideoTypeList.y= image_content_bg.y+image_content_bg.contentHeight+25
+		VideoTypeList.y= image_content_bg.y+image_content_bg.contentHeight+5
 	--	VideoTypeList.y=EventnameTop.y+EventnameTop.height/2
 		VideoTypeList.height = 150
 		VideoTypeList.width = url_dropdown_bg.contentWidth-2
@@ -1195,6 +1390,7 @@ end
 		composer.removeHidden()
 
 	send_button:addEventListener("touch",onSendButtonTouch)	
+	draft_button:addEventListener("touch",onSendButtonTouch)	
 	upload_button:addEventListener("touch",onImageButtonTouch)
 	feed_cancelbutton:addEventListener("touch",onCancelButtonTouch)
 	Message_content:addEventListener( "userInput", MessageLimitation )
@@ -1235,6 +1431,7 @@ end
 	--url_dropdown_bg:removeEventListener("touch",urlSelection)
 	feed_url:removeEventListener("userInput",textfield)
 	send_button:removeEventListener("touch",onSendButtonTouch)	
+	draft_button:removeEventListener("touch",onSendButtonTouch)	
 	Background:removeEventListener("touch",FocusComplete)
 	image_name_close:removeEventListener( "touch", ImageClose )
 

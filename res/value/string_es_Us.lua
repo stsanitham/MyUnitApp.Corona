@@ -214,6 +214,8 @@ Message.SuccessContentForImage = "Su imagen se ha cargado correctamente"
 Message.UrlHelpText = "Copiar / pegar la URL del vídeo en el campo dado para seguir adelante"
 Message.UploadImageText = "Subir su imagen aquí"
 Message.UploadButtonText = "Añadir imagen"
+Message.DraftButton = "Guardar como borrador"
+Message.DraftContent = "Su mensaje se ha guardado como borrador con éxito"
 
 
 
