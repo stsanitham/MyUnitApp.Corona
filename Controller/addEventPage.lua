@@ -58,7 +58,7 @@ local RecentTab_Topvalue = 70
 
 local TicklerType = "APPT"
 
-local List
+local List 
 
 local searchArray = {}
 
@@ -98,6 +98,38 @@ local function closeDetails( event )
 return true
 
 end
+
+
+
+local function photonametouch( event )
+
+	if event.phase == "began" then
+
+	elseif event.phase == "ended" then
+
+			----recently added----
+			if event.target.id == "close image" then
+
+				print("entering here *************************")
+
+				AddAttachmentPhotoName.isVisible = false
+				AddAttachmentLbl.isVisible = true
+				AddAttachment_icon.isVisible = true
+				AddAttachment_close.isVisible = false
+
+				 os.remove( path )
+
+           		 print("imagepath removal..........................",os.remove( path ))
+
+			end
+
+
+	end
+
+return true
+end
+
+
 
 local function onKeyEventADDevent( event )
 
@@ -151,16 +183,24 @@ end
 
 		--MessageSending(response)
 
-		AddAttachmentLbl.text = AddeventPage.ImageUploaded
+		--AddAttachmentLbl.text = AddeventPage.ImageUploaded
 
 		AttachmentFlag = true
 
 		AttachmentName = response.FileName
 		AttachmentPath = response.Abspath
 
+		AddAttachmentLbl.isVisible = false
 
+		AddAttachmentPhotoName.isVisible = true
+		AddAttachmentPhotoName.text = AttachmentName
+		AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
+
+		AddAttachment_icon.isVisible = false
+		AddAttachment_close.isVisible = true
 
 	end
+
 
 local function selectionComplete ( event )
 
@@ -239,8 +279,6 @@ local function selectionComplete ( event )
 
 
 					Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
-
-    
 
 	end
 
@@ -402,6 +440,10 @@ local function onRowTouch(event)
 			callGroup.isVisible = true
 			
 			belowGroup.y=-W/2+160
+
+			Where.isVisible = false
+
+			BottomImageWhere.isVisible = false
 
 			Phone.isVisible = true
 
@@ -1198,6 +1240,10 @@ end
 
 end
 
+
+
+
+
 local function usertextField( event )
 
 
@@ -1285,8 +1331,78 @@ local function usertextField( event )
 		end
 
 
+
+
+
+		if(event.target.id == "phone") then
+
+
+							local tempvalue = event.target.text:sub(1,1)
+
+							if (event.target.text:len() == 3) then
+
+								if (tempvalue ~= "(") then
+
+									--event.target.text = "("..event.target.text..") "
+
+									local previousText=event.target.text
+
+									Phone.text="("..previousText..") "
+
+									native.setKeyboardFocus(Phone)
+							
+								else
+
+									event.target.text = event.target.text:sub(2,event.target.text:len())
+
+								end
+
+							elseif event.target.text:len() == 5 and (tempvalue == "(") then
+
+								if event.target.text:sub(5,5) ~= ")" then
+
+									event.target.text = event.text:sub(1,4)..") "..event.target.text:sub(5,5)
+				
+								end
+
+
+							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
+
+
+									local previousText=event.target.text
+
+									Phone.text=previousText.."- "
+
+									native.setKeyboardFocus(Phone)
+
+
+							elseif event.target.text:len() == 10 then
+
+								if string.find(event.target.text,"-") then
+
+									event.target.text = event.target.text:sub(1,9)
+								else
+
+									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
+								end
+
+							end
+
+						if event.target.text:len() > 15 then
+
+								event.target.text = event.target.text:sub(1,15)
+
+								--native.setKeyboardFocus( AccessCode )
+
+							end
+
+						end
+
+
     end 
 end
+
+
 
 	local function addevent_scrollListener(event )
 
@@ -1668,6 +1784,7 @@ function scene:show( event )
 		Phone.hasBackground = false
 		Phone:setReturnKey( "next" )
 		Phone.placeholder=AddeventPage.Phone
+		Phone:addEventListener( "userInput", usertextField )
 		callGroup:insert(Phone)
 
 		BottomImagePhone= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
@@ -1849,7 +1966,7 @@ function scene:show( event )
 		AppintmentWith.x=leftPadding
 		AppintmentWith.hasBackground = false
 		AppintmentWith:setReturnKey( "next" )
-		AppintmentWith.placeholder="AddeventPage.Appointment_With"
+		AppintmentWith.placeholder="Appointment With"
 		belowGroup:insert(AppintmentWith)
 		AppintmentWith.contactinfo=""
 		AppintmentWith:addEventListener( "userInput", searchfunction )
@@ -2045,11 +2162,27 @@ function scene:show( event )
 		AddAttachmentLbl.x=leftPadding+5
 		AddAttachmentLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
+
+		AddAttachmentPhotoName = display.newText(belowOtherGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		AddAttachmentPhotoName.anchorX=0
+		AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+		AddAttachmentPhotoName.x=leftPadding+5
+		AddAttachmentPhotoName.isVisible = false
+		AddAttachmentPhotoName.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+		AddAttachmentPhotoName:addEventListener( "touch", photonametouch )
+
 		
 
 	  	AddAttachment_icon = display.newImageRect(belowOtherGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	AddAttachment_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	AddAttachment_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+
+	  	AddAttachment_close =  display.newImageRect(belowOtherGroup,"res/assert/icon-close.png",20,20)
+	  	AddAttachment_close.id = "close image"
+	  	AddAttachment_close.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
+	  	AddAttachment_close.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+	  	AddAttachment_close.isVisible = false
+	  	AddAttachment_close:addEventListener( "touch", photonametouch )
 
 	  	BottomImageAddAttachment= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomImageAddAttachment.x=W/2;BottomImageAddAttachment.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
@@ -2342,6 +2475,9 @@ end
 			event.parent:resumeGame(status)
 
 			Runtime:removeEventListener( "key", onKeyEventADDevent )
+
+			AddAttachmentPhotoName:removeEventListener( "touch", photonametouch )
+			AddAttachment_close:removeEventListener( "touch", photonametouch )
 
 
 		end	

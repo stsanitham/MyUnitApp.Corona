@@ -363,21 +363,21 @@ local function RequestProcess()
 				NO_UNITNUMBER_FUNCTION(RequestFromStatus)
 				unitnumberflag = true
 
-						if (FirstName.text~=nil or FirstName.text ~="") or (Name.text ~=nil or Name.text ~="")
+						-- if (FirstName.text~=nil or FirstName.text ~="") or (Name.text ~=nil or Name.text ~="")
 
-						or (Email.text~=nil or Email.text ~="") or (DirectorName.text ~=nil or DirectorName.text ~="") or (DirectorEmail.text ~=nil or DirectorEmail.text ~="") then
+						-- or (Email.text~=nil or Email.text ~="") or (DirectorName.text ~=nil or DirectorName.text ~="") or (DirectorEmail.text ~=nil or DirectorEmail.text ~="") then
 
-						FirstName.text = ""
+						-- FirstName.text = ""
 
-						Name.text = ""
+						-- Name.text = ""
 
-						Email.text = ""
+						-- Email.text = ""
 
-						DirectorName.text = ""
+						-- DirectorName.text = ""
 
-						DirectorEmail.text = ""
+						-- DirectorEmail.text = ""
 
-						end	
+						-- end	
 
 			elseif Request_response == "UNITNOEXIST" then
 
@@ -385,17 +385,17 @@ local function RequestProcess()
 				unitnumberflag = false
 
 
-				if (FirstName.text~=nil or FirstName.text ~="") or (Name.text ~=nil or Name.text ~="")
+				-- if (FirstName.text~=nil or FirstName.text ~="") or (Name.text ~=nil or Name.text ~="")
 
-						or (Email.text~=nil or Email.text ~="") then
+				-- 		or (Email.text~=nil or Email.text ~="") then
 
-						FirstName.text = ""
+				-- 		FirstName.text = ""
 
-						Name.text = ""
+				-- 		Name.text = ""
 
-						Email.text = ""
+				-- 		Email.text = ""
 
-						end	
+				-- 		end	
 
 
 			end

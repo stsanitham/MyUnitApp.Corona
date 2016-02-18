@@ -344,6 +344,8 @@ end
 
 			upload_text.isVisible = true
 
+			photodetail_bg.isVisible = false
+
 	end
 
 
@@ -383,6 +385,8 @@ end
 		Imagename = response.FileName
 
 		Imagesize = size
+
+		print("Imagesize................",Imagesize)
 
 			image_name_png.isVisible = true
 
@@ -428,12 +432,20 @@ end
       print("size of the image11 ",size)
 
 
-       elseif (event>=1048576) then   
+      elseif (event>=1048576) then   
 
        	size=(event/1048576)..' MB'
 
       print("size of the image 22",size)
 
+	       if event > 10485760 then
+
+	       	print("highest size of the image ",size)
+
+	       	local imagealert = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+
+	       end
+	       
 
       elseif (event>=1024)  then   
 
@@ -441,13 +453,11 @@ end
 
        print("size of the image 33",size)
 
-
       else      
 
   	  end
 
 end
-
 
 
 
