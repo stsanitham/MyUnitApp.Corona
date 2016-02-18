@@ -217,12 +217,13 @@ Message.DraftContent = "Your Message has been Saved as Draft Successfully"
 
 
 AddeventPage = {}
-AddeventPage.EventnameArray = {"Appointment","Call","Party","Task"}
+AddeventPage.EventnameArray = {"Appointment","Party","Task","Call"}
 AddeventPage.priorityArray = {"Low","Normal","High"}
-AddeventPage.purposeArray = {"Facial","On the Go","Double Facial","Class","Team Building","Training","Show","Meeting","Follow Up","Customer Service","2 Day Follow up","2 Week Follow up","2 Month Follow up","Other","Color Appointment","Family","Booking","Initial Appointment","Reschedule","Full Circle"}
+AddeventPage.purposeArray = {"Facial","On the Go","Double Facial","Team Building","Training","Follow Up","Customer Service","2 Day Follow up","2 Week Follow up","2 Month Follow up","Other","Color AppointmentDaily","Booking","Initial Appointment","Reschedule","Full Circle"}
 AddeventPage.selectContactGroup = {"--Select Contact Group--"}
 AddeventPage.contactgroup = {"Contact","Lead","Customer","Team Member"}
 AddeventPage.taskStatus = {"Not Started","In-Progress","Completed","Deferred"}
+AddeventPage.partyArray = {"Class","Full Circle","Show","Other"}
 AddeventPage.ImageUploaded="Image Uploaded !"
 AddeventPage.Event_Added="Event Added"
 AddeventPage.other_purpose="* Enter other purpose"

@@ -44,6 +44,8 @@ local contactgroup = AddeventPage.contactgroup
 
 local taskStatus =AddeventPage.taskStatus
 
+local partyArray = AddeventPage.partyArray
+
 local leftPadding = 15
 
 local AddeventGroup = display.newGroup( )
@@ -308,6 +310,7 @@ local function searchRender( event )
 	row.value = searchArray[row.index]
 end
 
+
 local function searchTouch(event) 
     print(event.phase)
 
@@ -331,6 +334,7 @@ local function searchTouch(event)
 
     end
 end
+
 
 local function onRowRender( event )
 
@@ -384,7 +388,7 @@ local function onRowTouch(event)
 
 			AppintmentWith.placeholder="Hostess"
 
-			PurposeLbl.text = "Purpose"
+			PurposeLbl.text = ""
 
 			TicklerType = "PARTY"
 
@@ -400,7 +404,7 @@ local function onRowTouch(event)
 
 			AppintmentWith.placeholder="Appointment With"
 
-			PurposeLbl.text = "Purpose"
+			PurposeLbl.text = ""
 
 			TicklerType = "APPT"
 
@@ -421,6 +425,10 @@ local function onRowTouch(event)
 
 			TicklerType = "TASK"
 
+		--	Where.isVisible = false
+
+		--	BottomImageWhere.isVisible = false
+
 			callGroup.isVisible = false
 			
 			belowGroup.y=-W/2+50
@@ -433,7 +441,7 @@ local function onRowTouch(event)
 
 			AppintmentWith.placeholder="Call With"
 
-			PurposeLbl.text = "Purpose"
+			PurposeLbl.text = ""
 
 			TicklerType = "CALL"
 
@@ -441,9 +449,9 @@ local function onRowTouch(event)
 			
 			belowGroup.y=-W/2+160
 
-			Where.isVisible = false
+		--	Where.isVisible = false
 
-			BottomImageWhere.isVisible = false
+		--	BottomImageWhere.isVisible = false
 
 			Phone.isVisible = true
 
@@ -540,10 +548,10 @@ local function onComplete(event)
 
 end
 
+
 function get_SaveAttachmentDetails(response)
 
-
-What.text=""
+            What.text=""
 			Where.text=""
 			Phone.text=""
 			AccessCode.text=""
@@ -551,16 +559,13 @@ What.text=""
 			Description_lbl.text=""
 			AppintmentWith.text=""
 			Addinvitees.text=""
-			PurposeLbl.text="Purpose"
+			PurposeLbl.text=""
 			Other.text=""
 			PriorityLbl.text="Low"
 
 			AttachmentFlag=false
 
-
-
 			local baseDir = system.DocumentsDirectory
-
 
 			local path = system.pathForFile( "eventAttach.jpg" , baseDir )
 
@@ -569,6 +574,8 @@ What.text=""
 			local alert = native.showAlert(  EventCalender.PageTitle,"Event Added", { "OK" },onComplete )
 
 end
+
+
 
 local function get_CreateTickler( response )
 	print("event Added")
@@ -917,6 +924,11 @@ local function TouchAction( event )
 						List.arrayName = taskStatus
 						List.textFiled = PurposeLbl
 
+					elseif SelectEvent.text:lower( ) == "party" then
+
+						List.arrayName = partyArray
+						List.textFiled = PurposeLbl
+
 					else
 
 					List.arrayName = purposeArray
@@ -969,8 +981,8 @@ local function TouchAction( event )
 
 				end
 
-			elseif event.target.id == "addattachment" then
 
+			elseif event.target.id == "addattachment" then
 
 
 						local function onComplete(event)
@@ -1097,8 +1109,6 @@ local function searchfunction( event )
     	current_textField = event.target;
 
 
-
-  
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
         print( event.target.text )
@@ -1109,11 +1119,11 @@ local function searchfunction( event )
 
     	if event.target.id == "appintmentwith" then
 
-    		Addinvitees.isVisible = false
+    		Addinvitees.isVisible = true ---changed now (it was false)
 
         elseif event.target.id == "addinvitees" then
 
-			AppintmentWith.isVisible = false
+			AppintmentWith.isVisible = true  ---changed now (it was false)
 
         end
 
@@ -1206,11 +1216,10 @@ local function searchfunction( event )
 
 		searchList.textFiled = event.target
 
-
-		searchList.height = #searchArray*36
+		searchList.height = #searchArray*32
 
 		if #searchArray >= 3 then
-			searchList.height = 3*36
+			searchList.height = 3*32
 		end
 
 		print( #searchArray,searchList.height )
@@ -1218,6 +1227,7 @@ local function searchfunction( event )
     	--searchArray
     end
 end
+
 
 local function scrollTo(position)
 
@@ -1424,6 +1434,7 @@ end
 			else
 				Where.isVisible = false
 			end
+
 
 		    elseif ( phase == "ended" ) then 
 		    end
@@ -1638,8 +1649,8 @@ function scene:show( event )
 			allday_onOffSwitch.x=alldayLbl.x+alldayLbl.contentWidth+allday_onOffSwitch.contentWidth/2-55
 			allday_onOffSwitch.y = alldayLbl.y
 
-			allday_onOffSwitch.width = 50
-			allday_onOffSwitch.height  = 15
+			allday_onOffSwitch.width = 60
+			allday_onOffSwitch.height  = 20
 			AddeventGroup:insert( allday_onOffSwitch )
 
 	  	--------------
@@ -2131,7 +2142,6 @@ function scene:show( event )
 		PriorityLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 		
-
 	  	Priority_icon = display.newImageRect(belowOtherGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	Priority_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Priority_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2

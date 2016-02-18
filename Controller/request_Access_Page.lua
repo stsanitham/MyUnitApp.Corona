@@ -601,10 +601,7 @@ local function RequestProcess()
 
 							end
 
-						
-
         				end
-
         			
 					end
 
