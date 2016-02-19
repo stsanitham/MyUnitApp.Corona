@@ -70,6 +70,8 @@ local searchList
 
 local callGroup = display.newGroup( )
 
+local whereGroup = display.newGroup( )
+
 local belowGroup = display.newGroup( )
 
 local belowOtherGroup = display.newGroup( )
@@ -367,6 +369,8 @@ local function onRowRender( event )
     row.name = List.arrayName[row.index]
 end
 
+
+
 local function onRowTouch(event) 
     print(event.phase)
 
@@ -374,7 +378,19 @@ local function onRowTouch(event)
 
     if event.phase == 'tap' or event.phase == 'release' then
 
-    	Where.isVisible = true
+    	if event.target.id == "call" or event.target.id == "task" then
+
+    	Where.isVisible = false
+
+    	whereGroup.isVisible = false
+
+        else
+
+       Where.isVisible = true
+
+       whereGroup.isVisible = true
+
+        end
     	What.isVisible = true
     	List_bg.isVisible = false
 		List:deleteAllRows()
@@ -394,7 +410,11 @@ local function onRowTouch(event)
 
 			callGroup.isVisible = false
 
-			belowGroup.y=-W/2+50
+			whereGroup.isVisible = true
+
+			Where.isVisible = true
+
+			belowGroup.y=-W/2+85
 
 			Phone.isVisible = false
 
@@ -409,8 +429,12 @@ local function onRowTouch(event)
 			TicklerType = "APPT"
 
 			callGroup.isVisible = false
+
+			whereGroup.isVisible = true
+
+			Where.isVisible = true
 			
-			belowGroup.y=-W/2+50
+			belowGroup.y=-W/2+80
 
 			Phone.isVisible = false
 
@@ -421,17 +445,39 @@ local function onRowTouch(event)
 
 			AppintmentWith.placeholder="Linked To"
 
-			PurposeLbl.text = "Status"
+			PurposeLbl.text = ""
+
+			PriorityLbl.text = "Not Started"
+
+			Prioritytxt.text = "Status"
 
 			TicklerType = "TASK"
+
+			Purposetxt.text = "Priority"
+
+			-- Addinvitees.isVisible = false
+
+			-- BottomImageAddinvitees.isVisible = false
+
+			-- Purposetxt.y = BottomImageAppintmentWith.y + BottomImageAppintmentWith.contentHeight+ 15
+
+			-- PurposeLbl . y = BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+15
+
+			-- Purpose_icon . y = BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+15
+
+			-- BottomImagePurpose . y =BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+15
 
 		--	Where.isVisible = false
 
 		--	BottomImageWhere.isVisible = false
 
 			callGroup.isVisible = false
+
+			whereGroup.isVisible = false
+
+			Where.isVisible = false
 			
-			belowGroup.y=-W/2+50
+			belowGroup.y=-W/2+40
 
 			Phone.isVisible = false
 
@@ -446,6 +492,18 @@ local function onRowTouch(event)
 			TicklerType = "CALL"
 
 			callGroup.isVisible = true
+
+			Event_toLbl.text = "Duration"
+
+			Event_to_date.x= Event_to_datebg.x+35
+
+			Event_from_date.x = Event_from_datebg.x+ 35
+
+			whereGroup.isVisible = false
+
+			Where.isVisible = false
+
+			--callGroup.y = W/2+20
 			
 			belowGroup.y=-W/2+160
 
@@ -564,6 +622,15 @@ function get_SaveAttachmentDetails(response)
 			PriorityLbl.text="Low"
 
 			AttachmentFlag=false
+
+		AddAttachmentLbl.isVisible = true
+
+		AddAttachmentPhotoName.isVisible = false
+
+		AddAttachment_icon.isVisible = true
+		AddAttachment_close.isVisible = false
+
+
 
 			local baseDir = system.DocumentsDirectory
 
@@ -816,8 +883,19 @@ local function TouchAction( event )
 
 				if appointmentGroup.isVisible == true then
 
-					What.isVisible = true
-					Where.isVisible = true
+					 What.isVisible = true
+
+				-- 	if event.target.id == "call" or event.target.id == "task" then
+
+				-- 	Where.isVisible = false
+				-- 	whereGroup.isVisible = false
+
+				-- else
+                     Where.isVisible = true
+					whereGroup.isVisible = true
+
+					--end
+
 					AppintmentWith.isVisible = true
 					Addinvitees.isVisible = true
 
@@ -831,6 +909,7 @@ local function TouchAction( event )
 
 					What.isVisible = false
 					Where.isVisible = false
+					whereGroup.isVisible = false
 					AppintmentWith.isVisible = false
 					Addinvitees.isVisible = false
 
@@ -921,7 +1000,7 @@ local function TouchAction( event )
 
 					if SelectEvent.text:lower( ) == "task" then
 
-						List.arrayName = taskStatus
+						List.arrayName = priorityArray
 						List.textFiled = PurposeLbl
 
 					elseif SelectEvent.text:lower( ) == "party" then
@@ -967,9 +1046,30 @@ local function TouchAction( event )
 							List.y = event.target.y+event.target.contentHeight+1.3-40
 
 						end
-						List.width =event.target.contentWidth
+
+
+	                if SelectEvent.text:lower( ) == "task" then
+
+						List.arrayName = taskStatus
+						List.textFiled = PriorityLbl
+
+					elseif SelectEvent.text:lower( ) == "party" then
+
 						List.arrayName = priorityArray
 						List.textFiled = PriorityLbl
+
+					else
+
+					List.arrayName = priorityArray
+					List.textFiled = PriorityLbl
+
+					end
+
+
+
+						List.width =event.target.contentWidth
+						--List.arrayName = priorityArray
+						--List.textFiled = PriorityLbl
 						List_bg.y = List.y
 						List_bg.isVisible = true
 						CreateList(event,List,List_bg)
@@ -1026,7 +1126,7 @@ local function TouchAction( event )
 						if TicklerType == "CALL" then
 							List.y = event.target.y+event.target.contentHeight+1.3
 						else
-							List.y = event.target.y+event.target.contentHeight+1.3+110
+							List.y = event.target.y+event.target.contentHeight+1.3+73
 
 						end
 						List_bg.y = List.y
@@ -1423,16 +1523,62 @@ end
 
 			local x, y = scrollView:getContentPosition()
 
+			print(y)
+
 			if y > -40 then
 				What.isVisible = true
 			else
 				What.isVisible = false
 			end
 
-			if y > -225 then
-				Where.isVisible = true
-			else
+			if y > -225 and (SelectEvent.text:lower( ) == "task") then
+
 				Where.isVisible = false
+				whereGroup.isVisible = false
+			end
+
+
+			if y > -225 and (SelectEvent.text:lower( ) == "call") then
+
+				Where.isVisible = false
+				whereGroup.isVisible = false
+
+				Phone.isVisible = true
+
+			elseif y < -225 and (SelectEvent.text:lower( ) == "call") then
+
+                Phone.isVisible = false
+			end
+
+
+			if  y > -225 and (SelectEvent.text:lower( ) == "appointment") then 
+
+				print("345345")
+
+				Where.isVisible = true
+				whereGroup.isVisible = true
+
+			elseif  y < -225 and (SelectEvent.text:lower( ) == "appointment") then
+
+				print("1111111")
+
+				Where.isVisible = false
+				whereGroup.isVisible = false
+
+			end
+
+
+			if  y > -225 and (SelectEvent.text:lower( ) == "party") then 
+
+				Where.isVisible = true
+			    whereGroup.isVisible = true
+
+			elseif  y < -225 and (SelectEvent.text:lower( ) == "party") then
+
+				print("party")
+
+				Where.isVisible = false
+				whereGroup.isVisible = false
 			end
 
 
@@ -1568,11 +1714,15 @@ function scene:show( event )
 
 		eventTime = event.params.details
 
+	--	print("eventtime value ", eventTime)
+
 		CalendarId = event.params.calendarId
 
 		CalendarName = event.params.calendarName
 
 		print( os.date( "%m/%d/%Y" ,  eventTime )) 
+
+	--	print( os.date("%H", eventTime))
 
 		----What----
 
@@ -1761,7 +1911,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+35
-		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		whereGroup:insert(AddeventArray[#AddeventArray])
 
 		Where = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
 		Where.id="Where"
@@ -1771,10 +1921,15 @@ function scene:show( event )
 		Where:setReturnKey( "next" )
 		Where.placeholder=AddeventPage.Where
 		Where:addEventListener( "userInput", usertextField )
-		AddeventGroup:insert(Where)
+		whereGroup:insert(Where)
 
 		BottomImageWhere = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomImageWhere.x=W/2;BottomImageWhere.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-5
+		whereGroup:insert(BottomImageWhere)
+
+		Where.isVisible = true
+
+		--scrollView:insert(Where)
 
 
 	  	----------
@@ -1785,7 +1940,7 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].id="phone"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
-		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight-25
 		callGroup:insert(AddeventArray[#AddeventArray])
 
 		Phone = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
@@ -1833,6 +1988,7 @@ function scene:show( event )
 			Phone.isVisible = false
 
 			AccessCode.isVisible = false
+
 
 	  	--------
 
@@ -1916,9 +2072,11 @@ function scene:show( event )
 
 		AddeventGroup:insert( belowGroup )
 		AddeventGroup:insert( callGroup )
+		AddeventGroup:insert( whereGroup )
 
 		callGroup.isVisible = false
-		belowGroup.y=-W/2+50
+		whereGroup.isVisible = true
+		belowGroup.y=-W/2+85
 
 	  	----Description----
 
@@ -1975,6 +2133,7 @@ function scene:show( event )
 		AppintmentWith.anchorY=0
 		AppintmentWith.anchorX=0
 		AppintmentWith.x=leftPadding
+		AppintmentWith.y = AddeventArray[#AddeventArray].y
 		AppintmentWith.hasBackground = false
 		AppintmentWith:setReturnKey( "next" )
 		AppintmentWith.placeholder="Appointment With"

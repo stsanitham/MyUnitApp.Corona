@@ -266,12 +266,9 @@ local function RequestProcess()
 					DirectorEmail.isVisible = true
 					DirectorEmail_bg.isVisible = true
 
-					DirectorName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-					DirectorName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-					DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
-					DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
-					FirstName_bg.y = DirectorEmail_bg.y+DirectorEmail_bg.height+7
-					FirstName.y = DirectorEmail_bg.y+DirectorEmail_bg.height+7
+				
+					FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
+					FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
 					Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
 					Name.y = FirstName_bg.y+FirstName_bg.height+7
 					Email_bg.y = Name_bg.y+Name_bg.height+7
@@ -284,7 +281,13 @@ local function RequestProcess()
 					rankText_icon.y=MKRank_bg.y
 					Comment_bg.y = MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
 					Comment.y = Comment_bg.y
-					sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+30
+
+					DirectorName_bg.y = Comment_bg.y+Comment_bg.height-7 
+					DirectorName.y = Comment_bg.y+Comment_bg.height-7
+					DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
+					DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
+
+					sumbitBtn.y = DirectorEmail.y+DirectorEmail.height/2+30
 					sumbitBtn_lbl.y=sumbitBtn.y
 					submit_spinner.y=sumbitBtn.y
 
@@ -308,10 +311,10 @@ local function RequestProcess()
 
 					print("inside the function of 'has unit number'")
 
-					DirectorName_bg.isVisible = false
-					DirectorName.isVisible = false
-					DirectorEmail.isVisible = false
-					DirectorEmail_bg.isVisible = false
+					DirectorName_bg.isVisible = true
+					DirectorName.isVisible = true
+					DirectorEmail.isVisible = true
+					DirectorEmail_bg.isVisible = true
 
 					FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
 					FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
@@ -326,7 +329,14 @@ local function RequestProcess()
 					rankText_icon.y=MKRank_bg.y
 					Comment_bg.y = MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
 					Comment.y = Comment_bg.y
-					sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+30
+
+
+					DirectorName_bg.y = Comment_bg.y+Comment_bg.height-7 
+					DirectorName.y = Comment_bg.y+Comment_bg.height-7
+					DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
+					DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
+
+					sumbitBtn.y = DirectorEmail_bg.y+DirectorEmail_bg.height/2+30
 					sumbitBtn_lbl.y=sumbitBtn.y
 					submit_spinner.y=sumbitBtn.y
 
@@ -814,10 +824,13 @@ local function rankTouch( event )
 					UnitNumber.isVisible=false
 					Comment.isVisible=false
 
-				if unitnumberflag == true then
-
 					DirectorName.isVisible = false
 					DirectorEmail.isVisible = false
+
+				if unitnumberflag == true then
+
+					DirectorName.isVisible = true
+					DirectorEmail.isVisible = true
 
 				end
 
@@ -925,36 +938,36 @@ function scene:create( event )
     end
 
 
-    	DirectorName_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
-    	DirectorName_bg.isVisible = false
-    	DirectorName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-		sceneGroup:insert(DirectorName_bg)
+  --   	DirectorName_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
+  --   	DirectorName_bg.isVisible = false
+  --   	DirectorName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
+		-- sceneGroup:insert(DirectorName_bg)
 
-		DirectorName = native.newTextField(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
-		DirectorName.id="Director Name"
-		DirectorName.size=14	
-		DirectorName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-		DirectorName.hasBackground = false
-		DirectorName:setReturnKey( "next" )
-		DirectorName.isVisible = false
-		DirectorName.placeholder=RequestAccess.DirectorName_placeholder
-		sceneGroup:insert(DirectorName)
+		-- DirectorName = native.newTextField(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
+		-- DirectorName.id="Director Name"
+		-- DirectorName.size=14	
+		-- DirectorName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
+		-- DirectorName.hasBackground = false
+		-- DirectorName:setReturnKey( "next" )
+		-- DirectorName.isVisible = false
+		-- DirectorName.placeholder=RequestAccess.DirectorName_placeholder
+		-- sceneGroup:insert(DirectorName)
 
 
-		DirectorEmail_bg = display.newRect(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
-		DirectorEmail_bg.isVisible = false
-		DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
-		sceneGroup:insert(DirectorEmail_bg)
+		-- DirectorEmail_bg = display.newRect(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
+		-- DirectorEmail_bg.isVisible = false
+		-- DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
+		-- sceneGroup:insert(DirectorEmail_bg)
 
-		DirectorEmail = native.newTextField(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
-		DirectorEmail.id="Director Email"
-		DirectorEmail.size=14	
-		DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
-		DirectorEmail.hasBackground = false
-		DirectorEmail.isVisible = false
-		DirectorEmail:setReturnKey( "next" )
-		DirectorEmail.placeholder=RequestAccess.DirectorEmail_placeholder
-		sceneGroup:insert(DirectorEmail)
+		-- DirectorEmail = native.newTextField(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
+		-- DirectorEmail.id="Director Email"
+		-- DirectorEmail.size=14	
+		-- DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
+		-- DirectorEmail.hasBackground = false
+		-- DirectorEmail.isVisible = false
+		-- DirectorEmail:setReturnKey( "next" )
+		-- DirectorEmail.placeholder=RequestAccess.DirectorEmail_placeholder
+		-- sceneGroup:insert(DirectorEmail)
 
 --------------------------------------changes will occur----------------------------------------------
 
@@ -1043,23 +1056,56 @@ function scene:create( event )
 
 
 
-	Comment_bg = display.newRect( W/2, 0, W-20, 80)
+	Comment_bg = display.newRect( W/2, 0, W-20, 70)
 	Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
 	sceneGroup:insert(Comment_bg)
 
 
-	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 80 )
+	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 70 )
 	Comment.id = "Comments"
 	Comment.size=14	
 	Comment.hasBackground = false
-	Comment:setReturnKey( "done" )
+	Comment:setReturnKey( "next" )
 	Comment.isEditable = true
 	Comment.placeholder=RequestAccess.Comment_placeholder
 	sceneGroup:insert(Comment)
 
 
+    	DirectorName_bg = display.newRect(W/2, Comment_bg.y+Comment_bg.height+7, W-20, 25)
+    	DirectorName_bg.isVisible = true
+    	DirectorName_bg.y = Comment_bg.y+Comment_bg.height-7
+		sceneGroup:insert(DirectorName_bg)
+
+		DirectorName = native.newTextField(W/2, Comment_bg.y+Comment_bg.height+7, W-20, 25)
+		DirectorName.id="Director Name"
+		DirectorName.size=14	
+		DirectorName.y = Comment_bg.y+Comment_bg.height-7
+		DirectorName.hasBackground = false
+		DirectorName:setReturnKey( "next" )
+		DirectorName.isVisible = true
+		DirectorName.placeholder=RequestAccess.DirectorName_placeholder
+		sceneGroup:insert(DirectorName)
+
+
+		DirectorEmail_bg = display.newRect(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
+		DirectorEmail_bg.isVisible = true
+		DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
+		sceneGroup:insert(DirectorEmail_bg)
+
+		DirectorEmail = native.newTextField(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
+		DirectorEmail.id="Director Email"
+		DirectorEmail.size=14	
+		DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
+		DirectorEmail.hasBackground = false
+		DirectorEmail.isVisible = true
+		DirectorEmail:setReturnKey( "next" )
+		DirectorEmail.placeholder=RequestAccess.DirectorEmail_placeholder
+		sceneGroup:insert(DirectorEmail)
+
+
+
 	sumbitBtn = display.newRect( 0,0,0,0 )
-	sumbitBtn.x=W/2;sumbitBtn.y = Comment_bg.y+Comment_bg.height/2+30
+	sumbitBtn.x=W/2;sumbitBtn.y = DirectorEmail_bg.y+DirectorEmail_bg.height/2+30
 	sumbitBtn.width=80
 	sumbitBtn.height=30
 	sumbitBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
@@ -1111,30 +1157,6 @@ function scene:show( event )
 	if phase == "will" then
 
 
-		elseif phase == "did" then
-
-			composer.removeHidden()
-
-			openPage="requestAccess Page"
-
-			ga.enterScene("Request Access")
-
-
-		MKRank_bg:addEventListener( "touch", rankTouch )
-		MKRank:addEventListener( "touch", rankTouch )
-
-		FirstName:addEventListener( "userInput", textfield )
-		Name:addEventListener( "userInput", textfield )
-		Email:addEventListener( "userInput", textfield )
-		Phone:addEventListener( "userInput", textfield )
-		UnitNumber:addEventListener( "userInput", textfield )
-		Comment:addEventListener( "userInput", textfield )
-		DirectorName:addEventListener( "userInput", textfield )
-		DirectorEmail:addEventListener( "userInput", textfield )
-		
-		Background:addEventListener("touch",touchBg)
-
-
 		function GetListArray(response)
 
 
@@ -1145,6 +1167,8 @@ function scene:show( event )
 				List_array[i][2] = response[i].MkRankId
 
 			end
+
+
   		---Listview---
 
   		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+3, 311 )
@@ -1214,7 +1238,31 @@ end
 
 	Webservice.GET_LIST_OF_RANKS(GetListArray)
 
+
+
+		elseif phase == "did" then
+
+			composer.removeHidden()
+
+			openPage="requestAccess Page"
+
+			ga.enterScene("Request Access")
+
+
+		MKRank_bg:addEventListener( "touch", rankTouch )
+		MKRank:addEventListener( "touch", rankTouch )
+
+		FirstName:addEventListener( "userInput", textfield )
+		Name:addEventListener( "userInput", textfield )
+		Email:addEventListener( "userInput", textfield )
+		Phone:addEventListener( "userInput", textfield )
+		UnitNumber:addEventListener( "userInput", textfield )
+		Comment:addEventListener( "userInput", textfield )
+		DirectorName:addEventListener( "userInput", textfield )
+		DirectorEmail:addEventListener( "userInput", textfield )
 		
+		Background:addEventListener("touch",touchBg)
+
 
 		backBtn_bg:addEventListener("touch",backAction)
 		page_title:addEventListener("touch",backAction)
