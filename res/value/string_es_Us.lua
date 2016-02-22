@@ -24,6 +24,22 @@ Month["nov"]= "nov"
 Month["dec"]= "dic"
 
 
+MonthNumber = {}
+
+MonthNumber[1] = "ene"
+MonthNumber[2]= "feb"
+MonthNumber[3]= "mar"
+MonthNumber[4]= "abr"
+MonthNumber[5]= "May"
+MonthNumber[6]= "jun"
+MonthNumber[7]= "jul"
+MonthNumber[8]= "ago"
+MonthNumber[9]= "sep"
+MonthNumber[10]= "oct"
+MonthNumber[11]= "nov"
+MonthNumber[12]= "dic"
+
+
 Week = {}
 
 Week["sunday"]="domingo"

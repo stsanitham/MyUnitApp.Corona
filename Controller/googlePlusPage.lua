@@ -245,7 +245,7 @@ function googleplusCallback( res,scrollView,flag )
 	end
 
 
-
+				local img = feedArray[feedCount].object.attachments
 				local link = display.newText(tempGroup,feedArray[feedCount].url,0,0,native.systemFont,12)
 				link:setFillColor( 0,0,1 )
 				link.anchorX = 0
@@ -255,6 +255,10 @@ function googleplusCallback( res,scrollView,flag )
 				link.y =  background.y+background.contentHeight-20
 				link:addEventListener( "touch", linkTouch )
 
+				if string.find( link.text, "https:" ) == nil then
+					link.text = img[1].url or "https:"..link.text
+					link.value = link.text
+				end
 				if link.text:len() > 35 then
 					link.text = string.sub( link.text,1,35).."..."
 				end

@@ -46,6 +46,10 @@ local taskStatus =AddeventPage.taskStatus
 
 local partyArray = AddeventPage.partyArray
 
+local durationTime = {"1","2","3","4","5","6","7","8","9","10","11"}
+
+local durationMin = {"00","15","30","45"}
+
 local leftPadding = 15
 
 local AddeventGroup = display.newGroup( )
@@ -114,7 +118,6 @@ local function photonametouch( event )
 			----recently added----
 			if event.target.id == "close image" then
 
-				print("entering here *************************")
 
 				AddAttachmentPhotoName.isVisible = false
 				AddAttachmentLbl.isVisible = true
@@ -352,11 +355,11 @@ local function onRowRender( event )
 
     -- Align the label left and vertically centered
     rowTitle.anchorX = 0
-    rowTitle.x = W-rowWidth
+    rowTitle.x = 15
     rowTitle.y = rowHeight * 0.5
 
     local tick = display.newImageRect( row, "res/assert/tick.png", 20,20 )
-    tick.x = rowWidth - 30
+    tick.x = rowWidth - 20
     tick.y = rowHeight * 0.5
 
     if List.textFiled.text == List.arrayName[row.index] then
@@ -367,30 +370,19 @@ local function onRowRender( event )
 
 
     row.name = List.arrayName[row.index]
+
+    print( row.name )
 end
 
 
 
 local function onRowTouch(event) 
-    print(event.phase)
 
     local row = event.row
 
-    if event.phase == 'tap' or event.phase == 'release' then
+    if event.phase == 'release' then
 
-    	if event.target.id == "call" or event.target.id == "task" then
 
-    	Where.isVisible = false
-
-    	whereGroup.isVisible = false
-
-        else
-
-       Where.isVisible = true
-
-       whereGroup.isVisible = true
-
-        end
     	What.isVisible = true
     	List_bg.isVisible = false
 		List:deleteAllRows()
@@ -399,6 +391,8 @@ local function onRowTouch(event)
 		QuickContactList.isVisible = false
 		List.textFiled.text = row.name
 		List.textFiled.value = row.index - 1
+
+		 print( "Here : "..row.name )
 
 		if List.textFiled.text:lower( ) == "party" then
 
@@ -455,9 +449,9 @@ local function onRowTouch(event)
 
 			Purposetxt.text = "Priority"
 
-			-- Addinvitees.isVisible = false
+			--Addinvitees.isVisible = false
 
-			-- BottomImageAddinvitees.isVisible = false
+			--BottomImageAddinvitees.isVisible = false
 
 			-- Purposetxt.y = BottomImageAppintmentWith.y + BottomImageAppintmentWith.contentHeight+ 15
 
@@ -465,7 +459,7 @@ local function onRowTouch(event)
 
 			-- Purpose_icon . y = BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+15
 
-			-- BottomImagePurpose . y =BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+15
+			-- BottomImagePurpose . y =BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+25
 
 		--	Where.isVisible = false
 
@@ -536,7 +530,6 @@ local function onRowTouch(event)
 end
 
 local function QuickTouch(event) 
-    print(event.phase)
 
     local row = event.row
 
@@ -555,25 +548,21 @@ local function QuickTouch(event)
     end
 end
 
+
 local function CreateList(event,list,bg)
 					
 
-					list.x = event.target.x
+					--list.x = event.target.x
 					--list.y = event.target.y+event.target.contentHeight
-					list.width =event.target.contentWidth+2
+					--list.contentWidth =event.target.contentWidth+2
 
-					bg.x = event.target.x
+					bg.x = list.x
 					--bg.y = event.target.y+event.target.contentHeight
-					bg.width =event.target.contentWidth+2
-					bg.height =list.contentHeight+2
-
-
-				
-
+					bg.width =list.width+2
+					bg.height =list.height+2
 
 					list:deleteAllRows()
 
-				
 
 					for i = 1, #List.arrayName do
 
@@ -585,19 +574,17 @@ local function CreateList(event,list,bg)
 					            rowColor = { default={0.9}, over={0.8} },
 					        }
 					    )
+
 					end
 
-
-
-
 end
+
 
 
 local function onComplete(event)
 
 	if "clicked"==event.action then
 
-		
 		status = "deleted"
 
 		composer.hideOverlay()
@@ -605,6 +592,7 @@ local function onComplete(event)
 	end
 
 end
+
 
 
 function get_SaveAttachmentDetails(response)
@@ -621,7 +609,7 @@ function get_SaveAttachmentDetails(response)
 			Other.text=""
 			PriorityLbl.text="Low"
 
-			AttachmentFlag=false
+		AttachmentFlag=false
 
 		AddAttachmentLbl.isVisible = true
 
@@ -631,14 +619,30 @@ function get_SaveAttachmentDetails(response)
 		AddAttachment_close.isVisible = false
 
 
-
 			local baseDir = system.DocumentsDirectory
 
 			local path = system.pathForFile( "eventAttach.jpg" , baseDir )
 
 			os.remove(path)
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event Added", { "OK" },onComplete )
+			if SelectEvent.text:lower( ) == "appointment" then
+
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Appointment added Successfully", { "OK" },onComplete )
+
+		    elseif SelectEvent.text:lower( ) == "call" then
+
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Call added Successfully", { "OK" },onComplete )
+
+			  elseif SelectEvent.text:lower( ) == "task" then
+
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Task added Successfully", { "OK" },onComplete )
+
+			  elseif SelectEvent.text:lower( ) == "party" then
+
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Party added Successfully", { "OK" },onComplete )
+		else
+
+		end
 
 end
 
@@ -683,8 +687,25 @@ local function get_CreateTickler( response )
 
 									os.remove(path)
 
-									local alert = native.showAlert(  EventCalender.PageTitle,AddeventPage.Event_Added, { CommonWords.ok },onComplete )
+			if SelectEvent.text:lower( ) == "appointment" then
 
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Appointment added Successfully", { "OK" },onComplete )
+
+		    elseif SelectEvent.text:lower( ) == "call" then
+
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Call added Successfully", { "OK" },onComplete )
+
+			  elseif SelectEvent.text:lower( ) == "task" then
+
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Task added Successfully", { "OK" },onComplete )
+
+			  elseif SelectEvent.text:lower( ) == "party" then
+
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Party added Successfully", { "OK" },onComplete )
+		else
+
+		--endlocal alert = native.showAlert(  EventCalender.PageTitle,AddeventPage.Event_Added, { CommonWords.ok },onComplete )
+		end
 							
 				end
 
@@ -891,7 +912,7 @@ local function TouchAction( event )
 				-- 	whereGroup.isVisible = false
 
 				-- else
-                     Where.isVisible = true
+                    Where.isVisible = true
 					whereGroup.isVisible = true
 
 					--end
@@ -927,13 +948,24 @@ local function TouchAction( event )
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
 					Addinvitees.isVisible = false
+
 				
+				if SelectEvent.text:lower( ) == "call" then
+
+					Phone.isVisible = false
+					AccessCode.isVisible = false
+
+				end
 				function getValue(time)
 
 					Event_from_time.text = time
 					AppintmentWith.isVisible = true
 					Where.isVisible = true
 					Addinvitees.isVisible = true
+					if SelectEvent.text:lower( ) == "call" then
+						Phone.isVisible = true
+						AccessCode.isVisible = true
+					end
 
 				end
 
@@ -941,25 +973,70 @@ local function TouchAction( event )
 
 			elseif event.target.id == "totime" then
 
+					local function getValue(time)
+
+						Event_to_time.text = time
+						AppintmentWith.isVisible = true
+						Where.isVisible = true
+						Addinvitees.isVisible = true
+						if SelectEvent.text:lower( ) == "call" then
+							Phone.isVisible = true
+							AccessCode.isVisible = true
+						end
+
+					end
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
 					Addinvitees.isVisible = false
+					if SelectEvent.text:lower( ) == "call" then
+
+								Phone.isVisible = false
+								AccessCode.isVisible = false
+
+							if List.isVisible == false then
+									List.isVisible = true
+									List.x = event.target.x
+									List.y = event.target.y+event.target.contentHeight+1.3-20
+
+										
+									List.arrayName = durationMin
+									List.textFiled = Event_to_time
+
+										List.contentWidth =80
+										--List.arrayName = priorityArray
+										--List.textFiled = PriorityLbl
+										List_bg.y = List.y
+										List_bg.isVisible = true
+										List:deleteAllRows()
+										CreateList(event,List,List_bg)
+								
+						else
+								List_bg.isVisible = false
+								List:deleteAllRows()
+								List.isVisible = false
+
+						end
+
+					else
+
+						timePicker.getTimeValue(getValue)
+
+					end
 				
-				function getValue(time)
-
-					Event_to_time.text = time
-					AppintmentWith.isVisible = true
-					Where.isVisible = true
-					Addinvitees.isVisible = true
-
-				end
-				timePicker.getTimeValue(getValue)
+				
+				
 
 			elseif event.target.id == "fromdate" then
 
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
 					Addinvitees.isVisible = false
+					if SelectEvent.text:lower( ) == "call" then
+
+					Phone.isVisible = false
+					AccessCode.isVisible = false
+
+					end
 				
 				function getValue(time)
 
@@ -967,6 +1044,10 @@ local function TouchAction( event )
 					AppintmentWith.isVisible = true
 					Where.isVisible = true
 					Addinvitees.isVisible = true
+					if SelectEvent.text:lower( ) == "call" then
+						Phone.isVisible = true
+						AccessCode.isVisible = true
+					end
 
 				end
 
@@ -977,6 +1058,12 @@ local function TouchAction( event )
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
 					Addinvitees.isVisible = false
+					if SelectEvent.text:lower( ) == "call" then
+
+					Phone.isVisible = false
+					AccessCode.isVisible = false
+
+					end
 				
 				function getValue(time)
 
@@ -984,9 +1071,49 @@ local function TouchAction( event )
 					AppintmentWith.isVisible = true
 					Where.isVisible = true
 					Addinvitees.isVisible = true
+					if SelectEvent.text:lower( ) == "call" then
+						Phone.isVisible = true
+						AccessCode.isVisible = true
+					end
 
 				end
-				datePicker.getTimeValue(getValue)
+				AppintmentWith.isVisible = false
+					Where.isVisible = false
+					Addinvitees.isVisible = false
+					if SelectEvent.text:lower( ) == "call" then
+
+								Phone.isVisible = false
+								AccessCode.isVisible = false
+
+							if List.isVisible == false then
+									List.isVisible = true
+									List.x = event.target.x+100
+									List.y = event.target.y+event.target.contentHeight+1.3-20
+
+										
+									List.arrayName = durationTime
+									List.textFiled = Event_to_date
+
+										List.contentWidth =80
+										--List.arrayName = priorityArray
+										--List.textFiled = PriorityLbl
+										List_bg.y = List.y
+										List_bg.isVisible = true
+										List:deleteAllRows()
+										CreateList(event,List,List_bg)
+								
+						else
+								List_bg.isVisible = false
+								List:deleteAllRows()
+								List.isVisible = false
+
+						end
+
+					else
+
+						timePicker.getTimeValue(getValue)
+
+					end
 			
 
 			elseif event.target.id == "purpose" then
@@ -1123,12 +1250,13 @@ local function TouchAction( event )
 						What.isVisible = false
 						List.isVisible = true
 						List.x = event.target.x
+
 						if TicklerType == "CALL" then
 							List.y = event.target.y+event.target.contentHeight+1.3
 						else
 							List.y = event.target.y+event.target.contentHeight+1.3+73
-
 						end
+
 						List_bg.y = List.y
 						List.width =event.target.contentWidth
 						List.arrayName = EventnameArray
@@ -1141,7 +1269,6 @@ local function TouchAction( event )
 						List_bg.isVisible = false
 						List:deleteAllRows()
 						List.isVisible = false
-
 				end
 			end
 
@@ -1444,6 +1571,7 @@ local function usertextField( event )
 
 		if(event.target.id == "phone") then
 
+					event.target.text = string.sub(event.target.text,1,event.startPosition )
 
 							local tempvalue = event.target.text:sub(1,1)
 
@@ -1523,9 +1651,16 @@ end
 
 			print(y)
 
-			if y > -40 then
+			if y > -60 then
+
+				print(y)
+
+				print("hai")
+
 				What.isVisible = true
 			else
+
+				print("hello")
 				What.isVisible = false
 			end
 
@@ -1534,7 +1669,6 @@ end
 				Where.isVisible = false
 				whereGroup.isVisible = false
 			end
-
 
 			if y > -225 and (SelectEvent.text:lower( ) == "call") then
 
@@ -1659,7 +1793,7 @@ function scene:create( event )
 			isBounceEnabled=false,
 			horizontalScrollDisabled = true,
 			bottomPadding = 265,
-			friction = .6,
+			friction = .4,
    			listener = addevent_scrollListener,
 		}
 

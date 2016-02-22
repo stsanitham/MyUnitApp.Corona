@@ -22,6 +22,22 @@ Month["oct"]= "oct"
 Month["nov"]= "nov"
 Month["dec"]= "déc"
 
+Month = {}
+
+
+Month["jan"] = "jan"
+Month["feb"]= "fév"
+Month["mar"]= "Mar"
+Month["apr"]= "avr"
+Month["may"]= "Mai"
+Month["jun"]= "jui"
+Month["jul"]= "juil"
+Month["aug"]= "aoû"
+Month["sep"]= "sep"
+Month["oct"]= "oct"
+Month["nov"]= "nov"
+Month["dec"]= "déc"
+
 
 Week = {}
 

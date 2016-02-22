@@ -525,6 +525,9 @@ local function RequestProcess()
 
         			elseif ( event.phase == "editing" ) then
 
+        				
+        			
+
         				if current_textField.id ~= "Comments" then
         					if event.text:len() > 50 then
 
@@ -548,7 +551,7 @@ local function RequestProcess()
 						elseif(current_textField.id =="Phone") then
 
 							
-
+								event.target.text = string.sub(event.target.text,1,event.startPosition )
 
 							local tempvalue = event.target.text:sub(1,1)
 
