@@ -271,7 +271,7 @@ function scene:show( event )
 		local profilePic 
 
 			profilePic = display.newImageRect("res/assert/usericon.png",65,60)
-			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-40
+			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-35
 			profilePic.anchorY=0
 			profilePic.anchorX=0
 			panel:insert( profilePic )
@@ -290,7 +290,7 @@ function scene:show( event )
 						print("response file "..img_event.response.filename)
 						profilePic = display.newImageRect(img_event.response.filename,system.TemporaryDirectory,80,65)
 						--profilePic.width=65;profilePic.height=65
-						profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-40
+						profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-35
 						profilePic.anchorY=0
 						profilePic.anchorX=0
 
@@ -309,7 +309,7 @@ function scene:show( event )
     			end, profilePic_path:match( "([^/]+)$" ), system.TemporaryDirectory)
 		else
 			profilePic = display.newImageRect("res/assert/usericon.png",65,60)
-			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+10;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-40
+			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-35
 			profilePic.anchorY=0
 			profilePic.anchorX=0
 			panel:insert( profilePic )
@@ -319,7 +319,7 @@ function scene:show( event )
 			profileName = display.newText(Director_Name,0,0,245,0,native.systemFont,15)
 			profileName.x=profilePic.x
 			profileName.anchorX=0
-			profileName.y=profilePic.y+profilePic.contentHeight+10
+			profileName.y=profilePic.y+profilePic.contentHeight+15
 			Utils.CssforTextView(profileName,sp_Flatmenu_labelName)
 			panel:insert( profileName )
 
