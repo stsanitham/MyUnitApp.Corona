@@ -122,9 +122,36 @@ function TwitterCallback(res,scrollView)
 					profilePic:setMask( mask )
 
 					tempGroup:insert(profilePic)
-					
 
-					userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %H:%m %p", feedArray[FeedCount].created_time)), 0, 0, native.systemFont, 11 )
+
+					local makeTimeStamp = function ( dateString )
+
+						print(dateString)
+
+						if string.find(dateString,"+0000") ~= nil then
+							dateString = string.gsub(dateString,"+0000","")
+						end
+						--dateString="Mon Oct 15 12:56:52 2014"
+
+						local pattern = "(%a+) (%a+)% (%d+) (%d+):(%d+):(%d+)  (%d+)"
+						--local day, month, date, hour, minute, seconds, year = dateString:match(pattern)
+
+						local weekday,month,day,hour, minute, seconds,year= dateString:match(pattern)
+
+						print(weekday,table.indexOf( MonthNumber, "Jan" ),day,hour, minute, seconds,year)
+
+				
+
+						local timestamp = os.time( {year=year, month=table.indexOf( MonthNumber, month ), day=day, hour=hour, min=minute, sec=seconds, isdst=false} )
+
+						return timestamp;
+					end
+
+
+					
+					local time = makeTimeStamp(feedArray[i].created_at)
+
+					userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %I:%m %p",time )) , 0, 0, native.systemFont, 11 )
 					userTime.anchorX = 0
 					userTime.anchorY = 0
 					Utils.CssforTextView(userTime,sp_Date_Time)
