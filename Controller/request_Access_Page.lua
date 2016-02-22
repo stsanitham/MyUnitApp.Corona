@@ -1056,9 +1056,13 @@ function scene:create( event )
 		if AppName ~= "DirectorApp" then
 
 			MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
+			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
+            MKRank_bg.strokeWidth = 0.7
 
 		else
 			MKRank_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
+			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
+            MKRank_bg.strokeWidth = 0.7
 
 		end
 
@@ -1082,12 +1086,9 @@ function scene:create( event )
 	  		rankText_icon.y=MKRank_bg.y
 
 
-
-
 	Comment_bg = display.newRect( W/2, 0, W-20, 70)
-	Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
+	Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
 	sceneGroup:insert(Comment_bg)
-
 
 	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 70 )
 	Comment.id = "Comments"
@@ -1101,13 +1102,13 @@ function scene:create( event )
 
     	DirectorName_bg = display.newRect(W/2, Comment_bg.y+Comment_bg.height+7, W-20, 25)
     	DirectorName_bg.isVisible = true
-    	DirectorName_bg.y = Comment_bg.y+Comment_bg.height-7
+    	DirectorName_bg.y = Comment_bg.y+Comment_bg.height-14
 		sceneGroup:insert(DirectorName_bg)
 
 		DirectorName = native.newTextField(W/2, Comment_bg.y+Comment_bg.height+7, W-20, 25)
 		DirectorName.id="Director Name"
 		DirectorName.size=14	
-		DirectorName.y = Comment_bg.y+Comment_bg.height-7
+		DirectorName.y = Comment_bg.y+Comment_bg.height-14
 		DirectorName.hasBackground = false
 		DirectorName:setReturnKey( "next" )
 		DirectorName.isVisible = true
