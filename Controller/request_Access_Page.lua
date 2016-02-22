@@ -36,7 +36,6 @@ local FirstName,Name,Email,Phone,UnitNumber,Comment,DirectorName,DirectorEmail
 --Spinner
 local submit_spinner
 
-
 --Button
 local sumbitBtn,scrollView
 
@@ -66,13 +65,16 @@ local function rankToptouch( event )
 				Phone.isVisible=true
 				UnitNumber.isVisible=true
 				Comment.isVisible=true
-
-				if unitnumberflag == true then
-
 				DirectorName.isVisible = true
 				DirectorEmail.isVisible = true
 
-			    end
+
+				 if unitnumberflag == true then
+
+				 DirectorName.isVisible = true
+				 DirectorEmail.isVisible = true
+
+			     end
 
 		end
 
@@ -187,7 +189,6 @@ local function RequestProcess()
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
 			submit_spinner:stop( )
 
-
 							UnitNumber.text = ""
 							DirectorName.text = ""
 							DirectorEmail.text = ""
@@ -257,7 +258,7 @@ local function RequestProcess()
 
 
 
-			function NO_UNITNUMBER_FUNCTION(responseUnitValue)
+			function NO_UNITNUMBER_FUNCTION(responseUnitValue,directorname,directoremail)
 
 					print("inside the function of 'has no unit number' ")
 
@@ -266,7 +267,16 @@ local function RequestProcess()
 					DirectorEmail.isVisible = true
 					DirectorEmail_bg.isVisible = true
 
-				
+				if directorname == nil and directoremail == nil then
+
+					print("both the values are nil")
+
+					DirectorName.text = ""
+
+					DirectorEmail.text = ""
+
+				end
+
 					FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
 					FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
 					Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
@@ -307,7 +317,7 @@ local function RequestProcess()
 
 
 
-			function HAS_UNITNUMBER_FUNCTION(responseUnitValue)
+			function HAS_UNITNUMBER_FUNCTION(responseUnitValue,directorname,directoremail)
 
 					print("inside the function of 'has unit number'")
 
@@ -315,6 +325,11 @@ local function RequestProcess()
 					DirectorName.isVisible = true
 					DirectorEmail.isVisible = true
 					DirectorEmail_bg.isVisible = true
+
+					DirectorName.text = directorname
+					print(DirectorName.text)
+					DirectorEmail.text = directoremail
+					print(DirectorEmail.text)
 
 					FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
 					FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
@@ -365,12 +380,23 @@ local function RequestProcess()
 
 			print("************************Request_response unitnumber initial*************************** ",Request_response)
 
-			RequestFromStatus = Request_response
+			RequestFromStatus = Request_response.RequestAccessStatus
+
+			print(RequestFromStatus)
 
 
-			if Request_response == "NOTINUNITWISE" then
+				directorname = Request_response.DirectorName
 
-				NO_UNITNUMBER_FUNCTION(RequestFromStatus)
+				directoremail = Request_response.EmailAddress
+
+				print(directorname)
+
+				print(directoremail)
+
+
+			if Request_response.RequestAccessStatus == "NOTINUNITWISE" then
+
+				NO_UNITNUMBER_FUNCTION(RequestFromStatus,directorname,directoremail)
 				unitnumberflag = true
 
 						-- if (FirstName.text~=nil or FirstName.text ~="") or (Name.text ~=nil or Name.text ~="")
@@ -389,9 +415,9 @@ local function RequestProcess()
 
 						-- end	
 
-			elseif Request_response == "UNITNOEXIST" then
+			elseif Request_response.RequestAccessStatus == "UNITNOEXIST" then
 
-				HAS_UNITNUMBER_FUNCTION(RequestFromStatus)
+			    HAS_UNITNUMBER_FUNCTION(RequestFromStatus, directorname, directoremail)
 				unitnumberflag = false
 
 
@@ -468,7 +494,7 @@ local function RequestProcess()
 
 									elseif(current_textField.id == "Phone") then
 
-										native.setKeyboardFocus(UnitNumber)
+										native.setKeyboardFocus(Comment)
 
 							   elseif (current_textField.id == "Director Name") then
 
@@ -695,6 +721,8 @@ local function onRowTouch( event )
 				Phone.isVisible=true
 				UnitNumber.isVisible=true
 				Comment.isVisible=true
+				DirectorName.isVisible = true
+				DirectorEmail.isVisible = true
 
 				if unitnumberflag == true then
 
@@ -830,12 +858,12 @@ local function rankTouch( event )
 					DirectorName.isVisible = false
 					DirectorEmail.isVisible = false
 
-				if unitnumberflag == true then
+				-- if unitnumberflag == true then
 
-					DirectorName.isVisible = true
-					DirectorEmail.isVisible = true
+				-- 	DirectorName.isVisible = true
+				-- 	DirectorEmail.isVisible = true
 
-				end
+				-- end
 
         	end
 

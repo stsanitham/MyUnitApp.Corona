@@ -1456,6 +1456,7 @@ local function searchfunction( event )
 end
 
 
+
 local function scrollTo(position)
 
 scrollView:scrollToPosition
@@ -1474,10 +1475,7 @@ else
 
 end
 
-
 end
-
-
 
 
 
@@ -1682,6 +1680,7 @@ end
 			elseif y < -225 and (SelectEvent.text:lower( ) == "call") then
 
                 Phone.isVisible = false
+
 			end
 
 
