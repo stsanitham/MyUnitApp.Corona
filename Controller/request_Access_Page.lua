@@ -661,6 +661,7 @@ local function RequestProcess()
 				end
 
 
+
 			
 	local function onRowRender( event )
 
@@ -668,8 +669,6 @@ local function RequestProcess()
 
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
-
-
 
     local rowTitle = display.newText(row, List_array[row.index][1], 0, 0,280,38, nil, 14 )
     rowTitle:setFillColor( 0 )
@@ -688,6 +687,7 @@ local function RequestProcess()
     row.text=List_array[row.index][1]
 
 end
+
 
 local function onRowTouch( event )
 	local phase = event.phase
@@ -858,6 +858,9 @@ local function rankTouch( event )
 					DirectorName.isVisible = false
 					DirectorEmail.isVisible = false
 
+					DirectorName_bottom.isVisible = false
+					DirectorEmail_bottom.isVisible = false
+
 				-- if unitnumberflag == true then
 
 				-- 	DirectorName.isVisible = true
@@ -966,6 +969,10 @@ function scene:create( event )
 			UnitNumber.placeholder=LoginPage.Unitnumber_placeholder
 			sceneGroup:insert(UnitNumber)
 
+		UnitNumber_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+		UnitNumber_bottom.x=W/2
+		UnitNumber_bottom.y= page_title.y+45
+
     end
 
 
@@ -1002,9 +1009,17 @@ function scene:create( event )
 
 --------------------------------------changes will occur----------------------------------------------
 
+
+-------------------------------------- first name -------------------------------------------
+
 		FirstName_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
 		FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
+		FirstName_bg.alpha = 0.01
 		sceneGroup:insert(FirstName_bg)
+
+		FirstName_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+		FirstName_bottom.x=W/2
+		FirstName_bottom.y= UnitNumber_bg.y+UnitNumber_bg.height+16
 
 		FirstName = native.newTextField(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
 		FirstName.id="First Name"
@@ -1015,10 +1030,16 @@ function scene:create( event )
 		FirstName.placeholder=RequestAccess.FirstName_placeholder
 		sceneGroup:insert(FirstName)
 
+-------------------------------------Last name ----------------------------------------------
 
 		Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 		Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
+		Name_bg.alpha = 0.01
 		sceneGroup:insert(Name_bg)
+
+		Name_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+		Name_bottom.x=W/2
+		Name_bottom.y= FirstName_bg.y+FirstName_bg.height+16
 
 		Name = native.newTextField( W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 		Name.id="Last Name"
@@ -1030,8 +1051,14 @@ function scene:create( event )
 		sceneGroup:insert(Name)
 
 
+----------------------------------Email address---------------------------------
 		Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+7, W-20, 25 )
+		Email_bg.alpha = 0.01
 		sceneGroup:insert(Email_bg)
+
+		Email_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+		Email_bottom.x=W/2
+		Email_bottom.y= Name_bg.y+Name_bg.height+16
 
 		Email = native.newTextField(W/2, Name_bg.y+Name_bg.height+7, W-20, 25 )
 		Email.id="Email"
@@ -1042,8 +1069,14 @@ function scene:create( event )
 		sceneGroup:insert(Email)
 
 
+-----------------------------------phone------------------------------------------
 		Phone_bg = display.newRect(W/2, Email_bg.y+Email_bg.height+7, W-20, 25)
+		Phone_bg.alpha = 0.01
 		sceneGroup:insert(Phone_bg)
+
+		Phone_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+		Phone_bottom.x=W/2
+		Phone_bottom.y= Email_bg.y+Email_bg.height+16
 
 
 		Phone = native.newTextField(W/2, Email_bg.y+Email_bg.height+7, W-20, 25)
@@ -1056,16 +1089,20 @@ function scene:create( event )
 		sceneGroup:insert(Phone)
 
 
+-----------------------------------MK rank----------------------------------------
+
 		if AppName ~= "DirectorApp" then
 
 			MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-            MKRank_bg.strokeWidth = 0.7
+
+            MKRank_bg.strokeWidth = 1
 
 		else
 			MKRank_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-            MKRank_bg.strokeWidth = 0.7
+
+            MKRank_bg.strokeWidth = 1
 
 		end
 
@@ -1089,8 +1126,11 @@ function scene:create( event )
 	  		rankText_icon.y=MKRank_bg.y
 
 
+
+----------------------comments --------------------------------------
 	Comment_bg = display.newRect( W/2, 0, W-20, 70)
 	Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+	Comment_bg.alpha = 0.01
 	sceneGroup:insert(Comment_bg)
 
 	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 70 )
@@ -1103,10 +1143,16 @@ function scene:create( event )
 	sceneGroup:insert(Comment)
 
 
+-------------------------Director name----------------------------------
     	DirectorName_bg = display.newRect(W/2, Comment_bg.y+Comment_bg.height+7, W-20, 25)
     	DirectorName_bg.isVisible = true
+    	DirectorName_bg.alpha = 0.01
     	DirectorName_bg.y = Comment_bg.y+Comment_bg.height-14
 		sceneGroup:insert(DirectorName_bg)
+
+		DirectorName_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+		DirectorName_bottom.x=W/2
+		DirectorName_bottom.y= Comment_bg.y+Comment_bg.height - 5
 
 		DirectorName = native.newTextField(W/2, Comment_bg.y+Comment_bg.height+7, W-20, 25)
 		DirectorName.id="Director Name"
@@ -1119,10 +1165,16 @@ function scene:create( event )
 		sceneGroup:insert(DirectorName)
 
 
+--------------------------Director email-------------------------------
 		DirectorEmail_bg = display.newRect(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
 		DirectorEmail_bg.isVisible = true
+		DirectorEmail_bg.alpha = 0.01
 		DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
 		sceneGroup:insert(DirectorEmail_bg)
+
+		DirectorEmail_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+		DirectorEmail_bottom.x=W/2
+		DirectorEmail_bottom.y= DirectorName_bg.y+DirectorName_bg.height+16
 
 		DirectorEmail = native.newTextField(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
 		DirectorEmail.id="Director Email"
@@ -1135,7 +1187,7 @@ function scene:create( event )
 		sceneGroup:insert(DirectorEmail)
 
 
-
+---------------------submit button------------------------------------
 	sumbitBtn = display.newRect( 0,0,0,0 )
 	sumbitBtn.x=W/2;sumbitBtn.y = DirectorEmail_bg.y+DirectorEmail_bg.height/2+30
 	sumbitBtn.width=80
@@ -1203,7 +1255,7 @@ function scene:show( event )
 
   		---Listview---
 
-  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+3, 311 )
+  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+1, 311 )
   		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
   		rankTop = display.newRect(rankGroup,W/2,H/2-160,300,30)

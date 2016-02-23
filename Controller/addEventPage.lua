@@ -92,7 +92,16 @@ local AttachmentFlag = false
 
 -----------------Function-------------------------
 
+local makeTimeStamp = function ( dateString )
 
+	print( dateString )
+	local pattern = "(%d+)%/(%d+)%/(%d+) (%d+):(%d+) (%a+)"
+	local month,day,year,hour,minute,tzoffset =
+	dateString:match(pattern)
+	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, isdst=false} )
+
+	return timestamp;
+end
 
 
 local function closeDetails( event )
@@ -884,6 +893,21 @@ local function TouchAction( event )
 
 					else
 
+							if TicklerType:lower( ) == "call" then
+
+							
+							local time = makeTimeStamp(startdate)
+
+							print( Event_to_date.text,EventTo_time)
+
+							time = time+ (tonumber(Event_to_date.text)*3600) + (tonumber(EventTo_time)*60)
+
+							print( os.date( "%I:%M %p",time) )
+
+							enddate = startdate
+							EventTo_time = os.date( "%I:%M %p",time)
+						end
+
 					
 
 							Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
@@ -893,7 +917,20 @@ local function TouchAction( event )
 
 					Other.text =  ""
 
-				
+						if TicklerType:lower( ) == "call" then
+
+							
+							local time = makeTimeStamp(startdate)
+
+							time = time+ (tonumber(Event_to_date.text)*3600) + (tonumber(EventTo_time)*60)
+
+
+							enddate = os.date( "%m/%d/%Y %I:%M %p",time)
+							EventTo_time = os.date( "%I:%M %p",time)
+						end
+
+													print( enddate,EventTo_time)
+
 
 						Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
 
