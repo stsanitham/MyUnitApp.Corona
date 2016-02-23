@@ -1095,13 +1095,13 @@ function scene:create( event )
 
 			MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-		--	MKRank_bg.alpha = 0.01
+
             MKRank_bg.strokeWidth = 1
 
 		else
 			MKRank_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-		--	MKRank_bg.alpha = 0.01
+
             MKRank_bg.strokeWidth = 1
 
 		end
