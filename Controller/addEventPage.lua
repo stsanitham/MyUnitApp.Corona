@@ -636,19 +636,19 @@ function get_SaveAttachmentDetails(response)
 
 			if SelectEvent.text:lower( ) == "appointment" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Appointment added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Appointment) added Successfully", { "OK" },onComplete )
 
 		    elseif SelectEvent.text:lower( ) == "call" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Call added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Call) added Successfully", { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "task" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Task added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Task) added Successfully", { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "party" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Party added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Party) added Successfully", { "OK" },onComplete )
 		else
 
 		end
@@ -698,19 +698,19 @@ local function get_CreateTickler( response )
 
 			if SelectEvent.text:lower( ) == "appointment" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Appointment added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Appointment) added Successfully", { "OK" },onComplete )
 
 		    elseif SelectEvent.text:lower( ) == "call" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Call added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Call) added Successfully", { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "task" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Task added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Task) added Successfully", { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "party" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Party added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Party) added Successfully", { "OK" },onComplete )
 		else
 
 		--endlocal alert = native.showAlert(  EventCalender.PageTitle,AddeventPage.Event_Added, { CommonWords.ok },onComplete )
