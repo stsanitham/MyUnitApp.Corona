@@ -958,6 +958,7 @@ function scene:create( event )
 
 	if AppName ~= "DirectorApp" then
 			UnitNumber_bg = display.newRect( W/2, page_title.y+35, W-20, 25)
+			UnitNumber_bg.alpha = 0.01
 			sceneGroup:insert(UnitNumber_bg)
 
 			UnitNumber = native.newTextField(W/2, page_title.y+35, W-20, 25 )
@@ -1095,13 +1096,11 @@ function scene:create( event )
 
 			MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-
             MKRank_bg.strokeWidth = 1
 
 		else
 			MKRank_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-
             MKRank_bg.strokeWidth = 1
 
 		end
@@ -1110,20 +1109,20 @@ function scene:create( event )
 		sceneGroup:insert(MKRank_bg)
 
 
-
 		MKRank = display.newText("",MKRank_bg.x+10,MKRank_bg.y,MKRank_bg.contentWidth,MKRank_bg.height,native.systemFont,14 )
 		MKRank.text = RequestAccess.MKRank_placeholder
 		MKRank.value = "-Select MK Rank-"
 		MKRank.id="MKrank"
-		MKRank.alpha=0.7
+		MKRank.alpha=0.8
 		MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		MKRank.y=MKRank_bg.y+5
 	    --MKRank.size=20
 	    sceneGroup:insert(MKRank)
 
-	  		rankText_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
-	  		rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth/2-15
-	  		rankText_icon.y=MKRank_bg.y
+
+  		rankText_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
+  		rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth/2-15
+  		rankText_icon.y=MKRank_bg.y
 
 
 
@@ -1313,7 +1312,7 @@ function scene:show( event )
 		for i = 1, #List_array do
 			    -- Insert a row into the tableView
 			    rankList:insertRow{ rowHeight = 35,
-			    rowColor = { default={ 1,1,1}, over={ 0, 0, 0, 0.1 } }
+			   -- rowColor = { default={ 1,1,1}, over={ 0, 0, 0, 0.1 } }
 
 			}
 		end

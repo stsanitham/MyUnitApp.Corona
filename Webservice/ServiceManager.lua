@@ -422,11 +422,9 @@ function Webservice.GET_ALL_MYUNITAPP_IMAGE(postExecution)
 
 	request.new( ApplicationConfig.GetAllMyUnitAppImage.."?"..resbody,method,params,postExecution)
 
-	
-
-
 	return response
 end
+
 
 
 function Webservice.GET_ALL_MYUNITAPP_DOCUMENT(postExecution)
@@ -451,10 +449,7 @@ function Webservice.GET_ALL_MYUNITAPP_DOCUMENT(postExecution)
 		AccessToken = row.AccessToken
 		ContactId = row.ContactId
 
-
 	end
-
-	
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 	
@@ -464,9 +459,10 @@ function Webservice.GET_ALL_MYUNITAPP_DOCUMENT(postExecution)
 
 	request.new(ApplicationConfig.GetAllMyUnitAppDocument.."?"..resbody,method,params,postExecution)
 
-
 	return response
 end
+
+
 
 
 function Webservice.GET_ACTIVE_TEAMMEMBERS(postExecution)
@@ -506,6 +502,7 @@ function Webservice.GET_ACTIVE_TEAMMEMBERS(postExecution)
 
 	return response
 end
+
 
 
 function Webservice.GET_ACTIVE_TEAMMEMBERDETAILS(contactId,postExecution)
@@ -1276,3 +1273,50 @@ local resbody = [[{
 	request.new(ApplicationConfig.SaveAttachmentDetails,method,params,postExecution)
 
 end
+
+
+
+
+
+-- function Webservice.SAVE_MYUNITAPP_GOALS(GoalsId,GoalsDetail,postExecution)
+-- 	local request_value = {}
+-- 	local params = {}
+-- 	local headers = {}
+-- 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+-- 	headers["IpAddress"] = Utility.getIpAddress()
+-- 	headers["UniqueId"] = system.getInfo("deviceID")
+-- 	headers["Accept"] = "application/json"
+-- 	headers["Content-Type"] = "application/json"
+-- 	method="POST"
+
+
+-- 	local url = splitUrl(ApplicationConfig.SaveMyEditedUnitAppGoals)
+-- 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+-- 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+-- 	headers["Authentication"] = authenticationkey
+
+
+-- 	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+-- 		print("UserId :"..row.UserId)
+-- 		UserId = row.UserId
+-- 		AccessToken = row.AccessToken
+-- 		ContactId = row.ContactId
+
+-- 	end
+
+-- 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+-- 	local resbody = [[{
+--   "UserId": ']]..UserId..[[',
+--   "MyUnitBuzzGoalsId": ']]..GoalsId..[[',
+--   "MyUnitBuzzGoals": ']]..GoalsDetail..[[',
+--    } ]]
+
+-- 	params={headers = headers,body = resbody}
+
+-- 	print("request : "..json.encode(params))
+
+-- 	request.new(ApplicationConfig.SaveMyEditedUnitAppGoals,method,params,postExecution)
+	
+-- 	return response
+-- end

@@ -131,4 +131,4 @@ ApplicationConfig.GetUnitWiseRegister = ApplicationConfig.BASE_URL.."/MyUnitBuzz
 
 ApplicationConfig.SaveAttachmentDetails = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/SaveAttachmentDetails"
 
-
+ApplicationConfig.SaveMyEditedUnitAppGoals = ApplicationConfig.BASE_URL.."MyUnitBuzz/SaveMyUnitBuzzGoals"
