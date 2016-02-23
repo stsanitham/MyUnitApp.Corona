@@ -23,6 +23,8 @@ local menuBtn,webView
 
 local webView
 
+local editGoals_icon
+
 openPage="goalsPage"
 
 local BackFlag = false
@@ -59,6 +61,20 @@ local function onTimer ( event )
 	print( "event time completion" )
 
 	BackFlag = false
+
+end
+
+
+local function editEvent( event)
+
+		local options = {
+					effect = "slideLeft",
+					time = 500,
+					}
+
+	Runtime:removeEventListener( "key", onKeyEvent )
+
+	composer.showOverlay( "Controller.editGoalsPage", options )
 
 end
 
@@ -116,9 +132,16 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
+
 	MainGroup:insert(sceneGroup)
 end
 
+
+function scene:resumeGame()
+
+	Runtime:addEventListener( "key", onKeyEvent )
+
+end
 
 
 function scene:show( event )
@@ -160,6 +183,18 @@ title = display.newText(sceneGroup,Goals.PageTitle,0,0,native.systemFont,18)
 title.anchorX = 0
 title.x=5;title.y = title_bg.y
 title:setFillColor(0)
+
+
+	editGoals_icon = display.newImageRect( sceneGroup, "res/assert/edit-48.png", 36,28 )
+	editGoals_icon.x=title_bg.x+title_bg.contentWidth/2-20
+	editGoals_icon.y=title_bg.y+title_bg.contentHeight/2 - 17
+	editGoals_icon:addEventListener( "touch", editEvent )
+
+		if not IsOwner then
+
+			editGoals_icon.isVisible = false
+
+		end
 
 
 
@@ -215,13 +250,14 @@ function get_Goals(response)
 	end
 
 end
+
 Webservice.GET_MYUNITAPP_GOALS(get_Goals)
 
 
 menuBtn:addEventListener("touch",menuTouch)
 BgText:addEventListener("touch",menuTouch)
 
- --Runtime:addEventListener( "key", onKeyEvent )
+	Runtime:addEventListener( "key", onKeyEvent )
 
 end	
 
@@ -239,7 +275,6 @@ function scene:hide( event )
 
 	if event.phase == "will" then
 
-
 		elseif phase == "did" then
 
 			composer.removeHidden()
@@ -249,7 +284,9 @@ function scene:hide( event )
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 
-			--Runtime:removeEventListener( "key", onKeyEvent )
+			editGoals_icon:removeEventListener( "touch", editEvent )
+
+			Runtime:removeEventListener( "key", onKeyEvent )
 
 		end	
 

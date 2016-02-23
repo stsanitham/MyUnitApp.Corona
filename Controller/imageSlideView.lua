@@ -419,8 +419,6 @@ function scene:create( event )
 	BackBtn.x=20;BackBtn.y=tabBar.y+tabBar.contentHeight/2+12
 	BackBtn:setFillColor(Utils.convertHexToRGB(color.Black))
 
-	
-
 
 	title = display.newText(sceneGroup,ImageLibrary.PageTitle,0,0,native.systemFont,18)
 	title.anchorX = 0
