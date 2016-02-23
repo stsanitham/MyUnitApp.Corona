@@ -275,9 +275,9 @@ function scene:hide( event )
 
 	if event.phase == "will" then
 
-		elseif phase == "did" then
+			Runtime:removeEventListener( "key", onKeyEvent )
 
-			composer.removeHidden()
+		elseif phase == "did" then
 
 			if webView then webView:removeSelf( );webView=nil end
 
@@ -286,16 +286,16 @@ function scene:hide( event )
 
 			editGoals_icon:removeEventListener( "touch", editEvent )
 
-			Runtime:removeEventListener( "key", onKeyEvent )
+			composer.removeHidden()
 
 		end	
 
 	end
 
 
+
 	function scene:destroy( event )
 		local sceneGroup = self.view
-
 
 
 	end

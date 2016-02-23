@@ -8,6 +8,7 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
+local json = require("json")
 
 
 
@@ -358,6 +359,8 @@ function scene:show( event )
 
 	
 			function get_avtiveTeammemberDetails( response)
+
+				print("Career Detail Response ",json.encode(response))
 
 				Details = response
 						

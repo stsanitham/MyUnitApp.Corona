@@ -89,11 +89,16 @@ local function BackTouch( event )
 
 	if event.phase == "began" then
 
+		display.getCurrentStage():setFocus( event.target )
+
 	elseif event.phase == "ended" then
 
-	print("webview check")
+	     print("webview check")
+	     display.getCurrentStage():setFocus( nil )
 
-		 composer.hideOverlay( "slideRight", 500 )
+		 composer.hideOverlay( "slideRight", 300 )
+
+		 --composer.gotoScene("Controller.goalsPage","slideRight",500)
 
 	end
 
@@ -138,7 +143,7 @@ function scene:show( event )
 
 		elseif phase == "did" then
 
-composer.removeHidden()
+--composer.removeHidden()
 
 title_bg = display.newRect(sceneGroup,0,0,W,30)
 title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
@@ -170,7 +175,7 @@ BgText:addEventListener("touch",menuTouch)
 BackBtn:addEventListener("touch",BackTouch)
 title:addEventListener("touch",BackTouch)
 
---Runtime:addEventListener( "key", onKeyEventDetail )
+Runtime:addEventListener( "key", onKeyEventDetail )
 
 end	
 
@@ -190,7 +195,7 @@ function scene:hide( event )
 
 			--composer.removeHidden()
 
-			--if webView then webView:removeSelf( );webView=nil end
+			if webView then webView:removeSelf( );webView=nil end
 
 
 		elseif phase == "did" then
@@ -200,7 +205,7 @@ function scene:hide( event )
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 
-		--	Runtime:removeEventListener( "key", onKeyEventDetail )
+			Runtime:removeEventListener( "key", onKeyEventDetail )
 
 		end	
 
