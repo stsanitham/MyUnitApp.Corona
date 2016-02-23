@@ -1229,8 +1229,6 @@ local function TouchAction( event )
 
 					end
 
-
-
 						List.width =event.target.contentWidth
 						--List.arrayName = priorityArray
 						--List.textFiled = PriorityLbl

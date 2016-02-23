@@ -27,7 +27,7 @@ local Details_Display = {}
 
 openPage="careerPathPage"
 
-local Career_Username
+local Career_Username , id_value
 
 local leftPadding = 10
 
@@ -297,6 +297,7 @@ local function MapShowing( event )
 end
 
 
+
 local function onKeyEventDetail( event )
 
         local phase = event.phase
@@ -316,6 +317,46 @@ local function onKeyEventDetail( event )
 
         return false
  end
+
+
+
+
+ local function onButtonTouch(event)
+
+ 	 local phase = event.phase
+
+ 	 id_value = event.target.id
+
+    if ( phase == "began" ) then 
+
+    	  if id_value == "Grant Access" then
+
+        print("grant access pressed") 
+
+          elseif id_value == "Remove Access" then
+
+        print("remove access pressed") 
+
+          elseif id_value == "Provide Access" then
+
+        print("provide access pressed") 
+
+          elseif id_value == "Deny Access" then
+
+        print("deny access pressed") 
+
+         elseif id_value == "Block Access" then
+
+        print("block access pressed") 
+
+           end
+
+    elseif ( phase == "ended") then 
+
+      end
+
+ end
+
 
 
 ------------------------------------------------------
@@ -344,6 +385,8 @@ function scene:create( event )
 
 end
 
+
+
 function scene:show( event )
 
 	local sceneGroup = self.view
@@ -370,9 +413,7 @@ function scene:show( event )
 				titleBar.isVisible=false
 
 				titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-
-
-								
+			
 
 				if Details.ImagePath ~= nil then
 					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
@@ -408,7 +449,7 @@ function scene:show( event )
 
 
 
-				if(Details.FirstName ~= nil ) then
+			    if(Details.FirstName ~= nil ) then
 
 					Career_Username = display.newText(sceneGroup,Details.FirstName.." "..Details.LastName,0,0,native.systemFont,24)
 
@@ -606,6 +647,7 @@ function scene:show( event )
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
+
 				if(Details.CareerProgress ~= nil) then
 
 					local CareerProgress = display.newText(CareerPath.Career_Progress,0,0,150,0,native.systemFont,16)
@@ -625,11 +667,167 @@ function scene:show( event )
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
+				Details_Display[#Details_Display+1] = display.newRect( W/2, Details_Display[#Details_Display].y+30, W, 5)
+				Details_Display[#Details_Display].isVisible=false
+				careerDetail_scrollview:insert( Details_Display[#Details_Display] )
+
+
+
+				local InviteAccess = display.newText("MyUnitBuzz - Invite / Access",0,0,0,0,native.systemFontBold,16)
+				InviteAccess.anchorX = 0 ;InviteAccess.anchorY=0
+				InviteAccess.x=leftPadding
+				InviteAccess:setFillColor(0,0,0)
+				InviteAccess.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight-5
+				--Utils.CssforTextView(InviteAccess,sp_labelName)
+				careerDetail_scrollview:insert( InviteAccess )
+
+				-- Details_Display[#Details_Display+1] = display.newRect( W/2, Details_Display[#Details_Display].y+30, W, 5)
+				-- Details_Display[#Details_Display].isVisible=false
+				-- careerDetail_scrollview:insert( Details_Display[#Details_Display] )
+
+
+
+-----------------------------------------------Access Buttons------------------------------------------------------------
+
+                    if(Details.CareerProgress == nil) then
+
+                    print("Grant or Remove Access")
+
+					grantaccess_button = display.newRect(sceneGroup,0,0,W,25)
+					grantaccess_button.x=leftPadding + 75
+					grantaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					grantaccess_button:setStrokeColor(0,0,0,0.5)
+					grantaccess_button:setFillColor(0,0,0,0.3)
+					grantaccess_button.strokeWidth = 1
+					grantaccess_button.cornerRadius = 2
+					grantaccess_button.width = W-190
+					grantaccess_button.id="Grant Access"
+					grantaccess_button:addEventListener("touch",onButtonTouch)
+					careerDetail_scrollview:insert( grantaccess_button )
+
+
+					grantaccess_button_text = display.newText(sceneGroup,"Grant",0,0,native.systemFont,16)
+					grantaccess_button_text.x=grantaccess_button.x
+					grantaccess_button_text.y=grantaccess_button.y
+					grantaccess_button_text:setFillColor(0,0,0)
+					careerDetail_scrollview:insert( grantaccess_button_text )
+
+
+					removeaccess_button = display.newRect(sceneGroup,0,0,W,25)
+					removeaccess_button.x=leftPadding + 223
+					removeaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					removeaccess_button:setStrokeColor(0,0,0,0.5)
+					removeaccess_button:setFillColor(0,0,0,0.3)
+					removeaccess_button.strokeWidth = 1
+					removeaccess_button.cornerRadius = 2
+					removeaccess_button.width = W-190
+					removeaccess_button.id="Remove Access"
+					removeaccess_button:addEventListener("touch",onButtonTouch)
+					careerDetail_scrollview:insert( removeaccess_button )
+
+					removeaccess_button_text = display.newText(sceneGroup,"Remove",0,0,native.systemFont,16)
+					removeaccess_button_text.x=removeaccess_button.x
+					removeaccess_button_text.y=removeaccess_button.y
+					removeaccess_button_text:setFillColor(0,0,0)
+					careerDetail_scrollview:insert( removeaccess_button_text )
+
+					elseif(Details.RecruiterName == nil) then
+
+						 print("Block Access")
+
+				    blockaccess_button = display.newRect(sceneGroup,0,0,W,25)
+					blockaccess_button.x=leftPadding + 150
+					blockaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					blockaccess_button:setStrokeColor(0,0,0,0.5)
+					blockaccess_button:setFillColor(0,0,0,0.3)
+					blockaccess_button.strokeWidth = 1
+					blockaccess_button.cornerRadius = 2
+					blockaccess_button.width = W-150
+					blockaccess_button.id="Block Access"
+					blockaccess_button:addEventListener("touch",onButtonTouch)
+					careerDetail_scrollview:insert( blockaccess_button )
+
+
+					blockaccess_button_text = display.newText(sceneGroup,"Block",0,0,native.systemFont,16)
+					blockaccess_button_text.x=blockaccess_button.x
+					blockaccess_button_text.y=blockaccess_button.y
+					blockaccess_button_text:setFillColor(0,0,0)
+					careerDetail_scrollview:insert( blockaccess_button_text )
+
+
+					elseif(Details.RecruiterName == nil) then
+
+						 print("Provide Access")
+
+				    provideaccess_button = display.newRect(sceneGroup,0,0,W,25)
+					provideaccess_button.x=leftPadding + 150
+					provideaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					provideaccess_button:setStrokeColor(0,0,0,0.5)
+					provideaccess_button:setFillColor(0,0,0,0.3)
+					provideaccess_button.strokeWidth = 1
+					provideaccess_button.cornerRadius = 2
+					provideaccess_button.width = W-150
+					provideaccess_button.id="Provide Access"
+					provideaccess_button:addEventListener("touch",onButtonTouch)
+					careerDetail_scrollview:insert( provideaccess_button )
+
+
+					provideaccess_button_text = display.newText(sceneGroup,"Provide Access",0,0,native.systemFont,16)
+					provideaccess_button_text.x=provideaccess_button.x
+					provideaccess_button_text.y=provideaccess_button.y
+					provideaccess_button_text:setFillColor(0,0,0)
+					careerDetail_scrollview:insert( provideaccess_button_text )
+
+					elseif(Details.RecruiterName == nil) then
+
+                    print("Grant or Deny Access")
+
+					grantaccess_button = display.newRect(sceneGroup,0,0,W,25)
+					grantaccess_button.x=leftPadding + 75
+					grantaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					grantaccess_button:setStrokeColor(0,0,0,0.5)
+					grantaccess_button:setFillColor(0,0,0,0.3)
+					grantaccess_button.strokeWidth = 1
+					grantaccess_button.cornerRadius = 2
+					grantaccess_button.width = W-190
+					grantaccess_button.id="Grant Access"
+					grantaccess_button:addEventListener("touch",onButtonTouch)
+					careerDetail_scrollview:insert( grantaccess_button )
+
+
+					grantaccess_button_text = display.newText(sceneGroup,"Grant",0,0,native.systemFont,16)
+					grantaccess_button_text.x=grantaccess_button.x
+					grantaccess_button_text.y=grantaccess_button.y
+					grantaccess_button_text:setFillColor(0,0,0)
+					careerDetail_scrollview:insert( grantaccess_button_text )
+
+
+					denyaccess_button = display.newRect(sceneGroup,0,0,W,25)
+					denyaccess_button.x=leftPadding + 223
+					denyaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					denyaccess_button:setStrokeColor(0,0,0,0.5)
+					denyaccess_button:setFillColor(0,0,0,0.3)
+					denyaccess_button.strokeWidth = 1
+					denyaccess_button.cornerRadius = 2
+					denyaccess_button.width = W-190
+					denyaccess_button.id="Deny Access"
+					denyaccess_button:addEventListener("touch",onButtonTouch)
+					careerDetail_scrollview:insert( denyaccess_button )
+
+					denyaccess_button_text = display.newText(sceneGroup,"Deny",0,0,native.systemFont,16)
+					denyaccess_button_text.x=denyaccess_button.x
+					denyaccess_button_text.y=denyaccess_button.y
+					denyaccess_button_text:setFillColor(0,0,0)
+					careerDetail_scrollview:insert( denyaccess_button_text )
+
+				    end
 
 				Details_Display[#Details_Display+1] = display.newRect( W/2, Details_Display[#Details_Display].y+30, W, 5)
 				Details_Display[#Details_Display].isVisible=false
 				careerDetail_scrollview:insert( Details_Display[#Details_Display] )
-				
+
+
+---------------------------------------------------End of Access Buttons----------------------------------------------------------------------				
 
 				local totalLenth_count = 0
 
@@ -857,13 +1055,18 @@ function scene:hide( event )
 
 		elseif phase == "did" then
 
+			-- blockaccess_button:removeEventListener("touch",onButtonTouch)
+			-- grantaccess_button:removeEventListener("touch",onButtonTouch)
+			-- removeaccess_button:removeEventListener("touch",onButtonTouch)
+			-- denyaccess_button:removeEventListener("touch",onButtonTouch)
+			-- provideaccess_button:removeEventListener("touch",onButtonTouch)
+
 			event.parent:resumeGame()
 
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 
 			Runtime:removeEventListener("key",onKeyEventDetail)
-
 
 		end	
 
