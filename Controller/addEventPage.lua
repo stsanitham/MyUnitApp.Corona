@@ -92,7 +92,16 @@ local AttachmentFlag = false
 
 -----------------Function-------------------------
 
+local makeTimeStamp = function ( dateString )
 
+	print( dateString )
+	local pattern = "(%d+)%/(%d+)%/(%d+) (%d+):(%d+) (%a+)"
+	local month,day,year,hour,minute,tzoffset =
+	dateString:match(pattern)
+	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, isdst=false} )
+
+	return timestamp;
+end
 
 
 local function closeDetails( event )
@@ -393,8 +402,6 @@ local function onRowTouch(event)
 		List.textFiled.value = row.index - 1
 
 		 print( "Here : "..row.name )
-		 local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
-
 
 		if List.textFiled.text:lower( ) == "party" then
 
@@ -403,13 +410,6 @@ local function onRowTouch(event)
 			PurposeLbl.text = ""
 
 			TicklerType = "PARTY"
-
-			Event_toLbl.text = "To"
-
-			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
-
-			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
-
 
 			callGroup.isVisible = false
 
@@ -430,12 +430,6 @@ local function onRowTouch(event)
 			PurposeLbl.text = ""
 
 			TicklerType = "APPT"
-
-			Event_toLbl.text = "To"
-
-			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
-
-			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
 
 			callGroup.isVisible = false
 
@@ -463,12 +457,6 @@ local function onRowTouch(event)
 			TicklerType = "TASK"
 
 			Purposetxt.text = "Priority"
-
-			Event_toLbl.text = "To"
-
-			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
-
-			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
 
 			--Addinvitees.isVisible = false
 
@@ -510,10 +498,6 @@ local function onRowTouch(event)
 
 			Event_toLbl.text = "Duration"
 
-			Event_to_time.text = "15"
-
-			Event_to_date.text = "00"
-
 			Event_to_date.x= Event_to_datebg.x+35
 
 			Event_from_date.x = Event_from_datebg.x+ 35
@@ -530,10 +514,8 @@ local function onRowTouch(event)
 
 		--	BottomImageWhere.isVisible = false
 
-
-			AppintmentWith.isVisible = true
-			Addinvitees.isVisible = true
 			Phone.isVisible = true
+
 			AccessCode.isVisible = true
 
 		end
@@ -550,16 +532,6 @@ local function onRowTouch(event)
 			Other.isVisible = false
 			BottomOther.isVisible = false
 			belowOtherGroup.y = -40
-
-			if SelectEvent.text:lower( ) == "call" then
-
-				AppintmentWith.isVisible = true
-			Addinvitees.isVisible = true
-			Phone.isVisible = true
-			AccessCode.isVisible = true
-
-
-			end
 
 		end
 
@@ -921,6 +893,20 @@ local function TouchAction( event )
 
 					else
 
+							if TicklerType:lower( ) == "call" then
+
+							
+							local time = makeTimeStamp(startdate)
+
+							print( Event_to_date.text,EventTo_time)
+
+							time = time+ (tonumber(Event_to_date.text)*3600) + (tonumber(EventTo_time)*60)
+
+							print( os.date( "%I:%M %p",time) )
+
+							enddate = startdate
+							EventTo_time = os.date( "%I:%M %p",time)
+						end
 
 					
 
@@ -933,13 +919,20 @@ local function TouchAction( event )
 
 						if TicklerType:lower( ) == "call" then
 
-							enddate = startdate
+							
+							local time = makeTimeStamp(startdate)
 
-							print( enddate.." "..EventFrom_time )
-							--EventTo_time = 
+							time = time+ (tonumber(Event_to_date.text)*3600) + (tonumber(EventTo_time)*60)
+
+
+							enddate = os.date( "%m/%d/%Y %I:%M %p",time)
+							EventTo_time = os.date( "%I:%M %p",time)
 						end
 
-					--	Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+													print( enddate,EventTo_time)
+
+
+						Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
 
 					
 				end
@@ -1013,8 +1006,6 @@ local function TouchAction( event )
 
 				end
 
-				native.setKeyboardFocus( nil )
-
 				timePicker.getTimeValue(getValue)
 
 			elseif event.target.id == "totime" then
@@ -1065,8 +1056,6 @@ local function TouchAction( event )
 
 					else
 
-						native.setKeyboardFocus( nil )
-
 						timePicker.getTimeValue(getValue)
 
 					end
@@ -1098,8 +1087,6 @@ local function TouchAction( event )
 					end
 
 				end
-
-				native.setKeyboardFocus( nil )
 
 				datePicker.getTimeValue(getValue)
 
@@ -1161,9 +1148,7 @@ local function TouchAction( event )
 
 					else
 
-						native.setKeyboardFocus( nil )
-
-						datePicker.getTimeValue(getValue)
+						timePicker.getTimeValue(getValue)
 
 					end
 			
@@ -1291,7 +1276,7 @@ local function TouchAction( event )
 						end
 
 
-				        local alert = native.showAlert(Message.FileSelect, "", {"Choose files",Message.FromCamera,"Cancel"} , onComplete)
+				        local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
 
 
 
@@ -1538,18 +1523,16 @@ local function usertextField( event )
         -- user begins editing defaultField
 		   if(event.target.id == "description") then
 
-     	   scrollTo(-140)
+     	   scrollTo(-100)
 
      	end
 	
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
 
-       
+        scrollTo(0)
 
         if(event.target.id == "description") then
-
-        	 scrollTo(0)
 
         	event.target.isVisible = false
 
@@ -1576,11 +1559,6 @@ local function usertextField( event )
         if(event.target.id == "What") then
 
         	native.setKeyboardFocus( Where )
-
-        elseif (event.target.id == "Where") then
-        	
-        	native.setKeyboardFocus( AppintmentWith )
-
 
         end
 
