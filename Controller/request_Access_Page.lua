@@ -661,6 +661,7 @@ local function RequestProcess()
 				end
 
 
+
 			
 	local function onRowRender( event )
 
@@ -668,8 +669,6 @@ local function RequestProcess()
 
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
-
-
 
     local rowTitle = display.newText(row, List_array[row.index][1], 0, 0,280,38, nil, 14 )
     rowTitle:setFillColor( 0 )
@@ -688,6 +687,7 @@ local function RequestProcess()
     row.text=List_array[row.index][1]
 
 end
+
 
 local function onRowTouch( event )
 	local phase = event.phase
@@ -857,6 +857,9 @@ local function rankTouch( event )
 
 					DirectorName.isVisible = false
 					DirectorEmail.isVisible = false
+
+					DirectorName_bottom.isVisible = false
+					DirectorEmail_bottom.isVisible = false
 
 				-- if unitnumberflag == true then
 
@@ -1252,7 +1255,7 @@ function scene:show( event )
 
   		---Listview---
 
-  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+3, 311 )
+  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+1, 311 )
   		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
   		rankTop = display.newRect(rankGroup,W/2,H/2-160,300,30)
