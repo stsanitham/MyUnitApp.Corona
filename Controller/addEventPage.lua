@@ -393,6 +393,8 @@ local function onRowTouch(event)
 		List.textFiled.value = row.index - 1
 
 		 print( "Here : "..row.name )
+		 local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
+
 
 		if List.textFiled.text:lower( ) == "party" then
 
@@ -401,6 +403,13 @@ local function onRowTouch(event)
 			PurposeLbl.text = ""
 
 			TicklerType = "PARTY"
+
+			Event_toLbl.text = "To"
+
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
+
 
 			callGroup.isVisible = false
 
@@ -421,6 +430,12 @@ local function onRowTouch(event)
 			PurposeLbl.text = ""
 
 			TicklerType = "APPT"
+
+			Event_toLbl.text = "To"
+
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
 
 			callGroup.isVisible = false
 
@@ -448,6 +463,12 @@ local function onRowTouch(event)
 			TicklerType = "TASK"
 
 			Purposetxt.text = "Priority"
+
+			Event_toLbl.text = "To"
+
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
 
 			--Addinvitees.isVisible = false
 
@@ -489,6 +510,10 @@ local function onRowTouch(event)
 
 			Event_toLbl.text = "Duration"
 
+			Event_to_time.text = "15"
+
+			Event_to_date.text = "00"
+
 			Event_to_date.x= Event_to_datebg.x+35
 
 			Event_from_date.x = Event_from_datebg.x+ 35
@@ -505,8 +530,10 @@ local function onRowTouch(event)
 
 		--	BottomImageWhere.isVisible = false
 
-			Phone.isVisible = true
 
+			AppintmentWith.isVisible = true
+			Addinvitees.isVisible = true
+			Phone.isVisible = true
 			AccessCode.isVisible = true
 
 		end
@@ -523,6 +550,16 @@ local function onRowTouch(event)
 			Other.isVisible = false
 			BottomOther.isVisible = false
 			belowOtherGroup.y = -40
+
+			if SelectEvent.text:lower( ) == "call" then
+
+				AppintmentWith.isVisible = true
+			Addinvitees.isVisible = true
+			Phone.isVisible = true
+			AccessCode.isVisible = true
+
+
+			end
 
 		end
 
@@ -969,6 +1006,8 @@ local function TouchAction( event )
 
 				end
 
+				native.setKeyboardFocus( nil )
+
 				timePicker.getTimeValue(getValue)
 
 			elseif event.target.id == "totime" then
@@ -1019,6 +1058,8 @@ local function TouchAction( event )
 
 					else
 
+						native.setKeyboardFocus( nil )
+
 						timePicker.getTimeValue(getValue)
 
 					end
@@ -1050,6 +1091,8 @@ local function TouchAction( event )
 					end
 
 				end
+
+				native.setKeyboardFocus( nil )
 
 				datePicker.getTimeValue(getValue)
 
@@ -1111,7 +1154,9 @@ local function TouchAction( event )
 
 					else
 
-						timePicker.getTimeValue(getValue)
+						native.setKeyboardFocus( nil )
+
+						datePicker.getTimeValue(getValue)
 
 					end
 			
@@ -1239,7 +1284,7 @@ local function TouchAction( event )
 						end
 
 
-				        local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
+				        local alert = native.showAlert(Message.FileSelect, "", {"Choose files",Message.FromCamera,"Cancel"} , onComplete)
 
 
 
@@ -1486,16 +1531,18 @@ local function usertextField( event )
         -- user begins editing defaultField
 		   if(event.target.id == "description") then
 
-     	   scrollTo(-100)
+     	   scrollTo(-140)
 
      	end
 	
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
 
-        scrollTo(0)
+       
 
         if(event.target.id == "description") then
+
+        	 scrollTo(0)
 
         	event.target.isVisible = false
 
@@ -1522,6 +1569,11 @@ local function usertextField( event )
         if(event.target.id == "What") then
 
         	native.setKeyboardFocus( Where )
+
+        elseif (event.target.id == "Where") then
+        	
+        	native.setKeyboardFocus( AppintmentWith )
+
 
         end
 

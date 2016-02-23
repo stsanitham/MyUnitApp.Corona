@@ -232,7 +232,7 @@ Message.DraftContent = "Your Message has been Saved as Draft Successfully"
 
 
 AddeventPage = {}
-AddeventPage.EventnameArray = {"Appointment","Party","Task","Call"}
+AddeventPage.EventnameArray = {"Appointment","Call","Party","Task"}
 AddeventPage.priorityArray = {"Low","Normal","High"}
 AddeventPage.purposeArray = {"Facial","On the Go","Double Facial","Team Building","Training","Follow Up","Customer Service","2 Day Follow up","2 Week Follow up","2 Month Follow up","Other","Color AppointmentDaily","Booking","Initial Appointment","Reschedule","Full Circle"}
 AddeventPage.selectContactGroup = {"--Select Contact Group--"}
