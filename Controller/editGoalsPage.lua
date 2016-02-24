@@ -23,27 +23,12 @@ local menuBtn,BackBtn
 
 local webView 
 
-openPage="editGoalsPage"
+openPage="goalsPage"
 
 local BackFlag = false
 
 local RecentTab_Topvalue = 40
 
-local cleaner = {
-{ "&amp;", "&" },
-{ "&#151;", "-" },
-{ "&#146;", "'" },
-{ "&#160;", " " },
-{ "&nbsp;", " " },
-{ "&#39;", "'" },
-{ "<br />", "\n" },
-{ "</p>", "\n\n" },
-{ "(%b<>)", "\n" },
-{ "\n\n*", "\n" },
-{ "\n*$", "\n" },
-{ "^\n*", "\n" },
-{ "&quot;", "'" },
-}
 
 --------------------------------------------------
 
@@ -55,8 +40,6 @@ local cleaner = {
 
 
 local function onTimer ( event )
-
-	print( "event time completion" )
 
 	BackFlag = false
 
@@ -110,6 +93,8 @@ end
 
 function scene:create( event )
 
+	print( "******************************" )
+
 	local sceneGroup = self.view
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
@@ -140,6 +125,8 @@ function scene:show( event )
 	if phase == "will" then
 
 		ga.enterScene("Unit Goals")
+
+		print( "edit goals" )
 
 		elseif phase == "did" then
 
