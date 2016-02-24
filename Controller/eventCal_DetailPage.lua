@@ -386,8 +386,9 @@ local display_details = {}
 
 		display_details[#display_details+1] = display.newText("",0,0,180,0,native.systemFont,14)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y
+		display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y-7
 		display_details[#display_details].anchorX=0
+		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="where"
 		scrollView:insert( display_details[#display_details] )
 

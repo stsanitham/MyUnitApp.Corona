@@ -278,30 +278,6 @@ local function RequestProcess()
 
 				end
 
-					FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-					FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-					Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
-					Name.y = FirstName_bg.y+FirstName_bg.height+7
-					Email_bg.y = Name_bg.y+Name_bg.height+7
-					Email.y = Name_bg.y+Name_bg.height+7
-					Phone_bg.y = Email_bg.y+Email_bg.height+7
-					Phone.y = Email_bg.y+Email_bg.height+7
-					MKRank_bg.y = Phone_bg.y+Phone_bg.height+7
-					--MKRank.y = Phone_bg.y+Phone_bg.height+7
-					MKRank.y=MKRank_bg.y+5
-					rankText_icon.y=MKRank_bg.y
-					Comment_bg.y = MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
-					Comment.y = Comment_bg.y
-
-					DirectorName_bg.y = Comment_bg.y+Comment_bg.height-7 
-					DirectorName.y = Comment_bg.y+Comment_bg.height-7
-					DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
-					DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
-
-					sumbitBtn.y = DirectorEmail.y+DirectorEmail.height/2+30
-					sumbitBtn_lbl.y=sumbitBtn.y
-					submit_spinner.y=sumbitBtn.y
-
 	              --  validationCheck()
 
 	              if responseUnitValue == "NOTINUNITWISE" then
@@ -332,29 +308,6 @@ local function RequestProcess()
 					DirectorEmail.text = directoremail
 					print(DirectorEmail.text)
 
-					FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-					FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-					Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
-					Name.y = FirstName_bg.y+FirstName_bg.height+7
-					Email_bg.y = Name_bg.y+Name_bg.height+7
-					Email.y = Name_bg.y+Name_bg.height+7
-					Phone_bg.y = Email_bg.y+Email_bg.height+7
-					Phone.y = Email_bg.y+Email_bg.height+7
-					MKRank_bg.y = Phone_bg.y+Phone_bg.height+7
-					MKRank.y=MKRank_bg.y+5
-					rankText_icon.y=MKRank_bg.y
-					Comment_bg.y = MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
-					Comment.y = Comment_bg.y
-
-
-					DirectorName_bg.y = Comment_bg.y+Comment_bg.height-7 
-					DirectorName.y = Comment_bg.y+Comment_bg.height-7
-					DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
-					DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
-
-					sumbitBtn.y = DirectorEmail_bg.y+DirectorEmail_bg.height/2+30
-					sumbitBtn_lbl.y=sumbitBtn.y
-					submit_spinner.y=sumbitBtn.y
 
 					 if responseUnitValue == "UNITNOEXIST" then
 
@@ -1020,6 +973,7 @@ function scene:create( event )
 	if AppName ~= "DirectorApp" then
 			UnitNumber_bg = display.newRect( W/2, page_title.y+35, W-20, 25)
 			sceneGroup:insert(UnitNumber_bg)
+			UnitNumber_bg.alpha=0.01
 
 			UnitNumber = native.newTextField(W/2, page_title.y+35, W-20, 25 )
 			UnitNumber.id = "Unit Number / Director name"
@@ -1167,6 +1121,8 @@ function scene:create( event )
 
 		end
 
+		MKRank_bg:setFillColor( 0,0,0,0 )
+
 		MKRank_bg.id="MKrank"
 		sceneGroup:insert(MKRank_bg)
 
@@ -1191,7 +1147,9 @@ function scene:create( event )
 ----------------------comments --------------------------------------
 	Comment_bg = display.newRect( W/2, 0, W-20, 70)
 	Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-	Comment_bg.alpha = 0.01
+	Comment_bg:setFillColor( 0,0,0,0 )
+	Comment_bg:setStrokeColor( 0, 0, 0 , 0.3 )
+     Comment_bg.strokeWidth = 1
 	sceneGroup:insert(Comment_bg)
 
 	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 70 )

@@ -1317,19 +1317,30 @@ end
 
 local function onSwitchPress( event )
     local switch = event.target
-    if switch.isOn == false then
 
-    	allDay=true
-	    Event_from_timebg.isVisible = false
-		Event_from_time.isVisible = false
-		Event_to_timebg.isVisible = false
-		Event_to_time.isVisible = false
-	else
-		allDay=false
-		Event_from_timebg.isVisible = true
-		Event_from_time.isVisible = true
-		Event_to_timebg.isVisible = true
-		Event_to_time.isVisible = true
+    if event.phase == "began" then
+
+		
+
+	elseif ( event.phase == "ended" ) then
+    
+    	if switch.isOn == true then
+
+	    	allDay=true
+		    Event_from_timebg.isVisible = false
+			Event_from_time.isVisible = false
+			Event_to_timebg.isVisible = false
+			Event_to_time.isVisible = false
+		else
+			allDay=false
+			Event_from_timebg.isVisible = true
+			Event_from_time.isVisible = true
+			Event_to_timebg.isVisible = true
+			Event_to_time.isVisible = true
+
+		end
+	   	
+	   	 
 
 	end
 end
@@ -1512,7 +1523,15 @@ else
 
 end
 
+
 end
+
+	local function createField()
+		native.setKeyboardFocus(nil)
+		input = native.newTextField(W/2, 240, W-20, 25)
+		
+		return input
+	end
 
 
 
@@ -1608,21 +1627,69 @@ local function usertextField( event )
 
 		if(event.target.id == "phone") then
 
-					event.target.text = string.sub(event.target.text,1,event.startPosition )
+				if event.target.text:len() > event.startPosition then
+
+
+									local previousText=event.target.text
+
+									event.target:removeSelf( );event.target=nil
+
+									Phone = createField()
+									Phone.id="Phone"
+									Phone.size=14	
+									Phone:setReturnKey( "next" )
+									Phone.hasBackground = false
+									Phone.placeholder=RequestAccess.Phone_placeholder
+									Phone.inputType = "number"
+									callGroup:insert(Phone)
+
+									Phone.text=previousText:sub(1,event.startPosition )
+
+
+									Phone:addEventListener( "userInput", usertextField )
+
+									event.target = Phone
+									native.setKeyboardFocus(Phone)
+
+									
+
+								end
+							
 
 							local tempvalue = event.target.text:sub(1,1)
+
+							print( event.target.text:len() )
 
 							if (event.target.text:len() == 3) then
 
 								if (tempvalue ~= "(") then
 
+
 									--event.target.text = "("..event.target.text..") "
 
 									local previousText=event.target.text
 
+									Phone:removeSelf( );Phone=nil
+
+									Phone = createField()
+									Phone.id="Phone"
+									Phone.size=14	
+									Phone:setReturnKey( "next" )
+									Phone.hasBackground = false
+									Phone.placeholder=RequestAccess.Phone_placeholder
+									Phone.inputType = "number"
+									callGroup:insert(Phone)
+
 									Phone.text="("..previousText..") "
 
+
+									Phone:addEventListener( "userInput", usertextField )
+
 									native.setKeyboardFocus(Phone)
+
+									event.target = Phone
+
+
 							
 								else
 
@@ -1634,7 +1701,29 @@ local function usertextField( event )
 
 								if event.target.text:sub(5,5) ~= ")" then
 
-									event.target.text = event.text:sub(1,4)..") "..event.target.text:sub(5,5)
+								local previousText=event.target.text
+
+									Phone:removeSelf( );Phone=nil
+
+									Phone = createField()
+									Phone.id="Phone"
+									Phone.size=14	
+									Phone:setReturnKey( "next" )
+									Phone.hasBackground = false
+									Phone.placeholder=RequestAccess.Phone_placeholder
+									Phone.inputType = "number"
+									callGroup:insert(Phone)
+
+									Phone.text=previousText:sub(1,4)..") "..previousText:sub(5,5)
+
+
+									Phone:addEventListener( "userInput", usertextField )
+
+									native.setKeyboardFocus(Phone)
+
+									event.target = Phone
+
+									
 				
 								end
 
@@ -1644,9 +1733,26 @@ local function usertextField( event )
 
 									local previousText=event.target.text
 
+									Phone:removeSelf( );Phone=nil
+
+									Phone = createField()
+									Phone.id="Phone"
+									Phone.size=14	
+									Phone:setReturnKey( "next" )
+									Phone.hasBackground = false
+									Phone.placeholder=RequestAccess.Phone_placeholder
+									Phone.inputType = "number"
+									callGroup:insert(Phone)
+
 									Phone.text=previousText.."- "
 
+
+									Phone:addEventListener( "userInput", usertextField )
+
 									native.setKeyboardFocus(Phone)
+
+									event.target = Phone
+
 
 
 							elseif event.target.text:len() == 10 then
@@ -1658,19 +1764,18 @@ local function usertextField( event )
 
 									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
 								end
+															
 
 							end
 
-						if event.target.text:len() > 15 then
+							if event.target.text:len() > 15 then
 
 								event.target.text = event.target.text:sub(1,15)
 
-								--native.setKeyboardFocus( AccessCode )
 
 							end
 
 						end
-
 
     end 
 end
@@ -1950,7 +2055,7 @@ function scene:show( event )
 		local allday_onOffSwitch = widget.newSwitch {
 			style = "onOff",
 			initialSwitchState = false,
-			onPress = onSwitchPress,
+			onEvent = onSwitchPress,
 			sheet = onOffSwitchSheet,
 
         onOffBackgroundFrame = 1,
