@@ -185,6 +185,9 @@ CareerPath.Recruiter_No="reclutador No"
 CareerPath.Recruiter_Name="reclutador Nombre"
 CareerPath.Career_Progress="El progreso de la carrera"
 CareerPath.NoSim = "Su dispositivo no tiene opción de compra"
+CareerPath.BlockAccess = "¿Seguro que deseas bloquear el acceso de este contacto ?"
+CareerPath.ToBlock = "Sí , quiero bloquear"
+CareerPath.NotToBlock = "No, no quiero bloquear"
 
 
 
