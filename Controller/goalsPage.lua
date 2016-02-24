@@ -185,16 +185,16 @@ title.x=5;title.y = title_bg.y
 title:setFillColor(0)
 
 
-	editGoals_icon = display.newImageRect( sceneGroup, "res/assert/edit-48.png", 36,28 )
-	editGoals_icon.x=title_bg.x+title_bg.contentWidth/2-20
-	editGoals_icon.y=title_bg.y+title_bg.contentHeight/2 - 17
-	editGoals_icon:addEventListener( "touch", editEvent )
+	-- editGoals_icon = display.newImageRect( sceneGroup, "res/assert/edit-48.png", 36,28 )
+	-- editGoals_icon.x=title_bg.x+title_bg.contentWidth/2-20
+	-- editGoals_icon.y=title_bg.y+title_bg.contentHeight/2 - 17
+	-- editGoals_icon:addEventListener( "touch", editEvent )
 
-		if not IsOwner then
+	-- 	if not IsOwner then
 
-			editGoals_icon.isVisible = false
+	-- 		editGoals_icon.isVisible = false
 
-		end
+	-- 	end
 
 
 

@@ -80,6 +80,10 @@ local belowGroup = display.newGroup( )
 
 local belowOtherGroup = display.newGroup( )
 
+local taskGroup = display.newGroup( )
+
+local taskGroupExt = display.newGroup( )
+
 local QuickContactList = {}
 
 local appointmentGroup = display.newGroup()
@@ -134,8 +138,6 @@ local function photonametouch( event )
 				AddAttachment_close.isVisible = false
 
 				 os.remove( path )
-
-           		 print("imagepath removal..........................",os.remove( path ))
 
 			end
 
@@ -431,6 +433,13 @@ local function onRowTouch(event)
 
 			AccessCode.isVisible = false
 
+
+			 taskGroup[1].isVisible = true
+			 taskGroup[2].isVisible = true
+
+			 taskGroup.y=0
+			taskGroupExt.y=0
+
 			
 			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
 
@@ -467,6 +476,12 @@ local function onRowTouch(event)
 			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
 			Event_toLbl.text = "To"
 
+			 taskGroup[1].isVisible = true
+			 taskGroup[2].isVisible = true
+
+			 taskGroup.y=0
+			taskGroupExt.y=0
+
 
 		elseif List.textFiled.text:lower( ) == "task" then
 
@@ -482,6 +497,13 @@ local function onRowTouch(event)
 
 			Purposetxt.text = "Priority"
 
+			 taskGroup[1].isVisible = false
+			 taskGroup[2].isVisible = false
+
+			 taskGroup.y=-40
+			taskGroupExt.y=-40
+
+		
 			
 			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
 
@@ -533,6 +555,12 @@ local function onRowTouch(event)
 			Phone.isVisible = true
 
 			AccessCode.isVisible = true
+
+			 taskGroup[1].isVisible = true
+			 taskGroup[2].isVisible = true
+
+			 taskGroup.y=0
+			taskGroupExt.y=0
 
 
 			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
@@ -1456,17 +1484,13 @@ local function searchfunction( event )
         -- do something with defaultField text
         print( event.target.text )
 
-      Addinvitees.isVisible = true
+     
 
     elseif ( event.phase == "editing" ) then
 
-    	if event.target.id == "appintmentwith" then
+    	if event.target.id == "addinvitees" then
 
-    		Addinvitees.isVisible = true ---changed now (it was false)
-
-        elseif event.target.id == "addinvitees" then
-
-			AppintmentWith.isVisible = true  ---changed now (it was false)
+			AppintmentWith.isVisible = false  ---changed now (it was false)
 
         end
 
@@ -1482,6 +1506,9 @@ local function searchfunction( event )
 
 			searchList:deleteAllRows()
 
+			if event.target.id == "addinvitees" then
+				AppintmentWith.isVisible = true 
+			end
 			
 		else
 
@@ -1548,7 +1575,6 @@ local function searchfunction( event )
 		end
 
 		searchList.x = event.target.x
-		searchList.y = event.target.y-event.target.contentHeight+25
 		searchList.width =event.target.contentWidth
 
 		searchList.textFiled = event.target
@@ -1557,7 +1583,15 @@ local function searchfunction( event )
 
 		if #searchArray >= 3 then
 			searchList.height = 3*36
+
+			if event.text:len() > 1 then
+				searchList:scrollToIndex( 1, 100 )
+			end
 		end
+
+				searchList.y = event.target.y-event.target.contentHeight+25
+
+				
 
 		print( #searchArray,searchList.height )
 
@@ -2512,6 +2546,8 @@ function scene:show( event )
 		belowGroup:insert(AddeventArray[#AddeventArray])
 
 
+	
+
 		Addinvitees = native.newTextField(0, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-30, AddeventArray[#AddeventArray].contentHeight)
 		Addinvitees.id="addinvitees"
 		Addinvitees.size=14
@@ -2522,12 +2558,12 @@ function scene:show( event )
 		Addinvitees.contactinfo=""
 		Addinvitees:setReturnKey( "next" )
 		Addinvitees.placeholder=AddeventPage.Add_Invitees
-		belowGroup:insert(Addinvitees)
+		taskGroup:insert(Addinvitees)
 		Addinvitees:addEventListener( "userInput", searchfunction )
 
 		BottomImageAddinvitees = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomImageAddinvitees.x=W/2;BottomImageAddinvitees.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-		belowGroup:insert(BottomImageAddinvitees)
+		taskGroup:insert(BottomImageAddinvitees)
 
 
 		
@@ -2546,12 +2582,12 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		belowGroup:insert(AddeventArray[#AddeventArray])
+		taskGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 		AddeventArray[#AddeventArray].count = #AddeventArray
 
 
-		Purposetxt = display.newText(belowGroup,AddeventPage.Purpose,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Purposetxt = display.newText(taskGroup,AddeventPage.Purpose,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		Purposetxt.anchorX=0
 		Purposetxt.value=0
 		Purposetxt.count = #AddeventArray
@@ -2560,7 +2596,7 @@ function scene:show( event )
 		Purposetxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 
-		PurposeLbl = display.newText(belowGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PurposeLbl = display.newText(taskGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PurposeLbl.anchorX=0
 		PurposeLbl.value=0
 		PurposeLbl.id="purpose"
@@ -2571,13 +2607,13 @@ function scene:show( event )
 
 		
 
-	  	Purpose_icon = display.newImageRect(belowGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	Purpose_icon = display.newImageRect(taskGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	Purpose_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Purpose_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 	  	BottomImagePurpose = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomImagePurpose.x=W/2;BottomImagePurpose.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-		belowGroup:insert(BottomImagePurpose)
+		taskGroup:insert(BottomImagePurpose)
 
 
 	  	--------
@@ -2590,7 +2626,7 @@ function scene:show( event )
 		AppintmentWith:addEventListener( "userInput", searchfunction )
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		belowGroup:insert(AddeventArray[#AddeventArray])
+		taskGroup:insert(AddeventArray[#AddeventArray])
 
 
 		Other = native.newTextField(0, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-30, AddeventArray[#AddeventArray].contentHeight)
@@ -2603,21 +2639,23 @@ function scene:show( event )
 		Other.contactinfo=""
 		Other:setReturnKey( "next" )
 		Other.placeholder=AddeventPage.Other
-		belowGroup:insert(Other)
+		taskGroup:insert(Other)
 		Other.count = #AddeventArray
 		Other:addEventListener( "userInput", usertextField )
 
 		BottomOther = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomOther.x=W/2;BottomOther.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-		belowGroup:insert(BottomOther)
+		taskGroup:insert(BottomOther)
 
 		AddeventArray[#AddeventArray].isVisible = false
 		Other.isVisible = false
 		BottomOther.isVisible = false
 
+
+		belowGroup:insert( taskGroup )
 		---
 
-
+		
 
 	  	--Priority---
 
@@ -2627,10 +2665,10 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].value = 0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		belowOtherGroup:insert(AddeventArray[#AddeventArray])
+		taskGroupExt:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
-		Prioritytxt = display.newText(belowOtherGroup,AddeventPage.Priority,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Prioritytxt = display.newText(taskGroupExt,AddeventPage.Priority,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		Prioritytxt.anchorX=0
 		Prioritytxt.value=0
 		Prioritytxt.count = #AddeventArray
@@ -2639,7 +2677,7 @@ function scene:show( event )
 		Prioritytxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 
-		PriorityLbl = display.newText(belowOtherGroup,AddeventPage.priorityArray[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
 		PriorityLbl.value=0
 		PriorityLbl.id="priority"
@@ -2649,13 +2687,13 @@ function scene:show( event )
 		PriorityLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 		
-	  	Priority_icon = display.newImageRect(belowOtherGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	Priority_icon = display.newImageRect(taskGroupExt,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	Priority_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Priority_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 	  	BottomImagePriority = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomImagePriority.x=W/2;BottomImagePriority.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-		belowOtherGroup:insert(BottomImagePriority)
+		taskGroupExt:insert(BottomImagePriority)
 
 	  	--------
 
@@ -2669,18 +2707,18 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		belowOtherGroup:insert(AddeventArray[#AddeventArray])
+		taskGroupExt:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
-		AddAttachmentLbl = display.newText(belowOtherGroup,AddeventPage.Add_Attachment,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		AddAttachmentLbl = display.newText(taskGroupExt,AddeventPage.Add_Attachment,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		AddAttachmentLbl.anchorX=0
 		AddAttachmentLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		AddAttachmentLbl.x=leftPadding+5
 		AddAttachmentLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 
-		AddAttachmentPhotoName = display.newText(belowOtherGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		AddAttachmentPhotoName = display.newText(taskGroupExt,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		AddAttachmentPhotoName.anchorX=0
 		AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		AddAttachmentPhotoName.x=leftPadding+5
@@ -2690,11 +2728,11 @@ function scene:show( event )
 
 		
 
-	  	AddAttachment_icon = display.newImageRect(belowOtherGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	AddAttachment_icon = display.newImageRect(taskGroupExt,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	AddAttachment_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	AddAttachment_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
-	  	AddAttachment_close =  display.newImageRect(belowOtherGroup,"res/assert/icon-close.png",20,20)
+	  	AddAttachment_close =  display.newImageRect(taskGroupExt,"res/assert/icon-close.png",20,20)
 	  	AddAttachment_close.id = "close image"
 	  	AddAttachment_close.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	AddAttachment_close.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
@@ -2703,9 +2741,11 @@ function scene:show( event )
 
 	  	BottomImageAddAttachment= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomImageAddAttachment.x=W/2;BottomImageAddAttachment.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-		belowOtherGroup:insert(BottomImageAddAttachment)
+		taskGroupExt:insert(BottomImageAddAttachment)
 
 	  	--------
+
+	  	belowOtherGroup:insert(taskGroupExt)
 
 	  	belowGroup:insert( belowOtherGroup )
 
