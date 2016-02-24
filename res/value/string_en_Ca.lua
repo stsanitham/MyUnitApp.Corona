@@ -184,6 +184,9 @@ CareerPath.Recruiter_No="Recruiter No"
 CareerPath.Recruiter_Name="Recruiter Name"
 CareerPath.Career_Progress="Career Progress"
 CareerPath.NoSim = "Your device does not have call option"
+CareerPath.BlockAccess = "Are you sure you want to block this contact's Access?"
+CareerPath.ToBlock = "Yes, I want to block"
+CareerPath.NotToBlock = "No, I don't want to block"
 
 
 

@@ -349,6 +349,8 @@ local function onKeyEventDetail( event )
 
         print("block access pressed") 
 
+        local block_alert = native.showAlert("Block", CareerPath.BlockAccess, { CareerPath.ToBlock , CareerPath.NotToBlock })
+
            end
 
     elseif ( phase == "ended") then 
@@ -677,7 +679,7 @@ function scene:show( event )
 				InviteAccess.anchorX = 0 ;InviteAccess.anchorY=0
 				InviteAccess.x=leftPadding
 				InviteAccess:setFillColor(0,0,0)
-				InviteAccess.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight-5
+				InviteAccess.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+8
 				--Utils.CssforTextView(InviteAccess,sp_labelName)
 				careerDetail_scrollview:insert( InviteAccess )
 
@@ -689,13 +691,13 @@ function scene:show( event )
 
 -----------------------------------------------Access Buttons------------------------------------------------------------
 
-                    if(Details.CareerProgress == nil) then
+                    if(Details.Status == "DENY" or Details.Status == "BLOCK") then
 
                     print("Grant or Remove Access")
 
 					grantaccess_button = display.newRect(sceneGroup,0,0,W,25)
 					grantaccess_button.x=leftPadding + 75
-					grantaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					grantaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
 					grantaccess_button:setStrokeColor(0,0,0,0.5)
 					grantaccess_button:setFillColor(0,0,0,0.3)
 					grantaccess_button.strokeWidth = 1
@@ -704,7 +706,6 @@ function scene:show( event )
 					grantaccess_button.id="Grant Access"
 					grantaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( grantaccess_button )
-
 
 					grantaccess_button_text = display.newText(sceneGroup,"Grant",0,0,native.systemFont,16)
 					grantaccess_button_text.x=grantaccess_button.x
@@ -715,7 +716,7 @@ function scene:show( event )
 
 					removeaccess_button = display.newRect(sceneGroup,0,0,W,25)
 					removeaccess_button.x=leftPadding + 223
-					removeaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					removeaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
 					removeaccess_button:setStrokeColor(0,0,0,0.5)
 					removeaccess_button:setFillColor(0,0,0,0.3)
 					removeaccess_button.strokeWidth = 1
@@ -731,13 +732,15 @@ function scene:show( event )
 					removeaccess_button_text:setFillColor(0,0,0)
 					careerDetail_scrollview:insert( removeaccess_button_text )
 
-					elseif(Details.RecruiterName == nil) then
 
-						 print("Block Access")
+
+					elseif(Details.Status == "GRANT") then
+
+					print("Block Access")
 
 				    blockaccess_button = display.newRect(sceneGroup,0,0,W,25)
 					blockaccess_button.x=leftPadding + 150
-					blockaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					blockaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
 					blockaccess_button:setStrokeColor(0,0,0,0.5)
 					blockaccess_button:setFillColor(0,0,0,0.3)
 					blockaccess_button.strokeWidth = 1
@@ -747,7 +750,6 @@ function scene:show( event )
 					blockaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( blockaccess_button )
 
-
 					blockaccess_button_text = display.newText(sceneGroup,"Block",0,0,native.systemFont,16)
 					blockaccess_button_text.x=blockaccess_button.x
 					blockaccess_button_text.y=blockaccess_button.y
@@ -755,13 +757,14 @@ function scene:show( event )
 					careerDetail_scrollview:insert( blockaccess_button_text )
 
 
-					elseif(Details.RecruiterName == nil) then
 
-						 print("Provide Access")
+					elseif(Details.Status == "ADDREQUEST" or Details.Status == "REMOVE") then
+
+					print("Provide Access")
 
 				    provideaccess_button = display.newRect(sceneGroup,0,0,W,25)
 					provideaccess_button.x=leftPadding + 150
-					provideaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					provideaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
 					provideaccess_button:setStrokeColor(0,0,0,0.5)
 					provideaccess_button:setFillColor(0,0,0,0.3)
 					provideaccess_button.strokeWidth = 1
@@ -771,20 +774,21 @@ function scene:show( event )
 					provideaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( provideaccess_button )
 
-
 					provideaccess_button_text = display.newText(sceneGroup,"Provide Access",0,0,native.systemFont,16)
 					provideaccess_button_text.x=provideaccess_button.x
 					provideaccess_button_text.y=provideaccess_button.y
 					provideaccess_button_text:setFillColor(0,0,0)
 					careerDetail_scrollview:insert( provideaccess_button_text )
 
-					elseif(Details.RecruiterName == nil) then
+
+
+					elseif(Details.Status == "OPEN") then
 
                     print("Grant or Deny Access")
 
 					grantaccess_button = display.newRect(sceneGroup,0,0,W,25)
 					grantaccess_button.x=leftPadding + 75
-					grantaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					grantaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
 					grantaccess_button:setStrokeColor(0,0,0,0.5)
 					grantaccess_button:setFillColor(0,0,0,0.3)
 					grantaccess_button.strokeWidth = 1
@@ -794,17 +798,15 @@ function scene:show( event )
 					grantaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( grantaccess_button )
 
-
 					grantaccess_button_text = display.newText(sceneGroup,"Grant",0,0,native.systemFont,16)
 					grantaccess_button_text.x=grantaccess_button.x
 					grantaccess_button_text.y=grantaccess_button.y
 					grantaccess_button_text:setFillColor(0,0,0)
 					careerDetail_scrollview:insert( grantaccess_button_text )
 
-
 					denyaccess_button = display.newRect(sceneGroup,0,0,W,25)
 					denyaccess_button.x=leftPadding + 223
-					denyaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+50
+					denyaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
 					denyaccess_button:setStrokeColor(0,0,0,0.5)
 					denyaccess_button:setFillColor(0,0,0,0.3)
 					denyaccess_button.strokeWidth = 1
@@ -1014,22 +1016,22 @@ function scene:show( event )
 
 					myMap:requestLocation( location, locationHandler )
 		
-			
-			end
+			    end
 
-	if #MapDisplayArray == 1 then
+				if #MapDisplayArray == 1 then
 
-						MapDisplayArray[#MapDisplayArray].x=W/2
+					MapDisplayArray[#MapDisplayArray].x=W/2
 
 				end
 
 				sceneGroup:insert(mapGroup)
 				mapGroup.isVisible=false
+
 			Background:addEventListener("touch",bgTouch)
 			menuBtn:addEventListener("touch",menuTouch)
 			BgText:addEventListener("touch",menuTouch)
 
-		end	
+		    end	
 
 
 		ga.enterScene("Unit Career Path")
