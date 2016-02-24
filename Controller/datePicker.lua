@@ -54,8 +54,6 @@ local columnData =
 datePicker.getTimeValue = function(listner)
 
 
-	local getValuesButton,pickerWheel,doneBg
-
 local function showValues( event )
 		-- Retrieve the current values from the picker
 		local values = pickerWheel:getValues()
@@ -76,7 +74,11 @@ local function showValues( event )
 		return true
 	end
 
-print( "############" )
+if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
+if doneBg then display.remove(doneBg);doneBg=nil end
+if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
+
+
 
 	pickerWheel = widget.newPickerWheel {
 		top = display.contentHeight-200,

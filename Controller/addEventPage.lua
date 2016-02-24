@@ -344,6 +344,14 @@ local function searchTouch(event)
 
 		searchList.textFiled.contactinfo = row.value
 
+		if SelectEvent.text:lower( ) == "call" then
+			if row.value.PrefPhone ~= nil and row.value.PrefPhone ~= "" then
+				Phone.text = row.value.PrefPhone
+			else
+				Phone.text = ""
+			end
+		end
+
 		native.setKeyboardFocus( nil )
 
     end
@@ -423,6 +431,14 @@ local function onRowTouch(event)
 
 			AccessCode.isVisible = false
 
+			
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
+
+
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
+			Event_toLbl.text = "To"
+
 		elseif List.textFiled.text:lower( ) == "appointment" then
 
 			AppintmentWith.placeholder="Appointment With"
@@ -444,6 +460,14 @@ local function onRowTouch(event)
 			AccessCode.isVisible = false
 
 
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
+
+
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
+			Event_toLbl.text = "To"
+
+
 		elseif List.textFiled.text:lower( ) == "task" then
 
 			AppintmentWith.placeholder="Linked To"
@@ -458,21 +482,13 @@ local function onRowTouch(event)
 
 			Purposetxt.text = "Priority"
 
-			--Addinvitees.isVisible = false
+			
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
 
-			--BottomImageAddinvitees.isVisible = false
 
-			-- Purposetxt.y = BottomImageAppintmentWith.y + BottomImageAppintmentWith.contentHeight+ 15
-
-			-- PurposeLbl . y = BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+15
-
-			-- Purpose_icon . y = BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+15
-
-			-- BottomImagePurpose . y =BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+25
-
-		--	Where.isVisible = false
-
-		--	BottomImageWhere.isVisible = false
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
+			Event_toLbl.text = "To"
 
 			callGroup.isVisible = false
 
@@ -517,6 +533,53 @@ local function onRowTouch(event)
 			Phone.isVisible = true
 
 			AccessCode.isVisible = true
+
+
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
+
+
+			Event_to_time.text = "15 M"
+			Event_to_time.value=15
+			Event_to_date.text = "00 H"
+			Event_to_date.value=00
+			Event_toLbl.text = "To"
+
+			elseif List.textFiled.id:lower( ) == "totime" then
+
+
+
+				if SelectEvent.text:lower( ) == "call" then
+					List.textFiled.value = List.textFiled.text
+					List.textFiled.text = List.textFiled.text.." M"
+					
+					if 	Phone.isVisible == true then
+										Phone.isVisible = false
+										AccessCode.isVisible = false
+					else
+										Phone.isVisible = true
+										AccessCode.isVisible = true
+					end
+
+				end
+
+			elseif List.textFiled.id:lower( ) == "todate" then
+
+
+				if SelectEvent.text:lower( ) == "call" then
+
+					List.textFiled.value = List.textFiled.text
+					List.textFiled.text = List.textFiled.text.." H"
+
+					if 	Phone.isVisible == true then
+										Phone.isVisible = false
+										AccessCode.isVisible = false
+					else
+										Phone.isVisible = true
+										AccessCode.isVisible = true
+					end
+
+				end
+
 
 		end
 
@@ -900,7 +963,7 @@ local function TouchAction( event )
 
 							print( Event_to_date.text,EventTo_time)
 
-							time = time+ (tonumber(Event_to_date.text)*3600) + (tonumber(EventTo_time)*60)
+							time = time+ (tonumber(Event_to_date.value)*3600) + (tonumber(EventTo_time)*60)
 
 							print( os.date( "%I:%M %p",time) )
 
@@ -922,7 +985,7 @@ local function TouchAction( event )
 							
 							local time = makeTimeStamp(startdate)
 
-							time = time+ (tonumber(Event_to_date.text)*3600) + (tonumber(EventTo_time)*60)
+							time = time+ (tonumber(Event_to_date.value)*3600) + (tonumber(Event_to_time.value)*60)
 
 
 							enddate = os.date( "%m/%d/%Y %I:%M %p",time)
@@ -1026,9 +1089,14 @@ local function TouchAction( event )
 					Where.isVisible = false
 					Addinvitees.isVisible = false
 					if SelectEvent.text:lower( ) == "call" then
-
-								Phone.isVisible = false
-								AccessCode.isVisible = false
+								
+								if 	Phone.isVisible == true then
+									Phone.isVisible = false
+									AccessCode.isVisible = false
+								else
+									Phone.isVisible = true
+									AccessCode.isVisible = true
+								end
 
 							if List.isVisible == false then
 									List.isVisible = true
@@ -1095,12 +1163,7 @@ local function TouchAction( event )
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
 					Addinvitees.isVisible = false
-					if SelectEvent.text:lower( ) == "call" then
-
-					Phone.isVisible = false
-					AccessCode.isVisible = false
-
-					end
+				
 				
 				function getValue(time)
 
@@ -1119,8 +1182,13 @@ local function TouchAction( event )
 					Addinvitees.isVisible = false
 					if SelectEvent.text:lower( ) == "call" then
 
-								Phone.isVisible = false
-								AccessCode.isVisible = false
+								if 	Phone.isVisible == true then
+									Phone.isVisible = false
+									AccessCode.isVisible = false
+								else
+									Phone.isVisible = true
+									AccessCode.isVisible = true
+								end
 
 							if List.isVisible == false then
 									List.isVisible = true
@@ -1148,7 +1216,7 @@ local function TouchAction( event )
 
 					else
 
-						timePicker.getTimeValue(getValue)
+						datePicker.getTimeValue(getValue)
 
 					end
 			
@@ -1408,12 +1476,6 @@ local function searchfunction( event )
 				searchArraytotal[i]=nil
 			end
 
-			if event.target.id == "addinvitees" then
-
-				AppintmentWith.isVisible = true
-
-        	end
-
 			Webservice.GetContact(event.text,get_Contact)
 
 		elseif event.text:len() == 0 then
@@ -1491,10 +1553,10 @@ local function searchfunction( event )
 
 		searchList.textFiled = event.target
 
-		searchList.height = #searchArray*32
+		searchList.height = #searchArray*36
 
 		if #searchArray >= 3 then
-			searchList.height = 3*32
+			searchList.height = 3*36
 		end
 
 		print( #searchArray,searchList.height )
@@ -1549,9 +1611,11 @@ local function usertextField( event )
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
 
-        scrollTo(0)
+        
 
         if(event.target.id == "description") then
+
+        	scrollTo(0)
 
         	event.target.isVisible = false
 
@@ -1578,6 +1642,10 @@ local function usertextField( event )
         if(event.target.id == "What") then
 
         	native.setKeyboardFocus( Where )
+
+        elseif (event.target.id == "Where") then
+
+        	native.setKeyboardFocus( nil )
 
         end
 
@@ -2104,6 +2172,7 @@ function scene:show( event )
 
 		Event_from_date = display.newText(AddeventGroup,os.date( "%m/%d/%Y" ,eventTime ),0,0,native.systemFont,14)
 		Event_from_date.anchorX=0
+		Event_from_date.id="fromdate"
 		Event_from_date:setFillColor( 0 )
 		Event_from_date.x= Event_from_datebg.x+5;Event_from_date.y= Event_from_datebg.y
 
@@ -2150,6 +2219,7 @@ function scene:show( event )
 
 		Event_to_date = display.newText(AddeventGroup,os.date( "%m/%d/%Y" ,eventTime ),0,0,native.systemFont,14)
 		Event_to_date.anchorX=0
+		Event_to_date.id="todate"
 		Event_to_date:setFillColor( 0 )
 		Event_to_date.x= Event_to_datebg.x+5;Event_to_date.y= Event_to_datebg.y
 
@@ -2164,6 +2234,7 @@ function scene:show( event )
 
 		Event_to_time = display.newText(AddeventGroup,os.date( "%I:%M "..TimeZonevalue , eventTime ),0,0,native.systemFont,14)
 		Event_to_time.anchorX=0
+		Event_to_time.id="totime"
 		Event_to_time:setFillColor( 0 )
 		Event_to_time.x= Event_to_timebg.x+5;Event_to_time.y= Event_to_timebg.y
 
@@ -2492,6 +2563,7 @@ function scene:show( event )
 		PurposeLbl = display.newText(belowGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PurposeLbl.anchorX=0
 		PurposeLbl.value=0
+		PurposeLbl.id="purpose"
 		PurposeLbl.count = #AddeventArray
 		PurposeLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		PurposeLbl.x=W/2
@@ -2570,6 +2642,7 @@ function scene:show( event )
 		PriorityLbl = display.newText(belowOtherGroup,AddeventPage.priorityArray[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
 		PriorityLbl.value=0
+		PriorityLbl.id="priority"
 		PriorityLbl.count = #AddeventArray
 		PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		PriorityLbl.x=W/2
