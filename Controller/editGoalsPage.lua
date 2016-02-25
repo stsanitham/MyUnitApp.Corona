@@ -149,8 +149,10 @@ title:setFillColor(0)
 
 		webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
 		webView.anchorY=0
-		webView:request( "goals.html", system.DocumentsDirectory )
+		webView:request( "Utils/ckeditor.html?value='hai", system.ResourceDirectory )
 		sceneGroup:insert( webView )
+
+		--webView:executeJS("Updategoals", "sample value")
 
 function saveEditedGoals(response)
 
