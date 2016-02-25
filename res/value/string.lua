@@ -233,8 +233,10 @@ Message.DraftContent = "Your Message has been Saved as Draft Successfully"
 
 AddeventPage = {}
 AddeventPage.EventnameArray = {"Appointment","Call","Party","Task"}
-AddeventPage.priorityArray = {"Low","Normal","High"}
-AddeventPage.purposeArray = {"Facial","On the Go","Double Facial","Team Building","Training","Follow Up","Customer Service","2 Day Follow up","2 Week Follow up","2 Month Follow up","Other","Color Appointment","Booking","Initial Appointment","Reschedule","Full Circle"}
+AddeventPage.priorityArray = {{value ="Normal",id=1},{value ="High",id=0},{value ="Low",id=2}}
+
+--
+AddeventPage.purposeArray = {{value = "Booking",id=16},{value ="Color Appointment",id=14},{value ="Customer Service",id=9},{value ="Double Facial",id=2},{value ="Facial",id=1},{value ="Follow Up",id=8},{value ="Full Circle",id=19},{value ="Initial Appointment",id=17},{value ="On the Go",id=1},{value ="Reschedule",id=18},{value ="Team Building",id=4},{value ="Training",id=5},{value ="2 Day Follow up",id=10},{value ="2 Week Follow up",id=11},{value ="2 Month Follow up",id=12},{value ="Other",id=13}}
 AddeventPage.selectContactGroup = {"--Select Contact Group--"}
 AddeventPage.contactgroup = {"Contact","Lead","Customer","Team Member"}
 AddeventPage.taskStatus = {"Not Started","In-Progress","Completed","Deferred"}

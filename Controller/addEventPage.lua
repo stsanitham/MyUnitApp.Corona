@@ -369,7 +369,15 @@ local function onRowRender( event )
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
 
-    local rowTitle = display.newText( row, List.arrayName[row.index], 0, 0, nil, 14 )
+    local rowTitle
+
+		if List.arrayName == purposeArray or List.arrayName == priorityArray then
+    		 rowTitle = display.newText( row, List.arrayName[row.index].value, 0, 0, nil, 14 )
+    	else
+
+    		rowTitle = display.newText( row, List.arrayName[row.index], 0, 0, nil, 14 )
+
+    	end
     rowTitle:setFillColor( 0 )
 
     -- Align the label left and vertically centered
@@ -381,14 +389,29 @@ local function onRowRender( event )
     tick.x = rowWidth - 20
     tick.y = rowHeight * 0.5
 
-    if List.textFiled.text == List.arrayName[row.index] then
+    
+
+		if List.arrayName == purposeArray or List.arrayName == priorityArray then
+
+    	 row.name = List.arrayName[row.index].value
+    	 row.id=List.arrayName[row.index].id
+    	 if List.textFiled.text == List.arrayName[row.index].value then
+
+		    else
+		    	tick.isVisible = false
+		    end
 
     else
-    	tick.isVisible = false
+    	 row.id=row.index
+    	 row.name = List.arrayName[row.index]
+    	 if List.textFiled.text == List.arrayName[row.index] then
+
+	    else
+	    	tick.isVisible = false
+	    end
+
     end
 
-
-    row.name = List.arrayName[row.index]
 
     print( row.name )
 end
@@ -401,6 +424,8 @@ local function onRowTouch(event)
 
     if event.phase == 'release' then
 
+    	List.textFiled:setFillColor( 0,0,0 )
+		List.textFiled.size = 14
 
     	What.isVisible = true
     	List_bg.isVisible = false
@@ -409,7 +434,7 @@ local function onRowTouch(event)
 		List.isVisible = false
 		QuickContactList.isVisible = false
 		List.textFiled.text = row.name
-		List.textFiled.value = row.index - 1
+		List.textFiled.value = row.id
 
 		 print( "Here : "..row.name )
 
@@ -995,6 +1020,27 @@ local function TouchAction( event )
 
 			elseif event.target.id == "save" then
 
+				if PurposeLbl.text == "" or PurposeLbl.text == "* Select Purpose" then
+					PurposeLbl:setFillColor( 1,0,0 )
+					PurposeLbl.size = 10
+					PurposeLbl.text = "* Select Purpose"
+
+					return false
+
+				end
+
+				if SelectEvent.text:lower( ) == "call" then
+
+					if Phone.text == "" or Phone.text:len() < 15 or Phone.text == "* Phone Number is mandatory" then
+						Phone.text = "* Phone Number is mandatory"
+						Phone:setTextColor ( 1,0,0 )
+						Phone.size = 10
+
+						return false
+					end
+
+				end
+
 				if allDay == true then
 
 					EventFrom_time = "00:00"
@@ -1044,7 +1090,7 @@ local function TouchAction( event )
 							EventTo_time = os.date( "%I:%M %p",time)
 						end
 
-					
+							
 
 							Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
 
@@ -1732,6 +1778,13 @@ local function usertextField( event )
      	   scrollTo(-105)
 
      	end
+
+     	if event.target.text == "* Phone Number is mandatory" then
+						event.target:setTextColor ( 0,0,0 )
+						event.target.size = 14
+						event.target.text=""
+
+		end
 	
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
@@ -1741,6 +1794,8 @@ local function usertextField( event )
         if(event.target.id == "description") then
 
         	scrollTo(0)
+
+        	native.setKeyboardFocus( nil )
 
         	event.target.isVisible = false
 
@@ -1884,7 +1939,7 @@ local function usertextField( event )
 									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
 								end
 
-							end
+							
 
 
 							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
@@ -1925,6 +1980,14 @@ local function usertextField( event )
 								end
 															
 
+							end
+
+							if event.target.text:len() > 15 then
+
+								event.target.text = event.target.text:sub(1,15)
+
+
+							end
 							end
 
 						
@@ -2730,7 +2793,7 @@ function scene:show( event )
 		Prioritytxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 
-		PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1].value,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
 		PriorityLbl.value=0
 		PriorityLbl.id="priority"

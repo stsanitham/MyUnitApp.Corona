@@ -280,17 +280,6 @@ local function RequestProcess()
 
 				end
 
-	              --  validationCheck()
-
-	              if responseUnitValue == "NOTINUNITWISE" then
-
-					if (DirectorName.id == "Director Name") then
-
-					native.setKeyboardFocus( nil )
-
-				    end
-
-				end
 
 			end
 
@@ -311,18 +300,7 @@ local function RequestProcess()
 					print(DirectorEmail.text)
 
 
-					 if responseUnitValue == "UNITNOEXIST" then
-
-						if (UnitNumber.id == "Unit Number / Director name") then
-
-					  native.setKeyboardFocus( FirstName )
-
-				     end
-
-
-				end
-
-
+			
 				
 	            --validationCheck()
 
@@ -436,6 +414,10 @@ local function RequestProcess()
 
 										native.setKeyboardFocus( nil )
 
+									elseif current_textField.id == "Unit Number / Director name" then
+
+								        native.setKeyboardFocus( FirstName )
+
 									elseif(current_textField.id == "First Name") then
 
 										native.setKeyboardFocus(Name)
@@ -454,11 +436,14 @@ local function RequestProcess()
 
 							   elseif (current_textField.id == "Director Name") then
 
+							   	
+							   	native.setKeyboardFocus( nil )
+
 								native.setKeyboardFocus( DirectorEmail )
 
 							    elseif (current_textField.id == "Director Email") then
 
-								native.setKeyboardFocus( FirstName )
+								native.setKeyboardFocus( nil )
 
 									end
 
@@ -475,8 +460,9 @@ local function RequestProcess()
 										scrollTo( 0 )
 										
 										native.setKeyboardFocus( nil )
-
+						
 						end
+
 
 
         			elseif ( event.phase == "editing" ) then
