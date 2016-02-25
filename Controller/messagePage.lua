@@ -240,13 +240,7 @@ local function MessageLimitation( event )
 
 	   elseif event.phase == "submitted" then
 
-			   if event.target.id =="messagecontent" or event.target.newCharacters=="\n" then
-
-			   	print("here is the focus")
-			   	--native.setKeyboardFocus( feed_url )
-			   	native.setKeyboardFocus( nil )
-
-			   end
+			   
 		   if event.target.id =="messagecontent" then
 
 		   		native.setKeyboardFocus( nil )
@@ -267,7 +261,14 @@ local function MessageLimitation( event )
 		print( event.newCharacters )
 
 	    if (event.newCharacters=="\n") then
+
+
+			Message_content.text = string.gsub( Message_content.text,"%\n","" )
+
 			native.setKeyboardFocus( nil )
+			
+			native.setKeyboardFocus( feed_url )
+
 		end
 
 	end
@@ -322,6 +323,7 @@ end
 
 		Message_content.text = ""
 
+		Message_content.placeholder = Message.Message_placeholder 
 		feed_url.isVisible = true
 
 		feed_url.text = ""
@@ -627,7 +629,15 @@ end
 
 					if url_dropdown.text == "YouTube" or url_dropdown.text == "Vimeo" or url_dropdown.text == "Facebook" or url_dropdown.text == "Yahoo" then
 
+				    if event.target.id == "send" then
+
 					local alert = native.showAlert( Message.ErrorTitle, Message.ErrorMessage, { CommonWords.ok } )
+
+					elseif event.target.id == "draft" then
+
+					local alert = native.showAlert( "Saving Failed", Message.ErrorMessage, { CommonWords.ok } )
+
+				    end
 
 					return false
 

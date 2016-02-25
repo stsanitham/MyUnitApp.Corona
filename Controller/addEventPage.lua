@@ -346,7 +346,7 @@ local function searchTouch(event)
 
 		searchList.textFiled.contactinfo = row.value
 
-		if SelectEvent.text:lower( ) == "call" then
+		if SelectEvent.text:lower( ) == "call" and searchList.textFiled == AppintmentWith then
 			if row.value.PrefPhone ~= nil and row.value.PrefPhone ~= "" then
 				Phone.text = row.value.PrefPhone
 			else
@@ -1020,25 +1020,35 @@ local function TouchAction( event )
 
 			elseif event.target.id == "save" then
 
+				local checkMad = false
+
 				if PurposeLbl.text == "" or PurposeLbl.text == "* Select Purpose" then
 					PurposeLbl:setFillColor( 1,0,0 )
 					PurposeLbl.size = 10
 					PurposeLbl.text = "* Select Purpose"
-
-					return false
+					scrollView:scrollToPosition
+						{
+						    y = -150,
+						    time = 400,
+						}
+					checkMad = true
 
 				end
 
 				if SelectEvent.text:lower( ) == "call" then
 
-					if Phone.text == "" or Phone.text:len() < 15 or Phone.text == "* Phone Number is mandatory" then
+					if Phone.text == "" or Phone.text == "* Phone Number is mandatory" then
 						Phone.text = "* Phone Number is mandatory"
 						Phone:setTextColor ( 1,0,0 )
 						Phone.size = 10
 
-						return false
+						checkMad = true
 					end
 
+				end
+
+				if checkMad == true then
+					return false
 				end
 
 				if allDay == true then
@@ -1175,11 +1185,13 @@ local function TouchAction( event )
 					AccessCode.isVisible = false
 
 				end
-				function getValue(time)
+				local function getValue(time)
 
 					Event_from_time.text = time
 					AppintmentWith.isVisible = true
-					Where.isVisible = true
+					if SelectEvent.text:lower( ) ~= "task" and SelectEvent.text:lower( ) ~= "call" then
+						Where.isVisible = true
+					end
 					Addinvitees.isVisible = true
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
@@ -1196,7 +1208,9 @@ local function TouchAction( event )
 
 						Event_to_time.text = time
 						AppintmentWith.isVisible = true
-						Where.isVisible = true
+					if SelectEvent.text:lower( ) ~= "task" and SelectEvent.text:lower( ) ~= "call" then
+									Where.isVisible = true
+								end	
 						Addinvitees.isVisible = true
 						if SelectEvent.text:lower( ) == "call" then
 							Phone.isVisible = true
@@ -1262,11 +1276,14 @@ local function TouchAction( event )
 
 					end
 				
-				function getValue(time)
+				local function getValue(time)
 
 					Event_from_date.text = time
 					AppintmentWith.isVisible = true
-					Where.isVisible = true
+
+					if SelectEvent.text:lower( ) ~= "task" and SelectEvent.text:lower( ) ~= "call" then
+						Where.isVisible = true
+					end
 					Addinvitees.isVisible = true
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
@@ -1284,12 +1301,13 @@ local function TouchAction( event )
 					Addinvitees.isVisible = false
 				
 				
-				function getValue(time)
+				local function getValue(time)
 
 					Event_to_date.text = time
 					AppintmentWith.isVisible = true
-					Where.isVisible = true
-					Addinvitees.isVisible = true
+					if SelectEvent.text:lower( ) ~= "task" and SelectEvent.text:lower( ) ~= "call" then
+						Where.isVisible = true
+					end					Addinvitees.isVisible = true
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
 						AccessCode.isVisible = true
@@ -1775,7 +1793,7 @@ local function usertextField( event )
         -- user begins editing defaultField
 		   if(event.target.id == "description") then
 
-     	   scrollTo(-105)
+     	   scrollTo(-115)
 
      	end
 
@@ -1817,13 +1835,17 @@ local function usertextField( event )
 
         	
 
-        end
+        
 
-        if(event.target.id == "What") then
+        elseif(event.target.id == "What") then
 
         	native.setKeyboardFocus( Where )
 
         elseif (event.target.id == "Where") then
+
+        	native.setKeyboardFocus( nil )
+
+        else
 
         	native.setKeyboardFocus( nil )
 
