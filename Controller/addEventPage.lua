@@ -1793,7 +1793,13 @@ local function usertextField( event )
         -- user begins editing defaultField
 		   if(event.target.id == "description") then
 
-     	   scrollTo(-115)
+		   	if SelectEvent.text:lower( ) == "call" then
+		   		scrollTo(-135)
+		   	else
+
+     	  	 scrollTo(-115)
+
+     	  	end
 
      	end
 
