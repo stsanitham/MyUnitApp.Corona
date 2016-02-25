@@ -440,6 +440,21 @@ local function onRowTouch(event)
 			 taskGroup.y=0
 			taskGroupExt.y=0
 
+			if allDay == true then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=false
+					end
+				end
+				Event_toLbl.isVisible = true
+				Event_to_datebg.isVisible = true
+				Event_to_date.isVisible = true
+				Event_to_timebg.isVisible = false
+				BottomImageTo.isVisible = true
+			end
+
 			
 			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
 
@@ -467,6 +482,21 @@ local function onRowTouch(event)
 			Phone.isVisible = false
 
 			AccessCode.isVisible = false
+
+			if allDay == true then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=false
+					end
+				end
+				Event_toLbl.isVisible = true
+				Event_to_datebg.isVisible = true
+				Event_to_date.isVisible = true
+				Event_to_timebg.isVisible = false
+				BottomImageTo.isVisible = true
+			end
 
 
 			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
@@ -502,6 +532,21 @@ local function onRowTouch(event)
 
 			 taskGroup.y=-40
 			taskGroupExt.y=-40
+
+			if allDay == true then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=false
+					end
+				end
+				Event_toLbl.isVisible = true
+				Event_to_datebg.isVisible = true
+				Event_to_date.isVisible = true
+				Event_to_timebg.isVisible = false
+				BottomImageTo.isVisible = true
+			end
 
 		
 			
@@ -563,6 +608,8 @@ local function onRowTouch(event)
 			taskGroupExt.y=0
 
 
+
+
 			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
 
 
@@ -570,7 +617,6 @@ local function onRowTouch(event)
 			Event_to_time.value=15
 			Event_to_date.text = "00 H"
 			Event_to_date.value=00
-			Event_toLbl.text = "To"
 
 			elseif List.textFiled.id:lower( ) == "totime" then
 
@@ -923,7 +969,6 @@ local function TouchAction( event )
         -- If the touch on the button has moved more than 10 pixels,
         -- pass focus back to the scroll view so it can continue scrolling
 
-        print(dy)
         if ( dy > 10 ) then
         	display.getCurrentStage():setFocus( nil )
             scrollView:takeFocus( event )
@@ -1427,12 +1472,42 @@ local function onSwitchPress( event )
 			Event_from_time.isVisible = false
 			Event_to_timebg.isVisible = false
 			Event_to_time.isVisible = false
+
+			if SelectEvent.text:lower( ) == "call" then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=false
+					end
+				end
+				Event_toLbl.isVisible = false
+				Event_to_datebg.isVisible = false
+				Event_to_date.isVisible = false
+				Event_to_timebg.isVisible = false
+				BottomImageTo.isVisible = false
+			end
 		else
 			allDay=false
 			Event_from_timebg.isVisible = true
 			Event_from_time.isVisible = true
 			Event_to_timebg.isVisible = true
 			Event_to_time.isVisible = true
+
+			if SelectEvent.text:lower( ) == "call" then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=true
+					end
+				end
+				Event_toLbl.isVisible = true
+				Event_to_datebg.isVisible = true
+				Event_to_date.isVisible = true
+				Event_to_timebg.isVisible = true
+				BottomImageTo.isVisible = true
+			end
 
 		end
 	   	
@@ -1500,6 +1575,16 @@ local function searchfunction( event )
 				searchArraytotal[i]=nil
 			end
 
+
+			if event.target.id == "addinvitees" then
+
+				if #searchArray == 0 then
+
+					AppintmentWith.isVisible = true 
+
+				end
+			end
+
 			Webservice.GetContact(event.text,get_Contact)
 
 		elseif event.text:len() == 0 then
@@ -1507,7 +1592,13 @@ local function searchfunction( event )
 			searchList:deleteAllRows()
 
 			if event.target.id == "addinvitees" then
-				AppintmentWith.isVisible = true 
+
+				
+				
+
+					AppintmentWith.isVisible = true 
+
+				
 			end
 			
 		else
@@ -1638,7 +1729,7 @@ local function usertextField( event )
         -- user begins editing defaultField
 		   if(event.target.id == "description") then
 
-     	   scrollTo(-100)
+     	   scrollTo(-105)
 
      	end
 	
@@ -1725,73 +1816,38 @@ local function usertextField( event )
 
 
 
+		if(event.target.id == "accesscode") then
 
+			if event.text:len() > 10 then
 
-		if(event.target.id == "phone") then
+					event.target.text = event.target.text:sub(1,10)
 
-				if event.target.text:len() > event.startPosition then
+				end
+		elseif(event.target.id == "What" or event.target.id == "Where" ) then
 
+			if event.text:len() > 100 then
 
-									local previousText=event.target.text
+					event.target.text = event.target.text:sub(1,100)
 
-									event.target:removeSelf( );event.target=nil
+				end
 
-									Phone = createField()
-									Phone.id="Phone"
-									Phone.size=14	
-									Phone:setReturnKey( "next" )
-									Phone.hasBackground = false
-									Phone.placeholder=RequestAccess.Phone_placeholder
-									Phone.inputType = "number"
-									callGroup:insert(Phone)
+		elseif(event.target.id == "phone") then
 
-									Phone.text=previousText:sub(1,event.startPosition )
-
-
-									Phone:addEventListener( "userInput", usertextField )
-
-									event.target = Phone
-									native.setKeyboardFocus(Phone)
-
-									
-
-								end
-							
+				event.target.text = string.sub(event.target.text,1,event.startPosition )
 
 							local tempvalue = event.target.text:sub(1,1)
-
-							print( event.target.text:len() )
 
 							if (event.target.text:len() == 3) then
 
 								if (tempvalue ~= "(") then
 
-
 									--event.target.text = "("..event.target.text..") "
 
 									local previousText=event.target.text
 
-									Phone:removeSelf( );Phone=nil
-
-									Phone = createField()
-									Phone.id="Phone"
-									Phone.size=14	
-									Phone:setReturnKey( "next" )
-									Phone.hasBackground = false
-									Phone.placeholder=RequestAccess.Phone_placeholder
-									Phone.inputType = "number"
-									callGroup:insert(Phone)
-
 									Phone.text="("..previousText..") "
 
-
-									Phone:addEventListener( "userInput", usertextField )
-
 									native.setKeyboardFocus(Phone)
-
-									event.target = Phone
-
-
 							
 								else
 
@@ -1803,31 +1859,32 @@ local function usertextField( event )
 
 								if event.target.text:sub(5,5) ~= ")" then
 
-								local previousText=event.target.text
-
-									Phone:removeSelf( );Phone=nil
-
-									Phone = createField()
-									Phone.id="Phone"
-									Phone.size=14	
-									Phone:setReturnKey( "next" )
-									Phone.hasBackground = false
-									Phone.placeholder=RequestAccess.Phone_placeholder
-									Phone.inputType = "number"
-									callGroup:insert(Phone)
-
-									Phone.text=previousText:sub(1,4)..") "..previousText:sub(5,5)
+									event.target.text = event.text:sub(1,4)..") "..event.target.text:sub(5,5)
+				
+								end
 
 
-									Phone:addEventListener( "userInput", usertextField )
+							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
+
+
+									local previousText=event.target.text
+
+									Phone.text=previousText.."- "
 
 									native.setKeyboardFocus(Phone)
 
-									event.target = Phone
 
-									
-				
+							elseif event.target.text:len() == 10 then
+
+								if string.find(event.target.text,"-") then
+
+									event.target.text = event.target.text:sub(1,9)
+								else
+
+									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
 								end
+
+							end
 
 
 							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
@@ -1870,16 +1927,10 @@ local function usertextField( event )
 
 							end
 
-							if event.target.text:len() > 15 then
+						
 
-								event.target.text = event.target.text:sub(1,15)
-
-
-							end
-
-						end
-
-    end 
+end
+	
 end
 
 
@@ -2329,6 +2380,7 @@ function scene:show( event )
 		Phone.anchorY=0
 		Phone.hasBackground = false
 		Phone:setReturnKey( "next" )
+		Phone.inputType = "number"
 		Phone.placeholder=AddeventPage.Phone
 		Phone:addEventListener( "userInput", usertextField )
 		callGroup:insert(Phone)
@@ -2357,6 +2409,7 @@ function scene:show( event )
 		AccessCode.hasBackground = false
 		AccessCode:setReturnKey( "next" )
 		AccessCode.placeholder=AddeventPage.Access_Code
+		AccessCode:addEventListener( "userInput", usertextField )
 		callGroup:insert(AccessCode)
 
 		BottomImageAccessCode= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)

@@ -305,6 +305,12 @@ local display_details = {}
 
 		titleBar_text.text = Details.title
 
+			if titleBar_text.text:len() > 30 then
+
+					titleBar_text.text = titleBar_text.text:sub(1,30).."..."
+
+				end
+
 
 		display_details[#display_details+1] = display.newText(EventCalender.When,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
