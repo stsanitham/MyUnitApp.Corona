@@ -32,6 +32,9 @@ local BackFlag = false
 local RecentTab_Topvalue = 40
 
 
+		local content=""
+
+
 --------------------------------------------------
 
 
@@ -58,10 +61,15 @@ local function editEvent( event)
 
 		Runtime:removeEventListener( "key", onKeyEvent )
 
+
+		
 		local options = {
     effect = "fromRight",
     time = 500,
-   
+  	params = {
+					content = content,
+					
+				}
 		}
 
 		composer.showOverlay( "Controller.editGoalsPage",options )
@@ -181,6 +189,9 @@ function get_Goals(response)
 	if response.MyUnitBuzzGoals ~= nil and response.MyUnitBuzzGoals ~= "" then
 
 		local t = response.MyUnitBuzzGoals
+
+
+		content = t
 
 		local saveData = t
 

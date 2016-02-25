@@ -89,6 +89,16 @@ local function BackTouch( event )
 
 end
 
+function string.urlEncode( str )
+	if ( str ) then
+		str = string.gsub( str, "\n", "\r\n" )
+		str = string.gsub( str, "([^%w ])",
+			function (c) return string.format( "%%%02X", string.byte(c) ) end )
+		str = string.gsub( str, " ", "+" )
+	end
+	return str
+end
+
 
 
 function scene:create( event )
@@ -145,11 +155,13 @@ title.anchorX = 0
 title.x=BackBtn.x+BackBtn.contentWidth/2+5;title.y = BackBtn.y
 title:setFillColor(0)
 
+	print( "Utils/ckeditor.html?value="..event.params.content )
 
+	local test=string.urlEncode( event.params.content )
 
 		webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
 		webView.anchorY=0
-		webView:request( "Utils/ckeditor.html?value='hai", system.ResourceDirectory )
+		webView:request( "Utils/ckeditor.html?value='"..test.."'", system.ResourceDirectory )
 		sceneGroup:insert( webView )
 
 		--webView:executeJS("Updategoals", "sample value")

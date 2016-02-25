@@ -23,11 +23,19 @@
 			height: 320
 		} );
 
-			// var tech = getUrlParameter('value');
 
-			var currentURL = document.URL;
-			var params = currentURL.extract();
-			 CKEDITOR.instances.editor1.setData(params.value);              
+			var vars = [], hash;
+		    var q = document.URL.split('?')[1];
+		    if(q != undefined){
+		        q = q.split('&');
+		        for(var i = 0; i < q.length; i++){
+		            hash = q[i].split('=');
+		            vars.push(hash[1]);
+		            vars[hash[0]] = decodeURIComponent(hash[1]);
+		        }
+		}
+
+			 CKEDITOR.instances.editor1.setData(vars[hash[0]]);              
 		
 		function myFunction() {
 
