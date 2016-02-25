@@ -18,7 +18,6 @@ local RequestFromStatus = ""
 local unitnumberflag = false
 
 
-
 --------------- Initialization -------------------
 
 local W = display.contentWidth;

@@ -379,6 +379,7 @@ local display_details = {}
 		--------------------
 
 		----Where----
+		 if Details.TicklerType ~= 4 then
 
 		if Details.Location ~= nil or Details.PhoneNumber ~= nil or Details.Location ~= "" then
 
@@ -397,6 +398,8 @@ local display_details = {}
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="where"
 		scrollView:insert( display_details[#display_details] )
+
+		end
 
 
 		if Details.TicklerType == 2 then

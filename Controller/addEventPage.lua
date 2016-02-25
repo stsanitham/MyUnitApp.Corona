@@ -1189,9 +1189,14 @@ local function TouchAction( event )
 
 					Event_from_time.text = time
 					AppintmentWith.isVisible = true
-					if SelectEvent.text:lower( ) ~= "task" and SelectEvent.text:lower( ) ~= "call" then
+
+					if SelectEvent.text:lower( ) ~= "call" then
 						Where.isVisible = true
+					elseif SelectEvent.text:lower( ) ~= "task" then
+						Where.isVisible = true
+						Addinvitees.isVisible = true
 					end
+
 					Addinvitees.isVisible = true
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
@@ -1208,9 +1213,12 @@ local function TouchAction( event )
 
 						Event_to_time.text = time
 						AppintmentWith.isVisible = true
-					if SelectEvent.text:lower( ) ~= "task" and SelectEvent.text:lower( ) ~= "call" then
-									Where.isVisible = true
-								end	
+						if SelectEvent.text:lower( ) ~= "call" then
+							Where.isVisible = true
+						elseif SelectEvent.text:lower( ) ~= "task" then
+							Where.isVisible = true
+							Addinvitees.isVisible = true
+						end
 						Addinvitees.isVisible = true
 						if SelectEvent.text:lower( ) == "call" then
 							Phone.isVisible = true
@@ -1281,8 +1289,11 @@ local function TouchAction( event )
 					Event_from_date.text = time
 					AppintmentWith.isVisible = true
 
-					if SelectEvent.text:lower( ) ~= "task" and SelectEvent.text:lower( ) ~= "call" then
+					if SelectEvent.text:lower( ) ~= "call" then
 						Where.isVisible = true
+					elseif SelectEvent.text:lower( ) ~= "task" then
+						Where.isVisible = true
+						Addinvitees.isVisible = true
 					end
 					Addinvitees.isVisible = true
 					if SelectEvent.text:lower( ) == "call" then
@@ -1305,9 +1316,15 @@ local function TouchAction( event )
 
 					Event_to_date.text = time
 					AppintmentWith.isVisible = true
-					if SelectEvent.text:lower( ) ~= "task" and SelectEvent.text:lower( ) ~= "call" then
+					
+						if SelectEvent.text:lower( ) ~= "call" then
 						Where.isVisible = true
-					end					Addinvitees.isVisible = true
+					elseif SelectEvent.text:lower( ) ~= "task" then
+						Where.isVisible = true
+						Addinvitees.isVisible = true
+					end
+
+									Addinvitees.isVisible = true
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
 						AccessCode.isVisible = true
@@ -1794,7 +1811,7 @@ local function usertextField( event )
 		   if(event.target.id == "description") then
 
 		   	if SelectEvent.text:lower( ) == "call" then
-		   		scrollTo(-135)
+		   		scrollTo(-200)
 		   	else
 
      	  	 scrollTo(-115)
@@ -2166,6 +2183,7 @@ function scene:create( event )
 		saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 50, 20 )
 		saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 		saveBtn_BG.id = "save"
+
 		saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
 
 
