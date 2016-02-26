@@ -33,6 +33,7 @@ local RecentTab_Topvalue = 40
 
 
 		local content=""
+		local goalsid
 
 
 --------------------------------------------------
@@ -57,7 +58,7 @@ local function editEvent( event)
 
 	if event.phase == "ended" then
 
-		webView.isVisible = false
+		webView:removeSelf( );webView=nil
 
 		Runtime:removeEventListener( "key", onKeyEvent )
 
@@ -68,6 +69,7 @@ local function editEvent( event)
     time = 500,
   	params = {
 					content = content,
+					goalsid = goalsid
 					
 				}
 		}
@@ -141,7 +143,7 @@ end
 
 function scene:resumeGame()
 
-	webView.isVisible = true
+	Webservice.GET_MYUNITAPP_GOALS(get_Goals)
 
 	Runtime:addEventListener( "key", onKeyEvent )
 
@@ -189,6 +191,8 @@ function get_Goals(response)
 	if response.MyUnitBuzzGoals ~= nil and response.MyUnitBuzzGoals ~= "" then
 
 		local t = response.MyUnitBuzzGoals
+
+		goalsid = response.MyUnitBuzzGoalsId
 
 
 		content = t

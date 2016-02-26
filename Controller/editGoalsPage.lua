@@ -9,6 +9,8 @@ local scene = composer.newScene()
 
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
+local mime = require("mime")
+local http = require("socket.http")
 local json = require('json')
 
 --------------- Initialization -------------------
@@ -28,6 +30,12 @@ openPage="goalsPage"
 local BackFlag = false
 
 local RecentTab_Topvalue = 40
+
+local updatedresponse
+
+local base64 = {}
+
+local Goalsid
 
 
 --------------------------------------------------
@@ -99,11 +107,57 @@ function string.urlEncode( str )
 	return str
 end
 
+function urlDecode( str )
+    assert( type(str)=='string', "urlDecode: input not a string" )
+    str = string.gsub (str, "+", " ")
+    str = string.gsub (str, "%%(%x%x)",
+        function(h) return string.char(tonumber(h,16)) end)
+    str = string.gsub (str, "\r\n", "\n")
+    return str
+end
+
+function get_SaveMyUnitBuzzGoals(response)
+	composer.hideOverlay( )
+end
+
+
+local function webListener( event )
+    local shouldLoad = true
+
+    local url = event.url
+
+    print( "here" )
+    if 1 == string.find( url, "corona:close" ) then
+        -- Close the web popup
+
+        print( "!!!!!!!!" )
+        shouldLoad = false
+--base64.decode
+        updatedresponse = urlDecode(url)
+         print( updatedresponse )
+
+
+        updatedresponse = (string.sub( updatedresponse, 18,updatedresponse:len() ))
+
+        print( updatedresponse )
+
+
+        Webservice.SaveMyUnitBuzzGoals(Goalsid,updatedresponse,get_SaveMyUnitBuzzGoals)
+
+    end
+
+    if event.errorCode then
+        -- Error loading page
+        print( "Error: " .. tostring( event.errorMessage ) )
+        shouldLoad = false
+    end
+
+    return shouldLoad
+end
+
 
 
 function scene:create( event )
-
-	print( "******************************" )
 
 	local sceneGroup = self.view
 
@@ -138,6 +192,8 @@ function scene:show( event )
 
 		print( "edit goals" )
 
+		Goalsid = event.params.goalsid
+
 		elseif phase == "did" then
 
 --composer.removeHidden()
@@ -159,12 +215,23 @@ title:setFillColor(0)
 
 	local test=string.urlEncode( event.params.content )
 
-		webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
-		webView.anchorY=0
-		webView:request( "Utils/ckeditor.html?value='"..test.."'", system.ResourceDirectory )
-		sceneGroup:insert( webView )
+		-- webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
+		-- webView.anchorY=0
+		-- webView:request( "Utils/ckeditor.html?value='"..test.."'", system.ResourceDirectory )
+		-- sceneGroup:insert( webView )
+		-- webView:addEventListener( "urlRequest", webListener )
 
 		--webView:executeJS("Updategoals", "sample value")
+
+		local options =
+{
+    hasBackground = false,
+    baseUrl = system.ResourceDirectory,
+    urlRequest = webListener
+}
+native.showWebPopup( 10, 70, display.viewableContentWidth, display.viewableContentHeight-80, "Utils/ckeditor.html?value='"..test.."'", options )
+
+
 
 function saveEditedGoals(response)
 

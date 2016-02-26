@@ -17,8 +17,7 @@
 		CKEDITOR.replace( 'editor1', {
 			fullPage: true,
 			extraPlugins: 'docprops',
-			// Disable content filtering because if you use full page mode, you probably
-			// want to  freely enter any HTML content in source mode without any limitations.
+
 			allowedContent: true,
 			height: 320
 		} );
@@ -27,27 +26,38 @@
 		// var res = encodeURI(uri);
 
 			var vars = [], hash;
-		    var q = encodeURIComponent(document.URL.split('?')[1]);
+		    var q = (document.URL.split('?')[1]);
 		    if(q != undefined){
 		        q = q.split('&');
 		        for(var i = 0; i < q.length; i++){
 		            hash = q[i].split('=');
 		            vars.push(hash[1]);
-		            vars[hash[0]] = hash[1];
+		            vars[hash[0]] = decodeURIComponent(hash[1]);
 		        }
 		}
 
 			 CKEDITOR.instances.editor1.setData(vars[hash[0]]);              
 		
-		function myFunction() {
+		function get_action(form) {
 
-			CKEDITOR.instances.editor1.setData("<p>My Text</p>");
+			var ckvalue = CKEDITOR.instances.editor1.getData();  
+
+			 CKEDITOR.instances.editor1.setData(ckvalue+" extra test sample"); 
+
+		 var texttemp='corona:close?id='+ckvalue; 
+
+		 form.action = texttemp
+       		
 		}
 
 
 	</script>
 
-	<button onclick="myFunction()">Submit</button>
+	<form onsubmit="get_action(this);">
+    <input type="submit" />
+	</form>
+
+	<!-- <button id="submit" onclick="myFunction()">Submit</button> -->
 </body>
 
 </html>
