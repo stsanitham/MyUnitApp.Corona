@@ -31,11 +31,11 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 --]]
 
---[[---------Android Live----------------
+----[[---------Android Live----------------
 
 IsLive = true
 
-ApplicationConfig.Version = "/Android/1.1.1"	    --1.1.0
+ApplicationConfig.Version = "/Android/1.1.2"	    --1.1.0
 
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.com/"..ApplicationConfig.Version
 
@@ -54,7 +54,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-4"
 --]]
 
 
-----[[---------IOS Live----------------
+--[[---------IOS Live----------------
 
 IsLive = true
 
