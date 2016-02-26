@@ -87,6 +87,15 @@ local appointmentGroup = display.newGroup()
 local status = "normal"
 
 local AttachmentFlag = false
+
+local Background,tabBar,menuBtn,BgText,titleBar,titleBar_icon,titleBar_text,saveBtn_BG,scrollView,SelectEventLbl,SelectEvent,SelectEvent_icon,BottomImage,What,BottomImageWhat
+local alldayLbl,Event_fromLbl,Event_from_datebg,Event_from_date,Event_from_timebg,Event_from_time,BottomImageWhen,Event_toLbl,Event_to_datebg,Event_to_date,Event_to_timebg
+local Event_to_time,timeZone,BottomImageTo,Where,BottomImageWhere,Phone,BottomImagePhone,AccessCode,BottomImageAccessCode,Out_bound,Out_bound_txt,Inbound,In_bound_txt,Conference
+local Conference_txt,Description,Description_lbl,AppintmentWith,BottomImageAppintmentWith,BottomImageAddinvitees,Purposetxt,PurposeLbl,Purpose_icon,BottomImagePurpose,BottomOther
+
+local Prioritytxt,PriorityLbl,Priority_icon,BottomImagePriority,AddAttachmentLbl,AddAttachmentPhotoName,AddAttachment_icon,AddAttachment_close,BottomImageAddAttachment,List_bg
+local List,searchList,appoitmentAdd_Background,appoitmentAdd_bg,appoitmentAdd_header,appoitmentAdd_headertitle,Ap_firstName,Ap_lastName,Ap_email,Ap_phone,selectcontactGroup_bg
+local Ap_selectcontactLbl,Ap_selectcontactLbl_icon,contactGroup_bg,Ap_contactLbl,Ap_contactLbl_icon,Ap_saveBtn,Ap_saveBtntxt,Ap_cancelBtn,Ap_cancelBtntxt,QuickContactList_bg,QuickContactList
 --------------------------------------------------
 
 
@@ -1817,6 +1826,10 @@ function scene:create( event )
 		saveBtn_BG.id = "save"
 		saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
 
+		if event.params.Details then
+			print("---------------------EDIT----------------------")
+		end
+
 
 		scrollView = widget.newScrollView
 			{
@@ -2815,6 +2828,17 @@ end
 
 			AddAttachmentPhotoName:removeEventListener( "touch", photonametouch )
 			AddAttachment_close:removeEventListener( "touch", photonametouch )
+				titleBar_icon:removeEventListener("touch",TouchAction)
+		titleBar_text:removeEventListener("touch",TouchAction)
+  		Background:removeEventListener( "touch", TouchAction )
+		menuBtn:removeEventListener("touch",menuTouch)
+
+		Event_from_timebg:removeEventListener("touch",TouchAction)
+		Event_to_timebg:removeEventListener("touch",TouchAction)
+		Event_from_datebg:removeEventListener("touch",TouchAction)
+		Event_to_datebg:removeEventListener("touch",TouchAction)
+		saveBtn_BG:removeEventListener("touch",TouchAction)
+
 
 
 		end	

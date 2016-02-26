@@ -97,6 +97,8 @@ local function BackTouch( event )
 
 end
 
+
+
 function string.urlEncode( str )
 	if ( str ) then
 		str = string.gsub( str, "\n", "\r\n" )
@@ -117,6 +119,7 @@ function urlDecode( str )
 end
 
 function get_SaveMyUnitBuzzGoals(response)
+
 	composer.hideOverlay( )
 end
 
@@ -215,21 +218,15 @@ title:setFillColor(0)
 
 	local test=string.urlEncode( event.params.content )
 
-		-- webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
-		-- webView.anchorY=0
-		-- webView:request( "Utils/ckeditor.html?value='"..test.."'", system.ResourceDirectory )
-		-- sceneGroup:insert( webView )
-		-- webView:addEventListener( "urlRequest", webListener )
+	print( test )
+
+		webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
+		webView.anchorY=0
+		webView:request( "Utils/ckeditor.html?value='"..test.."'", system.ResourceDirectory )
+		sceneGroup:insert( webView )
+		webView:addEventListener( "urlRequest", webListener )
 
 		--webView:executeJS("Updategoals", "sample value")
-
-		local options =
-{
-    hasBackground = false,
-    baseUrl = system.ResourceDirectory,
-    urlRequest = webListener
-}
-native.showWebPopup( 10, 70, display.viewableContentWidth, display.viewableContentHeight-80, "Utils/ckeditor.html?value='"..test.."'", options )
 
 
 

@@ -58,7 +58,7 @@ local function editEvent( event)
 
 	if event.phase == "ended" then
 
-		webView:removeSelf( );webView=nil
+		if webView then	webView:removeSelf( );webView=nil end
 
 		Runtime:removeEventListener( "key", onKeyEvent )
 
@@ -188,11 +188,12 @@ function scene:show( event )
 
 function get_Goals(response)
 
+
+		goalsid = response.MyUnitBuzzGoalsId
+
 	if response.MyUnitBuzzGoals ~= nil and response.MyUnitBuzzGoals ~= "" then
 
 		local t = response.MyUnitBuzzGoals
-
-		goalsid = response.MyUnitBuzzGoalsId
 
 
 		content = t

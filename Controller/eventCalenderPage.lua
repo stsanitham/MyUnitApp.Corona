@@ -1326,6 +1326,32 @@ function scene:resumeGame(value)
 
 end
 
+function scene:resumeGame(value,EditArray)
+
+
+    if value == "edit" then
+
+
+				local options = {
+					isModal = true,
+					effect = "slideLeft",
+					time = 100,
+					params = {
+					
+					Details = EditArray
+
+				}
+			}
+
+
+
+			composer.showOverlay( "Controller.addEventPage", options )
+
+		
+    end
+
+end
+
 
 
 function scene:show( event )

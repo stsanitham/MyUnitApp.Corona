@@ -32,19 +32,20 @@
 		        for(var i = 0; i < q.length; i++){
 		            hash = q[i].split('=');
 		            vars.push(hash[1]);
-		            vars[hash[0]] = decodeURIComponent(hash[1]);
+		            vars[hash[0]] = decodeURIComponent(((hash[1])+'').replace(/\+/g, '%20'));
 		        }
 		}
+		
 
-			 CKEDITOR.instances.editor1.setData(vars[hash[0]]);              
+			 CKEDITOR.instances.editor1.setData((vars[hash[0]]));              
 		
 		function get_action(form) {
 
-			var ckvalue = CKEDITOR.instances.editor1.getData();  
 
-			 CKEDITOR.instances.editor1.setData(ckvalue+" extra test sample"); 
+			 var ckvalue = CKEDITOR.instances.editor1.getData();  
 
-		 var texttemp='corona:close?id='+ckvalue; 
+			 var texttemp="corona:close?id=" + ckvalue; 
+
 
 		 form.action = texttemp
        		
