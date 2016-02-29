@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="noindex, nofollow">
+	<title></title>
+	<script src="http://cdn.ckeditor.com/4.5.7/standard-all/ckeditor.js"></script>
+	
+</head>
+
+<body>
+
+	<textarea cols="80" id="editor1" name="editor1" rows="10">		
+	</textarea>
+
+
+
+	<script>
+
+			function get_action(form) {
+
+
+			 var ckvalue = CKEDITOR.instances.editor1.getData();  
+
+			 var texttemp="corona:close?id=" + ckvalue; 
+
+
+		 form.action = texttemp
+       		
+		}
+		CKEDITOR.replace( 'editor1', {
+			fullPage: false,
+			extraPlugins: 'docprops',
+
+			allowedContent: true,
+			height: 320
+			width: 300
+		} );
+
+
+
+		
+
+function readTextFile(file)
+{
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                alert(allText);
+                 allText = decodeURIComponent((allText).replace(/\+/g, '%20'));
+                CKEDITOR.instances.editor1.setData("'"+allText);  
+            }
+        }
+    }
+    rawFile.send(null);
+}
+
+readTextFile("sample.txt");
+
+		 
+
+	</script>
+
+
+
+	<form onsubmit="get_action(this);">
+    <input type="submit" />
+	</form>
+
+	<!-- <button id="submit" onclick="myFunction()">Submit</button> -->
+</body>
+
+</html>

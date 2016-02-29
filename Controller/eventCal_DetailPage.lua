@@ -114,20 +114,21 @@ local display_details = {}
 
 		local function EditOption( event )
 
+			if event.phase == "ended" then
 			local function onComplete( event )
-			if event.action == "clicked" then
+				if event.action == "clicked" then
 
-			    local i = event.index
-			    if i == 1 then
+				    local i = event.index
+				    if i == 1 then
 
-			    	Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,get_DeleteTicklerEvent)
-			       
-			    elseif i == 2 then
-			    	--Details
+				    	Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,get_DeleteTicklerEvent)
+				       
+				    elseif i == 2 then
+				    	--Details
 
-			    	
-			    end
-			end
+				    	
+				    end
+				end
 			end
 
 			if event.target.id == "delete" then
@@ -139,6 +140,10 @@ local display_details = {}
 				status="edit"
 				composer.hideOverlay()
 			end
+
+		end
+
+		return true
 
 		end
 				

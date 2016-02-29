@@ -214,17 +214,39 @@ title.anchorX = 0
 title.x=BackBtn.x+BackBtn.contentWidth/2+5;title.y = BackBtn.y
 title:setFillColor(0)
 
-	print( "Utils/ckeditor.html?value="..event.params.content )
-
 	local test=string.urlEncode( event.params.content )
 
-	print( test )
+	local path = system.pathForFile( "sample.txt", system.ResourceDirectory )
 
-		webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
-		webView.anchorY=0
-		webView:request( "Utils/ckeditor.html?value='"..test.."'", system.ResourceDirectory )
-		sceneGroup:insert( webView )
-		webView:addEventListener( "urlRequest", webListener )
+		-- Open the file handle
+		local file, errorString = io.open( path, "w" )
+
+		if not file then
+		    -- Error occurred; output the cause
+		    print( "File error: " .. errorString )
+		else
+		    -- Write data to file
+		    file:write( test )
+		    -- Close the file handle
+		    io.close( file )
+		end
+
+		file = nil
+
+local options =
+{
+    hasBackground = false,
+    baseUrl = system.ResourceDirectory,
+    urlRequest = webListener
+}
+native.showWebPopup( 10, 70, display.viewableContentWidth, display.viewableContentHeight-80, "ckeditor.html", options )
+
+
+		-- webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
+		-- webView.anchorY=0
+		-- webView:request( "ckeditor.html?value='"..test.."'", system.ResourceDirectory )
+		-- sceneGroup:insert( webView )
+		-- webView:addEventListener( "urlRequest", ResourceDirectory )
 
 		--webView:executeJS("Updategoals", "sample value")
 

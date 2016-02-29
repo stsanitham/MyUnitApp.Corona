@@ -209,7 +209,7 @@ local function listTouch( event )
 				local options = {
 					isModal = true,
 					effect = "slideLeft",
-					time = 500,
+					time = 10,
 					params = {
 					details = event.target.value,
 					calendarId = CalendarId,
@@ -1307,7 +1307,6 @@ end
 
 function scene:resumeGame(value)
 
-	print( "!@#@$#$%$^%" )
 
 	Runtime:addEventListener( "key", onKeyEvent )
 
