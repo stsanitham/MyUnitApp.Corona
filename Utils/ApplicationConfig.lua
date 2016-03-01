@@ -139,3 +139,4 @@ ApplicationConfig.AccessPermissionDetails = ApplicationConfig.BASE_URL.."/MyUnit
 
 ApplicationConfig.SaveMyUnitBuzzGoals = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SaveMyUnitBuzzGoals"
 
+ApplicationConfig.UpdateTicklerRecur = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/UpdateTicklerRecur"

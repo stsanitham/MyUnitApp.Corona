@@ -198,7 +198,13 @@ function get_Goals(response)
 
 		content = t
 
-		local saveData = t
+		local saveData = [[<!DOCTYPE html>
+		<html>
+
+		<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		</head>]]..t..[[</html>]]
 
 		-- Path for the file to write
 		local path = system.pathForFile( "goals.html", system.DocumentsDirectory )
