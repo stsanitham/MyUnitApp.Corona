@@ -26,6 +26,8 @@ notificationFlag=false
 
 IsOwner = false
 
+leftPadding_value = 20
+
 TimeZone = ""
 
 --com.spanenterprises.MUBDev
@@ -48,6 +50,11 @@ end
 UnitnumberList = {}
 
 MainGroup = display.newGroup();
+
+popUpGroup = display.newGroup();
+
+AlertGroup = display.newGroup();
+
 
 
 
@@ -273,5 +280,49 @@ end
 
 Runtime:addEventListener("unhandledError", myUnhandledErrorListener)
 
+
+
+
+
+-- local function onCloseTouch( event )
+--     if event.phase == "began" then
+--         display.getCurrentStage():setFocus( event.target )
+--         elseif event.phase == "ended" then
+--         display.getCurrentStage():setFocus( nil )
+
+--         popUpGroup.isVisible = false
+
+--     end
+
+--     return true
+
+-- end
+
+
+    -- popupTop_bg = display.newRect( popUpGroup, leftPadding_value + 140, H/2+ 36.3, W-20, 331 )
+    -- popupTop_bg:setFillColor(0,0,0,0.7)
+
+    -- popupTop = display.newRect(popUpGroup,W/2,H/2-144.2,300,30)
+    -- popupTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+    -- popupText = display.newText(popUpGroup,"Grant Access",0,0,native.systemFont,18)
+    -- popupText.x=popupTop.x;popupText.y=popupTop.y
+
+    -- popupClose = display.newImageRect(popUpGroup,"res/assert/cancel.png",19,19)
+    -- popupClose.x=popupTop.x+popupTop.contentWidth/2-15;popupClose.y=popupTop.y
+    -- popupClose.id="close"
+    -- popupClose:addEventListener("touch",onCloseTouch)
+
+    -- popupClose_bg = display.newRect(popUpGroup,0,0,30,30)
+    -- popupClose_bg.x=popupTop.x+popupTop.contentWidth/2-15;popupClose_bg.y=popupTop.y
+    -- popupClose_bg.id="close"
+    -- popupClose_bg.alpha=0.01
+    -- popupClose_bg:addEventListener("touch",onCloseTouch)
+
+
+    -- popUpGroup.isVisible = false
+
+
+   
 
 

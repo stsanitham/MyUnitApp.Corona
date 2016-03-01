@@ -3,7 +3,7 @@ ApplicationConfig = {}
 
 ----------Dev---------------
 
---[[
+----[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -18,7 +18,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 
 -----Stagging--------
-----[[
+--[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -131,4 +131,9 @@ ApplicationConfig.GetUnitWiseRegister = ApplicationConfig.BASE_URL.."/MyUnitBuzz
 
 ApplicationConfig.SaveAttachmentDetails = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/SaveAttachmentDetails"
 
-ApplicationConfig.SaveMyEditedUnitAppGoals = ApplicationConfig.BASE_URL.."MyUnitBuzz/SaveMyUnitBuzzGoals"
+ApplicationConfig.SaveMyEditedUnitAppGoals = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SaveMyUnitBuzzGoals"
+
+ApplicationConfig.RemoveOrBlockContact = ApplicationConfig.BASE_URL.."/MyUnitBuzz/UpdateContactStatus"
+
+ApplicationConfig.AccessPermissionDetails = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SaveAccessPermissionsDetails"
+

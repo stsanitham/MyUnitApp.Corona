@@ -9,6 +9,8 @@ local scene = composer.newScene()
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 local json = require("json")
+local popupGroup = require( "Controller.popupGroup" )
+local alertGroup = require( "Controller.alertGroup" )
 
 
 
@@ -27,7 +29,7 @@ local Details_Display = {}
 
 openPage="careerPathPage"
 
-local Career_Username , id_value
+local Career_Username , id_value , popupevnt_value
 
 local leftPadding = 10
 
@@ -221,102 +223,229 @@ end
 
 
 
-local function phoneCallFunction( event )
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
-		--work
-		
-		local callFlag
+	local function phoneCallFunction( event )
+		if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+			--work
+			
+			local callFlag
 
-		local number = string.gsub(event.target.id, "%s+", "")
+			local number = string.gsub(event.target.id, "%s+", "")
 
-		
-
-			number = string.gsub(number,"%(" , "")
-			number = string.gsub(number,"%)" , "")
-			number = string.gsub(number,"%-" , "")
+				number = string.gsub(number,"%(" , "")
+				number = string.gsub(number,"%)" , "")
+				number = string.gsub(number,"%-" , "")
 
 
-		print( "Call : "..number )
+			print( "Call : "..number )
 
-		system.openURL( "tel:"..number)
+			system.openURL( "tel:"..number)
 
-		callFlag = system.openURL( "tel:"..number )
+			callFlag = system.openURL( "tel:"..number )
 
-		 if callFlag == true  then 
+			 if callFlag == true  then 
 
-			--fortumo.findService({callFlag}, onFindServiceComplete)
+				--fortumo.findService({callFlag}, onFindServiceComplete)
 
-		 else
+			 else
 
-		 	native.showAlert( "Call", CareerPath.NoSim, { CommonWords.ok } )
+			 	native.showAlert( "Call", CareerPath.NoSim, { CommonWords.ok } )
+
+			end
+		end
+
+		return true
+
+	end
+
+
+	local function closeDetails( event )
+		if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+			composer.hideOverlay( "slideRight", 300 )
+
+
 
 		end
-	end
 
-	return true
-
-end
-
-
-local function closeDetails( event )
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
-		composer.hideOverlay( "slideRight", 300 )
-
-
+		return true
 
 	end
 
-	return true
+	local function MapShowing( event )
+		if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+			print("MapShowing")
 
-end
-
-local function MapShowing( event )
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
-		print("MapShowing")
-
-		if event.target.id == "close" then
-			mapGroup.isVisible=false
-			myMap.isVisible=false
-		else
-			mapGroup.isVisible=true
-			myMap.isVisible=true
+			if event.target.id == "close" then
+				mapGroup.isVisible=false
+				if myMap then myMap.isVisible=false end
+			else
+				mapGroup.isVisible=true
+				if myMap then myMap.isVisible=true end
+			end
 		end
+
+		return true
+
 	end
 
-	return true
-
-end
 
 
+	local function onKeyEventDetail( event )
 
-local function onKeyEventDetail( event )
+	        local phase = event.phase
+	        local keyName = event.keyName
 
-        local phase = event.phase
-        local keyName = event.keyName
+	        if phase == "up" then
 
-        if phase == "up" then
+	        if keyName=="back" then
 
-        if keyName=="back" then
+	        	composer.hideOverlay( "slideRight", 300 )
 
-        	composer.hideOverlay( "slideRight", 300 )
+	        	 return true
+	            
+	        end
 
-        	 return true
-            
-        end
+	    end
+
+	        return false
+	 end
+
+
+
+
+	function get_removeorblockDetails( response)
+
+		Request_response = response
+
+
+	    function onCompletion(event)
+
+	       if "clicked"==event.action then
+
+	       	print("on complete action done [[[[[[[[[[[[[[[[[[[[980890890890]]]]]]]]]]]]]]]]]]]]]]]]]")
+
+			 AlertGroup.isVisible = false
+
+	        composer.hideOverlay()
+
+	       end
+
+         end
+
+
+
+		 if id_value == "Remove Access" then
+
+		    print("response after removing details ",Request_response)
+	        local remove_successful= native.showAlert("Contact Removed", "You are successful in removing the contact from the list", { CommonWords.ok} , onCompletion)
+
+		 elseif id_value == "Block Access" then
+
+		    print("response after blocking details ",Request_response)
+			local block_successful = native.showAlert("Contact Blocked", "You are successful in blocking the contact from the list", { CommonWords.ok} , onCompletion)
+
+		 end
+
+
+
+	 	 if Request_response == "5" then
+
+	 		print("56573284682368482348 providing access here in the list")
+
+			accessprovided = native.showAlert("Access Provided", "You are successful in providing access to the contact in the list", { CommonWords.ok } , onCompletion)
+ 
+         elseif Request_response == "GRANT" then
+
+		 	local granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+
+         elseif Request_response == "REMOVE" then
+
+		 	local Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		
+		 elseif Request_response == "ADDREQUEST" then
+
+		 	local addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+
+
+		end
+
+	end
+
+
+
+
+
+function onAccessButtonTouch( event )
+
+    if event.phase == "began" then
+
+    elseif event.phase == "ended" then
+
+        native.setKeyboardFocus(nil)
+
+--------------------------------------remove method -----------------------------------------------------
+
+			       if id_value == "Remove Access" then
+
+
+			    	    AlertGroup.isVisible = true
+
+			            reqaccess_id = Details.ContactId
+						reqaccess_from = "Contacts"
+					    accessStatus = "REMOVE"
+
+						print("contactid details",reqaccess_id,reqaccess_from,accessStatus)
+
+			        	if event.target.id == "accept" then
+
+		        		Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
+
+			        	elseif event.target.id == "reject" then
+
+							 print("making it invisible")
+
+							  AlertGroup.isVisible = false
+
+			        	end
+
+			        end
+
+------------------------------------------block method-------------------------------------------------
+
+			       if id_value == "Block Access" then
+
+			    	    AlertGroup.isVisible = true
+
+			            reqaccess_id = Details.ContactId
+						reqaccess_from = "Contacts"
+					    accessStatus = "BLOCK"
+
+						print("contactid details",reqaccess_id,reqaccess_from,accessStatus)
+
+
+			        	if event.target.id == "accept" then
+
+		        		Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
+
+			        	elseif event.target.id == "reject" then
+
+							 print("making it invisible")
+
+							  AlertGroup.isVisible = false
+
+			        	end
+			        end
+          end
 
     end
-
-        return false
- end
 
 
 
@@ -329,35 +458,472 @@ local function onKeyEventDetail( event )
 
     if ( phase == "began" ) then 
 
-    	  if id_value == "Grant Access" then
+    if id_value == "Grant Access" then
 
-        print("grant access pressed") 
+          print("grant access pressed") 
 
-          elseif id_value == "Remove Access" then
 
-        print("remove access pressed") 
+          print(Details.EmailAddress)
+          print(Details.Mobile)
+          print(Details.FirstName)
+          print(Details.LastName)
 
-          elseif id_value == "Provide Access" then
+          GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber)
 
-        print("provide access pressed") 
+          processbutton_text.text = "Grant Access"
+          popupText.text = "Grant Access"
 
-          elseif id_value == "Deny Access" then
 
-        print("deny access pressed") 
+          if Details.FirstName ~= nil and Details.LastName ~= nil then
+             NameDetailValue.text = Details.FirstName.." "..Details.LastName
+             native.setKeyboardFocus( nil )
+          elseif  Details.FirstName  ~= nil then
+             NameDetailValue.text = Details.FirstName
+             native.setKeyboardFocus( nil )
+          elseif Details.LastName ~= nil  then
+            NameDetailValue.text = Details.LastName
+             native.setKeyboardFocus( nil )
+		  else
+		    NameDetailValue.text = ""
+          end
+          print(NameDetailValue.text)
 
-         elseif id_value == "Block Access" then
 
-        print("block access pressed") 
 
-        local block_alert = native.showAlert("Block", CareerPath.BlockAccess, { CareerPath.ToBlock , CareerPath.NotToBlock })
+          if Details.EmailAddress ~= nil then
+          EmailDetailValue.text = Details.EmailAddress
+          native.setKeyboardFocus(PhoneDetailValue)
+            emailnotifybox.isVisible = true
+		    emailnotifytext.isVisible = true
+          else
+		  EmailDetailValue.text = ""
+		   emailnotifybox.isVisible = false
+		   emailnotifytext.isVisible = false
+          end
 
-           end
 
+        if Details.Mobile ~= nil or Details.Mobile ~= "" then
+             PhoneDetailValue.text = Details.Mobile
+          			textnotifybox.isVisible = true
+		 		    textnotifytext.isVisible = true
+          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "" then
+             PhoneDetailValue.text = Details.HomePhoneNumber
+          			textnotifybox.isVisible = true
+					textnotifytext.isVisible = true
+          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "" then
+             PhoneDetailValue.text = Details.WorkPhoneNumber
+          			textnotifybox.isVisible = true
+					textnotifytext.isVisible = true
+          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "" then
+             PhoneDetailValue.text = Details.OtherPhoneNumber
+                    textnotifybox.isVisible = true
+					textnotifytext.isVisible = true
+          else
+          	 PhoneDetailValue.text = ""
+          	        textnotifybox.isVisible = false
+					textnotifytext.isVisible = false
+          end
+
+
+
+          if Details.CareerProgress ~= nil then
+          MKRankDetailValue.text = Details.CareerProgress
+          native.setKeyboardFocus( nil )
+          else
+		  MKRankDetailValue.text = ""
+          end
+
+          if Details.UpdateTimeStamp ~= nil then
+          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
+          print("time stamp ",time)
+          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%m %p",time))
+          native.setKeyboardFocus( nil )
+          else
+          RequesteddateValue.text = ""
+          end
+
+	      print("values event ",EmailDetailValue.text)
+
+	      EmailDetailValue:addEventListener("userInput",textField)
+		  PhoneDetailValue:addEventListener("userInput",textField)
+		  PasswordValue:addEventListener("userInput",textField)
+
+
+	      processbutton:addEventListener("touch",onGrantButtonTouch)
+
+
+
+
+	  elseif id_value == "Remove Access" then
+
+	  print("remove access pressed") 
+
+	  --local remove_alert = native.showAlert("Remove", CareerPath.RemoveAccess, { CareerPath.ToRemove , CareerPath.NotToRemove} , onBlockClickComplete )
+
+	  GetAlertPopup()
+
+	  accept_button:addEventListener("touch",onAccessButtonTouch)
+	  reject_button:addEventListener("touch",onAccessButtonTouch)
+
+	  
+
+
+
+	  elseif id_value == "Provide Access" then
+
+	  print("provide access pressed") 
+
+	  GetPopUp()
+
+        processbutton_text.text = "Provide Access"
+        popupText.text = "Provide Access"
+       
+          if Details.FirstName ~= nil and Details.LastName ~= nil then
+             NameDetailValue.text = Details.FirstName..""..Details.LastName
+             native.setKeyboardFocus( nil )
+          elseif  Details.FirstName  ~= nil then
+             NameDetailValue.text = Details.FirstName
+             native.setKeyboardFocus( nil )
+          elseif Details.LastName ~= nil  then
+            NameDetailValue.text = Details.LastName
+             native.setKeyboardFocus( nil )
+		  else
+		    NameDetailValue.text = ""
+          end
+          print(NameDetailValue.text)
+
+
+          if Details.EmailAddress ~= nil then
+          EmailDetailValue.text = Details.EmailAddress
+          native.setKeyboardFocus(PhoneDetailValue)
+            emailnotifybox.isVisible = true
+		    emailnotifytext.isVisible = true
+          else
+		  EmailDetailValue.text = ""
+		   emailnotifybox.isVisible = false
+		   emailnotifytext.isVisible = false
+          end
+
+
+          if Details.Mobile ~= nil or Details.Mobile ~= "" then
+             PhoneDetailValue.text = Details.Mobile
+          			textnotifybox.isVisible = true
+		 		    textnotifytext.isVisible = true
+          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "" then
+             PhoneDetailValue.text = Details.HomePhoneNumber
+          			textnotifybox.isVisible = true
+					textnotifytext.isVisible = true
+          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "" then
+             PhoneDetailValue.text = Details.WorkPhoneNumber
+          			textnotifybox.isVisible = true
+					textnotifytext.isVisible = true
+          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "" then
+             PhoneDetailValue.text = Details.OtherPhoneNumber
+                    textnotifybox.isVisible = true
+					textnotifytext.isVisible = true
+          else
+          	 PhoneDetailValue.text = ""
+          	        textnotifybox.isVisible = false
+					textnotifytext.isVisible = false
+          end
+
+
+          if Details.CareerProgress ~= nil then
+          MKRankDetailValue.text = Details.CareerProgress
+          native.setKeyboardFocus( nil )
+          else
+		  MKRankDetailValue.text = ""
+          end
+
+          if Details.UpdateTimeStamp ~= nil then
+          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
+          print("time stamp ",time)
+          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%m %p",time))
+          native.setKeyboardFocus( nil )
+          else
+          RequesteddateValue.text = ""
+          end
+
+	      print("values event ",EmailDetailValue.text)
+
+	      EmailDetailValue:addEventListener("userInput",textField)
+		  PhoneDetailValue:addEventListener("userInput",textField)
+		  PasswordValue:addEventListener("userInput",textField)
+
+
+	      processbutton:addEventListener("touch",onGrantButtonTouch)
+
+
+
+	 
+	  elseif id_value == "Deny Access" then
+
+	  print("deny access pressed") 
+
+	   GetPopUp()
+
+        processbutton_text.text = "Deny Access"
+        popupText.text = "Deny Access"
+       
+          if Details.FirstName ~= nil and Details.LastName ~= nil then
+             NameDetailValue.text = Details.FirstName..""..Details.LastName
+             native.setKeyboardFocus( nil )
+          elseif  Details.FirstName  ~= nil then
+             NameDetailValue.text = Details.FirstName
+             native.setKeyboardFocus( nil )
+          elseif Details.LastName ~= nil  then
+            NameDetailValue.text = Details.LastName
+             native.setKeyboardFocus( nil )
+		  else
+		    NameDetailValue.text = ""
+          end
+          print(NameDetailValue.text)
+
+
+          if Details.EmailAddress ~= nil then
+          EmailDetailValue.text = Details.EmailAddress
+          native.setKeyboardFocus(PhoneDetailValue)
+            emailnotifybox.isVisible = true
+		    emailnotifytext.isVisible = true
+          else
+		  EmailDetailValue.text = ""
+		   emailnotifybox.isVisible = false
+		   emailnotifytext.isVisible = false
+          end
+
+
+          if Details.Mobile ~= nil or Details.Mobile ~= "" then
+             PhoneDetailValue.text = Details.Mobile
+          			textnotifybox.isVisible = true
+		 		    textnotifytext.isVisible = true
+          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "" then
+             PhoneDetailValue.text = Details.HomePhoneNumber
+          			textnotifybox.isVisible = true
+					textnotifytext.isVisible = true
+          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "" then
+             PhoneDetailValue.text = Details.WorkPhoneNumber
+          			textnotifybox.isVisible = true
+					textnotifytext.isVisible = true
+          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "" then
+             PhoneDetailValue.text = Details.OtherPhoneNumber
+                    textnotifybox.isVisible = true
+					textnotifytext.isVisible = true
+          else
+          	 PhoneDetailValue.text = ""
+          	        textnotifybox.isVisible = false
+					textnotifytext.isVisible = false
+          end
+
+
+          if Details.CareerProgress ~= nil then
+          MKRankDetailValue.text = Details.CareerProgress
+          native.setKeyboardFocus( nil )
+          else
+		  MKRankDetailValue.text = ""
+          end
+
+          if Details.UpdateTimeStamp ~= nil then
+          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
+          print("time stamp ",time)
+          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%m %p",time))
+          native.setKeyboardFocus( nil )
+          else
+          RequesteddateValue.text = ""
+          end
+
+	      print("values event ",EmailDetailValue.text)
+
+	      EmailDetailValue:addEventListener("userInput",textField)
+		  PhoneDetailValue:addEventListener("userInput",textField)
+		  PasswordValue:addEventListener("userInput",textField)
+
+
+	      processbutton:addEventListener("touch",onGrantButtonTouch)
+
+
+
+
+	  elseif id_value == "Block Access" then
+
+	  print("block access pressed") 
+
+	 -- local block_alert = native.showAlert("Block", CareerPath.BlockAccess, { CareerPath.ToBlock , CareerPath.NotToBlock } , onBlockClickComplete)
+
+       GetAlertPopup()
+
+		AlertText.text = "Block"
+		AlertContentText.text = CareerPath.BlockAccess
+		print("block access occurred text value ",AlertContentText.text)
+
+		accept_button_text.text = CareerPath.ToBlock
+		reject_button_text.text = CareerPath.NotToBlock
+
+	  accept_button:addEventListener("touch",onAccessButtonTouch)
+	  reject_button:addEventListener("touch",onAccessButtonTouch)
+
+    end
+
+   
     elseif ( phase == "ended") then 
 
-      end
+    end
 
  end
+
+
+
+
+
+    function RequestGrantProcess( )
+
+    	print("12537683479349090573974935793474395793479347597349793475934")
+
+    	if processbutton_text.text == "Grant Access" then
+
+    		print("service of grant access")
+
+
+   	    PhoneNumber=PhoneDetailValue.text
+
+   	    Email = EmailDetailValue.text
+
+   	    print("}}}}}}}}}}}}}",PhoneNumber)
+
+   	    print("}}}}}}}}}}}}}",Email)
+
+   	    MkRankId = Details.CareerProgressId
+        MyUnitBuzzRequestAccessId = Details.MyUnitBuzzRequestAccessId
+        print("value for access id : ",MyUnitBuzzRequestAccessId)
+
+   	    if MyUnitBuzzRequestAccessId == 0 then
+
+            isaddedToContact = true  
+            MyUnitBuzzRequestAccessId = Details.ContactId
+
+        else
+        	isaddedToContact = false
+
+        end
+
+   	    print("value for isaddedToContact : ",isaddedToContact)
+     
+   	    GetRquestAccessFrom = "Contacts"
+   	    MailTemplate = "GRANT"
+   	    Status = "GRANT"
+   	    ContactId = Details.ContactId
+   	    isSentMail = isSentMailValue
+   	    print("value 1 ",isSentMailValue)
+   	    isSendText= isSentMailValue
+   	    print("value 2 ",isSendTextValue)
+   	    password = PasswordValue.text
+
+   	    	Webservice.AccessPermissionDetails(Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,ContactId,isaddedToContact,MyUnitBuzzRequestAccessId,password,get_removeorblockDetails)
+
+     	end
+
+
+
+
+   	    if processbutton_text.text == "Provide Access" then
+
+   	    		print("service of Provide access")
+
+
+   	    PhoneNumber=PhoneDetailValue.text
+
+   	    Email = EmailDetailValue.text
+
+   	    print("}}}}}}}}}}}}}",PhoneNumber)
+
+   	    print("}}}}}}}}}}}}}",Email)
+
+
+   	    MkRankId = Details.CareerProgressId
+   	    GetRquestAccessFrom = "Contacts"
+
+   	   MyUnitBuzzRequestAccessId = Details.MyUnitBuzzRequestAccessId
+        print("value for access id : ",MyUnitBuzzRequestAccessId)
+
+   	    if MyUnitBuzzRequestAccessId == 0 then
+   	    	
+            isaddedToContact = true  
+            MyUnitBuzzRequestAccessId = Details.ContactId
+
+        else
+        	isaddedToContact = false
+
+        end
+
+   	    print("value for isaddedToContact : ",isaddedToContact)
+     
+
+   	    MailTemplate = "ADDREQUEST"
+   	    Status = "GRANT"
+   	    ContactId = Details.ContactId
+   	    isSentMail = isSentMailValue
+   	    print("value 1 ",isSentMailValue)
+   	    isSendText= isSentMailValue
+   	    print("value 2 ",isSendTextValue)
+   	    password = PasswordValue.text
+
+
+   	    	Webservice.AccessPermissionDetails(Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,ContactId,isaddedToContact,MyUnitBuzzRequestAccessId,password,get_removeorblockDetails)
+        end
+
+
+
+
+        if processbutton_text.text == "Deny Access" then
+
+        		print("service of deny access")
+
+  
+   	    PhoneNumber=PhoneDetailValue.text
+
+   	    Email = EmailDetailValue.text
+
+   	    print("}}}}}}}}}}}}}",PhoneNumber)
+
+   	    print("}}}}}}}}}}}}}",Email)
+
+   	    MkRankId = Details.CareerProgressId
+   	    GetRquestAccessFrom = "Contacts"
+
+   	    MyUnitBuzzRequestAccessId = Details.MyUnitBuzzRequestAccessId
+        print("value for access id : ",MyUnitBuzzRequestAccessId)
+
+   	    if MyUnitBuzzRequestAccessId == 0 then
+   	    	
+            isaddedToContact = true  
+            MyUnitBuzzRequestAccessId = Details.ContactId
+
+        else
+        	isaddedToContact = false
+
+        end
+
+   	    print("value for isaddedToContact : ",isaddedToContact)
+     
+   	    MailTemplate = "DENY"
+   	    Status = "DENY"
+   	    ContactId = Details.ContactId
+   	    isSentMail = isSentMailValue
+   	    print("value 1 ",isSentMailValue)
+   	    isSendText= isSentMailValue
+   	    print("value 2 ",isSendTextValue)
+   	    password = PasswordValue.text
+
+
+   	    	Webservice.AccessPermissionDetails(Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,ContactId,isaddedToContact,MyUnitBuzzRequestAccessId,password,get_removeorblockDetails)
+
+        end
+
+end
+
+
+
+
+
 
 
 
@@ -675,7 +1241,7 @@ function scene:show( event )
 
 
 
-				local InviteAccess = display.newText("MyUnitBuzz - Invite / Access",0,0,0,0,native.systemFontBold,16)
+				local InviteAccess = display.newText("Invite/Access",0,0,0,0,native.systemFontBold,16)
 				InviteAccess.anchorX = 0 ;InviteAccess.anchorY=0
 				InviteAccess.x=leftPadding
 				InviteAccess:setFillColor(0,0,0)
@@ -687,7 +1253,8 @@ function scene:show( event )
 				-- Details_Display[#Details_Display].isVisible=false
 				-- careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 
-
+                --careerDetail_scrollview:insert( popUpGroup)
+                --MainGroup:insert(popUpGroup)
 
 -----------------------------------------------Access Buttons------------------------------------------------------------
 
@@ -986,6 +1553,7 @@ function scene:show( event )
 
 			    Runtime:addEventListener("key",onKeyEventDetail)
 			
+			    	if not isSimulator then
 
 						myMap = native.newMapView( display.contentCenterX, display.contentCenterY+50, 280, 270 )
 						mapGroup:insert(myMap)
@@ -1015,6 +1583,8 @@ function scene:show( event )
 					end
 
 					myMap:requestLocation( location, locationHandler )
+				end
+
 		
 			    end
 
@@ -1052,6 +1622,21 @@ function scene:hide( event )
 	local phase = event.phase
 
 	if event.phase == "will" then
+
+		for j=popUpGroup.numChildren, 1, -1 do 
+						display.remove(popUpGroup[popUpGroup.numChildren])
+						popUpGroup[popUpGroup.numChildren] = nil
+	 	end
+
+	 	for j=AlertGroup.numChildren, 1, -1 do 
+						display.remove(AlertGroup[AlertGroup.numChildren])
+						AlertGroup[AlertGroup.numChildren] = nil
+	 	end
+
+	 	-- for j=popup_scroll.numChildren, 1, -1 do 
+			-- 			display.remove(popup_scroll[popup_scroll.numChildren])
+			-- 			popup_scroll[popup_scroll.numChildren] = nil
+	 	-- end
 
 		if myMap then myMap:removeSelf();myMap=nil;map_close:removeSelf();map_close=nil end
 
