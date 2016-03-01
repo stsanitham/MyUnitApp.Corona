@@ -32,7 +32,9 @@ function request.new(url, method, params,listner)
 
 	requestId = network.request( url, method, function(event)  if ( event.isError ) then
 
-		print( "Network error!" )
+		print( "Network error!" ,event.response)
+
+			spinner_hide()
 
 	else
 		

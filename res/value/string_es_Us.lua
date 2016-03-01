@@ -188,6 +188,9 @@ CareerPath.NoSim = "Su dispositivo no tiene opción de compra"
 CareerPath.BlockAccess = "¿Seguro que deseas bloquear el acceso de este contacto ?"
 CareerPath.ToBlock = "Sí , quiero bloquear"
 CareerPath.NotToBlock = "No, no quiero bloquear"
+CareerPath.RemoveAccess = "¿Está seguro de que desea eliminar este contacto de la lista ?"
+CareerPath.ToRemove = "Sí , deseo eliminar"
+CareerPath.NotToRemove = "No, no quiero quitar"
 
 
 

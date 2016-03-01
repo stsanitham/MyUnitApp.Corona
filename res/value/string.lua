@@ -185,6 +185,9 @@ CareerPath.NoSim = "Your device does not have call option"
 CareerPath.BlockAccess = "Are you sure you want to block this contact's Access?"
 CareerPath.ToBlock = "Yes, I want to block"
 CareerPath.NotToBlock = "No, I don't want to block"
+CareerPath.RemoveAccess = "Are you sure you want to remove this contact from the list?"
+CareerPath.ToRemove= "Yes, I want to remove"
+CareerPath.NotToRemove = "No, I don't want to remove"
 
 
 Goals = {}

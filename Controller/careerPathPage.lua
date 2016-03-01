@@ -208,12 +208,13 @@ local function careePath_list( list )
 
 
 	for j=#careerListArray, 1, -1 do 
+		
 		display.remove(careerListArray[#careerListArray])
 		careerListArray[#careerListArray] = nil
 	end
 
 	for i=1,#list do
-
+print("here")
 
 		if i == 1 then 
 			if viewValue == "position" then
@@ -357,6 +358,7 @@ local function careePath_list( list )
 	end
 end
 
+
 local function listPosition_change( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -420,6 +422,13 @@ end
 
 function get_Activeteammember(response)
 
+
+	for i=1,#List_array do
+		List_array[i]=nil
+		byNameArray[i]=nil
+	end
+
+
 	List_array=response
 
 	if response ~= nil and #response ~= 0 then
@@ -428,6 +437,8 @@ function get_Activeteammember(response)
 		
 							
 --NameArray
+
+print("size = "..#List_array)
 
 						for i=1,#List_array do
 
@@ -600,6 +611,9 @@ end
 function scene:resumeGame()
 
 	Runtime:addEventListener( "key", onKeyEvent )
+	Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
+
+
 
 end
 
