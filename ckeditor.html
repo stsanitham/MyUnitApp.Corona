@@ -4,6 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex, nofollow">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<title></title>
 	<script src="http://cdn.ckeditor.com/4.5.7/standard-all/ckeditor.js"></script>
 	
@@ -30,12 +31,12 @@
        		
 		}
 		CKEDITOR.replace( 'editor1', {
-			fullPage: false,
+			fullPage: true,
 			extraPlugins: 'docprops',
 
 			allowedContent: true,
-			height: 440,
-			width: 450
+			height: 300,
+			width: 400
 		} );
 
  CKEDITOR.instances.editor1.setData("''");  
@@ -58,7 +59,7 @@ function readTextFile(file)
             }
         }
     }
-    rawFile.send(null);
+    //rawFile.send(null);
 }
 
 readTextFile("sample.txt");
