@@ -513,14 +513,14 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
     popupTop:setStrokeColor(0,0,0)
     popupTop.strokeWidth=1
     popupTop:setFillColor(Utils.convertHexToRGB(color.LtyGray))
-    popUpGroup:insert(popupTop_bg)
+    popUpGroup:insert(popupTop)
 
     popupText = display.newText("",0,0,native.systemFont,18)
     popupText.anchorX = 0
     popupText.x=20
     popupText.y=popupTop.y
     popupText:setTextColor(0,0,0)
-    popUpGroup:insert(popupTop_bg)
+    popUpGroup:insert(popupText)
 
     popupClose = display.newImageRect("res/assert/cancel.png",19,19)
     popupClose.x=popupTop.x+popupTop.contentWidth/2-15
@@ -842,11 +842,6 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 	    Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+12
 	    popup_scroll:insert(Password_titletext)
 
-		Password_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
-		Password_bottom.x=W/2
-		Password_bottom.y= Password_titletext.y+Password_titletext.height+15
-		popup_scroll:insert(Password_bottom)
-
 		PasswordValue = native.newTextField(22,textnotifytext.y+28, W-40, 25)
 		PasswordValue.id="Password"
 		PasswordValue.size=14	
@@ -857,6 +852,11 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 		PasswordValue:setReturnKey( "next" )
 		PasswordValue.placeholder="Password"
 		popup_scroll:insert(PasswordValue)
+
+		Password_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
+		Password_bottom.x=W/2
+		Password_bottom.y= PasswordValue.y+10
+		popup_scroll:insert(Password_bottom)
 
 -----------------------------------password helptext detail-------------------------------------------------
 
