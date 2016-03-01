@@ -216,7 +216,7 @@ title:setFillColor(0)
 
 	local test=string.urlEncode( event.params.content )
 
-	local path = system.pathForFile( "sample.txt", system.ResourceDirectory )
+	local path = system.pathForFile( "sample.txt" )
 
 		-- Open the file handle
 		local file, errorString = io.open( path, "w" )
