@@ -63,7 +63,7 @@ settings =
 	
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, 
-			UIFileSharingEnabled=true,
+			--UIFileSharingEnabled=true,
 			--UIApplicationExitsOnSuspend = true,
 			CoronaWindowMovesWhenKeyboardAppears = true,
 			UIBackgroundModes = {"remote-notification"},

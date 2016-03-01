@@ -96,10 +96,10 @@ local AttachmentFlag = false
 local Background,tabBar,menuBtn,BgText,titleBar,titleBar_icon,titleBar_text,saveBtn_BG,scrollView,SelectEventLbl,SelectEvent,SelectEvent_icon,BottomImage,What,BottomImageWhat
 local alldayLbl,Event_fromLbl,Event_from_datebg,Event_from_date,Event_from_timebg,Event_from_time,BottomImageWhen,Event_toLbl,Event_to_datebg,Event_to_date,Event_to_timebg
 local Event_to_time,timeZone,BottomImageTo,Where,BottomImageWhere,Phone,BottomImagePhone,AccessCode,BottomImageAccessCode,Out_bound,Out_bound_txt,Inbound,In_bound_txt,Conference
--- local Conference_txt,Description,Description_lbl,AppintmentWith,BottomImageAppintmentWith,BottomImageAddinvitees,Purposetxt,PurposeLbl,Purpose_icon,BottomImagePurpose,BottomOther
+local Conference_txt,Description,Description_lbl,AppintmentWith,BottomImageAppintmentWith,BottomImageAddinvitees,Purposetxt,PurposeLbl,Purpose_icon,BottomImagePurpose,BottomOther
 
-local Prioritytxt,PriorityLbl,Priority_icon,BottomImagePriority,AddAttachmentLbl,AddAttachmentPhotoName,AddAttachment_icon,AddAttachment_close,BottomImageAddAttachment,List_bg
-local List,searchList,appoitmentAdd_Background,appoitmentAdd_bg,appoitmentAdd_header,appoitmentAdd_headertitle,Ap_firstName,Ap_lastName,Ap_email,Ap_phone,selectcontactGroup_bg
+--local Prioritytxt,PriorityLbl,Priority_icon,BottomImagePriority,AddAttachmentLbl,AddAttachmentPhotoName,AddAttachment_icon,AddAttachment_close,BottomImageAddAttachment,List_bg
+--local List,searchList,appoitmentAdd_Background,appoitmentAdd_bg,appoitmentAdd_header,appoitmentAdd_headertitle,Ap_firstName,Ap_lastName,Ap_email,Ap_phone,selectcontactGroup_bg
 --local Ap_selectcontactLbl,Ap_selectcontactLbl_icon,contactGroup_bg,Ap_contactLbl,Ap_contactLbl_icon,Ap_saveBtn,Ap_saveBtntxt,Ap_cancelBtn,Ap_cancelBtntxt,QuickContactList_bg,QuickContactList
 --------------------------------------------------
 
@@ -1790,66 +1790,8 @@ end
 
 
 	
-
-
-
-
-------------------------------------------------------
-
-function scene:create( event )
-
-	local sceneGroup = self.view
-
-	if event.params.Details ~= nil then
-		isUpdate = true
-		UpdateValue = event.params.Details
-	end
-
-	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
-	Background.x=W/2;Background.y=H/2
-	Background.id="bg"
-
-	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
-	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-
-	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
-	menuBtn.anchorX=0
-	menuBtn.x=10;menuBtn.y=20;
-
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-	BgText.anchorX=0
-
-		titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
-		titleBar.anchorY=0
-		titleBar:setFillColor(Utils.convertHexToRGB(color.tabbar))
-
-		titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
-		titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+10
-		titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
-		titleBar_icon.anchorY=0
-		titleBar_icon.id="back"
-
-		titleBar_text = display.newText(sceneGroup,AddeventPage.New_Event,0,0,native.systemFont,0)
-		titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
-		titleBar_text.y=titleBar.y+titleBar.contentHeight/2-titleBar_text.contentHeight/2
-		titleBar_text.anchorX=0;titleBar_text.anchorY=0
-		titleBar_text.id = "back"
-		Utils.CssforTextView(titleBar_text,sp_subHeader)
-		MainGroup:insert(sceneGroup)
-
-
-		saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 50, 20 )
-		saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-		saveBtn_BG.id = "save"
-		saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
-
-		if event.params.Details then
-			print("---------------------EDIT----------------------")
-		end
-
-
+	local function CreateObject( sceneGroup )
+	
 		scrollView = widget.newScrollView
 			{
 			top = RecentTab_Topvalue,
@@ -1891,12 +1833,7 @@ function scene:create( event )
 		SelectEvent.x=W/2
 		SelectEvent.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
-		if isUpdate == true then
-			SelectEvent.text = AddeventPage.EventnameArray[UpdateValue.TicklerType]
-			if UpdateValue.TicklerType == 2 then
-				CallAction()
-			end
-		end	
+
 
 	  	SelectEvent_icon = display.newImageRect(AddeventGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	SelectEvent_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
@@ -2177,8 +2114,7 @@ function scene:create( event )
 	  	--------
 
 
-
-	  	---Bounds-----
+	---Bounds-----
 
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="bounds"
@@ -2263,6 +2199,98 @@ function scene:create( event )
 		callGroup.isVisible = false
 		whereGroup.isVisible = true
 		belowGroup.y=-W/2+85
+
+
+
+
+	end
+
+
+
+------------------------------------------------------
+
+function scene:create( event )
+
+	local sceneGroup = self.view
+
+	if event.params.Details ~= nil then
+		isUpdate = true
+		UpdateValue = event.params.Details
+	end
+
+	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background.x=W/2;Background.y=H/2
+	Background.id="bg"
+
+	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+	tabBar.y=tabBar.contentHeight/2
+	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
+	menuBtn.anchorX=0
+	menuBtn.x=10;menuBtn.y=20;
+
+	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
+	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
+	BgText.anchorX=0
+
+		titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
+		titleBar.anchorY=0
+		titleBar:setFillColor(Utils.convertHexToRGB(color.tabbar))
+
+		titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
+		titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+10
+		titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
+		titleBar_icon.anchorY=0
+		titleBar_icon.id="back"
+
+		titleBar_text = display.newText(sceneGroup,AddeventPage.New_Event,0,0,native.systemFont,0)
+		titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
+		titleBar_text.y=titleBar.y+titleBar.contentHeight/2-titleBar_text.contentHeight/2
+		titleBar_text.anchorX=0;titleBar_text.anchorY=0
+		titleBar_text.id = "back"
+		Utils.CssforTextView(titleBar_text,sp_subHeader)
+		MainGroup:insert(sceneGroup)
+
+
+		saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 50, 20 )
+		saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+		saveBtn_BG.id = "save"
+		saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
+
+		if event.params.Details then
+			print("---------------------EDIT----------------------")
+		end
+
+
+	CreateObject(sceneGroup)
+
+
+
+		MainGroup:insert(sceneGroup)
+
+end
+
+function scene:show( event )
+
+	local sceneGroup = self.view
+	local phase = event.phase
+	
+	if phase == "will" then
+
+
+	elseif phase == "did" then
+
+		eventTime = event.params.details
+
+	--	print("eventtime value ", eventTime)
+
+		CalendarId = event.params.calendarId
+
+		CalendarName = event.params.calendarName
+
+		print( os.date( "%m/%d/%Y" ,  eventTime )) 
+
 
 	  	----Description----
 
@@ -2373,34 +2401,6 @@ function scene:create( event )
 		
 
 
-
-
-
-
-
-		MainGroup:insert(sceneGroup)
-
-end
-
-function scene:show( event )
-
-	local sceneGroup = self.view
-	local phase = event.phase
-	
-	if phase == "will" then
-
-
-	elseif phase == "did" then
-
-		eventTime = event.params.details
-
-	--	print("eventtime value ", eventTime)
-
-		CalendarId = event.params.calendarId
-
-		CalendarName = event.params.calendarName
-
-		print( os.date( "%m/%d/%Y" ,  eventTime )) 
 
 	--	print( os.date("%H", eventTime))
 
@@ -2818,6 +2818,23 @@ function scene:show( event )
 		Ap_email.isVisible = false
 		Ap_phone.isVisible = false
 	  	appointmentGroup.isVisible = false
+
+
+	  	if isUpdate == true then
+			SelectEvent.text = AddeventPage.EventnameArray[UpdateValue.TicklerType]
+			if UpdateValue.TicklerType == 2 then
+				CallAction()
+			end
+			if UpdateValue.title ~= nil then
+				What.text = UpdateValue.title
+			end
+			if UpdateValue.allDay == false then
+				
+				allday_onOffSwitch:setState( { isOn=false, isAnimated=true, onComplete=onSwitchPress } )
+			else
+
+			end
+		end	
 	 
 
 		titleBar_icon:addEventListener("touch",TouchAction)
