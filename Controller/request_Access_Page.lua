@@ -18,7 +18,6 @@ local RequestFromStatus = ""
 local unitnumberflag = false
 
 
-
 --------------- Initialization -------------------
 
 local W = display.contentWidth;
@@ -159,7 +158,10 @@ end
 
 
 	local function createField()
-		input = native.newTextField(W/2, Email_bg.y+Email_bg.height+7, W-20, 25)
+
+		
+		native.setKeyboardFocus(nil)
+		input = native.newTextField(W/2+10, Email_bg.y+Email_bg.height+7, W-20, 25)
 		
 		return input
 	end
@@ -277,41 +279,6 @@ local function RequestProcess()
 
 				end
 
-					FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-					FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-					Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
-					Name.y = FirstName_bg.y+FirstName_bg.height+7
-					Email_bg.y = Name_bg.y+Name_bg.height+7
-					Email.y = Name_bg.y+Name_bg.height+7
-					Phone_bg.y = Email_bg.y+Email_bg.height+7
-					Phone.y = Email_bg.y+Email_bg.height+7
-					MKRank_bg.y = Phone_bg.y+Phone_bg.height+7
-					--MKRank.y = Phone_bg.y+Phone_bg.height+7
-					MKRank.y=MKRank_bg.y+5
-					rankText_icon.y=MKRank_bg.y
-					Comment_bg.y = MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
-					Comment.y = Comment_bg.y
-
-					DirectorName_bg.y = Comment_bg.y+Comment_bg.height-7 
-					DirectorName.y = Comment_bg.y+Comment_bg.height-7
-					DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
-					DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
-
-					sumbitBtn.y = DirectorEmail.y+DirectorEmail.height/2+30
-					sumbitBtn_lbl.y=sumbitBtn.y
-					submit_spinner.y=sumbitBtn.y
-
-	              --  validationCheck()
-
-	              if responseUnitValue == "NOTINUNITWISE" then
-
-					if (DirectorName.id == "Director Name") then
-
-					native.setKeyboardFocus( nil )
-
-				    end
-
-				end
 
 			end
 
@@ -331,42 +298,8 @@ local function RequestProcess()
 					DirectorEmail.text = directoremail
 					print(DirectorEmail.text)
 
-					FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-					FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-					Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
-					Name.y = FirstName_bg.y+FirstName_bg.height+7
-					Email_bg.y = Name_bg.y+Name_bg.height+7
-					Email.y = Name_bg.y+Name_bg.height+7
-					Phone_bg.y = Email_bg.y+Email_bg.height+7
-					Phone.y = Email_bg.y+Email_bg.height+7
-					MKRank_bg.y = Phone_bg.y+Phone_bg.height+7
-					MKRank.y=MKRank_bg.y+5
-					rankText_icon.y=MKRank_bg.y
-					Comment_bg.y = MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2
-					Comment.y = Comment_bg.y
 
-
-					DirectorName_bg.y = Comment_bg.y+Comment_bg.height-7 
-					DirectorName.y = Comment_bg.y+Comment_bg.height-7
-					DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
-					DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
-
-					sumbitBtn.y = DirectorEmail_bg.y+DirectorEmail_bg.height/2+30
-					sumbitBtn_lbl.y=sumbitBtn.y
-					submit_spinner.y=sumbitBtn.y
-
-					 if responseUnitValue == "UNITNOEXIST" then
-
-						if (UnitNumber.id == "Unit Number / Director name") then
-
-					  native.setKeyboardFocus( FirstName )
-
-				     end
-
-
-				end
-
-
+			
 				
 	            --validationCheck()
 
@@ -480,6 +413,10 @@ local function RequestProcess()
 
 										native.setKeyboardFocus( nil )
 
+									elseif current_textField.id == "Unit Number / Director name" then
+
+								        native.setKeyboardFocus( FirstName )
+
 									elseif(current_textField.id == "First Name") then
 
 										native.setKeyboardFocus(Name)
@@ -498,11 +435,14 @@ local function RequestProcess()
 
 							   elseif (current_textField.id == "Director Name") then
 
+							   	
+							   	native.setKeyboardFocus( nil )
+
 								native.setKeyboardFocus( DirectorEmail )
 
 							    elseif (current_textField.id == "Director Email") then
 
-								native.setKeyboardFocus( FirstName )
+								native.setKeyboardFocus( nil )
 
 									end
 
@@ -519,8 +459,9 @@ local function RequestProcess()
 										scrollTo( 0 )
 										
 										native.setKeyboardFocus( nil )
-
+						
 						end
+
 
 
         			elseif ( event.phase == "editing" ) then
@@ -550,8 +491,35 @@ local function RequestProcess()
 
 						elseif(current_textField.id =="Phone") then
 
+							if event.target.text:len() > event.startPosition then
+
+									print( "here" )
+
+									local previousText=event.target.text
+
+									event.target:removeSelf( );event.target=nil
+
+									Phone = createField()
+									Phone.id="Phone"
+									Phone.size=14	
+									Phone:setReturnKey( "next" )
+									Phone.hasBackground = false
+									Phone.placeholder=RequestAccess.Phone_placeholder
+									Phone.inputType = "number"
+									MainGroup:insert( Phone )
+
+									Phone.text=previousText:sub(1,event.startPosition )
+
+
+									Phone:addEventListener( "userInput", textfield )
+
+									event.target = Phone
+									native.setKeyboardFocus(Phone)
+
+									
+
+								end
 							
-								event.target.text = string.sub(event.target.text,1,event.startPosition )
 
 							local tempvalue = event.target.text:sub(1,1)
 
@@ -564,7 +532,7 @@ local function RequestProcess()
 
 									local previousText=event.target.text
 
-									event.target:removeSelf( );event.target.text=nil
+									Phone:removeSelf( );Phone=nil
 
 									Phone = createField()
 									Phone.id="Phone"
@@ -581,6 +549,10 @@ local function RequestProcess()
 									Phone:addEventListener( "userInput", textfield )
 
 									native.setKeyboardFocus(Phone)
+
+									event.target = Phone
+
+
 							
 								else
 
@@ -592,7 +564,29 @@ local function RequestProcess()
 
 								if event.target.text:sub(5,5) ~= ")" then
 
-									event.target.text = event.text:sub(1,4)..") "..event.target.text:sub(5,5)
+								local previousText=event.target.text
+
+									Phone:removeSelf( );Phone=nil
+
+									Phone = createField()
+									Phone.id="Phone"
+									Phone.size=14	
+									Phone:setReturnKey( "next" )
+									Phone.hasBackground = false
+									Phone.placeholder=RequestAccess.Phone_placeholder
+									Phone.inputType = "number"
+									MainGroup:insert( Phone )
+
+									Phone.text=previousText:sub(1,4)..") "..previousText:sub(5,5)
+
+
+									Phone:addEventListener( "userInput", textfield )
+
+									native.setKeyboardFocus(Phone)
+
+									event.target = Phone
+
+									
 				
 								end
 
@@ -602,7 +596,7 @@ local function RequestProcess()
 
 									local previousText=event.target.text
 
-									event.target:removeSelf( );event.target.text=nil
+									Phone:removeSelf( );Phone=nil
 
 									Phone = createField()
 									Phone.id="Phone"
@@ -620,6 +614,8 @@ local function RequestProcess()
 
 									native.setKeyboardFocus(Phone)
 
+									event.target = Phone
+
 
 
 							elseif event.target.text:len() == 10 then
@@ -631,6 +627,7 @@ local function RequestProcess()
 
 									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
 								end
+															
 
 							end
 
@@ -638,8 +635,12 @@ local function RequestProcess()
 
 								event.target.text = event.target.text:sub(1,15)
 
+
 							end
 
+							
+							
+						
         				end
         			
 					end
@@ -958,10 +959,10 @@ function scene:create( event )
 
 	if AppName ~= "DirectorApp" then
 			UnitNumber_bg = display.newRect( W/2, page_title.y+35, W-20, 25)
-			UnitNumber_bg.alpha = 0.01
 			sceneGroup:insert(UnitNumber_bg)
+			UnitNumber_bg.alpha=0.01
 
-			UnitNumber = native.newTextField(W/2, page_title.y+35, W-20, 25 )
+			UnitNumber = native.newTextField(W/2+10, page_title.y+35, W-20, 25 )
 			UnitNumber.id = "Unit Number / Director name"
 			UnitNumber.value=""
 			UnitNumber.size=14	
@@ -1022,7 +1023,7 @@ function scene:create( event )
 		FirstName_bottom.x=W/2
 		FirstName_bottom.y= UnitNumber_bg.y+UnitNumber_bg.height+16
 
-		FirstName = native.newTextField(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
+		FirstName = native.newTextField(W/2+10, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
 		FirstName.id="First Name"
 		FirstName.size=14	
 		FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
@@ -1042,7 +1043,7 @@ function scene:create( event )
 		Name_bottom.x=W/2
 		Name_bottom.y= FirstName_bg.y+FirstName_bg.height+16
 
-		Name = native.newTextField( W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
+		Name = native.newTextField( W/2+10, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 		Name.id="Last Name"
 		Name.y = FirstName_bg.y+FirstName_bg.height+7
 		Name.size=14
@@ -1061,7 +1062,7 @@ function scene:create( event )
 		Email_bottom.x=W/2
 		Email_bottom.y= Name_bg.y+Name_bg.height+16
 
-		Email = native.newTextField(W/2, Name_bg.y+Name_bg.height+7, W-20, 25 )
+		Email = native.newTextField(W/2+10, Name_bg.y+Name_bg.height+7, W-20, 25 )
 		Email.id="Email"
 		Email.size=14	
 		Email:setReturnKey( "next" )
@@ -1080,7 +1081,7 @@ function scene:create( event )
 		Phone_bottom.y= Email_bg.y+Email_bg.height+16
 
 
-		Phone = native.newTextField(W/2, Email_bg.y+Email_bg.height+7, W-20, 25)
+		Phone = native.newTextField(W/2+10, Email_bg.y+Email_bg.height+7, W-20, 25)
 		Phone.id="Phone"
 		Phone.size=14	
 		Phone:setReturnKey( "next" )
@@ -1096,40 +1097,46 @@ function scene:create( event )
 
 			MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
+
             MKRank_bg.strokeWidth = 1
 
 		else
 			MKRank_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
+
             MKRank_bg.strokeWidth = 1
 
 		end
 
+		MKRank_bg:setFillColor( 0,0,0,0 )
+
 		MKRank_bg.id="MKrank"
 		sceneGroup:insert(MKRank_bg)
+
 
 
 		MKRank = display.newText("",MKRank_bg.x+10,MKRank_bg.y,MKRank_bg.contentWidth,MKRank_bg.height,native.systemFont,14 )
 		MKRank.text = RequestAccess.MKRank_placeholder
 		MKRank.value = "-Select MK Rank-"
 		MKRank.id="MKrank"
-		MKRank.alpha=0.8
+		MKRank.alpha=0.7
 		MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		MKRank.y=MKRank_bg.y+5
 	    --MKRank.size=20
 	    sceneGroup:insert(MKRank)
 
-
-  		rankText_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
-  		rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth/2-15
-  		rankText_icon.y=MKRank_bg.y
+	  		rankText_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
+	  		rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth/2-15
+	  		rankText_icon.y=MKRank_bg.y
 
 
 
 ----------------------comments --------------------------------------
 	Comment_bg = display.newRect( W/2, 0, W-20, 70)
 	Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-	Comment_bg.alpha = 0.01
+	Comment_bg:setFillColor( 0,0,0,0 )
+	Comment_bg:setStrokeColor( 0, 0, 0 , 0.3 )
+     Comment_bg.strokeWidth = 1
 	sceneGroup:insert(Comment_bg)
 
 	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 70 )
@@ -1153,7 +1160,7 @@ function scene:create( event )
 		DirectorName_bottom.x=W/2
 		DirectorName_bottom.y= Comment_bg.y+Comment_bg.height - 5
 
-		DirectorName = native.newTextField(W/2, Comment_bg.y+Comment_bg.height+7, W-20, 25)
+		DirectorName = native.newTextField(W/2+10, Comment_bg.y+Comment_bg.height+7, W-20, 25)
 		DirectorName.id="Director Name"
 		DirectorName.size=14	
 		DirectorName.y = Comment_bg.y+Comment_bg.height-14
@@ -1175,7 +1182,7 @@ function scene:create( event )
 		DirectorEmail_bottom.x=W/2
 		DirectorEmail_bottom.y= DirectorName_bg.y+DirectorName_bg.height+16
 
-		DirectorEmail = native.newTextField(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
+		DirectorEmail = native.newTextField(W/2+10, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
 		DirectorEmail.id="Director Email"
 		DirectorEmail.size=14	
 		DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
@@ -1312,7 +1319,7 @@ function scene:show( event )
 		for i = 1, #List_array do
 			    -- Insert a row into the tableView
 			    rankList:insertRow{ rowHeight = 35,
-			   -- rowColor = { default={ 1,1,1}, over={ 0, 0, 0, 0.1 } }
+			    rowColor = { default={ 1,1,1}, over={ 0, 0, 0, 0.1 } }
 
 			}
 		end

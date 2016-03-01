@@ -264,7 +264,7 @@ function scene:hide( event )
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 
-			editGoals_icon:removeEventListener( "touch", editEvent )
+			--editGoals_icon:removeEventListener( "touch", editEvent )
 
 			composer.removeHidden()
 

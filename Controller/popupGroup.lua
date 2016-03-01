@@ -522,19 +522,26 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
     popupText:setTextColor(0,0,0)
     popUpGroup:insert(popupText)
 
-    popupClose = display.newImageRect("res/assert/cancel.png",19,19)
-    popupClose.x=popupTop.x+popupTop.contentWidth/2-15
-    popupClose.y=popupText.y 
-    popupClose.id="close"
-    popUpGroup:insert(popupClose)
-    popupClose:addEventListener("touch",onCloseTouch)
 
-    popupClose_bg = display.newRect(0,0,30,30)
-    popupClose_bg.x=popupTop.x+popupTop.contentWidth/2-15;popupClose_bg.y=popupTop.y
+
+       popupClose_bg = display.newRect(0,0,30,30)
+    popupClose_bg.x=popupTop.x+popupTop.contentWidth/2-15
+    popupClose_bg.y=popupTop.y
     popupClose_bg.id="close"
+    popupClose_bg:setFillColor( 0.5,0.6,0.2 )
     popupClose_bg.alpha=0.01
     popUpGroup:insert(popupClose_bg)
     popupClose_bg:addEventListener("touch",onCloseTouch)
+
+	popupClose = display.newImageRect("res/assert/cancel.png",19,19)
+    popupClose.x=popupClose_bg.x
+    popupClose.y=popupClose_bg.y
+    popupClose.id="close"
+    popUpGroup:insert(popupClose)
+    --popupClose:addEventListener("touch",onCloseTouch)
+
+
+
 
    -- popUpGroup.isVisible = true
 
@@ -543,10 +550,10 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 
 	popup_scroll = widget.newScrollView
 	{
-	top = 0,
+	top = 60,
 	left = 0,
 	width = W-5,
-	height = popupTop_bg.contentHeight+60,
+	height = popupTop_bg.contentHeight,
 	hideBackground = true,
 	isBounceEnabled=false,
 	horizontalScrollingDisabled = true,
@@ -554,17 +561,20 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
     }
 
 
-    popupList = display.newRect(leftPadding_value + 140, H/2+ 10, W-22, 381 )
+    popupList = display.newRect(leftPadding_value + 140, 0, W-22, popupTop_bg.contentHeight+80 )
+    popupList.anchorY=0
     popup_scroll:insert(popupList)
+
+
 
 
 --------------------------------------name field--------------------------------------
 
-        NameDetail_bg = display.newRect(W/2, popupText.y+popupText.height+16, W-40, 25)
+        NameDetail_bg = display.newRect(W/2, popupList.y+5, W-40, 25)
 		NameDetail_bg.isVisible = true
 		NameDetail_bg.alpha = 0.01
 		NameDetail_bg:setFillColor(0,0,0)
-		NameDetail_bg.y = popupTop.y+popupTop.contentHeight
+		NameDetail_bg.y = popupList.y+10
 		popup_scroll:insert(NameDetail_bg)
 
 	    NameDetail_title = display.newText("Name ",0,0,native.systemFontBold,14)
@@ -892,6 +902,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 	processbutton_text.y=processbutton.y
 	processbutton_text:setFillColor(0,0,0)
 	popup_scroll:insert(processbutton_text)
+
+
 
 
     if email ~= nil or email ~= "" then

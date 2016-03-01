@@ -65,7 +65,12 @@ local GET_USER_INFO="self"
 
 
 -----------------Function-------------------------
-
+local function linkTouch( event )
+	if event.phase == "ended" then
+		system.openURL( event.target.value )
+	end
+return true
+end
 
 function FacebookCallback(res,scrollView,flag)
 
@@ -103,12 +108,12 @@ function FacebookCallback(res,scrollView,flag)
 
 									if feedArray[i].picture ~= nil then
 
-										bgheight = 100
+										bgheight = 110
 
 									end
 
 									
-										bgheight = bgheight+40
+										bgheight = bgheight+50
 									
 
 									local background = display.newRect(tempGroup,0,0,W-80,bgheight)
@@ -212,7 +217,30 @@ function FacebookCallback(res,scrollView,flag)
 								rowTitle.x=userName.x
 								rowTitle.y=background.y+25
 
-						
+										--test_response.text = tostring(feedArray[1].id)
+
+								if feedArray[i].link ~= nil and feedArray[i].type ~= "video" then 
+
+								local link = display.newText(tempGroup,feedArray[i].link,0,0,native.systemFont,12)
+								link:setFillColor( 0,0,1 )
+								link.anchorX = 0
+								link.anchorY = 0
+								link.value = feedArray[i].link
+								link.x = userName.x
+								link.y =  background.y+background.contentHeight-20
+								link:addEventListener( "touch", linkTouch )
+
+								if link.text:len() > 35 then
+									link.text = string.sub( link.text,1,35).."..."
+								end
+
+								local line = display.newLine( link.x, background.y+background.contentHeight-5, link.x+link.contentWidth,  background.y+background.contentHeight-5  )
+								line:setStrokeColor( Utils.convertHexToRGB(color.blue) )
+								line.strokeWidth = 1
+								tempGroup:insert( line )
+
+								end
+
 							if feedArray[i].picture ~= nil then
 
 								local img = feedArray[i].picture
@@ -228,12 +256,28 @@ function FacebookCallback(res,scrollView,flag)
 
 									event.target.y = rowTitle.y+rowTitle.contentHeight+event.target.contentHeight/2+5
 
+
 									tempGroup:insert(event.target)
+									if feedArray[i].type == "video" then
+
+									print( "here............" )
+										local play = display.newImageRect( "res/assert/play.png", 35,35 )
+										tempGroup:insert(play)
+										play.x=event.target.x;play.y=event.target.y
+										play.value = feedArray[i].link
+										play:addEventListener( "touch", linkTouch )
+
+									end
+
 								end
 
 							end, "facebook"..i..".png", system.TemporaryDirectory,userName.x+105,rowTitle.y+rowTitle.contentHeight+10)
 
 							
+
+										
+									
+
 							end
 							scrollView:insert(tempGroup)
 
@@ -243,7 +287,7 @@ function FacebookCallback(res,scrollView,flag)
 				
 			end
 
-				--test_response.text = tostring(feedArray[1].id)
+
 
 				local temp = tostring(feedArray[1].id)
 

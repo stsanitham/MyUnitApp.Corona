@@ -154,6 +154,7 @@ function googleplusCallback( res,scrollView,flag )
 		
 		username:setFillColor(41/255,129/255,203/255)
 
+		local rowTitle
 
 		if not feedArray[feedCount].title then
 
@@ -231,10 +232,9 @@ function googleplusCallback( res,scrollView,flag )
 		if(img[1].image ~= nil ) then
 			local shared_img = display.loadRemoteImage(img[1].image.url, "GET", postedimg_position, feedCount..".png", system.TemporaryDirectory,100+rowTitle.x,rowTitle.y+rowTitle.contentHeight+55 )
 			
+		
 
-			if rowTitle.text == " " then
-				rowTitle.text = img[1].image.displayName
-			end
+		
 			
 		else
 
@@ -254,6 +254,10 @@ function googleplusCallback( res,scrollView,flag )
 				link.x = username.x
 				link.y =  background.y+background.contentHeight-20
 				link:addEventListener( "touch", linkTouch )
+
+					if rowTitle.text == "" or rowTitle.text == nil then
+						rowTitle.text = img[1].displayName
+					end
 
 				if string.find( link.text, "https:" ) == nil then
 					link.text = img[1].url or "https:"..link.text

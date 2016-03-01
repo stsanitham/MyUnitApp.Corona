@@ -39,7 +39,6 @@ local Min = {}
 timePicker.getTimeValue = function(listner)
 
 
-	local getValuesButton,pickerWheel,doneBg
 
 local function showValues( event )
 		-- Retrieve the current values from the picker
@@ -60,6 +59,12 @@ local function showValues( event )
 		
 		return true
 	end
+
+
+
+if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
+if doneBg then display.remove(doneBg);doneBg=nil end
+if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
 
 
 

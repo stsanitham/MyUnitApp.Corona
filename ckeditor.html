@@ -34,11 +34,11 @@
 			extraPlugins: 'docprops',
 
 			allowedContent: true,
-			height: 320
-			width: 300
+			height: 440,
+			width: 450
 		} );
 
-
+ CKEDITOR.instances.editor1.setData("''");  
 
 		
 
@@ -53,9 +53,8 @@ function readTextFile(file)
             if(rawFile.status === 200 || rawFile.status == 0)
             {
                 var allText = rawFile.responseText;
-                alert(allText);
                  allText = decodeURIComponent((allText).replace(/\+/g, '%20'));
-                CKEDITOR.instances.editor1.setData("'"+allText);  
+                CKEDITOR.instances.editor1.setData("'"+allText+"'");  
             }
         }
     }
