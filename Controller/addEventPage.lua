@@ -10,7 +10,6 @@ local widget = require( "widget" )
 local Utility = require( "Utils.Utility" )
 local lfs = require ("lfs")
 local mime = require("mime")
-local json = require("json")
 local timePicker = require( "Controller.timePicker" )
 local datePicker = require( "Controller.datePicker" )
 
@@ -33,6 +32,8 @@ local EventnameFlag = false
 local BackFlag = false
 
 local isUpdate = false
+
+local UpdateValue={}
 
 
 local EventnameArray = AddeventPage.EventnameArray
@@ -71,8 +72,6 @@ local List
 
 local searchArray = {}
 
-local UpdateValue={}
-
 local searchArraytotal = {}
 
 local searchList
@@ -96,15 +95,6 @@ local appointmentGroup = display.newGroup()
 local status = "normal"
 
 local AttachmentFlag = false
-
-local Background,tabBar,menuBtn,BgText,titleBar,titleBar_icon,titleBar_text,saveBtn_BG,scrollView,SelectEventLbl,SelectEvent,SelectEvent_icon,BottomImage,What,BottomImageWhat
-local alldayLbl,Event_fromLbl,Event_from_datebg,Event_from_date,Event_from_timebg,Event_from_time,BottomImageWhen,Event_toLbl,Event_to_datebg,Event_to_date,Event_to_timebg
-local Event_to_time,timeZone,BottomImageTo,Where,BottomImageWhere,Phone,BottomImagePhone,AccessCode,BottomImageAccessCode,Out_bound,Out_bound_txt,Inbound,In_bound_txt,Conference
-local Conference_txt,Description,Description_lbl,AppintmentWith,BottomImageAppintmentWith,BottomImageAddinvitees,Purposetxt,PurposeLbl,Purpose_icon,BottomImagePurpose,BottomOther
-
---local Prioritytxt,PriorityLbl,Priority_icon,BottomImagePriority,AddAttachmentLbl,AddAttachmentPhotoName,AddAttachment_icon,AddAttachment_close,BottomImageAddAttachment,List_bg
---local List,searchList,appoitmentAdd_Background,appoitmentAdd_bg,appoitmentAdd_header,appoitmentAdd_headertitle,Ap_firstName,Ap_lastName,Ap_email,Ap_phone,selectcontactGroup_bg
---local Ap_selectcontactLbl,Ap_selectcontactLbl_icon,contactGroup_bg,Ap_contactLbl,Ap_contactLbl_icon,Ap_saveBtn,Ap_saveBtntxt,Ap_cancelBtn,Ap_cancelBtntxt,QuickContactList_bg,QuickContactList
 --------------------------------------------------
 
 
@@ -134,39 +124,103 @@ return true
 
 end
 
-local function CallAction()
-
-
-			AppintmentWith.placeholder="Call With"
+local function ChangeParty()
+	AppintmentWith.placeholder="Hostess"
 
 			PurposeLbl.text = ""
 
-			TicklerType = "CALL"
+			TicklerType = "PARTY"
 
-			callGroup.isVisible = true
+			callGroup.isVisible = false
 
-			Event_toLbl.text = "Duration"
+			whereGroup.isVisible = true
 
-			Event_to_date.x= Event_to_datebg.x+35
+			Where.isVisible = true
 
-			Event_from_date.x = Event_from_datebg.x+ 35
+			belowGroup.y=-W/2+85
 
-			whereGroup.isVisible = false
+			Phone.isVisible = false
 
-			Where.isVisible = false
+			AccessCode.isVisible = false
 
-			--callGroup.y = W/2+20
+
+			 taskGroup[1].isVisible = true
+			 taskGroup[2].isVisible = true
+
+			 taskGroup.y=0
+			taskGroupExt.y=0
+
+			if allDay == true then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=false
+					end
+				end
+				Event_toLbl.isVisible = true
+				Event_to_datebg.isVisible = true
+				Event_to_date.isVisible = true
+				Event_to_timebg.isVisible = false
+				BottomImageTo.isVisible = true
+			end
+
 			
-			belowGroup.y=-W/2+160
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
 
-		--	Where.isVisible = false
 
-		--	BottomImageWhere.isVisible = false
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
+			Event_toLbl.text = "To"
+end
 
-			Phone.isVisible = true
+local function changeAppointment(  )
+	AppintmentWith.placeholder="Appointment With"
 
-			AccessCode.isVisible = true
+			PurposeLbl.text = ""
 
+			TicklerType = "APPT"
+
+			callGroup.isVisible = false
+
+			whereGroup.isVisible = true
+
+			Where.isVisible = true
+			
+			belowGroup.y=-W/2+80
+
+			Phone.isVisible = false
+
+			AccessCode.isVisible = false
+
+			if allDay == true then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=false
+					end
+				end
+				Event_toLbl.isVisible = true
+				Event_to_datebg.isVisible = true
+				Event_to_date.isVisible = true
+				Event_to_timebg.isVisible = false
+				BottomImageTo.isVisible = true
+			end
+
+
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
+
+
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
+			Event_toLbl.text = "To"
+
+			 taskGroup[1].isVisible = true
+			 taskGroup[2].isVisible = true
+
+			 taskGroup.y=0
+			taskGroupExt.y=0
 end
 
 
@@ -489,102 +543,11 @@ local function onRowTouch(event)
 
 		if List.textFiled.text:lower( ) == "party" then
 
-			AppintmentWith.placeholder="Hostess"
-
-			PurposeLbl.text = ""
-
-			TicklerType = "PARTY"
-
-			callGroup.isVisible = false
-
-			whereGroup.isVisible = true
-
-			Where.isVisible = true
-
-			belowGroup.y=-W/2+85
-
-			Phone.isVisible = false
-
-			AccessCode.isVisible = false
-
-
-			 taskGroup[1].isVisible = true
-			 taskGroup[2].isVisible = true
-
-			 taskGroup.y=0
-			taskGroupExt.y=0
-
-			if allDay == true then
-				
-
-				for i=1,#AddeventArray do
-					if AddeventArray[i].id == "to" then
-						AddeventArray[i].isVisible=false
-					end
-				end
-				Event_toLbl.isVisible = true
-				Event_to_datebg.isVisible = true
-				Event_to_date.isVisible = true
-				Event_to_timebg.isVisible = false
-				BottomImageTo.isVisible = true
-			end
-
-			
-			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
-
-
-			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
-			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
-			Event_toLbl.text = "To"
+			ChangeParty()
 
 		elseif List.textFiled.text:lower( ) == "appointment" then
 
-			AppintmentWith.placeholder="Appointment With"
-
-			PurposeLbl.text = ""
-
-			TicklerType = "APPT"
-
-			callGroup.isVisible = false
-
-			whereGroup.isVisible = true
-
-			Where.isVisible = true
-			
-			belowGroup.y=-W/2+80
-
-			Phone.isVisible = false
-
-			AccessCode.isVisible = false
-
-			if allDay == true then
-				
-
-				for i=1,#AddeventArray do
-					if AddeventArray[i].id == "to" then
-						AddeventArray[i].isVisible=false
-					end
-				end
-				Event_toLbl.isVisible = true
-				Event_to_datebg.isVisible = true
-				Event_to_date.isVisible = true
-				Event_to_timebg.isVisible = false
-				BottomImageTo.isVisible = true
-			end
-
-
-			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
-
-
-			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
-			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
-			Event_toLbl.text = "To"
-
-			 taskGroup[1].isVisible = true
-			 taskGroup[2].isVisible = true
-
-			 taskGroup.y=0
-			taskGroupExt.y=0
+			changeAppointment()
 
 
 		elseif List.textFiled.text:lower( ) == "task" then
@@ -645,7 +608,35 @@ local function onRowTouch(event)
 
 		elseif List.textFiled.text:lower( ) == "call" then
 
-			CallAction()
+			AppintmentWith.placeholder="Call With"
+
+			PurposeLbl.text = ""
+
+			TicklerType = "CALL"
+
+			callGroup.isVisible = true
+
+			Event_toLbl.text = "Duration"
+
+			Event_to_date.x= Event_to_datebg.x+35
+
+			Event_from_date.x = Event_from_datebg.x+ 35
+
+			whereGroup.isVisible = false
+
+			Where.isVisible = false
+
+			--callGroup.y = W/2+20
+			
+			belowGroup.y=-W/2+160
+
+		--	Where.isVisible = false
+
+		--	BottomImageWhere.isVisible = false
+
+			Phone.isVisible = true
+
+			AccessCode.isVisible = true
 
 			 taskGroup[1].isVisible = true
 			 taskGroup[2].isVisible = true
@@ -1472,6 +1463,8 @@ local function TouchAction( event )
 
 					end
 
+
+
 						List.width =event.target.contentWidth
 						--List.arrayName = priorityArray
 						--List.textFiled = PriorityLbl
@@ -1522,8 +1515,6 @@ local function TouchAction( event )
 
 
 			elseif event.target.id == "eventtype" then
-
-				print( "*******************************" )
 
 				if List.isVisible == false then
 
@@ -2155,112 +2146,9 @@ end
 	end
 
 
-
-
-
-
-
-------------------------------------------------------
-
-function scene:create( event )
-
-	local sceneGroup = self.view
-
-	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
-	Background.x=W/2;Background.y=H/2
-	Background.id="bg"
-
-	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
-	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-
-	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
-	menuBtn.anchorX=0
-	menuBtn.x=10;menuBtn.y=20;
-
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-	BgText.anchorX=0
-
-		titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
-		titleBar.anchorY=0
-		titleBar:setFillColor(Utils.convertHexToRGB(color.tabbar))
-
-		titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
-		titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+10
-		titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
-		titleBar_icon.anchorY=0
-		titleBar_icon.id="back"
-
-		titleBar_text = display.newText(sceneGroup,AddeventPage.New_Event,0,0,native.systemFont,0)
-		titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
-		titleBar_text.y=titleBar.y+titleBar.contentHeight/2-titleBar_text.contentHeight/2
-		titleBar_text.anchorX=0;titleBar_text.anchorY=0
-		titleBar_text.id = "back"
-		Utils.CssforTextView(titleBar_text,sp_subHeader)
-		MainGroup:insert(sceneGroup)
-
-
-		saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 50, 20 )
-		saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-		saveBtn_BG.id = "save"
-
-		saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
-
-
-		scrollView = widget.newScrollView
-			{
-			top = RecentTab_Topvalue,
-			left = 0,
-			width = W,
-			height =H-RecentTab_Topvalue,
-			hideBackground = true,
-			isBounceEnabled=false,
-			horizontalScrollDisabled = true,
-			bottomPadding = 265,
-			friction = .4,
-   			listener = addevent_scrollListener,
-		}
-
-		sceneGroup:insert( scrollView )
-
-		print( json.encode( UpdateValue ) )
 	
-		--Form Design---
 
-		AddeventArray[#AddeventArray+1] = display.newRect( W/2, 5, W-20, 28)
-		AddeventArray[#AddeventArray].id="eventtype"
-		AddeventArray[#AddeventArray].anchorY=0
-		AddeventArray[#AddeventArray].alpha=0.01
-		AddeventGroup:insert(AddeventArray[#AddeventArray])
-		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
-
-		SelectEventLbl = display.newText(AddeventGroup,AddeventPage.Event_Type,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
-		SelectEventLbl.anchorX=0
-		SelectEventLbl.id="eventtype"
-		SelectEventLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-		SelectEventLbl.x=leftPadding
-		SelectEventLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
-
-		SelectEvent = display.newText(AddeventGroup,AddeventPage.EventnameArray[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
-		SelectEvent.alpha=0.7
-		SelectEvent.anchorX=0
-		SelectEvent:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-		SelectEvent.x=W/2
-		SelectEvent.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
-
-
-
-	  	SelectEvent_icon = display.newImageRect(AddeventGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
-	  	SelectEvent_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
-	  	SelectEvent_icon.y=SelectEvent.y
-
-		BottomImage = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImage.x=W/2;BottomImage.y=SelectEvent.y+SelectEvent.contentHeight-5
-
-		scrollView:insert( AddeventGroup)
-
-
+local function ObjectCreation( sceneGroup)
 		----What----
 
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+15, W-20, 28)
@@ -2534,8 +2422,7 @@ function scene:create( event )
 
 	  	--------
 
-
-	---Bounds-----
+	  	---Bounds-----
 
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="bounds"
@@ -2620,12 +2507,7 @@ function scene:create( event )
 		callGroup.isVisible = false
 		whereGroup.isVisible = true
 		belowGroup.y=-W/2+85
-
-
-
-
-	end
-
+end
 
 
 ------------------------------------------------------
@@ -2635,8 +2517,10 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 	if event.params.Details ~= nil then
-		isUpdate = true
-		UpdateValue = event.params.Details
+
+			isUpdate  = true
+			UpdateValue = event.params.Details
+
 	end
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
@@ -2677,16 +2561,57 @@ function scene:create( event )
 		saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 50, 20 )
 		saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 		saveBtn_BG.id = "save"
+
 		saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
 
-		if event.params.Details then
-			print("---------------------EDIT----------------------")
-		end
 
+		scrollView = widget.newScrollView
+			{
+			top = RecentTab_Topvalue,
+			left = 0,
+			width = W,
+			height =H-RecentTab_Topvalue,
+			hideBackground = true,
+			isBounceEnabled=false,
+			horizontalScrollDisabled = true,
+			bottomPadding = 265,
+			friction = .4,
+   			listener = addevent_scrollListener,
+		}
 
-	CreateObject(sceneGroup)
+		sceneGroup:insert( scrollView )
+	
+		--Form Design---
 
+		AddeventArray[#AddeventArray+1] = display.newRect( W/2, 5, W-20, 28)
+		AddeventArray[#AddeventArray].id="eventtype"
+		AddeventArray[#AddeventArray].anchorY=0
+		AddeventArray[#AddeventArray].alpha=0.01
+		AddeventGroup:insert(AddeventArray[#AddeventArray])
+		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
+		SelectEventLbl = display.newText(AddeventGroup,AddeventPage.Event_Type,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		SelectEventLbl.anchorX=0
+		SelectEventLbl.id="eventtype"
+		SelectEventLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+		SelectEventLbl.x=leftPadding
+		SelectEventLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+
+		SelectEvent = display.newText(AddeventGroup,AddeventPage.EventnameArray[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		SelectEvent.alpha=0.7
+		SelectEvent.anchorX=0
+		SelectEvent:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+		SelectEvent.x=W/2
+		SelectEvent.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+
+	  	SelectEvent_icon = display.newImageRect(AddeventGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	SelectEvent_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
+	  	SelectEvent_icon.y=SelectEvent.y
+
+		BottomImage = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImage.x=W/2;BottomImage.y=SelectEvent.y+SelectEvent.contentHeight-5
+
+		scrollView:insert( AddeventGroup)
 
 		MainGroup:insert(sceneGroup)
 
@@ -2712,6 +2637,9 @@ function scene:show( event )
 
 		print( os.date( "%m/%d/%Y" ,  eventTime )) 
 
+	--	print( os.date("%H", eventTime))
+
+		ObjectCreation(sceneGroup)
 
 	  	----Description----
 
@@ -2822,12 +2750,7 @@ function scene:show( event )
 
 
 		
-
-
-
-	--	print( os.date("%H", eventTime))
-
-		  	--[[ --stage 2
+	  	--[[ --stage 2
 	  	Addinvitees_icon = display.newImageRect(AddeventGroup,"res/assert/icon-close.png",30/1.5,30/1.5 )
 	  	Addinvitees_icon.rotation=45
 	  	Addinvitees_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
@@ -2956,6 +2879,10 @@ function scene:show( event )
 		taskGroupExt:insert(BottomImagePriority)
 
 	  	--------
+
+
+
+
 	  	--Add Attachment---
 
 		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
@@ -3070,6 +2997,7 @@ function scene:show( event )
 	  	searchList_bg.isVisible = false
 
 	  	----------------
+
   	
 
 
@@ -3247,23 +3175,6 @@ function scene:show( event )
 		Ap_email.isVisible = false
 		Ap_phone.isVisible = false
 	  	appointmentGroup.isVisible = false
-
-
-	  	if isUpdate == true then
-			SelectEvent.text = AddeventPage.EventnameArray[UpdateValue.TicklerType]
-			if UpdateValue.TicklerType == 2 then
-				CallAction()
-			end
-			if UpdateValue.title ~= nil then
-				What.text = UpdateValue.title
-			end
-			if UpdateValue.allDay == false then
-				
-				allday_onOffSwitch:setState( { isOn=false, isAnimated=true, onComplete=onSwitchPress } )
-			else
-
-			end
-		end	
 	 
 
 		titleBar_icon:addEventListener("touch",TouchAction)
@@ -3307,17 +3218,6 @@ end
 
 			AddAttachmentPhotoName:removeEventListener( "touch", photonametouch )
 			AddAttachment_close:removeEventListener( "touch", photonametouch )
-				titleBar_icon:removeEventListener("touch",TouchAction)
-		titleBar_text:removeEventListener("touch",TouchAction)
-  		Background:removeEventListener( "touch", TouchAction )
-		menuBtn:removeEventListener("touch",menuTouch)
-
-		Event_from_timebg:removeEventListener("touch",TouchAction)
-		Event_to_timebg:removeEventListener("touch",TouchAction)
-		Event_from_datebg:removeEventListener("touch",TouchAction)
-		Event_to_datebg:removeEventListener("touch",TouchAction)
-		saveBtn_BG:removeEventListener("touch",TouchAction)
-
 
 
 		end	
