@@ -23,7 +23,7 @@ local menuBtn,webView
 
 local webView
 
-local editGoals_icon
+local editGoals_icon,title_bg,title
 
 openPage="goalsPage"
 
@@ -31,21 +31,10 @@ local BackFlag = false
 
 local RecentTab_Topvalue = 40
 
-local cleaner = {
-{ "&amp;", "&" },
-{ "&#151;", "-" },
-{ "&#146;", "'" },
-{ "&#160;", " " },
-{ "&nbsp;", " " },
-{ "&#39;", "'" },
-{ "<br />", "\n" },
-{ "</p>", "\n\n" },
-{ "(%b<>)", "\n" },
-{ "\n\n*", "\n" },
-{ "\n*$", "\n" },
-{ "^\n*", "\n" },
-{ "&quot;", "'" },
-}
+
+		local content=""
+		local goalsid
+
 
 --------------------------------------------------
 
@@ -67,14 +56,29 @@ end
 
 local function editEvent( event)
 
+	if event.phase == "ended" then
+
+		if webView then	webView:removeSelf( );webView=nil end
+
+		Runtime:removeEventListener( "key", onKeyEvent )
+
+
+		
 		local options = {
-					effect = "slideLeft",
-					time = 500,
-					}
+    effect = "fromRight",
+    time = 500,
+  	params = {
+					content = content,
+					goalsid = goalsid
+					
+				}
+		}
 
-	Runtime:removeEventListener( "key", onKeyEvent )
+		composer.showOverlay( "Controller.editGoalsPage",options )
 
-	composer.showOverlay( "Controller.editGoalsPage", options )
+	end
+
+return true
 
 end
 
@@ -139,6 +143,8 @@ end
 
 function scene:resumeGame()
 
+	Webservice.GET_MYUNITAPP_GOALS(get_Goals)
+
 	Runtime:addEventListener( "key", onKeyEvent )
 
 end
@@ -157,32 +163,14 @@ function scene:show( event )
 
 			composer.removeHidden()
 
-			--[[goal_scrollview  = widget.newScrollView
-			{
-			top = RecentTab_Topvalue,
-			left = 0,
-			width = W,
-			height =H-70,
-			hideBackground = true,
-			isBounceEnabled=false,
-			horizontalScrollingDisabled = false,
-			verticalScrollingDisabled = false,
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-   -- listener = scrollListener
-}
-
-goal_scrollview.anchorY=0
-goal_scrollview.y=RecentTab_Topvalue+30
-goal_scrollview.x=W/2]]
-
-title_bg = display.newRect(sceneGroup,0,0,W,30)
-title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-
-title = display.newText(sceneGroup,Goals.PageTitle,0,0,native.systemFont,18)
-title.anchorX = 0
-title.x=5;title.y = title_bg.y
-title:setFillColor(0)
+	title = display.newText(sceneGroup,Goals.PageTitle,0,0,native.systemFont,18)
+	title.anchorX = 0
+	title.x=5;title.y = title_bg.y
+	title:setFillColor(0)
 
 
 	editGoals_icon = display.newImageRect( sceneGroup, "res/assert/edit-48.png", 36,28 )
@@ -200,16 +188,15 @@ title:setFillColor(0)
 
 function get_Goals(response)
 
+
+		goalsid = response.MyUnitBuzzGoalsId
+
 	if response.MyUnitBuzzGoals ~= nil and response.MyUnitBuzzGoals ~= "" then
 
 		local t = response.MyUnitBuzzGoals
 
-		--[[for i=1, #cleaner do
-			local cleans = cleaner[i]
-			t = string.gsub( t, cleans[1], cleans[2] )
-		end]]
 
-		print(t)
+		content = t
 
 		local saveData = t
 
@@ -236,13 +223,6 @@ function get_Goals(response)
 		webView:request( "goals.html", system.DocumentsDirectory )
 		sceneGroup:insert( webView )
 
-		--[[
-				GoalText = display.newText(t,0,0,W-20,t:len()/2.2,native.systemFont,14)
-				GoalText.anchorY=0
-				GoalText.x=W/2;GoalText.y=0
-				GoalText:setFillColor(Utils.convertHexToRGB(color.Black))
-				goal_scrollview:insert(GoalText)
-				]]
 	else
 		NoEvent = display.newText( sceneGroup, Goals.NoGolas, 0,0,0,0,native.systemFontBold,16)
 		NoEvent.x=W/2;NoEvent.y=H/2

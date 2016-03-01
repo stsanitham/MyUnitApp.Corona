@@ -209,7 +209,7 @@ local function listTouch( event )
 				local options = {
 					isModal = true,
 					effect = "slideLeft",
-					time = 500,
+					time = 10,
 					params = {
 					details = event.target.value,
 					calendarId = CalendarId,
@@ -1307,7 +1307,6 @@ end
 
 function scene:resumeGame(value)
 
-	print( "!@#@$#$%$^%" )
 
 	Runtime:addEventListener( "key", onKeyEvent )
 
@@ -1320,6 +1319,32 @@ function scene:resumeGame(value)
 		weekViewTouchFlag=true
 		ParentShow=true
 		creatWeek(temp,true)
+
+		
+    end
+
+end
+
+function scene:resumeGame(value,EditArray)
+
+
+    if value == "edit" then
+
+
+				local options = {
+					isModal = true,
+					effect = "slideLeft",
+					time = 100,
+					params = {
+					
+					Details = EditArray
+
+				}
+			}
+
+
+
+			composer.showOverlay( "Controller.addEventPage", options )
 
 		
     end

@@ -34,6 +34,8 @@ local purpose_enum = {"FACIAL","ON_THE_GO","DOUBLE_FACIAL","CLASS","TEAM_BUILDIN
 
 local deleteEvent_icon
 
+local eventResponse = {}
+
 local with_enum = {
         "CALENDAR",
         "APPT",
@@ -110,23 +112,38 @@ local display_details = {}
 		end
 
 
-		local function deleteEvent( event )
+		local function EditOption( event )
 
+			if event.phase == "ended" then
 			local function onComplete( event )
-			if event.action == "clicked" then
+				if event.action == "clicked" then
 
-			    local i = event.index
-			    if i == 1 then
+				    local i = event.index
+				    if i == 1 then
 
-			    	Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,get_DeleteTicklerEvent)
-			       
-			    elseif i == 2 then
+				    	Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,get_DeleteTicklerEvent)
+				       
+				    elseif i == 2 then
+				    	--Details
 
-			    end
+				    	
+				    end
+				end
 			end
-			end
+
+			if event.target.id == "delete" then
 
 					local alert = native.showAlert(EventCalender.DeleteTitle, EventCalender.DeleteAlert , { CommonWords.ok , CommonWords.cancel }, onComplete )
+
+			elseif event.target.id == "edit" then
+
+				status="edit"
+				composer.hideOverlay()
+			end
+
+		end
+
+		return true
 
 		end
 				
@@ -155,6 +172,7 @@ local display_details = {}
         if phase == "up" then
 
         if keyName=="back" then
+
 
         	composer.hideOverlay( "slideRight", 300 )
             
@@ -225,11 +243,19 @@ local display_details = {}
 		deleteEvent_icon = display.newImageRect( sceneGroup, "res/assert/delete.png", 20,16 )
 		deleteEvent_icon.x=titleBar.x+titleBar.contentWidth/2-20
 		deleteEvent_icon.y=titleBar.y+titleBar.contentHeight/2
-		deleteEvent_icon:addEventListener( "touch", deleteEvent )
+		deleteEvent_icon.id="delete"
+		deleteEvent_icon:addEventListener( "touch", EditOption )
+
+		editEvent_icon = display.newImageRect( sceneGroup, "res/assert/edit.png", 20,20 )
+		editEvent_icon.x=titleBar.x+titleBar.contentWidth/2-45
+		editEvent_icon.y=titleBar.y+titleBar.contentHeight/2
+		editEvent_icon.id="edit"
+		editEvent_icon:addEventListener( "touch", EditOption )
 
 		if not IsOwner then
 
 			deleteEvent_icon.isVisible = false
+			editEvent_icon.isVisible = false
 
 		end
 
@@ -672,7 +698,11 @@ local display_details = {}
 
 		elseif phase == "did" then
 
-		event.parent:resumeGame(status)
+		if status == "edit" then
+			event.parent:resumeGame(status,Details)
+		else
+			event.parent:resumeGame(status)
+		end
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
 		menuTouch_s:removeEventListener("touch",menuTouch)

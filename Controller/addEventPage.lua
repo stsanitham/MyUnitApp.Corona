@@ -10,6 +10,7 @@ local widget = require( "widget" )
 local Utility = require( "Utils.Utility" )
 local lfs = require ("lfs")
 local mime = require("mime")
+local json = require("json")
 local timePicker = require( "Controller.timePicker" )
 local datePicker = require( "Controller.datePicker" )
 
@@ -30,6 +31,8 @@ local EventnameGroup = display.newGroup( )
 local EventnameFlag = false
 
 local BackFlag = false
+
+local isUpdate = false
 
 
 local EventnameArray = AddeventPage.EventnameArray
@@ -68,6 +71,8 @@ local List
 
 local searchArray = {}
 
+local UpdateValue={}
+
 local searchArraytotal = {}
 
 local searchList
@@ -87,6 +92,15 @@ local appointmentGroup = display.newGroup()
 local status = "normal"
 
 local AttachmentFlag = false
+
+local Background,tabBar,menuBtn,BgText,titleBar,titleBar_icon,titleBar_text,saveBtn_BG,scrollView,SelectEventLbl,SelectEvent,SelectEvent_icon,BottomImage,What,BottomImageWhat
+local alldayLbl,Event_fromLbl,Event_from_datebg,Event_from_date,Event_from_timebg,Event_from_time,BottomImageWhen,Event_toLbl,Event_to_datebg,Event_to_date,Event_to_timebg
+local Event_to_time,timeZone,BottomImageTo,Where,BottomImageWhere,Phone,BottomImagePhone,AccessCode,BottomImageAccessCode,Out_bound,Out_bound_txt,Inbound,In_bound_txt,Conference
+-- local Conference_txt,Description,Description_lbl,AppintmentWith,BottomImageAppintmentWith,BottomImageAddinvitees,Purposetxt,PurposeLbl,Purpose_icon,BottomImagePurpose,BottomOther
+
+local Prioritytxt,PriorityLbl,Priority_icon,BottomImagePriority,AddAttachmentLbl,AddAttachmentPhotoName,AddAttachment_icon,AddAttachment_close,BottomImageAddAttachment,List_bg
+local List,searchList,appoitmentAdd_Background,appoitmentAdd_bg,appoitmentAdd_header,appoitmentAdd_headertitle,Ap_firstName,Ap_lastName,Ap_email,Ap_phone,selectcontactGroup_bg
+--local Ap_selectcontactLbl,Ap_selectcontactLbl_icon,contactGroup_bg,Ap_contactLbl,Ap_contactLbl_icon,Ap_saveBtn,Ap_saveBtntxt,Ap_cancelBtn,Ap_cancelBtntxt,QuickContactList_bg,QuickContactList
 --------------------------------------------------
 
 
@@ -113,6 +127,41 @@ local function closeDetails( event )
 	end
 
 return true
+
+end
+
+local function CallAction()
+
+
+			AppintmentWith.placeholder="Call With"
+
+			PurposeLbl.text = ""
+
+			TicklerType = "CALL"
+
+			callGroup.isVisible = true
+
+			Event_toLbl.text = "Duration"
+
+			Event_to_date.x= Event_to_datebg.x+35
+
+			Event_from_date.x = Event_from_datebg.x+ 35
+
+			whereGroup.isVisible = false
+
+			Where.isVisible = false
+
+			--callGroup.y = W/2+20
+			
+			belowGroup.y=-W/2+160
+
+		--	Where.isVisible = false
+
+		--	BottomImageWhere.isVisible = false
+
+			Phone.isVisible = true
+
+			AccessCode.isVisible = true
 
 end
 
@@ -488,35 +537,7 @@ local function onRowTouch(event)
 
 		elseif List.textFiled.text:lower( ) == "call" then
 
-			AppintmentWith.placeholder="Call With"
-
-			PurposeLbl.text = ""
-
-			TicklerType = "CALL"
-
-			callGroup.isVisible = true
-
-			Event_toLbl.text = "Duration"
-
-			Event_to_date.x= Event_to_datebg.x+35
-
-			Event_from_date.x = Event_from_datebg.x+ 35
-
-			whereGroup.isVisible = false
-
-			Where.isVisible = false
-
-			--callGroup.y = W/2+20
-			
-			belowGroup.y=-W/2+160
-
-		--	Where.isVisible = false
-
-		--	BottomImageWhere.isVisible = false
-
-			Phone.isVisible = true
-
-			AccessCode.isVisible = true
+			CallAction()
 
 		end
 
@@ -1280,6 +1301,8 @@ local function TouchAction( event )
 
 			elseif event.target.id == "eventtype" then
 
+				print( "*******************************" )
+
 				if List.isVisible == false then
 
 						What.isVisible = false
@@ -1777,6 +1800,11 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
+	if event.params.Details ~= nil then
+		isUpdate = true
+		UpdateValue = event.params.Details
+	end
+
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 	Background.id="bg"
@@ -1817,6 +1845,10 @@ function scene:create( event )
 		saveBtn_BG.id = "save"
 		saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
 
+		if event.params.Details then
+			print("---------------------EDIT----------------------")
+		end
+
 
 		scrollView = widget.newScrollView
 			{
@@ -1833,6 +1865,8 @@ function scene:create( event )
 		}
 
 		sceneGroup:insert( scrollView )
+
+		print( json.encode( UpdateValue ) )
 	
 		--Form Design---
 
@@ -1857,6 +1891,13 @@ function scene:create( event )
 		SelectEvent.x=W/2
 		SelectEvent.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
+		if isUpdate == true then
+			SelectEvent.text = AddeventPage.EventnameArray[UpdateValue.TicklerType]
+			if UpdateValue.TicklerType == 2 then
+				CallAction()
+			end
+		end	
+
 	  	SelectEvent_icon = display.newImageRect(AddeventGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	SelectEvent_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	SelectEvent_icon.y=SelectEvent.y
@@ -1866,31 +1907,6 @@ function scene:create( event )
 
 		scrollView:insert( AddeventGroup)
 
-		MainGroup:insert(sceneGroup)
-
-end
-
-function scene:show( event )
-
-	local sceneGroup = self.view
-	local phase = event.phase
-	
-	if phase == "will" then
-
-
-	elseif phase == "did" then
-
-		eventTime = event.params.details
-
-	--	print("eventtime value ", eventTime)
-
-		CalendarId = event.params.calendarId
-
-		CalendarName = event.params.calendarName
-
-		print( os.date( "%m/%d/%Y" ,  eventTime )) 
-
-	--	print( os.date("%H", eventTime))
 
 		----What----
 
@@ -2160,6 +2176,8 @@ function scene:show( event )
 
 	  	--------
 
+
+
 	  	---Bounds-----
 
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
@@ -2353,7 +2371,40 @@ function scene:show( event )
 
 
 		
-	  	--[[ --stage 2
+
+
+
+
+
+
+
+		MainGroup:insert(sceneGroup)
+
+end
+
+function scene:show( event )
+
+	local sceneGroup = self.view
+	local phase = event.phase
+	
+	if phase == "will" then
+
+
+	elseif phase == "did" then
+
+		eventTime = event.params.details
+
+	--	print("eventtime value ", eventTime)
+
+		CalendarId = event.params.calendarId
+
+		CalendarName = event.params.calendarName
+
+		print( os.date( "%m/%d/%Y" ,  eventTime )) 
+
+	--	print( os.date("%H", eventTime))
+
+		  	--[[ --stage 2
 	  	Addinvitees_icon = display.newImageRect(AddeventGroup,"res/assert/icon-close.png",30/1.5,30/1.5 )
 	  	Addinvitees_icon.rotation=45
 	  	Addinvitees_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
@@ -2478,10 +2529,6 @@ function scene:show( event )
 		belowOtherGroup:insert(BottomImagePriority)
 
 	  	--------
-
-
-
-
 	  	--Add Attachment---
 
 		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
@@ -2594,7 +2641,6 @@ function scene:show( event )
 	  	searchList_bg.isVisible = false
 
 	  	----------------
-
   	
 
 
@@ -2815,6 +2861,17 @@ end
 
 			AddAttachmentPhotoName:removeEventListener( "touch", photonametouch )
 			AddAttachment_close:removeEventListener( "touch", photonametouch )
+				titleBar_icon:removeEventListener("touch",TouchAction)
+		titleBar_text:removeEventListener("touch",TouchAction)
+  		Background:removeEventListener( "touch", TouchAction )
+		menuBtn:removeEventListener("touch",menuTouch)
+
+		Event_from_timebg:removeEventListener("touch",TouchAction)
+		Event_to_timebg:removeEventListener("touch",TouchAction)
+		Event_from_datebg:removeEventListener("touch",TouchAction)
+		Event_to_datebg:removeEventListener("touch",TouchAction)
+		saveBtn_BG:removeEventListener("touch",TouchAction)
+
 
 
 		end	

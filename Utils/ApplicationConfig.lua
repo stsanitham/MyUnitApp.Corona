@@ -18,6 +18,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 
 -----Stagging--------
+
 --[[
 
 IsLive = false
@@ -136,4 +137,6 @@ ApplicationConfig.SaveMyEditedUnitAppGoals = ApplicationConfig.BASE_URL.."/MyUni
 ApplicationConfig.RemoveOrBlockContact = ApplicationConfig.BASE_URL.."/MyUnitBuzz/UpdateContactStatus"
 
 ApplicationConfig.AccessPermissionDetails = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SaveAccessPermissionsDetails"
+
+ApplicationConfig.SaveMyUnitBuzzGoals = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SaveMyUnitBuzzGoals"
 
