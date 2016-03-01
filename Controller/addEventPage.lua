@@ -85,6 +85,10 @@ local belowGroup = display.newGroup( )
 
 local belowOtherGroup = display.newGroup( )
 
+local taskGroup = display.newGroup( )
+
+local taskGroupExt = display.newGroup( )
+
 local QuickContactList = {}
 
 local appointmentGroup = display.newGroup()
@@ -183,8 +187,6 @@ local function photonametouch( event )
 				AddAttachment_close.isVisible = false
 
 				 os.remove( path )
-
-           		 print("imagepath removal..........................",os.remove( path ))
 
 			end
 
@@ -393,6 +395,14 @@ local function searchTouch(event)
 
 		searchList.textFiled.contactinfo = row.value
 
+		if SelectEvent.text:lower( ) == "call" and searchList.textFiled == AppintmentWith then
+			if row.value.PrefPhone ~= nil and row.value.PrefPhone ~= "" then
+				Phone.text = row.value.PrefPhone
+			else
+				Phone.text = ""
+			end
+		end
+
 		native.setKeyboardFocus( nil )
 
     end
@@ -408,7 +418,15 @@ local function onRowRender( event )
     local rowHeight = row.contentHeight
     local rowWidth = row.contentWidth
 
-    local rowTitle = display.newText( row, List.arrayName[row.index], 0, 0, nil, 14 )
+    local rowTitle
+
+		if List.arrayName == purposeArray or List.arrayName == priorityArray then
+    		 rowTitle = display.newText( row, List.arrayName[row.index].value, 0, 0, nil, 14 )
+    	else
+
+    		rowTitle = display.newText( row, List.arrayName[row.index], 0, 0, nil, 14 )
+
+    	end
     rowTitle:setFillColor( 0 )
 
     -- Align the label left and vertically centered
@@ -420,14 +438,29 @@ local function onRowRender( event )
     tick.x = rowWidth - 20
     tick.y = rowHeight * 0.5
 
-    if List.textFiled.text == List.arrayName[row.index] then
+    
+
+		if List.arrayName == purposeArray or List.arrayName == priorityArray then
+
+    	 row.name = List.arrayName[row.index].value
+    	 row.id=List.arrayName[row.index].id
+    	 if List.textFiled.text == List.arrayName[row.index].value then
+
+		    else
+		    	tick.isVisible = false
+		    end
 
     else
-    	tick.isVisible = false
+    	 row.id=row.index
+    	 row.name = List.arrayName[row.index]
+    	 if List.textFiled.text == List.arrayName[row.index] then
+
+	    else
+	    	tick.isVisible = false
+	    end
+
     end
 
-
-    row.name = List.arrayName[row.index]
 
     print( row.name )
 end
@@ -440,6 +473,8 @@ local function onRowTouch(event)
 
     if event.phase == 'release' then
 
+    	List.textFiled:setFillColor( 0,0,0 )
+		List.textFiled.size = 14
 
     	What.isVisible = true
     	List_bg.isVisible = false
@@ -448,7 +483,7 @@ local function onRowTouch(event)
 		List.isVisible = false
 		QuickContactList.isVisible = false
 		List.textFiled.text = row.name
-		List.textFiled.value = row.index - 1
+		List.textFiled.value = row.id
 
 		 print( "Here : "..row.name )
 
@@ -472,6 +507,36 @@ local function onRowTouch(event)
 
 			AccessCode.isVisible = false
 
+
+			 taskGroup[1].isVisible = true
+			 taskGroup[2].isVisible = true
+
+			 taskGroup.y=0
+			taskGroupExt.y=0
+
+			if allDay == true then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=false
+					end
+				end
+				Event_toLbl.isVisible = true
+				Event_to_datebg.isVisible = true
+				Event_to_date.isVisible = true
+				Event_to_timebg.isVisible = false
+				BottomImageTo.isVisible = true
+			end
+
+			
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
+
+
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
+			Event_toLbl.text = "To"
+
 		elseif List.textFiled.text:lower( ) == "appointment" then
 
 			AppintmentWith.placeholder="Appointment With"
@@ -492,6 +557,35 @@ local function onRowTouch(event)
 
 			AccessCode.isVisible = false
 
+			if allDay == true then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=false
+					end
+				end
+				Event_toLbl.isVisible = true
+				Event_to_datebg.isVisible = true
+				Event_to_date.isVisible = true
+				Event_to_timebg.isVisible = false
+				BottomImageTo.isVisible = true
+			end
+
+
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
+
+
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
+			Event_toLbl.text = "To"
+
+			 taskGroup[1].isVisible = true
+			 taskGroup[2].isVisible = true
+
+			 taskGroup.y=0
+			taskGroupExt.y=0
+
 
 		elseif List.textFiled.text:lower( ) == "task" then
 
@@ -507,21 +601,35 @@ local function onRowTouch(event)
 
 			Purposetxt.text = "Priority"
 
-			--Addinvitees.isVisible = false
+			 taskGroup[1].isVisible = false
+			 taskGroup[2].isVisible = false
 
-			--BottomImageAddinvitees.isVisible = false
+			 taskGroup.y=-40
+			taskGroupExt.y=-40
 
-			-- Purposetxt.y = BottomImageAppintmentWith.y + BottomImageAppintmentWith.contentHeight+ 15
+			if allDay == true then
+				
 
-			-- PurposeLbl . y = BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+15
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=false
+					end
+				end
+				Event_toLbl.isVisible = true
+				Event_to_datebg.isVisible = true
+				Event_to_date.isVisible = true
+				Event_to_timebg.isVisible = false
+				BottomImageTo.isVisible = true
+			end
 
-			-- Purpose_icon . y = BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+15
+		
+			
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
 
-			-- BottomImagePurpose . y =BottomImageAppintmentWith.y+BottomImageAppintmentWith.contentHeight+25
 
-		--	Where.isVisible = false
-
-		--	BottomImageWhere.isVisible = false
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
+			Event_toLbl.text = "To"
 
 			callGroup.isVisible = false
 
@@ -538,6 +646,60 @@ local function onRowTouch(event)
 		elseif List.textFiled.text:lower( ) == "call" then
 
 			CallAction()
+
+			 taskGroup[1].isVisible = true
+			 taskGroup[2].isVisible = true
+
+			 taskGroup.y=0
+			taskGroupExt.y=0
+
+
+
+
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
+
+
+			Event_to_time.text = "15 M"
+			Event_to_time.value=15
+			Event_to_date.text = "00 H"
+			Event_to_date.value=00
+
+			elseif List.textFiled.id:lower( ) == "totime" then
+
+
+
+				if SelectEvent.text:lower( ) == "call" then
+					List.textFiled.value = List.textFiled.text
+					List.textFiled.text = List.textFiled.text.." M"
+					
+					if 	Phone.isVisible == true then
+										Phone.isVisible = false
+										AccessCode.isVisible = false
+					else
+										Phone.isVisible = true
+										AccessCode.isVisible = true
+					end
+
+				end
+
+			elseif List.textFiled.id:lower( ) == "todate" then
+
+
+				if SelectEvent.text:lower( ) == "call" then
+
+					List.textFiled.value = List.textFiled.text
+					List.textFiled.text = List.textFiled.text.." H"
+
+					if 	Phone.isVisible == true then
+										Phone.isVisible = false
+										AccessCode.isVisible = false
+					else
+										Phone.isVisible = true
+										AccessCode.isVisible = true
+					end
+
+				end
+
 
 		end
 
@@ -657,19 +819,19 @@ function get_SaveAttachmentDetails(response)
 
 			if SelectEvent.text:lower( ) == "appointment" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Appointment added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Appointment) added Successfully", { "OK" },onComplete )
 
 		    elseif SelectEvent.text:lower( ) == "call" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Call added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Call) added Successfully", { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "task" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Task added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Task) added Successfully", { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "party" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Party added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Party) added Successfully", { "OK" },onComplete )
 		else
 
 		end
@@ -719,19 +881,19 @@ local function get_CreateTickler( response )
 
 			if SelectEvent.text:lower( ) == "appointment" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Appointment added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Appointment) added Successfully", { "OK" },onComplete )
 
 		    elseif SelectEvent.text:lower( ) == "call" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Call added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Call) added Successfully", { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "task" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Task added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Task) added Successfully", { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "party" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event for Party added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Party) added Successfully", { "OK" },onComplete )
 		else
 
 		--endlocal alert = native.showAlert(  EventCalender.PageTitle,AddeventPage.Event_Added, { CommonWords.ok },onComplete )
@@ -853,7 +1015,6 @@ local function TouchAction( event )
         -- If the touch on the button has moved more than 10 pixels,
         -- pass focus back to the scroll view so it can continue scrolling
 
-        print(dy)
         if ( dy > 10 ) then
         	display.getCurrentStage():setFocus( nil )
             scrollView:takeFocus( event )
@@ -879,6 +1040,37 @@ local function TouchAction( event )
 				native.setKeyboardFocus( Description )
 
 			elseif event.target.id == "save" then
+
+				local checkMad = false
+
+				if PurposeLbl.text == "" or PurposeLbl.text == "* Select Purpose" then
+					PurposeLbl:setFillColor( 1,0,0 )
+					PurposeLbl.size = 10
+					PurposeLbl.text = "* Select Purpose"
+					scrollView:scrollToPosition
+						{
+						    y = -150,
+						    time = 400,
+						}
+					checkMad = true
+
+				end
+
+				if SelectEvent.text:lower( ) == "call" then
+
+					if Phone.text == "" or Phone.text == "* Phone Number is mandatory" then
+						Phone.text = "* Phone Number is mandatory"
+						Phone:setTextColor ( 1,0,0 )
+						Phone.size = 10
+
+						checkMad = true
+					end
+
+				end
+
+				if checkMad == true then
+					return false
+				end
 
 				if allDay == true then
 
@@ -921,7 +1113,7 @@ local function TouchAction( event )
 
 							print( Event_to_date.text,EventTo_time)
 
-							time = time+ (tonumber(Event_to_date.text)*3600) + (tonumber(EventTo_time)*60)
+							time = time+ (tonumber(Event_to_date.value)*3600) + (tonumber(EventTo_time)*60)
 
 							print( os.date( "%I:%M %p",time) )
 
@@ -929,7 +1121,7 @@ local function TouchAction( event )
 							EventTo_time = os.date( "%I:%M %p",time)
 						end
 
-					
+							
 
 							Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
 
@@ -943,7 +1135,7 @@ local function TouchAction( event )
 							
 							local time = makeTimeStamp(startdate)
 
-							time = time+ (tonumber(Event_to_date.text)*3600) + (tonumber(EventTo_time)*60)
+							time = time+ (tonumber(Event_to_date.value)*3600) + (tonumber(Event_to_time.value)*60)
 
 
 							enddate = os.date( "%m/%d/%Y %I:%M %p",time)
@@ -1014,11 +1206,18 @@ local function TouchAction( event )
 					AccessCode.isVisible = false
 
 				end
-				function getValue(time)
+				local function getValue(time)
 
 					Event_from_time.text = time
 					AppintmentWith.isVisible = true
-					Where.isVisible = true
+
+					if SelectEvent.text:lower( ) ~= "call" then
+						Where.isVisible = true
+					elseif SelectEvent.text:lower( ) ~= "task" then
+						Where.isVisible = true
+						Addinvitees.isVisible = true
+					end
+
 					Addinvitees.isVisible = true
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
@@ -1035,7 +1234,12 @@ local function TouchAction( event )
 
 						Event_to_time.text = time
 						AppintmentWith.isVisible = true
-						Where.isVisible = true
+						if SelectEvent.text:lower( ) ~= "call" then
+							Where.isVisible = true
+						elseif SelectEvent.text:lower( ) ~= "task" then
+							Where.isVisible = true
+							Addinvitees.isVisible = true
+						end
 						Addinvitees.isVisible = true
 						if SelectEvent.text:lower( ) == "call" then
 							Phone.isVisible = true
@@ -1047,9 +1251,14 @@ local function TouchAction( event )
 					Where.isVisible = false
 					Addinvitees.isVisible = false
 					if SelectEvent.text:lower( ) == "call" then
-
-								Phone.isVisible = false
-								AccessCode.isVisible = false
+								
+								if 	Phone.isVisible == true then
+									Phone.isVisible = false
+									AccessCode.isVisible = false
+								else
+									Phone.isVisible = true
+									AccessCode.isVisible = true
+								end
 
 							if List.isVisible == false then
 									List.isVisible = true
@@ -1096,11 +1305,17 @@ local function TouchAction( event )
 
 					end
 				
-				function getValue(time)
+				local function getValue(time)
 
 					Event_from_date.text = time
 					AppintmentWith.isVisible = true
-					Where.isVisible = true
+
+					if SelectEvent.text:lower( ) ~= "call" then
+						Where.isVisible = true
+					elseif SelectEvent.text:lower( ) ~= "task" then
+						Where.isVisible = true
+						Addinvitees.isVisible = true
+					end
 					Addinvitees.isVisible = true
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
@@ -1116,19 +1331,21 @@ local function TouchAction( event )
 					AppintmentWith.isVisible = false
 					Where.isVisible = false
 					Addinvitees.isVisible = false
-					if SelectEvent.text:lower( ) == "call" then
-
-					Phone.isVisible = false
-					AccessCode.isVisible = false
-
-					end
 				
-				function getValue(time)
+				
+				local function getValue(time)
 
 					Event_to_date.text = time
 					AppintmentWith.isVisible = true
-					Where.isVisible = true
-					Addinvitees.isVisible = true
+					
+						if SelectEvent.text:lower( ) ~= "call" then
+						Where.isVisible = true
+					elseif SelectEvent.text:lower( ) ~= "task" then
+						Where.isVisible = true
+						Addinvitees.isVisible = true
+					end
+
+									Addinvitees.isVisible = true
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
 						AccessCode.isVisible = true
@@ -1140,8 +1357,13 @@ local function TouchAction( event )
 					Addinvitees.isVisible = false
 					if SelectEvent.text:lower( ) == "call" then
 
-								Phone.isVisible = false
-								AccessCode.isVisible = false
+								if 	Phone.isVisible == true then
+									Phone.isVisible = false
+									AccessCode.isVisible = false
+								else
+									Phone.isVisible = true
+									AccessCode.isVisible = true
+								end
 
 							if List.isVisible == false then
 									List.isVisible = true
@@ -1169,7 +1391,7 @@ local function TouchAction( event )
 
 					else
 
-						timePicker.getTimeValue(getValue)
+						datePicker.getTimeValue(getValue)
 
 					end
 			
@@ -1338,19 +1560,60 @@ end
 
 local function onSwitchPress( event )
     local switch = event.target
-    if switch.isOn == false then
 
-    	allDay=true
-	    Event_from_timebg.isVisible = false
-		Event_from_time.isVisible = false
-		Event_to_timebg.isVisible = false
-		Event_to_time.isVisible = false
-	else
-		allDay=false
-		Event_from_timebg.isVisible = true
-		Event_from_time.isVisible = true
-		Event_to_timebg.isVisible = true
-		Event_to_time.isVisible = true
+    if event.phase == "began" then
+
+		
+
+	elseif ( event.phase == "ended" ) then
+    
+    	if switch.isOn == true then
+
+	    	allDay=true
+		    Event_from_timebg.isVisible = false
+			Event_from_time.isVisible = false
+			Event_to_timebg.isVisible = false
+			Event_to_time.isVisible = false
+
+			if SelectEvent.text:lower( ) == "call" then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=false
+					end
+				end
+				Event_toLbl.isVisible = false
+				Event_to_datebg.isVisible = false
+				Event_to_date.isVisible = false
+				Event_to_timebg.isVisible = false
+				BottomImageTo.isVisible = false
+			end
+		else
+			allDay=false
+			Event_from_timebg.isVisible = true
+			Event_from_time.isVisible = true
+			Event_to_timebg.isVisible = true
+			Event_to_time.isVisible = true
+
+			if SelectEvent.text:lower( ) == "call" then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=true
+					end
+				end
+				Event_toLbl.isVisible = true
+				Event_to_datebg.isVisible = true
+				Event_to_date.isVisible = true
+				Event_to_timebg.isVisible = true
+				BottomImageTo.isVisible = true
+			end
+
+		end
+	   	
+	   	 
 
 	end
 end
@@ -1398,17 +1661,13 @@ local function searchfunction( event )
         -- do something with defaultField text
         print( event.target.text )
 
-      Addinvitees.isVisible = true
+     
 
     elseif ( event.phase == "editing" ) then
 
-    	if event.target.id == "appintmentwith" then
+    	if event.target.id == "addinvitees" then
 
-    		Addinvitees.isVisible = true ---changed now (it was false)
-
-        elseif event.target.id == "addinvitees" then
-
-			AppintmentWith.isVisible = true  ---changed now (it was false)
+			AppintmentWith.isVisible = false  ---changed now (it was false)
 
         end
 
@@ -1418,11 +1677,15 @@ local function searchfunction( event )
 				searchArraytotal[i]=nil
 			end
 
+
 			if event.target.id == "addinvitees" then
 
-				AppintmentWith.isVisible = true
+				if #searchArray == 0 then
 
-        	end
+					AppintmentWith.isVisible = true 
+
+				end
+			end
 
 			Webservice.GetContact(event.text,get_Contact)
 
@@ -1430,6 +1693,15 @@ local function searchfunction( event )
 
 			searchList:deleteAllRows()
 
+			if event.target.id == "addinvitees" then
+
+				
+				
+
+					AppintmentWith.isVisible = true 
+
+				
+			end
 			
 		else
 
@@ -1496,16 +1768,23 @@ local function searchfunction( event )
 		end
 
 		searchList.x = event.target.x
-		searchList.y = event.target.y-event.target.contentHeight+25
 		searchList.width =event.target.contentWidth
 
 		searchList.textFiled = event.target
 
-		searchList.height = #searchArray*32
+		searchList.height = #searchArray*36
 
 		if #searchArray >= 3 then
-			searchList.height = 3*32
+			searchList.height = 3*36
+
+			if event.text:len() > 1 then
+				searchList:scrollToIndex( 1, 100 )
+			end
 		end
+
+				searchList.y = event.target.y-event.target.contentHeight+25
+
+				
 
 		print( #searchArray,searchList.height )
 
@@ -1533,7 +1812,15 @@ else
 
 end
 
+
 end
+
+	local function createField()
+		native.setKeyboardFocus(nil)
+		input = native.newTextField(W/2, 240, W-20, 25)
+		
+		return input
+	end
 
 
 
@@ -1544,16 +1831,33 @@ local function usertextField( event )
         -- user begins editing defaultField
 		   if(event.target.id == "description") then
 
-     	   scrollTo(-100)
+		   	if SelectEvent.text:lower( ) == "call" then
+		   		scrollTo(-200)
+		   	else
+
+     	  	 scrollTo(-115)
+
+     	  	end
 
      	end
+
+     	if event.target.text == "* Phone Number is mandatory" then
+						event.target:setTextColor ( 0,0,0 )
+						event.target.size = 14
+						event.target.text=""
+
+		end
 	
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
 
-        scrollTo(0)
+        
 
         if(event.target.id == "description") then
+
+        	scrollTo(0)
+
+        	native.setKeyboardFocus( nil )
 
         	event.target.isVisible = false
 
@@ -1575,11 +1879,19 @@ local function usertextField( event )
 
         	
 
-        end
+        
 
-        if(event.target.id == "What") then
+        elseif(event.target.id == "What") then
 
         	native.setKeyboardFocus( Where )
+
+        elseif (event.target.id == "Where") then
+
+        	native.setKeyboardFocus( nil )
+
+        else
+
+        	native.setKeyboardFocus( nil )
 
         end
 
@@ -1625,11 +1937,24 @@ local function usertextField( event )
 
 
 
+		if(event.target.id == "accesscode") then
 
+			if event.text:len() > 10 then
 
-		if(event.target.id == "phone") then
+					event.target.text = event.target.text:sub(1,10)
 
-					event.target.text = string.sub(event.target.text,1,event.startPosition )
+				end
+		elseif(event.target.id == "What" or event.target.id == "Where" ) then
+
+			if event.text:len() > 100 then
+
+					event.target.text = event.target.text:sub(1,100)
+
+				end
+
+		elseif(event.target.id == "phone") then
+
+				event.target.text = string.sub(event.target.text,1,event.startPosition )
 
 							local tempvalue = event.target.text:sub(1,1)
 
@@ -1680,20 +2005,61 @@ local function usertextField( event )
 									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
 								end
 
+							
+
+
+							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
+
+
+									local previousText=event.target.text
+
+									Phone:removeSelf( );Phone=nil
+
+									Phone = createField()
+									Phone.id="Phone"
+									Phone.size=14	
+									Phone:setReturnKey( "next" )
+									Phone.hasBackground = false
+									Phone.placeholder=RequestAccess.Phone_placeholder
+									Phone.inputType = "number"
+									callGroup:insert(Phone)
+
+									Phone.text=previousText.."- "
+
+
+									Phone:addEventListener( "userInput", usertextField )
+
+									native.setKeyboardFocus(Phone)
+
+									event.target = Phone
+
+
+
+							elseif event.target.text:len() == 10 then
+
+								if string.find(event.target.text,"-") then
+
+									event.target.text = event.target.text:sub(1,9)
+								else
+
+									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
+								end
+															
+
 							end
 
-						if event.target.text:len() > 15 then
+							if event.target.text:len() > 15 then
 
 								event.target.text = event.target.text:sub(1,15)
 
-								--native.setKeyboardFocus( AccessCode )
 
 							end
+							end
 
-						end
+						
 
-
-    end 
+end
+	
 end
 
 
@@ -1789,9 +2155,59 @@ end
 	end
 
 
-	
-	local function CreateObject( sceneGroup )
-	
+
+
+
+
+
+------------------------------------------------------
+
+function scene:create( event )
+
+	local sceneGroup = self.view
+
+	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background.x=W/2;Background.y=H/2
+	Background.id="bg"
+
+	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+	tabBar.y=tabBar.contentHeight/2
+	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
+	menuBtn.anchorX=0
+	menuBtn.x=10;menuBtn.y=20;
+
+	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
+	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
+	BgText.anchorX=0
+
+		titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
+		titleBar.anchorY=0
+		titleBar:setFillColor(Utils.convertHexToRGB(color.tabbar))
+
+		titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
+		titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+10
+		titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
+		titleBar_icon.anchorY=0
+		titleBar_icon.id="back"
+
+		titleBar_text = display.newText(sceneGroup,AddeventPage.New_Event,0,0,native.systemFont,0)
+		titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
+		titleBar_text.y=titleBar.y+titleBar.contentHeight/2-titleBar_text.contentHeight/2
+		titleBar_text.anchorX=0;titleBar_text.anchorY=0
+		titleBar_text.id = "back"
+		Utils.CssforTextView(titleBar_text,sp_subHeader)
+		MainGroup:insert(sceneGroup)
+
+
+		saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 50, 20 )
+		saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+		saveBtn_BG.id = "save"
+
+		saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
+
+
 		scrollView = widget.newScrollView
 			{
 			top = RecentTab_Topvalue,
@@ -1901,7 +2317,7 @@ end
 		local allday_onOffSwitch = widget.newSwitch {
 			style = "onOff",
 			initialSwitchState = false,
-			onPress = onSwitchPress,
+			onEvent = onSwitchPress,
 			sheet = onOffSwitchSheet,
 
         onOffBackgroundFrame = 1,
@@ -1950,6 +2366,7 @@ end
 
 		Event_from_date = display.newText(AddeventGroup,os.date( "%m/%d/%Y" ,eventTime ),0,0,native.systemFont,14)
 		Event_from_date.anchorX=0
+		Event_from_date.id="fromdate"
 		Event_from_date:setFillColor( 0 )
 		Event_from_date.x= Event_from_datebg.x+5;Event_from_date.y= Event_from_datebg.y
 
@@ -1996,6 +2413,7 @@ end
 
 		Event_to_date = display.newText(AddeventGroup,os.date( "%m/%d/%Y" ,eventTime ),0,0,native.systemFont,14)
 		Event_to_date.anchorX=0
+		Event_to_date.id="todate"
 		Event_to_date:setFillColor( 0 )
 		Event_to_date.x= Event_to_datebg.x+5;Event_to_date.y= Event_to_datebg.y
 
@@ -2010,6 +2428,7 @@ end
 
 		Event_to_time = display.newText(AddeventGroup,os.date( "%I:%M "..TimeZonevalue , eventTime ),0,0,native.systemFont,14)
 		Event_to_time.anchorX=0
+		Event_to_time.id="totime"
 		Event_to_time:setFillColor( 0 )
 		Event_to_time.x= Event_to_timebg.x+5;Event_to_time.y= Event_to_timebg.y
 
@@ -2070,6 +2489,7 @@ end
 		Phone.anchorY=0
 		Phone.hasBackground = false
 		Phone:setReturnKey( "next" )
+		Phone.inputType = "number"
 		Phone.placeholder=AddeventPage.Phone
 		Phone:addEventListener( "userInput", usertextField )
 		callGroup:insert(Phone)
@@ -2098,6 +2518,7 @@ end
 		AccessCode.hasBackground = false
 		AccessCode:setReturnKey( "next" )
 		AccessCode.placeholder=AddeventPage.Access_Code
+		AccessCode:addEventListener( "userInput", usertextField )
 		callGroup:insert(AccessCode)
 
 		BottomImageAccessCode= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
@@ -2380,6 +2801,8 @@ function scene:show( event )
 		belowGroup:insert(AddeventArray[#AddeventArray])
 
 
+	
+
 		Addinvitees = native.newTextField(0, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-30, AddeventArray[#AddeventArray].contentHeight)
 		Addinvitees.id="addinvitees"
 		Addinvitees.size=14
@@ -2390,12 +2813,12 @@ function scene:show( event )
 		Addinvitees.contactinfo=""
 		Addinvitees:setReturnKey( "next" )
 		Addinvitees.placeholder=AddeventPage.Add_Invitees
-		belowGroup:insert(Addinvitees)
+		taskGroup:insert(Addinvitees)
 		Addinvitees:addEventListener( "userInput", searchfunction )
 
 		BottomImageAddinvitees = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomImageAddinvitees.x=W/2;BottomImageAddinvitees.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-		belowGroup:insert(BottomImageAddinvitees)
+		taskGroup:insert(BottomImageAddinvitees)
 
 
 		
@@ -2419,12 +2842,12 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		belowGroup:insert(AddeventArray[#AddeventArray])
+		taskGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 		AddeventArray[#AddeventArray].count = #AddeventArray
 
 
-		Purposetxt = display.newText(belowGroup,AddeventPage.Purpose,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Purposetxt = display.newText(taskGroup,AddeventPage.Purpose,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		Purposetxt.anchorX=0
 		Purposetxt.value=0
 		Purposetxt.count = #AddeventArray
@@ -2433,9 +2856,10 @@ function scene:show( event )
 		Purposetxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 
-		PurposeLbl = display.newText(belowGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PurposeLbl = display.newText(taskGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PurposeLbl.anchorX=0
 		PurposeLbl.value=0
+		PurposeLbl.id="purpose"
 		PurposeLbl.count = #AddeventArray
 		PurposeLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		PurposeLbl.x=W/2
@@ -2443,13 +2867,13 @@ function scene:show( event )
 
 		
 
-	  	Purpose_icon = display.newImageRect(belowGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	Purpose_icon = display.newImageRect(taskGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	Purpose_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Purpose_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 	  	BottomImagePurpose = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomImagePurpose.x=W/2;BottomImagePurpose.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-		belowGroup:insert(BottomImagePurpose)
+		taskGroup:insert(BottomImagePurpose)
 
 
 	  	--------
@@ -2462,7 +2886,7 @@ function scene:show( event )
 		AppintmentWith:addEventListener( "userInput", searchfunction )
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		belowGroup:insert(AddeventArray[#AddeventArray])
+		taskGroup:insert(AddeventArray[#AddeventArray])
 
 
 		Other = native.newTextField(0, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-30, AddeventArray[#AddeventArray].contentHeight)
@@ -2475,21 +2899,23 @@ function scene:show( event )
 		Other.contactinfo=""
 		Other:setReturnKey( "next" )
 		Other.placeholder=AddeventPage.Other
-		belowGroup:insert(Other)
+		taskGroup:insert(Other)
 		Other.count = #AddeventArray
 		Other:addEventListener( "userInput", usertextField )
 
 		BottomOther = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomOther.x=W/2;BottomOther.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-		belowGroup:insert(BottomOther)
+		taskGroup:insert(BottomOther)
 
 		AddeventArray[#AddeventArray].isVisible = false
 		Other.isVisible = false
 		BottomOther.isVisible = false
 
+
+		belowGroup:insert( taskGroup )
 		---
 
-
+		
 
 	  	--Priority---
 
@@ -2499,10 +2925,10 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].value = 0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		belowOtherGroup:insert(AddeventArray[#AddeventArray])
+		taskGroupExt:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
-		Prioritytxt = display.newText(belowOtherGroup,AddeventPage.Priority,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Prioritytxt = display.newText(taskGroupExt,AddeventPage.Priority,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		Prioritytxt.anchorX=0
 		Prioritytxt.value=0
 		Prioritytxt.count = #AddeventArray
@@ -2511,22 +2937,23 @@ function scene:show( event )
 		Prioritytxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 
-		PriorityLbl = display.newText(belowOtherGroup,AddeventPage.priorityArray[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1].value,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
 		PriorityLbl.value=0
+		PriorityLbl.id="priority"
 		PriorityLbl.count = #AddeventArray
 		PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		PriorityLbl.x=W/2
 		PriorityLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 		
-	  	Priority_icon = display.newImageRect(belowOtherGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	Priority_icon = display.newImageRect(taskGroupExt,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	Priority_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Priority_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 	  	BottomImagePriority = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomImagePriority.x=W/2;BottomImagePriority.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-		belowOtherGroup:insert(BottomImagePriority)
+		taskGroupExt:insert(BottomImagePriority)
 
 	  	--------
 	  	--Add Attachment---
@@ -2536,18 +2963,18 @@ function scene:show( event )
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].alpha=0.01
 		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-		belowOtherGroup:insert(AddeventArray[#AddeventArray])
+		taskGroupExt:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
-		AddAttachmentLbl = display.newText(belowOtherGroup,AddeventPage.Add_Attachment,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		AddAttachmentLbl = display.newText(taskGroupExt,AddeventPage.Add_Attachment,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		AddAttachmentLbl.anchorX=0
 		AddAttachmentLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		AddAttachmentLbl.x=leftPadding+5
 		AddAttachmentLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 
-		AddAttachmentPhotoName = display.newText(belowOtherGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		AddAttachmentPhotoName = display.newText(taskGroupExt,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		AddAttachmentPhotoName.anchorX=0
 		AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		AddAttachmentPhotoName.x=leftPadding+5
@@ -2557,11 +2984,11 @@ function scene:show( event )
 
 		
 
-	  	AddAttachment_icon = display.newImageRect(belowOtherGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+	  	AddAttachment_icon = display.newImageRect(taskGroupExt,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	AddAttachment_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	AddAttachment_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
-	  	AddAttachment_close =  display.newImageRect(belowOtherGroup,"res/assert/icon-close.png",20,20)
+	  	AddAttachment_close =  display.newImageRect(taskGroupExt,"res/assert/icon-close.png",20,20)
 	  	AddAttachment_close.id = "close image"
 	  	AddAttachment_close.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	AddAttachment_close.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
@@ -2570,9 +2997,11 @@ function scene:show( event )
 
 	  	BottomImageAddAttachment= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
 		BottomImageAddAttachment.x=W/2;BottomImageAddAttachment.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-		belowOtherGroup:insert(BottomImageAddAttachment)
+		taskGroupExt:insert(BottomImageAddAttachment)
 
 	  	--------
+
+	  	belowOtherGroup:insert(taskGroupExt)
 
 	  	belowGroup:insert( belowOtherGroup )
 

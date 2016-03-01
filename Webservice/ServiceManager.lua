@@ -1015,8 +1015,8 @@ print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 		"Attachment":  ']]..check(Attachment)..[[',
 		"Contact":]]..contactInfo..[[,
 		"Invitees":]]..invitees..[[,
-		"PhoneNumber":]]..PhoneNumber..[[,
-		"AccessCode":]]..AccessCode..[[,
+		"PhoneNumber":']]..PhoneNumber..[[',
+		"AccessCode":']]..AccessCode..[[',
 		"IsConference":]]..tostring(IsConference)..[[,
 		"CallDirection":]]..tostring(CallDirection)..[[,
 	

@@ -331,6 +331,12 @@ local display_details = {}
 
 		titleBar_text.text = Details.title
 
+			if titleBar_text.text:len() > 30 then
+
+					titleBar_text.text = titleBar_text.text:sub(1,30).."..."
+
+				end
+
 
 		display_details[#display_details+1] = display.newText(EventCalender.When,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
@@ -399,6 +405,7 @@ local display_details = {}
 		--------------------
 
 		----Where----
+		 if Details.TicklerType ~= 4 then
 
 		if Details.Location ~= nil or Details.PhoneNumber ~= nil or Details.Location ~= "" then
 
@@ -412,10 +419,13 @@ local display_details = {}
 
 		display_details[#display_details+1] = display.newText("",0,0,180,0,native.systemFont,14)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y
+		display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y-5
 		display_details[#display_details].anchorX=0
+		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="where"
 		scrollView:insert( display_details[#display_details] )
+
+		end
 
 
 		if Details.TicklerType == 2 then

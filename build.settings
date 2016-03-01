@@ -32,11 +32,12 @@ settings =
 	        supportedPlatforms = { android=true, ["android-kindle"]=true },
 	    },    
 	 
+
 	["CoronaProvider.native.popup.quickLook"] =
-    {
-        publisherId = "com.coronalabs",
-        supportedPlatforms = { iphone = true },
-    },
+	    {
+	        publisherId = "com.coronalabs",
+	        supportedPlatforms = { iphone = true },
+	    },
 	     
 	   
     },
@@ -58,8 +59,8 @@ settings =
 		plist =
 		{
 
-			--CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
-			CFBundleIdentifier="com.spanenterprises.MUBDev",
+			CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
+			--CFBundleIdentifier="com.spanenterprises.MUBDev",
 	
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, 
