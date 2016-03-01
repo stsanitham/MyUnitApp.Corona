@@ -312,16 +312,18 @@ end
 			  emailnotifybox.isVisible = false
 			  emailnotifytext.isVisible = false
 
+			  print("here when invisible")
 
-			  PhoneDetail_titlestar.y= EmailDetail_bg.y+EmailDetail_bg.height+5
-			  PhoneDetail_titletext.y= EmailDetail_bg.y+EmailDetail_bg.height+5
-			  PhoneDetail_bottom.y= emailnotifytext.y+emailnotifytext.height+7
-			  PhoneDetailValue.y =emailnotifytext.y+emailnotifytext.height-2
-			  textnotifytext.y= PhoneDetail_bottom.y +12
-			  textnotifybox.y = PhoneDetail_bottom.y +13
+			  PhoneDetail_titlestar.y= EmailDetail_bottom.y+EmailDetail_bottom.contentHeight+9
+			  PhoneDetail_titletext.y=  PhoneDetail_titlestar.y
+			  PhoneDetailValue.y =PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+10
+			  PhoneDetail_bottom.y= PhoneDetailValue.y+9
+			  textnotifytext.y= PhoneDetail_bottom.y +PhoneDetail_bottom.contentHeight +12
+			  textnotifybox.y = PhoneDetail_bottom.y +PhoneDetail_bottom.contentHeight +13
 
-			  MKRankDetail_title.y= PhoneDetail_titletext.y+PhoneDetail_titletext.height+32
-			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+8
+              MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
+			  MKRankDetail_title.y= MKRankDetail_bg.y+15
+			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+10
 			  MKRankDetail_bottom.y= MKRankDetailValue.y+9
 
 			  Requesteddate_bg.y =  MKRankDetailValue.y+MKRankDetailValue.height+7
@@ -340,34 +342,37 @@ end
 	          processbutton_text.y=processbutton.y
 
 		    else 
-				emailnotifybox.isVisible = true
-			    emailnotifytext.isVisible = true
 
-			    PhoneDetail_titlestar.y= EmailDetail_bg.y+EmailDetail_bg.height+20
-			    PhoneDetail_titletext.y= EmailDetail_bg.y+EmailDetail_bg.height+20
-			    PhoneDetail_bottom.y= emailnotifytext.y+emailnotifytext.height+22
-			    PhoneDetailValue.y =emailnotifytext.y+emailnotifytext.height+12
-			    textnotifytext.y= PhoneDetail_bottom.y + 15
-			    textnotifybox.y = PhoneDetail_bottom.y+15
+		    	print("here when isVisible")
+					emailnotifybox.isVisible = true
+					emailnotifytext.isVisible = true
 
-		    MKRankDetail_title.y= PhoneDetail_titletext.y+PhoneDetail_titletext.height+32
-		    MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+8
-		    MKRankDetail_bottom.y= MKRankDetailValue.y+9
+					PhoneDetail_titlestar.y= PhoneDetail_bg.y
+					PhoneDetail_titletext.y= PhoneDetail_bg.y
+					PhoneDetail_bottom.y= PhoneDetailValue.y+10
+					PhoneDetailValue.y =PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+					textnotifytext.y= PhoneDetail_bottom.y + 15
+					textnotifybox.y = PhoneDetail_bottom.y
 
-		     Requesteddate_bg.y =  MKRankDetailValue.y+MKRankDetailValue.height+7
-		     Requesteddate_title.y= MKRankDetailValue.y+MKRankDetailValue.height+12
-		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
-		     Requesteddate_bottom.y= RequesteddateValue.y+9
+                    MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+					MKRankDetail_title.y= MKRankDetail_bg.y+5
+					MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
+					MKRankDetail_bottom.y=MKRankDetailValue.y+8.5
 
-		      Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-		      Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height-2
-		      Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+12
-		      Password_bottom.y= Password_titletext.y+Password_titletext.height+15
-		      PasswordValue.y =Password_titletext.y+Password_titletext.height+5
-		      PasswordHelptext.y= Password_bottom.y + 12
-		      GeneratePasstext.y= PasswordHelptext.y + 20
-		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-			  processbutton_text.y=processbutton.y
+					Requesteddate_bg.y =  MKRankDetailValue.y+MKRankDetailValue.height+7
+					Requesteddate_title.y= MKRankDetailValue.y+MKRankDetailValue.height+12
+					RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
+					Requesteddate_bottom.y= RequesteddateValue.y+8.5
+
+					Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
+					Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height-2
+					Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+12
+					Password_bottom.y= Password_titletext.y+Password_titletext.height+15
+					PasswordValue.y =Password_titletext.y+Password_titletext.height+5
+					PasswordHelptext.y= Password_bottom.y + 12
+					GeneratePasstext.y= PasswordHelptext.y + 20
+					processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+					processbutton_text.y=processbutton.y
 
 		end
 
@@ -522,13 +527,10 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
     popupText:setTextColor(0,0,0)
     popUpGroup:insert(popupText)
 
-
-
-       popupClose_bg = display.newRect(0,0,30,30)
+    popupClose_bg = display.newRect(0,0,30,30)
     popupClose_bg.x=popupTop.x+popupTop.contentWidth/2-15
     popupClose_bg.y=popupTop.y
     popupClose_bg.id="close"
-    popupClose_bg:setFillColor( 0.5,0.6,0.2 )
     popupClose_bg.alpha=0.01
     popUpGroup:insert(popupClose_bg)
     popupClose_bg:addEventListener("touch",onCloseTouch)
@@ -536,6 +538,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 	popupClose = display.newImageRect("res/assert/cancel.png",19,19)
     popupClose.x=popupClose_bg.x
     popupClose.y=popupClose_bg.y
+    popupClose:setFillColor(0,0,0)
     popupClose.id="close"
     popUpGroup:insert(popupClose)
     --popupClose:addEventListener("touch",onCloseTouch)
@@ -564,8 +567,6 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
     popupList = display.newRect(leftPadding_value + 140, 0, W-22, popupTop_bg.contentHeight+80 )
     popupList.anchorY=0
     popup_scroll:insert(popupList)
-
-
 
 
 --------------------------------------name field--------------------------------------
@@ -834,7 +835,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 
 -----------------------------------password detail-------------------------------------------------
 
-        Password_bg = display.newRect(W/2,Requesteddate_bg.y+15, W-45, 25)
+        Password_bg = display.newRect(W/2,Requesteddate_bg.y+15, W-40, 25)
 		Password_bg.isVisible = true
 		Password_bg.alpha = 0.01
 		Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
