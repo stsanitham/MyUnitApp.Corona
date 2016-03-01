@@ -216,7 +216,7 @@ title:setFillColor(0)
 
 	local test=string.urlEncode( event.params.content )
 
-	local path = system.pathForFile( "sample.txt", system.ResourceDirectory )
+	local path = system.pathForFile( "sample.txt" )
 
 		-- Open the file handle
 		local file, errorString = io.open( path, "w" )
@@ -239,7 +239,7 @@ local options =
     baseUrl = system.ResourceDirectory,
     urlRequest = webListener
 }
-native.showWebPopup( 10, 70, display.viewableContentWidth, display.viewableContentHeight-80, "ckeditor.html", options )
+native.showWebPopup( 0, 70, display.viewableContentWidth, display.viewableContentHeight-80, "ckeditor.html", options )
 
 
 		-- webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
@@ -288,6 +288,8 @@ function scene:hide( event )
 			--composer.removeHidden()
 
 			if webView then webView:removeSelf( );webView=nil end
+
+			native.canShowPopup(  )
 
 
 		elseif phase == "did" then

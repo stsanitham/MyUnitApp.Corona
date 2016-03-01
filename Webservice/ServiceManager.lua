@@ -934,7 +934,7 @@ end
 
 
 
-function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection,postExecution)
+function Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection,postExecution)
 
 --CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,PhoneNumber,AccessCode,IsConference,CallDirection
 
@@ -948,7 +948,17 @@ function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerSta
 	headers["Content-Type"] = "application/json"
 	method="POST"
 
-	local url = splitUrl(ApplicationConfig.CreateTickler)
+	local url
+
+	if isUpdate == true then
+
+		url = splitUrl(ApplicationConfig.UpdateTicklerRecur)
+
+	else
+
+		url = splitUrl(ApplicationConfig.CreateTickler)
+
+	end
 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
@@ -991,7 +1001,8 @@ print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 		resbody = [[
 		{
 		"UserId": ]]..UserId..[[,
-		"TicklerId": 0,
+		"id": ]]..id..[[,
+		"TicklerId": ]]..TicklerId..[[,
 		"CalendarId": ]]..CalendarId..[[,
 		"CalendarName":  ']]..CalendarName..[[',
 		"TicklerType": ']]..TicklerType..[[',
@@ -1030,8 +1041,15 @@ print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 		print("request : "..json.encode(params))
 
 
+	if isUpdate == true then
+		
+			request.new(ApplicationConfig.UpdateTicklerRecur,method,params,postExecution)
+
+	else
 
 	request.new(ApplicationConfig.CreateTickler,method,params,postExecution)
+
+	end
 	
 	return response
 

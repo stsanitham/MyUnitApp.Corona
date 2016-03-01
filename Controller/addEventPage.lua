@@ -21,6 +21,10 @@ local Background,BgText
 
 local menuBtn
 
+local TicklerId = 0
+
+local id=0
+
 openPage="eventCalenderPage"
 
 local eventTime = 0
@@ -109,6 +113,25 @@ local makeTimeStamp = function ( dateString )
 	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, isdst=false} )
 
 	return timestamp;
+end
+
+local modf = math.modf
+ 
+function wrap_time(time_amount)
+   local start_seconds = time_amount --start_seconds = 20000
+ 
+   local start_minutes = modf(start_seconds/60) --start_minutes = 333
+   local seconds = start_seconds - start_minutes*60 --seconds = 20
+ 
+   local start_hours = modf(start_minutes/60) --start_hours = 5
+   local minutes = start_minutes - start_hours*60 --minutes = 33
+ 
+   local start_days = modf(start_hours/24) --start_days = 0
+   local hours = start_hours - start_days*24 --hours = 5
+ 
+   local wrapped_time = {days=start_days, hours=hours, minutes=minutes, seconds=seconds}
+ 
+   return wrapped_time --returns 0, 5, 33, 20
 end
 
 
@@ -224,6 +247,112 @@ local function changeAppointment(  )
 end
 
 
+local function changeTask(  )
+	AppintmentWith.placeholder="Linked To"
+
+			PurposeLbl.text = ""
+
+			PriorityLbl.text = "Not Started"
+
+			Prioritytxt.text = "Status"
+
+			TicklerType = "TASK"
+
+			Purposetxt.text = "Priority"
+
+			 taskGroup[1].isVisible = false
+			 taskGroup[2].isVisible = false
+
+			 taskGroup.y=-40
+			taskGroupExt.y=-40
+
+			if allDay == true then
+				
+
+				for i=1,#AddeventArray do
+					if AddeventArray[i].id == "to" then
+						AddeventArray[i].isVisible=false
+					end
+				end
+				Event_toLbl.isVisible = true
+				Event_to_datebg.isVisible = true
+				Event_to_date.isVisible = true
+				Event_to_timebg.isVisible = false
+				BottomImageTo.isVisible = true
+			end
+
+		
+			
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
+
+
+			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
+			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
+			Event_toLbl.text = "To"
+
+			callGroup.isVisible = false
+
+			whereGroup.isVisible = false
+
+			Where.isVisible = false
+			
+			belowGroup.y=-W/2+40
+
+			Phone.isVisible = false
+
+			AccessCode.isVisible = false
+end
+
+local function changeCall(  )
+	AppintmentWith.placeholder="Call With"
+
+			PurposeLbl.text = ""
+
+			TicklerType = "CALL"
+
+			callGroup.isVisible = true
+
+			Event_toLbl.text = "Duration"
+
+			Event_to_date.x= Event_to_datebg.x+35
+
+			Event_from_date.x = Event_from_datebg.x+ 35
+
+			whereGroup.isVisible = false
+
+			Where.isVisible = false
+
+			--callGroup.y = W/2+20
+			
+			belowGroup.y=-W/2+160
+
+		--	Where.isVisible = false
+
+		--	BottomImageWhere.isVisible = false
+
+			Phone.isVisible = true
+
+			AccessCode.isVisible = true
+
+			 taskGroup[1].isVisible = true
+			 taskGroup[2].isVisible = true
+
+			 taskGroup.y=0
+			taskGroupExt.y=0
+
+
+
+
+			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
+
+
+			Event_to_time.text = "15 M"
+			Event_to_time.value=15
+			Event_to_date.text = "00 H"
+			Event_to_date.value=00
+end
+
+
 
 local function photonametouch( event )
 
@@ -239,6 +368,8 @@ local function photonametouch( event )
 				AddAttachmentLbl.isVisible = true
 				AddAttachment_icon.isVisible = true
 				AddAttachment_close.isVisible = false
+
+				path = system.pathForFile( photoname, baseDir)
 
 				 os.remove( path )
 
@@ -552,108 +683,15 @@ local function onRowTouch(event)
 
 		elseif List.textFiled.text:lower( ) == "task" then
 
-			AppintmentWith.placeholder="Linked To"
+			changeTask()
 
-			PurposeLbl.text = ""
-
-			PriorityLbl.text = "Not Started"
-
-			Prioritytxt.text = "Status"
-
-			TicklerType = "TASK"
-
-			Purposetxt.text = "Priority"
-
-			 taskGroup[1].isVisible = false
-			 taskGroup[2].isVisible = false
-
-			 taskGroup.y=-40
-			taskGroupExt.y=-40
-
-			if allDay == true then
-				
-
-				for i=1,#AddeventArray do
-					if AddeventArray[i].id == "to" then
-						AddeventArray[i].isVisible=false
-					end
-				end
-				Event_toLbl.isVisible = true
-				Event_to_datebg.isVisible = true
-				Event_to_date.isVisible = true
-				Event_to_timebg.isVisible = false
-				BottomImageTo.isVisible = true
-			end
-
-		
 			
-			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
-
-
-			Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
-			Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
-			Event_toLbl.text = "To"
-
-			callGroup.isVisible = false
-
-			whereGroup.isVisible = false
-
-			Where.isVisible = false
-			
-			belowGroup.y=-W/2+40
-
-			Phone.isVisible = false
-
-			AccessCode.isVisible = false
 
 		elseif List.textFiled.text:lower( ) == "call" then
 
-			AppintmentWith.placeholder="Call With"
+			changeCall()
 
-			PurposeLbl.text = ""
-
-			TicklerType = "CALL"
-
-			callGroup.isVisible = true
-
-			Event_toLbl.text = "Duration"
-
-			Event_to_date.x= Event_to_datebg.x+35
-
-			Event_from_date.x = Event_from_datebg.x+ 35
-
-			whereGroup.isVisible = false
-
-			Where.isVisible = false
-
-			--callGroup.y = W/2+20
 			
-			belowGroup.y=-W/2+160
-
-		--	Where.isVisible = false
-
-		--	BottomImageWhere.isVisible = false
-
-			Phone.isVisible = true
-
-			AccessCode.isVisible = true
-
-			 taskGroup[1].isVisible = true
-			 taskGroup[2].isVisible = true
-
-			 taskGroup.y=0
-			taskGroupExt.y=0
-
-
-
-
-			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
-
-
-			Event_to_time.text = "15 M"
-			Event_to_time.value=15
-			Event_to_date.text = "00 H"
-			Event_to_date.value=00
 
 			elseif List.textFiled.id:lower( ) == "totime" then
 
@@ -870,21 +908,26 @@ local function get_CreateTickler( response )
 
 									os.remove(path)
 
+									local EventType = "added"
+									if isUpdate == true then 
+										EventType = "updated"
+									end
+
 			if SelectEvent.text:lower( ) == "appointment" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Appointment) added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Appointment) "..EventType.." Successfully", { "OK" },onComplete )
 
 		    elseif SelectEvent.text:lower( ) == "call" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Call) added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Call) "..EventType.." Successfully", { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "task" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Task) added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Task) "..EventType.." Successfully", { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "party" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Party) added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Party) "..EventType.." Successfully", { "OK" },onComplete )
 		else
 
 		--endlocal alert = native.showAlert(  EventCalender.PageTitle,AddeventPage.Event_Added, { CommonWords.ok },onComplete )
@@ -1091,6 +1134,8 @@ local function TouchAction( event )
 
 				if PurposeLbl.text:lower( ) == "other" then
 
+					print( "CalendarName : "..CalendarName )
+
 					if Other.text == "" then
 
 						SetError(AddeventPage.other_purpose,Other)
@@ -1112,12 +1157,13 @@ local function TouchAction( event )
 							EventTo_time = os.date( "%I:%M %p",time)
 						end
 
-							
-
-							Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+								
+							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
 
 					end
 				else
+
+					print( "CalendarName : "..CalendarName )
 
 					Other.text =  ""
 
@@ -1136,7 +1182,7 @@ local function TouchAction( event )
 													print( enddate,EventTo_time)
 
 
-						Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+						Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
 
 					
 				end
@@ -2202,7 +2248,7 @@ local function ObjectCreation( sceneGroup)
 			}
 			local onOffSwitchSheet = graphics.newImageSheet( "res/assert/onoffswitch.png", options )
 
-		local allday_onOffSwitch = widget.newSwitch {
+		allday_onOffSwitch = widget.newSwitch {
 			style = "onOff",
 			initialSwitchState = false,
 			onEvent = onSwitchPress,
@@ -2322,7 +2368,7 @@ local function ObjectCreation( sceneGroup)
 
 		-----------------------------------
 
-		local timeZone = display.newText(AddeventGroup,"( "..TimeZone.." )",0,0,native.systemFont,12)
+		timeZone = display.newText(AddeventGroup,"( "..TimeZone.." )",0,0,native.systemFont,12)
 		timeZone.x=leftPadding
 		timeZone.anchorX = 0
 		timeZone:setFillColor( 0.2 )
@@ -2521,6 +2567,23 @@ function scene:create( event )
 			isUpdate  = true
 			UpdateValue = event.params.Details
 
+			CalendarId = UpdateValue.CalendarId
+
+			id = UpdateValue.id
+
+			if UpdateValue.CalendarName ~= nil then
+
+				print( "!!!!!!!!!!!!!!!!!!!!" )
+
+				CalendarName = UpdateValue.CalendarName
+			else
+
+				print( "^^^^^^^^^^^^^^^^^^^^^" )
+				CalendarName=""
+			end
+
+			TicklerId = UpdateValue.TicklerId
+
 	end
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
@@ -2558,12 +2621,15 @@ function scene:create( event )
 		MainGroup:insert(sceneGroup)
 
 
-		saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 50, 20 )
+		saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 60, 20 )
 		saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 		saveBtn_BG.id = "save"
 
 		saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
 
+		if isUpdate == true then
+			saveBtn.text = "Update"
+		end
 
 		scrollView = widget.newScrollView
 			{
@@ -2631,9 +2697,16 @@ function scene:show( event )
 
 	--	print("eventtime value ", eventTime)
 
-		CalendarId = event.params.calendarId
+		if event.params.calendarId ~= nil then
 
-		CalendarName = event.params.calendarName
+			print( "*****************" )
+
+			CalendarId = event.params.calendarId
+
+			CalendarName = event.params.calendarName
+
+
+		end
 
 		print( os.date( "%m/%d/%Y" ,  eventTime )) 
 
@@ -3168,6 +3241,222 @@ function scene:show( event )
 
 	  	appointmentGroup:insert(QuickContactList)
 	  	----------------
+
+
+
+	  	---Update----
+
+	  	if isUpdate == true then
+
+	  		SelectEvent.text = AddeventPage.EventnameArray[UpdateValue.TicklerType]
+
+	  		if UpdateValue.TicklerType == 1 then
+
+
+	  			changeAppointment()
+
+	  		elseif UpdateValue.TicklerType == 2 then
+
+	  			changeCall()
+
+	  		elseif UpdateValue.TicklerType == 3 then
+
+	  			ChangeParty()
+
+	  		elseif UpdateValue.TicklerType == 4 then
+
+	  			changeTask()
+
+	  		end
+
+	  		if UpdateValue.title ~= nil then
+
+	  			What.text = UpdateValue.title
+	  		end
+
+	  		if UpdateValue.allDay == true then
+
+	  			allday_onOffSwitch:setState( { isOn=true, isAnimated=true, onComplete=onSwitchPress } )
+
+	  		end
+
+	  		if UpdateValue.startdate ~= nil then
+
+	  			
+	  			local time = Utils.makeTimeStamp(UpdateValue.startdate)
+	  			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , time ))
+
+	  			Event_from_date.text = os.date( "%m/%d/%Y" ,time )
+	  			Event_from_time.text = os.date( "%I:%M "..TimeZonevalue ,time )
+
+	  		
+
+	  		end
+
+	  		if UpdateValue.enddate ~= nil then
+
+	  			local endtime = Utils.makeTimeStamp(UpdateValue.enddate)
+	  			local starttime = Utils.makeTimeStamp(UpdateValue.startdate)
+
+	  			local time = endtime-starttime
+
+	  			if UpdateValue.TicklerType == 2 then
+
+	  				local value = wrap_time(time)
+
+	  				Event_to_date.text = value.hours.."H"
+
+	  				Event_to_time.text = value.minutes.."M"
+
+	  		
+	  			else
+	  				local TimeZonevalue = Utils.GetWeek(os.date( "%p" , endtime ))
+	  				Event_to_date.text = os.date( "%m/%d/%Y" ,endtime )
+	  				Event_to_time.text =  os.date( "%I:%M "..TimeZonevalue ,endtime )
+
+	  			end
+	  			
+	  		end
+
+	  		if UpdateValue.TimeZone ~= nil then
+
+	  			timeZone.text = UpdateValue.TimeZone
+
+	  		end
+
+	  		if UpdateValue.Location ~= nil then
+
+	  			Where.text = UpdateValue.Location
+
+	  		end
+
+	  		if UpdateValue.PhoneNumber ~= nil then
+
+	  			Phone.text = UpdateValue.PhoneNumber
+	  			
+	  		end
+
+	  		if UpdateValue.AccessCode ~= nil then
+
+	  			AccessCode.text = UpdateValue.AccessCode
+	  			
+	  		end
+
+	  		if UpdateValue.IsConference == true then
+
+	  			Conference:setState( { isOn=true, isAnimated=true } )
+	  			
+	  		end
+
+	  		if UpdateValue.Description ~= nil then
+
+	  			Description.text = UpdateValue.Description
+	  			
+	  		end
+
+	  		if UpdateValue.Contact ~= nil then
+
+		  		if UpdateValue.Contact.FirstName ~= nil then
+
+		  			AppintmentWith.text = UpdateValue.Contact.FirstName.." "..UpdateValue.Contact.LastName
+
+		  		elseif UpdateValue.Contact.LastName ~= nil then
+
+		  			AppintmentWith.text = UpdateValue.Contact.LastName
+
+		  		end
+		  	end
+
+		  	if UpdateValue.Invitees ~= nil then
+
+		  		if UpdateValue.Invitees.FirstName ~= nil then
+
+		  			Invitees.text = UpdateValue.Invitees.FirstName.." "..UpdateValue.Invitees.LastName
+
+		  		elseif UpdateValue.Invitees.LastName ~= nil then
+
+		  			Invitees.text = UpdateValue.Invitees.LastName
+		  			
+		  		end
+		  	end
+
+	  		if UpdateValue.AppointmentPurpose ~= nil then
+
+	  			for i=1,#AddeventPage.purposeArray do
+	  				if AddeventPage.purposeArray[i].id == UpdateValue.AppointmentPurpose then
+	  					PurposeLbl.text = AddeventPage.purposeArray[i].value
+	  				end
+	  			end
+	   			
+	  		end
+
+	  		if UpdateValue.Priority ~= nil then
+
+	  			for i=1,#AddeventPage.priorityArray do
+	  				if AddeventPage.priorityArray[i].id == UpdateValue.Priority then
+	  					PriorityLbl.text = AddeventPage.priorityArray[i].value
+	  				end
+	  			end
+	   			
+	  		end
+
+	  		local function AttachListner( event )
+
+		  			if ( event.isError ) then
+					elseif ( event.phase == "began" ) then
+					elseif ( event.phase == "ended" ) then
+						spinner_hide()
+
+			  			filename = event.response.filename
+			  			AttachmentFlag = true
+
+			  			photoname = event.response.filename
+
+			  			
+
+						AttachmentName = event.response.filename
+						AttachmentPath = event.response.filename
+
+						AddAttachmentLbl.isVisible = false
+
+						AddAttachmentPhotoName.isVisible = true
+						AddAttachmentPhotoName.text = AttachmentName
+						AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
+
+						AddAttachment_icon.isVisible = false
+						AddAttachment_close.isVisible = true
+
+
+				end
+
+	  		end
+
+	  			if UpdateValue.AttachmentPath ~= nil then
+
+	  				spinner_show()
+
+	  				print( UpdateValue.AttachmentPath,UpdateValue.AttachmentName )
+
+					network.download(
+						UpdateValue.AttachmentPath,
+						"GET",
+						AttachListner,
+						UpdateValue.AttachmentName,
+						system.TemporaryDirectory
+						)
+
+	  			end
+
+
+
+	  	end
+
+				  		
+			
+				
+			
+
+	---
 
 
 		Ap_firstName.isVisible = false

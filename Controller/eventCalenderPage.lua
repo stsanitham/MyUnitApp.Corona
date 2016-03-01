@@ -1312,8 +1312,6 @@ function scene:resumeGame(value)
 
     search.isVisible=true
 
-    if value == "deleted" then
-
 		local temp = os.date( '*t' )
 		temp.day = temp.day - os.date( "%w" ) 
 		weekViewTouchFlag=true
@@ -1321,8 +1319,6 @@ function scene:resumeGame(value)
 		creatWeek(temp,true)
 
 		
-    end
-
 end
 
 function scene:resumeGame(value,EditArray)
@@ -1346,7 +1342,22 @@ function scene:resumeGame(value,EditArray)
 
 			composer.showOverlay( "Controller.addEventPage", options )
 
+	else
+
+			Runtime:addEventListener( "key", onKeyEvent )
+
+    search.isVisible=true
+
+print( "@@@@@@@@@@@@@@@@@@@" )
+
+		local temp = os.date( '*t' )
+		temp.day = temp.day - os.date( "%w" ) 
+		weekViewTouchFlag=true
+		ParentShow=true
+		creatWeek(temp,true)
+
 		
+
     end
 
 end
