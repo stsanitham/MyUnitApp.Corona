@@ -1188,6 +1188,8 @@ function scene:create( event )
 
 		MyUnitBuzzString = nil
 
+		openPage="eventCalenderPage"
+
 	print( langid,countryid )
 
 	--("res.value.string")
@@ -1371,7 +1373,7 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		openPage="eventCalenderPage"
+		
 
 		ga.enterScene("EventCalender")
 

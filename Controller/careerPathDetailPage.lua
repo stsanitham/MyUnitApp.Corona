@@ -43,6 +43,8 @@ local phoneNum = ""
 
 local RecentTab_Topvalue
 
+ContactIdValue = 0
+
 local ProfileImage,careerDetail_scrollview
 
 --------------------------------------------------
@@ -334,7 +336,11 @@ end
 
 			 AlertGroup.isVisible = false
 
-	        composer.hideOverlay()
+			 ContactIdValue = contactId
+
+			 print("ContactIdVlaue after assigning"..ContactIdValue)
+
+	         composer.hideOverlay()
 
 	       end
 
@@ -345,37 +351,77 @@ end
 		 if id_value == "Remove Access" then
 
 		    print("response after removing details ",Request_response)
-	        local remove_successful= native.showAlert("Contact Removed", "You are successful in removing the contact from the list", { CommonWords.ok} , onCompletion)
+	        local remove_successful= native.showAlert("Remove", "Contact removed", { CommonWords.ok} , onCompletion)
 
 		 elseif id_value == "Block Access" then
 
 		    print("response after blocking details ",Request_response)
-			local block_successful = native.showAlert("Contact Blocked", "You are successful in blocking the contact from the list", { CommonWords.ok} , onCompletion)
+			local block_successful = native.showAlert("Block", "Contact blocked successfully.", { CommonWords.ok} , onCompletion)
 
 		 end
 
 
+         if id_value == "Deny Access" then
 
-	 	 if Request_response == "5" then
+         	 if Request_response == "5" then
 
-	 		print("56573284682368482348 providing access here in the list")
+         	 	denyaccess = native.showAlert("Deny", "Access Denied", { CommonWords.ok } , onCompletion)
 
-			accessprovided = native.showAlert("Access Provided", "You are successful in providing access to the contact in the list", { CommonWords.ok } , onCompletion)
- 
-         elseif Request_response == "GRANT" then
+         	 elseif Request_response == "GRANT" then
 
-		 	local granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
 
-         elseif Request_response == "REMOVE" then
+         	 elseif Request_response == "REMOVE" then
 
-		 	local Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
 		
-		 elseif Request_response == "ADDREQUEST" then
+		     elseif Request_response == "ADDREQUEST" then
 
-		 	local addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
 
+         	 end
 
-		end
+         elseif id_value == "Grant Access" then
+
+	 	    if Request_response == "5" then
+
+	 	    	grantaccess = native.showAlert(" Grant access", " Access granted successfully", { CommonWords.ok} , onCompletion)
+
+	 	     elseif Request_response == "GRANT" then
+
+         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+
+         	 elseif Request_response == "REMOVE" then
+
+		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		
+		     elseif Request_response == "ADDREQUEST" then
+
+		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+
+         	 end
+
+	 	elseif id_value == "Provide Access" then
+
+	 	    if Request_response == "5" then
+
+	 	    	accessprovided = native.showAlert("Provide access", " Access provided successfully", { CommonWords.ok } , onCompletion)
+
+	 	     elseif Request_response == "GRANT" then
+
+         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+
+         	 elseif Request_response == "REMOVE" then
+
+		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		
+		     elseif Request_response == "ADDREQUEST" then
+
+		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+
+         	 end
+
+         	end
 
 	end
 
@@ -406,6 +452,8 @@ function onAccessButtonTouch( event )
 
 			        	if event.target.id == "accept" then
 
+			        		AlertGroup.isVisible = false
+
 		        		Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
 
 			        	elseif event.target.id == "reject" then
@@ -433,6 +481,8 @@ function onAccessButtonTouch( event )
 
 			        	if event.target.id == "accept" then
 
+			        		AlertGroup.isVisible = false
+
 		        		Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
 
 			        	elseif event.target.id == "reject" then
@@ -446,6 +496,26 @@ function onAccessButtonTouch( event )
           end
 
     end
+
+
+
+	 local function OnPasswordGeneration(event)
+
+	 	 if event.phase == "began" then
+
+         elseif event.phase == "ended" then
+
+         local function getGeneratedPassword( response )
+
+         	print("GENERATED PASSWORD OUTPUT "..response)
+
+         end
+
+         Webservice.GeneratePassword(getGeneratedPassword)
+
+         end
+
+	 end
 
 
 
@@ -468,7 +538,7 @@ function onAccessButtonTouch( event )
           print(Details.FirstName)
           print(Details.LastName)
 
-          GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber)
+          GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
           processbutton_text.text = "Grant Access"
           popupText.text = "Grant Access"
@@ -526,6 +596,56 @@ function onAccessButtonTouch( event )
 
 
 
+          if  PhoneDetailValue.text == "" then
+
+          	   textnotifybox.isVisible = false
+			   textnotifytext.isVisible = false
+			   print("here12345")
+
+			   MKRankDetail_bg.y =  PhoneDetail_bottom.y+8
+			   MKRankDetail_title.y= MKRankDetail_bg.y+8
+			   MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
+			   MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
+			   Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+			   Requesteddate_title.y= Requesteddate_bg.y + 7
+			   RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
+			   Requesteddate_bottom.y= RequesteddateValue.y+8.5
+			   Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
+				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
+				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
+				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
+				Password_bottom.y= PasswordValue.y+10
+				PasswordHelptext.y= Password_bottom.y + 12
+				GeneratePasstext.y= PasswordHelptext.y + 20
+				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+				processbutton_text.y=processbutton.y
+		  else
+
+		  	  textnotifybox.isVisible = true
+			  textnotifytext.isVisible = true
+
+			  MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+			  MKRankDetail_title.y= MKRankDetail_bg.y+8
+			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
+			  MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
+			  Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+			  Requesteddate_title.y= Requesteddate_bg.y + 7
+			  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
+			  Requesteddate_bottom.y= RequesteddateValue.y+8.5
+				Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
+				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
+				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
+				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
+				Password_bottom.y= PasswordValue.y+10
+				PasswordHelptext.y= Password_bottom.y + 12
+				GeneratePasstext.y= PasswordHelptext.y + 20
+				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+				processbutton_text.y=processbutton.y
+		   end
+
+
+
+
           if Details.CareerProgress ~= nil then
           MKRankDetailValue.text = Details.CareerProgress
           native.setKeyboardFocus( nil )
@@ -573,10 +693,15 @@ function onAccessButtonTouch( event )
 
 	  print("provide access pressed") 
 
-	  GetPopUp()
+	  GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
         processbutton_text.text = "Provide Access"
         popupText.text = "Provide Access"
+
+                Requesteddate_bg.isVisible = false
+			 	RequesteddateValue.isVisible = false
+			 	Requesteddate_title.isVisible = false
+			 	Requesteddate_bottom.isVisible = false
        
           if Details.FirstName ~= nil and Details.LastName ~= nil then
              NameDetailValue.text = Details.FirstName..""..Details.LastName
@@ -623,9 +748,55 @@ function onAccessButtonTouch( event )
 					textnotifytext.isVisible = true
           else
           	 PhoneDetailValue.text = ""
-          	        textnotifybox.isVisible = false
-					textnotifytext.isVisible = false
           end
+
+
+          if  PhoneDetailValue.text == "" then
+
+          	   textnotifybox.isVisible = false
+			   textnotifytext.isVisible = false
+			   print("here12345")
+
+			   MKRankDetail_bg.y =  PhoneDetail_bottom.y+8
+			   MKRankDetail_title.y= MKRankDetail_bg.y+8
+			   MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
+			   MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
+			  -- Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+			 --  Requesteddate_title.y= Requesteddate_bg.y + 7
+			 --  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
+			  -- Requesteddate_bottom.y= RequesteddateValue.y+8.5
+			    Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+				Password_titlestar.y= Password_bg.y+7
+				Password_titletext.y= Password_bg.y+7
+				PasswordValue.y =Password_titletext.y+Password_titletext.height+8
+				Password_bottom.y= PasswordValue.y+10
+				PasswordHelptext.y= Password_bottom.y + 12
+				GeneratePasstext.y= PasswordHelptext.y + 20
+				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+				processbutton_text.y=processbutton.y
+		  else
+
+		  	  textnotifybox.isVisible = true
+			  textnotifytext.isVisible = true
+
+			  MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+			  MKRankDetail_title.y= MKRankDetail_bg.y+8
+			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
+			  MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
+			  --Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+			 -- Requesteddate_title.y= Requesteddate_bg.y + 7
+			 -- RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
+			 -- Requesteddate_bottom.y= RequesteddateValue.y+8.5
+				Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+				Password_titlestar.y= Password_bg.y+7
+				Password_titletext.y= Password_bg.y+7
+				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
+				Password_bottom.y= PasswordValue.y+10
+				PasswordHelptext.y= Password_bottom.y + 12
+				GeneratePasstext.y= PasswordHelptext.y + 20
+				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+				processbutton_text.y=processbutton.y
+		   end
 
 
           if Details.CareerProgress ~= nil then
@@ -644,12 +815,14 @@ function onAccessButtonTouch( event )
           RequesteddateValue.text = ""
           end
 
-	      print("values event ",EmailDetailValue.text)
+	      print("values event PA", EmailDetailValue.text)
+	      print("values event PA", PhoneDetailValue.text)
 
 	      EmailDetailValue:addEventListener("userInput",textField)
 		  PhoneDetailValue:addEventListener("userInput",textField)
 		  PasswordValue:addEventListener("userInput",textField)
 
+		  --GeneratePasstext:addEventListener("touch",OnPasswordGeneration)
 
 	      processbutton:addEventListener("touch",onGrantButtonTouch)
 
@@ -660,10 +833,28 @@ function onAccessButtonTouch( event )
 
 	  print("deny access pressed") 
 
-	   GetPopUp()
+	    GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
         processbutton_text.text = "Deny Access"
         popupText.text = "Deny Access"
+
+        PasswordValue.isVisible = false
+        Password_bg.isVisible = false
+        Password_titlestar.isVisible = false
+        Password_titletext.isVisible = false
+        Password_bottom.isVisible = false
+        PasswordHelptext.isVisible = false
+        GeneratePasstext.isVisible = false
+
+        deny_bg.isVisible = true
+        deny_Value.isVisible = true
+
+        Requesteddate_bottom.y= RequesteddateValue.y+8.5
+        deny_bg.y = Requesteddate_bottom.y + Requesteddate_bottom.contentHeight +15
+        deny_Value.y=deny_bg.y
+        processbutton.y = deny_Value.y+deny_Value.contentHeight
+
+
        
           if Details.FirstName ~= nil and Details.LastName ~= nil then
              NameDetailValue.text = Details.FirstName..""..Details.LastName
@@ -713,6 +904,57 @@ function onAccessButtonTouch( event )
           	        textnotifybox.isVisible = false
 					textnotifytext.isVisible = false
           end
+
+
+
+          if  PhoneDetailValue.text == "" then
+
+          	   textnotifybox.isVisible = false
+			   textnotifytext.isVisible = false
+			   print("here12345")
+
+			   MKRankDetail_bg.y =  PhoneDetail_bottom.y+8
+			   MKRankDetail_title.y= MKRankDetail_bg.y+8
+			   MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
+			   MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
+			   Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+			   Requesteddate_title.y= Requesteddate_bg.y + 7
+			   RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
+			   Requesteddate_bottom.y= RequesteddateValue.y+8.5
+			   Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
+				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
+				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
+				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
+				Password_bottom.y= PasswordValue.y+10
+				PasswordHelptext.y= Password_bottom.y + 12
+				GeneratePasstext.y= PasswordHelptext.y + 20
+				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+				processbutton_text.y=processbutton.y
+		  else
+
+		  	  textnotifybox.isVisible = true
+			  textnotifytext.isVisible = true
+
+			  MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+			  MKRankDetail_title.y= MKRankDetail_bg.y+8
+			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
+			  MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
+			  Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+			  Requesteddate_title.y= Requesteddate_bg.y + 7
+			  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
+			  Requesteddate_bottom.y= RequesteddateValue.y+8.5
+				Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
+				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
+				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
+				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
+				Password_bottom.y= PasswordValue.y+10
+				PasswordHelptext.y= Password_bottom.y + 12
+				GeneratePasstext.y= PasswordHelptext.y + 20
+				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+				processbutton_text.y=processbutton.y
+		   end
+
+
 
 
           if Details.CareerProgress ~= nil then
@@ -817,7 +1059,10 @@ function onAccessButtonTouch( event )
    	    print("value 2 ",isSendTextValue)
    	    password = PasswordValue.text
 
-   	    	Webservice.AccessPermissionDetails(Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,ContactId,isaddedToContact,MyUnitBuzzRequestAccessId,password,get_removeorblockDetails)
+   	    idvalue = processbutton_text.text
+   	    print(idvalue)
+
+   	    	Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,ContactId,isaddedToContact,MyUnitBuzzRequestAccessId,password,get_removeorblockDetails)
 
      	end
 
@@ -866,8 +1111,12 @@ function onAccessButtonTouch( event )
    	    print("value 2 ",isSendTextValue)
    	    password = PasswordValue.text
 
+   	    idvalue = processbutton_text.text
+   	    print(idvalue)
 
-   	    	Webservice.AccessPermissionDetails(Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,ContactId,isaddedToContact,MyUnitBuzzRequestAccessId,password,get_removeorblockDetails)
+
+
+   	    	Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,ContactId,isaddedToContact,MyUnitBuzzRequestAccessId,password,get_removeorblockDetails)
         end
 
 
@@ -911,10 +1160,13 @@ function onAccessButtonTouch( event )
    	    print("value 1 ",isSentMailValue)
    	    isSendText= isSentMailValue
    	    print("value 2 ",isSendTextValue)
-   	    password = PasswordValue.text
+   	    reasonfordeny = deny_Value.text
+   	    print("reason for deny%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",reasonfordeny)
 
+   	    idvalue = processbutton_text.text
+   	    print(idvalue)
 
-   	    	Webservice.AccessPermissionDetails(Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,ContactId,isaddedToContact,MyUnitBuzzRequestAccessId,password,get_removeorblockDetails)
+   	    	Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,ContactId,isaddedToContact,MyUnitBuzzRequestAccessId,reasonfordeny,get_removeorblockDetails)
 
         end
 
@@ -967,6 +1219,8 @@ function scene:show( event )
 
 
 				contactId = event.params.contactId
+
+				print("ContactIdVlaue before assigning"..contactId)
 
 	
 			function get_avtiveTeammemberDetails( response)
@@ -1239,34 +1493,29 @@ function scene:show( event )
 				Details_Display[#Details_Display].isVisible=false
 				careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 
+                if (IsOwner == true) then
 
-
-				local InviteAccess = display.newText("Invite/Access",0,0,0,0,native.systemFontBold,16)
+				InviteAccess = display.newText("Invite/Access",0,0,0,0,native.systemFontBold,16)
 				InviteAccess.anchorX = 0 ;InviteAccess.anchorY=0
 				InviteAccess.x=leftPadding
+				InviteAccess.isVisible = false
 				InviteAccess:setFillColor(0,0,0)
 				InviteAccess.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+8
 				--Utils.CssforTextView(InviteAccess,sp_labelName)
 				careerDetail_scrollview:insert( InviteAccess )
 
-				-- Details_Display[#Details_Display+1] = display.newRect( W/2, Details_Display[#Details_Display].y+30, W, 5)
-				-- Details_Display[#Details_Display].isVisible=false
-				-- careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 
-                --careerDetail_scrollview:insert( popUpGroup)
-                --MainGroup:insert(popUpGroup)
-
------------------------------------------------Access Buttons------------------------------------------------------------
-
-                    if(Details.Status == "DENY" or Details.Status == "BLOCK") then
+                    if(IsOwner == true and Details.Status == "DENY" or Details.Status == "BLOCK") then
 
                     print("Grant or Remove Access")
+
+                    InviteAccess.isVisible = true
 
 					grantaccess_button = display.newRect(sceneGroup,0,0,W,25)
 					grantaccess_button.x=leftPadding + 75
 					grantaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
 					grantaccess_button:setStrokeColor(0,0,0,0.5)
-					grantaccess_button:setFillColor(0,0,0,0.3)
+					grantaccess_button:setFillColor(0,0,0,0.2)
 					grantaccess_button.strokeWidth = 1
 					grantaccess_button.cornerRadius = 2
 					grantaccess_button.width = W-190
@@ -1285,7 +1534,7 @@ function scene:show( event )
 					removeaccess_button.x=leftPadding + 223
 					removeaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
 					removeaccess_button:setStrokeColor(0,0,0,0.5)
-					removeaccess_button:setFillColor(0,0,0,0.3)
+					removeaccess_button:setFillColor(0,0,0,0.2)
 					removeaccess_button.strokeWidth = 1
 					removeaccess_button.cornerRadius = 2
 					removeaccess_button.width = W-190
@@ -1301,15 +1550,17 @@ function scene:show( event )
 
 
 
-					elseif(Details.Status == "GRANT") then
+					elseif(IsOwner == true and Details.Status == "GRANT") then
 
 					print("Block Access")
+
+					 InviteAccess.isVisible = true
 
 				    blockaccess_button = display.newRect(sceneGroup,0,0,W,25)
 					blockaccess_button.x=leftPadding + 150
 					blockaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
 					blockaccess_button:setStrokeColor(0,0,0,0.5)
-					blockaccess_button:setFillColor(0,0,0,0.3)
+					blockaccess_button:setFillColor(0,0,0,0.2)
 					blockaccess_button.strokeWidth = 1
 					blockaccess_button.cornerRadius = 2
 					blockaccess_button.width = W-150
@@ -1325,15 +1576,17 @@ function scene:show( event )
 
 
 
-					elseif(Details.Status == "ADDREQUEST" or Details.Status == "REMOVE") then
+					elseif(IsOwner == true and Details.Status == "ADDREQUEST" or Details.Status == "REMOVE") then
 
 					print("Provide Access")
+
+					InviteAccess.isVisible = true
 
 				    provideaccess_button = display.newRect(sceneGroup,0,0,W,25)
 					provideaccess_button.x=leftPadding + 150
 					provideaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
 					provideaccess_button:setStrokeColor(0,0,0,0.5)
-					provideaccess_button:setFillColor(0,0,0,0.3)
+					provideaccess_button:setFillColor(0,0,0,0.2)
 					provideaccess_button.strokeWidth = 1
 					provideaccess_button.cornerRadius = 2
 					provideaccess_button.width = W-150
@@ -1349,9 +1602,11 @@ function scene:show( event )
 
 
 
-					elseif(Details.Status == "OPEN") then
+					elseif(IsOwner == true and Details.Status == "OPEN") then
 
                     print("Grant or Deny Access")
+
+                     InviteAccess.isVisible = true
 
 					grantaccess_button = display.newRect(sceneGroup,0,0,W,25)
 					grantaccess_button.x=leftPadding + 75
@@ -1390,6 +1645,8 @@ function scene:show( event )
 					careerDetail_scrollview:insert( denyaccess_button_text )
 
 				    end
+
+				end
 
 				Details_Display[#Details_Display+1] = display.newRect( W/2, Details_Display[#Details_Display].y+30, W, 5)
 				Details_Display[#Details_Display].isVisible=false
@@ -1633,22 +1890,12 @@ function scene:hide( event )
 						AlertGroup[AlertGroup.numChildren] = nil
 	 	end
 
-	 	-- for j=popup_scroll.numChildren, 1, -1 do 
-			-- 			display.remove(popup_scroll[popup_scroll.numChildren])
-			-- 			popup_scroll[popup_scroll.numChildren] = nil
-	 	-- end
 
 		if myMap then myMap:removeSelf();myMap=nil;map_close:removeSelf();map_close=nil end
 
 		elseif phase == "did" then
 
-			-- blockaccess_button:removeEventListener("touch",onButtonTouch)
-			-- grantaccess_button:removeEventListener("touch",onButtonTouch)
-			-- removeaccess_button:removeEventListener("touch",onButtonTouch)
-			-- denyaccess_button:removeEventListener("touch",onButtonTouch)
-			-- provideaccess_button:removeEventListener("touch",onButtonTouch)
-
-			event.parent:resumeGame()
+			event.parent:resumeGame(ContactIdValue)
 
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)

@@ -25,7 +25,7 @@ local webView
 
 local editGoals_icon,title_bg,title
 
-openPage="goalsPage"
+
 
 local BackFlag = false
 
@@ -118,6 +118,8 @@ local function onKeyEvent( event )
 
 
 function scene:create( event )
+
+	openPage="goalsPage"
 
 	local sceneGroup = self.view
 

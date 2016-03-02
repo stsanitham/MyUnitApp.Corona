@@ -608,14 +608,41 @@ MainGroup:insert(sceneGroup)
 end
 
 
-function scene:resumeGame()
+function scene:resumeGame(contactId)
 
-	Runtime:addEventListener( "key", onKeyEvent )
-	Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
+	composer.removeHidden(true)
 
 
+	local function OnAction( event )
+
+			if contactId == 0 and openPage == "careerPathPage" then
+
+			Runtime:addEventListener( "key", onKeyEvent )
+			Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
+
+			elseif contactId > 0 and openPage == "careerPathPage" then
+
+				local options = {
+				isModal = true,
+				effect = "slideLeft",
+				time = 300,
+				params = {
+				contactId = contactId
+					}
+				}
+					composer.showOverlay( "Controller.careerPathDetailPage", options )
+
+			end
+
+	end
+
+	timer.performWithDelay(10,OnAction)
 
 end
+
+
+
+
 
 
 function scene:show( event )

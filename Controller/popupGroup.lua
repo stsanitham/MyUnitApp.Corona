@@ -77,11 +77,26 @@ local function onCloseTouch( event )
 end
 
 
+
+local function touchBg( event )
+		if event.phase == "began" then
+
+		elseif event.phase == "ended" then
+
+				native.setKeyboardFocus(nil)
+
+		end
+		return true
+end
+
+
+
+
 	local function createField()
 
 		print("hello")
 
-		input = native.newTextField(W/2+28,PhoneDetail_titletext.y, W-112, 25)
+		input = native.newTextField(W/2,PhoneDetail_bottom.y+PhoneDetail_bottom.contentHeight-15, W-40, 25)
 
 		return input
 	end
@@ -145,10 +160,9 @@ end
 									PhoneDetailValue.size=14	
 									PhoneDetailValue:setReturnKey( "next" )
 									PhoneDetailValue.hasBackground = false
-								
 									PhoneDetailValue.placeholder="Phone"
 									PhoneDetailValue.inputType = "number"
-									popUpGroup:insert( PhoneDetailValue )
+									popup_scroll:insert( PhoneDetailValue )
 
 									PhoneDetailValue.text="("..previousText..") "
 
@@ -162,7 +176,7 @@ end
 
 								end
 
-							elseif event.target.text:len() == 5 and (tempvalue == "(") then
+					elseif event.target.text:len() == 5 and (tempvalue == "(") then
 
 								if event.target.text:sub(5,5) ~= ")" then
 
@@ -171,7 +185,7 @@ end
 								end
 
 
-							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
+					elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
 
 									local previousText=event.target.text
 
@@ -183,9 +197,8 @@ end
 									PhoneDetailValue:setReturnKey( "next" )
 									PhoneDetailValue.hasBackground = false
 									PhoneDetailValue.placeholder="Phone"
-
 									PhoneDetailValue.inputType = "number"
-									popUpGroup:insert( PhoneDetailValue )
+									popup_scroll:insert( PhoneDetailValue )
 
 									PhoneDetailValue.text=previousText.."- "
 
@@ -194,7 +207,7 @@ end
 									native.setKeyboardFocus(PhoneDetailValue)
 
 
-							elseif event.target.text:len() == 10 then
+					elseif event.target.text:len() == 10 then
 
 								if string.find(event.target.text,"-") then
 
@@ -204,7 +217,7 @@ end
 									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
 								end
 
-							end
+								end
 
 							if event.target.text:len() > 15 then
 
@@ -213,227 +226,360 @@ end
 								event.target.text = event.target.text:sub(1,15)
 
 							end
-						end
+					end
 
-		  end
+		      end
 
----------------------for password -------------------------------------------------------------------------------
-							if(current_textField.id == "Password") then
+        ------------------------------------------for password ---------------------------------------------------
+
+						if(current_textField.id == "Password") then
 
         					if event.target.text:len() > 12 then
 
 								event.target.text = event.target.text:sub(1,12)
 
 							end
+
 						end
--------------------------------------------------------------------------------------------------------------------
+
+        -----------------------------------------------------------------------------------------------------------
         	
-	end
+	     end
 
 
 
- function onSwitchPress( event )
-    local switch = event.target
-    if (switch.id == "email_Checkbox" ) then
+		 function onSwitchPress( event )
 
-    	isSentMail = tostring(switch.isOn)
+		    local switch = event.target
 
-    	print("Sent mail switch",isSentMail)
-    end
+		    if (switch.id == "email_Checkbox" ) then
 
-    if (switch.id == "text_Checkbox" ) then
+		    	isSentMail = tostring(switch.isOn)
 
-    	isSentText = tostring(switch.isOn)
+		    	print("Sent mail switch",isSentMail)
+		    end
 
-    	print("Sent text switch",isSentText)
-    	
-    end
- end
+		    if (switch.id == "text_Checkbox" ) then
 
+		    	isSentText = tostring(switch.isOn)
 
-
-
-
-
-	function onGrantButtonTouch( event )
-
-    if event.phase == "began" then
+		    	print("Sent text switch",isSentText)
+		    	
+		    end
+		 end
 
 
 
-        if Details.Mobile ~= nil then
-        	 PhoneDetailValue.text=Details.Mobile
-					textnotifybox.isVisible = true
-		 		    textnotifytext.isVisible = true
-        elseif Details.HomePhoneNumber ~= nil  then
-        	 PhoneDetailValue.text=Details.HomePhoneNumber
-            		textnotifybox.isVisible = true
-		 		    textnotifytext.isVisible = true
-        elseif Details.WorkPhoneNumber ~= nil  then
-             PhoneDetailValue.text = Details.WorkPhoneNumber
-                    textnotifybox.isVisible = true
-		 		    textnotifytext.isVisible = true
-        elseif Details.OtherPhoneNumber ~= nil then
-             PhoneDetailValue.text = Details.OtherPhoneNumber
-                    textnotifybox.isVisible = true
-		 		    textnotifytext.isVisible = true      
-        else
-          	 PhoneDetailValue.text = ""
-          		--    textnotifybox.isVisible = true
-		 		 --   textnotifytext.isVisible = true
+        function getGeneratedPassword( response )
+
+         	generatedPassword = response
+
+         	print("GENERATED PASSWORD OUTPUT ",generatedPassword)
+
+         	if PasswordValue.text == "* Password is required" or PasswordValue.text == "* Password should contain atleast 6 characters" then
+
+         		print("password PasswordValue")
+
+         	    PasswordValue.text = generatedPassword
+         	    PasswordValue.size=14
+		        PasswordValue:setTextColor(0,0,0)
+
+		    else
+
+		    	print("PasswordValue present")
+
+		    	 PasswordValue.text = generatedPassword
+
+            end
+
         end
 
-        PhoneNum = PhoneDetailValue.text
-
-        print("Phone for grant access: "..PhoneNum)
 
 
+	   local function OnPasswordGeneration(event)
 
-        if Details.EmailAddress ~= nil then
-    	EmailDetailValue.text = Details.EmailAddress
-        else
-    	EmailDetailValue.text  = ""
-        end
+		 	 if event.phase == "began" then
 
-        Email = EmailDetailValue.text
-        print("Email for grant access: "..Email)
+	         elseif event.phase == "ended" then
+
+	         Webservice.GeneratePassword(getGeneratedPassword)
+
+	         end
+
+	        return true
+
+	   end
 
 
-    elseif event.phase == "ended" then
 
-        local validation = true
+	   function onGrantButtonTouch( event )
 
-        native.setKeyboardFocus(nil)
+            if event.phase == "began" then
+
+            elseif event.phase == "ended" then
+
+                local validation = true
+
+                native.setKeyboardFocus(nil)
 
 			if (EmailDetailValue.text == "") or (EmailDetailValue.text == EmailDetailValue.id) or (not Utils.emailValidation(EmailDetailValue.text)) then
-			validation=false
-			SetError("* ".."Email Address is required",EmailDetailValue)
+			  
+			     validation=false
+			     SetError("* ".."Email Address is required",EmailDetailValue)
 
-			  emailnotifybox.isVisible = false
-			  emailnotifytext.isVisible = false
+			     emailnotifybox.isVisible = false
+			     emailnotifytext.isVisible = false
 
-			  print("here when invisible")
+			     print("here when invisible")
 
-			  PhoneDetail_titlestar.y= EmailDetail_bottom.y+EmailDetail_bottom.contentHeight+9
-			  PhoneDetail_titletext.y=  PhoneDetail_titlestar.y
-			  PhoneDetailValue.y =PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+10
-			  PhoneDetail_bottom.y= PhoneDetailValue.y+9
-			  textnotifytext.y= PhoneDetail_bottom.y +PhoneDetail_bottom.contentHeight +12
-			  textnotifybox.y = PhoneDetail_bottom.y +PhoneDetail_bottom.contentHeight +13
+	              PhoneDetail_bg.y =  EmailDetail_bottom.y + EmailDetail_bottom.contentHeight+10
+				  PhoneDetail_titlestar.y= PhoneDetail_bg.y
+				  PhoneDetail_titletext.y=  PhoneDetail_bg.y
+				  PhoneDetailValue.y = PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+				  PhoneDetail_bottom.y= PhoneDetailValue.y+10
+				  textnotifytext.y= PhoneDetail_bottom.y +PhoneDetail_bottom.contentHeight +12
+				  textnotifybox.y = PhoneDetail_bottom.y +PhoneDetail_bottom.contentHeight +13
 
-              MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
-			  MKRankDetail_title.y= MKRankDetail_bg.y+15
-			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+10
-			  MKRankDetail_bottom.y= MKRankDetailValue.y+9
+	              MKRankDetail_bg.y =  PhoneDetail_bottom.y+PhoneDetail_bottom.contentHeight+30
+				  MKRankDetail_title.y= MKRankDetail_bg.y+15
+				  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+10
+				  MKRankDetail_bottom.y= MKRankDetailValue.y+9
 
-			  Requesteddate_bg.y =  MKRankDetailValue.y+MKRankDetailValue.height+7
-			  Requesteddate_title.y= MKRankDetailValue.y+MKRankDetailValue.height+12
-			  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
-			  Requesteddate_bottom.y= RequesteddateValue.y+9
+				  Requesteddate_bg.y =  MKRankDetailValue.y+MKRankDetailValue.height+7
+				  Requesteddate_title.y= MKRankDetailValue.y+MKRankDetailValue.height+15
+				  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
+				  Requesteddate_bottom.y= RequesteddateValue.y+9
 
-			  Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-			  Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+12
-			  Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+12
-			  Password_bottom.y= Password_titletext.y+Password_titletext.height+15
-			  PasswordValue.y =Password_titletext.y+Password_titletext.height+5
-			  PasswordHelptext.y= Password_bottom.y + 12
-			  GeneratePasstext.y= PasswordHelptext.y + 20
-			  processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-	          processbutton_text.y=processbutton.y
+				  Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
+				  Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
+				  Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
+				  Password_bottom.y= Password_titletext.y+Password_titletext.height+15
+				  PasswordValue.y =Password_titletext.y+Password_titletext.height+5
+				  PasswordHelptext.y= Password_bottom.y + 12
+				  GeneratePasstext.y= PasswordHelptext.y + 20
+				  processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+		          processbutton_text.y=processbutton.y
 
 		    else 
 
-		    	print("here when isVisible")
-					emailnotifybox.isVisible = true
-					emailnotifytext.isVisible = true
+			    print("here when isVisible")
+				emailnotifybox.isVisible = true
+				emailnotifytext.isVisible = true
 
-					PhoneDetail_titlestar.y= PhoneDetail_bg.y
-					PhoneDetail_titletext.y= PhoneDetail_bg.y
-					PhoneDetail_bottom.y= PhoneDetailValue.y+10
-					PhoneDetailValue.y =PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
-					textnotifytext.y= PhoneDetail_bottom.y + 15
-					textnotifybox.y = PhoneDetail_bottom.y
+				emailnotifybox.y = EmailDetail_bottom.y + 15
+				emailnotifytext.y = EmailDetail_bottom.y + 15
 
-                    MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
-					MKRankDetail_title.y= MKRankDetail_bg.y+5
-					MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
-					MKRankDetail_bottom.y=MKRankDetailValue.y+8.5
+	            PhoneDetail_bg.y =  emailnotifybox.y+emailnotifybox.contentHeight+5
+				PhoneDetail_titlestar.y= PhoneDetail_bg.y
+				PhoneDetail_titletext.y= PhoneDetail_bg.y
+				PhoneDetailValue.y =PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+				PhoneDetail_bottom.y= PhoneDetailValue.y+10
+				textnotifytext.y=  PhoneDetail_bottom.y + 15
+				textnotifybox.y = PhoneDetail_bottom.y + 15
 
-					Requesteddate_bg.y =  MKRankDetailValue.y+MKRankDetailValue.height+7
-					Requesteddate_title.y= MKRankDetailValue.y+MKRankDetailValue.height+12
-					RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-					Requesteddate_bottom.y= RequesteddateValue.y+8.5
+				MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+				MKRankDetail_title.y= MKRankDetail_bg.y+5
+				MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+7
+			    MKRankDetail_bottom.y= MKRankDetailValue.y+9
 
-					Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-					Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height-2
-					Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+12
-					Password_bottom.y= Password_titletext.y+Password_titletext.height+15
-					PasswordValue.y =Password_titletext.y+Password_titletext.height+5
-					PasswordHelptext.y= Password_bottom.y + 12
-					GeneratePasstext.y= PasswordHelptext.y + 20
-					processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-					processbutton_text.y=processbutton.y
+				Requesteddate_bg.y = MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+			    Requesteddate_title.y= Requesteddate_bg.y + 5
+			    RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
+			    Requesteddate_bottom.y= RequesteddateValue.y+9
+
+				Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
+			    Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
+			    Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
+			    Password_bottom.y= Password_titletext.y+Password_titletext.height+15
+			    PasswordValue.y =Password_titletext.y+Password_titletext.height+5
+			    PasswordHelptext.y= Password_bottom.y + 12
+			    GeneratePasstext.y= PasswordHelptext.y + 20
+			    processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+				processbutton_text.y=processbutton.y
 
 		end
 
 
 
-		if PhoneDetailValue.text == "" or PhoneDetailValue.text == PhoneDetailValue.id or PhoneDetailValue.text:len()<14 or PhoneDetailValue.text == "* Phone number is required" then
+		if  PhoneDetailValue.text == "" or PhoneDetailValue.text == PhoneDetailValue.id or PhoneDetailValue.text:len()<14 or PhoneDetailValue.text == "* Phone number is required" then
 			validation=false
-			--print(PhoneDetailValue.text)
-			--print(PhoneDetailValue.text:len())
-		    SetError("* ".."Phone number is required",PhoneDetailValue)
 
-		    textnotifybox.isVisible = false
-		    textnotifytext.isVisible = false
+		     SetError("* ".."Phone number is required",PhoneDetailValue)
 
+             print("phone value is null , focus is here")
+		     textnotifybox.isVisible = false
+		     textnotifytext.isVisible = false
 
-		     MKRankDetail_title.y= PhoneDetail_titletext.y+PhoneDetail_titletext.height+18
-		     MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+8
+             MKRankDetail_bg.y =  PhoneDetail_bottom.y + PhoneDetail_bottom.contentHeight+10
+		     MKRankDetail_title.y= MKRankDetail_bg.y
+		     MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+8
 			 MKRankDetail_bottom.y= MKRankDetailValue.y+9
 
-			 Requesteddate_bg.y =  MKRankDetailValue.y+MKRankDetailValue.height+7
-			 Requesteddate_title.y= MKRankDetailValue.y+MKRankDetailValue.height+12
-		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
+			 Requesteddate_bg.y =  MKRankDetail_bottom.y+10
+			 Requesteddate_title.y= Requesteddate_bg.y +7
+		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.contentHeight+8
 		     Requesteddate_bottom.y= RequesteddateValue.y+9
 
-		      Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-		      Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+12
-		      Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+12
-		      Password_bottom.y= Password_titletext.y+Password_titletext.height+15
-		      PasswordValue.y =Password_titletext.y+Password_titletext.height+5
+		   --    Password_bg.y =  Requesteddate_bottom.y+Requesteddate_bottom.contentHeight+7
+		   --    Password_titlestar.y= Password_bg.y+7
+		   --    Password_titletext.y= Password_bg.y+7
+		   --    PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
+		   --    Password_bottom.y= PasswordValue.y +9.5
+		   --    PasswordHelptext.y= Password_bottom.y + 12
+		   --    GeneratePasstext.y= PasswordHelptext.y + 20
+		   --    processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+		   --    processbutton_text.y=processbutton.y
+
+
+			  if popupText.text == "Deny Access" then
+
+		     	print("deny access , no phone number [1]1[1][1][1][1][1][1][1][1]1[1]1[1]1[]11[1]1[1]1[11[1]")
+
+		      Password_bg.isVisible = false
+		      Password_titlestar.isVisible = false
+		      Password_titletext.isVisible = false
+		      Password_bottom.isVisible = false
+		      PasswordValue.isVisible = false
+		      PasswordHelptext.isVisible = false
+		      GeneratePasstext.isVisible = false
+		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+			  processbutton_text.y=processbutton.y
+
+			  deny_bg.y = Requesteddate_bottom.y + 45
+			  deny_Value.y=deny_bg.y
+			  processbutton.y = deny_Value.y+deny_Value.contentHeight - 10
+			  processbutton_text.y=processbutton.y
+
+			 elseif popupText.text == "Provide Access" then
+
+			 	print("in provide access section")
+
+			 	Requesteddate_bg.isVisible = false
+			 	RequesteddateValue.isVisible = false
+			 	Requesteddate_title.isVisible = false
+			 	Requesteddate_bottom.isVisible = false
+
+			  Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.contentHeight+7
+		      Password_titlestar.y= Password_bg.y+7
+		      Password_titletext.y= Password_bg.y+7
+		      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
+		      Password_bottom.y= PasswordValue.y +9.5
 		      PasswordHelptext.y= Password_bottom.y + 12
 		      GeneratePasstext.y= PasswordHelptext.y + 20
 		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
 			  processbutton_text.y=processbutton.y
-		else 
 
 
-			textnotifybox.isVisible = true
-			textnotifytext.isVisible = true
+		     else
 
-			 MKRankDetail_title.y= PhoneDetail_titletext.y+PhoneDetail_titletext.height+32
-			 MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+8
+		     	print("deny access, has phone number [1]1[1][1][1][1][1][1][1][1]1[1]1[1]1[]11[1]1[1]1[11[1]")
+
+		      Password_bg.y =  Requesteddate_bottom.y+Requesteddate_bottom.contentHeight+7
+		      Password_titlestar.y= Password_bg.y+7
+		      Password_titletext.y= Password_bg.y+7
+		      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
+		      Password_bottom.y= PasswordValue.y +9.5
+		      PasswordHelptext.y= Password_bottom.y + 12
+		      GeneratePasstext.y= PasswordHelptext.y + 20
+		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+			  processbutton_text.y=processbutton.y
+
+			 end
+
+
+		    else 
+
+			 textnotifybox.isVisible = true
+			 textnotifytext.isVisible = true
+
+	         PhoneDetail_titlestar.y= PhoneDetail_bg.y
+			 PhoneDetail_titletext.y= PhoneDetail_bg.y
+			 PhoneDetail_bottom.y= PhoneDetailValue.y+10
+			 PhoneDetailValue.y =PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+
+			 textnotifybox.y = PhoneDetail_bottom.y + 15
+			 textnotifytext.y = PhoneDetail_bottom.y + 15
+
+			 MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+			 MKRankDetail_title.y= MKRankDetail_bg.y+7
+			 MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+7
 		     MKRankDetail_bottom.y= MKRankDetailValue.y+9
 
-		     Requesteddate_bg.y =  MKRankDetailValue.y+MKRankDetailValue.height+7
-		     Requesteddate_title.y= MKRankDetailValue.y+MKRankDetailValue.height+12
+		     Requesteddate_bg.y = MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+		     Requesteddate_title.y= Requesteddate_bg.y + 7
 		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
 		     Requesteddate_bottom.y= RequesteddateValue.y+9
 
+
+		     if popupText.text == "Deny Access" then
+
+		     	print("deny access , no phone number [][][][][][][][][][][][][][][[]")
+
+		      Password_bg.isVisible = false
+		      Password_titlestar.isVisible = false
+		      Password_titletext.isVisible = false
+		      Password_bottom.isVisible = false
+		      PasswordValue.isVisible = false
+		      PasswordHelptext.isVisible = false
+		      GeneratePasstext.isVisible = false
+		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+			  processbutton_text.y=processbutton.y
+
+			  deny_bg.y = Requesteddate_bottom.y + 45
+			  deny_Value.y=deny_bg.y
+			  processbutton.y = deny_Value.y+deny_Value.contentHeight-10
+			  processbutton_text.y=processbutton.y
+
+			  phonenumber = PhoneDetailValue.text
+			  email = EmailDetailValue.text
+			  denyreason = deny_Value.text
+			  isSentMailValue = isSentMail
+			  isSendTextValue = isSentText
+
+			  print(phonenumber .. email .. denyreason .. tostring(isSentMailValue) .. tostring(isSendTextValue))
+
+			  RequestGrantProcess()
+
+			 elseif popupText.text == "Provide Access" then
+
+			 	print("in provide has number access section")
+
+			 	Requesteddate_bg.isVisible = false
+			 	RequesteddateValue.isVisible = false
+			 	Requesteddate_title.isVisible = false
+			 	Requesteddate_bottom.isVisible = false
+
+			  Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.contentHeight+7
+		      Password_titlestar.y= Password_bg.y+7
+		      Password_titletext.y= Password_bg.y+7
+		      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
+		      Password_bottom.y= PasswordValue.y +9.5
+		      PasswordHelptext.y= Password_bottom.y + 12
+		      GeneratePasstext.y= PasswordHelptext.y + 20
+		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+			  processbutton_text.y=processbutton.y
+
+
+		     else
+
+		     	print("deny access has phone number")
+
 		      Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-		      Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+12
-		      Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+12
-		      Password_bottom.y= Password_titletext.y+Password_titletext.height+15
+		      Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
+		      Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
+		      Password_bottom.y= Password_titletext.y+Password_titletext.height+16
 		      PasswordValue.y =Password_titletext.y+Password_titletext.height+5
 		      PasswordHelptext.y= Password_bottom.y + 12
 		      GeneratePasstext.y= PasswordHelptext.y + 20
 		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
 			  processbutton_text.y=processbutton.y
+
+			 end
+
 	    end
 
 
-		if PasswordValue.text == "" or PasswordValue.text == PasswordValue.id or PasswordValue.text == "* Password is required"then
+		if PasswordValue.text == "" or PasswordValue.text == PasswordValue.id or PasswordValue.text == "* Password is required" then
 
 			validation = false
 
@@ -447,6 +593,19 @@ end
 
 		end
 
+
+  --      if popupText.text == " Deny Access" then
+
+		-- if deny_Value.text == "" or deny_Value.text.placeholder == "Reason for deny" then
+
+		-- 	validation = false
+
+		-- 	SetError("* ".."Reason is required",deny_Value)
+		-- end
+
+	 --  end
+
+
 						
 			if(validation == true) then
 
@@ -455,13 +614,16 @@ end
 				 print(isSentMailValue)
    	             isSendTextValue = isSentText
    	             print(isSendTextValue)
-   	             PhoneNo=PhoneNum
+   	             PhoneNo=PhoneDetailValue.text
    	             print("{{{{{{{{{{",PhoneNo)
-   	             EmailAddress = Email
+   	             EmailAddress = EmailDetailValue.text
    	             print("{{{{{{{{{{",EmailAddress)
 
 
-				RequestGrantProcess()
+   	             --denyreason = deny_Value.text
+
+
+				  RequestGrantProcess()
 
 			end
 
@@ -473,24 +635,52 @@ end
 end
 
 
+local function popup_scrollListener(event )
+
+		    local phase = event.phase
+		 if ( phase == "began" ) then 
+		 elseif ( phase == "moved" ) then 
+
+			local x, y = popup_scroll:getContentPosition()
+
+			if y > -80 then
+
+				EmailDetailValue.isVisible = true
+
+			else
+
+				EmailDetailValue.isVisible = false
+			end
+
+			-- if y > -10 and y < 30 then
+
+			-- 	print("value of y " ,y)
+
+			-- 	deny_bg.isVisible = false
+			-- 	deny_Value.isVisible = false
+			-- end
+
+		elseif ( phase == "ended" ) then 
+		    end
+
+		    -- In the event a scroll limit is reached...
+		    if ( event.limitReached ) then
+		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
+		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		        end
+		    end
+
+		    return true
+
+	end
 
 
 
-local function touchBg( event )
-		if event.phase == "began" then
-
-		elseif event.phase == "ended" then
-
-				native.setKeyboardFocus(nil)
-
-		end
-		return true
-end
 
 
-
-
-function GetPopUp(email,mobile,homenum,worknum,othernum)
+function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 		if popUpGroup.numChildren ~= nil then
 			 for j=popUpGroup.numChildren, 1, -1 do 
@@ -499,16 +689,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 			 end
 		end
 
-		-- 	if popup_scroll.numChildren ~= nil then
-		-- 	 for j=popup_scroll.numChildren, 1, -1 do 
-		-- 						display.remove(popup_scroll[popup_scroll.numChildren])
-		-- 						popup_scroll[popup_scroll.numChildren] = nil
-		-- 	 end
-		-- end
 
-
-
-	popupTop_bg = display.newRect(leftPadding_value + 140, H/2+ 10, W-20, 382 )
+	popupTop_bg = display.newRect(leftPadding_value + 140, H/2+ 10, W-20, 385 )
 	popupTop_bg.x = leftPadding_value + 140
     popupTop_bg:setFillColor(0,0,0)
     popupTop_bg:addEventListener("touch",touchBg)
@@ -553,18 +735,20 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 
 	popup_scroll = widget.newScrollView
 	{
-	top = 60,
+	top = 61,
 	left = 0,
 	width = W-5,
-	height = popupTop_bg.contentHeight,
+	height = popupTop_bg.contentHeight-4,
 	hideBackground = true,
 	isBounceEnabled=false,
-	horizontalScrollingDisabled = true,
-	verticalScrollingDisabled = false,
+	horizontalScrollDisabled = true,
+	verticalScrollDisabled = false,
+	friction = .6,
+   	listener = popup_scrollListener,
     }
 
 
-    popupList = display.newRect(leftPadding_value + 140, 0, W-22, popupTop_bg.contentHeight+80 )
+    popupList = display.newRect(leftPadding_value + 140, 0, W-22, popupTop_bg.contentHeight+78 )
     popupList.anchorY=0
     popup_scroll:insert(popupList)
 
@@ -575,32 +759,21 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 		NameDetail_bg.isVisible = true
 		NameDetail_bg.alpha = 0.01
 		NameDetail_bg:setFillColor(0,0,0)
-		NameDetail_bg.y = popupList.y+10
+		NameDetail_bg.y = popupList.y+20
 		popup_scroll:insert(NameDetail_bg)
 
 	    NameDetail_title = display.newText("Name ",0,0,native.systemFontBold,14)
-	    NameDetail_title.x= 40
+	    NameDetail_title.x= 44
 	    NameDetail_title:setFillColor(0,0,0)
 	    NameDetail_title.y= NameDetail_bg.y
 	    popup_scroll:insert(NameDetail_title)
 
 	    NameDetailValue = display.newText("name value ",0,0,native.systemFont,14)
-	    NameDetailValue.x=  NameDetail_title.x - 15
+	    NameDetailValue.x=  NameDetail_title.x - 20
 	    NameDetailValue.anchorX = 0
 	    NameDetailValue:setFillColor(0,0,0)
 	    NameDetailValue.y= NameDetail_title.y+NameDetail_title.contentHeight+7
 	    popup_scroll:insert(NameDetailValue)
-
-	 --    NameDetailValue = native.newTextField(W/2,popupText.y+popupText.height+16, W-45, 25)
-		-- NameDetailValue.id="Name Detail"
-		-- NameDetailValue.size=14	
-		-- NameDetailValue.anchorX = 0
-		-- NameDetailValue.y = popupText.y+popupText.height+20
-		-- NameDetailValue.hasBackground = false
-		-- NameDetailValue.isVisible = true
-		-- NameDetailValue:setReturnKey( "next" )
-		-- NameDetailValue.placeholder="Name"
-		-- popup_scroll:insert(NameDetailValue)
 
 
 	    NameDetail_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
@@ -609,26 +782,12 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 		popup_scroll:insert(NameDetail_bottom)
 
 
-		-- NameDetail_bottom = display.newImageRect(popUpGroup,"res/assert/line-large.png",W-45,5)
-		-- NameDetail_bottom.x=W/2
-		-- NameDetail_bottom.y= popupText.y+popupText.height+30
-
-		-- NameDetailValue = native.newTextField(W/2,popupText.y+popupText.height+16, W-45, 25)
-		-- NameDetailValue.id="Name Detail"
-		-- NameDetailValue.size=14	
-		-- NameDetailValue.y = popupText.y+popupText.height+20
-		-- NameDetailValue.hasBackground = false
-		-- NameDetailValue.isVisible = true
-		-- NameDetailValue:setReturnKey( "next" )
-		-- NameDetailValue.placeholder="Name"
-		-- popUpGroup:insert(NameDetailValue)
-
 --------------------------------------email field--------------------------------------
 
         EmailDetail_bg = display.newRect(W/2,NameDetail_bg.y+15, W-40, 25)
 		EmailDetail_bg.isVisible = true
 		EmailDetail_bg.alpha = 0.01
-		EmailDetail_bg.y = NameDetail_bottom.y+NameDetail_bottom.contentHeight+12
+		EmailDetail_bg.y = NameDetail_bottom.y+NameDetail_bottom.contentHeight+15
 		popup_scroll:insert(EmailDetail_bg)
 
 		EmailDetail_titlestar = display.newText("*",0,0,native.systemFontBold,14)
@@ -771,10 +930,10 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 
 
 		MKRankDetail_title = display.newText("MK Rank ",0,0,native.systemFontBold,14)
-	    MKRankDetail_title.x= 20
+	    MKRankDetail_title.x= 22
 	    MKRankDetail_title.anchorX = 0
 	    MKRankDetail_title:setFillColor(0,0,0)
-	    MKRankDetail_title.y= MKRankDetail_bg.y+5
+	    MKRankDetail_title.y= MKRankDetail_bg.y+8
 	    popup_scroll:insert(MKRankDetail_title)
 
 	    MKRankDetailValue = display.newText("name value ",0,0,native.systemFont,14)
@@ -795,7 +954,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
         Requesteddate_bg = display.newRect(W/2,MKRankDetailValue.y+15, W-40, 25)
 		Requesteddate_bg.isVisible = true
 		Requesteddate_bg.alpha = 0.01
-		Requesteddate_bg.y =  MKRankDetailValue.y+MKRankDetailValue.height+7
+		Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
 		popup_scroll:insert(Requesteddate_bg)
 
 		-- Requesteddate_bottom = display.newImageRect(popUpGroup,"res/assert/line-large.png",W-45,5)
@@ -813,9 +972,10 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 		-- popUpGroup:insert(RequesteddateValue)
 
 		Requesteddate_title = display.newText("Requested On ",0,0,native.systemFontBold,14)
-	    Requesteddate_title.x= MKRankDetail_bg.x - 88
+	    Requesteddate_title.x= 22
 	    Requesteddate_title:setFillColor(0,0,0)
-	    Requesteddate_title.y= MKRankDetailValue.y+MKRankDetailValue.height+12
+	    Requesteddate_title.anchorX = 0
+	    Requesteddate_title.y= Requesteddate_bg.y + 7
 	    popup_scroll:insert(Requesteddate_title)
 
 	    RequesteddateValue = display.newText("name value ",0,0,native.systemFont,14)
@@ -826,9 +986,38 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 	    popup_scroll:insert(RequesteddateValue)
 
 
-	    Requesteddate_bottom = display.newImageRect(popup_scroll,"res/assert/line-large.png",W-40,5)
+	    Requesteddate_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
 		Requesteddate_bottom.x=W/2
 		Requesteddate_bottom.y= RequesteddateValue.y+8.5
+		popup_scroll:insert(Requesteddate_bottom)
+
+
+--------------------------------------reason for deny---------------------------------------------
+
+    deny_bg = display.newRect( 0,0 , W-40, EditBoxStyle.height+40)
+  	deny_bg:setStrokeColor(0,0,0,0.4)
+  	deny_bg.x = W/2
+  	deny_bg.isVisible = false
+  	deny_bg.y = Requesteddate_bottom.y + 40
+  	deny_bg.hasBackground = true
+	deny_bg.strokeWidth = 1
+	popup_scroll:insert(deny_bg)
+
+
+	deny_Value = native.newTextBox( deny_bg.width,deny_bg.height,W-40, EditBoxStyle.height+40)
+	deny_Value.placeholder = "Reason for deny"
+	deny_Value.isEditable = true
+	deny_Value.size=14
+	deny_Value.isVisible = false
+	deny_Value.value=""
+	deny_Value.id = "deny"
+	deny_Value.hasBackground = true
+	deny_Value:setReturnKey( "done" )
+	deny_Value.inputType = "default"
+	deny_Value.x=W/2
+	deny_Value.y=deny_bg.y
+	popup_scroll:insert(deny_Value)
+
 
 
 
@@ -842,15 +1031,15 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
 		popup_scroll:insert(Password_bg)
 
 		Password_titlestar = display.newText("*",0,0,native.systemFontBold,14)
-	    Password_titlestar.x= NameDetail_bg.x - 139
+	    Password_titlestar.x= 19
 	    Password_titlestar:setFillColor(1,0,0)
-	    Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+12
+	    Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
 	    popup_scroll:insert(Password_titlestar)
 
 		Password_titletext = display.newText("Password ",0,0,native.systemFontBold,14)
-	    Password_titletext.x= NameDetail_bg.x - 99
+	    Password_titletext.x= 57
 	    Password_titletext:setFillColor(0,0,0)
-	    Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+12
+	    Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
 	    popup_scroll:insert(Password_titletext)
 
 		PasswordValue = native.newTextField(22,textnotifytext.y+28, W-40, 25)
@@ -884,6 +1073,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum)
     GeneratePasstext:setFillColor(0,0,0.5)
     GeneratePasstext.y= PasswordHelptext.y + 20
     popup_scroll:insert(GeneratePasstext)
+    GeneratePasstext:addEventListener("touch",OnPasswordGeneration)
+
 
 -------------------------------------process button----------------------------------------------------------
 

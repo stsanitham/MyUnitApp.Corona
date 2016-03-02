@@ -161,7 +161,7 @@ end
 
 		
 		native.setKeyboardFocus(nil)
-		input = native.newTextField(W/2+10, Email_bg.y+Email_bg.height+7, W-20, 25)
+		input = native.newTextField(W/2+3, Email_bg.y+Email_bg.height+7, W-20, 25)
 		
 		return input
 	end
@@ -962,7 +962,7 @@ function scene:create( event )
 			sceneGroup:insert(UnitNumber_bg)
 			UnitNumber_bg.alpha=0.01
 
-			UnitNumber = native.newTextField(W/2+10, page_title.y+35, W-20, 25 )
+			UnitNumber = native.newTextField(W/2+3, page_title.y+35, W-20, 25 )
 			UnitNumber.id = "Unit Number / Director name"
 			UnitNumber.value=""
 			UnitNumber.size=14	
@@ -1023,7 +1023,7 @@ function scene:create( event )
 		FirstName_bottom.x=W/2
 		FirstName_bottom.y= UnitNumber_bg.y+UnitNumber_bg.height+16
 
-		FirstName = native.newTextField(W/2+10, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
+		FirstName = native.newTextField(W/2+3, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
 		FirstName.id="First Name"
 		FirstName.size=14	
 		FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
@@ -1043,7 +1043,7 @@ function scene:create( event )
 		Name_bottom.x=W/2
 		Name_bottom.y= FirstName_bg.y+FirstName_bg.height+16
 
-		Name = native.newTextField( W/2+10, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
+		Name = native.newTextField( W/2+3, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 		Name.id="Last Name"
 		Name.y = FirstName_bg.y+FirstName_bg.height+7
 		Name.size=14
@@ -1062,7 +1062,7 @@ function scene:create( event )
 		Email_bottom.x=W/2
 		Email_bottom.y= Name_bg.y+Name_bg.height+16
 
-		Email = native.newTextField(W/2+10, Name_bg.y+Name_bg.height+7, W-20, 25 )
+		Email = native.newTextField(W/2+3, Name_bg.y+Name_bg.height+7, W-20, 25 )
 		Email.id="Email"
 		Email.size=14	
 		Email:setReturnKey( "next" )
@@ -1081,7 +1081,7 @@ function scene:create( event )
 		Phone_bottom.y= Email_bg.y+Email_bg.height+16
 
 
-		Phone = native.newTextField(W/2+10, Email_bg.y+Email_bg.height+7, W-20, 25)
+		Phone = native.newTextField(W/2+3, Email_bg.y+Email_bg.height+7, W-20, 25)
 		Phone.id="Phone"
 		Phone.size=14	
 		Phone:setReturnKey( "next" )
@@ -1097,13 +1097,11 @@ function scene:create( event )
 
 			MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-
             MKRank_bg.strokeWidth = 1
 
 		else
 			MKRank_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 			MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-
             MKRank_bg.strokeWidth = 1
 
 		end
@@ -1119,7 +1117,7 @@ function scene:create( event )
 		MKRank.text = RequestAccess.MKRank_placeholder
 		MKRank.value = "-Select MK Rank-"
 		MKRank.id="MKrank"
-		MKRank.alpha=0.7
+		MKRank.alpha=0.9
 		MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		MKRank.y=MKRank_bg.y+5
 	    --MKRank.size=20
@@ -1136,10 +1134,10 @@ function scene:create( event )
 	Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
 	Comment_bg:setFillColor( 0,0,0,0 )
 	Comment_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-     Comment_bg.strokeWidth = 1
+    Comment_bg.strokeWidth = 1
 	sceneGroup:insert(Comment_bg)
 
-	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 70 )
+	Comment = native.newTextBox(W/2+3, Comment_bg.y, W-20, 70 )
 	Comment.id = "Comments"
 	Comment.size=14	
 	Comment.hasBackground = false
@@ -1160,7 +1158,7 @@ function scene:create( event )
 		DirectorName_bottom.x=W/2
 		DirectorName_bottom.y= Comment_bg.y+Comment_bg.height - 5
 
-		DirectorName = native.newTextField(W/2+10, Comment_bg.y+Comment_bg.height+7, W-20, 25)
+		DirectorName = native.newTextField(W/2+3, Comment_bg.y+Comment_bg.height+7, W-20, 25)
 		DirectorName.id="Director Name"
 		DirectorName.size=14	
 		DirectorName.y = Comment_bg.y+Comment_bg.height-14
@@ -1182,7 +1180,7 @@ function scene:create( event )
 		DirectorEmail_bottom.x=W/2
 		DirectorEmail_bottom.y= DirectorName_bg.y+DirectorName_bg.height+16
 
-		DirectorEmail = native.newTextField(W/2+10, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
+		DirectorEmail = native.newTextField(W/2+3, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
 		DirectorEmail.id="Director Email"
 		DirectorEmail.size=14	
 		DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7

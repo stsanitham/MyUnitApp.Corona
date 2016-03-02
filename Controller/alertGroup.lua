@@ -35,6 +35,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 
 local function touchBg( event )
+
 		if event.phase == "began" then
 
 		elseif event.phase == "ended" then
@@ -60,24 +61,30 @@ function GetAlertPopup()
 
         print("coming here")
 
-	    AlertTop_bg = display.newRect(leftPadding_value + 140, H/2-11, W-20, 160 )
+        Background = display.newImageRect(AlertGroup,"res/assert/background.jpg",W,H)
+	    Background.x=W/2;Background.y=H/2
+	    Background.alpha = 0.35
+	    Background:addEventListener("touch",touchBg)
+
+	    AlertTop_bg = display.newRect(AlertGroup,leftPadding_value + 140, H/2-11, W-20, 160 )
 	    AlertTop_bg:setFillColor(0,0,0)
-	    AlertGroup:insert(AlertTop_bg)
+	    AlertTop_bg:setStrokeColor(0,0,0)
+	    AlertTop_bg.strokeWidth = 0.4
 	    AlertTop_bg:addEventListener("touch",touchBg)
 
-	    AlertTop = display.newRect(W/2,H/2-106,299,30)
-  	    AlertTop:setStrokeColor(0,0,0,0.7)
-  	    AlertTop.strokeWidth = 0.8
-	    AlertTop:setFillColor(Utils.convertHexToRGB(color.LtyGray))
+	    AlertTop = display.newRect(W/2,H/2-106.1,299,30)
+  	    AlertTop:setStrokeColor(0,0,0,0.5)
+  	    AlertTop.strokeWidth = 0.51
+	    AlertTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 	    AlertGroup:insert(AlertTop)
 
-	    AlertText = display.newText("Remove",0,0,native.systemFont,15)
+	    AlertText = display.newText("Remove",0,0,native.systemFontBold,15)
 	    AlertText.anchorX=0
 	    AlertText.x=20;AlertText.y=AlertTop.y
-	    AlertText:setFillColor(0,0,0)
+	    AlertText:setFillColor(1,1,1)
 	    AlertGroup:insert(AlertText)
 
-		alertList = display.newRect(leftPadding_value + 140, H/2 -11, W-22, 158 )
+		alertList = display.newRect(leftPadding_value + 140, H/2 -10.62, W-22, 158 )
 	    AlertGroup:insert(alertList)
 
 	    AlertContentText = display.newText(CareerPath.RemoveAccess,0,0,W-20,0,native.systemFont,14)
@@ -90,15 +97,10 @@ function GetAlertPopup()
 
 ------------------------------remove or block buttons------------------------------------------
 
-    accept_button = display.newRect( AlertGroup, 0,0 ,200, EditBoxStyle.height)
-  	accept_button:setStrokeColor(0,0,0,0.7)
-  	accept_button:setFillColor(0,0,0,0.3)
-  	accept_button.cornerRadius = 2
+    accept_button = display.newImageRect(AlertGroup,"res/assert/positive_alert.png" ,200, EditBoxStyle.height)
   	accept_button.x = W/2
   	accept_button.id = "accept"
   	accept_button.y = AlertContentText.y+AlertContentText.contentHeight+22
-  	accept_button.hasBackground = true
-	accept_button.strokeWidth = 1
 	--accept_button:addEventListener("touch",onProcessButtonTouch)
 
 	accept_button_text = display.newText(AlertGroup,"Yes, I want to remove",0,0,native.systemFont,14)
@@ -107,19 +109,15 @@ function GetAlertPopup()
 	accept_button_text:setFillColor(0,0,0)
 
 
-	reject_button = display.newRect( AlertGroup, 0,0 ,200, EditBoxStyle.height)
-  	reject_button:setStrokeColor(0,0,0,0.7)
-  	reject_button:setFillColor(0,0,0,0.3)
-  	reject_button.cornerRadius = 2
+
+	reject_button = display.newImageRect(AlertGroup,"res/assert/negative_alert.png",200, EditBoxStyle.height)
   	reject_button.id = "reject"
   	reject_button.x = accept_button.x
   	reject_button.y = accept_button.y + accept_button.contentHeight+15
-  	reject_button.hasBackground = true
-	reject_button.strokeWidth = 1
 	--reject_button:addEventListener("touch",onProcessButtonTouch)
 
 	reject_button_text = display.newText(AlertGroup,"No, I don't want to remove",0,0,native.systemFont,14)
-	reject_button_text.x=reject_button.x
+	reject_button_text.x=reject_button.x + 15
 	reject_button_text.y=reject_button.y
 	reject_button_text:setFillColor(0,0,0)
 
@@ -129,3 +127,32 @@ function GetAlertPopup()
 
    end
 
+
+
+
+
+
+ --  accept_button = display.newImageRect(AlertGroup,"res/assert/positive_alert.png" ,200, EditBoxStyle.height)
+ --  	--accept_button:setStrokeColor(0,0,0,0.7)
+ --  	--accept_button:setFillColor(0,0,0,0.3)
+ --  	--accept_button.cornerRadius = 2
+ --  	accept_button.x = W/2
+ --  	accept_button.id = "accept"
+ --  	accept_button.y = AlertContentText.y+AlertContentText.contentHeight+22
+ --  	--accept_button.hasBackground = true
+	-- --accept_button.strokeWidth = 1
+	-- --AlertGroup:insert(accept_button)
+	-- --accept_button:addEventListener("touch",onProcessButtonTouch)
+
+
+-- --  reject_button = display.newRect( AlertGroup, 0,0 ,200, EditBoxStyle.height)
+-- 	reject_button = display.newImageRect(AlertGroup,"res/assert/negative_alert.png",200, EditBoxStyle.height)
+--   	--reject_button:setStrokeColor(0,0,0,0.7)
+--   	--reject_button:setFillColor(0,0,0,0.3)
+--   	--reject_button.cornerRadius = 2
+--   	reject_button.id = "reject"
+--   	reject_button.x = accept_button.x
+--   	reject_button.y = accept_button.y + accept_button.contentHeight+15
+--   	--reject_button.hasBackground = true
+-- 	--reject_button.strokeWidth = 1
+-- 	--reject_button:addEventListener("touch",onProcessButtonTouch)

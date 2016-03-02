@@ -131,8 +131,6 @@ ApplicationConfig.GetUnitWiseRegister = ApplicationConfig.BASE_URL.."/MyUnitBuzz
 
 ApplicationConfig.SaveAttachmentDetails = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/SaveAttachmentDetails"
 
-ApplicationConfig.SaveMyEditedUnitAppGoals = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SaveMyUnitBuzzGoals"
-
 ApplicationConfig.RemoveOrBlockContact = ApplicationConfig.BASE_URL.."/MyUnitBuzz/UpdateContactStatus"
 
 ApplicationConfig.AccessPermissionDetails = ApplicationConfig.BASE_URL.."/MyUnitBuzz/SaveAccessPermissionsDetails"
@@ -141,5 +139,7 @@ ApplicationConfig.SaveMyUnitBuzzGoals = ApplicationConfig.BASE_URL.."/MyUnitBuzz
 
 ApplicationConfig.UpdateTicklerRecur = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/UpdateTicklerRecur"
 
+
 ApplicationConfig.GetMyUnitBuzzRequestAccesses = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMyUnitBuzzRequestAccesses"
 
+ApplicationConfig.GetGeneratePassword = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GeneratePassword"
