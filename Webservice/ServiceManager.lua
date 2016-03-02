@@ -1349,7 +1349,7 @@ end
 
 
 
-function Webservice.AccessPermissionDetails(Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,contact_id,isaddedToContact,MyUnitBuzzRequestAccessId,password,postExecution)
+function Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,contact_id,isaddedToContact,MyUnitBuzzRequestAccessId,password,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -1382,9 +1382,30 @@ function Webservice.AccessPermissionDetails(Email,PhoneNumber,MkRankId,GetRquest
 	countrylanguage=[["LanguageId": '1',
 		"CountryId": '1']]
 
+		print(idvalue)
 
+    if idvalue == "Deny Access" then
 
-	local resbody = [[{
+	 resbody = [[{
+		"UserId": ']]..UserId..[[',
+		"EmailAddress": ']]..Email..[[',
+		"PhoneNumber": ']]..PhoneNumber..[[',
+		"MkRankId": ']]..MkRankId..[[',
+		"GetRquestAccessFrom": ']]..GetRquestAccessFrom..[[',
+		"MailTemplate": ']]..MailTemplate..[[',
+		"Status": ']]..Status..[[',
+		"TypeLanguageCountry": {]]..countrylanguage..[[},
+		"IsSendMail": ']]..tostring(isSentMail)..[[',
+		"IsSendText": ']]..tostring(isSentText)..[[',
+		"ContactId": ']]..contact_id..[[',
+		"IsAddToContact": ']]..tostring(isaddedToContact)..[[',
+		"MyUnitBuzzRequestAccessId": ']]..MyUnitBuzzRequestAccessId..[[',
+		"Comments": ']]..password..[[',
+	  }]]
+
+	else
+
+		 resbody = [[{
 		"UserId": ']]..UserId..[[',
 		"EmailAddress": ']]..Email..[[',
 		"PhoneNumber": ']]..PhoneNumber..[[',
@@ -1401,6 +1422,8 @@ function Webservice.AccessPermissionDetails(Email,PhoneNumber,MkRankId,GetRquest
 		"Password": ']]..password..[[',
 	  }]]
 
+	end
+
 	params={headers = headers,body = resbody}
 
 	print("request 123: "..tostring(resbody))
@@ -1409,6 +1432,49 @@ function Webservice.AccessPermissionDetails(Email,PhoneNumber,MkRankId,GetRquest
 
 	return response
 end
+
+
+
+
+function Webservice.GeneratePassword(postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+
+	method="GET"
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	local url = splitUrl(ApplicationConfig.GetGeneratePassword)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetGeneratePassword,method,params,postExecution)
+
+    print("request : "..json.encode(params))
+
+	
+	return response
+end
+
 
 
 
