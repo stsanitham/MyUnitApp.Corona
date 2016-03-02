@@ -1411,8 +1411,6 @@ function Webservice.AccessPermissionDetails(Email,PhoneNumber,MkRankId,GetRquest
 end
 
 
-
-
 function Webservice.SaveMyUnitBuzzGoals(GoalsId,GoalsDetail,postExecution)
 	local request_value = {}
 	local params = {}
@@ -1452,6 +1450,51 @@ function Webservice.SaveMyUnitBuzzGoals(GoalsId,GoalsDetail,postExecution)
 	print("request : "..json.encode(params))
 
 	request.new(ApplicationConfig.SaveMyUnitBuzzGoals,method,params,postExecution)
+	
+	return response
+end
+
+function Webservice.GetMyUnitBuzzRequestAccesses(status,postExecution)
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method="GET"
+
+
+	local url = splitUrl(ApplicationConfig.GetMyUnitBuzzRequestAccesses)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	-- local resbody = [[{
+ --  "UserId": ']]..UserId..[[',
+ --  "status": ']]..status..[[',
+
+ --   } ]]
+
+   local resbody = "UserId="..UserId.."&status="..status
+
+	params={headers = headers}
+
+	print("request : "..json.encode(params))
+
+	request.new(ApplicationConfig.GetMyUnitBuzzRequestAccesses.."?"..resbody,method,params,postExecution)
 	
 	return response
 end

@@ -23,7 +23,7 @@ local menuBtn
 
 local menuArray_display = {}
 
-local space_value = 30
+local space_value = 27 
 
 local profilePic,UserEmail;
 
@@ -542,6 +542,31 @@ function scene:show( event )
 			message_text.y = message_icon.y
 			
 			panel:insert( message_text )
+
+
+			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
+			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].alpha=0.01
+			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
+			panel:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
+			menuArray_display[#menuArray_display].name = "invite"
+			menuArray_display[#menuArray_display].id="inviteAndaccessPage"
+
+			invite_icon = display.newImageRect("res/assert/message.png",15,15)
+			invite_icon.anchorX = 0
+			invite_icon:setFillColor(1,1,1)
+			invite_icon.x=-panel.width/2+5
+			invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
+			panel:insert( invite_icon )
+
+			invite_text = display.newText("Invite/Access" ,0,0,"Open Sans Regular",16)
+			invite_text.anchorX = 0
+			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
+			invite_text.y = invite_icon.y
+			
+			panel:insert( invite_text )
 
 			end
 
