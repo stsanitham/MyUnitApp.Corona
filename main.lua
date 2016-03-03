@@ -282,6 +282,15 @@ Runtime:addEventListener("unhandledError", myUnhandledErrorListener)
 
 
 
+local function listener( event )
+    if event.isShake then
+        print( "The device is being shaken!" )
+    end
+
+    return true
+end
+
+Runtime:addEventListener( "accelerometer", listener )
 
 
 -- local function onCloseTouch( event )
