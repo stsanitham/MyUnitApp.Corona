@@ -116,37 +116,35 @@ function Webservice.REQUEST_ACCESS(requestFromStatus,directorName,directorEmail,
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
-local v = 
+	local v = 
 
-[[{
-
-  "FirstName": "]]..firstName..[[",
-  "LastName": "]]..lastName..[[",
-  "EmailAddress": "]]..Email..[[",
-  "PhoneNumber": "]]..Phone..[[",
-  "Comments": "]]..Comment..[[",
-  "UnitNumber": "]]..UnitNumber..[[",
-  "DirectorName": "]]..directorName..[[",
-  "RequestAccessStatus": "]]..requestFromStatus..[[",
-  "DirectorEmailAddress": "]]..directorEmail..[[",
-  "MkRankId": "]]..MKRank..[[",
-  "TypeLanguageCountry": {
-    "LanguageId": 1,
-    "CountryId": 1,
-  },
-}]]
+	[[{
+	  "FirstName": "]]..firstName..[[",
+	  "LastName": "]]..lastName..[[",
+	  "EmailAddress": "]]..Email..[[",
+	  "PhoneNumber": "]]..Phone..[[",
+	  "Comments": "]]..Comment..[[",
+	  "UnitNumber": "]]..UnitNumber..[[",
+	  "DirectorName": "]]..directorName..[[",
+	  "RequestAccessStatus": "]]..requestFromStatus..[[",
+	  "DirectorEmailAddress": "]]..directorEmail..[[",
+	  "UniqueId": "]]..headers["UniqueId"]..[[",
+	  "MkRankId": "]]..MKRank..[[",
+	  "TypeLanguageCountry": {
+	    "LanguageId": 1,
+	    "CountryId": 1,
+	  },
+	}]]
 
 	--headers["Content-Type"] = "application/x-www-form-urlencoded"
 	--headers["Content-Length"]= string.len(v)
 
 	params={headers = headers,body = v}
 
-
 	print("Send Message Request :"..json.encode(params))
 
 	request.new( ApplicationConfig.REQUEST_ACCESS,method,params,postExecution)
 	
-
 	return response
 
 end
@@ -1474,6 +1472,7 @@ function Webservice.GeneratePassword(postExecution)
 	
 	return response
 end
+
 
 
 

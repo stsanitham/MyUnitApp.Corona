@@ -435,7 +435,6 @@ local function RequestProcess()
 
 							   elseif (current_textField.id == "Director Name") then
 
-							   	
 							   	native.setKeyboardFocus( nil )
 
 								native.setKeyboardFocus( DirectorEmail )
@@ -859,8 +858,8 @@ local function rankTouch( event )
 					DirectorName.isVisible = false
 					DirectorEmail.isVisible = false
 
-					DirectorName_bottom.isVisible = false
-					DirectorEmail_bottom.isVisible = false
+					--DirectorName_bottom.isVisible = false
+					--DirectorEmail_bottom.isVisible = false
 
 				-- if unitnumberflag == true then
 
