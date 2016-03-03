@@ -435,7 +435,6 @@ local function RequestProcess()
 
 							   elseif (current_textField.id == "Director Name") then
 
-							   	
 							   	native.setKeyboardFocus( nil )
 
 								native.setKeyboardFocus( DirectorEmail )

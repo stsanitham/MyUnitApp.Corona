@@ -1434,9 +1434,6 @@ function Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,G
 end
 
 
-<<<<<<< HEAD
-=======
-
 
 function Webservice.GeneratePassword(postExecution)
 
@@ -1480,8 +1477,6 @@ end
 
 
 
-
->>>>>>> fcfca9e94bd4f5cbb0f143d5736d5935b6c93086
 function Webservice.SaveMyUnitBuzzGoals(GoalsId,GoalsDetail,postExecution)
 	local request_value = {}
 	local params = {}
