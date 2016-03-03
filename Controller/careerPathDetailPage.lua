@@ -1504,6 +1504,10 @@ function scene:show( event )
 				--Utils.CssforTextView(InviteAccess,sp_labelName)
 				careerDetail_scrollview:insert( InviteAccess )
 
+			--	ContactId = row.ContactId
+
+			--	print("contact id from database........................... ",ContactId)
+
 
                     if(IsOwner == true and Details.Status == "DENY" or Details.Status == "BLOCK") then
 
