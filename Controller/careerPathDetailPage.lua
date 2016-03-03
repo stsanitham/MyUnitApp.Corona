@@ -11,8 +11,8 @@ local widget = require( "widget" )
 local json = require("json")
 local popupGroup = require( "Controller.popupGroup" )
 local alertGroup = require( "Controller.alertGroup" )
-
-
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
 
 
 --------------- Initialization -------------------
@@ -353,6 +353,7 @@ end
 		    print("response after removing details ",Request_response)
 	        local remove_successful= native.showAlert("Remove", "Contact removed", { CommonWords.ok} , onCompletion)
 
+
 		 elseif id_value == "Block Access" then
 
 		    print("response after blocking details ",Request_response)
@@ -421,7 +422,7 @@ end
 
          	 end
 
-         	end
+         end
 
 	end
 
@@ -1214,13 +1215,20 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-
 		elseif phase == "did" then
-
 
 				contactId = event.params.contactId
 
 				print("ContactIdVlaue before assigning"..contactId)
+
+
+				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+
+				ContactId = row.ContactId
+
+				print("ContactId :"..ContactId)
+
+				end
 
 	
 			function get_avtiveTeammemberDetails( response)
@@ -1228,7 +1236,9 @@ function scene:show( event )
 				print("Career Detail Response ",json.encode(response))
 
 				Details = response
-						
+
+				-- detailcontactid = Details.ContactId
+				-- print("detailcontactid before assigning"..detailcontactid)
 
 				titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
 				titleBar.anchorY=0
@@ -1493,7 +1503,13 @@ function scene:show( event )
 				Details_Display[#Details_Display].isVisible=false
 				careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 
-                if (IsOwner == true) then
+
+				print("ContactId and event id ",ContactId.."\n"..contactId)
+
+
+		if (ContactId ~= contactId) then
+
+            if (IsOwner == true) then
 
 				InviteAccess = display.newText("Invite/Access",0,0,0,0,native.systemFontBold,16)
 				InviteAccess.anchorX = 0 ;InviteAccess.anchorY=0
@@ -1503,10 +1519,6 @@ function scene:show( event )
 				InviteAccess.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+8
 				--Utils.CssforTextView(InviteAccess,sp_labelName)
 				careerDetail_scrollview:insert( InviteAccess )
-
-			--	ContactId = row.ContactId
-
-			--	print("contact id from database........................... ",ContactId)
 
 
                     if(IsOwner == true and Details.Status == "DENY" or Details.Status == "BLOCK") then
@@ -1651,6 +1663,8 @@ function scene:show( event )
 				    end
 
 				end
+
+			end
 
 				Details_Display[#Details_Display+1] = display.newRect( W/2, Details_Display[#Details_Display].y+30, W, 5)
 				Details_Display[#Details_Display].isVisible=false
