@@ -484,7 +484,7 @@ function onAccessButtonTouch( event )
 
 			        		AlertGroup.isVisible = false
 
-		        		Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
+		        			Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
 
 			        	elseif event.target.id == "reject" then
 
@@ -531,14 +531,7 @@ function onAccessButtonTouch( event )
 
     if id_value == "Grant Access" then
 
-          print("grant access pressed") 
-
-          -- print(Details.EmailAddress)
-          -- print(Details.Mobile)
-          -- print(Details.FirstName)
-          -- print(Details.LastName)
-
-          GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
+              GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
           processbutton_text.text = "Grant Access"
           popupText.text = "Grant Access"
@@ -1023,7 +1016,6 @@ function onAccessButtonTouch( event )
 
     function RequestGrantProcess( )
 
-    	print("12537683479349090573974935793474395793479347597349793475934")
 
     	if processbutton_text.text == "Grant Access" then
 
@@ -1034,9 +1026,6 @@ function onAccessButtonTouch( event )
 
    	    Email = EmailDetailValue.text
 
-   	    print("}}}}}}}}}}}}}",PhoneNumber)
-
-   	    print("}}}}}}}}}}}}}",Email)
 
    	    MkRankId = Details.CareerProgressId
         MyUnitBuzzRequestAccessId = Details.MyUnitBuzzRequestAccessId
