@@ -130,16 +130,34 @@ end
 
 							if "*" == event.target.text:sub(1,1) then
 								event.target.text=""
+								current_textField.text = ""
 							end
 
 
 					elseif ( event.phase == "submitted" ) then
+
+						if(current_textField.id =="Password") then
+
+                               native.setKeyboardFocus(nil)
+						end
 
 					elseif event.phase == "ended" then
 										
 
 
         			elseif ( event.phase == "editing" ) then
+
+						-- if(current_textField.id =="Password") then
+
+						-- 	print("password focus is here")
+
+      --   				    if event.target.text == "* Password is required" or event.target.text == "* Password should contain atleast 6 characters" then
+
+						-- 		event.target.text = ""
+
+						--     end
+
+						-- end
 
 						 if(current_textField.id =="Phone Detail") then
 
@@ -228,8 +246,6 @@ end
 							end
 					end
 
-		      end
-
         ------------------------------------------for password ---------------------------------------------------
 
 						if(current_textField.id == "Password") then
@@ -243,7 +259,8 @@ end
 						end
 
         -----------------------------------------------------------------------------------------------------------
-        	
+        	end
+
 	     end
 
 
@@ -278,17 +295,13 @@ end
 
          	if PasswordValue.text == "* Password is required" or PasswordValue.text == "* Password should contain atleast 6 characters" then
 
-         		print("password PasswordValue")
-
          	    PasswordValue.text = generatedPassword
          	    PasswordValue.size=14
 		        PasswordValue:setTextColor(0,0,0)
 
 		    else
 
-		    	print("PasswordValue present")
-
-		    	 PasswordValue.text = generatedPassword
+		    	PasswordValue.text = generatedPassword
 
             end
 
@@ -1046,10 +1059,11 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		PasswordValue.id="Password"
 		PasswordValue.size=14	
 		PasswordValue.anchorX = 0
+		PasswordValue.x = 18
 		PasswordValue.y =Password_titletext.y+Password_titletext.height+7
 		PasswordValue.hasBackground = false
 		PasswordValue.isVisible = true
-		PasswordValue:setReturnKey( "next" )
+		PasswordValue:setReturnKey( "done" )
 		PasswordValue.placeholder="Password"
 		popup_scroll:insert(PasswordValue)
 
@@ -1100,22 +1114,46 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
     if email ~= nil or email ~= "" then
 	EmailDetailValue.text = email
+	emailnotifytext.isVisible = true
+    emailnotifybox.isVisible = true
 	print("88888888888888888888888",email)
     else
     EmailDetailValue.text = ""
+    emailnotifytext.isVisible = false
+    emailnotifybox.isVisible = false
     end
 
 
     if mobile ~= nil or mobile ~= "" then
     	PhoneDetailValue.text = mobile
+    	textnotifybox.isVisible = true
+    	textnotifytext.isVisible = true
+
+    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
     elseif homenum ~= nil or homenum ~= "" then
     	PhoneDetailValue.text = homenum
+    	textnotifybox.isVisible = true
+    	textnotifytext.isVisible = true
+
+    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
     elseif othernum ~= nil or othernum ~= "" then
     	PhoneDetailValue.text = othernum
+    	textnotifybox.isVisible = true
+    	textnotifytext.isVisible = true
+
+    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
     elseif worknum  ~= nil or worknum ~= "" then
     	PhoneDetailValue.text = worknum
+    	textnotifybox.isVisible = true
+    	textnotifytext.isVisible = true
+
+    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
     else
     	PhoneDetailValue.text = ""
+    	textnotifybox.isVisible = false
+    	textnotifytext.isVisible = false
+
+    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
     end
     print("88888888888888888888888",mobile)
 

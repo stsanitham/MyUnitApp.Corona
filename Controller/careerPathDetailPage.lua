@@ -533,11 +533,10 @@ function onAccessButtonTouch( event )
 
           print("grant access pressed") 
 
-
-          print(Details.EmailAddress)
-          print(Details.Mobile)
-          print(Details.FirstName)
-          print(Details.LastName)
+          -- print(Details.EmailAddress)
+          -- print(Details.Mobile)
+          -- print(Details.FirstName)
+          -- print(Details.LastName)
 
           GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
@@ -552,25 +551,26 @@ function onAccessButtonTouch( event )
              NameDetailValue.text = Details.FirstName
              native.setKeyboardFocus( nil )
           elseif Details.LastName ~= nil  then
-            NameDetailValue.text = Details.LastName
+             NameDetailValue.text = Details.LastName
              native.setKeyboardFocus( nil )
 		  else
-		    NameDetailValue.text = ""
+		     NameDetailValue.text = nil
           end
-          print(NameDetailValue.text)
+          print("print the value of name ",NameDetailValue.text)
 
 
 
           if Details.EmailAddress ~= nil then
           EmailDetailValue.text = Details.EmailAddress
-          native.setKeyboardFocus(PhoneDetailValue)
+        --  native.setKeyboardFocus(PhoneDetailValue)
             emailnotifybox.isVisible = true
 		    emailnotifytext.isVisible = true
           else
-		  EmailDetailValue.text = ""
+		  EmailDetailValue.text = nil
 		   emailnotifybox.isVisible = false
 		   emailnotifytext.isVisible = false
           end
+           print("print the value of email ",EmailDetailValue.text)
 
 
         if Details.Mobile ~= nil or Details.Mobile ~= "" then
@@ -590,14 +590,16 @@ function onAccessButtonTouch( event )
                     textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
           else
-          	 PhoneDetailValue.text = ""
-          	        textnotifybox.isVisible = false
-					textnotifytext.isVisible = false
+          	 PhoneDetailValue.text = nil
+          	       textnotifybox.isVisible = false
+			       textnotifytext.isVisible = false
           end
 
+            print("print the value of phone ",PhoneDetailValue.text)
 
 
-          if  PhoneDetailValue.text == "" then
+
+          if  (PhoneDetailValue.text == nil) then
 
           	   textnotifybox.isVisible = false
 			   textnotifytext.isVisible = false
@@ -622,10 +624,12 @@ function onAccessButtonTouch( event )
 				processbutton_text.y=processbutton.y
 		  else
 
+		  	print("val not null")
+
 		  	  textnotifybox.isVisible = true
 			  textnotifytext.isVisible = true
 
-			  MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+			  MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.height+5
 			  MKRankDetail_title.y= MKRankDetail_bg.y+8
 			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
 			  MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
@@ -714,18 +718,18 @@ function onAccessButtonTouch( event )
             NameDetailValue.text = Details.LastName
              native.setKeyboardFocus( nil )
 		  else
-		    NameDetailValue.text = ""
+		    NameDetailValue.text = nil
           end
           print(NameDetailValue.text)
 
 
           if Details.EmailAddress ~= nil then
           EmailDetailValue.text = Details.EmailAddress
-          native.setKeyboardFocus(PhoneDetailValue)
+          --native.setKeyboardFocus(PhoneDetailValue)
             emailnotifybox.isVisible = true
 		    emailnotifytext.isVisible = true
           else
-		  EmailDetailValue.text = ""
+		  EmailDetailValue.text = nil
 		   emailnotifybox.isVisible = false
 		   emailnotifytext.isVisible = false
           end
@@ -748,11 +752,11 @@ function onAccessButtonTouch( event )
                     textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
           else
-          	 PhoneDetailValue.text = ""
+          	 PhoneDetailValue.text = nil
           end
 
 
-          if  PhoneDetailValue.text == "" then
+          if  PhoneDetailValue.text == nil then
 
           	   textnotifybox.isVisible = false
 			   textnotifytext.isVisible = false
@@ -867,18 +871,18 @@ function onAccessButtonTouch( event )
             NameDetailValue.text = Details.LastName
              native.setKeyboardFocus( nil )
 		  else
-		    NameDetailValue.text = ""
+		    NameDetailValue.text = nil
           end
           print(NameDetailValue.text)
 
 
           if Details.EmailAddress ~= nil then
           EmailDetailValue.text = Details.EmailAddress
-          native.setKeyboardFocus(PhoneDetailValue)
+        --  native.setKeyboardFocus(PhoneDetailValue)
             emailnotifybox.isVisible = true
 		    emailnotifytext.isVisible = true
           else
-		  EmailDetailValue.text = ""
+		  EmailDetailValue.text = nil
 		   emailnotifybox.isVisible = false
 		   emailnotifytext.isVisible = false
           end
@@ -901,14 +905,14 @@ function onAccessButtonTouch( event )
                     textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
           else
-          	 PhoneDetailValue.text = ""
+          	 PhoneDetailValue.text = nil
           	        textnotifybox.isVisible = false
 					textnotifytext.isVisible = false
           end
 
 
 
-          if  PhoneDetailValue.text == "" then
+          if  PhoneDetailValue.text == nil then
 
           	   textnotifybox.isVisible = false
 			   textnotifytext.isVisible = false

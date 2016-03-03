@@ -858,8 +858,8 @@ local function rankTouch( event )
 					DirectorName.isVisible = false
 					DirectorEmail.isVisible = false
 
-					DirectorName_bottom.isVisible = false
-					DirectorEmail_bottom.isVisible = false
+					--DirectorName_bottom.isVisible = false
+					--DirectorEmail_bottom.isVisible = false
 
 				-- if unitnumberflag == true then
 

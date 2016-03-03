@@ -901,12 +901,10 @@ function scene:create( event )
 	listBg:setStrokeColor( 0, 0, 0 , 0.3)
 	listBg.id="bg"
 
-
-	list_Bylist_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+5, listBg.y-20, 70, 25 )
+	list_Bylist_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y-20, 100, 25 )
 	list_Bylist_bg:setFillColor( 0.4 )
 	list_Bylist_bg.alpha=0.01
 	list_Bylist_bg.id="list"
-
 
 	list_Bylist = display.newText(changeMenuGroup,ImageLibrary.List,0,0,native.systemFont,16)
 	list_Bylist.x=listBg.x-listBg.contentWidth/2+5;list_Bylist.y=listBg.y-20
@@ -914,7 +912,7 @@ function scene:create( event )
 	list_Bylist:setFillColor(Utils.convertHexToRGB(color.Black))
 	list_Bylist.id="list"
 
-	list_ByGrid_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+35, listBg.y+20, 70, 25 )
+	list_ByGrid_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y+20, 100, 25 )
 	list_ByGrid_bg.alpha=0.01
 	list_ByGrid_bg.id="grid"
 
