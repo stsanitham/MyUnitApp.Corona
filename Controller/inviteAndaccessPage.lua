@@ -76,21 +76,22 @@ local menuGroup = display.newGroup( )
 
 		 if status == "ADDREQUEST" then
 
-		 	menuBg.widget = 95
+		 	menuBg.width = 90
 
 		 else
 
-		 	menuBg.widget = 75
+		 	menuBg.width = 75
 
 		 end
 
 		 if status == "GRANT" then
 
-		 	Blockbtn = display.newRect(menuGroup,0,0,menuBg.widget,25)
+		 	Blockbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
 		 	Blockbtn.anchorY=0
 		 	Blockbtn.y=menuBg.y+5;Blockbtn.x=menuBg.x
 		 	Blockbtn:setFillColor( 0.4 )
 		 	Blockbtn.alpha=0.01
+		 	Blockbtn.id="block"
 		 	Blockbtn.value = object.value
 
 		 	Blockbtn_txt = display.newText( menuGroup, "Block",0,0,native.systemFont,12 )
@@ -100,22 +101,24 @@ local menuGroup = display.newGroup( )
 
 		elseif status == "DENY" then
 
-			Grantbtn = display.newRect(menuGroup,0,0,menuBg.widget,25)
+			Grantbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
 		 	Grantbtn.anchorY=0
 		 	Grantbtn.y=menuBg.y+5;Grantbtn.x=menuBg.x
 		 	Grantbtn:setFillColor( 0.4 )
 		 	Grantbtn.alpha=0.01
+		 	Grantbtn.id = "grant"
 		 	Grantbtn.value = object.value
 
 		 	Grantbtn_txt = display.newText( menuGroup, "Grant",0,0,native.systemFont,12 )
 		 	Grantbtn_txt:setFillColor( 0.2 )
 		 	Grantbtn_txt.x=Grantbtn.x;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
 
-		 	removebtn = display.newRect(menuGroup,0,0,menuBg.widget,25)
+		 	removebtn = display.newRect(menuGroup,0,0,menuBg.width,25)
 		 	removebtn.anchorY=0
 		 	removebtn.y=Grantbtn.y+Grantbtn.contentHeight+5;removebtn.x=menuBg.x
 		 	removebtn:setFillColor( 0.4 )
 		 	removebtn.alpha=0.01
+		 	removebtn.id="remove"
 		 	removebtn.value = object.value
 
 		 	removebtn_txt = display.newText( menuGroup, "Remove",0,0,native.systemFont,12 )
@@ -124,22 +127,24 @@ local menuGroup = display.newGroup( )
 
 		elseif status == "OPEN" then
 
-			Grantbtn = display.newRect(menuGroup,0,0,menuBg.widget,25)
+			Grantbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
 		 	Grantbtn.anchorY=0
 		 	Grantbtn.y=menuBg.y+5;Grantbtn.x=menuBg.x
 		 	Grantbtn:setFillColor( 0.4 )
 		 	Grantbtn.alpha=0.01
+		 	Grantbtn.id="grant"
 		 	Grantbtn.value = object.value
 
 		 	Grantbtn_txt = display.newText( menuGroup, "Grant",0,0,native.systemFont,12 )
 		 	Grantbtn_txt:setFillColor( 0.2 )
 		 	Grantbtn_txt.x=Grantbtn.x;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
 
-		 	denybtn = display.newRect(menuGroup,0,0,menuBg.widget,25)
+		 	denybtn = display.newRect(menuGroup,0,0,menuBg.width,25)
 		 	denybtn.anchorY=0
 		 	denybtn.y=Grantbtn.y+Grantbtn.contentHeight+5;denybtn.x=menuBg.x
 		 	denybtn:setFillColor( 0.4 )
 		 	denybtn.alpha=0.01
+		 	denybtn.id="deny"
 		 	denybtn.value = object.value
 
 		 	denybtn_txt = display.newText( menuGroup, "Deny",0,0,native.systemFont,12 )
@@ -147,11 +152,12 @@ local menuGroup = display.newGroup( )
 		 	denybtn_txt.x=denybtn.x;denybtn_txt.y=denybtn.y+denybtn.contentHeight/2
 
 		 elseif status == "ADDREQUEST" then
-			Provideacessbtn = display.newRect(menuGroup,0,0,menuBg.widget,25)
+			Provideacessbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
 		 	Provideacessbtn.anchorY=0
 		 	Provideacessbtn.y=menuBg.y+5;Provideacessbtn.x=menuBg.x
 		 	Provideacessbtn:setFillColor( 0.4 )
 		 	Provideacessbtn.alpha=0.01
+		 	Provideacessbtn.id="provideaccess"
 		 	Provideacessbtn.value = object.value
 
 		 	Provideacess_txt = display.newText( menuGroup, "Provide Access",0,0,native.systemFont,12 )
