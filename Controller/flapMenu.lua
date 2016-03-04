@@ -6,6 +6,7 @@
 
 local composer = require( "composer" )
 local scene = composer.newScene()
+local widget = require( "widget" )
 
 require( "res.value.style" )
 local Utility = require( "Utils.Utility" )
@@ -63,90 +64,118 @@ local function MenuTouchAction(event)
 
 		display.getCurrentStage():setFocus( event.target )
 
-		elseif event.phase == "ended" then
+	elseif ( event.phase == "moved" ) then
+        local dy = math.abs( ( event.y - event.yStart ) )
+        -- If the touch on the button has moved more than 10 pixels,
+        -- pass focus back to the scroll view so it can continue scrolling
+        if ( dy > 10 ) then
+        	display.getCurrentStage():setFocus( nil )
+            flapScroll:takeFocus( event )
+        end
+
+	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
 
 		if event.target.id == "logout" then
-				local function onComplete( event )
-					if event.action == "clicked" then
-					        local i = event.index
-					    if i == 1 then
+					local function onComplete( event )
+						if event.action == "clicked" then
+						        local i = event.index
+						    if i == 1 then
 
-					        	function get_logout(response)
+						        	function get_logout(response)
 
-					        		if response == 5 then
+						        		if response == 5 then
 
-							        	slideAction()
-										for j=MainGroup.numChildren, 1, -1 do 
-											display.remove(MainGroup[MainGroup.numChildren])
-											MainGroup[MainGroup.numChildren] = nil
-										end
+								        	slideAction()
+											for j=MainGroup.numChildren, 1, -1 do 
+												display.remove(MainGroup[MainGroup.numChildren])
+												MainGroup[MainGroup.numChildren] = nil
+											end
 
-							            
-										local tablesetup = [[DROP TABLE logindetails;]]
-										db:exec( tablesetup )
+								            
+											local tablesetup = [[DROP TABLE logindetails;]]
+											db:exec( tablesetup )
 
-									composer.gotoScene( "Controller.singInPage" )
+										composer.gotoScene( "Controller.singInPage" )
 
-									else
+										else
 
-										slideAction()
+											slideAction()
 
-					        		end
-
-
-					        	end
-					     local logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId
-
-					    for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-
-			  				logout_Userid = row.UserId
-			  				logout_ContactId = row.ContactId
-			  				logout_AccessToken = row.AccessToken
-			  				logout_uniqueId = system.getInfo("deviceID")
-			  				
-      					end
+						        		end
 
 
-	        			Webservice.LogOut(logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId,get_logout)
+						        	end
+						     local logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId
 
-			        elseif i == 2 then
-			            --cancel
-			        end
-			    end
-			end
+						    for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
-		-- Show alert with two buttons
-		local alert = native.showAlert( "Log out", FlapMenu.Alert, { FlapMenu.LOG_OUT , FlapMenu.CANCEL }, onComplete )	
-		
-			return true
+				  				logout_Userid = row.UserId
+				  				logout_ContactId = row.ContactId
+				  				logout_AccessToken = row.AccessToken
+				  				logout_uniqueId = system.getInfo("deviceID")
+				  				
+	      					end
+
+
+		        			Webservice.LogOut(logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId,get_logout)
+
+				        elseif i == 2 then
+				            --cancel
+				        end
+				    end
+				end
+
+			-- Show alert with two buttons
+			local alert = native.showAlert( "Log out", FlapMenu.Alert, { FlapMenu.LOG_OUT , FlapMenu.CANCEL }, onComplete )	
 			
-		end
-
-		for i = 1, #menuArray_display do
-
-			menuArray_display[i].alpha=0.01
-
-		end
-
-		event.target.alpha=1
-		
-
-		slideAction()
-
-
-		if openPage ~= event.target.id then
-
-			for j=MainGroup.numChildren, 1, -1 do 
-				display.remove(MainGroup[MainGroup.numChildren])
-				MainGroup[MainGroup.numChildren] = nil
+				return true
+				
 			end
-			composer.removeHidden(true)
-			composer.gotoScene( "Controller."..event.target.id )
 
-			print(event.target.id)
-		end
+			for i = 1, #menuArray_display do
+
+				menuArray_display[i].alpha=0.01
+
+			end
+
+			event.target.alpha=1
+			
+
+			slideAction()
+
+
+			if openPage ~= event.target.id then
+
+				for j=MainGroup.numChildren, 1, -1 do 
+					display.remove(MainGroup[MainGroup.numChildren])
+					MainGroup[MainGroup.numChildren] = nil
+				end
+				composer.removeHidden(true)
+
+				if event.target.name == "GRANT" or event.target.name == "DENY" or event.target.name == "OPEN" or event.target.name == "ADDREQUEST" then
+
+					local option={
+						params = {status=event.target.name}
+					}
+					composer.gotoScene( "Controller."..event.target.id,option )
+
+				else
+
+					composer.gotoScene( "Controller."..event.target.id )
+
+				end
+
+			else
+				if event.target.name == "GRANT" or event.target.name == "DENY" or event.target.name == "OPEN" or event.target.name == "ADDREQUEST" then
+
+					print( '123' )
+					reloadInvitAccess(event.target.name)
+
+				end
+
+			end
 
 
 
@@ -371,32 +400,48 @@ function scene:show( event )
 			Utils.CssforTextView(Event_text,sp_Flatmenu_subHeader)
 			panel:insert( Event_text )]]
 
-			
-
+			 flapScroll = widget.newScrollView(
+			    {
+			        top = 0,
+			        left = 0,
+			        width = panel.width,
+			        height = 350,
+			        hideBackground=true,
+			        -- scrollWidth = 600,
+			        -- scrollHeight = 800,
+			        -- listener = scrollListener
+			    }
+			)
+			 flapScroll.anchorY=0
+			-- flapScroll.anchorX=0
+			-- flapScroll.y = panel.flapTopBg.y+panel.flapTopBg.contentHeight-5
+			flapScroll.x=panel.x;flapScroll.y=-panel.width/2+20
+			panel:insert( flapScroll )
 			--EventCalender
 
 			
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
-			menuArray_display[#menuArray_display].y=panel.flapTopBg.y+panel.flapTopBg.contentHeight-5
-			panel:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display].y=0
+			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "EventCalender"
 			menuArray_display[#menuArray_display].id="eventCalenderPage"
 
 			Event_icon = display.newImageRect("res/assert/calen.png",15,15)
 			Event_icon.anchorX = 0
-			Event_icon.x=-panel.width/2+5
+			Event_icon.x=5
 			Event_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-			panel:insert( Event_icon )
+			flapScroll:insert( Event_icon )
 
 			Event_text = display.newText(EventCalender.PageTitle,0,0,"Open Sans Regular",16)
 			Event_text.anchorX = 0
 			Event_text.x=Event_icon.x+Event_icon.contentWidth+5
 			Event_text.y = Event_icon.y
 			Utils.CssforTextView(Event_text,sp_Flatmenu_subHeader)
-			panel:insert( Event_text )
+			flapScroll:insert( Event_text )
 
 			-----
 
@@ -404,10 +449,11 @@ function scene:show( event )
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
 			menuArray_display[#menuArray_display].alpha=0.01
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
-			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
-			panel:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].height
+			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "CareerPath"
 			menuArray_display[#menuArray_display].id="careerPathPage"
@@ -415,16 +461,16 @@ function scene:show( event )
 
 			Career_icon = display.newImageRect("res/assert/carrer.png",15,15)
 			Career_icon.anchorX = 0
-			Career_icon.x=-panel.width/2+5
+			Career_icon.x=5
 			Career_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-			panel:insert( Career_icon )
+			flapScroll:insert( Career_icon )
 
 			Career_text = display.newText(CareerPath.PageTitle,0,0,"Open Sans Regular",16)
 			Career_text.anchorX = 0
 			Career_text.x=Career_icon.x+Career_icon.contentWidth+5
 			Career_text.y = Career_icon.y
 			Utils.CssforTextView(Career_text,sp_Flatmenu_subHeader)
-			panel:insert( Career_text )
+			flapScroll:insert( Career_text )
 
 			-----
 
@@ -432,10 +478,11 @@ function scene:show( event )
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
 			menuArray_display[#menuArray_display].alpha=0.01
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
-			panel:insert( menuArray_display[#menuArray_display] )
+			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "Goals"
 			menuArray_display[#menuArray_display].id="goalsPage"
@@ -443,9 +490,9 @@ function scene:show( event )
 
 			Goals_icon = display.newImageRect("res/assert/goals.png",15,15)
 			Goals_icon.anchorX = 0
-			Goals_icon.x=-panel.width/2+5
+			Goals_icon.x=5
 			Goals_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-			panel:insert( Goals_icon )
+			flapScroll:insert( Goals_icon )
 
 			Goals_text = display.newText(Goals.PageTitle,0,0,"Open Sans Regular",16)
 			Goals_text.anchorX = 0
@@ -453,7 +500,7 @@ function scene:show( event )
 			Goals_text.x=Goals_icon.x+Goals_icon.contentWidth+5
 			Goals_text.y = Goals_icon.y
 			
-			panel:insert( Goals_text )
+			flapScroll:insert( Goals_text )
 
 			-----
 
@@ -461,10 +508,11 @@ function scene:show( event )
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
 			menuArray_display[#menuArray_display].alpha=0.01
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
-			panel:insert( menuArray_display[#menuArray_display] )
+			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "Resource"
 
@@ -473,16 +521,16 @@ function scene:show( event )
 
 			Resource_icon = display.newImageRect("res/assert/resource.png",15,15)
 			Resource_icon.anchorX = 0
-			Resource_icon.x=-panel.width/2+5
+			Resource_icon.x=5
 			Resource_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-			panel:insert( Resource_icon )
+			flapScroll:insert( Resource_icon )
 
 			Resource_text = display.newText(ResourceLibrary.PageTitle ,0,0,"Open Sans Regular",16)
 			Resource_text.anchorX = 0
 			Resource_text.x=Resource_icon.x+Resource_icon.contentWidth+5
 			Resource_text.y = Resource_icon.y
 			Utils.CssforTextView(Resource_text,sp_Flatmenu_subHeader)
-			panel:insert( Resource_text )
+			flapScroll:insert( Resource_text )
 
 			-----
 
@@ -490,10 +538,11 @@ function scene:show( event )
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
 			menuArray_display[#menuArray_display].alpha=0.01
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
-			panel:insert( menuArray_display[#menuArray_display] )
+			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "Image_Library"
 			menuArray_display[#menuArray_display].id="imageLibPage"
@@ -501,16 +550,16 @@ function scene:show( event )
 
 			img_lib_icon = display.newImageRect("res/assert/library.png",15,15)
 			img_lib_icon.anchorX = 0
-			img_lib_icon.x=-panel.width/2+5
+			img_lib_icon.x=5
 			img_lib_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-			panel:insert( img_lib_icon )
+			flapScroll:insert( img_lib_icon )
 
 			img_lib_text = display.newText(ImageLibrary.PageTitle ,0,0,"Open Sans Regular",16)
 			img_lib_text.anchorX = 0
 			img_lib_text.x=img_lib_icon.x+img_lib_icon.contentWidth+5
 			img_lib_text.y = img_lib_icon.y
 			
-			panel:insert( img_lib_text )
+			flapScroll:insert( img_lib_text )
 
 			-----
 
@@ -521,10 +570,11 @@ function scene:show( event )
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
 			menuArray_display[#menuArray_display].alpha=0.01
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
-			panel:insert( menuArray_display[#menuArray_display] )
+			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "Message"
 			menuArray_display[#menuArray_display].id="messagePage"
@@ -532,41 +582,178 @@ function scene:show( event )
 			message_icon = display.newImageRect("res/assert/message.png",15,15)
 			message_icon.anchorX = 0
 			message_icon:setFillColor(1,1,1)
-			message_icon.x=-panel.width/2+5
+			message_icon.x=5
 			message_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-			panel:insert( message_icon )
+			flapScroll:insert( message_icon )
 
 			message_text = display.newText(Message.PageTitle ,0,0,"Open Sans Regular",16)
 			message_text.anchorX = 0
 			message_text.x=message_icon.x+message_icon.contentWidth+5
 			message_text.y = message_icon.y
 			
-			panel:insert( message_text )
+			flapScroll:insert( message_text )
 
+--Invite/Access
+
+			rect = display.newRect(0,0,panel.width,1)
+			rect.x = menuArray_display[#menuArray_display].x;
+			rect.anchorX=0
+			rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
+			rect:setFillColor(0)
+			flapScroll:insert( rect )
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
 			menuArray_display[#menuArray_display].alpha=0.01
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
-			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
-			panel:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight
+			flapScroll:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display].name = "Social"
+			menuArray_display[#menuArray_display].id="social"
+
+
+
+				socilaLbl = display.newText("Invite/Access",0,0,panel.contentWidth,0,native.systemFontBold,16)
+				socilaLbl.anchorX = 0
+				socilaLbl.x=5
+				socilaLbl.y= rect.y+15
+				flapScroll:insert( socilaLbl )
+
+			--Contacts with Access
+
+			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
+			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
+			menuArray_display[#menuArray_display].alpha=0.01
+			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight+3
+			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
-			menuArray_display[#menuArray_display].name = "invite"
+			menuArray_display[#menuArray_display].name = "GRANT"
 			menuArray_display[#menuArray_display].id="inviteAndaccessPage"
 
 			invite_icon = display.newImageRect("res/assert/message.png",15,15)
 			invite_icon.anchorX = 0
 			invite_icon:setFillColor(1,1,1)
-			invite_icon.x=-panel.width/2+5
+			invite_icon.x=5
 			invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-			panel:insert( invite_icon )
+			flapScroll:insert( invite_icon )
 
-			invite_text = display.newText("Invite/Access" ,0,0,"Open Sans Regular",16)
+			invite_text = display.newText("Contacts with Access" ,0,0,"Open Sans Regular",16)
 			invite_text.anchorX = 0
 			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
 			invite_text.y = invite_icon.y
 			
-			panel:insert( invite_text )
+			flapScroll:insert( invite_text )
+
+			---Denied Access
+
+			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
+			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
+			menuArray_display[#menuArray_display].alpha=0.01
+			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight+3
+			flapScroll:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
+			menuArray_display[#menuArray_display].name = "DENY"
+			menuArray_display[#menuArray_display].id="inviteAndaccessPage"
+
+			invite_icon = display.newImageRect("res/assert/message.png",15,15)
+			invite_icon.anchorX = 0
+			invite_icon:setFillColor(1,1,1)
+			invite_icon.x=5
+			invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
+			flapScroll:insert( invite_icon )
+
+			invite_text = display.newText("Denied Access" ,0,0,"Open Sans Regular",16)
+			invite_text.anchorX = 0
+			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
+			invite_text.y = invite_icon.y
+			
+			flapScroll:insert( invite_text )
+
+			--Pending Requests
+
+			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
+			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
+			menuArray_display[#menuArray_display].alpha=0.01
+			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight+3
+			flapScroll:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
+			menuArray_display[#menuArray_display].name = "OPEN"
+			menuArray_display[#menuArray_display].id="inviteAndaccessPage"
+
+			invite_icon = display.newImageRect("res/assert/message.png",15,15)
+			invite_icon.anchorX = 0
+			invite_icon:setFillColor(1,1,1)
+			invite_icon.x=5
+			invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
+			flapScroll:insert( invite_icon )
+
+			invite_text = display.newText("Pending Requests" ,0,0,"Open Sans Regular",16)
+			invite_text.anchorX = 0
+			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
+			invite_text.y = invite_icon.y
+			
+			flapScroll:insert( invite_text )
+
+			--Team Member without Access
+
+			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
+			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
+			menuArray_display[#menuArray_display].alpha=0.01
+			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight+3
+			flapScroll:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
+			menuArray_display[#menuArray_display].name = "ADDREQUEST"
+			menuArray_display[#menuArray_display].id="inviteAndaccessPage"
+
+			invite_icon = display.newImageRect("res/assert/message.png",15,15)
+			invite_icon.anchorX = 0
+			invite_icon:setFillColor(1,1,1)
+			invite_icon.x=5
+			invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
+			flapScroll:insert( invite_icon )
+
+			invite_text = display.newText("Team Member without Access" ,0,0,"Open Sans Regular",16)
+			invite_text.anchorX = 0
+			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
+			invite_text.y = invite_icon.y
+			
+			flapScroll:insert( invite_text )
+
+					--Add New Access
+
+			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
+			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
+			menuArray_display[#menuArray_display].alpha=0.01
+			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight+3
+			flapScroll:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
+			menuArray_display[#menuArray_display].name = "Add New Access"
+			menuArray_display[#menuArray_display].id="inviteAndaccessPage"
+
+			invite_icon = display.newImageRect("res/assert/message.png",15,15)
+			invite_icon.anchorX = 0
+			invite_icon:setFillColor(1,1,1)
+			invite_icon.x=5
+			invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
+			flapScroll:insert( invite_icon )
+
+			invite_text = display.newText("Add New Access" ,0,0,"Open Sans Regular",16)
+			invite_text.anchorX = 0
+			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
+			invite_text.y = invite_icon.y
+			
+			flapScroll:insert( invite_text )
 
 			end
 
@@ -575,9 +762,10 @@ function scene:show( event )
 
 			rect = display.newRect(0,0,panel.width,1)
 			rect.x = menuArray_display[#menuArray_display].x;
+			rect.anchorX=0
 			rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
 			rect:setFillColor(0)
-			panel:insert( rect )
+			flapScroll:insert( rect )
 
 
 		if isGoogle == true or isFacebook == true or isTwitter == true then
@@ -585,10 +773,11 @@ function scene:show( event )
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
 			menuArray_display[#menuArray_display].alpha=0.01
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 			menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight
-			panel:insert( menuArray_display[#menuArray_display] )
+			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display].name = "Social"
 			menuArray_display[#menuArray_display].id="social"
 
@@ -596,9 +785,9 @@ function scene:show( event )
 
 				socilaLbl = display.newText(FlapMenu.Social_Media,0,0,panel.contentWidth,0,native.systemFontBold,16)
 				socilaLbl.anchorX = 0
-				socilaLbl.x=-panel.width/2+5
+				socilaLbl.x=5
 				socilaLbl.y= rect.y+15
-				panel:insert( socilaLbl )
+				flapScroll:insert( socilaLbl )
 
 
 		end
@@ -614,10 +803,11 @@ function scene:show( event )
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
 			menuArray_display[#menuArray_display].alpha=0.01
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 			menuArray_display[#menuArray_display].y=socilaLbl.y+socilaLbl.contentHeight
-			panel:insert( menuArray_display[#menuArray_display] )
+			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "Facebook"
 			menuArray_display[#menuArray_display].id="facebookPage"
@@ -625,16 +815,16 @@ function scene:show( event )
 
 			Facebook_icon = display.newImageRect("res/assert/facebook.png",15,15)
 			Facebook_icon.anchorX = 0
-			Facebook_icon.x=-panel.width/2+5
+			Facebook_icon.x=5
 			Facebook_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-			panel:insert( Facebook_icon )
+			flapScroll:insert( Facebook_icon )
 
 			Facebook_text = display.newText(Facebook.PageTitle,0,0,"Open Sans Regular",16)
 			Facebook_text.anchorX = 0
 			Facebook_text.x=Facebook_icon.x+Facebook_icon.contentWidth+5
 			Facebook_text.y = Facebook_icon.y
 			
-			panel:insert( Facebook_text )
+			flapScroll:insert( Facebook_text )
 
 			-----
 
@@ -646,10 +836,11 @@ function scene:show( event )
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
 			menuArray_display[#menuArray_display].alpha=0.01
 			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
-			panel:insert( menuArray_display[#menuArray_display] )
+			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "Twitter"
 			menuArray_display[#menuArray_display].id="twitterPage"
@@ -657,16 +848,16 @@ function scene:show( event )
 
 			Twitter_icon = display.newImageRect("res/assert/twitter.png",15,15)
 			Twitter_icon.anchorX = 0
-			Twitter_icon.x=-panel.width/2+5
+			Twitter_icon.x=5
 			Twitter_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-			panel:insert( Twitter_icon )
+			flapScroll:insert( Twitter_icon )
 
 			Twitter_text = display.newText(Twitter.PageTitle,0,0,"Open Sans Regular",16)
 			Twitter_text.anchorX = 0
 			Twitter_text.x=Twitter_icon.x+Twitter_icon.contentWidth+5
 			Twitter_text.y = Twitter_icon.y
 			
-			panel:insert( Twitter_text )
+			flapScroll:insert( Twitter_text )
 
 			-----
 		end
@@ -677,10 +868,11 @@ function scene:show( event )
 
 					menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 					menuArray_display[#menuArray_display].anchorY=0
+					menuArray_display[#menuArray_display].anchorX=0
 					menuArray_display[#menuArray_display].alpha=0.01
 					menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 					menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
-					panel:insert( menuArray_display[#menuArray_display] )
+					flapScroll:insert( menuArray_display[#menuArray_display] )
 					menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 					menuArray_display[#menuArray_display].name = "Google +"
 					menuArray_display[#menuArray_display].id="googlePlusPage"
@@ -688,7 +880,7 @@ function scene:show( event )
 
 					Google_icon = display.newImageRect("res/assert/google+.png",15,15)
 					Google_icon.anchorX = 0
-					Google_icon.x=-panel.width/2+5
+					Google_icon.x=5
 					Google_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 					panel:insert( Google_icon )
 
@@ -697,16 +889,17 @@ function scene:show( event )
 					Googl_text.x=Google_icon.x+Google_icon.contentWidth+5
 					Googl_text.y = Google_icon.y
 
-					panel:insert( Googl_text )
+					flapScroll:insert( Googl_text )
 
 			end
 
 
 					rect = display.newRect(0,0,panel.width,1)
 					rect.x = menuArray_display[#menuArray_display].x;
+					rect.anchorX=0
 					rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
 					rect:setFillColor(0)
-					panel:insert( rect )
+					flapScroll:insert( rect )
 
 					--rect.isVisible=false
 
@@ -717,10 +910,11 @@ function scene:show( event )
 
 					menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 					menuArray_display[#menuArray_display].anchorY=0
+					menuArray_display[#menuArray_display].anchorX=0
 					menuArray_display[#menuArray_display].alpha=0.01
 					menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 					menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight
-					panel:insert( menuArray_display[#menuArray_display] )
+					flapScroll:insert( menuArray_display[#menuArray_display] )
 					menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 					menuArray_display[#menuArray_display].name = "Logout"
 					menuArray_display[#menuArray_display].id="logout"
@@ -728,9 +922,9 @@ function scene:show( event )
 
 					Logout_icon = display.newImageRect("res/assert/logout.png",15,15)
 					Logout_icon.anchorX = 0
-					Logout_icon.x=-panel.width/2+5
+					Logout_icon.x=5
 					Logout_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-					panel:insert( Logout_icon )
+					flapScroll:insert( Logout_icon )
 
 					Logout_text = display.newText(FlapMenu.PageTitle,0,0,"Open Sans Regular",16)
 					Logout_text.anchorX = 0
@@ -739,7 +933,7 @@ function scene:show( event )
 					Logout_text.y = Logout_icon.y
 
 
-					panel:insert( Logout_text )
+					flapScroll:insert( Logout_text )
 
 			-----
 

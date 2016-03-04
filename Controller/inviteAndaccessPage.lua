@@ -26,7 +26,7 @@ local menuBtn
 
 openPage="inviteAndaccessPage"
 
-local RecentTab_Topvalue = 110
+local RecentTab_Topvalue = 72
 
 local groupArray={}
 
@@ -59,6 +59,16 @@ function onAccessButtonTouch( event )
 
     if event.phase == "began" then
 
+   elseif ( event.phase == "moved" ) then
+        local dy = math.abs( ( event.y - event.yStart ) )
+        -- If the touch on the button has moved more than 10 pixels,
+        -- pass focus back to the scroll view so it can continue scrolling
+        if ( dy > 10 ) then
+        	display.getCurrentStage():setFocus( nil )
+            scrollView:takeFocus( event )
+        end
+
+
     elseif event.phase == "ended" then
 
         native.setKeyboardFocus(nil)
@@ -70,7 +80,7 @@ function onAccessButtonTouch( event )
 
 			    	    AlertGroup.isVisible = true
 
-			            reqaccess_id = Details.ContactId
+			            reqaccess_id = Details.MyUnitBuzzRequestAccessId
 						reqaccess_from = "Contacts"
 					    accessStatus = "REMOVE"
 
@@ -98,7 +108,7 @@ function onAccessButtonTouch( event )
 
 			    	    AlertGroup.isVisible = true
 
-			            reqaccess_id = Details.ContactId
+			            reqaccess_id = Details.MyUnitBuzzRequestAccessId
 						reqaccess_from = "Contacts"
 					    accessStatus = "BLOCK"
 
@@ -603,6 +613,16 @@ end
 local function ActionTouch( event )
 		if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
+
+	elseif ( event.phase == "moved" ) then
+        local dy = math.abs( ( event.y - event.yStart ) )
+        -- If the touch on the button has moved more than 10 pixels,
+        -- pass focus back to the scroll view so it can continue scrolling
+        if ( dy > 10 ) then
+        	display.getCurrentStage():setFocus( nil )
+            scrollView:takeFocus( event )
+        end
+
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 				for i=1,#groupArray do
@@ -642,6 +662,19 @@ local function ActionTouch( event )
 						Details = event.target.value
 
 					ProvideAccess(event.target.value)
+
+				elseif event.target.id == "listBg" then
+					Details = event.target.value
+
+									local options = {
+						isModal = true,
+						effect = "slideLeft",
+						time = 300,
+						params = {
+						contactId =  Details.MyUnitBuzzRequestAccessId,page = "invite"
+							}
+						}
+							composer.showOverlay( "Controller.careerPathDetailPage", options )
 
 				
 				end
@@ -786,6 +819,17 @@ end
 local function ListmenuTouch( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
+
+	elseif ( event.phase == "moved" ) then
+        local dy = math.abs( ( event.y - event.yStart ) )
+        -- If the touch on the button has moved more than 10 pixels,
+        -- pass focus back to the scroll view so it can continue scrolling
+        if ( dy > 10 ) then
+        	display.getCurrentStage():setFocus( nil )
+            scrollView:takeFocus( event )
+        end
+
+
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 			--Createmenu(event.target)
@@ -816,63 +860,6 @@ return true
 end
 
 
-local function onRowRender( event )
-
-print( "#########" )
- -- Get reference to the row group
- local row = event.row
-
-    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
-    local rowHeight = row.contentHeight
-    local rowWidth = row.contentWidth
-
-    local rowTitle = display.newText( row, inviteArray[row.index], 0, 0, nil, 14 )
-    rowTitle:setFillColor( 0 )
-
-    -- Align the label left and vertically centered
-    rowTitle.anchorX = 0
-    rowTitle.x = 25
-    rowTitle.y = rowHeight * 0.5
-
-    row.name = inviteArray[row.index]
-
-
-
-
-end
-
-local function onRowTouch( event )
-
- -- Get reference to the row group
- local phase = event.phase
- local row = event.row
-
-    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
-    local rowHeight = row.contentHeight
-    local rowWidth = row.contentWidth
-
-    	if "press" == phase then
-                print( "Pressed row: " .. row.index )
-
-        elseif "release" == phase then
-		    inviteList.isVisible=false
-		    List_bg.isVisible=false
-
-		    if row.name == titleValue.text then
-
-		    else
-		    	status = StatusArray[row.index]
-		    	titleValue.text = row.name
-		    	Webservice.GetMyUnitBuzzRequestAccesses(StatusArray[row.index],get_GetMyUnitBuzzRequestAccesses)
-
-		    end
-
-		end
-
-	
-
-
-end
 
 local function CreateList(list,scrollView)
 
@@ -1004,6 +991,16 @@ end
 local function TouchAction( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
+
+			elseif ( event.phase == "moved" ) then
+        local dy = math.abs( ( event.y - event.yStart ) )
+        -- If the touch on the button has moved more than 10 pixels,
+        -- pass focus back to the scroll view so it can continue scrolling
+        if ( dy > 10 ) then
+        	display.getCurrentStage():setFocus( nil )
+            scrollView:takeFocus( event )
+        end
+
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 			if inviteList.isVisible == false then
@@ -1048,38 +1045,34 @@ function scene:create( event )
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-	title = display.newText(sceneGroup,"Invite/Access",0,0,native.systemFont,18)
+	title = display.newText(sceneGroup,"Contacts with Access",0,0,native.systemFont,18)
 	title.anchorX = 0
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
 
 
-		titleDropdown = display.newRect( W/2, 80, W-10, 28)
-		titleDropdown.id="title"
-		titleDropdown.anchorY=0
-		titleDropdown.alpha=0.01
-		sceneGroup:insert(titleDropdown)
-		titleDropdown:addEventListener( "touch", TouchAction )
-
-		titleValue = display.newText(sceneGroup,"Contacts with Access",titleDropdown.x-titleDropdown.contentWidth/2+15,titleDropdown.y,native.systemFont,14 )
-		titleValue.alpha=0.7
-		titleValue.anchorX=0
-		titleValue:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-		titleValue.x=15
-		titleValue.y=titleDropdown.y+titleDropdown.contentHeight/2
-
-	  	SelectEvent_icon = display.newImageRect(sceneGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
-	  	SelectEvent_icon.x=titleDropdown.x+titleDropdown.contentWidth/2-15
-	  	SelectEvent_icon.y=titleValue.y
-
-		BottomImage = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
-		BottomImage.x=W/2;BottomImage.y=titleValue.y+titleValue.contentHeight-5
-
 
 	MainGroup:insert(sceneGroup)
 end
 
+function get_GetMyUnitBuzzRequestAccesses(response)
+	CreateList(response,scrollView)
+end
 
+function reloadInvitAccess(reloadstatus)
+
+	composer.hideOverlay( )
+
+	status = reloadstatus
+
+	if reloadstatus == "GRANT" then title.text = "Contacts with Access" end
+	if reloadstatus == "DENY" then title.text = "Denied Access" end
+	if reloadstatus == "OPEN" then title.text = "Pending Requests" end
+	if reloadstatus == "ADDREQUEST" then title.text = "Team Member without Access" end
+
+	Webservice.GetMyUnitBuzzRequestAccesses(reloadstatus,get_GetMyUnitBuzzRequestAccesses)
+
+end
 
 function scene:show( event )
 
@@ -1110,60 +1103,16 @@ function scene:show( event )
 	
 		
 
-		inviteList = widget.newTableView(
-		    {
-		        left = 5,
-		        top = 0,
-		        height = 160,
-		        width = 300,
-		        onRowRender = onRowRender,
-		        onRowTouch = onRowTouch,
-		        hideBackground = false,
-		        isBounceEnabled = false,
-		        noLines = true,
-
-		       -- listener = scrollListener
-		    }
-		)
-
-	  	inviteList.anchorY=0
-	  	inviteList.y=titleDropdown.y+titleDropdown.contentHeight
-	  	sceneGroup:insert( inviteList )
-	  	inviteList.isVisible = false
-
-	  	List_bg = display.newRect(200, 200, 104, 304 )
-		List_bg:setFillColor( 0 )
-		sceneGroup:insert( List_bg )
-	  	List_bg.anchorY = 0
-	  	List_bg.isVisible = false
-	  	List_bg.x=inviteList.x
-	  	List_bg.y=inviteList.y
-	  	List_bg.width = inviteList.width+2
-	  	List_bg.height = inviteList.height+1
-
-
-			for i = 1, #inviteArray do
-		    -- Insert a row into the tableView
-		    inviteList:insertRow{ rowHeight = 40,rowColor = 
-		    {
-		    default = { 1, 1, 1, 0 },
-		    over={ 1, 0.5, 0, 0 },
-
-		    }}
-		end
-
+		
 	  	
 
 sceneGroup:insert(scrollView)
 
+		
+		status = event.params.status
+	
 
-		function get_GetMyUnitBuzzRequestAccesses(response)
-
-			CreateList(response,scrollView)
-
-		end
-
-		Webservice.GetMyUnitBuzzRequestAccesses("GRANT",get_GetMyUnitBuzzRequestAccesses)
+		Webservice.GetMyUnitBuzzRequestAccesses(event.params.status,get_GetMyUnitBuzzRequestAccesses)
 
 		menuBtn:addEventListener("touch",menuTouch)
 		
@@ -1202,6 +1151,12 @@ end
 		scene:addEventListener( "hide", scene )
 		scene:addEventListener( "destroy", scene )
 
+		function scene:resumeGame(contactId)
+
+			composer.removeHidden(true)
+
+		end
+
 		function get_removeorblockDetails( response)
 
 		Request_response = response
@@ -1213,7 +1168,7 @@ end
 
 			 AlertGroup.isVisible = false
 
-			 ContactIdValue = Details.ContactId
+			 ContactIdValue = Details.MyUnitBuzzRequestAccessId
 
 			 print("ContactIdVlaue after assigning"..ContactIdValue)
 
@@ -1327,7 +1282,7 @@ end
    	    if MyUnitBuzzRequestAccessId == 0 then
 
             isaddedToContact = true  
-            MyUnitBuzzRequestAccessId = Details.ContactId
+            MyUnitBuzzRequestAccessId = Details.MyUnitBuzzRequestAccessId
 
         else
         	isaddedToContact = false
@@ -1339,7 +1294,7 @@ end
    	    GetRquestAccessFrom = "Contacts"
    	    MailTemplate = "GRANT"
    	    Status = "GRANT"
-   	    ContactId = Details.ContactId
+   	    ContactId = Details.MyUnitBuzzRequestAccessId
    	    isSentMail = isSentMailValue
    	    print("value 1 ",isSentMailValue)
    	    isSendText= isSentMailValue
@@ -1379,7 +1334,7 @@ end
    	    if MyUnitBuzzRequestAccessId == 0 then
    	    	
             isaddedToContact = true  
-            MyUnitBuzzRequestAccessId = Details.ContactId
+            MyUnitBuzzRequestAccessId = Details.MyUnitBuzzRequestAccessId
 
             --work
 
@@ -1393,7 +1348,7 @@ end
 
    	    MailTemplate = "ADDREQUEST"
    	    Status = "GRANT"
-   	    ContactId = Details.ContactId
+   	    ContactId = Details.MyUnitBuzzRequestAccessId
    	    isSentMail = isSentMailValue
    	    print("value 1 ",isSentMailValue)
    	    isSendText= isSentMailValue

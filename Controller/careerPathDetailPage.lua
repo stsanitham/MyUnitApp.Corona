@@ -27,7 +27,7 @@ local Details = {}
 
 local Details_Display = {}
 
-openPage="careerPathPage"
+
 
 local Career_Username , id_value , popupevnt_value
 
@@ -1179,6 +1179,15 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
+	if event.params.page == "invite" then
+
+		openPage="inviteAndaccessPage"
+	else
+
+		openPage="careerPathPage"
+
+	end
+
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 
@@ -1239,6 +1248,7 @@ function scene:show( event )
 
 				titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 			
+				if Details ~= nil then
 
 				if Details.ImagePath ~= nil then
 					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
@@ -1861,6 +1871,8 @@ function scene:show( event )
 					MapDisplayArray[#MapDisplayArray].x=W/2
 
 				end
+
+			end
 
 				sceneGroup:insert(mapGroup)
 				mapGroup.isVisible=false

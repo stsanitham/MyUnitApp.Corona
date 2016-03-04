@@ -354,17 +354,28 @@ function scene:show( event )
 
 							else
 
-								if isAndroid then 
+								local function onComplete( event )
+									if event.action == "clicked" then
 
-									system.openURL( "https://play.google.com/store/apps/details?id=com.spanenterprises.myunitbuzz" )
+									    	if isAndroid then 
 
-									os.exit()
+											system.openURL( "market://details?id=com.spanenterprises.myunitbuzz" )
 
-								elseif isIos then
+											os.exit()
 
-									system.openURL( "https://itunes.apple.com/in/app/myunitbuzz/id1068478993?mt=8" )
-									
+										elseif isIos then
+
+											system.openURL( "https://itunes.apple.com/in/app/myunitbuzz/id1068478993?mt=8" )
+											
+										end
+									     
+									end
 								end
+
+								local alert = native.showAlert("MyUnitBuzz","Update the latest version from the Play Store" , { "Update"}, onComplete )
+
+
+								
 
 							end
 					else

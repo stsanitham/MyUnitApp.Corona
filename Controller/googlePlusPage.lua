@@ -1,4 +1,4 @@
-----------------------------------------------------------------------------------
+	----------------------------------------------------------------------------------
 --
 -- google plus Screen
 --
@@ -255,6 +255,8 @@ function googleplusCallback( res,scrollView,flag )
 				link.y =  background.y+background.contentHeight-20
 				link:addEventListener( "touch", linkTouch )
 
+				if img ~= nil then
+
 					if rowTitle.text == "" or rowTitle.text == nil then
 						rowTitle.text = img[1].displayName
 					end
@@ -263,6 +265,8 @@ function googleplusCallback( res,scrollView,flag )
 					link.text = img[1].url or "https:"..link.text
 					link.value = link.text
 				end
+				end
+
 				if link.text:len() > 35 then
 					link.text = string.sub( link.text,1,35).."..."
 				end

@@ -627,7 +627,7 @@ function scene:resumeGame(contactId)
 				effect = "slideLeft",
 				time = 300,
 				params = {
-				contactId = contactId
+				contactId = contactId,page = "career"
 					}
 				}
 					composer.showOverlay( "Controller.careerPathDetailPage", options )
