@@ -116,37 +116,35 @@ function Webservice.REQUEST_ACCESS(requestFromStatus,directorName,directorEmail,
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
-local v = 
+	local v = 
 
-[[{
-
-  "FirstName": "]]..firstName..[[",
-  "LastName": "]]..lastName..[[",
-  "EmailAddress": "]]..Email..[[",
-  "PhoneNumber": "]]..Phone..[[",
-  "Comments": "]]..Comment..[[",
-  "UnitNumber": "]]..UnitNumber..[[",
-  "DirectorName": "]]..directorName..[[",
-  "RequestAccessStatus": "]]..requestFromStatus..[[",
-  "DirectorEmailAddress": "]]..directorEmail..[[",
-  "MkRankId": "]]..MKRank..[[",
-  "TypeLanguageCountry": {
-    "LanguageId": 1,
-    "CountryId": 1,
-  },
-}]]
+	[[{
+	  "FirstName": "]]..firstName..[[",
+	  "LastName": "]]..lastName..[[",
+	  "EmailAddress": "]]..Email..[[",
+	  "PhoneNumber": "]]..Phone..[[",
+	  "Comments": "]]..Comment..[[",
+	  "UnitNumber": "]]..UnitNumber..[[",
+	  "DirectorName": "]]..directorName..[[",
+	  "RequestAccessStatus": "]]..requestFromStatus..[[",
+	  "DirectorEmailAddress": "]]..directorEmail..[[",
+	  "UniqueId": "]]..headers["UniqueId"]..[[",
+	  "MkRankId": "]]..MKRank..[[",
+	  "TypeLanguageCountry": {
+	    "LanguageId": 1,
+	    "CountryId": 1,
+	  },
+	}]]
 
 	--headers["Content-Type"] = "application/x-www-form-urlencoded"
 	--headers["Content-Length"]= string.len(v)
 
 	params={headers = headers,body = v}
 
-
 	print("Send Message Request :"..json.encode(params))
 
 	request.new( ApplicationConfig.REQUEST_ACCESS,method,params,postExecution)
 	
-
 	return response
 
 end
@@ -934,7 +932,7 @@ end
 
 
 
-function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection,postExecution)
+function Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection,postExecution)
 
 --CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,PhoneNumber,AccessCode,IsConference,CallDirection
 
@@ -948,7 +946,17 @@ function Webservice.CreateTickler(CalendarId,CalendarName,TicklerType,TicklerSta
 	headers["Content-Type"] = "application/json"
 	method="POST"
 
-	local url = splitUrl(ApplicationConfig.CreateTickler)
+	local url
+
+	if isUpdate == true then
+
+		url = splitUrl(ApplicationConfig.UpdateTicklerRecur)
+
+	else
+
+		url = splitUrl(ApplicationConfig.CreateTickler)
+
+	end
 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
@@ -991,7 +999,8 @@ print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 		resbody = [[
 		{
 		"UserId": ]]..UserId..[[,
-		"TicklerId": 0,
+		"id": ]]..id..[[,
+		"TicklerId": ]]..TicklerId..[[,
 		"CalendarId": ]]..CalendarId..[[,
 		"CalendarName":  ']]..CalendarName..[[',
 		"TicklerType": ']]..TicklerType..[[',
@@ -1030,8 +1039,15 @@ print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 		print("request : "..json.encode(params))
 
 
+	if isUpdate == true then
+		
+			request.new(ApplicationConfig.UpdateTicklerRecur,method,params,postExecution)
+
+	else
 
 	request.new(ApplicationConfig.CreateTickler,method,params,postExecution)
+
+	end
 	
 	return response
 
@@ -1274,3 +1290,276 @@ local resbody = [[{
 
 end
 
+
+
+function Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+
+	method="GET"
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	local url = splitUrl(ApplicationConfig.RemoveOrBlockContact)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	print("reqaccess_id for remove or block contact: ",reqaccess_id,reqaccess_from,accessStatus)
+
+
+	local resbody = ""
+	resbody = resbody.."requestAccessId="..reqaccess_id.."&"
+	resbody = resbody.."requestAccessFrom="..reqaccess_from.."&"
+	resbody = resbody.."accessStatus="..accessStatus
+
+
+	headers["Content-Type"] = "application/x-www-form-urlencoded"
+	headers["Content-Length"]= string.len(resbody)
+
+
+	params={headers = headers,body = resbody}
+
+	request.new(ApplicationConfig.RemoveOrBlockContact.."?"..resbody,method,params,postExecution)
+
+    print("request : "..json.encode(params))
+
+	
+	return response
+end
+
+
+
+
+function Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,contact_id,isaddedToContact,MyUnitBuzzRequestAccessId,password,postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method="POST"
+
+	local url = splitUrl(ApplicationConfig.AccessPermissionDetails)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+
+	local countrylanguage = {}
+
+	countrylanguage=[["LanguageId": '1',
+		"CountryId": '1']]
+
+		print(idvalue)
+
+    if idvalue == "Deny Access" then
+
+	 resbody = [[{
+		"UserId": ']]..UserId..[[',
+		"EmailAddress": ']]..Email..[[',
+		"PhoneNumber": ']]..PhoneNumber..[[',
+		"MkRankId": ']]..MkRankId..[[',
+		"GetRquestAccessFrom": ']]..GetRquestAccessFrom..[[',
+		"MailTemplate": ']]..MailTemplate..[[',
+		"Status": ']]..Status..[[',
+		"TypeLanguageCountry": {]]..countrylanguage..[[},
+		"IsSendMail": ']]..tostring(isSentMail)..[[',
+		"IsSendText": ']]..tostring(isSentText)..[[',
+		"ContactId": ']]..contact_id..[[',
+		"IsAddToContact": ']]..tostring(isaddedToContact)..[[',
+		"MyUnitBuzzRequestAccessId": ']]..MyUnitBuzzRequestAccessId..[[',
+		"Comments": ']]..password..[[',
+	  }]]
+
+	else
+
+		 resbody = [[{
+		"UserId": ']]..UserId..[[',
+		"EmailAddress": ']]..Email..[[',
+		"PhoneNumber": ']]..PhoneNumber..[[',
+		"MkRankId": ']]..MkRankId..[[',
+		"GetRquestAccessFrom": ']]..GetRquestAccessFrom..[[',
+		"MailTemplate": ']]..MailTemplate..[[',
+		"Status": ']]..Status..[[',
+		"TypeLanguageCountry": {]]..countrylanguage..[[},
+		"IsSendMail": ']]..tostring(isSentMail)..[[',
+		"IsSendText": ']]..tostring(isSentText)..[[',
+		"ContactId": ']]..contact_id..[[',
+		"IsAddToContact": ']]..tostring(isaddedToContact)..[[',
+		"MyUnitBuzzRequestAccessId": ']]..MyUnitBuzzRequestAccessId..[[',
+		"Password": ']]..password..[[',
+	  }]]
+
+	end
+
+	params={headers = headers,body = resbody}
+
+	print("request 123: "..tostring(resbody))
+
+	request.new(ApplicationConfig.AccessPermissionDetails,method,params,postExecution)
+
+	return response
+end
+
+
+
+
+function Webservice.GeneratePassword(postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+
+	method="GET"
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	local url = splitUrl(ApplicationConfig.GetGeneratePassword)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetGeneratePassword,method,params,postExecution)
+
+    print("request : "..json.encode(params))
+
+	
+	return response
+end
+
+
+
+
+function Webservice.SaveMyUnitBuzzGoals(GoalsId,GoalsDetail,postExecution)
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method="POST"
+
+
+	local url = splitUrl(ApplicationConfig.SaveMyUnitBuzzGoals)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	local resbody = [[{
+  "UserId": ']]..UserId..[[',
+  "MyUnitBuzzGoalsId": ']]..GoalsId..[[',
+  "MyUnitBuzzGoals": ']]..GoalsDetail..[[',
+   } ]]
+
+	params={headers = headers,body = resbody}
+
+	print("request : "..json.encode(params))
+
+	request.new(ApplicationConfig.SaveMyUnitBuzzGoals,method,params,postExecution)
+	
+	return response
+end
+
+function Webservice.GetMyUnitBuzzRequestAccesses(status,postExecution)
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method="GET"
+
+
+	local url = splitUrl(ApplicationConfig.GetMyUnitBuzzRequestAccesses)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	-- local resbody = [[{
+ --  "UserId": ']]..UserId..[[',
+ --  "status": ']]..status..[[',
+
+ --   } ]]
+
+   local resbody = "UserId="..UserId.."&status="..status
+
+	params={headers = headers}
+
+	print("request : "..json.encode(params))
+
+	request.new(ApplicationConfig.GetMyUnitBuzzRequestAccesses.."?"..resbody,method,params,postExecution)
+	
+	return response
+end
