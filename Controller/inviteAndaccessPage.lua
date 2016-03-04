@@ -911,7 +911,7 @@ local function CreateList(list,scrollView)
 		    list_bg:addEventListener( "touch", ListmenuTouch )
 
 
-			local Name = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,11)
+			local Name = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 			Name.anchorX=0;Name.anchorY=0
 			Name.x=background.x+5;Name.y=background.y+5
 			Name:setFillColor( 0.3 )
@@ -926,18 +926,21 @@ local function CreateList(list,scrollView)
 
 			end
 
-			local Email = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,11)
+			local Email = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 			Email.anchorX=0;Email.anchorY=0
 			Email.x=background.x+5;Email.y=Name.y+Name.contentHeight+5
 			Email:setFillColor( 0.3 )
 
 			if feedArray[i].EmailAddress ~= nil then
 
-				Email.text = "EmailAddress : "..feedArray[i].EmailAddress
+				Email.text = "Email : "..feedArray[i].EmailAddress
+            else
+				Email.text = "Email : ".."-"
 
 			end
 
-			local Phone = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,11)
+
+			local Phone = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 			Phone.anchorX=0;Phone.anchorY=0
 			Phone.x=background.x+5;Phone.y=Email.y+Email.contentHeight+5
 			Phone:setFillColor( 0.3 )
@@ -948,7 +951,17 @@ local function CreateList(list,scrollView)
 
 			end
 
-			local MKRank = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,11)
+			-- if feedArray[i].PhoneNumber == nil or feedArray[i].PhoneNumber == "" then
+
+			-- 	print("Visibilty false for this contact")
+
+			-- 	Phone.text = " ".." "
+			-- 	MKRank.y = Email.y+Email.contentHeight+5
+
+			-- end
+
+
+			local MKRank = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 			MKRank.anchorX=0;MKRank.anchorY=0
 			MKRank.x=background.x+5;MKRank.y=Phone.y+Phone.contentHeight+5
 			MKRank:setFillColor( 0.3 )
@@ -958,10 +971,10 @@ local function CreateList(list,scrollView)
 				MKRank.text = "MKRank : "..feedArray[i].MkRankLevel
 			else
 
-				MKRank.text = "MKRank : "
+				MKRank.text = "MKRank : ".."-"
 			end
 
-			local ActiveOn = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,11)
+			local ActiveOn = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 			ActiveOn.anchorX=0;ActiveOn.anchorY=0
 			ActiveOn.x=background.x+5;ActiveOn.y=MKRank.y+MKRank.contentHeight+5
 			ActiveOn:setFillColor( 0.3 )
@@ -970,9 +983,11 @@ local function CreateList(list,scrollView)
 
 				local time = Utils.makeTimeStamp(feedArray[i].UpdateTimeStamp)
 
-				
 				ActiveOn.text = "Activity On : "..tostring(os.date("%m/%d/%Y %I:%m %p",time))
 
+			else
+
+                ActiveOn.text = "Activity On : ".."-"
 			end
 
 			   group =  Createmenu(list_bg)

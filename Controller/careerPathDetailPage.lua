@@ -1510,7 +1510,7 @@ function scene:show( event )
 				print("ContactId and event id ",ContactId.."\n"..contactId)
 
 
-		if (ContactId ~= contactId) then
+		if (tostring(ContactId) ~= tostring(contactId)) then
 
             if (IsOwner == true) then
 
@@ -1669,6 +1669,8 @@ function scene:show( event )
 
 			end
 
+
+			
 				Details_Display[#Details_Display+1] = display.newRect( W/2, Details_Display[#Details_Display].y+30, W, 5)
 				Details_Display[#Details_Display].isVisible=false
 				careerDetail_scrollview:insert( Details_Display[#Details_Display] )
