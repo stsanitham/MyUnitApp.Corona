@@ -1112,13 +1112,13 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 
 
-    if email ~= nil or email ~= "" then
+    if email ~= nil or email ~= "" or email ~= "* Email Address is required" then
 	EmailDetailValue.text = email
 	emailnotifytext.isVisible = true
     emailnotifybox.isVisible = true
 	print("88888888888888888888888",email)
     else
-    EmailDetailValue.text = ""
+    EmailDetailValue.text = nil
     emailnotifytext.isVisible = false
     emailnotifybox.isVisible = false
     end
@@ -1149,7 +1149,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
     	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
     else
-    	PhoneDetailValue.text = ""
+    	PhoneDetailValue.text = nil
     	textnotifybox.isVisible = false
     	textnotifytext.isVisible = false
 
