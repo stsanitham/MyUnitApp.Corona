@@ -26,18 +26,19 @@ local backBtn,UnitnumberField,UserName
 
 -----------------Function-------------------------
 
-local function bgTouch( event )
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
-		native.setKeyboardFocus(nil)
-	end
+		local function bgTouch( event )
+			if event.phase == "began" then
+				display.getCurrentStage():setFocus( event.target )
+				elseif event.phase == "ended" then
+				display.getCurrentStage():setFocus( nil )
+				native.setKeyboardFocus(nil)
+			end
 
-	return true
-end
+			return true
+		end
 
-local function SetError( displaystring, object )
+
+       local function SetError( displaystring, object )
 
 			if object.id == "password" then
 				object.isSecure = false
@@ -50,64 +51,55 @@ local function SetError( displaystring, object )
 		end
 
 
+		local function textfield( event )
 
-	local function textfield( event )
+			if ( event.phase == "began" ) then
 
-		if ( event.phase == "began" ) then
+				event.target:setTextColor(color.black)
 
-		
-			event.target:setTextColor(color.black)
+				current_textField = event.target;
 
-			current_textField = event.target;
+				current_textField.size=14	
 
-			
-			current_textField.size=16	
-
-			if "*" == event.target.text:sub(1,1) then
-				event.target.text=""
-			end
+				if "*" == event.target.text:sub(1,1) then
+					event.target.text=""
+				end
 
 		elseif ( event.phase == "ended" ) then
 
 
 		elseif (event.phase == "submitted" ) then
 
-			if(current_textField.id == "Unit Number / Director name") then
+				if(current_textField.id == "Unit Number / Director name") then
 
-				native.setKeyboardFocus( UserName )
+					native.setKeyboardFocus( UserName )
 
-			else
+				else
 
-				native.setKeyboardFocus( nil )
+					native.setKeyboardFocus( nil )
 
-			end
-			
+				end
+				
 
 		elseif ( event.phase == "editing" ) then
 
 				if(current_textField.id == "Unit Number / Director name") then
 
-						if event.text:len() > 50 then
+					if event.text:len() > 50 then
 
-							event.target.text = event.text:sub(1,50)
+						event.target.text = event.text:sub(1,50)
 
-						end
+					end
 
-							local temp = event.text
+					local temp = event.text
 
-							local tempvalue = temp:sub(temp:len(),temp:len())
+					local tempvalue = temp:sub(temp:len(),temp:len())
 
-							if(tempvalue == "(") then
-								event.text = event.text:sub( 1, event.text:len()-1)
-							end
+					if(tempvalue == "(") then
+						event.text = event.text:sub( 1, event.text:len()-1)
+					end
 
-
-
-						
-					
-						end
-
-
+				end
 
 			end
 
@@ -142,6 +134,8 @@ local function SetError( displaystring, object )
 				end
 
 		end
+
+		
 	
 		local function signInRequest(  )
 
@@ -395,8 +389,7 @@ function scene:create( event )
 	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+40;UserName.y=UserName_bg.y
 
 	
-
-signinBtn = display.newRect(sceneGroup,0,0,W-60,35)
+    signinBtn = display.newRect(sceneGroup,0,0,W-60,35)
 	signinBtn.x=W/2;signinBtn.y = UserName_bg.y+48
 	signinBtn.width = W-180
 	sceneGroup:insert(signinBtn)
@@ -419,6 +412,8 @@ signinBtn = display.newRect(sceneGroup,0,0,W-60,35)
 	MainGroup:insert(sceneGroup)
 
 end
+
+
 
 function scene:show( event )
 
