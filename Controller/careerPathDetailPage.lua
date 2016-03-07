@@ -27,7 +27,7 @@ local Details = {}
 
 local Details_Display = {}
 
-
+openPage="careerPathPage"
 
 local Career_Username , id_value , popupevnt_value
 
@@ -351,13 +351,13 @@ end
 		 if id_value == "Remove Access" then
 
 		    print("response after removing details ",Request_response)
-	        local remove_successful= native.showAlert("Remove", "Contact removed", { CommonWords.ok} , onCompletion)
+	        local remove_successful= native.showAlert("Remove", "Contact removed from the list.", { CommonWords.ok} , onCompletion)
 
 
 		 elseif id_value == "Block Access" then
 
 		    print("response after blocking details ",Request_response)
-			local block_successful = native.showAlert("Block", "Contact blocked successfully.", { CommonWords.ok} , onCompletion)
+			local block_successful = native.showAlert("Block", "This Contact’s Access blocked successfully.", { CommonWords.ok} , onCompletion)
 
 		 end
 
@@ -366,7 +366,7 @@ end
 
          	 if Request_response == "5" then
 
-         	 	denyaccess = native.showAlert("Deny", "Access Denied", { CommonWords.ok } , onCompletion)
+         	 	denyaccess = native.showAlert("Deny", "Access denied to this Contact.", { CommonWords.ok } , onCompletion)
 
          	 elseif Request_response == "GRANT" then
 
@@ -386,7 +386,7 @@ end
 
 	 	    if Request_response == "5" then
 
-	 	    	grantaccess = native.showAlert(" Grant access", " Access granted successfully", { CommonWords.ok} , onCompletion)
+	 	    	grantaccess = native.showAlert("Grant access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
@@ -406,7 +406,7 @@ end
 
 	 	    if Request_response == "5" then
 
-	 	    	accessprovided = native.showAlert("Provide access", " Access provided successfully", { CommonWords.ok } , onCompletion)
+	 	    	accessprovided = native.showAlert("Provide access", " Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
@@ -716,40 +716,99 @@ function onAccessButtonTouch( event )
           print(NameDetailValue.text)
 
 
-          if Details.EmailAddress ~= nil then
+          if Details.EmailAddress ~= "" then
+
+          	print("email not equal to error message")
           EmailDetailValue.text = Details.EmailAddress
+
+          print("@#$@#$@#$@@@@@@@@@@@@@@@@@@@@@@@@@ ",EmailDetailValue.text)
           --native.setKeyboardFocus(PhoneDetailValue)
             emailnotifybox.isVisible = true
 		    emailnotifytext.isVisible = true
           else
-		  EmailDetailValue.text = nil
+		   EmailDetailValue.text = nil
 		   emailnotifybox.isVisible = false
 		   emailnotifytext.isVisible = false
           end
 
 
-          if Details.Mobile ~= nil or Details.Mobile ~= "" then
+          if EmailDetailValue.text == "" then
+
+          	print("email null ********************************")
+
+          	emailnotifybox.isVisible = false
+          	emailnotifytext.isVisible = false
+
+          	PhoneDetail_bg.y =  EmailDetail_bottom.y+EmailDetail_bottom.contentHeight+5
+          	PhoneDetail_titlestar.y= PhoneDetail_bg.y
+          	PhoneDetail_titletext.y= PhoneDetail_bg.y
+          	PhoneDetailValue.y = PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+			PhoneDetail_bottom.y= PhoneDetailValue.y+10
+			textnotifybox.y = PhoneDetail_bottom.y+15
+			textnotifytext.y= PhoneDetail_bottom.y + 15
+			 MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+			 MKRankDetail_title.y= MKRankDetail_bg.y+7
+			 MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+7
+		     MKRankDetail_bottom.y= MKRankDetailValue.y+9
+
+		     Requesteddate_bg.y = MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+		     Requesteddate_title.y= Requesteddate_bg.y + 7
+		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
+		     Requesteddate_bottom.y= RequesteddateValue.y+9
+
+		   else
+
+		   	emailnotifybox.isVisible = true
+          	emailnotifytext.isVisible = true
+
+		   	PhoneDetail_bg.y =  emailnotifybox.y+emailnotifybox.contentHeight+5
+		   	PhoneDetail_titlestar.y= PhoneDetail_bg.y
+		   	PhoneDetail_titlestar.y= PhoneDetail_bg.y
+		   	PhoneDetailValue.y = PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+			PhoneDetail_bottom.y= PhoneDetailValue.y+10
+			textnotifybox.y = PhoneDetail_bottom.y+15
+			textnotifytext.y= PhoneDetail_bottom.y + 15
+			 MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+			 MKRankDetail_title.y= MKRankDetail_bg.y+7
+			 MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+7
+		     MKRankDetail_bottom.y= MKRankDetailValue.y+9
+
+		     Requesteddate_bg.y = MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+		     Requesteddate_title.y= Requesteddate_bg.y + 7
+		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
+		     Requesteddate_bottom.y= RequesteddateValue.y+9
+
+          end
+
+
+
+          if Details.Mobile ~= nil  then
              PhoneDetailValue.text = Details.Mobile
           			textnotifybox.isVisible = true
 		 		    textnotifytext.isVisible = true
-          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "" then
+          elseif Details.HomePhoneNumber ~= nil then
              PhoneDetailValue.text = Details.HomePhoneNumber
           			textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
-          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "" then
+          elseif Details.WorkPhoneNumber ~= nil then
              PhoneDetailValue.text = Details.WorkPhoneNumber
           			textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
-          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "" then
+          elseif Details.OtherPhoneNumber ~= nil then
              PhoneDetailValue.text = Details.OtherPhoneNumber
                     textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
           else
           	 PhoneDetailValue.text = nil
+          	 textnotifybox.isVisible = false
+			   textnotifytext.isVisible = false
           end
 
 
-          if  PhoneDetailValue.text == nil then
+          print(" PhoneDetailValue.text             ",  PhoneDetailValue.text)
+
+
+          if  PhoneDetailValue.text == nil or PhoneDetailValue.text == "" then
 
           	   textnotifybox.isVisible = false
 			   textnotifytext.isVisible = false
@@ -773,6 +832,8 @@ function onAccessButtonTouch( event )
 				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
 				processbutton_text.y=processbutton.y
 		  else
+
+		  	print("3475673456346586348586348568346587777777777777777777777777777")
 
 		  	  textnotifybox.isVisible = true
 			  textnotifytext.isVisible = true
@@ -1179,15 +1240,6 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	if event.params.page == "invite" then
-
-		openPage="inviteAndaccessPage"
-	else
-
-		openPage="careerPathPage"
-
-	end
-
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 
@@ -1248,7 +1300,6 @@ function scene:show( event )
 
 				titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 			
-				if Details ~= nil then
 
 				if Details.ImagePath ~= nil then
 					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
@@ -1669,8 +1720,6 @@ function scene:show( event )
 
 			end
 
-
-			
 				Details_Display[#Details_Display+1] = display.newRect( W/2, Details_Display[#Details_Display].y+30, W, 5)
 				Details_Display[#Details_Display].isVisible=false
 				careerDetail_scrollview:insert( Details_Display[#Details_Display] )
@@ -1873,8 +1922,6 @@ function scene:show( event )
 					MapDisplayArray[#MapDisplayArray].x=W/2
 
 				end
-
-			end
 
 				sceneGroup:insert(mapGroup)
 				mapGroup.isVisible=false

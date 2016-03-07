@@ -372,10 +372,8 @@ function scene:show( event )
 									end
 								end
 
-								local alert = native.showAlert("MyUnitBuzz","Update the latest version from the Play Store" , { "Update"}, onComplete )
+								local alert = native.showAlert("MyUnitBuzz","To Access our new features download the latest version of our App" , { "OK"}, onComplete )
 
-
-								
 
 							end
 					else

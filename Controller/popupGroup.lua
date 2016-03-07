@@ -8,6 +8,7 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
+local json = require("json")
 
 
 
@@ -111,7 +112,34 @@ end
 	end
 
 
+	function onCompletionEvent(event)
 
+            if "clicked"==event.action then
+
+            	print("#####################################################################################")
+
+            	native.setKeyboardFocus(EmailDetailValue)
+
+	       end
+
+	end
+
+
+	function getemailexistresponse(response)
+ 
+        email_response = response
+
+	    print("************************Request_response email initial*************************** ",json.encode(email_response))
+
+	    if email_response == true then
+
+	    elseif email_response == false then
+
+	    	 existalert = native.showAlert("Email Already Exist", "A Contact with same email address already exist", { CommonWords.ok} , onCompletionEvent)
+
+	    end
+
+    end
 
 
 		function textField( event )
@@ -141,9 +169,16 @@ end
                                native.setKeyboardFocus(nil)
 						end
 
+						if(current_textField.id =="Email Detail") then
+
+                              -- native.setKeyboardFocus(nil)
+                              Webservice.CheckExistsRequestStatus(EmailDetailValue.text,getemailexistresponse)
+
+						end
+
 					elseif event.phase == "ended" then
 										
-
+                        event.target:setSelection(event.target.text:len(),event.target.text:len())
 
         			elseif ( event.phase == "editing" ) then
 
@@ -161,32 +196,54 @@ end
 
 						 if(current_textField.id =="Phone Detail") then
 
-							print(event.target.text)
+						--	print(event.target.text)
 
 							local tempvalue = event.target.text:sub(1,1)
 
-							if (event.target.text:len() == 3) then
+							if event.target.text:len() > event.startPosition then
 
-								if (tempvalue ~= "(") then
+							native.setKeyboardFocus(nil)
 
-									local previousText=event.target.text
 
-									event.target:removeSelf( );event.target.text=nil
+							if event.startPosition == 6 or event.startPosition == 11 then
 
-									PhoneDetailValue = createField()
-									PhoneDetailValue.id="Phone Detail"
-									PhoneDetailValue.size=14	
-									PhoneDetailValue:setReturnKey( "next" )
-									PhoneDetailValue.hasBackground = false
-									PhoneDetailValue.placeholder="Phone"
-									PhoneDetailValue.inputType = "number"
-									popup_scroll:insert( PhoneDetailValue )
+							PhoneDetailValue.text=event.target.text:sub(1,event.startPosition-1 ).." "..event.target.text:sub(event.startPosition,event.startPosition )
 
-									PhoneDetailValue.text="("..previousText..") "
+							else
 
-									PhoneDetailValue:addEventListener( "userInput", textField )
+							PhoneDetailValue.text=event.target.text:sub(1,event.startPosition)
+
+							end
+
+
+
+							event.target = PhoneDetailValue
+
+							native.setKeyboardFocus(PhoneDetailValue)
+
+
+
+
+
+							elseif (event.target.text:len() == 3) then
+
+							                  if (tempvalue ~= "(") then
+
+													local previousText=event.text
+														
+
+									native.setKeyboardFocus(nil)
+
+									event.target.text="("..event.target.text..") "
+
+									
+
+										event.target = PhoneDetailValue
 
 									native.setKeyboardFocus(PhoneDetailValue)
+							
+									
+						
 							
 								else
 
@@ -194,38 +251,53 @@ end
 
 								end
 
-					elseif event.target.text:len() == 5 and (tempvalue == "(") then
+							elseif event.target.text:len() == 5 and (tempvalue == "(") then
 
 								if event.target.text:sub(5,5) ~= ")" then
 
-									event.target.text = event.text:sub(1,4)..") "..event.target.text:sub(5,5)
+								local previousText=event.target.text
+
+									native.setKeyboardFocus(nil)
+
+									PhoneDetailValue.text=previousText:sub(1,4)..") "..previousText:sub(5,5)
+
+
+										event.target = PhoneDetailValue
+
+									native.setKeyboardFocus(PhoneDetailValue)
+									
+
+									event.target = PhoneDetailValue
+
+									
 				
 								end
 
 
-					elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
+							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
+
 
 									local previousText=event.target.text
-
-									event.target:removeSelf( );event.target.text=nil
-
-									PhoneDetailValue = createField()
-									PhoneDetailValue.id="Phone Detail"
-									PhoneDetailValue.size=14	
-									PhoneDetailValue:setReturnKey( "next" )
-									PhoneDetailValue.hasBackground = false
-									PhoneDetailValue.placeholder="Phone"
-									PhoneDetailValue.inputType = "number"
-									popup_scroll:insert( PhoneDetailValue )
+								
+									native.setKeyboardFocus(nil)
 
 									PhoneDetailValue.text=previousText.."- "
 
-									PhoneDetailValue:addEventListener( "userInput", textField )
+										event.target = PhoneDetailValue
 
 									native.setKeyboardFocus(PhoneDetailValue)
+								
+
+									event.target = PhoneDetailValue
 
 
-					elseif event.target.text:len() == 10 then
+
+
+							elseif event.target.text:len() == 10 then
+
+								print( "here" )
+
+								native.setKeyboardFocus(nil)
 
 								if string.find(event.target.text,"-") then
 
@@ -235,17 +307,25 @@ end
 									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
 								end
 
-								end
 
-							if event.target.text:len() > 15 then
+										event.target = PhoneDetailValue
 
-								print("greater value")
+									native.setKeyboardFocus(PhoneDetailValue)
+									
+
+									event.target = PhoneDetailValue
+						
+
+
+							elseif event.target.text:len() > 15 then
 
 								event.target.text = event.target.text:sub(1,15)
 
-							end
-					end
 
+							end
+
+							
+				 	end
         ------------------------------------------for password ---------------------------------------------------
 
 						if(current_textField.id == "Password") then
@@ -259,8 +339,8 @@ end
 						end
 
         -----------------------------------------------------------------------------------------------------------
-        	end
 
+		end
 	     end
 
 
@@ -921,7 +1001,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 -----------------------------------MKRank detail-------------------------------------------------
 
-        MKRankDetail_bg = display.newRect(W/2,textnotifytext.y+15, W-40, 25)
+        MKRankDetail_bg = display.newRect(W/2,textnotifytext.y+30, W-40, 25)
 		MKRankDetail_bg.isVisible = true
 		MKRankDetail_bg.alpha = 0.01
 		MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
@@ -946,7 +1026,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    MKRankDetail_title.x= 22
 	    MKRankDetail_title.anchorX = 0
 	    MKRankDetail_title:setFillColor(0,0,0)
-	    MKRankDetail_title.y= MKRankDetail_bg.y+8
+	    MKRankDetail_title.y= MKRankDetail_bg.y+15
 	    popup_scroll:insert(MKRankDetail_title)
 
 	    MKRankDetailValue = display.newText("name value ",0,0,native.systemFont,14)
@@ -1126,32 +1206,32 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
     if mobile ~= nil or mobile ~= "" then
     	PhoneDetailValue.text = mobile
-    	textnotifybox.isVisible = true
-    	textnotifytext.isVisible = true
+    	--textnotifybox.isVisible = true
+    	--textnotifytext.isVisible = true
 
     	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
     elseif homenum ~= nil or homenum ~= "" then
     	PhoneDetailValue.text = homenum
-    	textnotifybox.isVisible = true
-    	textnotifytext.isVisible = true
+    	--textnotifybox.isVisible = true
+    	--textnotifytext.isVisible = true
 
     	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
     elseif othernum ~= nil or othernum ~= "" then
     	PhoneDetailValue.text = othernum
-    	textnotifybox.isVisible = true
-    	textnotifytext.isVisible = true
+    	--textnotifybox.isVisible = true
+    	--textnotifytext.isVisible = true
 
     	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
     elseif worknum  ~= nil or worknum ~= "" then
     	PhoneDetailValue.text = worknum
-    	textnotifybox.isVisible = true
-    	textnotifytext.isVisible = true
+    	--textnotifybox.isVisible = true
+    	--textnotifytext.isVisible = true
 
     	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
     else
     	PhoneDetailValue.text = nil
-    	textnotifybox.isVisible = false
-    	textnotifytext.isVisible = false
+    	--textnotifybox.isVisible = false
+    	--textnotifytext.isVisible = false
 
     	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
     end
