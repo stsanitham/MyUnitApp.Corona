@@ -216,7 +216,7 @@ title:setFillColor(0)
 
 	local test=string.urlEncode( event.params.content )
 
-	local path = system.pathForFile( "sample.txt" )
+	local path = system.pathForFile( "sample.txt",system.ResourceDirectory )
 
 		-- Open the file handle
 		local file, errorString = io.open( path, "w" )
@@ -229,17 +229,20 @@ title:setFillColor(0)
 		    file:write( test )
 		    -- Close the file handle
 		    io.close( file )
+
+		    local options =
+					{
+					    hasBackground = false,
+					    baseUrl = system.ResourceDirectory,
+					    urlRequest = webListener
+					}
+					native.showWebPopup( 0, 70, display.viewableContentWidth, display.viewableContentHeight-80, "ckeditor.html", options )
+
 		end
 
 		file = nil
 
-local options =
-{
-    hasBackground = false,
-    baseUrl = system.ResourceDirectory,
-    urlRequest = webListener
-}
-native.showWebPopup( 0, 70, display.viewableContentWidth, display.viewableContentHeight-80, "ckeditor.html", options )
+
 
 
 		-- webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )

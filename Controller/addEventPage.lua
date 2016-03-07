@@ -106,7 +106,6 @@ local AttachmentFlag = false
 
 local makeTimeStamp = function ( dateString )
 
-	print( dateString )
 	local pattern = "(%d+)%/(%d+)%/(%d+) (%d+):(%d+) (%a+)"
 	local month,day,year,hour,minute,tzoffset =
 	dateString:match(pattern)
@@ -562,7 +561,6 @@ end
 
 
 local function searchTouch(event) 
-    print(event.phase)
 
     local row = event.row
 
@@ -647,7 +645,6 @@ local function onRowRender( event )
     end
 
 
-    print( row.name )
 end
 
 
@@ -670,7 +667,6 @@ local function onRowTouch(event)
 		List.textFiled.text = row.name
 		List.textFiled.value = row.id
 
-		 print( "Here : "..row.name )
 
 		if List.textFiled.text:lower( ) == "party" then
 
@@ -806,7 +802,7 @@ local function onComplete(event)
 
 	if "clicked"==event.action then
 
-		status = "deleted"
+		--status = "deleted"
 
 		composer.hideOverlay()
 
@@ -870,7 +866,6 @@ end
 
 
 local function get_CreateTickler( response )
-	print("event Added")
 
 	if response.TicklerId ~= nil then
 
@@ -1134,7 +1129,6 @@ local function TouchAction( event )
 
 				if PurposeLbl.text:lower( ) == "other" then
 
-					print( "CalendarName : "..CalendarName )
 
 					if Other.text == "" then
 
@@ -1144,14 +1138,13 @@ local function TouchAction( event )
 
 							if TicklerType:lower( ) == "call" then
 
+								
 							
 							local time = makeTimeStamp(startdate)
 
-							print( Event_to_date.text,EventTo_time)
 
 							time = time+ (tonumber(Event_to_date.value)*3600) + (tonumber(EventTo_time)*60)
 
-							print( os.date( "%I:%M %p",time) )
 
 							enddate = startdate
 							EventTo_time = os.date( "%I:%M %p",time)
@@ -1163,23 +1156,25 @@ local function TouchAction( event )
 					end
 				else
 
-					print( "CalendarName : "..CalendarName )
 
 					Other.text =  ""
 
 						if TicklerType:lower( ) == "call" then
 
 							
+							print( "startdate : "..startdate )
+
 							local time = makeTimeStamp(startdate)
 
 							time = time+ (tonumber(Event_to_date.value)*3600) + (tonumber(Event_to_time.value)*60)
 
 
 							enddate = os.date( "%m/%d/%Y %I:%M %p",time)
+
+							print( "enddate : "..enddate )
+							
 							EventTo_time = os.date( "%I:%M %p",time)
 						end
-
-													print( enddate,EventTo_time)
 
 
 						Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
@@ -1696,7 +1691,6 @@ local function searchfunction( event )
 
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
-        print( event.target.text )
 
      
 
@@ -1822,8 +1816,6 @@ local function searchfunction( event )
 				searchList.y = event.target.y-event.target.contentHeight+25
 
 				
-
-		print( #searchArray,searchList.height )
 
     	--searchArray
     end
@@ -2110,18 +2102,13 @@ end
 
 			local x, y = scrollView:getContentPosition()
 
-			print(y)
 
 			if y > -60 then
 
-				print(y)
-
-				print("hai")
 
 				What.isVisible = true
 			else
 
-				print("hello")
 				What.isVisible = false
 			end
 
@@ -2147,14 +2134,11 @@ end
 
 			if  y > -225 and (SelectEvent.text:lower( ) == "appointment") then 
 
-				print("345345")
-
 				Where.isVisible = true
 				whereGroup.isVisible = true
 
 			elseif  y < -225 and (SelectEvent.text:lower( ) == "appointment") then
 
-				print("1111111")
 
 				Where.isVisible = false
 				whereGroup.isVisible = false
@@ -2169,7 +2153,6 @@ end
 
 			elseif  y < -225 and (SelectEvent.text:lower( ) == "party") then
 
-				print("party")
 
 				Where.isVisible = false
 				whereGroup.isVisible = false
@@ -2573,12 +2556,10 @@ function scene:create( event )
 
 			if UpdateValue.CalendarName ~= nil then
 
-				print( "!!!!!!!!!!!!!!!!!!!!" )
 
 				CalendarName = UpdateValue.CalendarName
 			else
 
-				print( "^^^^^^^^^^^^^^^^^^^^^" )
 				CalendarName=""
 			end
 
@@ -2629,6 +2610,7 @@ function scene:create( event )
 
 		if isUpdate == true then
 			saveBtn.text = "Update"
+			status="details"
 		end
 
 		scrollView = widget.newScrollView
@@ -2699,8 +2681,6 @@ function scene:show( event )
 
 		if event.params.calendarId ~= nil then
 
-			print( "*****************" )
-
 			CalendarId = event.params.calendarId
 
 			CalendarName = event.params.calendarName
@@ -2708,9 +2688,7 @@ function scene:show( event )
 
 		end
 
-		print( os.date( "%m/%d/%Y" ,  eventTime )) 
-
-	--	print( os.date("%H", eventTime))
+	
 
 		ObjectCreation(sceneGroup)
 
@@ -3351,6 +3329,8 @@ function scene:show( event )
 	  		if UpdateValue.Description ~= nil then
 
 	  			Description.text = UpdateValue.Description
+	  			Description_lbl.text = UpdateValue.Description
+	  			Description_lbl:setFillColor( 0 )
 	  			
 	  		end
 
@@ -3385,6 +3365,7 @@ function scene:show( event )
 	  			for i=1,#AddeventPage.purposeArray do
 	  				if AddeventPage.purposeArray[i].id == UpdateValue.AppointmentPurpose then
 	  					PurposeLbl.text = AddeventPage.purposeArray[i].value
+	  					PurposeLbl.value=AddeventPage.purposeArray[i].id
 	  				end
 	  			end
 	   			
@@ -3435,7 +3416,6 @@ function scene:show( event )
 
 	  				spinner_show()
 
-	  				print( UpdateValue.AttachmentPath,UpdateValue.AttachmentName )
 
 					network.download(
 						UpdateValue.AttachmentPath,
@@ -3501,7 +3481,15 @@ end
 
 		elseif phase == "did" then
 
-			event.parent:resumeGame(status)
+			if status == "details" then
+
+				event.parent:resumeGame(status,UpdateValue)
+
+			else
+
+				event.parent:resumeGame(status)
+
+			end
 
 			Runtime:removeEventListener( "key", onKeyEventADDevent )
 

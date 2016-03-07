@@ -100,6 +100,18 @@ function scene:show( event )
       					IsOwner = " "
       			end
 
+      			if response.MyUnitBuzzContacts.TimeZone ~= nil then
+
+						TimeZone = response.MyUnitBuzzContacts.TimeZone
+
+
+      			else
+
+
+      					TimeZone = " "
+
+      			end
+
 
 				if response.GoogleSettings ~= nil then
 
@@ -113,12 +125,6 @@ function scene:show( event )
 
 
 
-      				if response.MyUnitBuzzContacts.TimeZone ~= nil then
-
-						TimeZone = response.MyUnitBuzzContacts.TimeZone
-      				else
-      					TimeZone = " "
-      				end
 
 
 					if response.GoogleSettings.GoogleToken ~= nil then

@@ -1332,7 +1332,7 @@ function scene:resumeGame(value,EditArray)
 				local options = {
 					isModal = true,
 					effect = "slideLeft",
-					time = 100,
+					time = 10,
 					params = {
 					
 					Details = EditArray
@@ -1343,6 +1343,19 @@ function scene:resumeGame(value,EditArray)
 
 
 			composer.showOverlay( "Controller.addEventPage", options )
+
+	elseif value == "details" then
+
+			local options = {
+					isModal = true,
+					effect = "slideLeft",
+					time = 10,
+					params = {
+					details = EditArray
+				}
+			}
+
+		composer.showOverlay( "Controller.eventCal_DetailPage", options )
 
 	else
 

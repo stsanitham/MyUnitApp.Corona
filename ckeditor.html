@@ -39,8 +39,6 @@
 			width: 350
 		} );
 
-  CKEDITOR.instances.editor1.setData("''");  
-
 		
 
 function readTextFile(file)
@@ -55,7 +53,7 @@ function readTextFile(file)
             {
                 var allText = rawFile.responseText;
                  allText = decodeURIComponent((allText).replace(/\+/g, '%20'));
-                CKEDITOR.instances.editor1.setData("'"+allText+"'");  
+                CKEDITOR.instances.editor1.setData("'"+allText);  
             }
         }
     }
