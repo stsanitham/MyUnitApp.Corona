@@ -17,6 +17,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 --]]
 
 
+
 -----Stagging--------
 ----[[
 
@@ -30,6 +31,8 @@ ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28
 ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 --]]
+
+
 
 --[[---------Android Live----------------
 
@@ -54,6 +57,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-4"
 --]]
 
 
+
 --[[---------IOS Live----------------
 
 IsLive = true
@@ -75,6 +79,7 @@ ApplicationConfig.API_PRIVATE_KEY = "i67cHiLg5p7XkrnLrW2L6x4xNsqpNworZgboKHGHpdc
 ApplicationConfig.Analysic_TrackId = "UA-51545075-4"
 
 --]]
+
 
 
 ApplicationConfig.testUrl = ApplicationConfig.BASE_URL.."/Therapy/List"
@@ -139,7 +144,8 @@ ApplicationConfig.SaveMyUnitBuzzGoals = ApplicationConfig.BASE_URL.."/MyUnitBuzz
 
 ApplicationConfig.UpdateTicklerRecur = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/UpdateTicklerRecur"
 
-
 ApplicationConfig.GetMyUnitBuzzRequestAccesses = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMyUnitBuzzRequestAccesses"
 
 ApplicationConfig.GetGeneratePassword = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GeneratePassword"
+
+ApplicationConfig.CheckExistsRequestStatus = ApplicationConfig.BASE_URL.."/MyUnitBuzz/MyUnitBuzzCheckExistsRequestStatus"

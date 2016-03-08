@@ -668,19 +668,76 @@ local function ActionTouch( event )
 					ProvideAccess(event.target.value)
 
 				elseif event.target.id == "listBg" then
-					Details = event.target.value
 
-									local options = {
-						isModal = true,
-						effect = "slideLeft",
-						time = 300,
-						params = {
-						contactId =  Details.MyUnitBuzzRequestAccessId,page = "invite"
+						Details = event.target.value
+
+
+					local Status_Name = event.target.name
+
+
+						if Status_Name == "GRANT" then
+
+							local options = 
+							{
+							isModal = true,
+							effect = "slideLeft",
+							time = 300,
+							params = {
+							inviteDetails =  Details,checkstatus = Status_Name
+								}
 							}
-						}
-							composer.showOverlay( "Controller.careerPathDetailPage", options )
 
-				
+							composer.showOverlay( "Controller.inviteAccessDetailPage", options )
+
+
+						elseif Status_Name == "DENY" then
+
+							local options = 
+							{
+							isModal = true,
+							effect = "slideLeft",
+							time = 300,
+							params = {
+							inviteDetails =  Details,checkstatus = Status_Name
+								}
+							}
+
+							composer.showOverlay( "Controller.inviteAccessDetailPage", options )
+
+
+						elseif Status_Name == "OPEN" then
+
+							local options =
+							 {
+							isModal = true,
+							effect = "slideLeft",
+							time = 300,
+							params = {
+							inviteDetails =  Details,checkstatus = Status_Name
+								}
+							}
+                             
+                             composer.showOverlay( "Controller.inviteAccessDetailPage", options )
+
+
+						elseif Status_Name == "ADDREQUEST" then
+
+							local options = 
+							{
+							isModal = true,
+							effect = "slideLeft",
+							time = 300,
+							params = {
+							contactId =  Details.MyUnitBuzzRequestAccessId,page = "invite"
+								}
+							}
+
+							 composer.showOverlay( "Controller.careerPathDetailPage", options )
+
+						end
+
+
+
 				end
 
 
@@ -901,11 +958,14 @@ local function CreateList(list,scrollView)
 			background:setFillColor(1)
 			background.value = feedArray[i]
 			background.id="listBg"
+			background.name = status
 			background:addEventListener( "touch", ActionTouch )
 
 
 			local list_bg = display.newRect( tempGroup, 0, 0, 35, 35 )
 			list_bg:setFillColor( 0.3 )
+
+
 			local list = display.newImageRect( tempGroup, "res/assert/list.png",8/2,34/2)
 		    list.x = background.x+background.contentWidth-15
 		    list.y=background.y+5
@@ -976,6 +1036,7 @@ local function CreateList(list,scrollView)
 
 			if feedArray[i].MkRankLevel ~= nil then
 
+<<<<<<< HEAD
 					Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 			Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
 			Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
@@ -983,6 +1044,12 @@ local function CreateList(list,scrollView)
 
 				Display_Group[#Display_Group].text = "MKRank : "..feedArray[i].MkRankLevel
 			
+=======
+				MKRank.text = "MK Rank : "..feedArray[i].MkRankLevel
+			else
+
+				MKRank.text = "MK Rank : ".."-"
+>>>>>>> 4e4cbe14208680412f1a061aa16ee8282cd630cd
 			end
 
 			
@@ -1212,25 +1279,26 @@ end
 			 if id_value == "Remove Access" then
 
 			    print("response after removing details ",Request_response)
-		        local remove_successful= native.showAlert("Remove", "Contact removed", { CommonWords.ok} , onCompletion)
+		        local remove_successful= native.showAlert("Remove", "Contact removed from the list.", { CommonWords.ok} , onCompletion)
 
 
 			 elseif id_value == "Block Access" then
 
 			    print("response after blocking details ",Request_response)
-				local block_successful = native.showAlert("Block", "Contact blocked successfully.", { CommonWords.ok} , onCompletion)
+				local block_successful = native.showAlert("Block", "This Contact’s Access blocked successfully.", { CommonWords.ok} , onCompletion)
 
 			 end
 		else
-			local block_successful = native.showAlert("Block", "Contact blocked unsuccessfully.", { CommonWords.ok} )
+			local block_successful = native.showAlert("Block", "Blocking of this Contact’s Access failed.", { CommonWords.ok} )
 		end
+
 
 
          if id_value == "Deny Access" then
 
          	 if Request_response == "5" then
 
-         	 	denyaccess = native.showAlert("Deny", "Access Denied", { CommonWords.ok } , onCompletion)
+         	 	denyaccess = native.showAlert("Deny", "Access denied to this Contact.", { CommonWords.ok } , onCompletion)
 
          	 elseif Request_response == "GRANT" then
 
@@ -1242,7 +1310,7 @@ end
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert("Add Request", "Provide Access to the Contact", { CommonWords.ok} , onCompletion)
 
          	 end
 
@@ -1250,7 +1318,7 @@ end
 
 	 	    if Request_response == "5" then
 
-	 	    	grantaccess = native.showAlert(" Grant access", " Access granted successfully", { CommonWords.ok} , onCompletion)
+	 	    	grantaccess = native.showAlert(" Grant access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
@@ -1262,7 +1330,7 @@ end
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert("Add Request", "Provide Access to the Contact", { CommonWords.ok} , onCompletion)
 
          	 end
 
@@ -1270,7 +1338,7 @@ end
 
 	 	    if Request_response == "5" then
 
-	 	    	accessprovided = native.showAlert("Provide access", " Access provided successfully", { CommonWords.ok } , onCompletion)
+	 	    	accessprovided = native.showAlert("Provide access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
@@ -1282,7 +1350,7 @@ end
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert("Add Request", "Provide Access to the Contact", { CommonWords.ok} , onCompletion)
 
          	 end
 
