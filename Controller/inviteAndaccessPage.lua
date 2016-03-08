@@ -927,7 +927,7 @@ local function CreateList(list,scrollView)
 
 			
 
-				Display_Group[#Display_Group].text = "Name : "..feedArray[i].LastName..", "..feedArray[i].FirstName
+				Display_Group[#Display_Group].text = "Name : "..feedArray[i].FirstName..", "..feedArray[i].LastName
 
 			else
 

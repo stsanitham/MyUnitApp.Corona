@@ -12,6 +12,7 @@ local widget = require( "widget" )
 local mime = require("mime")
 local http = require("socket.http")
 local json = require('json')
+local ck_editor = require('Utils.ckeditor')
 
 --------------- Initialization -------------------
 
@@ -214,14 +215,13 @@ BackBtn:setFillColor(Utils.convertHexToRGB(color.Black))
 title = display.newText(sceneGroup,Goals.PageTitle,0,0,native.systemFont,18)
 title.anchorX = 0
 title.x=BackBtn.x+BackBtn.contentWidth/2+5;title.y = BackBtn.y
-title:setFillColor(0)
+title:setFillColor(0)  
 
-Utils.copyDatabaseTo("sample.txt", { filename="sample.txt", baseDir=system.DocumentsDirectory } )
-Utils.copyDatabaseTo("ckeditor.html", { filename="ckeditor.html", baseDir=system.DocumentsDirectory } )
+--Utils.copyDatabaseTo("sample.txt", system.ResourceDirectory,"sample.txt",system.DocumentsDirectory )
+--Utils.copyDatabaseTo("ckeditor.html", system.ResourceDirectory,"ckeditor.html",system.DocumentsDirectory  )
 
-	local test=string.urlEncode( event.params.content )
 
-	local path = system.pathForFile( "sample.txt",system.DocumentsDirectory )
+local path = system.pathForFile( "ckeditor.html",system.DocumentsDirectory )
 
 		-- Open the file handle
 		local file, errorString = io.open( path, "w" )
@@ -231,9 +231,33 @@ Utils.copyDatabaseTo("ckeditor.html", { filename="ckeditor.html", baseDir=system
 		    print( "File error: " .. errorString )
 		else
 		    -- Write data to file
-		    file:write( test )
+		    file:write( ckeditor.htmlContent )
 		    -- Close the file handle
 		    io.close( file )
+
+		end
+
+		file = nil
+
+
+
+
+
+	local test=string.urlEncode( event.params.content )
+
+	local textpath = system.pathForFile( "sample.txt",system.DocumentsDirectory )
+
+		-- Open the file handle
+		local txtfile, txterrorString = io.open( textpath, "w" )
+
+		if not txtfile then
+		    -- Error occurred; output the cause
+		    print( "File error: " .. txterrorString )
+		else
+		    -- Write data to file
+		    txtfile:write( test )
+		    -- Close the file handle
+		    io.close( txtfile )
 
 		    local options =
 					{
