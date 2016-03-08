@@ -3473,7 +3473,10 @@ end
 		if event.phase == "will" then
 
 
-			
+		if doneBg then display.remove(doneBg);doneBg=nil end
+		if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
+		if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
+
 			if List then List:removeSelf( );List=nil end
 			if searchList then searchList:removeSelf( );searchList=nil end
 			if scrollView then scrollView:removeSelf( );scrollView=nil end

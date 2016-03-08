@@ -61,7 +61,7 @@ local function onKeyEventDetail( event )
 
         if phase == "up" then
 
-        if keyName=="back" then
+        if keyName=="back"  then
 
         	composer.hideOverlay( "slideRight", 300 )
             
@@ -136,11 +136,13 @@ local function webListener( event )
         print( "!!!!!!!!" )
         shouldLoad = false
 --base64.decode
+ print( "Before decode : "..url )
+
         updatedresponse = urlDecode(url)
-         print( updatedresponse )
+         print( "Before : "..updatedresponse )
 
 
-        updatedresponse = (string.sub( updatedresponse, 18,updatedresponse:len() ))
+        updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
 
         print( updatedresponse )
 
@@ -214,9 +216,12 @@ title.anchorX = 0
 title.x=BackBtn.x+BackBtn.contentWidth/2+5;title.y = BackBtn.y
 title:setFillColor(0)
 
+Utils.copyDatabaseTo("sample.txt", { filename="sample.txt", baseDir=system.DocumentsDirectory } )
+Utils.copyDatabaseTo("ckeditor.html", { filename="ckeditor.html", baseDir=system.DocumentsDirectory } )
+
 	local test=string.urlEncode( event.params.content )
 
-	local path = system.pathForFile( "sample.txt",system.ResourceDirectory )
+	local path = system.pathForFile( "sample.txt",system.DocumentsDirectory )
 
 		-- Open the file handle
 		local file, errorString = io.open( path, "w" )
@@ -233,7 +238,7 @@ title:setFillColor(0)
 		    local options =
 					{
 					    hasBackground = false,
-					    baseUrl = system.ResourceDirectory,
+					    baseUrl = system.DocumentsDirectory,
 					    urlRequest = webListener
 					}
 					native.showWebPopup( 0, 70, display.viewableContentWidth, display.viewableContentHeight-80, "ckeditor.html", options )
@@ -292,7 +297,7 @@ function scene:hide( event )
 
 			if webView then webView:removeSelf( );webView=nil end
 
-			native.canShowPopup(  )
+			native.cancelWebPopup()
 
 
 		elseif phase == "did" then

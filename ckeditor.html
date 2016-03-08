@@ -12,34 +12,43 @@
 
 <body>
 
-	<textarea cols="80" id="editor1" name="editor1" rows="10">		
+	<textarea cols="80" id="UnitGoals" name="UnitGoals" rows="10">		
 	</textarea>
 
 
 
 	<script>
 
-			function get_action(form) {
 
-
-			 var ckvalue = CKEDITOR.instances.editor1.getData();  
-
-			 var texttemp="corona:close?id=" + ckvalue; 
-
-
-		 form.action = texttemp
-       		
-		}
-		CKEDITOR.replace( 'editor1', {
+		CKEDITOR.replace( 'UnitGoals', {
 			fullPage: true,
 			extraPlugins: 'docprops',
-
-			allowedContent: true,
+			allowedContent: false,
 			height: 300,
+			htmlEncodeOutput: true,
 			width: 350
 		} );
 
-		
+
+
+			function get_action(form) {
+
+
+			//CKEDITOR.instances.UnitGoals.setData("' set");  
+
+
+			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
+
+			//ckvalue = "encodeURIComponent(ckvalue)"
+
+			 var texttemp="corona:close"+ckvalue
+
+
+			 form.action = texttemp
+       		
+			}
+
+
 
 function readTextFile(file)
 {
@@ -53,7 +62,7 @@ function readTextFile(file)
             {
                 var allText = rawFile.responseText;
                  allText = decodeURIComponent((allText).replace(/\+/g, '%20'));
-                CKEDITOR.instances.editor1.setData("'"+allText);  
+                CKEDITOR.instances.UnitGoals.setData(allText);  
             }
         }
     }
@@ -69,7 +78,7 @@ readTextFile("sample.txt");
 
 
 	<form onsubmit="get_action(this);">
-    <input type="submit" />
+        <input type="submit" style="background-color:#e92568; padding:5px; color:#fff; font-weight:600; border:none; margin:10px 110px;">
 	</form>
 
 	<!-- <button id="submit" onclick="myFunction()">Submit</button> -->

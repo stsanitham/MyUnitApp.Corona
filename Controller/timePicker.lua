@@ -3,30 +3,32 @@ timePicker = {}
 local widget = require( "widget" )
 local W = display.contentWidth;H= display.contentHeight
 
-
+print( "######"..os.date( "%p" ))
 local Min = {}
 	local Hour = {}
 	for i = 1,60 do Min[i] = (string.format("%02d",i)) end
 	for j = 1,12 do Hour[j] = (string.format("%02d",j)) end
 
+	local tz = {"AM","PM"}
+
 	local columnData = { 
 		{
 			align = "right",
 			width = 125,
-			startIndex = 5,
+			startIndex = tonumber(string.format("%2d",os.date( "%I" ))),
 			labels = Hour,
 		},
 		{
 			align = "center",
 			width = 70,
-			startIndex = 18,
+			startIndex = tonumber(string.format("%2d",os.date( "%M" ))),
 			labels = Min,
 		},
 		{
 			align = "center",
 			width = 65,
-			startIndex = 2,
-			labels = {"AM","PM"},
+			startIndex = table.indexOf( tz, os.date( "%p" ) ),
+			labels = tz,
 		},
 	}
 

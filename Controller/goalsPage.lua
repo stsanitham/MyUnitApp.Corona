@@ -228,6 +228,7 @@ function get_Goals(response)
 
 		webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
 		webView.anchorY=0
+		webView.hasBackground=false
 		webView:request( "goals.html", system.DocumentsDirectory )
 		sceneGroup:insert( webView )
 

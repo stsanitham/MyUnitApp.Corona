@@ -636,15 +636,13 @@ local function RequestProcess()
 
 
 							end
-
-							
-							
+					
 						
         				end
         			
 					end
 
-						if event.phase == "ended" or event.phase=="submitted" then
+					if event.phase == "ended" or event.phase=="submitted" then
 
 					if testflag == true then
 
