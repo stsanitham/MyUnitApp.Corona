@@ -877,7 +877,6 @@ function scene:show( event )
 					menuArray_display[#menuArray_display].name = "Google +"
 					menuArray_display[#menuArray_display].id="googlePlusPage"
 
-
 					Google_icon = display.newImageRect("res/assert/google+.png",15,15)
 					Google_icon.anchorX = 0
 					Google_icon.x=5
@@ -945,8 +944,9 @@ function scene:show( event )
 		MainGroup:insert(sceneGroup)
 
 	end
+	
 
-	function scene:hide( event )
+		function scene:hide( event )
 
 		local sceneGroup = self.view
 		local phase = event.phase

@@ -375,6 +375,7 @@ local function RequestProcess()
 
 
 
+
 				local function textfield( event )
 
 					if ( event.phase == "began" ) then
@@ -407,39 +408,64 @@ local function RequestProcess()
 
 							if current_textField then
 
-					       			if(current_textField.id == "Comments") then
+								if testflag == true then
+
+									testflag = false
+
+									if(event.target.id == "Unit Number / Director name") then
+																				
+										Webservice.GET_UNITWISE_REGISTER(UnitNumber.text, getunitnumberresponse)
+
+									end
+								end
+
+
+					       			if(event.target.id == "Comments") then
 
 										scrollTo( 0 )
 
 										native.setKeyboardFocus( nil )
 
-									elseif current_textField.id == "Unit Number / Director name" then
+									elseif event.target.id == "Unit Number / Director name" then
 
 								        native.setKeyboardFocus( FirstName )
 
-									elseif(current_textField.id == "First Name") then
+
+									elseif(event.target.id == "First Name") then
 
 										native.setKeyboardFocus(Name)
 
-									elseif(current_textField.id == "Last Name") then
+
+									elseif(event.target.id == "Last Name") then
 
 										native.setKeyboardFocus(Email)
 
-									elseif(current_textField.id == "Email") then
+
+									elseif(event.target.id == "Email") then
+
+										native.setKeyboardFocus( nil )
 
 										native.setKeyboardFocus(Phone)
 
-									elseif(current_textField.id == "Phone") then
+
+									elseif(event.target.id == "Phone") then
 
 										native.setKeyboardFocus(Comment)
 
-							   elseif (current_textField.id == "Director Name") then
 
+							   elseif (event.target.id == "Director Name") then
+
+							   	
+							   	native.setKeyboardFocus( nil )
+
+							   	
 							   	native.setKeyboardFocus( nil )
 
 								native.setKeyboardFocus( DirectorEmail )
 
-							    elseif (current_textField.id == "Director Email") then
+
+							    elseif (event.target.id == "Director Email") then
+
 
 								native.setKeyboardFocus( nil )
 
@@ -448,12 +474,27 @@ local function RequestProcess()
 								end
 
 								scrollTo( 0 )
+		
 
 						elseif event.phase == "ended" then
 
 							scrollTo( 0 )
 
-						if(current_textField.id == "Comments") then
+
+       						 event.target:setSelection(event.target.text:len(),event.target.text:len())
+
+							if testflag == true then
+
+								testflag = false
+
+								if(event.target.id == "Unit Number / Director name") then
+																			
+									Webservice.GET_UNITWISE_REGISTER(UnitNumber.text, getunitnumberresponse)
+
+								end
+							end
+
+						if(event.target.id == "Comments") then
 
 										scrollTo( 0 )
 										
@@ -468,7 +509,7 @@ local function RequestProcess()
         				
         			
 
-        				if current_textField.id ~= "Comments" then
+        				if event.target.id ~= "Comments" then
         					if event.text:len() > 50 then
 
 								event.target.text = event.target.text:sub(1,50)
@@ -477,7 +518,7 @@ local function RequestProcess()
 
 						end
 
-	       				if(current_textField.id == "Comments") then
+	       				if(event.target.id == "Comments") then
         					if event.text:len() > 160 then
 
 								event.target.text = event.target.text:sub(1,160)
@@ -488,70 +529,59 @@ local function RequestProcess()
 								native.setKeyboardFocus( nil )
 							end
 
-						elseif(current_textField.id =="Phone") then
+						elseif(event.target.id =="Phone") then
 
-							if event.target.text:len() > event.startPosition then
+							
+				local tempvalue = event.target.text:sub(1,1)
 
-									print( "here" )
-
-									local previousText=event.target.text
-
-									event.target:removeSelf( );event.target=nil
-
-									Phone = createField()
-									Phone.id="Phone"
-									Phone.size=14	
-									Phone:setReturnKey( "next" )
-									Phone.hasBackground = false
-									Phone.placeholder=RequestAccess.Phone_placeholder
-									Phone.inputType = "number"
-									MainGroup:insert( Phone )
-
-									Phone.text=previousText:sub(1,event.startPosition )
+			if event.target.text:len() > event.startPosition then
 
 
-									Phone:addEventListener( "userInput", textfield )
+									-- local previousText=event.target.text
+									
+									native.setKeyboardFocus(nil)
 
-									event.target = Phone
-									native.setKeyboardFocus(Phone)
+							
+
+									if event.startPosition == 6 or event.startPosition == 11 then
+
+										Phone.text=event.target.text:sub(1,event.startPosition-1 ).." "..event.target.text:sub(event.startPosition,event.startPosition )
+
+									else
+
+										Phone.text=event.target.text:sub(1,event.startPosition)
+
+									end
 
 									
 
-								end
-							
+										event.target = Phone
 
-							local tempvalue = event.target.text:sub(1,1)
+									native.setKeyboardFocus(Phone)
+									
+									
+									
+						
 
-							if (event.target.text:len() == 3) then
+			elseif (event.target.text:len() == 3) then
 
 								if (tempvalue ~= "(") then
 
+									local previousText=event.text
+							
 
-									--event.target.text = "("..event.target.text..") "
+									native.setKeyboardFocus(nil)
 
-									local previousText=event.target.text
+									event.target.text="("..event.target.text..") "
 
-									Phone:removeSelf( );Phone=nil
+									
 
-									Phone = createField()
-									Phone.id="Phone"
-									Phone.size=14	
-									Phone:setReturnKey( "next" )
-									Phone.hasBackground = false
-									Phone.placeholder=RequestAccess.Phone_placeholder
-									Phone.inputType = "number"
-									MainGroup:insert( Phone )
-
-									Phone.text="("..previousText..") "
-
-
-									Phone:addEventListener( "userInput", textfield )
+										event.target = Phone
 
 									native.setKeyboardFocus(Phone)
-
-									event.target = Phone
-
-
+									
+									
+						
 							
 								else
 
@@ -565,23 +595,15 @@ local function RequestProcess()
 
 								local previousText=event.target.text
 
-									Phone:removeSelf( );Phone=nil
-
-									Phone = createField()
-									Phone.id="Phone"
-									Phone.size=14	
-									Phone:setReturnKey( "next" )
-									Phone.hasBackground = false
-									Phone.placeholder=RequestAccess.Phone_placeholder
-									Phone.inputType = "number"
-									MainGroup:insert( Phone )
+									native.setKeyboardFocus(nil)
 
 									Phone.text=previousText:sub(1,4)..") "..previousText:sub(5,5)
 
 
-									Phone:addEventListener( "userInput", textfield )
+										event.target = Phone
 
 									native.setKeyboardFocus(Phone)
+									
 
 									event.target = Phone
 
@@ -594,30 +616,26 @@ local function RequestProcess()
 
 
 									local previousText=event.target.text
-
-									Phone:removeSelf( );Phone=nil
-
-									Phone = createField()
-									Phone.id="Phone"
-									Phone.size=14	
-									Phone:setReturnKey( "next" )
-									Phone.hasBackground = false
-									Phone.placeholder=RequestAccess.Phone_placeholder
-									Phone.inputType = "number"
-									MainGroup:insert( Phone )
+								
+									native.setKeyboardFocus(nil)
 
 									Phone.text=previousText.."- "
 
-
-									Phone:addEventListener( "userInput", textfield )
+										event.target = Phone
 
 									native.setKeyboardFocus(Phone)
+							
 
 									event.target = Phone
 
 
 
+
 							elseif event.target.text:len() == 10 then
+
+								print( "here" )
+
+								native.setKeyboardFocus(nil)
 
 								if string.find(event.target.text,"-") then
 
@@ -626,38 +644,27 @@ local function RequestProcess()
 
 									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
 								end
-															
 
-							end
 
-							if event.target.text:len() > 15 then
+								event.target = Phone
+								native.setKeyboardFocus(Phone)
+								event.target = Phone
+						
+
+							elseif event.target.text:len() > 15 then
 
 								event.target.text = event.target.text:sub(1,15)
 
 
 							end
-
 							
-							
+								
 						
         				end
         			
 					end
 
-						if event.phase == "ended" or event.phase=="submitted" then
-
-					if testflag == true then
-
-						testflag = false
-
-						if(current_textField.id == "Unit Number / Director name") then
-																	
-							Webservice.GET_UNITWISE_REGISTER(UnitNumber.text, getunitnumberresponse)
-
-						end
-					end
-
-				   end
+						
 				end
 
 

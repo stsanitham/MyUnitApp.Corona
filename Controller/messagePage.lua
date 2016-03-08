@@ -324,6 +324,7 @@ end
 		Message_content.text = ""
 
 		Message_content.placeholder = Message.Message_placeholder 
+		
 		feed_url.isVisible = true
 
 		feed_url.text = ""

@@ -406,7 +406,7 @@ end
 
 	 	    if Request_response == "5" then
 
-	 	    	accessprovided = native.showAlert("Provide access", " Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
+	 	    	accessprovided = native.showAlert("Provide access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 

@@ -3,7 +3,7 @@ ApplicationConfig = {}
 
 ----------Dev---------------
 
-----[[
+--[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -17,8 +17,9 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 --]]
 
 
+
 -----Stagging--------
---[[
+----[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -30,6 +31,8 @@ ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28
 ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 --]]
+
+
 
 --[[---------Android Live----------------
 
@@ -54,6 +57,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-4"
 --]]
 
 
+
 --[[---------IOS Live----------------
 
 IsLive = true
@@ -75,6 +79,7 @@ ApplicationConfig.API_PRIVATE_KEY = "i67cHiLg5p7XkrnLrW2L6x4xNsqpNworZgboKHGHpdc
 ApplicationConfig.Analysic_TrackId = "UA-51545075-4"
 
 --]]
+
 
 
 ApplicationConfig.testUrl = ApplicationConfig.BASE_URL.."/Therapy/List"

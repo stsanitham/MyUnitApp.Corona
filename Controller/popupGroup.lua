@@ -164,73 +164,59 @@ end
 
 					elseif ( event.phase == "submitted" ) then
 
-						if(current_textField.id =="Password") then
+							if(current_textField.id =="Password") then
 
-                               native.setKeyboardFocus(nil)
-						end
+	                               native.setKeyboardFocus(nil)
+							end
 
-						if(current_textField.id =="Email Detail") then
+							if(current_textField.id =="Email Detail") then
 
-                              -- native.setKeyboardFocus(nil)
-                              Webservice.CheckExistsRequestStatus(EmailDetailValue.text,getemailexistresponse)
-
-						end
-
-					elseif event.phase == "ended" then
-										
-                        event.target:setSelection(event.target.text:len(),event.target.text:len())
-
-        			elseif ( event.phase == "editing" ) then
-
-						-- if(current_textField.id =="Password") then
-
-						-- 	print("password focus is here")
-
-      --   				    if event.target.text == "* Password is required" or event.target.text == "* Password should contain atleast 6 characters" then
-
-						-- 		event.target.text = ""
-
-						--     end
-
-						-- end
-
-						 if(current_textField.id =="Phone Detail") then
-
-						--	print(event.target.text)
-
-							local tempvalue = event.target.text:sub(1,1)
-
-							if event.target.text:len() > event.startPosition then
-
-							native.setKeyboardFocus(nil)
-
-
-							if event.startPosition == 6 or event.startPosition == 11 then
-
-							PhoneDetailValue.text=event.target.text:sub(1,event.startPosition-1 ).." "..event.target.text:sub(event.startPosition,event.startPosition )
-
-							else
-
-							PhoneDetailValue.text=event.target.text:sub(1,event.startPosition)
+	                              -- native.setKeyboardFocus(nil)
+	                              Webservice.CheckExistsRequestStatus(EmailDetailValue.text,getemailexistresponse)
 
 							end
 
+					elseif event.phase == "ended" then
+										
+                         	event.target:setSelection(event.target.text:len(),event.target.text:len())
+
+        			elseif ( event.phase == "editing" ) then
+
+						 if(current_textField.id =="Phone Detail") then
 
 
-							event.target = PhoneDetailValue
+								local tempvalue = event.target.text:sub(1,1)
 
-							native.setKeyboardFocus(PhoneDetailValue)
-
-
+									if event.target.text:len() > event.startPosition then
 
 
+									-- local previousText=event.target.text
+									
+									native.setKeyboardFocus(nil)
+							
 
+									if event.startPosition == 6 or event.startPosition == 11 then
+
+										PhoneDetailValue.text=event.target.text:sub(1,event.startPosition-1 ).." "..event.target.text:sub(event.startPosition,event.startPosition )
+
+									else
+
+										PhoneDetailValue.text=event.target.text:sub(1,event.startPosition)
+
+									end
+
+
+										event.target = PhoneDetailValue
+
+									native.setKeyboardFocus(PhoneDetailValue)
+									
+									
 							elseif (event.target.text:len() == 3) then
 
-							                  if (tempvalue ~= "(") then
+								if (tempvalue ~= "(") then
 
-													local previousText=event.text
-														
+									local previousText=event.text
+							
 
 									native.setKeyboardFocus(nil)
 
@@ -241,9 +227,7 @@ end
 										event.target = PhoneDetailValue
 
 									native.setKeyboardFocus(PhoneDetailValue)
-							
 									
-						
 							
 								else
 
@@ -286,7 +270,7 @@ end
 										event.target = PhoneDetailValue
 
 									native.setKeyboardFocus(PhoneDetailValue)
-								
+							
 
 									event.target = PhoneDetailValue
 
@@ -308,14 +292,10 @@ end
 								end
 
 
-										event.target = PhoneDetailValue
-
-									native.setKeyboardFocus(PhoneDetailValue)
-									
-
-									event.target = PhoneDetailValue
+								event.target = PhoneDetailValue
+								native.setKeyboardFocus(PhoneDetailValue)
+								event.target = PhoneDetailValue
 						
-
 
 							elseif event.target.text:len() > 15 then
 
@@ -323,9 +303,10 @@ end
 
 
 							end
-
 							
-				 	end
+								
+						
+        				end
         ------------------------------------------for password ---------------------------------------------------
 
 						if(current_textField.id == "Password") then
