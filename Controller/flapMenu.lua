@@ -633,7 +633,7 @@ function scene:show( event )
 			menuArray_display[#menuArray_display].name = "GRANT"
 			menuArray_display[#menuArray_display].id="inviteAndaccessPage"
 
-			invite_icon = display.newImageRect("res/assert/message.png",15,15)
+			invite_icon = display.newImageRect("res/assert/contacts-access.png",15,15)
 			invite_icon.anchorX = 0
 			invite_icon:setFillColor(1,1,1)
 			invite_icon.x=5
@@ -660,7 +660,7 @@ function scene:show( event )
 			menuArray_display[#menuArray_display].name = "DENY"
 			menuArray_display[#menuArray_display].id="inviteAndaccessPage"
 
-			invite_icon = display.newImageRect("res/assert/message.png",15,15)
+			invite_icon = display.newImageRect("res/assert/DENIDE-ACC.png",15,15)
 			invite_icon.anchorX = 0
 			invite_icon:setFillColor(1,1,1)
 			invite_icon.x=5
@@ -687,7 +687,7 @@ function scene:show( event )
 			menuArray_display[#menuArray_display].name = "OPEN"
 			menuArray_display[#menuArray_display].id="inviteAndaccessPage"
 
-			invite_icon = display.newImageRect("res/assert/message.png",15,15)
+			invite_icon = display.newImageRect("res/assert/PENDING.png",15,15)
 			invite_icon.anchorX = 0
 			invite_icon:setFillColor(1,1,1)
 			invite_icon.x=5
@@ -714,7 +714,7 @@ function scene:show( event )
 			menuArray_display[#menuArray_display].name = "ADDREQUEST"
 			menuArray_display[#menuArray_display].id="inviteAndaccessPage"
 
-			invite_icon = display.newImageRect("res/assert/message.png",15,15)
+			invite_icon = display.newImageRect("res/assert/team-men-Access.png",15,15)
 			invite_icon.anchorX = 0
 			invite_icon:setFillColor(1,1,1)
 			invite_icon.x=5
@@ -728,7 +728,7 @@ function scene:show( event )
 			
 			flapScroll:insert( invite_text )
 
-					--Add New Access
+				--[[]	--Add New Access
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
@@ -753,7 +753,7 @@ function scene:show( event )
 			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
 			invite_text.y = invite_icon.y
 			
-			flapScroll:insert( invite_text )
+			flapScroll:insert( invite_text )]]
 
 			end
 
@@ -882,7 +882,7 @@ function scene:show( event )
 					Google_icon.anchorX = 0
 					Google_icon.x=5
 					Google_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-					panel:insert( Google_icon )
+					flapScroll:insert( Google_icon )
 
 					Googl_text = display.newText(Google_Plus.PageTitle,0,0,"Open Sans Regular",16)
 					Googl_text.anchorX = 0

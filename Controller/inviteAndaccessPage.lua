@@ -30,7 +30,11 @@ local RecentTab_Topvalue = 72
 
 local groupArray={}
 
+local displayGroup={}
+
 local feedArray={}
+
+
 
 local status = "GRANT"
 
@@ -875,11 +879,13 @@ local function CreateList(list,scrollView)
 
 			groupArray[#groupArray+1] = display.newGroup()
 
+			local Display_Group = {}
+
 			local tempGroup = groupArray[#groupArray]
-			local bgheight = 100
+			local bgheight = 105
 			
 		
-			local background = display.newRect(tempGroup,0,0,W-10,bgheight)
+			local background = display.newImageRect(tempGroup,"res/assert/cont-list.png",W-10,bgheight)
 			local Initial_Height = 1
 
 			if(groupArray[#groupArray-1]) ~= nil then
@@ -890,6 +896,7 @@ local function CreateList(list,scrollView)
 			background.anchorX = 0
 			background.x=5;background.y=Initial_Height
 			background.strokeWidth = 1
+			--background.alpha=
 			background:setStrokeColor( Utils.convertHexToRGB("#d2d3d4") )
 			background:setFillColor(1)
 			background.value = feedArray[i]
@@ -900,54 +907,58 @@ local function CreateList(list,scrollView)
 			local list_bg = display.newRect( tempGroup, 0, 0, 35, 35 )
 			list_bg:setFillColor( 0.3 )
 			local list = display.newImageRect( tempGroup, "res/assert/list.png",8/2,34/2)
-		    list.x = background.x+background.contentWidth-10
+		    list.x = background.x+background.contentWidth-15
 		    list.y=background.y+5
 		    list.anchorY=0
-		    list_bg.x=list.x-5
+		    list_bg.x=list.x-10
 		    list_bg.y=list.y+5
 		    list_bg.alpha=0.01
 		    list_bg.value = feedArray[i]
 		    list_bg.id=i
 		    list_bg:addEventListener( "touch", ListmenuTouch )
 
+		    	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+				Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=background.y+5
+				Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-			local Name = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
-			Name.anchorX=0;Name.anchorY=0
-			Name.x=background.x+5;Name.y=background.y+5
-			Name:setFillColor( 0.3 )
 
 			if feedArray[i].FirstName ~= nil then
 
-				Name.text = "Name : "..feedArray[i].LastName..", "..feedArray[i].FirstName
+			
+
+				Display_Group[#Display_Group].text = "Name : "..feedArray[i].LastName..", "..feedArray[i].FirstName
 
 			else
 
-				Name.text = "Name : "..feedArray[i].LastName
-
+				Display_Group[#Display_Group].text = "Name : "..feedArray[i].LastName
+			
 			end
 
-			local Email = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
-			Email.anchorX=0;Email.anchorY=0
-			Email.x=background.x+5;Email.y=Name.y+Name.contentHeight+5
-			Email:setFillColor( 0.3 )
+			
 
 			if feedArray[i].EmailAddress ~= nil then
 
-				Email.text = "Email : "..feedArray[i].EmailAddress
-            else
-				Email.text = "Email : ".."-"
+				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+				Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+				Display_Group[#Display_Group]:setFillColor( 0.3 )
+				Display_Group[#Display_Group].text = "Email : "..feedArray[i].EmailAddress
+        
 
 			end
 
 
-			local Phone = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
-			Phone.anchorX=0;Phone.anchorY=0
-			Phone.x=background.x+5;Phone.y=Email.y+Email.contentHeight+5
-			Phone:setFillColor( 0.3 )
+		
 
-			if feedArray[i].PhoneNumber ~= nil then
+			if feedArray[i].PhoneNumber ~= nil and feedArray[i].PhoneNumber ~= "" then
 
-				Phone.text = "Phone : "..feedArray[i].PhoneNumber
+				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+				Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+				Display_Group[#Display_Group]:setFillColor( 0.3 )
+
+				Display_Group[#Display_Group].text = "Phone : "..feedArray[i].PhoneNumber
 
 			end
 
@@ -961,34 +972,37 @@ local function CreateList(list,scrollView)
 			-- end
 
 
-			local MKRank = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
-			MKRank.anchorX=0;MKRank.anchorY=0
-			MKRank.x=background.x+5;MKRank.y=Phone.y+Phone.contentHeight+5
-			MKRank:setFillColor( 0.3 )
+		
 
 			if feedArray[i].MkRankLevel ~= nil then
 
-				MKRank.text = "MKRank : "..feedArray[i].MkRankLevel
-			else
+					Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+			Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+			Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+			Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-				MKRank.text = "MKRank : ".."-"
+				Display_Group[#Display_Group].text = "MKRank : "..feedArray[i].MkRankLevel
+			
 			end
 
-			local ActiveOn = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
-			ActiveOn.anchorX=0;ActiveOn.anchorY=0
-			ActiveOn.x=background.x+5;ActiveOn.y=MKRank.y+MKRank.contentHeight+5
-			ActiveOn:setFillColor( 0.3 )
+			
 
 			if feedArray[i].MkRankLevel ~= nil then
 
 				local time = Utils.makeTimeStamp(feedArray[i].UpdateTimeStamp)
 
-				ActiveOn.text = "Activity On : "..tostring(os.date("%m/%d/%Y %I:%m %p",time))
+				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+			
+			Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+			Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+			Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-			else
+				Display_Group[#Display_Group].text = "Activity On : "..tostring(os.date("%m/%d/%Y %I:%m %p",time))
 
-                ActiveOn.text = "Activity On : ".."-"
+	
 			end
+
+			background.height = background.height-((background.height/5)*(5-#Display_Group))+5
 
 			   group =  Createmenu(list_bg)
 

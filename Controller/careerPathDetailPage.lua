@@ -300,25 +300,6 @@ end
 
 
 
-	local function onKeyEventDetail( event )
-
-	        local phase = event.phase
-	        local keyName = event.keyName
-
-	        if phase == "up" then
-
-	        if keyName=="back" then
-
-	        	composer.hideOverlay( "slideRight", 300 )
-
-	        	 return true
-	            
-	        end
-
-	    end
-
-	        return false
-	 end
 
 
 
@@ -1171,6 +1152,25 @@ end
 
 
 
+	local function onKeycareerDetail( event )
+
+	        local phase = event.phase
+	        local keyName = event.keyName
+
+	        if phase == "up" then
+
+	        if keyName=="back" then
+
+	        	composer.hideOverlay( "slideRight", 300 )
+
+	        	 return true
+	            
+	        end
+
+	    end
+
+	        return false
+	 end
 
 
 ------------------------------------------------------
@@ -1831,7 +1831,6 @@ function scene:show( event )
 
 				map_close_bg:addEventListener("touch",MapShowing)
 
-			    Runtime:addEventListener("key",onKeyEventDetail)
 			
 			    	if not isSimulator then
 
@@ -1888,6 +1887,8 @@ function scene:show( event )
 
 		ga.enterScene("Unit Career Path")
 
+	    Runtime:addEventListener("key",onKeycareerDetail)
+
 		MainGroup:insert(sceneGroup)
 
 			Webservice.GET_ACTIVE_TEAMMEMBERDETAILS(contactId,get_avtiveTeammemberDetails)
@@ -1925,7 +1926,7 @@ function scene:hide( event )
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 
-			Runtime:removeEventListener("key",onKeyEventDetail)
+			Runtime:removeEventListener("key",onKeycareerDetail)
 
 		end	
 
