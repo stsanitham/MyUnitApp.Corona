@@ -1254,6 +1254,11 @@ local function TouchAction( event )
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
 						AccessCode.isVisible = true
+					elseif SelectEvent.text:lower( ) == "task" then
+
+							Where.isVisible = false
+						Addinvitees.isVisible = false
+
 					end
 
 				end
@@ -1276,6 +1281,10 @@ local function TouchAction( event )
 						if SelectEvent.text:lower( ) == "call" then
 							Phone.isVisible = true
 							AccessCode.isVisible = true
+						elseif SelectEvent.text:lower( ) == "task" then
+
+							Where.isVisible = false
+						Addinvitees.isVisible = false
 						end
 
 					end
@@ -1292,29 +1301,29 @@ local function TouchAction( event )
 									AccessCode.isVisible = true
 								end
 
-							if List.isVisible == false then
-									List.isVisible = true
-									List.x = event.target.x
-									List.y = event.target.y+event.target.contentHeight+1.3-20
+								if List.isVisible == false then
+										List.isVisible = true
+										List.x = event.target.x
+										List.y = event.target.y+event.target.contentHeight+1.3-20
 
-										
-									List.arrayName = durationMin
-									List.textFiled = Event_to_time
+											
+										List.arrayName = durationMin
+										List.textFiled = Event_to_time
 
-										List.contentWidth =80
-										--List.arrayName = priorityArray
-										--List.textFiled = PriorityLbl
-										List_bg.y = List.y
-										List_bg.isVisible = true
+											List.contentWidth =80
+											--List.arrayName = priorityArray
+											--List.textFiled = PriorityLbl
+											List_bg.y = List.y
+											List_bg.isVisible = true
+											List:deleteAllRows()
+											CreateList(event,List,List_bg)
+									
+								else
+										List_bg.isVisible = false
 										List:deleteAllRows()
-										CreateList(event,List,List_bg)
-								
-						else
-								List_bg.isVisible = false
-								List:deleteAllRows()
-								List.isVisible = false
+										List.isVisible = false
 
-						end
+								end
 
 					else
 
@@ -1352,6 +1361,11 @@ local function TouchAction( event )
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
 						AccessCode.isVisible = true
+					elseif SelectEvent.text:lower( ) == "task" then
+
+							Where.isVisible = false
+						Addinvitees.isVisible = false
+
 					end
 
 				end
@@ -1381,6 +1395,12 @@ local function TouchAction( event )
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
 						AccessCode.isVisible = true
+
+					elseif SelectEvent.text:lower( ) == "task" then
+
+							Where.isVisible = false
+						Addinvitees.isVisible = false
+						
 					end
 
 				end
@@ -1803,18 +1823,32 @@ local function searchfunction( event )
 
 		searchList.textFiled = event.target
 
-		searchList.height = #searchArray*36
+		searchList.y = event.target.y
+
+		--searchList.height = 36 * #searchArray
 
 		if #searchArray >= 3 then
-			searchList.height = 3*36
 
-			if event.text:len() > 1 then
-				searchList:scrollToIndex( 1, 100 )
-			end
+			searchList.height = 36 * 3
+
+				searchList:scrollToY( { y=searchList:getContentPosition()-event.target.contentHeight/3, time=200 } )
+			
+		else
+
+				
+			searchList.height = 36 * #searchArray
+
+	
+			searchList:scrollToY( { y=searchList:getContentPosition()-event.target.contentHeight/3, time=200 } )
+			--searchList:scrollToIndex( 1, 200 )
+
+
 		end
 
-				searchList.y = event.target.y-event.target.contentHeight+25
 
+
+				--searchList:scrollTo( "top", { time=200} )
+			
 				
 
     	--searchArray
@@ -3034,7 +3068,7 @@ function scene:show( event )
 		        hideBackground = true,
 		        isBounceEnabled = false,
 		        noLines = true,
-		      --  bottomPadding = 5,
+		      -- bottomPadding = 20,
 
 
 		       -- listener = scrollListener

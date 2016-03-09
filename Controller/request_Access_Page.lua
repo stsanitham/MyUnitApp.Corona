@@ -384,8 +384,6 @@ local function RequestProcess()
 
 							event.target:setTextColor(color.black)
 
-							current_textField = nil
-
 							current_textField = event.target;
 
 
@@ -395,14 +393,7 @@ local function RequestProcess()
 								event.target.text=""
 							end
 
-							if(current_textField.id == "Comments") then
-							
-									current_textField.text = ""
-							
-								scrollTo( -100 )
-
-							end
-
+				
 
 					elseif ( event.phase == "submitted" ) then
 
@@ -418,6 +409,17 @@ local function RequestProcess()
 
 									end
 								end
+
+									if testflag == true then
+
+								testflag = false
+
+								if(current_textField.id == "Unit Number / Director name") then
+																			
+									Webservice.GET_UNITWISE_REGISTER(UnitNumber.text, getunitnumberresponse)
+
+								end
+							end
 
 
 					       			if(event.target.id == "Comments") then
@@ -480,6 +482,16 @@ local function RequestProcess()
 
 							scrollTo( 0 )
 
+								if testflag == true then
+
+								testflag = false
+
+								if(current_textField.id == "Unit Number / Director name") then
+																			
+									Webservice.GET_UNITWISE_REGISTER(UnitNumber.text, getunitnumberresponse)
+
+								end
+							end
 
        						 event.target:setSelection(event.target.text:len(),event.target.text:len())
 
@@ -506,7 +518,8 @@ local function RequestProcess()
 
         			elseif ( event.phase == "editing" ) then
 
-        				
+			
+								
         			
 
         				if event.target.id ~= "Comments" then
@@ -519,11 +532,13 @@ local function RequestProcess()
 						end
 
 	       				if(event.target.id == "Comments") then
-        					if event.text:len() > 160 then
+       --  					if event.text:len() > 160 then
 
-								event.target.text = event.target.text:sub(1,160)
+							-- 	event.target.text = event.target.text:sub(1,160)
 
-							end
+							-- end
+
+							scrollTo( -100 )
 
 							if (event.newCharacters=="\n") then
 								native.setKeyboardFocus( nil )
@@ -532,9 +547,9 @@ local function RequestProcess()
 						elseif(event.target.id =="Phone") then
 
 							
-				local tempvalue = event.target.text:sub(1,1)
+						local tempvalue = event.target.text:sub(1,1)
 
-			if event.target.text:len() > event.startPosition then
+					if event.target.text:len() > event.startPosition then
 
 
 									-- local previousText=event.target.text
@@ -663,20 +678,7 @@ local function RequestProcess()
         			
 					end
 
-					if event.phase == "ended" or event.phase=="submitted" then
-
-					if testflag == true then
-
-						testflag = false
-
-						if(current_textField.id == "Unit Number / Director name") then
-																	
-							Webservice.GET_UNITWISE_REGISTER(UnitNumber.text, getunitnumberresponse)
-
-						end
-					end
-
-				   end
+					
 
 				end
 
@@ -1157,12 +1159,14 @@ function scene:create( event )
 	sceneGroup:insert(Comment_bg)
 
 	Comment = native.newTextBox(W/2+3, Comment_bg.y, W-20, 70 )
-	Comment.id = "Comments"
+	Comment.placeholder=RequestAccess.Comment_placeholder
+	Comment.isEditable = true
 	Comment.size=14	
+	Comment.id = "Comments"
 	Comment.hasBackground = false
 	Comment:setReturnKey( "next" )
-	Comment.isEditable = true
-	Comment.placeholder=RequestAccess.Comment_placeholder
+	
+	
 	sceneGroup:insert(Comment)
 
 

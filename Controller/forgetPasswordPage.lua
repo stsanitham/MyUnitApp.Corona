@@ -364,7 +364,7 @@ function scene:create( event )
 		UnitnumberField.placeholder=LoginPage.Unitnumber_placeholder
 		UnitnumberField.value=""
 		UnitnumberField.size=14
-		UnitnumberField:setReturnKey( "go" )
+		UnitnumberField:setReturnKey( "next" )
 		UnitnumberField.hasBackground=false
 		sceneGroup:insert(UnitnumberField)
 		UnitnumberField.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+40;UnitnumberField.y=UnitNumber_bg.y

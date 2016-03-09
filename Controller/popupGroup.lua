@@ -185,6 +185,8 @@ end
 						 if(current_textField.id =="Phone Detail") then
 
 
+						 		print( "here : "..event.startPosition 	)
+
 								local tempvalue = event.target.text:sub(1,1)
 
 									if event.target.text:len() > event.startPosition then
@@ -199,6 +201,8 @@ end
 
 										PhoneDetailValue.text=event.target.text:sub(1,event.startPosition-1 ).." "..event.target.text:sub(event.startPosition,event.startPosition )
 
+									elseif event.startPosition == 10 then
+											print( "###########" )
 									else
 
 										PhoneDetailValue.text=event.target.text:sub(1,event.startPosition)
@@ -211,7 +215,7 @@ end
 									native.setKeyboardFocus(PhoneDetailValue)
 									
 									
-							elseif (event.target.text:len() == 3) then
+							elseif (event.startPosition == 3) then
 
 								if (tempvalue ~= "(") then
 
@@ -235,7 +239,7 @@ end
 
 								end
 
-							elseif event.target.text:len() == 5 and (tempvalue == "(") then
+							elseif event.startPosition == 5 and (tempvalue == "(") then
 
 								if event.target.text:sub(5,5) ~= ")" then
 
@@ -258,7 +262,7 @@ end
 								end
 
 
-							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
+							elseif event.startPosition == 9 and not string.find(event.target.text,"-") then
 
 
 									local previousText=event.target.text
@@ -277,15 +281,15 @@ end
 
 
 
-							elseif event.target.text:len() == 10 then
+							elseif event.startPosition == 10 then
 
-								print( "here" )
+								
 
 								native.setKeyboardFocus(nil)
 
 								if string.find(event.target.text,"-") then
 
-									event.target.text = event.target.text:sub(1,9)
+									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
 								else
 
 									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
@@ -297,7 +301,7 @@ end
 								event.target = PhoneDetailValue
 						
 
-							elseif event.target.text:len() > 15 then
+							elseif event.startPosition > 15 then
 
 								event.target.text = event.target.text:sub(1,15)
 
@@ -334,14 +338,12 @@ end
 
 		    	isSentMail = tostring(switch.isOn)
 
-		    	print("Sent mail switch",isSentMail)
 		    end
 
 		    if (switch.id == "text_Checkbox" ) then
 
 		    	isSentText = tostring(switch.isOn)
 
-		    	print("Sent text switch",isSentText)
 		    	
 		    end
 		 end
@@ -352,7 +354,6 @@ end
 
          	generatedPassword = response
 
-         	print("GENERATED PASSWORD OUTPUT ",generatedPassword)
 
          	if PasswordValue.text == "* Password is required" or PasswordValue.text == "* Password should contain atleast 6 characters" then
 
@@ -404,7 +405,6 @@ end
 			     emailnotifybox.isVisible = false
 			     emailnotifytext.isVisible = false
 
-			     print("here when invisible")
 
 	              PhoneDetail_bg.y =  EmailDetail_bottom.y + EmailDetail_bottom.contentHeight+10
 				  PhoneDetail_titlestar.y= PhoneDetail_bg.y
@@ -436,7 +436,6 @@ end
 
 		    else 
 
-			    print("here when isVisible")
 				emailnotifybox.isVisible = true
 				emailnotifytext.isVisible = true
 
@@ -480,7 +479,6 @@ end
 
 		     SetError("* ".."Phone number is required",PhoneDetailValue)
 
-             print("phone value is null , focus is here")
 		     textnotifybox.isVisible = false
 		     textnotifytext.isVisible = false
 
@@ -507,7 +505,6 @@ end
 
 			  if popupText.text == "Deny Access" then
 
-		     	print("deny access , no phone number [1]1[1][1][1][1][1][1][1][1]1[1]1[1]1[]11[1]1[1]1[11[1]")
 
 		      Password_bg.isVisible = false
 		      Password_titlestar.isVisible = false
@@ -526,7 +523,6 @@ end
 
 			 elseif popupText.text == "Provide Access" then
 
-			 	print("in provide access section")
 
 			 	Requesteddate_bg.isVisible = false
 			 	RequesteddateValue.isVisible = false
@@ -546,7 +542,6 @@ end
 
 		     else
 
-		     	print("deny access, has phone number [1]1[1][1][1][1][1][1][1][1]1[1]1[1]1[]11[1]1[1]1[11[1]")
 
 		      Password_bg.y =  Requesteddate_bottom.y+Requesteddate_bottom.contentHeight+7
 		      Password_titlestar.y= Password_bg.y+7
@@ -587,7 +582,6 @@ end
 
 		     if popupText.text == "Deny Access" then
 
-		     	print("deny access , no phone number [][][][][][][][][][][][][][][[]")
 
 		      Password_bg.isVisible = false
 		      Password_titlestar.isVisible = false
@@ -610,13 +604,11 @@ end
 			  isSentMailValue = isSentMail
 			  isSendTextValue = isSentText
 
-			  print(phonenumber .. email .. denyreason .. tostring(isSentMailValue) .. tostring(isSendTextValue))
 
 			  RequestGrantProcess()
 
 			 elseif popupText.text == "Provide Access" then
 
-			 	print("in provide has number access section")
 
 			 	Requesteddate_bg.isVisible = false
 			 	RequesteddateValue.isVisible = false
@@ -636,7 +628,6 @@ end
 
 		     else
 
-		     	print("deny access has phone number")
 
 		      Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
 		      Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
@@ -683,15 +674,10 @@ end
 						
 			if(validation == true) then
 
-				print("here [][[][][][][][][]]]")
 				 isSentMailValue = isSentMail
-				 print(isSentMailValue)
    	             isSendTextValue = isSentText
-   	             print(isSendTextValue)
    	             PhoneNo=PhoneDetailValue.text
-   	             print("{{{{{{{{{{",PhoneNo)
    	             EmailAddress = EmailDetailValue.text
-   	             print("{{{{{{{{{{",EmailAddress)
 
 
    	             --denyreason = deny_Value.text
@@ -1177,7 +1163,6 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	EmailDetailValue.text = email
 	emailnotifytext.isVisible = true
     emailnotifybox.isVisible = true
-	print("88888888888888888888888",email)
     else
     EmailDetailValue.text = nil
     emailnotifytext.isVisible = false
@@ -1216,7 +1201,6 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
     	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
     end
-    print("88888888888888888888888",mobile)
 
 
     popUpGroup:insert(popup_scroll)

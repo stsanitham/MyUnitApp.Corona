@@ -981,12 +981,20 @@ if Invitees.name ~= nil or Invitees ~= "" then
 
 		invitees = json.encode(Invitees)
 
+else
+
+	Invitees=""
+
 end
 
 
 if Contact.name ~= nil or Contact ~= "" then
 
 	contactInfo = json.encode(Contact)
+
+else
+
+	Contact=""
 
 end
 
@@ -1027,7 +1035,7 @@ print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 		"PhoneNumber":']]..PhoneNumber..[[',
 		"AccessCode":']]..AccessCode..[[',
 		"IsConference":]]..tostring(IsConference)..[[,
-		"CallDirection":]]..tostring(CallDirection)..[[,
+		"CallDirection":]]..tostring(CallDirection)..[[
 	
 		}
 		]]

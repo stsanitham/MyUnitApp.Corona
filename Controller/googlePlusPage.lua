@@ -136,7 +136,7 @@ function googleplusCallback( res,scrollView,flag )
 		
 
 
-		local time = tostring(os.date("%Y-%b-%d %I:%M %p", Utils.makeTimeStamp(feedArray[feedCount].published)));
+		local time = tostring(os.date("%b-%d-%Y %I:%m %p", Utils.makeTimeStamp(feedArray[feedCount].published)));
 
 
 

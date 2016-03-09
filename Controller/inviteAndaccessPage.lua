@@ -952,10 +952,7 @@ local function CreateList(list,scrollView)
 			background.anchorY = 0
 			background.anchorX = 0
 			background.x=5;background.y=Initial_Height
-			background.strokeWidth = 1
 			--background.alpha=
-			background:setStrokeColor( Utils.convertHexToRGB("#d2d3d4") )
-			background:setFillColor(1)
 			background.value = feedArray[i]
 			background.id="listBg"
 			background.name = status
@@ -1041,7 +1038,7 @@ local function CreateList(list,scrollView)
 			Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 			Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-				Display_Group[#Display_Group].text = "MKRank : "..feedArray[i].MkRankLevel
+				Display_Group[#Display_Group].text = "MK Rank : "..feedArray[i].MkRankLevel
 			
 		
 

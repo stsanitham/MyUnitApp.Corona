@@ -151,7 +151,7 @@ function TwitterCallback(res,scrollView)
 					
 					local time = makeTimeStamp(feedArray[i].created_at)
 
-					userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %I:%m %p",time )) , 0, 0, native.systemFont, 11 )
+					userTime = display.newText( tempGroup, tostring(os.date("%b-%d-%Y %I:%m %p",time )) , 0, 0, native.systemFont, 11 )
 					userTime.anchorX = 0
 					userTime.anchorY = 0
 					Utils.CssforTextView(userTime,sp_Date_Time)
@@ -445,7 +445,7 @@ function scene:create( event )
 
 
 sceneGroup:insert(scrollView)
-
+spinner_show()
 recent_tweet()
 
 MainGroup:insert(sceneGroup)
