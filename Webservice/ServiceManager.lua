@@ -983,7 +983,7 @@ if Invitees.name ~= nil or Invitees ~= "" then
 
 else
 
-	Invitees=""
+	Invitees="''"
 
 end
 
@@ -994,7 +994,7 @@ if Contact.name ~= nil or Contact ~= "" then
 
 else
 
-	Contact=""
+	Contact="''"
 
 end
 

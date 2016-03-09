@@ -361,6 +361,10 @@ end
 
 		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
 
+		 	     elseif Request_response == "BLOCK" then
+
+		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already blocked", { CommonWords.ok} , onCompletion)
+
          	 end
 
          elseif id_value == "Grant Access" then
@@ -381,6 +385,10 @@ end
 
 		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
 
+		 	 elseif Request_response == "BLOCK" then
+
+		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already blocked", { CommonWords.ok} , onCompletion)
+
          	 end
 
 	 	elseif id_value == "Provide Access" then
@@ -400,6 +408,9 @@ end
 		     elseif Request_response == "ADDREQUEST" then
 
 		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+		 	     elseif Request_response == "BLOCK" then
+
+		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already blocked", { CommonWords.ok} , onCompletion)
 
          	 end
 
