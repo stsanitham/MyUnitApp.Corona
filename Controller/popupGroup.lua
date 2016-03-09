@@ -174,6 +174,8 @@ end
 	                              -- native.setKeyboardFocus(nil)
 	                              Webservice.CheckExistsRequestStatus(EmailDetailValue.text,getemailexistresponse)
 
+	                              native.setKeyboardFocus(nil)
+
 							end
 
 					elseif event.phase == "ended" then
@@ -222,9 +224,7 @@ end
 
 									event.target.text="("..event.target.text..") "
 
-									
-
-										event.target = PhoneDetailValue
+									event.target = PhoneDetailValue
 
 									native.setKeyboardFocus(PhoneDetailValue)
 									
@@ -245,10 +245,9 @@ end
 
 									PhoneDetailValue.text=previousText:sub(1,4)..") "..previousText:sub(5,5)
 
-
 										event.target = PhoneDetailValue
 
-									native.setKeyboardFocus(PhoneDetailValue)
+									    native.setKeyboardFocus(PhoneDetailValue)
 									
 
 									event.target = PhoneDetailValue
@@ -310,6 +309,12 @@ end
         ------------------------------------------for password ---------------------------------------------------
 
 						if(current_textField.id == "Password") then
+
+							if (event.newCharacters==" ") then
+
+								event.target.text = event.target.text:sub(1,event.target.text:len()-1)
+
+							end
 
         					if event.target.text:len() > 12 then
 
@@ -842,7 +847,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    NameDetail_title.y= NameDetail_bg.y
 	    popup_scroll:insert(NameDetail_title)
 
-	    NameDetailValue = display.newText("name value ",0,0,native.systemFont,14)
+	    NameDetailValue = display.newText("",0,0,native.systemFont,14)
 	    NameDetailValue.x=  NameDetail_title.x - 20
 	    NameDetailValue.anchorX = 0
 	    NameDetailValue:setFillColor(0,0,0)
@@ -1010,7 +1015,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    MKRankDetail_title.y= MKRankDetail_bg.y+15
 	    popup_scroll:insert(MKRankDetail_title)
 
-	    MKRankDetailValue = display.newText("name value ",0,0,native.systemFont,14)
+	    MKRankDetailValue = display.newText("",0,0,native.systemFont,14)
 	    MKRankDetailValue.x= 25
 	    MKRankDetailValue:setFillColor(0,0,0)
 	    MKRankDetailValue.anchorX = 0
@@ -1052,7 +1057,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    Requesteddate_title.y= Requesteddate_bg.y + 7
 	    popup_scroll:insert(Requesteddate_title)
 
-	    RequesteddateValue = display.newText("name value ",0,0,native.systemFont,14)
+	    RequesteddateValue = display.newText("",0,0,native.systemFont,14)
 	    RequesteddateValue.x= 25
 	    RequesteddateValue:setFillColor(0,0,0)
 	    RequesteddateValue.anchorX = 0

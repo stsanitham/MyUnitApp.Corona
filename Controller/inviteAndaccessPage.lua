@@ -590,6 +590,7 @@ local function ProvideAccess()
 
 
 end
+
 local function Block()
 	id_value = "Block Access"
 
@@ -760,7 +761,7 @@ local menuGroup = display.newGroup( )
 		 menuBg.value = object.value
 		 menuBg:setStrokeColor( Utils.convertHexToRGB("#d2d3d4") )
 		 menuBg.y=object.y+5
-		  menuBg.x=object.x-menuBg.contentWidth/2+4
+		 menuBg.x=object.x-menuBg.contentWidth/2+4
 
 		  
 
@@ -793,7 +794,7 @@ local menuGroup = display.newGroup( )
 
 		 	Blockbtn_txt = display.newText( menuGroup, "Block",0,0,native.systemFont,12 )
 		 	Blockbtn_txt:setFillColor( 0.2 )
-		 	Blockbtn_txt.x=Blockbtn.x;Blockbtn_txt.y=Blockbtn.y+Blockbtn.contentHeight/2
+		 	Blockbtn_txt.x=Blockbtn.x-18;Blockbtn_txt.y=Blockbtn.y+Blockbtn.contentHeight/2
 
 		 	Blockbtn:addEventListener( "touch", ActionTouch )
 
@@ -809,7 +810,7 @@ local menuGroup = display.newGroup( )
 
 		 	Grantbtn_txt = display.newText( menuGroup, "Grant",0,0,native.systemFont,12 )
 		 	Grantbtn_txt:setFillColor( 0.2 )
-		 	Grantbtn_txt.x=Grantbtn.x;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
+		 	Grantbtn_txt.x=Grantbtn.x-18;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
 
 		 	removebtn = display.newRect(menuGroup,0,0,menuBg.width,25)
 		 	removebtn.anchorY=0
@@ -821,7 +822,7 @@ local menuGroup = display.newGroup( )
 
 		 	removebtn_txt = display.newText( menuGroup, "Remove",0,0,native.systemFont,12 )
 		 	removebtn_txt:setFillColor( 0.2 )
-		 	removebtn_txt.x=removebtn.x;removebtn_txt.y=removebtn.y+removebtn.contentHeight/2
+		 	removebtn_txt.x=removebtn.x-10;removebtn_txt.y=removebtn.y+removebtn.contentHeight/2
 
 		 	Grantbtn:addEventListener( "touch", ActionTouch )
 		 	removebtn:addEventListener( "touch", ActionTouch )
@@ -838,7 +839,7 @@ local menuGroup = display.newGroup( )
 
 		 	Grantbtn_txt = display.newText( menuGroup, "Grant",0,0,native.systemFont,12 )
 		 	Grantbtn_txt:setFillColor( 0.2 )
-		 	Grantbtn_txt.x=Grantbtn.x;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
+		 	Grantbtn_txt.x=Grantbtn.x-18;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
 
 		 	denybtn = display.newRect(menuGroup,0,0,menuBg.width,25)
 		 	denybtn.anchorY=0
@@ -850,7 +851,7 @@ local menuGroup = display.newGroup( )
 
 		 	denybtn_txt = display.newText( menuGroup, "Deny",0,0,native.systemFont,12 )
 		 	denybtn_txt:setFillColor( 0.2 )
-		 	denybtn_txt.x=denybtn.x;denybtn_txt.y=denybtn.y+denybtn.contentHeight/2
+		 	denybtn_txt.x=denybtn.x-18;denybtn_txt.y=denybtn.y+denybtn.contentHeight/2
 
 		 	Grantbtn:addEventListener( "touch", ActionTouch )
 		 	denybtn:addEventListener( "touch", ActionTouch )
@@ -933,7 +934,6 @@ local function CreateList(list,scrollView)
 
 	for i=1,#feedArray do
 
-
 			groupArray[#groupArray+1] = display.newGroup()
 
 			local Display_Group = {}
@@ -976,6 +976,9 @@ local function CreateList(list,scrollView)
 		    list_bg.value = feedArray[i]
 		    list_bg.id=i
 		    list_bg:addEventListener( "touch", ListmenuTouch )
+
+
+          --  local nameLabel = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 
 		    	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
@@ -1165,6 +1168,12 @@ function reloadInvitAccess(reloadstatus)
 
 end
 
+
+
+
+
+
+
 function scene:show( event )
 
 	local sceneGroup = self.view
@@ -1242,11 +1251,16 @@ end
 		scene:addEventListener( "hide", scene )
 		scene:addEventListener( "destroy", scene )
 
-		function scene:resumeGame(contactId)
+		function scene:resumeGame()
 
 			composer.removeHidden(true)
 
-		end
+
+		reloadInvitAccess(status)
+
+	end
+
+
 
 		function get_removeorblockDetails( response)
 
