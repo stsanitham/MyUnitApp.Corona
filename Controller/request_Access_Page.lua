@@ -657,18 +657,12 @@ local function RequestProcess()
 
 
 							end
-<<<<<<< HEAD
-					
-=======
-							
-								
->>>>>>> 4e4cbe14208680412f1a061aa16ee8282cd630cd
+
 						
         				end
         			
 					end
 
-<<<<<<< HEAD
 					if event.phase == "ended" or event.phase=="submitted" then
 
 					if testflag == true then
@@ -683,9 +677,7 @@ local function RequestProcess()
 					end
 
 				   end
-=======
-						
->>>>>>> 4e4cbe14208680412f1a061aa16ee8282cd630cd
+
 				end
 
 

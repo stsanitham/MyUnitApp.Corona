@@ -73,7 +73,7 @@ local display_details = {}
 
         if phase == "up" then
 
-        if keyName=="back" then
+        if keyName=="back" or keyName=="a" then
 
         	composer.hideOverlay( "slideRight", 300 )
             
