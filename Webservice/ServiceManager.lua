@@ -1036,7 +1036,7 @@ print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 
 	params={headers = headers,body = resbody}
 
-		print("request : "..json.encode(params))
+		print("request : "..resbody)
 
 
 	if isUpdate == true then
