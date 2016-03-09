@@ -1036,20 +1036,17 @@ local function CreateList(list,scrollView)
 
 			if feedArray[i].MkRankLevel ~= nil then
 
-<<<<<<< HEAD
+
 					Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 			Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
 			Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 			Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-				Display_Group[#Display_Group].text = "MKRank : "..feedArray[i].MkRankLevel
-			
-=======
-				MKRank.text = "MK Rank : "..feedArray[i].MkRankLevel
+				Display_Group[#Display_Group].text = "MK Rank : "..feedArray[i].MkRankLevel
 			else
 
 				MKRank.text = "MK Rank : ".."-"
->>>>>>> 4e4cbe14208680412f1a061aa16ee8282cd630cd
+
 			end
 
 			
