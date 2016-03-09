@@ -371,7 +371,7 @@ end
 
 	 	    if Request_response == "SUCCESS" then
 
-	 	    	grantaccess = native.showAlert("Grant access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
+	 	    	grantaccess = native.showAlert("Grant Access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
@@ -395,7 +395,7 @@ end
 
 	 	    if Request_response == "SUCCESS" then
 
-	 	    	accessprovided = native.showAlert("Provide access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
+	 	    	accessprovided = native.showAlert("Provide Access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
@@ -408,7 +408,7 @@ end
 		     elseif Request_response == "ADDREQUEST" then
 
 		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
-		 	    
+
 		 	     elseif Request_response == "BLOCK" then
 
 		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already blocked", { CommonWords.ok} , onCompletion)
