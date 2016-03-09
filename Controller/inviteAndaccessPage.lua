@@ -1044,6 +1044,7 @@ local function CreateList(list,scrollView)
 				Display_Group[#Display_Group].text = "MKRank : "..feedArray[i].MkRankLevel
 			
 		
+
 			end
 
 			

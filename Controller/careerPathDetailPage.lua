@@ -1240,6 +1240,16 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
+	if event.params.page == "invite" then
+
+		openPage = "inviteAndaccessPage"
+
+	else
+
+		openPage="careerPathPage"
+
+	end
+
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 
