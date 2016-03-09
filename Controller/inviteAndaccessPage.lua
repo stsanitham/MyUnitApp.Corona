@@ -1043,9 +1043,6 @@ local function CreateList(list,scrollView)
 			Display_Group[#Display_Group]:setFillColor( 0.3 )
 
 				Display_Group[#Display_Group].text = "MK Rank : "..feedArray[i].MkRankLevel
-			else
-
-				MKRank.text = "MK Rank : ".."-"
 
 			end
 
