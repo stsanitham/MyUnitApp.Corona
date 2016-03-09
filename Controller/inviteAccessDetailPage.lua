@@ -1089,9 +1089,9 @@ end
 		sceneGroup:insert( display_details[#display_details] )
 
 
-		display_details[#display_details+1] = display.newText(invitedetail_value.EmailAddress,0,0,190,0,native.systemFont,14)
+		display_details[#display_details+1] = display.newText(invitedetail_value.EmailAddress,0,0,W-20,0,native.systemFont,14)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-55;display_details[#display_details].y=display_details[#display_details-1].y-5
+		display_details[#display_details].x=W/2-150;display_details[#display_details].y=RecentTab_Topvalue+25
 		display_details[#display_details].anchorX=0
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="email_address"

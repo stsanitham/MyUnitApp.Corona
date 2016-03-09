@@ -312,8 +312,6 @@ end
 
 							if (event.newCharacters==" ") then
 
-								print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-
 								event.target.text = event.target.text:sub(1,event.target.text:len()-1)
 
 							end
