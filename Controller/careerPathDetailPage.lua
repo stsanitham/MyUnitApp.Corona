@@ -345,7 +345,7 @@ end
 
          if id_value == "Deny Access" then
 
-         	 if Request_response == "5" then
+         	 if Request_response == "SUCCESS" then
 
          	 	denyaccess = native.showAlert("Deny", "Access denied to this Contact.", { CommonWords.ok } , onCompletion)
 
@@ -363,15 +363,15 @@ end
 
 		 	     elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already blocked", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already denied", { CommonWords.ok} , onCompletion)
 
          	 end
 
          elseif id_value == "Grant Access" then
 
-	 	    if Request_response == "5" then
+	 	    if Request_response == "SUCCESS" then
 
-	 	    	grantaccess = native.showAlert("Grant access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
+	 	    	grantaccess = native.showAlert("Grant Access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
@@ -387,15 +387,15 @@ end
 
 		 	 elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already blocked", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already granted", { CommonWords.ok} , onCompletion)
 
          	 end
 
 	 	elseif id_value == "Provide Access" then
 
-	 	    if Request_response == "5" then
+	 	    if Request_response == "SUCCESS" then
 
-	 	    	accessprovided = native.showAlert("Provide access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
+	 	    	accessprovided = native.showAlert("Provide Access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
@@ -408,6 +408,7 @@ end
 		     elseif Request_response == "ADDREQUEST" then
 
 		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+
 		 	     elseif Request_response == "BLOCK" then
 
 		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already blocked", { CommonWords.ok} , onCompletion)
