@@ -1982,6 +1982,12 @@ local function usertextField( event )
 
 				end
 
+				if event.target.text == "" then
+
+					event.target.text=""
+						
+				end
+
 		else
 
 
@@ -2017,106 +2023,31 @@ local function usertextField( event )
 
 		elseif(event.target.id == "phone") then
 
-				event.target.text = string.sub(event.target.text,1,event.startPosition )
-
-							local tempvalue = event.target.text:sub(1,1)
-
-							if (event.target.text:len() == 3) then
-
-								if (tempvalue ~= "(") then
-
-									--event.target.text = "("..event.target.text..") "
-
-									local previousText=event.target.text
-
-									Phone.text="("..previousText..") "
-
-									native.setKeyboardFocus(Phone)
-							
-								else
-
-									event.target.text = event.target.text:sub(2,event.target.text:len())
-
-								end
-
-							elseif event.target.text:len() == 5 and (tempvalue == "(") then
-
-								if event.target.text:sub(5,5) ~= ")" then
-
-									event.target.text = event.text:sub(1,4)..") "..event.target.text:sub(5,5)
-				
-								end
-
-
-							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
-
-
-									local previousText=event.target.text
-
-									Phone.text=previousText.."- "
-
-									native.setKeyboardFocus(Phone)
-
-
-							elseif event.target.text:len() == 10 then
-
-								if string.find(event.target.text,"-") then
-
-									event.target.text = event.target.text:sub(1,9)
-								else
-
-									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
-								end
-
-							
-
-
-							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
-
-
-									local previousText=event.target.text
-
-									Phone:removeSelf( );Phone=nil
-
-									Phone = createField()
-									Phone.id="Phone"
-									Phone.size=14	
-									Phone:setReturnKey( "next" )
-									Phone.hasBackground = false
-									Phone.placeholder=RequestAccess.Phone_placeholder
-									Phone.inputType = "number"
-									callGroup:insert(Phone)
-
-									Phone.text=previousText.."- "
-
-
-									Phone:addEventListener( "userInput", usertextField )
-
-									native.setKeyboardFocus(Phone)
-
-									event.target = Phone
-
-
-
-							elseif event.target.text:len() == 10 then
-
-								if string.find(event.target.text,"-") then
-
-									event.target.text = event.target.text:sub(1,9)
-								else
-
-									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
-								end
-															
-
-							end
-
-							if event.target.text:len() > 15 then
+				if event.target.text:len() > 15 then
 
 								event.target.text = event.target.text:sub(1,15)
 
 
 							end
+
+							if event.target.text:len() > event.startPosition then
+
+								event.target.text = event.target.text:sub(1,event.startPosition )
+
+							end
+
+
+							local maskingValue =Utils.PhoneMasking(tostring(event.target.text))
+
+											
+
+									native.setKeyboardFocus(nil)
+
+									event.target.text=maskingValue
+
+									event.target = Phone
+
+									native.setKeyboardFocus(Phone)
 							end
 
 						
@@ -3379,19 +3310,27 @@ function scene:show( event )
 		  			AppintmentWith.text = UpdateValue.Contact.LastName
 
 		  		end
+
+		  		AppintmentWith.contactinfo=UpdateValue.Contact 
 		  	end
 
 		  	if UpdateValue.Invitees ~= nil then
 
-		  		if UpdateValue.Invitees.FirstName ~= nil then
+		  		print( "UpdateValue.Invitees "..#UpdateValue.Invitees )
 
-		  			Invitees.text = UpdateValue.Invitees.FirstName.." "..UpdateValue.Invitees.LastName
+		  		local value = UpdateValue.Invitees
 
-		  		elseif UpdateValue.Invitees.LastName ~= nil then
+		  		if value[1].FirstName ~= nil then
 
-		  			Invitees.text = UpdateValue.Invitees.LastName
+		  			Addinvitees.text = value[1].FirstName.." "..value[1].LastName
+
+		  		elseif value[1].LastName ~= nil then
+
+		  			Addinvitees.text = value[1].LastName
 		  			
 		  		end
+
+		  		Addinvitees.contactinfo=value[1]
 		  	end
 
 	  		if UpdateValue.AppointmentPurpose ~= nil then

@@ -118,7 +118,7 @@ local display_details = {}
 
          if id_value == "Deny Access" then
 
-         	 if Request_response == "5" then
+         	 if Request_response == "SUCCESS" then
 
          	 	denyaccess = native.showAlert("Deny", "Access denied to this Contact.", { CommonWords.ok } , onCompletion)
 
@@ -138,7 +138,7 @@ local display_details = {}
 
          elseif id_value == "Grant Access" then
 
-	 	    if Request_response == "5" then
+	 	    if Request_response == "SUCCESS" then
 
 	 	    	print("hai hai hai hai hai hai hai")
 
@@ -160,7 +160,7 @@ local display_details = {}
 
 	 	elseif id_value == "Provide Access" then
 
-	 	    if Request_response == "5" then
+	 	    if Request_response == "SUCCESS" then
 
 	 	    	accessprovided = native.showAlert("Provide Access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
 
@@ -1196,6 +1196,7 @@ end
 		display_details[#display_details].anchorX=0
 		sceneGroup:insert( display_details[#display_details] )
 
+  
 
 		display_details[#display_details+1] = display.newText(invitedetail_value.Comments,0,0,180,0,native.systemFont,14)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
@@ -1205,17 +1206,21 @@ end
 		display_details[#display_details].id="comments"
 		sceneGroup:insert( display_details[#display_details] )
 
-		end
+  end
+
+	
 
 -------------------------------------------------------------------------------------------------	
 
-
+  if invitedetail_value.IsOwner == false then
 		display_details[#display_details+1] = display.newText("Invite/Access",0,0,0,0,native.systemFontBold,15)
 		display_details[#display_details]:setFillColor(0,0,0)
 		display_details[#display_details].x=leftAlign
 		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+25
 		display_details[#display_details].anchorX=0
 		sceneGroup:insert( display_details[#display_details] )
+
+  end
 
 
 ----------------------------Activity On---------------------------------------------------------
@@ -1263,7 +1268,7 @@ end
 
 	    elseif invite_status == "GRANT" then
 
-	    	  		blockaccess_button = display.newRect(sceneGroup,0,0,W,25)
+	    	  blockaccess_button = display.newRect(sceneGroup,0,0,W,25)
 					blockaccess_button.x=leftAlign + 150
 					blockaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					blockaccess_button:setStrokeColor(0,0,0,0.5)
@@ -1280,6 +1285,13 @@ end
 					blockaccess_button_text.y=blockaccess_button.y
 					blockaccess_button_text:setFillColor(0,0,0)
 					sceneGroup:insert( blockaccess_button_text )
+
+          if invitedetail_value.IsOwner == true then
+
+            blockaccess_button.isVisible=false
+            blockaccess_button_text.isVisible=false
+
+          end
 
 
 		elseif invite_status == "ADDREQUEST" then

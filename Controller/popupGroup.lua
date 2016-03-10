@@ -186,127 +186,34 @@ end
 
 						 if(current_textField.id =="Phone Detail") then
 
+						 	--PhoneDetailValue
 
-						 		print( "here : "..event.startPosition 	)
-
-								local tempvalue = event.target.text:sub(1,1)
-
-									if event.target.text:len() > event.startPosition then
-
-
-									-- local previousText=event.target.text
-									
-									native.setKeyboardFocus(nil)
-							
-
-									if event.startPosition == 6 or event.startPosition == 11 then
-
-										PhoneDetailValue.text=event.target.text:sub(1,event.startPosition-1 ).." "..event.target.text:sub(event.startPosition,event.startPosition )
-
-									elseif event.startPosition == 10 then
-											print( "###########" )
-									else
-
-										PhoneDetailValue.text=event.target.text:sub(1,event.startPosition)
-
-									end
-
-
-										event.target = PhoneDetailValue
-
-									native.setKeyboardFocus(PhoneDetailValue)
-									
-									
-							elseif (event.startPosition == 3) then
-
-								if (tempvalue ~= "(") then
-
-									local previousText=event.text
-							
-
-									native.setKeyboardFocus(nil)
-
-									event.target.text="("..event.target.text..") "
-
-									event.target = PhoneDetailValue
-
-									native.setKeyboardFocus(PhoneDetailValue)
-									
-							
-								else
-
-									event.target.text = event.target.text:sub(2,event.target.text:len())
-
-								end
-
-							elseif event.startPosition == 5 and (tempvalue == "(") then
-
-								if event.target.text:sub(5,5) ~= ")" then
-
-								local previousText=event.target.text
-
-									native.setKeyboardFocus(nil)
-
-									PhoneDetailValue.text=previousText:sub(1,4)..") "..previousText:sub(5,5)
-
-										event.target = PhoneDetailValue
-
-									    native.setKeyboardFocus(PhoneDetailValue)
-									
-
-									event.target = PhoneDetailValue
-
-									
-				
-								end
-
-
-							elseif event.startPosition == 9 and not string.find(event.target.text,"-") then
-
-
-									local previousText=event.target.text
-								
-									native.setKeyboardFocus(nil)
-
-									PhoneDetailValue.text=previousText.."- "
-
-										event.target = PhoneDetailValue
-
-									native.setKeyboardFocus(PhoneDetailValue)
-							
-
-									event.target = PhoneDetailValue
-
-
-
-
-							elseif event.startPosition == 10 then
-
-								
-
-								native.setKeyboardFocus(nil)
-
-								if string.find(event.target.text,"-") then
-
-									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
-								else
-
-									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
-								end
-
-
-								event.target = PhoneDetailValue
-								native.setKeyboardFocus(PhoneDetailValue)
-								event.target = PhoneDetailValue
-						
-
-							elseif event.startPosition > 15 then
+						 	if event.target.text:len() > 15 then
 
 								event.target.text = event.target.text:sub(1,15)
 
 
 							end
-							
+
+							if event.target.text:len() > event.startPosition then
+
+								event.target.text = event.target.text:sub(1,event.startPosition )
+
+							end
+
+
+							local maskingValue =Utils.PhoneMasking(tostring(event.target.text))
+
+											
+
+									native.setKeyboardFocus(nil)
+
+									event.target.text=maskingValue
+
+									event.target = PhoneDetailValue
+
+									native.setKeyboardFocus(PhoneDetailValue)
+
 								
 						
         				end

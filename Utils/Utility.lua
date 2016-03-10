@@ -137,6 +137,70 @@ SnackTimer = timer.performWithDelay(1500, SnackFun )
 
 end
 
+Utils.PhoneMasking = function ( value )
+
+print(value)
+
+    if string.find( value,"%(" ) then
+        value=string.gsub(value,"%(","")
+    end
+    if string.find( value," " ) ~= nil then
+        value=string.gsub(value," ","")
+    end
+    if string.find( value,"%)" ) ~= nil then
+        value=string.gsub(value,"%)","")
+    end
+    if string.find( value,"%-" ) ~= nil then
+        value=string.gsub(value,"%-","")
+    end
+
+    print( "length : "..value:len())
+
+    if value:len() == 1  or value:len() == 2 then
+
+    elseif value:len() == 3 then
+
+        value = "("..value..") "
+
+    elseif value:len() == 4 then
+
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,4 )
+
+    elseif value:len() == 5 then
+
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,5 )
+
+    elseif value:len() == 6 then
+
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."- "
+
+    elseif value:len() == 7 then
+
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."- "..value:sub( 7,7)
+
+     elseif value:len() == 8 then
+
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."- "..value:sub( 7,8)
+
+     elseif value:len() == 9 then
+
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."- "..value:sub( 7,9)
+
+     elseif value:len() == 10 then
+
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."- "..value:sub( 7,10)
+
+
+
+    end
+
+
+
+
+
+return value
+end
+
 Utils.makeTimeStamp = function ( dateString )
 
 	local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
