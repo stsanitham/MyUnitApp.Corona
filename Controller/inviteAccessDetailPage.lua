@@ -26,7 +26,7 @@ local Background,BgText
 
 local menuBtn,contactId
 
-local RecentTab_Topvalue = 105
+local RecentTab_Topvalue = 70
 
 openPage="inviteAndaccessPage"
 
@@ -57,11 +57,16 @@ local display_details = {}
 
 
 
-	local function closeDetails( event )
+	local function closeInviteDetails( event )
+
+		print("^^^^^^^^^^^^^")
 
 	if event.phase == "began" then
 	display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
+
+	print("close button pressed")
+
 	display.getCurrentStage():setFocus( nil )
 	composer.hideOverlay( "slideRight", 300 )
 
@@ -608,7 +613,7 @@ local function DenyProcess()
 
        
           if invitedetail_value.FirstName ~= nil and invitedetail_value.LastName ~= nil then
-             NameDetailValue.text = invitedetail_value.FirstName..""..invitedetail_value.LastName
+             NameDetailValue.text = invitedetail_value.FirstName.." "..invitedetail_value.LastName
              native.setKeyboardFocus( nil )
           elseif  invitedetail_value.FirstName  ~= nil then
              NameDetailValue.text = invitedetail_value.FirstName
@@ -741,7 +746,7 @@ local function ProvideAccess()
 			 	Requesteddate_bottom.isVisible = false
        
           if invitedetail_value.FirstName ~= nil and invitedetail_value.LastName ~= nil then
-             NameDetailValue.text = invitedetail_value.FirstName..""..invitedetail_value.LastName
+             NameDetailValue.text = invitedetail_value.FirstName.." "..invitedetail_value.LastName
              native.setKeyboardFocus( nil )
           elseif  invitedetail_value.FirstName  ~= nil then
              NameDetailValue.text = invitedetail_value.FirstName
@@ -1010,13 +1015,15 @@ end
 
 				-- end
 
+	  
+
 
 		elseif phase == "did" then
 
 			local leftAlign = 10
 
-				titleBar_icon:addEventListener("touch",closeDetails)
-				titleBar_text:addEventListener("touch",closeDetails)
+				titleBar_icon:addEventListener("touch",closeInviteDetails)
+				titleBar_text:addEventListener("touch",closeInviteDetails)
 
 				Background:addEventListener("touch",bgTouch)
 
@@ -1063,19 +1070,27 @@ end
 		end
 
 
-	 --    if invitedetail_value.LastName ~= nil and invitedetail_value.LastName ~= ""  then
+		scroll_View = widget.newScrollView
+		{
+		top = 100,
+		left = 0,
+		width = W,
+		height = H-100,
+		hideBackground = false,
+		isBounceEnabled=false,
+		horizontalScrollingDisabled = true,
+		verticalScrollingDisabled = false,
+		hideScrollBar=true,
+		bottomPadding = 50,
 
-		--        titleBar_text.text = invitedetail_value.FirstName.." "..invitedetail_value.LastName
+		-- listener = scrollListener
+		}
+		--scroll_View.anchorY=0
+		--scroll_View.y=titleBar.y+30
+		--scrollView.anchorX=0
 
-		--        print("TITLE NAME 222-----------------------------------" , titleBar_text)
+		sceneGroup:insert(scroll_View)
 
-		-- end
-
-			  --  if titleBar_text.text:len() > 30 then
-
-					-- titleBar_text.text = titleBar_text.text:sub(1,30).."..."
-
-			  --  end
 
 ----------------------------Email Address---------------------------------------------------------
 
@@ -1084,18 +1099,30 @@ end
 		display_details[#display_details+1] = display.newText("Email",0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 		display_details[#display_details].x=leftAlign
-		display_details[#display_details].y=RecentTab_Topvalue+10
+		display_details[#display_details].y=15
 		display_details[#display_details].anchorX=0
-		sceneGroup:insert( display_details[#display_details] )
+		scroll_View:insert( display_details[#display_details] )
 
 
 		display_details[#display_details+1] = display.newText(invitedetail_value.EmailAddress,0,0,W-20,0,native.systemFont,14)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-150;display_details[#display_details].y=RecentTab_Topvalue+25
+		display_details[#display_details].x=W/2-145;display_details[#display_details].y=display_details[#display_details-1].y+15
 		display_details[#display_details].anchorX=0
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="email_address"
-		sceneGroup:insert( display_details[#display_details] )
+		scroll_View:insert( display_details[#display_details] )
+
+		-- display_details[#display_details+1] = display.newImageRect("res/assert/line-large.png",W-20,5)
+		-- display_details[#display_details].x=W/2
+		-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+4
+		-- sceneGroup:insert(display_details[#display_details])
+
+		display_details[#display_details+1] = display.newRect(0,0,W,0.8)
+		display_details[#display_details].x = W/2-160;
+		display_details[#display_details].anchorX=0
+		display_details[#display_details].y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+10
+		display_details[#display_details]:setFillColor(0,0,0,0.1)
+		scroll_View:insert( display_details[#display_details] )
 
 		end
 
@@ -1110,18 +1137,30 @@ end
 		display_details[#display_details+1] = display.newText("Phone",0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 		display_details[#display_details].x=leftAlign
-		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
+		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+15
 		display_details[#display_details].anchorX=0
-		sceneGroup:insert( display_details[#display_details] )
+		scroll_View:insert( display_details[#display_details] )
 
 
-		display_details[#display_details+1] = display.newText(invitedetail_value.PhoneNumber,0,0,180,0,native.systemFont,14)
+		display_details[#display_details+1] = display.newText(invitedetail_value.PhoneNumber,0,0,W-20,0,native.systemFont,14)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-55;display_details[#display_details].y=display_details[#display_details-1].y-5
+		display_details[#display_details].x=W/2-145;display_details[#display_details].y=display_details[#display_details-1].y+15
 		display_details[#display_details].anchorX=0
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="phone_number"
-		sceneGroup:insert( display_details[#display_details] )
+		scroll_View:insert( display_details[#display_details] )
+
+		-- display_details[#display_details+1] = display.newImageRect("res/assert/line-large.png",W-20,5)
+		-- display_details[#display_details].x=W/2
+		-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+4
+		-- sceneGroup:insert(display_details[#display_details])
+
+		display_details[#display_details+1] = display.newRect(0,0,W,0.8)
+		display_details[#display_details].x = W/2-160;
+		display_details[#display_details].anchorX=0
+		display_details[#display_details].y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+10
+		display_details[#display_details]:setFillColor(0,0,0,0.1)
+		scroll_View:insert( display_details[#display_details] )
 
 		end
 
@@ -1137,18 +1176,30 @@ end
 		display_details[#display_details+1] = display.newText("MK Rank",0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 		display_details[#display_details].x=leftAlign
-		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
+		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+15
 		display_details[#display_details].anchorX=0
-		sceneGroup:insert( display_details[#display_details] )
+		scroll_View:insert( display_details[#display_details] )
 
 
-		display_details[#display_details+1] = display.newText(invitedetail_value.MkRankLevel,0,0,180,0,native.systemFont,14)
+		display_details[#display_details+1] = display.newText(invitedetail_value.MkRankLevel,0,0,W-20,0,native.systemFont,14)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-55;display_details[#display_details].y=display_details[#display_details-1].y-5
+		display_details[#display_details].x=W/2-145;display_details[#display_details].y=display_details[#display_details-1].y+15
 		display_details[#display_details].anchorX=0
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="mk_rank"
-		sceneGroup:insert( display_details[#display_details] )
+		scroll_View:insert( display_details[#display_details] )
+
+		-- display_details[#display_details+1] = display.newImageRect("res/assert/line-large.png",W-20,5)
+		-- display_details[#display_details].x=W/2
+		-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+4
+		-- sceneGroup:insert(display_details[#display_details])
+
+		display_details[#display_details+1] = display.newRect(0,0,W,0.8)
+		display_details[#display_details].x = W/2-160;
+		display_details[#display_details].anchorX=0
+		display_details[#display_details].y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+10
+		display_details[#display_details]:setFillColor(0,0,0,0.1)
+		scroll_View:insert( display_details[#display_details] )
 
 		end
 
@@ -1168,18 +1219,31 @@ end
 		display_details[#display_details+1] = display.newText("Activity On",0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 		display_details[#display_details].x=leftAlign
-		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
+		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+15
 		display_details[#display_details].anchorX=0
-		sceneGroup:insert( display_details[#display_details] )
+		scroll_View:insert( display_details[#display_details] )
 
 
-		display_details[#display_details+1] = display.newText(activity_time,0,0,180,0,native.systemFont,14)
+		display_details[#display_details+1] = display.newText(activity_time,0,0,W-20,0,native.systemFont,14)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-55;display_details[#display_details].y=display_details[#display_details-1].y-5
+		display_details[#display_details].x=W/2-145;display_details[#display_details].y=display_details[#display_details-1].y+15
 		display_details[#display_details].anchorX=0
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="mk_rank"
-		sceneGroup:insert( display_details[#display_details] )
+		scroll_View:insert( display_details[#display_details] )
+
+		-- display_details[#display_details+1] = display.newImageRect("res/assert/line-large.png",W-20,5)
+		-- display_details[#display_details].x=W/2
+		-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+4
+		-- sceneGroup:insert(display_details[#display_details])
+
+		display_details[#display_details+1] = display.newRect(0,0,W,0.8)
+		display_details[#display_details].x = W/2-160;
+		display_details[#display_details].anchorX=0
+		display_details[#display_details].y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+10
+		display_details[#display_details]:setFillColor(0,0,0,0.1)
+		scroll_View:insert( display_details[#display_details] )
+
 
 		end
 
@@ -1192,19 +1256,33 @@ end
 		display_details[#display_details+1] = display.newText("Comments",0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 		display_details[#display_details].x=leftAlign
-		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
+		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+15
 		display_details[#display_details].anchorX=0
-		sceneGroup:insert( display_details[#display_details] )
+		scroll_View:insert( display_details[#display_details] )
 
   
 
-		display_details[#display_details+1] = display.newText(invitedetail_value.Comments,0,0,180,0,native.systemFont,14)
+		display_details[#display_details+1] = display.newText(invitedetail_value.Comments,0,0,W-20,0,native.systemFont,14)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-55;display_details[#display_details].y=display_details[#display_details-1].y-5
+		display_details[#display_details].x=W/2-145;display_details[#display_details].y=display_details[#display_details-1].y+15
 		display_details[#display_details].anchorX=0
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="comments"
-		sceneGroup:insert( display_details[#display_details] )
+		scroll_View:insert( display_details[#display_details] )
+
+		-- display_details[#display_details+1] = display.newRect( 0, 0, W-20, 30 )
+		-- display_details[#display_details].x=W/2
+		-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+4
+		-- sceneGroup:insert(display_details[#display_details])
+
+
+		display_details[#display_details+1] = display.newRect(0,0,W,0.8)
+		display_details[#display_details].x = W/2-160;
+		display_details[#display_details].anchorX=0
+		display_details[#display_details].y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+10
+		display_details[#display_details]:setFillColor(0,0,0,0.1)
+		scroll_View:insert( display_details[#display_details] )
+
 
   end
 
@@ -1218,7 +1296,7 @@ end
 		display_details[#display_details].x=leftAlign
 		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+25
 		display_details[#display_details].anchorX=0
-		sceneGroup:insert( display_details[#display_details] )
+		scroll_View:insert( display_details[#display_details] )
 
   end
 
@@ -1228,7 +1306,7 @@ end
 	    if invite_status == "DENY" then
 
 
-		            grantaccess_button = display.newRect(sceneGroup,0,0,W,25)
+		            grantaccess_button = display.newRect(scroll_View,0,0,W,25)
 					grantaccess_button.x=leftAlign + 75
 					grantaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					grantaccess_button:setStrokeColor(0,0,0,0.5)
@@ -1238,16 +1316,16 @@ end
 					grantaccess_button.width = W-190
 					grantaccess_button.id="Grant Access"
 					grantaccess_button:addEventListener("touch",onButtonTouchAction)
-					sceneGroup:insert( grantaccess_button )
+					scroll_View:insert( grantaccess_button )
 
-					grantaccess_button_text = display.newText(sceneGroup,"Grant",0,0,native.systemFont,16)
+					grantaccess_button_text = display.newText(scroll_View,"Grant",0,0,native.systemFont,16)
 					grantaccess_button_text.x=grantaccess_button.x
 					grantaccess_button_text.y=grantaccess_button.y
 					grantaccess_button_text:setFillColor(0,0,0)
-					sceneGroup:insert( grantaccess_button_text )
+					scroll_View:insert( grantaccess_button_text )
 
 
-					removeaccess_button = display.newRect(sceneGroup,0,0,W,25)
+					removeaccess_button = display.newRect(scroll_View,0,0,W,25)
 					removeaccess_button.x=leftAlign + 223
 					removeaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					removeaccess_button:setStrokeColor(0,0,0,0.5)
@@ -1257,18 +1335,19 @@ end
 					removeaccess_button.width = W-190
 					removeaccess_button.id="Remove Access"
 					removeaccess_button:addEventListener("touch",onButtonTouchAction)
-					sceneGroup:insert( removeaccess_button )
+					scroll_View:insert( removeaccess_button )
 
-					removeaccess_button_text = display.newText(sceneGroup,"Remove",0,0,native.systemFont,16)
+					removeaccess_button_text = display.newText(scroll_View,"Remove",0,0,native.systemFont,16)
 					removeaccess_button_text.x=removeaccess_button.x
 					removeaccess_button_text.y=removeaccess_button.y
 					removeaccess_button_text:setFillColor(0,0,0)
-					sceneGroup:insert( removeaccess_button_text )
+					scroll_View:insert( removeaccess_button_text )
 
 
 	    elseif invite_status == "GRANT" then
 
-	    	  blockaccess_button = display.newRect(sceneGroup,0,0,W,25)
+
+	    	  		blockaccess_button = display.newRect(scroll_View,0,0,W,25)
 					blockaccess_button.x=leftAlign + 150
 					blockaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					blockaccess_button:setStrokeColor(0,0,0,0.5)
@@ -1278,13 +1357,13 @@ end
 					blockaccess_button.width = W-150
 					blockaccess_button.id="Block Access"
 					blockaccess_button:addEventListener("touch",onButtonTouchAction)
-					sceneGroup:insert( blockaccess_button )
+					scroll_View:insert( blockaccess_button )
 
-					blockaccess_button_text = display.newText(sceneGroup,"Block",0,0,native.systemFont,16)
+					blockaccess_button_text = display.newText(scroll_View,"Block",0,0,native.systemFont,16)
 					blockaccess_button_text.x=blockaccess_button.x
 					blockaccess_button_text.y=blockaccess_button.y
 					blockaccess_button_text:setFillColor(0,0,0)
-					sceneGroup:insert( blockaccess_button_text )
+					scroll_View:insert( blockaccess_button_text )
 
           if invitedetail_value.IsOwner == true then
 
@@ -1296,7 +1375,7 @@ end
 
 		elseif invite_status == "ADDREQUEST" then
 
-			 	    provideaccess_button = display.newRect(sceneGroup,0,0,W,25)
+			 	    provideaccess_button = display.newRect(scroll_View,0,0,W,25)
 					provideaccess_button.x=leftAlign + 150
 					provideaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					provideaccess_button:setStrokeColor(0,0,0,0.5)
@@ -1306,18 +1385,18 @@ end
 					provideaccess_button.width = W-150
 					provideaccess_button.id="Provide Access"
 					provideaccess_button:addEventListener("touch",onButtonTouchAction)
-					sceneGroup:insert( provideaccess_button )
+					scroll_View:insert( provideaccess_button )
 
-					provideaccess_button_text = display.newText(sceneGroup,"Provide Access",0,0,native.systemFont,16)
+					provideaccess_button_text = display.newText(scroll_View,"Provide Access",0,0,native.systemFont,16)
 					provideaccess_button_text.x=provideaccess_button.x
 					provideaccess_button_text.y=provideaccess_button.y
 					provideaccess_button_text:setFillColor(0,0,0)
-					sceneGroup:insert( provideaccess_button_text )
+					scroll_View:insert( provideaccess_button_text )
 
 
         elseif invite_status == "OPEN" then
 
-        			grantaccess_button = display.newRect(sceneGroup,0,0,W,25)
+        			grantaccess_button = display.newRect(scroll_View,0,0,W,25)
 					grantaccess_button.x=leftAlign + 75
 					grantaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					grantaccess_button:setStrokeColor(0,0,0,0.5)
@@ -1327,15 +1406,15 @@ end
 					grantaccess_button.width = W-190
 					grantaccess_button.id="Grant Access"
 					grantaccess_button:addEventListener("touch",onButtonTouchAction)
-					sceneGroup:insert( grantaccess_button )
+					scroll_View:insert( grantaccess_button )
 
-					grantaccess_button_text = display.newText(sceneGroup,"Grant",0,0,native.systemFont,16)
+					grantaccess_button_text = display.newText(scroll_View,"Grant",0,0,native.systemFont,16)
 					grantaccess_button_text.x=grantaccess_button.x
 					grantaccess_button_text.y=grantaccess_button.y
 					grantaccess_button_text:setFillColor(0,0,0)
-					sceneGroup:insert( grantaccess_button_text )
+					scroll_View:insert( grantaccess_button_text )
 
-					denyaccess_button = display.newRect(sceneGroup,0,0,W,25)
+					denyaccess_button = display.newRect(scroll_View,0,0,W,25)
 					denyaccess_button.x=leftAlign + 223
 					denyaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					denyaccess_button:setStrokeColor(0,0,0,0.5)
@@ -1345,13 +1424,13 @@ end
 					denyaccess_button.width = W-190
 					denyaccess_button.id="Deny Access"
 					denyaccess_button:addEventListener("touch",onButtonTouchAction)
-					sceneGroup:insert( denyaccess_button )
+					scroll_View:insert( denyaccess_button )
 
-					denyaccess_button_text = display.newText(sceneGroup,"Deny",0,0,native.systemFont,16)
+					denyaccess_button_text = display.newText(scroll_View,"Deny",0,0,native.systemFont,16)
 					denyaccess_button_text.x=denyaccess_button.x
 					denyaccess_button_text.y=denyaccess_button.y
 					denyaccess_button_text:setFillColor(0,0,0)
-					sceneGroup:insert( denyaccess_button_text )
+					scroll_View:insert( denyaccess_button_text )
 
 		end
 
