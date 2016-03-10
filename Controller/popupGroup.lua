@@ -371,6 +371,13 @@ end
 
             end
 
+
+            if (PasswordValue.newCharacters==" ") then
+
+				PasswordValue.text = PasswordValue.text:sub(1,PasswordValue.text:len()-1)
+
+			end
+
         end
 
 
@@ -411,7 +418,7 @@ end
 
 			     print("here when invisible")
 
-	              PhoneDetail_bg.y =  EmailDetail_bottom.y + EmailDetail_bottom.contentHeight+10
+	              PhoneDetail_bg.y =  EmailDetail_bottom.y + 10
 				  PhoneDetail_titlestar.y= PhoneDetail_bg.y
 				  PhoneDetail_titletext.y=  PhoneDetail_bg.y
 				  PhoneDetailValue.y = PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9

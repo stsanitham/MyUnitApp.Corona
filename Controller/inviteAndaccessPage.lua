@@ -293,10 +293,9 @@ local function RemoveProcess()
 	  accept_button:addEventListener("touch",onAccessButtonTouch)
 	  reject_button:addEventListener("touch",onAccessButtonTouch)
 
-	  
-
-
 end
+
+
 local function DenyProcess()
 	id_value = "Deny Access"
 
@@ -317,7 +316,7 @@ local function DenyProcess()
         deny_Value.isVisible = true
 
         Requesteddate_bottom.y= RequesteddateValue.y+8.5
-        deny_bg.y = Requesteddate_bottom.y + Requesteddate_bottom.contentHeight +15
+        deny_bg.y = Requesteddate_bottom.y + Requesteddate_bottom.contentHeight +40
         deny_Value.y=deny_bg.y
         processbutton.y = deny_Value.y+deny_Value.contentHeight
 
