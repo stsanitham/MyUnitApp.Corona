@@ -676,12 +676,13 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	popupTop_bg = display.newRect(leftPadding_value + 140, H/2+ 10, W-20, 385 )
 	popupTop_bg.x = leftPadding_value + 140
     popupTop_bg:setFillColor(0,0,0)
+    popupTop_bg.isVisible=false
     popupTop_bg:addEventListener("touch",touchBg)
     popUpGroup:insert(popupTop_bg)
 
     popupTop = display.newRect(W/2,H/2-195,298,30)
-    popupTop:setStrokeColor(0,0,0)
-    popupTop.strokeWidth=1
+   -- popupTop:setStrokeColor(0,0,0,0.2)
+  --  popupTop.strokeWidth=1
     popupTop:setFillColor(Utils.convertHexToRGB(color.LtyGray))
     popUpGroup:insert(popupTop)
 
@@ -715,26 +716,33 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 
 --------------------------------popup details--------------------------------------
+	
+
+    popupList = display.newRect(leftPadding_value + 140, popupTop_bg.y+popupTop_bg.contentHeight/2, W-22, popupTop_bg.contentHeight+20 )
+    popupList.anchorY=0
+    popupList.y=60	
+     popupList.strokeWidth=1
+     popupList.isVisible=true
+    popupList:setStrokeColor(Utils.convertHexToRGB(color.LtyGray))
+    popUpGroup:insert(popupList)
 
 	popup_scroll = widget.newScrollView
 	{
-	top = 61,
+	top = 90,
 	left = 0,
-	width = W-5,
-	height = popupTop_bg.contentHeight-4,
+	width = W-24,
+	height = popupTop_bg.contentHeight+20,
 	hideBackground = true,
 	isBounceEnabled=false,
 	horizontalScrollDisabled = true,
 	verticalScrollDisabled = false,
 	friction = .6,
    	listener = popup_scrollListener,
+   	hideScrollBar=true
     }
 
-
-    popupList = display.newRect(leftPadding_value + 140, 0, W-22, popupTop_bg.contentHeight+78 )
-    popupList.anchorY=0
-    popup_scroll:insert(popupList)
-
+    popup_scroll.y=60
+    popup_scroll.anchorY=0
 
 --------------------------------------name field--------------------------------------
 
@@ -742,7 +750,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		NameDetail_bg.isVisible = true
 		NameDetail_bg.alpha = 0.01
 		NameDetail_bg:setFillColor(0,0,0)
-		NameDetail_bg.y = popupList.y+20
+		NameDetail_bg.y = 10
 		popup_scroll:insert(NameDetail_bg)
 
 	    NameDetail_title = display.newText("Name ",0,0,native.systemFontBold,14)
@@ -788,6 +796,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		EmailDetailValue = native.newTextField(W/2,NameDetail_bg.y+28, W-40, 25)
 		EmailDetailValue.id="Email Detail"
 		EmailDetailValue.size=14	
+		EmailDetailValue.x=24
+		EmailDetailValue.anchorX=0
 		EmailDetailValue.y = EmailDetail_titletext.y+ EmailDetail_titletext.contentHeight+9
 		EmailDetailValue.hasBackground = false
 		EmailDetailValue.isVisible = true
@@ -853,6 +863,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		PhoneDetailValue.id="Phone Detail"
 		PhoneDetailValue.size=14	
 		PhoneDetailValue.inputType = "number"
+		PhoneDetailValue.x=24
+		PhoneDetailValue.anchorX=0
 		PhoneDetailValue.y = PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
 		PhoneDetailValue.hasBackground = false
 		PhoneDetailValue.isVisible = true
@@ -1029,7 +1041,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		PasswordValue.id="Password"
 		PasswordValue.size=14	
 		PasswordValue.anchorX = 0
-		PasswordValue.x = 18
+		PasswordValue.x = 24
 		PasswordValue.y =Password_titletext.y+Password_titletext.height+7
 		PasswordValue.hasBackground = false
 		PasswordValue.isVisible = true

@@ -70,12 +70,13 @@ function GetAlertPopup()
 	    AlertTop_bg:setFillColor(0,0,0)
 	    AlertTop_bg:setStrokeColor(0,0,0)
 	    AlertTop_bg.strokeWidth = 0.4
+	    AlertTop_bg.isVisible=false
 	    AlertTop_bg:addEventListener("touch",touchBg)
 
 	    AlertTop = display.newRect(W/2,H/2-106.1,299,30)
   	    AlertTop:setStrokeColor(0,0,0,0.5)
   	    AlertTop.strokeWidth = 0.51
-	    AlertTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	    AlertTop:setFillColor(Utils.convertHexToRGB(color.LtyGray))
 	    AlertGroup:insert(AlertTop)
 
 	    AlertText = display.newText("Remove",0,0,native.systemFontBold,15)
@@ -85,6 +86,8 @@ function GetAlertPopup()
 	    AlertGroup:insert(AlertText)
 
 		alertList = display.newRect(leftPadding_value + 140, H/2 -10.62, W-22, 158 )
+		alertList.strokeWidth=1
+    alertList:setStrokeColor(Utils.convertHexToRGB(color.LtyGray))
 	    AlertGroup:insert(alertList)
 
 	    AlertContentText = display.newText(CareerPath.RemoveAccess,0,0,W-20,0,native.systemFont,14)
