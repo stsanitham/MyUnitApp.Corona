@@ -197,8 +197,8 @@ local function ChangeParty()
 end
 
 local function changeAppointment(  )
-	AppintmentWith.placeholder="Appointment With"
-
+	AppintmentWith.placeholder=AddeventPage.Appointment_With
+	
 			PurposeLbl.text = ""
 
 			TicklerType = "APPT"

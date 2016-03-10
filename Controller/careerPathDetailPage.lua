@@ -253,7 +253,7 @@ end
 
 			 else
 
-			 	native.showAlert( "Call", CareerPath.NoSim, { CommonWords.ok } )
+			 	native.showAlert( CareerPath.Call, CareerPath.NoSim, { CommonWords.ok } )
 
 			end
 		end
@@ -332,13 +332,13 @@ end
 		 if id_value == "Remove Access" then
 
 		    print("response after removing details ",Request_response)
-	        local remove_successful= native.showAlert("Remove", "Contact removed from the list.", { CommonWords.ok} , onCompletion)
+	        local remove_successful= native.showAlert(CommonWords.Remove , CareerPath.RemovedText, { CommonWords.ok} , onCompletion)
 
 
 		 elseif id_value == "Block Access" then
 
 		    print("response after blocking details ",Request_response)
-			local block_successful = native.showAlert("Block", "This Contact’s Access blocked successfully.", { CommonWords.ok} , onCompletion)
+			local block_successful = native.showAlert(CommonWords.Block , CareerPath.BlockedText, { CommonWords.ok} , onCompletion)
 
 		 end
 
@@ -347,23 +347,23 @@ end
 
          	 if Request_response == "SUCCESS" then
 
-         	 	denyaccess = native.showAlert("Deny", "Access denied to this Contact.", { CommonWords.ok } , onCompletion)
+         	 	denyaccess = native.showAlert(CommonWords.Deny, CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
 
          	 elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
 
 		 	     elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already denied", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
          	 end
 
@@ -371,23 +371,23 @@ end
 
 	 	    if Request_response == "SUCCESS" then
 
-	 	    	grantaccess = native.showAlert("Grant Access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
+	 	    	grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
 
 		 	 elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already granted", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
          	 end
 
@@ -395,23 +395,23 @@ end
 
 	 	    if Request_response == "SUCCESS" then
 
-	 	    	accessprovided = native.showAlert("Provide Access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
+	 	    	accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
 
 		 	     elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert("Already Blocked", "Contact's Access has been already blocked", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
          	 end
 
@@ -526,8 +526,8 @@ function onAccessButtonTouch( event )
 
               GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
-          processbutton_text.text = "Grant Access"
-          popupText.text = "Grant Access"
+          processbutton_text.text = CommonWords.GrantAccessText
+          popupText.text = CommonWords.GrantAccessText
 
 
           if Details.FirstName ~= nil and Details.LastName ~= nil then
@@ -686,8 +686,8 @@ function onAccessButtonTouch( event )
 
 	  GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
-        processbutton_text.text = "Provide Access"
-        popupText.text = "Provide Access"
+        processbutton_text.text = CommonWords.ProvideAccessText
+        popupText.text = CommonWords.ProvideAccessText
 
                 Requesteddate_bg.isVisible = false
 			 	RequesteddateValue.isVisible = false
@@ -887,8 +887,8 @@ function onAccessButtonTouch( event )
 
 	    GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
-        processbutton_text.text = "Deny Access"
-        popupText.text = "Deny Access"
+        processbutton_text.text = CommonWords.DenyAccessText
+        popupText.text = CommonWords.DenyAccessText
 
         PasswordValue.isVisible = false
         Password_bg.isVisible = false
@@ -1045,7 +1045,7 @@ function onAccessButtonTouch( event )
 
        GetAlertPopup()
 
-		AlertText.text = "Block"
+		AlertText.text = CommonWords.Block 
 		AlertContentText.text = CareerPath.BlockAccess
 		print("block access occurred text value ",AlertContentText.text)
 
@@ -1071,7 +1071,7 @@ function onAccessButtonTouch( event )
     function RequestGrantProcess( )
 
 
-    	if processbutton_text.text == "Grant Access" then
+    	if processbutton_text.text == RequestGrantProcess then
 
     		print("service of grant access")
 
@@ -1117,7 +1117,7 @@ function onAccessButtonTouch( event )
 
 
 
-   	    if processbutton_text.text == "Provide Access" then
+   	    if processbutton_text.text == CommonWords.ProvideAccessText then
 
    	    		print("service of Provide access")
 
@@ -1170,7 +1170,7 @@ function onAccessButtonTouch( event )
 
 
 
-        if processbutton_text.text == "Deny Access" then
+        if processbutton_text.text == CommonWords.DenyAccessText then
 
         		print("service of deny access")
 
@@ -1587,7 +1587,7 @@ function scene:show( event )
 
             if (IsOwner == true) then
 
-				InviteAccess = display.newText("Invite/Access",0,0,0,0,native.systemFontBold,16)
+				InviteAccess = display.newText(CommonWords.InviteAccessText,0,0,0,0,native.systemFontBold,16)
 				InviteAccess.anchorX = 0 ;InviteAccess.anchorY=0
 				InviteAccess.x=leftPadding
 				InviteAccess.isVisible = false
@@ -1615,7 +1615,7 @@ function scene:show( event )
 					grantaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( grantaccess_button )
 
-					grantaccess_button_text = display.newText(sceneGroup,"Grant",0,0,native.systemFont,16)
+					grantaccess_button_text = display.newText(sceneGroup,CommonWords.Grant,0,0,native.systemFont,16)
 					grantaccess_button_text.x=grantaccess_button.x
 					grantaccess_button_text.y=grantaccess_button.y
 					grantaccess_button_text:setFillColor(0,0,0)
@@ -1634,7 +1634,7 @@ function scene:show( event )
 					removeaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( removeaccess_button )
 
-					removeaccess_button_text = display.newText(sceneGroup,"Remove",0,0,native.systemFont,16)
+					removeaccess_button_text = display.newText(sceneGroup,CommonWords.Remove,0,0,native.systemFont,16)
 					removeaccess_button_text.x=removeaccess_button.x
 					removeaccess_button_text.y=removeaccess_button.y
 					removeaccess_button_text:setFillColor(0,0,0)
@@ -1660,7 +1660,7 @@ function scene:show( event )
 					blockaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( blockaccess_button )
 
-					blockaccess_button_text = display.newText(sceneGroup,"Block",0,0,native.systemFont,16)
+					blockaccess_button_text = display.newText(sceneGroup,CommonWords.Block,0,0,native.systemFont,16)
 					blockaccess_button_text.x=blockaccess_button.x
 					blockaccess_button_text.y=blockaccess_button.y
 					blockaccess_button_text:setFillColor(0,0,0)
@@ -1686,7 +1686,7 @@ function scene:show( event )
 					provideaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( provideaccess_button )
 
-					provideaccess_button_text = display.newText(sceneGroup,"Provide Access",0,0,native.systemFont,16)
+					provideaccess_button_text = display.newText(sceneGroup,CommonWords.ProvideAccess,0,0,native.systemFont,16)
 					provideaccess_button_text.x=provideaccess_button.x
 					provideaccess_button_text.y=provideaccess_button.y
 					provideaccess_button_text:setFillColor(0,0,0)
@@ -1712,7 +1712,7 @@ function scene:show( event )
 					grantaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( grantaccess_button )
 
-					grantaccess_button_text = display.newText(sceneGroup,"Grant",0,0,native.systemFont,16)
+					grantaccess_button_text = display.newText(sceneGroup,CommonWords.Grant,0,0,native.systemFont,16)
 					grantaccess_button_text.x=grantaccess_button.x
 					grantaccess_button_text.y=grantaccess_button.y
 					grantaccess_button_text:setFillColor(0,0,0)
@@ -1730,7 +1730,7 @@ function scene:show( event )
 					denyaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( denyaccess_button )
 
-					denyaccess_button_text = display.newText(sceneGroup,"Deny",0,0,native.systemFont,16)
+					denyaccess_button_text = display.newText(sceneGroup,CommonWords.Deny,0,0,native.systemFont,16)
 					denyaccess_button_text.x=denyaccess_button.x
 					denyaccess_button_text.y=denyaccess_button.y
 					denyaccess_button_text:setFillColor(0,0,0)

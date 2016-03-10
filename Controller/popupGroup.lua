@@ -116,8 +116,6 @@ end
 
             if "clicked"==event.action then
 
-            	print("#####################################################################################")
-
             	native.setKeyboardFocus(EmailDetailValue)
 
 	       end
@@ -426,7 +424,7 @@ end
 		   --    processbutton_text.y=processbutton.y
 
 
-			  if popupText.text == "Deny Access" then
+			  if popupText.text == CommonWords.DenyAccessText then
 
 
 		      Password_bg.isVisible = false
@@ -444,7 +442,7 @@ end
 			  processbutton.y = deny_Value.y+deny_Value.contentHeight - 10
 			  processbutton_text.y=processbutton.y
 
-			 elseif popupText.text == "Provide Access" then
+			 elseif popupText.text == CommonWords.ProvideAccessText then
 
 
 			 	Requesteddate_bg.isVisible = false
@@ -503,7 +501,7 @@ end
 		     Requesteddate_bottom.y= RequesteddateValue.y+9
 
 
-		     if popupText.text == "Deny Access" then
+		     if popupText.text == CommonWords.DenyAccessText then
 
 
 		      Password_bg.isVisible = false
@@ -530,7 +528,7 @@ end
 
 			  RequestGrantProcess()
 
-			 elseif popupText.text == "Provide Access" then
+			 elseif popupText.text == CommonWords.ProvideAccessText then
 
 
 			 	Requesteddate_bg.isVisible = false
@@ -745,8 +743,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		NameDetail_bg.y = popupList.y+20
 		popup_scroll:insert(NameDetail_bg)
 
-	    NameDetail_title = display.newText("Name ",0,0,native.systemFontBold,14)
-	    NameDetail_title.x= 44
+	    NameDetail_title = display.newText(PopupGroup.NameDetail_title,0,0,native.systemFontBold,14)
+	    NameDetail_title.x= 50
 	    NameDetail_title:setFillColor(0,0,0)
 	    NameDetail_title.y= NameDetail_bg.y
 	    popup_scroll:insert(NameDetail_title)
@@ -779,7 +777,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    EmailDetail_titlestar.y= EmailDetail_bg.y
 	    popup_scroll:insert(EmailDetail_titlestar)
 
-		EmailDetail_titletext = display.newText("Email ",0,0,native.systemFontBold,14)
+		EmailDetail_titletext = display.newText(PopupGroup.EmailDetail_titletext,0,0,native.systemFontBold,14)
 	    EmailDetail_titletext.x= 44
 	    EmailDetail_titletext:setFillColor(0,0,0)
 	    EmailDetail_titletext.y= EmailDetail_bg.y
@@ -792,7 +790,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		EmailDetailValue.hasBackground = false
 		EmailDetailValue.isVisible = true
 		EmailDetailValue:setReturnKey( "next" )
-		EmailDetailValue.placeholder="Email"
+		EmailDetailValue.placeholder= PopupGroup.EmailDetailValue_placeholder
 		popup_scroll:insert(EmailDetailValue)
 
 
@@ -819,7 +817,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
     popup_scroll:insert(emailnotifybox)
 
 
-    emailnotifytext = display.newText("Send email notification",0,0,native.systemFont,14)
+    emailnotifytext = display.newText(PopupGroup.emailnotifytext,0,0,native.systemFont,14)
     emailnotifytext.x= 50
     emailnotifytext.anchorX=0
     emailnotifytext:setFillColor(0,0,0)
@@ -842,8 +840,9 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    PhoneDetail_titlestar.y= PhoneDetail_bg.y
 	    popup_scroll:insert(PhoneDetail_titlestar)
 
-		PhoneDetail_titletext = display.newText("Phone ",0,0,native.systemFontBold,14)
-	    PhoneDetail_titletext.x= 47
+		PhoneDetail_titletext = display.newText(PopupGroup.PhoneDetail_titletext,0,0,native.systemFontBold,14)
+	    PhoneDetail_titletext.x= PhoneDetail_titlestar.x+3
+	    PhoneDetail_titletext.anchorX=0
 	    PhoneDetail_titletext:setFillColor(0,0,0)
 	    PhoneDetail_titletext.y= PhoneDetail_bg.y
 	    popup_scroll:insert(PhoneDetail_titletext)
@@ -857,7 +856,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		PhoneDetailValue.hasBackground = false
 		PhoneDetailValue.isVisible = true
 		PhoneDetailValue:setReturnKey( "next" )
-		PhoneDetailValue.placeholder="Phone"
+		PhoneDetailValue.placeholder=PopupGroup.PhoneDetailValue_placeholder
 		popup_scroll:insert(PhoneDetailValue)
 
 		PhoneDetail_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
@@ -882,7 +881,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
     popup_scroll:insert(textnotifybox)
 
-    textnotifytext = display.newText("Send text notification",0,0,native.systemFont,14)
+    textnotifytext = display.newText(PopupGroup.textnotifytext,0,0,native.systemFont,14)
     textnotifytext.x= 50
     textnotifytext:setFillColor(0,0,0)
     textnotifytext.anchorX=0
@@ -912,7 +911,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		-- popUpGroup:insert(MKRankDetailValue)
 
 
-		MKRankDetail_title = display.newText("MK Rank ",0,0,native.systemFontBold,14)
+		MKRankDetail_title = display.newText(PopupGroup.MKRankDetail_title,0,0,native.systemFontBold,14)
 	    MKRankDetail_title.x= 22
 	    MKRankDetail_title.anchorX = 0
 	    MKRankDetail_title:setFillColor(0,0,0)
@@ -954,7 +953,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		-- RequesteddateValue.placeholder="Requested On"
 		-- popUpGroup:insert(RequesteddateValue)
 
-		Requesteddate_title = display.newText("Requested On ",0,0,native.systemFontBold,14)
+		Requesteddate_title = display.newText(PopupGroup.Requesteddate_title,0,0,native.systemFontBold,14)
 	    Requesteddate_title.x= 22
 	    Requesteddate_title:setFillColor(0,0,0)
 	    Requesteddate_title.anchorX = 0
@@ -988,7 +987,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 
 	deny_Value = native.newTextBox( deny_bg.width,deny_bg.height,W-40, EditBoxStyle.height+40)
-	deny_Value.placeholder = "Reason for deny"
+	deny_Value.placeholder = PopupGroup.deny_Value_placeholder
 	deny_Value.isEditable = true
 	deny_Value.size=14
 	deny_Value.isVisible = false
@@ -1019,8 +1018,9 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
 	    popup_scroll:insert(Password_titlestar)
 
-		Password_titletext = display.newText("Password ",0,0,native.systemFontBold,14)
-	    Password_titletext.x= 57
+		Password_titletext = display.newText(PopupGroup.Password_titletext,0,0,native.systemFontBold,14)
+	    Password_titletext.x= Password_titlestar.x+3
+	    Password_titletext.anchorX = 0
 	    Password_titletext:setFillColor(0,0,0)
 	    Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
 	    popup_scroll:insert(Password_titletext)
@@ -1034,7 +1034,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		PasswordValue.hasBackground = false
 		PasswordValue.isVisible = true
 		PasswordValue:setReturnKey( "done" )
-		PasswordValue.placeholder="Password"
+		PasswordValue.placeholder= PopupGroup.PasswordValue_placeholder 
 		popup_scroll:insert(PasswordValue)
 
 		Password_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
@@ -1044,7 +1044,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 -----------------------------------password helptext detail-------------------------------------------------
 
-    PasswordHelptext = display.newText("Password must be between 6 and 12 characters in length",0,0,W-30,0,native.systemFont,10.5)
+    PasswordHelptext = display.newText(PopupGroup.PasswordHelptext,0,0,W-30,0,native.systemFont,10.5)
     PasswordHelptext.x= popupTop_bg.x+5
     PasswordHelptext:setFillColor(0,0,0)
     PasswordHelptext.y= Password_bottom.y + 12
@@ -1052,8 +1052,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
  -----------------------------------generate password detail-------------------------------------------------
 
-    GeneratePasstext = display.newText("Generate Password",0,0,W-30,0,native.systemFontBold,14.5)
-    GeneratePasstext.x= W - 15
+    GeneratePasstext = display.newText(PopupGroup.GeneratePasstext,0,0,W-30,0,native.systemFontBold,14.5)
+    GeneratePasstext.x= W - 25
     GeneratePasstext:setFillColor(0,0,0.5)
     GeneratePasstext.y= PasswordHelptext.y + 20
     popup_scroll:insert(GeneratePasstext)

@@ -7,6 +7,18 @@ CommonWords.done = "Fini"
 CommonWords.cancel = "Annuler"
 CommonWords.search = "Recherche"
 
+CommonWords.Deny = "Nier"
+CommonWords.ProvideAccess = "Fournir l'accès"
+CommonWords.Block = "Bloque"
+CommonWords.Remove = "Retirer"
+CommonWords.Grant = "Subvention"
+CommonWords.InviteAccessText = "Inviter / Accès"
+CommonWords.DenyAccessText = "Refuser l'accès"
+CommonWords.ProvideAccessText = "Fournir l'accès"
+CommonWords.GrantAccessText = "Accès Grant"
+
+
+
 Month = {}
 
 Month["jan"] = "jan"
@@ -122,6 +134,10 @@ FlapMenu.LOG_OUT="SE DÉCONNECTER"
 FlapMenu.CANCEL="ANNULER"
 FlapMenu.Home="Accueil"
 FlapMenu.Social_Media="Média social"
+FlapMenu.Contacts_with_Access = "Contacts avec Accès"
+FlapMenu.Denied_Access = "Accès refusé"
+FlapMenu.Pending_Requests = "solicitudes pendientes"
+FlapMenu.TeamMember_without_Access = "Membre de l'équipe sans accès"
 
 
 
@@ -192,7 +208,19 @@ CareerPath.NotToBlock = "Non, je ne veux pas bloquer"
 CareerPath.RemoveAccess = "Êtes-vous sûr de vouloir supprimer ce contact dans la liste ?"
 CareerPath.ToRemove= "Oui , je veux supprimer"
 CareerPath.NotToRemove = "Non, je ne veux pas supprimer"
+CareerPath.Call = "Appel"
 
+CareerPath.RemovedText = "Contactez retiré de la liste ."
+CareerPath.BlockedText = "Accès de ce contact bloqué avec succès ."
+CareerPath.DeniedText = "Accès refusé à ce contact ."
+CareerPath.GrantSuccessText = "Accès accordé avec succès à ce contact ."
+CareerPath.ProvideAccessSuccessText = "Accès fourni avec succès à ce contact ."
+CareerPath.AlreadyDenied = "Déjà Denied"
+CareerPath.AlreadyGranted = "Déjà Accordée"
+CareerPath.AlreadyRemoved = "Déjà Supprimé"
+CareerPath.AddRequest = "Ajouter Demande"
+CareerPath.AlreadyBlocked = "Déjà bloqué"
+CareerPath.AlreadyBlockedText = "Accès Contact a été déjà bloqué"
 
 
 Goals = {}
@@ -211,6 +239,8 @@ ImageLibrary = {}
 
 ImageLibrary.PageTitle = "Bibliothèque d'images"
 ImageLibrary.NoImage = "No Images se retrouvent pour voir"
+ImageLibrary.List="liste"
+ImageLibrary.Grid="la grille"
 
 
 Message = {}
@@ -257,24 +287,24 @@ AddeventPage.New_Event="un nouvel événement"
 AddeventPage.Event_Type="Type d'événement"
 AddeventPage.What="Quoi"
 AddeventPage.All_Day="toute la journée"
-AddeventPage.When="When"
-AddeventPage.To="To"
-AddeventPage.Where="Where"
-AddeventPage.Phone="Phone"
-AddeventPage.Access_Code="Access Code"
-AddeventPage.Out_bound="Out bound"
-AddeventPage.In_bound="In bound"
-AddeventPage.Conference="Conference?"
-AddeventPage.Appointment_With="Appointment With"
-AddeventPage.Add_Invitees="Add Invitees"
-AddeventPage.Purpose="Purpose"
-AddeventPage.Other="Other"
-AddeventPage.Priority="Priority"
-AddeventPage.Add_Attachment="Add Attachment"
-AddeventPage.Add_Quick_Customer="Add Quick Customer"
-AddeventPage.Select_Contact_Group="Select Contact Group"
+AddeventPage.When="Quand"
+AddeventPage.To="À"
+AddeventPage.Where="Où"
+AddeventPage.Phone="Téléphone"
+AddeventPage.Access_Code="Code d'accès"
+AddeventPage.Out_bound="Out lié"
+AddeventPage.In_bound="En consolidé"
+AddeventPage.Conference="Conférence?"
+AddeventPage.Appointment_With="Rendez-vous avec"
+AddeventPage.Add_Invitees="Ajouter Invitees"
+AddeventPage.Purpose="Objectif"
+AddeventPage.Other="Autre"
+AddeventPage.Priority="Priorité"
+AddeventPage.Add_Attachment="Ajouter une pièce jointe"
+AddeventPage.Add_Quick_Customer="Ajouter à la clientèle rapide"
+AddeventPage.Select_Contact_Group="Sélectionnez Groupe de contact"
 AddeventPage.Contact="Contact"
-AddeventPage.Save="Save"
+AddeventPage.Save="sauvegarder"
 AddeventPage.Cancel="annuler"
 
 Facebook = {}
@@ -290,3 +320,31 @@ Google_Plus = {}
 Google_Plus.PageTitle = "Google+"
 
 
+
+
+PopupGroup = {}
+
+PopupGroup.NameDetail_title = "prénom"
+PopupGroup.EmailDetail_titletext = "Email "
+PopupGroup.EmailDetailValue_placeholder = "Email"
+PopupGroup.emailnotifytext = "Envoyer une notification par e-mail"
+PopupGroup.PhoneDetail_titletext = "Téléphone"
+PopupGroup.PhoneDetailValue_placeholder="Téléphone"
+PopupGroup.textnotifytext = "Envoyer une notification de texte"
+PopupGroup.MKRankDetail_title = "MK Rank "
+PopupGroup.Requesteddate_title = "demandé le"
+PopupGroup.deny_Value_placeholder = "Raison de nier"
+PopupGroup.Password_titletext = "Mot de passe"
+PopupGroup.PasswordValue_placeholder = "Mot de passe"
+PopupGroup.PasswordHelptext = "Mot de passe doit être compris entre 6 et 12 caractères"
+PopupGroup.GeneratePasstext = "Générer Mot de passe"
+
+
+
+InviteAccessDetail = {}
+
+InviteAccessDetail.Email = "Email"
+InviteAccessDetail.Phone="Téléphone"
+InviteAccessDetail.MKRank = "MK Rank "
+InviteAccessDetail.ActivityOn = "Activité sur"
+InviteAccessDetail.Comments = "commentaires"
