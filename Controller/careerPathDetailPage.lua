@@ -695,7 +695,7 @@ function onAccessButtonTouch( event )
 			 	Requesteddate_bottom.isVisible = false
        
           if Details.FirstName ~= nil and Details.LastName ~= nil then
-             NameDetailValue.text = Details.FirstName..""..Details.LastName
+             NameDetailValue.text = Details.FirstName.." "..Details.LastName
              native.setKeyboardFocus( nil )
           elseif  Details.FirstName  ~= nil then
              NameDetailValue.text = Details.FirstName
@@ -909,7 +909,7 @@ function onAccessButtonTouch( event )
 
        
           if Details.FirstName ~= nil and Details.LastName ~= nil then
-             NameDetailValue.text = Details.FirstName..""..Details.LastName
+             NameDetailValue.text = Details.FirstName.." "..Details.LastName
              native.setKeyboardFocus( nil )
           elseif  Details.FirstName  ~= nil then
              NameDetailValue.text = Details.FirstName
