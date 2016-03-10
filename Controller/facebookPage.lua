@@ -149,7 +149,7 @@ function FacebookCallback(res,scrollView,flag)
 
 									local time = Utils.makeTimeStamp(string.gsub( feedArray[i].created_time, "+0000", "Z" ))
 
-									local userTime = display.newText( tempGroup, tostring(os.date("%Y-%b-%d %I:%m %p",time )), 0, 0, native.systemFont, 10 )
+									local userTime = display.newText( tempGroup, tostring(os.date("%b-%d-%Y %I:%m %p",time )), 0, 0, native.systemFont, 10 )
 									userTime.anchorX = 0
 									userTime.anchorY = 0
 									Utils.CssforTextView(userTime,sp_Date_Time)

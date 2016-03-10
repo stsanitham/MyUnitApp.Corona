@@ -926,10 +926,7 @@ local function CreateList(list,scrollView)
 
 	local feedArray = list
 
-	for j=#groupArray, 1, -1 do 
-		display.remove(groupArray[#groupArray])
-		groupArray[#groupArray] = nil
-	end
+
 
 	for i=1,#feedArray do
 
@@ -940,6 +937,7 @@ local function CreateList(list,scrollView)
 			local tempGroup = groupArray[#groupArray]
 			local bgheight = 105
 			
+
 		
 			local background = display.newImageRect(tempGroup,"res/assert/cont-list.png",W-10,bgheight)
 			local Initial_Height = 1
@@ -951,10 +949,7 @@ local function CreateList(list,scrollView)
 			background.anchorY = 0
 			background.anchorX = 0
 			background.x=5;background.y=Initial_Height
-			background.strokeWidth = 1
 			--background.alpha=
-			background:setStrokeColor( Utils.convertHexToRGB("#d2d3d4") )
-			background:setFillColor(1)
 			background.value = feedArray[i]
 			background.id="listBg"
 			background.name = status
@@ -963,6 +958,8 @@ local function CreateList(list,scrollView)
 
 			local list_bg = display.newRect( tempGroup, 0, 0, 35, 35 )
 			list_bg:setFillColor( 0.3 )
+
+			
 
 
 			local list = display.newImageRect( tempGroup, "res/assert/list.png",8/2,34/2)
@@ -975,6 +972,18 @@ local function CreateList(list,scrollView)
 		    list_bg.value = feedArray[i]
 		    list_bg.id=i
 		    list_bg:addEventListener( "touch", ListmenuTouch )
+
+		     if status == "GRANT" then
+
+		     	if i == 1 then
+		     		list_bg.alpha=0
+		     		list.isVisible =false
+		     		list_bg:removeEventListener( "touch", ListmenuTouch )
+
+		     	end
+
+		    end
+
 
 
           --  local nameLabel = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
@@ -1043,8 +1052,9 @@ local function CreateList(list,scrollView)
 			Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 			Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-
 				Display_Group[#Display_Group].text = "MK Rank : "..feedArray[i].MkRankLevel
+			
+		
 
 
 			end
@@ -1067,6 +1077,9 @@ local function CreateList(list,scrollView)
 			end
 
 			background.height = background.height-((background.height/5)*(5-#Display_Group))+5
+
+
+
 
 			   group =  Createmenu(list_bg)
 
@@ -1143,13 +1156,80 @@ function scene:create( event )
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
 
+	NoEvent = display.newText( sceneGroup, EventCalender.NoEvent , 0,0,0,0,native.systemFontBold,14)
+	NoEvent.x=W/2;NoEvent.y=H/2
+	NoEvent.isVisible=false
+	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+
 
 
 	MainGroup:insert(sceneGroup)
 end
 
 function get_GetMyUnitBuzzRequestAccesses(response)
-	CreateList(response,scrollView)
+
+	scrollView:scrollTo( "top", { time=200} )
+
+		for j=#groupArray, 1, -1 do 
+			display.remove(groupArray[#groupArray])
+			groupArray[#groupArray] = nil
+		end
+
+	if #response > 0 then
+		print( "here" )
+
+			NoEvent.isVisible=false
+
+		local listValue = {}
+
+		for i=1,#response do
+
+			if response[i].IsOwner == true then
+
+				listValue[#listValue+1] = response[i]
+
+			end
+
+		end
+
+
+		for i=1,#response do
+
+			if response[i].IsOwner == true then
+
+
+			else
+
+			listValue[#listValue+1] = response[i]	
+
+			end
+
+		end
+
+
+		CreateList(listValue,scrollView)
+
+	else
+
+			NoEvent.isVisible=true
+
+			if status == "DENY" then
+
+				NoEvent.text="No list of Denied Access found"
+
+			elseif status == "OPEN" then
+
+				NoEvent.text="No Pending Requests found"
+
+			elseif status == "ADDREQUEST" then
+
+				NoEvent.text="No list of Team Members without Access found"
+
+			end
+
+
+	end
+
 end
 
 function reloadInvitAccess(reloadstatus)
@@ -1304,7 +1384,7 @@ end
 
          if id_value == "Deny Access" then
 
-         	 if Request_response == "5" then
+         	 if Request_response == "SUCCESS" then
 
          	 	denyaccess = native.showAlert("Deny", "Access denied to this Contact.", { CommonWords.ok } , onCompletion)
 
@@ -1324,7 +1404,7 @@ end
 
          elseif id_value == "Grant Access" then
 
-	 	    if Request_response == "5" then
+	 	    if Request_response == "SUCCESS" then
 
 	 	    	grantaccess = native.showAlert(" Grant access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
 
@@ -1344,7 +1424,7 @@ end
 
 	 	elseif id_value == "Provide Access" then
 
-	 	    if Request_response == "5" then
+	 	    if Request_response == "SUCCESS" then
 
 	 	    	accessprovided = native.showAlert("Provide access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
 

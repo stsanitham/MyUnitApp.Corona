@@ -1254,6 +1254,11 @@ local function TouchAction( event )
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
 						AccessCode.isVisible = true
+					elseif SelectEvent.text:lower( ) == "task" then
+
+							Where.isVisible = false
+						Addinvitees.isVisible = false
+
 					end
 
 				end
@@ -1276,6 +1281,10 @@ local function TouchAction( event )
 						if SelectEvent.text:lower( ) == "call" then
 							Phone.isVisible = true
 							AccessCode.isVisible = true
+						elseif SelectEvent.text:lower( ) == "task" then
+
+							Where.isVisible = false
+						Addinvitees.isVisible = false
 						end
 
 					end
@@ -1292,29 +1301,29 @@ local function TouchAction( event )
 									AccessCode.isVisible = true
 								end
 
-							if List.isVisible == false then
-									List.isVisible = true
-									List.x = event.target.x
-									List.y = event.target.y+event.target.contentHeight+1.3-20
+								if List.isVisible == false then
+										List.isVisible = true
+										List.x = event.target.x
+										List.y = event.target.y+event.target.contentHeight+1.3-20
 
-										
-									List.arrayName = durationMin
-									List.textFiled = Event_to_time
+											
+										List.arrayName = durationMin
+										List.textFiled = Event_to_time
 
-										List.contentWidth =80
-										--List.arrayName = priorityArray
-										--List.textFiled = PriorityLbl
-										List_bg.y = List.y
-										List_bg.isVisible = true
+											List.contentWidth =80
+											--List.arrayName = priorityArray
+											--List.textFiled = PriorityLbl
+											List_bg.y = List.y
+											List_bg.isVisible = true
+											List:deleteAllRows()
+											CreateList(event,List,List_bg)
+									
+								else
+										List_bg.isVisible = false
 										List:deleteAllRows()
-										CreateList(event,List,List_bg)
-								
-						else
-								List_bg.isVisible = false
-								List:deleteAllRows()
-								List.isVisible = false
+										List.isVisible = false
 
-						end
+								end
 
 					else
 
@@ -1352,6 +1361,11 @@ local function TouchAction( event )
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
 						AccessCode.isVisible = true
+					elseif SelectEvent.text:lower( ) == "task" then
+
+							Where.isVisible = false
+						Addinvitees.isVisible = false
+
 					end
 
 				end
@@ -1381,6 +1395,12 @@ local function TouchAction( event )
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
 						AccessCode.isVisible = true
+
+					elseif SelectEvent.text:lower( ) == "task" then
+
+							Where.isVisible = false
+						Addinvitees.isVisible = false
+						
 					end
 
 				end
@@ -1803,18 +1823,32 @@ local function searchfunction( event )
 
 		searchList.textFiled = event.target
 
-		searchList.height = #searchArray*36
+		searchList.y = event.target.y
+
+		--searchList.height = 36 * #searchArray
 
 		if #searchArray >= 3 then
-			searchList.height = 3*36
 
-			if event.text:len() > 1 then
-				searchList:scrollToIndex( 1, 100 )
-			end
+			searchList.height = 36 * 3
+
+				searchList:scrollToY( { y=searchList:getContentPosition()-event.target.contentHeight/3, time=200 } )
+			
+		else
+
+				
+			searchList.height = 36 * #searchArray
+
+	
+			searchList:scrollToY( { y=searchList:getContentPosition()-event.target.contentHeight/3, time=200 } )
+			--searchList:scrollToIndex( 1, 200 )
+
+
 		end
 
-				searchList.y = event.target.y-event.target.contentHeight+25
 
+
+				--searchList:scrollTo( "top", { time=200} )
+			
 				
 
     	--searchArray
@@ -1948,6 +1982,12 @@ local function usertextField( event )
 
 				end
 
+				if event.target.text == "" then
+
+					event.target.text=""
+						
+				end
+
 		else
 
 
@@ -1983,106 +2023,31 @@ local function usertextField( event )
 
 		elseif(event.target.id == "phone") then
 
-				event.target.text = string.sub(event.target.text,1,event.startPosition )
-
-							local tempvalue = event.target.text:sub(1,1)
-
-							if (event.target.text:len() == 3) then
-
-								if (tempvalue ~= "(") then
-
-									--event.target.text = "("..event.target.text..") "
-
-									local previousText=event.target.text
-
-									Phone.text="("..previousText..") "
-
-									native.setKeyboardFocus(Phone)
-							
-								else
-
-									event.target.text = event.target.text:sub(2,event.target.text:len())
-
-								end
-
-							elseif event.target.text:len() == 5 and (tempvalue == "(") then
-
-								if event.target.text:sub(5,5) ~= ")" then
-
-									event.target.text = event.text:sub(1,4)..") "..event.target.text:sub(5,5)
-				
-								end
-
-
-							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
-
-
-									local previousText=event.target.text
-
-									Phone.text=previousText.."- "
-
-									native.setKeyboardFocus(Phone)
-
-
-							elseif event.target.text:len() == 10 then
-
-								if string.find(event.target.text,"-") then
-
-									event.target.text = event.target.text:sub(1,9)
-								else
-
-									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
-								end
-
-							
-
-
-							elseif event.target.text:len() == 9 and not string.find(event.target.text,"-") then
-
-
-									local previousText=event.target.text
-
-									Phone:removeSelf( );Phone=nil
-
-									Phone = createField()
-									Phone.id="Phone"
-									Phone.size=14	
-									Phone:setReturnKey( "next" )
-									Phone.hasBackground = false
-									Phone.placeholder=RequestAccess.Phone_placeholder
-									Phone.inputType = "number"
-									callGroup:insert(Phone)
-
-									Phone.text=previousText.."- "
-
-
-									Phone:addEventListener( "userInput", usertextField )
-
-									native.setKeyboardFocus(Phone)
-
-									event.target = Phone
-
-
-
-							elseif event.target.text:len() == 10 then
-
-								if string.find(event.target.text,"-") then
-
-									event.target.text = event.target.text:sub(1,9)
-								else
-
-									event.target.text = event.target.text:sub(1,9).."- "..event.target.text:sub(10,10)
-								end
-															
-
-							end
-
-							if event.target.text:len() > 15 then
+				if event.target.text:len() > 15 then
 
 								event.target.text = event.target.text:sub(1,15)
 
 
 							end
+
+							if event.target.text:len() > event.startPosition then
+
+								event.target.text = event.target.text:sub(1,event.startPosition )
+
+							end
+
+
+							local maskingValue =Utils.PhoneMasking(tostring(event.target.text))
+
+											
+
+									native.setKeyboardFocus(nil)
+
+									event.target.text=maskingValue
+
+									event.target = Phone
+
+									native.setKeyboardFocus(Phone)
 							end
 
 						
@@ -3034,7 +2999,7 @@ function scene:show( event )
 		        hideBackground = true,
 		        isBounceEnabled = false,
 		        noLines = true,
-		      --  bottomPadding = 5,
+		      -- bottomPadding = 20,
 
 
 		       -- listener = scrollListener
@@ -3345,19 +3310,27 @@ function scene:show( event )
 		  			AppintmentWith.text = UpdateValue.Contact.LastName
 
 		  		end
+
+		  		AppintmentWith.contactinfo=UpdateValue.Contact 
 		  	end
 
 		  	if UpdateValue.Invitees ~= nil then
 
-		  		if UpdateValue.Invitees.FirstName ~= nil then
+		  		print( "UpdateValue.Invitees "..#UpdateValue.Invitees )
 
-		  			Invitees.text = UpdateValue.Invitees.FirstName.." "..UpdateValue.Invitees.LastName
+		  		local value = UpdateValue.Invitees
 
-		  		elseif UpdateValue.Invitees.LastName ~= nil then
+		  		if value[1].FirstName ~= nil then
 
-		  			Invitees.text = UpdateValue.Invitees.LastName
+		  			Addinvitees.text = value[1].FirstName.." "..value[1].LastName
+
+		  		elseif value[1].LastName ~= nil then
+
+		  			Addinvitees.text = value[1].LastName
 		  			
 		  		end
+
+		  		Addinvitees.contactinfo=value[1]
 		  	end
 
 	  		if UpdateValue.AppointmentPurpose ~= nil then

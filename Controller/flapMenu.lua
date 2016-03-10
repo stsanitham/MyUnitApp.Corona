@@ -407,6 +407,7 @@ function scene:show( event )
 			        width = panel.width,
 			        height = 350,
 			        hideBackground=true,
+			        horizontalScrollDisabled=true
 			        -- scrollWidth = 600,
 			        -- scrollHeight = 800,
 			        -- listener = scrollListener
