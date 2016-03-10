@@ -225,7 +225,9 @@ end
 
 							if (event.newCharacters==" ") then
 
-								event.target.text = event.target.text:sub(1,event.target.text:len()-1)
+								if string.find( current_textField.text," " ) ~= nil then
+							        current_textField.text=string.gsub(current_textField.text," ","")
+							    end
 
 							end
 
