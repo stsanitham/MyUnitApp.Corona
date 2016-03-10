@@ -7,6 +7,20 @@ CommonWords.cancel = "Cancelar"
 CommonWords.done = "Hecho"
 CommonWords.search = "Buscar"
 
+CommonWords.Deny = "Negar"
+CommonWords.ProvideAccess = "Proveer acceso"
+CommonWords.Block = "Bloquear"
+CommonWords.Remove = "retirar"
+CommonWords.Grant = "Conceder"
+CommonWords.InviteAccessText = "Invite / Acceso"
+CommonWords.DenyAccessText = "Acceso denegado"
+CommonWords.ProvideAccessText = "Proveer acceso"
+CommonWords.GrantAccessText = "Autorizará el acceso"
+
+
+
+
+
 Month = {}
 
 
@@ -123,6 +137,10 @@ FlapMenu.LOG_OUT="CERRAR SESIÓN"
 FlapMenu.CANCEL="CANCELAR"
 FlapMenu.Home="Casa"
 FlapMenu.Social_Media="Medio social"
+FlapMenu.Contacts_with_Access = "Contactos con Acceso"
+FlapMenu.Denied_Access = "Acceso denegado"
+FlapMenu.Pending_Requests = "solicitudes pendientes"
+FlapMenu.TeamMember_without_Access = "Miembro del Equipo sin acceso"
 
 
 EventCalender = {}
@@ -191,6 +209,22 @@ CareerPath.NotToBlock = "No, no quiero bloquear"
 CareerPath.RemoveAccess = "¿Está seguro de que desea eliminar este contacto de la lista ?"
 CareerPath.ToRemove = "Sí , deseo eliminar"
 CareerPath.NotToRemove = "No, no quiero quitar"
+CareerPath.Call = "Llamada"
+
+CareerPath.RemovedText = "Contact removed from the list."
+CareerPath.BlockedText = "This Contact’s Access blocked successfully."
+CareerPath.DeniedText = "Acceso denegado al contacto ."
+CareerPath.GrantSuccessText = "Acceso permitido con éxito a este contacto ."
+CareerPath.ProvideAccessSuccessText = "El acceso proporcionado con éxito a este contacto ."
+CareerPath.AlreadyGranted = "ya concedidas"
+CareerPath.AlreadyRemoved = "Ya eliminado"
+CareerPath.AddRequest = "Añadir solicitud"
+CareerPath.AlreadyBlocked = "ya está bloqueado"
+CareerPath.AlreadyDenied = "ya denegado"
+CareerPath.AlreadyGrantedText = "ya concedidas"
+CareerPath.AlreadyRemovedText = "Ya eliminado"
+CareerPath.AddRequestText = "Añadir solicitud"
+CareerPath.AlreadyBlockedText = "El acceso de contacto ha sido ya bloqueados"
 
 
 
@@ -210,6 +244,8 @@ ImageLibrary = {}
 
 ImageLibrary.PageTitle = "Biblioteca de imágenes"
 ImageLibrary.NoImage = "No Images se encuentran para ver"
+ImageLibrary.List="Lista"
+ImageLibrary.Grid="Cuadrícula"
 
 
 Message = {}
@@ -288,3 +324,31 @@ Google_Plus = {}
 Google_Plus.PageTitle = "Google+"
 
 
+
+PopupGroup = {}
+
+PopupGroup.NameDetail_title = "Nombre"
+PopupGroup.EmailDetail_titletext = "Email "
+PopupGroup.EmailDetailValue_placeholder = "Email"
+PopupGroup.emailnotifytext = "Enviar notificación por correo electrónico"
+PopupGroup.PhoneDetail_titletext = "Teléfono "
+PopupGroup.PhoneDetailValue_placeholder="Teléfono"
+PopupGroup.textnotifytext = "Enviar notificación de texto"
+PopupGroup.MKRankDetail_title = "MK Rango"
+PopupGroup.Requesteddate_title = "solicitado el"
+PopupGroup.deny_Value_placeholder = "Razón para negar"
+PopupGroup.Password_titletext = "Contraseña"
+PopupGroup.PasswordValue_placeholder = "Contraseña"
+PopupGroup.PasswordHelptext = "La contraseña debe tener entre 6 y 12 caracteres de longitud"
+PopupGroup.GeneratePasstext = "Generar contraseña"
+
+
+
+
+InviteAccessDetail = {}
+
+InviteAccessDetail.Email = "Email"
+InviteAccessDetail.Phone="Teléfono"
+InviteAccessDetail.MKRank = "MK Rango"
+InviteAccessDetail.ActivityOn = "En la actividad"
+InviteAccessDetail.Comments = "comentarios"

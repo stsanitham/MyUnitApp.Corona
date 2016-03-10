@@ -107,16 +107,17 @@ local display_details = {}
          end
 
 
+
 		 if id_value == "Remove Access" then
 
 		    print("response after removing details ",Request_response)
-	        local remove_successful= native.showAlert("Remove", "Contact removed from the list.", { CommonWords.ok} , onCompletion)
+	        local remove_successful= native.showAlert(CommonWords.Remove , CareerPath.RemovedText, { CommonWords.ok} , onCompletion)
 
 
 		 elseif id_value == "Block Access" then
 
 		    print("response after blocking details ",Request_response)
-			local block_successful = native.showAlert("Block", "This Contact’s Access blocked successfully.", { CommonWords.ok} , onCompletion)
+			local block_successful = native.showAlert(CommonWords.Block , CareerPath.BlockedText, { CommonWords.ok} , onCompletion)
 
 		 end
 
@@ -125,19 +126,23 @@ local display_details = {}
 
          	 if Request_response == "SUCCESS" then
 
-         	 	denyaccess = native.showAlert("Deny", "Access denied to this Contact.", { CommonWords.ok } , onCompletion)
+         	 	denyaccess = native.showAlert(CommonWords.Deny, CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
 
          	 elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the Contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+
+		 	     elseif Request_response == "BLOCK" then
+
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
          	 end
 
@@ -145,21 +150,23 @@ local display_details = {}
 
 	 	    if Request_response == "SUCCESS" then
 
-	 	    	print("hai hai hai hai hai hai hai")
-
-	 	    	grantaccess = native.showAlert("Grant Access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
+	 	    	grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the Contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+
+		 	 elseif Request_response == "BLOCK" then
+
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
          	 end
 
@@ -167,19 +174,23 @@ local display_details = {}
 
 	 	    if Request_response == "SUCCESS" then
 
-	 	    	accessprovided = native.showAlert("Provide Access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
+	 	    	accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the Contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+
+		 	     elseif Request_response == "BLOCK" then
+
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
          	 end
 
@@ -193,7 +204,7 @@ local display_details = {}
 
     function RequestGrantProcess( )
 
-    	if processbutton_text.text == "Grant Access" then
+    	if processbutton_text.text == RequestGrantProcess then
 
     		print("service of grant access")
 
@@ -238,7 +249,7 @@ local display_details = {}
 
 
 
-   	    if processbutton_text.text == "Provide Access" then
+   	    if processbutton_text.text == CommonWords.ProvideAccessText  then
 
    	    		print("service of Provide access")
 
@@ -288,7 +299,7 @@ local display_details = {}
 
 
 
-        if processbutton_text.text == "Deny Access" then
+        if processbutton_text.text == CommonWords.DenyAccessText then
 
         		print("service of deny access")
 
@@ -458,8 +469,8 @@ local function GrandProcess(event)
 
 	     GetPopUp(invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
 
-          processbutton_text.text = "Grant Access"
-          popupText.text = "Grant Access"
+          processbutton_text.text = CommonWords.ProvideAccessText
+          popupText.text = CommonWords.ProvideAccessText
 
           if invitedetail_value.FirstName ~= nil and invitedetail_value.LastName ~= nil then
              NameDetailValue.text = invitedetail_value.FirstName.." "..invitedetail_value.LastName
@@ -591,8 +602,8 @@ local function DenyProcess()
 
 	 GetPopUp(invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
 
-        processbutton_text.text = "Deny Access"
-        popupText.text = "Deny Access"
+        processbutton_text.text = CommonWords.DenyAccessText
+        popupText.text = CommonWords.DenyAccessText
 
         PasswordValue.isVisible = false
         Password_bg.isVisible = false
@@ -737,8 +748,8 @@ local function ProvideAccess()
 
 	GetPopUp(invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
 
-        processbutton_text.text = "Provide Access"
-        popupText.text = "Provide Access"
+        processbutton_text.text = CommonWords.ProvideAccessText
+        popupText.text =  CommonWords.ProvideAccessText
 
                 Requesteddate_bg.isVisible = false
 			 	RequesteddateValue.isVisible = false
@@ -1096,7 +1107,7 @@ end
 
 	    if invitedetail_value.EmailAddress ~= nil and invitedetail_value.EmailAddress ~= "" then
 
-		display_details[#display_details+1] = display.newText("Email",0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
+		display_details[#display_details+1] = display.newText(InviteAccessDetail.Email,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 		display_details[#display_details].x=leftAlign
 		display_details[#display_details].y=15
@@ -1134,7 +1145,7 @@ end
 
 	    if invitedetail_value.PhoneNumber ~= nil and invitedetail_value.PhoneNumber ~= "" then
 
-		display_details[#display_details+1] = display.newText("Phone",0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
+		display_details[#display_details+1] = display.newText(InviteAccessDetail.Phone,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 		display_details[#display_details].x=leftAlign
 		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+15
@@ -1173,7 +1184,7 @@ end
 
 	    if invitedetail_value.MkRankLevel ~= nil and invitedetail_value.MkRankLevel ~= "" then
 
-		display_details[#display_details+1] = display.newText("MK Rank",0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
+		display_details[#display_details+1] = display.newText(InviteAccessDetail.MKRank,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 		display_details[#display_details].x=leftAlign
 		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+15
@@ -1216,7 +1227,7 @@ end
 
 		   local activity_time = tostring(os.date("%m/%d/%Y %I:%m %p",time))
 
-		display_details[#display_details+1] = display.newText("Activity On",0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
+		display_details[#display_details+1] = display.newText(InviteAccessDetail.ActivityOn,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 		display_details[#display_details].x=leftAlign
 		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+15
@@ -1253,7 +1264,7 @@ end
 
 	    if invitedetail_value.Comments ~= nil and invitedetail_value.Comments ~= "" then
 
-		display_details[#display_details+1] = display.newText("Comments",0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
+		display_details[#display_details+1] = display.newText(InviteAccessDetail.Comments,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 		display_details[#display_details].x=leftAlign
 		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+15
@@ -1291,7 +1302,7 @@ end
 -------------------------------------------------------------------------------------------------	
 
   if invitedetail_value.IsOwner == false then
-		display_details[#display_details+1] = display.newText("Invite/Access",0,0,0,0,native.systemFontBold,15)
+		display_details[#display_details+1] = display.newText(CommonWords.InviteAccessText,0,0,0,0,native.systemFontBold,15)
 		display_details[#display_details]:setFillColor(0,0,0)
 		display_details[#display_details].x=leftAlign
 		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+25
@@ -1318,7 +1329,7 @@ end
 					grantaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( grantaccess_button )
 
-					grantaccess_button_text = display.newText(scroll_View,"Grant",0,0,native.systemFont,16)
+					grantaccess_button_text = display.newText(scroll_View,CommonWords.Grant,0,0,native.systemFont,16)
 					grantaccess_button_text.x=grantaccess_button.x
 					grantaccess_button_text.y=grantaccess_button.y
 					grantaccess_button_text:setFillColor(0,0,0)
@@ -1337,7 +1348,7 @@ end
 					removeaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( removeaccess_button )
 
-					removeaccess_button_text = display.newText(scroll_View,"Remove",0,0,native.systemFont,16)
+					removeaccess_button_text = display.newText(scroll_View,CommonWords.Remove,0,0,native.systemFont,16)
 					removeaccess_button_text.x=removeaccess_button.x
 					removeaccess_button_text.y=removeaccess_button.y
 					removeaccess_button_text:setFillColor(0,0,0)
@@ -1359,7 +1370,7 @@ end
 					blockaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( blockaccess_button )
 
-					blockaccess_button_text = display.newText(scroll_View,"Block",0,0,native.systemFont,16)
+					blockaccess_button_text = display.newText(scroll_View,CommonWords.Block,0,0,native.systemFont,16)
 					blockaccess_button_text.x=blockaccess_button.x
 					blockaccess_button_text.y=blockaccess_button.y
 					blockaccess_button_text:setFillColor(0,0,0)
@@ -1387,7 +1398,7 @@ end
 					provideaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( provideaccess_button )
 
-					provideaccess_button_text = display.newText(scroll_View,"Provide Access",0,0,native.systemFont,16)
+					provideaccess_button_text = display.newText(scroll_View,CommonWords.ProvideAccess,0,0,native.systemFont,16)
 					provideaccess_button_text.x=provideaccess_button.x
 					provideaccess_button_text.y=provideaccess_button.y
 					provideaccess_button_text:setFillColor(0,0,0)
@@ -1408,7 +1419,7 @@ end
 					grantaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( grantaccess_button )
 
-					grantaccess_button_text = display.newText(scroll_View,"Grant",0,0,native.systemFont,16)
+					grantaccess_button_text = display.newText(scroll_View,CommonWords.Grant,0,0,native.systemFont,16)
 					grantaccess_button_text.x=grantaccess_button.x
 					grantaccess_button_text.y=grantaccess_button.y
 					grantaccess_button_text:setFillColor(0,0,0)
@@ -1426,7 +1437,7 @@ end
 					denyaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( denyaccess_button )
 
-					denyaccess_button_text = display.newText(scroll_View,"Deny",0,0,native.systemFont,16)
+					denyaccess_button_text = display.newText(scroll_View,CommonWords.Deny,0,0,native.systemFont,16)
 					denyaccess_button_text.x=denyaccess_button.x
 					denyaccess_button_text.y=denyaccess_button.y
 					denyaccess_button_text:setFillColor(0,0,0)
@@ -1437,10 +1448,6 @@ end
 -------------------------------------------------------------------------------------------------	
 
 
-
-
-
-			
 		end	
 		
 	MainGroup:insert(sceneGroup)

@@ -615,7 +615,7 @@ function scene:show( event )
 
 
 
-				socilaLbl = display.newText("Invite/Access",0,0,panel.contentWidth,0,native.systemFontBold,16)
+				socilaLbl = display.newText(CommonWords.InviteAccessText,0,0,panel.contentWidth,0,native.systemFontBold,16)
 				socilaLbl.anchorX = 0
 				socilaLbl.x=5
 				socilaLbl.y= rect.y+15
@@ -641,7 +641,7 @@ function scene:show( event )
 			invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			flapScroll:insert( invite_icon )
 
-			invite_text = display.newText("Contacts with Access" ,0,0,"Open Sans Regular",16)
+			invite_text = display.newText(FlapMenu.Contacts_with_Access ,0,0,"Open Sans Regular",16)
 			invite_text.anchorX = 0
 			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
 			invite_text.y = invite_icon.y
@@ -668,7 +668,7 @@ function scene:show( event )
 			invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			flapScroll:insert( invite_icon )
 
-			invite_text = display.newText("Denied Access" ,0,0,"Open Sans Regular",16)
+			invite_text = display.newText(FlapMenu.Denied_Access ,0,0,"Open Sans Regular",16)
 			invite_text.anchorX = 0
 			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
 			invite_text.y = invite_icon.y
@@ -695,7 +695,7 @@ function scene:show( event )
 			invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			flapScroll:insert( invite_icon )
 
-			invite_text = display.newText("Pending Requests" ,0,0,"Open Sans Regular",16)
+			invite_text = display.newText(FlapMenu.Pending_Requests,0,0,"Open Sans Regular",16)
 			invite_text.anchorX = 0
 			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
 			invite_text.y = invite_icon.y
@@ -722,7 +722,7 @@ function scene:show( event )
 			invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			flapScroll:insert( invite_icon )
 
-			invite_text = display.newText("Team Member without Access" ,0,0,"Open Sans Regular",16)
+			invite_text = display.newText(FlapMenu.TeamMember_without_Access,0,0,"Open Sans Regular",16)
 			invite_text.anchorX = 0
 			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
 			invite_text.y = invite_icon.y

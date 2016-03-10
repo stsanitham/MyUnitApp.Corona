@@ -79,7 +79,7 @@ function GetAlertPopup()
 	    AlertTop:setFillColor(Utils.convertHexToRGB(color.LtyGray))
 	    AlertGroup:insert(AlertTop)
 
-	    AlertText = display.newText("Remove",0,0,native.systemFontBold,15)
+	    AlertText = display.newText(CommonWords.Remove ,0,0,native.systemFontBold,15)
 	    AlertText.anchorX=0
 	    AlertText.x=20;AlertText.y=AlertTop.y
 	    AlertText:setFillColor(1,1,1)
@@ -106,7 +106,7 @@ function GetAlertPopup()
   	accept_button.y = AlertContentText.y+AlertContentText.contentHeight+22
 	--accept_button:addEventListener("touch",onProcessButtonTouch)
 
-	accept_button_text = display.newText(AlertGroup,"Yes, I want to remove",0,0,native.systemFont,14)
+	accept_button_text = display.newText(AlertGroup,CareerPath.ToRemove,0,0,native.systemFont,14)
 	accept_button_text.x=accept_button.x
 	accept_button_text.y=accept_button.y
 	accept_button_text:setFillColor(0,0,0)
@@ -119,7 +119,7 @@ function GetAlertPopup()
   	reject_button.y = accept_button.y + accept_button.contentHeight+15
 	--reject_button:addEventListener("touch",onProcessButtonTouch)
 
-	reject_button_text = display.newText(AlertGroup,"No, I don't want to remove",0,0,native.systemFont,14)
+	reject_button_text = display.newText(AlertGroup,CareerPath.NotToRemove,0,0,native.systemFont,14)
 	reject_button_text.x=reject_button.x + 15
 	reject_button_text.y=reject_button.y
 	reject_button_text:setFillColor(0,0,0)
