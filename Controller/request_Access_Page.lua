@@ -49,75 +49,71 @@ local listFlag= false
 
 -----------------Function-------------------------
 
-	local function rankToptouch( event )
-		if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-			elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
+local function rankToptouch( event )
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 
-			if event.target.id == "close" then
-				rankGroup.isVisible=false
+		if event.target.id == "close" then
+			rankGroup.isVisible=false
 
-					FirstName.isVisible=true
-					Name.isVisible=true
-					Email.isVisible=true
-					Phone.isVisible=true
-					UnitNumber.isVisible=true
-					Comment.isVisible=true
-					DirectorName.isVisible = true
-					DirectorEmail.isVisible = true
+				FirstName.isVisible=true
+				Name.isVisible=true
+				Email.isVisible=true
+				Phone.isVisible=true
+				UnitNumber.isVisible=true
+				Comment.isVisible=true
+				DirectorName.isVisible = true
+				DirectorEmail.isVisible = true
 
-					 if unitnumberflag == true then
 
-					 DirectorName.isVisible = true
-					 DirectorEmail.isVisible = true
+				 if unitnumberflag == true then
 
-				     end
+				 DirectorName.isVisible = true
+				 DirectorEmail.isVisible = true
 
-			end
+			     end
 
 		end
 
+	end
+
+	return true
+end
+
+local function touchBg( event )
+		if event.phase == "began" then
+
+		elseif event.phase == "ended" then
+
+				native.setKeyboardFocus(nil)
+
+		end
 		return true
-	end
+end
 
+local function backAction( event )
+		if event.phase == "began" then
 
+			display.getCurrentStage():setFocus( event.target )
 
-	local function touchBg( event )
-			if event.phase == "began" then
+		elseif event.phase == "ended" then
 
-			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+			local options = {
+								effect = "slideRight",
+								time = 600,
+								params = { responseValue=list_response_total}
+								}
+			composer.gotoScene( "Controller.singInPage", options )
 
-					native.setKeyboardFocus(nil)
+			
+		end
 
-			end
-			return true
-	end
+		return true
 
-
-
-	local function backAction( event )
-			if event.phase == "began" then
-
-				display.getCurrentStage():setFocus( event.target )
-
-			elseif event.phase == "ended" then
-
-				display.getCurrentStage():setFocus( nil )
-				local options = {
-									effect = "slideRight",
-									time = 600,
-									params = { responseValue=list_response_total}
-									}
-				composer.gotoScene( "Controller.singInPage", options )
-
-				
-			end
-
-			return true
-
-	end
-
+end
 
 
 	local function SetError( displaystring, object )
@@ -135,29 +131,29 @@ local listFlag= false
 	local function alertFun(value,flag)
 
 
-			local function onComplete( event )
-				   if event.action == "clicked" then
-				        local i = event.index
-				        if i == 1 then  
+					local function onComplete( event )
+						   if event.action == "clicked" then
+						        local i = event.index
+						        if i == 1 then  
 
-				        	if flag == 1 then
+						        	if flag == 1 then
 
-					        	local options = {
-									effect = "slideRight",
-									time = 600,
-									params = { responseValue=list_response_total}
-									}
-								composer.gotoScene( "Controller.singInPage", options )
+							        	local options = {
+											effect = "slideRight",
+											time = 600,
+											params = { responseValue=list_response_total}
+											}
+										composer.gotoScene( "Controller.singInPage", options )
 
-							end
-							
-				        end
-				   end
-			end
+									end
+									
+						        end
+						   end
+					end
 
-		local alert = native.showAlert( RequestAccess.PageTitle , value, { CommonWords.ok }, onComplete )
+			local alert = native.showAlert( RequestAccess.PageTitle , value, { CommonWords.ok }, onComplete )
 
-	end	
+		end	
 
 
 
@@ -183,7 +179,7 @@ local function RequestProcess()
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
 
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+40
+			sumbitBtn.width = sumbitBtn_lbl.contentWi\dth+40
 			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
 			sumbitBtn_lbl.x = sumbitBtn.x+5
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
@@ -218,49 +214,49 @@ sumbitBtn_lbl.x = sumbitBtn.x+5
 							MKRank.value = "-Select MK Rank-"
 							Comment.text = ""
 
-							
-			if Request_response == "REQUEST"  then
+						
+		if Request_response == "REQUEST"  then
 
-				alertFun(RequestAccess.REQUEST,0)
+			alertFun(RequestAccess.REQUEST,0)
 
-			elseif Request_response == "FIRSTREQUEST" then
+		elseif Request_response == "FIRSTREQUEST" then
 
-				alertFun(RequestAccess.FIRSTREQUEST,1)
+			alertFun(RequestAccess.FIRSTREQUEST,1)
 
-			elseif Request_response == "MUBNOTAGREE" then
+		elseif Request_response == "MUBNOTAGREE" then
 
-				alertFun(RequestAccess.MUBNOTAGREE,1)	
+			alertFun(RequestAccess.MUBNOTAGREE,1)	
 
-			elseif Request_response == "OPEN" then
+		elseif Request_response == "OPEN" then
 
-				alertFun(RequestAccess.OPEN,1)
-							
-			elseif Request_response == "GRANT" then
+			alertFun(RequestAccess.OPEN,1)
+						
+		elseif Request_response == "GRANT" then
 
-				alertFun(RequestAccess.GRANT,1)
+			alertFun(RequestAccess.GRANT,1)
 
-			elseif Request_response == "SUCCESS" then
+		elseif Request_response == "SUCCESS" then
 
-				alertFun(RequestAccess.FIRSTREQUEST,1)
+			alertFun(RequestAccess.FIRSTREQUEST,1)
 
-			elseif Request_response == "NOUNITNUMBER" then
+		elseif Request_response == "NOUNITNUMBER" then
 
-				SetError("* "..RequestAccess.NOUNITNUMBER,UnitNumber)
+			SetError("* "..RequestAccess.NOUNITNUMBER,UnitNumber)
 
-			elseif Request_response == "BLOCK"  then
+		elseif Request_response == "BLOCK"  then
 
-				alertFun(RequestAccess.BLOCK,0)
+			alertFun(RequestAccess.BLOCK,0)
 
-			elseif Request_response == "DENY" then
+		elseif Request_response == "DENY" then
 
-				alertFun(RequestAccess.DENY,0)
+			alertFun(RequestAccess.DENY,0)
 
-			elseif Request_response == "FAIL" then
+		elseif Request_response == "FAIL" then
 
-				alertFun(RequestAccess.FAIL,0)
-			end
+			alertFun(RequestAccess.FAIL,0)
+		end
 
-			end
+		end
 					
 				if AppName == "DirectorApp" then
 
@@ -320,6 +316,8 @@ sumbitBtn_lbl.x = sumbitBtn.x+5
 					print(DirectorEmail.text)
 
 
+			
+				
 	            --validationCheck()
 
 			end
