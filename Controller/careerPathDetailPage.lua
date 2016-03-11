@@ -658,6 +658,7 @@ function onAccessButtonTouch( event )
 	      EmailDetailValue:addEventListener("userInput",textField)
 		  PhoneDetailValue:addEventListener("userInput",textField)
 		  PasswordValue:addEventListener("userInput",textField)
+		 --popupList:addEventListener("touch",touchPopupBg)
 
 
 	      processbutton:addEventListener("touch",onGrantButtonTouch)
@@ -727,7 +728,6 @@ function onAccessButtonTouch( event )
 
           if EmailDetailValue.text == "" then
 
-          	print("email null ********************************")
 
           	emailnotifybox.isVisible = false
           	emailnotifytext.isVisible = false
@@ -873,6 +873,7 @@ function onAccessButtonTouch( event )
 	      EmailDetailValue:addEventListener("userInput",textField)
 		  PhoneDetailValue:addEventListener("userInput",textField)
 		  PasswordValue:addEventListener("userInput",textField)
+		 -- popupList:addEventListener("touch",touchPopupBg)
 
 		  --GeneratePasstext:addEventListener("touch",OnPasswordGeneration)
 
@@ -1030,6 +1031,8 @@ function onAccessButtonTouch( event )
 	      EmailDetailValue:addEventListener("userInput",textField)
 		  PhoneDetailValue:addEventListener("userInput",textField)
 		  PasswordValue:addEventListener("userInput",textField)
+		  deny_Value:addEventListener("userInput",textField)
+	     -- popupList:addEventListener("touch",touchPopupBg)
 
 
 	      processbutton:addEventListener("touch",onGrantButtonTouch)
@@ -1252,15 +1255,15 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	if event.params.page == "invite" then
+	-- if event.params.page == "invite" then
 
-		openPage = "inviteAndaccessPage"
+	-- 	openPage = "inviteAndaccessPage"
 
-	else
+	-- else
 
-		openPage="careerPathPage"
+	-- 	openPage="careerPathPage"
 
-	end
+	-- end
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
