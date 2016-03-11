@@ -1173,7 +1173,7 @@ local function onKeyEvent( event )
 	upload_defaultimage.x= upload_text.x +upload_text.contentWidth+ 23
 	upload_defaultimage.y=upload_button.y
 
-	upload_defaulttext = display.newText("MyUnitBuzz allows upto 10MB files for each upload. Enjoy!",image_content_bg.x-image_content_bg.contentWidth/2 + 10,image_content_bg.y+ 30,W-40,0,native.systemFont,11.5)
+	upload_defaulttext = display.newText(Message.MaximumUpload,image_content_bg.x-image_content_bg.contentWidth/2 + 10,image_content_bg.y+ 30,W-40,0,native.systemFont,11.5)
 	upload_defaulttext.value = "defaulttext"
 	upload_defaulttext.id="defaulttext"
 	upload_defaulttext:setFillColor( 0,0,0,0.5)
@@ -1307,7 +1307,7 @@ local function onKeyEvent( event )
   	feed_cancelbutton.hasBackground = true
 	feed_cancelbutton.strokeWidth = 1
 
-	feed_cancelbutton_text = display.newText(sceneGroup,"Clear",0,0,native.systemFont,14)
+	feed_cancelbutton_text = display.newText(sceneGroup,Message.Clear,0,0,native.systemFont,14)
 	feed_cancelbutton_text.x=feed_cancelbutton.x
 	feed_cancelbutton_text.y=feed_cancelbutton.y
 	Utils.CssforTextView(feed_cancelbutton_text,sp_primarybutton)

@@ -783,8 +783,10 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
     popupList = display.newRect(leftPadding_value + 140, 0, W-22, popupTop_bg.contentHeight+78 )
     popupList.anchorY=0
     popupList.id = "popuplist"
-    popup_scroll.y=60
     popup_scroll:insert(popupList)
+
+    popup_scroll.y=60
+    popup_scroll.anchorY=0
 
 --------------------------------------name field--------------------------------------
 
@@ -810,8 +812,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    popup_scroll:insert(NameDetailValue)
 
 
-	    NameDetail_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
-		NameDetail_bottom.x=W/2
+	    NameDetail_bottom = display.newImageRect("res/assert/line-large.png",W-50,5)
+		NameDetail_bottom.x=W/2-5
 		NameDetail_bottom.y= NameDetailValue.y+8.5
 		popup_scroll:insert(NameDetail_bottom)
 
@@ -849,8 +851,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		popup_scroll:insert(EmailDetailValue)
 
 
-		EmailDetail_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
-		EmailDetail_bottom.x=W/2
+		EmailDetail_bottom = display.newImageRect("res/assert/line-large.png",W-50,5)
+		EmailDetail_bottom.x=W/2-5
 		EmailDetail_bottom.y= EmailDetailValue.y+11.5
 		popup_scroll:insert(EmailDetail_bottom)
 
@@ -916,8 +918,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		PhoneDetailValue.placeholder=PopupGroup.PhoneDetailValue_placeholder
 		popup_scroll:insert(PhoneDetailValue)
 
-		PhoneDetail_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
-		PhoneDetail_bottom.x=W/2
+		PhoneDetail_bottom = display.newImageRect("res/assert/line-large.png",W-50,5)
+		PhoneDetail_bottom.x=W/2-5
 		PhoneDetail_bottom.y= PhoneDetailValue.y+10
 		popup_scroll:insert(PhoneDetail_bottom)
 
@@ -982,8 +984,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
 	    popup_scroll:insert(MKRankDetailValue)
 
-	    MKRankDetail_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
-		MKRankDetail_bottom.x=W/2
+	    MKRankDetail_bottom = display.newImageRect("res/assert/line-large.png",W-50,5)
+		MKRankDetail_bottom.x=W/2-5
 		MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
 		popup_scroll:insert(MKRankDetail_bottom)
 
@@ -1025,8 +1027,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    popup_scroll:insert(RequesteddateValue)
 
 
-	    Requesteddate_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
-		Requesteddate_bottom.x=W/2
+	    Requesteddate_bottom = display.newImageRect("res/assert/line-large.png",W-50,5)
+		Requesteddate_bottom.x=W/2-5
 		Requesteddate_bottom.y= RequesteddateValue.y+8.5
 		popup_scroll:insert(Requesteddate_bottom)
 
@@ -1094,8 +1096,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		PasswordValue.placeholder= PopupGroup.PasswordValue_placeholder 
 		popup_scroll:insert(PasswordValue)
 
-		Password_bottom = display.newImageRect("res/assert/line-large.png",W-40,5)
-		Password_bottom.x=W/2
+		Password_bottom = display.newImageRect("res/assert/line-large.png",W-50,5)
+		Password_bottom.x=W/2-5
 		Password_bottom.y= PasswordValue.y+10
 		popup_scroll:insert(Password_bottom)
 

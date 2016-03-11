@@ -284,6 +284,9 @@ Message.UploadImageText = "Subir su imagen aquí"
 Message.UploadButtonText = "Añadir imagen"
 Message.DraftButton = "Guardar como borrador"
 Message.DraftContent = "Su mensaje se ha guardado como borrador con éxito"
+Message.MaximumUpload = "MyUnitBuzz permite hasta 10 MB para los archivos de cada carga . ¡Disfrutar!"
+Message.Clear = "Claro"
+
 
 AddeventPage = {}
 AddeventPage.EventnameArray = {"cita","llamada","partido","tarea"}

@@ -275,6 +275,8 @@ Message.UploadImageText = "Upload your Image here"
 Message.UploadButtonText = "Add Image"
 Message.DraftButton = "Save as Draft"
 Message.DraftContent = "Your Message has been Saved as Draft Successfully"
+Message.MaximumUpload =  "MyUnitBuzz allows upto 10MB files for each upload. Enjoy!"
+Message.Clear = "Clear"
 
 
 
