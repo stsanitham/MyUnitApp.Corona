@@ -1326,21 +1326,29 @@ local function onKeyEvent( event )
 
 	send_button = display.newRect(sceneGroup,0,0,W-60,26)
 	send_button.x=Message_content.x-70
-	send_button.y = Message_content.y+320
+	send_button.y = Message_content.y+300
 	send_button.width = W-190
+	send_button.anchorY=0
 	send_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
 	send_button.id="send"
 
-	send_button_text = display.newText(sceneGroup,Message.SendButton,0,0,native.systemFont,16)
-	send_button_text.x=send_button.x+10
-	send_button_text.y=send_button.y
-	Utils.CssforTextView(send_button_text,sp_primarybutton)
+
 
 	send_icon = display.newImageRect("res/assert/send.png",16,14)
 	send_icon.id = "send icon"
 	sceneGroup:insert(send_icon)
-	send_icon.x= send_button_text.x - 50
-	send_icon.y=send_button.y
+	send_icon.anchorY=0
+	send_icon.x= send_button.x - send_button.contentWidth/2+10
+	send_icon.y=send_button.y+send_button.contentHeight/2-4
+
+	send_button_text = display.newText(sceneGroup,Message.SendButton,0,0,send_button.contentWidth-4,0,native.systemFont,16)
+	send_button_text.anchorX=0
+	send_button_text.anchorY=0
+	send_button_text.x=send_icon.x+10
+	send_button_text.y=send_button.y+send_button.contentHeight/2-send_button_text.contentHeight/2+4
+	Utils.CssforTextView(send_button_text,sp_primarybutton)
+
+	send_button.height= send_button_text.contentHeight+6
 
 
 	--------draft button----------------------
@@ -1349,6 +1357,7 @@ local function onKeyEvent( event )
 	draft_button.x=Message_content.x+70
 	draft_button.y =send_button.y 
 	draft_button.width = W-190
+	draft_button.anchorY=0
 	draft_button:setFillColor( 0,0,0,0.7 )
 	draft_button.id="draft"
 

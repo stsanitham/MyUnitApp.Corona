@@ -169,6 +169,14 @@ end
 								current_textField.text = ""
 							end
 
+							if (current_textField.id =="deny") then
+
+								current_textField.text=""
+
+							end
+							
+
+
 
 					elseif ( event.phase == "submitted" ) then
 
@@ -238,7 +246,7 @@ end
 
 									event.target = PhoneDetailValue
 
-									--native.setKeyboardFocus(PhoneDetailValue)
+									native.setKeyboardFocus(PhoneDetailValue)
 
 								
 						
@@ -783,8 +791,11 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
     popupList = display.newRect(leftPadding_value + 140, 0, W-22, popupTop_bg.contentHeight+78 )
     popupList.anchorY=0
     popupList.id = "popuplist"
-    popup_scroll.y=60
     popup_scroll:insert(popupList)
+
+
+    popup_scroll.y=60
+    popup_scroll.anchorY=0
 
 --------------------------------------name field--------------------------------------
 
