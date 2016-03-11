@@ -602,6 +602,7 @@ local display_details = {}
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="Priority"
 		scrollView:insert( display_details[#display_details] )
+		
 		end
 		------------------
 
@@ -641,8 +642,7 @@ local display_details = {}
 			end
 
 			display_details[#display_details].text = AttachName
-
-				display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.blue))
+			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.blue))
 			display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0

@@ -49,13 +49,14 @@ ckeditor.htmlContent = [[
 
 			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
 
+
 			var htmldata = CKEDITOR.instances.UnitGoals.document.getBody().getText()
+
 
 			//alert(htmldata.length)
 			if(htmldata.length > 1 )
 			{
 
-			
 								
 						var texttemp="corona:close"+ckvalue;
 			 			window.location.href = texttemp; 
@@ -70,6 +71,7 @@ ckeditor.htmlContent = [[
 
 		
 			}
+
 
        		
 		}
@@ -110,7 +112,5 @@ readTextFile("sample.txt");
 </body>
 
 </html>
-
-
 
 ]]

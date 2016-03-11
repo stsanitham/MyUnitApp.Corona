@@ -185,7 +185,12 @@ EventCalender.NoRecord="Aucun enregistrement trouvé"
 EventCalender.DeleteAlert = "Êtes-vous sûr de vouloir supprimer les détails de cet événement?"
 EventCalender.DeleteTitle = "supprimer Détails"
 
-
+EventCalender.EventAppointment = "Event ( Rendez-vous )" 
+EventCalender.EventCall = "Event ( Call)"
+EventCalender.EventTask = "Événement ( Groupe )"
+EventCalender.EventParty = "Événement (Parti )"
+EventCalender.Successfully="Avec succès"
+EventCalender.AddedSuccessfully="ajouté avec succès"
 
 
 CareerPath = {}
@@ -275,8 +280,8 @@ Message.DraftContent = "Votre message a été enregistré en tant que brouillon 
 
 AddeventPage = {}
 AddeventPage.EventnameArray = {"rendez-vous","appel","partie","tâche"}
-AddeventPage.priorityArray = {{value ="Normal",id=1},{value ="High",id=0},{value ="Low",id=2}}
-AddeventPage.purposeArray = {{value = "Booking",id=16},{value ="Color Appointment",id=14},{value ="Customer Service",id=9},{value ="Double Facial",id=2},{value ="Facial",id=1},{value ="Follow Up",id=8},{value ="Full Circle",id=19},{value ="Initial Appointment",id=17},{value ="On the Go",id=1},{value ="Reschedule",id=18},{value ="Team Building",id=4},{value ="Training",id=5},{value ="2 Day Follow up",id=10},{value ="2 Week Follow up",id=11},{value ="2 Month Follow up",id=12},{value ="Other",id=13}}
+AddeventPage.priorityArray = {{value ="Ordinaire",id=1},{value ="Haute",id=0},{value ="Faible",id=2}}
+AddeventPage.purposeArray = {{value = "Réservation",id=16},{value ="Nomination couleur",id=14},{value ="Service Clients",id=9},{value ="Double visage",id=2},{value ="soin du visage",id=1},{value ="Suivre",id=8},{value ="Cercle complet",id=19},{value ="Nomination initiale",id=17},{value ="Pret à partir",id=1},{value ="Replanifier",id=18},{value ="Construction d'équipe",id=4},{value ="Entraînement",id=5},{value ="2 jours Suivi",id=10},{value ="2 Semaine Suivi",id=11},{value ="2 mois de suivi",id=12},{value ="Autre",id=13}}
 AddeventPage.selectContactGroup = {"--Select Contactez Group--"}
 AddeventPage.contactgroup = {"Contact","Lead","client","membre de l'équipe"}
 AddeventPage.taskStatus = {"non commencé","En cours","terminé","différée"}
@@ -284,7 +289,7 @@ AddeventPage.partyArray = {"Classe","Cercle complet","Montrer","Autre"}
 AddeventPage.ImageUploaded="Image Télécharger!"
 AddeventPage.Event_Added="événement Ajouté"
 AddeventPage.other_purpose="* Entrez autres fins"
-AddeventPage.Description="description"
+AddeventPage.Description="La description"
 AddeventPage.New_Event="un nouvel événement"
 AddeventPage.Event_Type="Type d'événement"
 AddeventPage.What="Quoi"
@@ -308,6 +313,9 @@ AddeventPage.Select_Contact_Group="Sélectionnez Groupe de contact"
 AddeventPage.Contact="Contact"
 AddeventPage.Save="sauvegarder"
 AddeventPage.Cancel="annuler"
+AddeventPage.SelectPurpose = "* Sélectionner But"
+AddeventPage.PhoneNumberMandatory = "* Numéro de téléphone est obligatoire"
+AddeventPage.AppointmentWithPlace = "Rendez-vous avec"
 
 Facebook = {}
 
@@ -340,6 +348,13 @@ PopupGroup.Password_titletext = "Mot de passe"
 PopupGroup.PasswordValue_placeholder = "Mot de passe"
 PopupGroup.PasswordHelptext = "Mot de passe doit être compris entre 6 et 12 caractères"
 PopupGroup.GeneratePasstext = "Générer Mot de passe"
+
+PopupGroup.EmailExist = "L'email existe déjà"
+PopupGroup.EmailExistText = "Un contact avec la même adresse e-mail existent déjà"
+PopupGroup.PasswordRequired = "* Mot de passe requis"
+PopupGroup.PasswordLimit = "* Mot de passe doit contenir 6 caractères atleast"
+PopupGroup.PhoneRequired ="* Numéro de téléphone est nécessaire"
+PopupGroup.EmailRequired = "* Adresse e-mail est nécessaire"
 
 
 

@@ -79,14 +79,24 @@ end
 
 
 
-local function touchBg( event )
+function touchPopupBg( event )
+
 		if event.phase == "began" then
 
 		elseif event.phase == "ended" then
 
+		    if event.target.id == "popuplist" then
+
 				native.setKeyboardFocus(nil)
 
+				print("touch bg")
+
+				scrollTo(0)
+
+			end
+
 		end
+
 		return true
 end
 
@@ -133,7 +143,7 @@ end
 
 	    elseif email_response == false then
 
-	    	 existalert = native.showAlert("Email Already Exist", "A Contact with same email address already exist", { CommonWords.ok} , onCompletionEvent)
+	    	 existalert = native.showAlert(PopupGroup.EmailExist, PopupGroup.EmailExistText, { CommonWords.ok} , onCompletionEvent)
 
 	    end
 
@@ -167,6 +177,21 @@ end
 	                               native.setKeyboardFocus(nil)
 							end
 
+
+							if (current_textField.id =="deny") then
+
+							if (event.newCharacters=="\n") then 
+
+	                               native.setKeyboardFocus(nil)
+
+	                               scrollTo(0)
+							end
+
+							popupList:addEventListener("touch",touchPopupBg)
+
+						    end
+
+
 							if(current_textField.id =="Email Detail") then
 
 	                              -- native.setKeyboardFocus(nil)
@@ -180,7 +205,10 @@ end
 										
                          	event.target:setSelection(event.target.text:len(),event.target.text:len())
 
+                         	scrollTo( 0 )
+
         			elseif ( event.phase == "editing" ) then
+
 
 						 if(current_textField.id =="Phone Detail") then
 
@@ -210,11 +238,22 @@ end
 
 									event.target = PhoneDetailValue
 
-									native.setKeyboardFocus(PhoneDetailValue)
+									--native.setKeyboardFocus(PhoneDetailValue)
 
 								
 						
         				end
+
+
+
+        				 if (current_textField.id =="deny") then
+
+        				 	print("scrolling top")
+
+                            scrollTo( -100)
+
+        				 end
+
         ------------------------------------------for password ---------------------------------------------------
 
 						if(current_textField.id == "Password") then
@@ -269,7 +308,7 @@ end
          	generatedPassword = response
 
 
-         	if PasswordValue.text == "* Password is required" or PasswordValue.text == "* Password should contain atleast 6 characters" then
+         	if PasswordValue.text == PopupGroup.PasswordRequired or PasswordValue.text == PopupGroup.PasswordLimit then
 
          	    PasswordValue.text = generatedPassword
          	    PasswordValue.size=14
@@ -321,7 +360,7 @@ end
 			if (EmailDetailValue.text == "") or (EmailDetailValue.text == EmailDetailValue.id) or (not Utils.emailValidation(EmailDetailValue.text)) then
 			  
 			     validation=false
-			     SetError("* ".."Email Address is required",EmailDetailValue)
+			     SetError(PopupGroup.EmailRequired,EmailDetailValue)
 
 			     emailnotifybox.isVisible = false
 			     emailnotifytext.isVisible = false
@@ -395,10 +434,10 @@ end
 
 
 
-		if  PhoneDetailValue.text == "" or PhoneDetailValue.text == PhoneDetailValue.id or PhoneDetailValue.text:len()<14 or PhoneDetailValue.text == "* Phone number is required" then
+		if  PhoneDetailValue.text == "" or PhoneDetailValue.text == PhoneDetailValue.id or PhoneDetailValue.text:len()<14 or PhoneDetailValue.text == PopupGroup.PasswordRequired then
 			validation=false
 
-		     SetError("* ".."Phone number is required",PhoneDetailValue)
+		     SetError(PopupGroup.PhoneRequired,PhoneDetailValue)
 
 		     textnotifybox.isVisible = false
 		     textnotifytext.isVisible = false
@@ -565,17 +604,17 @@ end
 	    end
 
 
-		if PasswordValue.text == "" or PasswordValue.text == PasswordValue.id or PasswordValue.text == "* Password is required" then
+		if PasswordValue.text == "" or PasswordValue.text == PasswordValue.id or PasswordValue.text == PopupGroup.PasswordRequired then
 
 			validation = false
 
-		SetError("* ".."Password is required",PasswordValue)
+		SetError(PopupGroup.PasswordRequired,PasswordValue)
 
 	    elseif PasswordValue.text:len() < 6 then
 
 	    	validation = false
 
-	    SetError("* ".."Password should contain atleast 6 characters",PasswordValue)
+	    SetError(PopupGroup.PasswordLimit,PasswordValue)
 
 		end
 
@@ -602,6 +641,8 @@ end
 
 
    	             --denyreason = deny_Value.text
+
+   	             print("i'm here")
 
 
 				  RequestGrantProcess()
@@ -674,8 +715,6 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	popupTop_bg = display.newRect(leftPadding_value + 140, H/2+ 10, W-20, 385 )
 	popupTop_bg.x = leftPadding_value + 140
     popupTop_bg:setFillColor(0,0,0)
-    popupTop_bg.isVisible=false
-    popupTop_bg:addEventListener("touch",touchBg)
     popUpGroup:insert(popupTop_bg)
 
     popupTop = display.newRect(W/2,H/2-195,298,30)
@@ -739,8 +778,13 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
    	hideScrollBar=true
     }
 
+
+
+    popupList = display.newRect(leftPadding_value + 140, 0, W-22, popupTop_bg.contentHeight+78 )
+    popupList.anchorY=0
+    popupList.id = "popuplist"
     popup_scroll.y=60
-    popup_scroll.anchorY=0
+    popup_scroll:insert(popupList)
 
 --------------------------------------name field--------------------------------------
 
@@ -752,13 +796,14 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		popup_scroll:insert(NameDetail_bg)
 
 	    NameDetail_title = display.newText(PopupGroup.NameDetail_title,0,0,native.systemFontBold,14)
-	    NameDetail_title.x= 50
+	    NameDetail_title.x= 20
+	    NameDetail_title.anchorX = 0
 	    NameDetail_title:setFillColor(0,0,0)
 	    NameDetail_title.y= NameDetail_bg.y
 	    popup_scroll:insert(NameDetail_title)
 
 	    NameDetailValue = display.newText("",0,0,native.systemFont,14)
-	    NameDetailValue.x=  NameDetail_title.x - 20
+	    NameDetailValue.x=  NameDetail_title.x+5
 	    NameDetailValue.anchorX = 0
 	    NameDetailValue:setFillColor(0,0,0)
 	    NameDetailValue.y= NameDetail_title.y+NameDetail_title.contentHeight+7
@@ -1094,7 +1139,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 
 
-    if email ~= nil or email ~= "" or email ~= "* Email Address is required" then
+    if email ~= nil or email ~= "" or email ~= PopupGroup.EmailRequired then
 	EmailDetailValue.text = email
 	emailnotifytext.isVisible = true
     emailnotifybox.isVisible = true

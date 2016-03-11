@@ -143,8 +143,8 @@ local function GrandProcess(value)
 	id_value = "Grant Access"
  GetPopUp(value.EmailAddress,value.PhoneNumber,value.PhoneNumber,value.PhoneNumber,value.PhoneNumber,"Grant Access")
 
-          processbutton_text.text = "Grant Access"
-          popupText.text = "Grant Access"
+          processbutton_text.text = CommonWords.GrantAccessText
+          popupText.text = CommonWords.GrantAccessText
 
 
           if Details.FirstName ~= nil and Details.LastName ~= nil then
@@ -296,13 +296,14 @@ local function RemoveProcess()
 end
 
 
+
 local function DenyProcess()
 	id_value = "Deny Access"
 
 	 GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
-        processbutton_text.text = "Deny Access"
-        popupText.text = "Deny Access"
+        processbutton_text.text = CommonWords.DenyAccessText
+        popupText.text = CommonWords.DenyAccessText
 
         PasswordValue.isVisible = false
         Password_bg.isVisible = false
@@ -444,19 +445,21 @@ local function DenyProcess()
 	      EmailDetailValue:addEventListener("userInput",textField)
 		  PhoneDetailValue:addEventListener("userInput",textField)
 		  PasswordValue:addEventListener("userInput",textField)
+		  deny_Value:addEventListener("userInput",textField)
 
 
 	      processbutton:addEventListener("touch",onGrantButtonTouch)
 
 
 end
+
 local function ProvideAccess()
 	id_value = "Provide Access"
 
 	GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
-        processbutton_text.text = "Provide Access"
-        popupText.text = "Provide Access"
+        processbutton_text.text = CommonWords.ProvideAccessText
+        popupText.text = CommonWords.ProvideAccessText
 
                 Requesteddate_bg.isVisible = false
 			 	RequesteddateValue.isVisible = false
@@ -675,7 +678,7 @@ local function ActionTouch( event )
 					local Status_Name = event.target.name
 
 
-						if Status_Name == "GRANT" then
+						if Status_Name == "GRANT" or Status_Name == "DENY" or Status_Name == "OPEN" or Status_Name == "ADDREQUEST" then
 
 							local options = 
 							{
@@ -689,50 +692,6 @@ local function ActionTouch( event )
 
 							composer.showOverlay( "Controller.inviteAccessDetailPage", options )
 
-
-						elseif Status_Name == "DENY" then
-
-							local options = 
-							{
-							isModal = true,
-							effect = "slideLeft",
-							time = 300,
-							params = {
-							inviteDetails =  Details,checkstatus = Status_Name
-								}
-							}
-
-							composer.showOverlay( "Controller.inviteAccessDetailPage", options )
-
-
-						elseif Status_Name == "OPEN" then
-
-							local options =
-							 {
-							isModal = true,
-							effect = "slideLeft",
-							time = 300,
-							params = {
-							inviteDetails =  Details,checkstatus = Status_Name
-								}
-							}
-                             
-                             composer.showOverlay( "Controller.inviteAccessDetailPage", options )
-
-
-						elseif Status_Name == "ADDREQUEST" then
-
-							local options = 
-							{
-							isModal = true,
-							effect = "slideLeft",
-							time = 300,
-							params = {
-							contactId =  Details.MyUnitBuzzRequestAccessId,page = "invite"
-								}
-							}
-
-							 composer.showOverlay( "Controller.careerPathDetailPage", options )
 
 						end
 
@@ -791,7 +750,7 @@ local menuGroup = display.newGroup( )
 		 	Blockbtn.id="block"
 		 	Blockbtn.value = object.value
 
-		 	Blockbtn_txt = display.newText( menuGroup, "Block",0,0,native.systemFont,12 )
+		 	Blockbtn_txt = display.newText( menuGroup,CommonWords.Block,0,0,native.systemFont,12 )
 		 	Blockbtn_txt:setFillColor( 0.2 )
 		 	Blockbtn_txt.x=Blockbtn.x-18;Blockbtn_txt.y=Blockbtn.y+Blockbtn.contentHeight/2
 
@@ -807,7 +766,7 @@ local menuGroup = display.newGroup( )
 		 	Grantbtn.id = "grant"
 		 	Grantbtn.value = object.value
 
-		 	Grantbtn_txt = display.newText( menuGroup, "Grant",0,0,native.systemFont,12 )
+		 	Grantbtn_txt = display.newText( menuGroup,CommonWords.Grant,0,0,native.systemFont,12 )
 		 	Grantbtn_txt:setFillColor( 0.2 )
 		 	Grantbtn_txt.x=Grantbtn.x-18;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
 
@@ -819,7 +778,7 @@ local menuGroup = display.newGroup( )
 		 	removebtn.id="remove"
 		 	removebtn.value = object.value
 
-		 	removebtn_txt = display.newText( menuGroup, "Remove",0,0,native.systemFont,12 )
+		 	removebtn_txt = display.newText( menuGroup,CommonWords.Remove,0,0,native.systemFont,12 )
 		 	removebtn_txt:setFillColor( 0.2 )
 		 	removebtn_txt.x=removebtn.x-10;removebtn_txt.y=removebtn.y+removebtn.contentHeight/2
 
@@ -836,7 +795,7 @@ local menuGroup = display.newGroup( )
 		 	Grantbtn.id="grant"
 		 	Grantbtn.value = object.value
 
-		 	Grantbtn_txt = display.newText( menuGroup, "Grant",0,0,native.systemFont,12 )
+		 	Grantbtn_txt = display.newText( menuGroup,CommonWords.Grant,0,0,native.systemFont,12 )
 		 	Grantbtn_txt:setFillColor( 0.2 )
 		 	Grantbtn_txt.x=Grantbtn.x-18;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
 
@@ -848,7 +807,7 @@ local menuGroup = display.newGroup( )
 		 	denybtn.id="deny"
 		 	denybtn.value = object.value
 
-		 	denybtn_txt = display.newText( menuGroup, "Deny",0,0,native.systemFont,12 )
+		 	denybtn_txt = display.newText( menuGroup,CommonWords.Deny,0,0,native.systemFont,12 )
 		 	denybtn_txt:setFillColor( 0.2 )
 		 	denybtn_txt.x=denybtn.x-18;denybtn_txt.y=denybtn.y+denybtn.contentHeight/2
 
@@ -864,7 +823,7 @@ local menuGroup = display.newGroup( )
 		 	Provideacessbtn.id="provideaccess"
 		 	Provideacessbtn.value = object.value
 
-		 	Provideacess_txt = display.newText( menuGroup, "Provide Access",0,0,native.systemFont,12 )
+		 	Provideacess_txt = display.newText( menuGroup,CommonWords.ProvideAccess,0,0,native.systemFont,12 )
 		 	Provideacess_txt:setFillColor( 0.2 )
 		 	Provideacess_txt.x=Provideacessbtn.x;Provideacess_txt.y=Provideacessbtn.y+Provideacessbtn.contentHeight/2
 
@@ -956,13 +915,13 @@ local function CreateList(list,scrollView)
 			background:addEventListener( "touch", ActionTouch )
 
 
-			local list_bg = display.newRect( tempGroup, 0, 0, 35, 35 )
+			local list_bg = display.newRect( tempGroup, 0, 0, 45, 45 )
 			list_bg:setFillColor( 0.3 )
 
 			
 
 
-			local list = display.newImageRect( tempGroup, "res/assert/list.png",8/2,34/2)
+			local list = display.newImageRect( tempGroup, "res/assert/list.png",8/1.5,34/1.9)
 		    list.x = background.x+background.contentWidth-15
 		    list.y=background.y+5
 		    list.anchorY=0
@@ -998,11 +957,11 @@ local function CreateList(list,scrollView)
 
 			
 
-				Display_Group[#Display_Group].text = "Name : "..feedArray[i].FirstName.." "..feedArray[i].LastName
+				Display_Group[#Display_Group].text = PopupGroup.NameDetail_title..": "..feedArray[i].FirstName.." "..feedArray[i].LastName
 
 			else
 
-				Display_Group[#Display_Group].text = "Name : "..feedArray[i].LastName
+				Display_Group[#Display_Group].text = PopupGroup.NameDetail_title..": "..feedArray[i].LastName
 			
 			end
 
@@ -1014,13 +973,20 @@ local function CreateList(list,scrollView)
 				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
 				Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 				Display_Group[#Display_Group]:setFillColor( 0.3 )
-				Display_Group[#Display_Group].text = "Email : "..feedArray[i].EmailAddress
+				Display_Group[#Display_Group].text = PopupGroup.EmailDetail_titletext..": "..feedArray[i].EmailAddress
+
+
+			if feedArray[i].EmailAddress:len() > 33 then
+
+				Display_Group[#Display_Group].text = Display_Group[#Display_Group].text:sub(1,33)..".."
+
+			end
         
 
 			end
 
 
-		
+
 
 			if feedArray[i].PhoneNumber ~= nil and feedArray[i].PhoneNumber ~= "" then
 
@@ -1029,7 +995,7 @@ local function CreateList(list,scrollView)
 				Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 				Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-				Display_Group[#Display_Group].text = "Phone : "..feedArray[i].PhoneNumber
+				Display_Group[#Display_Group].text = PopupGroup.PhoneDetail_titletext..": "..feedArray[i].PhoneNumber
 
 			end
 
@@ -1052,7 +1018,7 @@ local function CreateList(list,scrollView)
 			Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 			Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-				Display_Group[#Display_Group].text = "MK Rank : "..feedArray[i].MkRankLevel
+				Display_Group[#Display_Group].text = PopupGroup.MKRankDetail_title..": "..feedArray[i].MkRankLevel
 			
 		
 
@@ -1071,7 +1037,7 @@ local function CreateList(list,scrollView)
 			Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 			Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-				Display_Group[#Display_Group].text = "Activity On : "..tostring(os.date("%m/%d/%Y %I:%m %p",time))
+				Display_Group[#Display_Group].text = InviteAccessDetail.ActivityOn..": "..tostring(os.date("%m/%d/%Y %I:%m %p",time))
 
 	
 			end

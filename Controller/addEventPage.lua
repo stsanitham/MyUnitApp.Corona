@@ -824,16 +824,13 @@ function get_SaveAttachmentDetails(response)
 			Addinvitees.text=""
 			PurposeLbl.text=""
 			Other.text=""
-			PriorityLbl.text="Low"
+			PriorityLbl.text=EventCalender.Low
 
-		AttachmentFlag=false
-
-		AddAttachmentLbl.isVisible = true
-
-		AddAttachmentPhotoName.isVisible = false
-
-		AddAttachment_icon.isVisible = true
-		AddAttachment_close.isVisible = false
+			AttachmentFlag=false
+			AddAttachmentLbl.isVisible = true
+			AddAttachmentPhotoName.isVisible = false
+			AddAttachment_icon.isVisible = true
+			AddAttachment_close.isVisible = false
 
 
 			local baseDir = system.DocumentsDirectory
@@ -842,21 +839,22 @@ function get_SaveAttachmentDetails(response)
 
 			os.remove(path)
 
-			if SelectEvent.text:lower( ) == "appointment" then
+		if SelectEvent.text:lower( ) == "appointment" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Appointment) added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventAppointment.." "..EventCalender.AddedSuccessfully, { "OK" },onComplete )
 
 		    elseif SelectEvent.text:lower( ) == "call" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Call) added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventCall.." ".. EventCalender.AddedSuccessfully, { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "task" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Task) added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventTask.." ".. EventCalender.AddedSuccessfully, { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "party" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Party) added Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventParty.." ".. EventCalender.AddedSuccessfully, { "OK" },onComplete )
+		
 		else
 
 		end
@@ -869,11 +867,8 @@ local function get_CreateTickler( response )
 
 	if response.TicklerId ~= nil then
 
-	
-
 		if response.TicklerId > 0 then
 		
-
 				if AttachmentFlag == true then
 
 							Webservice.SaveAttachmentDetails(response.id,AttachmentName,AttachmentPath,Attachment,get_SaveAttachmentDetails)
@@ -881,57 +876,55 @@ local function get_CreateTickler( response )
 				else
 
 						What.text=""
-									Where.text=""
-									Phone.text=""
-									AccessCode.text=""
-									Description.text=""
-									Description_lbl.text=""
-									AppintmentWith.text=""
-									Addinvitees.text=""
-									PurposeLbl.text=""
-									Other.text=""
-									PriorityLbl.text="Low"
+						Where.text=""
+						Phone.text=""
+						AccessCode.text=""
+						Description.text=""
+						Description_lbl.text=""
+						AppintmentWith.text=""
+						Addinvitees.text=""
+						PurposeLbl.text=""
+						Other.text=""
+						PriorityLbl.text="Low"
 
-									AttachmentFlag=false
-
-
-
-									local baseDir = system.DocumentsDirectory
+						AttachmentFlag=false
 
 
-									local path = system.pathForFile( "eventAttach.jpg" , baseDir )
+				local baseDir = system.DocumentsDirectory
 
-									os.remove(path)
+				local path = system.pathForFile( "eventAttach.jpg" , baseDir )
 
-									local EventType = "added"
-									if isUpdate == true then 
-										EventType = "updated"
-									end
+				os.remove(path)
 
-			if SelectEvent.text:lower( ) == "appointment" then
+				local EventType = "added"
+				if isUpdate == true then 
+					EventType = "updated"
+				end
+				
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Appointment) "..EventType.." Successfully", { "OK" },onComplete )
+		if SelectEvent.text:lower( ) == "appointment" then
+
+			local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventAppointment..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
 
 		    elseif SelectEvent.text:lower( ) == "call" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Call) "..EventType.." Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventCall..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "task" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Task) "..EventType.." Successfully", { "OK" },onComplete )
+			local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventTask..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
 
 			  elseif SelectEvent.text:lower( ) == "party" then
 
-			local alert = native.showAlert(  EventCalender.PageTitle,"Event(Party) "..EventType.." Successfully", { "OK" },onComplete )
-		else
+			local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventParty..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
+		
+		   else
 
 		--endlocal alert = native.showAlert(  EventCalender.PageTitle,AddeventPage.Event_Added, { CommonWords.ok },onComplete )
 		end
 							
 				end
 
-
-			
 		end
 
 	end
@@ -1072,7 +1065,7 @@ local function TouchAction( event )
 
 				local checkMad = false
 
-				if PurposeLbl.text == "" or PurposeLbl.text == "* Select Purpose" then
+				if PurposeLbl.text == "" or PurposeLbl.text == AddeventPage.SelectPurpose then
 					PurposeLbl:setFillColor( 1,0,0 )
 					PurposeLbl.size = 10
 					PurposeLbl.text = "* Select Purpose"
@@ -1087,8 +1080,8 @@ local function TouchAction( event )
 
 				if SelectEvent.text:lower( ) == "call" then
 
-					if Phone.text == "" or Phone.text == "* Phone Number is mandatory" then
-						Phone.text = "* Phone Number is mandatory"
+					if Phone.text == "" or Phone.text == AddeventPage.PhoneNumberMandatory then
+						Phone.text = AddeventPage.PhoneNumberMandatory
 						Phone:setTextColor ( 1,0,0 )
 						Phone.size = 10
 
@@ -2758,7 +2751,7 @@ function scene:show( event )
 		AppintmentWith.y = AddeventArray[#AddeventArray].y
 		AppintmentWith.hasBackground = false
 		AppintmentWith:setReturnKey( "next" )
-		AppintmentWith.placeholder="Appointment With"
+		AppintmentWith.placeholder=AddeventPage.AppointmentWithPlace
 		belowGroup:insert(AppintmentWith)
 		AppintmentWith.contactinfo=""
 		AppintmentWith:addEventListener( "userInput", searchfunction )

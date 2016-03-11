@@ -20,6 +20,7 @@ local db = sqlite3.open( path )
 
 --------------- Initialization -------------------
 
+
 local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
@@ -204,7 +205,7 @@ local display_details = {}
 
     function RequestGrantProcess( )
 
-    	if processbutton_text.text == RequestGrantProcess then
+    	if processbutton_text.text == CommonWords.GrantAccessText  then
 
     		print("service of grant access")
 
@@ -468,8 +469,8 @@ local function GrandProcess(event)
 
 	     GetPopUp(invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
 
-          processbutton_text.text = CommonWords.ProvideAccessText
-          popupText.text = CommonWords.ProvideAccessText
+          processbutton_text.text = CommonWords.GrantAccessText
+          popupText.text = CommonWords.GrantAccessText
 
           if invitedetail_value.FirstName ~= nil and invitedetail_value.LastName ~= nil then
              NameDetailValue.text = invitedetail_value.FirstName.." "..invitedetail_value.LastName
@@ -583,9 +584,10 @@ local function GrandProcess(event)
 
 	      print("values event ",EmailDetailValue.text)
 
-	      EmailDetailValue:addEventListener("userInput",textField)
+	     EmailDetailValue:addEventListener("userInput",textField)
 		  PhoneDetailValue:addEventListener("userInput",textField)
 		  PasswordValue:addEventListener("userInput",textField)
+     -- popupList:addEventListener("touch",touchPopupBg)
 
 
 	     processbutton:addEventListener("touch",onGrantButtonTouch)
@@ -734,6 +736,8 @@ local function DenyProcess()
 	      EmailDetailValue:addEventListener("userInput",textField)
 		  PhoneDetailValue:addEventListener("userInput",textField)
 		  PasswordValue:addEventListener("userInput",textField)
+      deny_Value:addEventListener("userInput",textField)
+      -- popupList:addEventListener("touch",touchPopupBg)
 
 
 	      processbutton:addEventListener("touch",onGrantButtonTouch)
@@ -865,10 +869,9 @@ local function ProvideAccess()
 	      EmailDetailValue:addEventListener("userInput",textField)
 		  PhoneDetailValue:addEventListener("userInput",textField)
 		  PasswordValue:addEventListener("userInput",textField)
+      -- popupList:addEventListener("touch",touchPopupBg)
 
 	      processbutton:addEventListener("touch",onGrantButtonTouch)
-
-
 
 end
 

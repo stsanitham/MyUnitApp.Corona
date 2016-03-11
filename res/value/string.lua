@@ -181,6 +181,13 @@ EventCalender.NoRecord="No records found"
 EventCalender.DeleteAlert = "Are you sure you want to delete the details of this event?"
 EventCalender.DeleteTitle = "Delete Details"
 
+EventCalender.EventAppointment = "Event(Appointment)" 
+EventCalender.EventCall = "Event(Call)"
+EventCalender.EventTask = "Event(Task)"
+EventCalender.EventParty = "Event(Party)"
+EventCalender.Successfully="Successfully"
+EventCalender.AddedSuccessfully="added Successfully"
+
 
 CareerPath = {}
 
@@ -305,6 +312,9 @@ AddeventPage.Select_Contact_Group="Select Contact Group"
 AddeventPage.Contact="Contact"
 AddeventPage.Save="Save"
 AddeventPage.Cancel="Cancel"
+AddeventPage.SelectPurpose = "* Select Purpose"
+AddeventPage.PhoneNumberMandatory = "* Phone Number is mandatory"
+AddeventPage.AppointmentWithPlace = "Appointment With"
 
 
 
@@ -339,6 +349,13 @@ PopupGroup.Password_titletext = "Password "
 PopupGroup.PasswordValue_placeholder = "Password"
 PopupGroup.PasswordHelptext = "Password must be between 6 and 12 characters in length"
 PopupGroup.GeneratePasstext = "Generate Password"
+
+PopupGroup.EmailExist = "Email Already Exist"
+PopupGroup.EmailExistText = "A Contact with same email address already exist"
+PopupGroup.PasswordRequired = "* Password is required"
+PopupGroup.PasswordLimit = "* Password should contain atleast 6 characters"
+PopupGroup.PhoneRequired = "* Phone number is required"
+PopupGroup.EmailRequired = "* Email Address is required"
 
 
 
