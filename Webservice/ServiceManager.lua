@@ -977,9 +977,11 @@ local invitees = ""
 
 
 
-if Invitees.name ~= nil or Invitees ~= "" then
-
+if  Invitees ~= nil then
+	if Invitees.name ~= nil then
 		invitees = json.encode(Invitees)
+
+	end
 
 else
 
@@ -1389,6 +1391,10 @@ function Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,G
 		"CountryId": '1']]
 
 		print(idvalue)
+
+		if MkRankId == nil then
+			MkRankId=""
+		end
 
     if idvalue == "Deny Access" then
 

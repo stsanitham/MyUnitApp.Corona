@@ -145,6 +145,10 @@ end
 
 function scene:resumeGame()
 
+	local alert = native.showAlert(  Goals.PageTitle,Goals.SuccessMsg, { "OK" } )
+
+
+
 	Webservice.GET_MYUNITAPP_GOALS(get_Goals)
 
 	Runtime:addEventListener( "key", onKeyEvent )

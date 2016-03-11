@@ -160,7 +160,7 @@ print(value)
 
     elseif value:len() == 3 then
 
-        value = "("..value..") "
+        value = "("..value
 
     elseif value:len() == 4 then
 
@@ -172,7 +172,7 @@ print(value)
 
     elseif value:len() == 6 then
 
-         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."- "
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 )
 
     elseif value:len() == 7 then
 
