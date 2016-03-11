@@ -20,6 +20,7 @@ local db = sqlite3.open( path )
 
 --------------- Initialization -------------------
 
+
 local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
