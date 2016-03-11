@@ -297,6 +297,11 @@ local function RequestProcess()
 					DirectorEmail.isVisible = true
 					DirectorEmail_bg.isVisible = true
 
+						
+					DirectorName:setTextColor(0)
+					DirectorName.size=14
+					DirectorEmail:setTextColor(0)
+					DirectorEmail.size=14
 					DirectorName.text = directorname
 					print(DirectorName.text)
 					DirectorEmail.text = directoremail
@@ -901,38 +906,7 @@ function scene:create( event )
     end
 
 
-  --   	DirectorName_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
-  --   	DirectorName_bg.isVisible = false
-  --   	DirectorName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-		-- sceneGroup:insert(DirectorName_bg)
 
-		-- DirectorName = native.newTextField(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
-		-- DirectorName.id="Director Name"
-		-- DirectorName.size=14	
-		-- DirectorName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-		-- DirectorName.hasBackground = false
-		-- DirectorName:setReturnKey( "next" )
-		-- DirectorName.isVisible = false
-		-- DirectorName.placeholder=RequestAccess.DirectorName_placeholder
-		-- sceneGroup:insert(DirectorName)
-
-
-		-- DirectorEmail_bg = display.newRect(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
-		-- DirectorEmail_bg.isVisible = false
-		-- DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
-		-- sceneGroup:insert(DirectorEmail_bg)
-
-		-- DirectorEmail = native.newTextField(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
-		-- DirectorEmail.id="Director Email"
-		-- DirectorEmail.size=14	
-		-- DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
-		-- DirectorEmail.hasBackground = false
-		-- DirectorEmail.isVisible = false
-		-- DirectorEmail:setReturnKey( "next" )
-		-- DirectorEmail.placeholder=RequestAccess.DirectorEmail_placeholder
-		-- sceneGroup:insert(DirectorEmail)
-
---------------------------------------changes will occur----------------------------------------------
 
 
 -------------------------------------- first name -------------------------------------------

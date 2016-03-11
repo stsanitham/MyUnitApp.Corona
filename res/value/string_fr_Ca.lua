@@ -232,6 +232,8 @@ Goals = {}
 
 Goals.PageTitle = "Objectifs unitaires"
 Goals.NoGolas = "Il n'y a pas de buts à voir dès maintenant"
+Goals.SuccessMsg="Coles unité cucceccpulli uptatet"
+
 
 ResourceLibrary = {}
 

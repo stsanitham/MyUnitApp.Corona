@@ -1140,59 +1140,61 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 			display.remove(groupArray[#groupArray])
 			groupArray[#groupArray] = nil
 		end
+	if response ~= nil then
+		if #response > 0 then
+			print( "here" )
 
-	if #response > 0 then
-		print( "here" )
+				NoEvent.isVisible=false
 
-			NoEvent.isVisible=false
+			local listValue = {}
 
-		local listValue = {}
+			for i=1,#response do
 
-		for i=1,#response do
+				if response[i].IsOwner == true then
 
-			if response[i].IsOwner == true then
+					listValue[#listValue+1] = response[i]
 
-				listValue[#listValue+1] = response[i]
+				end
 
 			end
+
+
+			for i=1,#response do
+
+				if response[i].IsOwner == true then
+
+
+				else
+
+				listValue[#listValue+1] = response[i]	
+
+				end
+
+			end
+
+
+			CreateList(listValue,scrollView)
+
+		else
+
+				NoEvent.isVisible=true
+
+				if status == "DENY" then
+
+					NoEvent.text="No list of Denied Access found"
+
+				elseif status == "OPEN" then
+
+					NoEvent.text="No Pending Requests found"
+
+				elseif status == "ADDREQUEST" then
+
+					NoEvent.text="No list of Team Members without Access found"
+
+				end
+
 
 		end
-
-
-		for i=1,#response do
-
-			if response[i].IsOwner == true then
-
-
-			else
-
-			listValue[#listValue+1] = response[i]	
-
-			end
-
-		end
-
-
-		CreateList(listValue,scrollView)
-
-	else
-
-			NoEvent.isVisible=true
-
-			if status == "DENY" then
-
-				NoEvent.text="No list of Denied Access found"
-
-			elseif status == "OPEN" then
-
-				NoEvent.text="No Pending Requests found"
-
-			elseif status == "ADDREQUEST" then
-
-				NoEvent.text="No list of Team Members without Access found"
-
-			end
-
 
 	end
 

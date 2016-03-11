@@ -240,6 +240,8 @@ Goals = {}
 
 Goals.PageTitle = "Metas de la unidad"
 Goals.NoGolas = "No hay metas para ver a partir de ahora"
+Goals.SuccessMsg="Coles uptatet unidad cucceccpulli"
+
 
 ResourceLibrary = {}
 

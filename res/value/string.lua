@@ -231,6 +231,7 @@ Goals = {}
 
 Goals.PageTitle = "Unit Goals"
 Goals.NoGolas = "There are no goals to view as of now"
+Goals.SuccessMsg="Unit Goals Updated Successfully"
 
 ResourceLibrary = {}
 

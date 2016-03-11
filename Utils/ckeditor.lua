@@ -10,15 +10,27 @@ ckeditor.htmlContent = [[
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<title></title>
 	<script src="http://cdn.ckeditor.com/4.5.7/standard-all/ckeditor.js"></script>
-	
+	<link href="path_to_css/apprise-v2.min.css" rel="stylesheet" type="text/css" />
+
+<script src="path_to_jquery"></script>
+<script src="path_to_scripts/apprise-v2.min.js"></script>
+<script type="text/javascript" src="http://www.adblockdetector.com/script.php"></script>
+<script src="https://cdn.rawgit.com/t4t5/sweetalert/master/dist/sweetalert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/t4t5/sweetalert/master/dist/sweetalert.css">
 </head>
 
 <body>
 
-	<textarea cols="80" id="UnitGoals" name="UnitGoals" rows="10">		
-	</textarea>
 
+		
 
+		<form id="sumbit" type="submit" align="center" >
+
+			<textarea cols="80" id="UnitGoals" name="UnitGoals" rows="10">		
+			</textarea>
+
+        <Button onclick=get_action(this) align="center" name="data" type="button" width="58" height="48" style="width=200px; height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 110px;"> Submit </Button>
+	</form>
 
 	<script>
 
@@ -38,16 +50,29 @@ ckeditor.htmlContent = [[
 			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
 
 
+			var htmldata = CKEDITOR.instances.UnitGoals.document.getBody().getText()
 
-				var texttemp="corona:close"+ckvalue
+
+			//alert(htmldata.length)
+			if(htmldata.length > 1 )
+			{
+
+								
+						var texttemp="corona:close"+ckvalue;
+			 			window.location.href = texttemp; 
+											
+					
 
 
-			 	form.action = texttemp
+			}else{
 
-			 	return true
+				
+				sweetAlert("Please enter Unit Goals");
 
 		
-			 
+			}
+
+
        		
 		}
 
@@ -80,9 +105,8 @@ readTextFile("sample.txt");
 
 
 
-	<form onsubmit="get_action(this);">
-        <input type="submit" style="background-color:#e92568; padding:5px; color:#fff; font-weight:600; border:none; margin:10px 110px;">
-	</form>
+
+
 
 	<!-- <button id="submit" onclick="myFunction()">Submit</button> -->
 </body>
