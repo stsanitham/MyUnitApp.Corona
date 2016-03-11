@@ -1097,9 +1097,9 @@ local function TouchAction( event )
 
 				end
 
-				if checkMad == true then
-					return false
-				end
+
+
+				
 
 				if allDay == true then
 
@@ -1114,6 +1114,11 @@ local function TouchAction( event )
 				local enddate = Event_to_date.text.." "..EventTo_time
 
 
+
+
+				if checkMad == true then
+					return false
+				end
 
 				--CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection
 
@@ -1150,9 +1155,24 @@ local function TouchAction( event )
 							EventTo_time = os.date( "%I:%M %p",time)
 						end
 
+						print( "Start date :"..startdate )
+
+
+									local start_time = tonumber(makeTimeStamp(startdate))
+						local end_time = tonumber(makeTimeStamp(enddate))
+
+
+						if end_time <= start_time then
+
+								ErrorIcon.isVisible=true
+
+						else
+
+								ErrorIcon.isVisible=false
 								
 							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
-
+						
+						end
 					end
 				else
 
@@ -1162,7 +1182,7 @@ local function TouchAction( event )
 						if TicklerType:lower( ) == "call" then
 
 							
-							print( "startdate : "..startdate )
+							
 
 							local time = makeTimeStamp(startdate)
 
@@ -1171,13 +1191,28 @@ local function TouchAction( event )
 
 							enddate = os.date( "%m/%d/%Y %I:%M %p",time)
 
-							print( "enddate : "..enddate )
+						
 							
 							EventTo_time = os.date( "%I:%M %p",time)
 						end
+							
+						local start_time = tonumber(makeTimeStamp(startdate))
+						local end_time = tonumber(makeTimeStamp(enddate))
 
 
-						Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+						if end_time <= start_time then
+
+								ErrorIcon.isVisible=true
+
+						else
+
+								ErrorIcon.isVisible=false
+
+							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+
+
+						end
+
 
 					
 				end
@@ -2314,6 +2349,14 @@ local function ObjectCreation( sceneGroup)
 		Event_to_time:setFillColor( 0 )
 		Event_to_time.x= Event_to_timebg.x+5;Event_to_time.y= Event_to_timebg.y
 
+
+		ErrorIcon = display.newText(AddeventGroup,"*",0,0,native.systemFont,16)
+		ErrorIcon.x=Event_to_time.x+Event_to_time.contentWidth+3
+		ErrorIcon.anchorX=0
+		ErrorIcon.isVisible=false
+		ErrorIcon.y=Event_to_time.y
+		ErrorIcon:setFillColor( 1,0,0 )
+
 		-----------------------------------
 
 		timeZone = display.newText(AddeventGroup,"( "..TimeZone.." )",0,0,native.systemFont,12)
@@ -3319,16 +3362,18 @@ function scene:show( event )
 		  		print( "UpdateValue.Invitees "..#UpdateValue.Invitees )
 
 		  		local value = UpdateValue.Invitees
+		  		if value[1] ~= nil then
 
-		  		if value[1].FirstName ~= nil then
+			  		if value[1].FirstName ~= nil then
 
-		  			Addinvitees.text = value[1].FirstName.." "..value[1].LastName
+			  			Addinvitees.text = value[1].FirstName.." "..value[1].LastName
 
-		  		elseif value[1].LastName ~= nil then
+			  		elseif value[1].LastName ~= nil then
 
-		  			Addinvitees.text = value[1].LastName
-		  			
-		  		end
+			  			Addinvitees.text = value[1].LastName
+			  			
+			  		end
+			  	end
 
 		  		Addinvitees.contactinfo=value[1]
 		  	end

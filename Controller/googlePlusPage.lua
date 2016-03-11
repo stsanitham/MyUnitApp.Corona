@@ -351,7 +351,7 @@ local function Google_scrollListener( event )
 
 		        	feedProcess = feedProcess + 10
 
-		        	 network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
+		        	googleplus =  network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
 		   
 
 		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
@@ -362,7 +362,7 @@ local function Google_scrollListener( event )
 
 		        		spinner_show()
 
- 			        	 network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
+ 			        	 googleplus = network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
 		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
 		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
 		        end
@@ -484,7 +484,7 @@ function scene:show( event )
 
 sceneGroup:insert(scrollView)
 
- network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
+ googleplus = network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
 
 menuBtn:addEventListener("touch",menuTouch)
 BgText:addEventListener("touch",menuTouch)
@@ -504,7 +504,8 @@ function scene:hide( event )
 	local phase = event.phase
 
 	if event.phase == "will" then
-
+		
+		network.cancel( googleplus )
 
 		elseif phase == "did" then
 

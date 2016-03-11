@@ -258,12 +258,11 @@ local display_details = {}
 
    	    Email = EmailDetailValue.text
 
-   	    print("}}}}}}}}}}}}}",PhoneNumber)
+        if Details ~= nil and Details.MkRankId ~= nil and Details.MkRankId ~= "" then
 
-   	    print("}}}}}}}}}}}}}",Email)
+   	      MkRankId = Details.MkRankId
 
-
-   	    MkRankId = Details.MkRankId
+        end
    	    GetRquestAccessFrom = invitedetail_value.GetRquestAccessFrom
 
    	   MyUnitBuzzRequestAccessId = invitedetail_value.MyUnitBuzzRequestAccessId
