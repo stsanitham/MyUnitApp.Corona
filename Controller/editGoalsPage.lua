@@ -134,18 +134,15 @@ local function webListener( event )
     if 1 == string.find( url, "corona:close" ) then
         -- Close the web popup
 
-        print( "!!!!!!!!" )
         shouldLoad = false
---base64.decode
- print( "Before decode : "..url )
+
 
         updatedresponse = urlDecode(url)
-         print( "Before : "..updatedresponse )
 
 
         updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
 
-        print( updatedresponse )
+        print( "updatedresponse : "..updatedresponse )
 
 
         Webservice.SaveMyUnitBuzzGoals(Goalsid,updatedresponse,get_SaveMyUnitBuzzGoals)

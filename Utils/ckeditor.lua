@@ -27,24 +27,29 @@ ckeditor.htmlContent = [[
 			fullPage: true,
 			extraPlugins: 'docprops',
 			allowedContent: true,
-			height: 260,
-			htmlEncodeOutput: false,
-			width: 330
+			htmlEncodeOutput: true,
 		} );
 
 
 
-			function get_action(form) {
+		function get_action(form) {
 
 
 			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
 
-			 var texttemp="corona:close"+ckvalue
 
 
-			 form.action = texttemp
+				var texttemp="corona:close"+ckvalue
+
+
+			 	form.action = texttemp
+
+			 	return true
+
+		
+			 
        		
-			}
+		}
 
 
 
@@ -83,4 +88,5 @@ readTextFile("sample.txt");
 </body>
 
 </html>
+
 ]]
