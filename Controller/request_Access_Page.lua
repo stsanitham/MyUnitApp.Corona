@@ -170,12 +170,20 @@ end
 
 local function RequestProcess()
 
-	if  sumbitBtn.width == 80 then
+	print( "here !!!!!" )
+
+	if  submit_spinner.isVisible == false then
 
 			submit_spinner.isVisible=true
-			sumbitBtn.width = sumbitBtn.width+20
+			sumbitBtn.width = sumbitBtn.contentWidth+20
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
+
+			sumbitBtn.width = sumbitBtn_lbl.contentWidth+40
+			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+			sumbitBtn_lbl.x = sumbitBtn.x+5
+			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
+
 			submit_spinner:start( )
 
 
@@ -186,9 +194,13 @@ local function RequestProcess()
 			print("response after unit number validation ",Request_response)
 
 			submit_spinner.isVisible=false
-			sumbitBtn.width = sumbitBtn.width-20
+			sumbitBtn.width = sumbitBtn_lbl.width+20
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
+			sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
+sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+sumbitBtn_lbl.x = sumbitBtn.x+5
+
 			submit_spinner:stop( )
 
 							UnitNumber.text = ""
@@ -1093,14 +1105,21 @@ function scene:create( event )
 	sumbitBtn.x=W/2;sumbitBtn.y = DirectorEmail_bg.y+DirectorEmail_bg.height/2+30
 	sumbitBtn.width=80
 	sumbitBtn.height=30
+	sumbitBtn.anchorX=0
 	sumbitBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 	sceneGroup:insert(sumbitBtn)
 	sumbitBtn.id="Submit"
 
 
 sumbitBtn_lbl = display.newText( sceneGroup,CommonWords.submit,0,0,native.systemFont,16 )
-sumbitBtn_lbl.x = sumbitBtn.x-sumbitBtn.contentWidth/2+15;sumbitBtn_lbl.y=sumbitBtn.y
+sumbitBtn_lbl.y=sumbitBtn.y
 sumbitBtn_lbl.anchorX=0
+
+sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
+sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+sumbitBtn_lbl.x = sumbitBtn.x+5
+
+
 
 local options = {
     width = 25,
