@@ -897,11 +897,10 @@ local function get_CreateTickler( response )
 				os.remove(path)
 
 				local EventType = "added"
-				
 				if isUpdate == true then 
 					EventType = "updated"
 				end
-
+				
 
 		if SelectEvent.text:lower( ) == "appointment" then
 
