@@ -109,7 +109,7 @@ local makeTimeStamp = function ( dateString )
 	local pattern = "(%d+)%/(%d+)%/(%d+) (%d+):(%d+) (%a+)"
 	local month,day,year,hour,minute,tzoffset =
 	dateString:match(pattern)
-	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, isdst=false} )
+	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, isdst=true} )
 
 	return timestamp;
 end
@@ -1130,7 +1130,30 @@ local function TouchAction( event )
 
 				end
 
-				if PurposeLbl.text:lower( ) == "other" then
+				function get_GetUserPreferencebyUserId( response )
+
+				local colorCode
+
+				if TicklerType:lower( ) == "call" then
+
+					colorCode=response.Call_Color
+
+				elseif TicklerType:lower( ) == "task" then
+
+					colorCode=response.Task_Color
+
+
+				elseif TicklerType:lower( ) == "party" then
+
+					colorCode=response.Party_Color
+
+				else
+
+					colorCode=response.Appt_Color
+
+				end
+
+					if PurposeLbl.text:lower( ) == "other" then
 
 
 					if Other.text == "" then
@@ -1138,26 +1161,41 @@ local function TouchAction( event )
 						SetError(AddeventPage.other_purpose,Other)
 
 					else
+						
+						if TicklerType:lower( ) == "call" then
 
-							if TicklerType:lower( ) == "call" then
-
-								
 							
+							
+
 							local time = makeTimeStamp(startdate)
 
+							time = time + ((tonumber(Event_to_date.value)+1)*3600) + (tonumber(Event_to_time.value)*60)
 
-							time = time+ (tonumber(Event_to_date.value)*3600) + (tonumber(EventTo_time)*60)
+							if string.find( startdate, "PM") then
+								time=time+(12*3600)
+							end
 
+							enddate = os.date( "%m/%d/%Y %I:%M %p",time)
 
-							enddate = startdate
+					
 							EventTo_time = os.date( "%I:%M %p",time)
+
+						end
+							
+								local start_time,end_time
+
+						if string.find( startdate, "PM") then
+
+							 start_time = tonumber(makeTimeStamp(startdate)+(12*3600))
+							 end_time = tonumber(makeTimeStamp(enddate)+(12*3600))
+
+						else
+
+						 	start_time = tonumber(makeTimeStamp(startdate))
+						 	end_time = tonumber(makeTimeStamp(enddate))
+
 						end
 
-						print( "Start date :"..startdate )
-
-
-									local start_time = tonumber(makeTimeStamp(startdate))
-						local end_time = tonumber(makeTimeStamp(enddate))
 
 
 						if end_time <= start_time then
@@ -1168,7 +1206,7 @@ local function TouchAction( event )
 
 								ErrorIcon.isVisible=false
 								
-							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
 						
 						end
 					end
@@ -1184,18 +1222,32 @@ local function TouchAction( event )
 
 							local time = makeTimeStamp(startdate)
 
-							time = time+ (tonumber(Event_to_date.value)*3600) + (tonumber(Event_to_time.value)*60)
+							time = time + ((tonumber(Event_to_date.value)+1)*3600) + (tonumber(Event_to_time.value)*60)
 
+							if string.find( startdate, "PM") then
+								time=time+(12*3600)
+							end
 
 							enddate = os.date( "%m/%d/%Y %I:%M %p",time)
 
-						
-							
+					
 							EventTo_time = os.date( "%I:%M %p",time)
+
 						end
 							
-						local start_time = tonumber(makeTimeStamp(startdate))
-						local end_time = tonumber(makeTimeStamp(enddate))
+								local start_time,end_time
+
+						if string.find( startdate, "PM") then
+
+							 start_time = tonumber(makeTimeStamp(startdate)+(12*3600))
+							 end_time = tonumber(makeTimeStamp(enddate)+(12*3600))
+
+						else
+
+						 	start_time = tonumber(makeTimeStamp(startdate))
+						 	end_time = tonumber(makeTimeStamp(enddate))
+
+						end
 
 
 						if end_time <= start_time then
@@ -1206,14 +1258,21 @@ local function TouchAction( event )
 
 								ErrorIcon.isVisible=false
 
-							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,get_CreateTickler)
+						Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
 
 
 						end
-
-
-					
 				end
+
+				end
+
+				print( "here" )
+				Webservice.GetUserPreferencebyUserId(get_GetUserPreferencebyUserId)
+
+				
+
+
+				
 				
 			elseif event.target.id == "AppintmentWith_plus" then
 
@@ -3278,6 +3337,8 @@ function scene:show( event )
 	  		end
 
 	  		if UpdateValue.enddate ~= nil then
+
+	  		print( "Start date : "..UpdateValue.startdate.."\n End date : "..UpdateValue.enddate )
 
 	  			local endtime = Utils.makeTimeStamp(UpdateValue.enddate)
 	  			local starttime = Utils.makeTimeStamp(UpdateValue.startdate)

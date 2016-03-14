@@ -410,6 +410,11 @@ sumbitBtn_lbl.x = sumbitBtn.x+5
 								event.target.text=""
 							end
 
+							if(event.target.id == "Comments") then
+     								scrollTo( -100 )
+     								event.target.text = ""
+
+     						end
 				
 
 					elseif ( event.phase == "submitted" ) then

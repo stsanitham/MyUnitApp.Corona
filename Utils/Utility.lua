@@ -191,11 +191,7 @@ print(value)
          value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."- "..value:sub( 7,10)
 
 
-
     end
-
-
-
 
 
 return value

@@ -12,6 +12,7 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
 
+
 local function splitUrl( URL )
 
 	local Url
@@ -46,6 +47,43 @@ function string.urlEncode( str )
 	end
 	return str
 end
+
+
+
+local function creatHeader(method,URL)
+
+local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method=method
+	local url
+
+
+		url = splitUrl(URL)
+
+
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+end
+
+
+
 
 
 function Webservice.GET_LIST_OF_RANKS(postExecution)
@@ -930,52 +968,90 @@ local request_value = {}
 	return response
 end
 
+function Webservice.GetUserPreferencebyUserId(postExecution)
+local request_value = {}
+    local params = {}
+    local headers = {}
+    headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+    headers["IpAddress"] = Utility.getIpAddress()
+    headers["UniqueId"] = system.getInfo("deviceID")
+    headers["Accept"] = "application/json"
+    headers["Content-Type"] = "application/json"
+    method="GET"
 
+    local url = splitUrl(ApplicationConfig.GetUserPreferencebyUserId)
 
-function Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection,postExecution)
+    local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
---CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,PhoneNumber,AccessCode,IsConference,CallDirection
+	print("canonicalizedHeaderString : "..canonicalizedHeaderString)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="POST"
-
-	local url
-
-	if isUpdate == true then
-
-		url = splitUrl(ApplicationConfig.UpdateTicklerRecur)
-
-	else
-
-		url = splitUrl(ApplicationConfig.CreateTickler)
-
-	end
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+        UserId = row.UserId
+        AccessToken = row.AccessToken
+        ContactId = row.ContactId
 
-	end
+    end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
-	
+    headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	print( authenticationkey )
+	params={headers = headers}
+
+	local resbody = "userId="..UserId
+
+
+	request.new( ApplicationConfig.GetUserPreferencebyUserId.."?"..resbody,method,params,postExecution)
+
+	return response
+
+end
+
+function Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection,colorCode,postExecution)
+
+--CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,PhoneNumber,AccessCode,IsConference,CallDirection,colorCode
+
+ local request_value = {}
+    local params = {}
+    local headers = {}
+    headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+    headers["IpAddress"] = Utility.getIpAddress()
+    headers["UniqueId"] = system.getInfo("deviceID")
+    headers["Accept"] = "application/json"
+    headers["Content-Type"] = "application/json"
+    method="POST"
+
+    local url
+
+    if isUpdate == true then
+
+        url = splitUrl(ApplicationConfig.UpdateTicklerRecur)
+
+    else
+
+        url = splitUrl(ApplicationConfig.CreateTickler)
+
+    end
+    local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+    authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+    headers["Authentication"] = authenticationkey
+
+    for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+        UserId = row.UserId
+        AccessToken = row.AccessToken
+        ContactId = row.ContactId
+
+    end
+
+    headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+    
+
 
 
 local contactInfo = ""
 local invitees = ""
-
-
 
 if  Invitees ~= nil then
 	if Invitees.name ~= nil then
@@ -1027,7 +1103,7 @@ print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 		"AppointmentPurposeOther":  ']]..AppointmentPurposeOther..[[',
 		"Priority":  ]]..Priority..[[,
 		"TimeZone": ']]..TimeZone..[[',
-		"ColorCode":"#BCA9F5",
+		"ColorCode":']]..colorCode..[[',
 		"EventAccess":"PUBLIC",
 		"AttachmentName": ']]..check(AttachmentName)..[[',
 		"AttachmentPath": ']]..check(AttachmentPath)..[[',
