@@ -1173,7 +1173,7 @@ local function onKeyEvent( event )
 	upload_defaultimage.x= upload_text.x +upload_text.contentWidth+ 23
 	upload_defaultimage.y=upload_button.y
 
-	upload_defaulttext = display.newText("MyUnitBuzz allows upto 10MB files for each upload. Enjoy!",image_content_bg.x-image_content_bg.contentWidth/2 + 10,image_content_bg.y+ 30,W-40,0,native.systemFont,11.5)
+	upload_defaulttext = display.newText(Message.MaximumUpload,image_content_bg.x-image_content_bg.contentWidth/2 + 10,image_content_bg.y+ 30,W-40,0,native.systemFont,11.5)
 	upload_defaulttext.value = "defaulttext"
 	upload_defaulttext.id="defaulttext"
 	upload_defaulttext:setFillColor( 0,0,0,0.5)
@@ -1307,7 +1307,7 @@ local function onKeyEvent( event )
   	feed_cancelbutton.hasBackground = true
 	feed_cancelbutton.strokeWidth = 1
 
-	feed_cancelbutton_text = display.newText(sceneGroup,"Clear",0,0,native.systemFont,14)
+	feed_cancelbutton_text = display.newText(sceneGroup,Message.Clear,0,0,native.systemFont,14)
 	feed_cancelbutton_text.x=feed_cancelbutton.x
 	feed_cancelbutton_text.y=feed_cancelbutton.y
 	Utils.CssforTextView(feed_cancelbutton_text,sp_primarybutton)
@@ -1339,13 +1339,13 @@ local function onKeyEvent( event )
 	sceneGroup:insert(send_icon)
 	send_icon.anchorY=0
 	send_icon.x= send_button.x - send_button.contentWidth/2+10
-	send_icon.y=send_button.y+send_button.contentHeight/2-4
+	send_icon.y=send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
 
-	send_button_text = display.newText(sceneGroup,Message.SendButton,0,0,send_button.contentWidth-4,0,native.systemFont,16)
+	send_button_text = display.newText(sceneGroup,Message.SendButton,0,0,send_button.contentWidth-12,0,native.systemFont,16)
 	send_button_text.anchorX=0
 	send_button_text.anchorY=0
 	send_button_text.x=send_icon.x+10
-	send_button_text.y=send_button.y+send_button.contentHeight/2-send_button_text.contentHeight/2+4
+	send_button_text.y=send_icon.y-3
 	Utils.CssforTextView(send_button_text,sp_primarybutton)
 
 	send_button.height= send_button_text.contentHeight+6
@@ -1361,16 +1361,21 @@ local function onKeyEvent( event )
 	draft_button:setFillColor( 0,0,0,0.7 )
 	draft_button.id="draft"
 
-	draft_button_text = display.newText(sceneGroup,Message.DraftButton,0,0,native.systemFont,16)
-	draft_button_text.x=draft_button.x+10
-	draft_button_text.y=draft_button.y
-	Utils.CssforTextView(draft_button_text,sp_primarybutton)
-
 	draft_icon = display.newImageRect("res/assert/draft.png",16,14)
 	draft_icon.id = "draft icon"
+	draft_icon.anchorY=0
 	sceneGroup:insert(draft_icon)
-	draft_icon.x= draft_button_text.x - 60
-	draft_icon.y=draft_button.y
+	draft_icon.x= draft_button.x - draft_button.contentWidth/2+10
+	draft_icon.y=draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+
+	draft_button_text = display.newText(sceneGroup,Message.DraftButton,0,0,native.systemFont,16)
+	draft_button_text.x=draft_icon.x+10
+	draft_button_text.y=draft_icon.y-3
+	draft_button_text.anchorY=0
+	draft_button_text.anchorX=0
+	Utils.CssforTextView(draft_button_text,sp_primarybutton)
+
+
 
 
 	-- photodetail_bg = display.newRect( sceneGroup, 0,0 , W/2+90, EditBoxStyle.height)
