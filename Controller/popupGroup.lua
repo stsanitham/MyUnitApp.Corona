@@ -218,6 +218,7 @@ end
 
 								event.target.text = event.target.text:sub(1,15)
 
+								native.setKeyboardFocus(nil)
 
 							end
 
@@ -230,7 +231,6 @@ end
 
 							local maskingValue =Utils.PhoneMasking(tostring(event.target.text))
 
-											
 
 									native.setKeyboardFocus(nil)
 
@@ -240,7 +240,6 @@ end
 
 									native.setKeyboardFocus(PhoneDetailValue)
 
-								
 						
         				end
 
