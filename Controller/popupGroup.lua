@@ -78,6 +78,34 @@ local function onCloseTouch( event )
 end
 
 
+-- -- The touch listener function for the button (created below)
+-- local function handleButtonEvent( event )
+
+--     local phase = event.phase
+
+--     if ( phase == "moved" ) then
+--         local dy = math.abs( ( event.y - event.yStart ) )
+--         -- If the touch on the button has moved more than 10 pixels,
+--         -- pass focus back to the scroll view so it can continue scrolling
+--         if ( dy > 10 ) then
+--             popup_scroll:takeFocus( event )
+--         end
+--     end
+--     return true
+-- end
+
+
+-- local function scrollTo(position)
+
+-- popup_scroll:scrollToPosition
+-- {
+--     y = position,
+--     time = 400,
+-- }
+
+-- end
+
+
 
 function touchPopupBg( event )
 
@@ -86,6 +114,8 @@ function touchPopupBg( event )
 		elseif event.phase == "ended" then
 
 		    if event.target.id == "popuplist" then
+
+		    	print("touch the background")
 
 				native.setKeyboardFocus(nil)
 
@@ -131,6 +161,7 @@ end
 	end
 
 
+
 	function getemailexistresponse(response)
  
         email_response = response
@@ -148,6 +179,7 @@ end
     end
 
 
+
 		function textField( event )
 
 					if ( event.phase == "began" ) then
@@ -159,8 +191,8 @@ end
 
 							current_textField = event.target;
 
-
 							current_textField.size=14
+
 
 							if "*" == event.target.text:sub(1,1) then
 								event.target.text=""
@@ -202,8 +234,12 @@ end
 
 							if(current_textField.id =="Email Detail") then
 
+								print("invitedetail_value.MyUnitBuzzRequestAccessId ", Contactid_value)
+
 	                              -- native.setKeyboardFocus(nil)
-	                              Webservice.CheckExistsRequestStatus(EmailDetailValue.text,getemailexistresponse)
+
+
+	                              Webservice.CheckExistsRequestStatus(Contactid_value,EmailDetailValue.text,getemailexistresponse)
 
 	                              native.setKeyboardFocus(nil)
 
@@ -254,6 +290,15 @@ end
 
 
         				 if (current_textField.id =="deny") then
+
+        				 	if event.target.text:len() > 160 then
+
+								event.target.text = event.target.text:sub(1,160)
+
+								native.setKeyboardFocus(nil)
+
+							end
+
 
         				 	if (event.newCharacters=="\n") then 
 
@@ -718,7 +763,7 @@ local function popup_scrollListener(event )
 
 
 
-function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
+function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value)
 
 		if popUpGroup.numChildren ~= nil then
 			 for j=popUpGroup.numChildren, 1, -1 do 
@@ -727,6 +772,9 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 			 end
 		end
 
+	Contactid_value = contactid_value
+
+	print("Contactid_value",Contactid_value)
 
 	popupTop_bg = display.newRect(leftPadding_value + 140, H/2+ 10, W-20, 385 )
 	popupTop_bg.x = leftPadding_value + 140
@@ -857,7 +905,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		EmailDetailValue = native.newTextField(W/2,NameDetail_bg.y+28, W-50, 25)
 		EmailDetailValue.id="Email Detail"
 		EmailDetailValue.size=14	
-		EmailDetailValue.x=18
+		EmailDetailValue.x=22
 		EmailDetailValue.anchorX=0
 		EmailDetailValue.y = EmailDetail_titletext.y+ EmailDetail_titletext.contentHeight+9
 		EmailDetailValue.hasBackground = false
@@ -925,7 +973,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 		PhoneDetailValue.id="Phone Detail"
 		PhoneDetailValue.size=14	
 		PhoneDetailValue.inputType = "number"
-		PhoneDetailValue.x=18
+		PhoneDetailValue.x=22
 		PhoneDetailValue.anchorX=0
 		PhoneDetailValue.y = PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
 		PhoneDetailValue.hasBackground = false
@@ -1051,7 +1099,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 --------------------------------------reason for deny---------------------------------------------
 
-    deny_bg = display.newRect( 0,0 , W-40, EditBoxStyle.height+40)
+    deny_bg = display.newRect( 0,0 , W-50, EditBoxStyle.height+40)
   	deny_bg:setStrokeColor(0,0,0,0.4)
   	deny_bg.x = W/2
   	deny_bg.isVisible = false
@@ -1061,7 +1109,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	popup_scroll:insert(deny_bg)
 
 
-	deny_Value = native.newTextBox( deny_bg.width,deny_bg.height,W-40, EditBoxStyle.height+40)
+	deny_Value = native.newTextBox( deny_bg.width,deny_bg.height,W-50, EditBoxStyle.height+40)
 	deny_Value.placeholder = PopupGroup.deny_Value_placeholder
 	deny_Value.isEditable = true
 	deny_Value.size=14
@@ -1155,6 +1203,14 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	popup_scroll:insert(processbutton_text)
 
 
+
+    -- if contactid_value ~= nil or contactid_value ~= "" then
+
+    -- 	Contactid_value = contactid_value
+
+    -- 	print("Contactid_value &&&&&&&&&&&&& ",Contactid_value)
+
+    -- end
 
 
     if email ~= nil or email ~= "" or email ~= PopupGroup.EmailRequired then

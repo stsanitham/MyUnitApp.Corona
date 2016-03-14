@@ -524,7 +524,11 @@ function onAccessButtonTouch( event )
 
     if id_value == "Grant Access" then
 
-              GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
+    	print("from career path page")
+
+    	contactid_career = Details.ContactId
+
+          GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
           processbutton_text.text = CommonWords.GrantAccessText
           popupText.text = CommonWords.GrantAccessText
@@ -685,7 +689,9 @@ function onAccessButtonTouch( event )
 
 	  print("provide access pressed") 
 
-	  GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
+	  contactid_career = Details.ContactId
+
+	  GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
         processbutton_text.text = CommonWords.ProvideAccessText
         popupText.text = CommonWords.ProvideAccessText
@@ -886,7 +892,9 @@ function onAccessButtonTouch( event )
 
 	  print("deny access pressed") 
 
-	    GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
+	    contactid_career = Details.ContactId
+
+	    GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
         processbutton_text.text = CommonWords.DenyAccessText
         popupText.text = CommonWords.DenyAccessText
@@ -1074,7 +1082,7 @@ function onAccessButtonTouch( event )
     function RequestGrantProcess( )
 
 
-    	if processbutton_text.text == RequestGrantProcess then
+    	if processbutton_text.text == CommonWords.GrantAccessText then
 
     		print("service of grant access")
 
