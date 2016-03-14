@@ -224,6 +224,10 @@ CareerPath.AlreadyRemoved = "Already Removed"
 CareerPath.AddRequest = "Add Request"
 CareerPath.AlreadyBlocked = "Already Blocked"
 CareerPath.AlreadyBlockedText = "Contact's Access has been already blocked"
+CareerPath.AlreadyDenied = "Already Denied"
+CareerPath.AlreadyGrantedText = "Contact's Access is already granted"
+CareerPath.AlreadyRemovedText = "Contact's Access is already removed"
+CareerPath.AddRequestText = "A Contact with same email address is already exist"
 
 
 

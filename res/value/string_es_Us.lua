@@ -229,11 +229,10 @@ CareerPath.AlreadyRemoved = "Ya eliminado"
 CareerPath.AddRequest = "Añadir solicitud"
 CareerPath.AlreadyBlocked = "ya está bloqueado"
 CareerPath.AlreadyDenied = "ya denegado"
-CareerPath.AlreadyGrantedText = "ya concedidas"
-CareerPath.AlreadyRemovedText = "Ya eliminado"
-CareerPath.AddRequestText = "Añadir solicitud"
+CareerPath.AlreadyGrantedText = "Contacto de acceso ya se haya concedido"
+CareerPath.AlreadyRemovedText = "Contacto de acceso ya se retira"
+CareerPath.AddRequestText = "Un contacto con la misma dirección de correo electrónico ya existe"
 CareerPath.AlreadyBlockedText = "El acceso de contacto ha sido ya bloqueados"
-
 
 
 Goals = {}
