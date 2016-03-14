@@ -143,9 +143,13 @@ function scene:create( event )
 end
 
 
-function scene:resumeGame()
+function scene:resumeGame(isEdited)
 
-	local alert = native.showAlert(  Goals.PageTitle,Goals.SuccessMsg, { "OK" } )
+	if isEdited == true then
+
+		local alert = native.showAlert(  Goals.PageTitle,Goals.SuccessMsg, { "OK" } )
+
+	end
 
 
 

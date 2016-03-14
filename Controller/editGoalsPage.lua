@@ -38,6 +38,8 @@ local base64 = {}
 
 local Goalsid
 
+local isEdited = false
+
 
 --------------------------------------------------
 
@@ -120,7 +122,7 @@ function urlDecode( str )
 end
 
 function get_SaveMyUnitBuzzGoals(response)
-
+	isEdited=true
 	composer.hideOverlay( )
 end
 
@@ -323,7 +325,7 @@ function scene:hide( event )
 
 		elseif phase == "did" then
 
-			event.parent:resumeGame()
+			event.parent:resumeGame(isEdited)
 
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
