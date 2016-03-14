@@ -87,7 +87,7 @@ function GetAlertPopup()
 
 		alertList = display.newRect(leftPadding_value + 140, H/2 -10.62, W-22, 158 )
 		alertList.strokeWidth=1
-    alertList:setStrokeColor(Utils.convertHexToRGB(color.LtyGray))
+        alertList:setStrokeColor(Utils.convertHexToRGB(color.LtyGray))
 	    AlertGroup:insert(alertList)
 
 	    AlertContentText = display.newText(CareerPath.RemoveAccess,0,0,W-20,0,native.systemFont,14)

@@ -89,8 +89,6 @@ function touchPopupBg( event )
 
 				native.setKeyboardFocus(nil)
 
-				print("touch bg")
-
 				scrollTo(0)
 
 			end
@@ -195,7 +193,9 @@ end
 	                               scrollTo(0)
 							end
 
-							popupList:addEventListener("touch",touchPopupBg)
+									print("event.target.id", event.target.id)
+
+							popupList_white:addEventListener("touch",touchPopupBg)
 
 						    end
 
@@ -226,6 +226,7 @@ end
 
 								event.target.text = event.target.text:sub(1,15)
 
+								native.setKeyboardFocus(nil)
 
 							end
 
@@ -238,7 +239,6 @@ end
 
 							local maskingValue =Utils.PhoneMasking(tostring(event.target.text))
 
-											
 
 									native.setKeyboardFocus(nil)
 
@@ -248,7 +248,6 @@ end
 
 									native.setKeyboardFocus(PhoneDetailValue)
 
-								
 						
         				end
 
@@ -256,9 +255,18 @@ end
 
         				 if (current_textField.id =="deny") then
 
+        				 	if (event.newCharacters=="\n") then 
+
+	                               native.setKeyboardFocus(nil)
+
+	                               scrollTo(0)
+							end
+
         				 	print("scrolling top")
 
                             scrollTo( -100)
+
+                            popupList_white:addEventListener("touch",touchPopupBg)
 
         				 end
 
@@ -726,8 +734,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
     popUpGroup:insert(popupTop_bg)
 
     popupTop = display.newRect(W/2,H/2-195,298,30)
-   -- popupTop:setStrokeColor(0,0,0,0.2)
-  --  popupTop.strokeWidth=1
+   --  popupTop:setStrokeColor(0,0,0,0.2)
+   --  popupTop.strokeWidth=1
     popupTop:setFillColor(Utils.convertHexToRGB(color.LtyGray))
     popUpGroup:insert(popupTop)
 
@@ -766,8 +774,8 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
     popupList = display.newRect(leftPadding_value + 140, popupTop_bg.y+popupTop_bg.contentHeight/2, W-22, popupTop_bg.contentHeight+20 )
     popupList.anchorY=0
     popupList.y=60	
-     popupList.strokeWidth=1
-     popupList.isVisible=true
+    popupList.strokeWidth=1
+    popupList.isVisible=true
     popupList:setStrokeColor(Utils.convertHexToRGB(color.LtyGray))
     popUpGroup:insert(popupList)
 
@@ -788,18 +796,17 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 
 
-    popupList = display.newRect(leftPadding_value + 140, 0, W-22, popupTop_bg.contentHeight+78 )
-    popupList.anchorY=0
-    popupList.id = "popuplist"
-    popup_scroll:insert(popupList)
-
+    popupList_white = display.newRect(leftPadding_value + 140, 0, W-22, popupTop_bg.contentHeight+78 )
+    popupList_white.anchorY=0
+    popupList_white.id = "popuplist"
+    popup_scroll:insert(popupList_white)
 
     popup_scroll.y=60
     popup_scroll.anchorY=0
 
 --------------------------------------name field--------------------------------------
 
-        NameDetail_bg = display.newRect(W/2, popupList.y+5, W-40, 25)
+        NameDetail_bg = display.newRect(W/2, popupList_white.y+5, W-50, 25)
 		NameDetail_bg.isVisible = true
 		NameDetail_bg.alpha = 0.01
 		NameDetail_bg:setFillColor(0,0,0)
@@ -814,7 +821,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    popup_scroll:insert(NameDetail_title)
 
 	    NameDetailValue = display.newText("",0,0,native.systemFont,14)
-	    NameDetailValue.x=  NameDetail_title.x+5
+	    NameDetailValue.x= 25
 	    NameDetailValue.anchorX = 0
 	    NameDetailValue:setFillColor(0,0,0)
 	    NameDetailValue.y= NameDetail_title.y+NameDetail_title.contentHeight+7
@@ -829,7 +836,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 --------------------------------------email field--------------------------------------
 
-        EmailDetail_bg = display.newRect(W/2,NameDetail_bg.y+15, W-40, 25)
+        EmailDetail_bg = display.newRect(W/2,NameDetail_bg.y+15, W-50, 25)
 		EmailDetail_bg.isVisible = true
 		EmailDetail_bg.alpha = 0.01
 		EmailDetail_bg.y = NameDetail_bottom.y+NameDetail_bottom.contentHeight+15
@@ -847,10 +854,10 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    EmailDetail_titletext.y= EmailDetail_bg.y
 	    popup_scroll:insert(EmailDetail_titletext)
 
-		EmailDetailValue = native.newTextField(W/2,NameDetail_bg.y+28, W-40, 25)
+		EmailDetailValue = native.newTextField(W/2,NameDetail_bg.y+28, W-50, 25)
 		EmailDetailValue.id="Email Detail"
 		EmailDetailValue.size=14	
-		EmailDetailValue.x=24
+		EmailDetailValue.x=18
 		EmailDetailValue.anchorX=0
 		EmailDetailValue.y = EmailDetail_titletext.y+ EmailDetail_titletext.contentHeight+9
 		EmailDetailValue.hasBackground = false
@@ -893,7 +900,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 --------------------------------------PHONE NUMBER--------------------------------------------
 
-        PhoneDetail_bg = display.newRect(W/2,emailnotifytext.y+15, W-40, 25)
+        PhoneDetail_bg = display.newRect(W/2,emailnotifytext.y+15, W-50, 25)
 		PhoneDetail_bg.isVisible = true
 		PhoneDetail_bg.alpha = 0.01
 		PhoneDetail_bg.y =  emailnotifybox.y+emailnotifybox.contentHeight+5
@@ -914,11 +921,11 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    popup_scroll:insert(PhoneDetail_titletext)
 
 
-		PhoneDetailValue = native.newTextField(W/2,emailnotifytext.y+28, W-40, 25)
+		PhoneDetailValue = native.newTextField(W/2,emailnotifytext.y+28, W-50, 25)
 		PhoneDetailValue.id="Phone Detail"
 		PhoneDetailValue.size=14	
 		PhoneDetailValue.inputType = "number"
-		PhoneDetailValue.x=24
+		PhoneDetailValue.x=18
 		PhoneDetailValue.anchorX=0
 		PhoneDetailValue.y = PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
 		PhoneDetailValue.hasBackground = false
@@ -958,7 +965,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 -----------------------------------MKRank detail-------------------------------------------------
 
-        MKRankDetail_bg = display.newRect(W/2,textnotifytext.y+30, W-40, 25)
+        MKRankDetail_bg = display.newRect(W/2,textnotifytext.y+30, W-50, 25)
 		MKRankDetail_bg.isVisible = true
 		MKRankDetail_bg.alpha = 0.01
 		MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
@@ -1001,7 +1008,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 -----------------------------------Requested_on detail-------------------------------------------------
 
-        Requesteddate_bg = display.newRect(W/2,MKRankDetailValue.y+15, W-40, 25)
+        Requesteddate_bg = display.newRect(W/2,MKRankDetailValue.y+15, W-50, 25)
 		Requesteddate_bg.isVisible = true
 		Requesteddate_bg.alpha = 0.01
 		Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
@@ -1074,7 +1081,7 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 
 -----------------------------------password detail-------------------------------------------------
 
-        Password_bg = display.newRect(W/2,Requesteddate_bg.y+15, W-40, 25)
+        Password_bg = display.newRect(W/2,Requesteddate_bg.y+15, W-50, 25)
 		Password_bg.isVisible = true
 		Password_bg.alpha = 0.01
 		Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
@@ -1093,11 +1100,11 @@ function GetPopUp(email,mobile,homenum,worknum,othernum,id_value)
 	    Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
 	    popup_scroll:insert(Password_titletext)
 
-		PasswordValue = native.newTextField(22,textnotifytext.y+28, W-40, 25)
+		PasswordValue = native.newTextField(22,textnotifytext.y+28, W-50, 25)
 		PasswordValue.id="Password"
 		PasswordValue.size=14	
 		PasswordValue.anchorX = 0
-		PasswordValue.x = 24
+		PasswordValue.x = 18
 		PasswordValue.y =Password_titletext.y+Password_titletext.height+7
 		PasswordValue.hasBackground = false
 		PasswordValue.isVisible = true
