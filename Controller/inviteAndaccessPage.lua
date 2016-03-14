@@ -141,7 +141,9 @@ function onAccessButtonTouch( event )
 local function GrandProcess(value)
 
 	id_value = "Grant Access"
- GetPopUp(value.EmailAddress,value.PhoneNumber,value.PhoneNumber,value.PhoneNumber,value.PhoneNumber,"Grant Access")
+
+
+ GetPopUp(value.MyUnitBuzzRequestAccessId,value.EmailAddress,value.PhoneNumber,value.PhoneNumber,value.PhoneNumber,value.PhoneNumber,"Grant Access")
 
           processbutton_text.text = CommonWords.GrantAccessText
           popupText.text = CommonWords.GrantAccessText
@@ -281,7 +283,7 @@ local function GrandProcess(value)
 
 end
 
-local function RemoveProcess()
+local function RemoveProcess(value)
 	id_value = "Remove Access"
 
 	  print("remove access pressed") 
@@ -297,10 +299,10 @@ end
 
 
 
-local function DenyProcess()
+local function DenyProcess(value)
 	id_value = "Deny Access"
 
-	 GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
+	 GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
         processbutton_text.text = CommonWords.DenyAccessText
         popupText.text = CommonWords.DenyAccessText
@@ -453,10 +455,10 @@ local function DenyProcess()
 
 end
 
-local function ProvideAccess()
+local function ProvideAccess(value)
 	id_value = "Provide Access"
 
-	GetPopUp(Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
+	GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
         processbutton_text.text = CommonWords.ProvideAccessText
         popupText.text = CommonWords.ProvideAccessText
@@ -593,7 +595,7 @@ local function ProvideAccess()
 
 end
 
-local function Block()
+local function Block(value)
 	id_value = "Block Access"
 
 	print("block access pressed") 
@@ -1330,7 +1332,7 @@ end
 
          end
 
-         if Request_response == true then
+         if Request_response == "SUCCESS" then
 
 			 if id_value == "Remove Access" then
 
@@ -1344,8 +1346,8 @@ end
 				local block_successful = native.showAlert("Block", "This Contact’s Access blocked successfully.", { CommonWords.ok} , onCompletion)
 
 			 end
-		else
-			local block_successful = native.showAlert("Block", "Blocking of this Contact’s Access failed.", { CommonWords.ok} )
+		--else
+			--local block_successful = native.showAlert("Block", "Blocking of this Contact’s Access failed.", { CommonWords.ok} )
 		end
 
 
@@ -1374,7 +1376,7 @@ end
 
 	 	    if Request_response == "SUCCESS" then
 
-	 	    	grantaccess = native.showAlert(" Grant access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
+	 	    	grantaccess = native.showAlert(" Grant Access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
@@ -1394,7 +1396,7 @@ end
 
 	 	    if Request_response == "SUCCESS" then
 
-	 	    	accessprovided = native.showAlert("Provide access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
+	 	    	accessprovided = native.showAlert("Provide Access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
@@ -1413,6 +1415,7 @@ end
          end
 
 	end
+
 
 
 		function RequestGrantProcess( )

@@ -467,7 +467,9 @@ local function GrandProcess(event)
 
 	     print("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{",invitedetail_value.FirstName)
 
-	     GetPopUp(invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
+       print("invite contact id ",invitedetail_value.MyUnitBuzzRequestAccessId)
+
+	     GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
 
           processbutton_text.text = CommonWords.GrantAccessText
           popupText.text = CommonWords.GrantAccessText
@@ -601,7 +603,7 @@ end
 local function DenyProcess()
 	id_value = "Deny Access"
 
-	 GetPopUp(invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
+	 GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
 
         processbutton_text.text = CommonWords.DenyAccessText
         popupText.text = CommonWords.DenyAccessText
@@ -749,7 +751,7 @@ end
 local function ProvideAccess()
 	id_value = "Provide Access"
 
-	GetPopUp(invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
+	GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
 
         processbutton_text.text = CommonWords.ProvideAccessText
         popupText.text =  CommonWords.ProvideAccessText

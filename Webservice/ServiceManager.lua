@@ -1582,7 +1582,7 @@ end
 
 
 
-function Webservice.CheckExistsRequestStatus(emailvalue,postExecution)
+function Webservice.CheckExistsRequestStatus(contactid_val,emailvalue,postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
@@ -1610,11 +1610,20 @@ function Webservice.CheckExistsRequestStatus(emailvalue,postExecution)
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-		local resbody = [[{
+		-- local resbody = [[{
+	 --  "UserId": ']]..UserId..[[',
+	 --  "ContactId": ']]..Contactid_value..[[',
+	 --  "EmailAddress": ']]..emailvalue..[[',
+	 --  "MyUnitBuzzRequestAccessId": ']]..Contactid_value..[[',
+	 --   } ]]
+
+	 		local resbody = [[{
 	  "UserId": ']]..UserId..[[',
-	  "ContactId": ']]..ContactId..[[',
+	  "ContactId": ']]..contactid_val..[[',
 	  "EmailAddress": ']]..emailvalue..[[',
+	  "MyUnitBuzzRequestAccessId": ']]..contactid_val..[[',
 	   } ]]
+
 
     params={headers = headers,body = resbody}
 
