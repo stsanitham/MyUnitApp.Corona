@@ -1031,7 +1031,17 @@ local function CreateList(list,scrollView)
 
 			if feedArray[i].MkRankLevel ~= nil then
 
-				local time = Utils.makeTimeStamp(feedArray[i].UpdateTimeStamp)
+				local time
+
+				if feedArray[i].CreateTimeStamp ~= nil then
+
+					 time = Utils.makeTimeStamp(feedArray[i].CreateTimeStamp)
+
+				else
+
+				    time = Utils.makeTimeStamp(feedArray[i].UpdateTimeStamp)
+
+				 end
 
 				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 			

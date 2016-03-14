@@ -3443,6 +3443,7 @@ function scene:show( event )
 	  				if AddeventPage.purposeArray[i].id == UpdateValue.AppointmentPurpose then
 	  					PurposeLbl.text = AddeventPage.purposeArray[i].value
 	  					PurposeLbl.value=AddeventPage.purposeArray[i].id
+	  					print("check = "..PurposeLbl.value)
 	  				end
 	  			end
 	   			
