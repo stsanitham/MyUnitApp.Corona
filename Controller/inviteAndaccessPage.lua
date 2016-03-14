@@ -1337,13 +1337,13 @@ end
 			 if id_value == "Remove Access" then
 
 			    print("response after removing details ",Request_response)
-		        local remove_successful= native.showAlert("Remove", "Contact removed from the list.", { CommonWords.ok} , onCompletion)
+		        local remove_successful= native.showAlert(CommonWords.Remove, "Contact removed from the list.", { CommonWords.ok} , onCompletion)
 
 
 			 elseif id_value == "Block Access" then
 
 			    print("response after blocking details ",Request_response)
-				local block_successful = native.showAlert("Block", "This Contact’s Access blocked successfully.", { CommonWords.ok} , onCompletion)
+				local block_successful = native.showAlert(CommonWords.Block, "This Contact’s Access blocked successfully.", { CommonWords.ok} , onCompletion)
 
 			 end
 		--else
@@ -1356,19 +1356,23 @@ end
 
          	 if Request_response == "SUCCESS" then
 
-         	 	denyaccess = native.showAlert("Deny", "Access denied to this Contact.", { CommonWords.ok } , onCompletion)
+         	 	denyaccess = native.showAlert(CommonWords.Deny,  CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
 
          	 elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the Contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+
+		 	 elseif Request_response == "BLOCK" then
+
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
          	 end
 
@@ -1376,19 +1380,23 @@ end
 
 	 	    if Request_response == "SUCCESS" then
 
-	 	    	grantaccess = native.showAlert(" Grant Access", "Access granted successfully to this Contact.", { CommonWords.ok} , onCompletion)
+	 	    	grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the Contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+
+		 	 elseif Request_response == "BLOCK" then
+
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
          	 end
 
@@ -1396,19 +1404,23 @@ end
 
 	 	    if Request_response == "SUCCESS" then
 
-	 	    	accessprovided = native.showAlert("Provide Access", "Access provided successfully to this Contact.", { CommonWords.ok } , onCompletion)
+	 	    	accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
 
 	 	     elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert("Already Granted", "Access is already granted", { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert("Already Removed", "Access is already removed", { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 		
 		     elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert("Add Request", "Provide Access to the Contact", { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText,{ CommonWords.ok} , onCompletion)
+
+		 	 elseif Request_response == "BLOCK" then
+
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
          	 end
 
