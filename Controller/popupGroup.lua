@@ -60,8 +60,22 @@ local function onKeyEventDetail( event )
 
 
 local function onCloseTouch( event )
-    if event.phase == "began" then
-        display.getCurrentStage():setFocus( event.target )
+	if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+
+			native.setKeyboardFocus( nil )
+
+	 elseif ( event.phase == "moved" ) then
+        local dy = math.abs( ( event.y - event.yStart ) )
+        -- If the touch on the button has moved more than 10 pixels,
+        -- pass focus back to the scroll view so it can continue scrolling
+
+        if ( dy > 10 ) then
+        	display.getCurrentStage():setFocus( nil )
+            popup_scroll:takeFocus( event )
+        end
+    
+
         elseif event.phase == "ended" then
         display.getCurrentStage():setFocus( nil )
 
@@ -78,38 +92,25 @@ local function onCloseTouch( event )
 end
 
 
--- -- The touch listener function for the button (created below)
--- local function handleButtonEvent( event )
 
---     local phase = event.phase
-
---     if ( phase == "moved" ) then
---         local dy = math.abs( ( event.y - event.yStart ) )
---         -- If the touch on the button has moved more than 10 pixels,
---         -- pass focus back to the scroll view so it can continue scrolling
---         if ( dy > 10 ) then
---             popup_scroll:takeFocus( event )
---         end
---     end
---     return true
--- end
-
-
--- local function scrollTo(position)
-
--- popup_scroll:scrollToPosition
--- {
---     y = position,
---     time = 400,
--- }
-
--- end
-
-
-
-function touchPopupBg( event )
+local function touchPopupBg( event )
 
 		if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+
+			native.setKeyboardFocus( nil )
+
+	 elseif ( event.phase == "moved" ) then
+        local dy = math.abs( ( event.y - event.yStart ) )
+        -- If the touch on the button has moved more than 10 pixels,
+        -- pass focus back to the scroll view so it can continue scrolling
+
+        if ( dy > 10 ) then
+        	display.getCurrentStage():setFocus( nil )
+            popup_scroll:takeFocus( event )
+        end
+    
+
 
 		elseif event.phase == "ended" then
 
@@ -117,7 +118,7 @@ function touchPopupBg( event )
 
 		    	print("touch the background")
 
-				native.setKeyboardFocus(nil)
+				
 
 				scrollTo(0)
 
@@ -203,12 +204,16 @@ end
 
 								current_textField.text=""
 
+ 								scrollTo( -120)
+
 							end
 							
 
 
 
 					elseif ( event.phase == "submitted" ) then
+
+						 scrollTo(0)
 
 							if(current_textField.id =="Password") then
 
@@ -218,14 +223,7 @@ end
 
 							if (current_textField.id =="deny") then
 
-							if (event.newCharacters=="\n") then 
-
-	                               native.setKeyboardFocus(nil)
-
-	                               scrollTo(0)
-							end
-
-									print("event.target.id", event.target.id)
+							print("event.target.id", event.target.id)
 
 							popupList_white:addEventListener("touch",touchPopupBg)
 
@@ -304,12 +302,9 @@ end
 
 	                               native.setKeyboardFocus(nil)
 
-	                               scrollTo(0)
 							end
 
         				 	print("scrolling top")
-
-                            scrollTo( -100)
 
                             popupList_white:addEventListener("touch",touchPopupBg)
 
@@ -776,6 +771,10 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 	print("Contactid_value",Contactid_value)
 
+	popup_Backgeound = display.newRect( popUpGroup, W/2, H/2, W, H )
+	popup_Backgeound:addEventListener( "touch", touchPopupBg )
+	popup_Backgeound.alpha=0.01
+
 	popupTop_bg = display.newRect(leftPadding_value + 140, H/2+ 10, W-20, 385 )
 	popupTop_bg.x = leftPadding_value + 140
     popupTop_bg:setFillColor(0,0,0)
@@ -1109,7 +1108,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 	popup_scroll:insert(deny_bg)
 
 
-	deny_Value = native.newTextBox( deny_bg.width,deny_bg.height,W-50, EditBoxStyle.height+40)
+	deny_Value = native.newTextBox( deny_bg.width,deny_bg.height,W-52, EditBoxStyle.height+40)
 	deny_Value.placeholder = PopupGroup.deny_Value_placeholder
 	deny_Value.isEditable = true
 	deny_Value.size=14
