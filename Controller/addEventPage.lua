@@ -445,6 +445,11 @@ end
 
 		AddAttachmentPhotoName.isVisible = true
 		AddAttachmentPhotoName.text = AttachmentName
+
+		if AddAttachmentPhotoName.text:len() > 35 then
+							AddAttachmentPhotoName.text = AddAttachmentPhotoName.text:sub(1,35  ).."..."
+		end
+
 		AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
 
 		AddAttachment_icon.isVisible = false
@@ -869,7 +874,7 @@ local function get_CreateTickler( response )
 
 		if response.TicklerId > 0 then
 		
-				if AttachmentFlag == true then
+				if AttachmentFlag == true and Attachment~= nil then
 
 							Webservice.SaveAttachmentDetails(response.id,AttachmentName,AttachmentPath,Attachment,get_SaveAttachmentDetails)
 
@@ -3413,6 +3418,11 @@ function scene:show( event )
 
 						AddAttachmentPhotoName.isVisible = true
 						AddAttachmentPhotoName.text = AttachmentName
+
+						print( "Length : "..AddAttachmentPhotoName.text:len() )
+						if AddAttachmentPhotoName.text:len() > 35 then
+							AddAttachmentPhotoName.text = AddAttachmentPhotoName.text:sub(1,35  ).."..."
+						end
 						AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
 
 						AddAttachment_icon.isVisible = false

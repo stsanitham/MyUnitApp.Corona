@@ -199,6 +199,14 @@ end
 								current_textField.text = ""
 							end
 
+							if (current_textField.id =="deny") then
+
+								current_textField.text=""
+
+							end
+							
+
+
 
 					elseif ( event.phase == "submitted" ) then
 
@@ -840,6 +848,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
     popupList_white.anchorY=0
     popupList_white.id = "popuplist"
     popup_scroll:insert(popupList_white)
+
     popup_scroll.y=60
     popup_scroll.anchorY=0
 
