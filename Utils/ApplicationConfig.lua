@@ -149,3 +149,5 @@ ApplicationConfig.GetMyUnitBuzzRequestAccesses = ApplicationConfig.BASE_URL.."/M
 ApplicationConfig.GetGeneratePassword = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GeneratePassword"
 
 ApplicationConfig.CheckExistsRequestStatus = ApplicationConfig.BASE_URL.."/MyUnitBuzz/MyUnitBuzzCheckExistsRequestStatus"
+
+ApplicationConfig.GetUserPreferencebyUserId =  ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/GetUserPreferencebyUserId"
