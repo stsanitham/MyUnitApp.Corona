@@ -326,7 +326,7 @@ local function DenyProcess(value)
 
        
           if Details.FirstName ~= nil and Details.LastName ~= nil then
-             NameDetailValue.text = Details.FirstName..""..Details.LastName
+             NameDetailValue.text = Details.FirstName.." "..Details.LastName
              native.setKeyboardFocus( nil )
           elseif  Details.FirstName  ~= nil then
              NameDetailValue.text = Details.FirstName
@@ -469,7 +469,7 @@ local function ProvideAccess(value)
 			 	Requesteddate_bottom.isVisible = false
        
           if Details.FirstName ~= nil and Details.LastName ~= nil then
-             NameDetailValue.text = Details.FirstName..""..Details.LastName
+             NameDetailValue.text = Details.FirstName.." "..Details.LastName
              native.setKeyboardFocus( nil )
           elseif  Details.FirstName  ~= nil then
              NameDetailValue.text = Details.FirstName
