@@ -584,13 +584,15 @@ end
 
                 native.setKeyboardFocus(nil)
 
-			if (EmailDetailValue.text == "") or (EmailDetailValue.text == EmailDetailValue.id) or (not Utils.emailValidation(EmailDetailValue.text)) then
+			if (EmailDetailValue.text == "") or (EmailDetailValue.text == "null") or (EmailDetailValue.text == EmailDetailValue.id) or (not Utils.emailValidation(EmailDetailValue.text)) then
 			  
+			   print("am here email") 
+
 			     validation=false
 			     SetError(PopupGroup.EmailRequired,EmailDetailValue)
 
-			   --  emailnotifybox.isVisible = false
-			    -- emailnotifytext.isVisible = false
+			     emailnotifybox.isVisible = false
+			     emailnotifytext.isVisible = false
 
 
 	              PhoneDetail_bg.y =  EmailDetail_bottom.y + 10
@@ -661,13 +663,15 @@ end
 
 
 
-		if  PhoneDetailValue.text == "" or PhoneDetailValue.text == PhoneDetailValue.id or PhoneDetailValue.text:len()<14 or PhoneDetailValue.text == PopupGroup.PasswordRequired then
+		if  PhoneDetailValue.text == "" or PhoneDetailValue.text == "null" or PhoneDetailValue.text == PhoneDetailValue.id or PhoneDetailValue.text:len()<14 or PhoneDetailValue.text == PopupGroup.PasswordRequired then
 			validation=false
 
 		     SetError(PopupGroup.PhoneRequired,PhoneDetailValue)
 
-		    -- textnotifybox.isVisible = false
-		    -- textnotifytext.isVisible = false
+		     print("am here phone")
+
+		     textnotifybox.isVisible = false
+		     textnotifytext.isVisible = false
 
              MKRankDetail_bg.y =  PhoneDetail_bottom.y + PhoneDetail_bottom.contentHeight+10
 		     MKRankDetail_title.y= MKRankDetail_bg.y
@@ -1399,7 +1403,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
     			processbutton.value=Details
 
-			   if email ~= nil or email ~= "" or email ~= PopupGroup.EmailRequired then
+			   if email ~= nil or email ~= "" or email ~= "null" or email ~= PopupGroup.EmailRequired then
 					EmailDetailValue.text = email
 					emailnotifytext.isVisible = true
 				    emailnotifybox.isVisible = true
@@ -1410,25 +1414,25 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 			    end
 
 
-			    if mobile ~= nil or mobile ~= "" then
+			    if mobile ~= nil or mobile ~= "" or mobile ~= "null" then
 			    	PhoneDetailValue.text = mobile
 			    	--textnotifybox.isVisible = true
 			    	--textnotifytext.isVisible = true
 
 			    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
-			    elseif homenum ~= nil or homenum ~= "" then
+			    elseif homenum ~= nil or homenum ~= "" or homenum ~= "null" then
 			    	PhoneDetailValue.text = homenum
 			    	--textnotifybox.isVisible = true
 			    	--textnotifytext.isVisible = true
 
 			    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
-			    elseif othernum ~= nil or othernum ~= "" then
+			    elseif othernum ~= nil or othernum ~= "" or othernum ~= "null" then
 			    	PhoneDetailValue.text = othernum
 			    	--textnotifybox.isVisible = true
 			    	--textnotifytext.isVisible = true
 
 			    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
-			    elseif worknum  ~= nil or worknum ~= "" then
+			    elseif worknum  ~= nil or worknum ~= "" or worknum ~= "null" then
 			    	PhoneDetailValue.text = worknum
 			    	--textnotifybox.isVisible = true
 			    	--textnotifytext.isVisible = true
@@ -1559,8 +1563,8 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 
 
-          if Details.CareerProgress ~= nil then
-          MKRankDetailValue.text = Details.CareerProgress
+          if Details.MkRankLevel ~= nil then
+          MKRankDetailValue.text = Details.MkRankLevel
           native.setKeyboardFocus( nil )
           else
 		  MKRankDetailValue.text = ""
@@ -1609,7 +1613,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 		    NameDetailValue.text = nil
           end
 
-          if Details.EmailAddress ~= "" then
+          if Details.EmailAddress ~= nil then
 
           EmailDetailValue.text = Details.EmailAddress
 
@@ -1623,7 +1627,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
           end
 
 
-          if EmailDetailValue.text == "" then
+          if  EmailDetailValue.text ~= nil or EmailDetailValue.text~="null" or EmailDetailValue.text~="" then
 
 
           	emailnotifybox.isVisible = false
@@ -1672,19 +1676,19 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 
 
-          if Details.Mobile ~= nil  then
+          if Details.Mobile ~= nil or Details.Mobile ~= "" then
              PhoneDetailValue.text = Details.Mobile
           			textnotifybox.isVisible = true
 		 		    textnotifytext.isVisible = true
-          elseif Details.HomePhoneNumber ~= nil then
+          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "" then
              PhoneDetailValue.text = Details.HomePhoneNumber
           			textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
-          elseif Details.WorkPhoneNumber ~= nil then
+          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "" then
              PhoneDetailValue.text = Details.WorkPhoneNumber
           			textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
-          elseif Details.OtherPhoneNumber ~= nil then
+          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "" then
              PhoneDetailValue.text = Details.OtherPhoneNumber
                     textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
@@ -1697,7 +1701,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 
 
-          if  PhoneDetailValue.text == nil or PhoneDetailValue.text == "" then
+          if  PhoneDetailValue.text == nil or PhoneDetailValue.text == "" or PhoneDetailValue.text == "null" then
 
           	   textnotifybox.isVisible = false
 			   textnotifytext.isVisible = false
@@ -1745,8 +1749,8 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 		   end
 
 
-          if Details.CareerProgress ~= nil then
-          MKRankDetailValue.text = Details.CareerProgress
+          if Details.MkRankLevel ~= nil then
+          MKRankDetailValue.text = Details.MkRankLevel
           native.setKeyboardFocus( nil )
           else
 		  MKRankDetailValue.text = ""
@@ -1775,7 +1779,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 	      elseif id_value == "Deny Access" then
 
 	      	processbutton_text.text = CommonWords.DenyAccessText
-        popupText.text = CommonWords.DenyAccessText
+            popupText.text = CommonWords.DenyAccessText
 
         PasswordValue.isVisible = false
         Password_bg.isVisible = false
@@ -1896,8 +1900,8 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 
 
-          if Details.CareerProgress ~= nil then
-          MKRankDetailValue.text = Details.CareerProgress
+          if Details.MkRankLevel ~= nil then
+          MKRankDetailValue.text = Details.MkRankLevel
           native.setKeyboardFocus( nil )
           else
 		  MKRankDetailValue.text = ""
