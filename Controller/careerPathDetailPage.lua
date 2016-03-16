@@ -517,155 +517,9 @@ function onAccessButtonTouch( event )
 
     if ( phase == "began" ) then 
 
-
 			display.getCurrentStage():setFocus( event.target )
   
     elseif ( phase == "ended") then 
-
-    if id_value == "Grant Access" then
-
-    	print("from career path page")
-
-    	  contactid_career = Details.ContactId
-
-          GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
-
-          processbutton_text.text = CommonWords.GrantAccessText
-          popupText.text = CommonWords.GrantAccessText
-
-
-          if Details.FirstName ~= nil and Details.LastName ~= nil then
-             NameDetailValue.text = Details.FirstName.." "..Details.LastName
-             native.setKeyboardFocus( nil )
-          elseif  Details.FirstName  ~= nil then
-             NameDetailValue.text = Details.FirstName
-             native.setKeyboardFocus( nil )
-          elseif Details.LastName ~= nil  then
-             NameDetailValue.text = Details.LastName
-             native.setKeyboardFocus( nil )
-		  else
-		     NameDetailValue.text = nil
-          end
-          print("print the value of name ",NameDetailValue.text)
-
-
-
-          if Details.EmailAddress ~= nil then
-          EmailDetailValue.text = Details.EmailAddress
-        --  native.setKeyboardFocus(PhoneDetailValue)
-            emailnotifybox.isVisible = true
-		    emailnotifytext.isVisible = true
-          else
-		  EmailDetailValue.text = nil
-		   emailnotifybox.isVisible = false
-		   emailnotifytext.isVisible = false
-          end
-           print("print the value of email ",EmailDetailValue.text)
-
-
-        if Details.Mobile ~= nil or Details.Mobile ~= "" then
-             PhoneDetailValue.text = Details.Mobile
-          			textnotifybox.isVisible = true
-		 		    textnotifytext.isVisible = true
-          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "" then
-             PhoneDetailValue.text = Details.HomePhoneNumber
-          			textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "" then
-             PhoneDetailValue.text = Details.WorkPhoneNumber
-          			textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "" then
-             PhoneDetailValue.text = Details.OtherPhoneNumber
-                    textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          else
-          	 PhoneDetailValue.text = nil
-          	       textnotifybox.isVisible = false
-			       textnotifytext.isVisible = false
-          end
-
-            print("print the value of phone ",PhoneDetailValue.text)
-
-
-
-          if  (PhoneDetailValue.text == nil) then
-
-          	   textnotifybox.isVisible = false
-			   textnotifytext.isVisible = false
-			   print("here12345")
-
-			   MKRankDetail_bg.y =  PhoneDetail_bottom.y+8
-			   MKRankDetail_title.y= MKRankDetail_bg.y+8
-			   MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
-			   MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			   Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			   Requesteddate_title.y= Requesteddate_bg.y + 7
-			   RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			   Requesteddate_bottom.y= RequesteddateValue.y+8.5
-			   Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
-				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
-				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
-				Password_bottom.y= PasswordValue.y+10
-				PasswordHelptext.y= Password_bottom.y + 12
-				GeneratePasstext.y= PasswordHelptext.y + 20
-				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-				processbutton_text.y=processbutton.y
-		  else
-
-		  	print("val not null")
-
-		  	  textnotifybox.isVisible = true
-			  textnotifytext.isVisible = true
-
-			  MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.height+5
-			  MKRankDetail_title.y= MKRankDetail_bg.y+8
-			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
-			  MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			  Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			  Requesteddate_title.y= Requesteddate_bg.y + 7
-			  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			  Requesteddate_bottom.y= RequesteddateValue.y+8.5
-				Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
-				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
-				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
-				Password_bottom.y= PasswordValue.y+10
-				PasswordHelptext.y= Password_bottom.y + 12
-				GeneratePasstext.y= PasswordHelptext.y + 20
-				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-				processbutton_text.y=processbutton.y
-		   end
-
-
-
-
-          if Details.CareerProgress ~= nil then
-          MKRankDetailValue.text = Details.CareerProgress
-          native.setKeyboardFocus( nil )
-          else
-		  MKRankDetailValue.text = ""
-          end
-
-          if Details.UpdateTimeStamp ~= nil then
-          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
-          print("time stamp ",time)
-          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%m %p",time))
-          native.setKeyboardFocus( nil )
-          else
-          RequesteddateValue.text = ""
-          end
-
-	      print("values event ",EmailDetailValue.text)
-
-	      EmailDetailValue:addEventListener("userInput",textField)
-		  PhoneDetailValue:addEventListener("userInput",textField)
-		  PasswordValue:addEventListener("userInput",textField)
-		 --popupList:addEventListener("touch",touchPopupBg)
-
-
-	      processbutton:addEventListener("touch",onGrantButtonTouch)
 
 			display.getCurrentStage():setFocus( nil )
     if id_value == "Grant Access" then
@@ -860,6 +714,7 @@ function scene:show( event )
 
 					Career_Username = display.newText(sceneGroup,Details.LastName,0,0,native.systemFont,24)
 				end
+				
 				Career_Username.x=leftPadding
 				Career_Username.y=ProfileImage.y+ProfileImage.contentHeight-Career_Username.contentHeight/2-20
 				Career_Username.anchorX=0;Career_Username.anchorY=0
