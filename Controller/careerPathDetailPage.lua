@@ -517,11 +517,11 @@ function onAccessButtonTouch( event )
 
     if ( phase == "began" ) then 
 
-<<<<<<< HEAD
+
 			display.getCurrentStage():setFocus( event.target )
   
     elseif ( phase == "ended") then 
-=======
+
     if id_value == "Grant Access" then
 
     	print("from career path page")
@@ -666,7 +666,6 @@ function onAccessButtonTouch( event )
 
 
 	      processbutton:addEventListener("touch",onGrantButtonTouch)
->>>>>>> 0d11fe230729abe4019af3d71483f62f9fb67ce7
 
 			display.getCurrentStage():setFocus( nil )
     if id_value == "Grant Access" then

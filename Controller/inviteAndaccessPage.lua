@@ -170,10 +170,8 @@ end
 local function DenyProcess(value)
 	id_value = "Deny Access"
 
-<<<<<<< HEAD
 	 GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value)
-=======
-	 GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
+
 
 	        processbutton_text.text = CommonWords.DenyAccessText
 	        popupText.text = CommonWords.DenyAccessText
@@ -323,7 +321,6 @@ local function DenyProcess(value)
 
 
 	      processbutton:addEventListener("touch",onGrantButtonTouch)
->>>>>>> 0d11fe230729abe4019af3d71483f62f9fb67ce7
 
         
 
@@ -333,13 +330,7 @@ end
 local function ProvideAccess(value)
 	id_value = "Provide Access"
 
-<<<<<<< HEAD
 	GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value)
-
-      
-end
-=======
-	GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
         processbutton_text.text = CommonWords.ProvideAccessText
         popupText.text = CommonWords.ProvideAccessText
@@ -474,9 +465,6 @@ end
 
 end
 
-
-
->>>>>>> 0d11fe230729abe4019af3d71483f62f9fb67ce7
 
 local function Block(value)
 
