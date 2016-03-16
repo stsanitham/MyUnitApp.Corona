@@ -617,8 +617,8 @@ function scene:resumeGame(contactId)
 
 			if contactId == 0 and openPage == "careerPathPage" then
 
-			Runtime:addEventListener( "key", onKeyEvent )
-			Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
+			    Runtime:addEventListener( "key", onKeyEvent )
+			    Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 
 			elseif contactId > 0 and openPage == "careerPathPage" then
 

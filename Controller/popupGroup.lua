@@ -238,10 +238,13 @@ end
 
 	                              -- native.setKeyboardFocus(nil)
 
+	                              if EmailDetailValue.text ~= nil and EmailDetailValue.text~= "" then
 
 	                              Webservice.CheckExistsRequestStatus(Contactid_value,EmailDetailValue.text,getemailexistresponse)
 
 	                              native.setKeyboardFocus(nil)
+
+	                              end
 
 							end
 
@@ -354,9 +357,9 @@ end
 		    if (switch.id == "text_Checkbox" ) then
 
 		    	isSentText = tostring(switch.isOn)
-
 		    	
 		    end
+		    
 		 end
 
 
