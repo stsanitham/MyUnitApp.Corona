@@ -706,13 +706,18 @@ function scene:show( event )
 
 
 
-			    if(Details.FirstName ~= nil ) and (Details.LastName ~= nil ) then
+			    if Details.FirstName ~= nil and Details.LastName ~= nil then
 
 					Career_Username = display.newText(sceneGroup,Details.FirstName.." "..Details.LastName,0,0,native.systemFont,24)
 
-				elseif(Details.FirstName == nil ) and (Details.LastName ~= nil ) then
+				elseif Details.FirstName == nil  and Details.LastName ~= nil  then
 
 					Career_Username = display.newText(sceneGroup,Details.LastName,0,0,native.systemFont,24)
+
+				elseif Details.FirstName ~= nil  and Details.LastName == nil  then
+
+					Career_Username = display.newText(sceneGroup,Details.FirstName,0,0,native.systemFont,24)
+
 				end
 				
 				Career_Username.x=leftPadding
