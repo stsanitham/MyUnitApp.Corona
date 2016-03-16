@@ -389,7 +389,7 @@ local function onKeyEventADDevent( event )
 
         if phase == "up" then
 
-        if keyName=="back" then
+        if keyName=="back" or keyName=="a" then
 
         	composer.hideOverlay( "slideRight", 300 )
 
@@ -3578,9 +3578,6 @@ end
 			end
 
 			Runtime:removeEventListener( "key", onKeyEventADDevent )
-
-			AddAttachmentPhotoName:removeEventListener( "touch", photonametouch )
-			AddAttachment_close:removeEventListener( "touch", photonametouch )
 
 
 		end	

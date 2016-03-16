@@ -38,10 +38,10 @@ function request.new(url, method, params,listner)
 
 	else
 		
-		print ( "RESPONSE: " .. event.response )
+				print ( "URL : "..url.."\n\n RESPONSE: " .. event.response )
 
-		response = json.decode(event.response)
 
+		local response = json.decode(event.response)
 
 
 		spinner_hide()

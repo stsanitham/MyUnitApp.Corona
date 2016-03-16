@@ -202,155 +202,6 @@ local display_details = {}
 
 
 
-
-    function RequestGrantProcess( )
-
-    	if processbutton_text.text == CommonWords.GrantAccessText  then
-
-    		print("service of grant access")
-
-
-   	    PhoneNumber=PhoneDetailValue.text
-
-   	    Email = EmailDetailValue.text
-
-
-   	    MkRankId = invitedetail_value.MkRankId
-        MyUnitBuzzRequestAccessId = invitedetail_value.MyUnitBuzzRequestAccessId
-        print("value for access id : ",MyUnitBuzzRequestAccessId)
-
-   	    if MyUnitBuzzRequestAccessId == 0 then
-
-            isaddedToContact = true  
-            MyUnitBuzzRequestAccessId = invitedetail_value.MyUnitBuzzRequestAccessId
-
-        else
-        	isaddedToContact = false
-
-        end
-
-   	    print("value for isaddedToContact : ",isaddedToContact)
-     
-   	    GetRquestAccessFrom = invitedetail_value.GetRquestAccessFrom
-   	    MailTemplate = "GRANT"
-   	    Status = "GRANT"
-   	    isSentMail = isSentMailValue
-   	    print("value 1 ",isSentMailValue)
-   	    isSendText= isSentMailValue
-   	    print("value 2 ",isSendTextValue)
-   	    password = PasswordValue.text
-
-   	    idvalue = processbutton_text.text
-   	    print(idvalue)
-
-   	    	Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,"",isaddedToContact,MyUnitBuzzRequestAccessId,password,get_removeorblockDetails)
-
-     	end
-
-
-
-
-   	    if processbutton_text.text == CommonWords.ProvideAccessText  then
-
-   	    		print("service of Provide access")
-
-
-   	    PhoneNumber=PhoneDetailValue.text
-
-   	    Email = EmailDetailValue.text
-
-        if Details ~= nil and Details.MkRankId ~= nil and Details.MkRankId ~= "" then
-
-   	      MkRankId = Details.MkRankId
-
-        end
-   	    GetRquestAccessFrom = invitedetail_value.GetRquestAccessFrom
-
-   	   MyUnitBuzzRequestAccessId = invitedetail_value.MyUnitBuzzRequestAccessId
-        print("value for access id : ",MyUnitBuzzRequestAccessId)
-
-   	    if MyUnitBuzzRequestAccessId == 0 then
-   	    	
-            isaddedToContact = true  
-            MyUnitBuzzRequestAccessId = invitedetail_value.MyUnitBuzzRequestAccessId
-
-        else
-        	isaddedToContact = false
-
-        end
-
-   	    print("value for isaddedToContact : ",isaddedToContact)
-     
-
-   	    MailTemplate = "ADDREQUEST"
-   	    Status = "GRANT"
-   	    isSentMail = isSentMailValue
-   	    print("value 1 ",isSentMailValue)
-   	    isSendText= isSentMailValue
-   	    print("value 2 ",isSendTextValue)
-   	    password = PasswordValue.text
-
-   	    idvalue = processbutton_text.text
-   	    print(idvalue)
-
-   	    	Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,"",isaddedToContact,MyUnitBuzzRequestAccessId,password,get_removeorblockDetails)
-        end
-
-
-
-
-        if processbutton_text.text == CommonWords.DenyAccessText then
-
-        		print("service of deny access")
-
-  
-   	    PhoneNumber=PhoneDetailValue.text
-
-   	    Email = EmailDetailValue.text
-
-   	    print("}}}}}}}}}}}}}",PhoneNumber)
-
-   	    print("}}}}}}}}}}}}}",Email)
-
-   	    MkRankId = invitedetail_value.MkRankId
-   	    GetRquestAccessFrom = invitedetail_value.GetRquestAccessFrom
-
-   	    MyUnitBuzzRequestAccessId = invitedetail_value.MyUnitBuzzRequestAccessId
-        print("value for access id : ",MyUnitBuzzRequestAccessId)
-
-   	    if MyUnitBuzzRequestAccessId == 0 then
-   	    	
-            isaddedToContact = true  
-            MyUnitBuzzRequestAccessId = invitedetail_value.MyUnitBuzzRequestAccessId
-
-        else
-        	isaddedToContact = false
-
-        end
-
-   	    print("value for isaddedToContact : ",isaddedToContact)
-     
-   	    MailTemplate = "DENY"
-   	    Status = "DENY"
-   	    isSentMail = isSentMailValue
-   	    print("value 1 ",isSentMailValue)
-   	    isSendText= isSentMailValue
-   	    print("value 2 ",isSendTextValue)
-   	    reasonfordeny = deny_Value.text
-   	    print("reason for deny%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",reasonfordeny)
-
-   	    idvalue = processbutton_text.text
-   	    print(idvalue)
-
-   	    	Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,"",isaddedToContact,MyUnitBuzzRequestAccessId,reasonfordeny,get_removeorblockDetails)
-
-        end
-
-end
-
-
-
-
 function onAccessButtonTouch( event )
 
     if event.phase == "began" then
@@ -463,287 +314,18 @@ end
 
 
 
-local function GrandProcess(event)
+local function GrandProcess()
 
-	     print("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{",invitedetail_value.FirstName)
-
-       print("invite contact id ",invitedetail_value.MyUnitBuzzRequestAccessId)
-
-	     GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
-
-          processbutton_text.text = CommonWords.GrantAccessText
-          popupText.text = CommonWords.GrantAccessText
-
-          if invitedetail_value.FirstName ~= nil and invitedetail_value.LastName ~= nil then
-             NameDetailValue.text = invitedetail_value.FirstName.." "..invitedetail_value.LastName
-             native.setKeyboardFocus( nil )
-          elseif  invitedetail_value.FirstName  ~= nil then
-             NameDetailValue.text = invitedetail_value.FirstName
-             native.setKeyboardFocus( nil )
-          elseif invitedetail_value.LastName ~= nil  then
-             NameDetailValue.text = invitedetail_value.LastName
-             native.setKeyboardFocus( nil )
-		  else
-		     NameDetailValue.text = nil
-          end
-          print("print the value of name ",NameDetailValue.text)
-
-
-
-          if invitedetail_value.EmailAddress ~= nil then
-          EmailDetailValue.text = invitedetail_value.EmailAddress
-        --  native.setKeyboardFocus(PhoneDetailValue)
-            emailnotifybox.isVisible = true
-		    emailnotifytext.isVisible = true
-          else
-		  EmailDetailValue.text = nil
-		   emailnotifybox.isVisible = false
-		   emailnotifytext.isVisible = false
-          end
-           print("print the value of email ",EmailDetailValue.text)
-
-
-         if invitedetail_value.PhoneNumber ~= nil or invitedetail_value.PhoneNumber ~= "" then
-             PhoneDetailValue.text = invitedetail_value.PhoneNumber
-                    textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          else
-          	 PhoneDetailValue.text = nil
-          	       textnotifybox.isVisible = false
-			       textnotifytext.isVisible = false
-          end
-
-            print("print the value of phone ",PhoneDetailValue.text)
-
-
-          if  (PhoneDetailValue.text == nil) then
-
-          	   textnotifybox.isVisible = false
-			   textnotifytext.isVisible = false
-			   print("here12345")
-
-			   MKRankDetail_bg.y =  PhoneDetail_bottom.y+8
-			   MKRankDetail_title.y= MKRankDetail_bg.y+8
-			   MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
-			   MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			   Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			   Requesteddate_title.y= Requesteddate_bg.y + 7
-			   RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			   Requesteddate_bottom.y= RequesteddateValue.y+8.5
-			   Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
-				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
-				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
-				Password_bottom.y= PasswordValue.y+10
-				PasswordHelptext.y= Password_bottom.y + 12
-				GeneratePasstext.y= PasswordHelptext.y + 20
-				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-				processbutton_text.y=processbutton.y
-		  else
-
-		  	print("val not null")
-
-		  	  textnotifybox.isVisible = true
-			  textnotifytext.isVisible = true
-
-			  MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.height+5
-			  MKRankDetail_title.y= MKRankDetail_bg.y+8
-			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
-			  MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			  Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			  Requesteddate_title.y= Requesteddate_bg.y + 7
-			  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			  Requesteddate_bottom.y= RequesteddateValue.y+8.5
-				Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
-				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
-				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
-				Password_bottom.y= PasswordValue.y+10
-				PasswordHelptext.y= Password_bottom.y + 12
-				GeneratePasstext.y= PasswordHelptext.y + 20
-				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-				processbutton_text.y=processbutton.y
-		   end
-
-
-          if invitedetail_value.MkRankLevel ~= nil or invitedetail_value.MkRankLevel ~= "" then
-             MKRankDetailValue.text = invitedetail_value.MkRankLevel
-          else
-          	 MKRankDetailValue.text = nil
-          end
-
-            print("print the value of phone ",MKRankDetailValue.text)
-
-
-          if invitedetail_value.UpdateTimeStamp ~= nil then
-          local time = Utils.makeTimeStamp(invitedetail_value.UpdateTimeStamp)
-          print("time stamp ",time)
-          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%m %p",time))
-          native.setKeyboardFocus( nil )
-          else
-          RequesteddateValue.text = ""
-          end
-
-	      print("values event ",EmailDetailValue.text)
-
-	     EmailDetailValue:addEventListener("userInput",textField)
-		  PhoneDetailValue:addEventListener("userInput",textField)
-		  PasswordValue:addEventListener("userInput",textField)
-     -- popupList:addEventListener("touch",touchPopupBg)
-
-
-	     processbutton:addEventListener("touch",onGrantButtonTouch)
-
+    id_value = "Grant Access"
+	     GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value)
+       
 end
-
-
-
 
 
 local function DenyProcess()
 	id_value = "Deny Access"
 
-	 GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
-
-        processbutton_text.text = CommonWords.DenyAccessText
-        popupText.text = CommonWords.DenyAccessText
-
-        PasswordValue.isVisible = false
-        Password_bg.isVisible = false
-        Password_titlestar.isVisible = false
-        Password_titletext.isVisible = false
-        Password_bottom.isVisible = false
-        PasswordHelptext.isVisible = false
-        GeneratePasstext.isVisible = false
-
-        deny_bg.isVisible = true
-        deny_Value.isVisible = true
-
-        Requesteddate_bottom.y= RequesteddateValue.y+8.5
-        deny_bg.y = Requesteddate_bottom.y + Requesteddate_bottom.contentHeight +35
-        deny_Value.y=deny_bg.y
-        processbutton.y = deny_Value.y+deny_Value.contentHeight
-
-
-       
-          if invitedetail_value.FirstName ~= nil and invitedetail_value.LastName ~= nil then
-             NameDetailValue.text = invitedetail_value.FirstName.." "..invitedetail_value.LastName
-             native.setKeyboardFocus( nil )
-          elseif  invitedetail_value.FirstName  ~= nil then
-             NameDetailValue.text = invitedetail_value.FirstName
-             native.setKeyboardFocus( nil )
-          elseif invitedetail_value.LastName ~= nil  then
-            NameDetailValue.text = invitedetail_value.LastName
-             native.setKeyboardFocus( nil )
-		  else
-		    NameDetailValue.text = nil
-          end
-          print(NameDetailValue.text)
-
-
-          if invitedetail_value.EmailAddress ~= nil then
-          EmailDetailValue.text = invitedetail_value.EmailAddress
-        --  native.setKeyboardFocus(PhoneDetailValue)
-            emailnotifybox.isVisible = true
-		    emailnotifytext.isVisible = true
-          else
-		  EmailDetailValue.text = nil
-		   emailnotifybox.isVisible = false
-		   emailnotifytext.isVisible = false
-          end
-
-
-          if invitedetail_value.PhoneNumber ~= nil or invitedetail_value.PhoneNumber ~= "" then
-             PhoneDetailValue.text = invitedetail_value.PhoneNumber
-                    textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          else
-          	 PhoneDetailValue.text = nil
-          	       textnotifybox.isVisible = false
-			       textnotifytext.isVisible = false
-          end
-
-            print("print the value of phone ",PhoneDetailValue.text)
-
-
-
-          if  PhoneDetailValue.text == nil then
-
-          	   textnotifybox.isVisible = false
-			   textnotifytext.isVisible = false
-			   print("here12345")
-
-			   MKRankDetail_bg.y =  PhoneDetail_bottom.y+8
-			   MKRankDetail_title.y= MKRankDetail_bg.y+8
-			   MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
-			   MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			   Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			   Requesteddate_title.y= Requesteddate_bg.y + 7
-			   RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			   Requesteddate_bottom.y= RequesteddateValue.y+8.5
-			   Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
-				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
-				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
-				Password_bottom.y= PasswordValue.y+10
-				PasswordHelptext.y= Password_bottom.y + 12
-				GeneratePasstext.y= PasswordHelptext.y + 20
-				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-				processbutton_text.y=processbutton.y
-		  else
-
-		  	  textnotifybox.isVisible = true
-			  textnotifytext.isVisible = true
-
-			  MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
-			  MKRankDetail_title.y= MKRankDetail_bg.y+8
-			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
-			  MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			  Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			  Requesteddate_title.y= Requesteddate_bg.y + 7
-			  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			  Requesteddate_bottom.y= RequesteddateValue.y+8.5
-				Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
-				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
-				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
-				Password_bottom.y= PasswordValue.y+10
-				PasswordHelptext.y= Password_bottom.y + 12
-				GeneratePasstext.y= PasswordHelptext.y + 20
-				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-				processbutton_text.y=processbutton.y
-		   end
-
-
-
-
-          if invitedetail_value.MkRankLevel ~= nil then
-          MKRankDetailValue.text = invitedetail_value.MkRankLevel
-          native.setKeyboardFocus( nil )
-          else
-		  MKRankDetailValue.text = ""
-          end
-
-          if invitedetail_value.UpdateTimeStamp ~= nil then
-          local time = Utils.makeTimeStamp(invitedetail_value.UpdateTimeStamp)
-          print("time stamp ",time)
-          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%m %p",time))
-          native.setKeyboardFocus( nil )
-          else
-          RequesteddateValue.text = ""
-          end
-
-	      print("values event ",EmailDetailValue.text)
-
-	      EmailDetailValue:addEventListener("userInput",textField)
-		  PhoneDetailValue:addEventListener("userInput",textField)
-		  PasswordValue:addEventListener("userInput",textField)
-      deny_Value:addEventListener("userInput",textField)
-      -- popupList:addEventListener("touch",touchPopupBg)
-
-
-	      processbutton:addEventListener("touch",onGrantButtonTouch)
-
+	 GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value)
 
 end
 
@@ -751,129 +333,11 @@ end
 local function ProvideAccess()
 	id_value = "Provide Access"
 
-	GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value)
 
-        processbutton_text.text = CommonWords.ProvideAccessText
-        popupText.text =  CommonWords.ProvideAccessText
 
-                Requesteddate_bg.isVisible = false
-			 	RequesteddateValue.isVisible = false
-			 	Requesteddate_title.isVisible = false
-			 	Requesteddate_bottom.isVisible = false
+	GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value)
+
        
-          if invitedetail_value.FirstName ~= nil and invitedetail_value.LastName ~= nil then
-             NameDetailValue.text = invitedetail_value.FirstName.." "..invitedetail_value.LastName
-             native.setKeyboardFocus( nil )
-          elseif  invitedetail_value.FirstName  ~= nil then
-             NameDetailValue.text = invitedetail_value.FirstName
-             native.setKeyboardFocus( nil )
-          elseif invitedetail_value.LastName ~= nil  then
-            NameDetailValue.text = invitedetail_value.LastName
-             native.setKeyboardFocus( nil )
-		  else
-		    NameDetailValue.text = nil
-          end
-          print(NameDetailValue.text)
-
-
-          if invitedetail_value.EmailAddress ~= nil then
-          EmailDetailValue.text = invitedetail_value.EmailAddress
-          --native.setKeyboardFocus(PhoneDetailValue)
-            emailnotifybox.isVisible = true
-		    emailnotifytext.isVisible = true
-          else
-		  EmailDetailValue.text = nil
-		   emailnotifybox.isVisible = false
-		   emailnotifytext.isVisible = false
-          end
-
-
-          if invitedetail_value.PhoneNumber ~= nil or invitedetail_value.PhoneNumber ~= "" then
-             PhoneDetailValue.text = invitedetail_value.PhoneNumber
-                    textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          else
-          	 PhoneDetailValue.text = nil
-          	       textnotifybox.isVisible = false
-			       textnotifytext.isVisible = false
-          end
-
-            print("print the value of phone ",PhoneDetailValue.text)
-
-
-          if  PhoneDetailValue.text == nil then
-
-          	   textnotifybox.isVisible = false
-			   textnotifytext.isVisible = false
-			   print("here12345")
-
-			   MKRankDetail_bg.y =  PhoneDetail_bottom.y+8
-			   MKRankDetail_title.y= MKRankDetail_bg.y+8
-			   MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
-			   MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			  -- Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			 --  Requesteddate_title.y= Requesteddate_bg.y + 7
-			 --  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			  -- Requesteddate_bottom.y= RequesteddateValue.y+8.5
-			    Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-				Password_titlestar.y= Password_bg.y+7
-				Password_titletext.y= Password_bg.y+7
-				PasswordValue.y =Password_titletext.y+Password_titletext.height+8
-				Password_bottom.y= PasswordValue.y+10
-				PasswordHelptext.y= Password_bottom.y + 12
-				GeneratePasstext.y= PasswordHelptext.y + 20
-				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-				processbutton_text.y=processbutton.y
-		  else
-
-		  	  textnotifybox.isVisible = true
-			  textnotifytext.isVisible = true
-
-			  MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
-			  MKRankDetail_title.y= MKRankDetail_bg.y+8
-			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
-			  MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			  --Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			 -- Requesteddate_title.y= Requesteddate_bg.y + 7
-			 -- RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			 -- Requesteddate_bottom.y= RequesteddateValue.y+8.5
-				Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-				Password_titlestar.y= Password_bg.y+7
-				Password_titletext.y= Password_bg.y+7
-				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
-				Password_bottom.y= PasswordValue.y+10
-				PasswordHelptext.y= Password_bottom.y + 12
-				GeneratePasstext.y= PasswordHelptext.y + 20
-				processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-				processbutton_text.y=processbutton.y
-		   end
-
-
-          if invitedetail_value.MkRankLevel ~= nil then
-          MKRankDetailValue.text = invitedetail_value.MkRankLevel
-          native.setKeyboardFocus( nil )
-          else
-		  MKRankDetailValue.text = ""
-          end
-
-          if invitedetail_value.UpdateTimeStamp ~= nil then
-          local time = Utils.makeTimeStamp(invitedetail_value.UpdateTimeStamp)
-          print("time stamp ",time)
-          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%m %p",time))
-          native.setKeyboardFocus( nil )
-          else
-          RequesteddateValue.text = ""
-          end
-
-	      print("values event PA", EmailDetailValue.text)
-	      print("values event PA", PhoneDetailValue.text)
-
-	      EmailDetailValue:addEventListener("userInput",textField)
-		  PhoneDetailValue:addEventListener("userInput",textField)
-		  PasswordValue:addEventListener("userInput",textField)
-      -- popupList:addEventListener("touch",touchPopupBg)
-
-	      processbutton:addEventListener("touch",onGrantButtonTouch)
 
 end
 
@@ -898,25 +362,25 @@ local function onButtonTouchAction( event )
 
 				if id_value == "Block Access" then
 
-					Block(event.target.id)
+					Block()
 
 				elseif id_value == "Grant Access" then
 
-					GrandProcess(event.target.id)
+					GrandProcess()
 
 				elseif id_value == "Remove Access" then
 
-					RemoveProcess(event.target.id)
+					RemoveProcess()
 
 
 				elseif id_value == "Deny Access" then
 
-					DenyProcess(event.target.id)
+					DenyProcess()
 
 
 				elseif id_value == "Provide Access" then
 
-					ProvideAccess(event.target.id)
+					ProvideAccess()
 
 				end
 
@@ -1467,16 +931,20 @@ end
 
 		if event.phase == "will" then
 
+    if popUpGroup.numChildren ~= nil then
+  		for j=popUpGroup.numChildren, 1, -1 do 
+  						display.remove(popUpGroup[popUpGroup.numChildren])
+  						popUpGroup[popUpGroup.numChildren] = nil
+  	 	end
+    end
 
-		for j=popUpGroup.numChildren, 1, -1 do 
-						display.remove(popUpGroup[popUpGroup.numChildren])
-						popUpGroup[popUpGroup.numChildren] = nil
-	 	end
+    if AlertGroup.numChildren ~= nil then
 
-	 	for j=AlertGroup.numChildren, 1, -1 do 
-						display.remove(AlertGroup[AlertGroup.numChildren])
-						AlertGroup[AlertGroup.numChildren] = nil
-	 	end
+  	 	for j=AlertGroup.numChildren, 1, -1 do 
+  						display.remove(AlertGroup[AlertGroup.numChildren])
+  						AlertGroup[AlertGroup.numChildren] = nil
+  	 	end
+    end
 
 
 			elseif phase == "did" then

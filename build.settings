@@ -39,11 +39,7 @@ settings =
 	        supportedPlatforms = { iphone = true },
 	    },
 
-	    ["CoronaProvider.native.popup.activity"] =
-        {
-            publisherId = "com.coronalabs",
-           -- supportedPlatforms = { iphone=true, ["iphone-sim"]=true },
-        },
+	   
 	     
 	   
     },

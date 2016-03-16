@@ -449,10 +449,12 @@ scrollView:insert(tempGroup)
 addEventBtn:toFront( )
 end
 
-local function createEventlist(respone,timeValue)
+local function createEventlist(responevalue,timeValue)
 
 
-DateWise_response=response
+print( "**"..#responevalue  )
+
+DateWise_response=responevalue
 
 		local function onTimer( event )
 			   weekViewTouchFlag=false
@@ -475,6 +477,9 @@ DateWise_response=response
 
 			return false
 		end
+
+		
+
 		if #DateWise_response == 0 then
 
 			NoEvent.isVisible=true
@@ -484,6 +489,8 @@ DateWise_response=response
 		else
 
 		end
+
+
 
 			
 
@@ -696,6 +703,7 @@ local function eventList( timeValue )
 
 	function get_TicklerEvents(response)
 
+		print( "***************************************************")
 
 		createEventlist(response,timeValue)
 

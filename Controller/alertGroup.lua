@@ -58,7 +58,7 @@ function GetAlertPopup()
 
 		AlertGroup.isVisible = true
 
-
+		AlertGroup=display.newGroup( )
         print("coming here")
 
         Background = display.newImageRect(AlertGroup,"res/assert/background.jpg",W,H)

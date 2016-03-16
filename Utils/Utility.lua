@@ -200,7 +200,7 @@ end
 Utils.makeTimeStamp = function ( dateString )
 
 	local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
-	local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin =
+	local year, month, day, hour, minute, seconds =
 	dateString:match(pattern)
 	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false} )
 
