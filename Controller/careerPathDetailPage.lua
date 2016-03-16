@@ -526,7 +526,7 @@ function onAccessButtonTouch( event )
 
     	print("from career path page")
 
-    	contactid_career = Details.ContactId
+    	  contactid_career = Details.ContactId
 
           GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 

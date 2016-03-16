@@ -304,24 +304,24 @@ local function DenyProcess(value)
 
 	 GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value)
 
-        processbutton_text.text = CommonWords.DenyAccessText
-        popupText.text = CommonWords.DenyAccessText
+	        processbutton_text.text = CommonWords.DenyAccessText
+	        popupText.text = CommonWords.DenyAccessText
 
-        PasswordValue.isVisible = false
-        Password_bg.isVisible = false
-        Password_titlestar.isVisible = false
-        Password_titletext.isVisible = false
-        Password_bottom.isVisible = false
-        PasswordHelptext.isVisible = false
-        GeneratePasstext.isVisible = false
+	        PasswordValue.isVisible = false
+	        Password_bg.isVisible = false
+	        Password_titlestar.isVisible = false
+	        Password_titletext.isVisible = false
+	        Password_bottom.isVisible = false
+	        PasswordHelptext.isVisible = false
+	        GeneratePasstext.isVisible = false
 
-        deny_bg.isVisible = true
-        deny_Value.isVisible = true
+	        deny_bg.isVisible = true
+	        deny_Value.isVisible = true
 
-        Requesteddate_bottom.y= RequesteddateValue.y+8.5
-        deny_bg.y = Requesteddate_bottom.y + Requesteddate_bottom.contentHeight +40
-        deny_Value.y=deny_bg.y
-        processbutton.y = deny_Value.y+deny_Value.contentHeight
+	        Requesteddate_bottom.y= RequesteddateValue.y+8.5
+	        deny_bg.y = Requesteddate_bottom.y + Requesteddate_bottom.contentHeight +40
+	        deny_Value.y=deny_bg.y
+	        processbutton.y = deny_Value.y+deny_Value.contentHeight
 
 
        
@@ -338,6 +338,7 @@ local function DenyProcess(value)
 		    NameDetailValue.text = nil
           end
           print(NameDetailValue.text)
+          
 
 
           if Details.EmailAddress ~= nil then
@@ -424,14 +425,13 @@ local function DenyProcess(value)
 		   end
 
 
-
-
           if Details.MkRankLevel ~= nil then
           MKRankDetailValue.text = Details.MkRankLevel
           native.setKeyboardFocus( nil )
           else
 		  MKRankDetailValue.text = ""
           end
+
 
           if Details.UpdateTimeStamp ~= nil then
           local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
@@ -441,6 +441,7 @@ local function DenyProcess(value)
           else
           RequesteddateValue.text = ""
           end
+
 
 	      print("values event ",EmailDetailValue.text)
 
@@ -454,6 +455,7 @@ local function DenyProcess(value)
 
 
 end
+
 
 local function ProvideAccess(value)
 	id_value = "Provide Access"
@@ -591,18 +593,20 @@ local function ProvideAccess(value)
 
 	      processbutton:addEventListener("touch",onGrantButtonTouch)
 
-
-
 end
 
+
+
+
 local function Block(value)
+
 	id_value = "Block Access"
 
 	print("block access pressed") 
 
 	 -- local block_alert = native.showAlert("Block", CareerPath.BlockAccess, { CareerPath.ToBlock , CareerPath.NotToBlock } , onBlockClickComplete)
 
-       GetAlertPopup()
+        GetAlertPopup()
 
 		AlertText.text = "Block"
 		AlertContentText.text = CareerPath.BlockAccess
@@ -611,8 +615,8 @@ local function Block(value)
 		accept_button_text.text = CareerPath.ToBlock
 		reject_button_text.text = CareerPath.NotToBlock
 
-	  accept_button:addEventListener("touch",onAccessButtonTouch)
-	  reject_button:addEventListener("touch",onAccessButtonTouch)
+	accept_button:addEventListener("touch",onAccessButtonTouch)
+	reject_button:addEventListener("touch",onAccessButtonTouch)
 
 end
 

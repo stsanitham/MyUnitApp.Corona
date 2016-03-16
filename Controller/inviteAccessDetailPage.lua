@@ -1223,9 +1223,9 @@ end
 
 
 
-----------------------------Activity On---------------------------------------------------------
+----------------------------Activity On----------------------------------------------------------
 
-	    if invitedetail_value.UpdateTimeStamp ~= nil and invitedetail_value.UpdateTimeStamp ~= "" then
+	  if invitedetail_value.UpdateTimeStamp ~= nil and invitedetail_value.UpdateTimeStamp ~= "" then
 
 	       local time = Utils.makeTimeStamp(invitedetail_value.UpdateTimeStamp)
 
