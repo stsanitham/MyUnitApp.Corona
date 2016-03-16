@@ -147,7 +147,10 @@ function FacebookCallback(res,scrollView,flag)
 									profilePic:setMask( mask )
 
 
+
 									local time = Utils.makeTimeStamp(string.gsub( feedArray[i].created_time, "+0000", "Z" ))
+
+									print( feedArray[i].created_time,time )
 
 									local userTime = display.newText( tempGroup, tostring(os.date("%b-%d-%Y %I:%m %p",time )), 0, 0, native.systemFont, 10 )
 									userTime.anchorX = 0
