@@ -968,7 +968,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 	            print("pagevaluename"..pagevaluename)
 
-	local PopUpGroup = display.newGroup()
+	popUpGroup = display.newGroup()
 
 	popup_Backgeound = display.newRect(W/2, H/2, W, H )
 	popup_Backgeound:addEventListener( "touch", touchPopupBg )
