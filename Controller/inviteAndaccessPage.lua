@@ -35,6 +35,8 @@ local displayGroup={}
 
 local feedArray={}
 
+page_flagval = "inviteAndaccessPage"
+
 
 
 local status = "GRANT"
@@ -143,9 +145,7 @@ local function GrandProcess(value)
 
 	id_value = "Grant Access"
 
-	page_flagval = "inviteAndaccessPage"
-
-          GetPopUp(value.MyUnitBuzzRequestAccessId,value.EmailAddress,value.Mobile,value.HomePhoneNumber,value.WorkPhoneNumber,value.OtherPhoneNumber,id_value,value)
+          GetPopUp(value.MyUnitBuzzRequestAccessId,value.EmailAddress,value.Mobile,value.HomePhoneNumber,value.WorkPhoneNumber,value.OtherPhoneNumber,id_value,value,page_flagval)
          
 end
 
@@ -168,9 +168,7 @@ end
 local function DenyProcess(value)
 	id_value = "Deny Access"
 
-	page_flagval = "inviteAndaccessPage"
-
-	 GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value)
+	 GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value,page_flagval)
 
 
 end
@@ -179,9 +177,7 @@ end
 local function ProvideAccess(value)
 	id_value = "Provide Access"
 
-	page_flagval = "inviteAndaccessPage"
-
-	GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value)
+	GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value,page_flagval)
 
 
 end
@@ -241,8 +237,10 @@ local function ActionTouch( event )
 
 				elseif event.target.id == "grant" then
 
-					Details = event.target.value
+						
 
+
+					Details = event.target.value
 
 					GrandProcess(event.target.value)
 

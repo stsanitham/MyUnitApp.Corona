@@ -47,6 +47,8 @@ ContactIdValue = 0
 
 local ProfileImage,careerDetail_scrollview
 
+pagevalue = "careerPathPage"
+
 --------------------------------------------------
 
 
@@ -528,9 +530,7 @@ function onAccessButtonTouch( event )
 
     	 contactid_career = Details.ContactId
 
-         pagevalue = "careerPathPage"
-
-          GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details)
+          GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details,pagevalue)
 
 	elseif id_value == "Remove Access" then
 
@@ -549,9 +549,7 @@ function onAccessButtonTouch( event )
 
 	  contactid_career = Details.ContactId
 
-	  pagevalue = "careerPathPage"
-
-	  GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details)
+	  GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details,pagevalue)
 
         
 	 
@@ -560,9 +558,7 @@ function onAccessButtonTouch( event )
 
 	    contactid_career = Details.ContactId
 
-	    pagevalue = "careerPathPage"
-
-	    GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details)
+	    GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details,pagevalue)
 
         
 	elseif id_value == "Block Access" then
