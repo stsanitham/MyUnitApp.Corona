@@ -181,27 +181,7 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-	MainGroup:insert(sceneGroup)
-end
-
-
-
-function scene:show( event )
-
-	local sceneGroup = self.view
-	local phase = event.phase
-	
-	if phase == "will" then
-
-		ga.enterScene("Unit Goals")
-
-		print( "edit goals" )
-
-		Goalsid = event.params.goalsid
-
-		elseif phase == "did" then
-
---composer.removeHidden()
+	--composer.removeHidden()
 
 title_bg = display.newRect(sceneGroup,0,0,W,30)
 title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
@@ -237,10 +217,6 @@ local path = system.pathForFile( "ckeditor.html",system.DocumentsDirectory )
 		end
 
 		file = nil
-
-
-
-
 
 	local test=string.urlEncode( event.params.content )
 
@@ -300,7 +276,29 @@ title:addEventListener("touch",BackTouch)
 
 Runtime:addEventListener( "key", onKeyEventDetail )
 
-end	
+
+
+	MainGroup:insert(sceneGroup)
+end
+
+
+
+function scene:show( event )
+
+	local sceneGroup = self.view
+	local phase = event.phase
+	
+	if phase == "will" then
+
+		ga.enterScene("Unit Goals")
+
+		print( "edit goals" )
+
+		Goalsid = event.params.goalsid
+
+		elseif phase == "did" then
+
+			end	
 
 MainGroup:insert(sceneGroup)
 
