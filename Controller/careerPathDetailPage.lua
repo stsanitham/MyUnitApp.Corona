@@ -515,6 +515,7 @@ function onAccessButtonTouch( event )
 
  	 id_value = event.target.id
 
+
     if ( phase == "began" ) then 
 
 			display.getCurrentStage():setFocus( event.target )
@@ -522,9 +523,12 @@ function onAccessButtonTouch( event )
     elseif ( phase == "ended") then 
 
 			display.getCurrentStage():setFocus( nil )
+
     if id_value == "Grant Access" then
 
     	 contactid_career = Details.ContactId
+
+         pagevalue = "careerPathPage"
 
           GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details)
 
@@ -545,6 +549,8 @@ function onAccessButtonTouch( event )
 
 	  contactid_career = Details.ContactId
 
+	  pagevalue = "careerPathPage"
+
 	  GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details)
 
         
@@ -553,6 +559,8 @@ function onAccessButtonTouch( event )
 
 
 	    contactid_career = Details.ContactId
+
+	    pagevalue = "careerPathPage"
 
 	    GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details)
 

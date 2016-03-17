@@ -37,6 +37,7 @@ local display_details = {}
 
 
 
+
 --------------------------------------------------
 
 
@@ -333,11 +334,7 @@ end
 local function ProvideAccess()
 	id_value = "Provide Access"
 
-
-
 	GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value)
-
-       
 
 end
 
@@ -359,6 +356,9 @@ local function onButtonTouchAction( event )
 			display.getCurrentStage():setFocus( nil )
 
 			id_value =  event.target.id
+
+       -- page_flag1 = "inviteAndaccessPage"
+
 
 				if id_value == "Block Access" then
 

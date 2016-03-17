@@ -143,12 +143,10 @@ local function GrandProcess(value)
 
 	id_value = "Grant Access"
 
-	 
-
+	page_flagval = "inviteAndaccessPage"
 
           GetPopUp(value.MyUnitBuzzRequestAccessId,value.EmailAddress,value.Mobile,value.HomePhoneNumber,value.WorkPhoneNumber,value.OtherPhoneNumber,id_value,value)
          
-
 end
 
 local function RemoveProcess(value)
@@ -170,6 +168,8 @@ end
 local function DenyProcess(value)
 	id_value = "Deny Access"
 
+	page_flagval = "inviteAndaccessPage"
+
 	 GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value)
 
 
@@ -178,6 +178,8 @@ end
 
 local function ProvideAccess(value)
 	id_value = "Provide Access"
+
+	page_flagval = "inviteAndaccessPage"
 
 	GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value)
 
@@ -239,10 +241,8 @@ local function ActionTouch( event )
 
 				elseif event.target.id == "grant" then
 
-						
-
-
 					Details = event.target.value
+
 
 					GrandProcess(event.target.value)
 

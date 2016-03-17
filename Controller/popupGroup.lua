@@ -22,6 +22,8 @@ local menuBtn,contactId
 
 openPage="PopUpGroup"
 
+local pagevaluename
+
 local Career_Username , id_value , popupevnt_value
 
 local leftPadding = 10
@@ -406,9 +408,9 @@ end
 
 	   end
 
+
+
 	    function RequestGrantProcess( Details )
-
-
 
     	if processbutton_text.text == CommonWords.GrantAccessText then
 
@@ -581,258 +583,268 @@ end
 
                 Details = event.target.value
 
-
                 native.setKeyboardFocus(nil)
 
-			if (EmailDetailValue.text == "") or (EmailDetailValue.text == "null") or (EmailDetailValue.text == EmailDetailValue.id) or (not Utils.emailValidation(EmailDetailValue.text)) then
+-- 			if (EmailDetailValue.text == "") or (EmailDetailValue.text == "null") or (EmailDetailValue.text == EmailDetailValue.id) or (not Utils.emailValidation(EmailDetailValue.text)) or EmailDetailValue.text == PopupGroup.EmailRequired  then
 			  
-			   print("am here email") 
+-- 			   print("am here email") 
 
-			     validation=false
-			     SetError(PopupGroup.EmailRequired,EmailDetailValue)
+-- 			     validation=false
+-- 			     SetError(PopupGroup.EmailRequired,EmailDetailValue)
 
-			     emailnotifybox.isVisible = false
-			     emailnotifytext.isVisible = false
+-- 			     emailnotifybox.isVisible = false
+-- 			     emailnotifytext.isVisible = false
 
+-- 	              PhoneDetail_bg.y =  EmailDetail_bottom.y + 10
+-- 				  PhoneDetail_titlestar.y= PhoneDetail_bg.y
+-- 				  PhoneDetail_titletext.y=  PhoneDetail_bg.y
+-- 				  PhoneDetailValue.y = PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+-- 				  PhoneDetail_bottom.y= PhoneDetailValue.y+10
+-- 				  textnotifytext.y= PhoneDetail_bottom.y +PhoneDetail_bottom.contentHeight +12
+-- 				  textnotifybox.y = PhoneDetail_bottom.y +PhoneDetail_bottom.contentHeight +13
 
-	              PhoneDetail_bg.y =  EmailDetail_bottom.y + 10
-				  PhoneDetail_titlestar.y= PhoneDetail_bg.y
-				  PhoneDetail_titletext.y=  PhoneDetail_bg.y
-				  PhoneDetailValue.y = PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
-				  PhoneDetail_bottom.y= PhoneDetailValue.y+10
-				  textnotifytext.y= PhoneDetail_bottom.y +PhoneDetail_bottom.contentHeight +12
-				  textnotifybox.y = PhoneDetail_bottom.y +PhoneDetail_bottom.contentHeight +13
+-- 	              MKRankDetail_bg.y =  PhoneDetail_bottom.y+PhoneDetail_bottom.contentHeight+30
+-- 				  MKRankDetail_title.y= MKRankDetail_bg.y+15
+-- 				  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+10
+-- 				  MKRankDetail_bottom.y= MKRankDetailValue.y+9
 
-	              MKRankDetail_bg.y =  PhoneDetail_bottom.y+PhoneDetail_bottom.contentHeight+30
-				  MKRankDetail_title.y= MKRankDetail_bg.y+15
-				  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+10
-				  MKRankDetail_bottom.y= MKRankDetailValue.y+9
+-- 				  Requesteddate_bg.y =  MKRankDetailValue.y+MKRankDetailValue.height+7
+-- 				  Requesteddate_title.y= MKRankDetailValue.y+MKRankDetailValue.height+15
+-- 				  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
+-- 				  Requesteddate_bottom.y= RequesteddateValue.y+9
 
-				  Requesteddate_bg.y =  MKRankDetailValue.y+MKRankDetailValue.height+7
-				  Requesteddate_title.y= MKRankDetailValue.y+MKRankDetailValue.height+15
-				  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
-				  Requesteddate_bottom.y= RequesteddateValue.y+9
+-- 				  Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
+-- 				  Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
+-- 				  Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
+-- 				  Password_bottom.y= Password_titletext.y+Password_titletext.height+15
+-- 				  PasswordValue.y =Password_titletext.y+Password_titletext.height+5
+-- 				  PasswordHelptext.y= Password_bottom.y + 12
+-- 				  GeneratePasstext.y= PasswordHelptext.y + 20
+-- 				  processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+-- 		          processbutton_text.y=processbutton.y
 
-				  Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-				  Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
-				  Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
-				  Password_bottom.y= Password_titletext.y+Password_titletext.height+15
-				  PasswordValue.y =Password_titletext.y+Password_titletext.height+5
-				  PasswordHelptext.y= Password_bottom.y + 12
-				  GeneratePasstext.y= PasswordHelptext.y + 20
-				  processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-		          processbutton_text.y=processbutton.y
+-- 		    else 
 
-		    else 
+-- 		    	print("email present @@@@@@@@@@")
 
-				emailnotifybox.isVisible = true
-				emailnotifytext.isVisible = true
+-- 				emailnotifybox.isVisible = true
+-- 				emailnotifytext.isVisible = true
 
-				emailnotifybox.y = EmailDetail_bottom.y + 15
-				emailnotifytext.y = EmailDetail_bottom.y + 15
+-- 				emailnotifybox.y = EmailDetail_bottom.y + 15
+-- 				emailnotifytext.y = EmailDetail_bottom.y + 15
 
-	            PhoneDetail_bg.y =  emailnotifybox.y+emailnotifybox.contentHeight+5
-				PhoneDetail_titlestar.y= PhoneDetail_bg.y
-				PhoneDetail_titletext.y= PhoneDetail_bg.y
-				PhoneDetailValue.y =PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
-				PhoneDetail_bottom.y= PhoneDetailValue.y+10
-				textnotifytext.y=  PhoneDetail_bottom.y + 15
-				textnotifybox.y = PhoneDetail_bottom.y + 15
+-- 	            PhoneDetail_bg.y =  emailnotifybox.y+emailnotifybox.contentHeight+5
+-- 				PhoneDetail_titlestar.y= PhoneDetail_bg.y
+-- 				PhoneDetail_titletext.y= PhoneDetail_bg.y
+-- 				PhoneDetailValue.y =PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+-- 				PhoneDetail_bottom.y= PhoneDetailValue.y+10
+-- 				textnotifytext.y=  PhoneDetail_bottom.y + 15
+-- 				textnotifybox.y = PhoneDetail_bottom.y + 15
 
-				MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
-				MKRankDetail_title.y= MKRankDetail_bg.y+5
-				MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+7
-			    MKRankDetail_bottom.y= MKRankDetailValue.y+9
+-- 				MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+-- 				MKRankDetail_title.y= MKRankDetail_bg.y+5
+-- 				MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+7
+-- 			    MKRankDetail_bottom.y= MKRankDetailValue.y+9
 
-				Requesteddate_bg.y = MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			    Requesteddate_title.y= Requesteddate_bg.y + 5
-			    RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
-			    Requesteddate_bottom.y= RequesteddateValue.y+9
+-- 				Requesteddate_bg.y = MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+-- 			    Requesteddate_title.y= Requesteddate_bg.y + 5
+-- 			    RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
+-- 			    Requesteddate_bottom.y= RequesteddateValue.y+9
 
-				Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-			    Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
-			    Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
-			    Password_bottom.y= Password_titletext.y+Password_titletext.height+15
-			    PasswordValue.y =Password_titletext.y+Password_titletext.height+5
-			    PasswordHelptext.y= Password_bottom.y + 12
-			    GeneratePasstext.y= PasswordHelptext.y + 20
-			    processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-				processbutton_text.y=processbutton.y
+-- 				Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
+-- 			    Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
+-- 			    Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
+-- 			    Password_bottom.y= Password_titletext.y+Password_titletext.height+15
+-- 			    PasswordValue.y =Password_titletext.y+Password_titletext.height+5
+-- 			    PasswordHelptext.y= Password_bottom.y + 12
+-- 			    GeneratePasstext.y= PasswordHelptext.y + 20
+-- 			    processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+-- 				processbutton_text.y=processbutton.y
 
-		end
-
-
-
-		if  PhoneDetailValue.text == "" or PhoneDetailValue.text == "null" or PhoneDetailValue.text == PhoneDetailValue.id or PhoneDetailValue.text:len()<14 or PhoneDetailValue.text == PopupGroup.PasswordRequired then
-			validation=false
-
-		     SetError(PopupGroup.PhoneRequired,PhoneDetailValue)
-
-		     print("am here phone")
-
-		     textnotifybox.isVisible = false
-		     textnotifytext.isVisible = false
-
-             MKRankDetail_bg.y =  PhoneDetail_bottom.y + PhoneDetail_bottom.contentHeight+10
-		     MKRankDetail_title.y= MKRankDetail_bg.y
-		     MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+8
-			 MKRankDetail_bottom.y= MKRankDetailValue.y+9
-
-			 Requesteddate_bg.y =  MKRankDetail_bottom.y+10
-			 Requesteddate_title.y= Requesteddate_bg.y +7
-		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.contentHeight+8
-		     Requesteddate_bottom.y= RequesteddateValue.y+9
-
-		   --    Password_bg.y =  Requesteddate_bottom.y+Requesteddate_bottom.contentHeight+7
-		   --    Password_titlestar.y= Password_bg.y+7
-		   --    Password_titletext.y= Password_bg.y+7
-		   --    PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
-		   --    Password_bottom.y= PasswordValue.y +9.5
-		   --    PasswordHelptext.y= Password_bottom.y + 12
-		   --    GeneratePasstext.y= PasswordHelptext.y + 20
-		   --    processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-		   --    processbutton_text.y=processbutton.y
+-- 		end
 
 
-			  if popupText.text == CommonWords.DenyAccessText then
+
+-- 		if  PhoneDetailValue.text == "" or PhoneDetailValue.text == "null" or PhoneDetailValue.text == PhoneDetailValue.id or PhoneDetailValue.text:len()<14 or PhoneDetailValue.text == PopupGroup.PasswordRequired then
+-- 			validation=false
+
+-- 		     SetError(PopupGroup.PhoneRequired,PhoneDetailValue)
+
+-- 		     print("am here phone")
+
+-- 		     textnotifybox.isVisible = false
+-- 		     textnotifytext.isVisible = false
+
+--              MKRankDetail_bg.y =  PhoneDetail_bottom.y + PhoneDetail_bottom.contentHeight+10
+-- 		     MKRankDetail_title.y= MKRankDetail_bg.y
+-- 		     MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+8
+-- 			 MKRankDetail_bottom.y= MKRankDetailValue.y+9
+
+-- 			 Requesteddate_bg.y =  MKRankDetail_bottom.y+10
+-- 			 Requesteddate_title.y= Requesteddate_bg.y +7
+-- 		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.contentHeight+8
+-- 		     Requesteddate_bottom.y= RequesteddateValue.y+9
+
+-- 		   --    Password_bg.y =  Requesteddate_bottom.y+Requesteddate_bottom.contentHeight+7
+-- 		   --    Password_titlestar.y= Password_bg.y+7
+-- 		   --    Password_titletext.y= Password_bg.y+7
+-- 		   --    PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
+-- 		   --    Password_bottom.y= PasswordValue.y +9.5
+-- 		   --    PasswordHelptext.y= Password_bottom.y + 12
+-- 		   --    GeneratePasstext.y= PasswordHelptext.y + 20
+-- 		   --    processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+-- 		   --    processbutton_text.y=processbutton.y
+
+-- 		    else 
+
+-- 			 textnotifybox.isVisible = true
+-- 			 textnotifytext.isVisible = true
+
+-- 	         PhoneDetail_titlestar.y= PhoneDetail_bg.y
+-- 			 PhoneDetail_titletext.y= PhoneDetail_bg.y
+-- 			 PhoneDetail_bottom.y= PhoneDetailValue.y+10
+-- 			 PhoneDetailValue.y =PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+
+-- 			 textnotifybox.y = PhoneDetail_bottom.y + 15
+-- 			 textnotifytext.y = PhoneDetail_bottom.y + 15
+
+-- 			 MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+-- 			 MKRankDetail_title.y= MKRankDetail_bg.y+7
+-- 			 MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+7
+-- 		     MKRankDetail_bottom.y= MKRankDetailValue.y+9
+
+-- 		     Requesteddate_bg.y = MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+-- 		     Requesteddate_title.y= Requesteddate_bg.y + 7
+-- 		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
+-- 		     Requesteddate_bottom.y= RequesteddateValue.y+9
 
 
-		      Password_bg.isVisible = false
-		      Password_titlestar.isVisible = false
-		      Password_titletext.isVisible = false
-		      Password_bottom.isVisible = false
-		      PasswordValue.isVisible = false
-		      PasswordHelptext.isVisible = false
-		      GeneratePasstext.isVisible = false
-		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-			  processbutton_text.y=processbutton.y
-
-			  deny_bg.y = Requesteddate_bottom.y + 45
-			  deny_Value.y=deny_bg.y
-			  processbutton.y = deny_Value.y+deny_Value.contentHeight - 10
-			  processbutton_text.y=processbutton.y
-
-			 elseif popupText.text == CommonWords.ProvideAccessText then
+-- 	    end
 
 
-			 	Requesteddate_bg.isVisible = false
-			 	RequesteddateValue.isVisible = false
-			 	Requesteddate_title.isVisible = false
-			 	Requesteddate_bottom.isVisible = false
+-- if  PhoneDetailValue.text == "" or PhoneDetailValue.text == "null" or PhoneDetailValue.text == PhoneDetailValue.id or PhoneDetailValue.text:len()<14 or PhoneDetailValue.text == PopupGroup.PasswordRequired then
 
-			  Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.contentHeight+7
-		      Password_titlestar.y= Password_bg.y+7
-		      Password_titletext.y= Password_bg.y+7
-		      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
-		      Password_bottom.y= PasswordValue.y +9.5
-		      PasswordHelptext.y= Password_bottom.y + 12
-		      GeneratePasstext.y= PasswordHelptext.y + 20
-		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-			  processbutton_text.y=processbutton.y
+-- 	print("phone null so here (((((((((((((((((((")
+
+-- 			  if popupText.text == CommonWords.DenyAccessText then
 
 
-		     else
+-- 		      Password_bg.isVisible = false
+-- 		      Password_titlestar.isVisible = false
+-- 		      Password_titletext.isVisible = false
+-- 		      Password_bottom.isVisible = false
+-- 		      PasswordValue.isVisible = false
+-- 		      PasswordHelptext.isVisible = false
+-- 		      GeneratePasstext.isVisible = false
+-- 		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+-- 			  processbutton_text.y=processbutton.y
+
+-- 			  deny_bg.y = Requesteddate_bottom.y + 45
+-- 			  deny_Value.y=deny_bg.y
+-- 			  processbutton.y = deny_Value.y+deny_Value.contentHeight - 10
+-- 			  processbutton_text.y=processbutton.y
+
+-- 			 elseif popupText.text == CommonWords.ProvideAccessText then
 
 
-		      Password_bg.y =  Requesteddate_bottom.y+Requesteddate_bottom.contentHeight+7
-		      Password_titlestar.y= Password_bg.y+7
-		      Password_titletext.y= Password_bg.y+7
-		      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
-		      Password_bottom.y= PasswordValue.y +9.5
-		      PasswordHelptext.y= Password_bottom.y + 12
-		      GeneratePasstext.y= PasswordHelptext.y + 20
-		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-			  processbutton_text.y=processbutton.y
+-- 			 	Requesteddate_bg.isVisible = false
+-- 			 	RequesteddateValue.isVisible = false
+-- 			 	Requesteddate_title.isVisible = false
+-- 			 	Requesteddate_bottom.isVisible = false
 
-			 end
-
-
-		    else 
-
-			 textnotifybox.isVisible = true
-			 textnotifytext.isVisible = true
-
-	         PhoneDetail_titlestar.y= PhoneDetail_bg.y
-			 PhoneDetail_titletext.y= PhoneDetail_bg.y
-			 PhoneDetail_bottom.y= PhoneDetailValue.y+10
-			 PhoneDetailValue.y =PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
-
-			 textnotifybox.y = PhoneDetail_bottom.y + 15
-			 textnotifytext.y = PhoneDetail_bottom.y + 15
-
-			 MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
-			 MKRankDetail_title.y= MKRankDetail_bg.y+7
-			 MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+7
-		     MKRankDetail_bottom.y= MKRankDetailValue.y+9
-
-		     Requesteddate_bg.y = MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-		     Requesteddate_title.y= Requesteddate_bg.y + 7
-		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
-		     Requesteddate_bottom.y= RequesteddateValue.y+9
+-- 			  Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.contentHeight+7
+-- 		      Password_titlestar.y= Password_bg.y+7
+-- 		      Password_titletext.y= Password_bg.y+7
+-- 		      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
+-- 		      Password_bottom.y= PasswordValue.y +9.5
+-- 		      PasswordHelptext.y= Password_bottom.y + 12
+-- 		      GeneratePasstext.y= PasswordHelptext.y + 20
+-- 		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+-- 			  processbutton_text.y=processbutton.y
 
 
-		     if popupText.text == CommonWords.DenyAccessText then
+-- 		     else
 
 
-		      Password_bg.isVisible = false
-		      Password_titlestar.isVisible = false
-		      Password_titletext.isVisible = false
-		      Password_bottom.isVisible = false
-		      PasswordValue.isVisible = false
-		      PasswordHelptext.isVisible = false
-		      GeneratePasstext.isVisible = false
-		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-			  processbutton_text.y=processbutton.y
+-- 		      Password_bg.y =  Requesteddate_bottom.y+Requesteddate_bottom.contentHeight+7
+-- 		      Password_titlestar.y= Password_bg.y+7
+-- 		      Password_titletext.y= Password_bg.y+7
+-- 		      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
+-- 		      Password_bottom.y= PasswordValue.y +9.5
+-- 		      PasswordHelptext.y= Password_bottom.y + 12
+-- 		      GeneratePasstext.y= PasswordHelptext.y + 20
+-- 		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+-- 			  processbutton_text.y=processbutton.y
 
-			  deny_bg.y = Requesteddate_bottom.y + 45
-			  deny_Value.y=deny_bg.y
-			  processbutton.y = deny_Value.y+deny_Value.contentHeight-10
-			  processbutton_text.y=processbutton.y
-
-			  phonenumber = PhoneDetailValue.text
-			  email = EmailDetailValue.text
-			  denyreason = deny_Value.text
-			  isSentMailValue = isSentMail
-			  isSendTextValue = isSentText
+-- 			 end
 
 
-			  RequestGrantProcess(Details)
+-- else
 
-			 elseif popupText.text == CommonWords.ProvideAccessText then
-
-
-			 	Requesteddate_bg.isVisible = false
-			 	RequesteddateValue.isVisible = false
-			 	Requesteddate_title.isVisible = false
-			 	Requesteddate_bottom.isVisible = false
-
-			  Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.contentHeight+7
-		      Password_titlestar.y= Password_bg.y+7
-		      Password_titletext.y= Password_bg.y+7
-		      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
-		      Password_bottom.y= PasswordValue.y +9.5
-		      PasswordHelptext.y= Password_bottom.y + 12
-		      GeneratePasstext.y= PasswordHelptext.y + 20
-		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-			  processbutton_text.y=processbutton.y
+-- 		     if popupText.text == CommonWords.DenyAccessText then
 
 
-		     else
+-- 		      Password_bg.isVisible = false
+-- 		      Password_titlestar.isVisible = false
+-- 		      Password_titletext.isVisible = false
+-- 		      Password_bottom.isVisible = false
+-- 		      PasswordValue.isVisible = false
+-- 		      PasswordHelptext.isVisible = false
+-- 		      GeneratePasstext.isVisible = false
+-- 		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+-- 			  processbutton_text.y=processbutton.y
+
+-- 			  deny_bg.y = Requesteddate_bottom.y + 45
+-- 			  deny_Value.y=deny_bg.y
+-- 			  processbutton.y = deny_Value.y+deny_Value.contentHeight-10
+-- 			  processbutton_text.y=processbutton.y
+
+-- 			  phonenumber = PhoneDetailValue.text
+-- 			  email = EmailDetailValue.text
+-- 			  denyreason = deny_Value.text
+-- 			  isSentMailValue = isSentMail
+-- 			  isSendTextValue = isSentText
 
 
-		      Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
-		      Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
-		      Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
-		      Password_bottom.y= Password_titletext.y+Password_titletext.height+16
-		      PasswordValue.y =Password_titletext.y+Password_titletext.height+5
-		      PasswordHelptext.y= Password_bottom.y + 12
-		      GeneratePasstext.y= PasswordHelptext.y + 20
-		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-			  processbutton_text.y=processbutton.y
+-- 			  RequestGrantProcess(Details)
 
-			 end
+-- 			 elseif popupText.text == CommonWords.ProvideAccessText then
 
-	    end
+
+-- 			 	Requesteddate_bg.isVisible = false
+-- 			 	RequesteddateValue.isVisible = false
+-- 			 	Requesteddate_title.isVisible = false
+-- 			 	Requesteddate_bottom.isVisible = false
+
+-- 			  Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.contentHeight+7
+-- 		      Password_titlestar.y= Password_bg.y+7
+-- 		      Password_titletext.y= Password_bg.y+7
+-- 		      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
+-- 		      Password_bottom.y= PasswordValue.y +9.5
+-- 		      PasswordHelptext.y= Password_bottom.y + 12
+-- 		      GeneratePasstext.y= PasswordHelptext.y + 20
+-- 		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+-- 			  processbutton_text.y=processbutton.y
+
+
+-- 		     else
+
+
+-- 		      Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
+-- 		      Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
+-- 		      Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
+-- 		      Password_bottom.y= Password_titletext.y+Password_titletext.height+16
+-- 		      PasswordValue.y =Password_titletext.y+Password_titletext.height+5
+-- 		      PasswordHelptext.y= Password_bottom.y + 12
+-- 		      GeneratePasstext.y= PasswordHelptext.y + 20
+-- 		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+-- 			  processbutton_text.y=processbutton.y
+
+-- 			end
+
+--  end
+
+
 
 
 		if PasswordValue.text == "" or PasswordValue.text == PasswordValue.id or PasswordValue.text == PopupGroup.PasswordRequired then
@@ -949,14 +961,18 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 	Details = details
 
+	--pagevaluename= pagevalue
+
 	             print( "match : "..json.encode(Details) )
 
+	           --  print("pagevaluename"..pagevaluename)
 
+	local PopUpGroup = display.newGroup()
 
 	popup_Backgeound = display.newRect(W/2, H/2, W, H )
 	popup_Backgeound:addEventListener( "touch", touchPopupBg )
 	popup_Backgeound.alpha=0.01
-	popUpGroup:insert( popup_Backgeound )
+	popUpGroup:insert(popup_Backgeound)
 
 	popupTop_bg = display.newRect(leftPadding_value + 140, H/2+ 10, W-20, 385 )
 	popupTop_bg.x = leftPadding_value + 140
@@ -1283,7 +1299,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
     deny_bg = display.newRect( 0,0 , W-50, EditBoxStyle.height+40)
   	deny_bg:setStrokeColor(0,0,0,0.4)
-  	deny_bg.x = W/2
+  	deny_bg.x = W/2-5
   	deny_bg.isVisible = false
   	deny_bg.y = Requesteddate_bottom.y + 40
   	deny_bg.hasBackground = true
@@ -1291,7 +1307,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 	popup_scroll:insert(deny_bg)
 
 
-	deny_Value = native.newTextBox( deny_bg.width,deny_bg.height,W-52, EditBoxStyle.height+40)
+	deny_Value = native.newTextBox( deny_bg.width,deny_bg.height,W-50, EditBoxStyle.height+40)
 	deny_Value.placeholder = PopupGroup.deny_Value_placeholder
 	deny_Value.isEditable = true
 	deny_Value.size=14
@@ -1301,7 +1317,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 	deny_Value.hasBackground = true
 	deny_Value:setReturnKey( "done" )
 	deny_Value.inputType = "default"
-	deny_Value.x=W/2
+	deny_Value.x=W/2-5
 	deny_Value.y=deny_bg.y
 	popup_scroll:insert(deny_Value)
 
@@ -1403,53 +1419,53 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
     			processbutton.value=Details
 
-			   if email ~= nil or email ~= "" or email ~= "null" or email ~= PopupGroup.EmailRequired then
-					EmailDetailValue.text = email
-					emailnotifytext.isVisible = true
-				    emailnotifybox.isVisible = true
-			    else
-				    EmailDetailValue.text = nil
-				    emailnotifytext.isVisible = false
-				    emailnotifybox.isVisible = false
-			    end
+			  --  if email ~= nil or email ~= "" or email ~= "null" or email ~= PopupGroup.EmailRequired then
+					-- EmailDetailValue.text = email
+					-- emailnotifytext.isVisible = true
+				 --    emailnotifybox.isVisible = true
+			  --   else
+				 --    EmailDetailValue.text = nil
+				 --    emailnotifytext.isVisible = false
+				 --    emailnotifybox.isVisible = false
+			  --   end
 
 
-			    if mobile ~= nil or mobile ~= "" or mobile ~= "null" then
-			    	PhoneDetailValue.text = mobile
-			    	--textnotifybox.isVisible = true
-			    	--textnotifytext.isVisible = true
+			  --   if mobile ~= nil or mobile ~= "" or mobile ~= "null" then
+			  --   	PhoneDetailValue.text = mobile
+			  --   	--textnotifybox.isVisible = true
+			  --   	--textnotifytext.isVisible = true
 
-			    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
-			    elseif homenum ~= nil or homenum ~= "" or homenum ~= "null" then
-			    	PhoneDetailValue.text = homenum
-			    	--textnotifybox.isVisible = true
-			    	--textnotifytext.isVisible = true
+			  --   	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
+			  --   elseif homenum ~= nil or homenum ~= "" or homenum ~= "null" then
+			  --   	PhoneDetailValue.text = homenum
+			  --   	--textnotifybox.isVisible = true
+			  --   	--textnotifytext.isVisible = true
 
-			    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
-			    elseif othernum ~= nil or othernum ~= "" or othernum ~= "null" then
-			    	PhoneDetailValue.text = othernum
-			    	--textnotifybox.isVisible = true
-			    	--textnotifytext.isVisible = true
+			  --   	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
+			  --   elseif othernum ~= nil or othernum ~= "" or othernum ~= "null" then
+			  --   	PhoneDetailValue.text = othernum
+			  --   	--textnotifybox.isVisible = true
+			  --   	--textnotifytext.isVisible = true
 
-			    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
-			    elseif worknum  ~= nil or worknum ~= "" or worknum ~= "null" then
-			    	PhoneDetailValue.text = worknum
-			    	--textnotifybox.isVisible = true
-			    	--textnotifytext.isVisible = true
+			  --   	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
+			  --   elseif worknum  ~= nil or worknum ~= "" or worknum ~= "null" then
+			  --   	PhoneDetailValue.text = worknum
+			  --   	--textnotifybox.isVisible = true
+			  --   	--textnotifytext.isVisible = true
 
-			    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
-			    else
-			    	PhoneDetailValue.text = nil
-			    	--textnotifybox.isVisible = false
-			    	--textnotifytext.isVisible = false
+			  --   	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+15
+			  --   else
+			  --   	PhoneDetailValue.text = nil
+			  --   	--textnotifybox.isVisible = false
+			  --   	--textnotifytext.isVisible = false
 
-			    	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
-			    end
-
-
+			  --   	MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+			  --   end
 
 
-			   if id_value == "Grant Access" then
+
+
+	      if id_value == "Grant Access" then
 
 
           processbutton_text.text = CommonWords.GrantAccessText
@@ -1472,46 +1488,130 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 
 
-          if Details.EmailAddress ~= nil then
-          EmailDetailValue.text = Details.EmailAddress
+          if Details.EmailAddress ~= nil or Details.EmailAddress ~= "null" then
+           EmailDetailValue.text = Details.EmailAddress
+
+           print("step 1 email address"..EmailDetailValue.text)
         --  native.setKeyboardFocus(PhoneDetailValue)
             emailnotifybox.isVisible = true
 		    emailnotifytext.isVisible = true
           else
-		  EmailDetailValue.text = nil
+          	EmailDetailValue.text = nil
 		   emailnotifybox.isVisible = false
 		   emailnotifytext.isVisible = false
           end
            print("print the value of email ",EmailDetailValue.text)
 
 
-        if Details.Mobile ~= nil or Details.Mobile ~= "" then
-             PhoneDetailValue.text = Details.Mobile
-          			textnotifybox.isVisible = true
-		 		    textnotifytext.isVisible = true
-          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "" then
-             PhoneDetailValue.text = Details.HomePhoneNumber
-          			textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "" then
-             PhoneDetailValue.text = Details.WorkPhoneNumber
-          			textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "" then
-             PhoneDetailValue.text = Details.OtherPhoneNumber
-                    textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          else
-          	 PhoneDetailValue.text = nil
-          	       textnotifybox.isVisible = false
-			       textnotifytext.isVisible = false
+
+         if EmailDetailValue.text == "null" or EmailDetailValue.text == popUpGroup.EmailRequired then
+
+          	emailnotifybox.isVisible = false
+          	emailnotifytext.isVisible = false
+
+          	print("step 1 grant email check no")
+
+          	PhoneDetail_bg.y =  EmailDetail_bottom.y+EmailDetail_bottom.contentHeight+5
+          	PhoneDetail_titlestar.y= PhoneDetail_bg.y
+          	PhoneDetail_titletext.y= PhoneDetail_bg.y
+          	PhoneDetailValue.y = PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+			PhoneDetail_bottom.y= PhoneDetailValue.y+10
+			textnotifybox.y = PhoneDetail_bottom.y+15
+			textnotifytext.y= PhoneDetail_bottom.y + 15
+			 MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+			 MKRankDetail_title.y= MKRankDetail_bg.y+7
+			 MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+7
+		     MKRankDetail_bottom.y= MKRankDetailValue.y+9
+
+		     Requesteddate_bg.y = MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+		     Requesteddate_title.y= Requesteddate_bg.y + 7
+		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
+		     Requesteddate_bottom.y= RequesteddateValue.y+9
+
+		   else
+
+		   	print("step 1 grant email check yes")
+
+		   	emailnotifybox.isVisible = true
+          	emailnotifytext.isVisible = true
+
+		   	PhoneDetail_bg.y =  emailnotifybox.y+emailnotifybox.contentHeight+5
+		   	PhoneDetail_titlestar.y= PhoneDetail_bg.y
+		   	PhoneDetail_titlestar.y= PhoneDetail_bg.y
+		   	PhoneDetailValue.y = PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+			PhoneDetail_bottom.y= PhoneDetailValue.y+10
+			textnotifybox.y = PhoneDetail_bottom.y+15
+			textnotifytext.y= PhoneDetail_bottom.y + 15
+			 MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+			 MKRankDetail_title.y= MKRankDetail_bg.y+7
+			 MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.contentHeight+7
+		     MKRankDetail_bottom.y= MKRankDetailValue.y+9
+
+		     Requesteddate_bg.y = MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+		     Requesteddate_title.y= Requesteddate_bg.y + 7
+		     RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+8
+		     Requesteddate_bottom.y= RequesteddateValue.y+9
+
           end
+
+
+
+
+      --  if pagevaluename == "careerPathPage" then
+
+        --	print("***carrer")
+
+	        if Details.Mobile ~= nil or Details.Mobile ~= "null" then
+	             PhoneDetailValue.text = Details.Mobile
+	          			textnotifybox.isVisible = true
+			 		    textnotifytext.isVisible = true
+	          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "null" then
+	             PhoneDetailValue.text = Details.HomePhoneNumber
+	          			textnotifybox.isVisible = true
+						textnotifytext.isVisible = true
+	          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "null" then
+	             PhoneDetailValue.text = Details.WorkPhoneNumber
+	          			textnotifybox.isVisible = true
+						textnotifytext.isVisible = true
+	          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "null" then
+	             PhoneDetailValue.text = Details.OtherPhoneNumber
+	                    textnotifybox.isVisible = true
+						textnotifytext.isVisible = true
+	          else
+	          	PhoneDetailValue.text = nil
+	          	       textnotifybox.isVisible = false
+				       textnotifytext.isVisible = false
+	          end
 
             print("print the value of phone ",PhoneDetailValue.text)
 
+            print("step 1 phone number"..PhoneDetailValue.text)
+
+    --    elseif pagevaluename == "inviteAndaccessPage" then
+
+        --	print("***invite")
 
 
-          if  (PhoneDetailValue.text == nil) then
+	          if Details.PhoneNumber ~= nil or Details.PhoneNumber ~= "null" or Details.PhoneNumber ~= PopUpGroup.PhoneRequired then
+	             PhoneDetailValue.text = Details.PhoneNumber
+	          			textnotifybox.isVisible = true
+			 		    textnotifytext.isVisible = true
+	          else
+	          		PhoneDetailValue.text = nil
+	          	        textnotifybox.isVisible = false
+						textnotifytext.isVisible = false
+
+
+	          end
+
+	           print("step 11 PhoneNumber"..PhoneDetailValue.text)
+
+
+      --  end
+
+
+
+          if  PhoneDetailValue.text == nil or PhoneDetailValue.text == "null" then
 
           	   textnotifybox.isVisible = false
 			   textnotifytext.isVisible = false
@@ -1590,10 +1690,11 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 	      processbutton:addEventListener("touch",onGrantButtonTouch)
 
 
-		 elseif id_value == "Provide Access" then
+
+elseif id_value == "Provide Access" then
 
 		 	processbutton_text.text = CommonWords.ProvideAccessText
-        popupText.text = CommonWords.ProvideAccessText
+            popupText.text = CommonWords.ProvideAccessText
 
                 Requesteddate_bg.isVisible = false
 			 	RequesteddateValue.isVisible = false
@@ -1613,22 +1714,25 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 		    NameDetailValue.text = nil
           end
 
-          if Details.EmailAddress ~= nil then
 
-          EmailDetailValue.text = Details.EmailAddress
+          if Details.EmailAddress ~= nil  or Details.EmailAddress ~= "null" then
+           EmailDetailValue.text = Details.EmailAddress
+
+            print("step 1 provide access email address"..EmailDetailValue.text)
 
           --native.setKeyboardFocus(PhoneDetailValue)
             emailnotifybox.isVisible = true
 		    emailnotifytext.isVisible = true
           else
-		   EmailDetailValue.text = nil
+          	EmailDetailValue.text = nil
 		   emailnotifybox.isVisible = false
 		   emailnotifytext.isVisible = false
           end
 
 
-          if EmailDetailValue.text == "" or EmailDetailValue.text == "null" then
+          if EmailDetailValue.text == "null" or EmailDetailValue.text == popUpGroup.EmailRequired then
 
+          	print("step 1 provide access email check no "..EmailDetailValue.text)
 
           	emailnotifybox.isVisible = false
           	emailnotifytext.isVisible = false
@@ -1651,6 +1755,8 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 		     Requesteddate_bottom.y= RequesteddateValue.y+9
 
 		   else
+
+		   		print("step 1 provide access email check yes "..EmailDetailValue.text)
 
 		   	emailnotifybox.isVisible = true
           	emailnotifytext.isVisible = true
@@ -1676,32 +1782,54 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 
 
-          if Details.Mobile ~= nil  then
-             PhoneDetailValue.text = Details.Mobile
-          			textnotifybox.isVisible = true
-		 		    textnotifytext.isVisible = true
-          elseif Details.HomePhoneNumber ~= nil then
-             PhoneDetailValue.text = Details.HomePhoneNumber
-          			textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          elseif Details.WorkPhoneNumber ~= nil then
-             PhoneDetailValue.text = Details.WorkPhoneNumber
-          			textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          elseif Details.OtherPhoneNumber ~= nil then
-             PhoneDetailValue.text = Details.OtherPhoneNumber
-                    textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          else
-          	 PhoneDetailValue.text = nil
-          	 textnotifybox.isVisible = false
-			   textnotifytext.isVisible = false
-          end
+       -- if pagevaluename == "careerPathPage" then
+
+	        if Details.Mobile ~= nil or Details.Mobile ~= "null" then
+	             PhoneDetailValue.text = Details.Mobile
+	          			textnotifybox.isVisible = true
+			 		    textnotifytext.isVisible = true
+	          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "null" then
+	             PhoneDetailValue.text = Details.HomePhoneNumber
+	          			textnotifybox.isVisible = true
+						textnotifytext.isVisible = true
+	          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "null" then
+	             PhoneDetailValue.text = Details.WorkPhoneNumber
+	          			textnotifybox.isVisible = true
+						textnotifytext.isVisible = true
+	          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "null" then
+	             PhoneDetailValue.text = Details.OtherPhoneNumber
+	                    textnotifybox.isVisible = true
+						textnotifytext.isVisible = true
+	          else
+	          	PhoneDetailValue.text = nil
+	          	       textnotifybox.isVisible = false
+				       textnotifytext.isVisible = false
+	          end
+
+            print("step 1 provide access phone number"..PhoneDetailValue.text)
+
+      --  elseif pagevaluename == "inviteAndaccessPage" then
+
+
+	          if Details.PhoneNumber ~= nil  or Details.PhoneNumber ~= PopUpGroup.PhoneRequired or Details.PhoneNumber ~= "null" then
+	             PhoneDetailValue.text = Details.PhoneNumber
+	          			textnotifybox.isVisible = true
+			 		    textnotifytext.isVisible = true
+	          else
+	          	PhoneDetailValue.text = nil
+	          	        textnotifybox.isVisible = false
+						textnotifytext.isVisible = false
+	          end
+
+	          print("step 11 provide access PhoneNumber"..PhoneDetailValue.text)
+
+
+     --   end
 
 
 
 
-          if  PhoneDetailValue.text == nil or PhoneDetailValue.text == "" or PhoneDetailValue.text == "null" then
+          if  PhoneDetailValue.text == nil  or PhoneDetailValue.text == "null" or PhoneDetailValue.text == popUpGroup.PhoneRequired then
 
           	   textnotifybox.isVisible = false
 			   textnotifytext.isVisible = false
@@ -1793,7 +1921,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
         deny_Value.isVisible = true
 
         Requesteddate_bottom.y= RequesteddateValue.y+8.5
-        deny_bg.y = Requesteddate_bottom.y + Requesteddate_bottom.contentHeight +15
+        deny_bg.y = Requesteddate_bottom.y + Requesteddate_bottom.contentHeight +35
         deny_Value.y=deny_bg.y
         processbutton.y = deny_Value.y+deny_Value.contentHeight
 
@@ -1814,43 +1942,71 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
           print(NameDetailValue.text)
 
 
-          if Details.EmailAddress ~= nil then
+          if Details.EmailAddress ~= nil  or Details.EmailAddress ~= "null" then
           EmailDetailValue.text = Details.EmailAddress
+
+          print("step 1 deny access email address"..EmailDetailValue.text)
         --  native.setKeyboardFocus(PhoneDetailValue)
             emailnotifybox.isVisible = true
 		    emailnotifytext.isVisible = true
           else
-		  EmailDetailValue.text = nil
+
+          	EmailDetailValue.text = nil
 		   emailnotifybox.isVisible = false
 		   emailnotifytext.isVisible = false
           end
 
 
-          if Details.Mobile ~= nil or Details.Mobile ~= "" then
-             PhoneDetailValue.text = Details.Mobile
-          			textnotifybox.isVisible = true
-		 		    textnotifytext.isVisible = true
-          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "" then
-             PhoneDetailValue.text = Details.HomePhoneNumber
-          			textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "" then
-             PhoneDetailValue.text = Details.WorkPhoneNumber
-          			textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "" then
-             PhoneDetailValue.text = Details.OtherPhoneNumber
-                    textnotifybox.isVisible = true
-					textnotifytext.isVisible = true
-          else
-          	 PhoneDetailValue.text = nil
-          	        textnotifybox.isVisible = false
-					textnotifytext.isVisible = false
-          end
 
 
+      --  if pagevaluename == "careerPathPage" then
 
-          if  PhoneDetailValue.text == nil then
+	        if Details.Mobile ~= nil  or Details.Mobile ~= "null" then
+	             PhoneDetailValue.text = Details.Mobile
+	          			textnotifybox.isVisible = true
+			 		    textnotifytext.isVisible = true
+	          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "null" then
+	             PhoneDetailValue.text = Details.HomePhoneNumber
+	          			textnotifybox.isVisible = true
+						textnotifytext.isVisible = true
+	          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "null" then
+	             PhoneDetailValue.text = Details.WorkPhoneNumber
+	          			textnotifybox.isVisible = true
+						textnotifytext.isVisible = true
+	          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "null" then
+	             PhoneDetailValue.text = Details.OtherPhoneNumber
+	                    textnotifybox.isVisible = true
+						textnotifytext.isVisible = true
+	          else
+
+	          	PhoneDetailValue.text = nil
+	          	       textnotifybox.isVisible = false
+				       textnotifytext.isVisible = false
+	          end
+
+            print("***** print the value of deny phone ",PhoneDetailValue.text)
+
+       -- elseif pagevaluename == "inviteAndaccessPage" then
+
+
+	          if Details.PhoneNumber ~= nil or Details.PhoneNumber ~= PopUpGroup.PhoneRequired or Details.PhoneNumber ~= "null" then
+	             PhoneDetailValue.text = Details.PhoneNumber
+	          			textnotifybox.isVisible = true
+			 		    textnotifytext.isVisible = true
+	          else
+
+	          	 PhoneDetailValue.text = nil
+	          	        textnotifybox.isVisible = false
+						textnotifytext.isVisible = false
+	          end
+
+	          print("step 1 deny access phone number "..PhoneDetailValue.text)
+
+
+      --  end
+
+
+          if PhoneDetailValue.text == nil or PhoneDetailValue.text == "null" or PhoneDetailValue.text == popUpGroup.PhoneRequired then
 
           	   textnotifybox.isVisible = false
 			   textnotifytext.isVisible = false
@@ -1969,9 +2125,6 @@ end
 print( "#####################" )
 
     Webservice.GetMyUnitBuzzRequestAccessPermissionsDetail(requestId,RequestFrom,Status,get_GetMyUnitBuzzRequestAccessPermissionsDetail)
-
-
-    
 
 
     popUpGroup:insert(popup_scroll)
