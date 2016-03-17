@@ -154,6 +154,12 @@ print(value)
         value=string.gsub(value,"%-","")
     end
 
+            if value:len() >= 10 then
+
+                 value = value:sub(1,10)
+
+            end
+
     print( "length : "..value:len())
 
     if value:len() == 1  or value:len() == 2 then

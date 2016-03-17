@@ -89,6 +89,14 @@ local display_details = {}
 		display.getCurrentStage():setFocus( event.target )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
+
+			if status == "edit" then
+			event.parent:resumeGame(status,Details)
+		else
+			event.parent:resumeGame(status)
+		end
+
+		
 		composer.hideOverlay( "slideRight", 300 )
 
 		end
@@ -102,6 +110,12 @@ local display_details = {}
 			if response.OperationStatus == 0 then
 
 				status = "deleted"
+
+					if status == "edit" then
+						event.parent:resumeGame(status,Details)
+					else
+						event.parent:resumeGame(status)
+					end
 
 				composer.hideOverlay( "slideRight", 300 )
 
@@ -138,6 +152,13 @@ local display_details = {}
 			elseif event.target.id == "edit" then
 
 				status="edit"
+
+					if status == "edit" then
+						event.parent:resumeGame(status,Details)
+					else
+						event.parent:resumeGame(status)
+					end
+
 				composer.hideOverlay()
 			end
 
@@ -173,6 +194,11 @@ local display_details = {}
 
         if keyName=="back" then
 
+        		if status == "edit" then
+					event.parent:resumeGame(status,Details)
+				else
+					event.parent:resumeGame(status)
+				end
 
         	composer.hideOverlay( "slideRight", 300 )
             
@@ -708,11 +734,7 @@ local display_details = {}
 
 		elseif phase == "did" then
 
-		if status == "edit" then
-			event.parent:resumeGame(status,Details)
-		else
-			event.parent:resumeGame(status)
-		end
+	
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
 		menuTouch_s:removeEventListener("touch",menuTouch)

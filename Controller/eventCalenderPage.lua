@@ -275,10 +275,13 @@ end
 
 local function display_calenderList(response)
 
+if headerGroup then
 
-for j=#headerGroup, 1, -1 do 
-			display.remove(headerGroup[#headerGroup])
-			headerGroup[#headerGroup] = nil
+	for j=#headerGroup, 1, -1 do 
+				display.remove(headerGroup[#headerGroup])
+				headerGroup[#headerGroup] = nil
+	end
+
 end
 
 		
@@ -464,9 +467,11 @@ DateWise_response=responevalue
 			
 		ProcessingCount =0 
 
-		for j=#event_groupArray, 1, -1 do 
-			display.remove(event_groupArray[#event_groupArray])
-			event_groupArray[#event_groupArray] = nil
+		if event_groupArray then 
+			for j=#event_groupArray, 1, -1 do 
+				display.remove(event_groupArray[#event_groupArray])
+				event_groupArray[#event_groupArray] = nil
+			end
 		end
 
 		
@@ -1619,6 +1624,8 @@ function scene:hide( event )
 	local phase = event.phase
 
 	if event.phase == "will" then
+
+
 
 		for j=1,#event_groupArray do 
 			event_groupArray[j]:removeSelf()

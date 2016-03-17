@@ -2115,31 +2115,23 @@ local function usertextField( event )
 
 		elseif(event.target.id == "phone") then
 
-				if event.target.text:len() > 15 then
+		
 
-								event.target.text = event.target.text:sub(1,15)
-
-
-							end
+							local text = event.target.text
 
 							if event.target.text:len() > event.startPosition then
 
-								event.target.text = event.target.text:sub(1,event.startPosition )
+								text = event.target.text:sub(1,event.startPosition )
 
 							end
 
 
-							local maskingValue =Utils.PhoneMasking(tostring(event.target.text))
+							local maskingValue =Utils.PhoneMasking(tostring(text))
 
 											
-
-									native.setKeyboardFocus(nil)
-
 									event.target.text=maskingValue
 
-									event.target = Phone
-
-									native.setKeyboardFocus(Phone)
+									 event.target:setSelection(maskingValue:len()+1,maskingValue:len()+1)
 							end
 
 						

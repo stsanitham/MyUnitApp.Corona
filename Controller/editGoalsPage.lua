@@ -198,43 +198,22 @@ title:setFillColor(0)
 
 --Utils.copyDatabaseTo("sample.txt", system.ResourceDirectory,"sample.txt",system.DocumentsDirectory )
 --Utils.copyDatabaseTo("ckeditor.html", system.ResourceDirectory,"ckeditor.html",system.DocumentsDirectory  )
-
+local test= string.urlEncode(event.params.content)
 
 local path = system.pathForFile( "ckeditor.html",system.DocumentsDirectory )
 
 		-- Open the file handle
-		local file, errorString = io.open( path, "w" )
+		local file, errorString = io.open( path, "w+" )
 
 		if not file then
 		    -- Error occurred; output the cause
 		    print( "File error: " .. errorString )
 		else
 		    -- Write data to file
-		    file:write( ckeditor.htmlContent )
+		    file:write( ckeditor.htmlContent.."'"..test.."'"..ckeditor.endHtml )
 		    -- Close the file handle
-		    io.close( file )
 
-		end
-
-		file = nil
-
-	local test=string.urlEncode( event.params.content )
-
-	local textpath = system.pathForFile( "sample.txt",system.DocumentsDirectory )
-
-		-- Open the file handle
-		local txtfile, txterrorString = io.open( textpath, "w" )
-
-		if not txtfile then
-		    -- Error occurred; output the cause
-		    print( "File error: " .. txterrorString )
-		else
-		    -- Write data to file
-		    txtfile:write( test )
-		    -- Close the file handle
-		    io.close( txtfile )
-
-		    local options =
+		       local options =
 					{
 					    hasBackground = false,
 					    baseUrl = system.DocumentsDirectory,
@@ -242,9 +221,36 @@ local path = system.pathForFile( "ckeditor.html",system.DocumentsDirectory )
 					}
 					native.showWebPopup( 0, 70, display.viewableContentWidth, display.viewableContentHeight-80, "ckeditor.html", options )
 
+
+		    file:close()
+
 		end
 
 		file = nil
+
+	-- local test=string.urlEncode( event.params.content )
+
+	-- print( test )
+
+	-- local textpath = system.pathForFile( "sample.txt",system.DocumentsDirectory )
+
+	-- 	-- Open the file handle
+	-- 	local txtfile, txterrorString = io.open( textpath, "w+" )
+
+	-- 	if not txtfile then
+	-- 	    -- Error occurred; output the cause
+	-- 	    print( "File error: " .. txterrorString )
+	-- 	else
+	-- 	    -- Write data to file
+	-- 	    txtfile:write( test )
+	-- 	    -- Close the file handle
+	-- 	   txtfile:close()
+
+		 
+
+	-- 	end
+
+	-- 	txtfile = nil
 
 
 

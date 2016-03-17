@@ -77,27 +77,11 @@ ckeditor.htmlContent = [[
 		}
 
 
+CKEDITOR.instances.UnitGoals.setData(decodeURIComponent(]]
 
-function readTextFile(file)
-{
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                var allText = rawFile.responseText;
-                 allText = decodeURIComponent((allText).replace(/\+/g, '%20'));
-                CKEDITOR.instances.UnitGoals.setData(allText);  
-            }
-        }
-    }
-     rawFile.send(null);
-}
 
-readTextFile("sample.txt");
+
+	ckeditor.endHtml = [[.replace(/\+/g, '%20')));  
 
 		 
 

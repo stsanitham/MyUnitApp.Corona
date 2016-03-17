@@ -253,7 +253,11 @@ end
 
 			 else
 
-			 	native.showAlert( CareerPath.Call, CareerPath.NoSim, { CommonWords.ok } )
+			 	if isIos then 
+
+			 		native.showAlert( CareerPath.Call, CareerPath.NoSim, { CommonWords.ok } )
+
+			 	end
 
 			end
 		end
