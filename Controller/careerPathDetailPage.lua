@@ -47,6 +47,8 @@ ContactIdValue = 0
 
 local ProfileImage,careerDetail_scrollview
 
+pagevalue = "careerPathPage"
+
 --------------------------------------------------
 
 
@@ -519,6 +521,7 @@ function onAccessButtonTouch( event )
 
  	 id_value = event.target.id
 
+
     if ( phase == "began" ) then 
 
 			display.getCurrentStage():setFocus( event.target )
@@ -526,11 +529,12 @@ function onAccessButtonTouch( event )
     elseif ( phase == "ended") then 
 
 			display.getCurrentStage():setFocus( nil )
+
     if id_value == "Grant Access" then
 
     	 contactid_career = Details.ContactId
 
-          GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details)
+          GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details,pagevalue)
 
 	elseif id_value == "Remove Access" then
 
@@ -549,7 +553,7 @@ function onAccessButtonTouch( event )
 
 	  contactid_career = Details.ContactId
 
-	  GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details)
+	  GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details,pagevalue)
 
         
 	 
@@ -558,7 +562,7 @@ function onAccessButtonTouch( event )
 
 	    contactid_career = Details.ContactId
 
-	    GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details)
+	    GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details,pagevalue)
 
         
 	elseif id_value == "Block Access" then

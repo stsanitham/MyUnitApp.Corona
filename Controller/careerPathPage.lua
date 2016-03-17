@@ -310,13 +310,20 @@ print("here")
 					if ( img_event.isError ) then
 						print ( "Network error - download failed" )
 					else
-						Image:removeSelf();Image=nil
+
+						if Image then
 
 						print(img_event.response.filename)
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
 						Image.width=35;Image.height=35
 						Image.x=30;Image.y=background.y+background.contentHeight/2
     				--event.row:insert(img_event.target)
+
+    			    else
+
+						Image:removeSelf();Image=nil
+
+					 end
     			end
 
     			end, "career"..list[i].Contact_Id..".png", system.TemporaryDirectory)

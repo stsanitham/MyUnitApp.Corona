@@ -35,6 +35,8 @@ ContactIdValue = 0
 
 local display_details = {}
 
+page_flag1 = "inviteAndaccessPage"
+
 
 
 --------------------------------------------------
@@ -317,7 +319,7 @@ end
 local function GrandProcess()
 
     id_value = "Grant Access"
-	     GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value)
+	     GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
        
 end
 
@@ -325,7 +327,7 @@ end
 local function DenyProcess()
 	id_value = "Deny Access"
 
-	 GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value)
+	 GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
 
 end
 
@@ -333,11 +335,7 @@ end
 local function ProvideAccess()
 	id_value = "Provide Access"
 
-
-
-	GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value)
-
-       
+	GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
 
 end
 
