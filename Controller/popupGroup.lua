@@ -1627,7 +1627,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
           end
 
 
-          if  EmailDetailValue.text ~= nil or EmailDetailValue.text~="null" or EmailDetailValue.text~="" then
+          if EmailDetailValue.text == "" or EmailDetailValue.text == "null" then
 
 
           	emailnotifybox.isVisible = false
@@ -1676,19 +1676,19 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 
 
-          if Details.Mobile ~= nil or Details.Mobile ~= "" then
+          if Details.Mobile ~= nil  then
              PhoneDetailValue.text = Details.Mobile
           			textnotifybox.isVisible = true
 		 		    textnotifytext.isVisible = true
-          elseif Details.HomePhoneNumber ~= nil or Details.HomePhoneNumber ~= "" then
+          elseif Details.HomePhoneNumber ~= nil then
              PhoneDetailValue.text = Details.HomePhoneNumber
           			textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
-          elseif Details.WorkPhoneNumber ~= nil or Details.WorkPhoneNumber ~= "" then
+          elseif Details.WorkPhoneNumber ~= nil then
              PhoneDetailValue.text = Details.WorkPhoneNumber
           			textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
-          elseif Details.OtherPhoneNumber ~= nil or Details.OtherPhoneNumber ~= "" then
+          elseif Details.OtherPhoneNumber ~= nil then
              PhoneDetailValue.text = Details.OtherPhoneNumber
                     textnotifybox.isVisible = true
 					textnotifytext.isVisible = true
