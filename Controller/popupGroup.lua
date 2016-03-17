@@ -673,6 +673,7 @@ end
 		     print("am here phone")
 
 		     textnotifybox.isVisible = false
+
 		     textnotifytext.isVisible = false
 
              MKRankDetail_bg.y =  PhoneDetail_bottom.y + PhoneDetail_bottom.contentHeight+10
@@ -961,11 +962,11 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 	Details = details
 
-	--pagevaluename= pagevalue
+	pagevaluename= pagevalue
 
 	             print( "match : "..json.encode(Details) )
 
-	           --  print("pagevaluename"..pagevaluename)
+	            print("pagevaluename"..pagevaluename)
 
 	local PopUpGroup = display.newGroup()
 
