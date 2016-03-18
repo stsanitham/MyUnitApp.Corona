@@ -279,7 +279,7 @@ function scene:show( event )
 			nameval = event.params.tabbuttonValue3
 		end
 
-		local centerText = display.newText(sceneGroup,"Geoup Page",0,0,native.systemFontBold,16)
+		local centerText = display.newText(sceneGroup,"Group Page",0,0,native.systemFontBold,16)
 		centerText.x=W/2;centerText.y=H/2
 		centerText:setFillColor( 0 )
 
