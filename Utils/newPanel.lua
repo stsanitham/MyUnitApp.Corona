@@ -87,3 +87,132 @@ function widget.newPanel( options )
     end
     return container
 end
+
+
+
+
+ function widget.newNavigationBar( options )
+    local customOptions = options or {}
+    local opt = {}
+    opt.left = customOptions.left or nil
+    opt.top = customOptions.top or nil
+    opt.width = customOptions.width or display.contentWidth
+    opt.height = customOptions.height or 50
+    if customOptions.includeStatusBar == nil then
+        opt.includeStatusBar = true -- assume status bars for business apps
+    else
+        opt.includeStatusBar = customOptions.includeStatusBar
+    end
+
+    local statusBarPad = 0
+    if opt.includeStatusBar then
+        statusBarPad = display.topStatusBarContentHeight
+    end
+
+    opt.x = customOptions.x or display.contentCenterX
+    opt.y = customOptions.y or (opt.height + statusBarPad) * 0.5
+    opt.id = customOptions.id
+    opt.isTransluscent = customOptions.isTransluscent or true
+    opt.background = customOptions.background
+    opt.backgroundColor = customOptions.backgroundColor
+    opt.title = customOptions.title or ""
+    opt.titleColor = customOptions.titleColor or { 0, 0, 0 }
+    opt.font = customOptions.font or native.systemFontBold
+    opt.fontSize = customOptions.fontSize or 18
+    opt.leftButton = customOptions.leftButton or nil
+    opt.rightButton = customOptions.rightButton or nil
+
+
+
+    if opt.left then
+        opt.x = opt.left + opt.width * 0.5
+    end
+    if opt.top then
+        opt.y = opt.top + (opt.height + statusBarPad) * 0.5
+    end
+
+    local barContainer = display.newGroup()
+    local background = display.newRect(barContainer, opt.x, opt.y, opt.width, opt.height + statusBarPad )
+    if opt.background then
+        background.fill = { type = "image", filename=opt.background}
+    elseif opt.backgroundColor then
+        background.fill = opt.backgroundColor
+    else
+        if widget.isSeven() then
+            background.fill = {1,1,1} 
+        else
+            background.fill = { type = "gradient", color1={0.5, 0.5, 0.5}, color2={0, 0, 0}}
+        end
+    end
+
+    barContainer._title = display.newText(opt.title, background.x, background.y + statusBarPad * 0.5, opt.font, opt.fontSize)
+    barContainer._title:setFillColor(unpack(opt.titleColor))
+    barContainer:insert(barContainer._title)
+
+    local leftButton
+    if opt.leftButton then
+        if opt.leftButton.defaultFile then -- construct an image button
+            leftButton = widget.newButton({
+                id = opt.leftButton.id,
+                width = opt.leftButton.width,
+                height = opt.leftButton.height,
+                baseDir = opt.leftButton.baseDir,
+                defaultFile = opt.leftButton.defaultFile,
+                overFile = opt.leftButton.overFile,
+                onEvent = opt.leftButton.onEvent,
+            })
+        else -- construct a text button
+            leftButton = widget.newButton({
+                id = opt.leftButton.id,
+                label = opt.leftButton.label,
+                onEvent = opt.leftButton.onEvent,
+                font = opt.leftButton.font or opt.font,
+                fontSize = opt.fontSize,
+                labelColor = opt.leftButton.labelColor or { default={ 1, 1, 1 }, over={ 0, 0, 0, 0.5 } },
+                labelAlign = "left",
+            })
+        end
+        leftButton.x = 15 + leftButton.width * 0.5
+        leftButton.y = barContainer._title.y
+        barContainer:insert(leftButton)
+    end
+
+    local rightButton
+    if opt.rightButton then
+        if opt.rightButton.defaultFile then -- construct an image button
+            rightButton = widget.newButton({
+                id = opt.rightButton.id,
+                width = opt.rightButton.width,
+                height = opt.rightButton.height,
+                baseDir = opt.rightButton.baseDir,
+                defaultFile = opt.rightButton.defaultFile,
+                overFile = opt.rightButton.overFile,
+                onEvent = opt.rightButton.onEvent,
+            })
+        else -- construct a text button
+            rightButton = widget.newButton({
+                id = opt.rightButton.id,
+                label = opt.rightButton.label or "Default",
+                onEvent = opt.rightButton.onEvent,
+                font = opt.leftButton.font or opt.font,
+                fontSize = opt.fontSize,
+                labelColor = opt.rightButton.labelColor or { default={ 1, 1, 1 }, over={ 0, 0, 0, 0.5 } },
+                labelAlign = "right",
+            })
+        end
+        rightButton.x = display.contentWidth - (15 + rightButton.width * 0.5)
+        rightButton.y = barContainer._title.y
+        barContainer:insert(rightButton)
+    end
+
+    function barContainer:setLabel( text )
+        self._title.text = text
+    end
+
+    function barContainer:getLabel()
+        return(self._title.text)
+    end
+
+
+    return barContainer
+end

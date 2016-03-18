@@ -191,7 +191,6 @@ function FacebookCallback(res,scrollView,flag)
 									
 
 
-
 									local userName = display.newText( tempGroup,user_Name, 0, 0, native.systemFont, 12 )
 									userName.anchorX = 0
 									userName.anchorY = 0

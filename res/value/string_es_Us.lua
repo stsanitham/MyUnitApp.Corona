@@ -141,6 +141,7 @@ FlapMenu.Contacts_with_Access = "Contactos con Acceso"
 FlapMenu.Denied_Access = "Acceso denegado"
 FlapMenu.Pending_Requests = "solicitudes pendientes"
 FlapMenu.TeamMember_without_Access = "Miembro del Equipo sin acceso"
+FlapMenu.chatMessageTitle = "mensajes"
 
 
 EventCalender = {}

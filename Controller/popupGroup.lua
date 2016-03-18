@@ -1723,12 +1723,9 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 	          	        textnotifybox.isVisible = false
 						textnotifytext.isVisible = false
 
-
 	          end
 
 	           print("step 11 PhoneNumber"..PhoneDetailValue.text)
-
-
         end
 
 

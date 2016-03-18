@@ -55,6 +55,8 @@ popUpGroup = display.newGroup();
 
 AlertGroup = display.newGroup();
 
+chatGroup = display.newGroup();
+
 
 
 
@@ -204,8 +206,6 @@ speed = menuTransTime,
 inEasing = easing.outCubic,
 outEasing = easing.outCubic
 }
-
-
 
 
 composer.gotoScene( "Controller.splashScreen")
