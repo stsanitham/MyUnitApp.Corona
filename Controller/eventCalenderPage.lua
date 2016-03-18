@@ -559,11 +559,15 @@ DateWise_response=responevalue
 end
 
 
-local function searchEventlist(respone,timeValue,searchText)
+local function searchEventlist(DateWise_response,timeValue,searchText)
+
+
 
 HaveField = false
 
-DateWise_response=response
+--DateWise_response=response
+
+print( DateWise_response )
 
 					
 		ProcessingCount =0 
@@ -581,6 +585,7 @@ DateWise_response=response
 
 			return false
 		end
+
 		if #DateWise_response == 0 then
 
 			NoEvent.isVisible=true
@@ -889,6 +894,8 @@ local function searchListener( event )
 				Processingdate = os.date( "%Y-%m-%d" , os.time( searchweektime ))
 
 				ParentShow = true
+
+				print( "123 : "..json.encode(DateWise_response ))
 
     			searchEventlist(DateWise_response,searchweektime,event.text)
 
@@ -1278,10 +1285,10 @@ function scene:create( event )
 	searchLeftDraw.x=searchhBg.x+searchhBg.contentWidth/2-searchLeftDraw.contentWidth
 	searchLeftDraw.y=searchhBg.y
 
-	search =  native.newTextField( searchhBg.x-searchhBg.contentWidth/2, searchhBg.y, searchhBg.contentWidth-25, 22 )
+	search =  native.newTextField( searchhBg.x-searchhBg.contentWidth/2, searchhBg.y, searchhBg.contentWidth-25, 24 )
 	search.anchorX=0
-	search.size=20
-	search:resizeFontToFitHeight()
+	search.size=14
+	--search:resizeFontToFitHeight()
 	search:setReturnKey( "search" )
 	search.placeholder = CommonWords.search
 	search.hasBackground = false
@@ -1322,21 +1329,40 @@ end
 
 function scene:resumeGame(value)
 
+	if value == "back" then
+
+		print( "^^^^^^^^^^^^^^^^^^^^^^" )
 
 	Runtime:addEventListener( "key", onKeyEvent )
 
     search.isVisible=true
 
-		local temp = os.date( '*t' )
-		temp.day = temp.day - os.date( "%w" ) 
-		weekViewTouchFlag=true
-		ParentShow=true
-		creatWeek(temp,true)
+	
+
+		local function waitTimer( event )
+			if openPage=="eventCalenderPage" then
+					local temp = os.date( '*t' )
+					temp.day = temp.day - os.date( "%w" ) 
+					weekViewTouchFlag=true
+					ParentShow=true
+					creatWeek(temp,true)
+
+			end
+		end
+
+		timer.performWithDelay( 500, waitTimer )
+
+
+	end
 
 		
 end
 
 function scene:resumeGame(value,EditArray)
+
+
+				print( "*********test*********" )
+
 
 
     if value == "edit" then
@@ -1345,7 +1371,7 @@ function scene:resumeGame(value,EditArray)
 				local options = {
 					isModal = true,
 					effect = "slideLeft",
-					time = 10,
+					time = 100,
 					params = {
 					
 					Details = EditArray
@@ -1359,6 +1385,9 @@ function scene:resumeGame(value,EditArray)
 
 	elseif value == "details" then
 
+		print( "@@@@@@@@@@@@@@@@@@@" )
+
+
 			local options = {
 					isModal = true,
 					effect = "slideLeft",
@@ -1370,19 +1399,24 @@ function scene:resumeGame(value,EditArray)
 
 		composer.showOverlay( "Controller.eventCal_DetailPage", options )
 
-	else
+	elseif value == "back" then
 
 			Runtime:addEventListener( "key", onKeyEvent )
 
     search.isVisible=true
 
-print( "@@@@@@@@@@@@@@@@@@@" )
+		local function waitTimer( event )
+			if openPage=="eventCalenderPage" then
+					local temp = os.date( '*t' )
+					temp.day = temp.day - os.date( "%w" ) 
+					weekViewTouchFlag=true
+					ParentShow=true
+					creatWeek(temp,true)
 
-		local temp = os.date( '*t' )
-		temp.day = temp.day - os.date( "%w" ) 
-		weekViewTouchFlag=true
-		ParentShow=true
-		creatWeek(temp,true)
+			end
+		end
+
+		timer.performWithDelay( 500, waitTimer )
 
 		
 

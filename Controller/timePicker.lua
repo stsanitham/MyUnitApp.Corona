@@ -6,7 +6,7 @@ local W = display.contentWidth;H= display.contentHeight
 print( "######"..os.date( "%p" ))
 local Min = {}
 	local Hour = {}
-	for i = 1,60 do Min[i] = (string.format("%02d",i)) end
+	for i = 1,60 do Min[i] = (string.format("%02d",i-1)) end
 	for j = 1,12 do Hour[j] = (string.format("%02d",j)) end
 
 	local tz = {"AM","PM"}

@@ -389,7 +389,7 @@ local function onKeyEventADDevent( event )
 
         if phase == "up" then
 
-        if keyName=="back" or keyName=="a" then
+        if keyName=="back" then
 
         	composer.hideOverlay( "slideRight", 300 )
 
@@ -701,6 +701,11 @@ local function onRowTouch(event)
 				if SelectEvent.text:lower( ) == "call" then
 					List.textFiled.value = List.textFiled.text
 					List.textFiled.text = List.textFiled.text.." M"
+
+					print("hai")
+
+					Addinvitees.isVisible=true
+					AppintmentWith.isVisible=true
 					
 					if 	Phone.isVisible == true then
 										Phone.isVisible = false
@@ -719,6 +724,9 @@ local function onRowTouch(event)
 
 					List.textFiled.value = List.textFiled.text
 					List.textFiled.text = List.textFiled.text.." H"
+
+					Addinvitees.isVisible=true
+					AppintmentWith.isVisible=true
 
 					if 	Phone.isVisible == true then
 										Phone.isVisible = false
@@ -1048,6 +1056,10 @@ local function TouchAction( event )
         end
     
 	elseif event.phase == "ended" then
+
+		native.setKeyboardFocus( nil )
+
+		
 			display.getCurrentStage():setFocus( nil )
 
 			if event.target.id == "bg" then
@@ -1346,6 +1358,7 @@ local function TouchAction( event )
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
 						AccessCode.isVisible = true
+						Where.isVisible = false
 					elseif SelectEvent.text:lower( ) == "task" then
 
 							Where.isVisible = false
@@ -1453,6 +1466,7 @@ local function TouchAction( event )
 					if SelectEvent.text:lower( ) == "call" then
 						Phone.isVisible = true
 						AccessCode.isVisible = true
+						Where.isVisible = false
 					elseif SelectEvent.text:lower( ) == "task" then
 
 							Where.isVisible = false
@@ -2227,31 +2241,7 @@ end
 	
 
 local function ObjectCreation( sceneGroup)
-		----What----
-
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+15, W-20, 28)
-		AddeventArray[#AddeventArray].id="what"
-		AddeventArray[#AddeventArray].anchorY=0
-		AddeventArray[#AddeventArray].alpha=0.01
-		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+15
-		AddeventGroup:insert(AddeventArray[#AddeventArray])
-
-		What = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
-		What.id="What"
-		What.size=14
-		What.anchorY=0
-		What.hasBackground = false
-		What:setReturnKey( "next" )
-		What.placeholder=AddeventPage.What
-		What:addEventListener( "userInput", usertextField )
-
-
-		BottomImageWhat = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageWhat.x=W/2;BottomImageWhat.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-5
-
-		AddeventGroup:insert(What)
-
-	  	----------
+		
 
 	  	----AllDay----
 
@@ -2602,6 +2592,10 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
+
+
+	print( "!!!!!!!!!!!!!!!!!!!!!" )
+
 	if event.params.Details ~= nil then
 
 			isUpdate  = true
@@ -2640,7 +2634,8 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-		titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
+		titleBar = display.newRect(sceneGroup,W/2,0,W,30)
+		titleBar.y=tabBar.y+tabBar.contentHeight/2
 		titleBar.anchorY=0
 		titleBar:setFillColor(Utils.convertHexToRGB(color.tabbar))
 
@@ -2734,6 +2729,9 @@ function scene:show( event )
 
 		eventTime = event.params.details
 
+
+
+
 	--	print("eventtime value ", eventTime)
 
 		if event.params.calendarId ~= nil then
@@ -2745,13 +2743,39 @@ function scene:show( event )
 
 		end
 
-	
+
+
+	----What----
+
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, 0, W-20, 28)
+		AddeventArray[#AddeventArray].id="what"
+		AddeventArray[#AddeventArray].anchorY=0
+		AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		AddeventGroup:insert(AddeventArray[#AddeventArray])
+
+		What = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
+		What.id="What"
+		What.size=14
+		What.anchorY=0
+		What.hasBackground = false
+		What:setReturnKey( "next" )
+		What.placeholder=AddeventPage.What
+		What:addEventListener( "userInput", usertextField )
+
+
+		BottomImageWhat = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
+		BottomImageWhat.x=W/2;BottomImageWhat.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-5
+
+		AddeventGroup:insert(What)
+
+	  	----------
 
 		ObjectCreation(sceneGroup)
 
 	  	----Description----
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 80)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, 85, W-20, 80)
 		AddeventArray[#AddeventArray].id="description"
 		AddeventArray[#AddeventArray].anchorY=0
 		--AddeventArray[#AddeventArray].alpha=0.01
@@ -3564,7 +3588,7 @@ end
 				event.parent:resumeGame(status,UpdateValue)
 
 			else
-
+				status="back"
 				event.parent:resumeGame(status)
 
 			end

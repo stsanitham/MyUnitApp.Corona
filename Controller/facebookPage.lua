@@ -13,7 +13,6 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
 
-
 --------------- Initialization -------------------
 
 local W = display.contentWidth
@@ -71,6 +70,32 @@ local function linkTouch( event )
 	end
 return true
 end
+
+function makeTimeStamp( dateString )
+   local pattern = "(%d+)%-(%d+)%-(%d+)%a(%d+)%:(%d+)%:([%d%.]+)([Z%p])(%d%d)%:?(%d%d)"
+   local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
+   local timestamp = os.time(
+      { year=year, month=month, day=day, hour=hour, min=minute, sec=seconds }
+   )
+   local offset = 0
+   if ( tzoffset ) then
+      if ( tzoffset == "+" or tzoffset == "-" ) then  -- We have a timezone
+
+      	print( "offsethour : "..offsethour )
+         offset = offsethour * 60 + offsetmin
+         if ( tzoffset == "-" ) then
+            offset = offset * -1
+         end
+         timestamp = timestamp + offset
+      end
+   end
+
+
+   return timestamp
+end
+
+
+
 
 function FacebookCallback(res,scrollView,flag)
 
@@ -146,13 +171,19 @@ function FacebookCallback(res,scrollView,flag)
 
 									profilePic:setMask( mask )
 
+									local timestamp = feedArray[i].created_time
 
+									local time = makeTimeStamp(timestamp)
 
-									local time = Utils.makeTimeStamp(string.gsub( feedArray[i].created_time, "+0000", "Z" ))
+									--TimeZone
+
+									local timeValue = Utils.getTime(time,"%b-%d-%Y %I:%M %p",TimeZone)
+
+								
 
 									print( feedArray[i].created_time,time )
 
-									local userTime = display.newText( tempGroup, tostring(os.date("%b-%d-%Y %I:%m %p",time )), 0, 0, native.systemFont, 10 )
+									local userTime = display.newText( tempGroup, timeValue, 0, 0, native.systemFont, 10 )
 									userTime.anchorX = 0
 									userTime.anchorY = 0
 									Utils.CssforTextView(userTime,sp_Date_Time)

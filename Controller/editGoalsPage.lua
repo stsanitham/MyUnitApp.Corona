@@ -146,6 +146,7 @@ local function webListener( event )
 
         print( "updatedresponse : "..updatedresponse )
 
+        if webView then webView:removeSelf( );webView=nil end
 
         Webservice.SaveMyUnitBuzzGoals(Goalsid,updatedresponse,get_SaveMyUnitBuzzGoals)
 
@@ -196,6 +197,9 @@ title.anchorX = 0
 title.x=BackBtn.x+BackBtn.contentWidth/2+5;title.y = BackBtn.y
 title:setFillColor(0)  
 
+
+
+
 --Utils.copyDatabaseTo("sample.txt", system.ResourceDirectory,"sample.txt",system.DocumentsDirectory )
 --Utils.copyDatabaseTo("ckeditor.html", system.ResourceDirectory,"ckeditor.html",system.DocumentsDirectory  )
 local test= string.urlEncode(event.params.content)
@@ -213,20 +217,35 @@ local path = system.pathForFile( "ckeditor.html",system.DocumentsDirectory )
 		    file:write( ckeditor.htmlContent.."'"..test.."'"..ckeditor.endHtml )
 		    -- Close the file handle
 
-		       local options =
-					{
-					    hasBackground = false,
-					    baseUrl = system.DocumentsDirectory,
-					    urlRequest = webListener
-					}
-					native.showWebPopup( 0, 70, display.viewableContentWidth, display.viewableContentHeight-80, "ckeditor.html", options )
+		   --     local options =
+					-- {
+					--     hasBackground = false,
+					--     baseUrl = system.DocumentsDirectory,
+					--     urlRequest = webListener
+					-- }
+					--  native.showWebPopup( 0, 70, display.viewableContentWidth, display.viewableContentHeight-80, "ckeditor.html", options )
 
+
+					 webView = native.newWebView( 0, 70, display.viewableContentWidth, display.viewableContentHeight )
+
+					 webView.hasBackground = false
+
+					 webView.anchorX=0;webView.anchorY=0
+					webView:request( "ckeditor.html", system.DocumentsDirectory )
+
+					webView:addEventListener( "urlRequest", webListener )
+
+					sceneGroup:insert( webView)
 
 		    file:close()
 
 		end
 
 		file = nil
+
+		-- local space = display.newRect( 0,0,W,80 )
+		-- space.x=W/2;space.y=webView.y+webView.contentHeight
+		-- webView.anchorY=0
 
 	-- local test=string.urlEncode( event.params.content )
 

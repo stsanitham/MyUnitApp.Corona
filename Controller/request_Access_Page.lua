@@ -544,8 +544,16 @@ sumbitBtn_lbl.x = sumbitBtn.x+5
 								
         			
 
-        				if event.target.id ~= "Comments" then
-        					if event.text:len() > 50 then
+        				if event.target.id == "Comments" then
+        					if event.text:len() > 160 then
+
+								event.target.text = event.target.text:sub(1,160)
+
+							end
+
+						else
+
+							if event.text:len() > 50 then
 
 								event.target.text = event.target.text:sub(1,50)
 

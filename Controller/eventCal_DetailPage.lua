@@ -24,6 +24,8 @@ local detail_value = {}
 
 local BackFlag = false
 
+local parantValue
+
 local TicklerId,CalendarId,CalendarName,id
 
 local RecentTab_Topvalue = 105
@@ -90,13 +92,7 @@ local display_details = {}
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
-			if status == "edit" then
-			event.parent:resumeGame(status,Details)
-		else
-			event.parent:resumeGame(status)
-		end
-
-		
+			
 		composer.hideOverlay( "slideRight", 300 )
 
 		end
@@ -111,11 +107,7 @@ local display_details = {}
 
 				status = "deleted"
 
-					if status == "edit" then
-						event.parent:resumeGame(status,Details)
-					else
-						event.parent:resumeGame(status)
-					end
+				
 
 				composer.hideOverlay( "slideRight", 300 )
 
@@ -129,7 +121,7 @@ local display_details = {}
 		local function EditOption( event )
 
 			if event.phase == "ended" then
-			local function onComplete( event )
+			local function onComplete( event )  
 				if event.action == "clicked" then
 
 				    local i = event.index
@@ -153,11 +145,8 @@ local display_details = {}
 
 				status="edit"
 
-					if status == "edit" then
-						event.parent:resumeGame(status,Details)
-					else
-						event.parent:resumeGame(status)
-					end
+
+					
 
 				composer.hideOverlay()
 			end
@@ -194,11 +183,7 @@ local display_details = {}
 
         if keyName=="back" then
 
-        		if status == "edit" then
-					event.parent:resumeGame(status,Details)
-				else
-					event.parent:resumeGame(status)
-				end
+        	
 
         	composer.hideOverlay( "slideRight", 300 )
             
@@ -294,6 +279,8 @@ local display_details = {}
 		local sceneGroup = self.view
 		local phase = event.phase
 
+		parantValue = event
+
 		if phase == "will" then
 
 		scrollView = widget.newScrollView
@@ -357,9 +344,9 @@ local display_details = {}
 
 		titleBar_text.text = Details.title
 
-			if titleBar_text.text:len() > 30 then
+			if titleBar_text.text:len() > 25 then
 
-					titleBar_text.text = titleBar_text.text:sub(1,30).."..."
+					titleBar_text.text = titleBar_text.text:sub(1,25).."..."
 
 				end
 
@@ -731,6 +718,12 @@ local display_details = {}
 
 		if event.phase == "will" then
 
+				if status == "edit" then
+					event.parent:resumeGame(status,Details)
+				else
+					status="back"
+					event.parent:resumeGame(status)
+				end
 
 		elseif phase == "did" then
 

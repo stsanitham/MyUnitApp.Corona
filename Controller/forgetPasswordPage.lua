@@ -98,7 +98,12 @@ local backBtn,UnitnumberField,UserName
 					if(tempvalue == "(") then
 						event.text = event.text:sub( 1, event.text:len()-1)
 					end
+				elseif (current_textField.id == "Username / Email") then
+					if event.text:len() > 100 then
 
+						event.target.text = event.text:sub(1,100)
+
+					end
 				end
 
 			end

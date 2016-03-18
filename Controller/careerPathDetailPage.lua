@@ -245,7 +245,7 @@ end
 
 			print( "Call : "..number )
 
-			system.openURL( "tel:"..number)
+			--system.openURL( "tel:"..number)
 
 			callFlag = system.openURL( "tel:"..number )
 

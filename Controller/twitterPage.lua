@@ -48,7 +48,32 @@ end
 --------------------------------------------------
 
 
+
+
 -----------------Function-------------------------
+
+function makeTimeStamp( dateString )
+   local pattern = "(%d+)%-(%d+)%-(%d+)%a(%d+)%:(%d+)%:([%d%.]+)([Z%p])(%d%d)%:?(%d%d)"
+   local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
+   local timestamp = os.time(
+      { year=year, month=month, day=day, hour=hour, min=minute, sec=seconds }
+   )
+   local offset = 0
+   if ( tzoffset ) then
+      if ( tzoffset == "+" or tzoffset == "-" ) then  -- We have a timezone
+
+      	print( "offsethour : "..offsethour )
+         offset = offsethour * 60 + offsetmin
+         if ( tzoffset == "-" ) then
+            offset = offset * -1
+         end
+         timestamp = timestamp + offset
+      end
+   end
+
+
+   return timestamp
+end
 
 function TwitterCallback(res,scrollView)
 	--local feedArray = {{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"}}
@@ -151,7 +176,9 @@ function TwitterCallback(res,scrollView)
 					
 					local time = makeTimeStamp(feedArray[i].created_at)
 
-					userTime = display.newText( tempGroup, tostring(os.date("%b-%d-%Y %I:%m %p",time )) , 0, 0, native.systemFont, 11 )
+					local timeValue = Utils.getTime(time,"%b-%d-%Y %I:%M %p",TimeZone)
+
+					userTime = display.newText( tempGroup, timeValue , 0, 0, native.systemFont, 11 )
 					userTime.anchorX = 0
 					userTime.anchorY = 0
 					Utils.CssforTextView(userTime,sp_Date_Time)

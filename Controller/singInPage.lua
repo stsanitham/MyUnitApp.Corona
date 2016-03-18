@@ -416,15 +416,38 @@ openPage="signInPage"
 		        print( "startPosition",event.startPosition )
 		        print( "text : ",event.text )
 		        print( "_______________________________________\n" )
-				
+				if current_textField.id == "Unit Number / Director name" then
 
-				if(current_textField.id == "Password") then
+						if event.text:len() > 50 then
+
+						event.target.text = event.text:sub(1,50)
+
+			
+
+					end
+
+
+				elseif current_textField.id == "User name or Email address" then
+
+						if event.text:len() > 100 then
+
+						event.target.text = event.text:sub(1,100)
+
+			
+
+					end
+
+
+
+				elseif(current_textField.id == "Password") then
 
 					
 
 					if event.text:len() > 12 then
 
 						event.target.text = event.text:sub(1,12)
+
+			
 
 					end
 

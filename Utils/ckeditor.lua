@@ -22,7 +22,7 @@ ckeditor.htmlContent = [[
 <body>
 
 
-		
+	<br>
 
 		<form id="sumbit" type="submit" align="center" >
 
@@ -30,6 +30,20 @@ ckeditor.htmlContent = [[
 			</textarea>
 
         <Button onclick=get_action(this) align="center" name="data" type="button" width="58" height="48" style="width=200px; height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 110px;"> Submit </Button>
+	
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+
 	</form>
 
 	<script>
