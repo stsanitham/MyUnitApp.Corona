@@ -22,7 +22,7 @@ local Background
 
 local menuBtn, chattabBar , tabButtons
 
-openPage="chatMessagePage"
+openPage="broadCastListPage"
 
 local BackFlag = false
 
@@ -99,7 +99,7 @@ local function onKeyEvent( event )
 									params = { tabbuttonValue2 =json.encode(tabButtons)}
 									}
 
-				    composer.gotoScene( "Controller.Chat", options )
+				    composer.gotoScene( "Controller.chatPage", options )
 
 			elseif tabbutton_id == "group" then
 
@@ -111,7 +111,7 @@ local function onKeyEvent( event )
 									params = { tabbuttonValue3 =json.encode(tabButtons)}
 									}
 
-				    composer.gotoScene( "Controller.GroupChat", options )
+				    composer.gotoScene( "Controller.groupPage", options )
 
 			elseif tabbutton_id == "consultant_list" then
 
@@ -123,7 +123,7 @@ local function onKeyEvent( event )
 									params = { tabbuttonValue4 =json.encode(tabButtons)}
 									}
 
-				    composer.gotoScene( "Controller.ConsultantList", options )
+				    composer.gotoScene( "Controller.consultantListPage", options )
 
 			end
 
@@ -280,7 +280,10 @@ end
 
 	elseif phase == "did" then
 
-	composer.removeHidden()
+	
+	local centerText = display.newText(sceneGroup,"Broadcast List",0,0,native.systemFontBold,16)
+	centerText.x=W/2;centerText.y=H/2
+	centerText:setFillColor( 0 )
 
     menuBtn:addEventListener("touch",menuTouch)
     BgText:addEventListener("touch",menuTouch)

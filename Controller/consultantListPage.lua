@@ -22,7 +22,7 @@ local Background,BgText
 
 local menuBtn,tabButtons,chattabBar
 
-openPage="consultantList"
+openPage="consultantListPage"
 
 local BackFlag = false
 
@@ -89,7 +89,21 @@ local function onKeyEvent( event )
 
 				tabbutton_id = event.target._id 
 
-			if tabbutton_id == "chat" then
+			if tabbutton_id == "broadcast_list" then
+
+ 				print("tabButtons details : "..json.encode(tabButtons))
+
+					chattabBar:setSelected( 1 ) 
+					composer.removeHidden()
+   				    local options = {
+									effect = "crossFade",
+									time = 300,	
+									params = { tabbuttonValue2 =json.encode(tabButtons)}
+									}
+
+				    composer.gotoScene( "Controller.broadCastListPage", options )
+
+			elseif tabbutton_id == "chat" then
 
 				    print("tabButtons details : "..json.encode(tabButtons))
 
@@ -101,7 +115,7 @@ local function onKeyEvent( event )
 									params = { tabbuttonValue2 =json.encode(tabButtons)}
 									}
 
-				    composer.gotoScene( "Controller.Chat", options )
+				    composer.gotoScene( "Controller.chatPage", options )
 
 			elseif tabbutton_id == "group" then
 
@@ -113,19 +127,8 @@ local function onKeyEvent( event )
 									params = { tabbuttonValue3 =json.encode(tabButtons)}
 									}
 
-				    composer.gotoScene( "Controller.GroupChat", options )
+				    composer.gotoScene( "Controller.groupPage", options )
 
-			elseif tabbutton_id == "consultant_list" then
-
-			    	chattabBar:setSelected( 4 ) 
-			    	composer.removeHidden()
-   				    local options = {
-									effect = "crossFade",
-									time = 300,	 
-									params = { tabbuttonValue4 =json.encode(tabButtons)}
-									}
-
-				    composer.gotoScene( "Controller.ConsultantList", options )
 
 			end
 
@@ -170,7 +173,6 @@ function scene:create( event )
 
 
 
-chattabBar = {}
 
 
 tabButtons = {
@@ -187,7 +189,7 @@ tabButtons = {
         },
         width = 20,
         height = 20,
-        --onPress = handleTabBarEvent,
+        onPress = handleTabBarEvent,
     },
     {
         label = "Chat",
@@ -202,7 +204,7 @@ tabButtons = {
         },
         width = 20,
         height = 15,
-        --onPress = handleTabBarEvent,
+        onPress = handleTabBarEvent,
     },
     {
         label = "Group",
@@ -217,7 +219,7 @@ tabButtons = {
         },
         width = 20,
         height = 20,
-       -- onPress = handleTabBarEvent,
+       onPress = handleTabBarEvent,
     },
     {
         label = "Consultant List",
@@ -232,7 +234,7 @@ tabButtons = {
         },
         width = 16,
         height = 20,
-       -- onPress = handleTabBarEvent,
+       onPress = handleTabBarEvent,
         selected = true,
     },
 }
@@ -283,10 +285,13 @@ function scene:show( event )
 			nameval = event.params.tabbuttonValue4
 		end
 
+		local centerText = display.newText(sceneGroup,"Consultant List",0,0,native.systemFontBold,16)
+		centerText.x=W/2;centerText.y=H/2
+		centerText:setFillColor( 0 )
 
 	elseif phase == "did" then
 
-		composer.removeHidden()
+		
 
 		menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)

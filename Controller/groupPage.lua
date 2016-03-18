@@ -23,7 +23,7 @@ local Background,BgText
 
 local menuBtn,tabButtons,chattabBar
 
-openPage="Chat"
+openPage="groupPage"
 
 local BackFlag = false
 
@@ -33,10 +33,8 @@ local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
 local tabBarRight = "res/assert/tabSelectedRight.png"
 
 
---------------------------------------------------
 
 
------------------Function-------------------------
 
 local function onTimer ( event )
 
@@ -81,14 +79,27 @@ local function onKeyEvent( event )
 
 
 
-
 	local function handleTabBarEvent( event )
 
 		if event.phase == "press" then 
 
 				tabbutton_id = event.target._id 
 
-			if tabbutton_id == "chat" then
+			if tabbutton_id == "broadcast_list" then
+
+ 				print("tabButtons details : "..json.encode(tabButtons))
+
+					chattabBar:setSelected( 1 ) 
+					composer.removeHidden()
+   				    local options = {
+									effect = "crossFade",
+									time = 300,	
+									params = { tabbuttonValue2 =json.encode(tabButtons)}
+									}
+
+				    composer.gotoScene( "Controller.broadCastListPage", options )
+
+			elseif tabbutton_id == "chat" then
 
 				    print("tabButtons details : "..json.encode(tabButtons))
 
@@ -100,19 +111,7 @@ local function onKeyEvent( event )
 									params = { tabbuttonValue2 =json.encode(tabButtons)}
 									}
 
-				    composer.gotoScene( "Controller.Chat", options )
-
-			elseif tabbutton_id == "group" then
-
-					chattabBar:setSelected( 3 ) 
-					composer.removeHidden()
-   				    local options = {
-									effect = "crossFade",
-									time = 300,	  
-									params = { tabbuttonValue3 =json.encode(tabButtons)}
-									}
-
-				    composer.gotoScene( "Controller.GroupChat", options )
+				    composer.gotoScene( "Controller.chatPage", options )
 
 			elseif tabbutton_id == "consultant_list" then
 
@@ -124,7 +123,7 @@ local function onKeyEvent( event )
 									params = { tabbuttonValue4 =json.encode(tabButtons)}
 									}
 
-				    composer.gotoScene( "Controller.ConsultantList", options )
+				    composer.gotoScene( "Controller.consultantListPage", options )
 
 			end
 
@@ -133,12 +132,13 @@ local function onKeyEvent( event )
     return true 
 
 	end
+
+
 ------------------------------------------------------
 
 function scene:create( event )
 
 	local sceneGroup = self.view
-
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
@@ -164,8 +164,6 @@ function scene:create( event )
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
 
-
-chattabBar = {}
 
 
 tabButtons = {
@@ -213,6 +211,7 @@ tabButtons = {
         width = 20,
         height = 20,
         onPress = handleTabBarEvent,
+        selected = true
     },
     {
         label = "Consultant List",
@@ -228,7 +227,6 @@ tabButtons = {
         width = 16,
         height = 20,
         onPress = handleTabBarEvent,
-        selected = true,
     },
 }
 
@@ -273,8 +271,12 @@ function scene:show( event )
 	if phase == "will" then
 
 		if event.params then
-			nameval = event.params.tabbuttonValue2
+			nameval = event.params.tabbuttonValue3
 		end
+
+		local centerText = display.newText(sceneGroup,"Geoup Page",0,0,native.systemFontBold,16)
+		centerText.x=W/2;centerText.y=H/2
+		centerText:setFillColor( 0 )
 
 
 	elseif phase == "did" then
