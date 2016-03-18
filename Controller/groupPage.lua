@@ -85,7 +85,11 @@ local function onKeyEvent( event )
 
 				tabbutton_id = event.target._id 
 
-			if tabbutton_id == "broadcast_list" then
+		    if tabbutton_id == "group" then
+
+				title.text = "Group"
+
+			elseif tabbutton_id == "broadcast_list" then
 
  				print("tabButtons details : "..json.encode(tabButtons))
 
@@ -164,6 +168,7 @@ function scene:create( event )
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
 
+	title.text = "Group"
 
 
 tabButtons = {
