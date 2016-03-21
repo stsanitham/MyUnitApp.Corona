@@ -46,8 +46,6 @@ local Listresponse_array = {}
 
 BroadcastList_array[#BroadcastList_array+1] = display.newGroup()
 
-local tempGroup = BroadcastList_array[#BroadcastList_array]
-
 
 local tabBarBackground = "res/assert/tabBarBg.png"
 local tabBarLeft = "res/assert/tabSelectedLeft.png"
