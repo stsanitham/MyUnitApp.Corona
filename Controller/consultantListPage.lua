@@ -26,11 +26,33 @@ openPage="consultantListPage"
 
 local BackFlag = false
 
+local newtworkArray = {}
+
+local NameArray = {}
+
+local consultantList_scrollview
+
+local careerListArray = {}
+
+local consultantList_array = {}
+
+local RecentTab_Topvalue = 75
+
+local header_value = ""
+
+local Image
+
+local byNameArray = {}
+
+local Listresponse_array = {}
+
+consultantList_array[#consultantList_array+1] = display.newGroup()
+
+
 local tabBarBackground = "res/assert/tabBarBg.png"
 local tabBarLeft = "res/assert/tabSelectedLeft.png"
 local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
 local tabBarRight = "res/assert/tabSelectedRight.png"
-
 
 
 --------------------------------------------------
@@ -141,6 +163,206 @@ local function onKeyEvent( event )
     return true 
 
 	end
+
+
+
+
+
+local function careePath_list( list )
+
+
+	for j=#careerListArray, 1, -1 do 
+		
+		display.remove(careerListArray[#careerListArray])
+		careerListArray[#careerListArray] = nil
+	end
+
+	for i=1,#list do
+      print("here")
+
+
+		careerListArray[#careerListArray+1] = display.newGroup()
+
+		local tempGroup = careerListArray[#careerListArray]
+
+		local Image 
+
+		local tempHeight = 0
+
+		local background = display.newRect(tempGroup,0,0,W,50)
+
+		if(careerListArray[#careerListArray-1]) ~= nil then
+			tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height+3
+		end
+
+		background.anchorY = 0
+		background.x=W/2;background.y=tempHeight
+		background.id=list[i].Contact_Id
+		background.alpha=0.01
+
+		if parentFlag == true then
+			parentFlag=false
+
+
+			parentTitle = display.newRect(tempGroup,0,0,W,25)
+			if(careerListArray[#careerListArray-1]) ~= nil then
+				--here
+				tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height/2+10
+			end
+
+
+			parentTitle.anchorY = 0
+			parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
+			parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
+
+			if viewValue == "position" then
+				parent_centerText = display.newText(tempGroup,header_value,0,0,native.systemFontBold,14)
+			else
+				parent_centerText = display.newText(tempGroup,header_value:upper(),0,0,native.systemFontBold,14)
+
+			end
+
+			parent_centerText.x=5
+			parent_centerText.anchorX=0
+			parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
+
+			background.y=parentTitle.y+background.contentHeight/2
+
+			
+
+
+		end
+
+		
+
+		if list[i].Image_Path ~= nil then
+
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
+
+			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
+				"GET",
+				function ( img_event )
+					if ( img_event.isError ) then
+						print ( "Network error - download failed" )
+					else
+
+						if Image then
+
+						print(img_event.response.filename)
+						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+						Image.width=35;Image.height=35
+						Image.x=30;Image.y=background.y+background.contentHeight/2
+    				--event.row:insert(img_event.target)
+
+    			    else
+
+						Image:removeSelf();Image=nil
+
+					 end
+    			end
+
+    			end, "career"..list[i].Contact_Id..".png", system.TemporaryDirectory)
+		else
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
+
+		end
+
+
+			
+
+
+
+		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,native.systemFont,14)
+		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
+		Name_txt.anchorX=0
+		Utils.CssforTextView(Name_txt,sp_labelName)
+		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+		local Position_txt = display.newText(tempGroup,list[i].CarrierProgress,0,0,native.systemFont,14)
+		Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
+		Position_txt.anchorX=0
+		Utils.CssforTextView(Position_txt,sp_fieldValue)
+
+		local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
+		right_img.anchorX=0
+		right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
+
+		local line = display.newRect(tempGroup,W/2,background.y,W,1)
+		line.y=background.y+background.contentHeight-line.contentHeight
+		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+	
+
+		tempGroup.Contact_Id = list[i].Contact_Id
+
+		consultantList_scrollview:insert(tempGroup)
+
+	end
+end
+
+
+
+
+
+
+function get_Activeteammember(response)
+
+
+	for i=1,#Listresponse_array do
+		Listresponse_array[i]=nil
+		byNameArray[i]=nil
+	end
+
+	Listresponse_array=response
+
+	if response ~= nil and #response ~= 0 then
+				
+--NameArray
+
+print("size = "..#Listresponse_array)
+
+						for i=1,#Listresponse_array do
+
+							local list_Name = Listresponse_array[i].Last_Name
+
+							
+
+								if Listresponse_array[i].First_Name then
+
+									list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
+
+								end
+
+							
+
+							print(list_Name)
+
+							local temp = {}
+
+							if list_Name:sub(1,1) == " " then
+								list_Name = list_Name:sub( 2,list_Name:len())
+							end
+
+							temp.Name = list_Name
+							temp.CarrierProgress = Listresponse_array[i].CarrierProgress
+							temp.Image_Path = Listresponse_array[i].Image_Path
+							temp.Contact_Id = Listresponse_array[i].Contact_Id
+							temp.DisplayPosition = Listresponse_array[i].DisplayPosition
+
+							byNameArray[#byNameArray+1] = temp
+
+
+						end
+
+								careePath_list(byNameArray)
+
+	else
+
+		NoEvent.isVisible=true
+
+	end
+end
 
 
 
@@ -271,6 +493,21 @@ tabButtons = {
 			sceneGroup:insert( rect )
 
 
+			consultantList_scrollview = widget.newScrollView
+			{
+				top = RecentTab_Topvalue-5,
+				left = 0,
+				width = W,
+				height =H-RecentTab_Topvalue-chattabBar.height+5,
+				hideBackground = true,
+				isBounceEnabled=false,
+				horizontalScrollingDisabled = true,
+				verticalScrollingDisabled = false,
+			}
+
+            sceneGroup:insert(consultantList_scrollview)
+
+
 MainGroup:insert(sceneGroup)
 
 end
@@ -288,13 +525,13 @@ function scene:show( event )
 			nameval = event.params.tabbuttonValue4
 		end
 
-		local centerText = display.newText(sceneGroup,"Consultant List",0,0,native.systemFontBold,16)
-		centerText.x=W/2;centerText.y=H/2
-		centerText:setFillColor( 0 )
+		-- local centerText = display.newText(sceneGroup,"Consultant List",0,0,native.systemFontBold,16)
+		-- centerText.x=W/2;centerText.y=H/2
+		-- centerText:setFillColor( 0 )
 
 	elseif phase == "did" then
 
-		
+		Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 
 		menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)

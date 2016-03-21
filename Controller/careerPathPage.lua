@@ -216,6 +216,7 @@ local function careePath_list( list )
 	for i=1,#list do
 print("here")
 
+
 		if i == 1 then 
 			if viewValue == "position" then
 				header_value = list[i].CarrierProgress
