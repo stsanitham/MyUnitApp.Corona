@@ -60,6 +60,28 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 
 -----------------Function-------------------------
 
+local function consultantTounch( event )
+	if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+			 				    local options = {
+										effect = "crossFade",
+										time = 300,	
+										params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
+										}
+
+					    composer.gotoScene( "Controller.chatPage", options )
+
+
+	end
+
+	return true
+
+end
+
+
 
 local function onTimer ( event )
 
@@ -120,7 +142,7 @@ local function onKeyEvent( event )
  				print("tabButtons details : "..json.encode(tabButtons))
 
 					chattabBar:setSelected( 1 ) 
-					composer.removeHidden()
+					-- composer.removeHidden()
    				    local options = {
 									effect = "crossFade",
 									time = 300,	
@@ -129,24 +151,24 @@ local function onKeyEvent( event )
 
 				    composer.gotoScene( "Controller.broadCastListPage", options )
 
-			elseif tabbutton_id == "chat" then
+			-- elseif tabbutton_id == "chat" then
 
-				    print("tabButtons details : "..json.encode(tabButtons))
+			-- 	    print("tabButtons details : "..json.encode(tabButtons))
 
-					chattabBar:setSelected( 2 ) 
-					composer.removeHidden()
-   				    local options = {
-									effect = "crossFade",
-									time = 300,	
-									params = { tabbuttonValue2 =json.encode(tabButtons)}
-									}
+			-- 		chattabBar:setSelected( 2 ) 
+			-- 		-- composer.removeHidden()
+   -- 				    local options = {
+			-- 						effect = "crossFade",
+			-- 						time = 300,	
+			-- 						params = { tabbuttonValue2 =json.encode(tabButtons)}
+			-- 						}
 
-				    composer.gotoScene( "Controller.chatPage", options )
+			-- 	    composer.gotoScene( "Controller.chatPage", options )
 
 			elseif tabbutton_id == "group" then
 
 					chattabBar:setSelected( 3 ) 
-					composer.removeHidden()
+					-- composer.removeHidden()
    				    local options = {
 									effect = "crossFade",
 									time = 300,	  
@@ -199,6 +221,7 @@ local function careePath_list( list )
 		background.x=W/2;background.y=tempHeight
 		background.id=list[i].Contact_Id
 		background.alpha=0.01
+		background.value = list[i]
 
 		if parentFlag == true then
 			parentFlag=false
@@ -295,6 +318,8 @@ local function careePath_list( list )
 	
 
 		tempGroup.Contact_Id = list[i].Contact_Id
+
+		background:addEventListener( "touch", consultantTounch )
 
 		consultantList_scrollview:insert(tempGroup)
 
@@ -400,6 +425,44 @@ function scene:create( event )
 	title.text = "Consultant List"
 
 
+
+
+			consultantList_scrollview = widget.newScrollView
+			{
+				top = RecentTab_Topvalue-5,
+				left = 0,
+				width = W,
+				height =H-RecentTab_Topvalue-50+5,
+				hideBackground = true,
+				isBounceEnabled=false,
+				horizontalScrollingDisabled = true,
+				verticalScrollingDisabled = false,
+			}
+
+            sceneGroup:insert(consultantList_scrollview)
+
+
+            		Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
+
+
+MainGroup:insert(sceneGroup)
+
+end
+
+
+
+function scene:show( event )
+
+	local sceneGroup = self.view
+	local phase = event.phase
+	
+	if phase == "will" then
+
+		if event.params then
+			nameval = event.params.tabbuttonValue4
+		end
+
+
 tabButtons = {
     {
         label = "Broadcast List",
@@ -492,46 +555,12 @@ tabButtons = {
 			rect:setFillColor(0)
 			sceneGroup:insert( rect )
 
-
-			consultantList_scrollview = widget.newScrollView
-			{
-				top = RecentTab_Topvalue-5,
-				left = 0,
-				width = W,
-				height =H-RecentTab_Topvalue-chattabBar.height+5,
-				hideBackground = true,
-				isBounceEnabled=false,
-				horizontalScrollingDisabled = true,
-				verticalScrollingDisabled = false,
-			}
-
-            sceneGroup:insert(consultantList_scrollview)
-
-
-MainGroup:insert(sceneGroup)
-
-end
-
-
-
-function scene:show( event )
-
-	local sceneGroup = self.view
-	local phase = event.phase
-	
-	if phase == "will" then
-
-		if event.params then
-			nameval = event.params.tabbuttonValue4
-		end
-
 		-- local centerText = display.newText(sceneGroup,"Consultant List",0,0,native.systemFontBold,16)
 		-- centerText.x=W/2;centerText.y=H/2
 		-- centerText:setFillColor( 0 )
 
 	elseif phase == "did" then
 
-		Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 
 		menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)
@@ -558,7 +587,7 @@ end
 
 		elseif phase == "did" then
 
-				composer.removeHidden()
+		composer.removeHidden()
 
 		end	
 
