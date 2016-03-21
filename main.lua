@@ -218,30 +218,33 @@ composer.gotoScene( "Controller.splashScreen")
 
 function DidReceiveRemoteNotification(message, additionalData, isActive)
 
-            notificationFlag = true
+            -- notificationFlag = true
 
-            if (additionalData) then
+            -- if (additionalData) then
                 
-              local options = {
-                isModal = true,
-                effect = "fade",
-                time = 400,
-                params = {
+            --   local options = {
+            --     isModal = true,
+            --     effect = "fade",
+            --     time = 400,
+            --     params = {
 
-                    additionalValue = additionalData,
-                    Message = message
+            --         additionalValue = additionalData,
+            --         Message = message
 
-                }
-            }
+            --     }
+            -- }
 
-            -- By some method (a pause button, for example), show the overlay
-            composer.showOverlay( "Controller.pushNotificationPage", options )
+            -- -- By some method (a pause button, for example), show the overlay
+            -- composer.showOverlay( "Controller.pushNotificationPage", options )
 
-            else
+            -- else
 
-              native.showAlert("MyUnitBuzz", message, { "OK" } )
+            --   native.showAlert("MyUnitBuzz", message, { "OK" } )
 
-            end
+            -- end
+
+
+            
 
 end
 

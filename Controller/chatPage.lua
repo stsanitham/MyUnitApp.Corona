@@ -12,6 +12,8 @@ local mime = require("mime")
 local style = require("res.value.style")
 local Utility = require( "Utils.Utility" )
 local json = require("json")
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
 
 
 
@@ -21,22 +23,149 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
 
-local menuBtn,tabButtons,chattabBar
+local menuBtn,tabButtons,chattabBar,chatScroll
 
 openPage="chatPage"
 
 local BackFlag = false
+
+local ChatBox
+
+local ContactDetails = {}
+
+local ChatHistory = {}
+
+local MeassageList={}
+
+local UserId,ContactId,To_ContactId
 
 local tabBarBackground = "res/assert/tabBarBg.png"
 local tabBarLeft = "res/assert/tabSelectedLeft.png"
 local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
 local tabBarRight = "res/assert/tabSelectedRight.png"
 
+for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		UserId = row.UserId
+		ContactId = row.ContactId
+
+end
 
 --------------------------------------------------
 
 
 -----------------Function-------------------------
+
+local function sendMeaasage()
+	
+	ChatBox.text=""
+
+	print( "sendMeaasage" )
+
+	for i=#MeassageList, 1, -1 do 
+			display.remove(MeassageList[#MeassageList])
+			MeassageList[#MeassageList] = nil
+	end
+	for i=#ChatHistory, 1, -1 do 
+			ChatHistory[#ChatHistory] = nil
+	end
+
+	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Message_From='"..tostring(ContactId).."' AND Message_To='"..tostring(To_ContactId).."'ORDER BY id DESC ") do
+
+		ChatHistory[#ChatHistory+1] =row
+
+	end
+
+	
+
+
+	for i=1,#ChatHistory do
+
+		MeassageList[#MeassageList+1] = display.newGroup( )
+
+		local tempGroup = MeassageList[#MeassageList]
+
+		local bg = display.newRoundedRect(0,0,W-100,25,3 )
+		tempGroup:insert(bg)
+		bg.strokeWidth = 1
+		bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+		bg.anchorX=0;bg.anchorY=0
+
+
+
+
+		if MeassageList[#MeassageList-1] ~= nil then
+			
+			bg.y=MeassageList[#MeassageList-1][1].y-MeassageList[#MeassageList-1][1].contentHeight-5
+		else
+			bg.y=H-210
+		end
+		bg.x=0
+
+		if ChatHistory[i].Message_From == tostring(ContactId) then
+			print( "here" )
+			bg.x=W-10
+			bg.anchorX=1
+			bg:setFillColor( 0.2,0.6,0.8,0.3 )
+			bg:setStrokeColor( 0.2,0.4,0.6)
+
+		end
+
+		local chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,0,0,native.systemFont,14)
+		chat.anchorY=0
+		chat.anchorX = bg.anchorX
+		chat.x=bg.x-5;chat.y=bg.y
+		chat:setFillColor( 0 )
+		tempGroup:insert( chat )
+
+		bg.width = chat.contentWidth+10
+
+		chatScroll:insert(tempGroup)
+
+	end
+
+
+
+end
+
+function get_sendMssage(response)
+
+	sendMeaasage()
+
+end
+
+local function ChatSendAction( event )
+	if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+			if ChatBox.text ~= nil and ChatBox.text ~= "" then
+			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+			
+			Message_date=os.date("%Y-%m-%dT%H:%m:%S")
+			isDeleted="false"
+			Created_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
+			Updated_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
+			ImagePath="NULL"
+			AudioPath="NULL"
+			VideoPath="NULL"
+			MyUnitBuzz_LongMessage=ChatBox.text
+			From=ContactId
+			To=To_ContactId
+			Message_Type = "INDIVIDUAL"
+
+				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n" )
+				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..ChatBox.text..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[');]]
+				db:exec( insertQuery )
+
+			Webservice.SEND_MESSAGE(ChatBox.text,"","","","","SEND",From,To,Message_Type,get_sendMssage)
+
+
+	end
+
+	end
+
+return true
+end
 
 local function onTimer ( event )
 
@@ -98,7 +227,6 @@ local function onKeyEvent( event )
 				    print("tabButtons details : "..json.encode(tabButtons))
 
 					chattabBar:setSelected( 1 ) 
-					composer.removeHidden()
    				    local options = {
 									effect = "crossFade",
 									time = 300,	
@@ -110,7 +238,6 @@ local function onKeyEvent( event )
 			elseif tabbutton_id == "group" then
 
 					chattabBar:setSelected( 3 ) 
-					composer.removeHidden()
    				    local options = {
 									effect = "crossFade",
 									time = 300,	  
@@ -122,7 +249,6 @@ local function onKeyEvent( event )
 			elseif tabbutton_id == "consultant_list" then
 
 			    	chattabBar:setSelected( 4 ) 
-			    	composer.removeHidden()
    				    local options = {
 									effect = "crossFade",
 									time = 300,	 
@@ -172,7 +298,7 @@ function scene:create( event )
 	title.text = "Chat"
 
 
-tabButtons = {
+		 tabButtons = {
     {
         label = "Broadcast List",
         defaultFile = "res/assert/user.png",
@@ -187,6 +313,7 @@ tabButtons = {
         width = 20,
         height = 20,
         onPress = handleTabBarEvent,
+        selected = true,
     },
     {
         label = "Chat",
@@ -218,7 +345,12 @@ tabButtons = {
         height = 20,
         onPress = handleTabBarEvent,
     },
-    {
+   
+}
+
+if IsOwner == true then
+
+tabButtons[#tabButtons+1] =  {
         label = "Consultant List",
         defaultFile = "res/assert/map.png",
         overFile = "res/assert/map.png",
@@ -232,9 +364,9 @@ tabButtons = {
         width = 16,
         height = 20,
         onPress = handleTabBarEvent,
-        selected = true,
-    },
-}
+    }
+
+end
 
 			    chattabBar = widget.newTabBar{
 			    top =  display.contentHeight - 55,
@@ -280,13 +412,56 @@ function scene:show( event )
 			nameval = event.params.tabbuttonValue2
 		end
 
-		local centerText = display.newText(sceneGroup,"Chat Page",0,0,native.systemFontBold,16)
-		centerText.x=W/2;centerText.y=H/2
-		centerText:setFillColor( 0 )
 
 
 	elseif phase == "did" then
 
+		ContactDetails = event.params.contactDetails
+		print( "ContactDetails : "..json.encode(ContactDetails) )
+
+		title.text = ContactDetails.Name
+
+		To_ContactId = ContactDetails.Contact_Id
+
+		ChatBox_bg = display.newRect(sceneGroup,0,H-100, W-50, 40 )
+		ChatBox_bg.anchorY=0;ChatBox_bg.anchorX=0
+		ChatBox_bg.x=5
+		ChatBox_bg.strokeWidth = 1
+		ChatBox_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray))
+
+		ChatBox = native.newTextBox( 0, ChatBox_bg.y, ChatBox_bg.contentWidth-5, ChatBox_bg.contentHeight-5 )
+		ChatBox.isEditable = true
+		ChatBox.anchorY=0;ChatBox.anchorX=0
+		ChatBox.x=ChatBox_bg.x
+		ChatBox.hasBackground = false
+		sceneGroup:insert( ChatBox )
+
+		sendBtn = display.newImageRect( sceneGroup, "res/assert/msg_send.png", 25,20 )
+		sendBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
+		sendBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-sendBtn.contentHeight/2
+		sendBtn.anchorY=0;sendBtn.anchorX=0
+
+
+		chatScroll = widget.newScrollView(
+    {
+        top = 75,
+        left = 0,
+        width = W,
+        height = H-175,
+        listener = scrollListener,
+        hideBackground=true,
+       
+    }
+)
+
+		chatScroll.anchorY=1
+		chatScroll.anchorX=0
+		chatScroll.x=0;chatScroll.y=ChatBox_bg.y-5
+		sceneGroup:insert( chatScroll )
+
+		sendMeaasage()
+
+		sendBtn:addEventListener( "touch", ChatSendAction )
 		menuBtn:addEventListener("touch",menuTouch)
 		
 	end	
@@ -303,10 +478,12 @@ end
 		if event.phase == "will" then
 
 
-			elseif phase == "did" then
+		elseif phase == "did" then
 
 
-			end	
+			composer.removeHidden()
+
+		end	
 
 		end
 

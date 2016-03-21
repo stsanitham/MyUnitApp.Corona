@@ -46,8 +46,6 @@ local Listresponse_array = {}
 
 BroadcastList_array[#BroadcastList_array+1] = display.newGroup()
 
-local tempGroup = BroadcastList_array[#BroadcastList_array]
-
 
 local tabBarBackground = "res/assert/tabBarBg.png"
 local tabBarLeft = "res/assert/tabSelectedLeft.png"
@@ -115,24 +113,24 @@ local function onKeyEvent( event )
 
 				title.text = "Broadcast List"
 
-			elseif tabbutton_id == "chat" then
+			-- elseif tabbutton_id == "chat" then
 
-				    print("tabButtons details : "..json.encode(tabButtons))
+			-- 	    print("tabButtons details : "..json.encode(tabButtons))
 
-					chattabBar:setSelected( 2 ) 
-					composer.removeHidden()
-   				    local options = {
-									effect = "crossFade",
-									time = 300,	
-									params = { tabbuttonValue2 =json.encode(tabButtons)}
-									}
+			-- 		chattabBar:setSelected( 2 ) 
+			-- 		-- composer.removeHidden()
+   -- 				    local options = {
+			-- 						effect = "crossFade",
+			-- 						time = 300,	
+			-- 						params = { tabbuttonValue2 =json.encode(tabButtons)}
+			-- 						}
 
-				    composer.gotoScene( "Controller.chatPage", options )
+			-- 	    composer.gotoScene( "Controller.chatPage", options )
 
 			elseif tabbutton_id == "group" then
 
 					chattabBar:setSelected( 3 ) 
-					composer.removeHidden()
+					-- composer.removeHidden()
    				    local options = {
 									effect = "crossFade",
 									time = 300,	  
@@ -144,7 +142,7 @@ local function onKeyEvent( event )
 			elseif tabbutton_id == "consultant_list" then
 
 			    	chattabBar:setSelected( 4 ) 
-			    	composer.removeHidden()
+			    	-- composer.removeHidden()
    				    local options = {
 									effect = "crossFade",
 									time = 300,	 
@@ -200,7 +198,43 @@ local function onKeyEvent( event )
 	title.text = "Broadcast List"
 
 
-    tabButtons = {
+   
+
+
+			-- broadcastList_scrollview = widget.newScrollView
+			-- {
+			-- 	top = RecentTab_Topvalue-5,
+			-- 	left = 0,
+			-- 	width = W,
+			-- 	height =H-RecentTab_Topvalue-chattabBar.height+5,
+			-- 	hideBackground = true,
+			-- 	isBounceEnabled=false,
+			-- 	horizontalScrollingDisabled = true,
+			-- 	verticalScrollingDisabled = false,
+			-- }
+
+   --          sceneGroup:insert(broadcastList_scrollview)
+
+    MainGroup:insert(sceneGroup)
+
+end
+
+
+
+
+	function scene:show( event )
+
+	local sceneGroup = self.view
+	local phase = event.phase
+
+	if phase == "will" then
+
+		if event.params then
+			nameval = event.params.tabbuttonValue1
+
+		end
+
+		 tabButtons = {
     {
         label = "Broadcast List",
         defaultFile = "res/assert/user.png",
@@ -247,7 +281,12 @@ local function onKeyEvent( event )
         height = 20,
         onPress = handleTabBarEvent,
     },
-    {
+   
+}
+
+if IsOwner == true then
+
+tabButtons[#tabButtons+1] =  {
         label = "Consultant List",
         defaultFile = "res/assert/map.png",
         overFile = "res/assert/map.png",
@@ -261,8 +300,9 @@ local function onKeyEvent( event )
         width = 16,
         height = 20,
         onPress = handleTabBarEvent,
-    },
-}
+    }
+
+end
 
 			    chattabBar = widget.newTabBar{
 			    top =  display.contentHeight - 55,
@@ -291,40 +331,6 @@ local function onKeyEvent( event )
 			rect.y = display.contentHeight - 50;
 			rect:setFillColor(0)
 			sceneGroup:insert( rect )
-
-
-			-- broadcastList_scrollview = widget.newScrollView
-			-- {
-			-- 	top = RecentTab_Topvalue-5,
-			-- 	left = 0,
-			-- 	width = W,
-			-- 	height =H-RecentTab_Topvalue-chattabBar.height+5,
-			-- 	hideBackground = true,
-			-- 	isBounceEnabled=false,
-			-- 	horizontalScrollingDisabled = true,
-			-- 	verticalScrollingDisabled = false,
-			-- }
-
-   --          sceneGroup:insert(broadcastList_scrollview)
-
-    MainGroup:insert(sceneGroup)
-
-end
-
-
-
-
-	function scene:show( event )
-
-	local sceneGroup = self.view
-	local phase = event.phase
-
-	if phase == "will" then
-
-		if event.params then
-			nameval = event.params.tabbuttonValue1
-
-		end
 
 
 	elseif phase == "did" then
@@ -356,6 +362,8 @@ end
 	local phase = event.phase
 
 	if event.phase == "will" then
+
+
 
 	menuBtn:removeEventListener("touch",menuTouch)
 	BgText:removeEventListener("touch",menuTouch)

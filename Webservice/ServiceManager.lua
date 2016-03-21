@@ -227,7 +227,7 @@ end
 
 
 
-function Webservice.SEND_MESSAGE(message,videopath,imagepath,imagename,imagesize,pushmethod,postExecution)
+function Webservice.SEND_MESSAGE(message,videopath,imagepath,imagename,imagesize,pushmethod,From,To,Message_Type,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -259,14 +259,7 @@ function Webservice.SEND_MESSAGE(message,videopath,imagepath,imagename,imagesize
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	--local v = "MyUnitBuzzMessageId=1&MyUnitBuzzMessage="..message.."&MessageStatus="..pushmethod.."&UserId="..UserId.."&EmailAddress="..EmailAddess.."&MessageDate="..headers["Timestamp"].."&TimeZone=Eastern Standard Time"
---02/02/2016 9:21:48 PM
---local time = os.date("%I")
-
-
--- if message ~="" then
-
--- 	v = v.."MyUnitBuzzMessage": "]]..message..[["
+	
 local v = [[
 
 {
@@ -279,6 +272,10 @@ local v = [[
 	"ImageFilePath": "]]..imagepath..[[",
 	 "ImageFileName": "]]..imagename..[[",
 	  "ImageFileSize": "]]..imagesize..[[",
+	  "From": "]]..From..[[",
+	  "To": "]]..To..[[",
+	  "Message_Type": "]]..Message_Type..[[",
+
    "TimeZone": "Eastern Standard Time",
 }
 ]]
@@ -286,7 +283,7 @@ local v = [[
 
 	params={headers = headers,body = v}
 
-	print("Send Message Request :"..json.encode(params))
+	print("Send Message Request :"..v)
 
 	request.new( ApplicationConfig.SEND_MESSAGE,method,params,postExecution)
 	
