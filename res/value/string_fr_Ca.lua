@@ -87,7 +87,7 @@ RequestAccess.BLOCK = "Accès refusé déjà"
 RequestAccess.DENY = "Accès refusé déjà"
 RequestAccess.FAIL = "Entrez les informations d'identification valides"
 RequestAccess.Name_error = "Entrez le Nom"
-RequestAccess.Email_error = "Entrez le e-mail"
+RequestAccess.Email_error = "Entrez le courriel"
 RequestAccess.EmailValidation_error = "Entrez le e-mail valide"
 RequestAccess.Phone_error = "Entrez le numéro de téléphone"
 RequestAccess.UnitNumber_error = "Entrez le numéro d'unité"
@@ -102,6 +102,7 @@ RequestAccess.DirectorEmail_placeholder = "Directeur Email"
 RequestAccess.DirectorName_error = "Entrez le nom Directeur"
 RequestAccess.DirectorEmail_error = "Entrez le directeur Adresse e-mail"
 RequestAccess.DirectorEmailValidation_error = "Entrez le Directeur adresse email valide"
+RequestAccess.Password_error = "Entrez le mot de passe"
 
 
 LoginPage = {}
@@ -362,6 +363,12 @@ PopupGroup.PasswordRequired = "* Mot de passe requis"
 PopupGroup.PasswordLimit = "* Mot de passe doit contenir 6 caractères atleast"
 PopupGroup.PhoneRequired ="* Numéro de téléphone est nécessaire"
 PopupGroup.EmailRequired = "* Adresse e-mail est nécessaire"
+PopupGroup.PhoneNumRequired = "* Entrez le numéro de téléphone"
+PopupGroup.LastNameRequired = "* Entrez le Nom"
+PopupGroup.EmailIdRequired = "* Entrez le courriel"
+PopupGroup.Add = "Ajouter"
+PopupGroup.AddNewAccess = "Ajouter un nouvel accès"
+PopupGroup.AddNewAccessText = "Access Ajouté avec succès"
 
 
 

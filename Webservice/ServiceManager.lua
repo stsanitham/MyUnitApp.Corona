@@ -133,7 +133,7 @@ function Webservice.GET_LIST_OF_RANKS(postExecution)
 end
 
 
-function Webservice.REQUEST_ACCESS(requestFromStatus,directorName,directorEmail,firstName,lastName,Email,Phone,UnitNumber,MKRank,Comment,postExecution)
+function Webservice.REQUEST_ACCESS(page,requestFromStatus,issentMail,issentText,directorName,directorEmail,firstName,lastName,Email,Phone,UnitNumber,Password,MKRank,Comment,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -144,17 +144,28 @@ function Webservice.REQUEST_ACCESS(requestFromStatus,directorName,directorEmail,
 	headers["Accept"] = "application/json"
 	headers["Content-Type"] = "application/json"
 
-	headers["UserAuthorization"]= ""
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+		UnitNumberValue = row.UnitNumberOrDirector
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
 	
 	method="POST"
+
+	local v 
 
 	local url = splitUrl(ApplicationConfig.REQUEST_ACCESS)
 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
-	local v = 
+	if page == "requestAccessPage" then
+
+	v = 
 
 	[[{
 	  "FirstName": "]]..firstName..[[",
@@ -173,6 +184,31 @@ function Webservice.REQUEST_ACCESS(requestFromStatus,directorName,directorEmail,
 	    "CountryId": 1,
 	  },
 	}]]
+
+    elseif page == "addNewAccessPage" then
+
+    v = 
+
+	[[{
+	  "FirstName": "]]..firstName..[[",
+	  "LastName": "]]..lastName..[[",
+	  "EmailAddress": "]]..Email..[[",
+	  "UnitNumber": "]]..UnitNumberValue..[[",
+	  "PhoneNumber": "]]..Phone..[[",
+	  "Password": "]]..Password..[[",
+	  "UserId": "]]..UserId..[[",
+	  "Comments": "]]..Comment..[[",
+	  "RequestFrom": "]]..requestFromStatus..[[",
+	  "MkRankId": "]]..MKRank..[[",
+	  "isSentText": "]]..tostring(issentText)..[[",
+	  "isSentMail": "]]..tostring(issentMail)..[[",
+	  "TypeLanguageCountry": {
+	    "LanguageId": 1,
+	    "CountryId": 2,
+	  },
+	}]]
+  
+    end
 
 	--headers["Content-Type"] = "application/x-www-form-urlencoded"
 	--headers["Content-Length"]= string.len(v)

@@ -289,6 +289,9 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 		elseif phase == "did" then
 
 			menuBtn:addEventListener("touch",menuTouch)
+			BgText:addEventListener("touch",menuTouch)
+
+	   		Runtime:addEventListener( "key", onKeyEvent )
 			
 		end	
 		
@@ -304,6 +307,10 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 		local phase = event.phase
 
 		if event.phase == "will" then
+
+			menuBtn:removeEventListener("touch",menuTouch)
+			BgText:removeEventListener("touch",menuTouch)
+			Runtime:removeEventListener( "key", onKeyEvent )
 
 
 			elseif phase == "did" then

@@ -106,6 +106,7 @@ RequestAccess.DirectorEmail_placeholder = "Directora de correo electrónico"
 RequestAccess.DirectorName_error = "Introduzca el Nombre de director"
 RequestAccess.DirectorEmail_error = "Introduzca el Director Dirección de correo electrónico"
 RequestAccess.DirectorEmailValidation_error = "Introduzca la dirección de correo electrónico válida director"
+RequestAccess.Password_error = "Introduzca la contraseña"
 
 
 LoginPage = {}
@@ -365,6 +366,12 @@ PopupGroup.PasswordRequired = "* Se requiere contraseña"
 PopupGroup.PasswordLimit = "* La contraseña debe contener menos 6 caracteres"
 PopupGroup.PhoneRequired ="* Se requiere el número de teléfono"
 PopupGroup.EmailRequired = "* Se requiere Dirección de correo electrónico"
+PopupGroup.PhoneNumRequired = "* Introduzca el número de teléfono"
+PopupGroup.LastNameRequired = "* Entre apellido"
+PopupGroup.EmailIdRequired = "* Introduzca el correo electrónico"
+PopupGroup.Add = "Añadir"
+PopupGroup.AddNewAccess = "Agregar nuevo acceso"
+PopupGroup.AddNewAccessText = "Acceso añadido correctamente"
 
 
 

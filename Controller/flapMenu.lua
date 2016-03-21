@@ -178,13 +178,14 @@ local function MenuTouchAction(event)
 			end
 
 
-
 			--end
 		end
 		return true
 
 	end
 ------------------------------------------------------
+
+
 
 function scene:create( event )
 
@@ -762,7 +763,7 @@ function scene:show( event )
 			
 			flapScroll:insert( invite_text )
 
-				--[[]	--Add New Access
+		    --Add New Access
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 			menuArray_display[#menuArray_display].anchorY=0
@@ -773,7 +774,7 @@ function scene:show( event )
 			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "Add New Access"
-			menuArray_display[#menuArray_display].id="inviteAndaccessPage"
+			menuArray_display[#menuArray_display].id="addNewAccessPage"
 
 			invite_icon = display.newImageRect("res/assert/message.png",15,15)
 			invite_icon.anchorX = 0
@@ -787,7 +788,7 @@ function scene:show( event )
 			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
 			invite_text.y = invite_icon.y
 			
-			flapScroll:insert( invite_text )]]
+			flapScroll:insert( invite_text )
 
 			end
 

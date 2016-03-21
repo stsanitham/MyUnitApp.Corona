@@ -38,6 +38,8 @@ local submit_spinner
 --Button
 local sumbitBtn,scrollView
 
+openPage="requestAccessPage"
+
 --Rank group
 local rankList,rankTop,rankClose,rankText
 
@@ -260,9 +262,10 @@ sumbitBtn_lbl.x = sumbitBtn.x+5
 					
 				if AppName == "DirectorApp" then
 
-						Webservice.REQUEST_ACCESS(RequestFromStatus,"","",FirstName.text,Name.text,Email.text,Phone.text,Unitnumber_value,mkRank_id,Comment.text,get_requestAccess)
+					Webservice.REQUEST_ACCESS(openPage,RequestFromStatus,"","","","",FirstName.text,Name.text,Email.text,Phone.text,Unitnumber_value,"",mkRank_id,Comment.text,get_requestAccess)
+
 				else
-						Webservice.REQUEST_ACCESS(RequestFromStatus,DirectorName.text,DirectorEmail.text,FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,mkRank_id,Comment.text,get_requestAccess)
+					Webservice.REQUEST_ACCESS(openPage,RequestFromStatus,"","",DirectorName.text,DirectorEmail.text,FirstName.text,Name.text,Email.text,Phone.text,Unitnumber_value,"",mkRank_id,Comment.text,get_requestAccess)
 						
 				end
 
@@ -733,7 +736,7 @@ local function onRowTouch( event )
 
 		end
 
-			if Phone.text == "" or Phone.text == Phone.id or Phone.text:len() < 15  then
+			if Phone.text == "" or Phone.text == "* Enter the Phone Number" or Phone.text == Phone.id or Phone.text:len() < 15  then
 				validation=false
 				SetError("* "..RequestAccess.Phone_error,Phone)
 			end
@@ -1053,7 +1056,6 @@ function scene:create( event )
 	Comment.id = "Comments"
 	Comment.hasBackground = false
 	Comment:setReturnKey( "next" )
-	
 	
 	sceneGroup:insert(Comment)
 
