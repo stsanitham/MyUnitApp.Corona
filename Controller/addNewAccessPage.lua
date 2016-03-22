@@ -160,6 +160,8 @@ local function RequestProcess()
 			MKRank.text = "-Select MK Rank-"
 			MKRank.value = "-Select MK Rank-"
 			Comment.text = ""
+			isSentMail = true
+			isSentText = true
 
 				if Request_response == "SUCCESS" then
 
@@ -185,7 +187,11 @@ local function RequestProcess()
 
 		    end
 
-		Webservice.REQUEST_ACCESS(openPage,"WEB",isSentMail,isSentText,"","",FirstName.text,Name.text,Email.text,Phone.text,"",Password.text,mkRank_id,Comment.text,get_requestAccess)
+		    local isSentMailvalue = isSentMail
+
+		    local isSentTextvalue = isSentText
+
+		Webservice.REQUEST_ACCESS(openPage,"WEB",isSentMailvalue,isSentTextvalue,"","",FirstName.text,Name.text,Email.text,Phone.text,"",Password.text,mkRank_id,Comment.text,get_requestAccess)
 	
 	end
 
@@ -785,6 +791,7 @@ function scene:create( event )
 		Phone.size=14	
 		Phone.anchorX = 0
 		Phone.x = 10
+		--Phone.text = "(111) 111 -1111"
 		Phone:setReturnKey( "next" )
 		Phone.hasBackground = false
 		Phone.placeholder=RequestAccess.Phone_placeholder
@@ -849,7 +856,8 @@ function scene:create( event )
 		sceneGroup:insert(PasswordHelptext)
 
 		GeneratePasstext = display.newText(PopupGroup.GeneratePasstext,0,0,W-30,0,native.systemFontBold,14.5)
-		GeneratePasstext.x= W
+		GeneratePasstext.x= W-145
+		GeneratePasstext.anchorX = 0
 		GeneratePasstext:setFillColor(0,0,0.5)
 		GeneratePasstext.y= PasswordHelptext.y + 20
 		sceneGroup:insert(GeneratePasstext)
@@ -860,7 +868,7 @@ function scene:create( event )
 
 		MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 		MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-		MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+20
+		MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
 		MKRank_bg.strokeWidth = 1
 		MKRank_bg:setFillColor( 0,0,0,0 )
 		MKRank_bg.id="MKrank"
@@ -885,14 +893,14 @@ function scene:create( event )
 
 
 ----------------------comments --------------------------------------
-	Comment_bg = display.newRect( W/2, 0, W-20, 70)
+	Comment_bg = display.newRect( W/2, 0, W-20, 60)
 	Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
 	Comment_bg:setFillColor( 0,0,0,0 )
 	Comment_bg:setStrokeColor( 0, 0, 0 , 0.3 )
     Comment_bg.strokeWidth = 1
 	sceneGroup:insert(Comment_bg)
 
-	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 70 )
+	Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 60 )
 	Comment.placeholder=RequestAccess.Comment_placeholder
 	Comment.isEditable = true
 	Comment.size=14	
@@ -908,7 +916,7 @@ function scene:create( event )
 
 ---------------------submit button------------------------------------
 	sumbitBtn = display.newRect( 0,0,0,0 )
-	sumbitBtn.x=W/2-45;sumbitBtn.y = Comment.y+Comment.height/2+30
+	sumbitBtn.x=W/2-45;sumbitBtn.y = Comment.y+Comment.height/2+20
 	sumbitBtn.width=100
 	sumbitBtn.height=25
 	sumbitBtn.anchorX=0
