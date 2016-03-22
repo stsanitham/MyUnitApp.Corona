@@ -137,6 +137,10 @@ local function RequestProcess()
 
 			submit_spinner:start( )
 
+		    local isSentMailvalue = isSentMail
+
+		    local isSentTextvalue = isSentText
+
 
 		function get_requestAccess(response)
 
@@ -160,8 +164,6 @@ local function RequestProcess()
 			MKRank.text = "-Select MK Rank-"
 			MKRank.value = "-Select MK Rank-"
 			Comment.text = ""
-			isSentMail = true
-			isSentText = true
 
 				if Request_response == "SUCCESS" then
 
@@ -187,9 +189,6 @@ local function RequestProcess()
 
 		    end
 
-		    local isSentMailvalue = isSentMail
-
-		    local isSentTextvalue = isSentText
 
 		Webservice.REQUEST_ACCESS(openPage,"WEB",isSentMailvalue,isSentTextvalue,"","",FirstName.text,Name.text,Email.text,Phone.text,"",Password.text,mkRank_id,Comment.text,get_requestAccess)
 	
