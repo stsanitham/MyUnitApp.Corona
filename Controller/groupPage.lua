@@ -11,6 +11,7 @@ local lfs = require ("lfs")
 local mime = require("mime")
 local style = require("res.value.style")
 local Utility = require( "Utils.Utility" )
+local newGroup = require( "Controller.newGroupAlert" )
 local json = require("json")
 
 
@@ -43,6 +44,21 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 		BackFlag = false
 
 	end
+
+
+    -- local function addGroupAction(event)
+
+	 	 -- if event.phase == "began" then
+
+    --      elseif event.phase == "ended" then
+
+    --        GroupNamePopup()
+
+    --      end
+
+	   --  return true
+
+    -- end
 
 
 	local function onKeyEvent( event )
@@ -167,8 +183,35 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 		title.anchorX = 0
 		title.x=5;title.y = title_bg.y
 		title:setFillColor(0)
-
 		title.text = "Group"
+
+		addGroupBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/2,66/2.2 )
+		addGroupBtn.x=W-40
+		addGroupBtn.y=tabBar.y+tabBar.contentHeight+20
+		addGroupBtn.anchorX = 0
+		addGroupBtn.isVisible = false
+		addGroupBtn.id="addGroup"
+
+		subjectBar = display.newRect(sceneGroup,W/2,0,W,40)
+		subjectBar.y=title_bg.y+15
+		subjectBar.anchorY = 0
+		subjectBar:setFillColor(0,0,0,0.1)
+
+		GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-60, 25)
+		GroupSubject.id="groupSubject"
+		GroupSubject.y = subjectBar.y +20
+		GroupSubject.size=14
+		GroupSubject.anchorX = 0
+		GroupSubject.x = 10
+		GroupSubject:setReturnKey( "done" )
+		GroupSubject.hasBackground = false	
+		GroupSubject.placeholder = "Type group subject here..."
+		NewGroupAlert:insert(GroupSubject)
+
+		create_groupicon =  display.newImageRect(sceneGroup,"res/assert/tick.png",25,22)
+		create_groupicon.anchorX=0
+		create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+10
+		create_groupicon.y=subjectBar.y +20
 
 
 		 tabButtons = {
@@ -297,6 +340,8 @@ end
 			menuBtn:addEventListener("touch",menuTouch)
 			BgText:addEventListener("touch",menuTouch)
 
+			--addGroupBtn:addEventListener("touch",addGroupAction)
+
 	   		Runtime:addEventListener( "key", onKeyEvent )
 			
 		end	
@@ -317,6 +362,8 @@ end
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 			Runtime:removeEventListener( "key", onKeyEvent )
+
+			--addGroupBtn:removeEventListener("touch",addGroupAction)
 
 
 			elseif phase == "did" then

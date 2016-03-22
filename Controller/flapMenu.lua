@@ -780,7 +780,7 @@ if IsOwner == true then
 			menuArray_display[#menuArray_display].name = "Add New Access"
 			menuArray_display[#menuArray_display].id="addNewAccessPage"
 
-			invite_icon = display.newImageRect("res/assert/message.png",15,15)
+			invite_icon = display.newImageRect("res/assert/Add-new-access.png",15,15)
 			invite_icon.anchorX = 0
 			invite_icon:setFillColor(1,1,1)
 			invite_icon.x=5

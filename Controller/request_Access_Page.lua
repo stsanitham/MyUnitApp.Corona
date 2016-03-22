@@ -1001,7 +1001,7 @@ function scene:create( event )
 		Phone = native.newTextField(W/2+3, Email_bg.y+Email_bg.height+7, W-20, 25)
 		Phone.id="Phone"
 		Phone.size=14	
-		-- Phone.text = "(123) 234 -5678"
+	    --Phone.text = "(123) 234 -5678"
 		Phone:setReturnKey( "next" )
 		Phone.hasBackground = false
 		Phone.placeholder=RequestAccess.Phone_placeholder
