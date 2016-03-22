@@ -1070,10 +1070,7 @@ end
 		Password:addEventListener( "userInput", textfield )
 		
 		Background:addEventListener("touch",touchBg)
-
 		Runtime:addEventListener( "key", onKeyEvent )
-
-		 
 
 end	
 
@@ -1096,7 +1093,6 @@ function scene:hide( event )
 
 		MKRank_bg:removeEventListener( "touch", rankTouch )
 		MKRank:removeEventListener( "touch", rankTouch ) 
-
 		Runtime:removeEventListener( "key", onKeyEvent )
 
 		if rankTop then rankTop:removeEventListener("touch",rankToptouch) end
