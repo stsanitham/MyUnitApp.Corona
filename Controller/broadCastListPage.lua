@@ -12,6 +12,8 @@ local mime = require("mime")
 local style = require("res.value.style")
 local Utility = require( "Utils.Utility" )
 local json = require("json")
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
 
 
 --------------- Initialization -------------------
@@ -34,6 +36,8 @@ local careerListArray = {}
 
 local BroadcastList_array = {}
 
+local BroadcastList = {}
+
 local RecentTab_Topvalue = 75
 
 local header_value = ""
@@ -44,7 +48,6 @@ local byNameArray = {}
 
 local Listresponse_array = {}
 
-BroadcastList_array[#BroadcastList_array+1] = display.newGroup()
 
 
 local tabBarBackground = "res/assert/tabBarBg.png"
@@ -160,6 +163,101 @@ local function onKeyEvent( event )
 	end
 
 
+local function consultantTounch( event )
+	if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+			 				    local options = {
+										effect = "crossFade",
+										time = 300,	
+										params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
+										}
+
+					    composer.gotoScene( "Controller.chatPage", options )
+
+
+	end
+
+	return true
+
+end
+
+local function Broadcast_list( list )
+
+
+	for j=#BroadcastList_array, 1, -1 do 
+		
+		display.remove(BroadcastList_array[#BroadcastList_array])
+		BroadcastList_array[#BroadcastList_array] = nil
+	end
+
+	for i=1,#list do
+
+		local flag = true
+
+		for j=1,i-1 do
+
+			if list[j].Message_To == list[i].Message_To  then
+
+				flag=false
+
+			end
+
+		end
+
+		if flag then 
+
+			BroadcastList_array[#BroadcastList_array+1] = display.newGroup()
+
+			local tempGroup = BroadcastList_array[#BroadcastList_array]
+
+			local Image 
+
+			local tempHeight = 0
+
+			local background = display.newRect(tempGroup,0,0,W,50)
+
+			if(BroadcastList_array[#BroadcastList_array-1]) ~= nil then
+				tempHeight = BroadcastList_array[#BroadcastList_array-1][1].y + BroadcastList_array[#BroadcastList_array-1][1].height+3
+			end
+
+			background.anchorY = 0
+			background.x=W/2;background.y=tempHeight
+			background.id=list[i].Contact_Id
+			background.alpha=0.01
+			background.value = list[i]
+
+			print( json.encode( list[i]))
+
+			local Name_txt = display.newText(tempGroup,list[i].ToName,0,0,native.systemFont,14)
+			Name_txt.x=5;Name_txt.y=background.y+background.height/2-10
+			Name_txt.anchorX=0
+			Utils.CssforTextView(Name_txt,sp_labelName)
+			Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+			local Position_txt = display.newText(tempGroup,list[i].MyUnitBuzz_Message,0,0,native.systemFont,14)
+			Position_txt.x=5;Position_txt.y=background.y+background.height/2+10
+			Position_txt.anchorX=0
+			Utils.CssforTextView(Position_txt,sp_fieldValue)
+
+			local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
+			right_img.anchorX=0
+			right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
+
+			local line = display.newRect(tempGroup,W/2,background.y,W,1)
+			line.y=background.y+background.contentHeight-line.contentHeight
+			line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+
+			background:addEventListener( "touch", consultantTounch )
+			broad_scrollview:insert(tempGroup)
+
+		end
+
+	end
+
+end
 
 
 
@@ -221,13 +319,40 @@ end
 
 
 
-
 	function scene:show( event )
 
 	local sceneGroup = self.view
 	local phase = event.phase
 
 	if phase == "will" then
+
+		broad_scrollview = widget.newScrollView
+			{
+				top = RecentTab_Topvalue-5,
+				left = 0,
+				width = W,
+				height =H-RecentTab_Topvalue-50+5,
+				hideBackground = true,
+				isBounceEnabled=false,
+				horizontalScrollingDisabled = true,
+				verticalScrollingDisabled = false,
+			}
+
+            sceneGroup:insert(broad_scrollview)
+
+	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message ORDER BY id DESC ") do
+
+		BroadcastList[#BroadcastList+1] =row
+
+	end
+
+	if #BroadcastList ~= nil then
+
+		Broadcast_list(BroadcastList)
+	end
+
+
+			
 
 		if event.params then
 			nameval = event.params.tabbuttonValue1
@@ -338,9 +463,9 @@ end
 		--Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 
 	
-	local centerText = display.newText(sceneGroup,"Broadcast List",0,0,native.systemFontBold,16)
-	centerText.x=W/2;centerText.y=H/2
-	centerText:setFillColor( 0 )
+	-- local centerText = display.newText(sceneGroup,"Broadcast List",0,0,native.systemFontBold,16)
+	-- centerText.x=W/2;centerText.y=H/2
+	-- centerText:setFillColor( 0 )
 
     menuBtn:addEventListener("touch",menuTouch)
     BgText:addEventListener("touch",menuTouch)

@@ -110,11 +110,16 @@ local function sendMeaasage()
 
 		end
 
-		local chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,0,0,native.systemFont,14)
+		local chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,native.systemFont,14)
 		chat.anchorY=0
 		chat.anchorX = bg.anchorX
 		chat.x=bg.x-5;chat.y=bg.y
 		chat:setFillColor( 0 )
+		if chat.width >  W then
+			chat.width = W-60
+
+		end
+
 		tempGroup:insert( chat )
 
 		bg.width = chat.contentWidth+10
@@ -154,7 +159,7 @@ local function ChatSendAction( event )
 			Message_Type = "INDIVIDUAL"
 
 				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n" )
-				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..ChatBox.text..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[');]]
+				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..ChatBox.text..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[');]]
 				db:exec( insertQuery )
 
 			Webservice.SEND_MESSAGE(ChatBox.text,"","","","","SEND",From,To,Message_Type,get_sendMssage)
@@ -417,11 +422,12 @@ function scene:show( event )
 	elseif phase == "did" then
 
 		ContactDetails = event.params.contactDetails
+
 		print( "ContactDetails : "..json.encode(ContactDetails) )
 
-		title.text = ContactDetails.Name
+		title.text = ContactDetails.Name or ContactDetails.ToName
 
-		To_ContactId = ContactDetails.Contact_Id
+		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To
 
 		ChatBox_bg = display.newRect(sceneGroup,0,H-100, W-50, 40 )
 		ChatBox_bg.anchorY=0;ChatBox_bg.anchorX=0
@@ -444,7 +450,7 @@ function scene:show( event )
 
 		chatScroll = widget.newScrollView(
     {
-        top = 75,
+        top = 125,
         left = 0,
         width = W,
         height = H-175,
