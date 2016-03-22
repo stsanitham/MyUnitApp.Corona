@@ -98,6 +98,7 @@ RequestAccess.Comment_placeholder= "Enter your comments here"
 RequestAccess.DirectorName_placeholder = "Your Director Name"
 RequestAccess.DirectorEmail_placeholder = "Your Director Email"
 RequestAccess.DirectorEmailValidation_error = "Enter the valid Director Email Address"
+RequestAccess.Password_error = "Enter the Password"
 
 
 LoginPage = {}
@@ -362,7 +363,12 @@ PopupGroup.PasswordRequired = "* Password is required"
 PopupGroup.PasswordLimit = "* Password should contain atleast 6 characters"
 PopupGroup.PhoneRequired ="* Phone number is required"
 PopupGroup.EmailRequired = "* Email Address is required"
-
+PopupGroup.PhoneNumRequired = "* Enter the Phone Number"
+PopupGroup.LastNameRequired = "* Enter the Last Name"
+PopupGroup.EmailIdRequired = "* Enter the Email"
+PopupGroup.Add = "Add"
+PopupGroup.AddNewAccess = "Add New Access"
+PopupGroup.AddNewAccessText = "Access Added Successfully"
 
 
 InviteAccessDetail = {}

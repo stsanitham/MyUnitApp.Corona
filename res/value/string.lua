@@ -86,7 +86,7 @@ RequestAccess.FAIL = "Enter Valid credentials"
 RequestAccess.Name_error = "Enter the Last Name"
 RequestAccess.DirectorName_error = "Enter the Director Name"
 RequestAccess.DirectorEmail_error = "Enter the Director Email Address"
-RequestAccess.Email_error = "Enter the Email Address"
+RequestAccess.Email_error = "Enter the Email"
 RequestAccess.EmailValidation_error = "Enter the valid Email Address"
 RequestAccess.Phone_error = "Enter the Phone Number"
 RequestAccess.UnitNumber_error = "Enter the Unit Number"
@@ -99,6 +99,7 @@ RequestAccess.Comment_placeholder= "Enter your comments here"
 RequestAccess.DirectorName_placeholder = "Your Director Name"
 RequestAccess.DirectorEmail_placeholder = "Your Director Email"
 RequestAccess.DirectorEmailValidation_error = "Enter the valid Director Email Address"
+RequestAccess.Password_error = "Enter the Password"
 
 LoginPage = {}
 
@@ -358,7 +359,13 @@ PopupGroup.EmailExistText = "A Contact with same email address already exist"
 PopupGroup.PasswordRequired = "* Password is required"
 PopupGroup.PasswordLimit = "* Password should contain atleast 6 characters"
 PopupGroup.PhoneRequired = "* Phone number is required"
+PopupGroup.PhoneNumRequired = "* Enter the Phone Number"
+PopupGroup.LastNameRequired = "* Enter the Last Name"
 PopupGroup.EmailRequired = "* Email Address is required"
+PopupGroup.EmailIdRequired = "* Enter the Email"
+PopupGroup.Add = "Add"
+PopupGroup.AddNewAccess = "Add New Access"
+PopupGroup.AddNewAccessText = "Access Added Successfully"
 
 
 

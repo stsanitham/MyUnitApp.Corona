@@ -11,6 +11,7 @@ local scene = composer.newScene()
 require( "Utils.Utility" )
 local style = require("res.value.style")
 local List_array = {}
+local json = require("json")
 local mkRank_id=0
 local current_textField,defalut
 local rankGroup = display.newGroup()
@@ -37,6 +38,8 @@ local submit_spinner
 
 --Button
 local sumbitBtn,scrollView
+
+openPage="requestAccessPage"
 
 --Rank group
 local rankList,rankTop,rankClose,rankText
@@ -198,8 +201,8 @@ local function RequestProcess()
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
 			sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
-sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-sumbitBtn_lbl.x = sumbitBtn.x+5
+			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+			sumbitBtn_lbl.x = sumbitBtn.x+5
 
 			submit_spinner:stop( )
 
@@ -257,12 +260,17 @@ sumbitBtn_lbl.x = sumbitBtn.x+5
 		end
 
 		end
+
+		print("unit number@@@@@@@@@@@@@@@@@@@@@@@ : "..UnitNumber.text)
 					
 				if AppName == "DirectorApp" then
 
-						Webservice.REQUEST_ACCESS(RequestFromStatus,"","",FirstName.text,Name.text,Email.text,Phone.text,Unitnumber_value,mkRank_id,Comment.text,get_requestAccess)
+					print("Open page name : "..openPage)
+
+					Webservice.REQUEST_ACCESS(openPage,RequestFromStatus,"","","","",FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,"",mkRank_id,Comment.text,get_requestAccess)
+
 				else
-						Webservice.REQUEST_ACCESS(RequestFromStatus,DirectorName.text,DirectorEmail.text,FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,mkRank_id,Comment.text,get_requestAccess)
+					Webservice.REQUEST_ACCESS(openPage,RequestFromStatus,"","",DirectorName.text,DirectorEmail.text,FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,"",mkRank_id,Comment.text,get_requestAccess)
 						
 				end
 
@@ -328,7 +336,7 @@ sumbitBtn_lbl.x = sumbitBtn.x+5
 
 			Request_response = response
 
-			print("************************Request_response unitnumber initial*************************** ",Request_response)
+			print("************************Request_response unitnumber initial*************************** ",json.encode(Request_response))
 
 			RequestFromStatus = Request_response.RequestAccessStatus
 
@@ -733,7 +741,7 @@ local function onRowTouch( event )
 
 		end
 
-			if Phone.text == "" or Phone.text == Phone.id or Phone.text:len() < 15  then
+			if Phone.text == "" or Phone.text == "* Enter the Phone Number" or Phone.text == Phone.id or Phone.text:len() < 15  then
 				validation=false
 				SetError("* "..RequestAccess.Phone_error,Phone)
 			end
@@ -993,6 +1001,7 @@ function scene:create( event )
 		Phone = native.newTextField(W/2+3, Email_bg.y+Email_bg.height+7, W-20, 25)
 		Phone.id="Phone"
 		Phone.size=14	
+		-- Phone.text = "(123) 234 -5678"
 		Phone:setReturnKey( "next" )
 		Phone.hasBackground = false
 		Phone.placeholder=RequestAccess.Phone_placeholder
@@ -1053,7 +1062,6 @@ function scene:create( event )
 	Comment.id = "Comments"
 	Comment.hasBackground = false
 	Comment:setReturnKey( "next" )
-	
 	
 	sceneGroup:insert(Comment)
 

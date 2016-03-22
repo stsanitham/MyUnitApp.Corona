@@ -862,11 +862,6 @@ function scene:show( event )
 		}
 
 
-	
-		
-
-		
-	  	
 
 sceneGroup:insert(scrollView)
 
@@ -890,6 +885,8 @@ end
 		local phase = event.phase
 
 		if event.phase == "will" then
+
+			composer.removeHidden()
 
 
 			elseif phase == "did" then

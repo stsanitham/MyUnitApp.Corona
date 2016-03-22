@@ -522,7 +522,7 @@ tabButtons = {
         },
         width = 16,
         height = 20,
-       onPress = handleTabBarEvent,
+        onPress = handleTabBarEvent,
         selected = true,
     },
 }
