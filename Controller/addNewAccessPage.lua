@@ -164,6 +164,8 @@ local function RequestProcess()
 			MKRank.text = "-Select MK Rank-"
 			MKRank.value = "-Select MK Rank-"
 			Comment.text = ""
+			emailnotifybox.isOn = true
+			textnotifybox.isOn = true
 
 				if Request_response == "SUCCESS" then
 
@@ -572,24 +574,32 @@ local function onKeyEvent( event )
 
         if phase == "up" then
 
-         if keyName=="back" then
+        if keyName=="back" then
 
-			 	local options = {
-									effect = "slideRight",
-									time = 600,	  
-									}
+        	print("keyName....")
 
-				composer.gotoScene( "Controller.singInPage", options )
+        	if BackFlag == false then
 
-				 return true
+        		Utils.SnackBar("Press again to exit")
+
+        		BackFlag = true
+
+        		timer.performWithDelay( 2000, onTimer )
+
+                return true
+
+            elseif BackFlag == true then
+
+			 os.exit() 
 
             end
             
         end
 
+    end
+
         return false
  end
-
 
 
 
@@ -637,7 +647,7 @@ local function onKeyEvent( event )
 
 
 
-	 function onSwitchPress( event )
+	 local function onSwitchPress( event )
 
 	    local switch = event.target
 
@@ -790,7 +800,7 @@ function scene:create( event )
 		Phone.size=14	
 		Phone.anchorX = 0
 		Phone.x = 10
-		--Phone.text = "(111) 111 -1111"
+		Phone.text = "(111) 111 -1111"
 		Phone:setReturnKey( "next" )
 		Phone.hasBackground = false
 		Phone.placeholder=RequestAccess.Phone_placeholder
@@ -848,10 +858,10 @@ function scene:create( event )
 		Password_bottom.y=Password.y+10
 
 		PasswordHelptext = display.newText(PopupGroup.PasswordHelptext,0,0,W-30,0,native.systemFont,11)
-		PasswordHelptext.x= 10
+		PasswordHelptext.x= 12
 		PasswordHelptext.anchorX=0
 		PasswordHelptext:setFillColor(0,0,0)
-		PasswordHelptext.y= Password_bottom.y + 12
+		PasswordHelptext.y= Password_bottom.y + 18
 		sceneGroup:insert(PasswordHelptext)
 
 		GeneratePasstext = display.newText(PopupGroup.GeneratePasstext,0,0,W-30,0,native.systemFontBold,14.5)
