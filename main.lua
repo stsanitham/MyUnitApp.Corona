@@ -59,6 +59,8 @@ AlertGroup = display.newGroup();
 
 chatGroup = display.newGroup();
 
+NewGroupAlert = display.newGroup();
+
 
 
 

@@ -12,8 +12,6 @@ local W = display.contentWidth;H= display.contentHeight
 
 
 
-
-
 -- local function onCloseTouch( event )
 --     if event.phase == "began" then
 --         display.getCurrentStage():setFocus( event.target )

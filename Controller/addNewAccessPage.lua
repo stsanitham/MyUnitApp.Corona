@@ -17,6 +17,7 @@ local current_textField,defalut
 local rankGroup = display.newGroup()
 local RequestFromStatus = ""
 local unitnumberflag = false
+local BackFlag = false
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
@@ -126,16 +127,20 @@ local function RequestProcess()
 	if  submit_spinner.isVisible == false then
 
 			submit_spinner.isVisible=true
-			sumbitBtn.width = sumbitBtn.contentWidth+20
+			sumbitBtn.width = sumbitBtn.contentWidth+30
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
 
 			sumbitBtn.width = sumbitBtn_lbl.contentWidth+40
 			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-			sumbitBtn_lbl.x = sumbitBtn.x+5
+			sumbitBtn_lbl.x = sumbitBtn.x+16
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
 
 			submit_spinner:start( )
+
+		    local isSentMailvalue = isSentMail
+
+		    local isSentTextvalue = isSentText
 
 
 		function get_requestAccess(response)
@@ -143,12 +148,12 @@ local function RequestProcess()
 			Request_response = response
 
 			submit_spinner.isVisible=false
-			sumbitBtn.width = sumbitBtn_lbl.width+20
+			sumbitBtn.width = sumbitBtn_lbl.width+30
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
+			sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
 			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-			sumbitBtn_lbl.x = sumbitBtn.x+5
+			sumbitBtn_lbl.x = sumbitBtn.x+16
 
 			submit_spinner:stop( )
 
@@ -160,8 +165,8 @@ local function RequestProcess()
 			MKRank.text = "-Select MK Rank-"
 			MKRank.value = "-Select MK Rank-"
 			Comment.text = ""
-			isSentMail = true
-			isSentText = true
+			emailnotifybox.isOn = true
+			textnotifybox.isOn = true
 
 				if Request_response == "SUCCESS" then
 
@@ -187,9 +192,6 @@ local function RequestProcess()
 
 		    end
 
-		    local isSentMailvalue = isSentMail
-
-		    local isSentTextvalue = isSentText
 
 		Webservice.REQUEST_ACCESS(openPage,"WEB",isSentMailvalue,isSentTextvalue,"","",FirstName.text,Name.text,Email.text,Phone.text,"",Password.text,mkRank_id,Comment.text,get_requestAccess)
 	
@@ -347,6 +349,14 @@ end
 
 			if event.target.id == "Password" then
 
+				if (event.newCharacters==" ") then
+
+					if string.find( current_textField.text," " ) ~= nil then
+				        current_textField.text=string.gsub(current_textField.text," ","")
+				    end
+
+				end
+
 				if event.text:len() > 12 then
 
 					event.target.text = event.target.text:sub(1,12)
@@ -475,7 +485,7 @@ local function onRowTouch( event )
 		else
 		if not Utils.emailValidation(Email.text) then
 		validation=false
-		SetError("* "..RequestAccess.EmailValidation_error,Email)
+		SetError("* "..RequestAccess.Email_error,Email)
 		end
 		end
 
@@ -486,17 +496,14 @@ local function onRowTouch( event )
 		end
 
 
-		if Password.text == "" or Password.text == Password.id or Password.text:len() > 12 then
+		if Password.text == "" or Password.text == Password.id or Password.text:len() > 12 or Password.text == LoginPage.setError_Password then
 			validation=false
 			SetError("* "..RequestAccess.Password_error,Password)
 		end
-
-
 		if Password.text:len() < 6 then
 			validation=false
 			SetError("* "..PopupGroup.PasswordHelptext,Password)
 		end
-
 
 			if(validation == true) then
 				
@@ -573,24 +580,32 @@ local function onKeyEvent( event )
 
         if phase == "up" then
 
-         if keyName=="back" then
+        if keyName=="back" then
 
-			 	local options = {
-									effect = "slideRight",
-									time = 600,	  
-									}
+        	scrollTo( 0 )
 
-				composer.gotoScene( "Controller.singInPage", options )
+        	if BackFlag == false then
 
-				 return true
+        		Utils.SnackBar("Press again to exit")
+
+        		BackFlag = true
+
+        		timer.performWithDelay( 2000, onTimer )
+
+                return true
+
+            elseif BackFlag == true then
+
+			 os.exit() 
 
             end
             
         end
 
+    end
+
         return false
  end
-
 
 
 
@@ -613,8 +628,11 @@ local function onKeyEvent( event )
             end
 
             if (Password.newCharacters==" ") then
+				--Password.text = Password.text:sub(1,Password.text:len()-1)
+				if string.find( Password.text," " ) ~= nil then
 
-				Password.text = Password.text:sub(1,Password.text:len()-1)
+						Password.text=string.gsub(Password.text," ","")
+				end
 
 			end
 
@@ -638,7 +656,7 @@ local function onKeyEvent( event )
 
 
 
-	 function onSwitchPress( event )
+	 local function onSwitchPress( event )
 
 	    local switch = event.target
 
@@ -751,6 +769,7 @@ function scene:create( event )
 		Email.size=14
 		Email.anchorX = 0
 		Email.x = 10	
+		Email:setTextColor(0,0,0)
 		Email:setReturnKey( "next" )
 		Email.hasBackground = false
 		Email.placeholder=RequestAccess.EmailAddress_placeholder
@@ -849,10 +868,10 @@ function scene:create( event )
 		Password_bottom.y=Password.y+10
 
 		PasswordHelptext = display.newText(PopupGroup.PasswordHelptext,0,0,W-30,0,native.systemFont,11)
-		PasswordHelptext.x= 10
+		PasswordHelptext.x= 12
 		PasswordHelptext.anchorX=0
 		PasswordHelptext:setFillColor(0,0,0)
-		PasswordHelptext.y= Password_bottom.y + 12
+		PasswordHelptext.y= Password_bottom.y + 18
 		sceneGroup:insert(PasswordHelptext)
 
 		GeneratePasstext = display.newText(PopupGroup.GeneratePasstext,0,0,W-30,0,native.systemFontBold,14.5)
@@ -916,7 +935,7 @@ function scene:create( event )
 
 ---------------------submit button------------------------------------
 	sumbitBtn = display.newRect( 0,0,0,0 )
-	sumbitBtn.x=W/2-45;sumbitBtn.y = Comment.y+Comment.height/2+20
+	sumbitBtn.x=W/2;sumbitBtn.y = Comment.y+Comment.height/2+20
 	sumbitBtn.width=100
 	sumbitBtn.height=25
 	sumbitBtn.anchorX=0
@@ -930,7 +949,10 @@ function scene:create( event )
 	sumbitBtn_lbl.y=sumbitBtn.y
 	sumbitBtn_lbl.anchorX=0
 	sumbitBtn_lbl:setFillColor(0,0,0)
-	sumbitBtn_lbl.x = sumbitBtn.x+35
+
+	sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+	sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+	sumbitBtn_lbl.x = sumbitBtn.x+16
 
 
 
@@ -1071,10 +1093,7 @@ end
 		Password:addEventListener( "userInput", textfield )
 		
 		Background:addEventListener("touch",touchBg)
-
 		Runtime:addEventListener( "key", onKeyEvent )
-
-		 
 
 end	
 
@@ -1097,7 +1116,6 @@ function scene:hide( event )
 
 		MKRank_bg:removeEventListener( "touch", rankTouch )
 		MKRank:removeEventListener( "touch", rankTouch ) 
-
 		Runtime:removeEventListener( "key", onKeyEvent )
 
 		if rankTop then rankTop:removeEventListener("touch",rankToptouch) end
