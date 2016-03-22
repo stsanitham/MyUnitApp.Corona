@@ -44,11 +44,14 @@ local tabBarLeft = "res/assert/tabSelectedLeft.png"
 local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
 local tabBarRight = "res/assert/tabSelectedRight.png"
 
+
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 		UserId = row.UserId
 		ContactId = row.ContactId
 
 end
+
+
 
 --------------------------------------------------
 
@@ -69,9 +72,18 @@ local function sendMeaasage()
 			ChatHistory[#ChatHistory] = nil
 	end
 
-	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Message_From='"..tostring(ContactId).."' AND Message_To='"..tostring(To_ContactId).."'ORDER BY id DESC ") do
+
+	           --native.showAlert("MyUnitBuzz", "From : "..tostring(ContactId).."To :"..tostring(To_ContactId), { "OK" } )
+
+
+	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId).."') OR (Message_To='"..tostring(ContactId).."') ORDER BY id DESC ") do
+
+		local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE Message_To='"..tostring(To_ContactId).."' AND Message_To='"..tostring(ContactId)..";"
+		db:exec( q )
 
 		ChatHistory[#ChatHistory+1] =row
+
+
 
 	end
 
@@ -99,7 +111,7 @@ local function sendMeaasage()
 		else
 			bg.y=H-210
 		end
-		bg.x=0
+		bg.x=5
 
 		if ChatHistory[i].Message_From == tostring(ContactId) then
 			print( "here" )
@@ -113,10 +125,11 @@ local function sendMeaasage()
 		local chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,native.systemFont,14)
 		chat.anchorY=0
 		chat.anchorX = bg.anchorX
-		chat.x=bg.x-5;chat.y=bg.y
+		chat.x=bg.x+2;chat.y=bg.y
 		chat:setFillColor( 0 )
 		if chat.width >  W then
 			chat.width = W-60
+			chat.x=bg.x+5
 
 		end
 
@@ -427,7 +440,7 @@ function scene:show( event )
 
 		title.text = ContactDetails.Name or ContactDetails.ToName
 
-		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To
+		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_From
 
 		ChatBox_bg = display.newRect(sceneGroup,0,H-100, W-50, 40 )
 		ChatBox_bg.anchorY=0;ChatBox_bg.anchorX=0
@@ -469,8 +482,20 @@ function scene:show( event )
 
 		sendBtn:addEventListener( "touch", ChatSendAction )
 		menuBtn:addEventListener("touch",menuTouch)
+
+
+		function printTimeSinceStart( event )
+		    if chatReceivedFlag==true then
+		    	chatReceivedFlag=false
+		    	sendMeaasage()
+		    end
+		end 
+		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 		
 	end	
+
+
+
 	
 MainGroup:insert(sceneGroup)
 
@@ -482,6 +507,8 @@ end
 		local phase = event.phase
 
 		if event.phase == "will" then
+
+					Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 
 
 		elseif phase == "did" then

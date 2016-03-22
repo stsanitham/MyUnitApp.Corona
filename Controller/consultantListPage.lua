@@ -63,6 +63,15 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 local function consultantTounch( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
+
+	elseif ( event.phase == "moved" ) then
+			local dy = math.abs( ( event.y - event.yStart ) )
+
+			if ( dy > 10 ) then
+				display.getCurrentStage():setFocus( nil )
+				consultantList_scrollview:takeFocus( event )
+			end
+
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 
@@ -308,6 +317,11 @@ local function careePath_list( list )
 		Position_txt.anchorX=0
 		Utils.CssforTextView(Position_txt,sp_fieldValue)
 
+		if Position_txt.text:len() > 26 then
+			Position_txt.text = string.sub(Position_txt.text,1,26).."..."
+
+		end
+
 		local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
 		right_img.anchorX=0
 		right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
@@ -349,13 +363,13 @@ print("size = "..#Listresponse_array)
 
 						for i=1,#Listresponse_array do
 
-							local list_Name = Listresponse_array[i].Last_Name
+							local list_Name = Listresponse_array[i].LastName
 
 							
 
-								if Listresponse_array[i].First_Name then
+								if Listresponse_array[i].FirstName then
 
-									list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
+									list_Name = Listresponse_array[i].FirstName.." "..Listresponse_array[i].LastName
 
 								end
 
@@ -370,10 +384,8 @@ print("size = "..#Listresponse_array)
 							end
 
 							temp.Name = list_Name
-							temp.CarrierProgress = Listresponse_array[i].CarrierProgress
-							temp.Image_Path = Listresponse_array[i].Image_Path
-							temp.Contact_Id = Listresponse_array[i].Contact_Id
-							temp.DisplayPosition = Listresponse_array[i].DisplayPosition
+							temp.CarrierProgress = Listresponse_array[i].EmailAddress
+							temp.Contact_Id = Listresponse_array[i].MyUnitBuzzRequestAccessId
 
 							byNameArray[#byNameArray+1] = temp
 
@@ -442,7 +454,7 @@ function scene:create( event )
             sceneGroup:insert(consultantList_scrollview)
 
 
-            		Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
+	Webservice.GetMyUnitBuzzRequestAccesses("GRANT",get_Activeteammember)
 
 
 MainGroup:insert(sceneGroup)

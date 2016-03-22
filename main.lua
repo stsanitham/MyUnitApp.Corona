@@ -30,6 +30,8 @@ leftPadding_value = 20
 
 TimeZone = ""
 
+chatReceivedFlag=false
+
 --com.spanenterprises.MUBDev
 
 --CommonApp/DirectorApp
@@ -218,6 +220,8 @@ composer.gotoScene( "Controller.splashScreen")
 
 function DidReceiveRemoteNotification(message, additionalData, isActive)
 
+    chatReceivedFlag=true
+
             -- notificationFlag = true
 
             -- if (additionalData) then
@@ -242,11 +246,39 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
             --   native.showAlert("MyUnitBuzz", message, { "OK" } )
 
             -- end
+local UserId,ContactId,Name
 
+for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+        UserId = row.UserId
+        ContactId = row.ContactId
+        Name = row.MemberName
+
+end
+
+    Message_date=os.date("%Y-%m-%dT%H:%m:%S")
+            isDeleted="false"
+            Created_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
+            Updated_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
+            ImagePath="NULL"
+            AudioPath="NULL"
+            VideoPath="NULL"
+            MyUnitBuzz_LongMessage=message
+            From=additionalData.messageFrom
+            To=additionalData.messageTo
+            Message_Type = "INDIVIDUAL"
+           -- Name="test"
+
+           -- native.showAlert("MyUnitBuzz", "From : "..From.."To :"..To, { "OK" } )
+
+               -- print(UserId.."\n"..message.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n" )
+                local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..message..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[');]]
+                db:exec( insertQuery )
 
             
 
 end
+
+
 
 
 

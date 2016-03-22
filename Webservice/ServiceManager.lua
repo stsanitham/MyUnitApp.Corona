@@ -286,7 +286,7 @@ local v = [[
 	  "ImageFileSize": "]]..imagesize..[[",
 	  "From": "]]..From..[[",
 	  "To": "]]..To..[[",
-	  "Message_Type": "]]..Message_Type..[[",
+	  "MessageType": "]]..Message_Type..[[",
 
    "TimeZone": "Eastern Standard Time",
 }

@@ -199,13 +199,14 @@ local function Broadcast_list( list )
 
 		for j=1,i-1 do
 
-			if list[j].Message_To == list[i].Message_To  then
+			if list[j].Contact_Id == list[i].Contact_Id  then
 
 				flag=false
 
 			end
 
 		end
+		--print( json.encode( list[i] ))
 
 		if flag then 
 
@@ -249,6 +250,33 @@ local function Broadcast_list( list )
 			local line = display.newRect(tempGroup,W/2,background.y,W,1)
 			line.y=background.y+background.contentHeight-line.contentHeight
 			line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+--UPDATE
+			local new_msgCount = 0
+
+			if list[i].Message_Status == "UPDATE" then
+
+				for k=1,#list do
+
+					if list[i].Contact_Id == list[k].Contact_Id then
+
+						if list[i].Message_Status == "UPDATE" and list[k].Message_Status == "UPDATE" then
+
+							new_msgCount=new_msgCount+1
+
+						end
+
+					end
+
+				end
+
+				local circle = display.newCircle( tempGroup, W-80, background.y+background.contentHeight/2, 10 )
+				circle.height=23;circle.width=25
+				circle:setFillColor( Utils.convertHexToRGB("#008B45" ))
+
+				local circle_txt = display.newText( tempGroup,new_msgCount,circle.x,circle.y,native.systemFontBold,14 )
+				circle_txt:setTextColor( 1)
+
+			end
 
 			background:addEventListener( "touch", consultantTounch )
 			broad_scrollview:insert(tempGroup)
@@ -326,6 +354,8 @@ end
 
 	if phase == "will" then
 
+		composer.removeHidden()
+
 		broad_scrollview = widget.newScrollView
 			{
 				top = RecentTab_Topvalue-5,
@@ -350,6 +380,23 @@ end
 
 		Broadcast_list(BroadcastList)
 	end
+
+		function printTimeSinceStart( event )
+		    if chatReceivedFlag==true then
+		    	chatReceivedFlag=false
+		    	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message ORDER BY id DESC ") do
+
+					BroadcastList[#BroadcastList+1] =row
+
+				end
+
+				if #BroadcastList ~= nil then
+
+					Broadcast_list(BroadcastList)
+				end
+		    end
+		end 
+		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 
 
 			
@@ -489,7 +536,7 @@ end
 	if event.phase == "will" then
 
 
-
+Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 	menuBtn:removeEventListener("touch",menuTouch)
 	BgText:removeEventListener("touch",menuTouch)
 
