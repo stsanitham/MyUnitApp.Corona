@@ -612,7 +612,7 @@ function scene:show( event )
 			flapScroll:insert( menuArray_display[#menuArray_display] )
 			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 			menuArray_display[#menuArray_display].name = "Messages"
-			menuArray_display[#menuArray_display].id="broadCastListPage"
+			menuArray_display[#menuArray_display].id="MessagingPage"
 
 			chat_message_icon = display.newImageRect("res/assert/message.png",15,15)
 			chat_message_icon.anchorX = 0

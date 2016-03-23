@@ -188,7 +188,7 @@ local function onKeyEvent( event )
 									params = { tabbuttonValue2 =json.encode(tabButtons)}
 									}
 
-				    composer.gotoScene( "Controller.broadCastListPage", options )
+				    composer.gotoScene( "Controller.MessagingPage", options )
 
 			-- elseif tabbutton_id == "chat" then
 
@@ -660,6 +660,7 @@ function scene:show( event )
 		end
 
 
+
 	    if addGroupid_value == "addGroup" then
 
 	    	RecentTab_Topvalue = 115
@@ -694,6 +695,23 @@ function scene:show( event )
         overFile = "res/assert/user.png",
         size = 11.5,
         labelYOffset = 2,
+        id = "group",
+        labelColor = { 
+            default = { 0,0,0}, 
+            over = { 0,0,0 }
+        },
+        width = 20,
+        height = 20,
+        onPress = handleTabBarEvent,
+    },
+
+
+       {
+        label = "Chats",
+        defaultFile = "res/assert/user.png",
+        overFile = "res/assert/user.png",
+        size = 11.5,
+        labelYOffset = 2,
         id = "broadcast_list",
         labelColor = { 
             default = { 0,0,0}, 
@@ -702,37 +720,10 @@ function scene:show( event )
         width = 20,
         height = 20,
         onPress = handleTabBarEvent,
+        selected = true,
     },
-    {
-        label = "Chat",
-        defaultFile = "res/assert/mail.png",
-        overFile = "res/assert/mail.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "chat",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 15,
-        onPress = handleTabBarEvent,
-    },
-    {
-        label = "Group",
-        defaultFile = "res/assert/phone.png",
-        overFile = "res/assert/phone.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "group",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = { 0,0,0 }
-        },
-        width = 20,
-        height = 20,
-       onPress = handleTabBarEvent,
-    },
+
+
     {
         label = "Consultant List",
         defaultFile = "res/assert/map.png",
@@ -741,14 +732,13 @@ function scene:show( event )
         labelYOffset = 2,
         id = "consultant_list",
         labelColor = { 
-            default = { 0,0,0}, 
-            over = { 0,0,0 }
+            default = { 0,0,1}, 
+            over = {0,0,1}
         },
         width = 16,
         height = 20,
         onPress = handleTabBarEvent,
-        selected = true,
-    },
+    }
 }
 
 			    chattabBar = widget.newTabBar{
