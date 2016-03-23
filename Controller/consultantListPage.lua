@@ -64,39 +64,32 @@ local function consultantTounch( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
 
-
 	elseif ( event.phase == "moved" ) then
-		local dy = math.abs( ( event.y - event.yStart ) )
+			local dy = math.abs( ( event.y - event.yStart ) )
 
-		if ( dy > 10 ) then
-			display.getCurrentStage():setFocus( nil )
-			consultantList_scrollview:takeFocus( event )
-		end
+			if ( dy > 10 ) then
+				display.getCurrentStage():setFocus( nil )
+				consultantList_scrollview:takeFocus( event )
+			end
 
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 
-				if addGroupid_value == "addGroup" then
+			 				    local options = {
+										effect = "crossFade",
+										time = 300,	
+										params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
+										}
 
-					--selectcontact_checkbox.isOn = true
+					    composer.gotoScene( "Controller.chatPage", options )
 
-				else
-
- 				    local options = {
-							effect = "crossFade",
-							time = 300,	
-							params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
-							}
-
-				    composer.gotoScene( "Controller.chatPage", options )
-
-			    end
 
 	end
 
 	return true
 
 end
+
 
 
 
@@ -188,7 +181,7 @@ local function onKeyEvent( event )
 									params = { tabbuttonValue2 =json.encode(tabButtons)}
 									}
 
-				    composer.gotoScene( "Controller.MessagingPage", options )
+				    composer.gotoScene( "Controller.broadCastListPage", options )
 
 			-- elseif tabbutton_id == "chat" then
 
@@ -224,6 +217,7 @@ local function onKeyEvent( event )
     return true 
 
 	end
+
 
 
 	local function onSwitchPress( event )
@@ -359,6 +353,7 @@ local function careePath_list( list )
 	for i=1,#list do
       print("here")
 
+
 		careerListArray[#careerListArray+1] = display.newGroup()
 
 		local tempGroup = careerListArray[#careerListArray]
@@ -407,6 +402,9 @@ local function careePath_list( list )
 
 			background.y=parentTitle.y+background.contentHeight/2
 
+			
+
+
 		end
 
 		
@@ -446,6 +444,10 @@ local function careePath_list( list )
 		end
 
 
+			
+
+
+
 		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,native.systemFont,14)
 		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
 		Name_txt.anchorX=0
@@ -457,38 +459,14 @@ local function careePath_list( list )
 		Position_txt.anchorX=0
 		Utils.CssforTextView(Position_txt,sp_fieldValue)
 
+		if Position_txt.text:len() > 26 then
+			Position_txt.text = string.sub(Position_txt.text,1,26).."..."
 
-		if addGroupid_value =="addGroup" then
-
-		selectcontact_checkbox = widget.newSwitch(
-		{
-		left = 15,
-		top = Position_txt.y-5,
-		style = "checkbox",
-		id = "email_Checkbox",
-		initialSwitchState = false,
-		onPress = onSwitchPress
-		})
-		selectcontact_checkbox.width= 20
-		selectcontact_checkbox.height = 20
-		selectcontact_checkbox.anchorX=0
-		selectcontact_checkbox.x = background.x+background.contentWidth/2-33
-		selectcontact_checkbox.y=background.y+background.height/2
-
-		tempGroup:insert(selectcontact_checkbox)
-
-		subjectBar.isVisible = true
-		GroupSubject.isVisible = true
-		create_groupicon.isVisible = true
-		backbutton.isVisible = true
-		else
+		end
 
 		local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
 		right_img.anchorX=0
 		right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
-
-	    end
-
 
 		local line = display.newRect(tempGroup,W/2,background.y,W,1)
 		line.y=background.y+background.contentHeight-line.contentHeight
@@ -497,13 +475,11 @@ local function careePath_list( list )
 
 		tempGroup.Contact_Id = list[i].Contact_Id
 
-		consultantList_scrollview:insert(tempGroup)
-
 		background:addEventListener( "touch", consultantTounch )
 
+		consultantList_scrollview:insert(tempGroup)
 
 	end
-
 end
 
 
@@ -529,13 +505,13 @@ print("size = "..#Listresponse_array)
 
 						for i=1,#Listresponse_array do
 
-							local list_Name = Listresponse_array[i].Last_Name
+							local list_Name = Listresponse_array[i].LastName
 
 							
 
-								if Listresponse_array[i].First_Name then
+								if Listresponse_array[i].FirstName then
 
-									list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
+									list_Name = Listresponse_array[i].FirstName.." "..Listresponse_array[i].LastName
 
 								end
 
@@ -550,10 +526,8 @@ print("size = "..#Listresponse_array)
 							end
 
 							temp.Name = list_Name
-							temp.CarrierProgress = Listresponse_array[i].CarrierProgress
-							temp.Image_Path = Listresponse_array[i].Image_Path
-							temp.Contact_Id = Listresponse_array[i].Contact_Id
-							temp.DisplayPosition = Listresponse_array[i].DisplayPosition
+							temp.CarrierProgress = Listresponse_array[i].EmailAddress
+							temp.Contact_Id = Listresponse_array[i].MyUnitBuzzRequestAccessId
 
 							byNameArray[#byNameArray+1] = temp
 
@@ -604,6 +578,25 @@ function scene:create( event )
 
 	title.text = "Consultant List"
 
+
+
+
+			consultantList_scrollview = widget.newScrollView
+			{
+				top = RecentTab_Topvalue-5,
+				left = 0,
+				width = W,
+				height =H-RecentTab_Topvalue-50+5,
+				hideBackground = true,
+				isBounceEnabled=false,
+				horizontalScrollingDisabled = true,
+				verticalScrollingDisabled = false,
+			}
+
+            sceneGroup:insert(consultantList_scrollview)
+
+
+	Webservice.GetMyUnitBuzzRequestAccesses("GRANT",get_Activeteammember)
 	subjectBar = display.newRect(sceneGroup,W/2,0,W,40)
 	subjectBar.y=title_bg.y+15
 	subjectBar.height = 40
@@ -636,8 +629,6 @@ function scene:create( event )
 	create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
 	create_groupicon.y=subjectBar.y +20
 
-    Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
-
 
 MainGroup:insert(sceneGroup)
 
@@ -653,46 +644,15 @@ function scene:show( event )
 	if phase == "will" then
 
 		if event.params then
-
-			addGroupid_value = event.params.addGroupid
-
-			print("addGroupid_value",addGroupid_value )
+			nameval = event.params.tabbuttonValue4
 		end
 
 
-
-	    if addGroupid_value == "addGroup" then
-
-	    	RecentTab_Topvalue = 115
-
-	    else
-
-	    	RecentTab_Topvalue = 75
-
-	    end
-
-
-		consultantList_scrollview = widget.newScrollView
-		{
-			top = RecentTab_Topvalue-5,
-			left = 0,
-			width = W,
-			height =H-RecentTab_Topvalue-50+5,
-			hideBackground = true,
-            backgroundColor = {0,0,0,0.6},
-			isBounceEnabled=false,
-			horizontalScrollingDisabled = true,
-			verticalScrollingDisabled = false
-		}
-
-        sceneGroup:insert(consultantList_scrollview)
-		
-
-    tabButtons = {
-    {
-        label = "Broadcast List",
-        defaultFile = "res/assert/user.png",
-        overFile = "res/assert/user.png",
+tabButtons = {
+       {
+        label = "Group",
+        defaultFile = "res/assert/phone.png",
+        overFile = "res/assert/phone.png",
         size = 11.5,
         labelYOffset = 2,
         id = "group",
@@ -732,8 +692,8 @@ function scene:show( event )
         labelYOffset = 2,
         id = "consultant_list",
         labelColor = { 
-            default = { 0,0,1}, 
-            over = {0,0,1}
+            default = { 0,0,0}, 
+            over = { 0,0,0 }
         },
         width = 16,
         height = 20,
@@ -778,6 +738,7 @@ function scene:show( event )
 
 		menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)
+
 		backbutton:addEventListener("touch",backactionTouch)
 		GroupSubject:addEventListener("userInput",textField)
 		create_groupicon:addEventListener("touch",createGroup)
@@ -801,6 +762,7 @@ end
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 			Runtime:removeEventListener( "key", onKeyEvent )
+
 			backbutton:removeEventListener("touch",backactionTouch)
 			GroupSubject:removeEventListener("userInput",textField)
 			create_groupicon:removeEventListener("touch",createGroup)

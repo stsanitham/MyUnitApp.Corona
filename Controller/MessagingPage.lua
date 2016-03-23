@@ -193,13 +193,15 @@ local function Broadcast_list( list )
 		BroadcastList_array[#BroadcastList_array] = nil
 	end
 
+	
+
 	for i=1,#list do
 
 		local flag = true
 
 		for j=1,i-1 do
 
-			if list[j].Contact_Id == list[i].Contact_Id  then
+			if list[j].Message_To == list[i].Message_To  then
 
 				flag=false
 
@@ -226,7 +228,7 @@ local function Broadcast_list( list )
 
 			background.anchorY = 0
 			background.x=W/2;background.y=tempHeight
-			background.id=list[i].Contact_Id
+			background.id=list[i].Message_To
 			background.alpha=0.01
 			background.value = list[i]
 
@@ -257,7 +259,7 @@ local function Broadcast_list( list )
 
 				for k=1,#list do
 
-					if list[i].Contact_Id == list[k].Contact_Id then
+					if list[i].Message_To == list[k].Message_To then
 
 						if list[i].Message_Status == "UPDATE" and list[k].Message_Status == "UPDATE" then
 
