@@ -224,6 +224,12 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 
     chatReceivedFlag=true
 
+    -- if openPage == "main" then
+
+    --     composer.gotoScene( "Controller.broadCastListPage" )
+
+    -- end
+
             -- notificationFlag = true
 
             -- if (additionalData) then

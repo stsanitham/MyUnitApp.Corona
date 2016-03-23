@@ -476,37 +476,8 @@ function scene:show( event )
 
 
 tabButtons = {
-    {
-        label = "Broadcast List",
-        defaultFile = "res/assert/user.png",
-        overFile = "res/assert/user.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "broadcast_list",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-    },
-    {
-        label = "Chat",
-        defaultFile = "res/assert/mail.png",
-        overFile = "res/assert/mail.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "chat",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 15,
-        onPress = handleTabBarEvent,
-    },
-    {
+  
+        {
         label = "Group",
         defaultFile = "res/assert/phone.png",
         overFile = "res/assert/phone.png",
@@ -519,8 +490,28 @@ tabButtons = {
         },
         width = 20,
         height = 20,
-       onPress = handleTabBarEvent,
+        onPress = handleTabBarEvent,
     },
+
+
+       {
+        label = "Chats",
+        defaultFile = "res/assert/user.png",
+        overFile = "res/assert/user.png",
+        size = 11.5,
+        labelYOffset = 2,
+        id = "broadcast_list",
+        labelColor = { 
+            default = { 0,0,0}, 
+            over = {0,0,0}
+        },
+        width = 20,
+        height = 20,
+        onPress = handleTabBarEvent,
+        selected = true,
+    },
+
+
     {
         label = "Consultant List",
         defaultFile = "res/assert/map.png",
@@ -529,14 +520,13 @@ tabButtons = {
         labelYOffset = 2,
         id = "consultant_list",
         labelColor = { 
-            default = { 0,0,0}, 
-            over = { 0,0,0 }
+            default = { 0,0,1}, 
+            over = {0,0,1}
         },
         width = 16,
         height = 20,
         onPress = handleTabBarEvent,
-        selected = true,
-    },
+    }
 }
 
 			    chattabBar = widget.newTabBar{

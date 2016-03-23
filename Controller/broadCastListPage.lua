@@ -384,6 +384,13 @@ end
 		function printTimeSinceStart( event )
 		    if chatReceivedFlag==true then
 		    	chatReceivedFlag=false
+
+		    	for i=1,#BroadcastList do
+		    		
+		    		BroadcastList[i]=nil
+
+		    	end
+
 		    	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message ORDER BY id DESC ") do
 
 					BroadcastList[#BroadcastList+1] =row
@@ -407,38 +414,7 @@ end
 		end
 
 		 tabButtons = {
-    {
-        label = "Broadcast List",
-        defaultFile = "res/assert/user.png",
-        overFile = "res/assert/user.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "broadcast_list",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-        selected = true,
-    },
-    {
-        label = "Chat",
-        defaultFile = "res/assert/mail.png",
-        overFile = "res/assert/mail.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "chat",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 15,
-        onPress = handleTabBarEvent,
-    },
-    {
+{
         label = "Group",
         defaultFile = "res/assert/phone.png",
         overFile = "res/assert/phone.png",
@@ -453,12 +429,27 @@ end
         height = 20,
         onPress = handleTabBarEvent,
     },
-   
-}
 
-if IsOwner == true then
 
-tabButtons[#tabButtons+1] =  {
+       {
+        label = "Chats",
+        defaultFile = "res/assert/user.png",
+        overFile = "res/assert/user.png",
+        size = 11.5,
+        labelYOffset = 2,
+        id = "broadcast_list",
+        labelColor = { 
+             default = { 0,0,1}, 
+            over = {0,0,1}
+        },
+        width = 20,
+        height = 20,
+        onPress = handleTabBarEvent,
+        selected = true,
+    },
+
+
+    {
         label = "Consultant List",
         defaultFile = "res/assert/map.png",
         overFile = "res/assert/map.png",
@@ -473,8 +464,10 @@ tabButtons[#tabButtons+1] =  {
         height = 20,
         onPress = handleTabBarEvent,
     }
+   
+}
 
-end
+
 
 			    chattabBar = widget.newTabBar{
 			    top =  display.contentHeight - 55,

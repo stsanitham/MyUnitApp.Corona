@@ -76,13 +76,12 @@ local function sendMeaasage()
 	           --native.showAlert("MyUnitBuzz", "From : "..tostring(ContactId).."To :"..tostring(To_ContactId), { "OK" } )
 
 
-	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId).."') OR (Message_To='"..tostring(ContactId).."') ORDER BY id DESC ") do
+	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId).."') OR (Message_To='"..tostring(ContactId).."')") do
 
-		local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE Message_To='"..tostring(To_ContactId).."' AND Message_To='"..tostring(ContactId)..";"
+		local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
 		db:exec( q )
 
 		ChatHistory[#ChatHistory+1] =row
-
 
 
 	end
@@ -107,9 +106,9 @@ local function sendMeaasage()
 
 		if MeassageList[#MeassageList-1] ~= nil then
 			
-			bg.y=MeassageList[#MeassageList-1][1].y-MeassageList[#MeassageList-1][1].contentHeight-5
+			bg.y=MeassageList[#MeassageList-1][1].y+MeassageList[#MeassageList-1][1].contentHeight+5
 		else
-			bg.y=H-210
+			bg.y=0
 		end
 		bg.x=5
 
@@ -124,24 +123,29 @@ local function sendMeaasage()
 
 		local chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,native.systemFont,14)
 		chat.anchorY=0
-		chat.anchorX = bg.anchorX
-		chat.x=bg.x+2;chat.y=bg.y
+		chat.anchorX = 0
+		chat.x=bg.x+5;chat.y=bg.y
 		chat:setFillColor( 0 )
 		if chat.width >  W then
 			chat.width = W-60
-			chat.x=bg.x+5
 
 		end
 
+		
+
 		tempGroup:insert( chat )
 
-		bg.width = chat.contentWidth+10
+		bg.width = chat.contentWidth+10	
+
+		if ChatHistory[i].Message_From == tostring(ContactId) then
+			chat.x = bg.x-bg.contentWidth+5
+		end
 
 		chatScroll:insert(tempGroup)
 
 	end
 
-
+chatScroll:scrollTo( "bottom", { time=200 } )
 
 end
 
@@ -317,37 +321,8 @@ function scene:create( event )
 
 
 		 tabButtons = {
-    {
-        label = "Broadcast List",
-        defaultFile = "res/assert/user.png",
-        overFile = "res/assert/user.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "broadcast_list",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-        selected = true,
-    },
-    {
-        label = "Chat",
-        defaultFile = "res/assert/mail.png",
-        overFile = "res/assert/mail.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "chat",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 15,
-        onPress = handleTabBarEvent,
-    },
+ 
+
     {
         label = "Group",
         defaultFile = "res/assert/phone.png",
@@ -363,12 +338,27 @@ function scene:create( event )
         height = 20,
         onPress = handleTabBarEvent,
     },
-   
-}
 
-if IsOwner == true then
 
-tabButtons[#tabButtons+1] =  {
+       {
+        label = "Chats",
+        defaultFile = "res/assert/user.png",
+        overFile = "res/assert/user.png",
+        size = 11.5,
+        labelYOffset = 2,
+        id = "broadcast_list",
+        labelColor = { 
+            default = { 0,0,0}, 
+            over = {0,0,0}
+        },
+        width = 20,
+        height = 20,
+        onPress = handleTabBarEvent,
+        selected = true,
+    },
+
+
+    {
         label = "Consultant List",
         defaultFile = "res/assert/map.png",
         overFile = "res/assert/map.png",
@@ -384,7 +374,11 @@ tabButtons[#tabButtons+1] =  {
         onPress = handleTabBarEvent,
     }
 
-end
+   
+}
+
+
+
 
 			    chattabBar = widget.newTabBar{
 			    top =  display.contentHeight - 55,
@@ -440,7 +434,7 @@ function scene:show( event )
 
 		title.text = ContactDetails.Name or ContactDetails.ToName
 
-		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_From
+		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To
 
 		ChatBox_bg = display.newRect(sceneGroup,0,H-100, W-50, 40 )
 		ChatBox_bg.anchorY=0;ChatBox_bg.anchorX=0
@@ -469,13 +463,14 @@ function scene:show( event )
         height = H-175,
         listener = scrollListener,
         hideBackground=true,
+        hideScrollBar=true,
        
     }
 )
 
-		chatScroll.anchorY=1
+		chatScroll.anchorY=0
 		chatScroll.anchorX=0
-		chatScroll.x=0;chatScroll.y=ChatBox_bg.y-5
+		chatScroll.x=0;chatScroll.y=title_bg.y+title_bg.contentHeight/2
 		sceneGroup:insert( chatScroll )
 
 		sendMeaasage()

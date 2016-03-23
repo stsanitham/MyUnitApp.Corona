@@ -215,8 +215,25 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 
 
 		 tabButtons = {
-    {
-        label = "Broadcast List",
+ {
+        label = "Group",
+        defaultFile = "res/assert/phone.png",
+        overFile = "res/assert/phone.png",
+        size = 11.5,
+        labelYOffset = 2,
+        id = "group",
+        labelColor = { 
+             default = { 0,0,1}, 
+            over = {0,0,1}
+        },
+        width = 20,
+        height = 20,
+        onPress = handleTabBarEvent,
+    },
+
+
+       {
+        label = "Chats",
         defaultFile = "res/assert/user.png",
         overFile = "res/assert/user.png",
         size = 11.5,
@@ -231,42 +248,9 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
         onPress = handleTabBarEvent,
         selected = true,
     },
-    {
-        label = "Chat",
-        defaultFile = "res/assert/mail.png",
-        overFile = "res/assert/mail.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "chat",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 15,
-        onPress = handleTabBarEvent,
-    },
-    {
-        label = "Group",
-        defaultFile = "res/assert/phone.png",
-        overFile = "res/assert/phone.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "group",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = { 0,0,0 }
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-    },
-   
-}
 
-if IsOwner == true then
 
-tabButtons[#tabButtons+1] =  {
+    {
         label = "Consultant List",
         defaultFile = "res/assert/map.png",
         overFile = "res/assert/map.png",
@@ -281,8 +265,10 @@ tabButtons[#tabButtons+1] =  {
         height = 20,
         onPress = handleTabBarEvent,
     }
+   
+}
 
-end
+
 
 				    chattabBar = widget.newTabBar{
 				    top =  display.contentHeight - 55,
