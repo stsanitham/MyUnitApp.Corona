@@ -24,7 +24,7 @@ local Background
 
 local menuBtn, chattabBar , tabButtons
 
-openPage="broadCastListPage"
+openPage="MessagingPage"
 
 local newtworkArray = {}
 

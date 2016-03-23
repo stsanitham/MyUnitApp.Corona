@@ -226,7 +226,7 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 
     -- if openPage == "main" then
 
-    --     composer.gotoScene( "Controller.broadCastListPage" )
+    --     composer.gotoScene( "Controller.MessagingPage" )
 
     -- end
 

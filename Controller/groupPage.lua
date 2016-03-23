@@ -117,7 +117,7 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 										params = { tabbuttonValue2 =json.encode(tabButtons)}
 										}
 
-					    composer.gotoScene( "Controller.broadCastListPage", options )
+					    composer.gotoScene( "Controller.MessagingPage", options )
 
 				-- elseif tabbutton_id == "chat" then
 
