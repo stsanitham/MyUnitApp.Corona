@@ -82,13 +82,13 @@ local function consultantTounch( event )
 
 				else
 
-				 				    local options = {
-											effect = "crossFade",
-											time = 300,	
-											params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
-											}
+ 				    local options = {
+							effect = "crossFade",
+							time = 300,	
+							params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
+							}
 
-						    composer.gotoScene( "Controller.chatPage", options )
+				    composer.gotoScene( "Controller.chatPage", options )
 
 			    end
 
@@ -120,7 +120,6 @@ local function backactionTouch(event)
 	end
 
 end
-
 
 
 local function onTimer ( event )
@@ -227,13 +226,124 @@ local function onKeyEvent( event )
 	end
 
 
-local function onSwitchPress( event )
+	local function onSwitchPress( event )
 
-    local switch = event.target
+	    local switch = event.target
 
-    print( "Switch with ID '"..switch.id.."' is on: "..tostring(switch.isOn) )
+	    print( "Switch with ID '"..switch.id.."' is on: "..tostring(switch.isOn) )
 
-end
+	end
+
+
+
+	local function SetError( displaystring, object )
+
+		object.text=displaystring
+		object.size=10
+		object:setTextColor(1,0,0)
+	end
+
+
+
+	 function getChatGroupCreation(response )
+
+		groupcreation_response = response
+
+		print("Response after group creation $$$$$$$$$$$$$$$$$$$$$$$$$$$$$ : ", json.encode(groupcreation_response))
+
+		composer.gotoScene("Controller.groupPage","slideRight",300)
+	    groupSubject.text = ""
+
+	 end 
+
+
+
+	local function createGroup(event)
+
+		if event.phase == "began" then
+			
+			native.setKeyboardFocus(nil)
+
+		elseif event.phase == "ended" then
+
+		      local validation = true
+
+              native.setKeyboardFocus(nil)
+
+
+		      if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == ChatDetails.GroupSubjectError or GroupSubject.text == GroupSubject.id then
+	            
+	             validation=false
+
+		     	 SetError(ChatDetails.GroupSubjectError,GroupSubject)
+
+		      else
+
+		      	 GroupSubject.text = groupSubjectname
+
+		      	 print("Here ######################################## ",GroupSubject.text)
+
+		      end
+
+
+		      if(validation == true) then
+
+		      	GroupSubject.text = groupSubjectname
+
+		      	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",getChatGroupCreation)
+
+		      end
+
+
+		 end
+
+	end
+
+
+
+	function textField( event )
+
+		if ( event.phase == "began" ) then
+
+				event.target:setTextColor(color.black)
+
+				current_textField = nil
+
+				current_textField = event.target;
+
+				current_textField.size=14
+
+				if "*" == event.target.text:sub(1,1) then
+					event.target.text=""
+					current_textField.text = ""
+				end
+				
+		elseif ( event.phase == "submitted" ) then
+
+		elseif event.phase == "ended" then
+
+		elseif ( event.phase == "editing" ) then
+
+				 if (current_textField.id =="groupSubject") then
+
+				 	if event.target.text:len() > 25 then
+
+						event.target.text = event.target.text:sub(1,25)
+
+						native.setKeyboardFocus(nil)
+
+					end
+
+						groupSubjectname = event.target.text
+
+						print("group subject name ############################ : ",groupSubjectname)
+
+				end
+		 end
+    end
+
+
+
 
 
 
@@ -526,8 +636,7 @@ function scene:create( event )
 	create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
 	create_groupicon.y=subjectBar.y +20
 
-
-        Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
+    Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 
 
 MainGroup:insert(sceneGroup)
@@ -680,6 +789,8 @@ function scene:show( event )
 		menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)
 		backbutton:addEventListener("touch",backactionTouch)
+		GroupSubject:addEventListener("userInput",textField)
+		create_groupicon:addEventListener("touch",createGroup)
 
    		Runtime:addEventListener( "key", onKeyEvent )
 		
@@ -701,6 +812,8 @@ end
 			BgText:removeEventListener("touch",menuTouch)
 			Runtime:removeEventListener( "key", onKeyEvent )
 			backbutton:removeEventListener("touch",backactionTouch)
+			GroupSubject:removeEventListener("userInput",textField)
+			create_groupicon:removeEventListener("touch",createGroup)
 
 		elseif phase == "did" then
 

@@ -379,3 +379,8 @@ InviteAccessDetail.Phone="Téléphone"
 InviteAccessDetail.MKRank = "MK Rank "
 InviteAccessDetail.ActivityOn = "Activité sur"
 InviteAccessDetail.Comments = "commentaires"
+
+
+ChatDetails = {}
+
+ChatDetails.GroupSubjectError = "* Entrez le Groupe Sujet"

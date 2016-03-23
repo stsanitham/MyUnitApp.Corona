@@ -154,3 +154,5 @@ ApplicationConfig.CheckExistsRequestStatus = ApplicationConfig.BASE_URL.."/MyUni
 ApplicationConfig.GetUserPreferencebyUserId =  ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/GetUserPreferencebyUserId"
 
 ApplicationConfig.GetMyUnitBuzzRequestAccessPermissionsDetail = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMyUnitBuzzRequestAccessPermissionsDetail"
+
+ApplicationConfig.CreateMessageChatGroup = ApplicationConfig.BASE_URL.."/MyUnitBuzz/CreateMessageChatGroup"

@@ -378,3 +378,8 @@ InviteAccessDetail.ActivityOn = "Activity On"
 InviteAccessDetail.Comments = "Comments"
 
 
+ChatDetails = {}
+
+ChatDetails.GroupSubjectError = "* Enter the Group Subject"
+
+
