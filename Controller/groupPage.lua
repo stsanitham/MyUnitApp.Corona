@@ -298,6 +298,8 @@ local function GroupCreation_list( list )
 
 		groupList_scrollview:insert(tempGroup)
 
+		addGroupBtn:toFront( )
+
 		background:addEventListener( "touch", groupBackground_Touch )
 
 
@@ -343,12 +345,16 @@ end
 		title:setFillColor(0)
 		title.text = "Group"
 
-		addGroupBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/2,66/2.2 )
-		addGroupBtn.x=W-40
-		addGroupBtn.y=tabBar.y+tabBar.contentHeight-4
-		addGroupBtn.anchorX = 0
+		-- addGroupBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/2,66/2.2 )
+		-- addGroupBtn.x=W-40
+		-- addGroupBtn.y=tabBar.y+tabBar.contentHeight-4
+		-- addGroupBtn.anchorX = 0
+		-- addGroupBtn.isVisible = true
+		-- addGroupBtn.id="addGroup"
+
+		addGroupBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
+		addGroupBtn.x=W/2+W/3+15;addGroupBtn.y=H-80;addGroupBtn.id="addGroup"
 		addGroupBtn.isVisible = true
-		addGroupBtn.id="addGroup"
 
 		subjectBar = display.newRect(sceneGroup,W/2,0,W,40)
 		subjectBar.y=title_bg.y+15

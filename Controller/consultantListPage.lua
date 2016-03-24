@@ -397,7 +397,13 @@ local function onKeyEvent( event )
 
 				current_textField = nil
 
-				current_textField = event.target;
+				current_textField = event.target;	
+
+			if (current_textField.id == "groupSubject") then
+
+			   native.setKeyboardFocus(current_textField)
+
+			end
 
 				current_textField.size=14
 
@@ -412,7 +418,7 @@ local function onKeyEvent( event )
 
 		elseif ( event.phase == "editing" ) then
 
-				 if (current_textField.id =="groupSubject") then
+				 if (current_textField.id == "groupSubject") then
 
 				 	if event.target.text:len() > 25 then
 
@@ -425,7 +431,6 @@ local function onKeyEvent( event )
 						groupSubjectname = event.target.text
 
 						print("group subject name ############################ : ",groupSubjectname)
-
 				end
 		 end
     end
