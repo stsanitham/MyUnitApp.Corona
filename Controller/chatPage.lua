@@ -286,6 +286,56 @@ local function onKeyEvent( event )
     return true 
 
 	end
+
+
+	local function ChatBoxHandler( event )
+
+   		 if ( event.phase == "began" ) then
+        -- user begins editing numericField
+        elseif event.phase == "editing" then
+
+        	if event.text:len() >=1 then
+        		sendBtn.isVisible=true
+        		recordBtn.isVisible=false
+        	else
+        		sendBtn.isVisible=false
+        		recordBtn.isVisible=true
+        	end
+
+
+	    end   
+	end
+
+	local function RecordAction(event)
+
+
+		local filePath = system.pathForFile( "newRecording.wav", system.DocumentsDirectory )
+		local r = media.newRecording( filePath )
+
+		if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+
+			 
+			 
+			
+			r:startRecording()
+
+			ChatBox.text="Start Recoding...."
+
+
+		elseif event.phase == "ended" then
+				display.getCurrentStage():setFocus( nil )
+
+				ChatBox.text=""
+				r:stopRecording()
+
+
+		end
+
+return true
+
+
+	end
 ------------------------------------------------------
 
 function scene:create( event )
@@ -453,6 +503,13 @@ function scene:show( event )
 		sendBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
 		sendBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-sendBtn.contentHeight/2
 		sendBtn.anchorY=0;sendBtn.anchorX=0
+		sendBtn.isVisible=false
+
+
+		recordBtn = display.newImageRect( sceneGroup, "res/assert/record.png", 25,20 )
+		recordBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
+		recordBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-recordBtn.contentHeight/2
+		recordBtn.anchorY=0;recordBtn.anchorX=0
 
 
 		chatScroll = widget.newScrollView(
@@ -477,7 +534,8 @@ function scene:show( event )
 
 		sendBtn:addEventListener( "touch", ChatSendAction )
 		menuBtn:addEventListener("touch",menuTouch)
-
+		ChatBox:addEventListener( "userInput", ChatBoxHandler )
+		recordBtn:addEventListener( "touch", RecordAction )
 
 		function printTimeSinceStart( event )
 		    if chatReceivedFlag==true then

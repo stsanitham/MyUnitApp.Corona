@@ -48,7 +48,7 @@ local byNameArray = {}
 
 local Listresponse_array = {}
 
-
+local tabBarGroup = display.newGroup( )
 
 local tabBarBackground = "res/assert/tabBarBg.png"
 local tabBarLeft = "res/assert/tabSelectedLeft.png"
@@ -103,56 +103,146 @@ local function onKeyEvent( event )
  end
 
 
+local function CreateTabBarIcons( )
+
+	if tab_Group_btn ~= nil then if tab_Group_btn.y then tab_Group_btn:removeSelf( );tab_Group_btn=nil end end
+	if tab_Message_btn ~= nil then if tab_Message_btn.y then tab_Message_btn:removeSelf( );tab_Message_btn=nil end end
+	if tab_Contact_btn ~= nil then if tab_Contact_btn.y then tab_Contact_btn:removeSelf( );tab_Contact_btn=nil end end
+
+
+	tab_Group_btn = display.newImageRect( tabBarGroup, "res/assert/group.png", 35/1.4, 31/1.4 )
+	tab_Group_btn.x=tab_Group.x
+	tab_Group_btn.y=tab_Group.y+tab_Group_btn.contentHeight/2-8
+	tab_Group_btn.anchorY=0
 
 
 
-	local function handleTabBarEvent( event )
+	tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats.png", 35/1.4, 31/1.4 )
+	tab_Message_btn.x=tab_Message.x
+	tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
+	tab_Message_btn.anchorY=0
 
-		if event.phase == "press" then 
 
-				tabbutton_id = event.target._id 
 
-			if tabbutton_id == "broadcast_list" then
+	tab_Contact_btn = display.newImageRect( tabBarGroup, "res/assert/Consultant.png", 35/1.4, 31/1.4 )
+	tab_Contact_btn.x=tab_Contact.x
+	tab_Contact_btn.y=tab_Contact.y+tab_Contact_btn.contentHeight/2-8
+	tab_Contact_btn.anchorY=0
 
-				title.text = "Broadcast List"
 
-			-- elseif tabbutton_id == "chat" then
+end
 
-			-- 	    print("tabButtons details : "..json.encode(tabButtons))
 
-			-- 		chattabBar:setSelected( 2 ) 
-			-- 		-- composer.removeHidden()
-   -- 				    local options = {
-			-- 						effect = "crossFade",
-			-- 						time = 300,	
-			-- 						params = { tabbuttonValue2 =json.encode(tabButtons)}
-			-- 						}
+	local function TabbarTouch( event )
 
-			-- 	    composer.gotoScene( "Controller.chatPage", options )
+		if event.phase == "began" then 
 
-			elseif tabbutton_id == "group" then
+		elseif event.phase == "ended" then
+			
+			if event.target.id == "message" then
 
-					chattabBar:setSelected( 3 ) 
-					-- composer.removeHidden()
-   				    local options = {
+				title.text = "Messages"
+
+
+			elseif event.target.id == "group" then
+
+				CreateTabBarIcons()
+
+
+					tab_Group_btn:removeSelf( );tab_Group_btn=nil
+
+					tab_Group_btn = display.newImageRect( tabBarGroup, "res/assert/group active.png", 35/1.4, 31/1.4 )
+					tab_Group_btn.x=tab_Group.x
+					tab_Group_btn.y=tab_Group.y+tab_Group_btn.contentHeight/2-8
+					tab_Group_btn.anchorY=0
+					tab_Group_btn:scale(0.1,0.1)
+
+					tab_Group_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					tab_Message_txt:setFillColor( 0.3 )
+					tab_Contact_txt:setFillColor(  0.3  )
+
+					local circle = display.newCircle( tabBarGroup, tab_Group_btn.x, tab_Group_btn.y+tab_Group_btn.contentHeight/2, 25 )
+					circle.strokeWidth=4
+					circle:scale(0.1,0.1)
+					circle.alpha=0.3
+					circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+					local function listener1( obj )
+
+						circle:removeSelf( );circle=nil
+						tab_Group_btn:scale(0.8,0.8)
+
+					    overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+					    overlay.y=tabBg.y+6;overlay.x=tab_Group_btn.x
+
+					        local options = {
 									effect = "crossFade",
 									time = 300,	  
-									params = { tabbuttonValue3 =json.encode(tabButtons)}
+									params = { tabbuttonValue3 =event.target.id}
 									}
 
 				    composer.gotoScene( "Controller.groupPage", options )
+					end
 
-			elseif tabbutton_id == "consultant_list" then
+					if overlay then overlay:removeSelf( );overlay=nil end
 
-			    	chattabBar:setSelected( 4 ) 
-			    	-- composer.removeHidden()
-   				    local options = {
+					transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
+					transition.to( tab_Group_btn, { time=220, delay=100, xScale=1.3,yScale=1.3 , onComplete=listener1} )
+
+   				
+
+
+
+			elseif event.target.id == "contact" then
+
+			    	CreateTabBarIcons()
+
+			    	tab_Contact_btn:removeSelf( );tab_Contact_btn=nil
+
+			    	tab_Contact_btn = display.newImageRect( tabBarGroup, "res/assert/Consultant active.png", 35/1.4, 31/1.4 )
+					tab_Contact_btn.x=tab_Contact.x
+					tab_Contact_btn.y=tab_Contact.y+tab_Contact_btn.contentHeight/2-8
+					tab_Contact_btn.anchorY=0
+					tab_Contact_btn:scale(0.1,0.1)
+
+					tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+					local circle = display.newCircle( tabBarGroup, tab_Contact_btn.x, tab_Contact_btn.y+tab_Contact_btn.contentHeight/2, 25 )
+					circle.strokeWidth=4
+					circle:scale(0.1,0.1)
+					circle.alpha=0.3
+					circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+					tab_Group_txt:setFillColor( 0.3 )
+					tab_Message_txt:setFillColor( 0.3 )
+					tab_Contact_txt:setFillColor(  Utils.convertHexToRGB(color.tabBarColor)  )
+
+
+					local function listener1( obj )
+
+						circle:removeSelf( );circle=nil
+						tab_Contact_btn:scale(0.9,0.9)
+					 	
+					 	 overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+					    overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
+
+					      local options = {
 									effect = "crossFade",
 									time = 300,	 
-									params = { tabbuttonValue4 =json.encode(tabButtons)}
+									params = { tabbuttonValue3 =event.target.id}
 									}
 
 				    composer.gotoScene( "Controller.consultantListPage", options )
+					end
+
+					if overlay then overlay:removeSelf( );overlay=nil end
+
+					transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
+					transition.to( tab_Contact_btn, { time=200, delay=100, xScale=1,yScale=1 , onComplete=listener1} )
+
+   				
 
 			end
 
@@ -193,7 +283,7 @@ local function Broadcast_list( list )
 		BroadcastList_array[#BroadcastList_array] = nil
 	end
 
-	
+
 
 	for i=1,#list do
 
@@ -323,7 +413,7 @@ end
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
 
-	title.text = "Broadcast List"
+	title.text = "Messages"
 
 
    
@@ -415,89 +505,146 @@ end
 
 		end
 
-		 tabButtons = {
-{
-        label = "Group",
-        defaultFile = "res/assert/phone.png",
-        overFile = "res/assert/phone.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "group",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = { 0,0,0 }
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-    },
+-- 	 tabButtons = {
+-- {
+--         label = "Group",
+--         defaultFile = "res/assert/phone.png",
+--         overFile = "res/assert/phone.png",
+--         size = 11.5,
+--         labelYOffset = 2,
+--         id = "group",
+--         labelColor = { 
+--             default = { 0,0,0}, 
+--             over = { 0,0,0 }
+--         },
+--         width = 20,
+--         height = 20,
+--         onPress = handleTabBarEvent,
+--     },
 
 
-       {
-        label = "Chats",
-        defaultFile = "res/assert/user.png",
-        overFile = "res/assert/user.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "broadcast_list",
-        labelColor = { 
-             default = { 0,0,1}, 
-            over = {0,0,1}
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-        selected = true,
-    },
+--        {
+--         label = "Chats",
+--         defaultFile = "res/assert/user.png",
+--         overFile = "res/assert/user.png",
+--         size = 11.5,
+--         labelYOffset = 2,
+--         id = "broadcast_list",
+--         labelColor = { 
+--              default = { 0,0,1}, 
+--             over = {0,0,1}
+--         },
+--         width = 20,
+--         height = 20,
+--         onPress = handleTabBarEvent,
+--         selected = true,
+--     },
 
 
-    {
-        label = "Consultant List",
-        defaultFile = "res/assert/map.png",
-        overFile = "res/assert/map.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "consultant_list",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = { 0,0,0 }
-        },
-        width = 16,
-        height = 20,
-        onPress = handleTabBarEvent,
-    }
+--     {
+--         label = "Consultant List",
+--         defaultFile = "res/assert/map.png",
+--         overFile = "res/assert/map.png",
+--         size = 11.5,
+--         labelYOffset = 2,
+--         id = "consultant_list",
+--         labelColor = { 
+--             default = { 0,0,0}, 
+--             over = { 0,0,0 }
+--         },
+--         width = 16,
+--         height = 20,
+--         onPress = handleTabBarEvent,
+--     }
    
-}
+-- }
 
 
 
-			    chattabBar = widget.newTabBar{
-			    top =  display.contentHeight - 55,
-			    left = 0,
-			    width = display.contentWidth, 
-			    backgroundFile = tabBarBackground,
-			    tabSelectedLeftFile = tabBarLeft,   
-			    tabSelectedRightFile = tabBarRight,    
-			    tabSelectedMiddleFile = tabBarMiddle,   
-			    tabSelectedFrameWidth = 20,                                         
-			    tabSelectedFrameHeight = 50, 
-			    backgroundFrame = 1,
-			    tabSelectedLeftFrame = 2,
-			    tabSelectedMiddleFrame = 3,
-			    tabSelectedRightFrame = 4,                                       
-			    buttons = tabButtons,
-			    height = 50,
-			}
+-- 			    chattabBar = widget.newTabBar{
+-- 			    top =  display.contentHeight - 55,
+-- 			    left = 0,
+-- 			    width = display.contentWidth, 
+-- 			    backgroundFile = tabBarBackground,
+-- 			    tabSelectedLeftFile = tabBarLeft,   
+-- 			    tabSelectedRightFile = tabBarRight,    
+-- 			    tabSelectedMiddleFile = tabBarMiddle,   
+-- 			    tabSelectedFrameWidth = 20,                                         
+-- 			    tabSelectedFrameHeight = 50, 
+-- 			    backgroundFrame = 1,
+-- 			    tabSelectedLeftFrame = 2,
+-- 			    tabSelectedMiddleFrame = 3,
+-- 			    tabSelectedRightFrame = 4,                                       
+-- 			    buttons = tabButtons,
+-- 			    height = 50,
+-- 			}
 
-			sceneGroup:insert(chattabBar)
+-- 			sceneGroup:insert(chattabBar)
 
 
-            local rect = display.newRect(0,0,display.contentWidth,1.3)
-			rect.x = 0;
-			rect.anchorX=0
-			rect.y = display.contentHeight - 50;
-			rect:setFillColor(0)
-			sceneGroup:insert( rect )
+--             local rect = display.newRect(0,0,display.contentWidth,1.3)
+-- 			rect.x = 0;
+-- 			rect.anchorX=0
+-- 			rect.y = display.contentHeight - 50;
+-- 			rect:setFillColor(0)
+-- 			sceneGroup:insert( rect )
+
+
+tabBg = display.newRect( tabBarGroup, W/2, H-40, W, 40 )
+tabBg.anchorY=0
+tabBg.strokeWidth = 1
+tabBg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor),0.7 )
+
+tab_Group = display.newRect(tabBarGroup,0,0,70,40)
+tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
+tab_Group.anchorY=0
+tab_Group.alpha=0.01
+tab_Group.id="group"
+tab_Group:setFillColor( 0.2 )
+
+tab_Message = display.newRect(tabBarGroup,0,0,70,40)
+tab_Message.x=W/2;tab_Message.y=tabBg.y
+tab_Message.anchorY=0
+tab_Message.alpha=0.01
+tab_Message.id="message"
+tab_Message:setFillColor( 0.2 )
+
+tab_Contact = display.newRect(tabBarGroup,0,0,70,40)
+tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
+tab_Contact.anchorY=0
+tab_Contact.alpha=0.01
+tab_Contact.id="contact"
+tab_Contact:setFillColor( 0.2 )
+
+tab_Group:addEventListener( "touch", TabbarTouch )
+tab_Message:addEventListener( "touch", TabbarTouch )
+tab_Contact:addEventListener( "touch", TabbarTouch )
+
+CreateTabBarIcons()
+
+	if tab_Message_btn then tab_Message_btn:removeSelf( );tab_Message_btn=nil end
+
+	tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats active.png", 35/1.4, 31/1.4 )
+	tab_Message_btn.x=tab_Message.x
+	tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
+	tab_Message_btn.anchorY=0
+
+	overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+	overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
+
+tab_Group_txt = display.newText( tabBarGroup, "Group",0,0,native.systemFont,11 )
+tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
+tab_Group_txt:setFillColor( 0.3 )
+
+tab_Message_txt = display.newText( tabBarGroup, "Chats",0,0,native.systemFont,11 )
+tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
+tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+tab_Contact_txt = display.newText( tabBarGroup, "Consultant List",0,0,native.systemFont,11 )
+tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
+tab_Contact_txt:setFillColor( 0.3 )
+
+sceneGroup:insert( tabBarGroup )
 
 
 	elseif phase == "did" then
@@ -536,7 +683,7 @@ Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 	BgText:removeEventListener("touch",menuTouch)
 
 	Runtime:removeEventListener( "key", onKeyEvent )
-
+	tab_Group_btn=nil;tab_Message_btn=nil;tab_Contact_btn=nil
 	elseif phase == "did" then
 
 	composer.removeHidden()
