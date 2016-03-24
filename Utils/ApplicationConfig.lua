@@ -156,3 +156,7 @@ ApplicationConfig.GetUserPreferencebyUserId =  ApplicationConfig.BASE_URL.."/MyU
 ApplicationConfig.GetMyUnitBuzzRequestAccessPermissionsDetail = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMyUnitBuzzRequestAccessPermissionsDetail"
 
 ApplicationConfig.CreateMessageChatGroup = ApplicationConfig.BASE_URL.."/MyUnitBuzz/CreateMessageChatGroup"
+
+ApplicationConfig.GetChatMessageGroupList = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetChatMessageGroupList"
+
+ApplicationConfig.AddTeamMemberToChatGroup = ApplicationConfig.BASE_URL.."/MyUnitBuzz/AddTeamMemberToChatGroup"

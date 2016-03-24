@@ -22,7 +22,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
 
-local menuBtn,tabButtons,chattabBar
+local menuBtn,tabButtons,chattabBar,NoEvent
 
 openPage="groupPage"
 
@@ -44,7 +44,7 @@ local Image
 
 local byNameArray = {}
 
-local Listresponse_array = {}
+local groupListresponse_array = {}
 
 
 local tabBarBackground = "res/assert/tabBarBg.png"
@@ -86,6 +86,52 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 	    return true
 
     end
+
+
+
+function makeTimeStamp( dateString )
+   local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
+   local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
+   local timestamp = os.time(
+      { year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false }
+   )
+   local offset = 0
+   if ( tzoffset ) then
+      if ( tzoffset == "+" or tzoffset == "-" ) then  -- We have a timezone
+         offset = offsethour * 60 + offsetmin
+         if ( tzoffset == "-" ) then
+            offset = offset * -1
+         end
+         timestamp = timestamp + offset
+      end
+   end
+   return timestamp
+end
+
+
+local function groupBackground_Touch( event )
+	if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
+
+		if ( dy > 10 ) then
+			display.getCurrentStage():setFocus( nil )
+			groupList_scrollview:takeFocus( event )
+		end
+
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+			
+	end
+
+	return true
+
+end
+
+
 
 
 	local function onKeyEvent( event )
@@ -144,7 +190,7 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 										params = { tabbuttonValue2 =json.encode(tabButtons)}
 										}
 
-					    composer.gotoScene( "Controller.broadCastListPage", options )
+					    composer.gotoScene( "Controller.MessagingPage", options )
 
 				-- elseif tabbutton_id == "chat" then
 
@@ -184,8 +230,8 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 	------------------------------------------------------
 
 
-	local function careePath_list( list )
 
+local function GroupCreation_list( list )
 
 	for j=#careerListArray, 1, -1 do 
 		
@@ -196,12 +242,9 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 	for i=1,#list do
       print("here")
 
-
 		careerListArray[#careerListArray+1] = display.newGroup()
 
 		local tempGroup = careerListArray[#careerListArray]
-
-		local Image 
 
 		local tempHeight = 0
 
@@ -217,212 +260,58 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 		background.alpha=0.01
 		background.value = list[i]
 
-		if parentFlag == true then
-			parentFlag=false
+		local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+		Image.x=30;Image.y=background.y+background.height/2
+
+		local GroupName_txt = display.newText(tempGroup,list[i].MyUnitBuzzGroupName,0,0,native.systemFont,14)
+		GroupName_txt.x=60;GroupName_txt.y=background.y+background.height/2-2
+		GroupName_txt.anchorX=0
+		Utils.CssforTextView(GroupName_txt,sp_labelName)
+		GroupName_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+			local timecreated = list[i].CreateTimeStamp
+
+			local time = makeTimeStamp(timecreated)
+		   -- local timeValue = Utils.getTime(time,"%b %d, %Y %I:%M %p","")
+
+			print( list[i].CreateTimeStamp,os.date("%b %d, %Y %I:%M %p",time) )											
 
 
-			parentTitle = display.newRect(tempGroup,0,0,W,25)
-			if(careerListArray[#careerListArray-1]) ~= nil then
-				--here
-				tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height/2+10
-			end
+		local GroupCreated_time = display.newText(tempGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,native.systemFont,11)
+		GroupCreated_time.x=background.x+background.contentWidth/2-123
+		GroupCreated_time.y=background.y+background.height/2+15
+		GroupCreated_time.anchorX=0
+		Utils.CssforTextView(GroupCreated_time,sp_labelName)
+		GroupCreated_time:setFillColor(0,0,0,0.6)
 
-
-			parentTitle.anchorY = 0
-			parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
-			parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
-
-			if viewValue == "position" then
-				parent_centerText = display.newText(tempGroup,header_value,0,0,native.systemFontBold,14)
-			else
-				parent_centerText = display.newText(tempGroup,header_value:upper(),0,0,native.systemFontBold,14)
-
-			end
-
-			parent_centerText.x=5
-			parent_centerText.anchorX=0
-			parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
-
-			background.y=parentTitle.y+background.contentHeight/2
-
-			
-
-
-		end
-
-		
-
-		if list[i].Image_Path ~= nil then
-
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2
-
-			networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
-				"GET",
-				function ( img_event )
-					if ( img_event.isError ) then
-						print ( "Network error - download failed" )
-					else
-
-						if Image then
-
-						print(img_event.response.filename)
-						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
-						Image.width=35;Image.height=35
-						Image.x=30;Image.y=background.y+background.contentHeight/2
-    				--event.row:insert(img_event.target)
-
-    			    else
-
-						Image:removeSelf();Image=nil
-
-					 end
-    			end
-
-    			end, "career"..list[i].Contact_Id..".png", system.TemporaryDirectory)
-		else
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2
-
-		end
-
-
-			
-
-
-
-		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,native.systemFont,14)
-		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
-		Name_txt.anchorX=0
-		Utils.CssforTextView(Name_txt,sp_labelName)
-		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-
-		local Position_txt = display.newText(tempGroup,list[i].CarrierProgress,0,0,native.systemFont,14)
-		Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
-		Position_txt.anchorX=0
-		Utils.CssforTextView(Position_txt,sp_fieldValue)
-
-		if Position_txt.text:len() > 26 then
-			Position_txt.text = string.sub(Position_txt.text,1,26).."..."
-
-		end
 
 		-- local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
 		-- right_img.anchorX=0
 		-- right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
 
 
-			-- local opt = {
-			-- width = 32,
-			-- height = 32,
-			-- numFrames = 2,
-			-- sheetContentWidth = 64,
-			-- sheetContentHeight = 32
-			-- }
-			-- local mySheet = graphics.newImageSheet( "img/check.png", opt )
-
-			-- local checkboxButton = widget.newSwitch {
-			-- left = 50,
-			-- top = 50,
-			-- width = 32,
-			-- height = 32,
-			-- style = "checkbox",
-			-- sheet = mySheet,
-			-- frameOff = 1,
-			-- frameOn = 2,
-			-- }
-
-
-		selectcontact_checkbox = widget.newSwitch(
-		{
-		left = 15,
-		top = Position_txt.y-5,
-		style = "checkbox",
-		id = "email_Checkbox",
-		initialSwitchState = false,
-		--onPress = onSwitchPress
-		})
-		selectcontact_checkbox.width= 20
-		selectcontact_checkbox.height = 20
-		selectcontact_checkbox.anchorX=0
-		selectcontact_checkbox.x = background.x+background.contentWidth/2-33
-		selectcontact_checkbox.y=background.y+background.height/2
-
-		tempGroup:insert(selectcontact_checkbox)
-
-
 		local line = display.newRect(tempGroup,W/2,background.y,W,1)
 		line.y=background.y+background.contentHeight-line.contentHeight
 		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 	
-
 		tempGroup.Contact_Id = list[i].Contact_Id
-
-		--background:addEventListener( "touch", consultantTounch )
 
 		groupList_scrollview:insert(tempGroup)
 
+		background:addEventListener( "touch", groupBackground_Touch )
+
+
 	end
+
 end
 
 
 
 
-function get_Activeteammember(response)
 
 
-	for i=1,#Listresponse_array do
-		Listresponse_array[i]=nil
-		byNameArray[i]=nil
-	end
-
-	Listresponse_array=response
-
-	if response ~= nil and #response ~= 0 then
-				
---NameArray
-
-print("size = "..#Listresponse_array)
-
-						for i=1,#Listresponse_array do
-
-							local list_Name = Listresponse_array[i].LastName
-
-							
-
-								if Listresponse_array[i].FirstName then
-
-									list_Name = Listresponse_array[i].FirstName.." "..Listresponse_array[i].LastName
-
-								end
-
-							
-
-							print(list_Name)
-
-							local temp = {}
-
-							if list_Name:sub(1,1) == " " then
-								list_Name = list_Name:sub( 2,list_Name:len())
-							end
-
-							temp.Name = list_Name
-							temp.CarrierProgress = Listresponse_array[i].EmailAddress
-							temp.Contact_Id = Listresponse_array[i].MyUnitBuzzRequestAccessId
-
-							byNameArray[#byNameArray+1] = temp
 
 
-						end
-
-								careePath_list(byNameArray)
-
-	else
-
-		NoEvent.isVisible=true
-
-	end
-end
 
 
 	function scene:create( event )
@@ -486,76 +375,65 @@ end
 		create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
 		create_groupicon.y=subjectBar.y +20
 
+		NoEvent = display.newText( sceneGroup,"No Group Found" , 0,0,0,0,native.systemFontBold,16)
+		NoEvent.x=W/2;NoEvent.y=H/2
+		NoEvent.isVisible=false
+		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-		 tabButtons = {
-    {
-        label = "Broadcast List",
-        defaultFile = "res/assert/user.png",
-        overFile = "res/assert/user.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "broadcast_list",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-        selected = true,
-    },
-    {
-        label = "Chat",
-        defaultFile = "res/assert/mail.png",
-        overFile = "res/assert/mail.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "chat",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 15,
-        onPress = handleTabBarEvent,
-    },
-    {
-        label = "Group",
-        defaultFile = "res/assert/phone.png",
-        overFile = "res/assert/phone.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "group",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = { 0,0,0 }
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-    },
-   
-}
 
-if IsOwner == true then
+		tabButtons = {
+		{
+		label = "Group",
+		defaultFile = "res/assert/phone.png",
+		overFile = "res/assert/phone.png",
+		size = 11.5,
+		labelYOffset = 2,
+		id = "group",
+		labelColor = { 
+		default = { 0,0,0}, 
+		over = { 0,0,0 }
+		},
+		width = 20,
+		height = 20,
+		onPress = handleTabBarEvent,
+		},
 
-tabButtons[#tabButtons+1] =  {
-        label = "Consultant List",
-        defaultFile = "res/assert/map.png",
-        overFile = "res/assert/map.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "consultant_list",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = { 0,0,0 }
-        },
-        width = 16,
-        height = 20,
-        onPress = handleTabBarEvent,
-    }
 
-end
+		{
+		label = "Chats",
+		defaultFile = "res/assert/user.png",
+		overFile = "res/assert/user.png",
+		size = 11.5,
+		labelYOffset = 2,
+		id = "broadcast_list",
+		labelColor = { 
+		default = { 0,0,0}, 
+		over = {0,0
+		,0}
+		        },
+		        width = 20,
+		        height = 20,
+		        onPress = handleTabBarEvent,
+		        selected = true,
+		    },
+
+
+		    {
+		        label = "Consultant List",
+		        defaultFile = "res/assert/map.png",
+		        overFile = "res/assert/map.png",
+		        size = 11.5,
+		        labelYOffset = 2,
+		        id = "consultant_list",
+		        labelColor = { 
+		            default = { 0,0,0}, 
+		            over = { 0,0,0 }
+		        },
+		        width = 16,
+		        height = 20,
+		        onPress = handleTabBarEvent,
+		    }
+		}
 
 				    chattabBar = widget.newTabBar{
 				    top =  display.contentHeight - 55,
@@ -586,20 +464,6 @@ end
 				sceneGroup:insert( rect )
 
 
-				groupList_scrollview = widget.newScrollView
-				{
-					top = RecentTab_Topvalue+subjectBar.height-5,
-					left = 0,
-					width = W,
-					height =H-RecentTab_Topvalue-50-subjectBar.height+5,
-					hideBackground = true,
-					isBounceEnabled=false,
-					horizontalScrollingDisabled = true,
-					verticalScrollingDisabled = false,
-				}
-
-            sceneGroup:insert(groupList_scrollview)
-
 	--Webservice.GetMyUnitBuzzRequestAccesses("GRANT",get_Activeteammember)
 
 
@@ -616,16 +480,78 @@ end
 		
 		if phase == "will" then
 
-			if event.params then
-				nameval = event.params.tabbuttonValue3
-			end
+					groupList_scrollview = widget.newScrollView
+				{
+					top = RecentTab_Topvalue-5,
+					left = 0,
+					width = W,
+					height =H-RecentTab_Topvalue-50+5,
+					hideBackground = true,
+					isBounceEnabled=false,
+					horizontalScrollingDisabled = true,
+					verticalScrollingDisabled = false,
+					listener = grouplist_scrollListener,
+				}
 
-			-- local centerText = display.newText(sceneGroup,"Group Page",0,0,native.systemFontBold,16)
-			-- centerText.x=W/2;centerText.y=H/2
-			-- centerText:setFillColor( 0 )
+            sceneGroup:insert(groupList_scrollview)
+
+
+
+			 function getGroupListresponse(response )
+
+				grouplist_response = response
+
+							for i=1,#groupListresponse_array do
+							groupListresponse_array[i]=nil
+							byNameArray[i]=nil
+							end
+
+							groupListresponse_array=grouplist_response
+
+							if grouplist_response ~= nil and #grouplist_response ~= 0 then
+									
+							--NameArray
+
+							print("size = "..#groupListresponse_array)
+
+								for i=1,#groupListresponse_array do
+
+									grouplist_Name = groupListresponse_array[i].MyUnitBuzzGroupName
+									grouplist_createdtime = groupListresponse_array[i].CreateTimeStamp
+									
+									local temp = {}
+
+									if grouplist_Name:sub(1,1) == " " then
+										grouplist_Name = grouplist_Name:sub( 2,grouplist_Name:len())
+									end
+
+									temp.MyUnitBuzzGroupName = grouplist_Name
+
+									temp.CreateTimeStamp = grouplist_createdtime
+
+									byNameArray[#byNameArray+1] = temp
+
+
+								end
+
+									GroupCreation_list(byNameArray)
+
+							else
+
+							NoEvent.isVisible=true
+
+							end
+				end
+
+			Webservice.GetChatMessageGroupList(getGroupListresponse)
 
 
 		elseif phase == "did" then
+
+		         	composer.removeHidden()
+
+			
+
 
 			menuBtn:addEventListener("touch",menuTouch)
 			BgText:addEventListener("touch",menuTouch)
@@ -679,3 +605,7 @@ end
 
 
 	return scene
+
+
+
+	--Webservice.AddTeamMemberToChatGroup(groupid,userid,postExecution)
