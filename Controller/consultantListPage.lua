@@ -125,6 +125,8 @@ local function backactionTouch(event)
 
 		composer.gotoScene( "Controller.groupPage", options )
 
+		native.setKeyboardFocus(nil)
+
 	end
 
 end

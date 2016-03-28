@@ -354,6 +354,8 @@ end
 
                 event.target.text = event.target.text:sub(1,50)
 
+                end
+
 		    end
 
 
@@ -362,6 +364,8 @@ end
 		        if event.text:len() > 50 then
 
                 event.target.text = event.target.text:sub(1,50)
+
+                end
 
 		    end
 
@@ -439,7 +443,6 @@ local function onRowRender( event )
     row.rowValue = List_array[row.index][2]
 
     row.text=List_array[row.index][1]
-
 end
 
 
