@@ -216,6 +216,45 @@ end
 
 
 
+	 local function formatSizeUnits(event)
+
+      if (event>=1073741824) then 
+
+      	size=(event/1073741824)..' GB'
+
+      print("size of the image11 ",size)
+
+
+      elseif (event>=1048576) then   
+
+       	size=(event/1048576)..' MB'
+
+      print("size of the image 22",size)
+
+	  
+	  elseif (event > 10485760) then
+
+	  print("highest size of the image ",size)
+
+	    local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+
+	       
+      elseif (event>=1024)  then   
+
+      	size = (event/1024)..' KB'
+
+       print("size of the image 33",size)
+
+      else      
+
+  	  end
+
+      --  local alert = native.showAlert(Message.FileSelect, size, {"OK"} , onComplete12)
+
+	end
+
+
+
      local function onImageSelectionComplete ( event )
 
         print(event.target)
@@ -271,28 +310,28 @@ end
 
         display.save(photo_image,photoname,system.DocumentsDirectory)
 
-       photo_image:removeSelf()
+        photo_image:removeSelf()
 
-       photo_image = nil
+        photo_image = nil
 
 
-  --       path = system.pathForFile( photoname, baseDir)
+         path = system.pathForFile( photoname, baseDir)
 
-  --       local size = lfs.attributes (path, "size")
+         local size = lfs.attributes (path, "size")
 
-		-- local fileHandle = io.open(path, "rb")
+		 local fileHandle = io.open(path, "rb")
 
-		-- file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+		 file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
 
-		-- io.close( fileHandle )
+		 io.close( fileHandle )
 
-  --           print("mime conversion ",file_inbytearray)
+            print("mime conversion ",file_inbytearray)
 
-  --       	print("bbb ",size)
+        	print("bbb ",size)
 
-  --       	formatSizeUnits(size)
+        	formatSizeUnits(size)
 
-  --       	sendImage()
+        	--sendImage()
 
 	else
 

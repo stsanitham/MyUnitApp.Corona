@@ -354,6 +354,8 @@ end
 
                 event.target.text = event.target.text:sub(1,50)
 
+                end
+
 		    end
 
 
@@ -362,6 +364,8 @@ end
 		        if event.text:len() > 50 then
 
                 event.target.text = event.target.text:sub(1,50)
+
+                end
 
 		    end
 
