@@ -287,7 +287,7 @@ end
 
 								end
 
-							Webservice.CheckExistsRequestStatus(ContactId,Email.text,getemailexistresponse)
+							Webservice.CheckExistsRequestStatus(0,Email.text,getemailexistresponse)
 
 							native.setKeyboardFocus(nil)
 
@@ -346,6 +346,26 @@ end
 				end
 
 			end
+
+
+			if(event.target.id == "First Name") then
+
+		        if event.text:len() > 50 then
+
+                event.target.text = event.target.text:sub(1,50)
+
+		    end
+
+
+		    if(event.target.id == "Last Name") then
+
+		        if event.text:len() > 50 then
+
+                event.target.text = event.target.text:sub(1,50)
+
+		    end
+
+
 
 			if event.target.id == "Password" then
 

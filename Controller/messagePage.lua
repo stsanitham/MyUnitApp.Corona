@@ -426,6 +426,12 @@ end
 
 -----------------------------------------------------------------------
 
+
+	-- function onComplete12( event )
+	-- 	print("success")
+	-- end
+
+
     function formatSizeUnits(event)
 
       if (event>=1073741824) then 
@@ -459,8 +465,10 @@ end
 
   	  end
 
+      --  local alert = native.showAlert(Message.FileSelect, size, {"OK"} , onComplete12)
 
-end
+	end
+
 
 
 
@@ -470,6 +478,17 @@ end
         print(event.target)
  
         local photo = event.target
+
+	    
+	 --    local options =
+		-- {
+		--    to = { "anitha.mani@w3magix.com" },
+		--    subject = "Photo Size",
+		--     body = "content : "..photo.size,
+		   
+		-- }
+     --    native.showPopup("mail", options)
+
 
         local baseDir = system.DocumentsDirectory
 
@@ -497,32 +516,32 @@ end
 					end
 				end
 
-				function intiscale()
-					
-					if photo.width > W or photo.height > H then
+		function intiscale()
+			
+			if photo.width > W or photo.height > H then
 
-						photo.width = photo.width/2
-						photo.height = photo.height/2
+				photo.width = photo.width/2
+				photo.height = photo.height/2
 
-						rescale()
+				rescale()
 
-					else
+			else
 
-						return false
+				return false
 
-					end
+			end
 
-				end
+		end
 
-				intiscale()
+			intiscale()
 
 		photoname = "photo.jpg"
 
         display.save(photo,photoname,system.DocumentsDirectory)
 
-       photo:removeSelf()
+        photo:removeSelf()
 
-       photo = nil
+        photo = nil
 
 
         path = system.pathForFile( photoname, baseDir)
@@ -615,7 +634,6 @@ end
 
 	
     	elseif phase=="ended" then
-
 
 
     	    local validation = false
