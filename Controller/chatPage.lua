@@ -234,7 +234,7 @@ end
 	  
 	  elseif (event > 10485760) then
 
-	  print("highest size of the image ",size)
+ print("highest size of the image ",size)
 
 	    local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
 
