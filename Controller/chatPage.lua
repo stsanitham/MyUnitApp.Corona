@@ -234,7 +234,7 @@ end
 	  
 	  elseif (event > 10485760) then
 
- print("highest size of the image ",size)
+	  print("highest size of the image ",size)
 
 	    local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
 
@@ -794,18 +794,18 @@ function scene:show( event )
 		ChatBox_bg.strokeWidth = 1
 		ChatBox_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray))
 
-		ChatBox = native.newTextBox( 0, ChatBox_bg.y, ChatBox_bg.contentWidth-40, ChatBox_bg.contentHeight-5 )
+		ChatBox = native.newTextBox( 0, ChatBox_bg.y, ChatBox_bg.contentWidth, ChatBox_bg.contentHeight-5 )
 		ChatBox.isEditable = true
 		ChatBox.anchorY=0;ChatBox.anchorX=0
 		ChatBox.x=ChatBox_bg.x
 		ChatBox.hasBackground = false
 		sceneGroup:insert( ChatBox )
 
-		cameraBtn = display.newImageRect( sceneGroup, "res/assert/user.png", 25,20 )
-		cameraBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth-35
-		cameraBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-cameraBtn.contentHeight/2
-		cameraBtn.anchorY=0;cameraBtn.anchorX=0
-		cameraBtn.isVisible=true
+		-- cameraBtn = display.newImageRect( sceneGroup, "res/assert/user.png", 25,20 )
+		-- cameraBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth-35
+		-- cameraBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-cameraBtn.contentHeight/2
+		-- cameraBtn.anchorY=0;cameraBtn.anchorX=0
+		-- cameraBtn.isVisible=true
 
 		sendBtn = display.newImageRect( sceneGroup, "res/assert/msg_send.png", 25,20 )
 		sendBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
@@ -896,7 +896,7 @@ sceneGroup:insert( tabBarGroup )
 
 
 		sendBtn:addEventListener( "touch", ChatSendAction )
-		cameraBtn:addEventListener("touch", UploadImageAction)
+		--cameraBtn:addEventListener("touch", UploadImageAction)
 		menuBtn:addEventListener("touch",menuTouch)
 		ChatBox:addEventListener( "userInput", ChatBoxHandler )
 		recordBtn:addEventListener( "touch", RecordAction )
