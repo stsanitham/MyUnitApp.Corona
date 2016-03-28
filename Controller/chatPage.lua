@@ -97,6 +97,8 @@ local function sendMeaasage()
 
 	for i=1,#ChatHistory do
 
+
+
 		MeassageList[#MeassageList+1] = display.newGroup( )
 
 		local tempGroup = MeassageList[#MeassageList]
@@ -119,29 +121,39 @@ local function sendMeaasage()
 		bg.x=5
 
 		if ChatHistory[i].Message_From == tostring(ContactId) then
-			print( "here" )
-			bg.x=W-10
-			bg.anchorX=1
-			bg:setFillColor( 0.2,0.6,0.8,0.3 )
-			bg:setStrokeColor( 0.2,0.4,0.6)
+
+			
+				print( "here" )
+				bg.x=W-10
+				bg.anchorX=1
+				bg:setFillColor( 0.2,0.6,0.8,0.3 )
+				bg:setStrokeColor( 0.2,0.4,0.6)
+		
 
 		end
 
-		local chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,native.systemFont,14)
+		local chat	
+
+		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
+
+		chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,W-40,0,native.systemFont,14)
+
+		else
+
+			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,native.systemFont,14)
+
+		end
 		chat.anchorY=0
 		chat.anchorX = 0
 		chat.x=bg.x+5;chat.y=bg.y
 		chat:setFillColor( 0 )
-		if chat.width >  W then
-			chat.width = W-60
-
-		end
-
-		
+	
 
 		tempGroup:insert( chat )
 
+	
 		bg.width = chat.contentWidth+10	
+		bg.height = chat.contentHeight+10	
 
 		if ChatHistory[i].Message_From == tostring(ContactId) then
 			chat.x = bg.x-bg.contentWidth+5
@@ -585,14 +597,29 @@ end
 
 	end
 
+	local function scrollAction(value)
+
+		chatScroll:scrollToPosition
+			{
+			    y = value,
+			    time = 100,
+			}
+
+	end
+
 
 	local function ChatBoxHandler( event )
 
    		 if ( event.phase == "began" ) then
         -- user begins editing numericField
+
+       	elseif event.phase == "ended" then
+
+       	scrollAction(0)
+
         elseif event.phase == "editing" then
 
-        	print("************************************************ here")
+        	scrollAction(-60)
 
         	if event.text:len() >=1 then
 
@@ -842,6 +869,7 @@ sceneGroup:insert( tabBarGroup )
 		    end
 		end 
 		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
+		Runtime:addEventListener( "key", onKeyEvent )
 		
 	end	
 
@@ -860,6 +888,7 @@ end
 		if event.phase == "will" then
 
 					Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+					Runtime:removeEventListener( "key", onKeyEvent )
 
 
 		elseif phase == "did" then

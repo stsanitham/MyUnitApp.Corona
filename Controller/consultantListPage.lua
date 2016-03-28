@@ -12,7 +12,8 @@ local mime = require("mime")
 local style = require("res.value.style")
 local Utility = require( "Utils.Utility" )
 local json = require("json")
-
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
 local tabBarGroup = display.newGroup( )
 
 --------------- Initialization -------------------
@@ -49,6 +50,8 @@ local byNameArray = {}
 
 local Listresponse_array = {}
 
+local ContactId
+
 consultantList_array[#consultantList_array+1] = display.newGroup()
 
 
@@ -59,7 +62,9 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 
 
 --------------------------------------------------
-
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		ContactId = row.ContactId
+	end
 
 -----------------Function-------------------------
 
@@ -537,7 +542,9 @@ local function careePath_list( list )
 	end
 
 	for i=1,#list do
-      print("here")
+      
+
+      if tostring(list[i].Contact_Id) ~= tostring(ContactId) then
 
 		careerListArray[#careerListArray+1] = display.newGroup()
 
@@ -678,9 +685,7 @@ local function careePath_list( list )
 
 		else
 
-		local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
-		right_img.anchorX=0
-		right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
+		
 
 	    end
 
@@ -694,6 +699,8 @@ local function careePath_list( list )
 
 
 	end
+
+end
 
 end
 

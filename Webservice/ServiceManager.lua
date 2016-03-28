@@ -1874,7 +1874,7 @@ function Webservice.GetChatMessageGroupList(postExecution)
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-    local resbody = "?userId="..UserId
+    local resbody = "?userId="..UserId.."&contactId="..ContactId
 
 	params={headers = headers}
 
