@@ -652,17 +652,18 @@ end
    		 if ( event.phase == "began" ) then
         -- user begins editing numericField
 
+        scrollAction(60)
+
        	elseif event.phase == "ended" then
 
        	scrollAction(0)
 
         elseif event.phase == "editing" then
 
-        	scrollAction(60)
+        	
 
         	if event.text:len() >=1 then
 
-        		print("************************************************ here 111111111111111") 
 
         		sendBtn.isVisible=true
         		recordBtn.isVisible=false
