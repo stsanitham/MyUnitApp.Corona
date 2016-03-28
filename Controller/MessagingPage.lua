@@ -333,9 +333,11 @@ local function Broadcast_list( list )
 			Position_txt.anchorX=0
 			Utils.CssforTextView(Position_txt,sp_fieldValue)
 
-			local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
-			right_img.anchorX=0
-			right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
+			if Position_txt.text:len() > 45 then
+
+				Position_txt.text = string.sub(Position_txt.text,1,45).."..."
+
+			end
 
 			local line = display.newRect(tempGroup,W/2,background.y,W,1)
 			line.y=background.y+background.contentHeight-line.contentHeight

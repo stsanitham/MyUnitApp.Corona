@@ -614,7 +614,7 @@ function scene:show( event )
 			menuArray_display[#menuArray_display].name = "Messages"
 			menuArray_display[#menuArray_display].id="MessagingPage"
 
-			chat_message_icon = display.newImageRect("res/assert/chats active.png",15,15)
+			chat_message_icon = display.newImageRect("res/assert/chaticon.png",15,15)
 			chat_message_icon.anchorX = 0
 			chat_message_icon:setFillColor(1,1,1)
 			chat_message_icon.x=5
