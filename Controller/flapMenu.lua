@@ -569,38 +569,38 @@ function scene:show( event )
 			-----
 
 
-		-- 	--Message
+			--Message
 
-		-- 	if IsOwner == true then
+			if IsOwner == true then
 
-		-- 	menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
-		-- 	menuArray_display[#menuArray_display].anchorY=0
-		-- 	menuArray_display[#menuArray_display].anchorX=0
-		-- 	menuArray_display[#menuArray_display].alpha=0.01
-		-- 	menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
-		-- 	menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
-		-- 	flapScroll:insert( menuArray_display[#menuArray_display] )
-		-- 	menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
-		-- 	menuArray_display[#menuArray_display].name = "Message"
-		-- 	menuArray_display[#menuArray_display].id="messagePage"
+			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
+			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
+			menuArray_display[#menuArray_display].alpha=0.01
+			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+			menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
+			flapScroll:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
+			menuArray_display[#menuArray_display].name = "Messages"
+			menuArray_display[#menuArray_display].id="messagePage"
 
-		-- 	message_icon = display.newImageRect("res/assert/message.png",15,15)
-		-- 	message_icon.anchorX = 0
-		-- 	message_icon:setFillColor(1,1,1)
-		-- 	message_icon.x=5
-		-- 	message_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
-		-- 	flapScroll:insert( message_icon )
+			message_icon = display.newImageRect("res/assert/message.png",15,15)
+			message_icon.anchorX = 0
+			message_icon:setFillColor(1,1,1)
+			message_icon.x=5
+			message_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
+			flapScroll:insert( message_icon )
 
-		-- 	message_text = display.newText(Message.PageTitle ,0,0,"Open Sans Regular",16)
-		-- 	message_text.anchorX = 0
-		-- 	message_text.x=message_icon.x+message_icon.contentWidth+5
-		-- 	message_text.y = message_icon.y
+			message_text = display.newText(Message.PageTitle ,0,0,"Open Sans Regular",16)
+			message_text.anchorX = 0
+			message_text.x=message_icon.x+message_icon.contentWidth+5
+			message_text.y = message_icon.y
 			
-		-- 	flapScroll:insert( message_text )
+			flapScroll:insert( message_text )
 
 
 
-		-- end
+		end
 --------------------------Messages--------------------------------------------------------
 
 			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
@@ -614,7 +614,7 @@ function scene:show( event )
 			menuArray_display[#menuArray_display].name = "Messages"
 			menuArray_display[#menuArray_display].id="MessagingPage"
 
-			chat_message_icon = display.newImageRect("res/assert/message.png",15,15)
+			chat_message_icon = display.newImageRect("res/assert/chats active.png",15,15)
 			chat_message_icon.anchorX = 0
 			chat_message_icon:setFillColor(1,1,1)
 			chat_message_icon.x=5

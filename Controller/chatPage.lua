@@ -179,7 +179,7 @@ local function ChatSendAction( event )
 			To=To_ContactId
 			Message_Type = MessageType
 
-			native.showAlert("Type",Message_Type,{CommonWords.ok})
+		--	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
 				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n" )
 				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..ChatBox.text..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[');]]
@@ -553,9 +553,11 @@ function scene:show( event )
 
 		if ContactDetails.Message_Type then
 
-			MessageType=ContactDetails.Message_Typ
+			print( "enter frame" )
+			MessageType=ContactDetails.Message_Type
 
 		end
+		print( MessageType )
 		ChatBox_bg = display.newRect(sceneGroup,0,H-100, W-50, 40 )
 		ChatBox_bg.anchorY=0;ChatBox_bg.anchorX=0
 		ChatBox_bg.x=5

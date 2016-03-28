@@ -396,7 +396,10 @@ local function GroupCreation_list( list )
 
 		groupList_scrollview:insert(tempGroup)
 
-		addGroupBtn:toFront( )
+		if IsOwner then
+			addGroupBtn:toFront( )
+
+		end
 
 		background:addEventListener( "touch", groupBackground_Touch )
 
@@ -455,7 +458,7 @@ end
 		addGroupBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
 		addGroupBtn.x=W/2+W/3+15;addGroupBtn.y=H-80;addGroupBtn.id="addGroup"
 		addGroupBtn.isVisible = true
-
+		addGroupBtn:addEventListener("touch",addGroupAction)
 	    end
 
 		subjectBar = display.newRect(sceneGroup,W/2,0,W,40)
@@ -620,7 +623,8 @@ sceneGroup:insert( tabBarGroup )
 			menuBtn:addEventListener("touch",menuTouch)
 			BgText:addEventListener("touch",menuTouch)
 
-			addGroupBtn:addEventListener("touch",addGroupAction)
+
+			
 
 	   		Runtime:addEventListener( "key", onKeyEvent )
 			
@@ -644,8 +648,9 @@ sceneGroup:insert( tabBarGroup )
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 			Runtime:removeEventListener( "key", onKeyEvent )
-
-			addGroupBtn:removeEventListener("touch",addGroupAction)
+			if IsOwner then
+				addGroupBtn:removeEventListener("touch",addGroupAction)
+			end
 
 		elseif phase == "did" then
 

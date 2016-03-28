@@ -222,39 +222,70 @@ composer.gotoScene( "Controller.splashScreen")
 
 function DidReceiveRemoteNotification(message, additionalData, isActive)
 
-    chatReceivedFlag=true
 
-local UserId,ContactId,Name
+    if additionalData.messageType ~= nil then
 
-for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-        UserId = row.UserId
-        ContactId = row.ContactId
-        Name = row.MemberName
+                chatReceivedFlag=true
 
-end
+            local UserId,ContactId,Name
 
-    Message_date=os.date("%Y-%m-%dT%H:%m:%S")
-            isDeleted="false"
-            Created_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
-            Updated_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
-            ImagePath="NULL"
-            AudioPath="NULL"
-            VideoPath="NULL"
-            MyUnitBuzz_LongMessage=message
-            From=additionalData.messageFrom
-            To=additionalData.messageTo
-            Message_Type = additionalData.messageType
+            for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+                    UserId = row.UserId
+                    ContactId = row.ContactId
+                    Name = row.MemberName
 
-            if additionalData.messageType == "GROUP" then
-                Name="test group"
             end
-        
-           
 
-            local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..message..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[');]]
-                db:exec( insertQuery )
+                Message_date=os.date("%Y-%m-%dT%H:%m:%S")
+                        isDeleted="false"
+                        Created_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
+                        Updated_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
+                        ImagePath="NULL"
+                        AudioPath="NULL"
+                        VideoPath="NULL"
+                        MyUnitBuzz_LongMessage=message
+                        From=additionalData.messageFrom
+                        To=additionalData.messageTo
+                        Message_Type = additionalData.messageType
 
-            
+                        if additionalData.messageType == "GROUP" then
+                            Name="test group"
+                        end
+                    
+                       
+
+                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..message..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[');]]
+                            db:exec( insertQuery )
+
+    else
+
+         notificationFlag = true
+
+            if (additionalData) then
+                
+              local options = {
+                isModal = true,
+                effect = "fade",
+                time = 400,
+                params = {
+
+                    additionalValue = additionalData,
+                    Message = message
+
+                }
+            }
+
+            -- By some method (a pause button, for example), show the overlay
+            composer.showOverlay( "Controller.pushNotificationPage", options )
+
+            else
+
+              native.showAlert("MyUnitBuzz", message, { "OK" } )
+
+            end
+
+
+    end      
 
 end
 
