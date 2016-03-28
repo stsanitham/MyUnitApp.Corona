@@ -177,7 +177,6 @@ end
 					    overlay.y=tabBg.y+6;overlay.x=tab_Group_btn.x
 
 					        local options = {
-									effect = "crossFade",
 									time = 300,	  
 									params = { tabbuttonValue3 =event.target.id}
 									}
@@ -229,7 +228,6 @@ end
 					    overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
 
 					      local options = {
-									effect = "crossFade",
 									time = 300,	 
 									params = { tabbuttonValue3 =event.target.id}
 									}
@@ -504,90 +502,6 @@ end
 			nameval = event.params.tabbuttonValue1
 
 		end
-
--- 	 tabButtons = {
--- {
---         label = "Group",
---         defaultFile = "res/assert/phone.png",
---         overFile = "res/assert/phone.png",
---         size = 11.5,
---         labelYOffset = 2,
---         id = "group",
---         labelColor = { 
---             default = { 0,0,0}, 
---             over = { 0,0,0 }
---         },
---         width = 20,
---         height = 20,
---         onPress = handleTabBarEvent,
---     },
-
-
---        {
---         label = "Chats",
---         defaultFile = "res/assert/user.png",
---         overFile = "res/assert/user.png",
---         size = 11.5,
---         labelYOffset = 2,
---         id = "broadcast_list",
---         labelColor = { 
---              default = { 0,0,1}, 
---             over = {0,0,1}
---         },
---         width = 20,
---         height = 20,
---         onPress = handleTabBarEvent,
---         selected = true,
---     },
-
-
---     {
---         label = "Consultant List",
---         defaultFile = "res/assert/map.png",
---         overFile = "res/assert/map.png",
---         size = 11.5,
---         labelYOffset = 2,
---         id = "consultant_list",
---         labelColor = { 
---             default = { 0,0,0}, 
---             over = { 0,0,0 }
---         },
---         width = 16,
---         height = 20,
---         onPress = handleTabBarEvent,
---     }
-   
--- }
-
-
-
--- 			    chattabBar = widget.newTabBar{
--- 			    top =  display.contentHeight - 55,
--- 			    left = 0,
--- 			    width = display.contentWidth, 
--- 			    backgroundFile = tabBarBackground,
--- 			    tabSelectedLeftFile = tabBarLeft,   
--- 			    tabSelectedRightFile = tabBarRight,    
--- 			    tabSelectedMiddleFile = tabBarMiddle,   
--- 			    tabSelectedFrameWidth = 20,                                         
--- 			    tabSelectedFrameHeight = 50, 
--- 			    backgroundFrame = 1,
--- 			    tabSelectedLeftFrame = 2,
--- 			    tabSelectedMiddleFrame = 3,
--- 			    tabSelectedRightFrame = 4,                                       
--- 			    buttons = tabButtons,
--- 			    height = 50,
--- 			}
-
--- 			sceneGroup:insert(chattabBar)
-
-
---             local rect = display.newRect(0,0,display.contentWidth,1.3)
--- 			rect.x = 0;
--- 			rect.anchorX=0
--- 			rect.y = display.contentHeight - 50;
--- 			rect:setFillColor(0)
--- 			sceneGroup:insert( rect )
 
 
 tabBg = display.newRect( tabBarGroup, W/2, H-40, W, 40 )

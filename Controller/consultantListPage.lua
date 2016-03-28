@@ -43,6 +43,8 @@ local header_value = ""
 
 local Image
 
+local selected_Contact={}
+
 local byNameArray = {}
 
 local Listresponse_array = {}
@@ -65,32 +67,39 @@ local function consultantTounch( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
 
-	elseif ( event.phase == "moved" ) then
-			local dy = math.abs( ( event.y - event.yStart ) )
 
-			if ( dy > 10 ) then
-				display.getCurrentStage():setFocus( nil )
-				consultantList_scrollview:takeFocus( event )
-			end
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
+
+		if ( dy > 10 ) then
+			display.getCurrentStage():setFocus( nil )
+			consultantList_scrollview:takeFocus( event )
+		end
 
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 
-			 				    local options = {
-										effect = "crossFade",
-										time = 300,	
-										params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
-										}
+				if addGroupid_value == "addGroup" then
 
-					    composer.gotoScene( "Controller.chatPage", options )
+					--selectcontact_checkbox.isOn = true
 
+				else
+
+ 				    local options = {
+							effect = "crossFade",
+							time = 300,	
+							params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
+							}
+
+				    composer.gotoScene( "Controller.chatPage", options )
+
+			    end
 
 	end
 
 	return true
 
 end
-
 
 
 
@@ -231,7 +240,6 @@ local function TabbarTouch( event )
 					    overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
 
 					      local options = {
-									effect = "crossFade",
 									time = 300,	 
 									params = { tabbuttonValue3 =event.target.id}
 									}
@@ -243,6 +251,7 @@ local function TabbarTouch( event )
 
 					transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
 					transition.to( tab_Message_btn, { time=200, delay=100, xScale=1,yScale=1 , onComplete=listener1} )
+
 
 
 			elseif event.target.id == "group" then
@@ -278,7 +287,6 @@ local function TabbarTouch( event )
 					    overlay.y=tabBg.y+6;overlay.x=tab_Group_btn.x
 
 					        local options = {
-									effect = "crossFade",
 									time = 300,	  
 									params = { tabbuttonValue3 =event.target.id}
 									}
@@ -307,12 +315,19 @@ local function TabbarTouch( event )
 	end
 
 
-
 	local function onSwitchPress( event )
 
 	    local switch = event.target
 
 	    print( "Switch with ID '"..switch.id.."' is on: "..tostring(switch.isOn) )
+
+	    if tostring(switch.isOn) == "true" then
+
+			local contactid = switch.value
+
+			print("contact_id value : ",contactid) 
+
+	    end
 
 	end
 
@@ -327,14 +342,61 @@ local function TabbarTouch( event )
 
 
 
+
+
+	local function onGroupCreationComplete( event )
+		   if event.action == "clicked" then
+		        local i = event.index
+		        if i == 1 then  
+
+		        	composer.gotoScene("Controller.groupPage","slideRight",300)
+
+		        end
+
+		    end
+    end
+
+
+
+	local function onComplete( event )
+		   if event.action == "clicked" then
+		        local i = event.index
+		        if i == 1 then  
+
+		        	print("success")
+
+		        end
+
+		    end
+    end
+
+
+
+
+
+
 	 function getChatGroupCreation(response )
 
 		groupcreation_response = response
 
 		print("Response after group creation $$$$$$$$$$$$$$$$$$$$$$$$$$$$$ : ", json.encode(groupcreation_response))
 
-		composer.gotoScene("Controller.groupPage","slideRight",300)
-	    groupSubject.text = ""
+		GroupSubject.text = ""
+
+		groupid_value = groupcreation_response.MyUnitBuzzGroupId
+
+
+		    function getAddedMembersInGroup(response)
+
+		    	if response == "Success" then
+
+		    		local alert = native.showAlert( "Group Created" , "Your group has been successfully created.", { CommonWords.ok }, onGroupCreationComplete )
+
+		    	end
+
+		    end
+
+		Webservice.AddTeamMemberToChatGroup(groupid_value,selected_Contact,getAddedMembersInGroup)
 
 	 end 
 
@@ -353,29 +415,60 @@ local function TabbarTouch( event )
               native.setKeyboardFocus(nil)
 
 
-		      if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == ChatDetails.GroupSubjectError or GroupSubject.text == GroupSubject.id then
-	            
-	             validation=false
+			      if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == ChatDetails.GroupSubjectError or GroupSubject.text == GroupSubject.id then
+		            
+		             validation=false
 
-		     	 SetError(ChatDetails.GroupSubjectError,GroupSubject)
+			     	 SetError(ChatDetails.GroupSubjectError,GroupSubject)
 
-		      else
+			      else
 
-		      	 GroupSubject.text = groupSubjectname
+			      	 GroupSubject.text = groupSubjectname
 
-		      	 print("Here ######################################## ",GroupSubject.text)
-
-		      end
+			      end
 
 
-		      if(validation == true) then
+--------------------------------------------------------------------------------------
 
-		      	GroupSubject.text = groupSubjectname
+			      if(validation == true) then
 
-		      	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",getChatGroupCreation)
+				      	GroupSubject.text = groupSubjectname
 
-		      end
+				      	for i=1,#selected_Contact do
 
+				      		selected_Contact[i]=nil
+
+				      	end
+
+				      	 
+				      	for i=1,#careerListArray do
+
+				      		local tempGroup = careerListArray[i]
+
+				      			if tostring(tempGroup[tempGroup.numChildren].isOn) == "true" then
+				      				print("Contact Id : "..tempGroup[tempGroup.numChildren].value)
+
+				      				selected_Contact[#selected_Contact+1] = tempGroup[tempGroup.numChildren].value
+
+				      			end
+
+
+				       	end
+
+				      	 if #selected_Contact>0 then
+
+				      	 	    Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",getChatGroupCreation)
+		                 
+		                 else
+
+		                    print("group not created")
+
+		                       local alert = native.showAlert( "Add Team Member" , "Please select atleast one team member to create a group.", { CommonWords.ok }, onComplete )
+
+		                 end
+
+			      end
+---------------------------------------------------------------------------------------
 
 		 end
 
@@ -441,7 +534,6 @@ local function careePath_list( list )
 	for i=1,#list do
       print("here")
 
-
 		careerListArray[#careerListArray+1] = display.newGroup()
 
 		local tempGroup = careerListArray[#careerListArray]
@@ -490,9 +582,6 @@ local function careePath_list( list )
 
 			background.y=parentTitle.y+background.contentHeight/2
 
-			
-
-
 		end
 
 		
@@ -532,10 +621,6 @@ local function careePath_list( list )
 		end
 
 
-			
-
-
-
 		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,native.systemFont,14)
 		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
 		Name_txt.anchorX=0
@@ -547,27 +632,64 @@ local function careePath_list( list )
 		Position_txt.anchorX=0
 		Utils.CssforTextView(Position_txt,sp_fieldValue)
 
-		if Position_txt.text:len() > 26 then
+		if Position_txt.text:len() > 26 then		
 			Position_txt.text = string.sub(Position_txt.text,1,26).."..."
-
 		end
+
+
+		local line = display.newRect(tempGroup,W/2,background.y,W,1)
+		line.y=background.y+background.contentHeight-line.contentHeight
+		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+
+		if addGroupid_value =="addGroup" then
+
+		contactidvalue =  list[i].Contact_Id
+
+		selectcontact_checkbox = widget.newSwitch(
+		{
+		left = 15,
+		top = Position_txt.y-5,
+		style = "checkbox",
+		id = "email_Checkbox",
+		initialSwitchState = false,
+		onPress = onSwitchPress
+		})
+		selectcontact_checkbox.width= 20
+		selectcontact_checkbox.height = 20
+		selectcontact_checkbox.anchorX=0
+		selectcontact_checkbox.value = contactidvalue
+		selectcontact_checkbox.x = background.x+background.contentWidth/2-33
+		selectcontact_checkbox.y=background.y+background.height/2
+
+		tempGroup:insert(selectcontact_checkbox)
+
+		print("value of  checkbox : ",contactidvalue)
+
+		subjectBar.isVisible = true
+		GroupSubject.isVisible = true
+		create_groupicon.isVisible = true
+		backbutton.isVisible = true
+
+
+		else
 
 		local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
 		right_img.anchorX=0
 		right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
 
-		local line = display.newRect(tempGroup,W/2,background.y,W,1)
-		line.y=background.y+background.contentHeight-line.contentHeight
-		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-	
+	    end
 
-		tempGroup.Contact_Id = list[i].Contact_Id
 
-		background:addEventListener( "touch", consultantTounch )
+
+		--tempGroup.Contact_Id = list[i].Contact_Id
 
 		consultantList_scrollview:insert(tempGroup)
 
+		background:addEventListener( "touch", consultantTounch )
+
+
 	end
+
 end
 
 
@@ -666,25 +788,6 @@ function scene:create( event )
 
 	title.text = "Consultant List"
 
-
-
-
-			consultantList_scrollview = widget.newScrollView
-			{
-				top = RecentTab_Topvalue-5,
-				left = 0,
-				width = W,
-				height =H-RecentTab_Topvalue-50+5,
-				hideBackground = true,
-				isBounceEnabled=false,
-				horizontalScrollingDisabled = true,
-				verticalScrollingDisabled = false,
-			}
-
-            sceneGroup:insert(consultantList_scrollview)
-
-
-	Webservice.GetMyUnitBuzzRequestAccesses("GRANT",get_Activeteammember)
 	subjectBar = display.newRect(sceneGroup,W/2,0,W,40)
 	subjectBar.y=title_bg.y+15
 	subjectBar.height = 40
@@ -717,6 +820,8 @@ function scene:create( event )
 	create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
 	create_groupicon.y=subjectBar.y +20
 
+    Webservice.GetMyUnitBuzzRequestAccesses("GRANT",get_Activeteammember)
+
 
 MainGroup:insert(sceneGroup)
 
@@ -732,7 +837,11 @@ function scene:show( event )
 	if phase == "will" then
 
 		if event.params then
-			nameval = event.params.tabbuttonValue4
+
+			addGroupid_value = event.params.addGroupid
+
+			print("addGroupid_value",addGroupid_value )
+
 		end
 
 
@@ -781,6 +890,34 @@ tab_Group_txt = display.newText( tabBarGroup, "Group",0,0,native.systemFont,11 )
 tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
 tab_Group_txt:setFillColor( 0.3 )
 
+	    if addGroupid_value == "addGroup" then
+
+	    	RecentTab_Topvalue = 115
+
+	    else
+
+	    	RecentTab_Topvalue = 75
+
+	    end
+
+
+		consultantList_scrollview = widget.newScrollView
+		{
+			top = RecentTab_Topvalue-5,
+			left = 0,
+			width = W,
+			height =H-RecentTab_Topvalue-50+5,
+			hideBackground = true,
+            backgroundColor = {0,0,0,0.6},
+			isBounceEnabled=false,
+			horizontalScrollingDisabled = true,
+			verticalScrollingDisabled = false
+		}
+
+        sceneGroup:insert(consultantList_scrollview)
+		
+
+
 tab_Message_txt = display.newText( tabBarGroup, "Chats",0,0,native.systemFont,11 )
 tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
 tab_Message_txt:setFillColor( 0.3 )
@@ -788,7 +925,7 @@ tab_Message_txt:setFillColor( 0.3 )
 tab_Contact_txt = display.newText( tabBarGroup, "Consultant List",0,0,native.systemFont,11 )
 tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
 tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-
+if overlay then overlay:removeSelf( );overlay=nil end
 overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 	overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
 
@@ -799,7 +936,6 @@ sceneGroup:insert( tabBarGroup )
 
 		menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)
-
 		backbutton:addEventListener("touch",backactionTouch)
 		GroupSubject:addEventListener("userInput",textField)
 		create_groupicon:addEventListener("touch",createGroup)
@@ -823,7 +959,6 @@ end
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 			Runtime:removeEventListener( "key", onKeyEvent )
-
 			backbutton:removeEventListener("touch",backactionTouch)
 			GroupSubject:removeEventListener("userInput",textField)
 			create_groupicon:removeEventListener("touch",createGroup)

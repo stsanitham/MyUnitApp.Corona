@@ -22,11 +22,33 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
 
-local menuBtn,tabButtons,chattabBar
+local menuBtn,tabButtons,chattabBar,NoEvent
 
 openPage="groupPage"
 
 local BackFlag = false
+
+local networkArray = {}
+
+local NameArray = {}
+
+local groupList_scrollview
+
+local careerListArray = {}
+
+local RecentTab_Topvalue = 75
+
+local header_value = ""
+
+local Image
+
+local byNameArray = {}
+
+local groupListresponse_array = {}
+
+local tabBarGroup = display.newGroup( )
+
+
 
 local tabBarBackground = "res/assert/tabBarBg.png"
 local tabBarLeft = "res/assert/tabSelectedLeft.png"
@@ -46,19 +68,81 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 	end
 
 
-    -- local function addGroupAction(event)
+    local function addGroupAction(event)
 
-	 	 -- if event.phase == "began" then
+	 	 if event.phase == "began" then
 
-    --      elseif event.phase == "ended" then
+         elseif event.phase == "ended" then
 
-    --        GroupNamePopup()
+         composer.removeHidden()
 
-    --      end
+		    local options = {
+						effect = "crossFade",
+						time = 500,	
+						params = { addGroupid = addGroupBtn.id }
+						}
 
-	   --  return true
+	        composer.gotoScene( "Controller.consultantListPage", options )
 
-    -- end
+         end
+
+	    return true
+
+    end
+
+
+
+function makeTimeStamp( dateString )
+   local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
+   local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
+   local timestamp = os.time(
+      { year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false }
+   )
+   local offset = 0
+   if ( tzoffset ) then
+      if ( tzoffset == "+" or tzoffset == "-" ) then  -- We have a timezone
+         offset = offsethour * 60 + offsetmin
+         if ( tzoffset == "-" ) then
+            offset = offset * -1
+         end
+         timestamp = timestamp + offset
+      end
+   end
+   return timestamp
+end
+
+
+local function groupBackground_Touch( event )
+	if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
+
+		if ( dy > 10 ) then
+			display.getCurrentStage():setFocus( nil )
+			groupList_scrollview:takeFocus( event )
+		end
+
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+			 local options = {
+										effect = "crossFade",
+										time = 300,	
+										params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
+										}
+
+					    composer.gotoScene( "Controller.chatPage", options )
+
+			
+	end
+
+	return true
+
+end
+
+
 
 
 	local function onKeyEvent( event )
@@ -93,68 +177,240 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 	        return false
 	 end
 
+local function CreateTabBarIcons( )
+
+	if tab_Group_btn ~= nil then if tab_Group_btn.y then tab_Group_btn:removeSelf( );tab_Group_btn=nil end end
+	if tab_Message_btn ~= nil then if tab_Message_btn.y then tab_Message_btn:removeSelf( );tab_Message_btn=nil end end
+	if tab_Contact_btn ~= nil then if tab_Contact_btn.y then tab_Contact_btn:removeSelf( );tab_Contact_btn=nil end end
 
 
-		local function handleTabBarEvent( event )
+	tab_Group_btn = display.newImageRect( tabBarGroup, "res/assert/group.png", 35/1.4, 31/1.4 )
+	tab_Group_btn.x=tab_Group.x
+	tab_Group_btn.y=tab_Group.y+tab_Group_btn.contentHeight/2-8
+	tab_Group_btn.anchorY=0
 
-			if event.phase == "press" then 
 
-					tabbutton_id = event.target._id 
 
-			    if tabbutton_id == "group" then
+	tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats.png", 35/1.4, 31/1.4 )
+	tab_Message_btn.x=tab_Message.x
+	tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
+	tab_Message_btn.anchorY=0
 
-					title.text = "Group"
 
-				elseif tabbutton_id == "broadcast_list" then
 
-	 				print("tabButtons details : "..json.encode(tabButtons))
+	tab_Contact_btn = display.newImageRect( tabBarGroup, "res/assert/Consultant.png", 35/1.4, 31/1.4 )
+	tab_Contact_btn.x=tab_Contact.x
+	tab_Contact_btn.y=tab_Contact.y+tab_Contact_btn.contentHeight/2-8
+	tab_Contact_btn.anchorY=0
 
-						chattabBar:setSelected( 1 ) 
-						composer.removeHidden()
-	   				    local options = {
-										effect = "crossFade",
-										time = 300,	
-										params = { tabbuttonValue2 =json.encode(tabButtons)}
-										}
 
-					    composer.gotoScene( "Controller.MessagingPage", options )
+end
 
-				-- elseif tabbutton_id == "chat" then
 
-				-- 	    print("tabButtons details : "..json.encode(tabButtons))
+	local function TabbarTouch( event )
 
-				-- 		chattabBar:setSelected( 2 ) 
-				-- 		composer.removeHidden()
-	   -- 				    local options = {
-				-- 						effect = "crossFade",
-				-- 						time = 300,	
-				-- 						params = { tabbuttonValue2 =json.encode(tabButtons)}
-				-- 						}
+		if event.phase == "began" then 
 
-				-- 	    composer.gotoScene( "Controller.chatPage", options )
+		elseif event.phase == "ended" then
+			
+			if event.target.id == "message" then
 
-				elseif tabbutton_id == "consultant_list" then
+				title.text = "Messages"
+				print( "Messages" )
 
-				    	chattabBar:setSelected( 4 ) 
-				    	composer.removeHidden()
-	   				    local options = {
-										effect = "crossFade",
-										time = 300,	 
-										params = { tabbuttonValue4 =json.encode(tabButtons)}
-										}
+			    	CreateTabBarIcons()
 
-					    composer.gotoScene( "Controller.consultantListPage", options )
+			    	tab_Message_btn:removeSelf( );tab_Message_btn=nil
 
-				end
+			    	tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats active.png", 35/1.4, 31/1.4 )
+					tab_Message_btn.x=tab_Message.x
+					tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
+					tab_Message_btn.anchorY=0
+					tab_Message_btn:scale(0.1,0.1)
 
-		    end
+					tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-	    return true 
+					local circle = display.newCircle( tabBarGroup, tab_Message_btn.x, tab_Message_btn.y+tab_Message_btn.contentHeight/2, 25 )
+					circle.strokeWidth=4
+					circle:scale(0.1,0.1)
+					circle.alpha=0.3
+					circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-		end
+					tab_Group_txt:setFillColor( 0.3 )
+					tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					tab_Contact_txt:setFillColor(  0.3  )
 
+
+					local function listener1( obj )
+
+						circle:removeSelf( );circle=nil
+						tab_Message_btn:scale(0.9,0.9)
+					 	
+					 	 overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+					    overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
+
+					      local options = {
+									time = 300,	 
+									params = { tabbuttonValue3 =event.target.id}
+									}
+
+				    composer.gotoScene( "Controller.MessagingPage", options )
+					end
+
+					if overlay then overlay:removeSelf( );overlay=nil end
+
+					transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
+					transition.to( tab_Message_btn, { time=200, delay=100, xScale=1,yScale=1 , onComplete=listener1} )
+
+
+			elseif event.target.id == "group" then
+
+				
+			elseif event.target.id == "contact" then
+
+			    	CreateTabBarIcons()
+
+			    	tab_Contact_btn:removeSelf( );tab_Contact_btn=nil
+
+			    	tab_Contact_btn = display.newImageRect( tabBarGroup, "res/assert/Consultant active.png", 35/1.4, 31/1.4 )
+					tab_Contact_btn.x=tab_Contact.x
+					tab_Contact_btn.y=tab_Contact.y+tab_Contact_btn.contentHeight/2-8
+					tab_Contact_btn.anchorY=0
+					tab_Contact_btn:scale(0.1,0.1)
+
+					tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+					local circle = display.newCircle( tabBarGroup, tab_Contact_btn.x, tab_Contact_btn.y+tab_Contact_btn.contentHeight/2, 25 )
+					circle.strokeWidth=4
+					circle:scale(0.1,0.1)
+					circle.alpha=0.3
+					circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+					tab_Group_txt:setFillColor( 0.3 )
+					tab_Message_txt:setFillColor( 0.3 )
+					tab_Contact_txt:setFillColor(  Utils.convertHexToRGB(color.tabBarColor)  )
+
+
+					local function listener1( obj )
+
+						circle:removeSelf( );circle=nil
+						tab_Contact_btn:scale(0.9,0.9)
+					 	
+					 	 overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+					    overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
+
+					      local options = {
+									time = 300,	 
+									params = { tabbuttonValue3 =event.target.id}
+									}
+
+				    composer.gotoScene( "Controller.consultantListPage", options )
+					end
+
+					if overlay then overlay:removeSelf( );overlay=nil end
+
+					transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
+					transition.to( tab_Contact_btn, { time=200, delay=100, xScale=1,yScale=1 , onComplete=listener1} )
+
+   				
+
+			end
+
+	    end
+
+    return true 
+
+	end
 
 	------------------------------------------------------
+
+
+
+local function GroupCreation_list( list )
+
+	for j=#careerListArray, 1, -1 do 
+		
+		display.remove(careerListArray[#careerListArray])
+		careerListArray[#careerListArray] = nil
+	end
+
+	for i=1,#list do
+      print("here")
+
+		careerListArray[#careerListArray+1] = display.newGroup()
+
+		local tempGroup = careerListArray[#careerListArray]
+
+		local tempHeight = 0
+
+		local background = display.newRect(tempGroup,0,0,W,50)
+
+		if(careerListArray[#careerListArray-1]) ~= nil then
+			tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height+3
+		end
+
+		background.anchorY = 0
+		background.x=W/2;background.y=tempHeight
+		background.id=list[i].Contact_Id
+		background.alpha=0.01
+		background.value = list[i]
+		print( "Listy : "..json.encode(list[i]) )
+
+		local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+		Image.x=30;Image.y=background.y+background.height/2
+
+		local GroupName_txt = display.newText(tempGroup,list[i].MyUnitBuzzGroupName,0,0,native.systemFont,14)
+		GroupName_txt.x=60;GroupName_txt.y=background.y+background.height/2-2
+		GroupName_txt.anchorX=0
+		Utils.CssforTextView(GroupName_txt,sp_labelName)
+		GroupName_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+			local timecreated = list[i].CreateTimeStamp
+
+			local time = makeTimeStamp(timecreated)
+		   -- local timeValue = Utils.getTime(time,"%b %d, %Y %I:%M %p","")
+
+			print( list[i].CreateTimeStamp,os.date("%b %d, %Y %I:%M %p",time) )											
+
+
+		local GroupCreated_time = display.newText(tempGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,native.systemFont,11)
+		GroupCreated_time.x=background.x+background.contentWidth/2-123
+		GroupCreated_time.y=background.y+background.height/2+15
+		GroupCreated_time.anchorX=0
+		Utils.CssforTextView(GroupCreated_time,sp_labelName)
+		GroupCreated_time:setFillColor(0,0,0,0.6)
+
+
+		-- local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
+		-- right_img.anchorX=0
+		-- right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
+
+
+		local line = display.newRect(tempGroup,W/2,background.y,W,1)
+		line.y=background.y+background.contentHeight-line.contentHeight
+		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+	
+		tempGroup.Contact_Id = list[i].Contact_Id
+
+		groupList_scrollview:insert(tempGroup)
+
+		background:addEventListener( "touch", groupBackground_Touch )
+
+
+	end
+
+end
+
+
+
+
+
+
+
+
+
 
 	function scene:create( event )
 
@@ -187,14 +443,16 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 
 		addGroupBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/2,66/2.2 )
 		addGroupBtn.x=W-40
-		addGroupBtn.y=tabBar.y+tabBar.contentHeight+20
+		addGroupBtn.y=tabBar.y+tabBar.contentHeight-4
 		addGroupBtn.anchorX = 0
-		addGroupBtn.isVisible = false
+		addGroupBtn.isVisible = true
 		addGroupBtn.id="addGroup"
 
 		subjectBar = display.newRect(sceneGroup,W/2,0,W,40)
 		subjectBar.y=title_bg.y+15
+		subjectBar.height = 40
 		subjectBar.anchorY = 0
+		subjectBar.isVisible = false
 		subjectBar:setFillColor(0,0,0,0.1)
 
 		GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-60, 25)
@@ -202,101 +460,28 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 		GroupSubject.y = subjectBar.y +20
 		GroupSubject.size=14
 		GroupSubject.anchorX = 0
+		GroupSubject.isVisible = false
 		GroupSubject.x = 10
 		GroupSubject:setReturnKey( "done" )
 		GroupSubject.hasBackground = false	
 		GroupSubject.placeholder = "Type group subject here..."
-		NewGroupAlert:insert(GroupSubject)
+		sceneGroup:insert(GroupSubject)
 
 		create_groupicon =  display.newImageRect(sceneGroup,"res/assert/tick.png",25,22)
 		create_groupicon.anchorX=0
-		create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+10
+		create_groupicon.isVisible = false
+		create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
 		create_groupicon.y=subjectBar.y +20
 
-
-		 tabButtons = {
- {
-        label = "Group",
-        defaultFile = "res/assert/phone.png",
-        overFile = "res/assert/phone.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "group",
-        labelColor = { 
-             default = { 0,0,1}, 
-            over = {0,0,1}
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-    },
+		NoEvent = display.newText( sceneGroup,"No Group Found" , 0,0,0,0,native.systemFontBold,16)
+		NoEvent.x=W/2;NoEvent.y=H/2
+		NoEvent.isVisible=false
+		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
 
-       {
-        label = "Chats",
-        defaultFile = "res/assert/user.png",
-        overFile = "res/assert/user.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "broadcast_list",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-        selected = true,
-    },
+	
 
-
-    {
-        label = "Consultant List",
-        defaultFile = "res/assert/map.png",
-        overFile = "res/assert/map.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "consultant_list",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = { 0,0,0 }
-        },
-        width = 16,
-        height = 20,
-        onPress = handleTabBarEvent,
-    }
-   
-}
-
-
-
-				    chattabBar = widget.newTabBar{
-				    top =  display.contentHeight - 55,
-				    left = 0,
-				    width = display.contentWidth, 
-				    backgroundFile = tabBarBackground,
-				    tabSelectedLeftFile = tabBarLeft,   
-				    tabSelectedRightFile = tabBarRight,    
-				    tabSelectedMiddleFile = tabBarMiddle,   
-				    tabSelectedFrameWidth = 20,                                         
-				    tabSelectedFrameHeight = 50, 
-				    backgroundFrame = 1,
-				    tabSelectedLeftFrame = 2,
-				    tabSelectedMiddleFrame = 3,
-				    tabSelectedRightFrame = 4,                                       
-				    buttons = tabButtons,
-				    height = 50,
-				}
-
-				sceneGroup:insert(chattabBar)
-
-
-	            local rect = display.newRect(0,0,display.contentWidth,1.3)
-				rect.x = 0;
-				rect.anchorX=0
-				rect.y = display.contentHeight - 50;
-				rect:setFillColor(0)
-				sceneGroup:insert( rect )
+	--Webservice.GetMyUnitBuzzRequestAccesses("GRANT",get_Activeteammember)
 
 
 	MainGroup:insert(sceneGroup)
@@ -312,21 +497,120 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 		
 		if phase == "will" then
 
-			if event.params then
-				nameval = event.params.tabbuttonValue3
-			end
+					groupList_scrollview = widget.newScrollView
+				{
+					top = RecentTab_Topvalue-5,
+					left = 0,
+					width = W,
+					height =H-RecentTab_Topvalue-50+5,
+					hideBackground = true,
+					isBounceEnabled=false,
+					horizontalScrollingDisabled = true,
+					verticalScrollingDisabled = false,
+					listener = grouplist_scrollListener,
+				}
 
-			local centerText = display.newText(sceneGroup,"Group Page",0,0,native.systemFontBold,16)
-			centerText.x=W/2;centerText.y=H/2
-			centerText:setFillColor( 0 )
+            sceneGroup:insert(groupList_scrollview)
+
+
+
+			 function getGroupListresponse(response )
+
+				grouplist_response = response
+
+					
+
+							if grouplist_response ~= nil and #grouplist_response ~= 0 then
+									
+							
+
+									GroupCreation_list(grouplist_response)
+
+							else
+
+							NoEvent.isVisible=true
+
+							end
+				end
+
+			Webservice.GetChatMessageGroupList(getGroupListresponse)
+
+			--Tabbar---
+
+
+
+tabBg = display.newRect( tabBarGroup, W/2, H-40, W, 40 )
+tabBg.anchorY=0
+tabBg.strokeWidth = 1
+tabBg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor),0.7 )
+
+tab_Group = display.newRect(tabBarGroup,0,0,70,40)
+tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
+tab_Group.anchorY=0
+tab_Group.alpha=0.01
+tab_Group.id="group"
+tab_Group:setFillColor( 0.2 )
+
+tab_Message = display.newRect(tabBarGroup,0,0,70,40)
+tab_Message.x=W/2;tab_Message.y=tabBg.y
+tab_Message.anchorY=0
+tab_Message.alpha=0.01
+tab_Message.id="message"
+tab_Message:setFillColor( 0.2 )
+
+tab_Contact = display.newRect(tabBarGroup,0,0,70,40)
+tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
+tab_Contact.anchorY=0
+tab_Contact.alpha=0.01
+tab_Contact.id="contact"
+tab_Contact:setFillColor( 0.2 )
+
+tab_Group:addEventListener( "touch", TabbarTouch )
+tab_Message:addEventListener( "touch", TabbarTouch )
+tab_Contact:addEventListener( "touch", TabbarTouch )
+
+CreateTabBarIcons()
+
+	if tab_Group_btn then tab_Group_btn:removeSelf( );tab_Group_btn=nil end
+
+	tab_Group_btn = display.newImageRect( tabBarGroup, "res/assert/group active.png", 35/1.4, 31/1.4 )
+	tab_Group_btn.x=tab_Group.x
+	tab_Group_btn.y=tab_Group.y+tab_Group_btn.contentHeight/2-8
+	tab_Group_btn.anchorY=0
+
+
+	
+
+tab_Group_txt = display.newText( tabBarGroup, "Group",0,0,native.systemFont,11 )
+tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
+tab_Group_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+if overlay then overlay:removeSelf( );overlay=nil end
+overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+overlay.y=tabBg.y+6;overlay.x=tab_Group_btn.x
+
+tab_Message_txt = display.newText( tabBarGroup, "Chats",0,0,native.systemFont,11 )
+tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
+tab_Message_txt:setFillColor( 0.3 )
+
+tab_Contact_txt = display.newText( tabBarGroup, "Consultant List",0,0,native.systemFont,11 )
+tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
+tab_Contact_txt:setFillColor( 0.3 )
+
+sceneGroup:insert( tabBarGroup )
 
 
 		elseif phase == "did" then
 
+		         	composer.removeHidden()
+
+			
+
+
 			menuBtn:addEventListener("touch",menuTouch)
 			BgText:addEventListener("touch",menuTouch)
 
-			--addGroupBtn:addEventListener("touch",addGroupAction)
+			addGroupBtn:addEventListener("touch",addGroupAction)
 
 	   		Runtime:addEventListener( "key", onKeyEvent )
 			
@@ -345,19 +629,20 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 
 		if event.phase == "will" then
 
+		    composer.removeHidden()
+
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 			Runtime:removeEventListener( "key", onKeyEvent )
 
-			--addGroupBtn:removeEventListener("touch",addGroupAction)
+			addGroupBtn:removeEventListener("touch",addGroupAction)
 
+		elseif phase == "did" then
 
-			elseif phase == "did" then
-
-
-			end	
 
 		end
+
+	end
 
 
 
@@ -374,3 +659,7 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 
 
 	return scene
+
+
+
+	--Webservice.AddTeamMemberToChatGroup(groupid,userid,postExecution)

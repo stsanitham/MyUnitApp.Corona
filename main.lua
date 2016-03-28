@@ -224,36 +224,6 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 
     chatReceivedFlag=true
 
-    -- if openPage == "main" then
-
-    --     composer.gotoScene( "Controller.MessagingPage" )
-
-    -- end
-
-            -- notificationFlag = true
-
-            -- if (additionalData) then
-                
-            --   local options = {
-            --     isModal = true,
-            --     effect = "fade",
-            --     time = 400,
-            --     params = {
-
-            --         additionalValue = additionalData,
-            --         Message = message
-
-            --     }
-            -- }
-
-            -- -- By some method (a pause button, for example), show the overlay
-            -- composer.showOverlay( "Controller.pushNotificationPage", options )
-
-            -- else
-
-            --   native.showAlert("MyUnitBuzz", message, { "OK" } )
-
-            -- end
 local UserId,ContactId,Name
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
@@ -273,13 +243,15 @@ end
             MyUnitBuzz_LongMessage=message
             From=additionalData.messageFrom
             To=additionalData.messageTo
-            Message_Type = "INDIVIDUAL"
-           -- Name="test"
+            Message_Type = additionalData.messageType
 
-           -- native.showAlert("MyUnitBuzz", "From : "..From.."To :"..To, { "OK" } )
+            if additionalData.messageType == "GROUP" then
+                Name="test group"
+            end
+        
+           
 
-               -- print(UserId.."\n"..message.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n" )
-                local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..message..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[');]]
+            local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..message..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[');]]
                 db:exec( insertQuery )
 
             

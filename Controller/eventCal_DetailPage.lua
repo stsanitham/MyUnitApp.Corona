@@ -145,10 +145,8 @@ local display_details = {}
 
 				status="edit"
 
-
-					
-
 				composer.hideOverlay()
+			
 			end
 
 		end
