@@ -439,7 +439,6 @@ local function onRowRender( event )
     row.rowValue = List_array[row.index][2]
 
     row.text=List_array[row.index][1]
-
 end
 
 
