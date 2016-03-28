@@ -48,6 +48,8 @@ local tabBarLeft = "res/assert/tabSelectedLeft.png"
 local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
 local tabBarRight = "res/assert/tabSelectedRight.png"
 
+local PHOTO_FUNCTION = media.PhotoLibrary 
+
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 		UserId = row.UserId
@@ -153,11 +155,15 @@ chatScroll:scrollTo( "bottom", { time=200 } )
 
 end
 
+
+
 function get_sendMssage(response)
 
 	sendMeaasage()
 
 end
+
+
 
 local function ChatSendAction( event )
 	if event.phase == "began" then
@@ -195,6 +201,155 @@ local function ChatSendAction( event )
 return true
 end
 
+
+
+
+     local function onImageSelectionComplete ( event )
+
+        print(event.target)
+ 
+        local photo_image = event.target
+
+        local baseDir = system.DocumentsDirectory
+
+        if photo_image then
+
+        photo_image.x = display.contentCenterX
+		photo_image.y = display.contentCenterY
+		local w = photo_image.width
+		local h = photo_image.height
+		print( "w,h = ".. w .."," .. h )
+
+		local function rescale()
+					
+					if photo_image.width > W or photo_image.height > H then
+
+						photo_image.width = photo_image.width/2
+						photo_image.height = photo_image.height/2
+
+						intiscale()
+
+					else
+               
+						return false
+
+					end
+				end
+
+				function intiscale()
+					
+					if photo_image.width > W or photo_image.height > H then
+
+						photo_image.width = photo_image.width/2
+						photo_image.height = photo_image.height/2
+
+						rescale()
+
+					else
+
+						return false
+
+					end
+
+				end
+
+				intiscale()
+
+		photoname = "photo.jpg"
+
+        display.save(photo_image,photoname,system.DocumentsDirectory)
+
+       photo_image:removeSelf()
+
+       photo_image = nil
+
+
+  --       path = system.pathForFile( photoname, baseDir)
+
+  --       local size = lfs.attributes (path, "size")
+
+		-- local fileHandle = io.open(path, "rb")
+
+		-- file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+		-- io.close( fileHandle )
+
+  --           print("mime conversion ",file_inbytearray)
+
+  --       	print("bbb ",size)
+
+  --       	formatSizeUnits(size)
+
+  --       	sendImage()
+
+	else
+
+	end
+
+end
+
+
+
+
+
+
+
+	local function onCompleteImage( event )
+		
+		if "clicked"==event.action then
+
+			local i = event.index 
+
+		if 1 == i then
+
+			if media.hasSource( PHOTO_FUNCTION  ) then
+			timer.performWithDelay( 100, function() media.selectPhoto( { listener = onImageSelectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+			end )
+		    end
+
+		elseif 2 == i then
+
+			if media.hasSource( media.Camera ) then
+	        timer.performWithDelay( 100, function() media.capturePhoto( { listener = onImageSelectionComplete, mediaSource = media.Camera } ) 
+			end )
+		    end
+
+		end
+
+	end
+
+	return true
+	end
+
+
+
+    function UploadImageAction( event )
+
+    	local phase = event.phase
+
+    	if phase=="began" then
+
+    		display.getCurrentStage():setFocus( event.target )
+
+    	elseif phase=="ended" then
+
+    	display.getCurrentStage():setFocus( nil )
+
+        local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onCompleteImage)
+	
+	    return true
+
+        end
+
+    end
+
+
+
+
+
+
+
+
 local function onTimer ( event )
 
 	print( "event time completion" )
@@ -202,6 +357,10 @@ local function onTimer ( event )
 	BackFlag = false
 
 end
+
+
+
+
 
 
 local function onKeyEvent( event )
@@ -433,7 +592,12 @@ end
         -- user begins editing numericField
         elseif event.phase == "editing" then
 
+        	print("************************************************ here")
+
         	if event.text:len() >=1 then
+
+        		print("************************************************ here 111111111111111") 
+
         		sendBtn.isVisible=true
         		recordBtn.isVisible=false
         	else
@@ -564,12 +728,18 @@ function scene:show( event )
 		ChatBox_bg.strokeWidth = 1
 		ChatBox_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray))
 
-		ChatBox = native.newTextBox( 0, ChatBox_bg.y, ChatBox_bg.contentWidth-5, ChatBox_bg.contentHeight-5 )
+		ChatBox = native.newTextBox( 0, ChatBox_bg.y, ChatBox_bg.contentWidth-40, ChatBox_bg.contentHeight-5 )
 		ChatBox.isEditable = true
 		ChatBox.anchorY=0;ChatBox.anchorX=0
 		ChatBox.x=ChatBox_bg.x
 		ChatBox.hasBackground = false
 		sceneGroup:insert( ChatBox )
+
+		cameraBtn = display.newImageRect( sceneGroup, "res/assert/user.png", 25,20 )
+		cameraBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth-35
+		cameraBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-cameraBtn.contentHeight/2
+		cameraBtn.anchorY=0;cameraBtn.anchorX=0
+		cameraBtn.isVisible=true
 
 		sendBtn = display.newImageRect( sceneGroup, "res/assert/msg_send.png", 25,20 )
 		sendBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
@@ -660,6 +830,7 @@ sceneGroup:insert( tabBarGroup )
 
 
 		sendBtn:addEventListener( "touch", ChatSendAction )
+		cameraBtn:addEventListener("touch", UploadImageAction)
 		menuBtn:addEventListener("touch",menuTouch)
 		ChatBox:addEventListener( "userInput", ChatBoxHandler )
 		recordBtn:addEventListener( "touch", RecordAction )
