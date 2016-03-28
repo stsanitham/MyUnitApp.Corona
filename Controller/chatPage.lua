@@ -619,7 +619,7 @@ end
 
         elseif event.phase == "editing" then
 
-        	scrollAction(-60)
+        	scrollAction(60)
 
         	if event.text:len() >=1 then
 
