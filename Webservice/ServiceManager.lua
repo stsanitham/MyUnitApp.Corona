@@ -217,6 +217,7 @@ function Webservice.REQUEST_ACCESS(page,requestFromStatus,issentMail,issentText,
 	  "TypeLanguageCountry": {
 	    "LanguageId": "]]..langid..[[",
 	    "CountryId": "]]..countryid..[[",
+	    "IsTeamMember": true,
 	  },
 	}]]
   
@@ -270,9 +271,10 @@ function Webservice.SEND_MESSAGE(message,videopath,imagepath,imagename,imagesize
 	end
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
-
+local v
+if Message_Type ~= nil then
 	
-local v = [[
+ v = [[
 
 {
   "MyUnitBuzzMessage": "]]..message..[[",
@@ -291,6 +293,26 @@ local v = [[
    "TimeZone": "Eastern Standard Time",
 }
 ]]
+
+else
+
+	 v = [[
+
+{
+  "MyUnitBuzzMessage": "]]..message..[[",
+  "VideoFilePath": "]]..videopath..[[",
+  "MessageStatus": "]]..pushmethod..[[",
+  "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
+   "UserId": "]]..UserId..[[",
+   "EmailAddress": "]]..EmailAddess..[[",
+	"ImageFilePath": "]]..imagepath..[[",
+	 "ImageFileName": "]]..imagename..[[",
+	  "ImageFileSize": "]]..imagesize..[[",
+   "TimeZone": "Eastern Standard Time",
+}
+]]
+
+end
 
 
 	params={headers = headers,body = v}
