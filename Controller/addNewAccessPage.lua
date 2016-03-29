@@ -519,13 +519,14 @@ local function onRowTouch( event )
 		end
 
 
-		if Password.text == "" or Password.text == Password.id or Password.text:len() > 12 or Password.text == LoginPage.setError_Password then
+		if Password.text == "" or Password.text == Password.id  then
 			validation=false
 			SetError("* "..RequestAccess.Password_error,Password)
-		end
-		if Password.text:len() < 6 then
+			
+		elseif Password.text:len() < 6 or Password.text == PopupGroup.PasswordHelptext then
 			validation=false
 			SetError("* "..PopupGroup.PasswordHelptext,Password)
+			
 		end
 
 			if(validation == true) then
@@ -636,7 +637,7 @@ local function onKeyEvent( event )
 
          	generatedPassword = response
 
-         	if Password.text == PopupGroup.PasswordRequired or Password.text == PopupGroup.PasswordLimit then
+         	if Password.text == PopupGroup.PasswordRequired or Password.text == PopupGroup.PasswordHelptext then
 
          	    Password.text = generatedPassword
          	    Password.size=14
