@@ -39,6 +39,8 @@ local MeassageList={}
 
 local MessageType=""
 
+local MemberName
+
 local tabBarGroup = display.newGroup( )
 
 local UserId,ContactId,To_ContactId
@@ -54,6 +56,7 @@ local PHOTO_FUNCTION = media.PhotoLibrary
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 		UserId = row.UserId
 		ContactId = row.ContactId
+		MemberName = row.MemberName
 
 end
 
@@ -103,17 +106,15 @@ local function sendMeaasage()
 
 		local tempGroup = MeassageList[#MeassageList]
 
-		local bg = display.newRoundedRect(0,0,W-100,25,3 )
+		local bg = display.newRect(0,0,W-100,25 )
 		tempGroup:insert(bg)
-		bg.strokeWidth = 1
-		bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+		
 		bg.anchorX=0;bg.anchorY=0
 
 
 
 
 		if MeassageList[#MeassageList-1] ~= nil then
-			
 			bg.y=MeassageList[#MeassageList-1][1].y+MeassageList[#MeassageList-1][1].contentHeight+5
 		else
 			bg.y=0
@@ -126,10 +127,7 @@ local function sendMeaasage()
 				print( "here" )
 				bg.x=W-10
 				bg.anchorX=1
-				bg:setFillColor( 0.2,0.6,0.8,0.3 )
-				bg:setStrokeColor( 0.2,0.4,0.6)
-		
-
+			
 		end
 
 		local chat	
@@ -146,7 +144,6 @@ local function sendMeaasage()
 		chat.anchorY=0
 		chat.anchorX = 0
 		chat.x=bg.x+5;chat.y=bg.y
-		chat:setFillColor( 0 )
 	
 
 		tempGroup:insert( chat )
@@ -155,9 +152,69 @@ local function sendMeaasage()
 		bg.width = chat.contentWidth+10	
 		bg.height = chat.contentHeight+10	
 
+		local owner
+
+				if MessageType == "GROUP" then
+
+			owner = display.newText(tempGroup,MemberName,0,0,native.systemFont,14)
+			owner.anchorY=0
+			owner.anchorX = 0
+			owner.x=chat.x
+			owner.y=chat.y
+			owner:setTextColor( 1, 1, 0 )
+			chat.y=owner.y+20
+
+			bg.height = bg.height+20
+
+			if ChatHistory[i].Message_From == tostring(ContactId) then
+
+				owner.text = MemberName
+
+			else
+
+				owner.text = MembeChatHistory[i].ToName
+
+			end
+
+			if owner.contentWidth > bg.contentWidth then
+					bg.width = owner.contentWidth+10	
+			end
+
+
+		end
+
+			
+		local arrow = display.newImageRect( tempGroup, "res/assert/whitetriangle.png", 10, 10 )
+		arrow.x=bg.x-5
+		arrow.y=bg.y-0.3
+		arrow.anchorY=0
+
 		if ChatHistory[i].Message_From == tostring(ContactId) then
 			chat.x = bg.x-bg.contentWidth+5
+			owner.x=chat.x
+			bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+		else
+			bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
 		end
+
+
+
+		if ChatHistory[i].Message_From == tostring(ContactId) then
+			arrow.x=bg.x+5
+			arrow:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+		else
+		
+		arrow:scale( -1, 1 )
+		arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
+
+
+		end
+
+
+
+
 
 		chatScroll:insert(tempGroup)
 
@@ -652,11 +709,11 @@ end
    		 if ( event.phase == "began" ) then
         -- user begins editing numericField
 
-        scrollAction(60)
+      --  scrollAction(60)
 
        	elseif event.phase == "ended" then
 
-       	scrollAction(0)
+      -- 	scrollAction(0)
 
         elseif event.phase == "editing" then
 
