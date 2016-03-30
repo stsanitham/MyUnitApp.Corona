@@ -16,7 +16,6 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
 
-
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -42,6 +41,8 @@ local MessageType=""
 local MemberName
 
 local tabBarGroup = display.newGroup( )
+
+local ChatScrollContent = display.newGroup( )
 
 local UserId,ContactId,To_ContactId
 
@@ -191,7 +192,7 @@ local function sendMeaasage()
 
 		if ChatHistory[i].Message_From == tostring(ContactId) then
 			chat.x = bg.x-bg.contentWidth+5
-			owner.x=chat.x
+			if owner.x then owner.x=chat.x end
 			bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 		else
@@ -236,7 +237,20 @@ end
 
 local function ChatSendAction( event )
 	if event.phase == "began" then
+
+		print( "###############" )
 			display.getCurrentStage():setFocus( event.target )
+
+	elseif ( event.phase == "moved" ) then
+        local dy = math.abs( ( event.y - event.yStart ) )
+        -- If the touch on the button has moved more than 10 pixels,
+        -- pass focus back to the scroll view so it can continue scrolling
+
+        if ( dy > 10 ) then
+        	display.getCurrentStage():setFocus( nil )
+            chatScroll:takeFocus( event )
+        end
+
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 			if ChatBox.text ~= nil and ChatBox.text ~= "" then
@@ -695,11 +709,11 @@ end
 
 	local function scrollAction(value)
 
-		chatScroll:scrollToPosition
-			{
-			    y = value,
-			    time = 100,
-			}
+		       		if value == 0 then
+		       		else
+
+		       		end
+	--ChatScrollContent.y=value
 
 	end
 
@@ -709,15 +723,22 @@ end
    		 if ( event.phase == "began" ) then
         -- user begins editing numericField
 
-      --  scrollAction(60)
+        scrollAction(-120)
+
+
+        elseif event.phase == "submitted" then
+       		
+       		
 
        	elseif event.phase == "ended" then
 
-      -- 	scrollAction(0)
+       		scrollAction(0)
 
         elseif event.phase == "editing" then
 
-        	
+        	if (event.newCharacters=="\n") then
+				native.setKeyboardFocus( nil )
+			end
 
         	if event.text:len() >=1 then
 
@@ -763,6 +784,30 @@ return true
 
 
 	end
+
+	local function scrollListener( event )
+
+    local phase = event.phase
+    if ( phase == "began" ) then print( "Scroll view was touched" )
+    elseif ( phase == "moved" ) then print( "Scroll view was moved" )
+    elseif ( phase == "ended" ) then print( "Scroll view was released" )
+    end
+
+    -- In the event a scroll limit is reached...
+    if ( event.limitReached ) then
+
+    	
+
+
+        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+	    elseif ( event.direction == "down" ) then print( "Reached top limit" )
+        elseif ( event.direction == "left" ) then print( "Reached right limit" )
+        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+        end
+    end
+
+    return true
+end
 ------------------------------------------------------
 
 function scene:create( event )
@@ -841,12 +886,11 @@ function scene:show( event )
 
 		if ContactDetails.Message_Type then
 
-			print( "enter frame" )
 			MessageType=ContactDetails.Message_Type
 
 		end
 		print( MessageType )
-		ChatBox_bg = display.newRect(sceneGroup,0,H-100, W-50, 40 )
+		ChatBox_bg = display.newRect(ChatScrollContent,0,H-100, W-50, 40 )
 		ChatBox_bg.anchorY=0;ChatBox_bg.anchorX=0
 		ChatBox_bg.x=5
 		ChatBox_bg.strokeWidth = 1
@@ -857,7 +901,7 @@ function scene:show( event )
 		ChatBox.anchorY=0;ChatBox.anchorX=0
 		ChatBox.x=ChatBox_bg.x
 		ChatBox.hasBackground = false
-		sceneGroup:insert( ChatBox )
+		ChatScrollContent:insert( ChatBox )
 
 		-- cameraBtn = display.newImageRect( sceneGroup, "res/assert/user.png", 25,20 )
 		-- cameraBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth-35
@@ -865,14 +909,16 @@ function scene:show( event )
 		-- cameraBtn.anchorY=0;cameraBtn.anchorX=0
 		-- cameraBtn.isVisible=true
 
-		sendBtn = display.newImageRect( sceneGroup, "res/assert/msg_send.png", 25,20 )
+		sendBtn = display.newImageRect( ChatScrollContent, "res/assert/msg_send.png", 25,20 )
 		sendBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
 		sendBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-sendBtn.contentHeight/2
 		sendBtn.anchorY=0;sendBtn.anchorX=0
 		sendBtn.isVisible=false
 
+		sendBtn_bg = display.newRect( ChatScrollContent, sendBtn.x+5, sendBtn.y+5, 45,45 )
+		sendBtn_bg:setFillColor( 0,0,0,0.01 )
 
-		recordBtn = display.newImageRect( sceneGroup, "res/assert/record.png", 25,20 )
+		recordBtn = display.newImageRect( ChatScrollContent, "res/assert/record.png", 25,20 )
 		recordBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
 		recordBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-recordBtn.contentHeight/2
 		recordBtn.anchorY=0;recordBtn.anchorX=0
@@ -894,9 +940,11 @@ function scene:show( event )
 		chatScroll.anchorY=0
 		chatScroll.anchorX=0
 		chatScroll.x=0;chatScroll.y=title_bg.y+title_bg.contentHeight/2
-		sceneGroup:insert( chatScroll )
+		ChatScrollContent:insert( chatScroll )
 
 		sendMeaasage()
+
+		sceneGroup:insert( ChatScrollContent )
 
 
 			--Tabbar---
@@ -953,14 +1001,19 @@ tab_Contact_txt:setFillColor( 0.3 )
 sceneGroup:insert( tabBarGroup )
 
 
-		sendBtn:addEventListener( "touch", ChatSendAction )
+		sendBtn_bg:addEventListener( "touch", ChatSendAction )
 		--cameraBtn:addEventListener("touch", UploadImageAction)
 		menuBtn:addEventListener("touch",menuTouch)
 		ChatBox:addEventListener( "userInput", ChatBoxHandler )
 		recordBtn:addEventListener( "touch", RecordAction )
 
 		function printTimeSinceStart( event )
+
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( )
+
 		    if chatReceivedFlag==true then
+
+
 		    	chatReceivedFlag=false
 		    	sendMeaasage()
 		    end

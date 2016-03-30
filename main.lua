@@ -248,14 +248,16 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
                         To=additionalData.messageTo
                         Message_Type = additionalData.messageType
 
-                        if additionalData.messageType == "GROUP" then
                             Name="test group"
-                        end
                     
                        
 
                         local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..message..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[');]]
                             db:exec( insertQuery )
+
+            if openPage == "main" then
+                     composer.showOverlay( "Controller.MessagingPage")
+            end
 
     else
 
