@@ -1343,7 +1343,7 @@ local function onKeyEvent( event )
 
 	send_button = display.newRect(sceneGroup,0,0,W-60,26)
 	send_button.x=Message_content.x-70
-	send_button.y = Message_content.y+300
+	send_button.y = video_outer_bg.y + video_outer_bg.contentHeight/2 +15
 	send_button.width = W-190
 	send_button.anchorY=0
 	send_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
@@ -1355,17 +1355,17 @@ local function onKeyEvent( event )
 	send_icon.id = "send icon"
 	sceneGroup:insert(send_icon)
 	send_icon.anchorY=0
-	send_icon.x= send_button.x - send_button.contentWidth/2+10
+	send_icon.x= send_button.x - send_button.contentWidth/2+25
 	send_icon.y=send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
 
 	send_button_text = display.newText(sceneGroup,Message.SendButton,0,0,send_button.contentWidth-12,0,native.systemFont,16)
 	send_button_text.anchorX=0
 	send_button_text.anchorY=0
-	send_button_text.x=send_icon.x+10
+	send_button_text.x=send_icon.x+15
 	send_button_text.y=send_icon.y-3
 	Utils.CssforTextView(send_button_text,sp_primarybutton)
 
-	send_button.height= send_button_text.contentHeight+6
+--	send_button.height= send_button_text.contentHeight+6
 
 
 	--------draft button----------------------
@@ -1382,11 +1382,11 @@ local function onKeyEvent( event )
 	draft_icon.id = "draft icon"
 	draft_icon.anchorY=0
 	sceneGroup:insert(draft_icon)
-	draft_icon.x= draft_button.x - draft_button.contentWidth/2+10
+	draft_icon.x= draft_button.x - draft_button.contentWidth/2+15
 	draft_icon.y=draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
 
 	draft_button_text = display.newText(sceneGroup,Message.DraftButton,0,0,native.systemFont,16)
-	draft_button_text.x=draft_icon.x+10
+	draft_button_text.x=draft_icon.x+15
 	draft_button_text.y=draft_icon.y-3
 	draft_button_text.anchorY=0
 	draft_button_text.anchorX=0
