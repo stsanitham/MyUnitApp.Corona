@@ -135,6 +135,7 @@ FlapMenu.Contacts_with_Access = "Contacts with Access"
 FlapMenu.Denied_Access = "Denied Access"
 FlapMenu.Pending_Requests = "Pending Requests"
 FlapMenu.TeamMember_without_Access = "Team Member without Access"
+FlapMenu.Add_New_Access = "Add New Access"
 FlapMenu.chatMessageTitle = "Chat"
 
 

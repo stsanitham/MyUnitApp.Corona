@@ -207,7 +207,7 @@ function scene:create( event )
         countryid = row.CountryId
 
         profilePic_path = row.ProfileImageUrl
-
+ 
         loginFlag=true
 
 					Director_Name = row.MemberName
@@ -309,7 +309,7 @@ function scene:show( event )
 			profilePic.anchorX=0
 			panel:insert( profilePic )
 
-		if profilePic_path ~= nil then 
+		if profilePic_path ~= nil and profilePic_path ~= "" then 
 
 			local downloadid = network.download(ApplicationConfig.IMAGE_BASE_URL..""..profilePic_path,
 				"GET",
@@ -337,9 +337,9 @@ function scene:show( event )
 						panel:insert( profilePic )
 						
     				--event.row:insert(img_event.target)
-    			end
+    					end
 
-    			end, profilePic_path:match( "([^/]+)$" ), system.TemporaryDirectory)
+    				end, profilePic_path:match( "([^/]+)$" ), system.TemporaryDirectory)
 		else
 			profilePic = display.newImageRect("res/assert/usericon.png",65,60)
 			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-35
@@ -787,7 +787,7 @@ if IsOwner == true then
 			invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			flapScroll:insert( invite_icon )
 
-			invite_text = display.newText("Add New Access" ,0,0,"Open Sans Regular",16)
+			invite_text = display.newText(FlapMenu.Add_New_Access ,0,0,"Open Sans Regular",16)
 			invite_text.anchorX = 0
 			invite_text.x=invite_icon.x+invite_icon.contentWidth+5
 			invite_text.y = invite_icon.y

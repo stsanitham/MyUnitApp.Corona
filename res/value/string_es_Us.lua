@@ -143,6 +143,7 @@ FlapMenu.Denied_Access = "Acceso denegado"
 FlapMenu.Pending_Requests = "solicitudes pendientes"
 FlapMenu.TeamMember_without_Access = "Miembro del Equipo sin acceso"
 FlapMenu.chatMessageTitle = "mensajes"
+FlapMenu.Add_New_Access = "Agregar nuevo acceso"
 
 
 EventCalender = {}
