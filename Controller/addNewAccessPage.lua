@@ -925,7 +925,7 @@ function scene:create( event )
 		MKRank.alpha=0.9
 		MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		MKRank.y=MKRank_bg.y+5
-		MKRank.x = 16
+		MKRank.x = 18
 	    MKRank.anchorX=0
 	    sceneGroup:insert(MKRank)
 
@@ -947,7 +947,7 @@ function scene:create( event )
 	Comment.placeholder=RequestAccess.Comment_placeholder
 	Comment.isEditable = true
 	Comment.size=14	
-	Comment.x = 13
+	Comment.x = 16
 	Comment.anchorX=0
 	Comment.y = Comment_bg.y
 	Comment.id = "Comments"
