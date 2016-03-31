@@ -83,10 +83,10 @@ local function sendMeaasage()
 	end
 
 
-	           --native.showAlert("MyUnitBuzz", "From : "..tostring(ContactId).."To :"..tostring(To_ContactId), { "OK" } )
+	          -- native.showAlert("MyUnitBuzz", "ContactId : "..tostring(ContactId).."To_ContactId :"..tostring(To_ContactId), { "OK" } )
 
 
-	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId).."') OR (Message_To='"..tostring(ContactId).."')") do
+	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') ") do
 
 		local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
 		db:exec( q )
@@ -183,6 +183,10 @@ local function sendMeaasage()
 			if owner.contentWidth > bg.contentWidth then
 					bg.width = owner.contentWidth+10	
 			end
+
+			
+
+		local alert = native.showAlert( LoginPage.ErrorTitle,owner.text, { CommonWords.ok } )
 
 
 		end

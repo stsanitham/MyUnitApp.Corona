@@ -243,7 +243,7 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
                         ImagePath="NULL"
                         AudioPath="NULL"
                         VideoPath="NULL"
-                        MyUnitBuzz_LongMessage=message
+                        MyUnitBuzz_LongMessage=tostring(message)
                         From=additionalData.messageFrom
                         To=additionalData.messageTo
                         Message_Type = additionalData.messageType
@@ -281,7 +281,7 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
                     
                        
 
-                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..message..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..tostring(message)..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                             db:exec( insertQuery )
 
             -- if openPage == "main" then

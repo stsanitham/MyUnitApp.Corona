@@ -298,7 +298,6 @@ end
 
 	print("response after sending message ",Request_response)
 
-
 	end
 
 
@@ -362,7 +361,7 @@ end
 		    end
 
 
-		Webservice.SEND_MESSAGE(Message_content.text,feed_url.text,Imagepath,Imagename,Imagesize,method,get_messagemodel)
+		Webservice.SEND_MESSAGE(Message_content.text,feed_url.text,Imagepath,Imagename,Imagesize,method,"","","",get_messagemodel)
 
     end
 
@@ -1298,11 +1297,11 @@ local function onKeyEvent( event )
   	feed_url_bg.hasBackground = true
 	feed_url_bg.strokeWidth = 1
 
-	video_defaultimg_bg = display.newRect( sceneGroup, 0,0 , 30, EditBoxStyle.height)
+	video_defaultimg_bg = display.newRect( sceneGroup, 0,0 , 30, EditBoxStyle.height+2)
   	video_defaultimg_bg:setStrokeColor(0,0,0,0.15)
   	video_defaultimg_bg:setFillColor(0,0,0,0.2)
   	video_defaultimg_bg.x = feed_url_bg.x+feed_url_bg.contentWidth/2+15
-  	video_defaultimg_bg.y = image_content_bg.y+ image_content_bg.contentHeight + 56
+  	video_defaultimg_bg.y = image_content_bg.y+ image_content_bg.contentHeight + 55
   	video_defaultimg_bg.hasBackground = true
 	--video_defaultimg_bg.strokeWidth = 1
 
