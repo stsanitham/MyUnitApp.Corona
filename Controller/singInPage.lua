@@ -284,11 +284,35 @@ openPage="signInPage"
 			Director_Name = string.gsub( Director_Name, "'", "''" )
 
 
+
+
 			local tablesetup = [[DROP TABLE logindetails;]]
 			db:exec( tablesetup )
 
-			local tablesetup_msg = [[DROP TABLE pu_MyUnitBuzz_Message;]]
-			db:exec( tablesetup_msg )
+					
+
+			local UserContactId
+
+			for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE id=1") do
+				
+					UserContactId = row.Message_From
+				
+
+			end
+
+			print( "**********************************\n"..ContactId,UserContactId )
+
+			if tostring(ContactId) == tostring(UserContactId) then
+
+
+			else
+
+					local tablesetup_msg = [[DROP TABLE pu_MyUnitBuzz_Message;]]
+					db:exec( tablesetup_msg )
+
+			end
+
+		
 
 			local tablesetup = [[CREATE TABLE IF NOT EXISTS logindetails (id INTEGER PRIMARY KEY autoincrement, UnitNumberOrDirector, EmailAddess, PhoneNumber, Status, UserId, GoogleUsername, GoogleToken, GoogleTokenSecret, GoogleUserId, FacebookUsername, FacebookAccessToken, TwitterUsername, TwitterToken, TwitterTokenSecret, ProfileImageUrl, AccessToken, ContactId, ContactDisplay, LanguageId, CountryId, MemberName, MemberEmail );]]
 			db:exec( tablesetup )

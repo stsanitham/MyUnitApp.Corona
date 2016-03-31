@@ -97,8 +97,8 @@ local function MenuTouchAction(event)
 											local tablesetup = [[DROP TABLE logindetails;]]
 											db:exec( tablesetup )
 
-											local tablesetup_msg = [[DROP TABLE pu_MyUnitBuzz_Message;]]
-											db:exec( tablesetup_msg )
+											-- local tablesetup_msg = [[DROP TABLE pu_MyUnitBuzz_Message;]]
+											-- db:exec( tablesetup_msg )
 
 										composer.gotoScene( "Controller.singInPage" )
 
