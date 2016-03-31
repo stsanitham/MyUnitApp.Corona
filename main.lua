@@ -15,7 +15,7 @@ local Applicationconfig = require("Utils.ApplicationConfig")
 
 widget.setTheme( "widget_theme_ios" )
 
-local OneSignal = require("plugin.OneSignal")
+    local OneSignal = require("plugin.OneSignal")
 GCMValue = 0
 ga = require("Utils.GoogleAnalytics.ga")
 
@@ -227,7 +227,7 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 
                 chatReceivedFlag=true
 
-            local UserId,ContactId,Name
+            local UserId,ContactId,Name,FromName,GroupName
 
             for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
                     UserId = row.UserId
@@ -248,16 +248,45 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
                         To=additionalData.messageTo
                         Message_Type = additionalData.messageType
 
-                            Name="test group"
+
+
+                            if additionalData.fFN ~= nil then
+                                Name=additionalData.fFN.." "..additionalData.fLN
+
+                            else
+
+                                Name=additionalData.fLN
+
+                            end
+
+                            GroupName=""
+
+                            if Message_Type == "GROUP" then
+                                 GroupName=additionalData.GN
+                                 FromName=""
+                            else
+
+
+                                   if additionalData.tFN ~= nil then
+                                        FromName=additionalData.tFN.." "..additionalData.tLN
+
+                                    else
+
+                                        FromName=additionalData.tLN
+
+                                    end
+
+                            end
+            
                     
                        
 
-                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..message..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[');]]
+                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..message..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                             db:exec( insertQuery )
 
-            if openPage == "main" then
-                     composer.showOverlay( "Controller.MessagingPage")
-            end
+            -- if openPage == "main" then
+            --          composer.showOverlay( "Controller.MessagingPage")
+            -- end
 
     else
 

@@ -217,8 +217,9 @@ function Webservice.REQUEST_ACCESS(page,requestFromStatus,issentMail,issentText,
 	  "TypeLanguageCountry": {
 	    "LanguageId": "]]..langid..[[",
 	    "CountryId": "]]..countryid..[[",
-	    "IsTeamMember": true,
+	    
 	  },
+	  "IsTeamMember": true,
 	}]]
   
     end
@@ -228,7 +229,7 @@ function Webservice.REQUEST_ACCESS(page,requestFromStatus,issentMail,issentText,
 
 	params={headers = headers,body = v}
 
-	print("Send Message Request :"..json.encode(params))
+	print("Send Message Request :"..v)
 
 	request.new( ApplicationConfig.REQUEST_ACCESS,method,params,postExecution)
 	

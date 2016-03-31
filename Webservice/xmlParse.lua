@@ -36,6 +36,17 @@ function request.new(url, method, params,listner)
 
 			spinner_hide()
 
+
+-- 			local options =
+-- {
+--    to = { "malarkodi.sellamuthu@w3magix.com"},
+--    subject = "bug",
+--    isBodyHtml = true,
+--    body = ""..event.response,
+
+-- }
+-- native.showPopup( "mail", options )
+
 	else
 		
 				print ( "URL : "..url.."\n\n RESPONSE: " .. event.response )

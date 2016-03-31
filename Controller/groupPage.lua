@@ -71,7 +71,7 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
     local function addGroupAction(event)
 
 	 	 if event.phase == "began" then
-
+	 	 	print( "here" )
          elseif event.phase == "ended" then
 
          composer.removeHidden()
@@ -128,8 +128,8 @@ local function groupBackground_Touch( event )
 			display.getCurrentStage():setFocus( nil )
 
 			 local options = {
-										effect = "crossFade",
-										time = 300,	
+										effect = "flipFadeOutIn",
+										time = 200,	
 										params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
 										}
 
@@ -396,16 +396,18 @@ local function GroupCreation_list( list )
 
 		groupList_scrollview:insert(tempGroup)
 
-		if IsOwner then
-			addGroupBtn:toFront( )
 
-		end
 
 		background:addEventListener( "touch", groupBackground_Touch )
 
 
 	end
 
+		if IsOwner then
+			
+			addGroupBtn:toFront( )
+
+		end
 end
 
 
@@ -453,13 +455,6 @@ end
 		-- addGroupBtn.isVisible = true
 		-- addGroupBtn.id="addGroup"
 
-		if IsOwner == true then
-
-		addGroupBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
-		addGroupBtn.x=W/2+W/3+15;addGroupBtn.y=H-80;addGroupBtn.id="addGroup"
-		addGroupBtn.isVisible = true
-		addGroupBtn:addEventListener("touch",addGroupAction)
-	    end
 
 		subjectBar = display.newRect(sceneGroup,W/2,0,W,40)
 		subjectBar.y=title_bg.y+15
@@ -525,7 +520,14 @@ end
 
             sceneGroup:insert(groupList_scrollview)
 
+            
+		if IsOwner == true then
 
+		addGroupBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
+		addGroupBtn.x=W/2+W/3+15;addGroupBtn.y=H-80;addGroupBtn.id="addGroup"
+		addGroupBtn.isVisible = true
+		addGroupBtn:addEventListener("touch",addGroupAction)
+	    end
 
 			 function getGroupListresponse(response )
 

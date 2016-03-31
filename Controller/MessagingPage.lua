@@ -69,6 +69,25 @@ local function onTimer ( event )
 
 end
 
+function makeTimeStamp( dateString )
+   local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
+   local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
+   local timestamp = os.time(
+      { year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false }
+   )
+   local offset = 0
+   if ( tzoffset ) then
+      if ( tzoffset == "+" or tzoffset == "-" ) then  -- We have a timezone
+         offset = offsethour * 60 + offsetmin
+         if ( tzoffset == "-" ) then
+            offset = offset * -1
+         end
+         timestamp = timestamp + offset
+      end
+   end
+   return timestamp
+end
+
 
 local function onKeyEvent( event )
 
@@ -258,8 +277,8 @@ local function consultantTounch( event )
 			display.getCurrentStage():setFocus( nil )
 
 			 				    local options = {
-										effect = "crossFade",
-										time = 300,	
+											effect = "flipFadeOutIn",
+										time = 200,	
 										params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
 										}
 
@@ -328,16 +347,28 @@ local function Broadcast_list( list )
 			Utils.CssforTextView(Name_txt,sp_labelName)
 			Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
+			 if list[i].Message_Type == "GROUP" then
+
+			 	Name_txt.text = list[i].GroupName
+			 end
+
 			local Position_txt = display.newText(tempGroup,list[i].MyUnitBuzz_Message,0,0,native.systemFont,14)
 			Position_txt.x=5;Position_txt.y=background.y+background.height/2+10
 			Position_txt.anchorX=0
 			Utils.CssforTextView(Position_txt,sp_fieldValue)
 
-			if Position_txt.text:len() > 45 then
+			if Position_txt.text:len() > 30 then
 
-				Position_txt.text = string.sub(Position_txt.text,1,45).."..."
+				Position_txt.text = string.sub(Position_txt.text,1,30).."..."
 
 			end
+
+			local time = makeTimeStamp(list[i].Create_Time_Stamp)
+
+			local time = display.newText( tempGroup,os.date("%b %d, %Y %I:%M %p",time),W-80,background.y+3,native.systemFont,10 )
+				time.x=W-120
+				time.anchorX=0;time.anchorY=0
+				time:setTextColor(Utils.convertHexToRGB(color.tabBarColor))
 
 			local line = display.newRect(tempGroup,W/2,background.y,W,1)
 			line.y=background.y+background.contentHeight-line.contentHeight
@@ -361,7 +392,9 @@ local function Broadcast_list( list )
 
 				end
 
-				local circle = display.newCircle( tempGroup, W-80, background.y+background.contentHeight/2, 10 )
+
+
+				local circle = display.newCircle( tempGroup, W-80, background.y+background.contentHeight/2+5, 10 )
 				circle.height=23;circle.width=25
 				circle:setFillColor( Utils.convertHexToRGB("#008B45" ))
 

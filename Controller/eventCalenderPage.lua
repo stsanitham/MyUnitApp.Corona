@@ -1320,8 +1320,6 @@ picker_Done = display.newText( pickerGroup, CommonWords.done, 0, 0, native.syste
 picker_Done:setFillColor(Utils.convertHexToRGB(color.today_blue))
 picker_Done.x=picker_btnBg.x+100;picker_Done.y=picker_btnBg.y
 
-addEventBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
-addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 
 
 end
@@ -1626,6 +1624,9 @@ weekView_rightArrow_bg:addEventListener( "touch", weekViewSwipe )
 weekView_rightArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
 weekView_rightArrow.x=weekView_bg.x+weekView_bg.contentWidth/2-20
 weekView_rightArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5
+
+addEventBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
+addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 
 
 if IsOwner == false then

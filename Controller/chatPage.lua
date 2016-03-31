@@ -22,7 +22,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
 
-local menuBtn,tabButtons,chattabBar,chatScroll
+local menuBtn,tabButtons,chattabBar,chatScroll,BackBtn
 
 openPage="chatPage"
 
@@ -155,15 +155,17 @@ local function sendMeaasage()
 
 		local owner
 
-				if MessageType == "GROUP" then
+		if MessageType == "GROUP" then
 
-			owner = display.newText(tempGroup,MemberName,0,0,native.systemFont,14)
+			owner = display.newText(tempGroup,"",0,0,native.systemFont,14)
 			owner.anchorY=0
 			owner.anchorX = 0
 			owner.x=chat.x
 			owner.y=chat.y
 			owner:setTextColor( 1, 1, 0 )
 			chat.y=owner.y+20
+
+
 
 			bg.height = bg.height+20
 
@@ -173,9 +175,10 @@ local function sendMeaasage()
 
 			else
 
-				owner.text = MembeChatHistory[i].ToName
+				owner.text = ChatHistory[i].FromName or ChatHistory[i].ToName or "(~No Name)"
 
 			end
+		
 
 			if owner.contentWidth > bg.contentWidth then
 					bg.width = owner.contentWidth+10	
@@ -192,7 +195,7 @@ local function sendMeaasage()
 
 		if ChatHistory[i].Message_From == tostring(ContactId) then
 			chat.x = bg.x-bg.contentWidth+5
-			if owner.x then owner.x=chat.x end
+			if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
 			bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 		else
@@ -234,6 +237,36 @@ function get_sendMssage(response)
 end
 
 
+local function backAction( event )
+	if event.phase == "began" then
+
+		display.getCurrentStage():setFocus( event.target )
+
+	elseif ( event.phase == "moved" ) then
+        local dy = math.abs( ( event.y - event.yStart ) )
+       
+	        if ( dy > 10 ) then
+	        	display.getCurrentStage():setFocus( nil )
+	            chatScroll:takeFocus( event )
+	        end
+
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+				      local options = {
+				      		effect = "flipFadeOutIn",
+							time = 200,	
+
+							}
+
+				    composer.gotoScene( "Controller.MessagingPage", options )
+
+	end
+
+return true
+end
+
+
 
 local function ChatSendAction( event )
 	if event.phase == "began" then
@@ -256,10 +289,10 @@ local function ChatSendAction( event )
 			if ChatBox.text ~= nil and ChatBox.text ~= "" then
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
-			Message_date=os.date("%Y-%m-%dT%H:%m:%S")
+			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
 			isDeleted="false"
-			Created_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
-			Updated_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
+			Created_TimeStamp=os.date("%Y-%m-%dT%H:%M:%S")
+			Updated_TimeStamp=os.date("%Y-%m-%dT%H:%M:%S")
 			ImagePath="NULL"
 			AudioPath="NULL"
 			VideoPath="NULL"
@@ -268,10 +301,12 @@ local function ChatSendAction( event )
 			To=To_ContactId
 			Message_Type = MessageType
 
+			print( "Created_TimeStamp : "..Created_TimeStamp )
+
 		--	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
-				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n" )
-				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..ChatBox.text..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[');]]
+				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
+				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..ChatBox.text..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
 				db:exec( insertQuery )
 
 			Webservice.SEND_MESSAGE(ChatBox.text,"","","","","SEND",From,To,Message_Type,get_sendMssage)
@@ -709,11 +744,11 @@ end
 
 	local function scrollAction(value)
 
-		       		if value == 0 then
-		       		else
+		       		-- if value == 0 then
+		       		-- else
 
-		       		end
-	--ChatScrollContent.y=value
+		       		-- end
+	ChatScrollContent.y=value
 
 	end
 
@@ -723,7 +758,7 @@ end
    		 if ( event.phase == "began" ) then
         -- user begins editing numericField
 
-        scrollAction(-120)
+        scrollAction(-140)
 
 
         elseif event.phase == "submitted" then
@@ -739,6 +774,14 @@ end
         	if (event.newCharacters=="\n") then
 				native.setKeyboardFocus( nil )
 			end
+
+				if event.text:len() > 250 then
+
+						event.target.text = event.text:sub(1,250)
+
+			
+
+					end
 
         	if event.text:len() >=1 then
 
@@ -788,22 +831,28 @@ return true
 	local function scrollListener( event )
 
     local phase = event.phase
+   
     if ( phase == "began" ) then print( "Scroll view was touched" )
     elseif ( phase == "moved" ) then print( "Scroll view was moved" )
     elseif ( phase == "ended" ) then print( "Scroll view was released" )
+
+    	print( #ChatHistory )
+
+    	if #ChatHistory < 10 then
+    		chatScroll:scrollTo( "bottom", { time=500 } )
+    	end
     end
 
     -- In the event a scroll limit is reached...
     if ( event.limitReached ) then
-
-    	
-
 
         if ( event.direction == "up" ) then print( "Reached bottom limit" )
 	    elseif ( event.direction == "down" ) then print( "Reached top limit" )
         elseif ( event.direction == "left" ) then print( "Reached right limit" )
         elseif ( event.direction == "right" ) then print( "Reached left limit" )
         end
+
+        
     end
 
     return true
@@ -834,9 +883,14 @@ function scene:create( event )
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
+	BackBtn = display.newText( sceneGroup, "<", 0, 0 , native.systemFontBold ,16 )
+	BackBtn.anchorX = 0
+	BackBtn.x=5;BackBtn.y = title_bg.y
+	BackBtn:setFillColor(0)
+
 	title = display.newText(sceneGroup,FlapMenu.chatMessageTitle,0,0,native.systemFont,18)
 	title.anchorX = 0
-	title.x=5;title.y = title_bg.y
+	title.x=BackBtn.x+BackBtn.contentWidth+5;title.y = title_bg.y
 	title:setFillColor(0)
 
 	title.text = "Chat"
@@ -871,6 +925,8 @@ function scene:show( event )
 
 
 		title.text = ContactDetails.Name or ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
+
+
 
 		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To or ContactDetails.MyUnitBuzzGroupId
 
@@ -983,7 +1039,15 @@ tab_Contact:addEventListener( "touch", TabbarTouch )
 
 CreateTabBarIcons()
 
+	if tab_Message_btn then tab_Message_btn:removeSelf( );tab_Message_btn=nil end
 
+	tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats active.png", 35/1.4, 31/1.4 )
+	tab_Message_btn.x=tab_Message.x
+	tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
+	tab_Message_btn.anchorY=0
+
+	overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+	overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
 
 tab_Group_txt = display.newText( tabBarGroup, "Group",0,0,native.systemFont,11 )
 tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
@@ -1009,7 +1073,7 @@ sceneGroup:insert( tabBarGroup )
 
 		function printTimeSinceStart( event )
 
-			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( )
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( )
 
 		    if chatReceivedFlag==true then
 
@@ -1020,6 +1084,8 @@ sceneGroup:insert( tabBarGroup )
 		end 
 		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 		Runtime:addEventListener( "key", onKeyEvent )
+		BackBtn:addEventListener( "touch", backAction )
+		title:addEventListener( "touch", backAction )
 		
 	end	
 

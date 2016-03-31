@@ -91,8 +91,8 @@ local function consultantTounch( event )
 				else
 
  				    local options = {
-							effect = "crossFade",
-							time = 300,	
+								effect = "flipFadeOutIn",
+							time = 200,	
 							params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
 							}
 
