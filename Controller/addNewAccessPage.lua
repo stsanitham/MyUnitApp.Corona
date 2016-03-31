@@ -190,7 +190,7 @@ local function RequestProcess()
 				
 				end
 
-		    end
+		end
 
 
 		Webservice.REQUEST_ACCESS(openPage,"WEB",isSentMailvalue,isSentTextvalue,"","",FirstName.text,Name.text,Email.text,Phone.text,"",Password.text,mkRank_id,Comment.text,get_requestAccess)
@@ -249,7 +249,7 @@ end
 				end
 
 				if(event.target.id == "Comments") then
-							scrollTo( -100 )
+							scrollTo( -150 )
 							event.target.text = ""
 
 				end
@@ -391,9 +391,9 @@ end
 
 
 
-				if(event.target.id == "Comments") then
+			if(event.target.id == "Comments") then
 
-				scrollTo( -100 )
+				scrollTo( -150 )
 
 				if (event.newCharacters=="\n") then
 					native.setKeyboardFocus( nil )
@@ -745,7 +745,7 @@ function scene:create( event )
 		FirstName.id="First Name"
 		FirstName.size=14	
 		FirstName.anchorX = 0
-		FirstName.x = 10
+		FirstName.x = 15
 		FirstName.y = title.y+title.contentHeight+15
 		FirstName.hasBackground = false
 		FirstName:setReturnKey( "next" )
@@ -772,7 +772,7 @@ function scene:create( event )
 		Name.y = FirstName_bg.y+FirstName_bg.height+7
 		Name.size=14
 		Name.anchorX = 0
-		Name.x = 10
+		Name.x = 15
 		Name:setReturnKey( "next" )
 		Name.hasBackground = false	
 		Name.placeholder = RequestAccess.LastName_placeholder
@@ -792,7 +792,7 @@ function scene:create( event )
 		Email.id="Email"
 		Email.size=14
 		Email.anchorX = 0
-		Email.x = 10	
+		Email.x = 15	
 		Email:setTextColor(0,0,0)
 		Email:setReturnKey( "next" )
 		Email.hasBackground = false
@@ -833,7 +833,7 @@ function scene:create( event )
 		Phone.id="Phone"
 		Phone.size=14	
 		Phone.anchorX = 0
-		Phone.x = 10
+		Phone.x = 15
 		--Phone.text = "(111) 111 -1111"
 		Phone:setReturnKey( "next" )
 		Phone.hasBackground = false
@@ -880,7 +880,7 @@ function scene:create( event )
 		Password.id="Password"
 		Password.size=14	
 		Password.anchorX = 0
-		Password.x = 10
+		Password.x = 15
 		Password.y = textnotifytext.y+textnotifytext.contentHeight+15
 		Password:setReturnKey( "next" )
 		Password.hasBackground = false
@@ -925,7 +925,7 @@ function scene:create( event )
 		MKRank.alpha=0.9
 		MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		MKRank.y=MKRank_bg.y+5
-		MKRank.x = 15
+		MKRank.x = 16
 	    MKRank.anchorX=0
 	    sceneGroup:insert(MKRank)
 
@@ -947,7 +947,7 @@ function scene:create( event )
 	Comment.placeholder=RequestAccess.Comment_placeholder
 	Comment.isEditable = true
 	Comment.size=14	
-	Comment.x = 10
+	Comment.x = 13
 	Comment.anchorX=0
 	Comment.y = Comment_bg.y
 	Comment.id = "Comments"
