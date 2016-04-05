@@ -24,7 +24,7 @@ local Background,BgText
 
 local menuBtn,tabButtons,chattabBar
 
-openPage="consultantListPage"
+openPage="MessagingPage"
 
 local BackFlag = false
 

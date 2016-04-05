@@ -15,7 +15,7 @@ local Applicationconfig = require("Utils.ApplicationConfig")
 
 widget.setTheme( "widget_theme_ios" )
 
-    local OneSignal = require("plugin.OneSignal")
+local OneSignal = require("plugin.OneSignal")
 GCMValue = 0
 ga = require("Utils.GoogleAnalytics.ga")
 
@@ -284,9 +284,11 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
                         local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..tostring(message)..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                             db:exec( insertQuery )
 
-            -- if openPage == "main" then
-            --          composer.showOverlay( "Controller.MessagingPage")
-            -- end
+            if openPage ~= "MessagingPage" then
+
+                     local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
+                     
+            end
 
     else
 

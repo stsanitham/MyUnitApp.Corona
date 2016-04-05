@@ -24,7 +24,7 @@ local Background,BgText
 
 local menuBtn,tabButtons,chattabBar,chatScroll,BackBtn
 
-openPage="chatPage"
+openPage="MessagingPage"
 
 local BackFlag = false
 
@@ -86,7 +86,7 @@ local function sendMeaasage()
 	          -- native.showAlert("MyUnitBuzz", "ContactId : "..tostring(ContactId).."To_ContactId :"..tostring(To_ContactId), { "OK" } )
 
 
-	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') ") do
+	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
 
 		local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
 		db:exec( q )
@@ -292,8 +292,8 @@ local function ChatSendAction( event )
 			
 			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
 			isDeleted="false"
-			Created_TimeStamp=os.date("%Y-%m-%dT%H:%M:%S")
-			Updated_TimeStamp=os.date("%Y-%m-%dT%H:%M:%S")
+			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 			ImagePath="NULL"
 			AudioPath="NULL"
 			VideoPath="NULL"
@@ -709,7 +709,7 @@ end
 					circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 					circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-					tab_Group_txt:setFillColor( 0.3 )
+					--tab_Group_txt:setFillColor( 0.3 )
 					tab_Message_txt:setFillColor( 0.3 )
 					tab_Contact_txt:setFillColor(  Utils.convertHexToRGB(color.tabBarColor)  )
 
@@ -759,7 +759,7 @@ end
    		 if ( event.phase == "began" ) then
         -- user begins editing numericField
 
-        scrollAction(-140)
+        scrollAction(-150)
 
 
         elseif event.phase == "submitted" then
@@ -929,6 +929,10 @@ function scene:show( event )
 
 		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To or ContactDetails.MyUnitBuzzGroupId
 
+		if tostring(To_ContactId) == tostring(ContactId) then
+			To_ContactId=ContactDetails.Message_From
+		end
+
 		if ContactDetails.MyUnitBuzzGroupId ~= nil then
 
 			MessageType = "GROUP"
@@ -965,6 +969,7 @@ function scene:show( event )
 		ChatBox.isEditable = true
 		ChatBox.anchorY=0;ChatBox.anchorX=0
 		ChatBox.x=ChatBox_bg.x
+		ChatBox.size=16
 		ChatBox.hasBackground = false
 		ChatScrollContent:insert( ChatBox )
 
@@ -998,6 +1003,7 @@ function scene:show( event )
         listener = scrollListener,
         hideBackground=true,
         hideScrollBar=true,
+        horizontalScrollDisabled=true,
        
     }
 )

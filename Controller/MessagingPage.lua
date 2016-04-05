@@ -56,6 +56,14 @@ local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
 local tabBarRight = "res/assert/tabSelectedRight.png"
 
 
+for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		UserId = row.UserId
+		ContactId = row.ContactId
+		MemberName = row.MemberName
+
+end
+
+
 ---------------------------------------------------
 
 
@@ -308,11 +316,37 @@ local function Broadcast_list( list )
 
 		for j=1,i-1 do
 
-			if list[j].Message_To == list[i].Message_To  then
+			if list[j].Message_From == list[i].Message_To   then
 
-				flag=false
+				if list[j].Message_To == list[i].Message_From  then
+
+					flag=false
+
+				end
 
 			end
+
+			if list[j].Message_To == list[i].Message_To   then
+
+				if list[j].Message_From == list[i].Message_From  then
+
+					flag=false
+
+				end
+
+			end
+
+			-- if list[j].Message_To == list[i].Message_From   then
+
+			-- 	if list[j].Message_From == list[i].Message_To then
+
+			-- 		flag=false
+
+			-- 	end
+
+			-- end
+
+			
 
 		end
 		--print( json.encode( list[i] ))
@@ -341,7 +375,15 @@ local function Broadcast_list( list )
 
 			print( json.encode( list[i]))
 
-			local Name_txt = display.newText(tempGroup,list[i].ToName,0,0,native.systemFont,14)
+			local Name = ""
+			if MemberName == list[i].ToName then
+				Name=list[i].FromName
+			else
+
+				Name=list[i].ToName
+			end
+
+			local Name_txt = display.newText(tempGroup,Name,0,0,native.systemFont,14)
 			Name_txt.x=5;Name_txt.y=background.y+background.height/2-10
 			Name_txt.anchorX=0
 			Utils.CssforTextView(Name_txt,sp_labelName)
@@ -365,7 +407,11 @@ local function Broadcast_list( list )
 
 			local time = makeTimeStamp(list[i].Create_Time_Stamp)
 
-			local time = display.newText( tempGroup,os.date("%b %d, %Y %I:%M %p",time),W-80,background.y+3,native.systemFont,10 )
+			print( os.date( "%b %d, %Y %I:%M %p",time ))
+
+			time = Utils.getTime(time,"%b %d, %Y %I:%M %p",TimeZone)
+
+			local time = display.newText( tempGroup,time,W-80,background.y+3,native.systemFont,10 )
 				time.x=W-120
 				time.anchorX=0;time.anchorY=0
 				time:setTextColor(Utils.convertHexToRGB(color.tabBarColor))

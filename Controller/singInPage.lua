@@ -293,24 +293,35 @@ openPage="signInPage"
 
 			local UserContactId
 
-			for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE id=1") do
+
+			local tablefound=false
+			db:exec([[select * from sqlite_master where name='pu_MyUnitBuzz_Message';]],
+			function(...) tablefound=true return 0 end)
+
+
+			if tablefound then 
+					
+						for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE id=1") do
 				
 					UserContactId = row.Message_From
 				
 
+					end
+
+
+					if tostring(ContactId) == tostring(UserContactId) then
+
+
+					else
+
+							local tablesetup_msg = [[DROP TABLE pu_MyUnitBuzz_Message;]]
+							db:exec( tablesetup_msg )
+
+					end
+
 			end
 
-			print( "**********************************\n"..ContactId,UserContactId )
-
-			if tostring(ContactId) == tostring(UserContactId) then
-
-
-			else
-
-					local tablesetup_msg = [[DROP TABLE pu_MyUnitBuzz_Message;]]
-					db:exec( tablesetup_msg )
-
-			end
+		
 
 		
 
