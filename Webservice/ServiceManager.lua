@@ -1949,3 +1949,51 @@ function Webservice.AddTeamMemberToChatGroup(groupid,contacts,postExecution)
 	return response
 	
 end
+
+
+
+
+
+
+
+function Webservice.GetMessagessListbyMessageStatus(status,postExecution)
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method="GET"
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	local url = splitUrl(ApplicationConfig.GetMessagessListbyMessageStatus)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+    local resbody = "?userId="..UserId.."&status="..status
+
+	params={headers = headers}
+
+	print("request : "..json.encode(params))
+
+	request.new(ApplicationConfig.GetMessagessListbyMessageStatus..resbody,method,params,postExecution)
+	
+	return response
+end
+
+
+
+
+

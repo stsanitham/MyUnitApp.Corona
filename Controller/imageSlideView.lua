@@ -634,6 +634,7 @@ function scene:show( event )
 					BgText:removeEventListener("touch",menuTouch)
 
 					Runtime:removeEventListener("key",onKeyEventDetail)
+					
 
 					network.cancel(imageDownload)
 

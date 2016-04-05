@@ -236,10 +236,10 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 
             end
 
-                Message_date=os.date("%Y-%m-%dT%H:%m:%S")
+                Message_date=os.date("%Y-%m-%dT%H:%M:%S")
                         isDeleted="false"
-                        Created_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
-                        Updated_TimeStamp=os.date("%Y-%m-%dT%H:%m:%S")
+                        Created_TimeStamp=os.date("%Y-%m-%dT%H:%M:%S")
+                        Updated_TimeStamp=os.date("%Y-%m-%dT%H:%M:%S")
                         ImagePath="NULL"
                         AudioPath="NULL"
                         VideoPath="NULL"

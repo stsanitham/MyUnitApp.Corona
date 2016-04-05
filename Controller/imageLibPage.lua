@@ -342,6 +342,8 @@ local function listTouch( event )
 	return true
 end
 
+
+
 local function onRowRender_ImageLib( event )
 
  -- Get reference to the row group
