@@ -132,11 +132,11 @@ local tabBarGroup = display.newGroup( )
 
 
 
-	function scene:resumeGame()
+		function scene:resumeGame()
 
-	Runtime:addEventListener( "key", onKeyEvent )
+		Runtime:addEventListener( "key", onKeyEvent )
 
-	end
+		end
 
 
 
@@ -577,6 +577,22 @@ local function TabbarTouch( event )
 						MessageCreation_list(messagelist_response)
 						NoScheduleMessage.isVisible=false
 
+						     for j = #sentmessageList_array , 1, -1 do
+
+			                	display.remove(sentmessageList_array[#sentmessageList_array])
+							    sentmessageList_array[#sentmessageList_array] = nil
+
+					         end
+
+
+					         for j = #draftmessageList_array , 1, -1 do
+
+			                	display.remove(draftmessageList_array[#draftmessageList_array])
+							    draftmessageList_array[#draftmessageList_array] = nil
+
+					         end
+
+
 					else
 
 						NoScheduleMessage.isVisible=true
@@ -626,6 +642,21 @@ local function TabbarTouch( event )
 							
 						SentMessageCreation_list(sentmessage_response)
 						NoSentMessage.isVisible=false
+
+						    for j = #draftmessageList_array , 1, -1 do
+
+			                	display.remove(draftmessageList_array[#draftmessageList_array])
+							    draftmessageList_array[#draftmessageList_array] = nil
+
+					         end
+
+
+					         for j = #messageList_array , 1, -1 do
+
+			                	display.remove(messageList_array[#messageList_array])
+							    messageList_array[#messageList_array] = nil
+
+					         end
 
 					else
 
@@ -677,6 +708,22 @@ local function TabbarTouch( event )
 							
 						DraftMessageCreation_list(draftmessage_response)
 						NoDraftMessage.isVisible=false
+
+
+							for j = #sentmessageList_array , 1, -1 do
+
+			                	display.remove(sentmessageList_array[#sentmessageList_array])
+							    sentmessageList_array[#sentmessageList_array] = nil
+
+					         end
+
+
+					         for j = #messageList_array , 1, -1 do
+
+			                	display.remove(messageList_array[#messageList_array])
+							    messageList_array[#messageList_array] = nil
+
+					         end
 
 					else
 
