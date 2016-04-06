@@ -67,6 +67,25 @@ end
 
 
 -----------------Function-------------------------
+function makeTimeStamp( dateString )
+   local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
+   local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
+   local timestamp = os.time(
+      { year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false }
+   )
+   local offset = 0
+   if ( tzoffset ) then
+      if ( tzoffset == "+" or tzoffset == "-" ) then  -- We have a timezone
+         offset = offsethour * 60 + offsetmin
+         if ( tzoffset == "-" ) then
+            offset = offset * -1
+         end
+         timestamp = timestamp + offset
+      end
+   end
+   return timestamp
+end
+
 
 local function sendMeaasage()
 	
@@ -97,15 +116,25 @@ local function sendMeaasage()
 	end
 
 	
-
+local dateVlaue=""
 
 	for i=1,#ChatHistory do
+
+		local dateLable = nil
+		local datevalue = nil
+
+
 
 
 
 		MeassageList[#MeassageList+1] = display.newGroup( )
 
 		local tempGroup = MeassageList[#MeassageList]
+
+	--	print( "ChatHistory : "..json.encode(ChatHistory[i]) )
+
+
+
 
 		local bg = display.newRect(0,0,W-100,25 )
 		tempGroup:insert(bg)
@@ -120,7 +149,41 @@ local function sendMeaasage()
 		else
 			bg.y=0
 		end
-		bg.x=5
+			bg.x=5
+
+
+		if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
+
+			print( "coming" ..dateVlaue,ChatHistory[i].Update_Time_Stamp)
+			dateVlaue =ChatHistory[i].Update_Time_Stamp
+
+			dateLable = display.newRect( tempGroup, W/2, bg.y+5, 100,20 )
+			bg.y=bg.y+30
+			dateLable:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			dateLable.alpha=0.2
+
+			datevalue = display.newText( tempGroup,  Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone), 0,0,native.systemFont,12 )
+			datevalue.x=dateLable.x;datevalue.y=dateLable.y
+
+			if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "*t" )),"%B %d, %Y",TimeZone) then
+
+				datevalue.text = "TODAY"
+			else
+
+				local t = os.date( "*t" )
+				t.day=t.day-1
+
+				if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(t),"%B %d, %Y",TimeZone) then
+
+				datevalue.text = "YESTERDAY"
+
+				end
+
+
+			end
+		end
+
+
 
 		if ChatHistory[i].Message_From == tostring(ContactId) then
 
@@ -238,6 +301,41 @@ function get_sendMssage(response)
 end
 
 
+
+
+local function DetailAction( event )
+	if event.phase == "began" then
+
+		display.getCurrentStage():setFocus( event.target )
+
+	elseif ( event.phase == "moved" ) then
+        local dy = math.abs( ( event.y - event.yStart ) )
+       
+	        if ( dy > 10 ) then
+	        	display.getCurrentStage():setFocus( nil )
+	            chatScroll:takeFocus( event )
+	        end
+
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+				      local options = {
+				      		effect = "fromTop",
+							time = 200,	
+								params = {
+								contactId = To_ContactId
+							}
+
+							}
+
+				    composer.gotoScene( "Controller.Chathead_detailPage", options )
+
+	end
+
+return true
+end
+
+
 local function backAction( event )
 	if event.phase == "began" then
 
@@ -302,7 +400,6 @@ local function ChatSendAction( event )
 			To=To_ContactId
 			Message_Type = MessageType
 
-			print( "Created_TimeStamp : "..Created_TimeStamp )
 
 		--	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
@@ -329,19 +426,13 @@ end
 
       	size=(event/1073741824)..' GB'
 
-      print("size of the image11 ",size)
-
-
       elseif (event>=1048576) then   
 
        	size=(event/1048576)..' MB'
 
-      print("size of the image 22",size)
 
 	  
 	  elseif (event > 10485760) then
-
-	  print("highest size of the image ",size)
 
 	    local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
 
@@ -349,8 +440,6 @@ end
       elseif (event>=1024)  then   
 
       	size = (event/1024)..' KB'
-
-       print("size of the image 33",size)
 
       else      
 
@@ -364,7 +453,6 @@ end
 
      local function onImageSelectionComplete ( event )
 
-        print(event.target)
  
         local photo_image = event.target
 
@@ -376,7 +464,6 @@ end
 		photo_image.y = display.contentCenterY
 		local w = photo_image.width
 		local h = photo_image.height
-		print( "w,h = ".. w .."," .. h )
 
 		local function rescale()
 					
@@ -432,10 +519,7 @@ end
 
 		 io.close( fileHandle )
 
-            print("mime conversion ",file_inbytearray)
-
-        	print("bbb ",size)
-
+       
         	formatSizeUnits(size)
 
         	--sendImage()
@@ -509,8 +593,6 @@ end
 
 
 local function onTimer ( event )
-
-	print( "event time completion" )
 
 	BackFlag = false
 
@@ -837,8 +919,6 @@ return true
     elseif ( phase == "moved" ) then print( "Scroll view was moved" )
     elseif ( phase == "ended" ) then print( "Scroll view was released" )
 
-    	print( #ChatHistory )
-
     	if #ChatHistory < 10 then
     		chatScroll:scrollTo( "bottom", { time=500 } )
     	end
@@ -1100,7 +1180,7 @@ sceneGroup:insert( tabBarGroup )
 		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 		Runtime:addEventListener( "key", onKeyEvent )
 		BackBtn:addEventListener( "touch", backAction )
-		title:addEventListener( "touch", backAction )
+		title:addEventListener( "touch", DetailAction )
 		
 	end	
 

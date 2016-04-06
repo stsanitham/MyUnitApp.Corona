@@ -442,29 +442,20 @@ end
 		menuTouch_s.anchorX=0
 		menuTouch_s.alpha=0.01
 
-		title_bg = display.newRect(sceneGroup,0,0,W,30)
-		title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-		title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+		-- title_bg = display.newRect(sceneGroup,0,0,W,30)
+		-- title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+		-- title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-		title = display.newText(sceneGroup,"",0,0,native.systemFont,18)
-		title.anchorX = 0
-		title.x=5;title.y = title_bg.y
-		title:setFillColor(0)
+		-- title = display.newText(sceneGroup,"",0,0,native.systemFont,18)
+		-- title.anchorX = 0
+		-- title.x=5;title.y = title_bg.y
+		-- title:setFillColor(0)
 
-		titleBar = display.newRect(sceneGroup,W/2,title_bg.y+title_bg.contentHeight/2,W,30)
-		titleBar.anchorY=0
-		titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+		-- titleBar = display.newRect(sceneGroup,W/2,title_bg.y+title_bg.contentHeight/2,W,30)
+		-- titleBar.anchorY=0
+		-- titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-		titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
-		titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+10
-		titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
-		titleBar_icon.anchorY=0
-
-		titleBar_text = display.newText(sceneGroup," ",0,0,native.systemFont,0)
-		titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
-		titleBar_text.y=titleBar.y+titleBar.contentHeight/2-titleBar_text.contentHeight/2
-		titleBar_text.anchorX=0;titleBar_text.anchorY=0
-		Utils.CssforTextView(titleBar_text,sp_subHeader)
+		
 
 	MainGroup:insert(sceneGroup)
 
@@ -499,8 +490,8 @@ end
 
 			local leftAlign = 10
 
-				titleBar_icon:addEventListener("touch",closeInviteDetails)
-				titleBar_text:addEventListener("touch",closeInviteDetails)
+				--titleBar_icon:addEventListener("touch",closeInviteDetails)
+				--titleBar_text:addEventListener("touch",closeInviteDetails)
 
 				Background:addEventListener("touch",bgTouch)
 
@@ -526,27 +517,41 @@ end
 		    end
 
 
-			if invite_status == "GRANT" then title.text = "Contacts with Access" end
-			if invite_status == "DENY" then title.text = "Denied Access" end
-			if invite_status == "OPEN" then title.text = "Pending Requests" end
-			if invite_status == "ADDREQUEST" then title.text = "Team Member without Access" end
+			-- if invite_status == "GRANT" then title.text = "Contacts with Access" end
+			-- if invite_status == "DENY" then title.text = "Denied Access" end
+			-- if invite_status == "OPEN" then title.text = "Pending Requests" end
+			-- if invite_status == "ADDREQUEST" then title.text = "Team Member without Access" end
 
 
-		if (invitedetail_value.FirstName ~= nil and invitedetail_value.FirstName ~= "") and (invitedetail_value.LastName ~= nil and invitedetail_value.LastName ~= "") then
-
-        	  titleBar_text.text = invitedetail_value.FirstName.." "..invitedetail_value.LastName
-
-        elseif  (invitedetail_value.FirstName ~= nil and invitedetail_value.FirstName ~= "") or (invitedetail_value.LastName == nil and invitedetail_value.LastName == "") then
-
-        	 titleBar_text.text = invitedetail_value.FirstName
-
-        elseif  (invitedetail_value.FirstName == nil and invitedetail_value.FirstName == "") or (invitedetail_value.LastName ~= nil and invitedetail_value.LastName ~= "") then
-
-        	 titleBar_text.text = invitedetail_value.LastName
-
-		end
 
 
+			if InviteAccessDetail.ImagePath ~= nil then
+					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
+
+			end
+
+						if not ProfileImage then
+					ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
+				end
+
+				ProfileImage.width = W;ProfileImage.height = 180
+				ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
+				ProfileImage.anchorY=0
+
+				TrasitionBar = display.newRect(sceneGroup,ProfileImage.x,ProfileImage.y,ProfileImage.width,ProfileImage.height)
+				TrasitionBar.anchorY=0
+				TrasitionBar.alpha=0
+				TrasitionBar:setFillColor(Utils.convertHexToRGB("#B6B6B6"))
+
+				titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
+		titleBar_icon.x=tabBar.x-tabBar.contentWidth/2+10
+		titleBar_icon.y=tabBar.y+tabBar.contentHeight/2-titleBar_icon.contentWidth
+		titleBar_icon.anchorY=0
+
+	
+
+
+					local RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight
 		scroll_View = widget.newScrollView
 		{
 		top = 100,
@@ -562,12 +567,34 @@ end
 
 		-- listener = scrollListener
 		}
-		--scroll_View.anchorY=0
-		--scroll_View.y=titleBar.y+30
+		scroll_View.anchorY=0
+		scroll_View.y=RecentTab_Topvalue
 		--scrollView.anchorX=0
 
 		sceneGroup:insert(scroll_View)
 
+			titleBar_text = display.newText(" dsfds",0,0,native.systemFont,0)
+		titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
+		titleBar_text.y=tabBar.y+tabBar.contentHeight/2-titleBar_text.contentHeight/2
+		titleBar_text.anchorX=0;titleBar_text.anchorY=0
+		Utils.CssforTextView(titleBar_text,sp_subHeader)
+		scroll_View:insert( titleBar_text )
+
+
+		
+				if (invitedetail_value.FirstName ~= nil and invitedetail_value.FirstName ~= "") and (invitedetail_value.LastName ~= nil and invitedetail_value.LastName ~= "") then
+
+        	  titleBar_text.text = invitedetail_value.FirstName.." "..invitedetail_value.LastName
+
+        elseif  (invitedetail_value.FirstName ~= nil and invitedetail_value.FirstName ~= "") or (invitedetail_value.LastName == nil and invitedetail_value.LastName == "") then
+
+        	 titleBar_text.text = invitedetail_value.FirstName
+
+        elseif  (invitedetail_value.FirstName == nil and invitedetail_value.FirstName == "") or (invitedetail_value.LastName ~= nil and invitedetail_value.LastName ~= "") then
+
+        	 titleBar_text.text = invitedetail_value.LastName
+
+		end
 
 ----------------------------Email Address---------------------------------------------------------
 
