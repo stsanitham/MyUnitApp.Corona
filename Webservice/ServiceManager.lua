@@ -300,7 +300,7 @@ else
 	 v = [[
 
 {
-  "MyUnitBuzzMessage": "]]..message..[[",
+  "MyUnitBuzzLongMessage": "]]..message..[[",
   "VideoFilePath": "]]..videopath..[[",
   "MessageStatus": "]]..pushmethod..[[",
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
@@ -309,7 +309,7 @@ else
 	"ImageFilePath": "]]..imagepath..[[",
 	 "ImageFileName": "]]..imagename..[[",
 	  "ImageFileSize": "]]..imagesize..[[",
-   "TimeZone": "Eastern Standard Time",
+   "TimeZone": "]]..TimeZone..[[",
 }
 ]]
 

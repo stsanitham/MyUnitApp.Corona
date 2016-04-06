@@ -560,10 +560,10 @@ local function CreateTabBarIcons( )
 	if tab_Contact_btn ~= nil then if tab_Contact_btn.y then tab_Contact_btn:removeSelf( );tab_Contact_btn=nil end end
 
 
-	-- tab_Group_btn = display.newImageRect( tabBarGroup, "res/assert/group.png", 35/1.4, 31/1.4 )
-	-- tab_Group_btn.x=tab_Group.x
-	-- tab_Group_btn.y=tab_Group.y+tab_Group_btn.contentHeight/2-8
-	-- tab_Group_btn.anchorY=0
+	tab_Group_btn = display.newImageRect( tabBarGroup, "res/assert/group.png", 35/1.4, 31/1.4 )
+	tab_Group_btn.x=tab_Group.x
+	tab_Group_btn.y=tab_Group.y+tab_Group_btn.contentHeight/2-8
+	tab_Group_btn.anchorY=0
 
 
 
@@ -709,7 +709,7 @@ end
 					circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 					circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-					--tab_Group_txt:setFillColor( 0.3 )
+					tab_Group_txt:setFillColor( 0.3 )
 					tab_Message_txt:setFillColor( 0.3 )
 					tab_Contact_txt:setFillColor(  Utils.convertHexToRGB(color.tabBarColor)  )
 
@@ -1027,28 +1027,28 @@ tabBg.anchorY=0
 tabBg.strokeWidth = 1
 tabBg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor),0.7 )
 
--- tab_Group = display.newRect(tabBarGroup,0,0,70,40)
--- tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
--- tab_Group.anchorY=0
--- tab_Group.alpha=0.01
--- tab_Group.id="group"
--- tab_Group:setFillColor( 0.2 )
+tab_Group = display.newRect(tabBarGroup,0,0,70,40)
+tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
+tab_Group.anchorY=0
+tab_Group.alpha=0.01
+tab_Group.id="group"
+tab_Group:setFillColor( 0.2 )
 
 tab_Message = display.newRect(tabBarGroup,0,0,70,40)
-tab_Message.x=W/2-W/5;tab_Message.y=tabBg.y
+tab_Message.x=W/2;tab_Message.y=tabBg.y
 tab_Message.anchorY=0
 tab_Message.alpha=0.01
 tab_Message.id="message"
 tab_Message:setFillColor( 0.2 )
 
 tab_Contact = display.newRect(tabBarGroup,0,0,70,40)
-tab_Contact.x=W/2+W/5;tab_Contact.y=tabBg.y
+tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
 tab_Contact.anchorY=0
 tab_Contact.alpha=0.01
 tab_Contact.id="contact"
 tab_Contact:setFillColor( 0.2 )
 
---tab_Group:addEventListener( "touch", TabbarTouch )
+tab_Group:addEventListener( "touch", TabbarTouch )
 tab_Message:addEventListener( "touch", TabbarTouch )
 tab_Contact:addEventListener( "touch", TabbarTouch )
 
@@ -1064,9 +1064,9 @@ CreateTabBarIcons()
 	overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 	overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
 
--- tab_Group_txt = display.newText( tabBarGroup, "Group",0,0,native.systemFont,11 )
--- tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
--- tab_Group_txt:setFillColor( 0.3 )
+tab_Group_txt = display.newText( tabBarGroup, "Group",0,0,native.systemFont,11 )
+tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
+tab_Group_txt:setFillColor( 0.3 )
 
 
 tab_Message_txt = display.newText( tabBarGroup, "Chats",0,0,native.systemFont,11 )
