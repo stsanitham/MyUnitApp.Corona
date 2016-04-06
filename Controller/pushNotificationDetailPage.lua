@@ -9,6 +9,7 @@ local scene = composer.newScene()
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 require( "Webservice.ServiceManager" )
+local deleteMessageGroup = require( "Controller.deleteMessageGroup" )
 local style = require("res.value.style")
 local json = require("json")
 
@@ -74,6 +75,95 @@ local sentMessage_detail
 
 		return true
 
+		end
+
+
+
+
+	   function getDeletionresponse( response)
+
+		  Request_response = response
+
+		       if Request_response == true then
+
+		      		 Utils.SnackBar("Your message has been deleted successfully")
+
+						local function onTimer ( event )
+
+								DeleteMessageGroup.isVisible = false
+
+								composer.hideOverlay("slideRight",500)
+
+
+						end
+
+        		     timer.performWithDelay(1000, onTimer )
+
+		       end
+
+        end
+
+
+
+
+
+	function onDeleteOptionsTouch( event )
+
+        if event.phase == "began" then
+
+
+    	elseif event.phase == "ended" then
+
+       		 native.setKeyboardFocus(nil)
+
+		    	    DeleteMessageGroup.isVisible = true
+
+		            message_id = messagelistvalue.MyUnitBuzzMessageId
+
+		            print("Message Id : ",message_id)
+
+		        	if event.target.id == "accept" then
+
+		        		DeleteMessageGroup.isVisible = false
+
+	        		    Webservice.DeleteMyUnitBuzzMessages(message_id,getDeletionresponse)
+
+		        	elseif event.target.id == "reject" then
+
+						DeleteMessageGroup.isVisible = false
+
+		        	end
+           end
+
+    end
+
+
+
+
+
+		local function onDeleteAction( event )
+
+			if event.phase == "began" then
+
+				display.getCurrentStage():setFocus( event.target )
+
+			elseif event.phase == "ended" then
+
+			    display.getCurrentStage():setFocus( nil )
+
+
+			    GetDeleteMessageAlertPopup()
+
+
+			    accept_button:addEventListener("touch",onDeleteOptionsTouch)
+	            reject_button:addEventListener("touch",onDeleteOptionsTouch)
+
+			    -- DeleteMessageGroup.isVisible = true
+
+			end
+
+		return true
+			
 		end
 
 
@@ -149,7 +239,6 @@ end
 		if phase == "will" then
 
 		elseif phase == "did" then
-
 
 
 			if event.params then
@@ -278,6 +367,9 @@ end
 
 			back_icon:addEventListener("touch",closeDetails)
 			back_icon_bg:addEventListener("touch",closeDetails)
+			title:addEventListener("touch",closeDetails)
+
+			short_msg_delete:addEventListener("touch",onDeleteAction)
 
             Runtime:addEventListener( "key", onKeyEventDetail )
 			
@@ -298,19 +390,35 @@ end
 
 		if event.phase == "will" then
 
-			elseif phase == "did" then
 
-				event.parent:resumeGame()
+			if DeleteMessageGroup.numChildren ~= nil then
 
+			  	 	for j=DeleteMessageGroup.numChildren, 1, -1 do 
+			  						display.remove(DeleteMessageGroup[DeleteMessageGroup.numChildren])
+			  						DeleteMessageGroup[DeleteMessageGroup.numChildren] = nil
+			  	 	end
+            end
+
+
+		elseif phase == "did" then
+
+				event.parent:resumeGame(messagelistvalue)
 
 				menuBtn:removeEventListener("touch",menuTouch)
+
+				back_icon:removeEventListener("touch",closeDetails)
+			    back_icon_bg:removeEventListener("touch",closeDetails)
+				title:removeEventListener("touch",closeDetails)
+
+				short_msg_delete:removeEventListener("touch",onDeleteAction)
 
 				Runtime:removeEventListener("key",onKeyEventDetail)
 
 
+
 			end	
 
-		end
+	end
 
 
 

@@ -21,7 +21,7 @@ local menuBtn
 
 local back_icon_bg, back_icon
 
-openPage="composeMessagePage"
+openPage="pushNotificationListPage"
 
 
 
@@ -101,7 +101,7 @@ function scene:create( event )
 	back_icon:setFillColor(0)
 	back_icon.y= title_bg.y - 8
 
-	title = display.newText(sceneGroup,"Compose Message",0,0,native.systemFont,18)
+	title = display.newText(sceneGroup,MessagePage.ComposeMessage,0,0,native.systemFont,18)
 	title.anchorX = 0
 	title.x=back_icon.x+15;title.y = title_bg.y
 	title:setFillColor(0)
@@ -120,7 +120,7 @@ end
 		
 		if phase == "will" then
 
-				shortmsg_title = display.newText(sceneGroup,"Short Message",0,0,native.systemFont,14)
+				shortmsg_title = display.newText(sceneGroup,MessagePage.ShortMessage,0,0,native.systemFont,14)
 				shortmsg_title.anchorX = 0
 				shortmsg_title.x=10
 				shortmsg_title.y = title_bg.y+title_bg.contentHeight+5
@@ -128,7 +128,7 @@ end
 
 
 				shortmsg_textbox = native.newTextBox( 0,0, W - 20, EditBoxStyle.height+50)
-				shortmsg_textbox.placeholder = "Enter your short message"
+				shortmsg_textbox.placeholder = MessagePage.ShortMessage_Placeholder
 				shortmsg_textbox.isEditable = true
 				shortmsg_textbox.size=14
 				shortmsg_textbox.anchorX = 0
@@ -143,7 +143,7 @@ end
 				shortmsg_textbox.y=shortmsg_title.y+ shortmsg_title.height+3
 
 
-				longmsg_title = display.newText(sceneGroup,"Long Message",0,0,native.systemFont,14)
+				longmsg_title = display.newText(sceneGroup,MessagePage.LongMessage,0,0,native.systemFont,14)
 				longmsg_title.anchorX = 0
 				longmsg_title.x=10
 				longmsg_title.y = shortmsg_textbox.y+shortmsg_textbox.contentHeight+18
@@ -151,7 +151,7 @@ end
 
 
 				longmsg_textbox = native.newTextBox( 0,0, W - 20, EditBoxStyle.height+50)
-				longmsg_textbox.placeholder = "Enter your long message"
+				longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
 				longmsg_textbox.isEditable = true
 				longmsg_textbox.size=14
 				longmsg_textbox.anchorX = 0
@@ -175,6 +175,7 @@ end
 
 			back_icon:addEventListener("touch",closeMessagePage)
 			back_icon_bg:addEventListener("touch",closeMessagePage)
+			title:addEventListener("touch",closeMessagePage)
 			
 		end	
 		
@@ -194,6 +195,7 @@ end
 
 			back_icon:removeEventListener("touch",closeMessagePage)
 		    back_icon_bg:removeEventListener("touch",closeMessagePage)
+		    title:addEventListener("touch",closeMessagePage)
 
 			elseif phase == "did" then
 

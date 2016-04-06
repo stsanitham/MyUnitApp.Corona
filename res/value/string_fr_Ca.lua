@@ -385,3 +385,18 @@ InviteAccessDetail.Comments = "commentaires"
 ChatDetails = {}
 
 ChatDetails.GroupSubjectError = "* Entrez le Groupe Sujet"
+
+
+MessagePage = {}
+
+MessagePage.ComposeMessage = "Rédiger un message"
+MessagePage.ShortMessage = "Message court"
+MessagePage.LongMessage = "message long"
+MessagePage.ShortMessage_Placeholder = "Entrez votre message court"
+MessagePage.LongMessage_Placeholder = "Entrez votre long message"
+MessagePage.NoScheduleMessage = "Aucun Horaire Messages trouvés"
+MessagePage.NoSentMessage = "Aucun Messages envoyés trouvés"
+MessagePage.NoDraftMessage = "Aucun projet de messages trouvés"
+MessagePage.ScheduleText = "Programme"
+MessagePage.SentText = "Envoyé"
+MessagePage.DraftText = "Brouillon"

@@ -384,3 +384,20 @@ ChatDetails = {}
 ChatDetails.GroupSubjectError = "* Enter the Group Subject"
 
 
+MessagePage = {}
+
+MessagePage.ComposeMessage = "Compose Message"
+MessagePage.ShortMessage = "Short Message"
+MessagePage.LongMessage = "Long Message"
+MessagePage.ShortMessage_Placeholder = "Enter your short message"
+MessagePage.LongMessage_Placeholder = "Enter your long message"
+MessagePage.NoScheduleMessage = "No Schedule Messages Found"
+MessagePage.NoSentMessage = "No Sent Messages Found"
+MessagePage.NoDraftMessage = "No Draft Messages Found"
+MessagePage.ScheduleText = "Schedule"
+MessagePage.SentText = "Sent"
+MessagePage.DraftText = "Draft"
+
+
+
+

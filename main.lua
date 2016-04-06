@@ -61,6 +61,8 @@ chatGroup = display.newGroup();
 
 NewGroupAlert = display.newGroup();
 
+DeleteMessageGroup = display.newGroup();
+
 
 
 

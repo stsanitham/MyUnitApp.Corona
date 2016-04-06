@@ -132,7 +132,7 @@ SnankText:setFillColor(Utils.convertHexToRGB(SnackBar.textColor))
 
 snackGroup:toFront()
 
-SnackTimer = timer.performWithDelay(1500, SnackFun )
+SnackTimer = timer.performWithDelay(800, SnackFun )
 
 
 end

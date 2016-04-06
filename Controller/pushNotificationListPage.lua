@@ -83,7 +83,7 @@ local tabBarGroup = display.newGroup( )
 			elseif event.phase == "ended" then
 					display.getCurrentStage():setFocus( nil )
 
-					--composer.gotoScene("Controller.composeMessagePage",slideLeft,300)
+					composer.gotoScene("Controller.composeMessagePage",slideLeft,300)
 
 			end
 
@@ -150,11 +150,6 @@ local tabBarGroup = display.newGroup( )
 
 
 
-	function scene:resumeGame()
-
-	Runtime:addEventListener( "key", onKeyEvent )
-
-	end
 
 
 
@@ -198,7 +193,7 @@ local tabBarGroup = display.newGroup( )
 
 		local function DraftMessageCreation_list( draftmessagelist )
 
-			for j=#draftmessageList_array, 1, -1 do 
+			for j=1, #draftmessageList_array do 
 				
 				display.remove(draftmessageList_array[#draftmessageList_array])
 				draftmessageList_array[#draftmessageList_array] = nil
@@ -294,14 +289,79 @@ local tabBarGroup = display.newGroup( )
 
 
 
+       
+		function scene:resumeGame(messagelistvalue)
 
+
+				if messagelistvalue.MessageStatus == "SCHEDULE" then
+
+
+						for j=1, #messageList_array do 
+
+							display.remove(messageList_array[#messageList_array])
+							messageList_array[#messageList_array] = nil
+						end
+
+
+					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+
+
+				elseif messagelistvalue.MessageStatus == "SENT" then
+
+						for j=1, #sentmessageList_array do 
+
+							display.remove(sentmessageList_array[#sentmessageList_array])
+							sentmessageList_array[#sentmessageList_array] = nil
+						end
+
+
+					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+
+
+				elseif messagelistvalue.MessageStatus == "DRAFT" then
+
+
+						for j=1, #draftmessageList_array do 
+
+							display.remove(draftmessageList_array[#draftmessageList_array])
+							draftmessageList_array[#draftmessageList_array] = nil
+						end
+
+
+						function getDraftMessageList1(response)
+
+
+							draftmessagelist_response = response
+
+
+								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
+
+									DraftMessageCreation_list(draftmessagelist_response)
+									NoDraftMessage.isVisible=false
+
+								else
+
+									NoDraftMessage.isVisible=true
+
+								end
+
+
+						end
+
+
+					Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
+
+				end
+
+
+		end
 
 
 
 
 		local function SentMessageCreation_list( sentmessagelist )
 
-			for j=#sentmessageList_array, 1, -1 do 
+			for j=1, #sentmessageList_array do 
 				
 				display.remove(sentmessageList_array[#sentmessageList_array])
 				sentmessageList_array[#sentmessageList_array] = nil
@@ -404,7 +464,7 @@ local tabBarGroup = display.newGroup( )
 
 		local function MessageCreation_list( messagelist )
 
-			for j=#messageList_array, 1, -1 do 
+			for j=1, #messageList_array do 
 				
 				display.remove(messageList_array[#messageList_array])
 				messageList_array[#messageList_array] = nil
@@ -539,32 +599,6 @@ local tabBarGroup = display.newGroup( )
 
 
 
--- local function CreateTabBarIcons( )
-
--- 	if tab_Group_btn ~= nil then if tab_Group_btn.y then tab_Group_btn:removeSelf( );tab_Group_btn=nil end end
--- 	if tab_Message_btn ~= nil then if tab_Message_btn.y then tab_Message_btn:removeSelf( );tab_Message_btn=nil end end
--- 	if tab_Contact_btn ~= nil then if tab_Contact_btn.y then tab_Contact_btn:removeSelf( );tab_Contact_btn=nil end end
-
--- 	tab_Group_btn = display.newImageRect( tabBarGroup, "res/assert/group.png", 35/1.4, 31/1.4 )
--- 	tab_Group_btn.x=tab_Group.x
--- 	tab_Group_btn.y=tab_Group.y+tab_Group_btn.contentHeight/2-8
--- 	tab_Group_btn.anchorY=0
-
-
--- 	tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats.png", 35/1.4, 31/1.4 )
--- 	tab_Message_btn.x=tab_Message.x
--- 	tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
--- 	tab_Message_btn.anchorY=0
-
-
--- 	tab_Contact_btn = display.newImageRect( tabBarGroup, "res/assert/Consultant.png", 35/1.4, 31/1.4 )
--- 	tab_Contact_btn.x=tab_Contact.x
--- 	tab_Contact_btn.y=tab_Contact.y+tab_Contact_btn.contentHeight/2-8
--- 	tab_Contact_btn.anchorY=0
-
-
--- end
-
 
 
 
@@ -600,7 +634,7 @@ local function TabbarTouch( event )
 						MessageCreation_list(messagelist_response)
 						NoScheduleMessage.isVisible=false
 
-						     for j = #sentmessageList_array , 1, -1 do
+						     for j = 1, #sentmessageList_array do
 
 			                	display.remove(sentmessageList_array[#sentmessageList_array])
 							    sentmessageList_array[#sentmessageList_array] = nil
@@ -608,7 +642,7 @@ local function TabbarTouch( event )
 					         end
 
 
-					         for j = #draftmessageList_array , 1, -1 do
+					         for j = 1, #draftmessageList_array do
 
 			                	display.remove(draftmessageList_array[#draftmessageList_array])
 							    draftmessageList_array[#draftmessageList_array] = nil
@@ -620,7 +654,7 @@ local function TabbarTouch( event )
 
 						NoScheduleMessage.isVisible=true
 
-							 for j = #sentmessageList_array , 1, -1 do
+							 for j = 1, #sentmessageList_array do
 
 			                	display.remove(sentmessageList_array[#sentmessageList_array])
 							    sentmessageList_array[#sentmessageList_array] = nil
@@ -628,7 +662,7 @@ local function TabbarTouch( event )
 					         end
 
 
-					         for j = #draftmessageList_array , 1, -1 do
+					         for j = 1, #draftmessageList_array do
 
 			                	display.remove(draftmessageList_array[#draftmessageList_array])
 							    draftmessageList_array[#draftmessageList_array] = nil
@@ -670,7 +704,7 @@ local function TabbarTouch( event )
 						SentMessageCreation_list(sentmessage_response)
 						NoSentMessage.isVisible=false
 
-						    for j = #draftmessageList_array , 1, -1 do
+						    for j = 1, #draftmessageList_array do
 
 			                	display.remove(draftmessageList_array[#draftmessageList_array])
 							    draftmessageList_array[#draftmessageList_array] = nil
@@ -678,7 +712,7 @@ local function TabbarTouch( event )
 					         end
 
 
-					         for j = #messageList_array , 1, -1 do
+					         for j = 1 , #messageList_array do
 
 			                	display.remove(messageList_array[#messageList_array])
 							    messageList_array[#messageList_array] = nil
@@ -689,7 +723,7 @@ local function TabbarTouch( event )
 
 						NoSentMessage.isVisible=true
 
-							for j = #draftmessageList_array , 1, -1 do
+							for j = 1, #draftmessageList_array do
 
 			                	display.remove(draftmessageList_array[#draftmessageList_array])
 							    draftmessageList_array[#draftmessageList_array] = nil
@@ -697,7 +731,7 @@ local function TabbarTouch( event )
 					         end
 
 
-					         for j = #messageList_array , 1, -1 do
+					         for j = 1, #messageList_array do
 
 			                	display.remove(messageList_array[#messageList_array])
 							    messageList_array[#messageList_array] = nil
@@ -742,7 +776,7 @@ local function TabbarTouch( event )
 						NoDraftMessage.isVisible=false
 
 
-							for j = #sentmessageList_array , 1, -1 do
+							for j = 1, #sentmessageList_array do
 
 			                	display.remove(sentmessageList_array[#sentmessageList_array])
 							    sentmessageList_array[#sentmessageList_array] = nil
@@ -750,7 +784,7 @@ local function TabbarTouch( event )
 					         end
 
 
-					         for j = #messageList_array , 1, -1 do
+					         for j = 1, #messageList_array do
 
 			                	display.remove(messageList_array[#messageList_array])
 							    messageList_array[#messageList_array] = nil
@@ -761,7 +795,7 @@ local function TabbarTouch( event )
 
 						NoDraftMessage.isVisible=true
 
-							for j = #sentmessageList_array , 1, -1 do
+							for j = 1, #sentmessageList_array do
 
 			                	display.remove(sentmessageList_array[#sentmessageList_array])
 							    sentmessageList_array[#sentmessageList_array] = nil
@@ -769,7 +803,7 @@ local function TabbarTouch( event )
 					         end
 
 
-					         for j = #messageList_array , 1, -1 do
+					         for j = 1, #messageList_array  do
 
 			                	display.remove(messageList_array[#messageList_array])
 							    messageList_array[#messageList_array] = nil
@@ -839,138 +873,11 @@ function scene:create( event )
 	title.x=12;title.y = title_bg.y
 	title:setFillColor(0)
 
-	-- NoScheduleMessage = display.newText( sceneGroup,"No Schedule Messages Found" , 0,0,0,0,native.systemFontBold,16)
-	-- NoScheduleMessage.x=W/2;NoScheduleMessage.y=H/2
-	-- NoScheduleMessage.isVisible=false
-	-- NoScheduleMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
-
-	-- NoSentMessage = display.newText( sceneGroup,"No Sent Messages Found" , 0,0,0,0,native.systemFontBold,16)
-	-- NoSentMessage.x=W/2;NoSentMessage.y=H/2
-	-- NoSentMessage.isVisible=false
-	-- NoSentMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
-
-	-- NoDraftMessage = display.newText( sceneGroup,"No Draft Messages Found" , 0,0,0,0,native.systemFontBold,16)
-	-- NoDraftMessage.x=W/2;NoDraftMessage.y=H/2
-	-- NoDraftMessage.isVisible=false
-	-- NoDraftMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
-
-
-	-- if IsOwner == true then
-
-	-- compose_msg_icon = display.newImageRect(sceneGroup,"res/assert/addevent.png", 66/2,66/2.2)
-	-- compose_msg_icon.anchorX = 0
-	-- compose_msg_icon.isVisible = true
-	-- compose_msg_icon.x=W/2+W/3+12
-	-- compose_msg_icon.y = title_bg.y+3
-
-
-	-- tabBg = display.newRect( tabBarGroup, W/2,title_bg.y+title_bg.height/2+3, W, 40 )
-	-- tabBg.anchorY=0
-	-- tabBg.height = 33
-	-- tabBg.y = title_bg.y+title_bg.height/2+3
-	-- tabBg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-	-- --tabBg.strokeWidth = 1
-	-- --tabBg:setStrokeColor( 0,0,0,0.7)
-	-- --sceneGroup:insert(tabBg)
-
-	-- tab_Group = display.newRect(tabBarGroup,0,0,97,33)
-	-- tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
-	-- tab_Group.anchorY=0
-	-- tab_Group.alpha=0.01
-	-- tab_Group.id="schedule"
-	-- tab_Group:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-	-- --tab_Group:setStrokeColor(0)
-	-- --tab_Group.strokeWidth = 1
-	-- --sceneGroup:insert(tab_Group)
-
-
-	-- tab_Message = display.newRect(tabBarGroup,0,0,103.33,33)
-	-- tab_Message.x=W/2;tab_Message.y=tabBg.y
-	-- tab_Message.anchorY=0
-	-- tab_Message.alpha=1
-	-- tab_Message.id="sent"
-	-- --tab_Message:setStrokeColor(0,0,0,0.7)
-	-- --tab_Message.strokeWidth = 1
-	-- tab_Message:setFillColor(  Utils.convertHexToRGB(color.tabbar) )
-	-- --sceneGroup:insert(tab_Message)
-
-
-	-- tab_Contact = display.newRect(tabBarGroup,0,0,97,33)
-	-- tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
-	-- tab_Contact.anchorY=0
-	-- tab_Contact.alpha=0.01
-	-- tab_Contact.id="draft"
-	-- --tab_Contact:setStrokeColor(0)
-	-- --tab_Contact.strokeWidth = 1
-	-- tab_Contact:setFillColor(  Utils.convertHexToRGB(color.tabbar) )
-	-- --sceneGroup:insert(tab_Contact)
-
-
-	-- tab_Schedule_txt = display.newText( tabBarGroup, "Schedule",0,0,native.systemFont,14 )
-	-- tab_Schedule_txt.x=tab_Group.x;
-	-- tab_Schedule_txt.y=tab_Group.y+tab_Group.contentHeight/2-2
-	-- tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-	-- --sceneGroup:insert(tab_Schedule_txt)
-
-	-- tab_Sent_txt = display.newText( tabBarGroup, "Sent",0,0,native.systemFont,14 )
-	-- tab_Sent_txt.x=tab_Message.x;
-	-- tab_Sent_txt.y=tab_Message.y+tab_Message.contentHeight/2-2
-	-- tab_Sent_txt:setFillColor( 0 )
-	-- --sceneGroup:insert(tab_Sent_txt)
-
-	-- tab_Draft_txt = display.newText( tabBarGroup, "Draft",0,0,native.systemFont,14 )
-	-- tab_Draft_txt.x=tab_Contact.x;
-	-- tab_Draft_txt.y=tab_Contact.y+tab_Contact.contentHeight/2-2
-	-- tab_Draft_txt:setFillColor( 0 )
-	-- --sceneGroup:insert(tab_Draft_txt)
-
-	-- sceneGroup:insert(tabBarGroup)
-
-
-	-- tab_Group:addEventListener( "touch", TabbarTouch )
-	-- tab_Message:addEventListener( "touch", TabbarTouch )
-	-- tab_Contact:addEventListener( "touch", TabbarTouch )
-
-
-	-- messagelist_scrollView = widget.newScrollView
-	-- 			{
-	-- 				top = RecentTab_Topvalue+tabBg.height+5,
-	-- 				left = 0,
-	-- 				width = W,
-	-- 				height =H-RecentTab_Topvalue-tabBg.height-5,
-	-- 				bottomPadding = 50,
-	-- 				hideBackground = true,
-	-- 				isBounceEnabled=false,
-	-- 				horizontalScrollingDisabled = true,
-	-- 				verticalScrollingDisabled = false,
-	-- 				--listener = MessageList_scrollListener,
-	-- 			}
-
- --    sceneGroup:insert(messagelist_scrollView)
-
-
- --    else
-
-	-- messagelist_scrollView = widget.newScrollView
-	-- 			{
-	-- 				top = RecentTab_Topvalue,
-	-- 				left = 0,
-	-- 				width = W,
-	-- 				height =H-RecentTab_Topvalue,
-	-- 				bottomPadding = 50,
-	-- 				hideBackground = true,
-	-- 				isBounceEnabled=false,
-	-- 				horizontalScrollingDisabled = true,
-	-- 				verticalScrollingDisabled = false,
-	-- 				--listener = MessageList_scrollListener,
-	-- 			}
-
- --    sceneGroup:insert(messagelist_scrollView)
-
-	-- end
-
-
-	
+	compose_msg_icon = display.newImageRect(sceneGroup,"res/assert/addevent.png", 66/2,66/2.2)
+	compose_msg_icon.anchorX = 0
+	compose_msg_icon.isVisible = false
+	compose_msg_icon.x=W/2+W/3+12
+	compose_msg_icon.y = title_bg.y+3
 
 
 MainGroup:insert(sceneGroup)
@@ -989,17 +896,17 @@ end
 		if phase == "will" then
 
 
-			NoScheduleMessage = display.newText( sceneGroup,"No Schedule Messages Found" , 0,0,0,0,native.systemFontBold,16)
+			NoScheduleMessage = display.newText( sceneGroup,MessagePage.NoScheduleMessage, 0,0,0,0,native.systemFontBold,16)
 			NoScheduleMessage.x=W/2;NoScheduleMessage.y=H/2
 			NoScheduleMessage.isVisible=false
 			NoScheduleMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-			NoSentMessage = display.newText( sceneGroup,"No Sent Messages Found" , 0,0,0,0,native.systemFontBold,16)
+			NoSentMessage = display.newText( sceneGroup,MessagePage.NoSentMessage , 0,0,0,0,native.systemFontBold,16)
 			NoSentMessage.x=W/2;NoSentMessage.y=H/2
 			NoSentMessage.isVisible=false
 			NoSentMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-			NoDraftMessage = display.newText( sceneGroup,"No Draft Messages Found" , 0,0,0,0,native.systemFontBold,16)
+			NoDraftMessage = display.newText( sceneGroup,MessagePage.NoDraftMessage , 0,0,0,0,native.systemFontBold,16)
 			NoDraftMessage.x=W/2;NoDraftMessage.y=H/2
 			NoDraftMessage.isVisible=false
 			NoDraftMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
@@ -1007,12 +914,7 @@ end
 
 			if IsOwner == true then
 
-
-			compose_msg_icon = display.newImageRect(sceneGroup,"res/assert/addevent.png", 66/2,66/2.2)
-			compose_msg_icon.anchorX = 0
 			compose_msg_icon.isVisible = true
-			compose_msg_icon.x=W/2+W/3+12
-			compose_msg_icon.y = title_bg.y+3
 
 
 			tabBg = display.newRect( tabBarGroup, W/2,title_bg.y+title_bg.height/2+3, W, 40 )
@@ -1057,19 +959,19 @@ end
 			--sceneGroup:insert(tab_Contact)
 
 
-			tab_Schedule_txt = display.newText( tabBarGroup, "Schedule",0,0,native.systemFont,14 )
+			tab_Schedule_txt = display.newText( tabBarGroup, MessagePage.ScheduleText,0,0,native.systemFont,14 )
 			tab_Schedule_txt.x=tab_Group.x;
 			tab_Schedule_txt.y=tab_Group.y+tab_Group.contentHeight/2-2
 			tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 			--sceneGroup:insert(tab_Schedule_txt)
 
-			tab_Sent_txt = display.newText( tabBarGroup, "Sent",0,0,native.systemFont,14 )
+			tab_Sent_txt = display.newText( tabBarGroup, MessagePage.SentText,0,0,native.systemFont,14 )
 			tab_Sent_txt.x=tab_Message.x;
 			tab_Sent_txt.y=tab_Message.y+tab_Message.contentHeight/2-2
 			tab_Sent_txt:setFillColor( 0 )
 			--sceneGroup:insert(tab_Sent_txt)
 
-			tab_Draft_txt = display.newText( tabBarGroup, "Draft",0,0,native.systemFont,14 )
+			tab_Draft_txt = display.newText( tabBarGroup, MessagePage.DraftText,0,0,native.systemFont,14 )
 			tab_Draft_txt.x=tab_Contact.x;
 			tab_Draft_txt.y=tab_Contact.y+tab_Contact.contentHeight/2-2
 			tab_Draft_txt:setFillColor( 0 )
@@ -1192,7 +1094,7 @@ end
 
 
 			menuBtn:addEventListener("touch",menuTouch)
-			--compose_msg_icon:addEventListener("touch",composeMessage)
+			compose_msg_icon:addEventListener("touch",composeMessage)
 
             Runtime:addEventListener( "key", onKeyEvent )
 
@@ -1221,7 +1123,7 @@ end
 
 
 				menuBtn:removeEventListener("touch",menuTouch)
-				--compose_msg_icon:removeEventListener("touch",composeMessage)
+				compose_msg_icon:removeEventListener("touch",composeMessage)
 
 				Runtime:removeEventListener( "key", onKeyEvent )
 

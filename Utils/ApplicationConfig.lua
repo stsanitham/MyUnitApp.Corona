@@ -162,3 +162,6 @@ ApplicationConfig.GetChatMessageGroupList = ApplicationConfig.BASE_URL.."/MyUnit
 ApplicationConfig.AddTeamMemberToChatGroup = ApplicationConfig.BASE_URL.."/MyUnitBuzz/AddTeamMemberToChatGroup"
 
 ApplicationConfig.GetMessagessListbyMessageStatus = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMessagessListbyMessageStatus"
+
+ApplicationConfig.DeleteMyUnitBuzzMessages = ApplicationConfig.BASE_URL.."/MyUnitBuzz/DeleteMyUnitBuzzMessages"
+
