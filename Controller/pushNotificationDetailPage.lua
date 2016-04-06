@@ -19,13 +19,13 @@ local json = require("json")
 
 local W = display.contentWidth;H= display.contentHeight
 
-local Background,BgText
+local Background,BgText,title_bg,title
 
 local menuBtn
 
-openPage="pushNotificationDetailPage"
+openPage="pushNotificationListPage"
 
-local RecentTab_Topvalue = 40
+local RecentTab_Topvalue = 70
 
 local back_icon,short_msg_txt,short_msg_delete,short_msg_edit
 
@@ -36,8 +36,6 @@ local careerListArray = {}
 local messagedetail_scrollView
 
 local sentMessage_detail
-
-local BackFlag = false
 
 
 
@@ -64,7 +62,11 @@ local BackFlag = false
 		local function closeDetails( event )
 			if event.phase == "began" then
 
+				display.getCurrentStage():setFocus( event.target )
+
 			elseif event.phase == "ended" then
+
+			    display.getCurrentStage():setFocus( nil )
 
 					 composer.hideOverlay("slideRight",300)
 
@@ -77,15 +79,6 @@ local BackFlag = false
 
 
 
-		local function onTimer ( event )
-
-			print( "event time completion" )
-
-			BackFlag = false
-
-		end
-
-
 
 		local function onKeyEventDetail( event )
 
@@ -94,7 +87,7 @@ local BackFlag = false
 
 		        if phase == "up" then
 
-		        if keyName=="back" or keyName == "a" then
+		        if keyName=="back" then
 
 		        	composer.hideOverlay( "slideRight", 300 )
 		            
@@ -167,6 +160,11 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+
+
 	Background:addEventListener( "touch", BgTouch )
 
     MainGroup:insert(sceneGroup)
@@ -185,7 +183,6 @@ end
 
 		elseif phase == "did" then
 
-			--composer.removeHidden()
 
 
 			if event.params then
@@ -199,10 +196,10 @@ end
 
 			messagedetail_scrollView = widget.newScrollView
 				{
-					top = 40,
+					top = 70,
 					left = 0,
 					width = W,
-					height =H-RecentTab_Topvalue-5,
+					height =H-70,
 					bottomPadding = 5,
 					hideBackground = true,
 					isBounceEnabled=false,
@@ -220,53 +217,57 @@ end
 
 		    print("********************************* : ", detail_value)
 
-		    back_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
+
+			back_icon_bg = display.newRect(sceneGroup,0,0,20,20)
+			back_icon_bg.x= 5
+			back_icon_bg.anchorX=0
+			back_icon_bg.anchorY=0
+			back_icon_bg.alpha=0.01
+			back_icon_bg:setFillColor(0)
+			back_icon_bg.y= title_bg.y-8
+
+			back_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",20/2,30/2)
 			back_icon.x= 10
 			back_icon.anchorX=0
 			back_icon.anchorY=0
 			back_icon:setFillColor(0)
-			back_icon.y= tabBar.y - 5
-			messagedetail_scrollView:insert(back_icon)
+			back_icon.y= title_bg.y - 8
+
+			title = display.newText(sceneGroup,Message.PageTitle,0,0,native.systemFont,18)
+			title.anchorX = 0
+			title.x=back_icon.x+20;title.y = title_bg.y
+			title:setFillColor(0)
 
 
-			short_msg_txt= display.newText(sceneGroup,detail_value.MyUnitBuzzMessage,0,0,W-80,0,native.systemFont,14)
-			short_msg_txt.x=back_icon.x + 18
-			short_msg_txt.y= back_icon.y
-			short_msg_txt.anchorX=0
-			short_msg_txt.anchorY = 0
-			Utils.CssforTextView(short_msg_txt,sp_labelName)
-			short_msg_txt:setFillColor(0)
-			messagedetail_scrollView:insert(short_msg_txt)
-            
-
-            if IsOwner == true then
-
-			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",20,20)
-			short_msg_edit.x= short_msg_txt.x+short_msg_txt.width+ 5
-			short_msg_edit.anchorX=0
-			short_msg_edit.anchorY=0
-			short_msg_edit.isVisible = true
-			short_msg_edit:setFillColor(0)
-			short_msg_edit.y= tabBar.y - 7
-			messagedetail_scrollView:insert(short_msg_edit)
-
-		    else
-
-		    	short_msg_txt.width = W-40
-		    	short_msg_txt.x=back_icon.x + 8
-			    short_msg_txt.y= back_icon.y
+			-- short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",18,16)
+			-- short_msg_delete.x= W-24
+			-- short_msg_delete.anchorX=0
+			-- short_msg_delete.anchorY=0
+			-- short_msg_delete:setFillColor(0)
+			-- short_msg_delete.y= title_bg.y - 8
+			-- --messagedetail_scrollView:insert(short_msg_delete)
 
 
-			end
+			-- if IsOwner == true then
+
+			-- short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",22,22)
+			-- short_msg_edit.x= short_msg_delete.x - 30
+			-- short_msg_edit.anchorX=0
+			-- short_msg_edit.anchorY=0
+			-- short_msg_edit.isVisible = true
+			-- short_msg_edit:setFillColor(0)
+			-- short_msg_edit.y= title_bg.y - 12
+			-- --messagedetail_scrollView:insert(short_msg_edit)
+
+		 --    else
+
+		 --    	-- short_msg_txt.width = W-40
+		 --    	-- short_msg_txt.x=back_icon.x + 8
+			--     -- short_msg_txt.y= back_icon.y
 
 
-			short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",18,16)
-			short_msg_delete.x= W-24
-			short_msg_delete.anchorX=0
-			short_msg_delete.anchorY=0
-			short_msg_delete:setFillColor(0)
-			short_msg_delete.y= tabBar.y - 5
-			messagedetail_scrollView:insert(short_msg_delete)
+			-- end
+
 
             
             local timecreated = detail_value.MessageDate
@@ -274,7 +275,7 @@ end
 
 			short_msg_timedate= display.newText(sceneGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,W-130,0,native.systemFont,12)
 			short_msg_timedate.x = W-133
-			short_msg_timedate.y = short_msg_txt.y+short_msg_txt.contentHeight+12
+			short_msg_timedate.y = title_bg.y - title_bg.height - 15
 			short_msg_timedate.anchorX=0
 			short_msg_timedate.anchorY = 0
 			short_msg_timedate:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
@@ -282,18 +283,28 @@ end
 			--short_msg_timedate:setFillColor(0)
 
 
-				if detail_value.MyUnitBuzzLongMessage ~= nil then
+			short_msg_txt= display.newText(sceneGroup,detail_value.MyUnitBuzzMessage,0,0,W-80,0,native.systemFont,14)
+			short_msg_txt.x=12
+			short_msg_txt.y= short_msg_timedate.y+short_msg_timedate.contentHeight+12
+			short_msg_txt.anchorX=0
+			short_msg_txt.anchorY = 0
+			Utils.CssforTextView(short_msg_txt,sp_labelName)
+			short_msg_txt:setFillColor(0)
+			messagedetail_scrollView:insert(short_msg_txt)
 
-			    long_msg_text= display.newText(sceneGroup,detail_value.MyUnitBuzzLongMessage,0,0,W-30,0,native.systemFont,14)
-				long_msg_text.x = 15
-				long_msg_text.y = short_msg_timedate.y+short_msg_timedate.contentHeight+12
-				long_msg_text.anchorX=0
-				long_msg_text.anchorY = 0
-				Utils.CssforTextView(long_msg_text,sp_labelName)
-				long_msg_text:setFillColor(0)
-				messagedetail_scrollView:insert(long_msg_text)
 
-				end
+			if detail_value.MyUnitBuzzLongMessage ~= nil then
+
+		    long_msg_text= display.newText(sceneGroup,detail_value.MyUnitBuzzLongMessage,0,0,W-30,0,native.systemFont,14)
+			long_msg_text.x = 12
+			long_msg_text.y = short_msg_txt.y+short_msg_txt.contentHeight+12
+			long_msg_text.anchorX=0
+			long_msg_text.anchorY = 0
+			Utils.CssforTextView(long_msg_text,sp_labelName)
+			long_msg_text:setFillColor(0)
+			messagedetail_scrollView:insert(long_msg_text)
+
+			end
 
 
 	    end
@@ -303,7 +314,9 @@ end
 
 
 			menuBtn:addEventListener("touch",menuTouch)
+
 			back_icon:addEventListener("touch",closeDetails)
+			back_icon_bg:addEventListener("touch",closeDetails)
 
             Runtime:addEventListener( "key", onKeyEventDetail )
 			
@@ -323,7 +336,6 @@ end
 		local phase = event.phase
 
 		if event.phase == "will" then
-
 
 			elseif phase == "did" then
 

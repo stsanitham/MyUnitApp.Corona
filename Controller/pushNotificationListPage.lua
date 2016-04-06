@@ -19,7 +19,7 @@ local json = require("json")
 
 local W = display.contentWidth;H= display.contentHeight
 
-local Background,BgText
+local Background,BgText,title_bg,title
 
 local menuBtn, compose_msg_icon
 
@@ -76,6 +76,24 @@ local tabBarGroup = display.newGroup( )
 
 
 
+		local function composeMessage( event )
+
+			if event.phase == "began" then
+					display.getCurrentStage():setFocus( event.target )
+			elseif event.phase == "ended" then
+					display.getCurrentStage():setFocus( nil )
+
+					--composer.gotoScene("Controller.composeMessagePage",slideLeft,300)
+
+			end
+
+		    return true
+			
+		end
+
+
+
+
 		local function onKeyEvent( event )
 
 		        local phase = event.phase
@@ -83,7 +101,7 @@ local tabBarGroup = display.newGroup( )
 
 		        if phase == "up" then
 
-		        if keyName=="back" or keyName == "a" then
+		        if keyName=="back" then
 
 		        	if BackFlag == false then
 
@@ -132,11 +150,11 @@ local tabBarGroup = display.newGroup( )
 
 
 
-		function scene:resumeGame()
+	function scene:resumeGame()
 
-		Runtime:addEventListener( "key", onKeyEvent )
+	Runtime:addEventListener( "key", onKeyEvent )
 
-		end
+	end
 
 
 
@@ -151,6 +169,7 @@ local tabBarGroup = display.newGroup( )
 						display.getCurrentStage():setFocus( nil )
 						messagelist_scrollView:takeFocus( event )
 					end
+
 					elseif event.phase == "ended" then
 					display.getCurrentStage():setFocus( nil )
 
@@ -234,11 +253,11 @@ local tabBarGroup = display.newGroup( )
 												
 				local Message_time = display.newText(tempGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,native.systemFont,10)
 				Message_time.x=background.x+background.contentWidth/2-115
-				Message_time.y=background.y+3
+				Message_time.y=background.y+5
 				Message_time.anchorX=0
 				Message_time.anchorY = 0
 				Utils.CssforTextView(Message_time,sp_labelName)
-				Message_time:setFillColor(0,0,0,0.6)
+				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
 				local Messagedetail_txt = display.newText(tempGroup,draftmessagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
@@ -247,7 +266,7 @@ local tabBarGroup = display.newGroup( )
 				Messagedetail_txt.anchorX=0
 				Messagedetail_txt.anchorY = 0
 				Utils.CssforTextView(Messagedetail_txt,sp_labelName)
-				Messagedetail_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				Messagedetail_txt:setFillColor(0,0,0)
 
 				if Messagedetail_txt.text:len() > 60 then
 
@@ -335,11 +354,11 @@ local tabBarGroup = display.newGroup( )
 												
 				local Message_time = display.newText(tempGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,native.systemFont,10)
 				Message_time.x=background.x+background.contentWidth/2-115
-				Message_time.y=background.y+3
+				Message_time.y=background.y+5
 				Message_time.anchorX=0
 				Message_time.anchorY = 0
 				Utils.CssforTextView(Message_time,sp_labelName)
-				Message_time:setFillColor(0,0,0,0.6)
+				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
 				local Messagedetail_txt = display.newText(tempGroup,sentmessagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
@@ -348,7 +367,7 @@ local tabBarGroup = display.newGroup( )
 				Messagedetail_txt.anchorX=0
 				Messagedetail_txt.anchorY = 0
 				Utils.CssforTextView(Messagedetail_txt,sp_labelName)
-				Messagedetail_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				Messagedetail_txt:setFillColor(0,0,0)
 
 				if Messagedetail_txt.text:len() > 60 then
 
@@ -440,11 +459,11 @@ local tabBarGroup = display.newGroup( )
 												
 				local Message_time = display.newText(tempGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,native.systemFont,10)
 				Message_time.x=background.x+background.contentWidth/2-115
-				Message_time.y=background.y+3
+				Message_time.y=background.y+5
 				Message_time.anchorX=0
 				Message_time.anchorY = 0
 				Utils.CssforTextView(Message_time,sp_labelName)
-				Message_time:setFillColor(0,0,0,0.6)
+				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
 				local Messagedetail_txt = display.newText(tempGroup,messagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
@@ -453,7 +472,7 @@ local tabBarGroup = display.newGroup( )
 				Messagedetail_txt.anchorX=0
 				Messagedetail_txt.anchorY = 0
 				Utils.CssforTextView(Messagedetail_txt,sp_labelName)
-				Messagedetail_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				Messagedetail_txt:setFillColor(0,0,0)
 
 				if Messagedetail_txt.text:len() > 60 then
 
@@ -563,6 +582,10 @@ local function TabbarTouch( event )
 				tab_Sent_txt:setFillColor(0)
 				tab_Draft_txt:setFillColor(0)
 
+				tab_Group_bottombar.isVisible = true
+				tab_Group_bottombar.y = tabBg.y+29.5
+				tab_Group_bottombar.x = W/2-W/3
+
 				NoSentMessage.isVisible = false
 				NoDraftMessage.isVisible = false
 
@@ -572,7 +595,7 @@ local function TabbarTouch( event )
 
 				messagelist_response = response
 
-					if messagelist_response ~= nil and #messagelist_response ~= 0 then
+					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
 							
 						MessageCreation_list(messagelist_response)
 						NoScheduleMessage.isVisible=false
@@ -628,6 +651,10 @@ local function TabbarTouch( event )
 				tab_Draft_txt:setFillColor(0)
 				tab_Schedule_txt:setFillColor(0)
 
+				tab_Group_bottombar.isVisible = true
+				tab_Group_bottombar.y = tabBg.y+29.5
+				tab_Group_bottombar.x = W/2
+
 				NoScheduleMessage.isVisible = false
 				NoDraftMessage.isVisible = false
 
@@ -638,7 +665,7 @@ local function TabbarTouch( event )
 
 				sentmessage_response = response
 
-					if sentmessage_response ~= nil and #sentmessage_response ~= 0 then
+					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
 							
 						SentMessageCreation_list(sentmessage_response)
 						NoSentMessage.isVisible=false
@@ -694,6 +721,11 @@ local function TabbarTouch( event )
 				tab_Sent_txt:setFillColor(0)
 				tab_Schedule_txt:setFillColor(0)
 
+				tab_Group_bottombar.isVisible = true
+				tab_Group_bottombar.y = tabBg.y+29.5
+				tab_Group_bottombar.x = W/2+W/3
+
+
 				composer.removeHidden()
 
 				NoSentMessage.isVisible = false
@@ -704,7 +736,7 @@ local function TabbarTouch( event )
 
 				draftmessage_response = response
 
-					if draftmessage_response ~= nil and #draftmessage_response ~= 0 then
+					if draftmessage_response ~= nil and #draftmessage_response ~= 0 and draftmessage_response ~= "" then
 							
 						DraftMessageCreation_list(draftmessage_response)
 						NoDraftMessage.isVisible=false
@@ -787,140 +819,155 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-	title_bg = display.newRect(sceneGroup,0,0,W,30)
-	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-
-	title = display.newText(sceneGroup,Message.PageTitle,0,0,native.systemFont,18)
-	title.anchorX = 0
-	title.x=5;title.y = title_bg.y
-	title:setFillColor(0)
-
-	NoScheduleMessage = display.newText( sceneGroup,"No Schedule Messages Found" , 0,0,0,0,native.systemFontBold,16)
-	NoScheduleMessage.x=W/2;NoScheduleMessage.y=H/2
-	NoScheduleMessage.isVisible=false
-	NoScheduleMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
-
-	NoSentMessage = display.newText( sceneGroup,"No Sent Messages Found" , 0,0,0,0,native.systemFontBold,16)
-	NoSentMessage.x=W/2;NoSentMessage.y=H/2
-	NoSentMessage.isVisible=false
-	NoSentMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
-
-	NoDraftMessage = display.newText( sceneGroup,"No Draft Messages Found" , 0,0,0,0,native.systemFontBold,16)
-	NoDraftMessage.x=W/2;NoDraftMessage.y=H/2
-	NoDraftMessage.isVisible=false
-	NoDraftMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
-
-
 	if IsOwner == true then
 
-	compose_msg_icon = display.newImageRect(sceneGroup,"res/assert/addevent.png", 66/2,66/2.2)
-	compose_msg_icon.anchorX = 0
-	compose_msg_icon.isVisible = true
-	compose_msg_icon.x=W/2+W/3+12
-	compose_msg_icon.y = title_bg.y+1
-
-
-	tabBg = display.newRect( tabBarGroup, W/2,title_bg.y+title_bg.height/2+3, W-10, 40 )
-	tabBg.anchorY=0
-	tabBg.height = 33
-	tabBg.y = title_bg.y+title_bg.height/2+3
-	tabBg:setFillColor(1,1,1,0.3)
-	tabBg.strokeWidth = 1
-	tabBg:setStrokeColor( 0,0,0,0.7)
-	sceneGroup:insert(tabBg)
-
-	tab_Group = display.newRect(tabBarGroup,0,0,97,33)
-	tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
-	tab_Group.anchorY=0
-	tab_Group.alpha=0.01
-	tab_Group.id="schedule"
-	tab_Group:setFillColor(1,1,1,0.3)
-	--tab_Group:setStrokeColor(0)
-	--tab_Group.strokeWidth = 1
-	sceneGroup:insert(tab_Group)
-
-	tab_Message = display.newRect(tabBarGroup,0,0,103.33,33)
-	tab_Message.x=W/2;tab_Message.y=tabBg.y
-	tab_Message.anchorY=0
-	tab_Message.alpha=1
-	tab_Message.id="sent"
-	tab_Message:setStrokeColor(0)
-	tab_Message.strokeWidth = 1
-	tab_Message:setFillColor( 1,1,1,0.3)
-	sceneGroup:insert(tab_Message)
-
-	tab_Contact = display.newRect(tabBarGroup,0,0,97,33)
-	tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
-	tab_Contact.anchorY=0
-	tab_Contact.alpha=0.01
-	tab_Contact.id="draft"
-	--tab_Contact:setStrokeColor(0)
-	--tab_Contact.strokeWidth = 1
-	tab_Contact:setFillColor( 1,1,1,0.3)
-	sceneGroup:insert(tab_Contact)
-
-
-	tab_Schedule_txt = display.newText( tabBarGroup, "Schedule",0,0,native.systemFont,14 )
-	tab_Schedule_txt.x=tab_Group.x;
-	tab_Schedule_txt.y=tab_Group.y+tab_Group.contentHeight/2-2
-	tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-	sceneGroup:insert(tab_Schedule_txt)
-
-	tab_Sent_txt = display.newText( tabBarGroup, "Sent",0,0,native.systemFont,14 )
-	tab_Sent_txt.x=tab_Message.x;
-	tab_Sent_txt.y=tab_Message.y+tab_Message.contentHeight/2-2
-	tab_Sent_txt:setFillColor( 0.3 )
-	sceneGroup:insert(tab_Sent_txt)
-
-	tab_Draft_txt = display.newText( tabBarGroup, "Draft",0,0,native.systemFont,14 )
-	tab_Draft_txt.x=tab_Contact.x;
-	tab_Draft_txt.y=tab_Contact.y+tab_Contact.contentHeight/2-2
-	tab_Draft_txt:setFillColor( 0.3 )
-	sceneGroup:insert(tab_Draft_txt)
-
-
-	tab_Group:addEventListener( "touch", TabbarTouch )
-	tab_Message:addEventListener( "touch", TabbarTouch )
-	tab_Contact:addEventListener( "touch", TabbarTouch )
-
-
-	messagelist_scrollView = widget.newScrollView
-				{
-					top = RecentTab_Topvalue+tabBg.height+5,
-					left = 0,
-					width = W,
-					height =H-RecentTab_Topvalue-tabBg.height-5,
-					bottomPadding = 50,
-					hideBackground = true,
-					isBounceEnabled=false,
-					horizontalScrollingDisabled = true,
-					verticalScrollingDisabled = false,
-					--listener = MessageList_scrollListener,
-				}
-
-    sceneGroup:insert(messagelist_scrollView)
-
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor(1,1,1,0.3)
 
     else
 
-	messagelist_scrollView = widget.newScrollView
-				{
-					top = RecentTab_Topvalue,
-					left = 0,
-					width = W,
-					height =H-RecentTab_Topvalue,
-					bottomPadding = 50,
-					hideBackground = true,
-					isBounceEnabled=false,
-					horizontalScrollingDisabled = true,
-					verticalScrollingDisabled = false,
-					--listener = MessageList_scrollListener,
-				}
+    title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor(0,0,0,0.3)
 
-    sceneGroup:insert(messagelist_scrollView)
+	end 
 
-	end
+
+	title = display.newText(sceneGroup,Message.PageTitle,0,0,native.systemFont,18)
+	title.anchorX = 0
+	title.x=12;title.y = title_bg.y
+	title:setFillColor(0)
+
+	-- NoScheduleMessage = display.newText( sceneGroup,"No Schedule Messages Found" , 0,0,0,0,native.systemFontBold,16)
+	-- NoScheduleMessage.x=W/2;NoScheduleMessage.y=H/2
+	-- NoScheduleMessage.isVisible=false
+	-- NoScheduleMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+	-- NoSentMessage = display.newText( sceneGroup,"No Sent Messages Found" , 0,0,0,0,native.systemFontBold,16)
+	-- NoSentMessage.x=W/2;NoSentMessage.y=H/2
+	-- NoSentMessage.isVisible=false
+	-- NoSentMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+	-- NoDraftMessage = display.newText( sceneGroup,"No Draft Messages Found" , 0,0,0,0,native.systemFontBold,16)
+	-- NoDraftMessage.x=W/2;NoDraftMessage.y=H/2
+	-- NoDraftMessage.isVisible=false
+	-- NoDraftMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+
+	-- if IsOwner == true then
+
+	-- compose_msg_icon = display.newImageRect(sceneGroup,"res/assert/addevent.png", 66/2,66/2.2)
+	-- compose_msg_icon.anchorX = 0
+	-- compose_msg_icon.isVisible = true
+	-- compose_msg_icon.x=W/2+W/3+12
+	-- compose_msg_icon.y = title_bg.y+3
+
+
+	-- tabBg = display.newRect( tabBarGroup, W/2,title_bg.y+title_bg.height/2+3, W, 40 )
+	-- tabBg.anchorY=0
+	-- tabBg.height = 33
+	-- tabBg.y = title_bg.y+title_bg.height/2+3
+	-- tabBg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+	-- --tabBg.strokeWidth = 1
+	-- --tabBg:setStrokeColor( 0,0,0,0.7)
+	-- --sceneGroup:insert(tabBg)
+
+	-- tab_Group = display.newRect(tabBarGroup,0,0,97,33)
+	-- tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
+	-- tab_Group.anchorY=0
+	-- tab_Group.alpha=0.01
+	-- tab_Group.id="schedule"
+	-- tab_Group:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+	-- --tab_Group:setStrokeColor(0)
+	-- --tab_Group.strokeWidth = 1
+	-- --sceneGroup:insert(tab_Group)
+
+
+	-- tab_Message = display.newRect(tabBarGroup,0,0,103.33,33)
+	-- tab_Message.x=W/2;tab_Message.y=tabBg.y
+	-- tab_Message.anchorY=0
+	-- tab_Message.alpha=1
+	-- tab_Message.id="sent"
+	-- --tab_Message:setStrokeColor(0,0,0,0.7)
+	-- --tab_Message.strokeWidth = 1
+	-- tab_Message:setFillColor(  Utils.convertHexToRGB(color.tabbar) )
+	-- --sceneGroup:insert(tab_Message)
+
+
+	-- tab_Contact = display.newRect(tabBarGroup,0,0,97,33)
+	-- tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
+	-- tab_Contact.anchorY=0
+	-- tab_Contact.alpha=0.01
+	-- tab_Contact.id="draft"
+	-- --tab_Contact:setStrokeColor(0)
+	-- --tab_Contact.strokeWidth = 1
+	-- tab_Contact:setFillColor(  Utils.convertHexToRGB(color.tabbar) )
+	-- --sceneGroup:insert(tab_Contact)
+
+
+	-- tab_Schedule_txt = display.newText( tabBarGroup, "Schedule",0,0,native.systemFont,14 )
+	-- tab_Schedule_txt.x=tab_Group.x;
+	-- tab_Schedule_txt.y=tab_Group.y+tab_Group.contentHeight/2-2
+	-- tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+	-- --sceneGroup:insert(tab_Schedule_txt)
+
+	-- tab_Sent_txt = display.newText( tabBarGroup, "Sent",0,0,native.systemFont,14 )
+	-- tab_Sent_txt.x=tab_Message.x;
+	-- tab_Sent_txt.y=tab_Message.y+tab_Message.contentHeight/2-2
+	-- tab_Sent_txt:setFillColor( 0 )
+	-- --sceneGroup:insert(tab_Sent_txt)
+
+	-- tab_Draft_txt = display.newText( tabBarGroup, "Draft",0,0,native.systemFont,14 )
+	-- tab_Draft_txt.x=tab_Contact.x;
+	-- tab_Draft_txt.y=tab_Contact.y+tab_Contact.contentHeight/2-2
+	-- tab_Draft_txt:setFillColor( 0 )
+	-- --sceneGroup:insert(tab_Draft_txt)
+
+	-- sceneGroup:insert(tabBarGroup)
+
+
+	-- tab_Group:addEventListener( "touch", TabbarTouch )
+	-- tab_Message:addEventListener( "touch", TabbarTouch )
+	-- tab_Contact:addEventListener( "touch", TabbarTouch )
+
+
+	-- messagelist_scrollView = widget.newScrollView
+	-- 			{
+	-- 				top = RecentTab_Topvalue+tabBg.height+5,
+	-- 				left = 0,
+	-- 				width = W,
+	-- 				height =H-RecentTab_Topvalue-tabBg.height-5,
+	-- 				bottomPadding = 50,
+	-- 				hideBackground = true,
+	-- 				isBounceEnabled=false,
+	-- 				horizontalScrollingDisabled = true,
+	-- 				verticalScrollingDisabled = false,
+	-- 				--listener = MessageList_scrollListener,
+	-- 			}
+
+ --    sceneGroup:insert(messagelist_scrollView)
+
+
+ --    else
+
+	-- messagelist_scrollView = widget.newScrollView
+	-- 			{
+	-- 				top = RecentTab_Topvalue,
+	-- 				left = 0,
+	-- 				width = W,
+	-- 				height =H-RecentTab_Topvalue,
+	-- 				bottomPadding = 50,
+	-- 				hideBackground = true,
+	-- 				isBounceEnabled=false,
+	-- 				horizontalScrollingDisabled = true,
+	-- 				verticalScrollingDisabled = false,
+	-- 				--listener = MessageList_scrollListener,
+	-- 			}
+
+ --    sceneGroup:insert(messagelist_scrollView)
+
+	-- end
 
 
 	
@@ -941,7 +988,150 @@ end
 		
 		if phase == "will" then
 
-			
+
+			NoScheduleMessage = display.newText( sceneGroup,"No Schedule Messages Found" , 0,0,0,0,native.systemFontBold,16)
+			NoScheduleMessage.x=W/2;NoScheduleMessage.y=H/2
+			NoScheduleMessage.isVisible=false
+			NoScheduleMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+			NoSentMessage = display.newText( sceneGroup,"No Sent Messages Found" , 0,0,0,0,native.systemFontBold,16)
+			NoSentMessage.x=W/2;NoSentMessage.y=H/2
+			NoSentMessage.isVisible=false
+			NoSentMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+			NoDraftMessage = display.newText( sceneGroup,"No Draft Messages Found" , 0,0,0,0,native.systemFontBold,16)
+			NoDraftMessage.x=W/2;NoDraftMessage.y=H/2
+			NoDraftMessage.isVisible=false
+			NoDraftMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+
+			if IsOwner == true then
+
+
+			compose_msg_icon = display.newImageRect(sceneGroup,"res/assert/addevent.png", 66/2,66/2.2)
+			compose_msg_icon.anchorX = 0
+			compose_msg_icon.isVisible = true
+			compose_msg_icon.x=W/2+W/3+12
+			compose_msg_icon.y = title_bg.y+3
+
+
+			tabBg = display.newRect( tabBarGroup, W/2,title_bg.y+title_bg.height/2+3, W, 40 )
+			tabBg.anchorY=0
+			tabBg.height = 33
+			tabBg.y = title_bg.y+title_bg.height/2+3
+			tabBg:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
+			--tabBg.strokeWidth = 1
+			--tabBg:setStrokeColor( 0,0,0,0.7)
+			--sceneGroup:insert(tabBg)
+
+			tab_Group = display.newRect(tabBarGroup,0,0,97,33)
+			tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
+			tab_Group.anchorY=0
+			tab_Group.alpha=1
+			tab_Group.id="schedule"
+			tab_Group:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
+			--tab_Group:setStrokeColor(0)
+			--tab_Group.strokeWidth = 1
+			--sceneGroup:insert(tab_Group)
+
+
+			tab_Message = display.newRect(tabBarGroup,0,0,103.33,33)
+			tab_Message.x=W/2;tab_Message.y=tabBg.y
+			tab_Message.anchorY=0
+			tab_Message.alpha=1
+			tab_Message.id="sent"
+			--tab_Message:setStrokeColor(0,0,0,0.7)
+			--tab_Message.strokeWidth = 1
+			tab_Message:setFillColor(  Utils.convertHexToRGB(color.LtyGray) )
+			--sceneGroup:insert(tab_Message)
+
+
+			tab_Contact = display.newRect(tabBarGroup,0,0,97,33)
+			tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
+			tab_Contact.anchorY=0
+			tab_Contact.alpha=1
+			tab_Contact.id="draft"
+			--tab_Contact:setStrokeColor(0)
+			--tab_Contact.strokeWidth = 1
+			tab_Contact:setFillColor(  Utils.convertHexToRGB(color.LtyGray) )
+			--sceneGroup:insert(tab_Contact)
+
+
+			tab_Schedule_txt = display.newText( tabBarGroup, "Schedule",0,0,native.systemFont,14 )
+			tab_Schedule_txt.x=tab_Group.x;
+			tab_Schedule_txt.y=tab_Group.y+tab_Group.contentHeight/2-2
+			tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			--sceneGroup:insert(tab_Schedule_txt)
+
+			tab_Sent_txt = display.newText( tabBarGroup, "Sent",0,0,native.systemFont,14 )
+			tab_Sent_txt.x=tab_Message.x;
+			tab_Sent_txt.y=tab_Message.y+tab_Message.contentHeight/2-2
+			tab_Sent_txt:setFillColor( 0 )
+			--sceneGroup:insert(tab_Sent_txt)
+
+			tab_Draft_txt = display.newText( tabBarGroup, "Draft",0,0,native.systemFont,14 )
+			tab_Draft_txt.x=tab_Contact.x;
+			tab_Draft_txt.y=tab_Contact.y+tab_Contact.contentHeight/2-2
+			tab_Draft_txt:setFillColor( 0 )
+			--sceneGroup:insert(tab_Draft_txt)
+
+
+			tab_Group_bottombar = display.newRect(tabBarGroup,0,0,107.33,3)
+			tab_Group_bottombar.x= W/2 - W/3
+			tab_Group_bottombar.y=tabBg.y+29.5
+			tab_Group_bottombar.anchorY = 0
+			tab_Group_bottombar.alpha=1
+			tab_Group_bottombar:setFillColor(Utility.convertHexToRGB(color.tabBarColor))
+			tab_Group_bottombar.isVisible = true
+
+
+			sceneGroup:insert(tabBarGroup)
+
+
+			tab_Group:addEventListener( "touch", TabbarTouch )
+			tab_Message:addEventListener( "touch", TabbarTouch )
+			tab_Contact:addEventListener( "touch", TabbarTouch )
+
+
+			messagelist_scrollView = widget.newScrollView
+						{
+							top = RecentTab_Topvalue+tabBg.height+5,
+							left = 0,
+							width = W,
+							height =H-RecentTab_Topvalue-tabBg.height-5,
+							bottomPadding = 50,
+							hideBackground = true,
+							isBounceEnabled=false,
+							horizontalScrollingDisabled = true,
+							verticalScrollingDisabled = false,
+							--listener = MessageList_scrollListener,
+						}
+
+
+		    sceneGroup:insert(messagelist_scrollView)
+
+
+		    else
+
+			messagelist_scrollView = widget.newScrollView
+						{
+							top = RecentTab_Topvalue,
+							left = 0,
+							width = W,
+							height =H-RecentTab_Topvalue,
+							bottomPadding = 50,
+							hideBackground = true,
+							isBounceEnabled=false,
+							horizontalScrollingDisabled = true,
+							verticalScrollingDisabled = false,
+							--listener = MessageList_scrollListener,
+						}
+
+		    sceneGroup:insert(messagelist_scrollView)
+
+			end
+
+
 
 		elseif phase == "did" then
 
@@ -952,7 +1142,7 @@ end
 
 				messagelist_response = response
 
-					if messagelist_response ~= nil and #messagelist_response ~= 0 then
+					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
 							
 						MessageCreation_list(messagelist_response)
 						NoScheduleMessage.isVisible=false
@@ -972,7 +1162,7 @@ end
 
 				sentmessage_response = response
 
-					if sentmessage_response ~= nil and #sentmessage_response ~= 0 then
+					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
 							
 						SentMessageCreation_list(sentmessage_response)
 						NoSentMessage.isVisible=false
@@ -1002,6 +1192,7 @@ end
 
 
 			menuBtn:addEventListener("touch",menuTouch)
+			--compose_msg_icon:addEventListener("touch",composeMessage)
 
             Runtime:addEventListener( "key", onKeyEvent )
 
@@ -1023,13 +1214,23 @@ end
 
 		if event.phase == "will" then
 
+				-- for j=MainGroup.numChildren, 1, -1 do 
+				-- display.remove(MainGroup[MainGroup.numChildren])
+				-- MainGroup[MainGroup.numChildren] = nil
+				-- end
+
 
 				menuBtn:removeEventListener("touch",menuTouch)
+				--compose_msg_icon:removeEventListener("touch",composeMessage)
 
 				Runtime:removeEventListener( "key", onKeyEvent )
 
 
 			elseif phase == "did" then
+
+				-- for j=1,#messageList_array do 
+				-- 	if messageList_array[j] then messageList_array[j]:removeSelf();messageList_array[j] = nil	end
+				-- end
 
 
 			end	
