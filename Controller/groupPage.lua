@@ -24,7 +24,7 @@ local Background,BgText
 
 local menuBtn,tabButtons,chattabBar,NoEvent
 
-openPage="groupPage"
+openPage="MessagingPage"
 
 local BackFlag = false
 
