@@ -90,6 +90,8 @@ local sentMessage_detail
 		        if keyName=="back" then
 
 		        	composer.hideOverlay( "slideRight", 300 )
+
+		        	return true
 		            
 		        end
 
@@ -97,41 +99,6 @@ local sentMessage_detail
 
 		        return false
 		 end
-
-
-
-
-
-
-	local function MessageDetail_scrollListener( event )
-
-		    local phase = event.phase
-
-		    if ( phase == "began" ) then 
-
-		    elseif ( phase == "moved" ) then
-
-		    elseif ( phase == "ended" ) then 
-
-		    end
-
-
-		    if ( event.limitReached ) then
-
-		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
-		        	
-		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
-
-		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
-
-		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
-
-		        end
-
-		    end
-
-		    return true
-	end
 
 
 
@@ -204,8 +171,6 @@ end
 					hideBackground = true,
 					isBounceEnabled=false,
 					horizontalScrollingDisabled = true,
-					verticalScrollingDisabled = false,
-					listener = MessageDetail_scrollListener,
 				}
 
             sceneGroup:insert(messagedetail_scrollView)
@@ -239,34 +204,33 @@ end
 			title:setFillColor(0)
 
 
-			-- short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",18,16)
-			-- short_msg_delete.x= W-24
-			-- short_msg_delete.anchorX=0
-			-- short_msg_delete.anchorY=0
-			-- short_msg_delete:setFillColor(0)
-			-- short_msg_delete.y= title_bg.y - 8
-			-- --messagedetail_scrollView:insert(short_msg_delete)
+			short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",18,16)
+			short_msg_delete.x= W-24
+			short_msg_delete.anchorX=0
+			short_msg_delete.anchorY=0
+			short_msg_delete:setFillColor(0)
+			short_msg_delete.y= title_bg.y - 8
+			--messagedetail_scrollView:insert(short_msg_delete)
 
 
-			-- if IsOwner == true then
+			if IsOwner == true then
 
-			-- short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",22,22)
-			-- short_msg_edit.x= short_msg_delete.x - 30
-			-- short_msg_edit.anchorX=0
-			-- short_msg_edit.anchorY=0
-			-- short_msg_edit.isVisible = true
-			-- short_msg_edit:setFillColor(0)
-			-- short_msg_edit.y= title_bg.y - 12
-			-- --messagedetail_scrollView:insert(short_msg_edit)
+			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",22,22)
+			short_msg_edit.x= short_msg_delete.x - 30
+			short_msg_edit.anchorX=0
+			short_msg_edit.anchorY=0
+			short_msg_edit.isVisible = true
+			short_msg_edit:setFillColor(0)
+			short_msg_edit.y= title_bg.y - 12
+			--messagedetail_scrollView:insert(short_msg_edit)
 
-		 --    else
+		    else
 
-		 --    	-- short_msg_txt.width = W-40
-		 --    	-- short_msg_txt.x=back_icon.x + 8
-			--     -- short_msg_txt.y= back_icon.y
+		    	-- short_msg_txt.width = W-40
+		    	-- short_msg_txt.x=back_icon.x + 8
+			    -- short_msg_txt.y= back_icon.y
 
-
-			-- end
+			end
 
 
             
@@ -275,11 +239,10 @@ end
 
 			short_msg_timedate= display.newText(sceneGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,W-130,0,native.systemFont,12)
 			short_msg_timedate.x = W-133
-			short_msg_timedate.y = title_bg.y - title_bg.height - 15
+			short_msg_timedate.y = title_bg.y +title_bg.contentHeight-5
 			short_msg_timedate.anchorX=0
 			short_msg_timedate.anchorY = 0
 			short_msg_timedate:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-			messagedetail_scrollView:insert(short_msg_timedate)
 			--short_msg_timedate:setFillColor(0)
 
 
@@ -290,7 +253,6 @@ end
 			short_msg_txt.anchorY = 0
 			Utils.CssforTextView(short_msg_txt,sp_labelName)
 			short_msg_txt:setFillColor(0)
-			messagedetail_scrollView:insert(short_msg_txt)
 
 
 			if detail_value.MyUnitBuzzLongMessage ~= nil then
@@ -302,7 +264,6 @@ end
 			long_msg_text.anchorY = 0
 			Utils.CssforTextView(long_msg_text,sp_labelName)
 			long_msg_text:setFillColor(0)
-			messagedetail_scrollView:insert(long_msg_text)
 
 			end
 
