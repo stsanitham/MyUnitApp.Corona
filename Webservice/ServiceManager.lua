@@ -278,7 +278,8 @@ if Message_Type ~= nil then
  v = [[
 
 {
-  "MyUnitBuzzMessage": "]]..message..[[",
+  "MyUnitBuzzLongMessage": "]]..message..[[",
+  "MyUnitBuzzMessage": " ",
   "VideoFilePath": "]]..videopath..[[",
   "MessageStatus": "]]..pushmethod..[[",
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
@@ -291,7 +292,7 @@ if Message_Type ~= nil then
 	  "To": "]]..To..[[",
 	  "MessageType": "]]..Message_Type..[[",
 
-   "TimeZone": "Eastern Standard Time",
+    "TimeZone": "]]..TimeZone..[[",
 }
 ]]
 
@@ -300,7 +301,7 @@ else
 	 v = [[
 
 {
-  "MyUnitBuzzLongMessage": "]]..message..[[",
+  "MyUnitBuzzMessage": "]]..message..[[",
   "VideoFilePath": "]]..videopath..[[",
   "MessageStatus": "]]..pushmethod..[[",
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
