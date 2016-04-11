@@ -48,14 +48,20 @@ local sentMessage_detail
 
 
 
-		local function BgTouch( event )
-			if event.phase == "ended" then
 
+
+
+			local function FocusComplete( event )
+
+			if event.phase == "began" then
+
+			native.setKeyboardFocus(nil)
+
+			elseif event.phase == "ended" then
 
 			end
 
-		return true
-		end
+			end 
 
 
 
@@ -222,7 +228,7 @@ function scene:create( event )
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
 
-	Background:addEventListener( "touch", BgTouch )
+	Background:addEventListener( "touch", FocusComplete )
 
     MainGroup:insert(sceneGroup)
 
@@ -311,7 +317,6 @@ end
 			short_msg_edit.isVisible = true
 			short_msg_edit:setFillColor(0)
 			short_msg_edit.y= title_bg.y - 12
-			--messagedetail_scrollView:insert(short_msg_edit)
 
 		    else
 
@@ -326,14 +331,37 @@ end
             local timecreated = detail_value.MessageDate
 			local time = makeTimeStamp(timecreated)
 
-			short_msg_timedate= display.newText(sceneGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,W-130,0,native.systemFont,12)
-			short_msg_timedate.x = W-133
+			--short_msg_timedate= display.newText(sceneGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,W-130,0,native.systemFont,12)
+			short_msg_timedate= display.newText(sceneGroup,"",0,0,W-130,0,native.systemFont,12)
+			short_msg_timedate.x = W-63
 			short_msg_timedate.y = title_bg.y +title_bg.contentHeight-5
 			short_msg_timedate.anchorX=0
 			short_msg_timedate.anchorY = 0
 			short_msg_timedate:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 			--short_msg_timedate:setFillColor(0)
 
+
+			  print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
+
+				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+
+				short_msg_timedate.text = "TODAY"
+			   
+			    else
+
+				local t = os.date( "*t" )
+				t.day=t.day-1
+
+				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+
+				short_msg_timedate.text = "YESTERDAY"
+
+				end
+
+			    end
+
+
+		
 
 			short_msg_txt= display.newText(sceneGroup,detail_value.MyUnitBuzzMessage,0,0,W-80,0,native.systemFont,14)
 			short_msg_txt.x=12
@@ -413,6 +441,8 @@ end
 				short_msg_delete:removeEventListener("touch",onDeleteAction)
 
 				Runtime:removeEventListener("key",onKeyEventDetail)
+
+				Background:removeEventListener( "touch", FocusComplete )
 
 
 

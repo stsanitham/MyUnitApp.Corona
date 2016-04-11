@@ -182,6 +182,7 @@ end
 
 
 
+
 local function listTouch( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -1355,6 +1356,9 @@ function scene:resumeGame(value)
 
 		
 end
+
+
+
 
 function scene:resumeGame(value,EditArray)
 

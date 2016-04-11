@@ -63,6 +63,20 @@ local tabBarGroup = display.newGroup( )
 		end
 
 
+		
+		local function FocusComplete( event )
+
+		if event.phase == "began" then
+
+		native.setKeyboardFocus(nil)
+
+		elseif event.phase == "ended" then
+
+		end
+
+		end 
+
+
 
 
 		local function onTimer ( event )
@@ -83,7 +97,15 @@ local tabBarGroup = display.newGroup( )
 			elseif event.phase == "ended" then
 					display.getCurrentStage():setFocus( nil )
 
-					composer.gotoScene("Controller.composeMessagePage",slideLeft,300)
+					local options = {
+						effect = "slideLeft",
+						time = 300,
+			        }
+
+
+					Runtime:removeEventListener( "key", onKeyEvent )
+
+			        composer.showOverlay( "Controller.composeMessagePage", options )
 
 			end
 
@@ -155,6 +177,7 @@ local tabBarGroup = display.newGroup( )
 
 		local function MessageDetailPage(event)
 
+
 			if event.phase == "began" then
 				display.getCurrentStage():setFocus( event.target )
 				elseif ( event.phase == "moved" ) then
@@ -206,23 +229,6 @@ local tabBarGroup = display.newGroup( )
 		        NoSentMessage.isVisible = false
 		        NoScheduleMessage.isVisible = false
 
-		       -- composer.removeHidden()
-
-		  --       for j = #sentmessageList_array , 1, -1 do
-
-    --             	display.remove(sentmessageList_array[#sentmessageList_array])
-				--     sentmessageList_array[#sentmessageList_array] = nil
-
-				-- end
-
-
-    --             for  j = #messageList_array , 1, -1 do
-
-    --             	display.remove(messageList_array[#messageList_array])
-				--     messageList_array[#messageList_array] = nil
-
-    --             end
-
 
 				draftmessageList_array[#draftmessageList_array+1] = display.newGroup()
 
@@ -243,16 +249,39 @@ local tabBarGroup = display.newGroup( )
 				background.value = draftmessagelist[i]
 
 
+				
 				local timecreated = draftmessagelist[i].MessageDate
 				local time = makeTimeStamp(timecreated)
-												
-				local Message_time = display.newText(tempGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,native.systemFont,10)
-				Message_time.x=background.x+background.contentWidth/2-115
+
+
+
+				local Message_time = display.newText(tempGroup,"",0,0,native.systemFont,10)
+				Message_time.x=background.x+background.contentWidth/2-65
 				Message_time.y=background.y+5
 				Message_time.anchorX=0
 				Message_time.anchorY = 0
 				Utils.CssforTextView(Message_time,sp_labelName)
 				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				
+
+                print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
+
+				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+
+				Message_time.text = "TODAY"
+			   
+			    else
+
+				local t = os.date( "*t" )
+				t.day=t.day-1
+
+				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+
+				Message_time.text = "YESTERDAY"
+
+				end
+
+			    end
 
 
 				local Messagedetail_txt = display.newText(tempGroup,draftmessagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
@@ -285,76 +314,6 @@ local tabBarGroup = display.newGroup( )
 
 		end
 
-
-
-
-
-       
-		function scene:resumeGame(messagelistvalue)
-
-
-				if messagelistvalue.MessageStatus == "SCHEDULE" then
-
-
-						for j=1, #messageList_array do 
-
-							display.remove(messageList_array[#messageList_array])
-							messageList_array[#messageList_array] = nil
-						end
-
-
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
-
-
-				elseif messagelistvalue.MessageStatus == "SENT" then
-
-						for j=1, #sentmessageList_array do 
-
-							display.remove(sentmessageList_array[#sentmessageList_array])
-							sentmessageList_array[#sentmessageList_array] = nil
-						end
-
-
-					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
-
-
-				elseif messagelistvalue.MessageStatus == "DRAFT" then
-
-
-						for j=1, #draftmessageList_array do 
-
-							display.remove(draftmessageList_array[#draftmessageList_array])
-							draftmessageList_array[#draftmessageList_array] = nil
-						end
-
-
-						function getDraftMessageList1(response)
-
-
-							draftmessagelist_response = response
-
-
-								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
-
-									DraftMessageCreation_list(draftmessagelist_response)
-									NoDraftMessage.isVisible=false
-
-								else
-
-									NoDraftMessage.isVisible=true
-
-								end
-
-
-						end
-
-
-					Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
-
-				end
-
-
-		end
 
 
 
@@ -407,18 +366,40 @@ local tabBarGroup = display.newGroup( )
 				background.alpha=0.01
 				background:setFillColor(0,0,0,0.5)
 				background.value = sentmessagelist[i]
-
-
+												
+				
 				local timecreated = sentmessagelist[i].MessageDate
 				local time = makeTimeStamp(timecreated)
-												
-				local Message_time = display.newText(tempGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,native.systemFont,10)
-				Message_time.x=background.x+background.contentWidth/2-115
+
+
+
+				local Message_time = display.newText(tempGroup,"",0,0,native.systemFont,10)
+				Message_time.x=background.x+background.contentWidth/2-65
 				Message_time.y=background.y+5
 				Message_time.anchorX=0
 				Message_time.anchorY = 0
 				Utils.CssforTextView(Message_time,sp_labelName)
 				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				
+
+                print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
+
+				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+
+				Message_time.text = "TODAY"
+			   
+			    else
+
+				local t = os.date( "*t" )
+				t.day=t.day-1
+
+				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+
+				Message_time.text = "YESTERDAY"
+
+				end
+
+			    end
 
 
 				local Messagedetail_txt = display.newText(tempGroup,sentmessagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
@@ -516,15 +497,39 @@ local tabBarGroup = display.newGroup( )
 
 				local timecreated = messagelist[i].MessageDate
 				local time = makeTimeStamp(timecreated)
-												
-				local Message_time = display.newText(tempGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,native.systemFont,10)
-				Message_time.x=background.x+background.contentWidth/2-115
+
+
+
+				local Message_time = display.newText(tempGroup,"",0,0,native.systemFont,10)
+				Message_time.x=background.x+background.contentWidth/2-65
 				Message_time.y=background.y+5
 				Message_time.anchorX=0
 				Message_time.anchorY = 0
 				Utils.CssforTextView(Message_time,sp_labelName)
 				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
+
+                print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
+
+				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+
+				Message_time.text = "TODAY"
+			   
+			    else
+
+				local t = os.date( "*t" )
+				t.day=t.day-1
+
+				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+
+				Message_time.text = "YESTERDAY"
+
+				end
+
+			    end
+
+
+				
 
 				local Messagedetail_txt = display.newText(tempGroup,messagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
 				Messagedetail_txt.x=12
@@ -560,6 +565,358 @@ local tabBarGroup = display.newGroup( )
 
 		end
 
+
+
+
+
+
+         
+
+
+
+
+		function scene:resumeCall(list_values)
+
+			print("ertertet64636265642563452345623")
+
+
+				if  list_values.MessageStatus == "SCHEDULE" and tab_Group.id =="schedule" then
+
+					print("schedule coming")
+
+						tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
+						tab_Sent_txt:setFillColor(0)
+						tab_Draft_txt:setFillColor(0)
+
+						tab_Group_bottombar.isVisible = true
+						tab_Group_bottombar.y = tabBg.y+29.5
+						tab_Group_bottombar.x = W/2 - W/3
+
+
+						for j=1, #messageList_array do 
+
+							display.remove(messageList_array[#messageList_array])
+							messageList_array[#messageList_array] = nil
+						end
+
+
+
+			local function getScheduleMessageList(response)
+
+				messagelist_response = response
+
+					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
+							
+						MessageCreation_list(messagelist_response)
+						NoScheduleMessage.isVisible=false
+
+						     for j = 1, #sentmessageList_array do
+
+			                	display.remove(sentmessageList_array[#sentmessageList_array])
+							    sentmessageList_array[#sentmessageList_array] = nil
+
+					         end
+
+
+					         for j = 1, #draftmessageList_array do
+
+			                	display.remove(draftmessageList_array[#draftmessageList_array])
+							    draftmessageList_array[#draftmessageList_array] = nil
+
+					         end
+
+
+					else
+
+						NoScheduleMessage.isVisible=true
+
+							 for j = 1, #sentmessageList_array do
+
+			                	display.remove(sentmessageList_array[#sentmessageList_array])
+							    sentmessageList_array[#sentmessageList_array] = nil
+
+					         end
+
+
+					         for j = 1, #draftmessageList_array do
+
+			                	display.remove(draftmessageList_array[#draftmessageList_array])
+							    draftmessageList_array[#draftmessageList_array] = nil
+
+					         end
+
+
+					end
+
+			   end
+
+
+
+					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+
+
+
+
+
+	elseif  list_values.MessageStatus == "SEND" and tab_Message.id=="sent" then
+
+					print("sent coming")
+
+
+				tab_Schedule_txt:setFillColor( 0 )
+				tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+				tab_Draft_txt:setFillColor(0)
+
+				tab_Group_bottombar.isVisible = true
+				tab_Group_bottombar.y = tabBg.y+29.5
+				tab_Group_bottombar.x = W/2
+
+
+				for j=1, #sentmessageList_array do 
+
+							display.remove(sentmessageList_array[#sentmessageList_array])
+							sentmessageList_array[#sentmessageList_array] = nil
+				end
+
+
+
+			   local function getSentMessageList(response)
+
+				  sentmessage_response = response
+
+					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
+							
+						SentMessageCreation_list(sentmessage_response)
+						NoSentMessage.isVisible=false
+
+						    for j = 1, #draftmessageList_array do
+
+			                	display.remove(draftmessageList_array[#draftmessageList_array])
+							    draftmessageList_array[#draftmessageList_array] = nil
+
+					         end
+
+
+					         for j = 1 , #messageList_array do
+
+			                	display.remove(messageList_array[#messageList_array])
+							    messageList_array[#messageList_array] = nil
+
+					         end
+
+					else
+
+						NoSentMessage.isVisible=true
+
+							for j = 1, #draftmessageList_array do
+
+			                	display.remove(draftmessageList_array[#draftmessageList_array])
+							    draftmessageList_array[#draftmessageList_array] = nil
+
+					         end
+
+
+					         for j = 1, #messageList_array do
+
+			                	display.remove(messageList_array[#messageList_array])
+							    messageList_array[#messageList_array] = nil
+
+					         end
+
+
+					end
+
+
+			    end
+
+
+
+					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+
+
+  elseif  list_values.MessageStatus == "DRAFT" and tab_Contact.id == "draft" then
+
+					print("draft coming")
+
+
+
+				tab_Schedule_txt:setFillColor( 0 )
+				tab_Sent_txt:setFillColor(0)
+				tab_Draft_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor) )
+
+				tab_Group_bottombar.isVisible = true
+				tab_Group_bottombar.y = tabBg.y+29.5
+				tab_Group_bottombar.x = W/2 + W/3
+
+
+
+						for j=1, #draftmessageList_array do 
+
+							display.remove(draftmessageList_array[#draftmessageList_array])
+							draftmessageList_array[#draftmessageList_array] = nil
+						end
+
+
+
+						function getDraftMessageList1(response)
+
+
+							draftmessagelist_response = response
+
+
+								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
+
+									DraftMessageCreation_list(draftmessagelist_response)
+									NoDraftMessage.isVisible=false
+									NoScheduleMessage.isVisible=false
+									NoSentMessage.isVisible=false
+
+										for j = 1, #sentmessageList_array do
+
+										display.remove(sentmessageList_array[#sentmessageList_array])
+										sentmessageList_array[#sentmessageList_array] = nil
+
+										end
+
+
+										for j = 1 , #messageList_array do
+
+										display.remove(messageList_array[#messageList_array])
+										messageList_array[#messageList_array] = nil
+
+										end
+
+
+								else
+
+									NoDraftMessage.isVisible=true
+
+
+										for j = 1, #sentmessageList_array do
+
+										display.remove(sentmessageList_array[#sentmessageList_array])
+										sentmessageList_array[#sentmessageList_array] = nil
+
+										end
+
+
+										for j = 1 , #messageList_array do
+
+										display.remove(messageList_array[#messageList_array])
+										messageList_array[#messageList_array] = nil
+
+										end
+
+
+
+								end
+
+
+						end
+
+
+					Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
+               
+				
+
+				-- elseif status == "back" then
+
+				-- 	print("nothing %%%%%")
+
+				-- 	composer.hideOverlay( "slideRight", 300 )
+
+
+				 end
+
+
+		end
+
+
+
+
+
+       
+		function scene:resumeGame(messagelistvalue)
+
+			print("ertertet")
+
+
+				if messagelistvalue.MessageStatus == "SCHEDULE" then
+
+
+						for j=1, #messageList_array do 
+
+							display.remove(messageList_array[#messageList_array])
+							messageList_array[#messageList_array] = nil
+						end
+
+
+					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+
+
+				elseif messagelistvalue.MessageStatus == "SENT" then
+
+						for j=1, #sentmessageList_array do 
+
+							display.remove(sentmessageList_array[#sentmessageList_array])
+							sentmessageList_array[#sentmessageList_array] = nil
+						end
+
+
+					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+
+
+				elseif messagelistvalue.MessageStatus == "DRAFT" then
+
+
+						for j=1, #draftmessageList_array do 
+
+							display.remove(draftmessageList_array[#draftmessageList_array])
+							draftmessageList_array[#draftmessageList_array] = nil
+						end
+
+
+						function getDraftMessageList1(response)
+
+
+							draftmessagelist_response = response
+
+
+								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
+
+									DraftMessageCreation_list(draftmessagelist_response)
+									NoDraftMessage.isVisible=false
+
+								else
+
+									NoDraftMessage.isVisible=true
+
+								end
+
+
+						end
+
+
+					Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
+               
+				
+
+				-- elseif status == "back" then
+
+				-- 	print("nothing %%%%%")
+
+				-- 	composer.hideOverlay( "slideRight", 300 )
+
+
+				 end
+
+
+		end
+
+
+
+
+		
 
 
 
@@ -879,6 +1236,8 @@ function scene:create( event )
 	compose_msg_icon.x=W/2+W/3+12
 	compose_msg_icon.y = title_bg.y+3
 
+	Background:addEventListener("touch",FocusComplete)
+
 
 MainGroup:insert(sceneGroup)
 
@@ -1126,6 +1485,8 @@ end
 				compose_msg_icon:removeEventListener("touch",composeMessage)
 
 				Runtime:removeEventListener( "key", onKeyEvent )
+
+				Background:removeEventListener("touch",FocusComplete)
 
 
 			elseif phase == "did" then

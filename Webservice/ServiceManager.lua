@@ -241,7 +241,7 @@ end
 
 
 
-function Webservice.SEND_MESSAGE(message,videopath,imagepath,imagename,imagesize,pushmethod,From,To,Message_Type,postExecution)
+function Webservice.SEND_MESSAGE(message,longmessage,videopath,imagepath,imagename,imagesize,pushmethod,From,To,Message_Type,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -272,8 +272,10 @@ function Webservice.SEND_MESSAGE(message,videopath,imagepath,imagename,imagesize
 	end
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
 local v
-if Message_Type ~= nil then
+
+if Message_Type ~= nil and Message_Type ~= "" then
 	
  v = [[
 
@@ -300,7 +302,8 @@ else
 	 v = [[
 
 {
-  "MyUnitBuzzLongMessage": "]]..message..[[",
+  "MyUnitBuzzMessage": "]]..message..[[",
+  "MyUnitBuzzLongMessage": "]]..longmessage..[[",
   "VideoFilePath": "]]..videopath..[[",
   "MessageStatus": "]]..pushmethod..[[",
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
