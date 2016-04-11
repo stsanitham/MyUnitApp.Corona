@@ -909,13 +909,14 @@ end
 
    		 if ( event.phase == "began" ) then
         -- user begins editing numericField
-        if ( string.sub( system.getInfo("model"), 1, 2 ) == "iP" ) then
+        -- if ( string.sub( system.getInfo("model"), 1, 2 ) == "iP" ) then
 
-        	scrollAction(-230)
-        else
-        	scrollAction(-150)
+        -- 	scrollAction(-230)
+        -- else
+        -- 	scrollAction(-150)
 
-        end
+
+        -- end
         
 
 
