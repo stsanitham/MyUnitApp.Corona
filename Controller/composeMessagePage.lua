@@ -57,8 +57,11 @@ local function FocusComplete( event )
 	if event.phase == "began" then
 
 		native.setKeyboardFocus(nil)
+		display.getCurrentStage():setFocus( event.target )
 
 	elseif event.phase == "ended" then
+
+	display.getCurrentStage():setFocus( nil )
 
 	end
 	
