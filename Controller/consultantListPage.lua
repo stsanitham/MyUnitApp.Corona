@@ -729,13 +729,13 @@ print("size = "..#Listresponse_array)
 
 						for i=1,#Listresponse_array do
 
-							local list_Name = Listresponse_array[i].LastName
+							local list_Name = Listresponse_array[i].Last_Name
 
 							
 
-								if Listresponse_array[i].FirstName then
+								if Listresponse_array[i].First_Name then
 
-									list_Name = Listresponse_array[i].FirstName.." "..Listresponse_array[i].LastName
+									list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
 
 								end
 
@@ -750,8 +750,8 @@ print("size = "..#Listresponse_array)
 							end
 
 							temp.Name = list_Name
-							temp.CarrierProgress = Listresponse_array[i].EmailAddress
-							temp.Contact_Id = Listresponse_array[i].MyUnitBuzzRequestAccessId
+							temp.CarrierProgress = Listresponse_array[i].Email_Address
+							temp.Contact_Id = Listresponse_array[i].Contact_Id
 
 							byNameArray[#byNameArray+1] = temp
 
@@ -834,7 +834,7 @@ function scene:create( event )
 	create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
 	create_groupicon.y=subjectBar.y +20
 
-    Webservice.GetMyUnitBuzzRequestAccesses("GRANT",get_Activeteammember)
+    Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
 
 MainGroup:insert(sceneGroup)

@@ -281,6 +281,14 @@ end
 local function consultantTounch( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
+
+	elseif ( event.phase == "moved" ) then
+			local dy = math.abs( ( event.y - event.yStart ) )
+
+			if ( dy > 10 ) then
+				display.getCurrentStage():setFocus( nil )
+				broad_scrollview:takeFocus( event )
+			end
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 

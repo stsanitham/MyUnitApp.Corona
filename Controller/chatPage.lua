@@ -40,6 +40,10 @@ local MessageType=""
 
 local MemberName
 
+local holdLevel
+
+local chatHoldflag=false
+
 local tabBarGroup = display.newGroup( )
 
 local ChatScrollContent = display.newGroup( )
@@ -87,6 +91,58 @@ function makeTimeStamp( dateString )
 end
 
 
+	local function printTimeSinceStart( event )
+
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( )
+
+			if chatHoldflag == true then
+
+				holdLevel=holdLevel+1
+
+					if holdLevel > 30 then
+
+						print("delete Action")
+
+						Deleteicon.isVisible=true
+					end
+
+			end
+		    if chatReceivedFlag==true then
+
+
+		    	chatReceivedFlag=false
+		    	sendMeaasage()
+		    end
+		end 
+
+local function ChatTouch( event )
+
+	if event.phase == "began" then
+		print( "touching" )
+		holdLevel=0
+		chatHoldflag=true
+	elseif event.phase == "moved" then
+		holdLevel=holdLevel+1
+		print( "moving" )
+	elseif event.phase == "ended" then
+		chatHoldflag=false
+		
+
+		if holdLevel > 25 then
+
+			Deleteicon.id=event.target.id
+
+			print("delete Action")
+		end
+
+
+		holdLevel=0
+	end
+
+return true
+end
+
+
 local function sendMeaasage()
 	
 	ChatBox.text=""
@@ -120,6 +176,7 @@ local dateVlaue=""
 
 	for i=1,#ChatHistory do
 
+
 		local dateLable = nil
 		local datevalue = nil
 
@@ -140,6 +197,8 @@ local dateVlaue=""
 		tempGroup:insert(bg)
 		
 		bg.anchorX=0;bg.anchorY=0
+		bg.id=ChatHistory[i].id
+		bg:addEventListener( "touch", ChatTouch )
 
 
 
@@ -290,6 +349,20 @@ local dateVlaue=""
 
 chatScroll:scrollTo( "bottom", { time=200 } )
 
+end
+
+
+local function deleteAction( event )
+	if event.phase == "ended" then
+
+		local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.id..[[;]]
+		db:exec( q )
+		sendMeaasage()
+
+		event.target.isVisible=false
+	end
+
+return true
 end
 
 
@@ -529,10 +602,6 @@ end
 	end
 
 end
-
-
-
-
 
 
 
@@ -922,6 +991,8 @@ return true
     local phase = event.phase
    
     if ( phase == "began" ) then print( "Scroll view was touched" )
+
+    	Deleteicon.isVisible=false
     elseif ( phase == "moved" ) then print( "Scroll view was moved" )
     elseif ( phase == "ended" ) then print( "Scroll view was released" )
 
@@ -981,6 +1052,11 @@ function scene:create( event )
 	title:setFillColor(0)
 
 	title.text = "Chat"
+
+	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 15, 15 )
+	Deleteicon.x=W-20;Deleteicon.y=title_bg.y
+	Deleteicon.isVisible=false
+	Deleteicon:addEventListener( "touch", deleteAction )
 
 
 
@@ -1172,17 +1248,7 @@ sceneGroup:insert( tabBarGroup )
 		ChatBox:addEventListener( "userInput", ChatBoxHandler )
 		recordBtn:addEventListener( "touch", RecordAction )
 
-		function printTimeSinceStart( event )
-
-			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( )
-
-		    if chatReceivedFlag==true then
-
-
-		    	chatReceivedFlag=false
-		    	sendMeaasage()
-		    end
-		end 
+	
 		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 		Runtime:addEventListener( "key", onKeyEvent )
 		BackBtn:addEventListener( "touch", backAction )
