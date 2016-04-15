@@ -10,6 +10,8 @@ local widget = require( "widget" )
 local Utility = require( "Utils.Utility" )
 local lfs = require ("lfs")
 local mime = require("mime")
+local json = require("json")
+
 local timePicker = require( "Controller.timePicker" )
 local datePicker = require( "Controller.datePicker" )
 
@@ -1144,6 +1146,9 @@ local function TouchAction( event )
 
 				function get_GetUserPreferencebyUserId( response )
 
+
+					print( "color response : "..json.encode(response ))
+
 				local colorCode
 
 				if TicklerType:lower( ) == "call" then
@@ -1278,7 +1283,7 @@ local function TouchAction( event )
 
 				end
 
-				print( "here" )
+				print( "****************here****************" )
 				Webservice.GetUserPreferencebyUserId(get_GetUserPreferencebyUserId)
 
 				

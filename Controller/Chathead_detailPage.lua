@@ -21,7 +21,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText,pageTitle,changeList_order_icon
 
-local menuBtn,contactId
+local menuBtn,contactId,Message_Type
 
 local Details = {}
 
@@ -48,6 +48,8 @@ ContactIdValue = 0
 local ProfileImage,careerDetail_scrollview
 
 pagevalue = "careerPathPage"
+
+local groupMemberListArray = {}
 
 --------------------------------------------------
 
@@ -275,7 +277,10 @@ end
 		if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
 			elseif event.phase == "ended" then
+
+			print( "closeDetails" )
 			display.getCurrentStage():setFocus( nil )
+
 			composer.hideOverlay( "slideRight", 300 )
 
 
@@ -597,7 +602,6 @@ function onAccessButtonTouch( event )
 
 
 
-
 	local function onKeycareerDetail( event )
 
 	        local phase = event.phase
@@ -618,6 +622,86 @@ function onAccessButtonTouch( event )
 	        return false
 	 end
 
+
+local function CreateGroupMemberList( list )
+
+
+	for j=#groupMemberListArray, 1, -1 do 
+		
+		display.remove(groupMemberListArray[#groupMemberListArray])
+		groupMemberListArray[#groupMemberListArray] = nil
+	end
+
+	local ContactList = list.Contact
+
+	for i=1,#ContactList do
+      
+
+
+		groupMemberListArray[#groupMemberListArray+1] = display.newGroup()
+
+		local tempGroup = groupMemberListArray[#groupMemberListArray]
+
+		local Image 
+
+		local tempHeight = 0
+
+		local background = display.newRect(tempGroup,0,0,W,50)
+
+		if(groupMemberListArray[#groupMemberListArray-1]) ~= nil then
+			tempHeight = groupMemberListArray[#groupMemberListArray-1][1].y + groupMemberListArray[#groupMemberListArray-1][1].height+3
+		end
+
+		background.anchorY = 0
+		background.x=W/2;background.y=tempHeight
+		background.alpha=0.01
+		background.value = ContactList[i]
+
+			local Image = display.newImageRect(tempGroup,ContactList[i].Contact_Id..".png",system.TemporaryDirectory,45,38)
+
+		if not Image then
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
+
+		end
+
+					Image.x=30;Image.y=background.y+background.height/2
+
+						local mask = graphics.newMask( "res/assert/masknew.png" )
+
+									Image:setMask( mask )
+
+		local Name_txt = display.newText(tempGroup,ContactList[i].First_Name.." "..ContactList[i].Last_Name,0,0,native.systemFont,14)
+		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
+		Name_txt.anchorX=0
+		Utils.CssforTextView(Name_txt,sp_labelName)
+		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+		local Position_txt = display.newText(tempGroup,ContactList[i].Email_Address,0,0,native.systemFont,14)
+		Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
+		Position_txt.anchorX=0
+		Utils.CssforTextView(Position_txt,sp_fieldValue)
+
+		if Position_txt.text:len() > 26 then		
+			Position_txt.text = string.sub(Position_txt.text,1,26).."..."
+		end
+
+
+		local line = display.newRect(tempGroup,W/2,background.y,W,1)
+		line.y=background.y+background.contentHeight-line.contentHeight
+		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+
+
+		--tempGroup.Contact_Id = list[i].Contact_Id
+
+		careerDetail_scrollview:insert(tempGroup)
+
+		--background:addEventListener( "touch", consultantTounch )
+
+
+	end
+
+end
 
 ------------------------------------------------------
 
@@ -658,6 +742,7 @@ function scene:show( event )
 		elseif phase == "did" then
 
 				contactId = event.params.contactId
+				Message_Type = event.params.MessageType
 
 				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
@@ -665,8 +750,118 @@ function scene:show( event )
 
 				end
 
+				titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
+				titleBar.anchorY=0
+				titleBar.isVisible=false
+
+				titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+			local function get_MessageGroupTeamMemberList( response )
+
+				-- print( "coming here" )
+				-- title_bg = display.newRect(sceneGroup,0,0,W,30)
+				-- title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+				-- title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+
+				-- title = display.newText(sceneGroup,FlapMenu.chatMessageTitle,0,0,native.systemFont,18)
+				-- title.anchorX = 0
+				-- title.x=5;title.y = title_bg.y
+				-- title:setFillColor(0)
+
+				-- title.text = "< "..response.MyUnitBuzzGroupName
+				-- title:addEventListener( "touch", closeDetails )
+
+				-- 	RecentTab_Topvalue = 75
+
+
+				-- 		consultantList_scrollview = widget.newScrollView
+				-- {
+				-- 	top = RecentTab_Topvalue-5,
+				-- 	left = 0,
+				-- 	width = W,
+				-- 	height =H-RecentTab_Topvalue-50+5,
+				-- 	hideBackground = true,
+		  --           backgroundColor = {0,0,0,0.6},
+				-- 	isBounceEnabled=false,
+				-- 	horizontalScrollingDisabled = true,
+				-- 	verticalScrollingDisabled = false
+				-- }
+
+		  --       sceneGroup:insert(consultantList_scrollview)
+
+				--CreateGroupMemberList(response)
+
+
+				Details = response
+
+				if Details.ImagePath ~= nil then
+					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
+
+				end
+
+				if not ProfileImage then
+					ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
+				end
+
+				ProfileImage.width = W;ProfileImage.height = 180
+				ProfileImage.x=W/2;ProfileImage.y=titleBar.y
+				ProfileImage.anchorY=0
+
+				TrasitionBar = display.newRect(sceneGroup,ProfileImage.x,ProfileImage.y,ProfileImage.width,ProfileImage.height)
+				TrasitionBar.anchorY=0
+				TrasitionBar.alpha=0
+				TrasitionBar:setFillColor(Utils.convertHexToRGB("#B6B6B6"))
+
+				titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
+				titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+15
+				titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
+				titleBar_icon.anchorY=0
+
+				titleBar_icon_bg = display.newRect(sceneGroup,0,0,25,28)
+				titleBar_icon_bg.x=titleBar.x-titleBar.contentWidth/2+20
+				titleBar_icon_bg.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon_bg.contentWidth+10
+				titleBar_icon_bg.anchorY=0
+				titleBar_icon_bg.alpha=0.01
+
+				titleBar_icon_bg:addEventListener("touch",closeDetails)
+
+
+				Career_Username = display.newText(sceneGroup,Details.MyUnitBuzzGroupName,0,0,native.systemFont,24)
+			
+				Career_Username.x=leftPadding
+				Career_Username.y=ProfileImage.y+ProfileImage.contentHeight-Career_Username.contentHeight/2-20
+				Career_Username.anchorX=0;Career_Username.anchorY=0
+				Career_Username.name = "userName"
+				Career_Username.fontSize=24
+				Career_Username:addEventListener("touch",closeDetails)
+
+				RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight
+
+				careerDetail_scrollview = widget.newScrollView
+					{
+					top = 0,
+					left = 0,
+					width = W,
+					height =H-RecentTab_Topvalue+ProfileImage.contentHeight,
+					--hideBackground = true,
+					isBounceEnabled=false,
+					horizontalScrollingDisabled = true,
+					verticalScrollingDisabled = false,
+					listener = observableScroll
+				}
+
+				--spinner_show()
+				careerDetail_scrollview.y=RecentTab_Topvalue
+				careerDetail_scrollview.x=W/2
+				careerDetail_scrollview.anchorY=0
+				sceneGroup:insert(careerDetail_scrollview)
+
+				CreateGroupMemberList(response)
+
+
+			end
+
 	
-			function get_avtiveTeammemberDetails( response)
+			local function get_avtiveTeammemberDetails( response)
 
 				print("Career Detail Response ",json.encode(response))
 
@@ -675,11 +870,7 @@ function scene:show( event )
 				-- detailcontactid = Details.ContactId
 				-- print("detailcontactid before assigning"..detailcontactid)
 
-				titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
-				titleBar.anchorY=0
-				titleBar.isVisible=false
-
-				titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				
 			
 
 				if Details.ImagePath ~= nil then
@@ -949,164 +1140,7 @@ function scene:show( event )
 				print("ContactId and event id ",ContactId.."\n"..contactId)
 
 
-		if (tostring(ContactId) ~= tostring(contactId)) then
-
-            if (IsOwner == true) then
-
-				InviteAccess = display.newText(CommonWords.InviteAccessText,0,0,0,0,native.systemFontBold,16)
-				InviteAccess.anchorX = 0 ;InviteAccess.anchorY=0
-				InviteAccess.x=leftPadding
-				InviteAccess.isVisible = false
-				InviteAccess:setFillColor(0,0,0)
-				InviteAccess.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+8
-				--Utils.CssforTextView(InviteAccess,sp_labelName)
-				careerDetail_scrollview:insert( InviteAccess )
-
-
-                    if(IsOwner == true and Details.Status == "DENY" or Details.Status == "BLOCK") then
-
-                    print("Grant or Remove Access")
-
-                    InviteAccess.isVisible = true
-
-					grantaccess_button = display.newRect(sceneGroup,0,0,W,25)
-					grantaccess_button.x=leftPadding + 75
-					grantaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
-					grantaccess_button:setStrokeColor(0,0,0,0.5)
-					grantaccess_button:setFillColor(0,0,0,0.2)
-					grantaccess_button.strokeWidth = 1
-					grantaccess_button.cornerRadius = 2
-					grantaccess_button.width = W-190
-					grantaccess_button.id="Grant Access"
-					grantaccess_button:addEventListener("touch",onButtonTouch)
-					careerDetail_scrollview:insert( grantaccess_button )
-
-					grantaccess_button_text = display.newText(sceneGroup,CommonWords.Grant,0,0,native.systemFont,16)
-					grantaccess_button_text.x=grantaccess_button.x
-					grantaccess_button_text.y=grantaccess_button.y
-					grantaccess_button_text:setFillColor(0,0,0)
-					careerDetail_scrollview:insert( grantaccess_button_text )
-
-
-					removeaccess_button = display.newRect(sceneGroup,0,0,W,25)
-					removeaccess_button.x=leftPadding + 223
-					removeaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
-					removeaccess_button:setStrokeColor(0,0,0,0.5)
-					removeaccess_button:setFillColor(0,0,0,0.2)
-					removeaccess_button.strokeWidth = 1
-					removeaccess_button.cornerRadius = 2
-					removeaccess_button.width = W-190
-					removeaccess_button.id="Remove Access"
-					removeaccess_button:addEventListener("touch",onButtonTouch)
-					careerDetail_scrollview:insert( removeaccess_button )
-
-					removeaccess_button_text = display.newText(sceneGroup,CommonWords.Remove,0,0,native.systemFont,16)
-					removeaccess_button_text.x=removeaccess_button.x
-					removeaccess_button_text.y=removeaccess_button.y
-					removeaccess_button_text:setFillColor(0,0,0)
-					careerDetail_scrollview:insert( removeaccess_button_text )
-
-
-
-					elseif(IsOwner == true and Details.Status == "GRANT") then
-
-					print("Block Access")
-
-					 InviteAccess.isVisible = true
-
-				    blockaccess_button = display.newRect(sceneGroup,0,0,W,25)
-					blockaccess_button.x=leftPadding + 150
-					blockaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
-					blockaccess_button:setStrokeColor(0,0,0,0.5)
-					blockaccess_button:setFillColor(0,0,0,0.2)
-					blockaccess_button.strokeWidth = 1
-					blockaccess_button.cornerRadius = 2
-					blockaccess_button.width = W-150
-					blockaccess_button.id="Block Access"
-					blockaccess_button:addEventListener("touch",onButtonTouch)
-					careerDetail_scrollview:insert( blockaccess_button )
-
-					blockaccess_button_text = display.newText(sceneGroup,CommonWords.Block,0,0,native.systemFont,16)
-					blockaccess_button_text.x=blockaccess_button.x
-					blockaccess_button_text.y=blockaccess_button.y
-					blockaccess_button_text:setFillColor(0,0,0)
-					careerDetail_scrollview:insert( blockaccess_button_text )
-
-
-
-					elseif(IsOwner == true and Details.Status == "ADDREQUEST" or Details.Status == "REMOVE") then
-
-					print("Provide Access")
-
-					InviteAccess.isVisible = true
-
-				    provideaccess_button = display.newRect(sceneGroup,0,0,W,25)
-					provideaccess_button.x=leftPadding + 150
-					provideaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
-					provideaccess_button:setStrokeColor(0,0,0,0.5)
-					provideaccess_button:setFillColor(0,0,0,0.2)
-					provideaccess_button.strokeWidth = 1
-					provideaccess_button.cornerRadius = 2
-					provideaccess_button.width = W-150
-					provideaccess_button.id="Provide Access"
-					provideaccess_button:addEventListener("touch",onButtonTouch)
-					careerDetail_scrollview:insert( provideaccess_button )
-
-					provideaccess_button_text = display.newText(sceneGroup,CommonWords.ProvideAccess,0,0,native.systemFont,16)
-					provideaccess_button_text.x=provideaccess_button.x
-					provideaccess_button_text.y=provideaccess_button.y
-					provideaccess_button_text:setFillColor(0,0,0)
-					careerDetail_scrollview:insert( provideaccess_button_text )
-
-
-
-					elseif(IsOwner == true and Details.Status == "OPEN") then
-
-                    print("Grant or Deny Access")
-
-                     InviteAccess.isVisible = true
-
-					grantaccess_button = display.newRect(sceneGroup,0,0,W,25)
-					grantaccess_button.x=leftPadding + 75
-					grantaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
-					grantaccess_button:setStrokeColor(0,0,0,0.5)
-					grantaccess_button:setFillColor(0,0,0,0.3)
-					grantaccess_button.strokeWidth = 1
-					grantaccess_button.cornerRadius = 2
-					grantaccess_button.width = W-190
-					grantaccess_button.id="Grant Access"
-					grantaccess_button:addEventListener("touch",onButtonTouch)
-					careerDetail_scrollview:insert( grantaccess_button )
-
-					grantaccess_button_text = display.newText(sceneGroup,CommonWords.Grant,0,0,native.systemFont,16)
-					grantaccess_button_text.x=grantaccess_button.x
-					grantaccess_button_text.y=grantaccess_button.y
-					grantaccess_button_text:setFillColor(0,0,0)
-					careerDetail_scrollview:insert( grantaccess_button_text )
-
-					denyaccess_button = display.newRect(sceneGroup,0,0,W,25)
-					denyaccess_button.x=leftPadding + 223
-					denyaccess_button.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+55
-					denyaccess_button:setStrokeColor(0,0,0,0.5)
-					denyaccess_button:setFillColor(0,0,0,0.3)
-					denyaccess_button.strokeWidth = 1
-					denyaccess_button.cornerRadius = 2
-					denyaccess_button.width = W-190
-					denyaccess_button.id="Deny Access"
-					denyaccess_button:addEventListener("touch",onButtonTouch)
-					careerDetail_scrollview:insert( denyaccess_button )
-
-					denyaccess_button_text = display.newText(sceneGroup,CommonWords.Deny,0,0,native.systemFont,16)
-					denyaccess_button_text.x=denyaccess_button.x
-					denyaccess_button_text.y=denyaccess_button.y
-					denyaccess_button_text:setFillColor(0,0,0)
-					careerDetail_scrollview:insert( denyaccess_button_text )
-
-				    end
-
-				end
-
-			end
+		
 
 				Details_Display[#Details_Display+1] = display.newRect( W/2, Details_Display[#Details_Display].y+30, W, 5)
 				Details_Display[#Details_Display].isVisible=false
@@ -1326,7 +1360,16 @@ function scene:show( event )
 
 		MainGroup:insert(sceneGroup)
 
-			Webservice.GET_ACTIVE_TEAMMEMBERDETAILS(contactId,get_avtiveTeammemberDetails)
+			print( Message_Type )
+			if Message_Type == "GROUP" then
+
+				Webservice.GetMessageGroupTeamMemberList(contactId,get_MessageGroupTeamMemberList)
+				
+			else
+
+				Webservice.GET_ACTIVE_TEAMMEMBERDETAILS(contactId,get_avtiveTeammemberDetails)
+
+			end
 
 	end
 
@@ -1360,6 +1403,8 @@ function scene:hide( event )
 		elseif phase == "did" then
 
 			event.parent:resumeGame(ContactIdValue)
+
+			composer.removeHidden( )
 
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)

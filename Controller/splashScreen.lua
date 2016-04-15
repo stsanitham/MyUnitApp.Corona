@@ -374,9 +374,6 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 							if (tonumber(responseVersion)<=tonumber(installedVersion)) then
 
-							--	print("responseVersion : ", responseVersion)
-
-							--	print("installedVersion : ", installedVersion)
 
 			
 									AfterVersionCheck()

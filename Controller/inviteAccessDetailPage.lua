@@ -490,8 +490,6 @@ end
 
 			local leftAlign = 10
 
-				--titleBar_icon:addEventListener("touch",closeInviteDetails)
-				--titleBar_text:addEventListener("touch",closeInviteDetails)
 
 				Background:addEventListener("touch",bgTouch)
 
@@ -523,7 +521,7 @@ end
 			-- if invite_status == "ADDREQUEST" then title.text = "Team Member without Access" end
 
 
-
+local ProfileImage
 
 			if InviteAccessDetail.ImagePath ~= nil then
 					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
@@ -545,13 +543,17 @@ end
 
 				titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
 		titleBar_icon.x=tabBar.x-tabBar.contentWidth/2+10
-		titleBar_icon.y=tabBar.y+tabBar.contentHeight/2-titleBar_icon.contentWidth
+		titleBar_icon.y=tabBar.y+tabBar.contentHeight/2-titleBar_icon.contentWidth+15
 		titleBar_icon.anchorY=0
 
-	
+				local titleBar_text = display.newText(" dsfds",0,0,native.systemFont,0)
+		titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
+		titleBar_text.y=titleBar_icon.y
+		titleBar_text.anchorX=0;titleBar_text.anchorY=0
+		Utils.CssforTextView(titleBar_text,sp_subHeader)
+		sceneGroup:insert( titleBar_text )
 
-
-					local RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight
+	local RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight
 		scroll_View = widget.newScrollView
 		{
 		top = 100,
@@ -573,12 +575,7 @@ end
 
 		sceneGroup:insert(scroll_View)
 
-			titleBar_text = display.newText(" dsfds",0,0,native.systemFont,0)
-		titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
-		titleBar_text.y=tabBar.y+tabBar.contentHeight/2-titleBar_text.contentHeight/2
-		titleBar_text.anchorX=0;titleBar_text.anchorY=0
-		Utils.CssforTextView(titleBar_text,sp_subHeader)
-		scroll_View:insert( titleBar_text )
+
 
 
 		
@@ -595,6 +592,8 @@ end
         	 titleBar_text.text = invitedetail_value.LastName
 
 		end
+
+		print( "titleBar_text : "..titleBar_text.text )
 
 ----------------------------Email Address---------------------------------------------------------
 
@@ -939,7 +938,9 @@ end
 		end
 
 -------------------------------------------------------------------------------------------------	
-
+	
+				titleBar_icon:addEventListener("touch",closeInviteDetails)
+				titleBar_text:addEventListener("touch",closeInviteDetails)
 
 		end	
 		

@@ -69,6 +69,7 @@ local tabBarGroup = display.newGroup( )
 		if event.phase == "began" then
 
 		native.setKeyboardFocus(nil)
+		display.getCurrentStage():setFocus( event.target )
 
 		display.getCurrentStage():setFocus( event.target )
 

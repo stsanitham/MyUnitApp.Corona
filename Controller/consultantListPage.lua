@@ -530,10 +530,6 @@ local function TabbarTouch( event )
     end
 
 
-
-
-
-
 local function careePath_list( list )
 
 
@@ -602,8 +598,7 @@ local function careePath_list( list )
 
 		if list[i].Image_Path ~= nil then
 
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2
+			
 
 			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
 				"GET",
@@ -612,27 +607,28 @@ local function careePath_list( list )
 						print ( "Network error - download failed" )
 					else
 
-						if Image then
 
 						print(img_event.response.filename)
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
-						Image.width=35;Image.height=35
+						Image.width=45;Image.height=38
 						Image.x=30;Image.y=background.y+background.contentHeight/2
     				--event.row:insert(img_event.target)
 
-    			    else
+    				local mask = graphics.newMask( "res/assert/masknew.png" )
 
-						Image:removeSelf();Image=nil
+									Image:setMask( mask )
 
-					 end
+    			   
     			end
 
-    			end, "career"..list[i].Contact_Id..".png", system.TemporaryDirectory)
+    			end, list[i].Contact_Id..".png", system.TemporaryDirectory)
 		else
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2
 
 		end
+
+		
 
 
 		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,native.systemFont,14)
@@ -729,13 +725,13 @@ print("size = "..#Listresponse_array)
 
 						for i=1,#Listresponse_array do
 
-							local list_Name = Listresponse_array[i].LastName
+							local list_Name = Listresponse_array[i].Last_Name
 
 							
 
-								if Listresponse_array[i].FirstName then
+								if Listresponse_array[i].First_Name then
 
-									list_Name = Listresponse_array[i].FirstName.." "..Listresponse_array[i].LastName
+									list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
 
 								end
 
@@ -750,8 +746,10 @@ print("size = "..#Listresponse_array)
 							end
 
 							temp.Name = list_Name
-							temp.CarrierProgress = Listresponse_array[i].EmailAddress
-							temp.Contact_Id = Listresponse_array[i].MyUnitBuzzRequestAccessId
+							temp.CarrierProgress = Listresponse_array[i].Email_Address
+							temp.Contact_Id = Listresponse_array[i].Contact_Id
+							temp.Image_Path = Listresponse_array[i].Image_Path
+							temp.Image_Name = Listresponse_array[i].Image_Name
 
 							byNameArray[#byNameArray+1] = temp
 
@@ -834,7 +832,7 @@ function scene:create( event )
 	create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
 	create_groupicon.y=subjectBar.y +20
 
-    Webservice.GetMyUnitBuzzRequestAccesses("GRANT",get_Activeteammember)
+    Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
 
 MainGroup:insert(sceneGroup)

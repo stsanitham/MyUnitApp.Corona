@@ -28,7 +28,7 @@ local space_value = 27
 
 local profilePic,UserEmail;
 
-local profilePic_path
+local profilePic_path,ContactId
 
 
 
@@ -205,6 +205,7 @@ function scene:create( event )
 
         langid = row.LanguageId
         countryid = row.CountryId
+        ContactId = row.ContactId
 
         profilePic_path = row.ProfileImageUrl
  
@@ -339,7 +340,7 @@ function scene:show( event )
     				--event.row:insert(img_event.target)
     					end
 
-    				end, profilePic_path:match( "([^/]+)$" ), system.TemporaryDirectory)
+    				end, ContactId..".png", system.TemporaryDirectory)
 		else
 			profilePic = display.newImageRect("res/assert/usericon.png",65,60)
 			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-35

@@ -62,7 +62,11 @@ local function FocusComplete( event )
 
 	elseif event.phase == "ended" then
 
+<<<<<<< HEAD
 	    display.getCurrentStage():setFocus( nil )
+=======
+	display.getCurrentStage():setFocus( nil )
+>>>>>>> origin/MUB_V1.1.9
 
 	end
 

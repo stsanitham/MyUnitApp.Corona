@@ -4,7 +4,7 @@ ApplicationConfig = {}
 ----------Dev---------------
 
 
-----[[
+--[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -35,7 +35,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 
 
---[[---------Android Live----------------
+----[[---------Android Live----------------
 
 IsLive = true
 
@@ -164,4 +164,8 @@ ApplicationConfig.AddTeamMemberToChatGroup = ApplicationConfig.BASE_URL.."/MyUni
 ApplicationConfig.GetMessagessListbyMessageStatus = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMessagessListbyMessageStatus"
 
 ApplicationConfig.DeleteMyUnitBuzzMessages = ApplicationConfig.BASE_URL.."/MyUnitBuzz/DeleteMyUnitBuzzMessages"
+
+ApplicationConfig.GetActiveChatTeammembersList = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetActiveChatTeammembersList"
+
+ApplicationConfig.GetMessageGroupTeamMemberList = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMessageGroupTeamMemberList"
 
