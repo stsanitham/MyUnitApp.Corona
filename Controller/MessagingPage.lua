@@ -383,16 +383,38 @@ local function Broadcast_list( list )
 
 			print( json.encode( list[i]))
 
+
+
+			
+
+
 			local Name = ""
+
+			local profilrPic=""
 			if MemberName == list[i].ToName then
 				Name=list[i].FromName
+				profilrPic=list[i].Message_From
 			else
-
+				profilrPic=list[i].Message_To
 				Name=list[i].ToName
 			end
 
+			local Image = display.newImageRect(tempGroup,profilrPic..".png",system.TemporaryDirectory,45,38)
+
+		if not Image then
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
+
+		end
+
+					Image.x=30;Image.y=background.y+background.height/2
+
+						local mask = graphics.newMask( "res/assert/masknew.png" )
+
+									Image:setMask( mask )
+
 			local Name_txt = display.newText(tempGroup,Name,0,0,native.systemFont,14)
-			Name_txt.x=5;Name_txt.y=background.y+background.height/2-10
+			Name_txt.x=Image.x+Image.contentWidth/2+10;Name_txt.y=background.y+background.height/2-10
 			Name_txt.anchorX=0
 			Utils.CssforTextView(Name_txt,sp_labelName)
 			Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
@@ -403,7 +425,7 @@ local function Broadcast_list( list )
 			 end
 
 			local Position_txt = display.newText(tempGroup,list[i].MyUnitBuzz_Message,0,0,native.systemFont,14)
-			Position_txt.x=5;Position_txt.y=background.y+background.height/2+10
+			Position_txt.x=Name_txt.x;Position_txt.y=background.y+background.height/2+10
 			Position_txt.anchorX=0
 			Utils.CssforTextView(Position_txt,sp_fieldValue)
 
@@ -500,7 +522,7 @@ end
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
 
-	title.text = "Messages"
+	title.text = "Chats"
 
 
    

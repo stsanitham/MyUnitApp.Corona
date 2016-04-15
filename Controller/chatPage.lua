@@ -22,7 +22,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
 
-local menuBtn,tabButtons,chattabBar,chatScroll,BackBtn
+local menuBtn,tabButtons,chattabBar,chatScroll,BackBtn,tabBar,title_bg,title,Deleteicon
 
 openPage="MessagingPage"
 
@@ -43,6 +43,8 @@ local MemberName
 local holdLevel
 
 local chatHoldflag=false
+
+local selectedForDelete
 
 local tabBarGroup = display.newGroup( )
 
@@ -93,25 +95,32 @@ end
 
 	local function printTimeSinceStart( event )
 
+
+
 			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( )
 
 			if chatHoldflag == true then
 
 				holdLevel=holdLevel+1
 
-					if holdLevel > 30 then
+					if holdLevel > 25 then
 
 						print("delete Action")
 
 						Deleteicon.isVisible=true
+
 					end
 
 			end
 		    if chatReceivedFlag==true then
 
-
+			if selectedForDelete ~= nil then 
+				if selectedForDelete.y ~= nil then
+				 selectedForDelete:removeSelf();selectedForDelete=nil 
+				 end 
+			end
 		    	chatReceivedFlag=false
-		    	sendMeaasage()
+		    	
 		    end
 		end 
 
@@ -122,8 +131,16 @@ local function ChatTouch( event )
 		holdLevel=0
 		chatHoldflag=true
 	elseif event.phase == "moved" then
-		holdLevel=holdLevel+1
-		print( "moving" )
+		 local dy = math.abs( ( event.y - event.yStart ) )
+        -- If the touch on the button has moved more than 10 pixels,
+        -- pass focus back to the scroll view so it can continue scrolling
+
+        if ( dy > 10 ) then
+        	display.getCurrentStage():setFocus( nil )
+            chatScroll:takeFocus( event )
+            holdLevel=0
+            chatHoldflag=false
+        end
 	elseif event.phase == "ended" then
 		chatHoldflag=false
 		
@@ -132,7 +149,18 @@ local function ChatTouch( event )
 
 			Deleteicon.id=event.target.id
 
+			if selectedForDelete ~= nil then 
+				if selectedForDelete.y ~= nil then
+				 selectedForDelete:removeSelf();selectedForDelete=nil 
+				 end 
+			end
+
+			selectedForDelete = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
+			selectedForDelete:setFillColor( 0.3,0.6,0.5,0.4 )
+			event.target.group:insert( selectedForDelete )
+
 			print("delete Action")
+
 		end
 
 
@@ -198,13 +226,14 @@ local dateVlaue=""
 		
 		bg.anchorX=0;bg.anchorY=0
 		bg.id=ChatHistory[i].id
+		bg.group=tempGroup
 		bg:addEventListener( "touch", ChatTouch )
 
 
 
 
 		if MeassageList[#MeassageList-1] ~= nil then
-			bg.y=MeassageList[#MeassageList-1][1].y+MeassageList[#MeassageList-1][1].contentHeight+5
+			bg.y=MeassageList[#MeassageList-1][1].y+MeassageList[#MeassageList-1][1].contentHeight+20
 		else
 			bg.y=0
 		end
@@ -216,13 +245,14 @@ local dateVlaue=""
 			print( "coming" ..dateVlaue,ChatHistory[i].Update_Time_Stamp)
 			dateVlaue =ChatHistory[i].Update_Time_Stamp
 
-			dateLable = display.newRect( tempGroup, W/2, bg.y+5, 100,20 )
+			dateLable = display.newRect( tempGroup, W/2, bg.y+5, 80,20 )
 			bg.y=bg.y+30
 			dateLable:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-			dateLable.alpha=0.2
+			dateLable.alpha=0.3
 
-			datevalue = display.newText( tempGroup,  Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone), 0,0,native.systemFont,12 )
+			datevalue = display.newText( tempGroup,  Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone), 0,0,native.systemFont,11)
 			datevalue.x=dateLable.x;datevalue.y=dateLable.y
+			datevalue:setFillColor( 0,0,0,0.6 )
 
 			if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "*t" )),"%B %d, %Y",TimeZone) then
 
@@ -244,12 +274,46 @@ local dateVlaue=""
 
 
 
+
 		if ChatHistory[i].Message_From == tostring(ContactId) then
 
 			
 				print( "here" )
-				bg.x=W-10
+				bg.x=W-65
 				bg.anchorX=1
+
+						local Image = display.newImageRect(tempGroup,ChatHistory[i].Message_From..".png",system.TemporaryDirectory,45,38)
+
+						if not Image then
+							Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+
+						end
+
+									Image.x=W-35;Image.y=bg.y+bg.height/2
+
+									local mask = graphics.newMask( "res/assert/masknew.png" )
+
+									Image:setMask( mask )
+
+		else
+
+
+				bg.x=65
+
+						local Image = display.newImageRect(tempGroup,To_ContactId..".png",system.TemporaryDirectory,45,38)
+
+						if not Image then
+							Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+							Image.x=30;Image.y=bg.y+bg.height/2
+
+						end
+
+									Image.x=30;Image.y=bg.y+bg.height/2
+
+									local mask = graphics.newMask( "res/assert/masknew.png" )
+
+									Image:setMask( mask )
+
 			
 		end
 
@@ -257,7 +321,7 @@ local dateVlaue=""
 
 		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
 
-		chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,W-40,0,native.systemFont,14)
+		chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,W-85,0,native.systemFont,14)
 
 		else
 
@@ -310,8 +374,16 @@ local dateVlaue=""
 
 		end
 
+		bg.height = bg.height+10
+		bg.width = bg.width+35
+
+		local time = display.newText( tempGroup, Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%I:%M %p",TimeZone), 0, 0 , native.systemFont ,10 )
+		time.x=bg.x
+		time.y=bg.y+bg.contentHeight-time.contentHeight/2-10
+		time.anchorX=bg.anchorX;time.anchorY=bg.anchorY
+
 			
-		local arrow = display.newImageRect( tempGroup, "res/assert/whitetriangle.png", 10, 10 )
+		local arrow = display.newImageRect( tempGroup, "res/assert/whitetriangle.png", 8, 8 )
 		arrow.x=bg.x-5
 		arrow.y=bg.y-0.3
 		arrow.anchorY=0
@@ -328,12 +400,13 @@ local dateVlaue=""
 
 
 		if ChatHistory[i].Message_From == tostring(ContactId) then
-			arrow.x=bg.x+5
+			arrow.x=bg.x+2
 			arrow:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 		else
 		
 		arrow:scale( -1, 1 )
+		arrow.x=arrow.x+2
 		arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
 
 
@@ -396,12 +469,16 @@ local function DetailAction( event )
 				      		effect = "fromTop",
 							time = 200,	
 								params = {
-								contactId = To_ContactId
+								contactId = To_ContactId,
+								MessageType = MessageType
 							}
 
 							}
 
-				    composer.gotoScene( "Controller.Chathead_detailPage", options )
+							print( "Message_Type"..MessageType )
+					Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+					ChatBox.isVisible=false
+				    composer.showOverlay( "Controller.Chathead_detailPage", options )
 
 	end
 
@@ -480,7 +557,9 @@ local function ChatSendAction( event )
 				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..ChatBox.text..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
 				db:exec( insertQuery )
 
-			Webservice.SEND_MESSAGE(ChatBox.text,"","","","","SEND",From,To,Message_Type,get_sendMssage)
+				print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
+
+			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type,get_sendMssage)
 
 
 	end
@@ -934,13 +1013,13 @@ end
 				native.setKeyboardFocus( nil )
 			end
 
-				if event.text:len() > 250 then
+				-- if event.text:len() > 250 then
 
-						event.target.text = event.text:sub(1,250)
+				-- 		event.target.text = event.text:sub(1,250)
 
 			
 
-					end
+				-- 	end
 
         	if event.text:len() >=1 then
 
@@ -994,10 +1073,12 @@ return true
     if ( phase == "began" ) then print( "Scroll view was touched" )
 
     	Deleteicon.isVisible=false
+    	chatReceivedFlag=true
+    	holdLevel=0
     elseif ( phase == "moved" ) then print( "Scroll view was moved" )
     elseif ( phase == "ended" ) then print( "Scroll view was released" )
 
-    	if #ChatHistory < 10 then
+    	if #ChatHistory < 5 then
     		chatScroll:scrollTo( "bottom", { time=500 } )
     	end
     end
@@ -1016,6 +1097,19 @@ return true
 
     return true
 end
+
+function scene:resumeGame()
+
+			composer.removeHidden()
+
+			ChatBox.isVisible=true
+
+		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
+
+
+
+	end
+
 ------------------------------------------------------
 
 function scene:create( event )

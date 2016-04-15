@@ -530,10 +530,6 @@ local function TabbarTouch( event )
     end
 
 
-
-
-
-
 local function careePath_list( list )
 
 
@@ -602,8 +598,7 @@ local function careePath_list( list )
 
 		if list[i].Image_Path ~= nil then
 
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2
+			
 
 			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
 				"GET",
@@ -612,27 +607,28 @@ local function careePath_list( list )
 						print ( "Network error - download failed" )
 					else
 
-						if Image then
 
 						print(img_event.response.filename)
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
-						Image.width=35;Image.height=35
+						Image.width=45;Image.height=38
 						Image.x=30;Image.y=background.y+background.contentHeight/2
     				--event.row:insert(img_event.target)
 
-    			    else
+    				local mask = graphics.newMask( "res/assert/masknew.png" )
 
-						Image:removeSelf();Image=nil
+									Image:setMask( mask )
 
-					 end
+    			   
     			end
 
-    			end, "career"..list[i].Contact_Id..".png", system.TemporaryDirectory)
+    			end, list[i].Contact_Id..".png", system.TemporaryDirectory)
 		else
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2
 
 		end
+
+		
 
 
 		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,native.systemFont,14)
@@ -752,6 +748,8 @@ print("size = "..#Listresponse_array)
 							temp.Name = list_Name
 							temp.CarrierProgress = Listresponse_array[i].Email_Address
 							temp.Contact_Id = Listresponse_array[i].Contact_Id
+							temp.Image_Path = Listresponse_array[i].Image_Path
+							temp.Image_Name = Listresponse_array[i].Image_Name
 
 							byNameArray[#byNameArray+1] = temp
 

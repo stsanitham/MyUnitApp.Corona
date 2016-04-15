@@ -273,6 +273,8 @@ end
 		if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
 			elseif event.phase == "ended" then
+
+			print( "clode" )
 			display.getCurrentStage():setFocus( nil )
 			composer.hideOverlay( "slideRight", 300 )
 
@@ -654,6 +656,9 @@ function scene:show( event )
 	if phase == "will" then
 
 		elseif phase == "did" then
+
+
+			print( "!!!!!!!!!!!!!!!!" )
 
 				contactId = event.params.contactId
 

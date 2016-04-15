@@ -275,12 +275,14 @@ function Webservice.SEND_MESSAGE(message,longmessage,videopath,imagepath,imagena
 
 local v
 
+print( "MessageType : "..Message_Type )
+
 if Message_Type ~= nil and Message_Type ~= "" then
 	
  v = [[
 
 {
-  "MyUnitBuzzLongMessage": "]]..message..[[",
+  "MyUnitBuzzLongMessage": "]]..longmessage..[[",
   "MyUnitBuzzMessage": " ",
   "VideoFilePath": "]]..videopath..[[",
   "MessageStatus": "]]..pushmethod..[[",
@@ -2079,6 +2081,48 @@ function Webservice.DeleteMyUnitBuzzMessages(messageId,postExecution)
 	print("request : "..json.encode(params))
 
 	request.new(ApplicationConfig.DeleteMyUnitBuzzMessages..resbody,method,params,postExecution)
+	
+	return response
+end
+
+function Webservice.GetMessageGroupTeamMemberList(groupid,postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+
+	method="GET"
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	local url = splitUrl(ApplicationConfig.GetMessageGroupTeamMemberList)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+
+	local resbody="?userId="..UserId.."&groupId="..groupid
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetMessageGroupTeamMemberList..resbody,method,params,postExecution)
+
+    print("request : "..json.encode(params))
+
 	
 	return response
 end
