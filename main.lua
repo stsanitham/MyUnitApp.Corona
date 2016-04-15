@@ -63,6 +63,8 @@ NewGroupAlert = display.newGroup();
 
 DeleteMessageGroup = display.newGroup();
 
+ScheduledMessageGroup = display.newGroup();
+
 
 
 

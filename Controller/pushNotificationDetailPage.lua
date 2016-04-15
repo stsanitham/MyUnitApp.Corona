@@ -57,9 +57,15 @@ local sentMessage_detail
 
 			native.setKeyboardFocus(nil)
 
+			display.getCurrentStage():setFocus( event.target )
+
 			elseif event.phase == "ended" then
 
+			display.getCurrentStage():setFocus( nil )
+
 			end
+
+			return true
 
 			end 
 
@@ -75,7 +81,7 @@ local sentMessage_detail
 
 			    display.getCurrentStage():setFocus( nil )
 
-					 composer.hideOverlay("slideRight",300)
+				composer.hideOverlay("slideRight",300)
 
 			end
 
@@ -128,18 +134,19 @@ local sentMessage_detail
 
 		            print("Message Id : ",message_id)
 
-		        	if event.target.id == "accept" then
+	        	if event.target.id == "accept" then
 
-		        		DeleteMessageGroup.isVisible = false
+	        		DeleteMessageGroup.isVisible = false
 
-	        		    Webservice.DeleteMyUnitBuzzMessages(message_id,getDeletionresponse)
+        		    Webservice.DeleteMyUnitBuzzMessages(message_id,getDeletionresponse)
 
-		        	elseif event.target.id == "reject" then
+	        	elseif event.target.id == "reject" then
 
-						DeleteMessageGroup.isVisible = false
+					DeleteMessageGroup.isVisible = false
 
-		        	end
-           end
+	        	end
+        
+        end
 
     end
 
@@ -298,6 +305,7 @@ end
 			title.x=back_icon.x+20;title.y = title_bg.y
 			title:setFillColor(0)
 
+            if IsOwner == true then
 
 			short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",18,16)
 			short_msg_delete.x= W-24
@@ -308,7 +316,7 @@ end
 			--messagedetail_scrollView:insert(short_msg_delete)
 
 
-			if IsOwner == true then
+			--if IsOwner == true then
 
 			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",22,22)
 			short_msg_edit.x= short_msg_delete.x - 30
@@ -397,7 +405,11 @@ end
 			back_icon_bg:addEventListener("touch",closeDetails)
 			title:addEventListener("touch",closeDetails)
 
-			short_msg_delete:addEventListener("touch",onDeleteAction)
+				if IsOwner == true then
+
+				short_msg_delete:addEventListener("touch",onDeleteAction)
+
+			    end
 
             Runtime:addEventListener( "key", onKeyEventDetail )
 			
@@ -438,7 +450,11 @@ end
 			    back_icon_bg:removeEventListener("touch",closeDetails)
 				title:removeEventListener("touch",closeDetails)
 
-				short_msg_delete:removeEventListener("touch",onDeleteAction)
+					if IsOwner == true then
+
+					short_msg_delete:removeEventListener("touch",onDeleteAction)
+
+				    end
 
 				Runtime:removeEventListener("key",onKeyEventDetail)
 

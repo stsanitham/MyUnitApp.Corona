@@ -4,7 +4,7 @@ ApplicationConfig = {}
 ----------Dev---------------
 
 
-----[[
+--[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -35,11 +35,11 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 
 
---[[---------Android Live----------------
+----[[---------Android Live----------------
 
 IsLive = true
 
-ApplicationConfig.Version = "/Android/1.2.2"	    --1.1.0
+ApplicationConfig.Version = "/Android/1.2.3"	    --1.1.0
 
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.com/"..ApplicationConfig.Version
 

@@ -409,3 +409,12 @@ MessagePage.Audio = "Audio"
 MessagePage.Gallery = "Galerie"
 MessagePage.Location = "Emplacement"
 MessagePage.Contact = "Contact"
+MessagePage.ScheduleButtonText = "Oui , je veux planifier pour cette période"
+MessagePage.ScheduleDate = "date"
+MessagePage.ScheduleTime = "Temps"
+MessagePage.DeleteConfirmText = "Etes-vous sur de vouloir supprimer ce message?"
+MessagePage.ToDelete = "Oui , je veux supprimer"
+MessagePage.NotToDelete = "Non, je ne veux supprimer"
+MessagePage.DeleteText = "Effacer"
+
+

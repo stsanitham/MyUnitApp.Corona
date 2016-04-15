@@ -412,3 +412,12 @@ MessagePage.Audio = "Audio"
 MessagePage.Gallery = "Galería"
 MessagePage.Location = "Ubicación"
 MessagePage.Contact = "Contacto"
+MessagePage.ScheduleButtonText = "Sí , quiero programar para esta época"
+MessagePage.ScheduleDate = "Fecha"
+MessagePage.ScheduleTime = "Hora"
+MessagePage.DeleteConfirmText = "¿Seguro que quieres borrar este mensaje?"
+MessagePage.ToDelete = "Sí , deseo eliminar"
+MessagePage.NotToDelete = "No, no quiero borrar"
+MessagePage.DeleteText = "Borrar"
+
+

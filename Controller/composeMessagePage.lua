@@ -10,6 +10,7 @@ local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 require( "Webservice.ServiceManager" )
 local style = require("res.value.style")
+local scheduledMessageGroup = require( "Controller.scheduledMessageGroup" )
 local json = require("json")
 
 
@@ -57,12 +58,17 @@ local function FocusComplete( event )
 	if event.phase == "began" then
 
 		native.setKeyboardFocus(nil)
+		display.getCurrentStage():setFocus( event.target )
 
 	elseif event.phase == "ended" then
 
+	    display.getCurrentStage():setFocus( nil )
+
 	end
+
+	return true
 	
-	
+
 end 
 
 
@@ -87,6 +93,10 @@ end
 								longmsg_textbox.text = ""
 
 								longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
+
+								short_msg_charlimit.text = MessagePage.ShortMsgLimit
+
+								long_msg_charlimit.text = MessagePage.LongMsgLimit
 
 					local function onTimer ( event )
 
@@ -126,12 +136,16 @@ end
 
 								longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
 
+								short_msg_charlimit.text = MessagePage.ShortMsgLimit
+
+								long_msg_charlimit.text = MessagePage.LongMsgLimit
+
 					local function onTimer ( event )
 
 
 							sceneevent.parent:resumeCall(list_values)
 
-							spinner.y=H/2-60
+							spinner.y=spinner.y-30
 
 							composer.hideOverlay()
 
@@ -199,6 +213,54 @@ end
   	    	native.setKeyboardFocus(nil)
 
     	    display.getCurrentStage():setFocus( nil )
+
+
+    	    if event.target.id == "schedule" then
+
+
+						function onScheduleButtonTouch( event )
+
+								if event.phase == "began" then
+
+
+								elseif event.phase == "ended" then
+
+								    native.setKeyboardFocus(nil)
+
+								    ScheduledMessageGroup.isVisible = true
+
+
+								if event.target.id == "accept" then
+
+									ScheduledMessageGroup.isVisible = false
+
+									longmsg_textbox.isVisible = true
+    	    	                    shortmsg_textbox.isVisible = true
+
+
+								elseif event.target.id == "closealert" then
+
+									ScheduledMessageGroup.isVisible = false
+
+									longmsg_textbox.isVisible = true
+    	    						shortmsg_textbox.isVisible = true
+
+								end
+
+								end
+
+						end
+
+
+    	    	GetScheduleMessageAlertPopup()
+
+    	    	longmsg_textbox.isVisible = false
+    	    	shortmsg_textbox.isVisible = false
+
+    	    	accept_button:addEventListener("touch",onScheduleButtonTouch)
+	            Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
+
+    	    end
 
 
 
@@ -299,6 +361,15 @@ local function TextLimitation( event )
 
 							end
 
+
+							if event.target.text then
+
+						       counttext = 250 - string.len(event.target.text) .. " characters"
+
+						       short_msg_charlimit.text = counttext
+
+							end
+
 					end
 
 
@@ -308,6 +379,15 @@ local function TextLimitation( event )
 							if (string.len(event.target.text) > 1000) then
 
 							event.target.text = event.target.text:sub(1, 1000)
+
+							end
+
+
+							if event.target.text then
+
+						       countlongtext = 1000 - string.len(event.target.text) .. " characters"
+
+						       long_msg_charlimit.text = countlongtext
 
 							end
 
@@ -505,9 +585,12 @@ end
 				longmsg_textbox.isEditable = true
 				longmsg_textbox.size=14
 				longmsg_textbox.anchorX = 0
+				longmsg_textbox.height = EditBoxStyle.height + 40
 				longmsg_textbox.anchorY=0
+				longmsg_textbox.width = W-20
 				longmsg_textbox.value=""
 				longmsg_textbox.id = "longmessage"
+				longmsg_textbox.isVisible = true
 				longmsg_textbox.hasBackground = true
 				longmsg_textbox:setReturnKey( "done" )
 				longmsg_textbox.inputType = "default"
@@ -522,6 +605,18 @@ end
 				long_msg_charlimit.x=W-110
 				long_msg_charlimit.y = longmsg_textbox.y+longmsg_textbox.contentHeight+2
 				long_msg_charlimit:setFillColor(0)
+
+------------------------------------------- attachment icon -----------------------------------------
+
+
+				attachment_icon = display.newImageRect(sceneGroup,"res/assert/attached.png",20,20)
+				attachment_icon.x= longmsg_textbox.width - 20
+				attachment_icon.anchorX=0
+				attachment_icon.anchorY=0
+				attachment_icon.isVisible = false
+				attachment_icon.y = long_msg_charlimit.y - 20
+				attachment_icon:toFront()
+
 
 ------------------------------------------- Icons Holder --------------------------------------------
 
@@ -740,6 +835,7 @@ end
 
 			send_button:addEventListener("touch",onSendButtonTouchAction)
 			draft_button:addEventListener("touch",onSendButtonTouchAction)
+			schedule_button:addEventListener("touch",onSendButtonTouchAction)
 
 			 Runtime:addEventListener( "key", onKeyEventDetail )
 			
@@ -761,6 +857,16 @@ end
 
 			composer.removeHidden()
 
+
+			if DeleteMessageGroup.numChildren ~= nil then
+
+			  	 	for j=DeleteMessageGroup.numChildren, 1, -1 do 
+			  						display.remove(DeleteMessageGroup[DeleteMessageGroup.numChildren])
+			  						DeleteMessageGroup[DeleteMessageGroup.numChildren] = nil
+			  	 	end
+            end
+
+
 			elseif phase == "did" then
 
 				--event.parent:resumeCall(list_values)
@@ -776,6 +882,7 @@ end
 
 				send_button:removeEventListener("touch",onSendButtonTouchAction)
 				draft_button:removeEventListener("touch",onSendButtonTouchAction)
+				schedule_button:removeEventListener("touch",onSendButtonTouchAction)
 
 
 				Runtime:removeEventListener( "key", onKeyEventDetail )
