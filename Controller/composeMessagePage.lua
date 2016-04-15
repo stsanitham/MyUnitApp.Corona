@@ -110,7 +110,7 @@ end
 
 							sceneevent.parent:resumeCall(list_values)
 
-							spinner.y=H/2-60
+							spinner.y=H/2-75
 
 							composer.hideOverlay()
 
@@ -145,7 +145,7 @@ end
 
 							sceneevent.parent:resumeCall(list_values)
 
-							spinner.y=spinner.y-30
+							spinner.y=H/2-75
 
 							composer.hideOverlay()
 

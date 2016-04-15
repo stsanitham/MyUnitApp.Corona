@@ -313,12 +313,17 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 					
 
-					if system.getInfo( "environment" ) ~= "device" then
+					if system.getInfo( "environment" ) == "device" then
 
-							local alert = native.showAlert( response,system.getInfo( "appVersionString" ), { CommonWords.ok } )
+						    print(system.getInfo( "appVersionString" ))
+
+							--local alert = native.showAlert( response,system.getInfo( "appVersionString" ), { CommonWords.ok } )
 
 							local responseVersion = string.gsub( response, "%.", "", 3 )
 							local installedVersion = string.gsub( system.getInfo( "appVersionString" ), "%.", "", 3 )
+
+
+							--local alert = native.showAlert( responseVersion,installedVersion, { CommonWords.ok } )
 
 
 							print("responseVersion : ", responseVersion)
@@ -369,9 +374,9 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 							if (tonumber(responseVersion)<=tonumber(installedVersion)) then
 
-								print("responseVersion : ", responseVersion)
+							--	print("responseVersion : ", responseVersion)
 
-								print("installedVersion : ", installedVersion)
+							--	print("installedVersion : ", installedVersion)
 
 			
 									AfterVersionCheck()
