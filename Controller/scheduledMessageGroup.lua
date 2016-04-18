@@ -145,18 +145,18 @@ function GetScheduleMessageAlertPopup()
 
 ------------------------------remove or block buttons------------------------------------------
 
-    accept_button = display.newImageRect(ScheduledMessageGroup,"res/assert/positive_alert.png" ,225, EditBoxStyle.height)
-  	accept_button.x = W/2
-  	accept_button.id = "set-time"
-  	accept_button.y = AlertContentText.y+AlertContentText.contentHeight+42
+    acceptschedule_button = display.newImageRect(ScheduledMessageGroup,"res/assert/positive_alert.png" ,225, EditBoxStyle.height)
+  	acceptschedule_button.x = W/2
+  	acceptschedule_button.id = "set-time"
+  	acceptschedule_button.y = AlertContentText.y+AlertContentText.contentHeight+42
 
-	accept_button_text = display.newText(ScheduledMessageGroup,MessagePage.ScheduleButtonText,0,0,accept_button.width - 40,30,native.systemFont,14)
-	accept_button_text.x=accept_button.x + 25
-	accept_button_text.height = 30
-	accept_button_text.y=accept_button.y
-	accept_button_text:setFillColor(0,0,0)
+	acceptschedule_button_text = display.newText(ScheduledMessageGroup,MessagePage.ScheduleButtonText,0,0,acceptschedule_button.width - 40,30,native.systemFont,14)
+	acceptschedule_button_text.x=acceptschedule_button.x + 25
+	acceptschedule_button_text.height = 30
+	acceptschedule_button_text.y=acceptschedule_button.y
+	acceptschedule_button_text:setFillColor(0,0,0)
 
-	accept_button.height = accept_button_text.contentHeight+10
+	acceptschedule_button.height = acceptschedule_button_text.contentHeight+10
 
 
 	MainGroup:insert(ScheduledMessageGroup)

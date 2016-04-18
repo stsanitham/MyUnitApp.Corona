@@ -13,6 +13,9 @@ local style = require("res.value.style")
 local scheduledMessageGroup = require( "Controller.scheduledMessageGroup" )
 local json = require("json")
 
+local timePicker = require( "Controller.timePicker" )
+local datePicker = require( "Controller.datePicker" )
+
 
 
 --------------- Initialization -------------------
@@ -84,7 +87,7 @@ end
 
 		if list_values.MessageStatus == "SEND" then
 
-		      		 Utils.SnackBar("Your message has been sent successfully")
+		      		 Utils.SnackBar(MessagePage.SentSuccess)
 
 				      		 	shortmsg_textbox.text = ""
 
@@ -126,7 +129,7 @@ end
 
 		if list_values.MessageStatus == "DRAFT" then
 
-		      		 Utils.SnackBar("Your message has been saved successfully")
+		      		 Utils.SnackBar(MessagePage.DraftSuccess)
 
 				      		 	shortmsg_textbox.text = ""
 
@@ -156,6 +159,42 @@ end
 
 	    end
 
+
+
+
+	    if list_values.MessageStatus == "SCHEDULE" then
+
+		      		 Utils.SnackBar(MessagePage.ScheduledSuccess)
+
+				      		 	shortmsg_textbox.text = ""
+
+								shortmsg_textbox.placeholder = MessagePage.ShortMessage_Placeholder		
+
+								longmsg_textbox.text = ""
+
+								longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
+
+								short_msg_charlimit.text = MessagePage.ShortMsgLimit
+
+								long_msg_charlimit.text = MessagePage.LongMsgLimit
+
+					local function onTimer ( event )
+
+							sceneevent.parent:resumeCall(list_values)
+
+							spinner.y=H/2-75
+
+							composer.hideOverlay()
+
+
+					end
+
+        		     timer.performWithDelay(1000, onTimer )
+
+	    end
+
+
+
 	
 	end
 
@@ -178,9 +217,116 @@ end
 		    end
 
 
-		Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,"","","","",method,"","","",get_messagemodel)
+	        if method == "SCHEDULE" then
+
+	        	ScheduledMessageGroup.isVisible = true
+
+	        	longmsg_textbox.isVisible = false
+    	 		shortmsg_textbox.isVisible = false
+
+
+
+    	    	function onTimePickerTouch(event)
+
+		    	    	local function getValue(time)
+
+							Time.text = time
+
+						end
+
+
+		    	    	local function getDateValue(time)
+
+							Date.text = time
+
+						end
+
+
+    	    		if event.target.id == "time" then
+
+    	    			timePicker.getTimeValue(getValue)
+
+    	    		elseif event.target.id == "date" then
+
+    	    			datePicker.getTimeValue(getDateValue)
+
+    	    		end  
+
+    	        end
+
+
+
+
+    	 		function onScheduleButtonTouch( event )
+
+					if event.phase == "began" then
+
+
+					elseif event.phase == "ended" then
+
+						native.setKeyboardFocus(nil)
+
+
+						if event.target.id == "set-time" then
+
+							print("sccept icon")
+
+
+								if Date.text ~= "Date" and Time.text ~= "Time" then
+
+								IsScheduled = tostring(true)
+
+								Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,IsScheduled,Date.text,Time.text,"","","","",method,"","","",get_messagemodel)
+
+								ScheduledMessageGroup.isVisible = false
+
+								longmsg_textbox.isVisible = true
+    	    	                shortmsg_textbox.isVisible = true
+
+								end
+
+						elseif event.target.id == "closealert" then
+
+						 			print("close alert")
+
+									ScheduledMessageGroup.isVisible = false
+
+					     			longmsg_textbox.isVisible = true
+    	    						shortmsg_textbox.isVisible = true
+
+						end
+
+				    end
+
+
+			    end
+
+
+
+    	        Time_bg:addEventListener("touch",onTimePickerTouch)
+    	        TimeSelect_icon:addEventListener("touch",onTimePickerTouch)
+    	        Time:addEventListener("touch",onTimePickerTouch)
+
+    	        Date_bg:addEventListener("touch",onTimePickerTouch)
+    	        Date:addEventListener("touch",onTimePickerTouch)
+    	        DateSelect_icon:addEventListener("touch",onTimePickerTouch)
+
+
+    	 		 acceptschedule_button:addEventListener("touch",onScheduleButtonTouch) 	
+
+    	         Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
+
+
+	        else
+
+	        	Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,"","","","","","","",method,"","","",get_messagemodel)
+
+	        end
+
 
     end
+
+
 
 
  
@@ -215,52 +361,18 @@ end
     	    display.getCurrentStage():setFocus( nil )
 
 
-    	    if event.target.id == "schedule" then
+    	    -- if event.target.id == "schedule" then
 
 
-						function onScheduleButtonTouch( event )
-
-								if event.phase == "began" then
 
 
-								elseif event.phase == "ended" then
+    	    -- 	--longmsg_textbox.isVisible = false
+    	    -- 	--shortmsg_textbox.isVisible = false
 
-								    native.setKeyboardFocus(nil)
+    	    	
+	           
 
-								    ScheduledMessageGroup.isVisible = true
-
-
-								if event.target.id == "accept" then
-
-									ScheduledMessageGroup.isVisible = false
-
-									longmsg_textbox.isVisible = true
-    	    	                    shortmsg_textbox.isVisible = true
-
-
-								elseif event.target.id == "closealert" then
-
-									ScheduledMessageGroup.isVisible = false
-
-									longmsg_textbox.isVisible = true
-    	    						shortmsg_textbox.isVisible = true
-
-								end
-
-								end
-
-						end
-
-
-    	    	GetScheduleMessageAlertPopup()
-
-    	    	longmsg_textbox.isVisible = false
-    	    	shortmsg_textbox.isVisible = false
-
-    	    	accept_button:addEventListener("touch",onScheduleButtonTouch)
-	            Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
-
-    	    end
+    	    -- end
 
 
 
@@ -273,6 +385,16 @@ end
 					elseif event.target.id == "draft" then
 
 					local alert = native.showAlert( "Saving Failed", "Enter the short/long message in the respective field and proceed further", { CommonWords.ok } )
+
+				    elseif event.target.id == "schedule" then
+
+					local alert = native.showAlert( "Scheduling Failed", "Enter the short/long message in the respective field and proceed further", { CommonWords.ok } )
+
+				    ScheduledMessageGroup.isVisible = false
+
+				    longmsg_textbox.isVisible = true
+
+				    shortmsg_textbox.isVisible = true
 
 				    end
 
@@ -292,6 +414,17 @@ end
 
 					    sendMessage("DRAFT")
 
+					elseif event.target.id == "schedule" then
+
+    	    	        GetScheduleMessageAlertPopup()
+
+						ScheduledMessageGroup.isVisible = true
+
+						longmsg_textbox.isVisible = false
+						shortmsg_textbox.isVisible = false
+
+						sendMessage("SCHEDULE")
+						
 					else
 
 				    end
@@ -355,20 +488,15 @@ local function TextLimitation( event )
 
 					if event.target.id =="shortmessage" then
 
-							if (string.len(event.target.text) > 250) then
+							if (string.len(event.target.text) >= 250) then
 
 							event.target.text = event.target.text:sub(1, 250)
 
 							end
 
-
-							if event.target.text then
-
-						       counttext = 250 - string.len(event.target.text) .. " characters"
+						       counttext = 250 - string.len(event.target.text).. " characters"
 
 						       short_msg_charlimit.text = counttext
-
-							end
 
 					end
 
@@ -376,20 +504,16 @@ local function TextLimitation( event )
 
 					if event.target.id =="longmessage" then
 
-							if (string.len(event.target.text) > 1000) then
+							if (string.len(event.target.text) >= 1000) then
 
 							event.target.text = event.target.text:sub(1, 1000)
 
 							end
 
-
-							if event.target.text then
-
 						       countlongtext = 1000 - string.len(event.target.text) .. " characters"
 
 						       long_msg_charlimit.text = countlongtext
 
-							end
 
 
 							--print( event.newCharacters )
@@ -539,20 +663,22 @@ end
 				shortmsg_title:setFillColor(0)
 
 
-				shortmsg_textbox = native.newTextBox( 0,0, W - 20, EditBoxStyle.height+20)
+				shortmsg_textbox = native.newTextBox( 10,shortmsg_title.y+ shortmsg_title.height+7, W - 20, EditBoxStyle.height+20)
 				shortmsg_textbox.placeholder = MessagePage.ShortMessage_Placeholder
 				shortmsg_textbox.isEditable = true
 				shortmsg_textbox.size=14
 				shortmsg_textbox.anchorX = 0
+				shortmsg_textbox.height = EditBoxStyle.height + 20
 				shortmsg_textbox.anchorY=0
+				shortmsg_textbox.width = W-20
 				shortmsg_textbox.value=""
 				shortmsg_textbox.id = "shortmessage"
 				shortmsg_textbox.hasBackground = true
 				shortmsg_textbox:setReturnKey( "next" )
 				shortmsg_textbox.inputType = "default"
 				sceneGroup:insert(shortmsg_textbox)
-				shortmsg_textbox.x=10
-				shortmsg_textbox.y=shortmsg_title.y+ shortmsg_title.height+7
+				--shortmsg_textbox.x=10
+				--shortmsg_textbox.y=shortmsg_title.y+ shortmsg_title.height+7
 
 
 				short_msg_charlimit = display.newText(sceneGroup,MessagePage.ShortMsgLimit,0,0,native.systemFont,14)
@@ -580,7 +706,7 @@ end
 				longmsg_title:setFillColor(0)
 
 
-				longmsg_textbox = native.newTextBox( 0,0, W - 20, EditBoxStyle.height+40)
+				longmsg_textbox = native.newTextBox( 10,longmsg_title.y+ longmsg_title.height+7, W - 20, EditBoxStyle.height+40)
 				longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
 				longmsg_textbox.isEditable = true
 				longmsg_textbox.size=14
@@ -595,8 +721,8 @@ end
 				longmsg_textbox:setReturnKey( "done" )
 				longmsg_textbox.inputType = "default"
 				sceneGroup:insert(longmsg_textbox)
-				longmsg_textbox.x=10
-				longmsg_textbox.y=longmsg_title.y+ longmsg_title.height+7
+				--longmsg_textbox.x=10
+				--longmsg_textbox.y=longmsg_title.y+ longmsg_title.height+7
 
 
 				long_msg_charlimit = display.newText(sceneGroup,MessagePage.LongMsgLimit,0,0,native.systemFont,14)

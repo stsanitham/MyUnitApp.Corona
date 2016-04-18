@@ -71,12 +71,12 @@ if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
 
 
 	pickerWheel = widget.newPickerWheel {
-		top = display.contentHeight-200,
+		top = display.contentHeight-192,
 		columns = columnData
 	}
 	pickerWheel.x = display.contentCenterX
 
-	doneBg = display.newRect(W/2,0,W,35)
+	doneBg = display.newRect(W/2,0,W,30)
 	doneBg:setFillColor( 1 )
 	doneBg.x=W/2;doneBg.y=pickerWheel.y-pickerWheel.contentHeight/2
 

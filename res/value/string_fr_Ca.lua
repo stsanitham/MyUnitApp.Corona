@@ -416,5 +416,10 @@ MessagePage.DeleteConfirmText = "Etes-vous sur de vouloir supprimer ce message?"
 MessagePage.ToDelete = "Oui , je veux supprimer"
 MessagePage.NotToDelete = "Non, je ne veux supprimer"
 MessagePage.DeleteText = "Effacer"
+MessagePage.NoMessage = "Aucun message trouvé"
+MessagePage.SentSuccess = "message envoyé avec succès"
+MessagePage.DraftSuccess = "Message rédigé avec succès"
+MessagePage.ScheduledSuccess = "Message programmé avec succès"
+MessagePage.DeleteSuccess = "Message supprimé"
 
 

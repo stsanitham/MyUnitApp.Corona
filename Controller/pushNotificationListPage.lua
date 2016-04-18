@@ -1412,17 +1412,17 @@ end
 		if phase == "will" then
 
 
-			NoScheduleMessage = display.newText( sceneGroup,MessagePage.NoScheduleMessage, 0,0,0,0,native.systemFontBold,16)
+			NoScheduleMessage = display.newText( sceneGroup,MessagePage.NoMessage, 0,0,0,0,native.systemFontBold,16)
 			NoScheduleMessage.x=W/2;NoScheduleMessage.y=H/2
 			NoScheduleMessage.isVisible=false
 			NoScheduleMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-			NoSentMessage = display.newText( sceneGroup,MessagePage.NoSentMessage , 0,0,0,0,native.systemFontBold,16)
+			NoSentMessage = display.newText( sceneGroup,MessagePage.NoMessage , 0,0,0,0,native.systemFontBold,16)
 			NoSentMessage.x=W/2;NoSentMessage.y=H/2
 			NoSentMessage.isVisible=false
 			NoSentMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-			NoDraftMessage = display.newText( sceneGroup,MessagePage.NoDraftMessage , 0,0,0,0,native.systemFontBold,16)
+			NoDraftMessage = display.newText( sceneGroup,MessagePage.NoMessage, 0,0,0,0,native.systemFontBold,16)
 			NoDraftMessage.x=W/2;NoDraftMessage.y=H/2
 			NoDraftMessage.isVisible=false
 			NoDraftMessage:setFillColor( Utils.convertHexToRGB(color.Black) )

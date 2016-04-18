@@ -241,7 +241,7 @@ end
 
 
 
-function Webservice.SEND_MESSAGE(message,longmessage,videopath,imagepath,imagename,imagesize,pushmethod,From,To,Message_Type,postExecution)
+function Webservice.SEND_MESSAGE(message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,pushmethod,From,To,Message_Type,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -284,6 +284,9 @@ if Message_Type ~= nil and Message_Type ~= "" then
 {
   "MyUnitBuzzLongMessage": "]]..longmessage..[[",
   "MyUnitBuzzMessage": " ",
+  "IsScheduled": " ",	
+  "ScheduledDate": " ",	
+  "ScheduledTime": " ",	
   "VideoFilePath": "]]..videopath..[[",
   "MessageStatus": "]]..pushmethod..[[",
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
@@ -306,8 +309,10 @@ else
 
 {
   "MyUnitBuzzMessage": "]]..message..[[",
-
   "MyUnitBuzzLongMessage": "]]..longmessage..[[",
+  "IsScheduled": "]]..IsScheduled..[[",	
+  "ScheduledDate": "]]..ScheduledDate..[[",	
+  "ScheduledTime": "]]..ScheduledTime..[[",	
   "VideoFilePath": "]]..videopath..[[",
   "MessageStatus": "]]..pushmethod..[[",
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",

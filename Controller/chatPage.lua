@@ -559,7 +559,7 @@ local function ChatSendAction( event )
 
 				print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type,get_sendMssage)
+			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","","","","SEND",From,To,Message_Type,get_sendMssage)
 
 
 	end

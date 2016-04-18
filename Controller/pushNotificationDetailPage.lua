@@ -74,6 +74,7 @@ local sentMessage_detail
 
 
 		local function closeDetails( event )
+			
 			if event.phase == "began" then
 
 				display.getCurrentStage():setFocus( event.target )
@@ -99,7 +100,7 @@ local sentMessage_detail
 
 		       if Request_response == true then
 
-		      		 Utils.SnackBar("Your message has been deleted successfully")
+		      		 Utils.SnackBar(MessagePage.DeleteSuccess)
 
 						local function onTimer ( event )
 
@@ -357,7 +358,9 @@ end
 
 					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
-					short_msg_timedate.text = os.date("%I:%M %p",time)
+					short_msg_timedate.text =  os.date("%B %d, %Y",time).."  "..os.date("%I:%M %p",time)
+
+					short_msg_timedate.x = W-140
 
 				    else 
 
@@ -368,7 +371,7 @@ end
 					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
 
 						short_msg_timedate.text = "YESTERDAY".."  "..os.date("%I:%M %p",time)
-						short_msg_timedate.x = W-110
+						short_msg_timedate.x = W-120
 
 					else
 

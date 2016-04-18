@@ -419,5 +419,10 @@ MessagePage.DeleteConfirmText = "¿Seguro que quieres borrar este mensaje?"
 MessagePage.ToDelete = "Sí , deseo eliminar"
 MessagePage.NotToDelete = "No, no quiero borrar"
 MessagePage.DeleteText = "Borrar"
+MessagePage.NoMessage = "No hay mensajes encontrados"
+MessagePage.SentSuccess = "Mensaje enviado con éxito"
+MessagePage.DraftSuccess = "Mensaje elaborado con éxito"
+MessagePage.ScheduledSuccess = "Mensaje programado con éxito"
+MessagePage.DeleteSuccess = "Mensaje eliminado correctamente"
 
 
