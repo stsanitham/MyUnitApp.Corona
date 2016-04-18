@@ -504,12 +504,17 @@ local function CreateList(list,scrollView)
 			background.anchorY = 0
 			background.anchorX = 0
 			background.x=5;background.y=Initial_Height
-			--background.alpha=
+			background.alpha=0.01
 			background.value = feedArray[i]
 			background.id="listBg"
 			background.name = status
 			background:addEventListener( "touch", ActionTouch )
 
+
+
+			local line = display.newRect(tempGroup,W/2,background.y,W,1)
+			line.y=background.y+background.contentHeight-line.contentHeight+15
+			line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
 
 			if feedArray[i].ImagePath ~= nil then
