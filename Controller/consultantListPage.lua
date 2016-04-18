@@ -397,7 +397,7 @@ local function TabbarTouch( event )
 
 		    	if response == "Success" then
 
-		    		local alert = native.showAlert( "Group Created" , "Your group has been successfully created.", { CommonWords.ok }, onGroupCreationComplete )
+		    		local alert = native.showAlert( "Group Created" , "Group created successfully", { CommonWords.ok }, onGroupCreationComplete )
 
 		    	end
 

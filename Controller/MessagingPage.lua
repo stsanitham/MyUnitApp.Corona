@@ -435,16 +435,40 @@ local function Broadcast_list( list )
 
 			end
 
-			local time = makeTimeStamp(list[i].Create_Time_Stamp)
+			local time = makeTimeStamp(list[i].Update_Time_Stamp)
 
 			print( os.date( "%b %d, %Y %I:%M %p",time ))
 
 			time = Utils.getTime(time,"%b %d, %Y %I:%M %p",TimeZone)
 
+
+
+
+
 			local time = display.newText( tempGroup,time,W-80,background.y+3,native.systemFont,10 )
 				time.x=W-120
 				time.anchorX=0;time.anchorY=0
 				time:setTextColor(Utils.convertHexToRGB(color.tabBarColor))
+
+
+			if Utils.getTime(makeTimeStamp(list[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "*t" )),"%B %d, %Y",TimeZone) then
+
+				time.text = Utils.getTime(makeTimeStamp(list[i].Update_Time_Stamp),"%I:%M %p",TimeZone)
+			else
+
+				local t = os.date( "*t" )
+				t.day=t.day-1
+
+				if Utils.getTime(makeTimeStamp(list[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(t),"%B %d, %Y",TimeZone) then
+
+				time.text = "YESTERDAY"
+
+				end
+
+
+			end
+
+			time.x=W-time.contentWidth-10
 
 			local line = display.newRect(tempGroup,W/2,background.y,W,1)
 			line.y=background.y+background.contentHeight-line.contentHeight

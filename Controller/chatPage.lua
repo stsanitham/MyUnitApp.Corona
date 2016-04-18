@@ -93,36 +93,6 @@ function makeTimeStamp( dateString )
 end
 
 
-	local function printTimeSinceStart( event )
-
-
-
-			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( )
-
-			if chatHoldflag == true then
-
-				holdLevel=holdLevel+1
-
-					if holdLevel > 25 then
-
-						print("delete Action")
-
-						Deleteicon.isVisible=true
-
-					end
-
-			end
-		    if chatReceivedFlag==true then
-
-			if selectedForDelete ~= nil then 
-				if selectedForDelete.y ~= nil then
-				 selectedForDelete:removeSelf();selectedForDelete=nil 
-				 end 
-			end
-		    	chatReceivedFlag=false
-		    	
-		    end
-		end 
 
 local function ChatTouch( event )
 
@@ -321,11 +291,11 @@ local dateVlaue=""
 
 		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
 
-		chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,W-85,0,native.systemFont,14)
+		chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,W-118,0,native.systemFont,14)
 
 		else
 
-			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,native.systemFont,14)
+			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,native.systemFont,14)
 
 		end
 		chat.anchorY=0
@@ -423,6 +393,43 @@ local dateVlaue=""
 chatScroll:scrollTo( "bottom", { time=200 } )
 
 end
+
+
+	local function printTimeSinceStart( event )
+
+
+
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( )
+
+			if chatHoldflag == true then
+
+				holdLevel=holdLevel+1
+
+					if holdLevel > 25 then
+
+						print("delete Action")
+
+						Deleteicon.isVisible=true
+
+					end
+
+			end
+
+		    if chatReceivedFlag==true then
+
+			chatReceivedFlag=false
+
+			sendMeaasage()
+			end 
+
+			if selectedForDelete ~= nil then 
+				if selectedForDelete.y ~= nil then
+				 selectedForDelete:removeSelf();selectedForDelete=nil 
+				 end 
+			end
+		    	
+		    	
+		    end
 
 
 local function deleteAction( event )
@@ -1136,14 +1143,15 @@ function scene:create( event )
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-	BackBtn = display.newText( sceneGroup, "<", 0, 0 , native.systemFontBold ,16 )
+	BackBtn = display.newImageRect( sceneGroup, "res/assert/right-arrow(gray-).png",15,15 )
 	BackBtn.anchorX = 0
-	BackBtn.x=5;BackBtn.y = title_bg.y
-	BackBtn:setFillColor(0)
+	BackBtn.x=25;BackBtn.y = title_bg.y
+	BackBtn.xScale=-1
+	--BackBtn:setFillColor(0)
 
 	title = display.newText(sceneGroup,FlapMenu.chatMessageTitle,0,0,native.systemFont,18)
 	title.anchorX = 0
-	title.x=BackBtn.x+BackBtn.contentWidth+5;title.y = title_bg.y
+	title.x=BackBtn.x+BackBtn.contentWidth-5;title.y = title_bg.y-3
 	title:setFillColor(0)
 
 	title.text = "Chat"

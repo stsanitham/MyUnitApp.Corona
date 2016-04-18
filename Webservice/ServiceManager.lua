@@ -993,12 +993,12 @@ local request_value = {}
 
 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	print("canonicalizedHeaderString : "..canonicalizedHeaderString)
+	
 
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
-
+	print("time : "..headers["Timestamp"])
 	print( authenticationkey )
 	params={headers = headers}
 
