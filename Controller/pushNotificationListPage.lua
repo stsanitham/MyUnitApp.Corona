@@ -755,7 +755,7 @@ local tabBarGroup = display.newGroup( )
 							messageList_array[#messageList_array] = nil
 						end
 
-
+         
 
 			local function getScheduleMessageList(response)
 
@@ -810,9 +810,7 @@ local tabBarGroup = display.newGroup( )
 
 					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
 
-
-
-
+                
 
 	elseif  list_values.MessageStatus == "SEND" and tab_Message.id=="sent" then
 
@@ -888,6 +886,7 @@ local tabBarGroup = display.newGroup( )
 
 
 					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+			    
 
 
   elseif  list_values.MessageStatus == "DRAFT" and tab_Contact.id == "draft" then

@@ -470,21 +470,6 @@ end
 		
 		if phase == "will" then
 
-			 --    contactId = invitedetail_value.MyUnitBuzzRequestAccessId
-
-				-- print("ContactIdVlaue before assigning"..contactId)
-
-
-				-- for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-
-				-- ContactId = row.ContactId
-
-				-- print("ContactId :"..ContactId)
-
-				-- end
-
-	  
-
 
 		elseif phase == "did" then
 
@@ -532,7 +517,7 @@ local ProfileImage
 					ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
 				end
 
-				ProfileImage.width = W;ProfileImage.height = 140
+				ProfileImage.width = W;ProfileImage.height = 135
 				ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
 				ProfileImage.anchorY=0
 
@@ -558,10 +543,10 @@ local ProfileImage
 
 		scroll_View = widget.newScrollView
 		{
-		top = 100,
+		top = 75,
 		left = 0,
 		width = W,
-		height = H-100,
+		height = H-75,
 		hideBackground = false,
 		isBounceEnabled=false,
 		horizontalScrollingDisabled = true,

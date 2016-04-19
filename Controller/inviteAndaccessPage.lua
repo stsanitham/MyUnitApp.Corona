@@ -229,7 +229,7 @@ local function ActionTouch( event )
 			display.getCurrentStage():setFocus( nil )
 				for i=1,#groupArray do
 				local group = groupArray[i]
-						group[group.numChildren].isVisible = false
+						group[group.numChildren].isVisible = true
 					
 				end
 
@@ -310,7 +310,7 @@ local function Createmenu( object )
 
 local menuGroup = display.newGroup( )
 	
-	print( "here" )
+	--print( "here" )
 	local menuBg = display.newRect(menuGroup,0,0,75,60)
 		 menuBg:setFillColor( 1 )
 		 menuBg.strokeWidth = 1
@@ -498,17 +498,17 @@ local function CreateList(list,scrollView)
 
 
 		
-			local background = display.newRect(tempGroup,0,0,W,50)
-			--local Initial_Height = 1
+			local background = display.newRect(tempGroup,0,0,W,45)
+			local Initial_Height = 3
 
 			if(groupArray[#groupArray-1]) ~= nil then
-				Initial_Height = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height+2.5
+				Initial_Height = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height-2
 			end
 
 			background.anchorY = 0
 			background.anchorX = 0
 			background.x=5;background.y=Initial_Height
-			--background.alpha=
+			background.alpha=0.01
 			background.value = feedArray[i]
 			background.id="listBg"
 			background.name = status
@@ -516,10 +516,15 @@ local function CreateList(list,scrollView)
 
 
 
+			local line = display.newRect(tempGroup,W/2,background.y,W,1)
+			line.y=background.y+background.contentHeight-line.contentHeight+15
+			line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+
+
 			if feedArray[i].ImagePath ~= nil then
 
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2
+			Image.x=30;Image.y=background.y+background.height/2+5
 
 			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
 				"GET",
@@ -533,7 +538,7 @@ local function CreateList(list,scrollView)
 						print(img_event.response.filename)
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
 						Image.width=35;Image.height=35
-						Image.x=30;Image.y=background.y+background.contentHeight/2
+						Image.x=30;Image.y=background.y+background.contentHeight/2+5
     				--event.row:insert(img_event.target)
 
     			    else
@@ -546,7 +551,7 @@ local function CreateList(list,scrollView)
     			end, "inviteaccess"..feedArray[i].Contact_Id..".png", system.TemporaryDirectory)
 		else
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2
+			Image.x=30;Image.y=background.y+background.height/2+5
 
 		end
 
@@ -558,7 +563,7 @@ local function CreateList(list,scrollView)
 
 		    	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-				Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=background.y+5
+				Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=background.y-1
 				Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
@@ -580,7 +585,7 @@ local function CreateList(list,scrollView)
 				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
 				Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 				Display_Group[#Display_Group]:setFillColor( 0.3 )
-				Display_Group[#Display_Group].text = PopupGroup.EmailDetail_titletext..": "..feedArray[i].EmailAddress
+				Display_Group[#Display_Group].text = feedArray[i].EmailAddress
 
 
 			if feedArray[i].EmailAddress:len() > 33 then
@@ -601,63 +606,11 @@ local function CreateList(list,scrollView)
 				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
 				Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 				Display_Group[#Display_Group]:setFillColor( 0.3 )
-
 				Display_Group[#Display_Group].text = feedArray[i].PhoneNumber
 
 			end
 
-			-- if feedArray[i].PhoneNumber == nil or feedArray[i].PhoneNumber == "" then
 
-			-- 	print("Visibilty false for this contact")
-
-			-- 	Phone.text = " ".." "
-			-- 	MKRank.y = Email.y+Email.contentHeight+5
-
-			-- end
-
-
-		
-
-			-- if feedArray[i].MkRankLevel ~= nil then
-
-			-- 		Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
-			-- Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-			-- Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
-			-- Display_Group[#Display_Group]:setFillColor( 0.3 )
-
-			-- 	Display_Group[#Display_Group].text = PopupGroup.MKRankDetail_title..": "..feedArray[i].MkRankLevel
-			
-		
-
-
-			-- end
-
-			
-
-			-- if feedArray[i].MkRankLevel ~= nil then
-
-			-- 	local time
-
-			-- 	if feedArray[i].CreateTimeStamp ~= nil then
-
-			-- 		 time = Utils.makeTimeStamp(feedArray[i].CreateTimeStamp)
-
-			-- 	else
-
-			-- 	    time = Utils.makeTimeStamp(feedArray[i].UpdateTimeStamp)
-
-			-- 	 end
-
-			-- 	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
-			
-			-- Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-			-- Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
-			-- Display_Group[#Display_Group]:setFillColor( 0.3 )
-
-			-- 	Display_Group[#Display_Group].text = InviteAccessDetail.ActivityOn..": "..tostring(os.date("%m/%d/%Y %I:%m %p",time))
-
-	
-			-- end
 
 			background.height = 0
 
@@ -674,11 +627,11 @@ local function CreateList(list,scrollView)
 
 	
 
-			   group =  Createmenu(background)
+			 --  group =  Createmenu(background)
 
-   				tempGroup:insert( group )
+   				--tempGroup:insert( group )
 
-   				group.isVisible=false
+   				--group.isVisible=false
 
 			scrollView:insert(tempGroup)
 
@@ -720,6 +673,8 @@ local function TouchAction( event )
 return true
 
 end
+
+
 
 ------------------------------------------------------
 
@@ -763,12 +718,20 @@ end
 
 function get_GetMyUnitBuzzRequestAccesses(response)
 
-	scrollView:scrollTo( "top", { time=200} )
+
+		scrollView:scrollToPosition
+		{
+		    y = 0,
+		    time = 200,
+		}
+
 
 		for j=#groupArray, 1, -1 do 
 			display.remove(groupArray[#groupArray])
 			groupArray[#groupArray] = nil
 		end
+
+
 	if response ~= nil then
 		if #response > 0 then
 		
@@ -781,7 +744,8 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 				listValue[i]=nil
 
-			end
+
+			 end
 
 
 			for i=1,#response do
@@ -864,11 +828,11 @@ function scene:show( event )
 					width = W,
 					height =H-RecentTab_Topvalue,
 					hideBackground = true,
-					isBounceEnabled=true,
+					isBounceEnabled=false,
 					horizontalScrollDisabled = true,
-			   		scrollWidth = W,
+			   		--scrollWidth = W,
 					bottomPadding = 60,
-		   			listener = Facebook_scrollListener,
+		   			--listener = Facebook_scrollListener,
 		}
 
 
