@@ -488,15 +488,27 @@ local function TextLimitation( event )
 
 					if event.target.id =="shortmessage" then
 
-							if (string.len(event.target.text) >= 250) then
+							if (string.len(event.target.text) > 250) then
 
 							event.target.text = event.target.text:sub(1, 250)
 
 							end
 
-						       counttext = 250 - string.len(event.target.text).. " characters"
 
-						       short_msg_charlimit.text = counttext
+							if (string.len(event.target.text) <= 250) then
+
+							      counttext = 250 - string.len(event.target.text).. " characters"
+
+							      short_msg_charlimit.text = counttext
+
+							end
+
+
+					        if (string.len(event.target.text) <= 0) then
+
+					       	      short_msg_charlimit.text = "0 characters"
+
+					        end
 
 					end
 
@@ -504,15 +516,28 @@ local function TextLimitation( event )
 
 					if event.target.id =="longmessage" then
 
-							if (string.len(event.target.text) >= 1000) then
+							if (string.len(event.target.text) > 1000) then
 
 							event.target.text = event.target.text:sub(1, 1000)
 
 							end
 
-						       countlongtext = 1000 - string.len(event.target.text) .. " characters"
 
-						       long_msg_charlimit.text = countlongtext
+							if (string.len(event.target.text) <= 1000) then
+
+							       countlongtext = 1000 - string.len(event.target.text) .. " characters"
+
+							       long_msg_charlimit.text = countlongtext
+
+							end
+
+
+
+						       if (string.len(event.target.text) <= 0) then
+
+						       	 long_msg_charlimit.text = "0 characters"
+
+						       end
 
 
 
