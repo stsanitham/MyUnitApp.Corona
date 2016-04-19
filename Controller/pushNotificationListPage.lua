@@ -817,149 +817,76 @@ local tabBarGroup = display.newGroup( )
 					print("sent coming")
 
 
-				-- tab_Schedule_txt:setFillColor( 0 )
-				-- tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-				-- tab_Draft_txt:setFillColor(0)
+				tab_Schedule_txt:setFillColor( 0 )
+				tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+				tab_Draft_txt:setFillColor(0)
 
-				-- tab_Group_bottombar.isVisible = true
-				-- tab_Group_bottombar.y = tabBg.y+29.5
-				-- tab_Group_bottombar.x = W/2
-
-
-				-- for j=1, #sentmessageList_array do 
-
-				-- 			display.remove(sentmessageList_array[#sentmessageList_array])
-				-- 			sentmessageList_array[#sentmessageList_array] = nil
-				-- end
+				tab_Group_bottombar.isVisible = true
+				tab_Group_bottombar.y = tabBg.y+29.5
+				tab_Group_bottombar.x = W/2
 
 
+				for j=1, #sentmessageList_array do 
 
-			 --   local function getSentMessageList(response)
+							display.remove(sentmessageList_array[#sentmessageList_array])
+							sentmessageList_array[#sentmessageList_array] = nil
+				end
 
-				--   sentmessage_response = response
 
-				-- 	if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
+
+			   local function getSentMessageList(response)
+
+				  sentmessage_response = response
+
+					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
 							
-				-- 		SentMessageCreation_list(sentmessage_response)
-				-- 		NoSentMessage.isVisible=false
+						SentMessageCreation_list(sentmessage_response)
+						NoSentMessage.isVisible=false
 
-				-- 		    for j = 1, #draftmessageList_array do
-
-			 --                	display.remove(draftmessageList_array[#draftmessageList_array])
-				-- 			    draftmessageList_array[#draftmessageList_array] = nil
-
-				-- 	         end
-
-
-				-- 	         for j = 1 , #messageList_array do
-
-			 --                	display.remove(messageList_array[#messageList_array])
-				-- 			    messageList_array[#messageList_array] = nil
-
-				-- 	         end
-
-				-- 	else
-
-				-- 		NoSentMessage.isVisible=true
-
-				-- 			for j = 1, #draftmessageList_array do
-
-			 --                	display.remove(draftmessageList_array[#draftmessageList_array])
-				-- 			    draftmessageList_array[#draftmessageList_array] = nil
-
-				-- 	         end
-
-
-				-- 	         for j = 1, #messageList_array do
-
-			 --                	display.remove(messageList_array[#messageList_array])
-				-- 			    messageList_array[#messageList_array] = nil
-
-				-- 	         end
-
-
-				-- 	end
-
-
-			 --    end
-
-
-
-				-- 	Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
-
-
-
-						tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
-						tab_Sent_txt:setFillColor(0)
-						tab_Draft_txt:setFillColor(0)
-
-						tab_Group_bottombar.isVisible = true
-						tab_Group_bottombar.y = tabBg.y+29.5
-						tab_Group_bottombar.x = W/2 - W/3
-
-
-						for j=1, #messageList_array do 
-
-							display.remove(messageList_array[#messageList_array])
-							messageList_array[#messageList_array] = nil
-						end
-
-         
-
-			local function getScheduleMessageList(response)
-
-				messagelist_response = response
-
-					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
-							
-						MessageCreation_list(messagelist_response)
-						NoScheduleMessage.isVisible=false
-
-						     for j = 1, #sentmessageList_array do
-
-			                	display.remove(sentmessageList_array[#sentmessageList_array])
-							    sentmessageList_array[#sentmessageList_array] = nil
-
-					         end
-
-
-					         for j = 1, #draftmessageList_array do
+						    for j = 1, #draftmessageList_array do
 
 			                	display.remove(draftmessageList_array[#draftmessageList_array])
 							    draftmessageList_array[#draftmessageList_array] = nil
 
 					         end
 
+
+					         for j = 1 , #messageList_array do
+
+			                	display.remove(messageList_array[#messageList_array])
+							    messageList_array[#messageList_array] = nil
+
+					         end
 
 					else
 
-						NoScheduleMessage.isVisible=true
+						NoSentMessage.isVisible=true
 
-							 for j = 1, #sentmessageList_array do
+							for j = 1, #draftmessageList_array do
 
-			                	display.remove(sentmessageList_array[#sentmessageList_array])
-							    sentmessageList_array[#sentmessageList_array] = nil
+			                	display.remove(draftmessageList_array[#draftmessageList_array])
+							    draftmessageList_array[#draftmessageList_array] = nil
 
 					         end
 
 
-					         for j = 1, #draftmessageList_array do
+					         for j = 1, #messageList_array do
 
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
+			                	display.remove(messageList_array[#messageList_array])
+							    messageList_array[#messageList_array] = nil
 
 					         end
 
 
 					end
 
-			   end
+
+			    end
 
 
 
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
-					
-
+					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+			    
 
 
   elseif  list_values.MessageStatus == "DRAFT" and tab_Contact.id == "draft" then
