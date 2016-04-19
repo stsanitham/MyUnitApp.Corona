@@ -241,7 +241,7 @@ end
 
 
 
-function Webservice.SEND_MESSAGE(message,longmessage,videopath,imagepath,imagename,imagesize,pushmethod,From,To,Message_Type,postExecution)
+function Webservice.SEND_MESSAGE(message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,pushmethod,From,To,Message_Type,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -284,6 +284,9 @@ if Message_Type ~= nil and Message_Type ~= "" then
 {
   "MyUnitBuzzLongMessage": "]]..longmessage..[[",
   "MyUnitBuzzMessage": " ",
+  "IsScheduled": " ",	
+  "ScheduledDate": " ",	
+  "ScheduledTime": " ",	
   "VideoFilePath": "]]..videopath..[[",
   "MessageStatus": "]]..pushmethod..[[",
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
@@ -306,8 +309,10 @@ else
 
 {
   "MyUnitBuzzMessage": "]]..message..[[",
-
   "MyUnitBuzzLongMessage": "]]..longmessage..[[",
+  "IsScheduled": "]]..IsScheduled..[[",	
+  "ScheduledDate": "]]..ScheduledDate..[[",	
+  "ScheduledTime": "]]..ScheduledTime..[[",	
   "VideoFilePath": "]]..videopath..[[",
   "MessageStatus": "]]..pushmethod..[[",
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
@@ -651,6 +656,45 @@ function Webservice.GET_ACTIVE_TEAMMEMBERDETAILS(contactId,postExecution)
 	params={headers = headers}
 
 	request.new(ApplicationConfig.GetActiveTeammemberDetails.."?"..resbody,method,params,postExecution)
+	
+	return response
+end
+
+
+
+function Webservice.GetContactInformation(contactId,postExecution)
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method="GET"
+
+	local url = splitUrl(ApplicationConfig.GetContactInformation)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	
+
+	local resbody = "contactId="..contactId
+
+
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetContactInformation.."?"..resbody,method,params,postExecution)
 	
 	return response
 end
@@ -2126,6 +2170,52 @@ function Webservice.GetMessageGroupTeamMemberList(groupid,postExecution)
 	
 	return response
 end
+
+
+function Webservice.UpdateLastActivityDate(postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+
+	method="GET"
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	local url = splitUrl(ApplicationConfig.UpdateLastActivityDate)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+
+	local resbody="?userId="..UserId.."&contactId="..ContactId
+	params={headers = headers}
+
+	request.new(ApplicationConfig.UpdateLastActivityDate..resbody,method,params,postExecution)
+
+    print("request : "..json.encode(params))
+
+	
+	return response
+end
+
+
+
 
 
 

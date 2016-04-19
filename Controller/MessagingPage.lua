@@ -324,35 +324,48 @@ local function Broadcast_list( list )
 
 		for j=1,i-1 do
 
-			if list[j].Message_From == list[i].Message_To   then
+			if list[i].Message_Type ~= "GROUP" then
 
-				if list[j].Message_To == list[i].Message_From  then
+					if list[j].Message_Type ~= "GROUP" and list[j].Message_From == list[i].Message_To   then
 
-					flag=false
+						if list[j].Message_To == list[i].Message_From  then
 
-				end
+							flag=false
+
+						end
+
+					end
+
+					if list[j].Message_Type ~= "GROUP" and list[j].Message_To == list[i].Message_To   then
+
+						if list[j].Message_From == list[i].Message_From  then
+
+							flag=false
+
+						end
+
+					end
 
 			end
 
-			if list[j].Message_To == list[i].Message_To   then
 
-				if list[j].Message_From == list[i].Message_From  then
+			if list[i].Message_Type == "GROUP" then
 
-					flag=false
+					if list[j].Message_Type == "GROUP" and (list[j].Message_To == list[i].Message_To or  list[j].Message_To == list[i].Message_From)  then
 
-				end
+						flag=false
+		
+
+					end
+
+					if list[j].Message_Type == "GROUP" and (list[j].Message_From == list[i].Message_To or  list[j].Message_From == list[i].Message_From)  then
+
+						flag=false
+		
+
+					end
 
 			end
-
-			-- if list[j].Message_To == list[i].Message_From   then
-
-			-- 	if list[j].Message_From == list[i].Message_To then
-
-			-- 		flag=false
-
-			-- 	end
-
-			-- end
 
 			
 

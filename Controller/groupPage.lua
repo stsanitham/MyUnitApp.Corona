@@ -92,6 +92,7 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 
 
 
+
 function makeTimeStamp( dateString )
    local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
    local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
@@ -112,6 +113,8 @@ function makeTimeStamp( dateString )
 end
 
 
+
+
 local function groupBackground_Touch( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
@@ -128,10 +131,10 @@ local function groupBackground_Touch( event )
 			display.getCurrentStage():setFocus( nil )
 
 			 local options = {
-										effect = "flipFadeOutIn",
-										time = 200,	
-										params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
-										}
+								effect = "flipFadeOutIn",
+								time = 200,	
+								params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
+							 }
 
 					    composer.gotoScene( "Controller.chatPage", options )
 

@@ -5,7 +5,7 @@ ApplicationConfig = {}
 ----------local---------------
 
 
-----[[
+--[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://192.168.1.47:9080"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -17,6 +17,9 @@ ApplicationConfig.API_PRIVATE_KEY = "ZujprDvpDDi4lvcitlgaRksJtpKxT7SOHiMxoB17i28
 ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 --]]
+
+
+
 
 
 ----------Dev---------------
@@ -38,7 +41,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 
 -----Stagging--------
---[[
+----[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -186,4 +189,8 @@ ApplicationConfig.DeleteMyUnitBuzzMessages = ApplicationConfig.BASE_URL.."/MyUni
 ApplicationConfig.GetActiveChatTeammembersList = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetActiveChatTeammembersList"
 
 ApplicationConfig.GetMessageGroupTeamMemberList = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMessageGroupTeamMemberList"
+
+ApplicationConfig.UpdateLastActivityDate = ApplicationConfig.BASE_URL.."/MyUnitBuzz/UpdateLastActivityDate"
+
+ApplicationConfig.GetContactInformation = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetContactInformation"
 

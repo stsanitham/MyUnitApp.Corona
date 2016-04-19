@@ -532,7 +532,7 @@ local ProfileImage
 					ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
 				end
 
-				ProfileImage.width = W;ProfileImage.height = 180
+				ProfileImage.width = W;ProfileImage.height = 140
 				ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
 				ProfileImage.anchorY=0
 
@@ -554,6 +554,8 @@ local ProfileImage
 		sceneGroup:insert( titleBar_text )
 
 	local RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight
+
+
 		scroll_View = widget.newScrollView
 		{
 		top = 100,
@@ -809,7 +811,7 @@ local ProfileImage
 	    if invite_status == "DENY" then
 
 
-		            grantaccess_button = display.newRect(scroll_View,0,0,W,25)
+		            grantaccess_button = display.newRect(0,0,W,25)
 					grantaccess_button.x=leftAlign + 75
 					grantaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					grantaccess_button:setStrokeColor(0,0,0,0.5)
@@ -821,14 +823,14 @@ local ProfileImage
 					grantaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( grantaccess_button )
 
-					grantaccess_button_text = display.newText(scroll_View,CommonWords.Grant,0,0,native.systemFont,16)
+					grantaccess_button_text = display.newText(CommonWords.Grant,0,0,native.systemFont,16)
 					grantaccess_button_text.x=grantaccess_button.x
 					grantaccess_button_text.y=grantaccess_button.y
 					grantaccess_button_text:setFillColor(0,0,0)
 					scroll_View:insert( grantaccess_button_text )
 
 
-					removeaccess_button = display.newRect(scroll_View,0,0,W,25)
+					removeaccess_button = display.newRect(0,0,W,25)
 					removeaccess_button.x=leftAlign + 223
 					removeaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					removeaccess_button:setStrokeColor(0,0,0,0.5)
@@ -840,7 +842,7 @@ local ProfileImage
 					removeaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( removeaccess_button )
 
-					removeaccess_button_text = display.newText(scroll_View,CommonWords.Remove,0,0,native.systemFont,16)
+					removeaccess_button_text = display.newText(CommonWords.Remove,0,0,native.systemFont,16)
 					removeaccess_button_text.x=removeaccess_button.x
 					removeaccess_button_text.y=removeaccess_button.y
 					removeaccess_button_text:setFillColor(0,0,0)
@@ -850,7 +852,7 @@ local ProfileImage
 	    elseif invite_status == "GRANT" then
 
 
-	    	  		blockaccess_button = display.newRect(scroll_View,0,0,W,25)
+	    	  		blockaccess_button = display.newRect(0,0,W,25)
 					blockaccess_button.x=leftAlign + 150
 					blockaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					blockaccess_button:setStrokeColor(0,0,0,0.5)
@@ -862,7 +864,7 @@ local ProfileImage
 					blockaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( blockaccess_button )
 
-					blockaccess_button_text = display.newText(scroll_View,CommonWords.Block,0,0,native.systemFont,16)
+					blockaccess_button_text = display.newText(CommonWords.Block,0,0,native.systemFont,16)
 					blockaccess_button_text.x=blockaccess_button.x
 					blockaccess_button_text.y=blockaccess_button.y
 					blockaccess_button_text:setFillColor(0,0,0)
@@ -878,7 +880,7 @@ local ProfileImage
 
 		elseif invite_status == "ADDREQUEST" then
 
-			 	    provideaccess_button = display.newRect(scroll_View,0,0,W,25)
+			 	    provideaccess_button = display.newRect(0,0,W,25)
 					provideaccess_button.x=leftAlign + 150
 					provideaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					provideaccess_button:setStrokeColor(0,0,0,0.5)
@@ -890,7 +892,7 @@ local ProfileImage
 					provideaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( provideaccess_button )
 
-					provideaccess_button_text = display.newText(scroll_View,CommonWords.ProvideAccess,0,0,native.systemFont,16)
+					provideaccess_button_text = display.newText(CommonWords.ProvideAccess,0,0,native.systemFont,16)
 					provideaccess_button_text.x=provideaccess_button.x
 					provideaccess_button_text.y=provideaccess_button.y
 					provideaccess_button_text:setFillColor(0,0,0)
@@ -899,7 +901,7 @@ local ProfileImage
 
         elseif invite_status == "OPEN" then
 
-        			grantaccess_button = display.newRect(scroll_View,0,0,W,25)
+        			grantaccess_button = display.newRect(0,0,W,25)
 					grantaccess_button.x=leftAlign + 75
 					grantaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					grantaccess_button:setStrokeColor(0,0,0,0.5)
@@ -911,13 +913,13 @@ local ProfileImage
 					grantaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( grantaccess_button )
 
-					grantaccess_button_text = display.newText(scroll_View,CommonWords.Grant,0,0,native.systemFont,16)
+					grantaccess_button_text = display.newText(CommonWords.Grant,0,0,native.systemFont,16)
 					grantaccess_button_text.x=grantaccess_button.x
 					grantaccess_button_text.y=grantaccess_button.y
 					grantaccess_button_text:setFillColor(0,0,0)
 					scroll_View:insert( grantaccess_button_text )
 
-					denyaccess_button = display.newRect(scroll_View,0,0,W,25)
+					denyaccess_button = display.newRect(0,0,W,25)
 					denyaccess_button.x=leftAlign + 223
 					denyaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
 					denyaccess_button:setStrokeColor(0,0,0,0.5)
@@ -929,7 +931,7 @@ local ProfileImage
 					denyaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( denyaccess_button )
 
-					denyaccess_button_text = display.newText(scroll_View,CommonWords.Deny,0,0,native.systemFont,16)
+					denyaccess_button_text = display.newText(CommonWords.Deny,0,0,native.systemFont,16)
 					denyaccess_button_text.x=denyaccess_button.x
 					denyaccess_button_text.y=denyaccess_button.y
 					denyaccess_button_text:setFillColor(0,0,0)

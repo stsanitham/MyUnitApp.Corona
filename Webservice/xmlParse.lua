@@ -19,14 +19,12 @@ function request.new(url, method, params,listner)
 	
 	print("enter "..url)
 
+	spinner_show()
+
 
 	if string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzzCheckExistsRequestStatus") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") or string.find(url,"/MyUnitBuzzCalendar/CreateQuickcContact") or string.find(url,"/MyUnitBuzz/CheckNotInUnitWiseRegister") or string.find(url,"/MyUnitBuzz/SaveMyUnitBuzzMessages") then
 
-		spinner_hide()
-
-	else
-
-		spinner_show()
+		spinner.isVisible=false
 
 	end
 

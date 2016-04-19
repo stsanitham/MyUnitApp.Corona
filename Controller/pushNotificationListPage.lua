@@ -71,11 +71,15 @@ local tabBarGroup = display.newGroup( )
 		native.setKeyboardFocus(nil)
 		display.getCurrentStage():setFocus( event.target )
 
+		display.getCurrentStage():setFocus( event.target )
+
 		elseif event.phase == "ended" then
 
 		display.getCurrentStage():setFocus( nil )
 
 		end
+
+		return true
 
 		end 
 
@@ -219,6 +223,15 @@ local tabBarGroup = display.newGroup( )
 
 		local function DraftMessageCreation_list( draftmessagelist )
 
+			messagelist_scrollView:scrollToPosition
+						{
+						    y = 0,
+						    time = 100,
+						}
+
+			compose_msg_icon:toFront()
+
+
 			for j=1, #draftmessageList_array do 
 				
 				display.remove(draftmessageList_array[#draftmessageList_array])
@@ -260,36 +273,43 @@ local tabBarGroup = display.newGroup( )
 
 				local Message_time = display.newText(tempGroup,"",0,0,native.systemFont,10)
 				Message_time.x=background.x+background.contentWidth/2-65
-				Message_time.y=background.y+5
+				Message_time.y=background.y+32
 				Message_time.anchorX=0
 				Message_time.anchorY = 0
 				Utils.CssforTextView(Message_time,sp_labelName)
 				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 				
 
-                print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
+                   print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
 
-				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
-				Message_time.text = "TODAY"
-			   
-			    else
+					Message_time.text = os.date("%I:%M %p",time)
 
-				local t = os.date( "*t" )
-				t.day=t.day-1
+				    else 
 
-				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
-				Message_time.text = "YESTERDAY"
+					local t = os.date( "*t" )
+					t.day=t.day-1
 
-				end
+					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
 
-			    end
+						Message_time.text = "YESTERDAY"
+						Message_time.x = background.x+background.contentWidth/2-70
+
+					else
+
+						Message_time.text = os.date("%B %d, %Y",time)
+						Message_time.x = background.x+background.contentWidth/2-75
+
+					end
+
+			     	end
 
 
 				local Messagedetail_txt = display.newText(tempGroup,draftmessagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
 				Messagedetail_txt.x=12
-				Messagedetail_txt.y=Message_time.y+Message_time.contentHeight+2
+				Messagedetail_txt.y=background.y+7
 				Messagedetail_txt.anchorX=0
 				Messagedetail_txt.anchorY = 0
 				Utils.CssforTextView(Messagedetail_txt,sp_labelName)
@@ -299,7 +319,9 @@ local tabBarGroup = display.newGroup( )
 
 					Messagedetail_txt.text = Messagedetail_txt.text:sub(1,60).."..."
 					background.height = 65
-					Messagedetail_txt.y=Message_time.y+Message_time.contentHeight+4
+					Messagedetail_txt.y=background.y+7
+
+					Message_time.y=background.y+45
 
 				end
 		
@@ -321,7 +343,19 @@ local tabBarGroup = display.newGroup( )
 
 
 
+
 		local function SentMessageCreation_list( sentmessagelist )
+
+			messagelist_scrollView:scrollToPosition
+						{
+						    y = 0,
+						    time = 100,
+						}
+
+						print("************************************************************")
+
+			compose_msg_icon:toFront()
+
 
 			for j=1, #sentmessageList_array do 
 				
@@ -378,46 +412,90 @@ local tabBarGroup = display.newGroup( )
 
 				local Message_time = display.newText(tempGroup,"",0,0,native.systemFont,10)
 				Message_time.x=background.x+background.contentWidth/2-65
-				Message_time.y=background.y+5
+				Message_time.y=background.y+32
 				Message_time.anchorX=0
 				Message_time.anchorY = 0
 				Utils.CssforTextView(Message_time,sp_labelName)
 				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 				
 
-                print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
+	                print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
 
-				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
-				Message_time.text = "TODAY"
-			   
-			    else
+					Message_time.text = os.date("%I:%M %p",time)
 
-				local t = os.date( "*t" )
-				t.day=t.day-1
+				    else 
 
-				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
-				Message_time.text = "YESTERDAY"
+					local t = os.date( "*t" )
+					t.day=t.day-1
 
-				end
+					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
 
-			    end
+						Message_time.text = "YESTERDAY"
+						Message_time.x = background.x+background.contentWidth/2-70
+
+					else
+
+						Message_time.text = os.date("%B %d, %Y",time)
+						Message_time.x = background.x+background.contentWidth/2-75
+
+					end
+
+			     	end
+
+
+
+
+					-- if Message_time.text ~= nil then
+
+					-- parentFlag=true
+
+					-- if parentFlag == true then
+					-- parentFlag=false
+
+					-- parentTitle = display.newRect(tempGroup,0,0,W,25)
+
+					-- -- if(messageList_array[#messageList_array-1]) ~= nil then
+					-- -- tempHeight = messageList_array[#messageList_array-1][1].y + messageList_array[#messageList_array-1][1].height+3
+					-- -- end
+
+					-- parentTitle.anchorY = 0
+					-- parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2 - 18
+					-- parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
+
+
+					-- parent_centerText = display.newText(tempGroup,Message_time.text,0,0,native.systemFontBold,14)
+					-- parent_centerText.x=W/2
+					-- parent_centerText.anchorX=0
+					-- parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
+
+					-- background.y=parentTitle.y+background.contentHeight/2
+
+					-- end
+
+					-- end
+
+
 
 
 				local Messagedetail_txt = display.newText(tempGroup,sentmessagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
 				Messagedetail_txt.x=12
-				Messagedetail_txt.y=Message_time.y+Message_time.contentHeight+2
+				Messagedetail_txt.y=background.y+7
 				Messagedetail_txt.anchorX=0
 				Messagedetail_txt.anchorY = 0
 				Utils.CssforTextView(Messagedetail_txt,sp_labelName)
 				Messagedetail_txt:setFillColor(0,0,0)
+				
 
 				if Messagedetail_txt.text:len() > 60 then
 
 					Messagedetail_txt.text = Messagedetail_txt.text:sub(1,60).."..."
 					background.height = 65
-					Messagedetail_txt.y=Message_time.y+Message_time.contentHeight+4
+					Messagedetail_txt.y=background.y+7
+
+					Message_time.y=background.y+45
 
 				end
 		
@@ -447,6 +525,16 @@ local tabBarGroup = display.newGroup( )
 
 
 		local function MessageCreation_list( messagelist )
+
+			messagelist_scrollView:scrollToPosition
+						{
+						    y = 0,
+						    time = 100,
+						}
+
+
+			compose_msg_icon:toFront()
+
 
 			for j=1, #messageList_array do 
 				
@@ -502,41 +590,104 @@ local tabBarGroup = display.newGroup( )
 				local time = makeTimeStamp(timecreated)
 
 
-
 				local Message_time = display.newText(tempGroup,"",0,0,native.systemFont,10)
 				Message_time.x=background.x+background.contentWidth/2-65
-				Message_time.y=background.y+5
+				Message_time.y=background.y+32
 				Message_time.anchorX=0
 				Message_time.anchorY = 0
 				Utils.CssforTextView(Message_time,sp_labelName)
 				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
-                print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
+    --             print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
 
-				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+				-- if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
-				Message_time.text = "TODAY"
+				-- Message_time.text = os.date("%I:%M %p",time)
 			   
-			    else
+			 --    else
 
-				local t = os.date( "*t" )
-				t.day=t.day-1
+				-- 	local t = os.date( "*t" )
+				-- 	t.day=t.day-1
 
-				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+				-- 	if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
-				Message_time.text = "YESTERDAY"
+				-- 	Message_time.text = "YESTERDAY"
 
-				end
+				-- 	end
 
-			    end
+			 --    end
+
+
+			    print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
+
+					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+
+					Message_time.text = os.date("%I:%M %p",time)
+
+				    else 
+
+
+					local t = os.date( "*t" )
+					t.day=t.day-1
+
+					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
+
+						Message_time.text = "YESTERDAY"
+						Message_time.x = background.x+background.contentWidth/2-70
+
+					else
+
+						Message_time.text = os.date("%B %d, %Y",time)
+						Message_time.x = background.x+background.contentWidth/2-75
+
+					end
+
+			     	end
+
+
+
+			    --  if Message_time.text ~= nil then
+
+			    --  	parentFlag=true
+
+
+							-- 	if parentFlag == true then
+							-- 	parentFlag=false
+
+							-- 	parentTitle = display.newRect(tempGroup,0,0,W,25)
+
+							-- 		if(messageList_array[#messageList_array-1]) ~= nil then
+							-- 		tempHeight = messageList_array[#messageList_array-1][1].y + messageList_array[#messageList_array-1][1].height+3
+							-- 		end
+
+							-- 	parentTitle.anchorY = 0
+							-- 	parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
+							-- 	parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
+
+								
+							-- 	parent_centerText = display.newText(tempGroup,Message_time.text,0,0,native.systemFontBold,14)
+								
+
+							-- 	parent_centerText.x=W/2
+							-- 	parent_centerText.anchorX=0
+							-- 	parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
+
+							-- 	background.y=parentTitle.y+background.contentHeight/2
+
+						
+
+							-- end
+
+
+			    --  end
 
 
 				
 
 				local Messagedetail_txt = display.newText(tempGroup,messagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
 				Messagedetail_txt.x=12
-				Messagedetail_txt.y=Message_time.y+Message_time.contentHeight+2
+				Messagedetail_txt.y=background.y+7
 				Messagedetail_txt.anchorX=0
 				Messagedetail_txt.anchorY = 0
 				Utils.CssforTextView(Messagedetail_txt,sp_labelName)
@@ -546,7 +697,9 @@ local tabBarGroup = display.newGroup( )
 
 					Messagedetail_txt.text = Messagedetail_txt.text:sub(1,60).."..."
 					background.height = 65
-					Messagedetail_txt.y=Message_time.y+Message_time.contentHeight+4
+					Messagedetail_txt.y=background.y+7
+
+					Message_time.y=background.y+45
 
 				end
 		
@@ -1233,11 +1386,12 @@ function scene:create( event )
 	title.x=12;title.y = title_bg.y
 	title:setFillColor(0)
 
-	compose_msg_icon = display.newImageRect(sceneGroup,"res/assert/addevent.png", 66/2,66/2.2)
+	compose_msg_icon = display.newImageRect(sceneGroup,"res/assert/addevent.png", 66/1.6,66/1.8)
 	compose_msg_icon.anchorX = 0
 	compose_msg_icon.isVisible = false
 	compose_msg_icon.x=W/2+W/3+12
 	compose_msg_icon.y = title_bg.y+3
+
 
 	Background:addEventListener("touch",FocusComplete)
 
@@ -1258,17 +1412,17 @@ end
 		if phase == "will" then
 
 
-			NoScheduleMessage = display.newText( sceneGroup,MessagePage.NoScheduleMessage, 0,0,0,0,native.systemFontBold,16)
+			NoScheduleMessage = display.newText( sceneGroup,MessagePage.NoMessage, 0,0,0,0,native.systemFontBold,16)
 			NoScheduleMessage.x=W/2;NoScheduleMessage.y=H/2
 			NoScheduleMessage.isVisible=false
 			NoScheduleMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-			NoSentMessage = display.newText( sceneGroup,MessagePage.NoSentMessage , 0,0,0,0,native.systemFontBold,16)
+			NoSentMessage = display.newText( sceneGroup,MessagePage.NoMessage , 0,0,0,0,native.systemFontBold,16)
 			NoSentMessage.x=W/2;NoSentMessage.y=H/2
 			NoSentMessage.isVisible=false
 			NoSentMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-			NoDraftMessage = display.newText( sceneGroup,MessagePage.NoDraftMessage , 0,0,0,0,native.systemFontBold,16)
+			NoDraftMessage = display.newText( sceneGroup,MessagePage.NoMessage, 0,0,0,0,native.systemFontBold,16)
 			NoDraftMessage.x=W/2;NoDraftMessage.y=H/2
 			NoDraftMessage.isVisible=false
 			NoDraftMessage:setFillColor( Utils.convertHexToRGB(color.Black) )
@@ -1277,6 +1431,8 @@ end
 			if IsOwner == true then
 
 			compose_msg_icon.isVisible = true
+			compose_msg_icon.y = H - 45
+			compose_msg_icon.x=W/2+W/3 - 15
 
 
 			tabBg = display.newRect( tabBarGroup, W/2,title_bg.y+title_bg.height/2+3, W, 40 )
@@ -1400,6 +1556,8 @@ end
 		elseif phase == "did" then
 
 			composer.removeHidden()
+
+			compose_msg_icon:toFront()
 
 
 			function getScheduleMessageList(response)

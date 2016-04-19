@@ -58,11 +58,15 @@ local sentMessage_detail
 			native.setKeyboardFocus(nil)
 			display.getCurrentStage():setFocus( event.target )
 
+			display.getCurrentStage():setFocus( event.target )
+
 			elseif event.phase == "ended" then
 
 			display.getCurrentStage():setFocus( nil )
 
 			end
+
+			return true
 
 			end 
 
@@ -70,6 +74,7 @@ local sentMessage_detail
 
 
 		local function closeDetails( event )
+			
 			if event.phase == "began" then
 
 				display.getCurrentStage():setFocus( event.target )
@@ -78,7 +83,7 @@ local sentMessage_detail
 
 			    display.getCurrentStage():setFocus( nil )
 
-					 composer.hideOverlay("slideRight",300)
+				composer.hideOverlay("slideRight",300)
 
 			end
 
@@ -95,7 +100,7 @@ local sentMessage_detail
 
 		       if Request_response == true then
 
-		      		 Utils.SnackBar("Your message has been deleted successfully")
+		      		 Utils.SnackBar(MessagePage.DeleteSuccess)
 
 						local function onTimer ( event )
 
@@ -131,18 +136,19 @@ local sentMessage_detail
 
 		            print("Message Id : ",message_id)
 
-		        	if event.target.id == "accept" then
+	        	if event.target.id == "accept" then
 
-		        		DeleteMessageGroup.isVisible = false
+	        		DeleteMessageGroup.isVisible = false
 
-	        		    Webservice.DeleteMyUnitBuzzMessages(message_id,getDeletionresponse)
+        		    Webservice.DeleteMyUnitBuzzMessages(message_id,getDeletionresponse)
 
-		        	elseif event.target.id == "reject" then
+	        	elseif event.target.id == "reject" then
 
-						DeleteMessageGroup.isVisible = false
+					DeleteMessageGroup.isVisible = false
 
-		        	end
-           end
+	        	end
+        
+        end
 
     end
 
@@ -265,11 +271,13 @@ end
 					left = 0,
 					width = W,
 					height =H-70,
-					bottomPadding = 5,
+					bottomPadding = 15,
 					hideBackground = true,
 					isBounceEnabled=false,
-					horizontalScrollingDisabled = true,
+					horizontalScrollDisabled = true,
+					hideScrollBar = true,
 				}
+
 
             sceneGroup:insert(messagedetail_scrollView)
 
@@ -301,6 +309,7 @@ end
 			title.x=back_icon.x+20;title.y = title_bg.y
 			title:setFillColor(0)
 
+            if IsOwner == true then
 
 			short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",18,16)
 			short_msg_delete.x= W-24
@@ -311,7 +320,7 @@ end
 			--messagedetail_scrollView:insert(short_msg_delete)
 
 
-			if IsOwner == true then
+			--if IsOwner == true then
 
 			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",22,22)
 			short_msg_edit.x= short_msg_delete.x - 30
@@ -337,32 +346,41 @@ end
 			--short_msg_timedate= display.newText(sceneGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,W-130,0,native.systemFont,12)
 			short_msg_timedate= display.newText(sceneGroup,"",0,0,W-130,0,native.systemFont,12)
 			short_msg_timedate.x = W-63
-			short_msg_timedate.y = title_bg.y +title_bg.contentHeight-5
+			short_msg_timedate.y = title_bg.y +title_bg.contentHeight/2-58
 			short_msg_timedate.anchorX=0
 			short_msg_timedate.anchorY = 0
 			short_msg_timedate:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 			--short_msg_timedate:setFillColor(0)
+			messagedetail_scrollView:insert(short_msg_timedate)
 
 
-			  print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
+                   print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
 
-				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
-				short_msg_timedate.text = "TODAY"
-			   
-			    else
+					short_msg_timedate.text =  os.date("%B %d, %Y",time).."  "..os.date("%I:%M %p",time)
 
-				local t = os.date( "*t" )
-				t.day=t.day-1
+					short_msg_timedate.x = W-140
 
-				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+				    else 
 
-				short_msg_timedate.text = "YESTERDAY"
 
-				end
+					local t = os.date( "*t" )
+					t.day=t.day-1
 
-			    end
+					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
 
+						short_msg_timedate.text = "YESTERDAY".."  "..os.date("%I:%M %p",time)
+						short_msg_timedate.x = W-120
+
+					else
+
+						short_msg_timedate.text = os.date("%B %d, %Y",time).."  "..os.date("%I:%M %p",time)
+						short_msg_timedate.x = W-140
+
+					end
+
+			     	end
 
 		
 
@@ -373,6 +391,7 @@ end
 			short_msg_txt.anchorY = 0
 			Utils.CssforTextView(short_msg_txt,sp_labelName)
 			short_msg_txt:setFillColor(0)
+			messagedetail_scrollView:insert(short_msg_txt)
 
 
 			if detail_value.MyUnitBuzzLongMessage ~= nil then
@@ -384,11 +403,14 @@ end
 			long_msg_text.anchorY = 0
 			Utils.CssforTextView(long_msg_text,sp_labelName)
 			long_msg_text:setFillColor(0)
+			messagedetail_scrollView:insert(long_msg_text)
 
 			end
 
 
 	    end
+
+	      -- sceneGroup:insert(messagedetail_scrollView)
 
 
             DisplayDetailValues(messagelistvalue)
@@ -400,7 +422,11 @@ end
 			back_icon_bg:addEventListener("touch",closeDetails)
 			title:addEventListener("touch",closeDetails)
 
-			short_msg_delete:addEventListener("touch",onDeleteAction)
+				if IsOwner == true then
+
+				short_msg_delete:addEventListener("touch",onDeleteAction)
+
+			    end
 
             Runtime:addEventListener( "key", onKeyEventDetail )
 			
@@ -441,7 +467,11 @@ end
 			    back_icon_bg:removeEventListener("touch",closeDetails)
 				title:removeEventListener("touch",closeDetails)
 
-				short_msg_delete:removeEventListener("touch",onDeleteAction)
+					if IsOwner == true then
+
+					short_msg_delete:removeEventListener("touch",onDeleteAction)
+
+				    end
 
 				Runtime:removeEventListener("key",onKeyEventDetail)
 

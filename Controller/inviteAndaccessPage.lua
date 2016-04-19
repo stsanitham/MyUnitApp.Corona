@@ -17,6 +17,10 @@ local Utility = require( "Utils.Utility" )
 
 local Details={}
 
+local listValue = {}
+
+local scrollView;
+
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -490,11 +494,12 @@ local function CreateList(list,scrollView)
 
 			local tempGroup = groupArray[#groupArray]
 			local bgheight = 105
-			
+
+
 
 		
-			local background = display.newImageRect(tempGroup,"res/assert/cont-list.png",W-10,bgheight)
-			local Initial_Height = 1
+			local background = display.newRect(tempGroup,0,0,W,50)
+			--local Initial_Height = 1
 
 			if(groupArray[#groupArray-1]) ~= nil then
 				Initial_Height = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height+2.5
@@ -510,33 +515,42 @@ local function CreateList(list,scrollView)
 			background:addEventListener( "touch", ActionTouch )
 
 
-			local list_bg = display.newRect( tempGroup, 0, 0, 45, 45 )
-			list_bg:setFillColor( 0.3 )
 
-			
+			if feedArray[i].ImagePath ~= nil then
+
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
+
+			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
+				"GET",
+				function ( img_event )
+					if ( img_event.isError ) then
+						print ( "Network error - download failed" )
+					else
+
+						if Image then
+
+						print(img_event.response.filename)
+						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+						Image.width=35;Image.height=35
+						Image.x=30;Image.y=background.y+background.contentHeight/2
+    				--event.row:insert(img_event.target)
+
+    			    else
+
+						Image:removeSelf();Image=nil
+
+					 end
+    			end
+
+    			end, "inviteaccess"..feedArray[i].Contact_Id..".png", system.TemporaryDirectory)
+		else
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
+
+		end
 
 
-			local list = display.newImageRect( tempGroup, "res/assert/list.png",8/1.5,34/1.9)
-		    list.x = background.x+background.contentWidth-15
-		    list.y=background.y+5
-		    list.anchorY=0
-		    list_bg.x=list.x-10
-		    list_bg.y=list.y+5
-		    list_bg.alpha=0.01
-		    list_bg.value = feedArray[i]
-		    list_bg.id=i
-		    list_bg:addEventListener( "touch", ListmenuTouch )
-
-		     if status == "GRANT" then
-
-		     	if i == 1 then
-		     		list_bg.alpha=0
-		     		list.isVisible =false
-		     		list_bg:removeEventListener( "touch", ListmenuTouch )
-
-		     	end
-
-		    end
 
 
 
@@ -544,29 +558,27 @@ local function CreateList(list,scrollView)
 
 		    	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-				Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=background.y+5
-				Display_Group[#Display_Group]:setFillColor( 0.3 )
+				Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=background.y+5
+				Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
 			if feedArray[i].FirstName ~= nil then
 
-			
-
-				Display_Group[#Display_Group].text = PopupGroup.NameDetail_title..": "..feedArray[i].FirstName.." "..feedArray[i].LastName
+				Display_Group[#Display_Group].text = feedArray[i].FirstName.." "..feedArray[i].LastName
 
 			else
 
-				Display_Group[#Display_Group].text = PopupGroup.NameDetail_title..": "..feedArray[i].LastName
+				Display_Group[#Display_Group].text = feedArray[i].LastName
 			
 			end
 
-			
+
 
 			if feedArray[i].EmailAddress ~= nil then
 
 				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-				Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+				Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 				Display_Group[#Display_Group]:setFillColor( 0.3 )
 				Display_Group[#Display_Group].text = PopupGroup.EmailDetail_titletext..": "..feedArray[i].EmailAddress
 
@@ -587,10 +599,10 @@ local function CreateList(list,scrollView)
 
 				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-				Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+				Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 				Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-				Display_Group[#Display_Group].text = PopupGroup.PhoneDetail_titletext..": "..feedArray[i].PhoneNumber
+				Display_Group[#Display_Group].text = feedArray[i].PhoneNumber
 
 			end
 
@@ -606,46 +618,46 @@ local function CreateList(list,scrollView)
 
 		
 
-			if feedArray[i].MkRankLevel ~= nil then
+			-- if feedArray[i].MkRankLevel ~= nil then
 
-					Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
-			Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-			Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
-			Display_Group[#Display_Group]:setFillColor( 0.3 )
+			-- 		Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+			-- Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+			-- Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+			-- Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-				Display_Group[#Display_Group].text = PopupGroup.MKRankDetail_title..": "..feedArray[i].MkRankLevel
+			-- 	Display_Group[#Display_Group].text = PopupGroup.MKRankDetail_title..": "..feedArray[i].MkRankLevel
 			
 		
 
 
-			end
+			-- end
 
 			
 
-			if feedArray[i].MkRankLevel ~= nil then
+			-- if feedArray[i].MkRankLevel ~= nil then
 
-				local time
+			-- 	local time
 
-				if feedArray[i].CreateTimeStamp ~= nil then
+			-- 	if feedArray[i].CreateTimeStamp ~= nil then
 
-					 time = Utils.makeTimeStamp(feedArray[i].CreateTimeStamp)
+			-- 		 time = Utils.makeTimeStamp(feedArray[i].CreateTimeStamp)
 
-				else
+			-- 	else
 
-				    time = Utils.makeTimeStamp(feedArray[i].UpdateTimeStamp)
+			-- 	    time = Utils.makeTimeStamp(feedArray[i].UpdateTimeStamp)
 
-				 end
+			-- 	 end
 
-				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+			-- 	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 			
-			Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-			Display_Group[#Display_Group].x=background.x+10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
-			Display_Group[#Display_Group]:setFillColor( 0.3 )
+			-- Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+			-- Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+			-- Display_Group[#Display_Group]:setFillColor( 0.3 )
 
-				Display_Group[#Display_Group].text = InviteAccessDetail.ActivityOn..": "..tostring(os.date("%m/%d/%Y %I:%m %p",time))
+			-- 	Display_Group[#Display_Group].text = InviteAccessDetail.ActivityOn..": "..tostring(os.date("%m/%d/%Y %I:%m %p",time))
 
 	
-			end
+			-- end
 
 			background.height = 0
 
@@ -660,15 +672,17 @@ local function CreateList(list,scrollView)
 			--background.height = background.height-((background.height/5)*(5-#Display_Group))+5
 
 
+	
 
-
-			   group =  Createmenu(list_bg)
+			   group =  Createmenu(background)
 
    				tempGroup:insert( group )
 
    				group.isVisible=false
 
 			scrollView:insert(tempGroup)
+
+			print( "@@@@@@@@@" )
 
 
 	end
@@ -757,19 +771,15 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 		end
 	if response ~= nil then
 		if #response > 0 then
-			print( "here" )
+		
 
 				NoEvent.isVisible=false
 
-			local listValue = {}
+			
 
-			for i=1,#response do
+			for i=1,#listValue do
 
-				if response[i].IsOwner == true then
-
-					listValue[#listValue+1] = response[i]
-
-				end
+				listValue[i]=nil
 
 			end
 
@@ -787,7 +797,7 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 			end
 
-
+				print( "here !!!!!!!"..#listValue )	
 			CreateList(listValue,scrollView)
 
 		else

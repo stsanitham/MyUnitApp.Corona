@@ -315,10 +315,21 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 					if system.getInfo( "environment" ) == "device" then
 
+						    print(system.getInfo( "appVersionString" ))
+
 							--local alert = native.showAlert( response,system.getInfo( "appVersionString" ), { CommonWords.ok } )
 
 							local responseVersion = string.gsub( response, "%.", "", 3 )
 							local installedVersion = string.gsub( system.getInfo( "appVersionString" ), "%.", "", 3 )
+
+
+							--local alert = native.showAlert( responseVersion,installedVersion, { CommonWords.ok } )
+
+
+							print("responseVersion : ", responseVersion)
+
+							print("installedVersion : ", installedVersion)
+
 
 							local contents = " "
 							-- Path for the file to read
@@ -363,9 +374,6 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 							if (tonumber(responseVersion)<=tonumber(installedVersion)) then
 
-								print("response version : "..tonumber(responseVersion))
-
-								print("installed version : "..tonumber(installedVersion))
 
 			
 									AfterVersionCheck()

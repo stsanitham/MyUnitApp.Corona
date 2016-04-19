@@ -63,6 +63,8 @@ NewGroupAlert = display.newGroup();
 
 DeleteMessageGroup = display.newGroup();
 
+ScheduledMessageGroup = display.newGroup();
+
 
 
 
@@ -363,15 +365,45 @@ Runtime:addEventListener("unhandledError", myUnhandledErrorListener)
 
 
 
-local function listener( event )
-    if event.isShake then
-        print( "The device is being shaken!" )
-    end
+-- local function listener( event )
+--     if event.isShake then
+--         print( "The device is being shaken!" )
+--     end
 
-    return true
+--     return true
+-- end
+
+-- Runtime:addEventListener( "accelerometer", listener )
+
+
+local function appexit( response )
+    
 end
 
-Runtime:addEventListener( "accelerometer", listener )
+local function onSystemEvent( event )
+    
+    if (event.type == "applicationStart") then
+        
+    elseif (event.type == "applicationExit") then 
+           
+    elseif ( event.type == "applicationSuspend" ) then
+
+        Webservice.UpdateLastActivityDate(appexit)
+        
+    elseif ( event.type == "applicationOpen" ) then
+
+        chatReceivedFlag=true
+
+    elseif event.type == "applicationResume" then
+
+        chatReceivedFlag=true
+    
+    end
+
+end
+
+--setup the system listener to catch applicationExit etc
+Runtime:addEventListener( "system", onSystemEvent )
 
 
 -- local function onCloseTouch( event )

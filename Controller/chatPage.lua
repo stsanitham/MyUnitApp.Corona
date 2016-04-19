@@ -189,8 +189,6 @@ local dateVlaue=""
 	--	print( "ChatHistory : "..json.encode(ChatHistory[i]) )
 
 
-
-
 		local bg = display.newRect(0,0,W-100,25 )
 		tempGroup:insert(bg)
 		
@@ -198,8 +196,6 @@ local dateVlaue=""
 		bg.id=ChatHistory[i].id
 		bg.group=tempGroup
 		bg:addEventListener( "touch", ChatTouch )
-
-
 
 
 		if MeassageList[#MeassageList-1] ~= nil then
@@ -291,7 +287,7 @@ local dateVlaue=""
 
 		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
 
-		chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,W-118,0,native.systemFont,14)
+			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,W-128,0,native.systemFont,14)
 
 		else
 
@@ -482,7 +478,7 @@ local function DetailAction( event )
 
 							}
 
-							print( "Message_Type"..MessageType )
+							print( "Message_Type          :  "..To_ContactId )
 					Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 					ChatBox.isVisible=false
 				    composer.showOverlay( "Controller.Chathead_detailPage", options )
@@ -566,7 +562,7 @@ local function ChatSendAction( event )
 
 				print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type,get_sendMssage)
+			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","","","","SEND",From,To,Message_Type,get_sendMssage)
 
 
 	end
@@ -1080,12 +1076,12 @@ return true
     if ( phase == "began" ) then print( "Scroll view was touched" )
 
     	Deleteicon.isVisible=false
-    	chatReceivedFlag=true
+    	-- chatReceivedFlag=true
     	holdLevel=0
     elseif ( phase == "moved" ) then print( "Scroll view was moved" )
     elseif ( phase == "ended" ) then print( "Scroll view was released" )
 
-    	if #ChatHistory < 5 then
+    	if #ChatHistory < 4 then
     		chatScroll:scrollTo( "bottom", { time=500 } )
     	end
     end

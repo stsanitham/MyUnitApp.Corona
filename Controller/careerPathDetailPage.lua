@@ -233,34 +233,63 @@ end
 			elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 			--work
+
+			if event.target.id == "chat" then
+
+
+					local DetailValues={}
+					local ContactId
+
+					for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 			
-			local callFlag
+						ContactId = row.ContactId
 
-			local number = string.gsub(event.target.id, "%s+", "")
+					end
+					print( "@@@@@@@@@@@ ; "..event.target.value )
+					DetailValues.Contact_Id=event.target.value
+					DetailValues.Message_To=event.target.value
+					DetailValues.Message_From=ContactId
+					DetailValues.Message_Type="INDIVIDUAL"
+					DetailValues.ToName=Career_Username.text
 
-				number = string.gsub(number,"%(" , "")
-				number = string.gsub(number,"%)" , "")
-				number = string.gsub(number,"%-" , "")
+						    local options = {
+											effect = "flipFadeOutIn",
+										time = 200,	
+										params = {contactDetails = DetailValues}
+										}
+
+					    composer.gotoScene( "Controller.chatPage", options )
+
+			else
+			
+					local callFlag
+
+					local number = string.gsub(event.target.id, "%s+", "")
+
+						number = string.gsub(number,"%(" , "")
+						number = string.gsub(number,"%)" , "")
+						number = string.gsub(number,"%-" , "")
 
 
-			print( "Call : "..number )
+					print( "Call : "..number )
 
-			--system.openURL( "tel:"..number)
+					--system.openURL( "tel:"..number)
 
-			callFlag = system.openURL( "tel:"..number )
+					callFlag = system.openURL( "tel:"..number )
 
-			 if callFlag == true  then 
+					 if callFlag == true  then 
 
-				--fortumo.findService({callFlag}, onFindServiceComplete)
+						--fortumo.findService({callFlag}, onFindServiceComplete)
 
-			 else
+					 else
 
-			 	if isIos then 
+					 	if isIos then 
 
-			 		native.showAlert( CareerPath.Call, CareerPath.NoSim, { CommonWords.ok } )
+					 		native.showAlert( CareerPath.Call, CareerPath.NoSim, { CommonWords.ok } )
 
-			 	end
+					 	end
 
+					end
 			end
 		end
 
@@ -717,8 +746,6 @@ function scene:show( event )
 				titleBar_icon_bg:addEventListener("touch",closeDetails)
 
 
-
-
 			    if Details.FirstName ~= nil and Details.LastName ~= nil then
 
 					Career_Username = display.newText(sceneGroup,Details.FirstName.." "..Details.LastName,0,0,native.systemFont,24)
@@ -1129,7 +1156,7 @@ function scene:show( event )
 				if Details.EmailAddress ~= nil then
 
 				MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/mail.png",33/2,25/2)
-				MapDisplayArray[#MapDisplayArray].x=W/4
+				MapDisplayArray[#MapDisplayArray].x=30
 				MapDisplayArray[#MapDisplayArray].id="email"
 				MapDisplayArray[#MapDisplayArray].value = Details.EmailAddress
 				MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
@@ -1152,14 +1179,40 @@ function scene:show( event )
 					MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/phone.png",32/2,32/2)
 
 					if MapDisplayArray[#MapDisplayArray-1] ~= nil then
-						MapDisplayArray[#MapDisplayArray].x=W/2
+						MapDisplayArray[#MapDisplayArray].x=MapDisplayArray[#MapDisplayArray-1].x+80
 					else
 						MapDisplayArray[#MapDisplayArray].x=W/4
 					end
 					MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
 					MapDisplayArray[#MapDisplayArray].id=phoneNum
 					MapDisplayArray[#MapDisplayArray]:addEventListener("touch",phoneCallFunction)
-				end	
+				end
+
+				 if(IsOwner == true and Details.Status == "GRANT") then
+
+				 	MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/chaticon.png",32/2,32/2)
+
+				 	if MapDisplayArray[#MapDisplayArray-1] ~= nil and MapDisplayArray[#MapDisplayArray-1].id == "email" then
+
+				 		MapDisplayArray[#MapDisplayArray].x=W/2+W/4
+
+				 		MapDisplayArray[#MapDisplayArray-1].x=W/2-W/4
+
+					elseif MapDisplayArray[#MapDisplayArray-1] ~= nil then
+						MapDisplayArray[#MapDisplayArray].x=MapDisplayArray[#MapDisplayArray-1].x+80
+					else
+						MapDisplayArray[#MapDisplayArray].x=W/4
+					end
+
+
+					MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
+					MapDisplayArray[#MapDisplayArray].id="chat"
+					MapDisplayArray[#MapDisplayArray].value=Details.ContactId
+					MapDisplayArray[#MapDisplayArray]:setFillColor( 0 )
+					MapDisplayArray[#MapDisplayArray]:addEventListener("touch",phoneCallFunction)
+
+
+				 end
 
 				if Details.ContactsAddress ~= nil then
 
@@ -1167,7 +1220,7 @@ function scene:show( event )
 
 					if MapDisplayArray[#MapDisplayArray-1] ~= nil then
 
-						MapDisplayArray[#MapDisplayArray].x=W/2+(W/2)/2
+						MapDisplayArray[#MapDisplayArray].x=MapDisplayArray[#MapDisplayArray-1].x+80
 
 					else
 
@@ -1176,9 +1229,8 @@ function scene:show( event )
 					end
 
 
-					
+					  
 
-					MapDisplayArray[#MapDisplayArray].x=maptap.x+90
 					MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
 					MapDisplayArray[#MapDisplayArray].id = "map"
 					MapDisplayArray[#MapDisplayArray]:addEventListener("touch",MapShowing)
