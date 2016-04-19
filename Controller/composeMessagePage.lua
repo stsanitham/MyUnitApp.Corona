@@ -87,7 +87,7 @@ end
 
 		if list_values.MessageStatus == "SEND" then
 
-		      		 Utils.SnackBar(MessagePage.SentSuccess)
+		        Utils.SnackBar(MessagePage.SentSuccess)
 
 				      		 	shortmsg_textbox.text = ""
 
@@ -120,7 +120,7 @@ end
 
 					end
 
-        		     timer.performWithDelay(1000, onTimer )
+        		timer.performWithDelay(1000, onTimer )
 
 	    end
 
@@ -145,13 +145,11 @@ end
 
 					local function onTimer ( event )
 
-
 							sceneevent.parent:resumeCall(list_values)
 
 							spinner.y=H/2-75
 
 							composer.hideOverlay()
-
 
 					end
 
