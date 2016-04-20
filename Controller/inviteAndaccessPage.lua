@@ -715,10 +715,11 @@ function scene:create( event )
 	NoEvent.isVisible=false
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-
-
 	MainGroup:insert(sceneGroup)
 end
+
+
+
 
 function get_GetMyUnitBuzzRequestAccesses(response)
 
@@ -794,6 +795,9 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 end
 
+
+
+
 function reloadInvitAccess(reloadstatus)
 
 	composer.hideOverlay( )
@@ -808,9 +812,6 @@ function reloadInvitAccess(reloadstatus)
 	Webservice.GetMyUnitBuzzRequestAccesses(reloadstatus,get_GetMyUnitBuzzRequestAccesses)
 
 end
-
-
-
 
 
 

@@ -1236,21 +1236,21 @@ function scene:show( event )
 					MapDisplayArray[#MapDisplayArray]:addEventListener("touch",MapShowing)
 
 
+					myMap_rect = display.newRect(mapGroup,20, 20, 280, 360)
+					myMap_rect.x = display.contentCenterX
+					myMap_rect.y = display.contentCenterY-myMap_rect.contentHeight/2
+					myMap_rect.strokeWidth = 1
+					myMap_rect:setStrokeColor( 0.5 )
+					myMap_rect.anchorY=0
 
-						myMap_rect = display.newRect(mapGroup,20, 20, 280, 360)
-						myMap_rect.x = display.contentCenterX
-						myMap_rect.y = display.contentCenterY-myMap_rect.contentHeight/2
-						myMap_rect.strokeWidth = 1
-						myMap_rect:setStrokeColor( 0.5 )
-						myMap_rect.anchorY=0
 
-							map_title = display.newText(mapGroup,CareerPath.Location,0,0,native.systemFont,16)
-				map_title.x=myMap_rect.x-myMap_rect.contentWidth/2+10
-				map_title.y=myMap_rect.y+15
-				map_title.anchorX=0
-				Utils.CssforTextView(map_title,sp_labelName)
+					map_title = display.newText(mapGroup,CareerPath.Location,0,0,native.systemFont,16)
+					map_title.x=myMap_rect.x-myMap_rect.contentWidth/2+10
+					map_title.y=myMap_rect.y+15
+					map_title.anchorX=0
+					Utils.CssforTextView(map_title,sp_labelName)
 
-				local location =""
+				local location = ""
 
 				if Details.ContactsAddress.Address1 ~= nil and Details.ContactsAddress.Address1 ~= "" then
 
@@ -1263,6 +1263,7 @@ function scene:show( event )
 					location = location..Details.ContactsAddress.Address1
 
 				end
+
 				if Details.ContactsAddress.Address2 ~= nil and Details.ContactsAddress.Address2 ~= "" then
 
 					if location:len() > 0  then
@@ -1286,6 +1287,7 @@ function scene:show( event )
 					location = location..Details.ContactsAddress.City..","
 					
 				end
+				
 				if Details.ContactsAddress.State ~= nil and Details.ContactsAddress.State ~= "" then
 				
 					location = location..Details.ContactsAddress.State..","
