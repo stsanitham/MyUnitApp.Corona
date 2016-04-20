@@ -31,6 +31,9 @@ local RecentTab_Topvalue = 70
 
 local networkArray = {}
 
+local titleBar_text;
+local ProfileImage
+
 openPage="inviteAndaccessPage"
 
 ContactIdValue = 0
@@ -45,6 +48,115 @@ page_flag1 = "inviteAndaccessPage"
 
 
 -----------------Function-------------------------
+
+
+
+
+local function observableScroll( event )
+
+    local phase = event.phase
+    if ( phase == "began" ) then 
+    elseif ( phase == "moved" ) then 
+
+    	if event.direction ~= nil then
+
+    	-- print("Direction : "..event.direction)
+
+    	 	if event.direction == "up" then
+
+    	 		if TrasitionBar.yScale >= 0.2 then
+
+
+    	 			event.target:scrollTo( "top" , { time=0})
+
+    	 			--display.getCurrentStage():setFocus(nil)
+
+    	 			--ProfileImage.yScale=ProfileImage.yScale-0.05
+
+    	 			TrasitionBar.yScale=TrasitionBar.yScale-0.05
+
+    	 			TrasitionBar.alpha=TrasitionBar.alpha+0.08
+
+
+    	 			scroll_View.y=TrasitionBar.y+TrasitionBar.contentHeight
+
+	   	 			if titleBar_text.y >= tabBar.y+30 then
+
+    	 				titleBar_text.y=titleBar_text.y-8.8
+
+
+    	 				titleBar_text.xScale = titleBar_text.xScale - 0.018
+    	 				titleBar_text.yScale = titleBar_text.yScale - 0.018
+    	 				titleBar_text.x=titleBar_text.x+0.8
+
+    	 			end
+
+  	 			
+
+    	 		else
+
+
+    	 		end
+
+    	 	elseif event.direction == "down" then
+
+    	 			if TrasitionBar.yScale <= 1 then
+
+
+    	 			event.target:scrollTo( "top" , { time=0})
+
+    	 			--display.getCurrentStage():setFocus(nil)
+
+    	 			--ProfileImage.yScale=ProfileImage.yScale+0.05
+    	 			if titleBar_text.y <= ProfileImage.y+ProfileImage.contentHeight-titleBar_text.contentHeight/2-25 then
+
+    	 				titleBar_text.y=titleBar_text.y+8.8
+
+    	 				titleBar_text.xScale = titleBar_text.xScale + 0.018
+    	 				titleBar_text.yScale = titleBar_text.yScale + 0.018
+    	 				titleBar_text.x=titleBar_text.x-0.8
+
+    	 			end
+
+
+    	 			scroll_View.y=TrasitionBar.y+TrasitionBar.contentHeight
+
+    	 			TrasitionBar.yScale=TrasitionBar.yScale+0.05
+
+    	 			TrasitionBar.alpha=TrasitionBar.alpha-0.08
+
+    	 			local temp = RecentTab_Topvalue - scroll_View.y
+
+ 	 			
+
+    	 		else
+
+
+    	 		end
+
+    	 	end
+
+
+    	end
+
+
+  
+
+    elseif ( phase == "ended" ) then 
+    end
+
+   
+  	 -- In the event a scroll limit is reached...
+    if ( event.limitReached ) then
+        if ( event.direction == "up" ) then 
+        elseif ( event.direction == "down" ) then 
+        elseif ( event.direction == "left" ) then 
+        elseif ( event.direction == "right" ) then 
+        end
+    end
+    return true
+end
+
 
 
 
@@ -508,45 +620,27 @@ end
 			-- if invite_status == "ADDREQUEST" then title.text = "Team Member without Access" end
 
 
-local ProfileImage
+
 
 			if invitedetail_value.ImagePath ~= nil then
 
-						ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
+						ProfileImage = display.newImageRect(sceneGroup, "inviteaccess"..invitedetail_value.MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory,80,80)
 						ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
-						ProfileImage.isVisible = true
-
-						networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..invitedetail_value.ImagePath,
-							"GET",
-							function ( img_event )
-								if ( img_event.isError ) then
-									print ( "Network error - download failed" )
-								else
-
-									if ProfileImage then
-
-										ProfileImage = display.newImage(sceneGroup,img_event.response.filename,system.TemporaryDirectory)
-										ProfileImage.width=W;ProfileImage.height=135
-										ProfileImage.anchorY=0
+						ProfileImage.width = W;ProfileImage.height = 135
 										ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
-				    				--event.row:insert(img_event.target)
+									ProfileImage.anchorY=0
+						 ProfileImage.isVisible = true
 
-				    			    else
 
-										ProfileImage:removeSelf();ProfileImage=nil
-
-									 end
-			    			     end
-
-			    			end, "inviteaccess"..invitedetail_value.MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory)
 
 			else
 					ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
-			end
-
-				ProfileImage.width = W;ProfileImage.height = 135
+						ProfileImage.width = W;ProfileImage.height = 135
 				ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
 				ProfileImage.anchorY=0
+			end
+
+			
 
 				TrasitionBar = display.newRect(sceneGroup,ProfileImage.x,ProfileImage.y,ProfileImage.width,ProfileImage.height)
 				TrasitionBar.anchorY=0
@@ -558,7 +652,7 @@ local ProfileImage
 		titleBar_icon.y=tabBar.y+tabBar.contentHeight/2-titleBar_icon.contentWidth+15
 		titleBar_icon.anchorY=0
 
-				local titleBar_text = display.newText(" dsfds",0,0,native.systemFont,0)
+				titleBar_text = display.newText(" dsfds",0,0,native.systemFont,0)
 		titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
 		titleBar_text.y=titleBar_icon.y
 		titleBar_text.anchorX=0;titleBar_text.anchorY=0
@@ -581,7 +675,7 @@ local ProfileImage
 		hideScrollBar=true,
 		bottomPadding = 50,
 
-		-- listener = scrollListener
+		listener = observableScroll
 		}
 		scroll_View.anchorY=0
 		scroll_View.y=RecentTab_Topvalue

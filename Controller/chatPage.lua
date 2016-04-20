@@ -293,11 +293,11 @@ local dateVlaue=""
 
 		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
 
-			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,W-128,0,native.systemFont,14)
+			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,W-115,0,native.systemFont,124)
 
 		else
 
-			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,native.systemFont,14)
+			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,native.systemFont,12)
 
 		end
 		chat.anchorY=0

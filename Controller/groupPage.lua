@@ -416,12 +416,6 @@ end
 
 
 
-
-
-
-
-
-
 	function scene:create( event )
 
 		local sceneGroup = self.view
@@ -489,8 +483,6 @@ end
 		NoEvent.isVisible=false
 		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-
-	
 
 	--Webservice.GetMyUnitBuzzRequestAccesses("GRANT",get_Activeteammember)
 

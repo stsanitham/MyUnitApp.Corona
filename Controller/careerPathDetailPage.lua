@@ -1188,7 +1188,7 @@ function scene:show( event )
 					MapDisplayArray[#MapDisplayArray]:addEventListener("touch",phoneCallFunction)
 				end
 
-				 if(IsOwner == true and Details.Status == "GRANT") then
+				 if(Details.Status == "GRANT") then
 
 				 	MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/chaticon.png",32/2,32/2)
 
