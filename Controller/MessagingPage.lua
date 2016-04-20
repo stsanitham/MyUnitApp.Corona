@@ -464,12 +464,12 @@ local function Broadcast_list( list )
 				time:setTextColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
-			if Utils.getTime(makeTimeStamp(list[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "*t" )),"%B %d, %Y",TimeZone) then
+			if Utils.getTime(makeTimeStamp(list[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) then
 
 				time.text = Utils.getTime(makeTimeStamp(list[i].Update_Time_Stamp),"%I:%M %p",TimeZone)
 			else
 
-				local t = os.date( "*t" )
+				local t = os.date( "!*t" )
 				t.day=t.day-1
 
 				if Utils.getTime(makeTimeStamp(list[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(t),"%B %d, %Y",TimeZone) then

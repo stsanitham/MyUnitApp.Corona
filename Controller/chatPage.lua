@@ -14,7 +14,8 @@ local Utility = require( "Utils.Utility" )
 local json = require("json")
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
-
+local pasteboard = require( "plugin.pasteboard" )
+local toast = require('plugin.toast')
 
 --------------- Initialization -------------------
 
@@ -22,7 +23,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
 
-local menuBtn,tabButtons,chattabBar,chatScroll,BackBtn,tabBar,title_bg,title,Deleteicon
+local menuBtn,tabButtons,chattabBar,chatScroll,BackBtn,tabBar,title_bg,title,Deleteicon,Copyicon
 
 openPage="MessagingPage"
 
@@ -117,7 +118,8 @@ local function ChatTouch( event )
 
 		if holdLevel > 25 then
 
-			Deleteicon.id=event.target.id
+			Deleteicon.value=event.target.id
+			Copyicon.value = event.target.chat
 
 			if selectedForDelete ~= nil then 
 				if selectedForDelete.y ~= nil then
@@ -205,6 +207,7 @@ local dateVlaue=""
 		end
 			bg.x=5
 
+			
 
 		if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
 
@@ -220,12 +223,15 @@ local dateVlaue=""
 			datevalue.x=dateLable.x;datevalue.y=dateLable.y
 			datevalue:setFillColor( 0,0,0,0.6 )
 
-			if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "*t" )),"%B %d, %Y",TimeZone) then
+			--print( Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) .." and ".. Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) )
+
+			if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) then
 
 				datevalue.text = "TODAY"
+
 			else
 
-				local t = os.date( "*t" )
+				local t = os.date( "!*t" )
 				t.day=t.day-1
 
 				if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(t),"%B %d, %Y",TimeZone) then
@@ -303,7 +309,8 @@ local dateVlaue=""
 
 	
 		bg.width = chat.contentWidth+10	
-		bg.height = chat.contentHeight+10	
+		bg.height = chat.contentHeight+10
+		bg.chat=chat.text
 
 		local owner
 
@@ -395,7 +402,7 @@ end
 
 
 
-			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( )
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( )
 
 			if chatHoldflag == true then
 
@@ -406,6 +413,7 @@ end
 						print("delete Action")
 
 						Deleteicon.isVisible=true
+						Copyicon.isVisible=true
 
 					end
 
@@ -431,11 +439,27 @@ end
 local function deleteAction( event )
 	if event.phase == "ended" then
 
-		local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.id..[[;]]
-		db:exec( q )
-		sendMeaasage()
+ 
+		if event.target.id == "delete" then
 
-		event.target.isVisible=false
+
+				local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.value..[[;]]
+				db:exec( q )
+				sendMeaasage()
+
+		elseif event.target.id == "copy" then
+						
+						print( event.target.value )
+
+						pasteboard.copy( "string", event.target.value)
+
+						toast.show('Message Copied', {duration = 'long', gravity = 'Center', offset = {0, 128}})  
+
+
+
+		end		
+				Copyicon.isVisible=false
+				Deleteicon.isVisible=false
 	end
 
 return true
@@ -1076,6 +1100,7 @@ return true
     if ( phase == "began" ) then print( "Scroll view was touched" )
 
     	Deleteicon.isVisible=false
+    	Copyicon.isVisible=false
     	-- chatReceivedFlag=true
     	holdLevel=0
     elseif ( phase == "moved" ) then print( "Scroll view was moved" )
@@ -1155,7 +1180,14 @@ function scene:create( event )
 	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 15, 15 )
 	Deleteicon.x=W-20;Deleteicon.y=title_bg.y
 	Deleteicon.isVisible=false
+	Deleteicon.id="delete"
 	Deleteicon:addEventListener( "touch", deleteAction )
+
+	Copyicon = display.newImageRect( sceneGroup, "res/assert/copy-icon.png", 15, 15 )
+	Copyicon.x=W-50;Copyicon.y=title_bg.y
+	Copyicon.isVisible=false
+	Copyicon.id="copy"
+	Copyicon:addEventListener( "touch", deleteAction )
 
 
 
@@ -1177,6 +1209,7 @@ function scene:show( event )
 		end
 
 
+	
 
 	elseif phase == "did" then
 

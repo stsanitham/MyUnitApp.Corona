@@ -8,7 +8,7 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 local widget = require( "widget" )
 local json = require("json")
-
+local toast = require('plugin.toast')
 
 local Utility = require( "Utils.Utility" )
 
@@ -1439,6 +1439,8 @@ function scene:show( event )
 
 		ga.enterScene("EventCalender")
 
+
+--toast.show('Toast is done!', {duration = 'long', gravity = 'BottomCenter', offset = {0, 128}})  
 
 		elseif phase == "did" then
 

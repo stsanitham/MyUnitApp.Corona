@@ -182,19 +182,19 @@ print(value)
 
     elseif value:len() == 7 then
 
-         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."- "..value:sub( 7,7)
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."-"..value:sub( 7,7)
 
      elseif value:len() == 8 then
 
-         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."- "..value:sub( 7,8)
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."-"..value:sub( 7,8)
 
      elseif value:len() == 9 then
 
-         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."- "..value:sub( 7,9)
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."-"..value:sub( 7,9)
 
      elseif value:len() == 10 then
 
-         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."- "..value:sub( 7,10)
+         value = "("..value:sub( 1, 3 )..") "..value:sub( 4,6 ).."-"..value:sub( 7,10)
 
 
     end

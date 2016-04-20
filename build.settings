@@ -18,6 +18,15 @@ settings =
 
     plugins =
     {
+
+     ['plugin.toast'] = {publisherId = 'com.spiralcodestudio'},
+
+     ["plugin.pasteboard"] =
+        {
+            publisherId = "com.coronalabs",
+            supportedPlatforms = { iphone = true, android = true },
+        },
+
         ["CoronaProvider.native.popup.social"] =
         {
             publisherId = "com.coronalabs"
