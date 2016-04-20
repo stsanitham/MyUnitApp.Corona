@@ -2,8 +2,6 @@ ApplicationConfig = {}
 
 
 
-
-
 ----------local---------------
 
 
@@ -23,10 +21,11 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 
 
+
 ----------Dev---------------
 
 
-----[[
+--[[
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -42,7 +41,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 
 -----Stagging--------
---[[
+----[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -61,7 +60,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 IsLive = true
 
-ApplicationConfig.Version = "/Android/1.2.2"	    --1.1.0
+ApplicationConfig.Version = "Android/1.2.2"	    --1.2.2
 
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.com/"..ApplicationConfig.Version
 
@@ -190,4 +189,8 @@ ApplicationConfig.DeleteMyUnitBuzzMessages = ApplicationConfig.BASE_URL.."/MyUni
 ApplicationConfig.GetActiveChatTeammembersList = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetActiveChatTeammembersList"
 
 ApplicationConfig.GetMessageGroupTeamMemberList = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMessageGroupTeamMemberList"
+
+ApplicationConfig.UpdateLastActivityDate = ApplicationConfig.BASE_URL.."/MyUnitBuzz/UpdateLastActivityDate"
+
+ApplicationConfig.GetContactInformation = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetContactInformation"
 

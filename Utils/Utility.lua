@@ -267,7 +267,7 @@ end
 
 local tzoffset
         if TimeZone == "Eastern Standard Time" then
-            tzoffset = "-04:00"
+            tzoffset = "-05:00"
 
         elseif TimeZone == "Hawaiian Standard Time" then
              tzoffset = "-10:00"

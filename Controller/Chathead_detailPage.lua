@@ -841,7 +841,7 @@ function scene:show( event )
 					top = 0,
 					left = 0,
 					width = W,
-					height =H-RecentTab_Topvalue+ProfileImage.contentHeight,
+					height =H-RecentTab_Topvalue+ProfileImage.contentHeight-35,
 					--hideBackground = true,
 					isBounceEnabled=false,
 					horizontalScrollingDisabled = true,
@@ -1367,7 +1367,7 @@ function scene:show( event )
 				
 			else
 
-				Webservice.GET_ACTIVE_TEAMMEMBERDETAILS(contactId,get_avtiveTeammemberDetails)
+				Webservice.GetContactInformation(contactId,get_avtiveTeammemberDetails)
 
 			end
 

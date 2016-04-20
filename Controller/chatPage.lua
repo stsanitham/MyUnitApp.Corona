@@ -93,36 +93,6 @@ function makeTimeStamp( dateString )
 end
 
 
-	local function printTimeSinceStart( event )
-
-
-
-			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( )
-
-			if chatHoldflag == true then
-
-				holdLevel=holdLevel+1
-
-					if holdLevel > 25 then
-
-						print("delete Action")
-
-						Deleteicon.isVisible=true
-
-					end
-
-			end
-		    if chatReceivedFlag==true then
-
-			if selectedForDelete ~= nil then 
-				if selectedForDelete.y ~= nil then
-				 selectedForDelete:removeSelf();selectedForDelete=nil 
-				 end 
-			end
-		    	chatReceivedFlag=false
-		    	
-		    end
-		end 
 
 local function ChatTouch( event )
 
@@ -219,8 +189,6 @@ local dateVlaue=""
 	--	print( "ChatHistory : "..json.encode(ChatHistory[i]) )
 
 
-
-
 		local bg = display.newRect(0,0,W-100,25 )
 		tempGroup:insert(bg)
 		
@@ -228,8 +196,6 @@ local dateVlaue=""
 		bg.id=ChatHistory[i].id
 		bg.group=tempGroup
 		bg:addEventListener( "touch", ChatTouch )
-
-
 
 
 		if MeassageList[#MeassageList-1] ~= nil then
@@ -321,11 +287,11 @@ local dateVlaue=""
 
 		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
 
-		chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,W-85,0,native.systemFont,14)
+			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,W-128,0,native.systemFont,14)
 
 		else
 
-			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-40,0,native.systemFont,14)
+			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,native.systemFont,14)
 
 		end
 		chat.anchorY=0
@@ -425,6 +391,43 @@ chatScroll:scrollTo( "bottom", { time=200 } )
 end
 
 
+	local function printTimeSinceStart( event )
+
+
+
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( )
+
+			if chatHoldflag == true then
+
+				holdLevel=holdLevel+1
+
+					if holdLevel > 25 then
+
+						print("delete Action")
+
+						Deleteicon.isVisible=true
+
+					end
+
+			end
+
+		    if chatReceivedFlag==true then
+
+			chatReceivedFlag=false
+
+			sendMeaasage()
+			end 
+
+			if selectedForDelete ~= nil then 
+				if selectedForDelete.y ~= nil then
+				 selectedForDelete:removeSelf();selectedForDelete=nil 
+				 end 
+			end
+		    	
+		    	
+		    end
+
+
 local function deleteAction( event )
 	if event.phase == "ended" then
 
@@ -475,7 +478,7 @@ local function DetailAction( event )
 
 							}
 
-							print( "Message_Type"..MessageType )
+							print( "Message_Type          :  "..To_ContactId )
 					Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 					ChatBox.isVisible=false
 				    composer.showOverlay( "Controller.Chathead_detailPage", options )
@@ -1073,12 +1076,12 @@ return true
     if ( phase == "began" ) then print( "Scroll view was touched" )
 
     	Deleteicon.isVisible=false
-    	chatReceivedFlag=true
+    	-- chatReceivedFlag=true
     	holdLevel=0
     elseif ( phase == "moved" ) then print( "Scroll view was moved" )
     elseif ( phase == "ended" ) then print( "Scroll view was released" )
 
-    	if #ChatHistory < 5 then
+    	if #ChatHistory < 4 then
     		chatScroll:scrollTo( "bottom", { time=500 } )
     	end
     end
@@ -1136,14 +1139,15 @@ function scene:create( event )
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-	BackBtn = display.newText( sceneGroup, "<", 0, 0 , native.systemFontBold ,16 )
+	BackBtn = display.newImageRect( sceneGroup, "res/assert/right-arrow(gray-).png",15,15 )
 	BackBtn.anchorX = 0
-	BackBtn.x=5;BackBtn.y = title_bg.y
-	BackBtn:setFillColor(0)
+	BackBtn.x=25;BackBtn.y = title_bg.y
+	BackBtn.xScale=-1
+	--BackBtn:setFillColor(0)
 
 	title = display.newText(sceneGroup,FlapMenu.chatMessageTitle,0,0,native.systemFont,18)
 	title.anchorX = 0
-	title.x=BackBtn.x+BackBtn.contentWidth+5;title.y = title_bg.y
+	title.x=BackBtn.x+BackBtn.contentWidth-5;title.y = title_bg.y-3
 	title:setFillColor(0)
 
 	title.text = "Chat"

@@ -17,6 +17,10 @@ local Utility = require( "Utils.Utility" )
 
 local Details={}
 
+local listValue = {}
+
+local scrollView;
+
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -577,7 +581,7 @@ local function CreateList(list,scrollView)
 			
 			end
 
-			
+
 
 			if feedArray[i].EmailAddress ~= nil then
 
@@ -625,7 +629,7 @@ local function CreateList(list,scrollView)
 			--background.height = background.height-((background.height/5)*(5-#Display_Group))+5
 
 
-
+	
 
 			 --  group =  Createmenu(background)
 
@@ -634,6 +638,8 @@ local function CreateList(list,scrollView)
    				--group.isVisible=false
 
 			scrollView:insert(tempGroup)
+
+			print( "@@@@@@@@@" )
 
 
 	end
@@ -732,10 +738,11 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 	if response ~= nil then
 		if #response > 0 then
-			print( "here" )
+		
 
 				NoEvent.isVisible=false
 
+<<<<<<< HEAD
 			local listValue = {}
 
 				for i=1,#response do
@@ -743,6 +750,16 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 					listValue[#listValue+1] = response[i]	
 
 				end
+=======
+			
+
+			for i=1,#listValue do
+
+				listValue[i]=nil
+
+
+			 end
+>>>>>>> origin/MUB_V1.1.9
 
 
 			-- for i=1,#response do
@@ -758,7 +775,7 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 			--end
 
-
+				print( "here !!!!!!!"..#listValue )	
 			CreateList(listValue,scrollView)
 
 		else
