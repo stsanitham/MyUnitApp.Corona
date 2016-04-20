@@ -424,5 +424,8 @@ MessagePage.SentSuccess = "Mensaje enviado con éxito"
 MessagePage.DraftSuccess = "Mensaje elaborado con éxito"
 MessagePage.ScheduledSuccess = "Mensaje programado con éxito"
 MessagePage.DeleteSuccess = "Mensaje eliminado correctamente"
-
+MessagePage.characters=" caracteres"
+MessagePage.ErrorText = "Introduzca el mensaje corto / largo en el campo respectivo y seguir adelante"
+MessagePage.SavingFailed = "No ha podido guardarse"
+MessagePage.SchedulingFailed = "Error de programación"
 

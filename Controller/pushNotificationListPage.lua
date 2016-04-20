@@ -466,7 +466,7 @@ local tabBarGroup = display.newGroup( )
 					-- parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
 
 
-					-- parent_centerText = display.newText(tempGroup,Message_time.text,0,0,native.systemFontBold,14)
+					-- parent_centerText = display.newText(tempGroup,Message_time.text,0,0,native.systemFont,13)
 					-- parent_centerText.x=W/2
 					-- parent_centerText.anchorX=0
 					-- parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
