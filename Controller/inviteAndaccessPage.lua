@@ -742,7 +742,7 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 				NoEvent.isVisible=false
 
-<<<<<<< HEAD
+
 			local listValue = {}
 
 				for i=1,#response do
@@ -750,16 +750,7 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 					listValue[#listValue+1] = response[i]	
 
 				end
-=======
-			
 
-			for i=1,#listValue do
-
-				listValue[i]=nil
-
-
-			 end
->>>>>>> origin/MUB_V1.1.9
 
 
 			-- for i=1,#response do
