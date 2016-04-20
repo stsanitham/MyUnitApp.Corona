@@ -33,6 +33,8 @@ local groupArray={}
 
 local displayGroup={}
 
+local networkArray = {}
+
 local feedArray={}
 
 page_flagval = "inviteAndaccessPage"
@@ -491,7 +493,7 @@ local function CreateList(list,scrollView)
 			local tempGroup = groupArray[#groupArray]
 			local bgheight = 105
 
-
+            local Image 
 
 		
 			local background = display.newRect(tempGroup,0,0,W,45)
@@ -517,12 +519,14 @@ local function CreateList(list,scrollView)
 			line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
 
+
 			if feedArray[i].ImagePath ~= nil then
 
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2+5
+			Image.isVisible = true
 
-			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
+			networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
 				"GET",
 				function ( img_event )
 					if ( img_event.isError ) then
@@ -531,10 +535,9 @@ local function CreateList(list,scrollView)
 
 						if Image then
 
-						print(img_event.response.filename)
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
 						Image.width=35;Image.height=35
-						Image.x=30;Image.y=background.y+background.contentHeight/2+5
+						Image.x=30;Image.y=background.y+background.height/2-7
     				--event.row:insert(img_event.target)
 
     			    else
@@ -544,8 +547,9 @@ local function CreateList(list,scrollView)
 					 end
     			end
 
-    			end, "inviteaccess"..feedArray[i].Contact_Id..".png", system.TemporaryDirectory)
+    			end, "inviteaccess"..feedArray[i].MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory)
 		else
+
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2+5
 
@@ -734,29 +738,25 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 			local listValue = {}
 
+				for i=1,#response do
+
+					listValue[#listValue+1] = response[i]	
+
+				end
+
+
 			-- for i=1,#response do
 
 			-- 	if response[i].IsOwner == true then
 
-			-- 		listValue[#listValue+1] = response[i]
 
-			-- 	end
+			-- 	else
 
-			-- end
+			--	listValue[#listValue+1] = response[i]	
 
+			--	end
 
-			for i=1,#response do
-
-				if response[i].IsOwner == true then
-
-
-				else
-
-				listValue[#listValue+1] = response[i]	
-
-				end
-
-			end
+			--end
 
 
 			CreateList(listValue,scrollView)
@@ -861,6 +861,17 @@ end
 
 
 			elseif phase == "did" then
+
+
+					for i=1,#networkArray do
+
+						network.cancel(networkArray[i])
+					end
+
+
+					for j=1,#groupArray do 
+						if groupArray[j] then groupArray[j]:removeSelf();groupArray[j] = nil	end
+					end
 
 
 			end	

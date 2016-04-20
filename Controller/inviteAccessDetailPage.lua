@@ -29,6 +29,8 @@ local menuBtn,contactId
 
 local RecentTab_Topvalue = 70
 
+local networkArray = {}
+
 openPage="inviteAndaccessPage"
 
 ContactIdValue = 0
@@ -508,14 +510,39 @@ end
 
 local ProfileImage
 
-			if InviteAccessDetail.ImagePath ~= nil then
-					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
+			if invitedetail_value.ImagePath ~= nil then
 
-			end
+						ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
+						ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
+						ProfileImage.isVisible = true
 
-						if not ProfileImage then
+						networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..invitedetail_value.ImagePath,
+							"GET",
+							function ( img_event )
+								if ( img_event.isError ) then
+									print ( "Network error - download failed" )
+								else
+
+									if ProfileImage then
+
+										ProfileImage = display.newImage(sceneGroup,img_event.response.filename,system.TemporaryDirectory)
+										ProfileImage.width=W;ProfileImage.height=135
+										ProfileImage.anchorY=0
+										ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
+				    				--event.row:insert(img_event.target)
+
+				    			    else
+
+										ProfileImage:removeSelf();ProfileImage=nil
+
+									 end
+			    			     end
+
+			    			end, "inviteaccess"..invitedetail_value.MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory)
+
+			else
 					ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
-				end
+			end
 
 				ProfileImage.width = W;ProfileImage.height = 135
 				ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
@@ -526,7 +553,7 @@ local ProfileImage
 				TrasitionBar.alpha=0
 				TrasitionBar:setFillColor(Utils.convertHexToRGB("#B6B6B6"))
 
-				titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
+		titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
 		titleBar_icon.x=tabBar.x-tabBar.contentWidth/2+10
 		titleBar_icon.y=tabBar.y+tabBar.contentHeight/2-titleBar_icon.contentWidth+15
 		titleBar_icon.anchorY=0

@@ -302,15 +302,13 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 								composer.gotoScene( "Controller.singInPage", options )
 
 						end
-
 			end
-
-
 
 	end
 
-		function get_versionFromWeb(response)
 
+
+		function get_versionFromWeb(response)
 					
 
 					if system.getInfo( "environment" ) == "device" then
@@ -374,8 +372,6 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 							if (tonumber(responseVersion)<=tonumber(installedVersion)) then
 
-
-			
 									AfterVersionCheck()
 
 							else
@@ -408,9 +404,6 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 					
 					end
 
-
-				
-
 		end
 
 
@@ -438,12 +431,15 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 	end
 
-	function scene:hide( event )
+
+
+
+	   function scene:hide( event )
 
 		local sceneGroup = self.view
 		local phase = event.phase
 
-		if event.phase == "will" then
+		    if event.phase == "will" then
 
 
 			elseif phase == "did" then

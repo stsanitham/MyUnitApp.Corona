@@ -418,6 +418,10 @@ MessagePage.SentSuccess = "Message sent successfully"
 MessagePage.DraftSuccess = "Message drafted successfully"
 MessagePage.ScheduledSuccess = "Message scheduled successfully"
 MessagePage.DeleteSuccess = "Message deleted successfully"
+MessagePage.characters=" characters"
+MessagePage.ErrorText = "Enter the short/long message in the respective field and proceed further"
+MessagePage.SavingFailed = "Saving Failed"
+MessagePage.SchedulingFailed = "Scheduling Failed"
 
 
 

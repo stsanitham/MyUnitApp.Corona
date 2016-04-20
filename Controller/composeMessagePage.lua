@@ -267,8 +267,7 @@ end
 
 						if event.target.id == "set-time" then
 
-							print("sccept icon")
-
+							print("accept icon pressed")
 
 								if Date.text ~= "Date" and Time.text ~= "Time" then
 
@@ -359,34 +358,20 @@ end
     	    display.getCurrentStage():setFocus( nil )
 
 
-    	    -- if event.target.id == "schedule" then
-
-
-
-
-    	    -- 	--longmsg_textbox.isVisible = false
-    	    -- 	--shortmsg_textbox.isVisible = false
-
-    	    	
-	           
-
-    	    -- end
-
-
 
 			if (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) or (longmsg_textbox.text == "" or longmsg_textbox.text == nil) then
 
 				    if event.target.id == "send" then
 
-					local alert = native.showAlert( Message.ErrorTitle, "Enter the short/long message in the respective field and proceed further", { CommonWords.ok } )
+					local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
 
 					elseif event.target.id == "draft" then
 
-					local alert = native.showAlert( "Saving Failed", "Enter the short/long message in the respective field and proceed further", { CommonWords.ok } )
+					local alert = native.showAlert( MessagePage.SavingFailed , MessagePage.ErrorText , { CommonWords.ok } )
 
 				    elseif event.target.id == "schedule" then
 
-					local alert = native.showAlert( "Scheduling Failed", "Enter the short/long message in the respective field and proceed further", { CommonWords.ok } )
+					local alert = native.showAlert( MessagePage.SchedulingFailed , MessagePage.ErrorText , { CommonWords.ok } )
 
 				    ScheduledMessageGroup.isVisible = false
 
@@ -495,7 +480,7 @@ local function TextLimitation( event )
 
 							if (string.len(event.target.text) <= 250) then
 
-							      counttext = 250 - string.len(event.target.text).. " characters"
+							      counttext = 250 - string.len(event.target.text).. MessagePage.characters
 
 							      short_msg_charlimit.text = counttext
 
@@ -504,7 +489,7 @@ local function TextLimitation( event )
 
 					        if (string.len(event.target.text) <= 0) then
 
-					       	      short_msg_charlimit.text = "0 characters"
+					       	      short_msg_charlimit.text = "0"..MessagePage.characters
 
 					        end
 
@@ -523,7 +508,7 @@ local function TextLimitation( event )
 
 							if (string.len(event.target.text) <= 1000) then
 
-							       countlongtext = 1000 - string.len(event.target.text) .. " characters"
+							       countlongtext = 1000 - string.len(event.target.text) .. MessagePage.characters
 
 							       long_msg_charlimit.text = countlongtext
 
@@ -533,7 +518,7 @@ local function TextLimitation( event )
 
 						       if (string.len(event.target.text) <= 0) then
 
-						       	 long_msg_charlimit.text = "0 characters"
+						       	 long_msg_charlimit.text = "0"..MessagePage.characters
 
 						       end
 
@@ -591,8 +576,6 @@ local function TextLimitation( event )
 			elseif event.phase == "ended" then
 
 			    display.getCurrentStage():setFocus( nil )
-
-			    print("345345345345")
 
 					 composer.hideOverlay("slideRight",300)		 
 
