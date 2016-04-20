@@ -38,17 +38,11 @@ local messagedetail_scrollView
 
 local sentMessage_detail
 
-
-
 --------------------------------------------------
 
 
+
 -----------------Function-------------------------
-
-
-
-
-
 
 
 			local function FocusComplete( event )
