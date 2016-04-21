@@ -139,7 +139,7 @@ FlapMenu.Contacts_with_Access = "Contacts avec Accès"
 FlapMenu.Denied_Access = "Accès refusé"
 FlapMenu.Pending_Requests = "solicitudes pendientes"
 FlapMenu.TeamMember_without_Access = "Membre de l'équipe sans accès"
-FlapMenu.chatMessageTitle = "messages"
+FlapMenu.chatMessageTitle = "bavarder"
 FlapMenu.Add_New_Access = "Ajouter un nouvel accès"
 
 
@@ -426,3 +426,25 @@ MessagePage.ErrorText = "Entrez le court message long / dans le domaine respecti
 MessagePage.SavingFailed = "Sauvegarde Échec"
 MessagePage.SchedulingFailed = "Scheduling Échec"
 
+
+
+
+ChatPage = {}
+
+ChatPage.Group = "Groupe"
+ChatPage.Chats = "causeries"
+ChatPage.Consultant_List = "Liste de Consultant"
+ChatPage.Message_Copied = "Copié message"
+ChatPage.ImageUploadError = "Erreur dans l'image Upload"
+ChatPage.ImageSize = "Taille de l'image ne ​​peut pas être plus de 10 MB"
+ChatPage.RecordStartText = "Démarrez recodage ...."
+ChatPage.Today = "AUJOURD'HUI"
+ChatPage.Yesterday = "HIER"
+ChatPage.Messages = "messages"
+ChatPage.groupSubject = "Tapez l'objet de groupe ici ..."
+ChatPage.NoGroup = "Aucun groupe trouvé"
+ChatPage.GroupCreated = "Groupe créé"
+ChatPage.GroupCreationSuccess = "Groupe créé avec succès"
+ChatPage.addTeamMember = "Ajouter Membre de l'équipe"
+ChatPage.addLimit = "S'il vous plaît sélectionner au moins un membre de l' équipe pour créer un groupe ."
+ChatPage.PressAgain = "Appuyez à nouveau pour quitter"

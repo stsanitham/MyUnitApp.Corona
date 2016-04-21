@@ -227,7 +227,7 @@ local dateVlaue=""
 
 			if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) then
 
-				datevalue.text = "TODAY"
+				datevalue.text = ChatPage.Today
 
 			else
 
@@ -236,7 +236,7 @@ local dateVlaue=""
 
 				if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(t),"%B %d, %Y",TimeZone) then
 
-				datevalue.text = "YESTERDAY"
+				datevalue.text = ChatPage.Yesterday
 
 				end
 
@@ -453,7 +453,7 @@ local function deleteAction( event )
 
 						pasteboard.copy( "string", event.target.value)
 
-						toast.show('Message Copied', {duration = 'long', gravity = 'Center', offset = {0, 128}})  
+						toast.show(ChatPage.Message_Copied, {duration = 'long', gravity = 'Center', offset = {0, 128}})  
 
 
 
@@ -613,7 +613,7 @@ end
 	  
 	  elseif (event > 10485760) then
 
-	    local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+	    local image = native.showAlert( ChatPage.ImageUploadError, ChatPage.ImageSize , { CommonWords.ok } )
 
 	       
       elseif (event>=1024)  then   
@@ -752,7 +752,7 @@ end
 
     	display.getCurrentStage():setFocus( nil )
 
-        local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onCompleteImage)
+        local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,CommonWords.cancel} , onCompleteImage)
 	
 	    return true
 
@@ -789,7 +789,7 @@ local function onKeyEvent( event )
 
         	if BackFlag == false then
 
-        		Utils.SnackBar("Press again to exit")
+        		Utils.SnackBar(ChatPage.PressAgain)
 
         		BackFlag = true
 
@@ -848,7 +848,7 @@ end
 			
 			if event.target.id == "message" then
 
-				title.text = "Messages"
+				title.text = ChatPage.Messages
 
 			    	CreateTabBarIcons()
 
@@ -1076,7 +1076,7 @@ end
 			
 			r:startRecording()
 
-			ChatBox.text="Start Recoding...."
+			ChatBox.text= ChatPage.RecordStartText 
 
 
 		elseif event.phase == "ended" then
@@ -1175,7 +1175,7 @@ function scene:create( event )
 	title.x=BackBtn.x+BackBtn.contentWidth-5;title.y = title_bg.y-3
 	title:setFillColor(0)
 
-	title.text = "Chat"
+	title.text = FlapMenu.chatMessageTitle
 
 	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 15, 15 )
 	Deleteicon.x=W-20;Deleteicon.y=title_bg.y
@@ -1358,16 +1358,16 @@ CreateTabBarIcons()
 	overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 	overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
 
-tab_Group_txt = display.newText( tabBarGroup, "Group",0,0,native.systemFont,11 )
+tab_Group_txt = display.newText( tabBarGroup,ChatPage.Group ,0,0,native.systemFont,11 )
 tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
 tab_Group_txt:setFillColor( 0.3 )
 
 
-tab_Message_txt = display.newText( tabBarGroup, "Chats",0,0,native.systemFont,11 )
+tab_Message_txt = display.newText( tabBarGroup, ChatPage.Chats ,0,0,native.systemFont,11 )
 tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
 tab_Message_txt:setFillColor( 0.3 )
 
-tab_Contact_txt = display.newText( tabBarGroup, "Consultant List",0,0,native.systemFont,11 )
+tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List ,0,0,native.systemFont,11 )
 tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
 tab_Contact_txt:setFillColor( 0.3 )
 

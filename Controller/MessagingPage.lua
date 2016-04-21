@@ -108,7 +108,7 @@ local function onKeyEvent( event )
 
         	if BackFlag == false then
 
-        		Utils.SnackBar("Press again to exit")
+        		Utils.SnackBar(ChatPage.PressAgain)
 
         		BackFlag = true
 
@@ -168,7 +168,7 @@ end
 			
 			if event.target.id == "message" then
 
-				title.text = "Messages"
+				title.text = ChatPage.Messages
 
 
 			elseif event.target.id == "group" then
@@ -474,7 +474,7 @@ local function Broadcast_list( list )
 
 				if Utils.getTime(makeTimeStamp(list[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(t),"%B %d, %Y",TimeZone) then
 
-				time.text = "YESTERDAY"
+				time.text = ChatPage.Yesterday
 
 				end
 
@@ -559,7 +559,7 @@ end
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
 
-	title.text = "Chats"
+	title.text = ChatPage.Chats
 
 
    
@@ -693,15 +693,15 @@ CreateTabBarIcons()
 	overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 	overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
 
-tab_Group_txt = display.newText( tabBarGroup, "Group",0,0,native.systemFont,11 )
+tab_Group_txt = display.newText( tabBarGroup,  ChatPage.Group ,0,0,native.systemFont,11 )
 tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
 tab_Group_txt:setFillColor( 0.3 )
 
-tab_Message_txt = display.newText( tabBarGroup, "Chats",0,0,native.systemFont,11 )
+tab_Message_txt = display.newText( tabBarGroup,  ChatPage.Chats,0,0,native.systemFont,11 )
 tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
 tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-tab_Contact_txt = display.newText( tabBarGroup, "Consultant List",0,0,native.systemFont,11 )
+tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List ,0,0,native.systemFont,11 )
 tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
 tab_Contact_txt:setFillColor( 0.3 )
 

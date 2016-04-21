@@ -364,7 +364,7 @@ end
 
 					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
 
-						short_msg_timedate.text = "YESTERDAY".."  "..os.date("%I:%M %p",time)
+						short_msg_timedate.text = ChatPage.Yesterday.."  "..os.date("%I:%M %p",time)
 						short_msg_timedate.x = W-150
 
 					else
