@@ -351,7 +351,7 @@ local dateVlaue=""
 		bg.width = bg.width+35
 
 		local time = display.newText( tempGroup, Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%I:%M %p",TimeZone), 0, 0 , native.systemFont ,10 )
-		time.x=bg.x
+		time.x=bg.x-5
 		time.y=bg.y+bg.contentHeight-time.contentHeight/2-10
 		time.anchorX=bg.anchorX;time.anchorY=bg.anchorY
 
@@ -1020,9 +1020,9 @@ end
 
 	        if ( string.sub( system.getInfo("model"), 1, 2 ) == "iP" ) then
 
-	        	scrollAction(-230)
+	        	scrollAction(-200)
 	        else
-	        	scrollAction(-150)
+	        	scrollAction(-120)
 
 
 	        end

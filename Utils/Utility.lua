@@ -314,13 +314,18 @@ Utils.encrypt = function ( value )
 
 -- local encryptedData = mime.b64 ( cipher:encrypt ( value, "MUB" ) )
 
+--local encryptedData = mime.b64 ( cipher:encrypt ( value, "MUB" ) )
 
 return value
 end
 
+
+
 Utils.decrypt = function ( value )
 
 -- local decryptedData = cipher:decrypt ( mime.unb64 ( value ), "MUB" )
+
+--local decryptedData = cipher:decrypt ( mime.unb64 ( value ), "MUB" )
 
 return value
 end
