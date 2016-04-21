@@ -741,7 +741,7 @@ local function onRowTouch( event )
 
 		end
 
-			if Phone.text == "" or Phone.text == "* Enter the Phone Number" or Phone.text == Phone.id or Phone.text:len() < 15  then
+			if Phone.text == "" or Phone.text == "* Enter the Phone Number" or Phone.text == Phone.id or Phone.text:len() < 14  then
 				validation=false
 				SetError("* "..RequestAccess.Phone_error,Phone)
 			end

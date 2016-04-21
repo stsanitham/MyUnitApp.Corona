@@ -31,6 +31,8 @@ local RecentTab_Topvalue = 70
 
 local networkArray = {}
 
+local leftPadding = 10
+
 local titleBar_text;
 local ProfileImage
 
@@ -48,6 +50,7 @@ page_flag1 = "inviteAndaccessPage"
 
 
 -----------------Function-------------------------
+
 
 
 
@@ -87,7 +90,7 @@ local function observableScroll( event )
 
     	 				titleBar_text.xScale = titleBar_text.xScale - 0.018
     	 				titleBar_text.yScale = titleBar_text.yScale - 0.018
-    	 				titleBar_text.x=titleBar_text.x+0.8
+    	 				titleBar_text.x=titleBar_text.x+1
 
     	 			end
 
@@ -114,7 +117,7 @@ local function observableScroll( event )
 
     	 				titleBar_text.xScale = titleBar_text.xScale + 0.018
     	 				titleBar_text.yScale = titleBar_text.yScale + 0.018
-    	 				titleBar_text.x=titleBar_text.x-0.8
+    	 				titleBar_text.x=titleBar_text.x-1
 
     	 			end
 
@@ -156,6 +159,10 @@ local function observableScroll( event )
     end
     return true
 end
+
+
+
+
 
 
 
@@ -402,7 +409,7 @@ local function Block()
 
        GetAlertPopup()
 
-		AlertText.text = "Block"
+		AlertText.text = CommonWords.Block
 		AlertContentText.text = CareerPath.BlockAccess
 		print("block access occurred text value ",AlertContentText.text)
 
@@ -619,26 +626,26 @@ end
 			-- if invite_status == "OPEN" then title.text = "Pending Requests" end
 			-- if invite_status == "ADDREQUEST" then title.text = "Team Member without Access" end
 
+        	titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
+			titleBar.anchorY=0
+			titleBar.isVisible=false
 
+			titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
 			if invitedetail_value.ImagePath ~= nil then
 
-						ProfileImage = display.newImageRect(sceneGroup, "inviteaccess"..invitedetail_value.MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory,80,80)
-						ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
-						ProfileImage.width = W;ProfileImage.height = 135
-										ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
-									ProfileImage.anchorY=0
-						 ProfileImage.isVisible = true
-
-
-
+					ProfileImage = display.newImageRect(sceneGroup, "inviteaccess"..invitedetail_value.MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory,80,80)
+						
 			else
 					ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
-						ProfileImage.width = W;ProfileImage.height = 135
-				ProfileImage.x=W/2;ProfileImage.y=tabBar.y+tabBar.contentHeight/2
-				ProfileImage.anchorY=0
+					
 			end
+
+
+			ProfileImage.width = W;ProfileImage.height = 180
+			ProfileImage.x=W/2;ProfileImage.y=titleBar.y
+			ProfileImage.anchorY=0
 
 			
 
@@ -647,36 +654,48 @@ end
 				TrasitionBar.alpha=0
 				TrasitionBar:setFillColor(Utils.convertHexToRGB("#B6B6B6"))
 
+	
 		titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
-		titleBar_icon.x=tabBar.x-tabBar.contentWidth/2+10
-		titleBar_icon.y=tabBar.y+tabBar.contentHeight/2-titleBar_icon.contentWidth+15
+		titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+15
+		titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
 		titleBar_icon.anchorY=0
 
-				titleBar_text = display.newText(" dsfds",0,0,native.systemFont,0)
-		titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
-		titleBar_text.y=titleBar_icon.y
+		titleBar_icon_bg = display.newRect(sceneGroup,0,0,25,28)
+		titleBar_icon_bg.x=titleBar.x-titleBar.contentWidth/2+20
+		titleBar_icon_bg.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon_bg.contentWidth+10
+		titleBar_icon_bg.anchorY=0
+		titleBar_icon_bg.alpha=0.01
+
+		titleBar_icon_bg:addEventListener("touch",closeInviteDetails)
+
+
+		titleBar_text = display.newText(" dsfds",0,0,native.systemFont,24)
+		titleBar_text.x=leftPadding
+		titleBar_text.y=ProfileImage.y+ProfileImage.contentHeight-titleBar_text.contentHeight/2-20
 		titleBar_text.anchorX=0;titleBar_text.anchorY=0
-		Utils.CssforTextView(titleBar_text,sp_subHeader)
+		titleBar_text.fontSize=24
+		--Utils.CssforTextView(titleBar_text,sp_subHeader)
 		sceneGroup:insert( titleBar_text )
+
 
 	local RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight
 
 
 		scroll_View = widget.newScrollView
 		{
-		top = 75,
+		top = 0,
 		left = 0,
 		width = W,
-		height = H-75,
+		height = H-RecentTab_Topvalue+ProfileImage.contentHeight,
 		hideBackground = false,
 		isBounceEnabled=false,
-		horizontalScrollingDisabled = true,
-		verticalScrollingDisabled = false,
+		horizontalScrollDisabled = true,
+		verticalScrollDisabled = false,
 		hideScrollBar=true,
 		bottomPadding = 50,
-
 		listener = observableScroll
 		}
+
 		scroll_View.anchorY=0
 		scroll_View.y=RecentTab_Topvalue
 		--scrollView.anchorX=0
@@ -684,10 +703,8 @@ end
 		sceneGroup:insert(scroll_View)
 
 
-
-
 		
-				if (invitedetail_value.FirstName ~= nil and invitedetail_value.FirstName ~= "") and (invitedetail_value.LastName ~= nil and invitedetail_value.LastName ~= "") then
+		if (invitedetail_value.FirstName ~= nil and invitedetail_value.FirstName ~= "") and (invitedetail_value.LastName ~= nil and invitedetail_value.LastName ~= "") then
 
         	  titleBar_text.text = invitedetail_value.FirstName.." "..invitedetail_value.LastName
 
@@ -702,6 +719,8 @@ end
 		end
 
 		print( "titleBar_text : "..titleBar_text.text )
+
+
 
 ----------------------------Email Address---------------------------------------------------------
 
@@ -825,7 +844,7 @@ end
 
 	       local time = Utils.makeTimeStamp(invitedetail_value.UpdateTimeStamp)
 
-		   local activity_time = tostring(os.date("%m/%d/%Y %I:%m %p",time))
+		   local activity_time = tostring(os.date("%m/%d/%Y %I:%M %p",time))
 
 		display_details[#display_details+1] = display.newText(InviteAccessDetail.ActivityOn,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
