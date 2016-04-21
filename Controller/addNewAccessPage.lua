@@ -403,6 +403,7 @@ end
 
 				local text = event.target.text
 
+
 				if event.target.text:len() > event.startPosition then
 
 					text = event.target.text:sub(1,event.startPosition )
@@ -410,12 +411,12 @@ end
 				end
 
 
-				local maskingValue =Utils.PhoneMasking(tostring(text))
+				local maskingValue = Utils.PhoneMasking(tostring(text))
 
 								
 						event.target.text=maskingValue
 
-						 event.target:setSelection(maskingValue:len()+1,maskingValue:len()+1)
+						event.target:setSelection(maskingValue:len()+1,maskingValue:len()+1)
 
 			end
 		
@@ -513,7 +514,7 @@ local function onRowTouch( event )
 		end
 
 
-		if Phone.text == "" or Phone.text == Phone.id or Phone.text:len() < 15 or Phone.text==PopupGroup.PhoneNumRequired then
+		if Phone.text == "" or Phone.text == Phone.id or Phone.text:len() < 14 or Phone.text==PopupGroup.PhoneNumRequired then
 			validation=false
 			SetError("* "..RequestAccess.Phone_error,Phone)
 		end
