@@ -135,7 +135,7 @@ local tabBarGroup = display.newGroup( )
 		        	if BackFlag == false then
 
 
-		        		Utils.SnackBar("Press again to exit")
+		        		Utils.SnackBar(ChatPage.PressAgain)
 
 		        		BackFlag = true
 
@@ -294,7 +294,7 @@ local tabBarGroup = display.newGroup( )
 
 					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
 
-						Message_time.text = "YESTERDAY"
+						Message_time.text = ChatPage.Yesterday
 						Message_time.x = background.x+background.contentWidth/2-70
 
 					else
@@ -433,7 +433,7 @@ local tabBarGroup = display.newGroup( )
 
 					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
 
-						Message_time.text = "YESTERDAY"
+						Message_time.text = ChatPage.Yesterday
 						Message_time.x = background.x+background.contentWidth/2-70
 
 					else
@@ -633,7 +633,7 @@ local tabBarGroup = display.newGroup( )
 
 					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
 
-						Message_time.text = "YESTERDAY"
+						Message_time.text = ChatPage.Yesterday
 						Message_time.x = background.x+background.contentWidth/2-70
 
 					else

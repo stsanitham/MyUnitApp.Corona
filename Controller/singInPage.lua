@@ -640,7 +640,7 @@ end
 
         	if BackFlag == false then
 
-        		Utils.SnackBar("Press again to exit")
+        		Utils.SnackBar(ChatPage.PressAgain)
 
         		BackFlag = true
 

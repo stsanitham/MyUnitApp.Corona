@@ -159,7 +159,7 @@ end
 
 	        	if BackFlag == false then
 
-	        		Utils.SnackBar("Press again to exit")
+	        		Utils.SnackBar(ChatPage.PressAgain)
 
 	        		BackFlag = true
 
@@ -218,7 +218,7 @@ end
 			
 			if event.target.id == "message" then
 
-				title.text = "Messages"
+				title.text = ChatPage.Messages
 				print( "Messages" )
 
 			    	CreateTabBarIcons()
@@ -443,7 +443,7 @@ end
 		title.anchorX = 0
 		title.x=5;title.y = title_bg.y
 		title:setFillColor(0)
-		title.text = "Group"
+		title.text = ChatPage.Group
 
 		-- addGroupBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/2,66/2.2 )
 		-- addGroupBtn.x=W-40
@@ -469,7 +469,7 @@ end
 		GroupSubject.x = 10
 		GroupSubject:setReturnKey( "done" )
 		GroupSubject.hasBackground = false	
-		GroupSubject.placeholder = "Type group subject here..."
+		GroupSubject.placeholder = ChatPage.groupSubject
 		sceneGroup:insert(GroupSubject)
 
 		create_groupicon =  display.newImageRect(sceneGroup,"res/assert/tick.png",25,22)
@@ -478,7 +478,7 @@ end
 		create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
 		create_groupicon.y=subjectBar.y +20
 
-		NoEvent = display.newText( sceneGroup,"No Group Found" , 0,0,0,0,native.systemFontBold,16)
+		NoEvent = display.newText( sceneGroup, ChatPage.NoGroup , 0,0,0,0,native.systemFontBold,16)
 		NoEvent.x=W/2;NoEvent.y=H/2
 		NoEvent.isVisible=false
 		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
@@ -591,7 +591,7 @@ CreateTabBarIcons()
 
 	
 
-tab_Group_txt = display.newText( tabBarGroup, "Group",0,0,native.systemFont,11 )
+tab_Group_txt = display.newText( tabBarGroup, ChatPage.Group ,0,0,native.systemFont,11 )
 tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
 tab_Group_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
@@ -599,11 +599,11 @@ if overlay then overlay:removeSelf( );overlay=nil end
 overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 overlay.y=tabBg.y+6;overlay.x=tab_Group_btn.x
 
-tab_Message_txt = display.newText( tabBarGroup, "Chats",0,0,native.systemFont,11 )
+tab_Message_txt = display.newText( tabBarGroup, ChatPage.Chats ,0,0,native.systemFont,11 )
 tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
 tab_Message_txt:setFillColor( 0.3 )
 
-tab_Contact_txt = display.newText( tabBarGroup, "Consultant List",0,0,native.systemFont,11 )
+tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List ,0,0,native.systemFont,11 )
 tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
 tab_Contact_txt:setFillColor( 0.3 )
 

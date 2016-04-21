@@ -142,7 +142,7 @@ FlapMenu.Contacts_with_Access = "Contactos con Acceso"
 FlapMenu.Denied_Access = "Acceso denegado"
 FlapMenu.Pending_Requests = "solicitudes pendientes"
 FlapMenu.TeamMember_without_Access = "Miembro del Equipo sin acceso"
-FlapMenu.chatMessageTitle = "mensajes"
+FlapMenu.chatMessageTitle = "Charla"
 FlapMenu.Add_New_Access = "Agregar nuevo acceso"
 
 
@@ -429,3 +429,25 @@ MessagePage.ErrorText = "Introduzca el mensaje corto / largo en el campo respect
 MessagePage.SavingFailed = "No ha podido guardarse"
 MessagePage.SchedulingFailed = "Error de programación"
 
+
+
+
+ChatPage = {}
+
+ChatPage.Group = "Grupo"
+ChatPage.Chats = "chats"
+ChatPage.Consultant_List = "Lista consultor"
+ChatPage.Message_Copied = "mensaje Copiado"
+ChatPage.ImageUploadError = "Error en la imagen Subir "
+ChatPage.ImageSize ="Tamaño de la imagen no puede contener más de 10 MB"
+ChatPage.RecordStartText = "Iniciar la recodificación ...."
+ChatPage.Today = "HOY"
+ChatPage.Yesterday = "AYER"
+ChatPage.groupSubject = "Tipo de grupo de sujetos aquí ..."
+ChatPage.Messages = "mensajes"
+ChatPage.NoGroup = "Sin Grupo Encontrado"
+ChatPage.GroupCreated = "Fecha de creación"
+ChatPage.GroupCreationSuccess = "Grupo creado con éxito"
+ChatPage.addTeamMember = "Añadir miembro del equipo"
+ChatPage.addLimit = "Por favor, seleccione al menos un miembro del equipo para crear un grupo ."
+ChatPage.PressAgain = "Presione nuevamente para salir"

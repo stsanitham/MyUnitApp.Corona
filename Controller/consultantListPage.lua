@@ -152,7 +152,7 @@ local function onKeyEvent( event )
 
         	if BackFlag == false then
 
-        		Utils.SnackBar("Press again to exit")
+        		Utils.SnackBar(ChatPage.PressAgain)
 
         		BackFlag = true
 
@@ -210,7 +210,7 @@ local function TabbarTouch( event )
 			
 			if event.target.id == "message" then
 
-				title.text = "Messages"
+				title.text = ChatPage.Messages
 
 				print( "Messages" )
 
@@ -397,7 +397,7 @@ local function TabbarTouch( event )
 
 		    	if response == "Success" then
 
-		    		local alert = native.showAlert( "Group Created" , "Group created successfully", { CommonWords.ok }, onGroupCreationComplete )
+		    		local alert = native.showAlert( ChatPage.GroupCreated ,ChatPage.GroupCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
 		    	end
 
@@ -470,7 +470,7 @@ local function TabbarTouch( event )
 
 		                    print("group not created")
 
-		                       local alert = native.showAlert( "Add Team Member" , "Please select atleast one team member to create a group.", { CommonWords.ok }, onComplete )
+		                       local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addLimit, { CommonWords.ok }, onComplete )
 
 		                 end
 
@@ -798,7 +798,7 @@ function scene:create( event )
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
 
-	title.text = "Consultant List"
+	title.text = ChatPage.Consultant_List
 
 	subjectBar = display.newRect(sceneGroup,W/2,0,W,40)
 	subjectBar.y=title_bg.y+15
@@ -823,7 +823,7 @@ function scene:create( event )
 	GroupSubject.x = backbutton.x + backbutton.contentWidth +10
 	GroupSubject:setReturnKey( "done" )
 	GroupSubject.hasBackground = false	
-	GroupSubject.placeholder = "Type group subject here..."
+	GroupSubject.placeholder = ChatPage.groupSubject
 	sceneGroup:insert(GroupSubject)
 
 	create_groupicon =  display.newImageRect(sceneGroup,"res/assert/tick.png",25,22)
@@ -898,7 +898,7 @@ CreateTabBarIcons()
 
 	
 
-tab_Group_txt = display.newText( tabBarGroup, "Group",0,0,native.systemFont,11 )
+tab_Group_txt = display.newText( tabBarGroup, ChatPage.Group ,0,0,native.systemFont,11 )
 tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
 tab_Group_txt:setFillColor( 0.3 )
 
@@ -930,11 +930,11 @@ tab_Group_txt:setFillColor( 0.3 )
 		
 
 
-tab_Message_txt = display.newText( tabBarGroup, "Chats",0,0,native.systemFont,11 )
+tab_Message_txt = display.newText( tabBarGroup,ChatPage.Chats ,0,0,native.systemFont,11 )
 tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
 tab_Message_txt:setFillColor( 0.3 )
 
-tab_Contact_txt = display.newText( tabBarGroup, "Consultant List",0,0,native.systemFont,11 )
+tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List  ,0,0,native.systemFont,11 )
 tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
 tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 if overlay then overlay:removeSelf( );overlay=nil end

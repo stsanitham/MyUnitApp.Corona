@@ -424,5 +424,24 @@ MessagePage.SavingFailed = "Saving Failed"
 MessagePage.SchedulingFailed = "Scheduling Failed"
 
 
+ChatPage = {}
+
+ChatPage.Group = "Group"
+ChatPage.Chats = "Chats"
+ChatPage.Consultant_List = "Consultant List"
+ChatPage.Message_Copied = "Message Copied"
+ChatPage.ImageUploadError = "Error in Image Upload"
+ChatPage.ImageSize = "Size of the image cannot be more than 10 MB"
+ChatPage.RecordStartText = "Start Recoding...."
+ChatPage.Today = "TODAY"
+ChatPage.Yesterday = "YESTERDAY"
+ChatPage.Messages = "Messages"
+ChatPage.groupSubject = "Type group subject here..."
+ChatPage.NoGroup = "No Group Found"
+ChatPage.GroupCreated = "Group Created"
+ChatPage.GroupCreationSuccess = "Group created successfully"
+ChatPage.addTeamMember = "Add Team Member"
+ChatPage.addLimit = "Please select atleast one team member to create a group."
+ChatPage.PressAgain = "Press again to exit"
 
 
