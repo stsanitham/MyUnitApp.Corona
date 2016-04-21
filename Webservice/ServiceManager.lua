@@ -177,7 +177,35 @@ function Webservice.REQUEST_ACCESS(page,requestFromStatus,issentMail,issentText,
 
 		end
 
-	 v = 
+
+
+    if page == "addNewAccessPage" then
+
+		    v = 
+
+			[[{
+			  "FirstName": "]]..firstName..[[",
+			  "LastName": "]]..lastName..[[",
+			  "EmailAddress": "]]..Email..[[",
+			  "UnitNumber": "]]..UnitNumberValue..[[",
+			  "PhoneNumber": "]]..Phone..[[",
+			  "Password": "]]..Password..[[",
+			  "UserId": "]]..UserId..[[",
+			  "Comments": "]]..Comment..[[",
+			  "RequestFrom": "]]..requestFromStatus..[[",
+			  "MkRankId": "]]..MKRank..[[",
+			  "IsSendText": "]]..tostring(issentText)..[[",
+			  "IsSendMail": "]]..tostring(issentMail)..[[",
+			  "TypeLanguageCountry": {
+			    "LanguageId": "]]..langid..[[",
+			    "CountryId": "]]..countryid..[[",
+			    
+			  },
+			  "IsTeamMember": true,
+			}]]
+	else
+
+			 v = 
 
 	[[{
 	  "FirstName": "]]..firstName..[[",
@@ -195,31 +223,6 @@ function Webservice.REQUEST_ACCESS(page,requestFromStatus,issentMail,issentText,
 	    "LanguageId": 1,
 	    "CountryId": 1,
 	  },
-	}]]
-
-    if page == "addNewAccessPage" then
-
-    v = 
-
-	[[{
-	  "FirstName": "]]..firstName..[[",
-	  "LastName": "]]..lastName..[[",
-	  "EmailAddress": "]]..Email..[[",
-	  "UnitNumber": "]]..UnitNumberValue..[[",
-	  "PhoneNumber": "]]..Phone..[[",
-	  "Password": "]]..Password..[[",
-	  "UserId": "]]..UserId..[[",
-	  "Comments": "]]..Comment..[[",
-	  "RequestFrom": "]]..requestFromStatus..[[",
-	  "MkRankId": "]]..MKRank..[[",
-	  "IsSendText": "]]..tostring(issentText)..[[",
-	  "IsSendMail": "]]..tostring(issentMail)..[[",
-	  "TypeLanguageCountry": {
-	    "LanguageId": "]]..langid..[[",
-	    "CountryId": "]]..countryid..[[",
-	    
-	  },
-	  "IsTeamMember": true,
 	}]]
   
     end
