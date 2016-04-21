@@ -286,7 +286,9 @@ end
 
 						 			print("close alert")
 
-						 			datePicker.clear()
+						 			if datePicker then datePicker.clear() end
+
+									if timePicker then timePicker.clear() end
 
 									ScheduledMessageGroup.isVisible = false
 
@@ -365,15 +367,15 @@ end
 
 				    if event.target.id == "send" then
 
-					local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
+						local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
 
 					elseif event.target.id == "draft" then
 
-					local alert = native.showAlert( MessagePage.SavingFailed , MessagePage.ErrorText , { CommonWords.ok } )
+						local alert = native.showAlert( MessagePage.SavingFailed , MessagePage.ErrorText , { CommonWords.ok } )
 
 				    elseif event.target.id == "schedule" then
 
-					local alert = native.showAlert( MessagePage.SchedulingFailed , MessagePage.ErrorText , { CommonWords.ok } )
+						local alert = native.showAlert( MessagePage.SchedulingFailed , MessagePage.ErrorText , { CommonWords.ok } )
 
 				    ScheduledMessageGroup.isVisible = false
 
@@ -383,42 +385,44 @@ end
 
 				    end
 
-					return false
+				return false
 
 	        end
+
 
 
 
 	        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (longmsg_textbox.text ~= "" or longmsg_textbox.text ~= nil) then
 
-				    if event.target.id == "send" then
+					    if event.target.id == "send" then
 
-				        sendMessage("SEND")
-                        
-					elseif event.target.id == "draft" then
+					        sendMessage("SEND")
+	                        
+						elseif event.target.id == "draft" then
 
-					    sendMessage("DRAFT")
+						    sendMessage("DRAFT")
 
-					elseif event.target.id == "schedule" then
+						elseif event.target.id == "schedule" then
 
-    	    	        GetScheduleMessageAlertPopup()
+	    	    	        GetScheduleMessageAlertPopup()
 
-						ScheduledMessageGroup.isVisible = true
+							ScheduledMessageGroup.isVisible = true
 
-						longmsg_textbox.isVisible = false
-						shortmsg_textbox.isVisible = false
+							longmsg_textbox.isVisible = false
+							shortmsg_textbox.isVisible = false
 
-						sendMessage("SCHEDULE")
-						
-					else
+							sendMessage("SCHEDULE")
+							
+						else
 
-				    end
+					    end
 
-				    return false
+				  return false
 
 	        end
 
----------------------------
+
+
 
 	        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (longmsg_textbox.text == "" or longmsg_textbox.text == nil) then
 
@@ -553,6 +557,12 @@ local function TextLimitation( event )
 		        if phase == "up" then
 
 		        if keyName=="back" then
+
+		        	ScheduledMessageGroup.isVisible = false
+
+		        	if datePicker then datePicker.clear() end
+
+		        	if timePicker then timePicker.clear() end
 
 		        	composer.hideOverlay( "slideRight", 300 )
 
@@ -990,6 +1000,10 @@ end
 		if event.phase == "will" then
 
 			composer.removeHidden()
+
+				if datePicker then datePicker.clear() end
+
+				if timePicker then timePicker.clear() end
 
 
 			if DeleteMessageGroup.numChildren ~= nil then

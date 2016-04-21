@@ -145,7 +145,7 @@ function GetScheduleMessageAlertPopup()
 
 ------------------------------remove or block buttons------------------------------------------
 
-    acceptschedule_button = display.newImageRect(ScheduledMessageGroup,"res/assert/positive_alert.png" ,225, EditBoxStyle.height)
+    acceptschedule_button = display.newImageRect(ScheduledMessageGroup,"res/assert/positive_alert.png" ,245, EditBoxStyle.height)
   	acceptschedule_button.x = W/2
   	acceptschedule_button.id = "set-time"
   	acceptschedule_button.y = AlertContentText.y+AlertContentText.contentHeight+42

@@ -19,9 +19,6 @@ settings =
     plugins =
     {
 
-
-     ["plugin.openssl"] = { publisherId = "com.coronalabs", },
-
      ['plugin.toast'] = {publisherId = 'com.spiralcodestudio'},
 
      ["plugin.pasteboard"] =
