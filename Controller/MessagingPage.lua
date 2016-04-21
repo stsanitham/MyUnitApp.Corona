@@ -437,7 +437,7 @@ local function Broadcast_list( list )
 			 	Name_txt.text = list[i].GroupName
 			 end
 
-			local Position_txt = display.newText(tempGroup,list[i].MyUnitBuzz_Message,0,0,native.systemFont,14)
+			local Position_txt = display.newText(tempGroup,Utils.decrypt(list[i].MyUnitBuzz_Message),0,0,native.systemFont,14)
 			Position_txt.x=Name_txt.x;Position_txt.y=background.y+background.height/2+10
 			Position_txt.anchorX=0
 			Utils.CssforTextView(Position_txt,sp_fieldValue)

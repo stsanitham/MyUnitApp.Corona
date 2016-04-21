@@ -1,4 +1,9 @@
 
+local openssl = require( "plugin.openssl" )
+ 
+local cipher = openssl.get_cipher ( "aes-256-cbc" )
+local mime = require ( "mime" )
+
 Utils = {}
 function doesFileExist( fname, path )
 
@@ -307,6 +312,21 @@ if Style.Text_Color then Object:setFillColor( Utils.convertHexToRGB( Style.Text_
 --if Style.Text_Alignment then Object.align = Style.Text_Alignment   end
 
 
+end
+
+Utils.encrypt = function ( value )
+
+local encryptedData = mime.b64 ( cipher:encrypt ( value, "MUB" ) )
+
+
+return encryptedData
+end
+
+Utils.decrypt = function ( value )
+
+local decryptedData = cipher:decrypt ( mime.unb64 ( value ), "MUB" )
+
+return decryptedData
 end
 
 Utils.CssforTextField= function ( Object,Style )

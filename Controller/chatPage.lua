@@ -293,11 +293,11 @@ local dateVlaue=""
 
 		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
 
-			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,W-115,0,native.systemFont,124)
+			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,W-115,0,native.systemFont,124)
 
 		else
 
-			chat = display.newText( ChatHistory[i].MyUnitBuzz_Message,W-80,0,native.systemFont,12)
+			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,native.systemFont,12)
 
 		end
 		chat.anchorY=0
@@ -581,7 +581,7 @@ local function ChatSendAction( event )
 		--	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
 				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
-				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..ChatBox.text..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
 				db:exec( insertQuery )
 
 				print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
@@ -1015,14 +1015,19 @@ end
 
    		 if ( event.phase == "began" ) then
         -- user begins editing numericField
-        -- if ( string.sub( system.getInfo("model"), 1, 2 ) == "iP" ) then
 
-        -- 	scrollAction(-230)
-        -- else
-        -- 	scrollAction(-150)
+        if isIos then
+
+	        if ( string.sub( system.getInfo("model"), 1, 2 ) == "iP" ) then
+
+	        	scrollAction(-230)
+	        else
+	        	scrollAction(-150)
 
 
-        -- end
+	        end
+
+	    end
         
 
 
@@ -1172,7 +1177,7 @@ function scene:create( event )
 
 	title = display.newText(sceneGroup,FlapMenu.chatMessageTitle,0,0,native.systemFont,18)
 	title.anchorX = 0
-	title.x=BackBtn.x+BackBtn.contentWidth-5;title.y = title_bg.y-3
+	title.x=BackBtn.x+BackBtn.contentWidth-5;title.y = title_bg.y
 	title:setFillColor(0)
 
 	title.text = "Chat"
