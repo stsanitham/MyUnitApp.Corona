@@ -47,7 +47,12 @@ local columnData =
 }
 
 
-	
+	datePicker.clear  = function ()
+		if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
+		if doneBg then display.remove(doneBg);doneBg=nil end
+		if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
+
+	end
 
 
 

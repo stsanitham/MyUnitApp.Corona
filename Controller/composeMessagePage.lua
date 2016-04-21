@@ -286,6 +286,8 @@ end
 
 						 			print("close alert")
 
+						 			datePicker.clear()
+
 									ScheduledMessageGroup.isVisible = false
 
 					     			longmsg_textbox.isVisible = true
