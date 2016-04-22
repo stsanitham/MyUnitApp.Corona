@@ -729,13 +729,6 @@ local tabBarGroup = display.newGroup( )
 
 
 
-
-
-         
-
-
-
-
 		function scene:resumeCall(list_values)
 
 			print("ertertet64636265642563452345623")
@@ -988,6 +981,8 @@ local tabBarGroup = display.newGroup( )
 
 				 end
 
+		--	end
+
 
 		end
 
@@ -1059,13 +1054,6 @@ local tabBarGroup = display.newGroup( )
 
 					Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
                
-				
-
-				-- elseif status == "back" then
-
-				-- 	print("nothing %%%%%")
-
-				-- 	composer.hideOverlay( "slideRight", 300 )
 
 
 				 end
@@ -1416,6 +1404,8 @@ end
 		if phase == "will" then
 
 
+
+
 			NoScheduleMessage = display.newText( sceneGroup,MessagePage.NoMessage, 0,0,0,0,native.systemFontBold,16)
 			NoScheduleMessage.x=W/2;NoScheduleMessage.y=H/2
 			NoScheduleMessage.isVisible=false
@@ -1604,17 +1594,34 @@ end
 
 
 
+			if event.params then
 
+				page_value_name = event.params.page_val
 
-            if IsOwner == true then
+				editpagevalues = event.params.editpagevalue
 
-			Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+				print(" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% : "..page_value_name)
+				print(" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% : "..json.encode(editpagevalues))
 
-		    else
+				if page_value_name == "editpage" then
 
-		    Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+					scene:resumeCall(editpagevalues)
 
+				end
+
+			else
+
+		            if IsOwner == true then
+
+					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+
+				    else
+
+				    Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+
+				    end
 		    end
+
 
 
 			menuBtn:addEventListener("touch",menuTouch)
