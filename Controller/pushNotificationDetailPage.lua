@@ -328,10 +328,12 @@ end
 			title.x=back_icon.x+20;title.y = title_bg.y
 			title:setFillColor(0)
 
+
+
             if IsOwner == true then
 
-			short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",18,16)
-			short_msg_delete.x= W-24
+			short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",19,17)
+			short_msg_delete.x= W-25
 			short_msg_delete.anchorX=0
 			short_msg_delete.id = "deleteoption"
 			short_msg_delete.anchorY=0
@@ -342,8 +344,8 @@ end
 
 			--if IsOwner == true then
 
-			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",22,22)
-			short_msg_edit.x= short_msg_delete.x - 30
+			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",23,23)
+			short_msg_edit.x= short_msg_delete.x - 35
 			short_msg_edit.anchorX=0
 			short_msg_edit.anchorY=0
 			short_msg_edit.id = "editoption"
@@ -480,8 +482,10 @@ end
 
 
 		elseif phase == "did" then
+                
 
 				event.parent:resumeGame(messagelistvalue)
+
 
 				menuBtn:removeEventListener("touch",menuTouch)
 

@@ -104,13 +104,6 @@ end
 					local function onTimer ( event )
 
 
-						    options =
-							{
-							effect = "slideRight",
-							time = 500,
-							}
-                            
-
 	                            if openPagevalue == "addpage" then
 
 									sceneevent.parent:resumeCall(list_values)
@@ -120,6 +113,15 @@ end
 									composer.hideOverlay()
 
 								elseif openPagevalue == "editpage" then
+
+											  local options =
+												{
+												effect = "slideRight",
+												time = 500,
+												params = { editpagevalue = list_values, page_val = openPagevalue}
+												
+												}
+                           
 
 									spinner.y=H/2-75
 
@@ -155,14 +157,6 @@ end
 
 					local function onTimer ( event )
 
-							
-						    options =
-							{
-							effect = "slideRight",
-							time = 500,
-							}
-                            
-
 	                            if openPagevalue == "addpage" then
 
 									sceneevent.parent:resumeCall(list_values)
@@ -172,6 +166,14 @@ end
 									composer.hideOverlay()
 
 								elseif openPagevalue == "editpage" then
+
+									  local options =
+										{
+										effect = "slideRight",
+										time = 500,
+										params = { editpagevalue = list_values, page_val = openPagevalue}
+
+										}
 
 									spinner.y=H/2-75
 
@@ -205,13 +207,7 @@ end
 								long_msg_charlimit.text = MessagePage.LongMsgLimit
 
 					local function onTimer ( event )
-
-						    options =
-							{
-							effect = "slideRight",
-							time = 500,
-							}
-                            
+						
 
 	                            if openPagevalue == "addpage" then
 
@@ -222,6 +218,15 @@ end
 									composer.hideOverlay()
 
 								elseif openPagevalue == "editpage" then
+
+									 local options =
+										{
+										effect = "slideRight",
+										time = 500,
+										params = { editpagevalue = list_values, page_val = openPagevalue}
+
+										}
+
 
 									spinner.y=H/2-75
 
@@ -634,7 +639,25 @@ local function TextLimitation( event )
 
 			    display.getCurrentStage():setFocus( nil )
 
-					 composer.hideOverlay("slideRight",300)		 
+			        if openPagevalue == "addpage" then
+
+					    composer.hideOverlay("slideRight",300)		
+
+					elseif openPagevalue == "editpage" then
+
+						local options ={
+
+						effect = "slideLeft",
+						time = 300,
+						params = {
+						         page = openPagevalue
+						}
+
+					    }
+
+						composer.gotoScene("Controller.pushNotificationDetailPage",options)		
+
+					end
 
 			end
 
@@ -813,6 +836,11 @@ end
 						longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
 
 					end
+
+
+						back_icon:addEventListener("touch",closeMessagePage)
+						back_icon_bg:addEventListener("touch",closeMessagePage)
+						title:addEventListener("touch",closeMessagePage)
 
 				end
 
