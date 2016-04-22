@@ -161,11 +161,36 @@ local sentMessage_detail
 			    display.getCurrentStage():setFocus( nil )
 
 
-			    GetDeleteMessageAlertPopup()
+		                if event.target.id == "deleteoption" then
+
+					    GetDeleteMessageAlertPopup()
 
 
-			    accept_button:addEventListener("touch",onDeleteOptionsTouch)
-	            reject_button:addEventListener("touch",onDeleteOptionsTouch)
+					    accept_button:addEventListener("touch",onDeleteOptionsTouch)
+			            reject_button:addEventListener("touch",onDeleteOptionsTouch)
+
+				        elseif event.target.id == "editoption" then
+
+									if event.params then
+
+									messagelistvalue = event.params.messagelistvalues
+
+									end
+
+
+									local options = {
+											isModal = true,
+											effect = "slideRight",
+											time = 300,
+											params = {
+											editvalues = messagelistvalue , pagevalue = "editpage"
+										}
+									}
+
+
+				        	        composer.gotoScene("Controller.composeMessagePage",options)
+
+				        end
 
 			    -- DeleteMessageGroup.isVisible = true
 
@@ -308,6 +333,7 @@ end
 			short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",18,16)
 			short_msg_delete.x= W-24
 			short_msg_delete.anchorX=0
+			short_msg_delete.id = "deleteoption"
 			short_msg_delete.anchorY=0
 			short_msg_delete:setFillColor(0)
 			short_msg_delete.y= title_bg.y - 8
@@ -320,6 +346,7 @@ end
 			short_msg_edit.x= short_msg_delete.x - 30
 			short_msg_edit.anchorX=0
 			short_msg_edit.anchorY=0
+			short_msg_edit.id = "editoption"
 			short_msg_edit.isVisible = true
 			short_msg_edit:setFillColor(0)
 			short_msg_edit.y= title_bg.y - 12
@@ -419,6 +446,7 @@ end
 				if IsOwner == true then
 
 				short_msg_delete:addEventListener("touch",onDeleteAction)
+				short_msg_edit:addEventListener("touch",onDeleteAction)
 
 			    end
 
@@ -464,6 +492,7 @@ end
 					if IsOwner == true then
 
 					short_msg_delete:removeEventListener("touch",onDeleteAction)
+					short_msg_edit:removeEventListener("touch",onDeleteAction)
 
 				    end
 
