@@ -412,9 +412,16 @@ local function Broadcast_list( list )
 				Name=list[i].ToName
 			end
 
-			local Image = display.newImageRect(tempGroup,profilrPic..".png",system.TemporaryDirectory,45,38)
 
-		if not Image then
+			 local filePath = system.pathForFile( profilrPic..".png",system.TemporaryDirectory )
+		  local fhd = io.open( filePath )
+
+		  local Image
+
+		 if fhd then
+			 Image = display.newImageRect(tempGroup,profilrPic..".png",system.TemporaryDirectory,45,38)
+
+		else
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2
 

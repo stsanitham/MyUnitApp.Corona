@@ -657,9 +657,19 @@ local function CreateGroupMemberList( list )
 		background.alpha=0.01
 		background.value = ContactList[i]
 
-			local Image = display.newImageRect(tempGroup,ContactList[i].Contact_Id..".png",system.TemporaryDirectory,45,38)
+		  local filePath = system.pathForFile( ContactList[i].Contact_Id..".png",system.TemporaryDirectory )
+		  local fhd = io.open( filePath )
 
-		if not Image then
+		  local Image
+
+		 if fhd then
+
+			Image = display.newImageRect(tempGroup,ContactList[i].Contact_Id..".png",system.TemporaryDirectory,45,38)
+
+			io.close( fhd )
+
+		else
+
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2
 

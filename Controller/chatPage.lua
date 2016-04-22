@@ -254,12 +254,21 @@ local dateVlaue=""
 				bg.x=W-65
 				bg.anchorX=1
 
-						local Image = display.newImageRect(tempGroup,ChatHistory[i].Message_From..".png",system.TemporaryDirectory,45,38)
 
-						if not Image then
+				 local filePath = system.pathForFile( ChatHistory[i].Message_From..".png",system.TemporaryDirectory )
+		  local fhd = io.open( filePath )
+
+		  local Image
+
+				 if fhd then
+
+						Image = display.newImageRect(tempGroup,ChatHistory[i].Message_From..".png",system.TemporaryDirectory,45,38)
+						io.close( fhd )
+
+				else
 							Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 
-						end
+				end
 
 									Image.x=W-35;Image.y=bg.y+bg.height/2
 
@@ -293,7 +302,7 @@ local dateVlaue=""
 
 		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
 
-			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,W-115,0,native.systemFont,124)
+			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,W-105,0,native.systemFont,12)
 
 		else
 
@@ -1020,9 +1029,9 @@ end
 
 	        if ( string.sub( system.getInfo("model"), 1, 2 ) == "iP" ) then
 
-	        	scrollAction(-200)
+	        	scrollAction(-150)
 	        else
-	        	scrollAction(-120)
+	        	scrollAction(-170)
 
 
 	        end
@@ -1111,9 +1120,17 @@ return true
     elseif ( phase == "moved" ) then print( "Scroll view was moved" )
     elseif ( phase == "ended" ) then print( "Scroll view was released" )
 
-    	if #ChatHistory < 4 then
-    		chatScroll:scrollTo( "bottom", { time=500 } )
-    	end
+    local view = chatScroll:getView()
+
+    print( "Size : "..view.contentHeight )
+
+    if view.contentHeight < 300 then
+
+    	 chatScroll:scrollTo( "bottom", { time=500 } )
+
+    end
+
+    	
     end
 
     -- In the event a scroll limit is reached...

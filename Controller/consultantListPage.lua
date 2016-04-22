@@ -452,12 +452,21 @@ local function TabbarTouch( event )
 
 				      		local tempGroup = careerListArray[i]
 
-				      			if tostring(tempGroup[tempGroup.numChildren].isOn) == "true" then
-				      				print("Contact Id : "..tempGroup[tempGroup.numChildren].value)
+				      		
 
-				      				selected_Contact[#selected_Contact+1] = tempGroup[tempGroup.numChildren].value
+				      		for j=1,tempGroup.numChildren do
 
-				      			end
+				      			if tempGroup[j].id == "email_Checkbox" then
+
+				      				print( "check box")
+
+					      			if tostring(tempGroup[j].isOn) == "true" then
+
+					      				selected_Contact[#selected_Contact+1] = tempGroup[j].value
+
+					      			end
+					      		end
+					      	end
 
 
 				       	end
@@ -667,6 +676,7 @@ local function careePath_list( list )
 		selectcontact_checkbox.width= 20
 		selectcontact_checkbox.height = 20
 		selectcontact_checkbox.anchorX=0
+		selectcontact_checkbox.key="checkbox"
 		selectcontact_checkbox.value = contactidvalue
 		selectcontact_checkbox.x = background.x+background.contentWidth/2-33
 		selectcontact_checkbox.y=background.y+background.height/2

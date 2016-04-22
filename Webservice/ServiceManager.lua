@@ -421,7 +421,7 @@ function Webservice.LOGIN_ACCESS(Device_OS,Unique_Id,Model,Version,GCM,UnitNumbe
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
-
+--native.showAlert( "test", Unique_Id , { "ok"} )
 
 Version="1.1.0"
 

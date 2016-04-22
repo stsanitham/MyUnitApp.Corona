@@ -166,15 +166,6 @@ coronaWindowMovesWhenKeyboardAppears = true,
 
         },
 
-         supportsScreens =
-        {
-            smallScreens  = true,
-            normalScreens = true,
-            largeScreens  = false,
-            xlargeScreens = false,
-
-        },
-
-       
+              
 	},
 }

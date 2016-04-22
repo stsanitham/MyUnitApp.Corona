@@ -240,10 +240,10 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 
             end
 
-                Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+                Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
                         isDeleted="false"
-                        Created_TimeStamp=os.date("%Y-%m-%dT%H:%M:%S")
-                        Updated_TimeStamp=os.date("%Y-%m-%dT%H:%M:%S")
+                        Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+                        Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
                         ImagePath="NULL"
                         AudioPath="NULL"
                         VideoPath="NULL"
@@ -283,7 +283,6 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
                             end
             
                     
-                       
 
                         local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                             db:exec( insertQuery )
@@ -388,7 +387,7 @@ local function onSystemEvent( event )
            
     elseif ( event.type == "applicationSuspend" ) then
 
-        Webservice.UpdateLastActivityDate(appexit)
+        --Webservice.UpdateLastActivityDate(appexit)
         
     elseif ( event.type == "applicationOpen" ) then
 

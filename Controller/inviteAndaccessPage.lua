@@ -538,7 +538,8 @@ local function CreateList(list,scrollView)
 					else
 
 						if Image then
-
+						Image:removeSelf();Image=nil
+						
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
 						Image.width=35;Image.height=35
 						Image.x=30;Image.y=background.y+background.height/2-7
