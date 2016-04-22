@@ -107,7 +107,10 @@ local tabBarGroup = display.newGroup( )
 					local options = {
 						effect = "slideLeft",
 						time = 300,
-			        }
+						params = {
+						         pagevalue = "addpage"
+						        }
+			            }
 
 
 					Runtime:removeEventListener( "key", onKeyEvent )
@@ -407,6 +410,8 @@ local tabBarGroup = display.newGroup( )
 				
 				local timecreated = sentmessagelist[i].MessageDate
 				local time = makeTimeStamp(timecreated)
+
+			--	local timeValue = Utils.getTime(time,"%b-%d-%Y %I:%M %p",TimeZone)
 
 
 

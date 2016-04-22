@@ -20,7 +20,6 @@ settings =
     {
 
 
-
      ['plugin.toast'] = {publisherId = 'com.spiralcodestudio'},
 
      ["plugin.pasteboard"] =

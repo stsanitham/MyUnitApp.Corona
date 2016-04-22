@@ -123,7 +123,6 @@ local function RequestProcess()
 
 	print( "here !!!!!" )
 
-
 	if  submit_spinner.isVisible == false then
 
 			submit_spinner.isVisible=true
@@ -190,8 +189,7 @@ local function RequestProcess()
 				
 				end
 
-		end
-
+		    end
 
 		Webservice.REQUEST_ACCESS(openPage,"WEB",isSentMailvalue,isSentTextvalue,"","",FirstName.text,Name.text,Email.text,Phone.text,"",Password.text,mkRank_id,Comment.text,get_requestAccess)
 	

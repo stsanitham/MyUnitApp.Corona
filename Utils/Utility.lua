@@ -312,25 +312,30 @@ end
 
 Utils.encrypt = function ( value )
 
---local encryptedData = mime.b64 ( cipher:encrypt ( value, "MUB" ) )
+-- local encryptedData = mime.b64 ( cipher:encrypt ( value, "MUB" ) )
 
+--local encryptedData = mime.b64 ( cipher:encrypt ( value, "MUB" ) )
 
 return value
 end
 
+
+
 Utils.decrypt = function ( value )
+
+-- local decryptedData = cipher:decrypt ( mime.unb64 ( value ), "MUB" )
 
 --local decryptedData = cipher:decrypt ( mime.unb64 ( value ), "MUB" )
 
 return value
 end
 
+
 Utils.CssforTextField= function ( Object,Style )
 
 if Style.Font_Family then Object.font = Style.Font_Family end
 if Style.Font_Size_ios then Object.fontSize = Style.Font_Size_ios end
 --if Style.Text_Alignment then Object.align = Style.Text_Alignment   end
-
 
 end
 

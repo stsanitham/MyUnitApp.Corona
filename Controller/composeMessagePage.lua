@@ -111,11 +111,21 @@ end
 							}
                             
 
-							sceneevent.parent:resumeCall(list_values)
+	                            if openPagevalue == "addpage" then
 
-							spinner.y=H/2-75
+									sceneevent.parent:resumeCall(list_values)
 
-							composer.hideOverlay()
+									spinner.y=H/2-75
+
+									composer.hideOverlay()
+
+								elseif openPagevalue == "editpage" then
+
+									spinner.y=H/2-75
+
+									composer.gotoScene("Controller.pushNotificationListPage",options)
+
+								end
 
 
 					end
@@ -145,11 +155,29 @@ end
 
 					local function onTimer ( event )
 
-							sceneevent.parent:resumeCall(list_values)
+							
+						    options =
+							{
+							effect = "slideRight",
+							time = 500,
+							}
+                            
 
-							spinner.y=H/2-75
+	                            if openPagevalue == "addpage" then
 
-							composer.hideOverlay()
+									sceneevent.parent:resumeCall(list_values)
+
+									spinner.y=H/2-75
+
+									composer.hideOverlay()
+
+								elseif openPagevalue == "editpage" then
+
+									spinner.y=H/2-75
+
+									composer.gotoScene("Controller.pushNotificationListPage",options)
+
+								end
 
 					end
 
@@ -178,11 +206,28 @@ end
 
 					local function onTimer ( event )
 
-							sceneevent.parent:resumeCall(list_values)
+						    options =
+							{
+							effect = "slideRight",
+							time = 500,
+							}
+                            
 
-							spinner.y=H/2-75
+	                            if openPagevalue == "addpage" then
 
-							composer.hideOverlay()
+									sceneevent.parent:resumeCall(list_values)
+
+									spinner.y=H/2-75
+
+									composer.hideOverlay()
+
+								elseif openPagevalue == "editpage" then
+
+									spinner.y=H/2-75
+
+									composer.gotoScene("Controller.pushNotificationListPage",options)
+
+								end
 
 
 					end
@@ -286,7 +331,9 @@ end
 
 						 			print("close alert")
 
-						 			datePicker.clear()
+						 			if datePicker then datePicker.clear() end
+
+									if timePicker then timePicker.clear() end
 
 									ScheduledMessageGroup.isVisible = false
 
@@ -363,17 +410,17 @@ end
 
 			if (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) or (longmsg_textbox.text == "" or longmsg_textbox.text == nil) then
 
-				    if event.target.id == "send" then
+				    if event.target.id == "send" or event.target.id == "send icon" or event.target.id == "send_icon_text" then 
 
-					local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
+						local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
 
-					elseif event.target.id == "draft" then
+					elseif event.target.id == "draft" or event.target.id == "draft icon" or event.target.id == "draft_icon_text" then
 
-					local alert = native.showAlert( MessagePage.SavingFailed , MessagePage.ErrorText , { CommonWords.ok } )
+						local alert = native.showAlert( MessagePage.SavingFailed , MessagePage.ErrorText , { CommonWords.ok } )
 
-				    elseif event.target.id == "schedule" then
+				    elseif event.target.id == "schedule" or event.target.id == "schedule icon" or event.target.id == "schedule_icon_text" then
 
-					local alert = native.showAlert( MessagePage.SchedulingFailed , MessagePage.ErrorText , { CommonWords.ok } )
+						local alert = native.showAlert( MessagePage.SchedulingFailed , MessagePage.ErrorText , { CommonWords.ok } )
 
 				    ScheduledMessageGroup.isVisible = false
 
@@ -383,42 +430,44 @@ end
 
 				    end
 
-					return false
+				return false
 
 	        end
+
 
 
 
 	        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (longmsg_textbox.text ~= "" or longmsg_textbox.text ~= nil) then
 
-				    if event.target.id == "send" then
+					    if event.target.id == "send" or event.target.id == "send icon" or event.target.id == "send_icon_text" then
 
-				        sendMessage("SEND")
-                        
-					elseif event.target.id == "draft" then
+					        sendMessage("SEND")
+	                        
+						elseif event.target.id == "draft" or event.target.id == "draft icon" or event.target.id == "draft_icon_text" then
 
-					    sendMessage("DRAFT")
+						    sendMessage("DRAFT")
 
-					elseif event.target.id == "schedule" then
+						elseif event.target.id == "schedule" or event.target.id == "schedule icon" or event.target.id == "schedule_icon_text" then
 
-    	    	        GetScheduleMessageAlertPopup()
+	    	    	        GetScheduleMessageAlertPopup()
 
-						ScheduledMessageGroup.isVisible = true
+							ScheduledMessageGroup.isVisible = true
 
-						longmsg_textbox.isVisible = false
-						shortmsg_textbox.isVisible = false
+							longmsg_textbox.isVisible = false
+							shortmsg_textbox.isVisible = false
 
-						sendMessage("SCHEDULE")
-						
-					else
+							sendMessage("SCHEDULE")
+							
+						else
 
-				    end
+					    end
 
-				    return false
+				  return false
 
 	        end
 
----------------------------
+
+
 
 	        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (longmsg_textbox.text == "" or longmsg_textbox.text == nil) then
 
@@ -554,6 +603,12 @@ local function TextLimitation( event )
 
 		        if keyName=="back" then
 
+		        	ScheduledMessageGroup.isVisible = false
+
+		        	if datePicker then datePicker.clear() end
+
+		        	if timePicker then timePicker.clear() end
+
 		        	composer.hideOverlay( "slideRight", 300 )
 
 		        	return true
@@ -653,6 +708,13 @@ end
 
 			sceneevent = event
 
+			    if sceneevent.params then
+
+                        openPagevalue = sceneevent.params.pagevalue
+
+                        print("openpagevalue : "..openPagevalue)
+
+			    end
        
 ---------------------------------------------- Short Message ----------------------------------------------------------
 
@@ -691,7 +753,7 @@ end
 
 				short_msg_charlimit = display.newText(sceneGroup,MessagePage.ShortMsgLimit,0,0,native.systemFont,14)
 				short_msg_charlimit.anchorX = 0
-				short_msg_charlimit.x=W-105
+				short_msg_charlimit.x=W-120
 				short_msg_charlimit.anchorY = 0
 				short_msg_charlimit.y = shortmsg_textbox.y+shortmsg_textbox.contentHeight+2
 				short_msg_charlimit:setFillColor(0)
@@ -736,9 +798,24 @@ end
 				long_msg_charlimit = display.newText(sceneGroup,MessagePage.LongMsgLimit,0,0,native.systemFont,14)
 				long_msg_charlimit.anchorX = 0
 				long_msg_charlimit.anchorY = 0
-				long_msg_charlimit.x=W-110
+				long_msg_charlimit.x=W-125
 				long_msg_charlimit.y = longmsg_textbox.y+longmsg_textbox.contentHeight+2
 				long_msg_charlimit:setFillColor(0)
+
+                
+                if openPagevalue == "editpage" then
+
+					if sceneevent.params then
+
+						edit_msg_values = sceneevent.params.editvalues
+
+						shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
+						longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
+
+					end
+
+				end
+
 
 ------------------------------------------- attachment icon -----------------------------------------
 
@@ -865,9 +942,9 @@ end
 ------------------------------------------ Schedule Button -----------------------------------------------
 
 			    schedule_button = display.newRect(sceneGroup,0,0,W-50,26)
-				schedule_button.x = W/2 - W/3 - 40
+				schedule_button.x = W/2 - W/3 - 45
 				schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-				schedule_button.width = W - 220
+				schedule_button.width = W - 210
 				schedule_button.anchorX = 0
 				schedule_button.anchorY=0
 				schedule_button:setFillColor( 0,0.5,0.8 )
@@ -884,6 +961,7 @@ end
 
 				schedule_icon_text = display.newText(sceneGroup,MessagePage.ScheduleText,0,0,schedule_button.contentWidth-12,0,native.systemFont,14)
 				schedule_icon_text.anchorX=0
+				schedule_icon_text.id = "schedule_icon_text"
 				schedule_icon_text.anchorY=0
 				schedule_icon_text.x=schedule_icon.x+schedule_icon.contentWidth+ 5
 				schedule_icon_text.y=schedule_icon.y
@@ -896,9 +974,9 @@ end
 --------------------------------------------- Send Button ---------------------------------------------------------
 
 			    send_button = display.newRect(sceneGroup,0,0,W-50,26)
-				send_button.x = W/2 - 38
+				send_button.x = W/2 - 35
 				send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-				send_button.width = W - 240
+				send_button.width = W - 235
 				send_button.anchorX = 0
 				send_button.anchorY=0
 				send_button:setFillColor(Utils.convertHexToRGB(color.darkgreen))
@@ -915,6 +993,7 @@ end
 				send_icon_text = display.newText(sceneGroup,MessagePage.Send,0,0,send_button.contentWidth-12,0,native.systemFont,14)
 				send_icon_text.anchorX=0
 				send_icon_text.anchorY=0
+				send_icon_text.id = "send_icon_text"
 				send_icon_text.x=send_icon.x+send_icon.contentWidth+ 5
 				send_icon_text.y=send_icon.y
 				Utils.CssforTextView(send_icon_text,sp_primarybutton)
@@ -926,7 +1005,7 @@ end
 --------------------------------------------- Draft Button ---------------------------------------------------------
 
 			    draft_button = display.newRect(sceneGroup,0,0,W-50,26)
-				draft_button.x = W/2 + W/3 - 55
+				draft_button.x = W/2 + W/3 - 50
 				draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
 				draft_button.width = W - 225
 				draft_button.anchorX = 0
@@ -945,6 +1024,7 @@ end
 				draft_icon_text = display.newText(sceneGroup,MessagePage.DraftText,0,0,send_button.contentWidth-12,0,native.systemFont,14)
 				draft_icon_text.anchorX=0
 				draft_icon_text.anchorY=0
+				draft_icon_text.id = "draft_icon_text"
 				draft_icon_text.x=draft_icon.x+draft_icon.contentWidth+ 5
 				draft_icon_text.y=draft_icon.y
 				Utils.CssforTextView(draft_icon_text,sp_primarybutton)
@@ -968,10 +1048,18 @@ end
 			Background:addEventListener("touch",FocusComplete)
 
 			send_button:addEventListener("touch",onSendButtonTouchAction)
-			draft_button:addEventListener("touch",onSendButtonTouchAction)
-			schedule_button:addEventListener("touch",onSendButtonTouchAction)
+			send_icon:addEventListener("touch",onSendButtonTouchAction)
+			send_icon_text:addEventListener("touch",onSendButtonTouchAction)
 
-			 Runtime:addEventListener( "key", onKeyEventDetail )
+			draft_button:addEventListener("touch",onSendButtonTouchAction)
+			draft_icon:addEventListener("touch",onSendButtonTouchAction)
+			draft_icon_text:addEventListener("touch",onSendButtonTouchAction)
+
+			schedule_button:addEventListener("touch",onSendButtonTouchAction)
+			schedule_icon:addEventListener("touch",onSendButtonTouchAction)
+			schedule_icon_text:addEventListener("touch",onSendButtonTouchAction)
+
+			Runtime:addEventListener( "key", onKeyEventDetail )
 			
 		end	
 		
@@ -990,6 +1078,10 @@ end
 		if event.phase == "will" then
 
 			composer.removeHidden()
+
+				if datePicker then datePicker.clear() end
+
+				if timePicker then timePicker.clear() end
 
 
 			if DeleteMessageGroup.numChildren ~= nil then
@@ -1015,8 +1107,16 @@ end
 				Background:removeEventListener("touch",FocusComplete)
 
 				send_button:removeEventListener("touch",onSendButtonTouchAction)
+				send_icon:removeEventListener("touch",onSendButtonTouchAction)
+				send_icon_text:removeEventListener("touch",onSendButtonTouchAction)
+
 				draft_button:removeEventListener("touch",onSendButtonTouchAction)
+				draft_icon:removeEventListener("touch",onSendButtonTouchAction)
+				draft_icon_text:removeEventListener("touch",onSendButtonTouchAction)
+
 				schedule_button:removeEventListener("touch",onSendButtonTouchAction)
+				schedule_icon:removeEventListener("touch",onSendButtonTouchAction)
+				schedule_icon_text:removeEventListener("touch",onSendButtonTouchAction)
 
 
 				Runtime:removeEventListener( "key", onKeyEventDetail )

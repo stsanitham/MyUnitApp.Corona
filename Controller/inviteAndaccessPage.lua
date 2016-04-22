@@ -524,14 +524,15 @@ local function CreateList(list,scrollView)
 
 
 
-			if feedArray[i].ImagePath ~= nil then
+		if feedArray[i].ImagePath ~= nil then
 
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2+5
 			Image.isVisible = true
 
-			networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
+			    networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
 				"GET",
+				
 				function ( img_event )
 					if ( img_event.isError ) then
 						print ( "Network error - download failed" )
