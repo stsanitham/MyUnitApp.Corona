@@ -554,7 +554,7 @@ local function TextLimitation( event )
 
 					        if (string.len(event.target.text) <= 0) then
 
-					       	      short_msg_charlimit.text = "0"..MessagePage.characters
+					       	      short_msg_charlimit.text = "250"..MessagePage.characters
 
 					        end
 
@@ -583,7 +583,7 @@ local function TextLimitation( event )
 
 						       if (string.len(event.target.text) <= 0) then
 
-						       	 long_msg_charlimit.text = "0"..MessagePage.characters
+						       	 long_msg_charlimit.text = "1000"..MessagePage.characters
 
 						       end
 
@@ -849,7 +849,7 @@ end
 
 								        if (string.len(shortmsg_textbox.text) <= 0) then
 
-								       	      short_msg_charlimit.text = "0"..MessagePage.characters
+								       	      short_msg_charlimit.text = "250"..MessagePage.characters
 
 								        end
 
@@ -878,7 +878,7 @@ end
 
 									       if (string.len(longmsg_textbox.text) <= 0) then
 
-									       	 long_msg_charlimit.text = "0"..MessagePage.characters
+									       	 long_msg_charlimit.text = "1000"..MessagePage.characters
 
 									       end
 
