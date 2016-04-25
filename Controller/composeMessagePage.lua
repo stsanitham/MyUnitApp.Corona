@@ -34,6 +34,8 @@ local RecentTab_Topvalue = 70
 
 local sceneevent
 
+local openPagevalue = "addpage"
+
 
 
 --------------------------------------------------
@@ -112,20 +114,20 @@ end
 
 									composer.hideOverlay()
 
-								elseif openPagevalue == "editpage" then
+								elseif openPagevalue ~= "addpage" then
 
 											  local options =
 												{
 												effect = "slideRight",
 												time = 500,
-												params = { editpagevalue = list_values, page_val = openPagevalue}
+												params = { editpagevalue = list_values, page_val = "editpage"}
 												
 												}
                            
 
 									spinner.y=H/2-75
 
-									composer.gotoScene("Controller.pushNotificationListPage",options)
+								--	composer.gotoScene("Controller.pushNotificationListPage",options)
 
 								end
 
@@ -165,13 +167,13 @@ end
 
 									composer.hideOverlay()
 
-								elseif openPagevalue == "editpage" then
+								elseif openPagevalue ~= "addpage" then
 
 									  local options =
 										{
 										effect = "slideRight",
 										time = 500,
-										params = { editpagevalue = list_values, page_val = openPagevalue}
+										params = { editpagevalue = list_values, page_val = "editpage"}
 
 										}
 
@@ -217,13 +219,13 @@ end
 
 									composer.hideOverlay()
 
-								elseif openPagevalue == "editpage" then
+								elseif openPagevalue ~= "addpage" then
 
 									 local options =
 										{
 										effect = "slideRight",
 										time = 500,
-										params = { editpagevalue = list_values, page_val = openPagevalue}
+										params = { editpagevalue = list_values, page_val = "editpage"}
 
 										}
 
@@ -655,7 +657,8 @@ local function TextLimitation( event )
 
 					    }
 
-						composer.gotoScene("Controller.pushNotificationDetailPage",options)		
+						composer.gotoScene("Controller.pushNotificationListPage",options)	
+
 
 					end
 
@@ -731,14 +734,7 @@ end
 
 			sceneevent = event
 
-			    if sceneevent.params then
 
-                        openPagevalue = sceneevent.params.pagevalue
-
-                        print("openpagevalue : "..openPagevalue)
-
-			    end
-       
 ---------------------------------------------- Short Message ----------------------------------------------------------
 
                 shortmsg_star = display.newText(sceneGroup,"*",0,0,native.systemFont,14)
@@ -825,24 +821,43 @@ end
 				long_msg_charlimit.y = longmsg_textbox.y+longmsg_textbox.contentHeight+2
 				long_msg_charlimit:setFillColor(0)
 
+
+				if sceneevent.params then
+
+                        detailvalues = sceneevent.params.Details
+                        page = sceneevent.params.value
+
+                        print("detailvalues : "..json.encode(detailvalues))
+
+                        if page == "edit" then
+
+                        shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
+						longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
+                       	
+                        end
+
+			    end
+
+
+
                 
-                if openPagevalue == "editpage" then
+  			    -- if openPagevalue == "editpage" then
 
-					if sceneevent.params then
+				-- 	if sceneevent.params then
 
-						edit_msg_values = sceneevent.params.editvalues
+				-- 		edit_msg_values = sceneevent.params.editvalues
 
-						shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
-						longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
+				-- 		shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
+				-- 		longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
 
-					end
+				-- 	end
 
 
-						back_icon:addEventListener("touch",closeMessagePage)
-						back_icon_bg:addEventListener("touch",closeMessagePage)
-						title:addEventListener("touch",closeMessagePage)
+				-- 		back_icon:addEventListener("touch",closeMessagePage)
+				-- 		back_icon_bg:addEventListener("touch",closeMessagePage)
+				-- 		title:addEventListener("touch",closeMessagePage)
 
-				end
+				-- end
 
 
 ------------------------------------------- attachment icon -----------------------------------------

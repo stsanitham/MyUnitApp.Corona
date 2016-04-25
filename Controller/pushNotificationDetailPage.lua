@@ -13,7 +13,7 @@ local deleteMessageGroup = require( "Controller.deleteMessageGroup" )
 local style = require("res.value.style")
 local json = require("json")
 
-
+local status = "normal"
 
 
 --------------- Initialization -------------------
@@ -100,6 +100,8 @@ local sentMessage_detail
 
 								DeleteMessageGroup.isVisible = false
 
+								status = "deleted"
+
 								composer.hideOverlay("slideRight",500)
 
 
@@ -178,17 +180,25 @@ local sentMessage_detail
 									end
 
 
-									local options = {
-											isModal = true,
-											effect = "slideRight",
-											time = 300,
-											params = {
-											editvalues = messagelistvalue , pagevalue = "editpage"
-										}
-									}
+									-- local options = {
+									-- 		isModal = true,
+									-- 		effect = "slideRight",
+									-- 		time = 300,
+									-- 		params = {
+									-- 		editvalues = messagelistvalue , pagevalue = "editpage"
+									-- 	}
+									-- }
 
 
-				        	        composer.gotoScene("Controller.composeMessagePage",options)
+				                    --   composer.gotoScene("Controller.composeMessagePage",options)
+
+
+									status="edit"
+
+									pagevalue = "editpage"
+
+									composer.hideOverlay()
+
 
 				        end
 
@@ -434,7 +444,7 @@ end
 	    end
 
 	      -- sceneGroup:insert(messagedetail_scrollView)
-
+            
 
             DisplayDetailValues(messagelistvalue)
 
@@ -484,7 +494,21 @@ end
 		elseif phase == "did" then
                 
 
-				event.parent:resumeGame(messagelistvalue)
+			--	event.parent:resumeGame(status,messagelistvalue)
+
+
+
+				if status == "edit" then
+
+					    print("edit values ************* : ",json.encode(messagelistvalue))
+
+						event.parent:resumeGame(status,messagelistvalue,pagevalue)
+				else
+					    status="back"
+
+						event.parent:resumeGame(status)
+				end
+
 
 
 				menuBtn:removeEventListener("touch",menuTouch)
