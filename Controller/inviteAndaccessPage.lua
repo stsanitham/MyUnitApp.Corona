@@ -584,7 +584,6 @@ local function CreateList(list,scrollView)
 			end
 
 
-
 			if feedArray[i].EmailAddress ~= nil then
 
 				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)

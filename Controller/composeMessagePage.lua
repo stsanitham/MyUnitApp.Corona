@@ -659,7 +659,6 @@ local function TextLimitation( event )
 
 						composer.gotoScene("Controller.pushNotificationListPage",options)	
 
-
 					end
 
 			end
@@ -731,6 +730,7 @@ end
 		local phase = event.phase
 		
 		if phase == "will" then
+
 
 			sceneevent = event
 
