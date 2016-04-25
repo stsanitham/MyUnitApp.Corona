@@ -824,6 +824,77 @@ end
                         shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
 						longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
+
+
+								if shortmsg_textbox.id =="shortmessage" then
+
+										if (string.len(shortmsg_textbox.text) > 250) then
+
+										shortmsg_textbox.text = shortmsg_textbox.text:sub(1, 250)
+
+										end
+
+
+										if (string.len(shortmsg_textbox.text) <= 250) then
+
+										      counttext = 250 - string.len(shortmsg_textbox.text).. MessagePage.characters
+
+										      short_msg_charlimit.text = counttext
+
+										end
+
+
+								        if (string.len(shortmsg_textbox.text) <= 0) then
+
+								       	      short_msg_charlimit.text = "0"..MessagePage.characters
+
+								        end
+
+								end
+
+
+
+								if longmsg_textbox.id =="longmessage" then
+
+										if (string.len(longmsg_textbox.text) > 1000) then
+
+										longmsg_textbox.text = longmsg_textbox.text:sub(1, 1000)
+
+										end
+
+
+										if (string.len(longmsg_textbox.text) <= 1000) then
+
+										       countlongtext = 1000 - string.len(longmsg_textbox.text) .. MessagePage.characters
+
+										       long_msg_charlimit.text = countlongtext
+
+										end
+
+
+
+									       if (string.len(longmsg_textbox.text) <= 0) then
+
+									       	 long_msg_charlimit.text = "0"..MessagePage.characters
+
+									       end
+
+
+
+										--print( event.newCharacters )
+
+										if (event.newCharacters=="\n") then
+
+										longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
+
+										native.setKeyboardFocus( nil )
+
+										end
+
+								end
+
+
+
 						back_icon:addEventListener("touch",closeMessagePage)
 						back_icon_bg:addEventListener("touch",closeMessagePage)
 						title:addEventListener("touch",closeMessagePage)
