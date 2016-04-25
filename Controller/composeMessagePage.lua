@@ -117,7 +117,7 @@ end
 											  local options =
 												{
 												effect = "slideRight",
-												time = 500,
+												time = 300,
 												params = { editpagevalue = list_values, page_val = openPagevalue}
 												
 												}
@@ -170,7 +170,7 @@ end
 									  local options =
 										{
 										effect = "slideRight",
-										time = 500,
+										time = 300,
 										params = { editpagevalue = list_values, page_val = openPagevalue}
 
 										}
@@ -222,7 +222,7 @@ end
 									 local options =
 										{
 										effect = "slideRight",
-										time = 500,
+										time = 300,
 										params = { editpagevalue = list_values, page_val = openPagevalue}
 
 										}
@@ -732,7 +732,7 @@ end
 
 			sceneevent = event
 
-			composer.removeHidden(  )
+		--	composer.removeHidden(  )
 
 			    if sceneevent.params then
 

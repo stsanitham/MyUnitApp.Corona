@@ -1637,33 +1637,28 @@ end
 
 
 
-	function scene:hide( event )
+		function scene:hide( event )
 
-		local sceneGroup = self.view
-		local phase = event.phase
+			local sceneGroup = self.view
+			local phase = event.phase
 
-		if event.phase == "will" then
+			if event.phase == "will" then
 
-				-- for j=MainGroup.numChildren, 1, -1 do 
-				-- display.remove(MainGroup[MainGroup.numChildren])
-				-- MainGroup[MainGroup.numChildren] = nil
-				-- end
+						-- for j=MainGroup.numChildren, 1, -1 do 
+						-- display.remove(MainGroup[MainGroup.numChildren])
+						-- MainGroup[MainGroup.numChildren] = nil
+						-- end
 
-
-				menuBtn:removeEventListener("touch",menuTouch)
-				compose_msg_icon:removeEventListener("touch",composeMessage)
-
-				Runtime:removeEventListener( "key", onKeyEvent )
-
-				Background:removeEventListener("touch",FocusComplete)
-
+						menuBtn:removeEventListener("touch",menuTouch)
+						compose_msg_icon:removeEventListener("touch",composeMessage)
+						Runtime:removeEventListener( "key", onKeyEvent )
+						Background:removeEventListener("touch",FocusComplete)
 
 			elseif phase == "did" then
 
-				-- for j=1,#messageList_array do 
-				-- 	if messageList_array[j] then messageList_array[j]:removeSelf();messageList_array[j] = nil	end
-				-- end
-
+						-- for j=1,#messageList_array do 
+						-- 	if messageList_array[j] then messageList_array[j]:removeSelf();messageList_array[j] = nil	end
+						-- end
 
 			end	
 
@@ -1673,12 +1668,11 @@ end
 
 
 
-	function scene:destroy( event )
+		function scene:destroy( event )
 
-		local sceneGroup = self.view
+			local sceneGroup = self.view
 
-
-	end
+		end
 
 
 
