@@ -42,6 +42,12 @@ local MeassageList={}
 
 local MessageType=""
 
+local Imagename = ""
+
+local Imagepath = ""
+
+local Imagesize = ""
+
 local MemberName
 
 local holdLevel
@@ -94,6 +100,170 @@ end
 
 
 
+
+ function formatSizeUnits(event)
+
+      if (event>=1073741824) then 
+
+      	size=(event/1073741824)..' GB'
+
+      print("size of the image11 ",size)
+
+
+      elseif (event>=1048576) then   
+
+       	size=(event/1048576)..' MB'
+
+      print("size of the image 22",size)
+
+	  
+	  elseif (event > 10485760) then
+
+	  print("highest size of the image ",size)
+
+	    local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+
+	       
+      elseif (event>=1024)  then   
+
+      	size = (event/1024)..' KB'
+
+       print("size of the image 33",size)
+
+      else      
+
+  	  end
+
+
+end
+
+
+
+    
+	function get_imagemodel(response)
+
+		print("SuccessMessage")
+
+		Imagepath = response.Abspath
+
+		Imagename = response.FileName
+
+		Imagesize = size
+
+		print("Imagesize................",Imagesize)
+
+			image_name_png.isVisible = true
+
+			image_name_png.text = Imagename
+
+			image_name_close.isVisible = true
+
+			sendBtn_bg.isVisible = true
+
+			sendBtn.isVisible = true
+
+			recordBtn.isVisible = false
+
+	end
+
+
+
+      
+
+    local function sendImage( )
+
+	Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+    end
+
+
+
+    local function selectionComplete ( event )
+ 
+        local photo = event.target
+
+        local baseDir = system.DocumentsDirectory
+
+        if photo then
+
+        photo.x = display.contentCenterX
+		photo.y = display.contentCenterY
+		local w = photo.width
+		local h = photo.height
+		print( "w,h = ".. w .."," .. h )
+
+		local function rescale()
+					
+					if photo.width > W or photo.height > H then
+
+						photo.width = photo.width/2
+						photo.height = photo.height/2
+
+						intiscale()
+
+					else
+               
+						return false
+
+					end
+				end
+
+		function intiscale()
+			
+			if photo.width > W or photo.height > H then
+
+				photo.width = photo.width/2
+				photo.height = photo.height/2
+
+				rescale()
+
+			else
+
+				return false
+
+			end
+
+		end
+
+		intiscale()
+
+		photoname = "image.jpg"
+
+        display.save(photo,photoname,system.DocumentsDirectory)
+
+        photo:removeSelf()
+
+        photo = nil
+
+
+        path = system.pathForFile( photoname, baseDir)
+
+        local size = lfs.attributes (path, "size")
+
+		local fileHandle = io.open(path, "rb")
+
+		file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+		io.close( fileHandle )
+
+            print("mime conversion ",file_inbytearray)
+
+        	print("bbb ",size)
+
+        	formatSizeUnits(size)
+
+        	sendImage()
+
+	else
+
+	end
+
+end
+
+
+
+
+
 local function attachAction( event )
 
 	if event.phase == "began" then
@@ -102,7 +272,15 @@ local function attachAction( event )
 
 		if event.target.id =="camera" then
 
-			print( "camera" )
+				if media.hasSource( media.Camera ) then
+				timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+				end )
+
+			    else
+
+			    	local image1 = native.showAlert( "Camera Unavailable", "Camera is not supported in this device", { CommonWords.ok } )
+
+				end
 
 		elseif event.target.id == "video" then
 
@@ -647,6 +825,20 @@ end
 
 function get_sendMssage(response)
 
+    if image_name_png.isVisible == true and image_name_close.isVisible == true then
+
+    	image_name_png.isVisible = false 
+
+    	image_name_close.isVisible = false 
+
+    	sendBtn.isVisible = false
+
+    	sendBtn_bg.isVisible = false
+
+    	recordBtn.isVisible = true
+
+    end
+
 	sendMeaasage()
 
 end
@@ -741,6 +933,7 @@ local function ChatSendAction( event )
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 			if ChatBox.text ~= nil and ChatBox.text ~= "" then
+			
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
 			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
@@ -764,10 +957,45 @@ local function ChatSendAction( event )
 
 				print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","","","","SEND",From,To,Message_Type,get_sendMssage)
+
+			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",Imagepath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
 
 
-	end
+		    elseif Imagename ~= nil or Imagename ~= "" then
+
+		    	    print("ertertertertt")
+
+		            local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+					
+					Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+					isDeleted="false"
+					Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+					Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+					ImagePath=Imagepath
+					ImageName = Imagename
+					ImageSize = Imagesize
+					AudioPath="NULL"
+					VideoPath="NULL"
+					MyUnitBuzz_LongMessage=ChatBox.text
+					From=ContactId
+					To=To_ContactId
+					Message_Type = MessageType
+
+
+				--	native.showAlert("Type",Message_Type,{CommonWords.ok})
+
+						print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..Imagename..[[',']]..[[',']]..Imagesize..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						db:exec( insertQuery )
+
+						print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
+
+
+					Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"SEND",From,To,Message_Type,get_sendMssage)
+
+
+
+	         end
 
 	end
 
@@ -1441,6 +1669,7 @@ function scene:show( event )
 		ChatBox_bg = display.newRect(ChatScrollContent,0,H-100, W-50, 40 )
 		ChatBox_bg.anchorY=0;ChatBox_bg.anchorX=0
 		ChatBox_bg.x=5
+		ChatBox_bg.width = W-50
 		ChatBox_bg.strokeWidth = 1
 		ChatBox_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray))
 
@@ -1451,6 +1680,33 @@ function scene:show( event )
 		ChatBox.size=16
 		ChatBox.hasBackground = false
 		ChatScrollContent:insert( ChatBox )
+
+
+
+		image_name_png = display.newText("",ChatBox_bg.x, ChatBox_bg.contentHeight-5  ,native.systemFont,14)
+		image_name_png.text = ""
+		image_name_png.value = "imagenamepng"
+		image_name_png.id="imagenamepng"
+		image_name_png:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
+		image_name_png.x = ChatBox_bg.x + 10
+		image_name_png.y= ChatBox_bg.y+10
+		image_name_png.anchorY = 0 
+		image_name_png.anchorX = 0
+		image_name_png.isVisible = false
+		ChatScrollContent:insert(image_name_png)
+		--image_name_png.anchorX=0
+
+		image_name_close = display.newImageRect("res/assert/icon-close.png",20,20)
+		image_name_close.id = "image close"
+		image_name_close.anchorX=0
+		image_name_close.anchorY=0
+		ChatScrollContent:insert(image_name_close)
+		image_name_close.x= ChatBox_bg.width - 30
+		image_name_close.isVisible = false
+		image_name_close.y=ChatBox_bg.y+10
+
+
+
 
 		-- cameraBtn = display.newImageRect( sceneGroup, "res/assert/user.png", 25,20 )
 		-- cameraBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth-35
