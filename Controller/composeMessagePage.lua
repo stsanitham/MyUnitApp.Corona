@@ -34,6 +34,10 @@ local RecentTab_Topvalue = 70
 
 local sceneevent
 
+local status
+
+local Details={}
+
 local openPagevalue = "addpage"
 
 
@@ -127,7 +131,7 @@ end
 
 									spinner.y=H/2-75
 
-								--	composer.gotoScene("Controller.pushNotificationListPage",options)
+									composer.gotoScene("Controller.pushNotificationListPage",options)
 
 								end
 
@@ -413,6 +417,7 @@ end
 
     	    display.getCurrentStage():setFocus( nil )
 
+    	    status="normal"
 
 
 			if (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) or (longmsg_textbox.text == "" or longmsg_textbox.text == nil) then
@@ -641,25 +646,8 @@ local function TextLimitation( event )
 
 			    display.getCurrentStage():setFocus( nil )
 
-			        if openPagevalue == "addpage" then
-
 					    composer.hideOverlay("slideRight",300)		
 
-					elseif openPagevalue == "editpage" then
-
-						local options ={
-
-						effect = "slideLeft",
-						time = 300,
-						params = {
-						         page = openPagevalue
-						}
-
-					    }
-
-						composer.gotoScene("Controller.pushNotificationListPage",options)	
-
-					end
 
 			end
 
@@ -731,6 +719,8 @@ end
 		
 		if phase == "will" then
 
+			status=event.params.page
+			Details = event.params.Details
 
 			sceneevent = event
 
@@ -833,6 +823,11 @@ end
 
                         shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
 						longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
+
+						back_icon:addEventListener("touch",closeMessagePage)
+						back_icon_bg:addEventListener("touch",closeMessagePage)
+						title:addEventListener("touch",closeMessagePage)
+
                        	
                         end
 
@@ -1138,15 +1133,20 @@ end
 
 			elseif phase == "did" then
 
-				--event.parent:resumeCall(list_values)
+				if status == "editpage" then
+
+					event.parent:resumeGame("details",Details,"details")
+
+				end
+
 				
 
 				back_icon:removeEventListener("touch",closeMessagePage)
 			    back_icon_bg:removeEventListener("touch",closeMessagePage)
 			    title:removeEventListener("touch",closeMessagePage)
 
-			    shortmsg_textbox:removeEventListener( "userInput", TextLimitation )
-				longmsg_textbox:removeEventListener( "userInput", TextLimitation )
+			    shortmsg_textbox:removeEventListener( "userInput", TextLimitation)
+				longmsg_textbox:removeEventListener( "userInput", TextLimitation)
 				Background:removeEventListener("touch",FocusComplete)
 
 				send_button:removeEventListener("touch",onSendButtonTouchAction)

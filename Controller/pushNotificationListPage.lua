@@ -990,9 +990,9 @@ local tabBarGroup = display.newGroup( )
 
 
        
-		function scene:resumeGame(messagelistvalue)
+		function scene:resumeGame(value,messagelistvalue)
 
-			print("ertertet")
+			print("!!!!!!!!!!!!!!!!!!!!!!!!!ertertet")
 
 
 			if value == "back" then
@@ -1099,7 +1099,7 @@ local tabBarGroup = display.newGroup( )
 					local options = {
 						isModal = true,
 						effect = "slideLeft",
-						time = 100,
+						time = 300,
 						params = {
 						
 						Details = EditArray,
@@ -1123,9 +1123,9 @@ local tabBarGroup = display.newGroup( )
 				local options = {
 						isModal = true,
 						effect = "slideLeft",
-						time = 10,
+						time = 1,
 						params = {
-						details = EditArray
+						messagelistvalues = EditArray
 					}
 				}
 
@@ -1561,8 +1561,6 @@ end
 		local phase = event.phase
 		
 		if phase == "will" then
-
-
 
 
 			NoScheduleMessage = display.newText( sceneGroup,MessagePage.NoMessage, 0,0,0,0,native.systemFontBold,16)
