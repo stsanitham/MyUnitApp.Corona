@@ -1600,9 +1600,6 @@ end
 
 				editpagevalues = event.params.editpagevalue
 
-				print(" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% : "..page_value_name)
-				print(" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% : "..json.encode(editpagevalues))
-
 				if page_value_name == "editpage" then
 
 					scene:resumeCall(editpagevalues)

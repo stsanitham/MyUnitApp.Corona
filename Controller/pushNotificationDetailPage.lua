@@ -471,6 +471,7 @@ end
 
 		if event.phase == "will" then
 
+			Runtime:removeEventListener("key",onKeyEventDetail)
 
 			if DeleteMessageGroup.numChildren ~= nil then
 
@@ -480,11 +481,9 @@ end
 			  	 	end
             end
 
-
-		elseif phase == "did" then
-                
-
-				event.parent:resumeGame(messagelistvalue)
+					if event.parent ~= nil then 
+						event.parent:resumeGame(messagelistvalue) 
+				
 
 
 				menuBtn:removeEventListener("touch",menuTouch)
@@ -500,9 +499,20 @@ end
 
 				    end
 
-				Runtime:removeEventListener("key",onKeyEventDetail)
+				    				Background:removeEventListener( "touch", FocusComplete )
 
-				Background:removeEventListener( "touch", FocusComplete )
+
+				    end
+
+				
+
+
+				    composer.removeHidden(  )
+		elseif phase == "did" then
+			
+			
+                
+				
 
 
 
