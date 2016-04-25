@@ -19,9 +19,12 @@ local toast = require('plugin.toast')
 
 --------------- Initialization -------------------
 
-local W = display.contentWidth;H= display.contentHeight
+local W = display.contentWidth;
+local H= display.contentHeight
 
 local Background,BgText
+
+local AttachmentGroup = display.newGroup( )
 
 local menuBtn,tabButtons,chattabBar,chatScroll,BackBtn,tabBar,title_bg,title,Deleteicon,Copyicon
 
@@ -53,13 +56,9 @@ local ChatScrollContent = display.newGroup( )
 
 local UserId,ContactId,To_ContactId
 
-local tabBarBackground = "res/assert/tabBarBg.png"
-local tabBarLeft = "res/assert/tabSelectedLeft.png"
-local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
-local tabBarRight = "res/assert/tabSelectedRight.png"
-
 local PHOTO_FUNCTION = media.PhotoLibrary 
 
+local icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 		UserId = row.UserId
@@ -94,6 +93,185 @@ function makeTimeStamp( dateString )
 end
 
 
+
+local function attachAction( event )
+
+	if event.phase == "began" then
+
+	elseif event.phase == "ended" then
+
+		if event.target.id =="camera" then
+
+			print( "camera" )
+
+		elseif event.target.id == "video" then
+
+			print( "video" )
+
+		elseif event.target.id == "audio" then
+
+
+		elseif event.target.id == "gallery" then
+
+
+		elseif event.target.id == "location" then
+
+
+		elseif event.target.id == "contact" then
+
+		end
+
+
+		AttachmentGroup.alpha = 0
+
+
+	end
+
+return true
+end
+
+local function AttachmentTouch( event )
+
+	if event.phase == "began" then
+
+	elseif event.phase == "ended" then
+
+		if AttachmentGroup.alpha == 0 then
+			AttachmentGroup.alpha = 1
+		else
+			AttachmentGroup.alpha = 0
+		end
+
+	end
+
+return true
+end
+
+local function createAttachment( )
+	
+------------------------------------------- Icons Holder --------------------------------------------
+
+				icons_holder_bg = display.newRect(AttachmentGroup,0,0,W,EditBoxStyle.height+115)
+				icons_holder_bg.x=0
+				icons_holder_bg.anchorX=0
+				icons_holder_bg.anchorY=0
+				icons_holder_bg.strokeWidth = 1
+				icons_holder_bg:setStrokeColor( 0,0,0,0.1)
+				icons_holder_bg.y = tabBar.y+tabBar.height+10
+				icons_holder_bg:setFillColor( 1,1,1)
+
+-------------------------------------------- Camera ---------------------------------------------------
+
+				camera_icon = display.newImageRect(AttachmentGroup,"res/assert/camera1.png",40,35)
+				camera_icon.x=W/2 - W/3 - 15
+				camera_icon.anchorX=0
+				camera_icon.anchorY=0
+				camera_icon.y = icons_holder_bg.y + 7.5
+				camera_icon.id="camera"
+				camera_icon:addEventListener( "touch", attachAction )
+
+
+				camera_icon_txt = display.newText(AttachmentGroup,MessagePage.Camera,0,0,native.systemFont,14)
+				camera_icon_txt.anchorX = 0
+				camera_icon_txt.anchorY = 0
+				camera_icon_txt.x = camera_icon.x - 7
+				camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
+				camera_icon_txt:setFillColor(0)
+
+-------------------------------------------- Video ---------------------------------------------------
+
+				video_icon = display.newImageRect(AttachmentGroup,"res/assert/video1.png",40,35)
+				video_icon.x= W/2 - 12
+				video_icon.anchorX=0
+				video_icon.anchorY=0
+				video_icon.y = camera_icon.y
+				video_icon.id="video"
+				video_icon:addEventListener( "touch", attachAction )
+
+
+				video_icon_txt = display.newText(AttachmentGroup,MessagePage.Video,0,0,native.systemFont,14)
+				video_icon_txt.anchorX = 0
+				video_icon_txt.anchorY = 0
+				video_icon_txt.x = video_icon.x 
+				video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
+				video_icon_txt:setFillColor(0)
+
+-------------------------------------------- Audio ---------------------------------------------------
+
+                audio_icon = display.newImageRect(AttachmentGroup,"res/assert/audio1.png",40,35)
+				audio_icon.x= W/2 + W/3 - 15
+				audio_icon.anchorX=0
+				audio_icon.anchorY=0
+				audio_icon.y = video_icon.y
+				audio_icon.id="audio"
+				audio_icon:addEventListener( "touch", attachAction )
+
+
+				audio_icon_txt = display.newText(AttachmentGroup,MessagePage.Audio,0,0,native.systemFont,14)
+				audio_icon_txt.anchorX = 0
+				audio_icon_txt.anchorY = 0
+				audio_icon_txt.x = audio_icon.x 
+				audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
+				audio_icon_txt:setFillColor(0)
+
+-------------------------------------------- Gallery ---------------------------------------------------
+
+                gallery_icon = display.newImageRect(AttachmentGroup,"res/assert/gallery1.png",40,35)
+				gallery_icon.x= W/2 - W/3 - 15
+				gallery_icon.anchorX=0
+				gallery_icon.anchorY=0
+				gallery_icon.y = camera_icon.y + camera_icon.contentHeight + 35
+				gallery_icon.id="gallery"
+				gallery_icon:addEventListener( "touch", attachAction )
+
+
+				gallery_icon_txt = display.newText(AttachmentGroup,MessagePage.Gallery,0,0,native.systemFont,14)
+				gallery_icon_txt.anchorX = 0
+				gallery_icon_txt.anchorY = 0
+				gallery_icon_txt.x = gallery_icon.x - 5
+				gallery_icon_txt.y = gallery_icon.y+gallery_icon.contentHeight+5
+				gallery_icon_txt:setFillColor(0)
+
+
+-------------------------------------------- Location ---------------------------------------------------
+
+                Location_icon = display.newImageRect(AttachmentGroup,"res/assert/location1.png",40,35)
+				Location_icon.x= W/2 - 12
+				Location_icon.anchorX=0
+				Location_icon.anchorY=0
+				Location_icon.y = gallery_icon.y
+				Location_icon.id="location"
+				Location_icon:addEventListener( "touch", attachAction )
+
+
+
+				Location_icon_txt = display.newText(AttachmentGroup,MessagePage.Location,0,0,native.systemFont,14)
+				Location_icon_txt.anchorX = 0
+				Location_icon_txt.anchorY = 0
+				Location_icon_txt.x = Location_icon.x - 10
+				Location_icon_txt.y = Location_icon.y+Location_icon.contentHeight+5
+				Location_icon_txt:setFillColor(0)
+
+
+-------------------------------------------- Contact ---------------------------------------------------
+
+                Contact_icon = display.newImageRect(AttachmentGroup,"res/assert/user1.png",40,35)
+				Contact_icon.x= W/2 + W/3 - 15
+				Contact_icon.anchorX=0
+				Contact_icon.anchorY=0
+				Contact_icon.y = Location_icon.y
+				Contact_icon.id="contact"
+				Contact_icon:addEventListener( "touch", attachAction )
+
+
+
+				Contact_icon_txt = display.newText(AttachmentGroup,MessagePage.Contact,0,0,native.systemFont,14)
+				Contact_icon_txt.anchorX = 0
+				Contact_icon_txt.anchorY = 0
+				Contact_icon_txt.x = Contact_icon.x - 7
+				Contact_icon_txt.y = Contact_icon.y+Contact_icon.contentHeight+5
+				Contact_icon_txt:setFillColor(0)
+end 
 
 local function ChatTouch( event )
 
@@ -147,18 +325,14 @@ local function sendMeaasage()
 	
 	ChatBox.text=""
 
-	print( "sendMeaasage" )
-
 	for i=#MeassageList, 1, -1 do 
 			display.remove(MeassageList[#MeassageList])
 			MeassageList[#MeassageList] = nil
 	end
+
 	for i=#ChatHistory, 1, -1 do 
 			ChatHistory[#ChatHistory] = nil
 	end
-
-
-	          -- native.showAlert("MyUnitBuzz", "ContactId : "..tostring(ContactId).."To_ContactId :"..tostring(To_ContactId), { "OK" } )
 
 
 	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
@@ -168,21 +342,16 @@ local function sendMeaasage()
 
 		ChatHistory[#ChatHistory+1] =row
 
-
 	end
 
 	
-local dateVlaue=""
+	local dateVlaue=""
 
 	for i=1,#ChatHistory do
 
 
 		local dateLable = nil
 		local datevalue = nil
-
-
-
-
 
 		MeassageList[#MeassageList+1] = display.newGroup( )
 
@@ -279,7 +448,7 @@ local dateVlaue=""
 		else
 
 
-				bg.x=65
+						bg.x=65
 
 						local Image = display.newImageRect(tempGroup,To_ContactId..".png",system.TemporaryDirectory,45,38)
 
@@ -302,7 +471,7 @@ local dateVlaue=""
 
 		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
 
-			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,W-105,0,native.systemFont,12)
+			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,W-115,0,native.systemFont,12)
 
 		else
 
@@ -411,7 +580,7 @@ end
 
 
 
-			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( )
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
 
 			if chatHoldflag == true then
 
@@ -1239,10 +1408,6 @@ function scene:show( event )
 
 		print( "ContactDetails : "..json.encode(ContactDetails) )
 
-
-
-
-
 		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To or ContactDetails.MyUnitBuzzGroupId
 
 		if tostring(To_ContactId) == tostring(ContactId) then
@@ -1260,7 +1425,6 @@ function scene:show( event )
 		end
 
 		
-
 		if ContactDetails.Message_Type then
 
 			MessageType=ContactDetails.Message_Type
@@ -1270,11 +1434,10 @@ function scene:show( event )
 		if MessageType == "GROUP" then
 			title.text = ContactDetails.GroupName or ContactDetails.MyUnitBuzzGroupName
 		else
-					title.text = ContactDetails.Name or ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
+			title.text = ContactDetails.Name or ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
 		end
 
 
-		print( MessageType )
 		ChatBox_bg = display.newRect(ChatScrollContent,0,H-100, W-50, 40 )
 		ChatBox_bg.anchorY=0;ChatBox_bg.anchorX=0
 		ChatBox_bg.x=5
@@ -1332,6 +1495,22 @@ function scene:show( event )
 		sendMeaasage()
 
 		sceneGroup:insert( ChatScrollContent )
+	
+
+
+		------------------------------------------- attachment icon -----------------------------------------
+
+
+				attachment_icon = display.newImageRect(sceneGroup,"res/assert/attached.png",20,20)
+				attachment_icon.x= W-40;attachment_icon.y = tabBar.y+35
+				attachment_icon:setFillColor( 0 )
+				attachment_icon:addEventListener( "touch", AttachmentTouch )
+
+
+				createAttachment()
+				AttachmentGroup.anchorX=1;AttachmentGroup.anchorY=0
+				AttachmentGroup.alpha=0
+
 
 
 			--Tabbar---
