@@ -502,15 +502,18 @@ end
 local function sendMeaasage()
 	
 	ChatBox.text=""
+	
 
 	for i=#MeassageList, 1, -1 do 
 			display.remove(MeassageList[#MeassageList])
 			MeassageList[#MeassageList] = nil
 	end
 
+
 	for i=#ChatHistory, 1, -1 do 
 			ChatHistory[#ChatHistory] = nil
 	end
+
 
 
 	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
@@ -536,7 +539,7 @@ local function sendMeaasage()
 		local tempGroup = MeassageList[#MeassageList]
 
 	--	print( "ChatHistory : "..json.encode(ChatHistory[i]) )
-
+        
 
 		local bg = display.newRect(0,0,W-100,25 )
 		tempGroup:insert(bg)
