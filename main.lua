@@ -293,6 +293,7 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
                      
             end
 
+          
     else
 
          notificationFlag = true

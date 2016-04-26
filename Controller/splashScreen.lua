@@ -26,7 +26,7 @@ require( "Webservice.ServiceManager" )
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
-
+openPage="spalshPage"
 --------------------------------------------------
 
 

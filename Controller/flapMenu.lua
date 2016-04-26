@@ -976,8 +976,17 @@ if IsOwner == true then
 
 			-----
 
+			if chatReceivedFlag == true then
 
-			composer.gotoScene( "Controller.eventCalenderPage" )
+				chatReceivedFlag=false
+
+				composer.gotoScene( "Controller.MessagingPage" )
+
+			else
+
+				composer.gotoScene( "Controller.eventCalenderPage" )
+
+			end
 			--composer.gotoScene( "Controller.careerPathDetailPage", options )
 		end	
 
