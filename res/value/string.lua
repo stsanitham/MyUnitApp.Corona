@@ -443,5 +443,6 @@ ChatPage.GroupCreationSuccess = "Group created successfully"
 ChatPage.addTeamMember = "Add Team Member"
 ChatPage.addLimit = "Please select atleast one team member to create a group."
 ChatPage.PressAgain = "Press again to exit"
+ChatPage.recordTittle="Record your message"
 
 
