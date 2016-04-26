@@ -54,7 +54,6 @@ local groupMemberListArray = {}
 --------------------------------------------------
 
 
-
 -----------------Function-------------------------
 
 
@@ -766,7 +765,6 @@ function scene:show( event )
 				titleBar.isVisible=false
 
 				titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-				
 			local function get_MessageGroupTeamMemberList( response )
 
 				-- print( "coming here" )
@@ -882,6 +880,8 @@ function scene:show( event )
 				-- detailcontactid = Details.ContactId
 				-- print("detailcontactid before assigning"..detailcontactid)
 
+				
+			
 
 				if Details.ImagePath ~= nil then
 					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
@@ -1005,27 +1005,6 @@ function scene:show( event )
 					Details_Display[#Details_Display].x=anniversari_icon.x+anniversari_icon.contentWidth+5
 					Details_Display[#Details_Display].y = anniversari_icon.y
 					Details_Display[#Details_Display].name = "Anniversarie"
-					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
-				end
-
-
-				--Email---
-
-				if(Details.EmailAddress ~= nil) then
-
-					local EmailAddress = display.newText(LoginPage.UserName_placeholder,0,0,150,0,native.systemFont,16)
-					EmailAddress.anchorX = 0 ;EmailAddress.anchorY=0
-					EmailAddress.x=leftPadding
-					EmailAddress.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
-					Utils.CssforTextView(EmailAddress,sp_labelName)
-					careerDetail_scrollview:insert( EmailAddress )
-
-					Details_Display[#Details_Display+1] = display.newText(Details.EmailAddress,0,0,native.systemFont,14)
-					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
-					Details_Display[#Details_Display].x=leftPadding
-					Details_Display[#Details_Display].y = EmailAddress.y+20
-					Details_Display[#Details_Display].name = "EmailAddress"
-					Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
 
