@@ -229,7 +229,7 @@ end
 
 		intiscale()
 
-		photoname = "image"..os.date("%Y%m%d%H%m%S")..".jpg"
+		photoname = "image"..os.date("%Y%m%d%H%M%S")..".jpg"
 
         display.save(photo,photoname,system.DocumentsDirectory)
 
@@ -547,7 +547,7 @@ local function receviedimageDownload( event )
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 
-			network.download(
+	network.download(
 	event.target.id,
 	"GET",
 	recivedNetwork,
@@ -733,6 +733,8 @@ local function sendMeaasage()
 		bg.height = chat.contentHeight+10
 		bg.chat=chat.text
 
+
+
 		local owner
 
 		if MessageType == "GROUP" then
@@ -767,20 +769,52 @@ local function sendMeaasage()
 		bg.width = bg.width+35
 
 
+
+
 			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
 
 			Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
 
-							print( "here value : "..Imagename)
+					print( "here value : "..Imagename)
 
 			local image
 
 			 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
 		 	 local fhd = io.open( filePath )
 			
-				if fhd then		
-						
-					image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+				if fhd then	
+
+					    if MessageType == "GROUP" then	
+							
+						image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+						bg.width = image.contentWidth+5
+						bg.height = image.contentHeight+23.5
+
+						owner.anchorY=0
+						owner.anchorX = 0
+						owner.x=chat.x
+						owner.y=bg.y+1
+
+						image.anchorY=0
+						image.anchorX = 0
+						image.x=bg.x+2.5
+
+						image.y=owner.y+20	
+
+						else
+
+						image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+
+							image.anchorY=0
+							image.anchorX = 0
+							image.x=bg.x+2.5
+							image.y=bg.y+2.5
+
+							bg.width = image.contentWidth+5
+							bg.height = image.contentHeight+5	
+
+						end
+
 					io.close( fhd )
 
 				else
@@ -790,17 +824,7 @@ local function sendMeaasage()
 					image.id=ChatHistory[i].Image_Path
 					image:addEventListener( "touch", receviedimageDownload )
 
-				end
-
-
-			image.anchorY=0
-			image.anchorX = 0
-			image.x=bg.x+2.5
-			image.y=bg.y+2.5
-
-
-			bg.width = image.contentWidth+5
-			bg.height = image.contentHeight+5		
+				end	
 
 
 			if ChatHistory[i].Message_From == tostring(ContactId) then
@@ -828,6 +852,7 @@ local function sendMeaasage()
 
 		else
 			bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
+			time.x=bg.x+5
 		end
 
 
@@ -842,12 +867,7 @@ local function sendMeaasage()
 		arrow.x=arrow.x+2
 		arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
 
-
 		end
-
-
-
-
 
 		chatScroll:insert(tempGroup)
 
@@ -858,8 +878,9 @@ chatScroll:scrollTo( "bottom", { time=200 } )
 end
 
 
-	local function printTimeSinceStart( event )
 
+
+	local function printTimeSinceStart( event )
 
 
 			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
