@@ -479,7 +479,7 @@ end
 		local sceneGroup = self.view
 		local phase = event.phase
 
-		if event.phase == "will" then
+		if phase == "will" then
 
 			Runtime:removeEventListener("key",onKeyEventDetail)
 
@@ -494,10 +494,9 @@ end
 
 
 		elseif phase == "did" then
-                
+               
 
 			--	event.parent:resumeGame(status,messagelistvalue)
-
 
 
 				if status == "edit" then
@@ -508,9 +507,8 @@ end
 				else
 					    status="back"
 
-						event.parent:resumeGame(status)
+						event.parent:resumeGame(status,messagelistvalue)
 				end
-
 
 
 
@@ -520,31 +518,18 @@ end
 			    back_icon_bg:removeEventListener("touch",closeDetails)
 				title:removeEventListener("touch",closeDetails)
 
-					if IsOwner == true then
 
-					short_msg_delete:removeEventListener("touch",onDeleteAction)
-					short_msg_edit:removeEventListener("touch",onDeleteAction)
+			if IsOwner == true then
 
-				    end
+			short_msg_delete:removeEventListener("touch",onDeleteAction)
+			short_msg_edit:removeEventListener("touch",onDeleteAction)
 
-				    				Background:removeEventListener( "touch", FocusComplete )
+		    end
 
-
-				    end
-
-				
+		    Background:removeEventListener( "touch", FocusComplete )
 
 
-				    composer.removeHidden(  )
-		elseif phase == "did" then
-			
-			
-                
-				
-
-
-
-			end	
+		    end
 
 	end
 

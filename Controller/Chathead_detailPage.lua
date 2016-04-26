@@ -765,6 +765,7 @@ function scene:show( event )
 				titleBar.isVisible=false
 
 				titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				
 			local function get_MessageGroupTeamMemberList( response )
 
 				-- print( "coming here" )
@@ -880,8 +881,6 @@ function scene:show( event )
 				-- detailcontactid = Details.ContactId
 				-- print("detailcontactid before assigning"..detailcontactid)
 
-				
-			
 
 				if Details.ImagePath ~= nil then
 					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
