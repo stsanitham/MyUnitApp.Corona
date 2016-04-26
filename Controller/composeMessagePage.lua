@@ -34,6 +34,12 @@ local RecentTab_Topvalue = 70
 
 local sceneevent
 
+local status
+
+local Details={}
+
+local openPagevalue = "addpage"
+
 
 
 --------------------------------------------------
@@ -112,14 +118,15 @@ end
 
 									composer.hideOverlay()
 
-								elseif openPagevalue == "editpage" then
+								elseif openPagevalue ~= "addpage" then
 
 											  local options =
 												{
 												effect = "slideRight",
-												time = 500,
-												params = { editpagevalue = list_values, page_val = openPagevalue}
-												
+
+												time = 300,
+												params = { editpagevalue = list_values, page_val = "editpage"}
+					
 												}
                            
 
@@ -165,13 +172,14 @@ end
 
 									composer.hideOverlay()
 
-								elseif openPagevalue == "editpage" then
+								elseif openPagevalue ~= "addpage" then
 
 									  local options =
 										{
 										effect = "slideRight",
-										time = 500,
-										params = { editpagevalue = list_values, page_val = openPagevalue}
+
+										time = 300,
+										params = { editpagevalue = list_values, page_val = "editpage"}
 
 										}
 
@@ -217,13 +225,13 @@ end
 
 									composer.hideOverlay()
 
-								elseif openPagevalue == "editpage" then
+								elseif openPagevalue ~= "addpage" then
 
 									 local options =
 										{
-										effect = "slideRight",
-										time = 500,
-										params = { editpagevalue = list_values, page_val = openPagevalue}
+
+										time = 300,
+										params = { editpagevalue = list_values, page_val = "editpage"}
 
 										}
 
@@ -411,6 +419,7 @@ end
 
     	    display.getCurrentStage():setFocus( nil )
 
+    	    status="normal"
 
 
 			if (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) or (longmsg_textbox.text == "" or longmsg_textbox.text == nil) then
@@ -545,7 +554,7 @@ local function TextLimitation( event )
 
 					        if (string.len(event.target.text) <= 0) then
 
-					       	      short_msg_charlimit.text = "0"..MessagePage.characters
+					       	      short_msg_charlimit.text = "250"..MessagePage.characters
 
 					        end
 
@@ -574,7 +583,7 @@ local function TextLimitation( event )
 
 						       if (string.len(event.target.text) <= 0) then
 
-						       	 long_msg_charlimit.text = "0"..MessagePage.characters
+						       	 long_msg_charlimit.text = "1000"..MessagePage.characters
 
 						       end
 
@@ -639,25 +648,8 @@ local function TextLimitation( event )
 
 			    display.getCurrentStage():setFocus( nil )
 
-			        if openPagevalue == "addpage" then
-
 					    composer.hideOverlay("slideRight",300)		
 
-					elseif openPagevalue == "editpage" then
-
-						local options ={
-
-						effect = "slideLeft",
-						time = 300,
-						params = {
-						         page = openPagevalue
-						}
-
-					    }
-
-						composer.gotoScene("Controller.pushNotificationListPage",options)		
-
-					end
 
 			end
 
@@ -729,19 +721,13 @@ end
 		
 		if phase == "will" then
 
+			status=event.params.page
+			Details = event.params.Details
 
 			sceneevent = event
 
-			composer.removeHidden(  )
 
-			    if sceneevent.params then
 
-                        openPagevalue = sceneevent.params.pagevalue
-
-                        print("openpagevalue : "..openPagevalue)
-
-			    end
-       
 ---------------------------------------------- Short Message ----------------------------------------------------------
 
                 shortmsg_star = display.newText(sceneGroup,"*",0,0,native.systemFont,14)
@@ -828,24 +814,119 @@ end
 				long_msg_charlimit.y = longmsg_textbox.y+longmsg_textbox.contentHeight+2
 				long_msg_charlimit:setFillColor(0)
 
-                
-                if openPagevalue == "editpage" then
 
-					if sceneevent.params then
+				if sceneevent.params then
 
-						edit_msg_values = sceneevent.params.editvalues
+                        detailvalues = sceneevent.params.Details
+                        page = sceneevent.params.value
 
-						shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
-						longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
+                        print("detailvalues : "..json.encode(detailvalues))
 
-					end
+                        if page == "edit" then
+
+                        shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
+						longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
+
+
+
+								if shortmsg_textbox.id =="shortmessage" then
+
+										if (string.len(shortmsg_textbox.text) > 250) then
+
+										shortmsg_textbox.text = shortmsg_textbox.text:sub(1, 250)
+
+										end
+
+
+										if (string.len(shortmsg_textbox.text) <= 250) then
+
+										      counttext = 250 - string.len(shortmsg_textbox.text).. MessagePage.characters
+
+										      short_msg_charlimit.text = counttext
+
+										end
+
+
+								        if (string.len(shortmsg_textbox.text) <= 0) then
+
+								       	      short_msg_charlimit.text = "250"..MessagePage.characters
+
+								        end
+
+								end
+
+
+
+								if longmsg_textbox.id =="longmessage" then
+
+										if (string.len(longmsg_textbox.text) > 1000) then
+
+										longmsg_textbox.text = longmsg_textbox.text:sub(1, 1000)
+
+										end
+
+
+										if (string.len(longmsg_textbox.text) <= 1000) then
+
+										       countlongtext = 1000 - string.len(longmsg_textbox.text) .. MessagePage.characters
+
+										       long_msg_charlimit.text = countlongtext
+
+										end
+
+
+
+									       if (string.len(longmsg_textbox.text) <= 0) then
+
+									       	 long_msg_charlimit.text = "1000"..MessagePage.characters
+
+									       end
+
+
+
+										--print( event.newCharacters )
+
+										if (event.newCharacters=="\n") then
+
+										longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
+
+										native.setKeyboardFocus( nil )
+
+										end
+
+								end
+
 
 
 						back_icon:addEventListener("touch",closeMessagePage)
 						back_icon_bg:addEventListener("touch",closeMessagePage)
 						title:addEventListener("touch",closeMessagePage)
 
-				end
+                       	
+                        end
+
+			    end
+
+
+
+                
+  			    -- if openPagevalue == "editpage" then
+
+				-- 	if sceneevent.params then
+
+				-- 		edit_msg_values = sceneevent.params.editvalues
+
+				-- 		shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
+				-- 		longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
+
+				-- 	end
+
+
+				-- 		back_icon:addEventListener("touch",closeMessagePage)
+				-- 		back_icon_bg:addEventListener("touch",closeMessagePage)
+				-- 		title:addEventListener("touch",closeMessagePage)
+
+				-- end
 
 
 ------------------------------------------- attachment icon -----------------------------------------
@@ -1126,15 +1207,20 @@ end
 
 			elseif phase == "did" then
 
-				--event.parent:resumeCall(list_values)
+				if status == "editpage" then
+
+					event.parent:resumeGame("details",Details,"details")
+
+				end
+
 				
 
 				back_icon:removeEventListener("touch",closeMessagePage)
 			    back_icon_bg:removeEventListener("touch",closeMessagePage)
 			    title:removeEventListener("touch",closeMessagePage)
 
-			    shortmsg_textbox:removeEventListener( "userInput", TextLimitation )
-				longmsg_textbox:removeEventListener( "userInput", TextLimitation )
+			    shortmsg_textbox:removeEventListener( "userInput", TextLimitation)
+				longmsg_textbox:removeEventListener( "userInput", TextLimitation)
 				Background:removeEventListener("touch",FocusComplete)
 
 				send_button:removeEventListener("touch",onSendButtonTouchAction)

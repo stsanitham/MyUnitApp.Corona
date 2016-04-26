@@ -112,7 +112,6 @@ local tabBarGroup = display.newGroup( )
 						        }
 			            }
 
-
 					Runtime:removeEventListener( "key", onKeyEvent )
 
 			        composer.showOverlay( "Controller.composeMessagePage", options )
@@ -991,9 +990,18 @@ local tabBarGroup = display.newGroup( )
 
 
        
-		function scene:resumeGame(messagelistvalue)
+		function scene:resumeGame(value,messagelistvalue)
 
-			print("ertertet")
+			print("!!!!!!!!!!!!!!!!!!!!!!!!!ertertet")
+
+
+			if value == "back" then
+
+            print( "^^^^^^^^^^^^^^^^^^^^^^" )
+
+	        Runtime:addEventListener( "key", onKeyEvent )
+
+	           	local function waitTimer( event )
 
 
 				if messagelistvalue.MessageStatus == "SCHEDULE" then
@@ -1059,12 +1067,163 @@ local tabBarGroup = display.newGroup( )
 				 end
 
 
+				end
+
+				 	timer.performWithDelay( 500, waitTimer )
+
+			end
+
+
 		end
 
 
 
 
 		
+
+
+
+	function scene:resumeGame(value,EditArray,pagevalue)
+
+
+					print( "*********test*********" )
+
+
+
+	    if value == "edit" then
+
+
+	    	pagevalue = "editpage"
+
+
+					local options = {
+						isModal = true,
+						effect = "slideLeft",
+						time = 300,
+						params = {
+						
+						Details = EditArray,
+						value = "edit",
+						page = pagevalue
+
+					}
+				}
+
+
+				print("************************************************** : ", json.encode(Details))
+
+
+				composer.showOverlay( "Controller.composeMessagePage", options )
+
+		elseif value == "details" then
+
+			print( "@@@@@@@@@@@@@@@@@@@" )
+
+
+				local options = {
+						isModal = true,
+						effect = "slideLeft",
+						time = 1,
+						params = {
+						messagelistvalues = EditArray
+					}
+				}
+
+			composer.showOverlay( "Controller.pushNotificationDetailPage", options )
+
+		elseif value == "back" then
+
+				Runtime:addEventListener( "key", onKeyEvent )
+
+	   -- search.isVisible=true
+
+			-- local function waitTimer( event )
+			-- 	if openPage=="eventCalenderPage" then
+			-- 			local temp = os.date( '*t' )
+			-- 			temp.day = temp.day - os.date( "%w" ) 
+			-- 			weekViewTouchFlag=true
+			-- 			ParentShow=true
+			-- 			creatWeek(temp,true)
+
+			-- 	end
+			-- end
+
+			 	local function waitTimer( event )
+
+
+				if messagelistvalue.MessageStatus == "SCHEDULE" then
+
+
+						for j=1, #messageList_array do 
+
+							display.remove(messageList_array[#messageList_array])
+							messageList_array[#messageList_array] = nil
+						end
+
+
+					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+
+
+				elseif messagelistvalue.MessageStatus == "SENT" then
+
+						for j=1, #sentmessageList_array do 
+
+							display.remove(sentmessageList_array[#sentmessageList_array])
+							sentmessageList_array[#sentmessageList_array] = nil
+						end
+
+
+					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+
+
+				elseif messagelistvalue.MessageStatus == "DRAFT" then
+
+
+						for j=1, #draftmessageList_array do 
+
+							display.remove(draftmessageList_array[#draftmessageList_array])
+							draftmessageList_array[#draftmessageList_array] = nil
+						end
+
+
+						function getDraftMessageList1(response)
+
+
+							draftmessagelist_response = response
+
+
+								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
+
+									DraftMessageCreation_list(draftmessagelist_response)
+									NoDraftMessage.isVisible=false
+
+								else
+
+									NoDraftMessage.isVisible=true
+
+								end
+
+
+						end
+
+
+					Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
+               
+
+
+				 end
+
+
+				end
+
+
+			timer.performWithDelay( 500, waitTimer )
+
+			
+
+	    end
+
+	end
 
 
 
@@ -1130,54 +1289,54 @@ local function TabbarTouch( event )
 
 				composer.removeHidden()
 
-				local function getScheduleMessageList(response)
+					local function getScheduleMessageList(response)
 
-				messagelist_response = response
+					messagelist_response = response
 
-					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
-							
-						MessageCreation_list(messagelist_response)
-						NoScheduleMessage.isVisible=false
+						if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
+								
+							MessageCreation_list(messagelist_response)
+							NoScheduleMessage.isVisible=false
 
-						     for j = 1, #sentmessageList_array do
+							     for j = 1, #sentmessageList_array do
 
-			                	display.remove(sentmessageList_array[#sentmessageList_array])
-							    sentmessageList_array[#sentmessageList_array] = nil
+				                	display.remove(sentmessageList_array[#sentmessageList_array])
+								    sentmessageList_array[#sentmessageList_array] = nil
 
-					         end
-
-
-					         for j = 1, #draftmessageList_array do
-
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
-
-					         end
+						         end
 
 
-					else
+						         for j = 1, #draftmessageList_array do
 
-						NoScheduleMessage.isVisible=true
+				                	display.remove(draftmessageList_array[#draftmessageList_array])
+								    draftmessageList_array[#draftmessageList_array] = nil
 
-							 for j = 1, #sentmessageList_array do
-
-			                	display.remove(sentmessageList_array[#sentmessageList_array])
-							    sentmessageList_array[#sentmessageList_array] = nil
-
-					         end
+						         end
 
 
-					         for j = 1, #draftmessageList_array do
+						else
 
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
+							NoScheduleMessage.isVisible=true
 
-					         end
+								 for j = 1, #sentmessageList_array do
+
+				                	display.remove(sentmessageList_array[#sentmessageList_array])
+								    sentmessageList_array[#sentmessageList_array] = nil
+
+						         end
 
 
-					end
+						         for j = 1, #draftmessageList_array do
 
-			   end
+				                	display.remove(draftmessageList_array[#draftmessageList_array])
+								    draftmessageList_array[#draftmessageList_array] = nil
+
+						         end
+
+
+						end
+
+				   end
 
 
 				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
@@ -1402,8 +1561,6 @@ end
 		local phase = event.phase
 		
 		if phase == "will" then
-
-
 
 
 			NoScheduleMessage = display.newText( sceneGroup,MessagePage.NoMessage, 0,0,0,0,native.systemFontBold,16)
@@ -1637,33 +1794,28 @@ end
 
 
 
-	function scene:hide( event )
+		function scene:hide( event )
 
-		local sceneGroup = self.view
-		local phase = event.phase
+			local sceneGroup = self.view
+			local phase = event.phase
 
-		if event.phase == "will" then
+			if event.phase == "will" then
 
-				-- for j=MainGroup.numChildren, 1, -1 do 
-				-- display.remove(MainGroup[MainGroup.numChildren])
-				-- MainGroup[MainGroup.numChildren] = nil
-				-- end
+						-- for j=MainGroup.numChildren, 1, -1 do 
+						-- display.remove(MainGroup[MainGroup.numChildren])
+						-- MainGroup[MainGroup.numChildren] = nil
+						-- end
 
-
-				menuBtn:removeEventListener("touch",menuTouch)
-				compose_msg_icon:removeEventListener("touch",composeMessage)
-
-				Runtime:removeEventListener( "key", onKeyEvent )
-
-				Background:removeEventListener("touch",FocusComplete)
-
+						menuBtn:removeEventListener("touch",menuTouch)
+						compose_msg_icon:removeEventListener("touch",composeMessage)
+						Runtime:removeEventListener( "key", onKeyEvent )
+						Background:removeEventListener("touch",FocusComplete)
 
 			elseif phase == "did" then
 
-				-- for j=1,#messageList_array do 
-				-- 	if messageList_array[j] then messageList_array[j]:removeSelf();messageList_array[j] = nil	end
-				-- end
-
+						-- for j=1,#messageList_array do 
+						-- 	if messageList_array[j] then messageList_array[j]:removeSelf();messageList_array[j] = nil	end
+						-- end
 
 			end	
 
@@ -1673,12 +1825,11 @@ end
 
 
 
-	function scene:destroy( event )
+		function scene:destroy( event )
 
-		local sceneGroup = self.view
+			local sceneGroup = self.view
 
-
-	end
+		end
 
 
 
