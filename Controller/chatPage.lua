@@ -526,20 +526,17 @@ local function sendMeaasage()
 	end
 
 	
+
 	local dateVlaue=""
 
 	for i=1,#ChatHistory do
-
 
 		local dateLable = nil
 		local datevalue = nil
 
 		MeassageList[#MeassageList+1] = display.newGroup( )
 
-		local tempGroup = MeassageList[#MeassageList]
-
-	--	print( "ChatHistory : "..json.encode(ChatHistory[i]) )
-        
+		local tempGroup = MeassageList[#MeassageList]]
 
 		local bg = display.newRect(0,0,W-100,25 )
 		tempGroup:insert(bg)
@@ -557,53 +554,8 @@ local function sendMeaasage()
 		end
 			bg.x=5
 
-			--
+	
 
-
-		if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
-
-			Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
-
-							print( "here value : "..Imagename)
-
-			local image
-
-			 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
-		 	 local fhd = io.open( filePath )
-			
-				if fhd then		
-
-					print("@@@@@@@@@@@@")
-					
-					image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
-
-				else
-
-
-					image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
-
-				end
-
-			image.anchorY=0
-			image.anchorX = 0
-			image.x=bg.x
-			image.y=bg.y+2.5
-
-			bg.width = image.contentWidth+5
-			bg.height = image.contentHeight+5		
-
-
-			if ChatHistory[i].Message_From == tostring(ContactId) then
-			image.x = bg.x-bg.contentWidth+2.5
-			end
-
-
-		end
-
-
-
-
-			
 
 		if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
 
