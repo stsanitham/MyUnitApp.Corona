@@ -767,7 +767,7 @@ local function sendMeaasage()
 		bg.width = bg.width+35
 
 
-			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
+			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" and ChatHistory[i].Image_Path ~= "NULL" then
 
 			Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
 
@@ -1043,7 +1043,10 @@ local function ChatSendAction( event )
 
 print("Imagename : "..Imagename)
 
-			if ChatBox.text ~= nil and ChatBox.text ~= "" then
+			if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " then
+
+
+				
 			
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
@@ -1385,19 +1388,21 @@ end
 
        		scrollAction(0)
 
+       		
+
         elseif event.phase == "editing" then
 
         	if (event.newCharacters=="\n") then
 				native.setKeyboardFocus( nil )
 			end
 
-				-- if event.text:len() > 250 then
+				if event.text:len() > 500 then
 
-				-- 		event.target.text = event.text:sub(1,250)
+						event.target.text = event.text:sub(1,500)
 
 			
 
-				-- 	end
+					end
 
         	if event.text:len() >=1 then
 
