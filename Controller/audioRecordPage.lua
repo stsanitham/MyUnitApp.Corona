@@ -19,6 +19,7 @@ local H= display.contentHeight
 local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title
 local dataFileName = "testfile"
 local menuBtn
+local filePath
 
 openPage="audiorecordPage"
 
@@ -193,24 +194,20 @@ function scene:show( event )
 		        dataFileName = dataFileName .. ".aif"
 		    elseif "Android" == platformName then
 		        dataFileName = dataFileName .. ".wav"
-		        isAndroid = true
 		    else
 		    	print("Unknown OS " .. platformName )
 		    end
 		end
 		print (dataFileName)
 
-		local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+		filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		r = media.newRecording(filePath)
 
 
-		timerCount = display.newText( sceneGroup, "00:00",0,0,native.systemFont,45)
+		timerCount = display.newText( sceneGroup, "00:00",0,0,native.systemFont,65)
 		timerCount:setFillColor( 0 )
 		timerCount.x=W/2
 		timerCount.y=H/2
-
-
-
 
 
 		startBtn:addEventListener( "touch", audioAction )
