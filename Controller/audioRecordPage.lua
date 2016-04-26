@@ -17,7 +17,7 @@ local W = display.contentWidth
 local H= display.contentHeight
 
 local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title
-
+local dataFileName = "testfile"
 local menuBtn
 
 openPage="audiorecordPage"
@@ -184,7 +184,7 @@ function scene:show( event )
 
 
 
-		local dataFileName = "testfile"
+		
 		if "simulator" == system.getInfo("environment") then
 		    dataFileName = dataFileName .. ".aif"
 		else
