@@ -55,7 +55,7 @@ local function audioAction( event )
 			if event.target.id == "play" then
 				    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            -- Play back the recording
-		            local file = io.open( filePath, "r" )
+		            local file = io.open( filePath)
 		            
 		            if file then
 		                io.close( file )
@@ -189,10 +189,9 @@ function scene:show( event )
 		if "simulator" == system.getInfo("environment") then
 		    dataFileName = dataFileName .. ".aif"
 		else
-			local platformName = system.getInfo( "platformName" )
-		    if "iPhone OS" == platformName then
+		    if isIos then
 		        dataFileName = dataFileName .. ".aif"
-		    elseif "Android" == platformName then
+		    elseif isAndroid then
 		        dataFileName = dataFileName .. ".wav"
 		    else
 		    	print("Unknown OS " .. platformName )
