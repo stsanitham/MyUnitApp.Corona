@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 --
--- instagram Screen
+-- chat Screen
 --
 ----------------------------------------------------------------------------------
 
@@ -110,6 +110,22 @@ local function attachAction( event )
 
 		elseif event.target.id == "audio" then
 
+			print( "audio" )
+
+			   local options = {
+				      		effect = "fromTop",
+							time = 200,	
+								params = {
+								contactId = To_ContactId,
+								MessageType = MessageType
+							}
+
+							}
+
+			Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+			ChatBox.isVisible=false
+
+		    composer.showOverlay( "Controller.audioRecordPage",options)
 
 		elseif event.target.id == "gallery" then
 
@@ -135,11 +151,18 @@ local function AttachmentTouch( event )
 	if event.phase == "began" then
 
 	elseif event.phase == "ended" then
-
-		if AttachmentGroup.alpha == 0 then
+		print( AttachmentGroup.alpha )
+		if AttachmentGroup.alpha <= 0.3 then
+			AttachmentGroup.yScale=0.1
 			AttachmentGroup.alpha = 1
+
+			transition.from( AttachmentGroup, {time=300,alpha=1} )
+			transition.scaleTo( AttachmentGroup, {yScale=1.0, time=300 } )
+			
 		else
-			AttachmentGroup.alpha = 0
+
+			transition.to( AttachmentGroup, {time=300,alpha=0,yScale=0.01} )
+
 		end
 
 	end
@@ -163,7 +186,7 @@ local function createAttachment( )
 -------------------------------------------- Camera ---------------------------------------------------
 
 				camera_icon = display.newImageRect(AttachmentGroup,"res/assert/camera1.png",40,35)
-				camera_icon.x=W/2 - W/3 - 15
+				camera_icon.x=W/2 - W/3
 				camera_icon.anchorX=0
 				camera_icon.anchorY=0
 				camera_icon.y = icons_holder_bg.y + 7.5
@@ -199,7 +222,7 @@ local function createAttachment( )
 -------------------------------------------- Audio ---------------------------------------------------
 
                 audio_icon = display.newImageRect(AttachmentGroup,"res/assert/audio1.png",40,35)
-				audio_icon.x= W/2 + W/3 - 15
+				audio_icon.x= W/2 + W/3 - 30
 				audio_icon.anchorX=0
 				audio_icon.anchorY=0
 				audio_icon.y = video_icon.y
@@ -217,7 +240,7 @@ local function createAttachment( )
 -------------------------------------------- Gallery ---------------------------------------------------
 
                 gallery_icon = display.newImageRect(AttachmentGroup,"res/assert/gallery1.png",40,35)
-				gallery_icon.x= W/2 - W/3 - 15
+				gallery_icon.x= W/2 - W/3 
 				gallery_icon.anchorX=0
 				gallery_icon.anchorY=0
 				gallery_icon.y = camera_icon.y + camera_icon.contentHeight + 35
@@ -256,7 +279,7 @@ local function createAttachment( )
 -------------------------------------------- Contact ---------------------------------------------------
 
                 Contact_icon = display.newImageRect(AttachmentGroup,"res/assert/user1.png",40,35)
-				Contact_icon.x= W/2 + W/3 - 15
+				Contact_icon.x= W/2 + W/3 - 30
 				Contact_icon.anchorX=0
 				Contact_icon.anchorY=0
 				Contact_icon.y = Location_icon.y
@@ -1508,9 +1531,12 @@ function scene:show( event )
 
 
 				createAttachment()
-				AttachmentGroup.anchorX=1;AttachmentGroup.anchorY=0
+				AttachmentGroup.anchorX=0;AttachmentGroup.anchorY=0
 				AttachmentGroup.alpha=0
+				AttachmentGroup.y=AttachmentGroup.y+68
+				AttachmentGroup.anchorChildren = true
 
+				sceneGroup:insert( AttachmentGroup )
 
 
 			--Tabbar---
