@@ -791,9 +791,6 @@ local function sendMeaasage()
 
 				else
 
-
-
-
 					--network download
 					image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
 					image.id=ChatHistory[i].Image_Path
@@ -804,7 +801,7 @@ local function sendMeaasage()
 
 			image.anchorY=0
 			image.anchorX = 0
-			image.x=bg.x
+			image.x=bg.x+2.5
 			image.y=bg.y+2.5
 
 			bg.width = image.contentWidth+5
