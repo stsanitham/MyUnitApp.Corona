@@ -227,7 +227,7 @@ end
 
 		intiscale()
 
-		photoname = "image.jpg"
+		photoname = "image"..os.date("%Y%m%d%H%m%S")..".jpg"
 
         display.save(photo,photoname,system.DocumentsDirectory)
 
@@ -525,15 +525,18 @@ end
 local function sendMeaasage()
 	
 	ChatBox.text=""
+	
 
 	for i=#MeassageList, 1, -1 do 
 			display.remove(MeassageList[#MeassageList])
 			MeassageList[#MeassageList] = nil
 	end
 
+
 	for i=#ChatHistory, 1, -1 do 
 			ChatHistory[#ChatHistory] = nil
 	end
+
 
 
 	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
@@ -559,7 +562,7 @@ local function sendMeaasage()
 		local tempGroup = MeassageList[#MeassageList]
 
 	--	print( "ChatHistory : "..json.encode(ChatHistory[i]) )
-
+        
 
 		local bg = display.newRect(0,0,W-100,25 )
 		tempGroup:insert(bg)
@@ -576,6 +579,52 @@ local function sendMeaasage()
 			bg.y=0
 		end
 			bg.x=5
+
+			--
+
+
+		if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
+
+			Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
+
+							print( "here value : "..Imagename)
+
+			local image
+
+			 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
+		 	 local fhd = io.open( filePath )
+			
+				if fhd then		
+
+					print("@@@@@@@@@@@@")
+					
+					image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+
+				else
+
+
+					image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
+
+				end
+
+			image.anchorY=0
+			image.anchorX = 0
+			image.x=bg.x
+			image.y=bg.y+2.5
+
+			bg.width = image.contentWidth+5
+			bg.height = image.contentHeight+5		
+
+
+			if ChatHistory[i].Message_From == tostring(ContactId) then
+			image.x = bg.x-bg.contentWidth+2.5
+			end
+
+
+		end
+
+
+
 
 			
 
@@ -955,6 +1004,10 @@ local function ChatSendAction( event )
 
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
+
+
+print("Imagename : "..Imagename)
+
 			if ChatBox.text ~= nil and ChatBox.text ~= "" then
 			
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
@@ -963,7 +1016,7 @@ local function ChatSendAction( event )
 			isDeleted="false"
 			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-			ImagePath="NULL"
+			ImagePath= Imagepath or ""
 			AudioPath="NULL"
 			VideoPath="NULL"
 			MyUnitBuzz_LongMessage=ChatBox.text
@@ -981,7 +1034,7 @@ local function ChatSendAction( event )
 				print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
 
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",Imagepath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
+			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
 
 
 		    elseif Imagename ~= nil or Imagename ~= "" then
@@ -1008,7 +1061,7 @@ local function ChatSendAction( event )
 				--	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
 						print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
-						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..Imagename..[[',']]..[[',']]..Imagesize..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
 						db:exec( insertQuery )
 
 						print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
@@ -1027,182 +1080,11 @@ end
 
 
 
-
-	 local function formatSizeUnits(event)
-
-      if (event>=1073741824) then 
-
-      	size=(event/1073741824)..' GB'
-
-      elseif (event>=1048576) then   
-
-       	size=(event/1048576)..' MB'
-
-
-	  
-	  elseif (event > 10485760) then
-
-	    local image = native.showAlert( ChatPage.ImageUploadError, ChatPage.ImageSize , { CommonWords.ok } )
-
-	       
-      elseif (event>=1024)  then   
-
-      	size = (event/1024)..' KB'
-
-      else      
-
-  	  end
-
-      --  local alert = native.showAlert(Message.FileSelect, size, {"OK"} , onComplete12)
-
-	end
-
-
-
-     local function onImageSelectionComplete ( event )
-
- 
-        local photo_image = event.target
-
-        local baseDir = system.DocumentsDirectory
-
-        if photo_image then
-
-        photo_image.x = display.contentCenterX
-		photo_image.y = display.contentCenterY
-		local w = photo_image.width
-		local h = photo_image.height
-
-		local function rescale()
-					
-					if photo_image.width > W or photo_image.height > H then
-
-						photo_image.width = photo_image.width/2
-						photo_image.height = photo_image.height/2
-
-						intiscale()
-
-					else
-               
-						return false
-
-					end
-				end
-
-				function intiscale()
-					
-					if photo_image.width > W or photo_image.height > H then
-
-						photo_image.width = photo_image.width/2
-						photo_image.height = photo_image.height/2
-
-						rescale()
-
-					else
-
-						return false
-
-					end
-
-				end
-
-				intiscale()
-
-		photoname = "photo.jpg"
-
-        display.save(photo_image,photoname,system.DocumentsDirectory)
-
-        photo_image:removeSelf()
-
-        photo_image = nil
-
-
-         path = system.pathForFile( photoname, baseDir)
-
-         local size = lfs.attributes (path, "size")
-
-		 local fileHandle = io.open(path, "rb")
-
-		 file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
-
-		 io.close( fileHandle )
-
-       
-        	formatSizeUnits(size)
-
-        	--sendImage()
-
-	else
-
-	end
-
-end
-
-
-
-	local function onCompleteImage( event )
-		
-		if "clicked"==event.action then
-
-			local i = event.index 
-
-		if 1 == i then
-
-			if media.hasSource( PHOTO_FUNCTION  ) then
-			timer.performWithDelay( 100, function() media.selectPhoto( { listener = onImageSelectionComplete, mediaSource = PHOTO_FUNCTION } ) 
-			end )
-		    end
-
-		elseif 2 == i then
-
-			if media.hasSource( media.Camera ) then
-	        timer.performWithDelay( 100, function() media.capturePhoto( { listener = onImageSelectionComplete, mediaSource = media.Camera } ) 
-			end )
-		    end
-
-		end
-
-	end
-
-	return true
-	end
-
-
-
-    function UploadImageAction( event )
-
-    	local phase = event.phase
-
-    	if phase=="began" then
-
-    		display.getCurrentStage():setFocus( event.target )
-
-    	elseif phase=="ended" then
-
-    	display.getCurrentStage():setFocus( nil )
-
-        local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,CommonWords.cancel} , onCompleteImage)
-	
-	    return true
-
-        end
-
-    end
-
-
-
-
-
-
-
-
 local function onTimer ( event )
 
 	BackFlag = false
 
 end
-
-
 
 
 
