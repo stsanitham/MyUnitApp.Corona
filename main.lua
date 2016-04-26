@@ -244,7 +244,7 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
                         isDeleted="false"
                         Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
                         Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-                        ImagePath="NULL"
+                        ImagePath=additionalData.image or ""
                         AudioPath="NULL"
                         VideoPath="NULL"
                         MyUnitBuzz_LongMessage=tostring(message)

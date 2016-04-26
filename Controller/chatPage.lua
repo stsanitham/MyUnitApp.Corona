@@ -34,6 +34,8 @@ local BackFlag = false
 
 local ChatBox
 
+local reciveImageFlag=false
+
 local ContactDetails = {}
 
 local ChatHistory = {}
@@ -521,6 +523,39 @@ local function ChatTouch( event )
 return true
 end
 
+local function recivedNetwork( event )
+    if ( event.isError ) then
+        print( "Network error - download failed: ", event.response )
+    elseif ( event.phase == "began" ) then
+        print( "Progress Phase: began" )
+    elseif ( event.phase == "ended" ) then
+        print( "Displaying response image file" )
+        reciveImageFlag=true
+  		
+    end
+end
+
+
+
+local function receviedimageDownload( event )
+	if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+			network.download(
+	event.target.id,
+	"GET",
+	recivedNetwork,
+	event.target.id:match( "([^/]+)$" ),
+	system.DocumentsDirectory
+	)
+
+	end
+
+return true
+end
+
 
 local function sendMeaasage()
 	
@@ -581,49 +616,6 @@ local function sendMeaasage()
 			bg.x=5
 
 			--
-
-
-		if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
-
-			Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
-
-							print( "here value : "..Imagename)
-
-			local image
-
-			 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
-		 	 local fhd = io.open( filePath )
-			
-				if fhd then		
-
-					print("@@@@@@@@@@@@")
-					
-					image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
-
-				else
-
-
-					image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
-
-				end
-
-			image.anchorY=0
-			image.anchorX = 0
-			image.x=bg.x
-			image.y=bg.y+2.5
-
-			bg.width = image.contentWidth+5
-			bg.height = image.contentHeight+5		
-
-
-			if ChatHistory[i].Message_From == tostring(ContactId) then
-			image.x = bg.x-bg.contentWidth+2.5
-			end
-
-
-		end
-
-
 
 
 			
@@ -778,6 +770,54 @@ local function sendMeaasage()
 		bg.height = bg.height+10
 		bg.width = bg.width+35
 
+
+			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
+
+			Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
+
+							print( "here value : "..Imagename)
+
+			local image
+
+			 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
+		 	 local fhd = io.open( filePath )
+			
+				if fhd then		
+
+					print("@@@@@@@@@@@@")
+						
+					image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+					io.close( fhd )
+
+				else
+
+
+
+
+					--network download
+					image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
+					image.id=ChatHistory[i].Image_Path
+					image:addEventListener( "touch", receviedimageDownload )
+
+				end
+
+
+			image.anchorY=0
+			image.anchorX = 0
+			image.x=bg.x
+			image.y=bg.y+2.5
+
+			bg.width = image.contentWidth+5
+			bg.height = image.contentHeight+5		
+
+
+			if ChatHistory[i].Message_From == tostring(ContactId) then
+				image.x = bg.x-bg.contentWidth+2.5
+			end
+
+
+		end
+
 		local time = display.newText( tempGroup, Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%I:%M %p",TimeZone), 0, 0 , native.systemFont ,10 )
 		time.x=bg.x-5
 		time.y=bg.y+bg.contentHeight-time.contentHeight/2-10
@@ -845,6 +885,11 @@ end
 
 					end
 
+			end
+
+			if reciveImageFlag == true then
+				reciveImageFlag=false
+				sendMeaasage()
 			end
 
 		    if chatReceivedFlag==true then
