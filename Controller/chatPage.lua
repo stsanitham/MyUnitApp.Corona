@@ -360,7 +360,7 @@ local dateVlaue=""
 		bg.width = bg.width+35
 
 		local time = display.newText( tempGroup, Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%I:%M %p",TimeZone), 0, 0 , native.systemFont ,10 )
-		time.x=bg.x-5
+		time.x=bg.x-time.contentWidth/2+10
 		time.y=bg.y+bg.contentHeight-time.contentHeight/2-10
 		time.anchorX=bg.anchorX;time.anchorY=bg.anchorY
 
@@ -372,6 +372,7 @@ local dateVlaue=""
 
 		if ChatHistory[i].Message_From == tostring(ContactId) then
 			chat.x = bg.x-bg.contentWidth+5
+		
 			if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
 			bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
