@@ -476,6 +476,8 @@ local function createAttachment( )
 				Contact_icon_txt:setFillColor(0)
 end 
 
+
+
 local function ChatTouch( event )
 
 	if event.phase == "began" then
@@ -523,6 +525,8 @@ local function ChatTouch( event )
 return true
 end
 
+
+
 local function recivedNetwork( event )
     if ( event.isError ) then
         print( "Network error - download failed: ", event.response )
@@ -557,15 +561,17 @@ return true
 end
 
 
+
 local function sendMeaasage()
 	
 	ChatBox.text=""
-	
+
 
 	for i=#MeassageList, 1, -1 do 
 			display.remove(MeassageList[#MeassageList])
 			MeassageList[#MeassageList] = nil
 	end
+
 
 
 	for i=#ChatHistory, 1, -1 do 
@@ -579,7 +585,7 @@ local function sendMeaasage()
 		local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
 		db:exec( q )
 
-		ChatHistory[#ChatHistory+1] =row
+		ChatHistory[#ChatHistory+1] = row
 
 	end
 
@@ -592,9 +598,9 @@ local function sendMeaasage()
 		local dateLable = nil
 		local datevalue = nil
 
-		MeassageList[#MeassageList+1] = display.newGroup( )
+		MeassageList[#MeassageList+1] = display.newGroup()
 
-		local tempGroup = MeassageList[#MeassageList]]
+		local tempGroup = MeassageList[#MeassageList]
 
 		local bg = display.newRect(0,0,W-100,25 )
 		tempGroup:insert(bg)
@@ -603,6 +609,7 @@ local function sendMeaasage()
 		bg.id=ChatHistory[i].id
 		bg.group=tempGroup
 		bg:addEventListener( "touch", ChatTouch )
+
 
 
 		if MeassageList[#MeassageList-1] ~= nil then
@@ -645,8 +652,8 @@ local function sendMeaasage()
 
 				end
 
-
 			end
+
 		end
 
 
@@ -735,9 +742,8 @@ local function sendMeaasage()
 			owner.anchorX = 0
 			owner.x=chat.x
 			owner.y=chat.y
-			owner:setTextColor( 1, 1, 0 )
+			owner:setTextColor(1,1,0)
 			chat.y=owner.y+20
-
 
 
 			bg.height = bg.height+20
@@ -745,11 +751,8 @@ local function sendMeaasage()
 			if ChatHistory[i].Message_From == tostring(ContactId) then
 
 				owner.text = MemberName
-
 			else
-
 				owner.text = ChatHistory[i].ToName or "(~No Name)"
-
 			end
 		
 
@@ -757,8 +760,7 @@ local function sendMeaasage()
 					bg.width = owner.contentWidth+10	
 			end
 
-			
-
+		
 		end
 
 		bg.height = bg.height+10
@@ -777,8 +779,6 @@ local function sendMeaasage()
 		 	 local fhd = io.open( filePath )
 			
 				if fhd then		
-
-					print("@@@@@@@@@@@@")
 						
 					image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
 					io.close( fhd )
@@ -797,6 +797,7 @@ local function sendMeaasage()
 			image.anchorX = 0
 			image.x=bg.x+2.5
 			image.y=bg.y+2.5
+
 
 			bg.width = image.contentWidth+5
 			bg.height = image.contentHeight+5		
