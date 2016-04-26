@@ -584,20 +584,17 @@ local function sendMeaasage()
 	end
 
 	
+
 	local dateVlaue=""
 
 	for i=1,#ChatHistory do
-
 
 		local dateLable = nil
 		local datevalue = nil
 
 		MeassageList[#MeassageList+1] = display.newGroup( )
 
-		local tempGroup = MeassageList[#MeassageList]
-
-	--	print( "ChatHistory : "..json.encode(ChatHistory[i]) )
-        
+		local tempGroup = MeassageList[#MeassageList]]
 
 		local bg = display.newRect(0,0,W-100,25 )
 		tempGroup:insert(bg)
@@ -615,10 +612,7 @@ local function sendMeaasage()
 		end
 			bg.x=5
 
-			--
 
-
-			
 
 		if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
 
