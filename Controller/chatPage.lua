@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 --
--- instagram Screen
+-- chat Screen
 --
 ----------------------------------------------------------------------------------
 
@@ -19,9 +19,12 @@ local toast = require('plugin.toast')
 
 --------------- Initialization -------------------
 
-local W = display.contentWidth;H= display.contentHeight
+local W = display.contentWidth;
+local H= display.contentHeight
 
 local Background,BgText
+
+local AttachmentGroup = display.newGroup( )
 
 local menuBtn,tabButtons,chattabBar,chatScroll,BackBtn,tabBar,title_bg,title,Deleteicon,Copyicon
 
@@ -31,6 +34,8 @@ local BackFlag = false
 
 local ChatBox
 
+local reciveImageFlag=false
+
 local ContactDetails = {}
 
 local ChatHistory = {}
@@ -38,6 +43,12 @@ local ChatHistory = {}
 local MeassageList={}
 
 local MessageType=""
+
+local Imagename = ""
+
+local Imagepath = ""
+
+local Imagesize = ""
 
 local MemberName
 
@@ -53,13 +64,9 @@ local ChatScrollContent = display.newGroup( )
 
 local UserId,ContactId,To_ContactId
 
-local tabBarBackground = "res/assert/tabBarBg.png"
-local tabBarLeft = "res/assert/tabSelectedLeft.png"
-local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
-local tabBarRight = "res/assert/tabSelectedRight.png"
-
 local PHOTO_FUNCTION = media.PhotoLibrary 
 
+local icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 		UserId = row.UserId
@@ -92,6 +99,382 @@ function makeTimeStamp( dateString )
    end
    return timestamp
 end
+
+
+
+
+ function formatSizeUnits(event)
+
+      if (event>=1073741824) then 
+
+      	size=(event/1073741824)..' GB'
+
+      print("size of the image11 ",size)
+
+
+      elseif (event>=1048576) then   
+
+       	size=(event/1048576)..' MB'
+
+      print("size of the image 22",size)
+
+	  
+	  elseif (event > 10485760) then
+
+	  print("highest size of the image ",size)
+
+	    local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+
+	       
+      elseif (event>=1024)  then   
+
+      	size = (event/1024)..' KB'
+
+       print("size of the image 33",size)
+
+      else      
+
+  	  end
+
+
+end
+
+
+
+    
+	function get_imagemodel(response)
+
+		print("SuccessMessage")
+
+		Imagepath = response.Abspath
+
+		Imagename = response.FileName
+
+		Imagesize = size
+
+		print("Imagesize................",Imagesize)
+
+			image_name_png.isVisible = true
+
+			image_name_png.text = Imagename
+
+			image_name_close.isVisible = true
+
+			sendBtn_bg.isVisible = true
+
+			sendBtn.isVisible = true
+
+			recordBtn.isVisible = false
+
+	end
+
+
+
+      
+
+    local function sendImage( )
+
+	Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+    end
+
+
+
+    local function selectionComplete ( event )
+ 
+        local photo = event.target
+
+        local baseDir = system.DocumentsDirectory
+
+        if photo then
+
+        photo.x = display.contentCenterX
+		photo.y = display.contentCenterY
+		local w = photo.width
+		local h = photo.height
+		print( "w,h = ".. w .."," .. h )
+
+		local function rescale()
+					
+					if photo.width > W or photo.height > H then
+
+						photo.width = photo.width/2
+						photo.height = photo.height/2
+
+						intiscale()
+
+					else
+               
+						return false
+
+					end
+				end
+
+		function intiscale()
+			
+			if photo.width > W or photo.height > H then
+
+				photo.width = photo.width/2
+				photo.height = photo.height/2
+
+				rescale()
+
+			else
+
+				return false
+
+			end
+
+		end
+
+		intiscale()
+
+		photoname = "image"..os.date("%Y%m%d%H%M%S")..".jpg"
+
+        display.save(photo,photoname,system.DocumentsDirectory)
+
+        photo:removeSelf()
+
+        photo = nil
+
+
+        path = system.pathForFile( photoname, baseDir)
+
+        local size = lfs.attributes (path, "size")
+
+		local fileHandle = io.open(path, "rb")
+
+		file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+		io.close( fileHandle )
+
+            print("mime conversion ",file_inbytearray)
+
+        	print("bbb ",size)
+
+        	formatSizeUnits(size)
+
+        	sendImage()
+
+	else
+
+	end
+
+end
+
+
+
+
+
+local function attachAction( event )
+
+	if event.phase == "began" then
+
+	elseif event.phase == "ended" then
+
+		if event.target.id =="camera" then
+
+				if media.hasSource( media.Camera ) then
+				timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+				end )
+
+			    else
+
+			    	local image1 = native.showAlert( "Camera Unavailable", "Camera is not supported in this device", { CommonWords.ok } )
+
+				end
+
+		elseif event.target.id == "video" then
+
+			print( "video" )
+
+		elseif event.target.id == "audio" then
+
+			print( "audio" )
+
+			   local options = {
+				      		effect = "fromTop",
+							time = 200,	
+								params = {
+								contactId = To_ContactId,
+								MessageType = MessageType
+							}
+
+							}
+
+			Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+			ChatBox.isVisible=false
+
+		    composer.showOverlay( "Controller.audioRecordPage",options)
+
+		elseif event.target.id == "gallery" then
+
+
+		elseif event.target.id == "location" then
+
+
+		elseif event.target.id == "contact" then
+
+		end
+
+
+		AttachmentGroup.alpha = 0
+
+
+	end
+
+return true
+end
+
+local function AttachmentTouch( event )
+
+	if event.phase == "began" then
+
+	elseif event.phase == "ended" then
+		print( AttachmentGroup.alpha )
+		if AttachmentGroup.alpha <= 0.3 then
+			AttachmentGroup.yScale=0.1
+			AttachmentGroup.alpha = 1
+
+			transition.from( AttachmentGroup, {time=300,alpha=1} )
+			transition.scaleTo( AttachmentGroup, {yScale=1.0, time=300 } )
+			
+		else
+
+			transition.to( AttachmentGroup, {time=300,alpha=0,yScale=0.01} )
+
+		end
+
+	end
+
+return true
+end
+
+local function createAttachment( )
+	
+------------------------------------------- Icons Holder --------------------------------------------
+
+				icons_holder_bg = display.newRect(AttachmentGroup,0,0,W,EditBoxStyle.height+115)
+				icons_holder_bg.x=0
+				icons_holder_bg.anchorX=0
+				icons_holder_bg.anchorY=0
+				icons_holder_bg.strokeWidth = 1
+				icons_holder_bg:setStrokeColor( 0,0,0,0.1)
+				icons_holder_bg.y = tabBar.y+tabBar.height+10
+				icons_holder_bg:setFillColor( 1,1,1)
+
+-------------------------------------------- Camera ---------------------------------------------------
+
+				camera_icon = display.newImageRect(AttachmentGroup,"res/assert/camera1.png",40,35)
+				camera_icon.x=W/2 - W/3
+				camera_icon.anchorX=0
+				camera_icon.anchorY=0
+				camera_icon.y = icons_holder_bg.y + 7.5
+				camera_icon.id="camera"
+				camera_icon:addEventListener( "touch", attachAction )
+
+
+				camera_icon_txt = display.newText(AttachmentGroup,MessagePage.Camera,0,0,native.systemFont,14)
+				camera_icon_txt.anchorX = 0
+				camera_icon_txt.anchorY = 0
+				camera_icon_txt.x = camera_icon.x - 7
+				camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
+				camera_icon_txt:setFillColor(0)
+
+-------------------------------------------- Video ---------------------------------------------------
+
+				video_icon = display.newImageRect(AttachmentGroup,"res/assert/video1.png",40,35)
+				video_icon.x= W/2 - 12
+				video_icon.anchorX=0
+				video_icon.anchorY=0
+				video_icon.y = camera_icon.y
+				video_icon.id="video"
+				video_icon:addEventListener( "touch", attachAction )
+
+
+				video_icon_txt = display.newText(AttachmentGroup,MessagePage.Video,0,0,native.systemFont,14)
+				video_icon_txt.anchorX = 0
+				video_icon_txt.anchorY = 0
+				video_icon_txt.x = video_icon.x 
+				video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
+				video_icon_txt:setFillColor(0)
+
+-------------------------------------------- Audio ---------------------------------------------------
+
+                audio_icon = display.newImageRect(AttachmentGroup,"res/assert/audio1.png",40,35)
+				audio_icon.x= W/2 + W/3 - 30
+				audio_icon.anchorX=0
+				audio_icon.anchorY=0
+				audio_icon.y = video_icon.y
+				audio_icon.id="audio"
+				audio_icon:addEventListener( "touch", attachAction )
+
+
+				audio_icon_txt = display.newText(AttachmentGroup,MessagePage.Audio,0,0,native.systemFont,14)
+				audio_icon_txt.anchorX = 0
+				audio_icon_txt.anchorY = 0
+				audio_icon_txt.x = audio_icon.x 
+				audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
+				audio_icon_txt:setFillColor(0)
+
+-------------------------------------------- Gallery ---------------------------------------------------
+
+                gallery_icon = display.newImageRect(AttachmentGroup,"res/assert/gallery1.png",40,35)
+				gallery_icon.x= W/2 - W/3 
+				gallery_icon.anchorX=0
+				gallery_icon.anchorY=0
+				gallery_icon.y = camera_icon.y + camera_icon.contentHeight + 35
+				gallery_icon.id="gallery"
+				gallery_icon:addEventListener( "touch", attachAction )
+
+
+				gallery_icon_txt = display.newText(AttachmentGroup,MessagePage.Gallery,0,0,native.systemFont,14)
+				gallery_icon_txt.anchorX = 0
+				gallery_icon_txt.anchorY = 0
+				gallery_icon_txt.x = gallery_icon.x - 5
+				gallery_icon_txt.y = gallery_icon.y+gallery_icon.contentHeight+5
+				gallery_icon_txt:setFillColor(0)
+
+
+-------------------------------------------- Location ---------------------------------------------------
+
+                Location_icon = display.newImageRect(AttachmentGroup,"res/assert/location1.png",40,35)
+				Location_icon.x= W/2 - 12
+				Location_icon.anchorX=0
+				Location_icon.anchorY=0
+				Location_icon.y = gallery_icon.y
+				Location_icon.id="location"
+				Location_icon:addEventListener( "touch", attachAction )
+
+
+
+				Location_icon_txt = display.newText(AttachmentGroup,MessagePage.Location,0,0,native.systemFont,14)
+				Location_icon_txt.anchorX = 0
+				Location_icon_txt.anchorY = 0
+				Location_icon_txt.x = Location_icon.x - 10
+				Location_icon_txt.y = Location_icon.y+Location_icon.contentHeight+5
+				Location_icon_txt:setFillColor(0)
+
+
+-------------------------------------------- Contact ---------------------------------------------------
+
+                Contact_icon = display.newImageRect(AttachmentGroup,"res/assert/user1.png",40,35)
+				Contact_icon.x= W/2 + W/3 - 30
+				Contact_icon.anchorX=0
+				Contact_icon.anchorY=0
+				Contact_icon.y = Location_icon.y
+				Contact_icon.id="contact"
+				Contact_icon:addEventListener( "touch", attachAction )
+
+
+
+				Contact_icon_txt = display.newText(AttachmentGroup,MessagePage.Contact,0,0,native.systemFont,14)
+				Contact_icon_txt.anchorX = 0
+				Contact_icon_txt.anchorY = 0
+				Contact_icon_txt.x = Contact_icon.x - 7
+				Contact_icon_txt.y = Contact_icon.y+Contact_icon.contentHeight+5
+				Contact_icon_txt:setFillColor(0)
+end 
 
 
 
@@ -143,22 +526,58 @@ return true
 end
 
 
+
+local function recivedNetwork( event )
+    if ( event.isError ) then
+        print( "Network error - download failed: ", event.response )
+    elseif ( event.phase == "began" ) then
+        print( "Progress Phase: began" )
+    elseif ( event.phase == "ended" ) then
+        print( "Displaying response image file" )
+        reciveImageFlag=true
+  		
+    end
+end
+
+
+
+local function receviedimageDownload( event )
+	if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+			network.download(
+	event.target.id,
+	"GET",
+	recivedNetwork,
+	event.target.id:match( "([^/]+)$" ),
+	system.DocumentsDirectory
+	)
+
+	end
+
+return true
+end
+
+
+
 local function sendMeaasage()
 	
 	ChatBox.text=""
 
-	print( "sendMeaasage" )
 
 	for i=#MeassageList, 1, -1 do 
 			display.remove(MeassageList[#MeassageList])
 			MeassageList[#MeassageList] = nil
 	end
+
+
+
 	for i=#ChatHistory, 1, -1 do 
 			ChatHistory[#ChatHistory] = nil
 	end
 
-
-	          -- native.showAlert("MyUnitBuzz", "ContactId : "..tostring(ContactId).."To_ContactId :"..tostring(To_ContactId), { "OK" } )
 
 
 	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
@@ -166,30 +585,22 @@ local function sendMeaasage()
 		local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
 		db:exec( q )
 
-		ChatHistory[#ChatHistory+1] =row
-
+		ChatHistory[#ChatHistory+1] = row
 
 	end
 
 	
-local dateVlaue=""
+
+	local dateVlaue=""
 
 	for i=1,#ChatHistory do
-
 
 		local dateLable = nil
 		local datevalue = nil
 
-
-
-
-
-		MeassageList[#MeassageList+1] = display.newGroup( )
+		MeassageList[#MeassageList+1] = display.newGroup()
 
 		local tempGroup = MeassageList[#MeassageList]
-
-	--	print( "ChatHistory : "..json.encode(ChatHistory[i]) )
-
 
 		local bg = display.newRect(0,0,W-100,25 )
 		tempGroup:insert(bg)
@@ -200,6 +611,7 @@ local dateVlaue=""
 		bg:addEventListener( "touch", ChatTouch )
 
 
+
 		if MeassageList[#MeassageList-1] ~= nil then
 			bg.y=MeassageList[#MeassageList-1][1].y+MeassageList[#MeassageList-1][1].contentHeight+20
 		else
@@ -207,7 +619,7 @@ local dateVlaue=""
 		end
 			bg.x=5
 
-			
+
 
 		if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
 
@@ -240,8 +652,8 @@ local dateVlaue=""
 
 				end
 
-
 			end
+
 		end
 
 
@@ -279,7 +691,7 @@ local dateVlaue=""
 		else
 
 
-				bg.x=65
+						bg.x=65
 
 						local Image = display.newImageRect(tempGroup,To_ContactId..".png",system.TemporaryDirectory,45,38)
 
@@ -302,7 +714,7 @@ local dateVlaue=""
 
 		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
 
-			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,W-105,0,native.systemFont,12)
+			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,W-115,0,native.systemFont,12)
 
 		else
 
@@ -330,9 +742,8 @@ local dateVlaue=""
 			owner.anchorX = 0
 			owner.x=chat.x
 			owner.y=chat.y
-			owner:setTextColor( 1, 1, 0 )
+			owner:setTextColor(1,1,0)
 			chat.y=owner.y+20
-
 
 
 			bg.height = bg.height+20
@@ -340,11 +751,8 @@ local dateVlaue=""
 			if ChatHistory[i].Message_From == tostring(ContactId) then
 
 				owner.text = MemberName
-
 			else
-
 				owner.text = ChatHistory[i].ToName or "(~No Name)"
-
 			end
 		
 
@@ -352,15 +760,58 @@ local dateVlaue=""
 					bg.width = owner.contentWidth+10	
 			end
 
-			
-
+		
 		end
 
 		bg.height = bg.height+10
 		bg.width = bg.width+35
 
+
+			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
+
+			Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
+
+							print( "here value : "..Imagename)
+
+			local image
+
+			 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
+		 	 local fhd = io.open( filePath )
+			
+				if fhd then		
+						
+					image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+					io.close( fhd )
+
+				else
+
+					--network download
+					image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
+					image.id=ChatHistory[i].Image_Path
+					image:addEventListener( "touch", receviedimageDownload )
+
+				end
+
+
+			image.anchorY=0
+			image.anchorX = 0
+			image.x=bg.x+2.5
+			image.y=bg.y+2.5
+
+
+			bg.width = image.contentWidth+5
+			bg.height = image.contentHeight+5		
+
+
+			if ChatHistory[i].Message_From == tostring(ContactId) then
+				image.x = bg.x-bg.contentWidth+2.5
+			end
+
+
+		end
+
 		local time = display.newText( tempGroup, Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%I:%M %p",TimeZone), 0, 0 , native.systemFont ,10 )
-		time.x=bg.x-time.contentWidth/2+10
+		time.x=bg.x-5
 		time.y=bg.y+bg.contentHeight-time.contentHeight/2-10
 		time.anchorX=bg.anchorX;time.anchorY=bg.anchorY
 
@@ -372,12 +823,12 @@ local dateVlaue=""
 
 		if ChatHistory[i].Message_From == tostring(ContactId) then
 			chat.x = bg.x-bg.contentWidth+5
-		
 			if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
 			bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 		else
 			bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
+			time.x=bg.x+5
 		end
 
 
@@ -392,12 +843,7 @@ local dateVlaue=""
 		arrow.x=arrow.x+2
 		arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
 
-
 		end
-
-
-
-
 
 		chatScroll:insert(tempGroup)
 
@@ -408,11 +854,13 @@ chatScroll:scrollTo( "bottom", { time=200 } )
 end
 
 
+
+
 	local function printTimeSinceStart( event )
 
 
 
-			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( )
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
 
 			if chatHoldflag == true then
 
@@ -427,6 +875,11 @@ end
 
 					end
 
+			end
+
+			if reciveImageFlag == true then
+				reciveImageFlag=false
+				sendMeaasage()
 			end
 
 		    if chatReceivedFlag==true then
@@ -478,6 +931,20 @@ end
 
 
 function get_sendMssage(response)
+
+    if image_name_png.isVisible == true and image_name_close.isVisible == true then
+
+    	image_name_png.isVisible = false 
+
+    	image_name_close.isVisible = false 
+
+    	sendBtn.isVisible = false
+
+    	sendBtn_bg.isVisible = false
+
+    	recordBtn.isVisible = true
+
+    end
 
 	sendMeaasage()
 
@@ -572,14 +1039,19 @@ local function ChatSendAction( event )
 
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
+
+
+print("Imagename : "..Imagename)
+
 			if ChatBox.text ~= nil and ChatBox.text ~= "" then
+			
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
 			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
 			isDeleted="false"
 			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-			ImagePath="NULL"
+			ImagePath= Imagepath or ""
 			AudioPath="NULL"
 			VideoPath="NULL"
 			MyUnitBuzz_LongMessage=ChatBox.text
@@ -596,10 +1068,45 @@ local function ChatSendAction( event )
 
 				print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","","","","SEND",From,To,Message_Type,get_sendMssage)
+
+			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
 
 
-	end
+		    elseif Imagename ~= nil or Imagename ~= "" then
+
+		    	    print("ertertertertt")
+
+		            local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+					
+					Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+					isDeleted="false"
+					Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+					Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+					ImagePath=Imagepath
+					ImageName = Imagename
+					ImageSize = Imagesize
+					AudioPath="NULL"
+					VideoPath="NULL"
+					MyUnitBuzz_LongMessage=ChatBox.text
+					From=ContactId
+					To=To_ContactId
+					Message_Type = MessageType
+
+
+				--	native.showAlert("Type",Message_Type,{CommonWords.ok})
+
+						print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						db:exec( insertQuery )
+
+						print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
+
+
+					Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"SEND",From,To,Message_Type,get_sendMssage)
+
+
+
+	         end
 
 	end
 
@@ -608,182 +1115,11 @@ end
 
 
 
-
-	 local function formatSizeUnits(event)
-
-      if (event>=1073741824) then 
-
-      	size=(event/1073741824)..' GB'
-
-      elseif (event>=1048576) then   
-
-       	size=(event/1048576)..' MB'
-
-
-	  
-	  elseif (event > 10485760) then
-
-	    local image = native.showAlert( ChatPage.ImageUploadError, ChatPage.ImageSize , { CommonWords.ok } )
-
-	       
-      elseif (event>=1024)  then   
-
-      	size = (event/1024)..' KB'
-
-      else      
-
-  	  end
-
-      --  local alert = native.showAlert(Message.FileSelect, size, {"OK"} , onComplete12)
-
-	end
-
-
-
-     local function onImageSelectionComplete ( event )
-
- 
-        local photo_image = event.target
-
-        local baseDir = system.DocumentsDirectory
-
-        if photo_image then
-
-        photo_image.x = display.contentCenterX
-		photo_image.y = display.contentCenterY
-		local w = photo_image.width
-		local h = photo_image.height
-
-		local function rescale()
-					
-					if photo_image.width > W or photo_image.height > H then
-
-						photo_image.width = photo_image.width/2
-						photo_image.height = photo_image.height/2
-
-						intiscale()
-
-					else
-               
-						return false
-
-					end
-				end
-
-				function intiscale()
-					
-					if photo_image.width > W or photo_image.height > H then
-
-						photo_image.width = photo_image.width/2
-						photo_image.height = photo_image.height/2
-
-						rescale()
-
-					else
-
-						return false
-
-					end
-
-				end
-
-				intiscale()
-
-		photoname = "photo.jpg"
-
-        display.save(photo_image,photoname,system.DocumentsDirectory)
-
-        photo_image:removeSelf()
-
-        photo_image = nil
-
-
-         path = system.pathForFile( photoname, baseDir)
-
-         local size = lfs.attributes (path, "size")
-
-		 local fileHandle = io.open(path, "rb")
-
-		 file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
-
-		 io.close( fileHandle )
-
-       
-        	formatSizeUnits(size)
-
-        	--sendImage()
-
-	else
-
-	end
-
-end
-
-
-
-	local function onCompleteImage( event )
-		
-		if "clicked"==event.action then
-
-			local i = event.index 
-
-		if 1 == i then
-
-			if media.hasSource( PHOTO_FUNCTION  ) then
-			timer.performWithDelay( 100, function() media.selectPhoto( { listener = onImageSelectionComplete, mediaSource = PHOTO_FUNCTION } ) 
-			end )
-		    end
-
-		elseif 2 == i then
-
-			if media.hasSource( media.Camera ) then
-	        timer.performWithDelay( 100, function() media.capturePhoto( { listener = onImageSelectionComplete, mediaSource = media.Camera } ) 
-			end )
-		    end
-
-		end
-
-	end
-
-	return true
-	end
-
-
-
-    function UploadImageAction( event )
-
-    	local phase = event.phase
-
-    	if phase=="began" then
-
-    		display.getCurrentStage():setFocus( event.target )
-
-    	elseif phase=="ended" then
-
-    	display.getCurrentStage():setFocus( nil )
-
-        local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,CommonWords.cancel} , onCompleteImage)
-	
-	    return true
-
-        end
-
-    end
-
-
-
-
-
-
-
-
 local function onTimer ( event )
 
 	BackFlag = false
 
 end
-
-
 
 
 
@@ -1240,10 +1576,6 @@ function scene:show( event )
 
 		print( "ContactDetails : "..json.encode(ContactDetails) )
 
-
-
-
-
 		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To or ContactDetails.MyUnitBuzzGroupId
 
 		if tostring(To_ContactId) == tostring(ContactId) then
@@ -1261,7 +1593,6 @@ function scene:show( event )
 		end
 
 		
-
 		if ContactDetails.Message_Type then
 
 			MessageType=ContactDetails.Message_Type
@@ -1271,14 +1602,14 @@ function scene:show( event )
 		if MessageType == "GROUP" then
 			title.text = ContactDetails.GroupName or ContactDetails.MyUnitBuzzGroupName
 		else
-					title.text = ContactDetails.Name or ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
+			title.text = ContactDetails.Name or ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
 		end
 
 
-		print( MessageType )
 		ChatBox_bg = display.newRect(ChatScrollContent,0,H-100, W-50, 40 )
 		ChatBox_bg.anchorY=0;ChatBox_bg.anchorX=0
 		ChatBox_bg.x=5
+		ChatBox_bg.width = W-50
 		ChatBox_bg.strokeWidth = 1
 		ChatBox_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray))
 
@@ -1289,6 +1620,33 @@ function scene:show( event )
 		ChatBox.size=16
 		ChatBox.hasBackground = false
 		ChatScrollContent:insert( ChatBox )
+
+
+
+		image_name_png = display.newText("",ChatBox_bg.x, ChatBox_bg.contentHeight-5  ,native.systemFont,14)
+		image_name_png.text = ""
+		image_name_png.value = "imagenamepng"
+		image_name_png.id="imagenamepng"
+		image_name_png:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
+		image_name_png.x = ChatBox_bg.x + 10
+		image_name_png.y= ChatBox_bg.y+10
+		image_name_png.anchorY = 0 
+		image_name_png.anchorX = 0
+		image_name_png.isVisible = false
+		ChatScrollContent:insert(image_name_png)
+		--image_name_png.anchorX=0
+
+		image_name_close = display.newImageRect("res/assert/icon-close.png",20,20)
+		image_name_close.id = "image close"
+		image_name_close.anchorX=0
+		image_name_close.anchorY=0
+		ChatScrollContent:insert(image_name_close)
+		image_name_close.x= ChatBox_bg.width - 30
+		image_name_close.isVisible = false
+		image_name_close.y=ChatBox_bg.y+10
+
+
+
 
 		-- cameraBtn = display.newImageRect( sceneGroup, "res/assert/user.png", 25,20 )
 		-- cameraBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth-35
@@ -1333,6 +1691,25 @@ function scene:show( event )
 		sendMeaasage()
 
 		sceneGroup:insert( ChatScrollContent )
+	
+
+
+		------------------------------------------- attachment icon -----------------------------------------
+
+
+				attachment_icon = display.newImageRect(sceneGroup,"res/assert/attached.png",20,20)
+				attachment_icon.x= W-40;attachment_icon.y = tabBar.y+35
+				attachment_icon:setFillColor( 0,0,0,0 )
+				attachment_icon:addEventListener( "touch", AttachmentTouch )
+
+
+				--createAttachment()
+				AttachmentGroup.anchorX=0;AttachmentGroup.anchorY=0
+				AttachmentGroup.alpha=0
+				AttachmentGroup.y=AttachmentGroup.y+68
+				AttachmentGroup.anchorChildren = true
+
+				sceneGroup:insert( AttachmentGroup )
 
 
 			--Tabbar---

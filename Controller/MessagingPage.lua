@@ -514,7 +514,7 @@ local function Broadcast_list( list )
 
 
 
-				local circle = display.newCircle( tempGroup, W-80, background.y+background.contentHeight/2+5, 10 )
+				local circle = display.newCircle( tempGroup, W-20, background.y+background.contentHeight/2+5, 10 )
 				circle.height=23;circle.width=25
 				circle:setFillColor( Utils.convertHexToRGB("#008B45" ))
 
