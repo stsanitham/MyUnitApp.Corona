@@ -22,7 +22,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 ----------Dev---------------
 
---[[
+----[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
@@ -39,7 +39,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 -----Stagging--------
 
-----[[
+--[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -83,7 +83,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-4"
 
 IsLive = true
 
-ApplicationConfig.Version = "/iOS/1.2.3"	    --1.1.2
+ApplicationConfig.Version = "/iOS/1.2.4"	    --1.1.2
 
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.com/"..ApplicationConfig.Version
 

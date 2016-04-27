@@ -358,12 +358,12 @@ local function Broadcast_list( list )
 
 					end
 
-					if list[j].Message_Type == "GROUP" and (list[j].Message_From == list[i].Message_To or  list[j].Message_From == list[i].Message_From)  then
+					-- if list[j].Message_Type == "GROUP" and (list[j].Message_From == list[i].Message_To or  list[j].Message_From == list[i].Message_From)  then
 
-						flag=false
+					-- 	flag=false
 		
 
-					end
+					-- end
 
 			end
 
@@ -396,9 +396,6 @@ local function Broadcast_list( list )
 
 			print( json.encode( list[i]))
 
-
-
-			
 
 
 			local Name = ""

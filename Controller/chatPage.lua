@@ -832,7 +832,7 @@ local function sendMeaasage()
 
 				else
 					bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
-					time.x=bg.x+2.5
+					time.x=bg.x+bg.contentWidth-time.contentWidth-2.5
 				end
 
 
@@ -874,8 +874,6 @@ end
 
 					if holdLevel > 25 then
 
-						print("delete Action")
-
 						Deleteicon.isVisible=true
 						Copyicon.isVisible=true
 
@@ -895,11 +893,11 @@ end
 			sendMeaasage()
 			end 
 
-			if selectedForDelete ~= nil then 
-				if selectedForDelete.y ~= nil then
-				 selectedForDelete:removeSelf();selectedForDelete=nil 
-				 end 
-			end
+			-- if selectedForDelete ~= nil then 
+			-- 	if selectedForDelete.y ~= nil then
+			-- 	 selectedForDelete:removeSelf();selectedForDelete=nil 
+			-- 	 end 
+			-- end
 		    	
 		    	
 		    end
@@ -929,6 +927,12 @@ local function deleteAction( event )
 		end		
 				Copyicon.isVisible=false
 				Deleteicon.isVisible=false
+
+			if selectedForDelete ~= nil then 
+				if selectedForDelete.y ~= nil then
+				 selectedForDelete:removeSelf();selectedForDelete=nil 
+				 end 
+			end
 	end
 
 return true
@@ -1475,6 +1479,11 @@ return true
     	Deleteicon.isVisible=false
     	Copyicon.isVisible=false
     	-- chatReceivedFlag=true
+    		if selectedForDelete ~= nil then 
+				if selectedForDelete.y ~= nil then
+				 selectedForDelete:removeSelf();selectedForDelete=nil 
+				 end 
+			end
     	holdLevel=0
     elseif ( phase == "moved" ) then print( "Scroll view was moved" )
     elseif ( phase == "ended" ) then print( "Scroll view was released" )
