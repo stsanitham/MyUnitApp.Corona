@@ -1085,7 +1085,12 @@ print("Imagename : "..Imagename)
 			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
 
 
-		    elseif Imagename ~= nil or Imagename ~= "" then
+		    else
+
+
+		    	if Imagename ~= nil or Imagename ~= "" then
+
+		    		if ChatBox.text ~= nil and ChatBox.text ~= "" then
 
 		    	    print("ertertertertt")
 
@@ -1118,6 +1123,9 @@ print("Imagename : "..Imagename)
 					Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"SEND",From,To,Message_Type,get_sendMssage)
 
 
+                    end
+
+                end
 
 	         end
 
@@ -1125,6 +1133,8 @@ print("Imagename : "..Imagename)
 
 return true
 end
+
+
 
 
 
@@ -1207,7 +1217,7 @@ end
 			
 			if event.target.id == "message" then
 
-				title.text = ChatPage.Messages
+				title.text = ChatPage.Chats
 
 			    	CreateTabBarIcons()
 
@@ -1397,6 +1407,7 @@ end
 
 	        -- end
 
+
 	    end
         
 
@@ -1404,12 +1415,10 @@ end
         elseif event.phase == "submitted" then
        		
        		
-
        	elseif event.phase == "ended" then
 
        		scrollAction(0)
 
-       		
 
         elseif event.phase == "editing" then
 
@@ -1417,16 +1426,15 @@ end
 				native.setKeyboardFocus( nil )
 			end
 
+			    print("event.text:len() of chatbox : "..event.text:len())
+
 				if event.text:len() > 500 then
 
 						event.target.text = event.text:sub(1,500)
 
-			
-
-					end
+			    end
 
         	if event.text:len() >=1 then
-
 
         		sendBtn.isVisible=true
         		recordBtn.isVisible=false
@@ -1560,12 +1568,12 @@ function scene:create( event )
 	BackBtn.xScale=-1
 	--BackBtn:setFillColor(0)
 
-	title = display.newText(sceneGroup,FlapMenu.chatMessageTitle,0,0,native.systemFont,18)
+	title = display.newText(sceneGroup,"",0,0,native.systemFont,18)
 	title.anchorX = 0
 	title.x=BackBtn.x+BackBtn.contentWidth-5;title.y = title_bg.y
 	title:setFillColor(0)
 
-	title.text = FlapMenu.chatMessageTitle
+	--title.text = ChatPage.Chats
 
 	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 15, 15 )
 	Deleteicon.x=W-20;Deleteicon.y=title_bg.y
