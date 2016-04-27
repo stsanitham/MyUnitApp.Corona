@@ -40,6 +40,10 @@ local Details={}
 
 local openPagevalue = "addpage"
 
+ local pWidth = display.pixelWidth 
+
+ local pHeight = display.pixelHeight
+
 
 
 --------------------------------------------------
@@ -514,6 +518,14 @@ end
 
 
 
+local function scrollTo(position)
+
+ MainGroup.y = position
+
+end
+
+
+
 
 local function TextLimitation( event )
 
@@ -525,11 +537,12 @@ local function TextLimitation( event )
 
 				   		native.setKeyboardFocus( nil )
 
+				   		scrollTo(0)
+
 				   end
 
 
 	   elseif event.phase == "editing" then
-
 
 					if event.target.id =="shortmessage" then
 
@@ -605,6 +618,17 @@ local function TextLimitation( event )
 							native.setKeyboardFocus( nil )
 
 							end
+
+
+								
+
+									if (pHeight < 1000) then
+
+										scrollTo(-70)
+
+									end
+
+
 
 					end
 

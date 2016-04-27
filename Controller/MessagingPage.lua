@@ -168,7 +168,7 @@ end
 			
 			if event.target.id == "message" then
 
-				title.text = ChatPage.Messages
+				title.text = ChatPage.Chats
 
 
 			elseif event.target.id == "group" then
@@ -489,6 +489,7 @@ local function Broadcast_list( list )
 			end
 
 			time.x=W-time.contentWidth-10
+			time.y=background.y+background.height/2-12
 
 			local line = display.newRect(tempGroup,W/2,background.y,W,1)
 			line.y=background.y+background.contentHeight-line.contentHeight
