@@ -595,261 +595,267 @@ local function sendMeaasage()
 
 	for i=1,#ChatHistory do
 
-		local dateLable = nil
-		local datevalue = nil
+		if ChatHistory[i].Message_Type:lower() == MessageType:lower() then
 
-		MeassageList[#MeassageList+1] = display.newGroup()
+				local dateLable = nil
+				local datevalue = nil
 
-		local tempGroup = MeassageList[#MeassageList]
+				MeassageList[#MeassageList+1] = display.newGroup()
 
-		local bg = display.newRect(0,0,W-100,25 )
-		tempGroup:insert(bg)
-		
-		bg.anchorX=0;bg.anchorY=0
-		bg.id=ChatHistory[i].id
-		bg.group=tempGroup
-		bg:addEventListener( "touch", ChatTouch )
+				local tempGroup = MeassageList[#MeassageList]
 
-
-
-		if MeassageList[#MeassageList-1] ~= nil then
-			bg.y=MeassageList[#MeassageList-1][1].y+MeassageList[#MeassageList-1][1].contentHeight+20
-		else
-			bg.y=0
-		end
-			bg.x=5
+				local bg = display.newRect(0,0,W-100,25 )
+				tempGroup:insert(bg)
+				
+				bg.anchorX=0;bg.anchorY=0
+				bg.id=ChatHistory[i].id
+				bg.group=tempGroup
+				bg:addEventListener( "touch", ChatTouch )
 
 
 
-		if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
-
-			print( "coming" ..dateVlaue,ChatHistory[i].Update_Time_Stamp)
-			dateVlaue =ChatHistory[i].Update_Time_Stamp
-
-			dateLable = display.newRect( tempGroup, W/2, bg.y+5, 80,20 )
-			bg.y=bg.y+30
-			dateLable:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-			dateLable.alpha=0.3
-
-			datevalue = display.newText( tempGroup,  Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone), 0,0,native.systemFont,11)
-			datevalue.x=dateLable.x;datevalue.y=dateLable.y
-			datevalue:setFillColor( 0,0,0,0.6 )
-
-			--print( Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) .." and ".. Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) )
-
-			if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) then
-
-				datevalue.text = ChatPage.Today
-
-			else
-
-				local t = os.date( "!*t" )
-				t.day=t.day-1
-
-				if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(t),"%B %d, %Y",TimeZone) then
-
-				datevalue.text = ChatPage.Yesterday
-
-				end
-
-			end
-
-		end
-
-
-
-
-		if ChatHistory[i].Message_From == tostring(ContactId) then
-
-			
-				print( "here" )
-				bg.x=W-65
-				bg.anchorX=1
-
-
-				 local filePath = system.pathForFile( ChatHistory[i].Message_From..".png",system.TemporaryDirectory )
-		  local fhd = io.open( filePath )
-
-		  local Image
-
-				 if fhd then
-
-						Image = display.newImageRect(tempGroup,ChatHistory[i].Message_From..".png",system.TemporaryDirectory,45,38)
-						io.close( fhd )
-
+				if MeassageList[#MeassageList-1] ~= nil then
+					bg.y=MeassageList[#MeassageList-1][1].y+MeassageList[#MeassageList-1][1].contentHeight+20
 				else
-							Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-
+					bg.y=0
 				end
-
-									Image.x=W-35;Image.y=bg.y+bg.height/2
-
-									local mask = graphics.newMask( "res/assert/masknew.png" )
-
-									Image:setMask( mask )
-
-		else
+					bg.x=5
 
 
-						bg.x=65
 
-						local Image = display.newImageRect(tempGroup,To_ContactId..".png",system.TemporaryDirectory,45,38)
+				if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
 
-						if not Image then
-							Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-							Image.x=30;Image.y=bg.y+bg.height/2
+					print( "coming" ..dateVlaue,ChatHistory[i].Update_Time_Stamp)
+					dateVlaue =ChatHistory[i].Update_Time_Stamp
+
+					dateLable = display.newRect( tempGroup, W/2, bg.y+5, 80,20 )
+					bg.y=bg.y+30
+					dateLable:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					dateLable.alpha=0.3
+
+					datevalue = display.newText( tempGroup,  Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone), 0,0,native.systemFont,11)
+					datevalue.x=dateLable.x;datevalue.y=dateLable.y
+					datevalue:setFillColor( 0,0,0,0.6 )
+
+					--print( Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) .." and ".. Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) )
+
+					if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) then
+
+						datevalue.text = ChatPage.Today
+
+					else
+
+						local t = os.date( "!*t" )
+						t.day=t.day-1
+
+						if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(t),"%B %d, %Y",TimeZone) then
+
+						datevalue.text = ChatPage.Yesterday
 
 						end
 
-									Image.x=30;Image.y=bg.y+bg.height/2
-
-									local mask = graphics.newMask( "res/assert/masknew.png" )
-
-									Image:setMask( mask )
-
-			
-		end
-
-		local chat	
-
-		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
-
-			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,W-115,0,native.systemFont,12)
-
-		else
-
-			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,native.systemFont,12)
-
-		end
-		chat.anchorY=0
-		chat.anchorX = 0
-		chat.x=bg.x+5;chat.y=bg.y
-	
-
-		tempGroup:insert( chat )
-
-	
-		bg.width = chat.contentWidth+10	
-		bg.height = chat.contentHeight+10
-		bg.chat=chat.text
-
-		local owner
-
-		if MessageType == "GROUP" then
-
-			owner = display.newText(tempGroup,"",0,0,native.systemFont,14)
-			owner.anchorY=0
-			owner.anchorX = 0
-			owner.x=chat.x
-			owner.y=chat.y
-			owner:setTextColor(1,1,0)
-			chat.y=owner.y+20
-
-
-			bg.height = bg.height+20
-
-			if ChatHistory[i].Message_From == tostring(ContactId) then
-
-				owner.text = MemberName
-			else
-				owner.text = ChatHistory[i].ToName or "(~No Name)"
-			end
-		
-
-			if owner.contentWidth > bg.contentWidth then
-					bg.width = owner.contentWidth+10	
-			end
-
-		
-		end
-
-		bg.height = bg.height+10
-		bg.width = bg.width+35
-
-
-			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" and ChatHistory[i].Image_Path ~= "NULL" then
-
-			Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
-
-							print( "here value : "..Imagename)
-
-			local image
-
-			 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
-		 	 local fhd = io.open( filePath )
-			
-				if fhd then		
-						
-					image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
-					io.close( fhd )
-
-				else
-
-					--network download
-					image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
-					image.id=ChatHistory[i].Image_Path
-					image:addEventListener( "touch", receviedimageDownload )
+					end
 
 				end
 
 
-			image.anchorY=0
-			image.anchorX = 0
-			image.x=bg.x+2.5
-			image.y=bg.y+2.5
 
 
-			bg.width = image.contentWidth+5
-			bg.height = image.contentHeight+5		
+				if ChatHistory[i].Message_From == tostring(ContactId) then
+
+					
+						print( "here" )
+						bg.x=W-65
+						bg.anchorX=1
 
 
-			if ChatHistory[i].Message_From == tostring(ContactId) then
-				image.x = bg.x-bg.contentWidth+2.5
-			end
+						 local filePath = system.pathForFile( ChatHistory[i].Message_From..".png",system.TemporaryDirectory )
+				  local fhd = io.open( filePath )
+
+				  local Image
+
+						 if fhd then
+
+								Image = display.newImageRect(tempGroup,ChatHistory[i].Message_From..".png",system.TemporaryDirectory,45,38)
+								io.close( fhd )
+
+						else
+									Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+
+						end
+
+											Image.x=W-35;Image.y=bg.y+bg.height/2
+
+											local mask = graphics.newMask( "res/assert/masknew.png" )
+
+											Image:setMask( mask )
+
+				else
 
 
-		end
+								bg.x=65
 
-		local time = display.newText( tempGroup, Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%I:%M %p",TimeZone), 0, 0 , native.systemFont ,10 )
-		time.x=bg.x-5
-		time.y=bg.y+bg.contentHeight-time.contentHeight/2-10
-		time.anchorX=bg.anchorX;time.anchorY=bg.anchorY
+								local Image = display.newImageRect(tempGroup,To_ContactId..".png",system.TemporaryDirectory,45,38)
+
+								if not Image then
+									Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+									Image.x=30;Image.y=bg.y+bg.height/2
+
+								end
+
+											Image.x=30;Image.y=bg.y+bg.height/2
+
+											local mask = graphics.newMask( "res/assert/masknew.png" )
+
+											Image:setMask( mask )
+
+					
+				end
+
+				local chat	
+
+				if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
+
+					chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,W-115,0,native.systemFont,12)
+
+				else
+
+					chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,native.systemFont,12)
+
+				end
+				chat.anchorY=0
+				chat.anchorX = 0
+				chat.x=bg.x+5;chat.y=bg.y
+			
+
+				tempGroup:insert( chat )
 
 			
-		local arrow = display.newImageRect( tempGroup, "res/assert/whitetriangle.png", 8, 8 )
-		arrow.x=bg.x-5
-		arrow.y=bg.y-0.3
-		arrow.anchorY=0
+				bg.width = chat.contentWidth+10	
+				bg.height = chat.contentHeight+10
+				bg.chat=chat.text
 
-		if ChatHistory[i].Message_From == tostring(ContactId) then
-			chat.x = bg.x-bg.contentWidth+5
-			if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
-			bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+				local owner
 
-		else
-			bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
-			time.x=bg.x+5
-		end
+				if MessageType == "GROUP" then
+
+					owner = display.newText(tempGroup,"",0,0,native.systemFont,14)
+					owner.anchorY=0
+					owner.anchorX = 0
+					owner.x=chat.x
+					owner.y=chat.y
+					owner:setTextColor(1,1,0)
+					chat.y=owner.y+20
+
+
+					bg.height = bg.height+20
+
+					if ChatHistory[i].Message_From == tostring(ContactId) then
+
+						owner.text = MemberName
+					else
+						owner.text = ChatHistory[i].ToName or "(~No Name)"
+					end
+				
+
+					if owner.contentWidth > bg.contentWidth then
+							bg.width = owner.contentWidth+10	
+					end
+
+				
+				end
+
+				bg.height = bg.height+10
+				bg.width = bg.width+35
+
+
+					if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" and ChatHistory[i].Image_Path ~= "NULL" then
+
+					Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
+
+									print( "here value : "..Imagename)
+
+					local image
+
+					 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
+				 	 local fhd = io.open( filePath )
+					
+						if fhd then		
+								
+							image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+							io.close( fhd )
+
+						else
+
+							--network download
+							image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
+							image.id=ChatHistory[i].Image_Path
+							image:addEventListener( "touch", receviedimageDownload )
+
+						end
+
+
+					image.anchorY=0
+					image.anchorX = 0
+					image.x=bg.x+2.5
+					image.y=bg.y+2.5
+
+
+					bg.width = image.contentWidth+5
+					bg.height = image.contentHeight+5		
+
+
+					if ChatHistory[i].Message_From == tostring(ContactId) then
+						image.x = bg.x-bg.contentWidth+2.5
+					end
+
+
+				end
+
+				local time = display.newText( tempGroup, Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%I:%M %p",TimeZone), 0, 0 , native.systemFont ,10 )
+				time.x=bg.x-5
+				time.y=bg.y+bg.contentHeight-time.contentHeight/2-10
+				time.anchorX=bg.anchorX;time.anchorY=bg.anchorY
+
+					
+				local arrow = display.newImageRect( tempGroup, "res/assert/whitetriangle.png", 8, 8 )
+				arrow.x=bg.x-5
+				arrow.y=bg.y-0.3
+				arrow.anchorY=0
+
+				if ChatHistory[i].Message_From == tostring(ContactId) then
+					chat.x = bg.x-bg.contentWidth+5
+
+					time.x=bg.x-2.5
+					if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
+					bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+				else
+					bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
+					time.x=bg.x+2.5
+				end
 
 
 
-		if ChatHistory[i].Message_From == tostring(ContactId) then
-			arrow.x=bg.x+2
-			arrow:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+				if ChatHistory[i].Message_From == tostring(ContactId) then
+					arrow.x=bg.x+2
+					arrow:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-		else
-		
-		arrow:scale( -1, 1 )
-		arrow.x=arrow.x+2
-		arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
+				else
+				
+				arrow:scale( -1, 1 )
+				arrow.x=arrow.x+2
+				arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
 
-		end
+				end
 
-		chatScroll:insert(tempGroup)
+				chatScroll:insert(tempGroup)
+
+			end
+
+		chatScroll:scrollTo( "bottom", { time=200 } )
 
 	end
-
-chatScroll:scrollTo( "bottom", { time=200 } )
 
 end
 
@@ -1367,14 +1373,25 @@ end
 
         if isIos then
 
-	        if ( string.sub( system.getInfo("model"), 1, 2 ) == "iP" ) then
 
-	        	scrollAction(-150)
-	        else
-	        	scrollAction(-170)
+        	local pWidth, pHeight = display.pixelWidth, display.pixelHeight
 
 
-	        end
+			if (pHeight < 1000) then
+			    print("iphone 4")
+			   scrollAction(-180)
+			else
+			    scrollAction(-150)
+			end
+
+	        -- if ( string.sub( system.getInfo("model"), 1, 2 ) == "iP" ) then
+
+	        	
+	        -- else
+	        	
+
+
+	        -- end
 
 	    end
         
