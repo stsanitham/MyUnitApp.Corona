@@ -883,7 +883,7 @@ function scene:show( event )
 
 
 				if Details.ImagePath ~= nil then
-					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
+					ProfileImage = display.newImage(sceneGroup,contactId..".png",system.TemporaryDirectory)
 
 				end
 

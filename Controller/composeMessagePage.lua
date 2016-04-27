@@ -519,7 +519,6 @@ local function TextLimitation( event )
 
 	   if event.phase == "began" then
 
-
 	   elseif event.phase == "submitted" then
 
 				    if event.target.id =="longmessage" then
@@ -552,9 +551,19 @@ local function TextLimitation( event )
 
 					        if (string.len(event.target.text) <= 0) then
 
-					       	      short_msg_charlimit.text = "0"..MessagePage.characters
+					       	      short_msg_charlimit.text = "250"..MessagePage.characters
 
 					        end
+
+
+					        if (event.newCharacters=="\n") then
+
+							shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
+
+							native.setKeyboardFocus( longmsg_textbox )
+
+						    end
+
 
 					end
 
@@ -581,7 +590,7 @@ local function TextLimitation( event )
 
 						       if (string.len(event.target.text) <= 0) then
 
-						       	 long_msg_charlimit.text = "0"..MessagePage.characters
+						       	 long_msg_charlimit.text = "1000"..MessagePage.characters
 
 						       end
 
@@ -825,7 +834,6 @@ end
 						longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
 
-
 								if shortmsg_textbox.id =="shortmessage" then
 
 										if (string.len(shortmsg_textbox.text) > 250) then
@@ -846,9 +854,19 @@ end
 
 								        if (string.len(shortmsg_textbox.text) <= 0) then
 
-								       	      short_msg_charlimit.text = "0"..MessagePage.characters
+								       	      short_msg_charlimit.text = "250"..MessagePage.characters
 
 								        end
+
+
+										-- if (event.newCharacters=="\n") then
+
+										-- shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
+
+										-- native.setKeyboardFocus( longmsg_textbox )
+
+										-- end
+
 
 								end
 
@@ -872,13 +890,11 @@ end
 										end
 
 
+								       if (string.len(longmsg_textbox.text) <= 0) then
 
-									       if (string.len(longmsg_textbox.text) <= 0) then
+								       	 long_msg_charlimit.text = "1000"..MessagePage.characters
 
-									       	 long_msg_charlimit.text = "0"..MessagePage.characters
-
-									       end
-
+								       end
 
 
 										--print( event.newCharacters )
