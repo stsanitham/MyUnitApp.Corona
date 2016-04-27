@@ -735,8 +735,6 @@ end
 
 			sceneevent = event
 
-
-
 ---------------------------------------------- Short Message ----------------------------------------------------------
 
                 shortmsg_star = display.newText(sceneGroup,"*",0,0,native.systemFont,14)
