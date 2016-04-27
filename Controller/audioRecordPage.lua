@@ -41,7 +41,6 @@ local function closeDetails( event )
 			display.getCurrentStage():setFocus( nil )
 
 	end
-
 return true
 
 end
