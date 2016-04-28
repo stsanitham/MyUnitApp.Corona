@@ -206,7 +206,6 @@ end
 
 local function careePath_list( list )
 
-
 	for j=#careerListArray, 1, -1 do 
 		
 		display.remove(careerListArray[#careerListArray])
@@ -214,8 +213,7 @@ local function careePath_list( list )
 	end
 
 	for i=1,#list do
-print("here")
-
+         print("here")
 
 		if i == 1 then 
 			if viewValue == "position" then
@@ -293,12 +291,10 @@ print("here")
 
 			background.y=parentTitle.y+background.contentHeight/2
 
-			
-
-
 		end
 
 		
+
 
 		if list[i].Image_Path ~= nil then
 
@@ -308,21 +304,23 @@ print("here")
 			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
 				"GET",
 				function ( img_event )
-					if ( img_event.isError ) then
+					 if ( img_event.isError ) then
 						print ( "Network error - download failed" )
-					else
+					 else
 
-						if Image then
+							if Image then
 
-						print(img_event.response.filename)
-						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
-						Image.width=35;Image.height=35
-						Image.x=30;Image.y=background.y+background.contentHeight/2
-    				--event.row:insert(img_event.target)
+							Image:removeSelf();Image=nil
 
-    			    else
+							print(img_event.response.filename)
+							Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+							Image.width=35;Image.height=35
+							Image.x=30;Image.y=background.y+background.contentHeight/2
+	    				--event.row:insert(img_event.target)
 
-						Image:removeSelf();Image=nil
+	    			        else
+
+							Image:removeSelf();Image=nil
 
 					 end
     			end
@@ -336,8 +334,6 @@ print("here")
 
 
 			
-
-
 
 		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,native.systemFont,14)
 		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
@@ -367,6 +363,8 @@ print("here")
 end
 
 
+
+
 local function listPosition_change( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -394,8 +392,6 @@ local function listPosition_change( event )
 								careePath_list(byNameArray)
 
 					else
-
-			
 			
 								local function compare(a,b)
 									return a.Name:upper( ) < b.Name:upper( )
@@ -406,7 +402,7 @@ local function listPosition_change( event )
 								careePath_list(byNameArray)
 
 							end
-				end
+				    end
 
 			if event.target.id == "bg" then
 
@@ -423,36 +419,32 @@ local function listPosition_change( event )
 			end
 		end
 	
-
 return true
 end
 
 
-function get_Activeteammember(response)
 
 
-	for i=1,#List_array do
-		List_array[i]=nil
-		byNameArray[i]=nil
-	end
+	function get_Activeteammember(response)
 
 
-	List_array=response
+		for i=1,#List_array do
+			List_array[i]=nil
+			byNameArray[i]=nil
+		end
 
-	if response ~= nil and #response ~= 0 then
 
+		List_array=response
 
-		
-							
---NameArray
+		if response ~= nil and #response ~= 0 then
+					
+			--NameArray
 
-print("size = "..#List_array)
+			print("size = "..#List_array)
 
 						for i=1,#List_array do
 
 							local list_Name = List_array[i].Last_Name
-
-							
 
 								if List_array[i].First_Name then
 
@@ -460,7 +452,6 @@ print("size = "..#List_array)
 
 								end
 
-							
 
 							print(list_Name)
 

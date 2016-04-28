@@ -1575,14 +1575,14 @@ function scene:create( event )
 
 	--title.text = ChatPage.Chats
 
-	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 16, 16 )
+	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 20,18  )
 	Deleteicon.x=W-25;Deleteicon.y=title_bg.y-1
 	Deleteicon.isVisible=false
 	Deleteicon.id="delete"
 	Deleteicon:addEventListener( "touch", deleteAction )
 
-	Copyicon = display.newImageRect( sceneGroup, "res/assert/copy-icon.png", 16, 16 )
-	Copyicon.x=W-58;Copyicon.y=title_bg.y-1
+	Copyicon = display.newImageRect( sceneGroup, "res/assert/copy-icon.png", 20, 20  )
+	Copyicon.x=W-60;Copyicon.y=title_bg.y-1
 	Copyicon.isVisible=false
 	Copyicon.id="copy"
 	Copyicon:addEventListener( "touch", deleteAction )

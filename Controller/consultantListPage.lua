@@ -607,7 +607,8 @@ local function careePath_list( list )
 
 		if list[i].Image_Path ~= nil then
 
-			
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
 
 			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
 				"GET",
@@ -616,16 +617,24 @@ local function careePath_list( list )
 						print ( "Network error - download failed" )
 					else
 
+                        if Image then
 
+							Image:removeSelf();Image=nil
 						--print(img_event.response.filename)
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
 						Image.width=45;Image.height=38
 						Image.x=30;Image.y=background.y+background.contentHeight/2
     				--event.row:insert(img_event.target)
 
-    				local mask = graphics.newMask( "res/assert/masknew.png" )
+    				    local mask = graphics.newMask( "res/assert/masknew.png" )
 
 									Image:setMask( mask )
+
+						 else
+
+							Image:removeSelf();Image=nil
+
+					     end
 
     			   
     			end
