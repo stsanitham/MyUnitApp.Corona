@@ -464,7 +464,7 @@ local function Broadcast_list( list )
 
 			local time = display.newText( tempGroup,time,W-80,background.y+3,native.systemFont,10 )
 				time.x=W-120
-				time.anchorX=0;time.anchorY=0
+				time.anchorX=0
 				time:setTextColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
@@ -486,7 +486,7 @@ local function Broadcast_list( list )
 			end
 
 			time.x=W-time.contentWidth-10
-			time.y=background.y+background.height/2-12
+			time.y=Name_txt.y
 
 			local line = display.newRect(tempGroup,W/2,background.y,W,1)
 			line.y=background.y+background.contentHeight-line.contentHeight
@@ -512,7 +512,7 @@ local function Broadcast_list( list )
 
 
 
-				local circle = display.newCircle( tempGroup, W-20, background.y+background.contentHeight/2+5, 10 )
+				local circle = display.newCircle( tempGroup, W-20, background.y+background.contentHeight/2+7, 10 )
 				circle.height=23;circle.width=25
 				circle:setFillColor( Utils.convertHexToRGB("#008B45" ))
 
