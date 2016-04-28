@@ -122,6 +122,8 @@ end
 
 									composer.hideOverlay()
 
+									scrollTo(0)
+
 								elseif openPagevalue ~= "addpage" then
 
 											  local options =
@@ -136,6 +138,8 @@ end
 									spinner.y=H/2-75
 
 									composer.gotoScene("Controller.pushNotificationListPage",options)
+
+									scrollTo(0)
 
 								end
 
@@ -175,6 +179,8 @@ end
 
 									composer.hideOverlay()
 
+									scrollTo(0)
+
 								elseif openPagevalue ~= "addpage" then
 
 									  local options =
@@ -188,6 +194,8 @@ end
 									spinner.y=H/2-75
 
 									composer.gotoScene("Controller.pushNotificationListPage",options)
+
+									scrollTo(0)
 
 								end
 
@@ -227,6 +235,8 @@ end
 
 									composer.hideOverlay()
 
+									scrollTo(0)
+
 								elseif openPagevalue ~= "addpage" then
 
 									 local options =
@@ -241,6 +251,8 @@ end
 									spinner.y=H/2-75
 
 									composer.gotoScene("Controller.pushNotificationListPage",options)
+
+									scrollTo(0)
 
 								end
 
@@ -372,10 +384,8 @@ end
     	        Date:addEventListener("touch",onTimePickerTouch)
     	        DateSelect_icon:addEventListener("touch",onTimePickerTouch)
 
-
-    	 		 acceptschedule_button:addEventListener("touch",onScheduleButtonTouch) 	
-
-    	         Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
+    	 		acceptschedule_button:addEventListener("touch",onScheduleButtonTouch) 	
+    	        Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
 
 
 	        else
@@ -389,14 +399,13 @@ end
 
 
 
-
  
 
 	local function SetError( displaystring, object )
 
-	object.text=displaystring
-	object.size=11
-	object:setTextColor(1,0,0)
+		object.text=displaystring
+		object.size=11
+		object:setTextColor(1,0,0)
 
 	end
 
@@ -411,8 +420,6 @@ end
 
     		display.getCurrentStage():setFocus( event.target )
 
-
-	
     	elseif phase=="ended" then
 
     	    local validation = false
@@ -518,11 +525,14 @@ end
 
 
 
+
+
 local function scrollTo(position)
 
  MainGroup.y = position
 
 end
+
 
 
 
@@ -540,6 +550,15 @@ local function TextLimitation( event )
 				   		scrollTo(0)
 
 				   end
+
+
+
+					if (pHeight < 1000) then
+
+						scrollTo(0)
+
+					end
+
 
 
 	   elseif event.phase == "editing" then
@@ -632,6 +651,26 @@ local function TextLimitation( event )
 
 					end
 
+
+
+	        elseif event.phase == "ended" then
+
+				    if event.target.id =="longmessage" then
+
+				   		native.setKeyboardFocus( nil )
+
+				   		scrollTo(0)
+
+				   end
+
+
+
+					if (pHeight < 1000) then
+
+						scrollTo(0)
+
+					end
+
 		  end
 
    end
@@ -655,6 +694,8 @@ local function TextLimitation( event )
 		        	if timePicker then timePicker.clear() end
 
 		        	composer.hideOverlay( "slideRight", 300 )
+
+		        	scrollTo(0)
 
 		        	return true
 		            
@@ -680,6 +721,8 @@ local function TextLimitation( event )
 			    display.getCurrentStage():setFocus( nil )
 
 					    composer.hideOverlay("slideRight",300)		
+
+					    scrollTo(0)
 
 
 			end
