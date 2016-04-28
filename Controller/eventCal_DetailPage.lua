@@ -320,7 +320,7 @@ local display_details = {}
 
 		print(json.encode(detail_value))
 
-		local timeGMT = makeTimeStamp( detail_value.date )
+		local timeGMT = Utils.makeTimeStampwithOffset( detail_value.date )
 
 
 
@@ -330,8 +330,37 @@ local display_details = {}
 
 		local leftAllign = 10
 
-		local start_timeGMT = makeTimeStamp( Details.startdate )
-		local end_timeGMT = makeTimeStamp( Details.enddate )
+
+		local tzoffset
+
+        if Details.TimeZone == "Eastern Standard Time" then
+            tzoffset = "-04:00:00"
+
+        elseif Details.TimeZone == "Hawaiian Standard Time" then
+             tzoffset = "-10:00:00"
+
+        elseif Details.TimeZone == "Alaskan Standard Time" then
+             tzoffset = "-09:00:00"
+
+        elseif Details.TimeZone == "Mountain Standard Time" then
+             tzoffset = "-06:00:00"
+
+        elseif Details.TimeZone == "Pacific Standard Time" then
+             tzoffset = "-07:00:00"
+
+        elseif Details.TimeZone == "Central Standard Time" then
+             tzoffset = "-05:00:00"
+
+        elseif Details.TimeZone == "US Mountain Standard Time" then
+             tzoffset = "-06:00:00"
+        else
+            tzoffset = "local"
+        end
+
+       print( "***************************** : "..Details.startdate.." "..tzoffset ) 
+
+		local start_timeGMT = Utils.makeTimeStampwithOffset( Details.startdate.." "..tzoffset )
+		local end_timeGMT = Utils.makeTimeStampwithOffset( Details.enddate.." "..tzoffset )
 
 		TicklerId = Details.TicklerId
 		CalendarId = Details.CalendarId
@@ -392,7 +421,7 @@ local display_details = {}
 			local TimeZone_end = Utils.GetWeek(os.date( "%p" , end_timeGMT ))
 
 
-		time = "("..os.date( "%I:%M " , start_timeGMT )..TimeZone_start.." to "..os.date( "%I:%M " , end_timeGMT )..TimeZone_end..")"
+		time = "("..Utils.getTime(start_timeGMT, "%I:%M " ,Details.TimeZone  )..TimeZone_start.." to "..Utils.getTime( end_timeGMT,"%I:%M " ,Details.TimeZone  )..TimeZone_end..")"
 
 		else
 

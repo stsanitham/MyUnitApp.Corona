@@ -1051,9 +1051,11 @@ local function ChatSendAction( event )
 			display.getCurrentStage():setFocus( nil )
 
 
-            print("Imagename : "..Imagename)
+            print("Imagename : "..ChatBox.text:sub( ChatBox.text:len()-1, ChatBox.text:len()))
 
-			if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " then
+
+
+			if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " and ChatBox.text ~= "\n" and ChatBox.text:sub( ChatBox.text:len()-1, ChatBox.text:len())~= "\n" then
 
 
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
@@ -1088,7 +1090,7 @@ local function ChatSendAction( event )
 
 		    	if Imagename ~= nil or Imagename ~= "" then
 
-		    		if ChatBox.text ~= nil and ChatBox.text ~= "" then
+				if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " and ChatBox.text ~= "\n" then
 
 		    	    print("ertertertertt")
 
@@ -1420,6 +1422,9 @@ end
         elseif event.phase == "editing" then
 
         	if (event.newCharacters=="\n") then
+
+        		event.target.text = event.text:sub(1,event.target.text:len()-1)
+
 				native.setKeyboardFocus( nil )
 			end
 

@@ -294,6 +294,10 @@ local tempGroup = event_groupArray[#event_groupArray]
 
 local bgheight = 45
 --os.date("%Y-%m-%dT%H:%m:%S")
+
+       print( "***************************** : "..response.date) 
+
+       
 local timeGMT = Utils.makeTimeStampwithOffset( response.date )
 
 
