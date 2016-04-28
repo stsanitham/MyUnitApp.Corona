@@ -84,35 +84,6 @@ end
 
 
 
-local function FocusComplete( event )
-
-	if event.phase == "began" then
-
-		native.setKeyboardFocus(nil)
-		display.getCurrentStage():setFocus( event.target )
-
-	elseif event.phase == "ended" then
-
-	    display.getCurrentStage():setFocus( nil )
-
-	                    if (pHeight <= 960) then
-
-				   		  moveFieldsDown()
-
-				   		 end
-
-
-	end
-
-	return true
-	
-
-end 
-
-
-
-
-
 
 	function get_messagemodel(response)
 
@@ -565,6 +536,44 @@ end
 
 
 
+
+local function FocusComplete( event )
+
+	if event.phase == "began" then
+
+		native.setKeyboardFocus(nil)
+		display.getCurrentStage():setFocus( event.target )
+
+		 if (pHeight <= 960) then
+
+			moveFieldsDown()
+
+		 end
+
+
+	elseif event.phase == "ended" then
+
+	    display.getCurrentStage():setFocus( nil )
+
+	                    if (pHeight <= 960) then
+
+				   		  moveFieldsDown()
+
+				   		 end
+
+
+	end
+
+	return true
+
+end 
+
+
+
+
+
+
+
 local function TextLimitation( event )
 
 	   if event.phase == "began" then
@@ -938,7 +947,7 @@ end
 --                         if page == "edit" then
 
 --                         shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
--- 						longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
+-- 						   longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
 
 -- 								if shortmsg_textbox.id =="shortmessage" then
