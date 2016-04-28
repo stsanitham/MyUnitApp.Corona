@@ -46,6 +46,24 @@ local openPagevalue = "addpage"
 
 
 
+fieldOffset = 0
+
+local deviceModel = system.getInfo( "model" )
+
+if isIos then
+
+if (deviceModel == "iPhone") then	
+
+	 fieldOffset = 80
+
+end
+
+end
+
+fieldTrans = 200
+
+
+
 --------------------------------------------------
 
 
@@ -76,6 +94,13 @@ local function FocusComplete( event )
 	elseif event.phase == "ended" then
 
 	    display.getCurrentStage():setFocus( nil )
+
+	                    if (pHeight <= 960) then
+
+				   		  moveFieldsDown()
+
+				   		 end
+
 
 	end
 
@@ -122,7 +147,7 @@ end
 
 									composer.hideOverlay()
 
-									scrollTo(0)
+								--	scrollTo(0)
 
 								elseif openPagevalue ~= "addpage" then
 
@@ -139,7 +164,7 @@ end
 
 									composer.gotoScene("Controller.pushNotificationListPage",options)
 
-									scrollTo(0)
+								--	scrollTo(0)
 
 								end
 
@@ -179,7 +204,7 @@ end
 
 									composer.hideOverlay()
 
-									scrollTo(0)
+								--	scrollTo(0)
 
 								elseif openPagevalue ~= "addpage" then
 
@@ -195,7 +220,7 @@ end
 
 									composer.gotoScene("Controller.pushNotificationListPage",options)
 
-									scrollTo(0)
+								--	scrollTo(0)
 
 								end
 
@@ -235,7 +260,7 @@ end
 
 									composer.hideOverlay()
 
-									scrollTo(0)
+								--	scrollTo(0)
 
 								elseif openPagevalue ~= "addpage" then
 
@@ -252,7 +277,7 @@ end
 
 									composer.gotoScene("Controller.pushNotificationListPage",options)
 
-									scrollTo(0)
+								--	scrollTo(0)
 
 								end
 
@@ -523,14 +548,17 @@ end
     end
 
 
+MainGroup.y = 0
+
+MainGroupY = MainGroup.y
 
 
-
-
-local function scrollTo(position)
-
- MainGroup.y = position
-
+local function moveFieldsDown()
+    transition.to( MainGroup, { time=fieldTrans, y=(MainGroupY)} )
+end
+ 
+local function moveFieldsUp()
+    transition.to( MainGroup, { time=fieldTrans, y=(MainGroupY - fieldOffset)} )
 end
 
 
@@ -547,17 +575,22 @@ local function TextLimitation( event )
 
 				   		native.setKeyboardFocus( nil )
 
-				   		scrollTo(0)
+				   		 if (pHeight <= 960) then
+
+				   		  moveFieldsDown()
+
+				   		 end
 
 				   end
 
+			--scrollTo(0)
 
+					
+					  if (pHeight <= 960) then
 
-					if (pHeight < 1000) then
+		                    moveFieldsDown()
 
-						scrollTo(0)
-
-					end
+		              end
 
 
 
@@ -626,6 +659,12 @@ local function TextLimitation( event )
 
 						       end
 
+                                 
+						        if (pHeight <= 960) then
+
+		                                moveFieldsUp()
+		                        end
+
 
 
 							--print( event.newCharacters )
@@ -636,19 +675,15 @@ local function TextLimitation( event )
 
 							native.setKeyboardFocus( nil )
 
+								if (pHeight <= 960) then
+
+								 moveFieldsDown()
+
+								end
+
 							end
 
-
-								
-
-									if (pHeight < 1000) then
-
-										scrollTo(-70)
-
-									end
-
-
-
+		                           
 					end
 
 
@@ -659,17 +694,22 @@ local function TextLimitation( event )
 
 				   		native.setKeyboardFocus( nil )
 
-				   		scrollTo(0)
+
+				   		       if (pHeight <= 960) then
+
+								 moveFieldsDown()
+
+								end
 
 				   end
 
+     --               -- scrollTo(0)
 
+					  if (pHeight <= 960) then
 
-					if (pHeight < 1000) then
+		                    moveFieldsDown()
 
-						scrollTo(0)
-
-					end
+		              end
 
 		  end
 
@@ -695,7 +735,7 @@ local function TextLimitation( event )
 
 		        	composer.hideOverlay( "slideRight", 300 )
 
-		        	scrollTo(0)
+		        	--scrollTo(0)
 
 		        	return true
 		            
@@ -722,7 +762,7 @@ local function TextLimitation( event )
 
 					    composer.hideOverlay("slideRight",300)		
 
-					    scrollTo(0)
+					   -- scrollTo(0)
 
 
 			end
@@ -873,7 +913,7 @@ end
 				longmsg_textbox.id = "longmessage"
 				longmsg_textbox.isVisible = true
 				longmsg_textbox.hasBackground = true
-				longmsg_textbox:setReturnKey( "done" )
+				--longmsg_textbox:setReturnKey( "done" )
 				longmsg_textbox.inputType = "default"
 				sceneGroup:insert(longmsg_textbox)
 				--longmsg_textbox.x=10
