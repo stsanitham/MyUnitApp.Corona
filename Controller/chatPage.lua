@@ -164,7 +164,7 @@ end
 
 			sendBtn.isVisible = true
 
-			recordBtn.isVisible = false
+		--	recordBtn.isVisible = false
 
 	end
 
@@ -906,7 +906,6 @@ end
 local function deleteAction( event )
 	if event.phase == "ended" then
 
- 
 		if event.target.id == "delete" then
 
 
@@ -948,11 +947,11 @@ function get_sendMssage(response)
 
     	image_name_close.isVisible = false 
 
-    	sendBtn.isVisible = false
+    	sendBtn.isVisible = true
 
-    	sendBtn_bg.isVisible = false
+    	sendBtn_bg.isVisible = true
 
-    	recordBtn.isVisible = true
+    	--recordBtn.isVisible = true
 
     end
 
@@ -1031,6 +1030,7 @@ end
 
 
 
+
 local function ChatSendAction( event )
 	if event.phase == "began" then
 
@@ -1051,13 +1051,11 @@ local function ChatSendAction( event )
 			display.getCurrentStage():setFocus( nil )
 
 
-print("Imagename : "..Imagename)
+            print("Imagename : "..Imagename)
 
 			if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " then
 
 
-				
-			
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
 			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
@@ -1082,7 +1080,7 @@ print("Imagename : "..Imagename)
 				print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
 
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
+			    Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
 
 
 		    else
@@ -1109,7 +1107,6 @@ print("Imagename : "..Imagename)
 					From=ContactId
 					To=To_ContactId
 					Message_Type = MessageType
-
 
 				--	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
@@ -1437,10 +1434,10 @@ end
         	if event.text:len() >=1 then
 
         		sendBtn.isVisible=true
-        		recordBtn.isVisible=false
+        		--recordBtn.isVisible=false
         	else
-        		sendBtn.isVisible=false
-        		recordBtn.isVisible=true
+        		sendBtn.isVisible=true
+        		--recordBtn.isVisible=true
         	end
 
 
@@ -1456,9 +1453,7 @@ end
 		if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
 
-			 
-			 
-			
+						
 			r:startRecording()
 
 			ChatBox.text= ChatPage.RecordStartText 
@@ -1575,25 +1570,24 @@ function scene:create( event )
 
 	--title.text = ChatPage.Chats
 
-	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 15, 15 )
-	Deleteicon.x=W-20;Deleteicon.y=title_bg.y
+	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 16, 16 )
+	Deleteicon.x=W-25;Deleteicon.y=title_bg.y-1
 	Deleteicon.isVisible=false
 	Deleteicon.id="delete"
 	Deleteicon:addEventListener( "touch", deleteAction )
 
-	Copyicon = display.newImageRect( sceneGroup, "res/assert/copy-icon.png", 15, 15 )
-	Copyicon.x=W-50;Copyicon.y=title_bg.y
+	Copyicon = display.newImageRect( sceneGroup, "res/assert/copy-icon.png", 16, 16 )
+	Copyicon.x=W-58;Copyicon.y=title_bg.y-1
 	Copyicon.isVisible=false
 	Copyicon.id="copy"
 	Copyicon:addEventListener( "touch", deleteAction )
 
-
-
-
-
 MainGroup:insert(sceneGroup)
 
 end
+
+
+
 
 function scene:show( event )
 
@@ -1697,15 +1691,15 @@ function scene:show( event )
 		sendBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
 		sendBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-sendBtn.contentHeight/2
 		sendBtn.anchorY=0;sendBtn.anchorX=0
-		sendBtn.isVisible=false
+		sendBtn.isVisible=true
 
 		sendBtn_bg = display.newRect( ChatScrollContent, sendBtn.x+5, sendBtn.y+5, 45,45 )
 		sendBtn_bg:setFillColor( 0,0,0,0.01 )
 
-		recordBtn = display.newImageRect( ChatScrollContent, "res/assert/record.png", 25,20 )
-		recordBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
-		recordBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-recordBtn.contentHeight/2
-		recordBtn.anchorY=0;recordBtn.anchorX=0
+		-- recordBtn = display.newImageRect( ChatScrollContent, "res/assert/record.png", 25,20 )
+		-- recordBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
+		-- recordBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-recordBtn.contentHeight/2
+		-- recordBtn.anchorY=0;recordBtn.anchorX=0
 
 
 		chatScroll = widget.newScrollView(
@@ -1817,7 +1811,7 @@ sceneGroup:insert( tabBarGroup )
 		--cameraBtn:addEventListener("touch", UploadImageAction)
 		menuBtn:addEventListener("touch",menuTouch)
 		ChatBox:addEventListener( "userInput", ChatBoxHandler )
-		recordBtn:addEventListener( "touch", RecordAction )
+	--	recordBtn:addEventListener( "touch", RecordAction )
 
 	
 		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
