@@ -77,8 +77,8 @@ local function bgTouch( event )
 	end
 
 	return true
-
 end
+
 
 local function emailTouch( event )
 	if event.phase == "began" then

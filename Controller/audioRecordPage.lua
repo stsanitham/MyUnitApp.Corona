@@ -53,6 +53,8 @@ local function audioAction( event )
 			display.getCurrentStage():setFocus( nil )
 
 			if event.target.id == "play" then
+				print("play")
+				native.showAlert( "MUB", "dataFileName : "..dataFileName ,{"Ok"})
 				    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
@@ -63,7 +65,7 @@ local function audioAction( event )
 		                fSoundPaused = false
 		                
 						playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
-						audio.play( playbackSoundHandle, { onComplete=onCompleteSound } )
+						audio.play( playbackSoundHandle)
 
 						 keyTips.text = "Playing"
 		            end  
@@ -71,9 +73,7 @@ local function audioAction( event )
 				
 				if r:isRecording() then
 		            r:stopRecording()
-
 		            timer.cancel(countdown)
-
 		            keyTips.text = "Recording Stopped"
 		       	end
 			elseif event.target.id == "start" then
@@ -173,7 +173,7 @@ function scene:show( event )
 
 		playBtn = display.newText( sceneGroup, "Play",  0,0,native.systemFont,16 )
 		playBtn.x=W/2;playBtn.y=H/2+150
-		playBtn.play="play"
+		playBtn.id="play"
 		playBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 
