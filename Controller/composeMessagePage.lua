@@ -519,6 +519,7 @@ end
     end
 
 
+
 MainGroup.y = 0
 
 MainGroupY = MainGroup.y
@@ -531,7 +532,6 @@ end
 local function moveFieldsUp()
     transition.to( MainGroup, { time=fieldTrans, y=(MainGroupY - fieldOffset)} )
 end
-
 
 
 
@@ -555,16 +555,15 @@ local function FocusComplete( event )
 
 	    display.getCurrentStage():setFocus( nil )
 
-	                    if (pHeight <= 960) then
+         if (pHeight <= 960) then
 
-				   		  moveFieldsDown()
+   		  moveFieldsDown()
 
-				   		 end
-
+   		 end
 
 	end
 
-	return true
+	   return true
 
 end 
 
