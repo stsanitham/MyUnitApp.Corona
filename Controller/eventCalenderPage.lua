@@ -428,7 +428,7 @@ leftDraw_line.x=W/4;leftDraw_line.y=background.y-5
 
 local Timezone = Utils.GetWeek(os.date( "%p" , timeGMT ))
 
-local time = display.newText(tempGroup,Utils.getTime( timeGMT,"%I:%M \n  "..Timezone,TimeZone ),0,0,80,0,native.systemFontBold,12)
+local time = display.newText(tempGroup,Utils.getTime( timeGMT,"%I:%M \n  "..Timezone,response.TimeZone ),0,0,80,0,native.systemFontBold,12)
 time.x=W/6
 time.y=background.y+background.contentHeight/2
 Utils.CssforTextView(time,sp_Date_Time)
