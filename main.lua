@@ -240,6 +240,62 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 
             end
 
+            if additionalData.stacked_notifications then
+
+                local stakedArray = additionalData.stacked_notifications
+
+                for i=1,#stakedArray do
+                     local Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
+                        local isDeleted="false"
+                        local Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+                        local Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+                        local ImagePath="NULL"
+                        AudioPath="NULL"
+                        VideoPath="NULL"
+                        MyUnitBuzz_LongMessage=tostring(stakedArray[i].message)
+                        From=stakedArray[i].messageFrom
+                        To=stakedArray[i].messageTo
+                        Message_Type = stakedArray[i].messageType
+
+
+
+                            if stakedArray[i].fFN ~= nil then
+                                Name=stakedArray[i].fFN.." "..stakedArray[i].fLN
+
+                            else
+
+                                Name=stakedArray[i].fLN
+
+                            end
+
+                            GroupName=""
+
+                            if Message_Type == "GROUP" then
+                                 GroupName=stakedArray[i].GN
+                                 FromName=""
+                            else
+
+
+                                   if stakedArray[i].tFN ~= nil then
+                                        FromName=stakedArray[i].tFN.." "..stakedArray[i].tLN
+
+                                    else
+
+                                        FromName=stakedArray[i].tLN
+
+                                    end
+
+                            end
+            
+                    
+
+                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(stakedArray[i].message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+                            db:exec( insertQuery )
+
+                end
+
+            else
+
                 Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
                         isDeleted="false"
                         Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
@@ -286,7 +342,8 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 
                         local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                             db:exec( insertQuery )
-
+        end
+                    
             if openPage ~= "MessagingPage" then
 
                      local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
