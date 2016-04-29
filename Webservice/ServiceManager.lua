@@ -309,7 +309,6 @@ if Message_Type ~= nil and Message_Type ~= "" then
 else
 
 	 v = [[
-
 {
   "MyUnitBuzzMessage": "]]..message..[[",
   "MyUnitBuzzLongMessage": "]]..longmessage..[[",
@@ -319,12 +318,12 @@ else
   "VideoFilePath": "]]..videopath..[[",
   "MessageStatus": "]]..pushmethod..[[",
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
-   "UserId": "]]..UserId..[[",
-   "EmailAddress": "]]..EmailAddess..[[",
-	"ImageFilePath": "]]..imagepath..[[",
-	 "ImageFileName": "]]..imagename..[[",
-	  "ImageFileSize": "]]..imagesize..[[",
-   "TimeZone": "]]..TimeZone..[[",
+  "UserId": "]]..UserId..[[",
+  "EmailAddress": "]]..EmailAddess..[[",
+  "ImageFilePath": "]]..imagepath..[[",
+  "ImageFileName": "]]..imagename..[[",
+  "ImageFileSize": "]]..imagesize..[[",
+  "TimeZone": "]]..TimeZone..[[",
 }
 ]]
 
@@ -333,9 +332,7 @@ end
 
 	params={headers = headers,body = v}
 
-	print("Send Message Request :"..v)
-
-
+	print("Send Message Request :"..json.encode(v))
 
 	request.new( ApplicationConfig.SEND_MESSAGE,method,params,postExecution)
 	

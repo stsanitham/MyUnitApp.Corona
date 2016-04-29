@@ -98,18 +98,18 @@ local function onKeyEvent( event )
 				if event.target.id == "cancel icon" or event.target.id == "cancel" or event.target.id == "cancel_icon_text" then
 
 	                   composer.hideOverlay("slideRight",300)
+
+	                   button_idvalue = "cancel"
+
+
 				end
 
 
 				if event.target.id == "send icon" or event.target.id == "send" or event.target.id == "send_icon_text" then
 
-	                   	--resumeGame(photoview)
+	                   composer.hideOverlay("slideRight",300)
 
-	                   	print("hhhhhhhhh")
-
-	                   
-
-	                   	 composer.hideOverlay("slideRight",300)
+	                   button_idvalue = "send"
 
 	                 
 				end
@@ -326,7 +326,7 @@ end
 
 			elseif phase == "did" then
 
-	             event.parent:resumeImageCallBack(photoview)
+	             event.parent:resumeImageCallBack(photoview,button_idvalue)
 
 			end	
 

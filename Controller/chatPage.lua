@@ -52,6 +52,8 @@ local Imagesize = ""
 
 local MemberName
 
+local image_update_row
+
 local holdLevel
 
 local chatHoldflag=false
@@ -142,62 +144,9 @@ end
 
 
     
-	function get_imagemodel(response)
-
-		print("SuccessMessage")
-
-		Imagepath = response.Abspath
-
-		Imagename = response.FileName
-
-		Imagesize = size
 
 
-		print("Imagesize................",Imagesize)
-
-		print("Imagename................",Imagename)
-
-		print("Imagepath................",Imagepath)
-
-			--image_name_png.isVisible = true
-
-			--image_name_png.text = Imagename
-
-			ChatBox_bg.isVisible = true
-
-			ChatBox.isVisible = false
-
-			--image_name_close.isVisible = true
-
-			sendBtn_bg.isVisible = true
-
-			sendBtn.isVisible = true
-
-			recordBtn.isVisible = false
-
-
-		-- for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
-
-		-- 	local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
-		-- 	db:exec( q )
-
-		-- 	ChatHistory[#ChatHistory+1] = row
-
-		-- end
-
-
-	end
-
-
-
-      
-
-    local function sendImage( )
-
-	Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
-
-    end
-
+    
 
 
     local function selectionComplete ( event )
@@ -819,8 +768,8 @@ end
 			
 			end
 
-			bg.height = bg.height+10
-			bg.width = bg.width+35
+				bg.height = bg.height+10
+				bg.width = bg.width+35
 
 
 
@@ -857,12 +806,6 @@ end
 
 								image.y=owner.y+20	
 
-							--	ChatBox.isVisible = true
-								--ChatBox_bg.isVisible = true
-								--ChatBox.text = ""
-
-								image:addEventListener( "touch", receviedimageDownload )
-
 							else
 
 							    image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
@@ -876,11 +819,6 @@ end
 								bg.width = image.contentWidth+5
 								bg.height = image.contentHeight+5
 
-								--ChatBox.isVisible = true
-								--ChatBox_bg.isVisible = true
-								--ChatBox.text = ""
-
-								image:addEventListener( "touch", receviedimageDownload )
 							end
 
 						io.close( fhd )
@@ -992,6 +930,67 @@ end
 
 
 
+
+function get_imagemodel(response)
+
+		print("SuccessMessage")
+
+		Imagepath = response.Abspath
+
+		Imagename = response.FileName
+
+		Imagesize = size
+
+
+		print("Imagesize................",Imagesize)
+
+		print("Imagename................",Imagename)
+
+		print("Imagepath................",Imagepath)
+
+			--image_name_png.isVisible = true
+
+			--image_name_png.text = Imagename
+
+			ChatBox_bg.isVisible = true
+
+			ChatBox.isVisible = false
+
+			--image_name_close.isVisible = true
+
+			sendBtn_bg.isVisible = true
+
+			sendBtn.isVisible = true
+
+			recordBtn.isVisible = false
+
+
+
+
+
+			local q = "UPDATE pu_MyUnitBuzz_Message SET Image_Path='"..Imagepath.."' WHERE id='"..image_update_row.."';"
+			db:exec( q )
+
+			sendMeaasage()
+
+			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+			
+			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+			isDeleted="false"
+			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+			ImagePath= Imagepath or ""
+			AudioPath="NULL"
+			VideoPath="NULL"
+			MyUnitBuzz_LongMessage=ChatBox.text
+			From=ContactId
+			To=To_ContactId
+			Message_Type = MessageType
+
+
+			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
+
+	end
 
 
 
@@ -1205,7 +1204,7 @@ local function ChatSendAction( event )
 			Message_Type = MessageType
 
 
-		--	native.showAlert("Type",Message_Type,{CommonWords.ok})
+		    --	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
 				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
 				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
@@ -1251,7 +1250,7 @@ local function ChatSendAction( event )
 						print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
 
-					Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"SEND",From,To,Message_Type,get_sendMssage)
+					    Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"SEND",From,To,Message_Type,get_sendMssage)
 
                    end
                    end
@@ -1673,7 +1672,7 @@ end
 
 
 
-	function scene:resumeImageCallBack(photoviewname)
+	function scene:resumeImageCallBack(photoviewname,button_idvalue)
 
 		print("resume game calling")
 
@@ -1681,30 +1680,51 @@ end
 
 		if photoviewname  ~= nil and photoviewname ~= "" then
 
-				Imagename = photoviewname:match( "([^/]+)$" )
+				if button_idvalue == "cancel" then
 
-				print( "photoviewname 1111: "..Imagename)
+					print("cancel pressed")
 
-				    local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+				elseif button_idvalue == "send" then
 
-				    Message_date=os.date("%Y-%m-%dT%H:%M:%S")
-					isDeleted="false"
-					Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-					Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-					ImagePath="DEFAULT"
-					ImageName = Imagename
-					ImageSize = Imagesize
-					AudioPath="NULL"
-					VideoPath="NULL"
-					MyUnitBuzz_LongMessage=ChatBox.text
-					From=ContactId
-					To=To_ContactId
-					Message_Type = MessageType
+					Imagename = photoviewname:match( "([^/]+)$" )
 
-					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
-					db:exec( insertQuery )
+					print( "photoviewname 1111: "..Imagename)
 
-					sendImage()
+					    local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+
+					    Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+						isDeleted="false"
+						Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+						Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+						ImagePath="DEFAULT"
+						ImageName = Imagename
+						ImageSize = Imagesize
+						AudioPath="NULL"
+						VideoPath="NULL"
+						MyUnitBuzz_LongMessage=ChatBox.text
+						From=ContactId
+						To=To_ContactId
+						Message_Type = MessageType
+
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						db:exec( insertQuery )
+
+
+
+
+					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Image_Path= 'DEFAULT'") do
+					   image_update_row = row.id 
+
+					end 
+
+					sendMeaasage()
+
+				  Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+
+
+
+				end
 
 		end
 
@@ -1778,13 +1798,12 @@ function scene:create( event )
 	Copyicon.id="copy"
 	Copyicon:addEventListener( "touch", deleteAction )
 
-
-
-
-
 MainGroup:insert(sceneGroup)
 
 end
+
+
+
 
 function scene:show( event )
 
@@ -1798,7 +1817,7 @@ function scene:show( event )
 		end
 
 
-	
+		
 
 	elseif phase == "did" then
 
@@ -1917,9 +1936,7 @@ function scene:show( event )
 		chatScroll.x=0;chatScroll.y=title_bg.y+title_bg.contentHeight/2
 		ChatScrollContent:insert( chatScroll )
 
-
 		sendMeaasage()
-
 
 		sceneGroup:insert( ChatScrollContent )
 	
