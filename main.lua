@@ -226,10 +226,14 @@ composer.gotoScene( "Controller.splashScreen")
 
 function DidReceiveRemoteNotification(message, additionalData, isActive)
 
+    if additionalData.stacked_notifications then
 
-    if additionalData.messageType ~= nil then
 
-                chatReceivedFlag=true
+    end
+
+    if additionalData.messageType ~= nil or additionalData.stacked_notifications[1].messageType ~= nil then
+
+        chatReceivedFlag=true
 
             local UserId,ContactId,Name,FromName,GroupName
 
@@ -241,6 +245,7 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
             end
 
             if additionalData.stacked_notifications then
+
 
                 local stakedArray = additionalData.stacked_notifications
 
