@@ -1178,6 +1178,9 @@ local function onKeyEvent( event )
         return false
  end
 
+
+
+
 local function CreateTabBarIcons( )
 
 	if tab_Group_btn ~= nil then if tab_Group_btn.y then tab_Group_btn:removeSelf( );tab_Group_btn=nil end end
@@ -1206,6 +1209,7 @@ local function CreateTabBarIcons( )
 
 
 end
+
 
 
 	local function TabbarTouch( event )
@@ -1368,15 +1372,15 @@ end
 
 	end
 
+
+
 	local function scrollAction(value)
 
-		       		-- if value == 0 then
-		       		-- else
-
-		       		-- end
 	ChatScrollContent.y=value
 
 	end
+
+
 
 
 	local function ChatBoxHandler( event )
@@ -1449,8 +1453,10 @@ end
 	    end   
 	end
 
-	local function RecordAction(event)
 
+
+
+	local function RecordAction(event)
 
 		local filePath = system.pathForFile( "newRecording.wav", system.DocumentsDirectory )
 		local r = media.newRecording( filePath )
@@ -1470,13 +1476,14 @@ end
 				ChatBox.text=""
 				r:stopRecording()
 
-
 		end
 
-return true
-
+      return true
 
 	end
+
+
+
 
 	local function scrollListener( event )
 
@@ -1524,6 +1531,9 @@ return true
     return true
 end
 
+
+
+
 function scene:resumeGame()
 
 			composer.removeHidden()
@@ -1533,8 +1543,9 @@ function scene:resumeGame()
 		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 
 
+end
 
-	end
+
 
 ------------------------------------------------------
 
@@ -1587,7 +1598,7 @@ function scene:create( event )
 	Copyicon.id="copy"
 	Copyicon:addEventListener( "touch", deleteAction )
 
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
