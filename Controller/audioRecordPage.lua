@@ -17,7 +17,7 @@ local W = display.contentWidth
 local H= display.contentHeight
 
 local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title
-local dataFileName = "audio"..
+local dataFileName = "audio"..os.date("%Y%m%d%H%M%S")
 local menuBtn
 local filePath
 local okBtn,okBtn_txt,cancelBtn,cancelBtn_txt

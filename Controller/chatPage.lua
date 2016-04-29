@@ -1485,6 +1485,22 @@ return true
     return true
 end
 
+
+
+
+function scene:updateAudio(dataFileName)
+
+		composer.removeHidden()
+
+		ChatBox.isVisible=true
+
+		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
+
+		print( dataFileName )
+
+
+	end
+
 function scene:resumeGame()
 
 			composer.removeHidden()
