@@ -564,7 +564,7 @@ end
 
 local function sendMeaasage()
 	
-	ChatBox.text=""
+	
 
 
 	for i=#MeassageList, 1, -1 do 
@@ -931,7 +931,7 @@ end
 
 
 function get_sendMssage(response)
-
+	ChatBox.text=""
     if image_name_png.isVisible == true and image_name_close.isVisible == true then
 
     	image_name_png.isVisible = false 
