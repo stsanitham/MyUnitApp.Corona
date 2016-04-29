@@ -49,7 +49,6 @@ local function closeDetails( event )
 			end
 
 	end
-
 return true
 
 end

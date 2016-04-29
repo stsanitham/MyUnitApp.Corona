@@ -558,6 +558,15 @@ local function TextLimitation( event )
 
 					        end
 
+
+					        if (event.newCharacters=="\n") then
+
+							shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
+
+							native.setKeyboardFocus( longmsg_textbox )
+
+						    end
+
 					end
 
 
@@ -726,8 +735,6 @@ end
 
 			sceneevent = event
 
-
-
 ---------------------------------------------- Short Message ----------------------------------------------------------
 
                 shortmsg_star = display.newText(sceneGroup,"*",0,0,native.systemFont,14)
@@ -826,7 +833,6 @@ end
 
                         shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
 						longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
-
 
 
 								if shortmsg_textbox.id =="shortmessage" then

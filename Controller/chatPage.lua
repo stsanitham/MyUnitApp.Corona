@@ -52,6 +52,8 @@ local Imagesize = ""
 
 local MemberName
 
+local image_update_row
+
 local holdLevel
 
 local chatHoldflag=false
@@ -142,42 +144,9 @@ end
 
 
     
-	function get_imagemodel(response)
-
-		print("SuccessMessage")
-
-		Imagepath = response.Abspath
-
-		Imagename = response.FileName
-
-		Imagesize = size
-
-		print("Imagesize................",Imagesize)
-
-			image_name_png.isVisible = true
-
-			image_name_png.text = Imagename
-
-			image_name_close.isVisible = true
-
-			sendBtn_bg.isVisible = true
-
-			sendBtn.isVisible = true
-
-			recordBtn.isVisible = false
-
-	end
 
 
-
-      
-
-    local function sendImage( )
-
-	Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
-
-    end
-
+    
 
 
     local function selectionComplete ( event )
@@ -238,6 +207,21 @@ end
         photo = nil
 
 
+		  local options = {
+				      		effect = "fromTop",
+							time = 400,	
+								params = {
+								imageselected = photoname,
+								sendto = title.text,
+								contactId = To_ContactId,
+								MessageType = MessageType
+							}
+
+							}
+
+			composer.showOverlay("Controller.imagePreviewPage",options)
+
+
         path = system.pathForFile( photoname, baseDir)
 
         local size = lfs.attributes (path, "size")
@@ -254,13 +238,14 @@ end
 
         	formatSizeUnits(size)
 
-        	sendImage()
+        	--sendImage()
 
 	else
 
 	end
 
 end
+
 
 
 
@@ -283,6 +268,12 @@ local function attachAction( event )
 			    	local image1 = native.showAlert( "Camera Unavailable", "Camera is not supported in this device", { CommonWords.ok } )
 
 				end
+
+
+				Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+				ChatBox.isVisible=false
+
+
 
 		elseif event.target.id == "video" then
 
@@ -308,6 +299,11 @@ local function attachAction( event )
 		    composer.showOverlay( "Controller.audioRecordPage",options)
 
 		elseif event.target.id == "gallery" then
+
+				if media.hasSource( PHOTO_FUNCTION  ) then
+				timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+				end )
+				end
 
 
 		elseif event.target.id == "location" then
@@ -478,386 +474,525 @@ end
 
 
 
-local function ChatTouch( event )
+	local function ChatTouch( event )
 
-	if event.phase == "began" then
-		print( "touching" )
-		holdLevel=0
-		chatHoldflag=true
-	elseif event.phase == "moved" then
-		 local dy = math.abs( ( event.y - event.yStart ) )
-        -- If the touch on the button has moved more than 10 pixels,
-        -- pass focus back to the scroll view so it can continue scrolling
+		if event.phase == "began" then
+			print( "touching" )
+			holdLevel=0
+			chatHoldflag=true
+		elseif event.phase == "moved" then
+			 local dy = math.abs( ( event.y - event.yStart ) )
+	        -- If the touch on the button has moved more than 10 pixels,
+	        -- pass focus back to the scroll view so it can continue scrolling
 
-        if ( dy > 10 ) then
-        	display.getCurrentStage():setFocus( nil )
-            chatScroll:takeFocus( event )
-            holdLevel=0
-            chatHoldflag=false
-        end
-	elseif event.phase == "ended" then
-		chatHoldflag=false
-		
+	        if ( dy > 10 ) then
+	        	display.getCurrentStage():setFocus( nil )
+	            chatScroll:takeFocus( event )
+	            holdLevel=0
+	            chatHoldflag=false
+	        end
+		elseif event.phase == "ended" then
+			chatHoldflag=false
+			
 
-		if holdLevel > 25 then
+			if holdLevel > 25 then
 
-			Deleteicon.value=event.target.id
-			Copyicon.value = event.target.chat
+				Deleteicon.value=event.target.id
+				Copyicon.value = event.target.chat
 
-			if selectedForDelete ~= nil then 
-				if selectedForDelete.y ~= nil then
-				 selectedForDelete:removeSelf();selectedForDelete=nil 
-				 end 
+				if selectedForDelete ~= nil then 
+					if selectedForDelete.y ~= nil then
+					 selectedForDelete:removeSelf();selectedForDelete=nil 
+					 end 
+				end
+
+				selectedForDelete = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
+				selectedForDelete:setFillColor( 0.3,0.6,0.5,0.4 )
+				event.target.group:insert( selectedForDelete )
+
+				print("delete Action")
+
 			end
 
-			selectedForDelete = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
-			selectedForDelete:setFillColor( 0.3,0.6,0.5,0.4 )
-			event.target.group:insert( selectedForDelete )
 
-			print("delete Action")
+			holdLevel=0
+		end
+
+	return true
+	end
+
+
+
+	local function recivedNetwork( event )
+	    if ( event.isError ) then
+	        print( "Network error - download failed: ", event.response )
+	    elseif ( event.phase == "began" ) then
+	        print( "Progress Phase: began" )
+	    elseif ( event.phase == "ended" ) then
+	        print( "Displaying response image file" )
+	        reciveImageFlag=true
+	  		
+	    end
+	end
+
+
+
+	local function receviedimageDownload( event )
+		if event.phase == "began" then
+				display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+				display.getCurrentStage():setFocus( nil )
+
+		network.download(
+		event.target.id,
+		"GET",
+		recivedNetwork,
+		event.target.id:match( "([^/]+)$" ),
+		system.DocumentsDirectory
+		)
 
 		end
 
-
-		holdLevel=0
+	return true
 	end
-
-return true
-end
-
-
-
-local function recivedNetwork( event )
-    if ( event.isError ) then
-        print( "Network error - download failed: ", event.response )
-    elseif ( event.phase == "began" ) then
-        print( "Progress Phase: began" )
-    elseif ( event.phase == "ended" ) then
-        print( "Displaying response image file" )
-        reciveImageFlag=true
-  		
-    end
-end
-
-
-
-local function receviedimageDownload( event )
-	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
-
-			network.download(
-	event.target.id,
-	"GET",
-	recivedNetwork,
-	event.target.id:match( "([^/]+)$" ),
-	system.DocumentsDirectory
-	)
-
-	end
-
-return true
-end
 
 
 
 local function sendMeaasage()
 	
-	
-
-
-	for i=#MeassageList, 1, -1 do 
-			display.remove(MeassageList[#MeassageList])
-			MeassageList[#MeassageList] = nil
-	end
-
-
-
-	for i=#ChatHistory, 1, -1 do 
-			ChatHistory[#ChatHistory] = nil
-	end
-
-
-
-	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
-
-		local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
-		db:exec( q )
-
-		ChatHistory[#ChatHistory+1] = row
-
-	end
-
-	
-
-	local dateVlaue=""
-
-	for i=1,#ChatHistory do
-
-		local dateLable = nil
-		local datevalue = nil
-
-		MeassageList[#MeassageList+1] = display.newGroup()
-
-		local tempGroup = MeassageList[#MeassageList]
-
-		local bg = display.newRect(0,0,W-100,25 )
-		tempGroup:insert(bg)
-		
-		bg.anchorX=0;bg.anchorY=0
-		bg.id=ChatHistory[i].id
-		bg.group=tempGroup
-		bg:addEventListener( "touch", ChatTouch )
-
-
-
-		if MeassageList[#MeassageList-1] ~= nil then
-			bg.y=MeassageList[#MeassageList-1][1].y+MeassageList[#MeassageList-1][1].contentHeight+20
-		else
-			bg.y=0
+			for i=#MeassageList, 1, -1 do 
+				display.remove(MeassageList[#MeassageList])
+				MeassageList[#MeassageList] = nil
 		end
-			bg.x=5
 
 
 
-		if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
+		for i=#ChatHistory, 1, -1 do 
+				ChatHistory[#ChatHistory] = nil
+		end
 
-			print( "coming" ..dateVlaue,ChatHistory[i].Update_Time_Stamp)
-			dateVlaue =ChatHistory[i].Update_Time_Stamp
 
-			dateLable = display.newRect( tempGroup, W/2, bg.y+5, 80,20 )
-			bg.y=bg.y+30
-			dateLable:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-			dateLable.alpha=0.3
 
-			datevalue = display.newText( tempGroup,  Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone), 0,0,native.systemFont,11)
-			datevalue.x=dateLable.x;datevalue.y=dateLable.y
-			datevalue:setFillColor( 0,0,0,0.6 )
 
-			--print( Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) .." and ".. Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) )
 
-			if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) then
+		for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
 
-				datevalue.text = ChatPage.Today
+			local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
+			db:exec( q )
 
+			ChatHistory[#ChatHistory+1] = row
+
+		end
+
+		
+
+		local dateVlaue=""
+
+		for i=1,#ChatHistory do
+
+			local dateLable = nil
+			local datevalue = nil
+
+			MeassageList[#MeassageList+1] = display.newGroup()
+
+			local tempGroup = MeassageList[#MeassageList]
+
+			local bg = display.newRect(0,0,W-100,25 )
+			tempGroup:insert(bg)
+			
+			bg.anchorX=0;bg.anchorY=0
+			bg.id=ChatHistory[i].id
+			bg.group=tempGroup
+			bg:addEventListener( "touch", ChatTouch )
+
+
+			if MeassageList[#MeassageList-1] ~= nil then
+				bg.y=MeassageList[#MeassageList-1][1].y+MeassageList[#MeassageList-1][1].contentHeight+20
 			else
+				bg.y=0
+			end
+				bg.x=5
 
-				local t = os.date( "!*t" )
-				t.day=t.day-1
 
-				if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(t),"%B %d, %Y",TimeZone) then
 
-				datevalue.text = ChatPage.Yesterday
+			if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
+
+				print( "coming" ..dateVlaue,ChatHistory[i].Update_Time_Stamp)
+				dateVlaue =ChatHistory[i].Update_Time_Stamp
+
+				dateLable = display.newRect( tempGroup, W/2, bg.y+5, 80,20 )
+				bg.y=bg.y+30
+				dateLable:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+				dateLable.alpha=0.3
+
+				datevalue = display.newText( tempGroup,  Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone), 0,0,native.systemFont,11)
+				datevalue.x=dateLable.x;datevalue.y=dateLable.y
+				datevalue:setFillColor( 0,0,0,0.6 )
+
+				--print( Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) .." and ".. Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) )
+
+				if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) then
+
+					datevalue.text = ChatPage.Today
+
+				else
+
+					local t = os.date( "!*t" )
+					t.day=t.day-1
+
+					if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(t),"%B %d, %Y",TimeZone) then
+
+					datevalue.text = ChatPage.Yesterday
+
+					end
 
 				end
 
 			end
 
-		end
 
 
 
+			if ChatHistory[i].Message_From == tostring(ContactId) then
 
-		if ChatHistory[i].Message_From == tostring(ContactId) then
+					print( "here" )
+					bg.x = W-65
+					bg.anchorX = 1
+
+
+			  local filePath = system.pathForFile( ChatHistory[i].Message_From..".png",system.TemporaryDirectory )
+			  local fhd = io.open( filePath )
+
+			  local Image
+
+					 if fhd then
+
+							Image = display.newImageRect(tempGroup,ChatHistory[i].Message_From..".png",system.TemporaryDirectory,45,38)
+							io.close( fhd )
+
+					else
+								Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+
+					end
+
+										Image.x=W-35;Image.y=bg.y+bg.height/2
+
+										local mask = graphics.newMask( "res/assert/masknew.png" )
+
+										Image:setMask( mask )
+
+			else
+
+							bg.x=65
+
+							local Image = display.newImageRect(tempGroup,To_ContactId..".png",system.TemporaryDirectory,45,38)
+
+							if not Image then
+								Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+								Image.x=30;Image.y=bg.y+bg.height/2
+
+							end
+
+										Image.x=30;Image.y=bg.y+bg.height/2
+
+										local mask = graphics.newMask( "res/assert/masknew.png" )
+
+										Image:setMask( mask )
+
+				
+			end
+
+
+
+			local chat	
+
+
+			if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
+
+				chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,W-115,0,native.systemFont,12)
+
+			else
+
+				chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,native.systemFont,12)
+
+			end
+
+
+			chat.anchorY=0
+			chat.anchorX = 0
+			chat.x=bg.x+5;chat.y=bg.y
+
+			tempGroup:insert( chat )
+
+		
+			bg.width = chat.contentWidth+10	
+			bg.height = chat.contentHeight+10
+			bg.chat=chat.text
+
+
+
+			local owner
+
+			if MessageType == "GROUP" then
+
+				owner = display.newText(tempGroup,"",0,0,native.systemFont,14)
+				owner.anchorY=0
+				owner.anchorX = 0
+				owner.x=chat.x
+				owner.y=chat.y
+				owner:setTextColor(1,1,0)
+				chat.y=owner.y+20
+
+
+				bg.height = bg.height+20
+
+				if ChatHistory[i].Message_From == tostring(ContactId) then
+
+					owner.text = MemberName
+				else
+					owner.text = ChatHistory[i].ToName or "(~No Name)"
+				end
+			
+
+				if owner.contentWidth > bg.contentWidth then
+						bg.width = owner.contentWidth+10	
+				end
 
 			
-				print( "here" )
-				bg.x=W-65
-				bg.anchorX=1
+			end
+
+				bg.height = bg.height+10
+				bg.width = bg.width+35
 
 
-				 local filePath = system.pathForFile( ChatHistory[i].Message_From..".png",system.TemporaryDirectory )
-		  local fhd = io.open( filePath )
 
-		  local Image
 
-				 if fhd then
+				if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
 
-						Image = display.newImageRect(tempGroup,ChatHistory[i].Message_From..".png",system.TemporaryDirectory,45,38)
+				 Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
+
+						print( "here value : "..Imagename)
+
+				 local image
+
+				 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
+			 	 local fhd = io.open( filePath )
+				
+					if fhd then	
+
+						    if MessageType == "GROUP" then	
+									
+								image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+								image.id = ChatHistory[i].Image_Path
+
+								bg.width = image.contentWidth+5
+								bg.height = image.contentHeight+23.5
+
+								owner.anchorY=0
+								owner.anchorX = 0
+								owner.x=chat.x
+								owner.y=bg.y+1
+
+								image.anchorY=0
+								image.anchorX = 0
+								image.x=bg.x+2.5
+
+								image.y=owner.y+20	
+
+							else
+
+							    image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+							    image.id = ChatHistory[i].Image_Path
+
+								image.anchorY=0
+								image.anchorX = 0
+								image.x=bg.x+2.5
+								image.y=bg.y+2.5
+
+								bg.width = image.contentWidth+5
+								bg.height = image.contentHeight+5
+
+							end
+
 						io.close( fhd )
 
-				else
-							Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+					else
 
+
+						    if MessageType == "GROUP" then	
+								
+								image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
+								image.id = ChatHistory[i].Image_Path
+
+							    bg.width = image.contentWidth+5
+								bg.height = image.contentHeight+23.5
+
+								owner.anchorY=0
+								owner.anchorX = 0
+								owner.x=chat.x
+								owner.y=bg.y+1
+
+								image.anchorY=0
+								image.anchorX = 0
+								image.x=bg.x+2.5
+
+								image.y=owner.y+20	
+
+							--	ChatBox.isVisible = true
+							--	ChatBox_bg.isVisible = true
+							--	ChatBox.text = ""
+
+								image:addEventListener( "touch", receviedimageDownload )
+
+							else
+
+								image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
+								image.id = ChatHistory[i].Image_Path
+
+								image.anchorY=0
+								image.anchorX = 0
+								image.x=bg.x+2.5
+								image.y=bg.y+2.5
+
+								bg.width = image.contentWidth+5
+								bg.height = image.contentHeight+5	
+
+								--ChatBox.isVisible = true
+								--ChatBox_bg.isVisible = true
+							--	ChatBox.text = ""
+
+								image:addEventListener( "touch", receviedimageDownload )
+
+							end
+
+					end	
+
+
+				if ChatHistory[i].Message_From == tostring(ContactId) then
+					image.x = bg.x-bg.contentWidth+2.5
 				end
 
-									Image.x=W-35;Image.y=bg.y+bg.height/2
-
-									local mask = graphics.newMask( "res/assert/masknew.png" )
-
-									Image:setMask( mask )
-
-		else
+			end
 
 
-						bg.x=65
 
-						local Image = display.newImageRect(tempGroup,To_ContactId..".png",system.TemporaryDirectory,45,38)
+			local time = display.newText( tempGroup, Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%I:%M %p",TimeZone), 0, 0 , native.systemFont ,10 )
+			time.x=bg.x-5
+			time.y=bg.y+bg.contentHeight-time.contentHeight/2-10
+			time.anchorX=bg.anchorX;time.anchorY=bg.anchorY
 
-						if not Image then
-							Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-							Image.x=30;Image.y=bg.y+bg.height/2
-
-						end
-
-									Image.x=30;Image.y=bg.y+bg.height/2
-
-									local mask = graphics.newMask( "res/assert/masknew.png" )
-
-									Image:setMask( mask )
-
-			
-		end
-
-		local chat	
-
-		if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
-
-			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,W-115,0,native.systemFont,12)
-
-		else
-
-			chat = display.newText( Utils.decrypt(ChatHistory[i].MyUnitBuzz_Message),W-80,0,native.systemFont,12)
-
-		end
-		chat.anchorY=0
-		chat.anchorX = 0
-		chat.x=bg.x+5;chat.y=bg.y
-	
-
-		tempGroup:insert( chat )
-
-	
-		bg.width = chat.contentWidth+10	
-		bg.height = chat.contentHeight+10
-		bg.chat=chat.text
-
-		local owner
-
-		if MessageType == "GROUP" then
-
-			owner = display.newText(tempGroup,"",0,0,native.systemFont,14)
-			owner.anchorY=0
-			owner.anchorX = 0
-			owner.x=chat.x
-			owner.y=chat.y
-			owner:setTextColor(1,1,0)
-			chat.y=owner.y+20
-
-
-			bg.height = bg.height+20
+				
+			local arrow = display.newImageRect( tempGroup, "res/assert/whitetriangle.png", 8, 8 )
+			arrow.x=bg.x-5
+			arrow.y=bg.y-0.3
+			arrow.anchorY=0
 
 			if ChatHistory[i].Message_From == tostring(ContactId) then
+				chat.x = bg.x-bg.contentWidth+5
+				if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
+				bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-				owner.text = MemberName
 			else
-				owner.text = ChatHistory[i].ToName or "(~No Name)"
-			end
-		
-
-			if owner.contentWidth > bg.contentWidth then
-					bg.width = owner.contentWidth+10	
+				bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
+				time.x=bg.x+5
 			end
 
-		
-		end
-
-		bg.height = bg.height+10
-		bg.width = bg.width+35
-
-
-			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
-
-			Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
-
-							print( "here value : "..Imagename)
-
-			local image
-
-			 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
-		 	 local fhd = io.open( filePath )
-			
-				if fhd then		
-						
-					image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
-					io.close( fhd )
-
-				else
-
-					--network download
-					image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
-					image.id=ChatHistory[i].Image_Path
-					image:addEventListener( "touch", receviedimageDownload )
-
-				end
-
-
-			image.anchorY=0
-			image.anchorX = 0
-			image.x=bg.x+2.5
-			image.y=bg.y+2.5
-
-
-			bg.width = image.contentWidth+5
-			bg.height = image.contentHeight+5		
 
 
 			if ChatHistory[i].Message_From == tostring(ContactId) then
-				image.x = bg.x-bg.contentWidth+2.5
+				arrow.x=bg.x+2
+				arrow:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+			else
+			
+			arrow:scale( -1, 1 )
+			arrow.x=arrow.x+2
+			arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
+
 			end
 
+			chatScroll:insert(tempGroup)
 
 		end
 
-		local time = display.newText( tempGroup, Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%I:%M %p",TimeZone), 0, 0 , native.systemFont ,10 )
-		time.x=bg.x-5
-		time.y=bg.y+bg.contentHeight-time.contentHeight/2-10
-		time.anchorX=bg.anchorX;time.anchorY=bg.anchorY
-
-			
-		local arrow = display.newImageRect( tempGroup, "res/assert/whitetriangle.png", 8, 8 )
-		arrow.x=bg.x-5
-		arrow.y=bg.y-0.3
-		arrow.anchorY=0
-
-		if ChatHistory[i].Message_From == tostring(ContactId) then
-			chat.x = bg.x-bg.contentWidth+5
-			if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
-			bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-
-		else
-			bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
-			time.x=bg.x+5
-		end
-
-
-
-		if ChatHistory[i].Message_From == tostring(ContactId) then
-			arrow.x=bg.x+2
-			arrow:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-
-		else
-		
-		arrow:scale( -1, 1 )
-		arrow.x=arrow.x+2
-		arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
-
-		end
-
-		chatScroll:insert(tempGroup)
+	chatScroll:scrollTo( "bottom", { time=200 } )
 
 	end
 
-chatScroll:scrollTo( "bottom", { time=200 } )
 
-end
+
+
+
+
+function get_imagemodel(response)
+
+		print("SuccessMessage")
+
+		Imagepath = response.Abspath
+
+		Imagename = response.FileName
+
+		Imagesize = size
+
+
+		print("Imagesize................",Imagesize)
+
+		print("Imagename................",Imagename)
+
+		print("Imagepath................",Imagepath)
+
+			--image_name_png.isVisible = true
+
+			--image_name_png.text = Imagename
+
+			ChatBox_bg.isVisible = true
+
+			ChatBox.isVisible = false
+
+			--image_name_close.isVisible = true
+
+			sendBtn_bg.isVisible = true
+
+			sendBtn.isVisible = true
+
+			recordBtn.isVisible = false
+
+
+
+
+
+			local q = "UPDATE pu_MyUnitBuzz_Message SET Image_Path='"..Imagepath.."' WHERE id='"..image_update_row.."';"
+			db:exec( q )
+
+			sendMeaasage()
+
+			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+			
+			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+			isDeleted="false"
+			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+			ImagePath= Imagepath or ""
+			AudioPath="NULL"
+			VideoPath="NULL"
+			MyUnitBuzz_LongMessage=ChatBox.text
+			From=ContactId
+			To=To_ContactId
+			Message_Type = MessageType
+
+
+			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
+
+	end
+
+
+
+
 
 
 
 
 	local function printTimeSinceStart( event )
-
 
 
 			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
@@ -1041,9 +1176,11 @@ local function ChatSendAction( event )
 			display.getCurrentStage():setFocus( nil )
 
 
-print("Imagename : "..Imagename)
+          print("Imagename : "..Imagename)
 
 			if ChatBox.text ~= nil and ChatBox.text ~= "" then
+
+				print("chat message not null")
 			
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
@@ -1060,7 +1197,7 @@ print("Imagename : "..Imagename)
 			Message_Type = MessageType
 
 
-		--	native.showAlert("Type",Message_Type,{CommonWords.ok})
+		    --	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
 				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
 				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
@@ -1072,7 +1209,11 @@ print("Imagename : "..Imagename)
 			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
 
 
-		    elseif Imagename ~= nil or Imagename ~= "" then
+		    else
+
+		    	if Imagename ~= nil or Imagename ~= "" then
+
+		    		if ChatBox.text ~= nil and ChatBox.text ~= "" then
 
 		    	    print("ertertertertt")
 
@@ -1102,16 +1243,17 @@ print("Imagename : "..Imagename)
 						print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
 
-					Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"SEND",From,To,Message_Type,get_sendMssage)
+					    Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"SEND",From,To,Message_Type,get_sendMssage)
 
-
-
+                   end
+                   end
 	         end
 
 	end
 
 return true
 end
+
 
 
 
@@ -1155,6 +1297,42 @@ local function onKeyEvent( event )
 
         return false
  end
+
+
+
+
+
+
+	function ImageClose(event)
+
+		    local phase = event.phase
+
+			if phase=="began" then
+
+				display.getCurrentStage():setFocus( event.target )
+
+			elseif phase=="ended" then
+
+				display.getCurrentStage():setFocus( nil )
+
+				image_name_png.text = ""
+
+				image_name_close.isVisible = false
+
+				--ChatBox_bg.isVisible = true
+
+			  --  ChatBox.isVisible = true
+
+				os.remove( path )
+
+	            print("imagepath removal..........................",os.remove( path ))
+
+			end
+
+	end
+
+
+
 
 local function CreateTabBarIcons( )
 
@@ -1501,14 +1679,77 @@ function scene:updateAudio(dataFileName)
 
 	end
 
-function scene:resumeGame()
+	function scene:resumeImageCallBack(photoviewname,button_idvalue)
+
+		print("resume game calling")
+
+		composer.removeHidden()
+
+		if photoviewname  ~= nil and photoviewname ~= "" then
+
+				if button_idvalue == "cancel" then
+
+					print("cancel pressed")
+
+				elseif button_idvalue == "send" then
+
+					Imagename = photoviewname:match( "([^/]+)$" )
+
+					print( "photoviewname 1111: "..Imagename)
+
+					    local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+
+					    Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+						isDeleted="false"
+						Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+						Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+						ImagePath="DEFAULT"
+						ImageName = Imagename
+						ImageSize = Imagesize
+						AudioPath="NULL"
+						VideoPath="NULL"
+						MyUnitBuzz_LongMessage=ChatBox.text
+						From=ContactId
+						To=To_ContactId
+						Message_Type = MessageType
+
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						db:exec( insertQuery )
+
+
+
+
+					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Image_Path= 'DEFAULT'") do
+					   image_update_row = row.id 
+
+					end 
+
+					sendMeaasage()
+
+				  Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+
+
+
+				end
+
+		end
+
+	end
+
+
+
+
+	function scene:resumeGame()
+
+
+		print("resume game")
 
 			composer.removeHidden()
 
 			ChatBox.isVisible=true
 
 		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
-
 
 
 	end
@@ -1564,13 +1805,12 @@ function scene:create( event )
 	Copyicon.id="copy"
 	Copyicon:addEventListener( "touch", deleteAction )
 
-
-
-
-
 MainGroup:insert(sceneGroup)
 
 end
+
+
+
 
 function scene:show( event )
 
@@ -1584,7 +1824,7 @@ function scene:show( event )
 		end
 
 
-	
+		
 
 	elseif phase == "did" then
 
@@ -1686,18 +1926,17 @@ function scene:show( event )
 
 
 		chatScroll = widget.newScrollView(
-    {
-        top = 125,
-        left = 0,
-        width = W,
-        height = H-175,
-        listener = scrollListener,
-        hideBackground=true,
-        hideScrollBar=true,
-        horizontalScrollDisabled=true,
-       
-    }
-)
+	    {
+	        top = 125,
+	        left = 0,
+	        width = W,
+	        height = H-175,
+	        listener = scrollListener,
+	        hideBackground=true,
+	        hideScrollBar=true,
+	        horizontalScrollDisabled=true,  
+	    }
+	    )
 
 		chatScroll.anchorY=0
 		chatScroll.anchorX=0
@@ -1801,6 +2040,7 @@ sceneGroup:insert( tabBarGroup )
 		Runtime:addEventListener( "key", onKeyEvent )
 		BackBtn:addEventListener( "touch", backAction )
 		title:addEventListener( "touch", DetailAction )
+		image_name_close:addEventListener( "touch", ImageClose )
 		
 	end	
 
@@ -1820,6 +2060,7 @@ end
 
 					Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 					Runtime:removeEventListener( "key", onKeyEvent )
+					image_name_close:removeEventListener( "touch", ImageClose )
 
 
 		elseif phase == "did" then

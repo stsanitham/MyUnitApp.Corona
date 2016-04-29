@@ -9,6 +9,7 @@ local widget = require( "widget" )
 local Utility = require( "Utils.Utility" )
 EventCalender = require( "res.value.color" )
 local sqlite3 = require( "sqlite3" )
+local json = require( "json" )
 MyUnitBuzzString = require( "res.value.string" )
 local Applicationconfig = require("Utils.ApplicationConfig")
 
@@ -141,7 +142,6 @@ spinnerBg:addEventListener( "touch", SpinneBgtouch )
 
 
 
-
 function spinner_show ()
     spinner.isVisible=true
     spinner:toFront()
@@ -150,6 +150,7 @@ function spinner_show ()
     spinner:start()
 
 end
+
 
 function spinner_hide ()
     spinner.isVisible=false
@@ -167,6 +168,8 @@ local function panelTransDone( target )
 	end
 end
 
+
+
 function slideAction()
 	if(menuShowFlag) then
 
@@ -183,6 +186,7 @@ function slideAction()
 	end
 
 end
+
 
 
 function menuTouch( event )
@@ -204,7 +208,6 @@ end
 
 
 
-
 panel = widget.newPanel{
 location = "left",
 onComplete = panelTransDone,
@@ -218,7 +221,6 @@ outEasing = easing.outCubic
 
 composer.gotoScene( "Controller.splashScreen")
 
-
    
 --composer.gotoScene( "Controller.pushNotificationPage")
 
@@ -226,12 +228,11 @@ composer.gotoScene( "Controller.splashScreen")
 
 function DidReceiveRemoteNotification(message, additionalData, isActive)
 
-
     if additionalData.messageType ~= nil then
 
-                chatReceivedFlag=true
+            chatReceivedFlag=true
 
-            local UserId,ContactId,Name,FromName,GroupName
+        local UserId,ContactId,Name,FromName,GroupName
 
             for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
                     UserId = row.UserId
@@ -242,6 +243,7 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 
         
                 Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
+
                         isDeleted="false"
                         Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
                         Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
@@ -328,22 +330,20 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 end
 
 
+    OneSignal.Init(ApplicationConfig.OneSignal_Appid, ApplicationConfig.ProjectNumber, DidReceiveRemoteNotification)
+
+    OneSignal.EnableInAppAlertNotification(false)
 
 
+    ---------Google Analytics-------
 
-OneSignal.Init(ApplicationConfig.OneSignal_Appid, ApplicationConfig.ProjectNumber, DidReceiveRemoteNotification)
+    ga.init({ -- Only initialize once, not in every file
+        isLive = IsLive, -- REQUIRED
+        testTrackingID = ApplicationConfig.Analysic_TrackId, -- REQUIRED Tracking ID from Google -- Dev UA-51545075-5
+        productionTrackingID = ApplicationConfig.Analysic_TrackId,
+        debug = true, -- Recomended when starting
+    })
 
-OneSignal.EnableInAppAlertNotification(false)
-
-
----------Google Analytics-------
-
-ga.init({ -- Only initialize once, not in every file
-    isLive = IsLive, -- REQUIRED
-    testTrackingID = ApplicationConfig.Analysic_TrackId, -- REQUIRED Tracking ID from Google -- Dev UA-51545075-5
-    productionTrackingID = ApplicationConfig.Analysic_TrackId,
-    debug = true, -- Recomended when starting
-})
 
 
 -----Runtime Error------

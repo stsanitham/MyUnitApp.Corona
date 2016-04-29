@@ -25,6 +25,8 @@ local menuBtn, compose_msg_icon
 
 local messagelist_scrollView
 
+local compose_msg_icon
+
 openPage="pushNotificationListPage"
 
 local RecentTab_Topvalue = 70
@@ -222,7 +224,6 @@ local tabBarGroup = display.newGroup( )
 
 
 
-
 		local function DraftMessageCreation_list( draftmessagelist )
 
 			messagelist_scrollView:scrollToPosition
@@ -231,7 +232,16 @@ local tabBarGroup = display.newGroup( )
 						    time = 100,
 						}
 
+
+			if IsOwner == true then
+
+			compose_msg_icon.isVisible = true
+			compose_msg_icon.y = H - 45
+			compose_msg_icon.x=W/2+W/3 - 15
+
 			compose_msg_icon:toFront()
+
+		    end
 
 
 			for j=1, #draftmessageList_array do 
@@ -356,7 +366,15 @@ local tabBarGroup = display.newGroup( )
 
 						print("************************************************************")
 
+			if IsOwner == true then
+
+			compose_msg_icon.isVisible = true
+			compose_msg_icon.y = H - 45
+			compose_msg_icon.x=W/2+W/3 - 15
+
 			compose_msg_icon:toFront()
+
+		    end
 
 
 			for j=1, #sentmessageList_array do 
@@ -536,8 +554,15 @@ local tabBarGroup = display.newGroup( )
 						    time = 100,
 						}
 
+            if IsOwner == true then
+
+			compose_msg_icon.isVisible = true
+			compose_msg_icon.y = H - 45
+			compose_msg_icon.x=W/2+W/3 - 15
 
 			compose_msg_icon:toFront()
+
+		    end
 
 
 			for j=1, #messageList_array do 
@@ -1810,6 +1835,7 @@ end
 						compose_msg_icon:removeEventListener("touch",composeMessage)
 						Runtime:removeEventListener( "key", onKeyEvent )
 						Background:removeEventListener("touch",FocusComplete)
+
 
 			elseif phase == "did" then
 
