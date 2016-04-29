@@ -453,11 +453,11 @@ local function onSystemEvent( event )
         
     elseif ( event.type == "applicationOpen" ) then
 
-        chatReceivedFlag=true
+      --  chatReceivedFlag=true
 
     elseif event.type == "applicationResume" then
 
-        chatReceivedFlag=true
+      --  chatReceivedFlag=true
     
     end
 
