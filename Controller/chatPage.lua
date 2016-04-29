@@ -872,6 +872,32 @@ local function sendMeaasage()
 					image.x = bg.x-bg.contentWidth+2.5
 				end
 
+				if ChatHistory[i].Image_Path == "DEFAULT" then
+
+					local options = {
+							    width = 32,
+							    height = 32,
+							    numFrames = 4,
+							    sheetContentWidth = 64,
+							    sheetContentHeight = 64
+							}
+					local spinnerSingleSheet = graphics.newImageSheet( "res/assert/processer.png", options )
+
+					local imageLoader = widget.newSpinner
+						{
+						    width = 106/4 ,
+						    height = 111/4,
+						    deltaAngle = 10,
+						    sheet = spinnerSingleSheet,
+						    startFrame = 1,
+						    incrementEvery = 20
+						}
+
+						tempGroup:insert(imageLoader)
+						imageLoader.x=image.x;imageLoader.y=image.y
+						imageLoader:start()
+				end
+
 			end
 
 
