@@ -218,7 +218,7 @@ end
 			
 			if event.target.id == "message" then
 
-				title.text = ChatPage.Messages
+				title.text = ChatPage.Chats
 				print( "Messages" )
 
 			    	CreateTabBarIcons()

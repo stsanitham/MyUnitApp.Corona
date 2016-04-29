@@ -210,7 +210,7 @@ local function TabbarTouch( event )
 			
 			if event.target.id == "message" then
 
-				title.text = ChatPage.Messages
+				title.text = ChatPage.Chats
 
 				print( "Messages" )
 
@@ -620,15 +620,16 @@ local function careePath_list( list )
                         if Image then
 
 							Image:removeSelf();Image=nil
-						--print(img_event.response.filename)
-						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
-						Image.width=45;Image.height=38
-						Image.x=30;Image.y=background.y+background.contentHeight/2
-    				--event.row:insert(img_event.target)
+							--print(img_event.response.filename)
 
-    				    local mask = graphics.newMask( "res/assert/masknew.png" )
+							Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+							Image.width=45;Image.height=38
+							Image.x=30;Image.y=background.y+background.contentHeight/2
+	    				    --event.row:insert(img_event.target)
 
-									Image:setMask( mask )
+    				        local mask = graphics.newMask( "res/assert/masknew.png" )
+
+							Image:setMask( mask )
 
 						 else
 
@@ -637,7 +638,7 @@ local function careePath_list( list )
 					     end
 
     			   
-    			end
+    			    end
 
     			end, list[i].Contact_Id..".png", system.TemporaryDirectory)
 		else
