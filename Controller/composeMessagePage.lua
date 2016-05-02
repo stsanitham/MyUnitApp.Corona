@@ -83,6 +83,22 @@ end
 
 
 
+local function onIconsTouch( event )
+	
+	if event.phase == "began" then
+
+		native.setKeyboardFocus(nil)
+		display.getCurrentStage():setFocus( event.target )
+
+	elseif event.phase == "ended" then
+
+	    display.getCurrentStage():setFocus( nil )
+
+	end
+
+	return true
+end
+
 
 
 	function get_messagemodel(response)
@@ -964,7 +980,9 @@ end
 				camera_icon.x=W/2 - W/3 - 15
 				camera_icon.anchorX=0
 				camera_icon.anchorY=0
+				camera_icon.id= "camera"
 				camera_icon.y = icons_holder_bg.y + 7.5
+				camera_icon:addEventListener("touch",onIconsTouch)
 
 
 				camera_icon_txt = display.newText(sceneGroup,MessagePage.Camera,0,0,native.systemFont,14)
@@ -1012,7 +1030,9 @@ end
 				gallery_icon.x= W/2 - W/3 - 15
 				gallery_icon.anchorX=0
 				gallery_icon.anchorY=0
+				gallery_icon.id= "gallery"
 				gallery_icon.y = camera_icon.y + camera_icon.contentHeight + 35
+				gallery_icon:addEventListener("touch",onIconsTouch)
 
 
 				gallery_icon_txt = display.newText(sceneGroup,MessagePage.Gallery,0,0,native.systemFont,14)

@@ -322,6 +322,9 @@ local function attachAction( event )
 return true
 end
 
+
+
+
 local function AttachmentTouch( event )
 
 	if event.phase == "began" then
@@ -345,6 +348,9 @@ local function AttachmentTouch( event )
 
 return true
 end
+
+
+
 
 local function createAttachment( )
 	
@@ -480,6 +486,7 @@ end
 			print( "touching" )
 			holdLevel=0
 			chatHoldflag=true
+
 		elseif event.phase == "moved" then
 			 local dy = math.abs( ( event.y - event.yStart ) )
 	        -- If the touch on the button has moved more than 10 pixels,
@@ -491,7 +498,9 @@ end
 	            holdLevel=0
 	            chatHoldflag=false
 	        end
+
 		elseif event.phase == "ended" then
+
 			chatHoldflag=false
 			
 
@@ -894,6 +903,7 @@ end
 			arrow.y=bg.y-0.3
 			arrow.anchorY=0
 
+
 			if ChatHistory[i].Message_From == tostring(ContactId) then
 				chat.x = bg.x-bg.contentWidth+5
 				if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
@@ -963,9 +973,6 @@ function get_imagemodel(response)
 			sendBtn.isVisible = true
 
 			recordBtn.isVisible = false
-
-
-
 
 
 			local q = "UPDATE pu_MyUnitBuzz_Message SET Image_Path='"..Imagepath.."' WHERE id='"..image_update_row.."';"
@@ -1600,6 +1607,9 @@ end
 	    end   
 	end
 
+
+
+
 	local function RecordAction(event)
 
 
@@ -1609,9 +1619,6 @@ end
 		if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
 
-			 
-			 
-			
 			r:startRecording()
 
 			ChatBox.text= ChatPage.RecordStartText 
@@ -1626,10 +1633,12 @@ end
 
 		end
 
-return true
-
+ 			return true
 
 	end
+
+
+
 
 	local function scrollListener( event )
 
@@ -1674,6 +1683,7 @@ end
 
 
 
+
 	function scene:resumeImageCallBack(photoviewname,button_idvalue)
 
 		print("resume game calling")
@@ -1712,8 +1722,6 @@ end
 						db:exec( insertQuery )
 
 
-
-
 					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Image_Path= 'DEFAULT'") do
 					   image_update_row = row.id 
 
@@ -1722,8 +1730,6 @@ end
 					sendMeaasage()
 
 				  Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
-
-
 
 
 				end
@@ -1737,7 +1743,6 @@ end
 
 	function scene:resumeGame()
 
-
 		print("resume game")
 
 			composer.removeHidden()
@@ -1748,6 +1753,8 @@ end
 
 
 	end
+
+
 
 ------------------------------------------------------
 
@@ -1781,12 +1788,12 @@ function scene:create( event )
 	BackBtn.xScale=-1
 	--BackBtn:setFillColor(0)
 
-	title = display.newText(sceneGroup,FlapMenu.chatMessageTitle,0,0,native.systemFont,18)
+	title = display.newText(sceneGroup,"",0,0,native.systemFont,18)
 	title.anchorX = 0
 	title.x=BackBtn.x+BackBtn.contentWidth-5;title.y = title_bg.y
 	title:setFillColor(0)
 
-	title.text = FlapMenu.chatMessageTitle
+	title.text = ChatPage.Chats
 
 	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 15, 15 )
 	Deleteicon.x=W-20;Deleteicon.y=title_bg.y
@@ -1819,8 +1826,6 @@ function scene:show( event )
 		end
 
 
-		
-
 	elseif phase == "did" then
 
 		ContactDetails = event.params.contactDetails
@@ -1829,19 +1834,21 @@ function scene:show( event )
 
 		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To or ContactDetails.MyUnitBuzzGroupId
 
-		if tostring(To_ContactId) == tostring(ContactId) then
-			To_ContactId=ContactDetails.Message_From
-		end
 
-		if ContactDetails.MyUnitBuzzGroupId ~= nil then
+			if tostring(To_ContactId) == tostring(ContactId) then
+				To_ContactId=ContactDetails.Message_From
+			end
 
-			MessageType = "GROUP"
 
-		else
+			if ContactDetails.MyUnitBuzzGroupId ~= nil then
 
-			MessageType = "INDIVIDUAL"
+				MessageType = "GROUP"
 
-		end
+			else
+
+				MessageType = "INDIVIDUAL"
+
+			end
 
 		
 		if ContactDetails.Message_Type then
@@ -1895,8 +1902,6 @@ function scene:show( event )
 		image_name_close.x= ChatBox_bg.width - 30
 		image_name_close.isVisible = false
 		image_name_close.y=ChatBox_bg.y+10
-
-
 
 
 		-- cameraBtn = display.newImageRect( sceneGroup, "res/assert/user.png", 25,20 )
