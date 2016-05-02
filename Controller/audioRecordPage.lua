@@ -22,6 +22,7 @@ local menuBtn
 local filePath
 local okBtn,okBtn_txt,cancelBtn,cancelBtn_txt
 local userAction="cancel"
+
 openPage="audiorecordPage"
 
 local r                 -- media object for audio recording
@@ -49,6 +50,7 @@ local function closeDetails( event )
 			end
 
 	end
+
 return true
 
 end
@@ -60,8 +62,7 @@ local function audioAction( event )
 			display.getCurrentStage():setFocus( nil )
 
 			if event.target.id == "play" then
-				print("play")
-				native.showAlert( "MUB", "dataFileName : "..dataFileName ,{"Ok"})
+
 				    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
@@ -72,7 +73,8 @@ local function audioAction( event )
 		                fSoundPaused = false
 		                
 						playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
-						audio.play( playbackSoundHandle)
+
+						audio.play( playbackSoundHandle, { onComplete=onCompleteSound } )
 
 						 keyTips.text = "Playing"
 		            end  
@@ -86,6 +88,7 @@ local function audioAction( event )
 					okBtn_txt.isVisible=true
 					cancelBtn.isVisible=true
 					cancelBtn_txt.isVisible=true
+
 
 		            keyTips.text = "Recording Stopped"
 		       	end
@@ -125,6 +128,7 @@ function scene:create( event )
 	Background.x=W/2;Background.y=H/2
 	Background.id="background"
 	Background:addEventListener( "touch", closeDetails )
+
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
@@ -167,6 +171,7 @@ function scene:create( event )
 	back_icon:addEventListener( "touch", closeDetails )
 
 
+
 MainGroup:insert(sceneGroup)
 
 end
@@ -192,6 +197,7 @@ function scene:show( event )
 		playBtn = display.newText( sceneGroup, "Play",  0,0,native.systemFont,16 )
 		playBtn.x=W/2;playBtn.y=H/2+150
 		playBtn.id="play"
+		playBtn.play="play"
 		playBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 
@@ -227,6 +233,7 @@ function scene:show( event )
 			cancelBtn.isVisible=false
 			cancelBtn_txt.isVisible=false
 
+
 		
 		if "simulator" == system.getInfo("environment") then
 		    dataFileName = dataFileName .. ".aif"
@@ -249,6 +256,7 @@ function scene:show( event )
 		timerCount:setFillColor( 0 )
 		timerCount.x=W/2
 		timerCount.y=H/2-50
+
 
 
 		startBtn:addEventListener( "touch", audioAction )
@@ -287,6 +295,7 @@ end
 	            os.remove( filePath )
 
 			end
+
 
 		end	
 

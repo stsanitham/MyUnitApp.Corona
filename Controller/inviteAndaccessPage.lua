@@ -495,13 +495,13 @@ local function CreateList(list,scrollView)
 			local Display_Group = {}
 
 			local tempGroup = groupArray[#groupArray]
-			local bgheight = 105
+			local bgheight = 65
 
             local Image 
 
 		
-			local background = display.newRect(tempGroup,0,0,W,45)
-			local Initial_Height = 3
+			local background = display.newRect(tempGroup,0,0,W,55)
+			local Initial_Height = 0
 
 			if(groupArray[#groupArray-1]) ~= nil then
 				Initial_Height = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height-2
@@ -518,17 +518,14 @@ local function CreateList(list,scrollView)
 
 
 
-			local line = display.newRect(tempGroup,W/2,background.y,W,1)
-			line.y=background.y+background.contentHeight-line.contentHeight+15
-			line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-
+		
 
 
 		if feedArray[i].ImagePath ~= nil then
 
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2+5
-			Image.isVisible = true
+					Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			--Image.anchorY=0
+						Image.x=30;Image.y=background.y+background.contentHeight/2
 
 			    networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
 				"GET",
@@ -538,12 +535,13 @@ local function CreateList(list,scrollView)
 						print ( "Network error - download failed" )
 					else
 
-						if Image then
+					if Image then
 						Image:removeSelf();Image=nil
 						
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
 						Image.width=35;Image.height=35
-						Image.x=30;Image.y=background.y+background.height/2-7
+						--Image.anchorY=0
+						Image.x=30;Image.y=background.y+background.contentHeight/2
     				--event.row:insert(img_event.target)
 
     			    else
@@ -557,7 +555,8 @@ local function CreateList(list,scrollView)
 		else
 
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2+5
+			--Image.anchorY=0
+						Image.x=30;Image.y=background.y+background.contentHeight/2
 
 		end
 
@@ -569,7 +568,7 @@ local function CreateList(list,scrollView)
 
 		    	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-				Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=background.y-1
+				Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=background.y+10
 				Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
@@ -588,7 +587,7 @@ local function CreateList(list,scrollView)
 
 				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-				Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+				Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 				Display_Group[#Display_Group]:setFillColor( 0.3 )
 				Display_Group[#Display_Group].text = feedArray[i].EmailAddress
 
@@ -609,34 +608,42 @@ local function CreateList(list,scrollView)
 
 				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-				Display_Group[#Display_Group].x=Image.x+Image.contentWidth/2 +10;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+				Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
 				Display_Group[#Display_Group]:setFillColor( 0.3 )
 				Display_Group[#Display_Group].text = feedArray[i].PhoneNumber
 
-			end
-
-
-
-			background.height = 0
-
-			for i=1,#Display_Group do
-
-				background.height = background.height + Display_Group[i].contentHeight+10
+				background.height = background.height+15
 
 			end
 
-		--	background.height = background.height + 20
 
-			--background.height = background.height-((background.height/5)*(5-#Display_Group))+5
+
+		-- 	--background.height = 0
+
+		-- 	for i=1,#Display_Group do
+
+		-- 		background.height = background.height + Display_Group[i].contentHeight+10
+
+		-- 	end
+
+		-- --	background.height = background.height + 20
+
+		-- 	--background.height = background.height-((background.height/5)*(5-#Display_Group))+5
 
 
 	
 
-			 --  group =  Createmenu(background)
+		-- 	 --  group =  Createmenu(background)
 
-   				--tempGroup:insert( group )
+  --  				--tempGroup:insert( group )
 
-   				--group.isVisible=false
+  --  				--group.isVisible=false
+
+
+	local line = display.newRect(tempGroup,W/2,background.y,W,1)
+			line.y=background.y+background.contentHeight-line.contentHeight
+			line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+
 
 			scrollView:insert(tempGroup)
 

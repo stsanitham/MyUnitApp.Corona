@@ -982,6 +982,7 @@ if IsOwner == true then
 
 				composer.gotoScene( "Controller.MessagingPage" )
 
+
 			else
 
 				composer.gotoScene( "Controller.eventCalenderPage" )

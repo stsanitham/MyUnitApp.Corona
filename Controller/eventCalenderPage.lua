@@ -294,7 +294,11 @@ local tempGroup = event_groupArray[#event_groupArray]
 
 local bgheight = 45
 --os.date("%Y-%m-%dT%H:%m:%S")
-local timeGMT = Utils.makeTimeStamp( response.date )
+
+       print( "***************************** : "..response.date) 
+
+       
+local timeGMT = Utils.makeTimeStampwithOffset( response.date )
 
 
 --date_value = os.date( "%A" , timeGMT )
@@ -426,9 +430,9 @@ leftDraw_line.anchorY=0
 leftDraw_line.height = background.height+5
 leftDraw_line.x=W/4;leftDraw_line.y=background.y-5
 
-local TimeZone = Utils.GetWeek(os.date( "%p" , timeGMT ))
+local Timezone = Utils.GetWeek(os.date( "%p" , timeGMT ))
 
-local time = display.newText(tempGroup,os.date( "%I:%M \n  "..TimeZone , timeGMT ),0,0,80,0,native.systemFontBold,12)
+local time = display.newText(tempGroup,Utils.getTime( timeGMT,"%I:%M \n  "..Timezone,response.TimeZone ),0,0,80,0,native.systemFontBold,12)
 time.x=W/6
 time.y=background.y+background.contentHeight/2
 Utils.CssforTextView(time,sp_Date_Time)
@@ -607,7 +611,7 @@ print( DateWise_response )
 
 			date = dateSplit(DateWise_response[i].date)
 
-			local timeGMT = Utils.makeTimeStamp( DateWise_response[i].date )
+			local timeGMT = Utils.makeTimeStampwithOffset( DateWise_response[i].date )
 
 			if string.find( os.date( "%B %d, %Y" , timeGMT ):upper( ), searchText:upper( )) ~= nil then
 
@@ -762,7 +766,7 @@ local function dayTouch(event)
 
 		eventList(event.target.value)
 
-		local timeGMT = makeTimeStamp( startdate )
+		local timeGMT = makeTimeStampwithOffset( startdate )
 
 		addEventBtn.value = timeGMT
 

@@ -102,6 +102,7 @@ local function onKeyEvent( event )
 	                   button_idvalue = "cancel"
 
 
+
 				end
 
 
@@ -110,6 +111,7 @@ local function onKeyEvent( event )
 	                   composer.hideOverlay("slideRight",300)
 
 	                   button_idvalue = "send"
+
 
 	                 
 				end
@@ -327,6 +329,7 @@ end
 			elseif phase == "did" then
 
 	             event.parent:resumeImageCallBack(photoview,button_idvalue)
+
 
 			end	
 

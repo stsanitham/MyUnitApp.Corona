@@ -358,12 +358,12 @@ local function Broadcast_list( list )
 
 					end
 
-					if list[j].Message_Type == "GROUP" and (list[j].Message_From == list[i].Message_To or  list[j].Message_From == list[i].Message_From)  then
+					-- if list[j].Message_Type == "GROUP" and (list[j].Message_From == list[i].Message_To or  list[j].Message_From == list[i].Message_From)  then
 
-						flag=false
+					-- 	flag=false
 		
 
-					end
+					-- end
 
 			end
 
@@ -396,9 +396,6 @@ local function Broadcast_list( list )
 
 			print( json.encode( list[i]))
 
-
-
-			
 
 
 			local Name = ""
@@ -467,7 +464,7 @@ local function Broadcast_list( list )
 
 			local time = display.newText( tempGroup,time,W-80,background.y+3,native.systemFont,10 )
 				time.x=W-120
-				time.anchorX=0;time.anchorY=0
+				time.anchorX=0
 				time:setTextColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
@@ -489,6 +486,7 @@ local function Broadcast_list( list )
 			end
 
 			time.x=W-time.contentWidth-10
+			time.y=Name_txt.y
 
 			local line = display.newRect(tempGroup,W/2,background.y,W,1)
 			line.y=background.y+background.contentHeight-line.contentHeight
@@ -514,7 +512,8 @@ local function Broadcast_list( list )
 
 
 
-				local circle = display.newCircle( tempGroup, W-20, background.y+background.contentHeight/2+5, 10 )
+
+				local circle = display.newCircle( tempGroup, W-20, background.y+background.contentHeight/2+7, 10 )
 				circle.height=23;circle.width=25
 				circle:setFillColor( Utils.convertHexToRGB("#008B45" ))
 
@@ -561,7 +560,7 @@ end
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-	title = display.newText(sceneGroup,FlapMenu.chatMessageTitle,0,0,native.systemFont,18)
+	title = display.newText(sceneGroup,ChatPage.Chats,0,0,native.systemFont,18)
 	title.anchorX = 0
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)

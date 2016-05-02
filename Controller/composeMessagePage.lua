@@ -40,6 +40,28 @@ local Details={}
 
 local openPagevalue = "addpage"
 
+ local pWidth = display.pixelWidth 
+
+ local pHeight = display.pixelHeight
+
+
+
+fieldOffset = 0
+
+local deviceModel = system.getInfo( "model" )
+
+if isIos then
+
+if (deviceModel == "iPhone") then	
+
+	 fieldOffset = 80
+
+end
+
+end
+
+fieldTrans = 200
+
 
 
 --------------------------------------------------
@@ -58,28 +80,6 @@ local function closeDetails( event )
 return true
 
 end
-
-
-
-
-local function FocusComplete( event )
-
-	if event.phase == "began" then
-
-		native.setKeyboardFocus(nil)
-		display.getCurrentStage():setFocus( event.target )
-
-	elseif event.phase == "ended" then
-
-	    display.getCurrentStage():setFocus( nil )
-
-	end
-
-	return true
-	
-
-end 
-
 
 
 
@@ -118,6 +118,8 @@ end
 
 									composer.hideOverlay()
 
+								--	scrollTo(0)
+
 								elseif openPagevalue ~= "addpage" then
 
 											  local options =
@@ -133,6 +135,8 @@ end
 									spinner.y=H/2-75
 
 									composer.gotoScene("Controller.pushNotificationListPage",options)
+
+								--	scrollTo(0)
 
 								end
 
@@ -172,6 +176,8 @@ end
 
 									composer.hideOverlay()
 
+								--	scrollTo(0)
+
 								elseif openPagevalue ~= "addpage" then
 
 									  local options =
@@ -186,6 +192,8 @@ end
 									spinner.y=H/2-75
 
 									composer.gotoScene("Controller.pushNotificationListPage",options)
+
+								--	scrollTo(0)
 
 								end
 
@@ -225,6 +233,8 @@ end
 
 									composer.hideOverlay()
 
+								--	scrollTo(0)
+
 								elseif openPagevalue ~= "addpage" then
 
 									 local options =
@@ -239,6 +249,8 @@ end
 									spinner.y=H/2-75
 
 									composer.gotoScene("Controller.pushNotificationListPage",options)
+
+								--	scrollTo(0)
 
 								end
 
@@ -370,10 +382,8 @@ end
     	        Date:addEventListener("touch",onTimePickerTouch)
     	        DateSelect_icon:addEventListener("touch",onTimePickerTouch)
 
-
-    	 		 acceptschedule_button:addEventListener("touch",onScheduleButtonTouch) 	
-
-    	         Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
+    	 		acceptschedule_button:addEventListener("touch",onScheduleButtonTouch) 	
+    	        Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
 
 
 	        else
@@ -387,14 +397,13 @@ end
 
 
 
-
  
 
 	local function SetError( displaystring, object )
 
-	object.text=displaystring
-	object.size=11
-	object:setTextColor(1,0,0)
+		object.text=displaystring
+		object.size=11
+		object:setTextColor(1,0,0)
 
 	end
 
@@ -409,8 +418,6 @@ end
 
     		display.getCurrentStage():setFocus( event.target )
 
-
-	
     	elseif phase=="ended" then
 
     	    local validation = false
@@ -515,12 +522,62 @@ end
 
 
 
+MainGroup.y = 0
+
+MainGroupY = MainGroup.y
+
+
+local function moveFieldsDown()
+    transition.to( MainGroup, { time=fieldTrans, y=(MainGroupY)} )
+end
+ 
+local function moveFieldsUp()
+    transition.to( MainGroup, { time=fieldTrans, y=(MainGroupY - fieldOffset)} )
+end
+
+
+
+
+
+local function FocusComplete( event )
+
+	if event.phase == "began" then
+
+		native.setKeyboardFocus(nil)
+		display.getCurrentStage():setFocus( event.target )
+
+		 if (pHeight <= 960) then
+
+			moveFieldsDown()
+
+		 end
+
+
+	elseif event.phase == "ended" then
+
+	    display.getCurrentStage():setFocus( nil )
+
+         if (pHeight <= 960) then
+
+   		  moveFieldsDown()
+
+   		 end
+
+	end
+
+	   return true
+
+end 
+
+
+
+
+
 
 
 local function TextLimitation( event )
 
 	   if event.phase == "began" then
-
 
 	   elseif event.phase == "submitted" then
 
@@ -528,11 +585,26 @@ local function TextLimitation( event )
 
 				   		native.setKeyboardFocus( nil )
 
+				   		 if (pHeight <= 960) then
+
+				   		  moveFieldsDown()
+
+				   		 end
+
 				   end
+
+			--scrollTo(0)
+
+					
+					  if (pHeight <= 960) then
+
+		                    moveFieldsDown()
+
+		              end
+
 
 
 	   elseif event.phase == "editing" then
-
 
 					if event.target.id =="shortmessage" then
 
@@ -567,6 +639,7 @@ local function TextLimitation( event )
 
 						    end
 
+
 					end
 
 
@@ -596,6 +669,12 @@ local function TextLimitation( event )
 
 						       end
 
+                                 
+						        if (pHeight <= 960) then
+
+		                                moveFieldsUp()
+		                        end
+
 
 
 							--print( event.newCharacters )
@@ -606,9 +685,41 @@ local function TextLimitation( event )
 
 							native.setKeyboardFocus( nil )
 
+								if (pHeight <= 960) then
+
+								 moveFieldsDown()
+
+								end
+
 							end
 
+		                           
 					end
+
+
+
+	        elseif event.phase == "ended" then
+
+				    if event.target.id =="longmessage" then
+
+				   		native.setKeyboardFocus( nil )
+
+
+				   		       if (pHeight <= 960) then
+
+								 moveFieldsDown()
+
+								end
+
+				   end
+
+     --               -- scrollTo(0)
+
+					  if (pHeight <= 960) then
+
+		                    moveFieldsDown()
+
+		              end
 
 		  end
 
@@ -634,6 +745,8 @@ local function TextLimitation( event )
 
 		        	composer.hideOverlay( "slideRight", 300 )
 
+		        	--scrollTo(0)
+
 		        	return true
 		            
 		        end
@@ -658,6 +771,8 @@ local function TextLimitation( event )
 			    display.getCurrentStage():setFocus( nil )
 
 					    composer.hideOverlay("slideRight",300)		
+
+					   -- scrollTo(0)
 
 
 			end
@@ -807,7 +922,7 @@ end
 				longmsg_textbox.id = "longmessage"
 				longmsg_textbox.isVisible = true
 				longmsg_textbox.hasBackground = true
-				longmsg_textbox:setReturnKey( "done" )
+				--longmsg_textbox:setReturnKey( "done" )
 				longmsg_textbox.inputType = "default"
 				sceneGroup:insert(longmsg_textbox)
 				--longmsg_textbox.x=10
@@ -822,246 +937,259 @@ end
 				long_msg_charlimit:setFillColor(0)
 
 
-				if sceneevent.params then
+-- 				if sceneevent.params then
 
-                        detailvalues = sceneevent.params.Details
-                        page = sceneevent.params.value
+--                         detailvalues = sceneevent.params.Details
+--                         page = sceneevent.params.value
 
-                        print("detailvalues : "..json.encode(detailvalues))
+--                         print("detailvalues : "..json.encode(detailvalues))
 
-                        if page == "edit" then
+--                         if page == "edit" then
 
-                        shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
-						longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
-
-
-								if shortmsg_textbox.id =="shortmessage" then
-
-										if (string.len(shortmsg_textbox.text) > 250) then
-
-										shortmsg_textbox.text = shortmsg_textbox.text:sub(1, 250)
-
-										end
-
-
-										if (string.len(shortmsg_textbox.text) <= 250) then
-
-										      counttext = 250 - string.len(shortmsg_textbox.text).. MessagePage.characters
-
-										      short_msg_charlimit.text = counttext
-
-										end
-
-
-								        if (string.len(shortmsg_textbox.text) <= 0) then
-
-								       	      short_msg_charlimit.text = "250"..MessagePage.characters
-
-								        end
-
-								end
+--                         shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
+-- 						   longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
 
 
-								if longmsg_textbox.id =="longmessage" then
+-- 								if shortmsg_textbox.id =="shortmessage" then
 
-										if (string.len(longmsg_textbox.text) > 1000) then
+-- 										if (string.len(shortmsg_textbox.text) > 250) then
 
-										longmsg_textbox.text = longmsg_textbox.text:sub(1, 1000)
+-- 										shortmsg_textbox.text = shortmsg_textbox.text:sub(1, 250)
 
-										end
-
-
-										if (string.len(longmsg_textbox.text) <= 1000) then
-
-										       countlongtext = 1000 - string.len(longmsg_textbox.text) .. MessagePage.characters
-
-										       long_msg_charlimit.text = countlongtext
-
-										end
+-- 										end
 
 
+-- 										if (string.len(shortmsg_textbox.text) <= 250) then
 
-									       if (string.len(longmsg_textbox.text) <= 0) then
+-- 										      counttext = 250 - string.len(shortmsg_textbox.text).. MessagePage.characters
+
+-- 										      short_msg_charlimit.text = counttext
+
+-- 										end
+
+
+-- 								        if (string.len(shortmsg_textbox.text) <= 0) then
+
+-- 								       	      short_msg_charlimit.text = "250"..MessagePage.characters
+
+
+-- 								        end
+
+
+-- 										-- if (event.newCharacters=="\n") then
+
+-- 										-- shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
+
+-- 										-- native.setKeyboardFocus( longmsg_textbox )
+
+-- 										-- end
+
+
+-- 								end
+
+
+
+-- 								if longmsg_textbox.id =="longmessage" then
+
+-- 										if (string.len(longmsg_textbox.text) > 1000) then
+
+-- 										longmsg_textbox.text = longmsg_textbox.text:sub(1, 1000)
+
+-- 										end
+
+
+-- 										if (string.len(longmsg_textbox.text) <= 1000) then
+
+-- 										       countlongtext = 1000 - string.len(longmsg_textbox.text) .. MessagePage.characters
 
 									       	 long_msg_charlimit.text = "1000"..MessagePage.characters
-
-									       end
-
+-- 										       long_msg_charlimit.text = countlongtext
 
 
-										--print( event.newCharacters )
-
-										if (event.newCharacters=="\n") then
-
-										longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
-
-										native.setKeyboardFocus( nil )
-
-										end
-
-								end
+-- 										end
 
 
+-- 								       if (string.len(longmsg_textbox.text) <= 0) then
 
-						back_icon:addEventListener("touch",closeMessagePage)
-						back_icon_bg:addEventListener("touch",closeMessagePage)
-						title:addEventListener("touch",closeMessagePage)
+-- 								       	 long_msg_charlimit.text = "1000"..MessagePage.characters
+
+-- 								       end
+
+
+-- 										--print( event.newCharacters )
+
+-- 										if (event.newCharacters=="\n") then
+
+-- 										longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
+
+-- 										native.setKeyboardFocus( nil )
+
+-- 										end
+
+-- 								end
+
+
+
+-- 						back_icon:addEventListener("touch",closeMessagePage)
+-- 						back_icon_bg:addEventListener("touch",closeMessagePage)
+-- 						title:addEventListener("touch",closeMessagePage)
 
                        	
-                        end
+--                         end
 
-			    end
-
-
-
-                
-  			    -- if openPagevalue == "editpage" then
-
-				-- 	if sceneevent.params then
-
-				-- 		edit_msg_values = sceneevent.params.editvalues
-
-				-- 		shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
-				-- 		longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
-
-				-- 	end
+-- 			    end
 
 
-				-- 		back_icon:addEventListener("touch",closeMessagePage)
-				-- 		back_icon_bg:addEventListener("touch",closeMessagePage)
-				-- 		title:addEventListener("touch",closeMessagePage)
 
-				-- end
+           
+--   			    -- if openPagevalue == "editpage" then
 
+-- 				-- 	if sceneevent.params then
 
-------------------------------------------- attachment icon -----------------------------------------
+-- 				-- 		edit_msg_values = sceneevent.params.editvalues
 
+-- 				-- 		shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
+-- 				-- 		longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
 
-				attachment_icon = display.newImageRect(sceneGroup,"res/assert/attached.png",20,20)
-				attachment_icon.x= longmsg_textbox.width - 20
-				attachment_icon.anchorX=0
-				attachment_icon.anchorY=0
-				attachment_icon.isVisible = false
-				attachment_icon.y = long_msg_charlimit.y - 20
-				attachment_icon:toFront()
+-- 				-- 	end
 
 
-------------------------------------------- Icons Holder --------------------------------------------
+-- 				-- 		back_icon:addEventListener("touch",closeMessagePage)
+-- 				-- 		back_icon_bg:addEventListener("touch",closeMessagePage)
+-- 				-- 		title:addEventListener("touch",closeMessagePage)
 
-				icons_holder_bg = display.newRect(sceneGroup,0,0,W-20,EditBoxStyle.height+115)
-				icons_holder_bg.x=10
-				icons_holder_bg.anchorX=0
-				icons_holder_bg.anchorY=0
-				icons_holder_bg.strokeWidth = 1
-				icons_holder_bg:setStrokeColor( 0,0,0,0.1)
-				icons_holder_bg.y = long_msg_charlimit.y+long_msg_charlimit.height+10
-				icons_holder_bg:setFillColor( 1,1,1,0.8)
-
--------------------------------------------- Camera ---------------------------------------------------
-
-				camera_icon = display.newImageRect(sceneGroup,"res/assert/camera1.png",40,35)
-				camera_icon.x=W/2 - W/3 - 15
-				camera_icon.anchorX=0
-				camera_icon.anchorY=0
-				camera_icon.y = icons_holder_bg.y + 7.5
+-- 				-- end
 
 
-				camera_icon_txt = display.newText(sceneGroup,MessagePage.Camera,0,0,native.systemFont,14)
-				camera_icon_txt.anchorX = 0
-				camera_icon_txt.anchorY = 0
-				camera_icon_txt.x = camera_icon.x - 7
-				camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
-				camera_icon_txt:setFillColor(0)
-
--------------------------------------------- Video ---------------------------------------------------
-
-				video_icon = display.newImageRect(sceneGroup,"res/assert/video1.png",40,35)
-				video_icon.x= W/2 - 12
-				video_icon.anchorX=0
-				video_icon.anchorY=0
-				video_icon.y = camera_icon.y
+-- ------------------------------------------- attachment icon -----------------------------------------
 
 
-				video_icon_txt = display.newText(sceneGroup,MessagePage.Video,0,0,native.systemFont,14)
-				video_icon_txt.anchorX = 0
-				video_icon_txt.anchorY = 0
-				video_icon_txt.x = video_icon.x 
-				video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
-				video_icon_txt:setFillColor(0)
-
--------------------------------------------- Audio ---------------------------------------------------
-
-                audio_icon = display.newImageRect(sceneGroup,"res/assert/audio1.png",40,35)
-				audio_icon.x= W/2 + W/3 - 15
-				audio_icon.anchorX=0
-				audio_icon.anchorY=0
-				audio_icon.y = video_icon.y
+-- 				attachment_icon = display.newImageRect(sceneGroup,"res/assert/attached.png",20,20)
+-- 				attachment_icon.x= longmsg_textbox.width - 20
+-- 				attachment_icon.anchorX=0
+-- 				attachment_icon.anchorY=0
+-- 				attachment_icon.isVisible = false
+-- 				attachment_icon.y = long_msg_charlimit.y - 20
+-- 				attachment_icon:toFront()
 
 
-				audio_icon_txt = display.newText(sceneGroup,MessagePage.Audio,0,0,native.systemFont,14)
-				audio_icon_txt.anchorX = 0
-				audio_icon_txt.anchorY = 0
-				audio_icon_txt.x = audio_icon.x 
-				audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
-				audio_icon_txt:setFillColor(0)
+-- ------------------------------------------- Icons Holder --------------------------------------------
 
--------------------------------------------- Gallery ---------------------------------------------------
+-- 				icons_holder_bg = display.newRect(sceneGroup,0,0,W-20,EditBoxStyle.height+115)
+-- 				icons_holder_bg.x=10
+-- 				icons_holder_bg.anchorX=0
+-- 				icons_holder_bg.anchorY=0
+-- 				icons_holder_bg.strokeWidth = 1
+-- 				icons_holder_bg:setStrokeColor( 0,0,0,0.1)
+-- 				icons_holder_bg.y = long_msg_charlimit.y+long_msg_charlimit.height+10
+-- 				icons_holder_bg:setFillColor( 1,1,1,0.8)
 
-                gallery_icon = display.newImageRect(sceneGroup,"res/assert/gallery1.png",40,35)
-				gallery_icon.x= W/2 - W/3 - 15
-				gallery_icon.anchorX=0
-				gallery_icon.anchorY=0
-				gallery_icon.y = camera_icon.y + camera_icon.contentHeight + 35
+-- -------------------------------------------- Camera ---------------------------------------------------
 
-
-				gallery_icon_txt = display.newText(sceneGroup,MessagePage.Gallery,0,0,native.systemFont,14)
-				gallery_icon_txt.anchorX = 0
-				gallery_icon_txt.anchorY = 0
-				gallery_icon_txt.x = gallery_icon.x - 5
-				gallery_icon_txt.y = gallery_icon.y+gallery_icon.contentHeight+5
-				gallery_icon_txt:setFillColor(0)
+-- 				camera_icon = display.newImageRect(sceneGroup,"res/assert/camera1.png",40,35)
+-- 				camera_icon.x=W/2 - W/3 - 15
+-- 				camera_icon.anchorX=0
+-- 				camera_icon.anchorY=0
+-- 				camera_icon.y = icons_holder_bg.y + 7.5
 
 
--------------------------------------------- Location ---------------------------------------------------
+-- 				camera_icon_txt = display.newText(sceneGroup,MessagePage.Camera,0,0,native.systemFont,14)
+-- 				camera_icon_txt.anchorX = 0
+-- 				camera_icon_txt.anchorY = 0
+-- 				camera_icon_txt.x = camera_icon.x - 7
+-- 				camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
+-- 				camera_icon_txt:setFillColor(0)
 
-                Location_icon = display.newImageRect(sceneGroup,"res/assert/location1.png",40,35)
-				Location_icon.x= W/2 - 12
-				Location_icon.anchorX=0
-				Location_icon.anchorY=0
-				Location_icon.y = gallery_icon.y
+-- -------------------------------------------- Video ---------------------------------------------------
 
-
-				Location_icon_txt = display.newText(sceneGroup,MessagePage.Location,0,0,native.systemFont,14)
-				Location_icon_txt.anchorX = 0
-				Location_icon_txt.anchorY = 0
-				Location_icon_txt.x = Location_icon.x - 10
-				Location_icon_txt.y = Location_icon.y+Location_icon.contentHeight+5
-				Location_icon_txt:setFillColor(0)
-
-
--------------------------------------------- Contact ---------------------------------------------------
-
-                Contact_icon = display.newImageRect(sceneGroup,"res/assert/user1.png",40,35)
-				Contact_icon.x= W/2 + W/3 - 15
-				Contact_icon.anchorX=0
-				Contact_icon.anchorY=0
-				Contact_icon.y = Location_icon.y
+-- 				video_icon = display.newImageRect(sceneGroup,"res/assert/video1.png",40,35)
+-- 				video_icon.x= W/2 - 12
+-- 				video_icon.anchorX=0
+-- 				video_icon.anchorY=0
+-- 				video_icon.y = camera_icon.y
 
 
-				Contact_icon_txt = display.newText(sceneGroup,MessagePage.Contact,0,0,native.systemFont,14)
-				Contact_icon_txt.anchorX = 0
-				Contact_icon_txt.anchorY = 0
-				Contact_icon_txt.x = Contact_icon.x - 7
-				Contact_icon_txt.y = Contact_icon.y+Contact_icon.contentHeight+5
-				Contact_icon_txt:setFillColor(0)
+-- 				video_icon_txt = display.newText(sceneGroup,MessagePage.Video,0,0,native.systemFont,14)
+-- 				video_icon_txt.anchorX = 0
+-- 				video_icon_txt.anchorY = 0
+-- 				video_icon_txt.x = video_icon.x 
+-- 				video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
+-- 				video_icon_txt:setFillColor(0)
+
+-- -------------------------------------------- Audio ---------------------------------------------------
+
+--                 audio_icon = display.newImageRect(sceneGroup,"res/assert/audio1.png",40,35)
+-- 				audio_icon.x= W/2 + W/3 - 15
+-- 				audio_icon.anchorX=0
+-- 				audio_icon.anchorY=0
+-- 				audio_icon.y = video_icon.y
+
+
+-- 				audio_icon_txt = display.newText(sceneGroup,MessagePage.Audio,0,0,native.systemFont,14)
+-- 				audio_icon_txt.anchorX = 0
+-- 				audio_icon_txt.anchorY = 0
+-- 				audio_icon_txt.x = audio_icon.x 
+-- 				audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
+-- 				audio_icon_txt:setFillColor(0)
+
+-- -------------------------------------------- Gallery ---------------------------------------------------
+
+--                 gallery_icon = display.newImageRect(sceneGroup,"res/assert/gallery1.png",40,35)
+-- 				gallery_icon.x= W/2 - W/3 - 15
+-- 				gallery_icon.anchorX=0
+-- 				gallery_icon.anchorY=0
+-- 				gallery_icon.y = camera_icon.y + camera_icon.contentHeight + 35
+
+
+-- 				gallery_icon_txt = display.newText(sceneGroup,MessagePage.Gallery,0,0,native.systemFont,14)
+-- 				gallery_icon_txt.anchorX = 0
+-- 				gallery_icon_txt.anchorY = 0
+-- 				gallery_icon_txt.x = gallery_icon.x - 5
+-- 				gallery_icon_txt.y = gallery_icon.y+gallery_icon.contentHeight+5
+-- 				gallery_icon_txt:setFillColor(0)
+
+
+-- -------------------------------------------- Location ---------------------------------------------------
+
+--                 Location_icon = display.newImageRect(sceneGroup,"res/assert/location1.png",40,35)
+-- 				Location_icon.x= W/2 - 12
+-- 				Location_icon.anchorX=0
+-- 				Location_icon.anchorY=0
+-- 				Location_icon.y = gallery_icon.y
+
+
+-- 				Location_icon_txt = display.newText(sceneGroup,MessagePage.Location,0,0,native.systemFont,14)
+-- 				Location_icon_txt.anchorX = 0
+-- 				Location_icon_txt.anchorY = 0
+-- 				Location_icon_txt.x = Location_icon.x - 10
+-- 				Location_icon_txt.y = Location_icon.y+Location_icon.contentHeight+5
+-- 				Location_icon_txt:setFillColor(0)
+
+
+-- -------------------------------------------- Contact ---------------------------------------------------
+
+--                 Contact_icon = display.newImageRect(sceneGroup,"res/assert/user1.png",40,35)
+-- 				Contact_icon.x= W/2 + W/3 - 15
+-- 				Contact_icon.anchorX=0
+-- 				Contact_icon.anchorY=0
+-- 				Contact_icon.y = Location_icon.y
+
+
+-- 				Contact_icon_txt = display.newText(sceneGroup,MessagePage.Contact,0,0,native.systemFont,14)
+-- 				Contact_icon_txt.anchorX = 0
+-- 				Contact_icon_txt.anchorY = 0
+-- 				Contact_icon_txt.x = Contact_icon.x - 7
+-- 				Contact_icon_txt.y = Contact_icon.y+Contact_icon.contentHeight+5
+-- 				Contact_icon_txt:setFillColor(0)
 
 
 ------------------------------------------ Schedule Button -----------------------------------------------
 
 			    schedule_button = display.newRect(sceneGroup,0,0,W-50,26)
 				schedule_button.x = W/2 - W/3 - 45
-				schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				--schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				schedule_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				schedule_button.width = W - 210
 				schedule_button.anchorX = 0
 				schedule_button.anchorY=0
@@ -1093,7 +1221,8 @@ end
 
 			    send_button = display.newRect(sceneGroup,0,0,W-50,26)
 				send_button.x = W/2 - 35
-				send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				--send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				send_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				send_button.width = W - 235
 				send_button.anchorX = 0
 				send_button.anchorY=0
@@ -1124,7 +1253,8 @@ end
 
 			    draft_button = display.newRect(sceneGroup,0,0,W-50,26)
 				draft_button.x = W/2 + W/3 - 50
-				draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				--draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				draft_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				draft_button.width = W - 225
 				draft_button.anchorX = 0
 				draft_button.anchorY=0
