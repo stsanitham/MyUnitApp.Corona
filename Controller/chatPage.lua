@@ -1002,27 +1002,7 @@ function get_imagemodel(response)
 		local q = "UPDATE pu_MyUnitBuzz_Message SET Image_Path='"..Imagepath.."' WHERE id='"..image_update_row.."';"
 		db:exec( q )
 
-<<<<<<< HEAD
-			ChatBox_bg.isVisible = true
-
-			ChatBox.isVisible = false
-
-			--image_name_close.isVisible = true
-
-			sendBtn_bg.isVisible = true
-
-			sendBtn.isVisible = true
-
-			recordBtn.isVisible = false
-
-
-			local q = "UPDATE pu_MyUnitBuzz_Message SET Image_Path='"..Imagepath.."' WHERE id='"..image_update_row.."';"
-			db:exec( q )
-
-			sendMeaasage()
-=======
 		sendMeaasage()
->>>>>>> origin/MUB_V1.2.0
 
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
@@ -1937,12 +1917,9 @@ function scene:show( event )
 			nameval = event.params.tabbuttonValue2
 		end
 
-
-<<<<<<< HEAD
-=======
 		composer.removeHidden()
 
->>>>>>> origin/MUB_V1.2.0
+
 	elseif phase == "did" then
 
 
@@ -2024,15 +2001,7 @@ function scene:show( event )
 		image_name_close.y=ChatBox_bg.y+10
 
 
-<<<<<<< HEAD
-		-- cameraBtn = display.newImageRect( sceneGroup, "res/assert/user.png", 25,20 )
-		-- cameraBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth-35
-		-- cameraBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-cameraBtn.contentHeight/2
-		-- cameraBtn.anchorY=0;cameraBtn.anchorX=0
-		-- cameraBtn.isVisible=true
 
-=======
->>>>>>> origin/MUB_V1.2.0
 		sendBtn = display.newImageRect( ChatScrollContent, "res/assert/msg_send.png", 25,20 )
 		sendBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
 		sendBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-sendBtn.contentHeight/2
