@@ -1121,15 +1121,17 @@ local function DetailAction( event )
 
 							}
 
-							print( "Message_Type          :  "..To_ContactId )
-					Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
-					ChatBox.isVisible=false
-				    composer.showOverlay( "Controller.Chathead_detailPage", options )
+				print( "Message_Type          :  "..To_ContactId )
+				Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+				ChatBox.isVisible=false
+			    composer.showOverlay( "Controller.Chathead_detailPage", options )
 
 	end
 
 return true
 end
+
+
 
 
 local function backAction( event )

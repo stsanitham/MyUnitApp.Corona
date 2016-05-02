@@ -385,7 +385,7 @@ local tabBarGroup = display.newGroup( )
 
 
 			for i=1,#sentmessagelist do
-		      print("here")
+		        print("here")
 
 		        NoScheduleMessage.isVisible = false
 		        NoDraftMessage.isVisible = false
@@ -469,37 +469,34 @@ local tabBarGroup = display.newGroup( )
 
 
 
+				-- if Message_time.text ~= nil then
 
-			-- if Message_time.text ~= nil then
+				-- parentFlag=true
 
-			-- parentFlag=true
+				-- if parentFlag == true then
+				-- parentFlag=false
 
-			-- if parentFlag == true then
-			-- parentFlag=false
+				-- parentTitle = display.newRect(tempGroup,0,0,W,25)
 
-			-- parentTitle = display.newRect(tempGroup,0,0,W,25)
+				-- -- if(messageList_array[#messageList_array-1]) ~= nil then
+				-- -- tempHeight = messageList_array[#messageList_array-1][1].y + messageList_array[#messageList_array-1][1].height+3
+				-- -- end
 
-			-- -- if(messageList_array[#messageList_array-1]) ~= nil then
-			-- -- tempHeight = messageList_array[#messageList_array-1][1].y + messageList_array[#messageList_array-1][1].height+3
-			-- -- end
-
-			-- parentTitle.anchorY = 0
-			-- parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2 - 18
-			-- parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
-
-
-			-- parent_centerText = display.newText(tempGroup,Message_time.text,0,0,native.systemFont,13)
-			-- parent_centerText.x=W/2
-			-- parent_centerText.anchorX=0
-			-- parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
-
-			-- background.y=parentTitle.y+background.contentHeight/2
-
-			-- end
-
-			-- end
+				-- parentTitle.anchorY = 0
+				-- parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2 - 18
+				-- parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
 
 
+				-- parent_centerText = display.newText(tempGroup,Message_time.text,0,0,native.systemFont,13)
+				-- parent_centerText.x=W/2
+				-- parent_centerText.anchorX=0
+				-- parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
+
+				-- background.y=parentTitle.y+background.contentHeight/2
+
+				-- end
+
+				-- end
 
 
 				local Messagedetail_txt = display.newText(tempGroup,sentmessagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
@@ -529,7 +526,7 @@ local tabBarGroup = display.newGroup( )
 				local line = display.newRect(tempGroup,W/2,background.y,W,1)
 				line.y=background.y+background.contentHeight-line.contentHeight
 				line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-	
+
 
 				messagelist_scrollView:insert(tempGroup)
 
