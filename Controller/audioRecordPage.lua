@@ -45,6 +45,7 @@ local function closeDetails( event )
 
 			elseif event.target.id == "ok" then
 				userAction="ok"
+				composer.hideOverlay()
 			else
 				composer.hideOverlay()
 			end
@@ -287,7 +288,7 @@ end
 
 			if userAction == "ok" then
 
-				event.parant:updateAudio(dataFileName)
+				event.parent:updateAudio(dataFileName)
 
 			else
 

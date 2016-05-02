@@ -606,7 +606,7 @@ local function careePath_list( list )
 		
 
 		if list[i].Image_Path ~= nil then
-
+			local Image
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2
 
@@ -617,9 +617,10 @@ local function careePath_list( list )
 						print ( "Network error - download failed" )
 					else
 
-                        if Image then
+                        if Image ~= nil then
 
-							Image:removeSelf();Image=nil
+							if Image.y ~= nil then Image:removeSelf() 
+
 							--print(img_event.response.filename)
 
 							Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
@@ -631,9 +632,7 @@ local function careePath_list( list )
 
 							Image:setMask( mask )
 
-						 else
-
-							Image:removeSelf();Image=nil
+					     end
 
 					     end
 
@@ -988,6 +987,8 @@ end
 
 		if event.phase == "will" then
 
+			network.cancel( newtworkArray[#newtworkArray] )
+
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 			Runtime:removeEventListener( "key", onKeyEvent )
@@ -995,9 +996,11 @@ end
 			GroupSubject:removeEventListener("userInput",textField)
 			create_groupicon:removeEventListener("touch",createGroup)
 
+			composer.removeHidden()
+
 		elseif phase == "did" then
 
-		composer.removeHidden()
+		
 
 		end	
 
