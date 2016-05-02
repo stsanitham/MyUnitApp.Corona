@@ -228,9 +228,10 @@ composer.gotoScene( "Controller.splashScreen")
 
 function DidReceiveRemoteNotification(message, additionalData, isActive)
 
-    if additionalData.messageType ~= nil then
 
-            chatReceivedFlag=true
+     if additionalData.messageType ~= nil or additionalData.stacked_notifications[1].messageType ~= nil then
+
+        chatReceivedFlag=true
 
         local UserId,ContactId,Name,FromName,GroupName
 
@@ -241,7 +242,66 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 
             end
 
-                        Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
+
+            if additionalData.stacked_notifications then
+
+
+                local stakedArray = additionalData.stacked_notifications
+
+                for i=1,#stakedArray do
+                     local Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
+                        local isDeleted="false"
+                        local Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+                        local Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+                        local ImagePath="NULL"
+                        AudioPath="NULL"
+                        VideoPath="NULL"
+                        MyUnitBuzz_LongMessage=tostring(stakedArray[i].message)
+                        From=stakedArray[i].messageFrom
+                        To=stakedArray[i].messageTo
+                        Message_Type = stakedArray[i].messageType
+
+
+
+                            if stakedArray[i].fFN ~= nil then
+                                Name=stakedArray[i].fFN.." "..stakedArray[i].fLN
+
+                            else
+
+                                Name=stakedArray[i].fLN
+
+                            end
+
+                            GroupName=""
+
+                            if Message_Type == "GROUP" then
+                                 GroupName=stakedArray[i].GN
+                                 FromName=""
+                            else
+
+
+                                   if stakedArray[i].tFN ~= nil then
+                                        FromName=stakedArray[i].tFN.." "..stakedArray[i].tLN
+
+                                    else
+
+                                        FromName=stakedArray[i].tLN
+
+                                    end
+
+                            end
+            
+                    
+
+                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(stakedArray[i].message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+                            db:exec( insertQuery )
+
+                end
+
+            else
+
+                Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
+
                         isDeleted="false"
                         Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
                         Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
@@ -286,15 +346,19 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
                     
 
                         local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
-                            db:exec( insertQuery )
+                        db:exec( insertQuery )
 
-            if openPage ~= "MessagingPage" then
 
-                     local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
-                     
-            end
+                        
 
-          
+                        if openPage ~= "MessagingPage" then
+
+
+                            local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
+                                 
+                        end
+       
+           end
     else
 
          notificationFlag = true
@@ -391,11 +455,12 @@ local function onSystemEvent( event )
         
     elseif ( event.type == "applicationOpen" ) then
 
-        chatReceivedFlag=true
+
+      --  chatReceivedFlag=true
 
     elseif event.type == "applicationResume" then
 
-        chatReceivedFlag=true
+      --  chatReceivedFlag=true
     
     end
 
@@ -405,45 +470,6 @@ end
 Runtime:addEventListener( "system", onSystemEvent )
 
 
--- local function onCloseTouch( event )
---     if event.phase == "began" then
---         display.getCurrentStage():setFocus( event.target )
---         elseif event.phase == "ended" then
---         display.getCurrentStage():setFocus( nil )
 
---         popUpGroup.isVisible = false
-
---     end
-
---     return true
-
--- end
-
-
-    -- popupTop_bg = display.newRect( popUpGroup, leftPadding_value + 140, H/2+ 36.3, W-20, 331 )
-    -- popupTop_bg:setFillColor(0,0,0,0.7)
-
-    -- popupTop = display.newRect(popUpGroup,W/2,H/2-144.2,300,30)
-    -- popupTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-
-    -- popupText = display.newText(popUpGroup,"Grant Access",0,0,native.systemFont,18)
-    -- popupText.x=popupTop.x;popupText.y=popupTop.y
-
-    -- popupClose = display.newImageRect(popUpGroup,"res/assert/cancel.png",19,19)
-    -- popupClose.x=popupTop.x+popupTop.contentWidth/2-15;popupClose.y=popupTop.y
-    -- popupClose.id="close"
-    -- popupClose:addEventListener("touch",onCloseTouch)
-
-    -- popupClose_bg = display.newRect(popUpGroup,0,0,30,30)
-    -- popupClose_bg.x=popupTop.x+popupTop.contentWidth/2-15;popupClose_bg.y=popupTop.y
-    -- popupClose_bg.id="close"
-    -- popupClose_bg.alpha=0.01
-    -- popupClose_bg:addEventListener("touch",onCloseTouch)
-
-
-    -- popUpGroup.isVisible = false
-
-
-   
 
 

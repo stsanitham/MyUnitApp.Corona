@@ -210,7 +210,7 @@ local function TabbarTouch( event )
 			
 			if event.target.id == "message" then
 
-				title.text = ChatPage.Messages
+				title.text = ChatPage.Chats
 
 				print( "Messages" )
 
@@ -606,8 +606,9 @@ local function careePath_list( list )
 		
 
 		if list[i].Image_Path ~= nil then
-
-			
+			local Image
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
 
 			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
 				"GET",
@@ -616,19 +617,27 @@ local function careePath_list( list )
 						print ( "Network error - download failed" )
 					else
 
+                        if Image ~= nil then
 
-						print(img_event.response.filename)
-						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
-						Image.width=45;Image.height=38
-						Image.x=30;Image.y=background.y+background.contentHeight/2
-    				--event.row:insert(img_event.target)
+							if Image.y ~= nil then Image:removeSelf() 
 
-    				local mask = graphics.newMask( "res/assert/masknew.png" )
+							--print(img_event.response.filename)
 
-									Image:setMask( mask )
+							Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+							Image.width=45;Image.height=38
+							Image.x=30;Image.y=background.y+background.contentHeight/2
+	    				    --event.row:insert(img_event.target)
+
+    				        local mask = graphics.newMask( "res/assert/masknew.png" )
+
+							Image:setMask( mask )
+
+					     end
+
+					     end
 
     			   
-    			end
+    			    end
 
     			end, list[i].Contact_Id..".png", system.TemporaryDirectory)
 		else
@@ -978,6 +987,8 @@ end
 
 		if event.phase == "will" then
 
+			network.cancel( newtworkArray[#newtworkArray] )
+
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 			Runtime:removeEventListener( "key", onKeyEvent )
@@ -985,9 +996,11 @@ end
 			GroupSubject:removeEventListener("userInput",textField)
 			create_groupicon:removeEventListener("touch",createGroup)
 
+			composer.removeHidden()
+
 		elseif phase == "did" then
 
-		composer.removeHidden()
+		
 
 		end	
 

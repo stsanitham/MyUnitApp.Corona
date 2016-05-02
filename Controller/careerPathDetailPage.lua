@@ -49,6 +49,14 @@ local ProfileImage,careerDetail_scrollview
 
 pagevalue = "careerPathPage"
 
+local ContactId
+
+for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+
+	ContactId = row.ContactId
+	
+end
+
 --------------------------------------------------
 
 
@@ -77,8 +85,8 @@ local function bgTouch( event )
 	end
 
 	return true
-
 end
+
 
 local function emailTouch( event )
 	if event.phase == "began" then
@@ -1188,7 +1196,7 @@ function scene:show( event )
 					MapDisplayArray[#MapDisplayArray]:addEventListener("touch",phoneCallFunction)
 				end
 
-				 if(Details.Status == "GRANT") then
+				 if(Details.Status == "GRANT" and Details.ContactId ~= ContactId) then
 
 				 	MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/chaticon.png",32/2,32/2)
 

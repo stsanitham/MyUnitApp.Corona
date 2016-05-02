@@ -17,9 +17,11 @@ local W = display.contentWidth
 local H= display.contentHeight
 
 local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title
-local dataFileName = "testfile"
+local dataFileName = "audio"..os.date("%Y%m%d%H%M%S")
 local menuBtn
 local filePath
+local okBtn,okBtn_txt,cancelBtn,cancelBtn_txt
+local userAction="cancel"
 
 openPage="audiorecordPage"
 
@@ -39,8 +41,17 @@ local function closeDetails( event )
 			display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
+			if event.target.id =="background" then
+
+			elseif event.target.id == "ok" then
+				userAction="ok"
+				composer.hideOverlay()
+			else
+				composer.hideOverlay()
+			end
 
 	end
+
 return true
 
 end
@@ -52,6 +63,7 @@ local function audioAction( event )
 			display.getCurrentStage():setFocus( nil )
 
 			if event.target.id == "play" then
+
 				    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
@@ -62,6 +74,7 @@ local function audioAction( event )
 		                fSoundPaused = false
 		                
 						playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
+
 						audio.play( playbackSoundHandle, { onComplete=onCompleteSound } )
 
 						 keyTips.text = "Playing"
@@ -70,8 +83,13 @@ local function audioAction( event )
 				
 				if r:isRecording() then
 		            r:stopRecording()
-
 		            timer.cancel(countdown)
+
+		            okBtn.isVisible=true
+					okBtn_txt.isVisible=true
+					cancelBtn.isVisible=true
+					cancelBtn_txt.isVisible=true
+
 
 		            keyTips.text = "Recording Stopped"
 		       	end
@@ -109,6 +127,9 @@ function scene:create( event )
 
     Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
+	Background.id="background"
+	Background:addEventListener( "touch", closeDetails )
+
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
@@ -147,6 +168,10 @@ function scene:create( event )
 	title.x=back_icon.x+15;title.y = title_bg.y
 	title:setFillColor(0)
 
+	title:addEventListener( "touch", closeDetails )
+	back_icon:addEventListener( "touch", closeDetails )
+
+
 
 MainGroup:insert(sceneGroup)
 
@@ -172,6 +197,7 @@ function scene:show( event )
 
 		playBtn = display.newText( sceneGroup, "Play",  0,0,native.systemFont,16 )
 		playBtn.x=W/2;playBtn.y=H/2+150
+		playBtn.id="play"
 		playBtn.play="play"
 		playBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
@@ -182,6 +208,31 @@ function scene:show( event )
 		stopBtn.id="stop"
 		stopBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
+		okBtn = display.newImageRect( sceneGroup, "res/assert/positive_alert.png", 100, 30 )
+		okBtn.x=W/2-120;okBtn.y=H/2+50
+		okBtn.id="ok"
+		okBtn.anchorX=0
+
+		okBtn_txt = display.newText( sceneGroup, MessagePage.Send, 0,0,native.systemFont,14 )
+		okBtn_txt.x=okBtn.x+25;okBtn_txt.y=okBtn.y
+		okBtn_txt.anchorX=0
+
+		cancelBtn = display.newImageRect( sceneGroup, "res/assert/negative_alert.png", 100, 30 )
+		cancelBtn.x=W/2;cancelBtn.y=H/2+50
+		cancelBtn.id="cancel"
+		cancelBtn.anchorX=0
+
+		cancelBtn_txt = display.newText( sceneGroup, CommonWords.cancel, 0,0,native.systemFont,14 )
+		cancelBtn_txt.x=cancelBtn.x+25;cancelBtn_txt.y=cancelBtn.y
+		cancelBtn_txt.anchorX=0
+
+		okBtn:addEventListener( "touch", closeDetails )
+		cancelBtn:addEventListener( "touch", closeDetails )
+
+		    okBtn.isVisible=false
+			okBtn_txt.isVisible=false
+			cancelBtn.isVisible=false
+			cancelBtn_txt.isVisible=false
 
 
 		
@@ -202,10 +253,11 @@ function scene:show( event )
 		r = media.newRecording(filePath)
 
 
-		timerCount = display.newText( sceneGroup, "00:00",0,0,native.systemFont,65)
+		timerCount = display.newText( sceneGroup, "00:00",0,0,native.systemFont,75)
 		timerCount:setFillColor( 0 )
 		timerCount.x=W/2
-		timerCount.y=H/2
+		timerCount.y=H/2-50
+
 
 
 		startBtn:addEventListener( "touch", audioAction )
@@ -233,6 +285,17 @@ end
 		if event.phase == "will" then
 
 		elseif phase == "did" then
+
+			if userAction == "ok" then
+
+				event.parent:updateAudio(dataFileName)
+
+			else
+
+				local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+	            os.remove( filePath )
+
+			end
 
 
 		end	

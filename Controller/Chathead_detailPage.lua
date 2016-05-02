@@ -884,7 +884,7 @@ function scene:show( event )
 			
 
 				if Details.ImagePath ~= nil then
-					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
+					ProfileImage = display.newImage(sceneGroup,contactId..".png",system.TemporaryDirectory)
 
 				end
 
@@ -1007,6 +1007,29 @@ function scene:show( event )
 					Details_Display[#Details_Display].name = "Anniversarie"
 					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
 				end
+
+
+				--Email ---
+
+
+				if(Details.EmailAddress ~= nil) then
+
+					local EmailAddress = display.newText(LoginPage.UserName_placeholder,0,0,150,0,native.systemFont,16)
+					EmailAddress.anchorX = 0 ;EmailAddress.anchorY=0
+					EmailAddress.x=leftPadding
+					EmailAddress.y = Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+10
+					Utils.CssforTextView(EmailAddress,sp_labelName)
+					careerDetail_scrollview:insert( EmailAddress )
+
+					Details_Display[#Details_Display+1] = display.newText(Details.EmailAddress,0,0,native.systemFont,14)
+					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
+					Details_Display[#Details_Display].x=leftPadding
+					Details_Display[#Details_Display].y = EmailAddress.y+20
+					Details_Display[#Details_Display].name = "EmailAddress"
+					Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
+					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
+				end
+
 
 
 			

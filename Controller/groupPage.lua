@@ -218,7 +218,7 @@ end
 			
 			if event.target.id == "message" then
 
-				title.text = ChatPage.Messages
+				title.text = ChatPage.Chats
 				print( "Messages" )
 
 			    	CreateTabBarIcons()
@@ -528,11 +528,11 @@ end
 
 				grouplist_response = response
 
-					
+						
 
 							if grouplist_response ~= nil and #grouplist_response ~= 0 then
 									
-							
+									NoEvent.text=""
 
 									GroupCreation_list(grouplist_response)
 

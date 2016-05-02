@@ -568,28 +568,15 @@ end
 
 
 	local function sendMeaasage()
-		
-		ChatBox.text=""
-
-		-- sendBtn.isVisible = true
-		-- sendBtn_bg.isVisible = true
-		-- recordBtn.isVisible = false
-
 
 		for i=#MeassageList, 1, -1 do 
 				display.remove(MeassageList[#MeassageList])
 				MeassageList[#MeassageList] = nil
 		end
 
-
-
 		for i=#ChatHistory, 1, -1 do 
 				ChatHistory[#ChatHistory] = nil
 		end
-
-
-
-
 
 		for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
 
@@ -605,6 +592,8 @@ end
 		local dateVlaue=""
 
 		for i=1,#ChatHistory do
+
+			if ChatHistory[i].Message_Type:lower() == MessageType:lower() then
 
 			local dateLable = nil
 			local datevalue = nil
@@ -834,6 +823,51 @@ end
 
 					else
 
+						if ChatHistory[i].Image_Path == "DEFAULT" then
+
+
+							image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
+							image.id = ChatHistory[i].Image_Path;bg.width = image.contentWidth+5;bg.height = image.contentHeight+23.5
+							if MessageType == "GROUP" then	owner.anchorY=0;owner.anchorX = 0;owner.x=chat.x;owner.y=bg.y+1 
+								image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=owner.y+20
+									    bg.width = image.contentWidth+5
+								bg.height = image.contentHeight+23.5
+							else
+								image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=bg.y+2.5
+								bg.width = image.contentWidth+5
+								bg.height = image.contentHeight+5	
+
+							end
+					
+
+							spinner.isVisible=false
+
+
+							local options = {
+											    width = 32,
+											    height = 32,
+											    numFrames = 4,
+											    sheetContentWidth = 64,
+											    sheetContentHeight = 64
+											}
+											local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
+
+							local image_spinner = widget.newSpinner
+													{
+													    width = 106/4 ,
+													    height = 111/4,
+													    deltaAngle = 10,
+													    sheet = spinnerSingleSheet,
+													    startFrame = 1,
+													    incrementEvery = 20
+													}
+
+													image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
+												    image_spinner:toFront();image_spinner:start()
+
+												   tempGroup:insert(image_spinner)
+
+						else
 
 						    if MessageType == "GROUP" then	
 								
@@ -881,6 +915,8 @@ end
 
 							end
 
+						end
+
 					end	
 
 
@@ -906,10 +942,13 @@ end
 
 			if ChatHistory[i].Message_From == tostring(ContactId) then
 				chat.x = bg.x-bg.contentWidth+5
+									time.x=bg.x-2.5
+
 				if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
 				bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 			else
+				time.x=bg.x+bg.contentWidth-time.contentWidth-2.5
 				bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
 				time.x=bg.x+5
 			end
@@ -932,6 +971,8 @@ end
 
 		end
 
+	end
+
 	chatScroll:scrollTo( "bottom", { time=200 } )
 
 	end
@@ -943,7 +984,6 @@ end
 
 function get_imagemodel(response)
 
-		print("SuccessMessage")
 
 		Imagepath = response.Abspath
 
@@ -951,17 +991,18 @@ function get_imagemodel(response)
 
 		Imagesize = size
 
+		ChatBox_bg.isVisible = true
 
-		print("Imagesize................",Imagesize)
+		ChatBox.isVisible = false
 
-		print("Imagename................",Imagename)
+		sendBtn_bg.isVisible = true
 
-		print("Imagepath................",Imagepath)
+		sendBtn.isVisible = true
 
-			--image_name_png.isVisible = true
+		local q = "UPDATE pu_MyUnitBuzz_Message SET Image_Path='"..Imagepath.."' WHERE id='"..image_update_row.."';"
+		db:exec( q )
 
-			--image_name_png.text = Imagename
-
+<<<<<<< HEAD
 			ChatBox_bg.isVisible = true
 
 			ChatBox.isVisible = false
@@ -979,6 +1020,9 @@ function get_imagemodel(response)
 			db:exec( q )
 
 			sendMeaasage()
+=======
+		sendMeaasage()
+>>>>>>> origin/MUB_V1.2.0
 
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
@@ -1038,11 +1082,11 @@ function get_imagemodel(response)
 			sendMeaasage()
 			end 
 
-			if selectedForDelete ~= nil then 
-				if selectedForDelete.y ~= nil then
-				 selectedForDelete:removeSelf();selectedForDelete=nil 
-				 end 
-			end
+			-- if selectedForDelete ~= nil then 
+			-- 	if selectedForDelete.y ~= nil then
+			-- 	 selectedForDelete:removeSelf();selectedForDelete=nil 
+			-- 	 end 
+			-- end
 		    	
 		    	
 		    end
@@ -1072,6 +1116,12 @@ local function deleteAction( event )
 		end		
 				Copyicon.isVisible=false
 				Deleteicon.isVisible=false
+
+			if selectedForDelete ~= nil then 
+				if selectedForDelete.y ~= nil then
+				 selectedForDelete:removeSelf();selectedForDelete=nil 
+				 end 
+			end
 	end
 
 return true
@@ -1080,6 +1130,8 @@ end
 
 
 function get_sendMssage(response)
+
+	ChatBox.text=""
 
     if image_name_png.isVisible == true and image_name_close.isVisible == true then
 
@@ -1194,8 +1246,7 @@ local function ChatSendAction( event )
 
           print("Imagename : "..Imagename)
 
-			if ChatBox.text ~= nil and ChatBox.text ~= "" then
-
+if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " and ChatBox.text ~= "\n" then
 				print("chat message not null")
 			
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
@@ -1388,7 +1439,7 @@ end
 			
 			if event.target.id == "message" then
 
-				title.text = ChatPage.Messages
+				title.text = ChatPage.Chats
 
 			    	CreateTabBarIcons()
 
@@ -1558,15 +1609,14 @@ end
 
         if isIos then
 
-	        if ( string.sub( system.getInfo("model"), 1, 2 ) == "iP" ) then
-
-	        	scrollAction(-150)
-	        else
-	        	scrollAction(-170)
-
-
-	        end
-
+	      	local pWidth, pHeight = display.pixelWidth, display.pixelHeight
+			if (pHeight < 1000) then
+			    print("iphone 4")
+			   scrollAction(-180)
+			else
+			    scrollAction(-150)
+			end
+	 
 	    end
         
 
@@ -1582,26 +1632,19 @@ end
         elseif event.phase == "editing" then
 
         	if (event.newCharacters=="\n") then
+        		event.target.text = event.text:sub(1,event.target.text:len()-1)
 				native.setKeyboardFocus( nil )
 			end
 
-				-- if event.text:len() > 250 then
+				if event.text:len() > 500 then
 
-				-- 		event.target.text = event.text:sub(1,250)
+						event.target.text = event.text:sub(1,500)
 
 			
 
-				-- 	end
+					end
 
-        	if event.text:len() >=1 then
-
-
-        		sendBtn.isVisible=true
-        		recordBtn.isVisible=false
-        	else
-        		sendBtn.isVisible=false
-        		recordBtn.isVisible=true
-        	end
+        	
 
 
 	    end   
@@ -1650,6 +1693,13 @@ end
     	Copyicon.isVisible=false
     	-- chatReceivedFlag=true
     	holdLevel=0
+
+    	if selectedForDelete ~= nil then 
+				if selectedForDelete.y ~= nil then
+				 selectedForDelete:removeSelf();selectedForDelete=nil 
+				 end 
+			end
+
     elseif ( phase == "moved" ) then print( "Scroll view was moved" )
     elseif ( phase == "ended" ) then print( "Scroll view was released" )
 
@@ -1662,6 +1712,8 @@ end
     	 chatScroll:scrollTo( "bottom", { time=500 } )
 
     end
+
+
 
     	
     end
@@ -1681,7 +1733,67 @@ end
     return true
 end
 
+function get_audiomodel( response )
+	-- body
+end
 
+
+	function scene:updateAudio(dataFileName)
+
+	    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+		            -- Play back the recording
+		            local file = io.open( filePath)
+		            
+		            if file then
+		                io.close( file )
+		            else
+		            	dataFileName="test.wav"
+			           	filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+		            end
+
+		                local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+
+					    Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+						isDeleted="false"
+						Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+						Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+						ImagePath=""
+						ImageName = ""
+						ImageSize = ""
+						AudioPath="DEFAULT"
+						VideoPath=""
+						MyUnitBuzz_LongMessage=ChatBox.text
+						From=ContactId
+						To=To_ContactId
+						Message_Type = MessageType
+
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						db:exec( insertQuery )
+
+
+
+
+					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Audio_Path= 'DEFAULT'") do
+					   audio_update_row = row.id 
+
+					end 
+
+					sendMeaasage()
+
+
+					 	local path = system.pathForFile( dataFileName, system.DocumentsDirectory)
+
+				        local size = lfs.attributes (path, "size")
+
+						local fileHandle = io.open(path, "rb")
+
+						local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+						formatSizeUnits(size)
+
+						 Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
+
+	end
 
 
 	function scene:resumeImageCallBack(photoviewname,button_idvalue)
@@ -1727,9 +1839,9 @@ end
 
 					end 
 
-					sendMeaasage()
+				   Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
 
-				  Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+				  sendMeaasage()
 
 
 				end
@@ -1826,7 +1938,15 @@ function scene:show( event )
 		end
 
 
+<<<<<<< HEAD
+=======
+		composer.removeHidden()
+
+>>>>>>> origin/MUB_V1.2.0
 	elseif phase == "did" then
+
+
+
 
 		ContactDetails = event.params.contactDetails
 
@@ -1904,25 +2024,22 @@ function scene:show( event )
 		image_name_close.y=ChatBox_bg.y+10
 
 
+<<<<<<< HEAD
 		-- cameraBtn = display.newImageRect( sceneGroup, "res/assert/user.png", 25,20 )
 		-- cameraBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth-35
 		-- cameraBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-cameraBtn.contentHeight/2
 		-- cameraBtn.anchorY=0;cameraBtn.anchorX=0
 		-- cameraBtn.isVisible=true
 
+=======
+>>>>>>> origin/MUB_V1.2.0
 		sendBtn = display.newImageRect( ChatScrollContent, "res/assert/msg_send.png", 25,20 )
 		sendBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
 		sendBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-sendBtn.contentHeight/2
 		sendBtn.anchorY=0;sendBtn.anchorX=0
-		sendBtn.isVisible=false
 
 		sendBtn_bg = display.newRect( ChatScrollContent, sendBtn.x+5, sendBtn.y+5, 45,45 )
 		sendBtn_bg:setFillColor( 0,0,0,0.01 )
-
-		recordBtn = display.newImageRect( ChatScrollContent, "res/assert/record.png", 25,20 )
-		recordBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
-		recordBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-recordBtn.contentHeight/2
-		recordBtn.anchorY=0;recordBtn.anchorX=0
 
 
 		chatScroll = widget.newScrollView(
@@ -2030,17 +2147,14 @@ sceneGroup:insert( tabBarGroup )
 
 
 		sendBtn_bg:addEventListener( "touch", ChatSendAction )
-		--cameraBtn:addEventListener("touch", UploadImageAction)
 		menuBtn:addEventListener("touch",menuTouch)
 		ChatBox:addEventListener( "userInput", ChatBoxHandler )
-		recordBtn:addEventListener( "touch", RecordAction )
 
 	
 		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 		Runtime:addEventListener( "key", onKeyEvent )
 		BackBtn:addEventListener( "touch", backAction )
 		title:addEventListener( "touch", DetailAction )
-		image_name_close:addEventListener( "touch", ImageClose )
 		
 	end	
 

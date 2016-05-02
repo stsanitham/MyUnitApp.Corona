@@ -206,12 +206,38 @@ end
 
 Utils.makeTimeStamp = function ( dateString )
 
-	local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
-	local year, month, day, hour, minute, seconds =
-	dateString:match(pattern)
-	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false} )
+local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"    
+  local xyear, xmonth, xday, xhour, xminute,xseconds, xoffset, xoffsethour, xoffsetmin = dateString:match(pattern)    
 
-	return timestamp;
+  print( xoffset, xoffsethour, xoffsetmin )
+
+  local convertedTimestamp = os.time({year = xyear, month = xmonth,day = xday, hour = xhour, min = xminute, sec = xseconds})    
+  -- local offset = xoffsethour * 60 * 60 + xoffsetmin*60
+  -- if xoffset == "-" then 
+  --   offset = offset * -1 
+  -- end    
+
+  -- print( offset )
+
+  return convertedTimestamp 
+end
+
+Utils.makeTimeStampwithOffset = function ( dateString )
+
+  local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+) ([%+%-])(%d+)%:(%d+):(%d+)"    
+  local xyear, xmonth, xday, xhour, xminute,xseconds, xoffset, xoffsethour, xoffsetmin = dateString:match(pattern)    
+
+  print( xoffset, xoffsethour, xoffsetmin )
+
+  local convertedTimestamp = os.time({year = xyear, month = xmonth,day = xday, hour = xhour, min = xminute, sec = xseconds})    
+  local offset = xoffsethour * 60 * 60 + xoffsetmin*60
+  if xoffset == "-" then 
+    offset = offset * -1 
+  end    
+
+  print( offset )
+
+  return convertedTimestamp - offset
 end
 
 Utils.GetMonth = function ( monthString)
@@ -237,7 +263,7 @@ weekString = weekString:lower()
 return weekString
 end
 
-Utils.getTime = function(time,format,TimeZone)
+Utils.getTime = function(time,format,Timezone)
 function format_time(timestamp, format, tzoffset, tzname)
    if tzoffset == "local" then  -- calculate local time zone (for the server)
       local now = os.time()
@@ -267,25 +293,25 @@ tonumber(tzoffset:sub(3,4)))*60
 end
 
 local tzoffset
-        if TimeZone == "Eastern Standard Time" then
+        if Timezone == "Eastern Standard Time" then
             tzoffset = "-04:00"
 
-        elseif TimeZone == "Hawaiian Standard Time" then
+        elseif Timezone == "Hawaiian Standard Time" then
              tzoffset = "-10:00"
 
-        elseif TimeZone == "Alaskan Standard Time" then
+        elseif Timezone == "Alaskan Standard Time" then
              tzoffset = "-09:00"
 
-        elseif TimeZone == "Mountain Standard Time" then
+        elseif Timezone == "Mountain Standard Time" then
              tzoffset = "-06:00"
 
-        elseif TimeZone == "Pacific Standard Time" then
+        elseif Timezone == "Pacific Standard Time" then
              tzoffset = "-07:00"
 
-        elseif TimeZone == "Central Standard Time" then
+        elseif Timezone == "Central Standard Time" then
              tzoffset = "-05:00"
 
-        elseif TimeZone == "US Mountain Standard Time" then
+        elseif Timezone == "US Mountain Standard Time" then
              tzoffset = "-06:00"
         else
             tzoffset = "local"

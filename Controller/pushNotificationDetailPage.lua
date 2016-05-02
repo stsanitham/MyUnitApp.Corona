@@ -352,8 +352,6 @@ end
 			--messagedetail_scrollView:insert(short_msg_delete)
 
 
-			--if IsOwner == true then
-
 			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",23,23)
 			short_msg_edit.x= short_msg_delete.x - 35
 			short_msg_edit.anchorX=0
@@ -365,9 +363,9 @@ end
 
 		    else
 
-		    	-- short_msg_txt.width = W-40
-		    	-- short_msg_txt.x=back_icon.x + 8
-			    -- short_msg_txt.y= back_icon.y
+		    	short_msg_txt.width = W-40
+		    	short_msg_txt.x=back_icon.x + 8
+			    short_msg_txt.y= back_icon.y
 
 			end
 

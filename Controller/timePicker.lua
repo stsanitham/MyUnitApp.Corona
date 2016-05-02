@@ -11,23 +11,25 @@ local Min = {}
 
 	local tz = {"AM","PM"}
 
+		print(TimeZone.." and "..Utils.getTime(os.time(os.date( "!*t" )),"%I",TimeZone))
+
 	local columnData = { 
 		{
 			align = "right",
 			width = 125,
-			startIndex = tonumber(string.format("%2d",os.date( "%I" ))),
+			startIndex = tonumber(string.format("%2d",Utils.getTime(os.time(os.date( "!*t" )),"%I",TimeZone))),
 			labels = Hour,
 		},
 		{
 			align = "center",
 			width = 70,
-			startIndex = tonumber(string.format("%2d",os.date( "%M" ))),
+			startIndex = tonumber(string.format("%2d",Utils.getTime(os.time(os.date( "!*t" )),"%M",TimeZone))),
 			labels = Min,
 		},
 		{
 			align = "center",
 			width = 65,
-			startIndex = table.indexOf( tz, os.date( "%p" ) ),
+			startIndex = table.indexOf( tz, Utils.getTime(os.time(os.date( "!*t" )),"%p",TimeZone) ),
 			labels = tz,
 		},
 	}

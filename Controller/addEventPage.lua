@@ -3386,7 +3386,7 @@ function scene:show( event )
 
 	  		if UpdateValue.TimeZone ~= nil then
 
-	  			timeZone.text = UpdateValue.TimeZone
+	  			--timeZone.text = UpdateValue.TimeZone
 
 	  		end
 
