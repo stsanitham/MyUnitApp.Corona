@@ -313,9 +313,7 @@ local function attachAction( event )
 
 		end
 
-
 		AttachmentGroup.alpha = 0
-
 
 	end
 
@@ -512,6 +510,8 @@ end
 				if selectedForDelete ~= nil then 
 					if selectedForDelete.y ~= nil then
 					 selectedForDelete:removeSelf();selectedForDelete=nil 
+
+					-- attachment_icon.isVisible =true
 					 end 
 				end
 
@@ -552,6 +552,11 @@ end
 		elseif event.phase == "ended" then
 				display.getCurrentStage():setFocus( nil )
 
+	--    event.target.object.isVisible = true
+	--    event.target.object:toFront()
+	--    event.target.object:start()
+
+
 		network.download(
 		event.target.id,
 		"GET",
@@ -560,10 +565,16 @@ end
 		system.DocumentsDirectory
 		)
 
+    --   event.target:removeSelf()
+    --   event.target = nil
+		--image_spinner:toBack()
+        --image_spinner:stop()
+
 		end
 
 	return true
 	end
+
 
 
 
@@ -772,7 +783,7 @@ end
 
 
 
-				if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
+			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
 
 				 Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
 
@@ -783,137 +794,233 @@ end
 				 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
 			 	 local fhd = io.open( filePath )
 				
-					if fhd then	
+					   if fhd then	
 
-						    if MessageType == "GROUP" then	
-									
-								image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
-								image.id = ChatHistory[i].Image_Path
+							    if MessageType == "GROUP" then	
 
-								bg.width = image.contentWidth+5
-								bg.height = image.contentHeight+23.5
+							    	print("download image 3")
+										
+									image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+									image.id = ChatHistory[i].Image_Path
 
-								owner.anchorY=0
-								owner.anchorX = 0
-								owner.x=chat.x
-								owner.y=bg.y+1
+									bg.width = image.contentWidth+5
+									bg.height = image.contentHeight+23.5
 
-								image.anchorY=0
-								image.anchorX = 0
-								image.x=bg.x+2.5
+									owner.anchorY=0
+									owner.anchorX = 0
+									owner.x=chat.x
+									owner.y=bg.y+1
 
-								image.y=owner.y+20	
+									image.anchorY=0
+									image.anchorX = 0
+									image.x=bg.x+2.5
 
-							else
+									image.y=owner.y+20	
 
-							    image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
-							    image.id = ChatHistory[i].Image_Path
+								else
 
-								image.anchorY=0
-								image.anchorX = 0
-								image.x=bg.x+2.5
-								image.y=bg.y+2.5
+								    image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+								    image.id = ChatHistory[i].Image_Path
 
-								bg.width = image.contentWidth+5
-								bg.height = image.contentHeight+5
+									image.anchorY=0
+									image.anchorX = 0
+									image.x=bg.x+2.5
+									image.y=bg.y+2.5
 
-							end
+									bg.width = image.contentWidth+5
+									bg.height = image.contentHeight+5
 
-						io.close( fhd )
+								end
+
+							io.close( fhd )
 
 					else
 
+						
 						if ChatHistory[i].Image_Path == "DEFAULT" then
 
+								image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
+								image.id = ChatHistory[i].Image_Path;bg.width = image.contentWidth+5;bg.height = image.contentHeight+23.5
 
-							image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
-							image.id = ChatHistory[i].Image_Path;bg.width = image.contentWidth+5;bg.height = image.contentHeight+23.5
-							if MessageType == "GROUP" then	owner.anchorY=0;owner.anchorX = 0;owner.x=chat.x;owner.y=bg.y+1 
-								image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=owner.y+20
-									    bg.width = image.contentWidth+5
-								bg.height = image.contentHeight+23.5
-							else
-								image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=bg.y+2.5
-								bg.width = image.contentWidth+5
-								bg.height = image.contentHeight+5	
+								if MessageType == "GROUP" then	
 
-							end
-					
+									print("**********************")
 
-							spinner.isVisible=false
+									owner.anchorY=0;owner.anchorX = 0;owner.x=chat.x;owner.y=bg.y+1 
+									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=owner.y+20
+									bg.width = image.contentWidth+5
+									bg.height = image.contentHeight+23.5
+								else
+									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=bg.y+2.5
+									bg.width = image.contentWidth+5
+									bg.height = image.contentHeight+5	
 
 
-							local options = {
-											    width = 32,
-											    height = 32,
-											    numFrames = 4,
-											    sheetContentWidth = 64,
-											    sheetContentHeight = 64
-											}
-											local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
+								end
+						
 
-							local image_spinner = widget.newSpinner
-													{
-													    width = 106/4 ,
-													    height = 111/4,
-													    deltaAngle = 10,
-													    sheet = spinnerSingleSheet,
-													    startFrame = 1,
-													    incrementEvery = 20
-													}
+								spinner.isVisible=false
 
-													image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
-												    image_spinner:toFront();image_spinner:start()
 
-												   tempGroup:insert(image_spinner)
+								local options = {
+												    width = 32,
+												    height = 32,
+												    numFrames = 4,
+												    sheetContentWidth = 64,
+												    sheetContentHeight = 64
+												}
+
+										local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
+
+								local image_spinner = widget.newSpinner
+														{
+														    width = 106/4 ,
+														    height = 111/4,
+														    deltaAngle = 10,
+														    sheet = spinnerSingleSheet,
+														    startFrame = 1,
+														    incrementEvery = 20
+														}
+
+														image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
+													    image_spinner:toFront();image_spinner:start()
+
+													   tempGroup:insert(image_spinner)
 
 						else
 
-						    if MessageType == "GROUP" then	
-								
-								image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
-								image.id = ChatHistory[i].Image_Path
 
-							    bg.width = image.contentWidth+5
-								bg.height = image.contentHeight+23.5
+							    if MessageType == "GROUP" then	
 
-								owner.anchorY=0
-								owner.anchorX = 0
-								owner.x=chat.x
-								owner.y=bg.y+1
 
-								image.anchorY=0
-								image.anchorX = 0
-								image.x=bg.x+2.5
+							    	print("download image 1")
+									
+									image = display.newImageRect( tempGroup, "res/assert/thumbnail.jpg", 200, 170 )
+									--image.id = ChatHistory[i].Image_Path
 
-								image.y=owner.y+20	
+								    bg.width = image.contentWidth+5
+									bg.height = image.contentHeight+23.5
 
-							--	ChatBox.isVisible = true
-							--	ChatBox_bg.isVisible = true
-							--	ChatBox.text = ""
+									owner.anchorY=0
+									owner.anchorX = 0
+									owner.x=chat.x
+									owner.y=bg.y+1
 
-								image:addEventListener( "touch", receviedimageDownload )
+									image.anchorY=0
+									image.anchorX = 0
+									image.x=bg.x+2.5
+									image.y=owner.y+20	
 
-							else
+									
 
-								image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
-								image.id = ChatHistory[i].Image_Path
+									spinner.isVisible=false
 
-								image.anchorY=0
-								image.anchorX = 0
-								image.x=bg.x+2.5
-								image.y=bg.y+2.5
+								    local options = {
+												    width = 32,
+												    height = 32,
+												    numFrames = 4,
+												    sheetContentWidth = 64,
+												    sheetContentHeight = 64
+												}
 
-								bg.width = image.contentWidth+5
-								bg.height = image.contentHeight+5	
+									local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
+ 
+								    local image_spinner = widget.newSpinner
+														{
+														    width = 106/4 ,
+														    height = 111/4,
+														    deltaAngle = 10,
+														    sheet = spinnerSingleSheet,
+														    startFrame = 1,
+														    incrementEvery = 20
+														}
 
-								--ChatBox.isVisible = true
-								--ChatBox_bg.isVisible = true
-							--	ChatBox.text = ""
+										image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
+									    image_spinner:toFront();image_spinner:start()
 
-								image:addEventListener( "touch", receviedimageDownload )
+									    image_spinner.isVisible = false
 
-							end
+									    tempGroup:insert(image_spinner)
+
+
+									local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
+									downloadimage.x = image.x+image.contentWidth/2-25
+									downloadimage.id = ChatHistory[i].Image_Path
+									downloadimage.anchorX = 0
+									downloadimage.anchorY = 0
+									--downloadimage.object = image_spinner
+									downloadimage.y = image.y+image.contentHeight/2-25
+									downloadimage.isVisible = true
+									downloadimage:toFront()
+
+
+									downloadimage:addEventListener( "touch", receviedimageDownload )
+
+
+
+								else
+
+									print("download image 2")
+
+									image = display.newImageRect( tempGroup, "res/assert/thumbnail.jpg", 200, 170 )
+									--image.id = ChatHistory[i].Image_Path
+
+									image.anchorY=0
+									image.anchorX = 0
+									image.x=bg.x+2.5
+									image.y=bg.y+2.5
+
+									bg.width = image.contentWidth+5
+									bg.height = image.contentHeight+5	
+
+
+									    spinner.isVisible=false
+
+								        local options = {
+												    width = 32,
+												    height = 32,
+												    numFrames = 4,
+												    sheetContentWidth = 64,
+												    sheetContentHeight = 64
+												}
+
+										local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
+
+								        local image_spinner = widget.newSpinner
+														{
+														    width = 106/4 ,
+														    height = 111/4,
+														    deltaAngle = 10,
+														    sheet = spinnerSingleSheet,
+														    startFrame = 1,
+														    incrementEvery = 20
+														}
+
+														image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
+													    image_spinner:toFront();image_spinner:start()
+
+													   image_spinner.isVisible = false
+
+													   tempGroup:insert(image_spinner)
+
+
+									local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
+									downloadimage.x = image.x+image.contentWidth/2-25
+									downloadimage.id = ChatHistory[i].Image_Path
+									downloadimage.anchorX = 0
+									downloadimage.anchorY = 0
+									--downloadimage.object = image_spinner
+									downloadimage.y = image.y+image.contentHeight/2-25
+									downloadimage.isVisible = true
+									downloadimage:toFront()
+
+
+									downloadimage:addEventListener( "touch", receviedimageDownload )
+
+
+
+
+								end
 
 						end
 
@@ -1046,6 +1153,8 @@ function get_imagemodel(response)
 						Deleteicon.isVisible=true
 						Copyicon.isVisible=true
 
+						attachment_icon.isVisible = false
+
 					end
 
 			end
@@ -1096,6 +1205,8 @@ local function deleteAction( event )
 		end		
 				Copyicon.isVisible=false
 				Deleteicon.isVisible=false
+
+				attachment_icon.isVisible = true
 
 			if selectedForDelete ~= nil then 
 				if selectedForDelete.y ~= nil then
@@ -1160,10 +1271,10 @@ local function DetailAction( event )
 
 							}
 
-				print( "Message_Type          :  "..To_ContactId )
-				Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
-				ChatBox.isVisible=false
-			    composer.showOverlay( "Controller.Chathead_detailPage", options )
+			print( "Message_Type          :  "..To_ContactId )
+			Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+			ChatBox.isVisible=false
+		    composer.showOverlay( "Controller.Chathead_detailPage", options )
 
 	end
 
