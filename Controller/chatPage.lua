@@ -508,6 +508,8 @@ end
 				Copyicon.value = event.target.chat
 
 				if selectedForDelete ~= nil then 
+
+					print("777777777777")
 					if selectedForDelete.y ~= nil then
 					 selectedForDelete:removeSelf();selectedForDelete=nil 
 
@@ -522,7 +524,6 @@ end
 				print("delete Action")
 
 			end
-
 
 			holdLevel=0
 		end
@@ -1247,6 +1248,8 @@ local function deleteAction( event )
 			if selectedForDelete ~= nil then 
 
 				 if selectedForDelete.y ~= nil then
+
+				 	print("6767676767")
 				 selectedForDelete:removeSelf();selectedForDelete=nil 
 				 end 
 
@@ -1724,6 +1727,9 @@ end
 
 	end
 
+
+
+
 	local function scrollAction(value)
 
 		       		-- if value == 0 then
@@ -1733,6 +1739,8 @@ end
 	ChatScrollContent.y=value
 
 	end
+
+
 
 
 	local function ChatBoxHandler( event )
@@ -1753,9 +1761,7 @@ end
 	    end
         
 
-
         elseif event.phase == "submitted" then
-       		
        		
 
        	elseif event.phase == "ended" then
@@ -1773,12 +1779,7 @@ end
 
 						event.target.text = event.text:sub(1,500)
 
-			
-
-					end
-
-        	
-
+				end
 
 	    end   
 	end
@@ -1816,107 +1817,112 @@ end
 
 
 
+
 	local function scrollListener( event )
 
-    local phase = event.phase
-   
-    if ( phase == "began" ) then print( "Scroll view was touched" )
+	    local phase = event.phase
+	   
+	    if ( phase == "began" ) then print( "Scroll view was touched" )
 
-    	Deleteicon.isVisible=false
-    	Copyicon.isVisible=false
-    	-- chatReceivedFlag=true
-    	holdLevel=0
+	    	Deleteicon.isVisible=false
+	    	Copyicon.isVisible=false
+	    	-- chatReceivedFlag=true
+	    	holdLevel=0
 
-    	if selectedForDelete ~= nil then 
-				if selectedForDelete.y ~= nil then
-				 selectedForDelete:removeSelf();selectedForDelete=nil 
-				 end 
-			end
+	    	attachment_icon.isVisible = true
 
-    elseif ( phase == "moved" ) then print( "Scroll view was moved" )
-    elseif ( phase == "ended" ) then print( "Scroll view was released" )
+	    	if selectedForDelete ~= nil then 
+					if selectedForDelete.y ~= nil then
+					 selectedForDelete:removeSelf();selectedForDelete=nil 
+					 end 
+				end
 
-    local view = chatScroll:getView()
+	    elseif ( phase == "moved" ) then print( "Scroll view was moved" )
+	    elseif ( phase == "ended" ) then print( "Scroll view was released" )
 
-    print( "Size : "..view.contentHeight )
+	    local view = chatScroll:getView()
 
-    if view.contentHeight < 300 then
+	    print( "Size : "..view.contentHeight )
 
-    	 chatScroll:scrollTo( "bottom", { time=500 } )
+	    if view.contentHeight < 300 then
 
-    end
+	    	 chatScroll:scrollTo( "bottom", { time=500 } )
 
+	    end
+	    	
+	    end
 
+	    -- In the event a scroll limit is reached...
+	    if ( event.limitReached ) then
 
-    	
-    end
+	        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+		    elseif ( event.direction == "down" ) then print( "Reached top limit" )
+	        elseif ( event.direction == "left" ) then print( "Reached right limit" )
+	        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+	        end
 
-    -- In the event a scroll limit is reached...
-    if ( event.limitReached ) then
+	        
+	    end
 
-        if ( event.direction == "up" ) then print( "Reached bottom limit" )
-	    elseif ( event.direction == "down" ) then print( "Reached top limit" )
-        elseif ( event.direction == "left" ) then print( "Reached right limit" )
-        elseif ( event.direction == "right" ) then print( "Reached left limit" )
-        end
-
-        
-    end
-
-    return true
-end
-
-function get_audiomodel( response )
-
-			composer.removeHidden()
-
-			ChatBox.isVisible=true
-
-		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
+	    return true
+	end
 
 
-		local audiopath = response.Abspath
-
-		local audioname = response.FileName
-
-		audiosize = size
-
-		ChatBox_bg.isVisible = true
-
-		ChatBox.isVisible = false
-
-		sendBtn_bg.isVisible = true
-
-		sendBtn.isVisible = true
-
-		local q = "UPDATE pu_MyUnitBuzz_Message SET Audio_Path='"..audiopath.."' WHERE id='"..audio_update_row.."';"
-		db:exec( q )
-
-		sendMeaasage()
-
-			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
-			
-			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
-			isDeleted="false"
-			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-			ImagePath= ""
-			AudioPath=audiopath or""
-			VideoPath="NULL"
-			MyUnitBuzz_LongMessage=ChatBox.text
-			From=ContactId
-			To=To_ContactId
-			Message_Type = MessageType
 
 
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
+
+	function get_audiomodel( response )
+
+				composer.removeHidden()
+
+				ChatBox.isVisible=true
+
+			Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 
 
-end
+			local audiopath = response.Abspath
+
+			local audioname = response.FileName
+
+			audiosize = size
+
+			ChatBox_bg.isVisible = true
+
+			ChatBox.isVisible = false
+
+			sendBtn_bg.isVisible = true
+
+			sendBtn.isVisible = true
+
+			local q = "UPDATE pu_MyUnitBuzz_Message SET Audio_Path='"..audiopath.."' WHERE id='"..audio_update_row.."';"
+			db:exec( q )
+
+			sendMeaasage()
+
+				local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+				
+				Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+				isDeleted="false"
+				Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+				Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+				ImagePath= ""
+				AudioPath=audiopath or""
+				VideoPath="NULL"
+				MyUnitBuzz_LongMessage=ChatBox.text
+				From=ContactId
+				To=To_ContactId
+				Message_Type = MessageType
+
+
+				Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
+
+
+	end
+
+
 
 
 	function scene:updateAudio(dataFileName)
-
 
 		composer.removeHidden()
 
@@ -1978,6 +1984,8 @@ end
 						 Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
 
 	end
+
+
 
 
 	function scene:resumeImageCallBack(photoviewname,button_idvalue)
@@ -2117,16 +2125,14 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		if event.params then
-			nameval = event.params.tabbuttonValue2
-		end
+			if event.params then
+				nameval = event.params.tabbuttonValue2
+			end
 
-		composer.removeHidden()
+			composer.removeHidden()
 
 
 	elseif phase == "did" then
-
-
 
 
 		ContactDetails = event.params.contactDetails
@@ -2137,7 +2143,7 @@ function scene:show( event )
 
 
 			if tostring(To_ContactId) == tostring(ContactId) then
-				To_ContactId=ContactDetails.Message_From
+				   To_ContactId=ContactDetails.Message_From
 			end
 
 
@@ -2158,9 +2164,12 @@ function scene:show( event )
 
 		end
 
+
 		if MessageType == "GROUP" then
+
 			title.text = ContactDetails.GroupName or ContactDetails.MyUnitBuzzGroupName
 		else
+
 			title.text = ContactDetails.Name or ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
 		end
 
@@ -2172,6 +2181,7 @@ function scene:show( event )
 		ChatBox_bg.strokeWidth = 1
 		ChatBox_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray))
 
+
 		ChatBox = native.newTextBox( 0, ChatBox_bg.y, ChatBox_bg.contentWidth, ChatBox_bg.contentHeight-5 )
 		ChatBox.isEditable = true
 		ChatBox.anchorY=0;ChatBox.anchorX=0
@@ -2179,7 +2189,6 @@ function scene:show( event )
 		ChatBox.size=16
 		ChatBox.hasBackground = false
 		ChatScrollContent:insert( ChatBox )
-
 
 
 		image_name_png = display.newText("",ChatBox_bg.x, ChatBox_bg.contentHeight-5  ,native.systemFont,14)
@@ -2195,6 +2204,7 @@ function scene:show( event )
 		ChatScrollContent:insert(image_name_png)
 		--image_name_png.anchorX=0
 
+
 		image_name_close = display.newImageRect("res/assert/icon-close.png",20,20)
 		image_name_close.id = "image close"
 		image_name_close.anchorX=0
@@ -2203,7 +2213,6 @@ function scene:show( event )
 		image_name_close.x= ChatBox_bg.width - 30
 		image_name_close.isVisible = false
 		image_name_close.y=ChatBox_bg.y+10
-
 
 
 		sendBtn = display.newImageRect( ChatScrollContent, "res/assert/msg_send.png", 25,20 )
@@ -2238,85 +2247,84 @@ function scene:show( event )
 		sceneGroup:insert( ChatScrollContent )
 	
 
-
 		------------------------------------------- attachment icon -----------------------------------------
 
 
-				attachment_icon = display.newImageRect(sceneGroup,"res/assert/attached.png",20,20)
-				attachment_icon.x= W-40;attachment_icon.y = tabBar.y+35
-				attachment_icon:setFillColor( 0 )
-				attachment_icon:addEventListener( "touch", AttachmentTouch )
+		attachment_icon = display.newImageRect(sceneGroup,"res/assert/attached.png",20,20)
+		attachment_icon.x= W-40;attachment_icon.y = tabBar.y+35
+		attachment_icon:setFillColor( 0 )
+		attachment_icon.isVisible = true
+		attachment_icon:addEventListener( "touch", AttachmentTouch )
 
 
-				createAttachment()
-				AttachmentGroup.anchorX=0;AttachmentGroup.anchorY=0
-				AttachmentGroup.alpha=0
-				AttachmentGroup.y=AttachmentGroup.y+68
-				AttachmentGroup.anchorChildren = true
+		createAttachment()
+		AttachmentGroup.anchorX=0;AttachmentGroup.anchorY=0
+		AttachmentGroup.alpha=0
+		AttachmentGroup.y=AttachmentGroup.y+68
+		AttachmentGroup.anchorChildren = true
 
-				sceneGroup:insert( AttachmentGroup )
-
-
-			--Tabbar---
+		sceneGroup:insert( AttachmentGroup )
 
 
+		--Tabbar---
 
-tabBg = display.newRect( tabBarGroup, W/2, H-40, W, 40 )
-tabBg.anchorY=0
-tabBg.strokeWidth = 1
-tabBg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor),0.7 )
+		tabBg = display.newRect( tabBarGroup, W/2, H-40, W, 40 )
+		tabBg.anchorY=0
+		tabBg.strokeWidth = 1
+		tabBg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor),0.7 )
 
-tab_Group = display.newRect(tabBarGroup,0,0,70,40)
-tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
-tab_Group.anchorY=0
-tab_Group.alpha=0.01
-tab_Group.id="group"
-tab_Group:setFillColor( 0.2 )
+		tab_Group = display.newRect(tabBarGroup,0,0,70,40)
+		tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
+		tab_Group.anchorY=0
+		tab_Group.alpha=0.01
+		tab_Group.id="group"
+		tab_Group:setFillColor( 0.2 )
 
-tab_Message = display.newRect(tabBarGroup,0,0,70,40)
-tab_Message.x=W/2;tab_Message.y=tabBg.y
-tab_Message.anchorY=0
-tab_Message.alpha=0.01
-tab_Message.id="message"
-tab_Message:setFillColor( 0.2 )
+		tab_Message = display.newRect(tabBarGroup,0,0,70,40)
+		tab_Message.x=W/2;tab_Message.y=tabBg.y
+		tab_Message.anchorY=0
+		tab_Message.alpha=0.01
+		tab_Message.id="message"
+		tab_Message:setFillColor( 0.2 )
 
-tab_Contact = display.newRect(tabBarGroup,0,0,70,40)
-tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
-tab_Contact.anchorY=0
-tab_Contact.alpha=0.01
-tab_Contact.id="contact"
-tab_Contact:setFillColor( 0.2 )
+		tab_Contact = display.newRect(tabBarGroup,0,0,70,40)
+		tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
+		tab_Contact.anchorY=0
+		tab_Contact.alpha=0.01
+		tab_Contact.id="contact"
+		tab_Contact:setFillColor( 0.2 )
 
-tab_Group:addEventListener( "touch", TabbarTouch )
-tab_Message:addEventListener( "touch", TabbarTouch )
-tab_Contact:addEventListener( "touch", TabbarTouch )
+		tab_Group:addEventListener( "touch", TabbarTouch )
+		tab_Message:addEventListener( "touch", TabbarTouch )
+		tab_Contact:addEventListener( "touch", TabbarTouch )
 
-CreateTabBarIcons()
+		CreateTabBarIcons()
+
 
 	if tab_Message_btn then tab_Message_btn:removeSelf( );tab_Message_btn=nil end
 
-	tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats active.png", 35/1.4, 31/1.4 )
-	tab_Message_btn.x=tab_Message.x
-	tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
-	tab_Message_btn.anchorY=0
+		tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats active.png", 35/1.4, 31/1.4 )
+		tab_Message_btn.x=tab_Message.x
+		tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
+		tab_Message_btn.anchorY=0
 
-	overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
-	overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
+		overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+		overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
 
-tab_Group_txt = display.newText( tabBarGroup,ChatPage.Group ,0,0,native.systemFont,11 )
-tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
-tab_Group_txt:setFillColor( 0.3 )
+		tab_Group_txt = display.newText( tabBarGroup,ChatPage.Group ,0,0,native.systemFont,11 )
+		tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
+		tab_Group_txt:setFillColor( 0.3 )
 
 
-tab_Message_txt = display.newText( tabBarGroup, ChatPage.Chats ,0,0,native.systemFont,11 )
-tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
-tab_Message_txt:setFillColor( 0.3 )
+		tab_Message_txt = display.newText( tabBarGroup, ChatPage.Chats ,0,0,native.systemFont,11 )
+		tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
+		tab_Message_txt:setFillColor( 0.3 )
 
-tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List ,0,0,native.systemFont,11 )
-tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
-tab_Contact_txt:setFillColor( 0.3 )
+		tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List ,0,0,native.systemFont,11 )
+		tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
+		tab_Contact_txt:setFillColor( 0.3 )
 
-sceneGroup:insert( tabBarGroup )
+		sceneGroup:insert( tabBarGroup )
 
 
 		sendBtn_bg:addEventListener( "touch", ChatSendAction )
@@ -2331,12 +2339,12 @@ sceneGroup:insert( tabBarGroup )
 		
 	end	
 
-
-
-	
 MainGroup:insert(sceneGroup)
 
 end
+
+
+
 
 	function scene:hide( event )
 
@@ -2345,27 +2353,28 @@ end
 
 		if event.phase == "will" then
 
-					Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
-					Runtime:removeEventListener( "key", onKeyEvent )
-					image_name_close:removeEventListener( "touch", ImageClose )
+				Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+				Runtime:removeEventListener( "key", onKeyEvent )
+				image_name_close:removeEventListener( "touch", ImageClose )
 
 
 		elseif phase == "did" then
 
-
-			composer.removeHidden()
+				composer.removeHidden()
 
 		end	
 
 		end
 
 
-		function scene:destroy( event )
-			local sceneGroup = self.view
 
 
+	function scene:destroy( event )
+		local sceneGroup = self.view
 
-		end
+
+	end
+
 
 
 		scene:addEventListener( "create", scene )

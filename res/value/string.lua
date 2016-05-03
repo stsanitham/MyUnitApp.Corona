@@ -428,7 +428,7 @@ ChatPage = {}
 
 ChatPage.Group = "Group"
 ChatPage.Chats = "Chats"
-ChatPage.Consultant_List = "Consultant List"
+ChatPage.Consultant_List = "Consultants"
 ChatPage.Message_Copied = "Message Copied"
 ChatPage.ImageUploadError = "Error in Image Upload"
 ChatPage.ImageSize = "Size of the image cannot be more than 10 MB"
