@@ -52,7 +52,7 @@ local Imagesize = ""
 
 local MemberName
 
-local image_update_row
+local image_update_row,audio_update_row
 
 local holdLevel
 
@@ -557,7 +557,42 @@ end
 	end
 
 
+local function audioPlay( event )
+			if event.phase == "began" then
+				display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+				display.getCurrentStage():setFocus( nil )
 
+					local audioname = event.target.id:match( "([^/]+)$" )
+
+					 local filePath = system.pathForFile( audioname, system.DocumentsDirectory )
+		            -- Play back the recording
+		            local file = io.open( filePath)
+		            
+		            if file then
+		                io.close( file )
+
+		                print("playing...")
+
+		                local laserSound = audio.loadSound( filePath )
+		                local laserChannel = audio.play( laserSound,{channel=1} )
+
+		            else
+
+		            end
+
+		-- network.download(
+		-- event.target.id,
+		-- "GET",
+		-- recivedNetwork,
+		-- event.target.id:match( "([^/]+)$" ),
+		-- system.DocumentsDirectory
+		-- )
+
+		end
+
+	return true
+end
 	local function sendMeaasage()
 
 		for i=#MeassageList, 1, -1 do 
@@ -760,14 +795,28 @@ end
 				bg.height = bg.height+10
 				bg.width = bg.width+35
 
+				if ChatHistory[i].Audio_Path  ~= nil and ChatHistory[i].Audio_Path ~= "" and ChatHistory[i].Audio_Path ~= "NULL" and ChatHistory[i].Audio_Path ~= " " then
 
+					print( "audio" )
+
+					if ChatHistory[i].Audio_Path == "DEFAULT" then
+
+					else
+						bg.width=bg.width+30;bg.height=bg.height+15
+						local playIcon = display.newImageRect( tempGroup,"res/assert/play.png",20,20 )
+						playIcon.x=bg.x-bg.contentWidth/2;playIcon.y=bg.y+bg.contentHeight/2-5
+						playIcon.id=ChatHistory[i].Audio_Path
+						playIcon:addEventListener( "touch", audioPlay )
+
+					end
+
+
+				end
 
 
 				if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
 
 				 Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
-
-						print( "here value : "..Imagename)
 
 				 local image
 
@@ -859,6 +908,8 @@ end
 												   tempGroup:insert(image_spinner)
 
 						else
+							--When notification recive
+
 
 						    if MessageType == "GROUP" then	
 								
@@ -879,10 +930,7 @@ end
 
 								image.y=owner.y+20	
 
-							--	ChatBox.isVisible = true
-							--	ChatBox_bg.isVisible = true
-							--	ChatBox.text = ""
-
+					
 								image:addEventListener( "touch", receviedimageDownload )
 
 							else
@@ -898,9 +946,7 @@ end
 								bg.width = image.contentWidth+5
 								bg.height = image.contentHeight+5	
 
-								--ChatBox.isVisible = true
-								--ChatBox_bg.isVisible = true
-							--	ChatBox.text = ""
+						
 
 								image:addEventListener( "touch", receviedimageDownload )
 
@@ -1009,7 +1055,7 @@ function get_imagemodel(response)
 			Message_Type = MessageType
 
 
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
+			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 
 	end
 
@@ -1150,7 +1196,6 @@ local function DetailAction( event )
 
 							}
 
-				print( "Message_Type          :  "..To_ContactId )
 				Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 				ChatBox.isVisible=false
 			    composer.showOverlay( "Controller.Chathead_detailPage", options )
@@ -1243,7 +1288,7 @@ if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " and ChatBo
 				print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
 
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"SEND",From,To,Message_Type,get_sendMssage)
+			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 
 
 		    else
@@ -1280,7 +1325,7 @@ if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " and ChatBo
 						print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
 
-					    Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"SEND",From,To,Message_Type,get_sendMssage)
+					    Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 
                    end
                    end
@@ -1702,11 +1747,62 @@ return true
 end
 
 function get_audiomodel( response )
-	-- body
+
+			composer.removeHidden()
+
+			ChatBox.isVisible=true
+
+		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
+
+
+		local audiopath = response.Abspath
+
+		local audioname = response.FileName
+
+		audiosize = size
+
+		ChatBox_bg.isVisible = true
+
+		ChatBox.isVisible = false
+
+		sendBtn_bg.isVisible = true
+
+		sendBtn.isVisible = true
+
+		local q = "UPDATE pu_MyUnitBuzz_Message SET Audio_Path='"..audiopath.."' WHERE id='"..audio_update_row.."';"
+		db:exec( q )
+
+		sendMeaasage()
+
+			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+			
+			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+			isDeleted="false"
+			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+			ImagePath= ""
+			AudioPath=audiopath or""
+			VideoPath="NULL"
+			MyUnitBuzz_LongMessage=ChatBox.text
+			From=ContactId
+			To=To_ContactId
+			Message_Type = MessageType
+
+
+			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
+
+
 end
 
 
 	function scene:updateAudio(dataFileName)
+
+
+		composer.removeHidden()
+
+		ChatBox.isVisible=true
+
+		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 
 	    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            -- Play back the recording

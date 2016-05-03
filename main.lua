@@ -253,9 +253,9 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
                         local isDeleted="false"
                         local Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
                         local Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-                        local ImagePath="NULL"
-                        AudioPath="NULL"
-                        VideoPath="NULL"
+                        local ImagePath=stakedArray[i].image or ""
+                        AudioPath=stakedArray[i].audio or ""
+                        VideoPath=stakedArray[i].video or ""
                         MyUnitBuzz_LongMessage=tostring(stakedArray[i].message)
                         From=stakedArray[i].messageFrom
                         To=stakedArray[i].messageTo
@@ -306,8 +306,8 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
                         Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
                         Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
                         ImagePath=additionalData.image or ""
-                        AudioPath="NULL"
-                        VideoPath="NULL"
+                        AudioPath=additionalData.audio or ""
+                        VideoPath=additionalData.audio or ""
                         MyUnitBuzz_LongMessage=tostring(message)
                         From=additionalData.messageFrom
                         To=additionalData.messageTo

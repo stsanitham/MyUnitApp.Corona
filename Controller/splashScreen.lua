@@ -362,8 +362,8 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 									print('table exists!')
 
 
-									local tablesetup = [[DROP TABLE logindetails;]]
-									db:exec( tablesetup )
+									-- local tablesetup = [[DROP TABLE logindetails;]]
+									-- db:exec( tablesetup )
 
 								end
 

@@ -244,7 +244,7 @@ end
 
 
 
-function Webservice.SEND_MESSAGE(message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,pushmethod,From,To,Message_Type,postExecution)
+function Webservice.SEND_MESSAGE(message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,audiopath,audioname,audiosize,pushmethod,From,To,Message_Type,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -278,8 +278,6 @@ function Webservice.SEND_MESSAGE(message,longmessage,IsScheduled,ScheduledDate,S
 
 local v
 
-print( "MessageType : "..Message_Type )
-
 if Message_Type ~= nil and Message_Type ~= "" then
 	
  v = [[
@@ -298,6 +296,9 @@ if Message_Type ~= nil and Message_Type ~= "" then
 	"ImageFilePath": "]]..imagepath..[[",
 	 "ImageFileName": "]]..imagename..[[",
 	  "ImageFileSize": "]]..imagesize..[[",
+	  "AudioFilePath": "]]..audiopath..[[",
+	 "AudioFileName": "]]..audioname..[[",
+	  "AudioFileSize": "]]..audiosize..[[",
 	  "From": "]]..From..[[",
 	  "To": "]]..To..[[",
 	  "MessageType": "]]..Message_Type..[[",
@@ -323,6 +324,9 @@ else
   "ImageFilePath": "]]..imagepath..[[",
   "ImageFileName": "]]..imagename..[[",
   "ImageFileSize": "]]..imagesize..[[",
+  "AudioFilePath": "]]..audiopath..[[",
+  "AudioFileName": "]]..audioname..[[",
+  "AudioFileSize": "]]..audiosize..[[",
   "TimeZone": "]]..TimeZone..[[",
 }
 ]]
@@ -332,7 +336,7 @@ end
 
 	params={headers = headers,body = v}
 
-	print("Send Message Request :"..json.encode(v))
+	print("Send Message Request :"..(v))
 
 	request.new( ApplicationConfig.SEND_MESSAGE,method,params,postExecution)
 	

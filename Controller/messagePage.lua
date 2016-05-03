@@ -361,7 +361,7 @@ end
 		    end
 
 
-		Webservice.SEND_MESSAGE(Message_content.text,feed_url.text,Imagepath,Imagename,Imagesize,method,"","","",get_messagemodel)
+		Webservice.SEND_MESSAGE(Message_content.text,feed_url.text,Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
     end
 
