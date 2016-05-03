@@ -728,7 +728,7 @@ local tabBarGroup = display.newGroup( )
 					Message_time.y=background.y+45
 
 				end
-		
+
 
 				-- local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
 				-- right_img.anchorX=0
@@ -1117,13 +1117,11 @@ local tabBarGroup = display.newGroup( )
 
 	    	pagevalue = "editpage"
 
-
 					local options = {
 						isModal = true,
 						effect = "slideLeft",
 						time = 300,
 						params = {
-						
 						Details = EditArray,
 						value = "edit",
 						page = pagevalue

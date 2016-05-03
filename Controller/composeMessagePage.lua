@@ -656,6 +656,14 @@ local function TextLimitation( event )
 						    end
 
 
+
+						    if page == "edit" then
+
+						    	short_msg_charlimit.text = counttext
+
+						    end
+
+
 					end
 
 
@@ -708,6 +716,14 @@ local function TextLimitation( event )
 								end
 
 							end
+
+
+
+						    if page == "edit" then
+
+						    	long_msg_charlimit.text = countlongtext
+
+						    end
 
 		                           
 					end
@@ -962,9 +978,64 @@ end
 
                         if page == "edit" then
 
-                       shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
-					   longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
+	                       shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
+						   longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
+						   short_msg_charlimit.text = ""
+						   long_msg_charlimit.text = ""
+
+						   shortmesslen = shortmsg_textbox.text:len()
+						   longmesslen = longmsg_textbox.text:len()
+
+						   print(shortmesslen.."      "..longmesslen)
+
+
+								if (string.len(shortmsg_textbox.text) <= 250) then
+
+									      counttext = 250 - shortmesslen.." "..MessagePage.characters
+
+									      short_msg_charlimit.text = counttext
+
+									      print(counttext)
+
+									end
+
+
+
+								if (string.len(longmsg_textbox.text) <= 1000) then
+
+								         countlongtext = 1000 - longmesslen.." "..MessagePage.characters
+
+									     long_msg_charlimit.text = countlongtext
+
+									     print(countlongtext)
+
+								end
+
+
+					    local native = native.showAlert("MyUnitBuzz",counttext.." "..countlongtext,{"ok"})
+
+ 
+						back_icon:addEventListener("touch",closeMessagePage)
+						back_icon_bg:addEventListener("touch",closeMessagePage)
+						title:addEventListener("touch",closeMessagePage)
+
+                       	
+                        end
+
+			    end
+
+
+
+           
+  			    if openPagevalue == "editpage" then
+
+					if sceneevent.params then
+
+						edit_msg_values = sceneevent.params.editvalues
+
+						shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
+						longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
 
 
 							if shortmsg_textbox.id =="shortmessage" then
@@ -999,6 +1070,7 @@ end
  										native.setKeyboardFocus( longmsg_textbox )
 
  										end
+
 
 							end
 
@@ -1044,27 +1116,6 @@ end
 								end
 
 
-
-						back_icon:addEventListener("touch",closeMessagePage)
-						back_icon_bg:addEventListener("touch",closeMessagePage)
-						title:addEventListener("touch",closeMessagePage)
-
-                       	
-                        end
-
-			    end
-
-
-
-           
-  			    if openPagevalue == "editpage" then
-
-					if sceneevent.params then
-
-						edit_msg_values = sceneevent.params.editvalues
-
-						shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
-						longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
 
 					end
 
