@@ -871,7 +871,7 @@ end
 									    image_spinner:toFront();image_spinner:start()
 
 
-									    image_spinner.isVisible = false
+									    image_spinner:start()
 
 									    tempGroup:insert(image_spinner)
 						else
