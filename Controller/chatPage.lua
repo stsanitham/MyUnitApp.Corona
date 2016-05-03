@@ -889,8 +889,6 @@ end
 					   if fhd then	
 
 							    if MessageType == "GROUP" then	
-
-							    	print("download image 3")
 										
 									image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
 									image.id = ChatHistory[i].Image_Path
@@ -937,8 +935,6 @@ end
 
 								if MessageType == "GROUP" then	
 
-									print("**********************")
-
 									owner.anchorY=0;owner.anchorX = 0;owner.x=chat.x;owner.y=bg.y+1 
 									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=owner.y+20
 									bg.width = image.contentWidth+5
@@ -966,19 +962,20 @@ end
 										local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
 
 								local image_spinner = widget.newSpinner
-														{
-														    width = 106/4 ,
-														    height = 111/4,
-														    deltaAngle = 10,
-														    sheet = spinnerSingleSheet,
-														    startFrame = 1,
-														    incrementEvery = 20
-														}
 
-														image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
-													    image_spinner:toFront();image_spinner:start()
+												{
+												    width = 106/4 ,
+												    height = 111/4,
+												    deltaAngle = 10,
+												    sheet = spinnerSingleSheet,
+												    startFrame = 1,
+												    incrementEvery = 20
+												}
 
-													   tempGroup:insert(image_spinner)
+												image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
+											    image_spinner:toFront();image_spinner:start()
+
+											   tempGroup:insert(image_spinner)
 
 						else
 							--When notification recive
@@ -986,9 +983,6 @@ end
 
 
 							    if MessageType == "GROUP" then	
-
-
-							    	print("download image 1")
 									
 									image = display.newImageRect( tempGroup, "res/assert/thumbnail.jpg", 200, 170 )
 									--image.id = ChatHistory[i].Image_Path
@@ -1056,8 +1050,6 @@ end
 
 								else
 
-									print("download image 2")
-
 									image = display.newImageRect( tempGroup, "res/assert/thumbnail.jpg", 200, 170 )
 									--image.id = ChatHistory[i].Image_Path
 
@@ -1112,9 +1104,6 @@ end
 
 
 									downloadimage:addEventListener( "touch", receviedimageDownload )
-
-
-
 
 								end
 
@@ -1230,9 +1219,6 @@ function get_imagemodel(response)
 
 
 
-
-
-
 	local function printTimeSinceStart( event )
 
 
@@ -1272,17 +1258,17 @@ function get_imagemodel(response)
 			-- 	 selectedForDelete:removeSelf();selectedForDelete=nil 
 			-- 	 end 
 			-- end
-		    	
-		    	
+		    		
 		    end
 
 
-local function deleteAction( event )
-	if event.phase == "ended" then
 
+
+local function deleteAction( event )
+
+	if event.phase == "ended" then
  
 		if event.target.id == "delete" then
-
 
 				local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.value..[[;]]
 				db:exec( q )
@@ -1296,23 +1282,26 @@ local function deleteAction( event )
 
 						toast.show(ChatPage.Message_Copied, {duration = 'long', gravity = 'Center', offset = {0, 128}})  
 
-
-
 		end		
-				Copyicon.isVisible=false
-				Deleteicon.isVisible=false
+					Copyicon.isVisible=false
+					Deleteicon.isVisible=false
 
-				attachment_icon.isVisible = true
+					attachment_icon.isVisible = true
 
 			if selectedForDelete ~= nil then 
-				if selectedForDelete.y ~= nil then
+
+				 if selectedForDelete.y ~= nil then
 				 selectedForDelete:removeSelf();selectedForDelete=nil 
 				 end 
+
 			end
+
 	end
 
 return true
+
 end
+
 
 
 

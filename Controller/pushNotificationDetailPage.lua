@@ -363,9 +363,9 @@ end
 
 		    else
 
-		    	short_msg_txt.width = W-40
-		    	short_msg_txt.x=back_icon.x + 8
-			    short_msg_txt.y= back_icon.y
+		    	--short_msg_txt.width = W-40
+		    	--short_msg_txt.x=back_icon.x + 8
+			    --short_msg_txt.y= back_icon.y
 
 			end
 
