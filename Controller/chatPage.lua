@@ -505,6 +505,9 @@ end
 			if holdLevel > 25 then
 
 				Deleteicon.value=event.target.id
+				Deleteicon.type=event.target.type
+				Deleteicon.contentPath=event.target.contentPath
+				
 				Copyicon.value = event.target.chat
 
 				if selectedForDelete ~= nil then 
@@ -654,6 +657,7 @@ end
 			bg.anchorX=0;bg.anchorY=0
 			bg.id=ChatHistory[i].id
 			bg.group=tempGroup
+			 bg.type = "text"
 			bg:addEventListener( "touch", ChatTouch )
 
 
@@ -824,8 +828,13 @@ end
 
 					 local audio
 
+					 bg.type = "audio"
+
 					 local filePath = system.pathForFile( audioname,system.DocumentsDirectory )
 				 	 local fhd = io.open( filePath )
+
+					  bg.contentPath = filePath
+
 					
 					if fhd then	
 							bg.width=bg.width+30;bg.height=bg.height+15
@@ -885,6 +894,8 @@ end
 
 				 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
 			 	 local fhd = io.open( filePath )
+
+			 	 bg.type = "image";bg.contentPath = filePath
 				
 					   if fhd then	
 
@@ -1269,6 +1280,12 @@ local function deleteAction( event )
 	if event.phase == "ended" then
  
 		if event.target.id == "delete" then
+
+				if event.target.type ~= "text" then
+
+					os.remove( event.target.contentPath )
+
+				end
 
 				local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.value..[[;]]
 				db:exec( q )

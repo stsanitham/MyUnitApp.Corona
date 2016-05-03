@@ -981,41 +981,13 @@ end
 	                       shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
 						   longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
-						   short_msg_charlimit.text = ""
-						   long_msg_charlimit.text = ""
 
-						   shortmesslen = shortmsg_textbox.text:len()
-						   longmesslen = longmsg_textbox.text:len()
+					   		short_msg_charlimit.text = (250 - shortmsg_textbox.text:len()).." "..MessagePage.characters
 
-						   print(shortmesslen.."      "..longmesslen)
-
-
-								if (string.len(shortmsg_textbox.text) <= 250) then
-
-									      counttext = 250 - shortmesslen.." "..MessagePage.characters
-
-									      short_msg_charlimit.text = counttext
-
-									      print(counttext)
-
-									end
+				        	long_msg_charlimit.text = (1000 - longmsg_textbox.text:len()).." "..MessagePage.characters
 
 
 
-								if (string.len(longmsg_textbox.text) <= 1000) then
-
-								         countlongtext = 1000 - longmesslen.." "..MessagePage.characters
-
-									     long_msg_charlimit.text = countlongtext
-
-									     print(countlongtext)
-
-								end
-
-
-					    local native = native.showAlert("MyUnitBuzz",counttext.." "..countlongtext,{"ok"})
-
- 
 						back_icon:addEventListener("touch",closeMessagePage)
 						back_icon_bg:addEventListener("touch",closeMessagePage)
 						title:addEventListener("touch",closeMessagePage)
@@ -1026,105 +998,6 @@ end
 			    end
 
 
-
-           
-  			    if openPagevalue == "editpage" then
-
-					if sceneevent.params then
-
-						edit_msg_values = sceneevent.params.editvalues
-
-						shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
-						longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
-
-
-							if shortmsg_textbox.id =="shortmessage" then
-
- 										if (string.len(shortmsg_textbox.text) > 250) then
-
- 										shortmsg_textbox.text = shortmsg_textbox.text:sub(1, 250)
-
-										end
-
-
-										if (string.len(shortmsg_textbox.text) <= 250) then
-
- 										      counttext = 250 - string.len(shortmsg_textbox.text).. MessagePage.characters
-
- 										      short_msg_charlimit.text = counttext
-
- 										end
-
-
-								        if (string.len(shortmsg_textbox.text) <= 0) then
-
-								       	      short_msg_charlimit.text = "250"..MessagePage.characters
-
-								        end
-
-
-										if (event.newCharacters=="\n") then
-
-										shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
-
- 										native.setKeyboardFocus( longmsg_textbox )
-
- 										end
-
-
-							end
-
-
-
-								if longmsg_textbox.id =="longmessage" then
-
-										if (string.len(longmsg_textbox.text) > 1000) then
-
-										longmsg_textbox.text = longmsg_textbox.text:sub(1, 1000)
-
-										end
-
-
-										if (string.len(longmsg_textbox.text) <= 1000) then
-
-										     countlongtext = 1000 - string.len(longmsg_textbox.text) .. MessagePage.characters
-
-									       	 long_msg_charlimit.text = "1000"..MessagePage.characters
-
- 										      long_msg_charlimit.text = countlongtext
-
-										end
-
-
-								       if (string.len(longmsg_textbox.text) <= 0) then
-
-								       	 long_msg_charlimit.text = "1000"..MessagePage.characters
-
-								       end
-
-
-										--print( event.newCharacters )
-
-										if (event.newCharacters=="\n") then
-
-										longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
-
-										native.setKeyboardFocus( nil )
-
-										end
-
-								end
-
-
-
-					end
-
-
-						back_icon:addEventListener("touch",closeMessagePage)
-						back_icon_bg:addEventListener("touch",closeMessagePage)
-						title:addEventListener("touch",closeMessagePage)
-
-				end
 
 
 -- ------------------------------------------- attachment icon -----------------------------------------
