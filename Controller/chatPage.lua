@@ -505,6 +505,9 @@ end
 			if holdLevel > 25 then
 
 				Deleteicon.value=event.target.id
+				Deleteicon.type=event.target.type
+				Deleteicon.contentPath=event.target.contentPath
+				
 				Copyicon.value = event.target.chat
 
 				if selectedForDelete ~= nil then 
@@ -655,6 +658,7 @@ end
 			bg.anchorX=0;bg.anchorY=0
 			bg.id=ChatHistory[i].id
 			bg.group=tempGroup
+			 bg.type = "text"
 			bg:addEventListener( "touch", ChatTouch )
 
 
@@ -816,24 +820,72 @@ end
 				bg.height = bg.height+10
 				bg.width = bg.width+35
 
+
+			--------audio Attachment---------------
+
 				if ChatHistory[i].Audio_Path  ~= nil and ChatHistory[i].Audio_Path ~= "" and ChatHistory[i].Audio_Path ~= "NULL" and ChatHistory[i].Audio_Path ~= " " then
 
-					print( "audio" )
+					local audioname = ChatHistory[i].Audio_Path:match( "([^/]+)$" )
 
-					if ChatHistory[i].Audio_Path == "DEFAULT" then
+					 local audio
 
+					 bg.type = "audio"
+
+					 local filePath = system.pathForFile( audioname,system.DocumentsDirectory )
+				 	 local fhd = io.open( filePath )
+
+					  bg.contentPath = filePath
+
+					
+					if fhd then	
+							bg.width=bg.width+30;bg.height=bg.height+15
+							local playIcon = display.newImageRect( tempGroup,"res/assert/play.png",20,20 )
+							playIcon.x=bg.x-bg.contentWidth/2;playIcon.y=bg.y+bg.contentHeight/2-5
+							playIcon.id=ChatHistory[i].Audio_Path
+							playIcon:addEventListener( "touch", audioPlay )
 					else
-						bg.width=bg.width+30;bg.height=bg.height+15
-						local playIcon = display.newImageRect( tempGroup,"res/assert/play.png",20,20 )
-						playIcon.x=bg.x-bg.contentWidth/2;playIcon.y=bg.y+bg.contentHeight/2-5
-						playIcon.id=ChatHistory[i].Audio_Path
-						playIcon:addEventListener( "touch", audioPlay )
+
+						if ChatHistory[i].Audio_Path == "DEFAULT" then
+							spinner.isVisible=false
+
+								    local options = {
+												    width = 32,
+												    height = 32,
+												    numFrames = 4,
+												    sheetContentWidth = 64,
+												    sheetContentHeight = 64
+												}
+
+									local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
+ 
+								    local image_spinner = widget.newSpinner
+														{
+														    width = 106/4 ,
+														    height = 111/4,
+														    deltaAngle = 10,
+														    sheet = spinnerSingleSheet,
+														    startFrame = 1,
+														    incrementEvery = 20
+														}
+
+										image_spinner.x=bg.x-bg.contentWidth/2;image_spinner.y=bg.y+bg.contentHeight/2
+									    image_spinner:toFront();image_spinner:start()
+
+
+									    image_spinner.isVisible = false
+
+									    tempGroup:insert(image_spinner)
+						else
+							
+
+						end
 
 					end
 
 
 				end
 
+			--------Image Attachment---------------
 
 			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
 
@@ -843,6 +895,8 @@ end
 
 				 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
 			 	 local fhd = io.open( filePath )
+
+			 	 bg.type = "image";bg.contentPath = filePath
 				
 					   if fhd then	
 
@@ -884,7 +938,8 @@ end
 
 					else
 
-						
+					
+
 						if ChatHistory[i].Image_Path == "DEFAULT" then
 
 								image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
@@ -1226,6 +1281,12 @@ local function deleteAction( event )
 	if event.phase == "ended" then
  
 		if event.target.id == "delete" then
+
+				if event.target.type ~= "text" then
+
+					os.remove( event.target.contentPath )
+
+				end
 
 				local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.value..[[;]]
 				db:exec( q )

@@ -984,38 +984,12 @@ end
 	                       shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
 						   longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
-						   short_msg_charlimit.text = ""
-						   long_msg_charlimit.text = ""
 
-						   shortmesslen = shortmsg_textbox.text:len()
-						   longmesslen = longmsg_textbox.text:len()
+					   		short_msg_charlimit.text = (250 - shortmsg_textbox.text:len()).." "..MessagePage.characters
 
-						   print(shortmesslen.."      "..longmesslen)
+				        	long_msg_charlimit.text = (1000 - longmsg_textbox.text:len()).." "..MessagePage.characters
 
 
-								if (shortmesslen <= 250) then
-
-									      counttext = 250 - shortmesslen.." "..MessagePage.characters
-
-									      short_msg_charlimit.text = counttext
-
-									      print(counttext)
-
-									end
-
-
-
-								if (longmesslen <= 1000) then
-
-								         countlongtext = 1000 - longmesslen.." "..MessagePage.characters
-
-									     long_msg_charlimit.text = countlongtext
-
-									     print(countlongtext)
-
-								end
-
- 
 						back_icon:addEventListener("touch",closeMessagePage)
 						back_icon_bg:addEventListener("touch",closeMessagePage)
 						title:addEventListener("touch",closeMessagePage)
