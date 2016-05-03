@@ -357,7 +357,7 @@ local display_details = {}
             tzoffset = "local"
         end
 
-       print( "***************************** : "..Details.startdate.." "..tzoffset ) 
+       print( "***************************** : \n"..Details.startdate.." "..tzoffset.."\n"..Details.enddate.." "..tzoffset ) 
 
 		local start_timeGMT = Utils.makeTimeStampwithOffset( Details.startdate.." "..tzoffset )
 		local end_timeGMT = Utils.makeTimeStampwithOffset( Details.enddate.." "..tzoffset )
@@ -384,22 +384,9 @@ local display_details = {}
 		display_details[#display_details].anchorX=0
 		scrollView:insert( display_details[#display_details] )
 
-		local monthstart = Utils.GetMonth(os.date( "%b" , start_timeGMT ))
-		local monthend = Utils.GetMonth(os.date( "%b" , end_timeGMT ))
-
-		local value 
-		if CommonWords.language == "Canada English" then
-
-			value = os.date( " %d " , start_timeGMT )..monthstart..os.date( ", %Y" , start_timeGMT).." to ".. os.date( "%d " , start_timeGMT )..monthend..os.date( ", %Y" , start_timeGMT)
-
-		else
-
-			value = monthstart..os.date( " %d, %Y" , start_timeGMT ).." to "..monthend..os.date( " %d, %Y" , end_timeGMT )
-
-		end
 
 		display_details[#display_details+1] = display_details[#display_details+1]
-		display_details[#display_details] = display.newText(value,0,0,220,0,sp_fieldValue.Font_Weight,sp_fieldValue.Font_Size_ios)
+		display_details[#display_details] = display.newText("",0,0,220,0,sp_fieldValue.Font_Weight,sp_fieldValue.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_fieldValue.Text_Color))
 		display_details[#display_details].x=W/2-28;display_details[#display_details].y=titleBar.y-45
 		display_details[#display_details].anchorX=0
@@ -417,11 +404,12 @@ local display_details = {}
 
 		if Details.allDay == false then
 
-			local TimeZone_start = Utils.GetWeek(os.date( "%p" , start_timeGMT ))
-			local TimeZone_end = Utils.GetWeek(os.date( "%p" , end_timeGMT ))
+			-- local TimeZone_start = Utils.GetWeek(os.date( "%p" , start_timeGMT ))
+			-- local TimeZone_end = Utils.GetWeek(os.date( "%p" , end_timeGMT ))
+			-- print( "timing diff : "..end_timeGMT-start_timeGMT )
+			-- print( TimeZone_start,TimeZone_end )
 
-
-		time = "("..Utils.getTime(start_timeGMT, "%I:%M " ,Details.TimeZone  )..TimeZone_start.." to "..Utils.getTime( end_timeGMT,"%I:%M " ,Details.TimeZone  )..TimeZone_end..")"
+		time = "("..Utils.getTime(start_timeGMT, "%I:%M %p" ,Details.TimeZone  ).." to "..Utils.getTime( end_timeGMT,"%I:%M %p" ,Details.TimeZone  )..")"
 
 		else
 
