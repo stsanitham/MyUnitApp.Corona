@@ -83,6 +83,22 @@ end
 
 
 
+local function onIconsTouch( event )
+	
+	if event.phase == "began" then
+
+		native.setKeyboardFocus(nil)
+		display.getCurrentStage():setFocus( event.target )
+
+	elseif event.phase == "ended" then
+
+	    display.getCurrentStage():setFocus( nil )
+
+	end
+
+	return true
+end
+
 
 
 	function get_messagemodel(response)
@@ -937,129 +953,127 @@ end
 				long_msg_charlimit:setFillColor(0)
 
 
--- 				if sceneevent.params then
+				if sceneevent.params then
 
---                         detailvalues = sceneevent.params.Details
---                         page = sceneevent.params.value
+                        detailvalues = sceneevent.params.Details
+                        page = sceneevent.params.value
 
---                         print("detailvalues : "..json.encode(detailvalues))
+                        print("detailvalues : "..json.encode(detailvalues))
 
---                         if page == "edit" then
+                        if page == "edit" then
 
---                         shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
--- 						   longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
-
-
-
--- 								if shortmsg_textbox.id =="shortmessage" then
-
--- 										if (string.len(shortmsg_textbox.text) > 250) then
-
--- 										shortmsg_textbox.text = shortmsg_textbox.text:sub(1, 250)
-
--- 										end
-
-
--- 										if (string.len(shortmsg_textbox.text) <= 250) then
-
--- 										      counttext = 250 - string.len(shortmsg_textbox.text).. MessagePage.characters
-
--- 										      short_msg_charlimit.text = counttext
-
--- 										end
-
-
--- 								        if (string.len(shortmsg_textbox.text) <= 0) then
-
--- 								       	      short_msg_charlimit.text = "250"..MessagePage.characters
-
-
--- 								        end
-
-
--- 										-- if (event.newCharacters=="\n") then
-
--- 										-- shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
-
--- 										-- native.setKeyboardFocus( longmsg_textbox )
-
--- 										-- end
-
-
--- 								end
+                       shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
+					   longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
 
 
--- 								if longmsg_textbox.id =="longmessage" then
+							if shortmsg_textbox.id =="shortmessage" then
 
--- 										if (string.len(longmsg_textbox.text) > 1000) then
+ 										if (string.len(shortmsg_textbox.text) > 250) then
 
--- 										longmsg_textbox.text = longmsg_textbox.text:sub(1, 1000)
+ 										shortmsg_textbox.text = shortmsg_textbox.text:sub(1, 250)
 
--- 										end
+										end
 
 
--- 										if (string.len(longmsg_textbox.text) <= 1000) then
+										if (string.len(shortmsg_textbox.text) <= 250) then
 
--- 										       countlongtext = 1000 - string.len(longmsg_textbox.text) .. MessagePage.characters
+ 										      counttext = 250 - string.len(shortmsg_textbox.text).. MessagePage.characters
+
+ 										      short_msg_charlimit.text = counttext
+
+ 										end
+
+
+								        if (string.len(shortmsg_textbox.text) <= 0) then
+
+								       	      short_msg_charlimit.text = "250"..MessagePage.characters
+
+								        end
+
+
+										if (event.newCharacters=="\n") then
+
+										shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
+
+ 										native.setKeyboardFocus( longmsg_textbox )
+
+ 										end
+
+							end
+
+
+
+								if longmsg_textbox.id =="longmessage" then
+
+										if (string.len(longmsg_textbox.text) > 1000) then
+
+										longmsg_textbox.text = longmsg_textbox.text:sub(1, 1000)
+
+										end
+
+
+										if (string.len(longmsg_textbox.text) <= 1000) then
+
+										     countlongtext = 1000 - string.len(longmsg_textbox.text) .. MessagePage.characters
 
 									       	 long_msg_charlimit.text = "1000"..MessagePage.characters
--- 										       long_msg_charlimit.text = countlongtext
+
+ 										      long_msg_charlimit.text = countlongtext
+
+										end
 
 
--- 										end
+								       if (string.len(longmsg_textbox.text) <= 0) then
+
+								       	 long_msg_charlimit.text = "1000"..MessagePage.characters
+
+								       end
 
 
--- 								       if (string.len(longmsg_textbox.text) <= 0) then
+										--print( event.newCharacters )
 
--- 								       	 long_msg_charlimit.text = "1000"..MessagePage.characters
+										if (event.newCharacters=="\n") then
 
--- 								       end
+										longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
 
+										native.setKeyboardFocus( nil )
 
--- 										--print( event.newCharacters )
+										end
 
--- 										if (event.newCharacters=="\n") then
-
--- 										longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
-
--- 										native.setKeyboardFocus( nil )
-
--- 										end
-
--- 								end
+								end
 
 
 
--- 						back_icon:addEventListener("touch",closeMessagePage)
--- 						back_icon_bg:addEventListener("touch",closeMessagePage)
--- 						title:addEventListener("touch",closeMessagePage)
+						back_icon:addEventListener("touch",closeMessagePage)
+						back_icon_bg:addEventListener("touch",closeMessagePage)
+						title:addEventListener("touch",closeMessagePage)
 
                        	
---                         end
+                        end
 
--- 			    end
+			    end
 
 
 
            
---   			    -- if openPagevalue == "editpage" then
+  			    if openPagevalue == "editpage" then
 
--- 				-- 	if sceneevent.params then
+					if sceneevent.params then
 
--- 				-- 		edit_msg_values = sceneevent.params.editvalues
+						edit_msg_values = sceneevent.params.editvalues
 
--- 				-- 		shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
--- 				-- 		longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
+						shortmsg_textbox.text = edit_msg_values.MyUnitBuzzMessage
+						longmsg_textbox.text = edit_msg_values.MyUnitBuzzLongMessage
 
--- 				-- 	end
+					end
 
 
--- 				-- 		back_icon:addEventListener("touch",closeMessagePage)
--- 				-- 		back_icon_bg:addEventListener("touch",closeMessagePage)
--- 				-- 		title:addEventListener("touch",closeMessagePage)
+						back_icon:addEventListener("touch",closeMessagePage)
+						back_icon_bg:addEventListener("touch",closeMessagePage)
+						title:addEventListener("touch",closeMessagePage)
 
--- 				-- end
+				end
 
 
 -- ------------------------------------------- attachment icon -----------------------------------------
@@ -1086,6 +1100,15 @@ end
 -- 				icons_holder_bg:setFillColor( 1,1,1,0.8)
 
 -- -------------------------------------------- Camera ---------------------------------------------------
+
+
+				-- camera_icon = display.newImageRect(sceneGroup,"res/assert/camera1.png",40,35)
+				-- camera_icon.x=W/2 - W/3 - 15
+				-- camera_icon.anchorX=0
+				-- camera_icon.anchorY=0
+				-- camera_icon.id= "camera"
+				-- camera_icon.y = icons_holder_bg.y + 7.5
+				-- camera_icon:addEventListener("touch",onIconsTouch)
 
 -- 				camera_icon = display.newImageRect(sceneGroup,"res/assert/camera1.png",40,35)
 -- 				camera_icon.x=W/2 - W/3 - 15
@@ -1135,11 +1158,21 @@ end
 
 -- -------------------------------------------- Gallery ---------------------------------------------------
 
+
+    --             gallery_icon = display.newImageRect(sceneGroup,"res/assert/gallery1.png",40,35)
+				-- gallery_icon.x= W/2 - W/3 - 15
+				-- gallery_icon.anchorX=0
+				-- gallery_icon.anchorY=0
+				-- gallery_icon.id= "gallery"
+				-- gallery_icon.y = camera_icon.y + camera_icon.contentHeight + 35
+				-- gallery_icon:addEventListener("touch",onIconsTouch)
+
 --                 gallery_icon = display.newImageRect(sceneGroup,"res/assert/gallery1.png",40,35)
 -- 				gallery_icon.x= W/2 - W/3 - 15
 -- 				gallery_icon.anchorX=0
 -- 				gallery_icon.anchorY=0
 -- 				gallery_icon.y = camera_icon.y + camera_icon.contentHeight + 35
+
 
 
 -- 				gallery_icon_txt = display.newText(sceneGroup,MessagePage.Gallery,0,0,native.systemFont,14)

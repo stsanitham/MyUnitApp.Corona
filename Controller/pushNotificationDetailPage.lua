@@ -352,22 +352,20 @@ end
 			--messagedetail_scrollView:insert(short_msg_delete)
 
 
-			--if IsOwner == true then
+			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",23,23)
+			short_msg_edit.x= short_msg_delete.x - 35
+			short_msg_edit.anchorX=0
+			short_msg_edit.anchorY=0
+			short_msg_edit.id = "editoption"
+			short_msg_edit.isVisible = true
+			short_msg_edit:setFillColor(0)
+			short_msg_edit.y= title_bg.y - 12
 
-			-- short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",23,23)
-			-- short_msg_edit.x= short_msg_delete.x - 35
-			-- short_msg_edit.anchorX=0
-			-- short_msg_edit.anchorY=0
-			-- short_msg_edit.id = "editoption"
-			-- short_msg_edit.isVisible = true
-			-- short_msg_edit:setFillColor(0)
-			-- short_msg_edit.y= title_bg.y - 12
+		    else
 
-		 --    else
-
-		    	-- short_msg_txt.width = W-40
-		    	-- short_msg_txt.x=back_icon.x + 8
-			    -- short_msg_txt.y= back_icon.y
+		    	short_msg_txt.width = W-40
+		    	short_msg_txt.x=back_icon.x + 8
+			    short_msg_txt.y= back_icon.y
 
 			end
 
@@ -458,7 +456,7 @@ end
 				if IsOwner == true then
 
 				short_msg_delete:addEventListener("touch",onDeleteAction)
-			--	short_msg_edit:addEventListener("touch",onDeleteAction)
+				short_msg_edit:addEventListener("touch",onDeleteAction)
 
 			    end
 
@@ -522,7 +520,7 @@ end
 			if IsOwner == true then
 
 			short_msg_delete:removeEventListener("touch",onDeleteAction)
-		--	short_msg_edit:removeEventListener("touch",onDeleteAction)
+			short_msg_edit:removeEventListener("touch",onDeleteAction)
 
 		    end
 
