@@ -845,7 +845,8 @@ end
 					else
 
 						if ChatHistory[i].Audio_Path == "DEFAULT" then
-							spinner.isVisible=false
+							
+								spinner.isVisible=false
 
 								    local options = {
 												    width = 32,
@@ -874,6 +875,11 @@ end
 									    image_spinner:start()
 
 									    tempGroup:insert(image_spinner)
+
+									    bg.height = bg.height+15
+
+
+
 						else
 							
 
@@ -1953,7 +1959,7 @@ function get_audiomodel( response )
 		local q = "UPDATE pu_MyUnitBuzz_Message SET Audio_Path='"..audiopath.."' WHERE id='"..audio_update_row.."';"
 		db:exec( q )
 
-		sendMeaasage()
+		
 
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
@@ -1972,7 +1978,7 @@ function get_audiomodel( response )
 
 			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
 
-
+			sendMeaasage()
 end
 
 

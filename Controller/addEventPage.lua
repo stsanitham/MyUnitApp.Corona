@@ -1147,7 +1147,6 @@ local function TouchAction( event )
 				function get_GetUserPreferencebyUserId( response )
 
 
-					print( "color response : "..json.encode(response ))
 
 				local colorCode
 
