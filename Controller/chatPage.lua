@@ -671,14 +671,36 @@ local function audioPlay( event )
 		            if file then
 		                io.close( file )
 
-		                print("playing...")
-
+		               
 		                if event.target.value == "play" then
-
+		                	print("paly")
+		                	
 
 		                	 local isChannel1Playing = audio.isChannelPlaying( 1 )
-								if isChannel1Playing then
-									
+								if isChannel1Playing or isSimulator then
+
+									print( "123" )
+									 for i=#MeassageList, 1, -1 do 
+												local group = MeassageList[#MeassageList]
+
+												for j=group.numChildren, 1, -1 do 
+
+													
+
+													if group[j].value == "pause" then
+
+														print("!!!!!!!!!!...")
+
+														group[j]:setSequence( "play" )
+														group[j].value="play"
+	      												group[j]:play()
+
+													end
+
+									   		 	end
+												
+							end
+
 								end
 			                local laserSound = audio.loadSound( filePath )
 			                local laserChannel = audio.play( laserSound,{channel=1} )
@@ -687,11 +709,17 @@ local function audioPlay( event )
 	      					event.target.value="pause"
 
 	      				elseif event.target.value == "pause" then
-
+	      						print( "pause" )
 	      						 local isChannel1Playing = audio.isChannelPlaying( 1 )
-									if isChannel1Playing then
+									if isChannel1Playing or isSimulator then
 									    audio.pause( 1 )
+
+									     event.target:setSequence( "play" )
+				      					event.target:play()
+				      					event.target.value="play"
 									end
+
+									
 
 	      				end
 
