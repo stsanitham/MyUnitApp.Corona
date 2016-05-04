@@ -770,15 +770,13 @@ local function dayTouch(event)
 
 		addEventBtn.value = timeGMT
 
-		
-
-		
-
-	
 	end
+
 return true
 
 end
+
+
 
 local function creatWeek( weekfirstDay,flagValue )
 	--todaydate =  os.date( "%m/%d/%Y" , os.time( t ) )
@@ -808,7 +806,6 @@ end
 weekfirstDay.day = weekfirstDay.day - 1
 	
 	weekStartX = weekView_leftArrow.x
-
 	
 
 	for i=1,7 do
@@ -849,29 +846,27 @@ weekfirstDay.day = weekfirstDay.day - 1
 
 			if CommonWords.language == "Canada English" then
 
-				weekView_header.text =  weekView_header.text..os.date( " %d " , os.time( weekfirstDay )  )..month..os.date( ", %Y" , os.time( weekfirstDay )  )
+				   weekView_header.text =  weekView_header.text..os.date( " %d " , os.time( weekfirstDay )  )..month..os.date( ", %Y" , os.time( weekfirstDay )  )
 
 			else
 
-				weekView_header.text = weekView_header.text..os.date( month.." %d, %Y" , os.time( weekfirstDay ) )
+				   weekView_header.text = weekView_header.text..os.date( month.." %d, %Y" , os.time( weekfirstDay ) )
 
 			end
-
-
-			
 
 		end
 
 		Week_Group:addEventListener( "touch", dayTouch )
 
-	
 		week:insert( Week_Group )
+
 	end
+
 	weekfirstDay.day=weekfirstDay.day-7
 
-	if flagValue then
-		eventList(weekfirstDay)
-	end
+		if flagValue then
+			eventList(weekfirstDay)
+		end
 
 end
 local function searchListener( event )

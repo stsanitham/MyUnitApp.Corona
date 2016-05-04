@@ -17,6 +17,8 @@ local db = sqlite3.open( path )
 local pasteboard = require( "plugin.pasteboard" )
 local toast = require('plugin.toast')
 
+local imageFullviewGroup = require( "Controller.imageFullviewGroup" )
+
 --------------- Initialization -------------------
 
 local W = display.contentWidth;
@@ -485,6 +487,7 @@ end
 			holdLevel=0
 			chatHoldflag=true
 
+
 		elseif event.phase == "moved" then
 			 local dy = math.abs( ( event.y - event.yStart ) )
 	        -- If the touch on the button has moved more than 10 pixels,
@@ -507,12 +510,33 @@ end
 				Deleteicon.value=event.target.id
 				Deleteicon.type=event.target.type
 				Deleteicon.contentPath=event.target.contentPath
+
+				Copyicon.type = event.target.type
+
+					if Copyicon.type ~= "text" then
+
+						Copyicon.isVisible = false
+
+					else
+
+						Copyicon.isVisible = true
+
+					end
 				
 				Copyicon.value = event.target.chat
 
 				if selectedForDelete ~= nil then 
 
-					print("777777777777")
+					if Copyicon.type ~= "text" then
+
+						Copyicon.isVisible = false
+
+					else
+
+						Copyicon.isVisible = true
+
+					end
+
 					if selectedForDelete.y ~= nil then
 					 selectedForDelete:removeSelf();selectedForDelete=nil 
 
@@ -529,9 +553,29 @@ end
 			end
 
 			holdLevel=0
+
+				
+				if event.target.type == "image" then
+
+					imageviewname = event.target.imageviewname
+
+				local options = {4
+					      		effect = "fromTop",
+								time = 200,	
+								params = {
+									imagenameval = imageviewname,
+								}
+								}
+
+
+					composer.showOverlay("Controller.imageFullviewPage",options)
+
+			    end
+
 		end
 
 	return true
+
 	end
 
 
@@ -617,6 +661,10 @@ local function audioPlay( event )
 	return true
 end
 
+
+
+
+
 	local function sendMeaasage()
 
 		for i=#MeassageList, 1, -1 do 
@@ -658,7 +706,7 @@ end
 			bg.anchorX=0;bg.anchorY=0
 			bg.id=ChatHistory[i].id
 			bg.group=tempGroup
-			 bg.type = "text"
+			bg.type = "text"
 			bg:addEventListener( "touch", ChatTouch )
 
 
@@ -907,7 +955,7 @@ end
 				 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
 			 	 local fhd = io.open( filePath )
 
-			 	 bg.type = "image";bg.contentPath = filePath
+			 	 bg.type = "image";bg.contentPath = filePath; bg.imageviewname = Imagename
 				
 					   if fhd then	
 
@@ -1256,7 +1304,18 @@ function get_imagemodel(response)
 						print("delete Action")
 
 						Deleteicon.isVisible=true
-						Copyicon.isVisible=true
+						--Copyicon.isVisible=true
+
+					if Copyicon.type ~= "text" then
+
+						Copyicon.isVisible = false
+
+					else
+
+						Copyicon.isVisible = true
+
+					end
+
 
 						attachment_icon.isVisible = false
 
@@ -1911,6 +1970,8 @@ end
 
 	    elseif ( phase == "moved" ) then print( "Scroll view was moved" )
 	    elseif ( phase == "ended" ) then print( "Scroll view was released" )
+
+			transition.to( AttachmentGroup, {time=300,alpha=0,yScale=0.01} )
 
 	    local view = chatScroll:getView()
 

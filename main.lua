@@ -66,6 +66,8 @@ DeleteMessageGroup = display.newGroup();
 
 ScheduledMessageGroup = display.newGroup();
 
+ImageFullViewGroup = display.newGroup();
+
 
 
 
