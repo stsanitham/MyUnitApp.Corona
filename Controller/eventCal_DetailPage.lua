@@ -357,10 +357,10 @@ local display_details = {}
             tzoffset = "local"
         end
 
-       print( "***************************** : \n"..Details.startdate.." "..tzoffset.."\n"..Details.enddate.." "..tzoffset ) 
+       print( "***************************** : \n"..detail_value.startdate.." "..tzoffset.."\n"..detail_value.enddate.." "..tzoffset ) 
 
-		local start_timeGMT = Utils.makeTimeStampwithOffset( Details.startdate.." "..tzoffset )
-		local end_timeGMT = Utils.makeTimeStampwithOffset( Details.enddate.." "..tzoffset )
+		local start_timeGMT = Utils.makeTimeStampwithOffset(detail_value.startdate.." "..tzoffset )
+		local end_timeGMT = Utils.makeTimeStampwithOffset( detail_value.enddate.." "..tzoffset )
 
 		TicklerId = Details.TicklerId
 		CalendarId = Details.CalendarId
@@ -711,6 +711,8 @@ local display_details = {}
 			scrollView:insert( display_details[#display_details] )
 			display_details[#display_details].isVisible=false
 		end
+
+		--print( json.encode(detail_value ) )
 		Webservice.Get_TicklerEventsById(detail_value.id,get_ticklereventByid)
 
 		end

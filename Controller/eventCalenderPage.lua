@@ -500,18 +500,7 @@ DateWise_response=responevalue
 
 		end
 
-
-
-			
-
-
-
 			Processingdate = dateSplit(DateWise_response[1].date)
-
-
-			print( "Compare with start : "..startdate,Processingdate )
-	
-	
 
 		for i = 1, #DateWise_response do
 
@@ -782,9 +771,9 @@ local function creatWeek( weekfirstDay,flagValue )
 	--todaydate =  os.date( "%m/%d/%Y" , os.time( t ) )
 
 	for j=week.numChildren, 1, -1 do 
-    display.remove(week[week.numChildren])
-    week[week.numChildren] = nil
-end 
+   		display.remove(week[week.numChildren])
+    	week[week.numChildren] = nil
+	end 
 
 
 weekViewGroup:insert( week )
@@ -1339,11 +1328,13 @@ function scene:resumeGame(value)
 
 		local function waitTimer( event )
 			if openPage=="eventCalenderPage" then
-					local temp = os.date( '*t' )
-					temp.day = temp.day - os.date( "%w" ) 
+					local tempvalue = os.date( '*t' )
+					tempvalue.day = tempvalue.day - os.date( "%w" ) 
 					weekViewTouchFlag=true
 					ParentShow=true
-					creatWeek(temp,true)
+
+					
+					creatWeek(tempvalue,true)
 
 			end
 		end
@@ -1408,6 +1399,15 @@ function scene:resumeGame(value,EditArray)
 
 		local function waitTimer( event )
 			if openPage=="eventCalenderPage" then
+
+
+			local tempvalue = os.date( '*t' )
+					tempvalue.day = tempvalue.day - os.date( "%w" ) 
+					startdate = os.date( "%m/%d/%Y" , os.time( tempvalue )).." 12:00:00 AM"
+
+					tempvalue.day = tempvalue.day + 7
+
+					enddate = os.date( "%m/%d/%Y" , os.time( tempvalue )).." 11:59:59 PM"
 					local temp = os.date( '*t' )
 					temp.day = temp.day - os.date( "%w" ) 
 					weekViewTouchFlag=true
