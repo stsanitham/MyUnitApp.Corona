@@ -359,7 +359,7 @@ end
 
 								IsScheduled = tostring(true)
 
-								Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
+								Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,IsScheduled,Date.text,Time.text,"","","","",method,"","","",get_messagemodel)
 
 								ScheduledMessageGroup.isVisible = false
 
@@ -404,7 +404,7 @@ end
 
 	        else
 
-	        	Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,"","","","","","","","","","",method,"","","",get_messagemodel)
+	        	Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,"","","","","","","",method,"","","",get_messagemodel)
 
 	        end
 
@@ -594,6 +594,7 @@ end
 local function TextLimitation( event )
 
 	   if event.phase == "began" then
+						 
 
 	   elseif event.phase == "submitted" then
 
@@ -802,6 +803,8 @@ local function TextLimitation( event )
 
 			    display.getCurrentStage():setFocus( nil )
 
+			            native.setKeyboardFocus(nil)
+
 					    composer.hideOverlay("slideRight",300)		
 
 					   -- scrollTo(0)
@@ -987,7 +990,6 @@ end
 				        	long_msg_charlimit.text = (1000 - longmsg_textbox.text:len()).." "..MessagePage.characters
 
 
-
 						back_icon:addEventListener("touch",closeMessagePage)
 						back_icon_bg:addEventListener("touch",closeMessagePage)
 						title:addEventListener("touch",closeMessagePage)
@@ -996,7 +998,6 @@ end
                         end
 
 			    end
-
 
 
 
