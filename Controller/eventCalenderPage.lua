@@ -766,7 +766,7 @@ local function dayTouch(event)
 
 		eventList(event.target.value)
 
-		local timeGMT = makeTimeStampwithOffset( startdate )
+		local timeGMT = makeTimeStamp( startdate )
 
 		addEventBtn.value = timeGMT
 
