@@ -549,13 +549,9 @@ end
 				event.target.group:insert( selectedForDelete )
 
 				print("delete Action")
+			else
 
-			end
-
-			holdLevel=0
-
-				
-				if event.target.type == "image" then
+				if event.target.type == "image" and selectedForDelete == nil then
 
 					imageviewname = event.target.imageviewname
 
@@ -572,6 +568,13 @@ end
 
 			    end
 
+
+			end
+
+			holdLevel=0
+
+				
+				
 		end
 
 	return true
