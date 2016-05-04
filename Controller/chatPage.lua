@@ -845,7 +845,8 @@ end
 					else
 
 						if ChatHistory[i].Audio_Path == "DEFAULT" then
-							
+								
+
 								spinner.isVisible=false
 
 								    local options = {
@@ -876,11 +877,15 @@ end
 
 									    tempGroup:insert(image_spinner)
 
-									    bg.height = bg.height+15
+									    bg.height = bg.height+20;bg.width = bg.width+15
 
 
 
 						else
+							
+							--When audio notification receives
+
+
 							
 
 						end
@@ -995,7 +1000,7 @@ end
 											   tempGroup:insert(image_spinner)
 
 						else
-							--When notification recive
+							--When image notification recive
 
 
 
@@ -2029,7 +2034,7 @@ end
 
 					end 
 
-					sendMeaasage()
+					
 
 
 					 	local path = system.pathForFile( dataFileName, system.DocumentsDirectory)
@@ -2043,6 +2048,9 @@ end
 						formatSizeUnits(size)
 
 						 Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
+
+
+						 sendMeaasage()
 
 	end
 
