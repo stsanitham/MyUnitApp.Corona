@@ -559,7 +559,7 @@ end
 
 					imageviewname = event.target.imageviewname
 
-				local options = {4
+				local options = {
 					      		effect = "fromTop",
 								time = 200,	
 								params = {
