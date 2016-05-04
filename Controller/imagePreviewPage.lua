@@ -95,13 +95,11 @@ local function onKeyEvent( event )
 
 				display.getCurrentStage():setFocus( nil )
 
-				if event.target.id == "cancel icon" or event.target.id == "cancel" or event.target.id == "cancel_icon_text" then
+				if event.target.id == "cancel icon" or event.target.id == "cancel" or event.target.id == "cancel_icon_text" or event.target.id == "backbtn" then
 
 	                   composer.hideOverlay("slideRight",300)
 
 	                   button_idvalue = "cancel"
-
-
 
 				end
 
@@ -152,6 +150,7 @@ function scene:create( event )
 
 		BackBtn = display.newImageRect( sceneGroup, "res/assert/right-arrow(gray-).png",15,15 )
 		BackBtn.anchorX = 0
+		BackBtn.id = "backbtn"
 		BackBtn.x=25;BackBtn.y = title_bg.y
 		BackBtn.xScale=-1
 		--BackBtn:setFillColor(0)
@@ -297,6 +296,8 @@ function scene:show( event )
 			image_send_button:addEventListener("touch",onButtonTouch)
 			send_icon:addEventListener("touch",onButtonTouch)
 			send_icon_text:addEventListener("touch",onButtonTouch)
+
+			BackBtn:addEventListener("touch",onButtonTouch)
 		
 	end	
 	
@@ -324,6 +325,8 @@ end
 		image_send_button:removeEventListener("touch",onButtonTouch)
 		send_icon:removeEventListener("touch",onButtonTouch)
 		send_icon_text:removeEventListener("touch",onButtonTouch)
+
+		BackBtn:removeEventListener("touch",onButtonTouch)
 
 
 			elseif phase == "did" then

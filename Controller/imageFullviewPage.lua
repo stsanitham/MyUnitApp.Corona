@@ -115,8 +115,10 @@ local function onKeyEvent( event )
 
 
 local function listTouch( event )
+
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
+		
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
@@ -182,7 +184,7 @@ local function listTouch( event )
 
 									    end
 
-									native.showAlert(  downImg.filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
+									native.showAlert( downImg.filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
 
 							end
 
@@ -337,9 +339,8 @@ function scene:show( event )
 			Runtime:addEventListener( "key", onKeyEvent )
 
 			BackBtn:addEventListener("touch", onBackButtonTouch)
-
+			title:addEventListener("touch", onBackButtonTouch)
 			photo:addEventListener("touch",onBackButtonTouch)
-
 			Background:addEventListener("touch",onBackButtonTouch)
 		
 	end	
@@ -362,9 +363,8 @@ end
 		Runtime:removeEventListener( "key", onKeyEvent )
 
 		BackBtn:removeEventListener("touch", onBackButtonTouch)
-
+		title:removeEventListener("touch", onBackButtonTouch)
 		photo:removeEventListener("touch",onBackButtonTouch)
-
 		Background:removeEventListener("touch",onBackButtonTouch)
 
 

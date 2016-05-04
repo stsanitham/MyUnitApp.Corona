@@ -209,7 +209,7 @@ end
         photo = nil
 
 
-		  local options = {
+		  local options =  {
 				      		effect = "fromTop",
 							time = 400,	
 								params = {
@@ -226,7 +226,7 @@ end
 
         path = system.pathForFile( photoname, baseDir)
 
-        local size = lfs.attributes (path, "size")
+        local size1 = lfs.attributes (path, "size")
 
 		local fileHandle = io.open(path, "rb")
 
@@ -236,9 +236,9 @@ end
 
             print("mime conversion ",file_inbytearray)
 
-        	print("bbb ",size)
+        	print("bbb ",size1)
 
-        	formatSizeUnits(size)
+        formatSizeUnits(size1)
 
         	--sendImage()
 
@@ -247,7 +247,6 @@ end
 	end
 
 end
-
 
 
 
@@ -636,7 +635,7 @@ end
 
 
 		network.download(
-		ApplicationConfig.IMAGE_BASE_URL..event.target.id,
+		event.target.id,
 		"GET",
 		recivedNetwork,
 		event.target.id:match( "([^/]+)$" ),
