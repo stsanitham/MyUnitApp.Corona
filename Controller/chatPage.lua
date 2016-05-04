@@ -550,7 +550,7 @@ end
 
 
 
-	local function receviedimageDownload( event )
+	local function receviednotifyDownload( event )
 		if event.phase == "began" then
 				display.getCurrentStage():setFocus( event.target )
 		elseif event.phase == "ended" then
@@ -561,13 +561,42 @@ end
 	--    event.target.object:start()
 
 
+				spinner.isVisible=false
+
+				local options = {
+				    width = 32,
+				    height = 32,
+				    numFrames = 4,
+					sheetContentWidth = 64,
+					sheetContentHeight = 64
+					}
+
+					local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
+
+					local image_spinner = widget.newSpinner
+						{
+						  width = 106/4 ,
+						  height = 111/4,
+						  deltaAngle = 10,
+						  sheet = spinnerSingleSheet,
+						  startFrame = 1,
+						  incrementEvery = 20
+						}
+
+						image_spinner.x=event.target.x+event.target.contentWidth/2;image_spinner.y=event.target.y+event.target.contentHeight/2
+						image_spinner:toFront();image_spinner:start()
+						event.target.object:insert(image_spinner)
+
+
 		network.download(
-		event.target.id,
+		ApplicationConfig.IMAGE_BASE_URL..event.target.id,
 		"GET",
 		recivedNetwork,
 		event.target.id:match( "([^/]+)$" ),
 		system.DocumentsDirectory
 		)
+
+		event.target:removeSelf( );event.target = nil
 
     --   event.target:removeSelf()
     --   event.target = nil
@@ -597,8 +626,27 @@ local function audioPlay( event )
 
 		                print("playing...")
 
-		                local laserSound = audio.loadSound( filePath )
-		                local laserChannel = audio.play( laserSound,{channel=1} )
+		                if event.target.value == "play" then
+
+
+		                	 local isChannel1Playing = audio.isChannelPlaying( 1 )
+								if isChannel1Playing then
+									
+								end
+			                local laserSound = audio.loadSound( filePath )
+			                local laserChannel = audio.play( laserSound,{channel=1} )
+			                event.target:setSequence( "pause" )
+	      					event.target:play()
+	      					event.target.value="pause"
+
+	      				elseif event.target.value == "pause" then
+
+	      						 local isChannel1Playing = audio.isChannelPlaying( 1 )
+									if isChannel1Playing then
+									    audio.pause( 1 )
+									end
+
+	      				end
 
 		            else
 
@@ -653,12 +701,7 @@ end
 			local tempGroup = MeassageList[#MeassageList]
 
 			local bg = display.newRect(0,0,W-100,25 )
-			tempGroup:insert(bg)
-			
-			bg.anchorX=0;bg.anchorY=0
-			bg.id=ChatHistory[i].id
-			bg.group=tempGroup
-			 bg.type = "text"
+			tempGroup:insert(bg);bg.anchorX=0;bg.anchorY=0;bg.id=ChatHistory[i].id;bg.group=tempGroup;bg.type = "text"
 			bg:addEventListener( "touch", ChatTouch )
 
 
@@ -667,10 +710,7 @@ end
 			else
 				bg.y=0
 			end
-				bg.x=5
-
-
-
+		
 			if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
 
 				print( "coming" ..dateVlaue,ChatHistory[i].Update_Time_Stamp)
@@ -684,8 +724,6 @@ end
 				datevalue = display.newText( tempGroup,  Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone), 0,0,native.systemFont,11)
 				datevalue.x=dateLable.x;datevalue.y=dateLable.y
 				datevalue:setFillColor( 0,0,0,0.6 )
-
-				--print( Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) .." and ".. Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) )
 
 				if Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) then
 
@@ -711,7 +749,6 @@ end
 
 			if ChatHistory[i].Message_From == tostring(ContactId) then
 
-					print( "here" )
 					bg.x = W-65
 					bg.anchorX = 1
 
@@ -773,18 +810,12 @@ end
 
 			end
 
-
-			chat.anchorY=0
-			chat.anchorX = 0
-			chat.x=bg.x+5;chat.y=bg.y
-
+			chat.anchorY=0;chat.anchorX = 0;chat.x=bg.x+5;chat.y=bg.y
 			tempGroup:insert( chat )
 
 		
-			bg.width = chat.contentWidth+10	
-			bg.height = chat.contentHeight+10
+			bg.width = chat.contentWidth+10;bg.height = chat.contentHeight+10
 			bg.chat=chat.text
-
 
 
 			local owner
@@ -838,11 +869,28 @@ end
 
 					
 					if fhd then	
-							bg.width=bg.width+30;bg.height=bg.height+15
-							local playIcon = display.newImageRect( tempGroup,"res/assert/play.png",20,20 )
+							bg.width=bg.width+25;bg.height=bg.height+20
+
+							local sheetData2 = { width=30, height=30, numFrames=2, sheetContentWidth=60, sheetContentHeight=30 }
+							local sheet1 = graphics.newImageSheet( "res/assert/playpause.png", sheetData2 )
+
+							local sequenceData = {
+				                { name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
+				                { name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
+				                }
+
+							local playIcon = display.newSprite( sheet1, sequenceData )
 							playIcon.x=bg.x-bg.contentWidth/2;playIcon.y=bg.y+bg.contentHeight/2-5
 							playIcon.id=ChatHistory[i].Audio_Path
+							playIcon.value="play"
 							playIcon:addEventListener( "touch", audioPlay )
+							playIcon:setSequence( "play" )
+      						playIcon:play()
+							tempGroup:insert(playIcon)
+
+							if ChatHistory[i].Message_From ~= tostring(ContactId) then
+								playIcon.x = bg.x+bg.contentWidth/2
+							end
 					else
 
 						if ChatHistory[i].Audio_Path == "DEFAULT" then
@@ -886,7 +934,20 @@ end
 							
 							--When audio notification receives
 
+							local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
+									downloadimage.x = bg.x+bg.contentWidth/4
+									downloadimage.id = ChatHistory[i].Audio_Path
+									downloadimage.anchorX = 0
+									downloadimage.anchorY = 0
+									downloadimage.object = tempGroup
+									downloadimage.y = bg.y
+									downloadimage.isVisible = true
+									downloadimage:toFront()
 
+									bg.width=bg.width+20;bg.height=bg.height+25
+
+
+									downloadimage:addEventListener( "touch", receviednotifyDownload )
 							
 
 						end
@@ -1008,22 +1069,10 @@ end
 							    if MessageType == "GROUP" then	
 									
 									image = display.newImageRect( tempGroup, "res/assert/thumbnail.jpg", 200, 170 )
-									--image.id = ChatHistory[i].Image_Path
+								    bg.width = image.contentWidth+5;bg.height = image.contentHeight+23.5
 
-								    bg.width = image.contentWidth+5
-									bg.height = image.contentHeight+23.5
-
-									owner.anchorY=0
-									owner.anchorX = 0
-									owner.x=chat.x
-									owner.y=bg.y+1
-
-
-									image.anchorY=0
-									image.anchorX = 0
-									image.x=bg.x+2.5
-									image.y=owner.y+20	
-
+									owner.anchorY=0;owner.anchorX = 0;owner.x=chat.x;owner.y=bg.y+1
+									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=owner.y+20	
 									
 									spinner.isVisible=false
 
@@ -1067,52 +1116,16 @@ end
 									downloadimage:toFront()
 
 
-									downloadimage:addEventListener( "touch", receviedimageDownload )
+									downloadimage:addEventListener( "touch", receviednotifyDownload )
 
 
 
 								else
 
 									image = display.newImageRect( tempGroup, "res/assert/thumbnail.jpg", 200, 170 )
-									--image.id = ChatHistory[i].Image_Path
+									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=bg.y+2.5
 
-									image.anchorY=0
-									image.anchorX = 0
-									image.x=bg.x+2.5
-									image.y=bg.y+2.5
-
-									bg.width = image.contentWidth+5
-									bg.height = image.contentHeight+5	
-
-
-									    spinner.isVisible=false
-
-								        local options = {
-												    width = 32,
-												    height = 32,
-												    numFrames = 4,
-												    sheetContentWidth = 64,
-												    sheetContentHeight = 64
-												}
-
-										local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
-
-								        local image_spinner = widget.newSpinner
-														{
-														    width = 106/4 ,
-														    height = 111/4,
-														    deltaAngle = 10,
-														    sheet = spinnerSingleSheet,
-														    startFrame = 1,
-														    incrementEvery = 20
-														}
-
-														image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
-													    image_spinner:toFront();image_spinner:start()
-
-													   image_spinner.isVisible = false
-
-													   tempGroup:insert(image_spinner)
+									bg.width = image.contentWidth+5;bg.height = image.contentHeight+5	
 
 
 									local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
@@ -1120,13 +1133,13 @@ end
 									downloadimage.id = ChatHistory[i].Image_Path
 									downloadimage.anchorX = 0
 									downloadimage.anchorY = 0
-									--downloadimage.object = image_spinner
+									downloadimage.object = tempGroup
 									downloadimage.y = image.y+image.contentHeight/2-25
 									downloadimage.isVisible = true
 									downloadimage:toFront()
 
 
-									downloadimage:addEventListener( "touch", receviedimageDownload )
+									downloadimage:addEventListener( "touch", receviednotifyDownload )
 
 								end
 
