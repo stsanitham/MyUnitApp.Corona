@@ -698,25 +698,37 @@ local function audioPlay( event )
 
 									   		 	end
 												
-							end
+									end
 
+									event.target:setSequence( "pause" )
+			      					event.target:play()
+			      					event.target.value="pause"
+			      					if event.target.channel == 1 then
+			      					 	audio.resume( 1 )
+
+			      					end
+
+								else
+
+									local laserSound = audio.loadSound( filePath )
+					                local laserChannel = audio.play( laserSound,{channel=1} )
+					                event.target:setSequence( "pause" )
+			      					event.target:play()
+			      					event.target.value="pause"
+			      					event.target.channel=1
 								end
-			                local laserSound = audio.loadSound( filePath )
-			                local laserChannel = audio.play( laserSound,{channel=1} )
-			                event.target:setSequence( "pause" )
-	      					event.target:play()
-	      					event.target.value="pause"
+			           
 
 	      				elseif event.target.value == "pause" then
 	      						print( "pause" )
 	      						 local isChannel1Playing = audio.isChannelPlaying( 1 )
 									if isChannel1Playing or isSimulator then
 									    audio.pause( 1 )
-
+									end
 									     event.target:setSequence( "play" )
 				      					event.target:play()
 				      					event.target.value="play"
-									end
+									
 
 									
 
