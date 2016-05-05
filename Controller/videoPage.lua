@@ -191,11 +191,11 @@ end
 
 			        videoPreview.isVisible = true
 
-				    videofile = native.newVideo( title.x , title_bg.y+title_bg.contentHeight + 15, W-60 , 180)
+				    videofile = native.newVideo( title.x , title_bg.y+title_bg.contentHeight + 15, 250 , 180)
 				    videofile.x=title.x
 				    videofile.y= title_bg.y+title_bg.contentHeight + 15
 					videofile.id="video object"
-					videofile.width = videoPreview.width
+					videofile.width = 250
 					videofile.anchorX=0
 					videofile.anchorY = 0
 
@@ -262,6 +262,8 @@ end
 
 								media.captureVideo( { listener = onVideoComplete, preferredQuality = "high", } )
 
+								idvalue = "capture"
+
 								else
 
 								native.showAlert( "Video Recording Failed", "This device does not have a camera.", { "OK" } )
@@ -280,6 +282,8 @@ end
 								if ( media.hasSource( PHOTO_FUNCTION ) ) then
 
 								media.selectVideo( { listener = onVideoComplete, mediaSource = PHOTO_FUNCTION } ) 
+
+								idvalue = "selection"
 							
 								else
 
