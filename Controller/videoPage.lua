@@ -198,7 +198,7 @@ end
 					videofile.anchorX=0
 					videofile.anchorY = 0
 
-					videofile:load( videoname , system.DocumentsDirectory )
+					videofile:load( savedVideoFileName , savedVideoDirectory )
 					videofile:play()
 
 		    end
@@ -233,7 +233,7 @@ end
 
 	    end
 
-		local nativealert = native.showAlert("Video Properties", event.duration .."        "..event.fileSize.."        "..event.url..,{"ok"})	
+		local nativealert = native.showAlert("Video Properties", event.duration .."        "..event.fileSize.."        "..event.url,{"ok"})	
 
 end
 
