@@ -251,6 +251,16 @@ end
 
 
 
+-- local function onVideoComplete( event )
+--    if ( event.completed ) then
+--       media.playVideo( event.url, media.RemoteSource, true, videoPlayBackDone )
+--       print( "video duration : ",event.duration )
+--       print( "video size : ",event.fileSize )
+--    end
+-- end
+
+
+
 
 local function attachAction( event )
 
@@ -278,7 +288,40 @@ local function attachAction( event )
 
 		elseif event.target.id == "video" then
 
-			print( "video" )
+			-- --print( "video" )
+
+			-- 	if ( media.hasSource( PHOTO_FUNCTION ) ) then
+
+			-- 	timer.performWithDelay( 100, function() media.selectVideo( { listener = onVideoComplete, mediaSource = PHOTO_FUNCTION } ) 
+			-- 	end )
+
+			-- 	else
+
+			-- 	native.showAlert( "Video Capture Failed", "This device does not have a photo library.", { CommonWords.ok  } )
+
+			-- 	end
+
+
+			-- 	Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+			-- 	ChatBox.isVisible=false
+
+			 local options = {
+		      		effect = "slideRight",
+					time = 200,	
+						params = {
+						contactId = To_ContactId,
+						MessageType = MessageType
+					}
+
+					}
+
+		    Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+			ChatBox.isVisible=false
+
+
+			composer.showOverlay( "Controller.videoPage",options)
+
+
 
 		elseif event.target.id == "audio" then
 
