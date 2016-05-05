@@ -191,10 +191,11 @@ end
 
 			        videoPreview.isVisible = true
 
-				    videofile = native.newVideo( title.x , title_bg.y+title_bg.contentHeight + 15, W-60 , 150)
+				    videofile = native.newVideo( title.x , title_bg.y+title_bg.contentHeight + 15, W-60 , 180)
 				    videofile.x=title.x
 				    videofile.y= title_bg.y+title_bg.contentHeight + 15
 					videofile.id="video object"
+					videofile.width = videoPreview.width
 					videofile.anchorX=0
 					videofile.anchorY = 0
 
@@ -369,6 +370,7 @@ end
 
 			videoPreview = display.newImageRect( sceneGroup, "res/assert/videopreview.png", W-60, 150 )
 			videoPreview.x=title.x;videoPreview.y= title_bg.y+title_bg.contentHeight + 15
+			videoPreview.width = W-60
 			videoPreview.id="video preview"
 			videoPreview.anchorX=0
 			videoPreview.anchorY = 0
