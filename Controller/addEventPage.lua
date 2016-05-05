@@ -672,8 +672,9 @@ local function onRowTouch(event)
 		List.isVisible = false
 		QuickContactList.isVisible = false
 		List.textFiled.text = row.name
-		List.textFiled.value = row.id
+		List.textFiled.value = row.name
 
+	
 
 		if List.textFiled.text:lower( ) == "party" then
 
