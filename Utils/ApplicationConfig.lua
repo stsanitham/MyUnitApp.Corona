@@ -39,7 +39,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 -----Stagging--------
 
-----[[
+--[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -79,7 +79,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-4"
 
 
 
---[[---------IOS Live----------------
+----[[---------IOS Live----------------
 
 IsLive = true
 
