@@ -178,11 +178,9 @@ end
 
 			end
 
-				--  local sourcePath = string.sub(event.url,6,-1)
-
-				--  local destPath = system.pathForFile( videoname, baseDir )
-
-				--  print( " s,d = ", sourcePath, destPath )
+			--  local sourcePath = string.sub(event.url,6,-1)
+			--  local destPath = system.pathForFile( videoname, baseDir )
+			--  print( " s,d = ", sourcePath, destPath )
 
 		    local videoFilePath = string.sub(event.url,8,-1)
 		    local savedVideoFileName = "video"..os.date("%Y%m%d%H%M%S")..videoFileExtension
@@ -193,11 +191,11 @@ end
 
 			        videoPreview.isVisible = true
 
-				    videofile = native.newVideo( title.x , title_bg.y+title_bg.contentHeight + 15, 250 , 180)
+				    videofile = native.newVideo( title.x, title_bg.y+title_bg.contentHeight + 15, 250, 180)
 				    videofile.x=title.x
 				    videofile.y= title_bg.y+title_bg.contentHeight + 15
-					videofile.id="video object"
-					videofile.width = 250
+					--videofile.id="video object"
+					--videofile.width = 250
 					videofile.anchorX=0
 					videofile.anchorY = 0
 
