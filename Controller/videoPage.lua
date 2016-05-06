@@ -31,6 +31,8 @@ local fSoundPlaying = false   -- sound playback state
 local fSoundPaused = false    -- sound pause state
 
 local countdown
+
+local PHOTO_FUNCTION = media.PhotoLibrary 
 --------------------------------------------------
 
 
@@ -111,7 +113,7 @@ function formatSizeUnits(event)
 	  
 	  elseif (event > 10485760) then
 
-	  print("highest size of the image ",size)
+	    print("highest size of the image ",size)
 
 	    local image = native.showAlert( "Error in Video Upload", "Size of the video cannot be more than 10 MB", { CommonWords.ok } )
 
@@ -159,6 +161,7 @@ end
 
 
 
+
     local function onVideoComplete ( event )
  
         local video = event.target
@@ -175,12 +178,11 @@ end
 
 			end
 
-    --      local sourcePath = string.sub(event.url,6,-1)
+				--  local sourcePath = string.sub(event.url,6,-1)
 
-    --      local destPath = system.pathForFile( videoname, baseDir )
+				--  local destPath = system.pathForFile( videoname, baseDir )
 
-    --      print(" s,d = ", sourcePath, destPath)
-
+				--  print( " s,d = ", sourcePath, destPath )
 
 		    local videoFilePath = string.sub(event.url,8,-1)
 		    local savedVideoFileName = "video"..os.date("%Y%m%d%H%M%S")..videoFileExtension
@@ -191,15 +193,16 @@ end
 
 			        videoPreview.isVisible = true
 
-				    videofile = native.newVideo( title.x , title_bg.y+title_bg.contentHeight + 15, W-60 , 180)
+				    videofile = native.newVideo( title.x , title_bg.y+title_bg.contentHeight + 15, 250 , 180)
 				    videofile.x=title.x
 				    videofile.y= title_bg.y+title_bg.contentHeight + 15
 					videofile.id="video object"
-					videofile.width = videoPreview.width
+					videofile.width = 250
 					videofile.anchorX=0
 					videofile.anchorY = 0
 
 					videofile:load( savedVideoFileName , savedVideoDirectory )
+
 					videofile:play()
 
 		    end
@@ -262,6 +265,8 @@ end
 
 								media.captureVideo( { listener = onVideoComplete, preferredQuality = "high", } )
 
+								idvalue = "capture"
+
 								else
 
 								native.showAlert( "Video Recording Failed", "This device does not have a camera.", { "OK" } )
@@ -280,6 +285,8 @@ end
 								if ( media.hasSource( PHOTO_FUNCTION ) ) then
 
 								media.selectVideo( { listener = onVideoComplete, mediaSource = PHOTO_FUNCTION } ) 
+
+								idvalue = "selection"
 							
 								else
 

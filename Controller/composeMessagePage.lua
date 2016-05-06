@@ -277,10 +277,9 @@ end
 
 	    end
 
-
-
-	
 	end
+
+
 
 
 
@@ -301,7 +300,7 @@ end
 		    end
 
 
-	        if method == "SCHEDULE" then
+	    if method == "SCHEDULE" then
 
 	        	ScheduledMessageGroup.isVisible = true
 
@@ -309,105 +308,100 @@ end
     	 		shortmsg_textbox.isVisible = false
 
 
+	function onTimePickerTouch(event)
 
-    	    	function onTimePickerTouch(event)
+	    	local function getValue(time)
 
-		    	    	local function getValue(time)
+				Time.text = time
 
-							Time.text = time
-
-						end
-
-
-		    	    	local function getDateValue(time)
-
-							Date.text = time
-
-						end
+			end
 
 
-    	    		if event.target.id == "time" then
+	    	local function getDateValue(time)
 
-    	    			timePicker.getTimeValue(getValue)
+				Date.text = time
 
-    	    		elseif event.target.id == "date" then
+			end
 
-    	    			datePicker.getTimeValue(getDateValue)
 
-    	    		end  
+		if event.target.id == "time" then
 
-    	        end
+			timePicker.getTimeValue(getValue)
 
+		elseif event.target.id == "date" then
+
+			datePicker.getTimeValue(getDateValue)
+
+		end  
+
+    end
 
 
 
-    	 		function onScheduleButtonTouch( event )
-
-					if event.phase == "began" then
 
 
-					elseif event.phase == "ended" then
 
-						native.setKeyboardFocus(nil)
+    function onScheduleButtonTouch( event )
+
+			if event.phase == "began" then
 
 
-						if event.target.id == "set-time" then
+			elseif event.phase == "ended" then
 
-							print("accept icon pressed")
+				native.setKeyboardFocus(nil)
 
-								if Date.text ~= "Date" and Time.text ~= "Time" then
+				if event.target.id == "set-time" then
 
-								IsScheduled = tostring(true)
+					print("accept icon pressed")
 
-								Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
+						if Date.text ~= "Date" and Time.text ~= "Time" then
 
-								ScheduledMessageGroup.isVisible = false
+						IsScheduled = tostring(true)
 
-								longmsg_textbox.isVisible = true
-    	    	                shortmsg_textbox.isVisible = true
+						Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
 
-								end
+						ScheduledMessageGroup.isVisible = false
 
-						elseif event.target.id == "closealert" then
-
-						 			print("close alert")
-
-						 			if datePicker then datePicker.clear() end
-
-									if timePicker then timePicker.clear() end
-
-									ScheduledMessageGroup.isVisible = false
-
-					     			longmsg_textbox.isVisible = true
-    	    						shortmsg_textbox.isVisible = true
+						longmsg_textbox.isVisible = true
+    	                shortmsg_textbox.isVisible = true
 
 						end
 
-				    end
+				elseif event.target.id == "closealert" then
 
+			 			print("close alert")
 
-			    end
+			 			if datePicker then datePicker.clear() end
 
+						if timePicker then timePicker.clear() end
 
+						ScheduledMessageGroup.isVisible = false
 
-    	        Time_bg:addEventListener("touch",onTimePickerTouch)
-    	        TimeSelect_icon:addEventListener("touch",onTimePickerTouch)
-    	        Time:addEventListener("touch",onTimePickerTouch)
+		     			longmsg_textbox.isVisible = true
+						shortmsg_textbox.isVisible = true
 
-    	        Date_bg:addEventListener("touch",onTimePickerTouch)
-    	        Date:addEventListener("touch",onTimePickerTouch)
-    	        DateSelect_icon:addEventListener("touch",onTimePickerTouch)
+				end
 
-    	 		acceptschedule_button:addEventListener("touch",onScheduleButtonTouch) 	
-    	        Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
+		    end
 
+	    end
 
-	        else
+	        Time_bg:addEventListener("touch",onTimePickerTouch)
+	        TimeSelect_icon:addEventListener("touch",onTimePickerTouch)
+	        Time:addEventListener("touch",onTimePickerTouch)
 
-	        	Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,"","","","","","","","","","",method,"","","",get_messagemodel)
+	        Date_bg:addEventListener("touch",onTimePickerTouch)
+	        Date:addEventListener("touch",onTimePickerTouch)
+	        DateSelect_icon:addEventListener("touch",onTimePickerTouch)
 
-	        end
+	 		acceptschedule_button:addEventListener("touch",onScheduleButtonTouch) 	
+	        Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
 
+        else
+
+        	Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,"","","","","","","","","","",method,"","","",get_messagemodel)
+
+        end
 
     end
 
