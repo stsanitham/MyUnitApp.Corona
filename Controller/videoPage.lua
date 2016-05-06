@@ -31,6 +31,8 @@ local fSoundPlaying = false   -- sound playback state
 local fSoundPaused = false    -- sound pause state
 
 local countdown
+
+local PHOTO_FUNCTION = media.PhotoLibrary 
 --------------------------------------------------
 
 
@@ -111,7 +113,7 @@ function formatSizeUnits(event)
 	  
 	  elseif (event > 10485760) then
 
-	  print("highest size of the image ",size)
+	    print("highest size of the image ",size)
 
 	    local image = native.showAlert( "Error in Video Upload", "Size of the video cannot be more than 10 MB", { CommonWords.ok } )
 
@@ -159,6 +161,7 @@ end
 
 
 
+
     local function onVideoComplete ( event )
  
         local video = event.target
@@ -175,12 +178,11 @@ end
 
 			end
 
-    --      local sourcePath = string.sub(event.url,6,-1)
+				--  local sourcePath = string.sub(event.url,6,-1)
 
-    --      local destPath = system.pathForFile( videoname, baseDir )
+				--  local destPath = system.pathForFile( videoname, baseDir )
 
-    --      print(" s,d = ", sourcePath, destPath)
-
+				--  print( " s,d = ", sourcePath, destPath )
 
 		    local videoFilePath = string.sub(event.url,8,-1)
 		    local savedVideoFileName = "video"..os.date("%Y%m%d%H%M%S")..videoFileExtension
@@ -200,6 +202,7 @@ end
 					videofile.anchorY = 0
 
 					videofile:load( savedVideoFileName , savedVideoDirectory )
+
 					videofile:play()
 
 		    end
