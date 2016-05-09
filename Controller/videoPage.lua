@@ -88,7 +88,7 @@ local function onComplete( event )
 
     if event.completed then
 
-        local video = native.newVideo( display.contentCenterX+90, display.contentCenterY, 400, 280 )
+        local video = native.newVideo( display.contentCenterX+90, display.contentCenterY, W-60, 150 )
         --video.rotation = 90
 				    -- video.x=title.x
 				    -- video.y= 85
@@ -110,9 +110,10 @@ local function onComplete( event )
         -- load a remote video
         video:load( event.url, media.RemoteSource )
 
-        video:addEventListener( "video", videoListener )
         -- play video
         video:play()
+        video:addEventListener( "video", videoListener )
+
 
 		--video:pause()
 		--video:removeSelf()
@@ -307,13 +308,13 @@ end
 
 								if ( media.hasSource( media.Camera ) ) then
 
-								media.captureVideo( { listener = onVideoComplete, preferredQuality = "high", } )
+									media.captureVideo( { listener = onVideoComplete, preferredQuality = "high", } )
 
-								idvalue = "capture"
+									idvalue = "capture"
 
 								else
 
-								native.showAlert( "Video Recording Failed", "This device does not have a camera.", { "OK" } )
+									native.showAlert( "Video Recording Failed", "This device does not have a camera.", { "OK" } )
 
 								end
 
@@ -328,13 +329,13 @@ end
 
 								if ( media.hasSource( PHOTO_FUNCTION ) ) then
 
-								media.selectVideo( { listener = onComplete, mediaSource = PHOTO_FUNCTION } ) 
+									media.selectVideo( { listener = onComplete, mediaSource = PHOTO_FUNCTION } ) 
 
-								idvalue = "selection"
+									idvalue = "selection"
 							
 								else
 
-								native.showAlert( "Video Capture Failed", "This device does not have a photo library.", { CommonWords.ok  } )
+									native.showAlert( "Video Capture Failed", "This device does not have a photo library.", { CommonWords.ok  } )
 
 								end
 

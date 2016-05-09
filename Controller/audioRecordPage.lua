@@ -228,7 +228,7 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		keyTips = display.newText( sceneGroup, "Press record",  0,0,native.systemFont,16 )
+		keyTips = display.newText( sceneGroup, "Press ‘Start’ to record",  0,0,native.systemFont,16 )
 		keyTips:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 		keyTips.x=W/2;keyTips.y=title_bg.y+title_bg.contentHeight
 
@@ -335,11 +335,20 @@ end
 
 		elseif phase == "did" then
 
+			local isChannel1Playing = audio.isChannelPlaying( 1 )
+				if isChannel1Playing then
+
+					audio.pause( 1 );audio.stop(1);audio.dispose(1)
+
+				end
+
 			if userAction == "ok" then
 
 				event.parent:updateAudio(dataFileName)
 
 			else
+
+
 
 				local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 	            os.remove( filePath )

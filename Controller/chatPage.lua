@@ -693,6 +693,36 @@ end
 	return true
 	end
 
+local function audioPlayComplete( event )
+
+	print( "complete" )
+
+	local alert = native.showAlert( "Corona", "audio completed", { "OK"} )
+
+	    if ( event.completed ) then
+
+
+
+				for i=#MeassageList, 1, -1 do 
+					local group = MeassageList[#MeassageList]
+
+						for j=group.numChildren, 1, -1 do 
+
+							if group[j].value == "pause" then
+
+								group[j]:setSequence( "play" )
+								group[j].value="play"
+		      					group[j]:play()
+
+		      				end
+
+
+						end
+												
+				end
+
+		end
+end
 
 local function audioPlay( event )
 			if event.phase == "began" then
@@ -711,13 +741,11 @@ local function audioPlay( event )
 
 		               
 		                if event.target.value == "play" then
-		                	print("paly")
-		                	
+               	
 
-		                	 local isChannel1Playing = audio.isChannelPlaying( 1 )
+		                	 local isChannel1Playing = audio.isChannelPlaying( 2 )
 								if isChannel1Playing or isSimulator then
 
-									print( "123" )
 									 for i=#MeassageList, 1, -1 do 
 												local group = MeassageList[#MeassageList]
 
@@ -726,8 +754,6 @@ local function audioPlay( event )
 													
 
 													if group[j].value == "pause" then
-
-														print("!!!!!!!!!!...")
 
 														group[j]:setSequence( "play" )
 														group[j].value="play"
@@ -742,27 +768,27 @@ local function audioPlay( event )
 									event.target:setSequence( "pause" )
 			      					event.target:play()
 			      					event.target.value="pause"
-			      					if event.target.channel == 1 then
-			      					 	audio.resume( 1 )
+			      					if event.target.channel == 2 then
+			      					 	audio.resume( 2 )
 
 			      					end
 
 								else
 
 									local laserSound = audio.loadSound( filePath )
-					                local laserChannel = audio.play( laserSound,{channel=1} )
+					                local laserChannel = audio.play( laserSound,{channel=2,onComplete = audioPlayComplete} )
 					                event.target:setSequence( "pause" )
 			      					event.target:play()
 			      					event.target.value="pause"
-			      					event.target.channel=1
+			      					event.target.channel=2
 								end
 			           
 
 	      				elseif event.target.value == "pause" then
 	      						print( "pause" )
-	      						 local isChannel1Playing = audio.isChannelPlaying( 1 )
+	      						 local isChannel1Playing = audio.isChannelPlaying( 2 )
 									if isChannel1Playing or isSimulator then
-									    audio.pause( 1 )
+									    audio.pause( 2 )
 									end
 									     event.target:setSequence( "play" )
 				      					event.target:play()
@@ -984,6 +1010,8 @@ end
 
 			--------audio Attachment---------------
 
+			print( "Status = "..ChatHistory[i].Audio_Path )
+
 				if ChatHistory[i].Audio_Path  ~= nil and ChatHistory[i].Audio_Path ~= "" and ChatHistory[i].Audio_Path ~= "NULL" and ChatHistory[i].Audio_Path ~= " " then
 
 					local audioname = ChatHistory[i].Audio_Path:match( "([^/]+)$" )
@@ -998,8 +1026,11 @@ end
 					  bg.contentPath = filePath
 
 					
-					if fhd then	
-							bg.width=bg.width+25;bg.height=bg.height+20
+					if fhd or ChatHistory[i].Audio_Path == "DEFAULT" then	
+
+							spinner.isVisible=false
+
+							bg.width=bg.width+25;bg.height=bg.height+30
 
 							local sheetData2 = { width=30, height=30, numFrames=2, sheetContentWidth=60, sheetContentHeight=30 }
 							local sheet1 = graphics.newImageSheet( "res/assert/playpause.png", sheetData2 )
@@ -1008,9 +1039,11 @@ end
 				                { name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
 				                { name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
 				                }
-				            chat.text=""
+				           --chat.text=""
+
+				           chat.size=14
 							local playIcon = display.newSprite( sheet1, sequenceData )
-							playIcon.x=bg.x-bg.contentWidth/2;playIcon.y=bg.y+bg.contentHeight/2-5
+							playIcon.x=bg.x-bg.contentWidth/2;playIcon.y=bg.y+bg.contentHeight/2
 							playIcon.id=ChatHistory[i].Audio_Path
 							playIcon.value="play"
 							playIcon:addEventListener( "touch", audioPlay )
@@ -1056,7 +1089,7 @@ end
 
 									    tempGroup:insert(image_spinner)
 
-									    bg.height = bg.height+20;bg.width = bg.width+15
+									    bg.height = bg.height+20;bg.width = bg.width+20
 
 
 
@@ -1100,7 +1133,9 @@ end
 
 			 	 bg.type = "image";bg.contentPath = filePath; bg.imageviewname = Imagename
 				
-					   if fhd then	
+					if fhd or ChatHistory[i].Image_Path == "DEFAULT" then	
+
+								spinner.isVisible=false
 
 							    if MessageType == "GROUP" then	
 										
@@ -1360,7 +1395,7 @@ function get_imagemodel(response)
 		local q = "UPDATE pu_MyUnitBuzz_Message SET Image_Path='"..Imagepath.."' WHERE id='"..image_update_row.."';"
 		db:exec( q )
 
-		sendMeaasage()
+		--sendMeaasage()
 
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
@@ -1393,8 +1428,6 @@ function get_imagemodel(response)
 				holdLevel=holdLevel+1
 
 					if holdLevel > 25 then
-
-						print("delete Action")
 
 						Deleteicon.isVisible=true
 						--Copyicon.isVisible=true
@@ -1459,7 +1492,6 @@ local function deleteAction( event )
 
 		elseif event.target.id == "copy" then
 						
-						print( event.target.value )
 
 						pasteboard.copy( "string", event.target.value)
 
@@ -1475,7 +1507,6 @@ local function deleteAction( event )
 
 				 if selectedForDelete.y ~= nil then
 
-				 	print("6767676767")
 				 selectedForDelete:removeSelf();selectedForDelete=nil 
 				 end 
 
@@ -1542,7 +1573,6 @@ local function DetailAction( event )
 							}
 
 
-			print( "Message_Type          :  "..To_ContactId )
 			ChatBox.isVisible=false
 		    composer.showOverlay( "Controller.Chathead_detailPage", options )
 
@@ -1588,7 +1618,6 @@ end
 local function ChatSendAction( event )
 	if event.phase == "began" then
 
-		print( "###############" )
 			display.getCurrentStage():setFocus( event.target )
 
 	elseif ( event.phase == "moved" ) then
@@ -1605,10 +1634,8 @@ local function ChatSendAction( event )
 			display.getCurrentStage():setFocus( nil )
 
 
-          print("Imagename : "..Imagename)
 
 	if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " and ChatBox.text ~= "\n" then
-				print("chat message not null")
 			
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
@@ -1641,7 +1668,6 @@ local function ChatSendAction( event )
 
 		    		if ChatBox.text ~= nil and ChatBox.text ~= "" then
 
-		    	    print("ertertertertt")
 
 		            local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 					
@@ -1660,7 +1686,7 @@ local function ChatSendAction( event )
 					Message_Type = MessageType
 
 
-					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Image','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
 					db:exec( insertQuery )
 
 
@@ -1747,7 +1773,6 @@ local function onKeyEvent( event )
 
 				os.remove( path )
 
-	            print("imagepath removal..........................",os.remove( path ))
 
 			end
 
@@ -1972,7 +1997,6 @@ end
 
 	      	local pWidth, pHeight = display.pixelWidth, display.pixelHeight
 			if (pHeight < 1000) then
-			    print("iphone 4")
 			   scrollAction(-180)
 			else
 			    scrollAction(-150)
@@ -2064,8 +2088,6 @@ end
 
 	    local view = chatScroll:getView()
 
-	    print( "Size : "..view.contentHeight )
-
 	    if view.contentHeight < 300 then
 
 	    	 chatScroll:scrollTo( "bottom", { time=500 } )
@@ -2135,7 +2157,7 @@ end
 
 				Webservice.SEND_MESSAGE("Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
 
-				sendMeaasage()
+				--sendMeaasage()
 
 	end
 
@@ -2143,8 +2165,6 @@ end
 
 
 	function scene:updateAudio(dataFileName)
-
-		print( "Update audio" )
 
 		ChatBox.isVisible=true
 
@@ -2168,20 +2188,20 @@ end
 						ImagePath=""
 						ImageName = ""
 						ImageSize = ""
-						AudioPath="DEFAULT"
+						AudioPath=dataFileName
 						VideoPath=""
 						MyUnitBuzz_LongMessage=ChatBox.text
 						From=ContactId
 						To=To_ContactId
 						Message_Type = MessageType
 
-						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Audio','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
 						db:exec( insertQuery )
 
 
 
 
-					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Audio_Path= 'DEFAULT'") do
+					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Audio_Path= '"..dataFileName.."'") do
 					   audio_update_row = row.id 
 
 					end 
@@ -2211,7 +2231,6 @@ end
 
 	function scene:resumeImageCallBack(photoviewname,button_idvalue)
 
-		print("resume game calling")
 
 		ChatBox.isVisible=true
 
@@ -2219,13 +2238,11 @@ end
 
 				if button_idvalue == "cancel" then
 
-					print("cancel pressed")
 
 				elseif button_idvalue == "send" then
 
 					Imagename = photoviewname:match( "([^/]+)$" )
 
-					print( "photoviewname 1111: "..Imagename)
 
 					    local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 
@@ -2233,7 +2250,7 @@ end
 						isDeleted="false"
 						Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 						Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-						ImagePath="DEFAULT"
+						ImagePath=photoviewname
 						ImageName = Imagename
 						ImageSize = Imagesize
 						AudioPath="NULL"
@@ -2243,11 +2260,11 @@ end
 						To=To_ContactId
 						Message_Type = MessageType
 
-						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Image','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
 						db:exec( insertQuery )
 
 
-					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Image_Path= 'DEFAULT'") do
+					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Image_Path= '"..Imagename.."'") do
 					   image_update_row = row.id 
 
 					end 
