@@ -280,8 +280,6 @@ local function attachAction( event )
 
 				end
 
-
-				Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 				ChatBox.isVisible=false
 
 
@@ -315,7 +313,6 @@ local function attachAction( event )
 
 					}
 
-		    Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 			ChatBox.isVisible=false
 
 
@@ -337,7 +334,6 @@ local function attachAction( event )
 
 							}
 
-			Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 			ChatBox.isVisible=false
 
 		    composer.showOverlay( "Controller.audioRecordPage",options)
@@ -1012,7 +1008,7 @@ end
 				                { name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
 				                { name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
 				                }
-
+				            chat.text=""
 							local playIcon = display.newSprite( sheet1, sequenceData )
 							playIcon.x=bg.x-bg.contentWidth/2;playIcon.y=bg.y+bg.contentHeight/2-5
 							playIcon.id=ChatHistory[i].Audio_Path
@@ -1355,7 +1351,7 @@ function get_imagemodel(response)
 
 		ChatBox_bg.isVisible = true
 
-		ChatBox.isVisible = false
+		ChatBox.isVisible = true
 
 		sendBtn_bg.isVisible = true
 
@@ -1391,8 +1387,6 @@ function get_imagemodel(response)
 
 	local function printTimeSinceStart( event )
 
-
-			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
 
 			if chatHoldflag == true then
 
@@ -1439,6 +1433,8 @@ function get_imagemodel(response)
 			-- 	 selectedForDelete:removeSelf();selectedForDelete=nil 
 			-- 	 end 
 			-- end
+
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
 		    		
 		    end
 
@@ -1547,7 +1543,6 @@ local function DetailAction( event )
 
 
 			print( "Message_Type          :  "..To_ContactId )
-			Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 			ChatBox.isVisible=false
 		    composer.showOverlay( "Controller.Chathead_detailPage", options )
 
@@ -1612,7 +1607,7 @@ local function ChatSendAction( event )
 
           print("Imagename : "..Imagename)
 
-if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " and ChatBox.text ~= "\n" then
+	if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " and ChatBox.text ~= "\n" then
 				print("chat message not null")
 			
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
@@ -1635,8 +1630,6 @@ if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " and ChatBo
 				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
 				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
 				db:exec( insertQuery )
-
-				print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
 
 			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
@@ -1667,13 +1660,9 @@ if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " and ChatBo
 					Message_Type = MessageType
 
 
-				--	native.showAlert("Type",Message_Type,{CommonWords.ok})
+					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+					db:exec( insertQuery )
 
-						print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
-						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
-						db:exec( insertQuery )
-
-						print( ChatBox.text,ChatBox.text,"","","","","SEND",From,To,Message_Type )
 
 
 					    Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"","","","SEND",From,To,Message_Type,get_sendMssage)
@@ -1802,7 +1791,8 @@ end
 		if event.phase == "began" then 
 
 		elseif event.phase == "ended" then
-			
+
+		
 			if event.target.id == "message" then
 
 				title.text = ChatPage.Chats
@@ -2109,8 +2099,6 @@ end
 
 				ChatBox.isVisible=true
 
-			Runtime:addEventListener( "enterFrame", printTimeSinceStart )
-
 
 			local audiopath = response.Abspath
 
@@ -2119,8 +2107,6 @@ end
 			audiosize = size
 
 			ChatBox_bg.isVisible = true
-
-			ChatBox.isVisible = false
 
 			sendBtn_bg.isVisible = true
 
@@ -2147,7 +2133,7 @@ end
 
 
 
-				Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
+				Webservice.SEND_MESSAGE("Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
 
 				sendMeaasage()
 
@@ -2158,11 +2144,9 @@ end
 
 	function scene:updateAudio(dataFileName)
 
-		composer.removeHidden()
+		print( "Update audio" )
 
 		ChatBox.isVisible=true
-
-		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 
 	    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            -- Play back the recording
@@ -2229,7 +2213,7 @@ end
 
 		print("resume game calling")
 
-		composer.removeHidden()
+		ChatBox.isVisible=true
 
 		if photoviewname  ~= nil and photoviewname ~= "" then
 
@@ -2286,12 +2270,7 @@ end
 
 		print("resume game")
 
-			composer.removeHidden()
-
 			ChatBox.isVisible=true
-
-		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
-
 
 	end
 
@@ -2590,7 +2569,7 @@ end
 
 		if event.phase == "will" then
 
-				Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+			Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 				Runtime:removeEventListener( "key", onKeyEvent )
 				image_name_close:removeEventListener( "touch", ImageClose )
 
