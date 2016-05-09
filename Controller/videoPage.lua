@@ -32,7 +32,7 @@ local fSoundPaused = false    -- sound pause state
 
 local countdown
 
-local PHOTO_FUNCTION = media.PhotoLibrary 
+local PHOTO_FUNCTION = media.SavedPhotosAlbum  
 --------------------------------------------------
 
 
@@ -84,6 +84,46 @@ local PHOTO_FUNCTION = media.PhotoLibrary
 
 
 
+local function onComplete( event )
+
+    if event.completed then
+
+        local video = native.newVideo( display.contentCenterX+90, display.contentCenterY, 400, 280 )
+        --video.rotation = 90
+				    -- video.x=title.x
+				    -- video.y= 85
+					-- video.id="video object"
+					-- video.width = 640
+					-- video.anchorX=0
+					-- video.anchorY = 0
+        
+
+        local function videoListener( event )
+            print( "Event phase: " .. event.phase )
+
+            if event.errorCode then
+                 native.showAlert( "Error!", event.errorMessage, { "OK" } )
+            end
+
+        end
+
+        -- load a remote video
+        video:load( event.url, media.RemoteSource )
+
+        video:addEventListener( "video", videoListener )
+        -- play video
+        video:play()
+
+		--video:pause()
+		--video:removeSelf()
+		--video = nil
+
+
+    end
+end
+
+
+
 
 	-- local function onVideoComplete( event )
 
@@ -96,6 +136,7 @@ local PHOTO_FUNCTION = media.PhotoLibrary
 	--    end
 
 	-- end
+
 
 
 
@@ -193,17 +234,21 @@ end
 
 			        videoPreview.isVisible = true
 
-				    videofile = native.newVideo( title.x , title_bg.y+title_bg.contentHeight + 15, 250 , 180)
-				    videofile.x=title.x
-				    videofile.y= title_bg.y+title_bg.contentHeight + 15
-					videofile.id="video object"
-					videofile.width = 250
-					videofile.anchorX=0
-					videofile.anchorY = 0
+				    videofile = native.newVideo( display.contentCenterX, display.contentCenterY, 320, 350)
+				 --    videofile.x=title.x
+				 --    videofile.y= title_bg.y+title_bg.contentHeight + 15
+					-- videofile.id="video object"
+					-- videofile.width = 250
+					-- videofile.anchorX=0
+					-- videofile.anchorY = 0
 
 					videofile:load( savedVideoFileName , savedVideoDirectory )
 
 					videofile:play()
+
+				--	videofile:pause()
+				--	videofile:removeSelf()
+				--	videofile = nil
 
 		    end
 
@@ -230,8 +275,8 @@ end
 			-- video:addEventListener( "video", videoListener )
 
 
-		videofilesize = event.fileSize
-		videourl = event.url
+		--videofilesize = event.fileSize
+		--videourl = event.url
 
         formatSizeUnits(videofilesize)
 
@@ -284,7 +329,7 @@ end
 
 								if ( media.hasSource( PHOTO_FUNCTION ) ) then
 
-								media.selectVideo( { listener = onVideoComplete, mediaSource = PHOTO_FUNCTION } ) 
+								media.selectVideo( { listener = onComplete, mediaSource = PHOTO_FUNCTION } ) 
 
 								idvalue = "selection"
 							
