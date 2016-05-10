@@ -698,8 +698,6 @@ local function audioPlayComplete( event )
 
 	print( "complete" )
 
-	local alert = native.showAlert( "Corona", "audio completed", { "OK"} )
-
 	    if ( event.completed ) then
 
 
@@ -733,12 +731,19 @@ local function audioPlay( event )
 
 					local audioname = event.target.id:match( "([^/]+)$" )
 
+					--native.showAlert( "MUB", "audioname" ,{"ok"} )
+					if not audioname then
+						audioname = event.target.id
+					end
+
 					 local filePath = system.pathForFile( audioname, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
 		            
 		            if file then
 		                io.close( file )
+
+		                	
 
 		               
 		                if event.target.value == "play" then
@@ -764,7 +769,10 @@ local function audioPlay( event )
 
 									   		 	end
 												
-									end
+										end
+
+
+
 
 									event.target:setSequence( "pause" )
 			      					event.target:play()
@@ -843,8 +851,7 @@ local function videoPlay( event )
 		                	print("play")
 
 
-		                	local native = native.showAlert("dsdffdsf","sdfdsfsdf",{"ok"})
-		                	
+	                	
 	      				end
 
 		            end
@@ -1061,6 +1068,8 @@ end
 				 	 local fhd = io.open( filePath )
 
 					  bg.contentPath = filePath
+
+
 
 					
 					if fhd or ChatHistory[i].Audio_Path == "DEFAULT" then	
@@ -1489,7 +1498,6 @@ end
 			else
 				time.x=bg.x+bg.contentWidth-time.contentWidth-2.5
 				bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
-				time.x=bg.x+5
 			end
 
 
@@ -2468,7 +2476,7 @@ end
 		            local file = io.open( filePath)
 		            
 		            if file then
-		            	
+
 		                io.close( file )
 		            
 					    local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
