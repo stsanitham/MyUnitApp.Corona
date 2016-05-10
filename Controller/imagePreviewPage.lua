@@ -28,6 +28,8 @@ local Background,BgText
 
 local menuBtn
 
+local cancel_button, cancel_icon, cancel_icon_text , image_send_button, send_icon ,send_icon_text
+
 openPage="imagePreviewPage"
 
 local BackFlag = false

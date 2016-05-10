@@ -772,9 +772,7 @@ end
 
 			    event.parent:resumeVideoCallBack(videoFilePath,userAction,videofilesize)
 
-
 			elseif userAction == "cancel" then
-
 
 				local filePath = system.pathForFile( videoFilePath, media.RemoteSource )
 
@@ -791,7 +789,7 @@ end
 
 		end	
 
-		end
+	end
 
 
 
