@@ -975,20 +975,26 @@ if IsOwner == true then
 					flapScroll:insert( Logout_text )
 
 			-----
+			if not isSimulator then
+				if chatReceivedFlag == true then
 
-			if chatReceivedFlag == true then
+					chatReceivedFlag=false
 
-				chatReceivedFlag=false
-
-				composer.gotoScene( "Controller.MessagingPage" )
+					composer.gotoScene( "Controller.MessagingPage" )
 
 
+				else
+
+					composer.gotoScene( "Controller.eventCalenderPage" )
+
+				end
 			else
+
+				--composer.gotoScene( "Controller.audioRecordPage", options )
 
 				composer.gotoScene( "Controller.eventCalenderPage" )
 
 			end
-			--composer.gotoScene( "Controller.careerPathDetailPage", options )
 		end	
 
 		MainGroup:insert(sceneGroup)

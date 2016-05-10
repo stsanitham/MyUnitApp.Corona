@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 --
--- instagram Screen
+-- Audio recording Screen
 --
 ----------------------------------------------------------------------------------
 
@@ -8,7 +8,7 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 
 local Utility = require( "Utils.Utility" )
-
+local toast = require('plugin.toast')
 
 
 --------------- Initialization -------------------
@@ -29,7 +29,7 @@ local r                 -- media object for audio recording
 local recButton         -- gui buttons
 local fSoundPlaying = false   -- sound playback state
 local fSoundPaused = false    -- sound pause state
-
+ local Seconds,Mintues=0,0
 local countdown
 --------------------------------------------------
 
@@ -44,9 +44,26 @@ local function closeDetails( event )
 			if event.target.id =="background" then
 
 			elseif event.target.id == "ok" then
-				userAction="ok"
-				composer.hideOverlay()
+
+				    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+		            local file = io.open( filePath)
+		            
+		           		if file then
+		                	io.close( file )
+							userAction="ok"
+							composer.hideOverlay()
+						else
+							toast.show("Please record the audio to proceed", {duration = 'long', gravity = 'Bottom', offset = {0, 128}})  
+						end
 			else
+
+				 local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+		            local file = io.open( filePath)
+		            
+		           		if file then
+		                	io.close( file );print("removed")
+		                	os.remove(filePath)
+		                end
 				composer.hideOverlay()
 			end
 
@@ -74,37 +91,56 @@ local function audioAction( event )
 		                io.close( file )
 		                fSoundPlaying = true
 		                fSoundPaused = false
-		                
-						playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
 
-						audio.play( playbackSoundHandle, { onComplete=onCompleteSound } )
+		                local isChannelPaused = audio.isChannelPaused( 1 )
+						if isChannel1Playing then
+						    audio.pause( 1 )
+						end
+		                	local isChannel1Playing = audio.isChannelPlaying( 1 )
+							if isChannel1Playing then
+							else
+								playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
+								audio.play( playbackSoundHandle, { channel=1, loops=-1 } )
+							end
 
-						 keyTips.text = "Playing"
-		            end  
+						end  
+
+		            keyTips.text = "Playing"
+
 			elseif event.target.id == "stop" then
 				
+				
+
 				if r:isRecording() then
 		            r:stopRecording()
 		            timer.cancel(countdown)
 
-		            okBtn.isVisible=true
-					okBtn_txt.isVisible=true
-					cancelBtn.isVisible=true
-					cancelBtn_txt.isVisible=true
-
-
 		            keyTips.text = "Recording Stopped"
+
 		       	end
+
+		       	local isChannel1Playing = audio.isChannelPlaying( 1 )
+				if isChannel1Playing then
+				    audio.pause( 1 )
+				     keyTips.text = "Recording Paused"
+				end
+
 			elseif event.target.id == "start" then
 				 fSoundPlaying = false
 		         fSoundPaused = false
 		         r:startRecording()
 
-		         local count=0
-		         countdown = timer.performWithDelay(1000, function()
-		         	count=count+1
-		         	timerCount.text = "00:"..count
 
+		        	
+		         countdown = timer.performWithDelay(1000, function()
+
+		         	if Seconds == 60 then
+		         		Seconds=0
+		         		Mintues=Mintues+1
+		         	end
+		         	
+		         	timerCount.text = string.format("%02d",Mintues)..":"..string.format("%02d",Seconds)
+		         	Seconds=Seconds+1
 		         end,-1)
 
 		         keyTips.text = "Recording"
@@ -170,6 +206,14 @@ function scene:create( event )
 	title.x=back_icon.x+15;title.y = title_bg.y
 	title:setFillColor(0)
 
+	local audio_bg = display.newImageRect( sceneGroup, "res/assert/audiobg.png",W,H/2-40)
+	audio_bg.x=W/2;audio_bg.y=H/2+40
+	audio_bg.anchorY=0
+
+	local recordIcon = display.newImageRect( sceneGroup, "res/assert/recordicon.png", 130, 110 )
+	recordIcon.x=W/2;recordIcon.y=H/2-80
+
+
 	title:addEventListener( "touch", closeDetails )
 	back_icon:addEventListener( "touch", closeDetails )
 
@@ -188,55 +232,60 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		keyTips = display.newText( sceneGroup, "Press record",  0,0,native.systemFont,16 )
+		keyTips = display.newText( sceneGroup, "Press ‘Start’ to record",  0,0,native.systemFont,16 )
 		keyTips:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-		keyTips.x=W/2;keyTips.y=title_bg.y+title_bg.contentHeight+20
+		keyTips.x=W/2;keyTips.y=title_bg.y+title_bg.contentHeight
 
 
-		startBtn = display.newText( sceneGroup, "Start",  0,0,native.systemFont,16 )
-		startBtn.x=W/3-10;startBtn.y=H/2+150
+		startBtn = display.newImageRect( sceneGroup,"res/assert/audiostart.png",55,50 )
+		startBtn.x=W/2-70;startBtn.y=H/2+100
 		startBtn.id="start"
-		startBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 
-		playBtn = display.newText( sceneGroup, "Play",  0,0,native.systemFont,16 )
-		playBtn.x=W/2;playBtn.y=H/2+150
+		playBtn = display.newImageRect( sceneGroup,"res/assert/audioplay.png",75,65 )
+		playBtn.x=W/2;playBtn.y=H/2+100
 		playBtn.id="play"
 		playBtn.play="play"
-		playBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 
 
-		stopBtn = display.newText( sceneGroup, "Stop",  0,0,native.systemFont,16 )
-		stopBtn.x=W/2+50;stopBtn.y=H/2+150
+		stopBtn = display.newImageRect( sceneGroup,"res/assert/audiostop.png",55,50 )
+		stopBtn.x=W/2+70;stopBtn.y=H/2+100
 		stopBtn.id="stop"
-		stopBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-		okBtn = display.newImageRect( sceneGroup, "res/assert/positive_alert.png", 100, 30 )
-		okBtn.x=W/2-120;okBtn.y=H/2+50
+		okBtn = display.newRect( sceneGroup, 0,0, W/2, 45 )
+		okBtn.x=0;okBtn.y=H-45
 		okBtn.id="ok"
-		okBtn.anchorX=0
+		okBtn.anchorX=0;okBtn.anchorY=0
+		okBtn:setFillColor( Utils.convertHexToRGB(color.darkGreen) )
 
-		okBtn_txt = display.newText( sceneGroup, MessagePage.Send, 0,0,native.systemFont,14 )
-		okBtn_txt.x=okBtn.x+25;okBtn_txt.y=okBtn.y
+		local okIcon = display.newImageRect( sceneGroup, "res/assert/audiosend.png",25,20 )
+		okIcon.x=okBtn.x+20;okIcon.y=okBtn.y+okBtn.contentHeight/2
+
+		okBtn_txt = display.newText( sceneGroup, MessagePage.Send, 0,0,native.systemFont,16 )
+		okBtn_txt.x=okIcon.x+25;okBtn_txt.y=okIcon.y
 		okBtn_txt.anchorX=0
 
-		cancelBtn = display.newImageRect( sceneGroup, "res/assert/negative_alert.png", 100, 30 )
-		cancelBtn.x=W/2;cancelBtn.y=H/2+50
+		cancelBtn = display.newRect( sceneGroup, 0,0, W/2, 45 )
+		cancelBtn.x=W/2;cancelBtn.y=H-45
 		cancelBtn.id="cancel"
-		cancelBtn.anchorX=0
+		cancelBtn.anchorX=0;cancelBtn.anchorY=0
+		cancelBtn:setFillColor( Utils.convertHexToRGB(color.Lytred) )
 
-		cancelBtn_txt = display.newText( sceneGroup, CommonWords.cancel, 0,0,native.systemFont,14 )
-		cancelBtn_txt.x=cancelBtn.x+25;cancelBtn_txt.y=cancelBtn.y
+		local cancelIcon = display.newImageRect( sceneGroup, "res/assert/audiocancel.png",25,20 )
+		cancelIcon.x=cancelBtn.x+20;cancelIcon.y=cancelBtn.y+cancelBtn.contentHeight/2
+
+		cancelBtn_txt = display.newText( sceneGroup, CommonWords.cancel, 0,0,native.systemFont,16 )
+		cancelBtn_txt.x=cancelIcon.x+25;cancelBtn_txt.y=cancelIcon.y
 		cancelBtn_txt.anchorX=0
 
 		okBtn:addEventListener( "touch", closeDetails )
 		cancelBtn:addEventListener( "touch", closeDetails )
 
-		    okBtn.isVisible=false
-			okBtn_txt.isVisible=false
-			cancelBtn.isVisible=false
-			cancelBtn_txt.isVisible=false
+		 --    okBtn.isVisible=false
+			-- okBtn_txt.isVisible=false
+			-- cancelBtn.isVisible=false
+			-- cancelBtn_txt.isVisible=false
 
 
 		
@@ -257,10 +306,10 @@ function scene:show( event )
 		r = media.newRecording(filePath)
 
 
-		timerCount = display.newText( sceneGroup, "00:00",0,0,native.systemFont,75)
+		timerCount = display.newText( sceneGroup, "00:00",0,0,native.systemFont,70)
 		timerCount:setFillColor( 0 )
 		timerCount.x=W/2
-		timerCount.y=H/2-50
+		timerCount.y=H/2+10
 
 
 
@@ -290,11 +339,20 @@ end
 
 		elseif phase == "did" then
 
+			local isChannel1Playing = audio.isChannelPlaying( 1 )
+				if isChannel1Playing then
+
+					audio.pause( 1 );audio.stop(1);audio.dispose(1)
+
+				end
+
 			if userAction == "ok" then
 
 				event.parent:updateAudio(dataFileName)
 
 			else
+
+
 
 				local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 	            os.remove( filePath )

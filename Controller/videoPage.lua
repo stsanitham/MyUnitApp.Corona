@@ -84,6 +84,7 @@ function formatSizeUnits(event)
 
 	    if size > "10 MB" then
 
+
 	    	local image = native.showAlert( "Error in Video Upload", "Size of the video cannot be more than 10 MB", { CommonWords.ok } )
 
 	    end
@@ -93,22 +94,15 @@ function formatSizeUnits(event)
 
       	size = (event/1024)..' KB'
 
-      else      
+        -- play video
+        video:play()
+        video:addEventListener( "video", videoListener )
 
-  	  end
+      end
 
-  	 -- return size
-
-  	  local nativealert = native.showAlert("Video size", size ,{"ok"})
+  	 		 local nativealert = native.showAlert("Video size", size ,{"ok"})
 
 end
-
-
-
-
-
-
-
 
 
 
@@ -344,6 +338,7 @@ local function onComplete( eventvideo )
 		  --  filePath = system.pathForFile( savedVideoFileName, system.DocumentsDirectory )
 
 
+
        -- copyFile( savedVideoFileName, videoFilePath , savedVideoFileName, savedVideoDirectory, true )
 
        -- saveValue(videoFilePath, savedVideoFileName)
@@ -357,6 +352,16 @@ local function onComplete( eventvideo )
         video_selectionSend.isVisible = true
         video_selectionCancelTick.isVisible = true
         video_selectionSendTick.isVisible = true
+
+
+				  --  videofile = native.newVideo( display.contentCenterX, display.contentCenterY, 320, 350)
+				 --    videofile.x=title.x
+				 --    videofile.y= title_bg.y+title_bg.contentHeight + 15
+					-- videofile.id="video object"
+					-- videofile.width = 250
+					-- videofile.anchorX=0
+					-- videofile.anchorY = 0
+
 
     --end
 
@@ -450,13 +455,13 @@ end
 
 								if ( media.hasSource( media.Camera ) ) then
 
-								media.captureVideo( { listener = onVideoComplete, preferredQuality = "high", } )
+									media.captureVideo( { listener = onVideoComplete, preferredQuality = "high", } )
 
-								idvalue = "capture"
+									idvalue = "capture"
 
 								else
 
-								native.showAlert( "Video Recording Failed", "This device does not have a camera.", { "OK" } )
+									native.showAlert( "Video Recording Failed", "This device does not have a camera.", { "OK" } )
 
 								end
 
@@ -471,13 +476,13 @@ end
 
 								if ( media.hasSource( PHOTO_FUNCTION ) ) then
 
-								media.selectVideo( { listener = onComplete, mediaSource = PHOTO_FUNCTION } ) 
+									media.selectVideo( { listener = onComplete, mediaSource = PHOTO_FUNCTION } ) 
 
-								idvalue = "selection"
+									idvalue = "selection"
 							
 								else
 
-								native.showAlert( "Video Capture Failed", "This device does not have a photo library.", { CommonWords.ok  } )
+									native.showAlert( "Video Capture Failed", "This device does not have a photo library.", { CommonWords.ok  } )
 
 								end
 
