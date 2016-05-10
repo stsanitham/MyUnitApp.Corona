@@ -1163,13 +1163,13 @@ end
 
 				if ChatHistory[i].Video_Path  ~= nil and ChatHistory[i].Video_Path ~= "" and ChatHistory[i].Video_Path ~= "NULL" and ChatHistory[i].Video_Path ~= " " then
 
-					local videoname = ChatHistory[i].Video_Path:match( "([^/]+)$" )
+					local videoname = ChatHistory[i].Video_Path
 
 					 local video
 
 					 bg.type = "video"
 
-					 local filePath = system.pathForFile( videoname,system.DocumentsDirectory )
+					 local filePath = system.pathForFile( videoname,media.RemoteSource )
 				 	 local fhd = io.open( filePath )
 
 					  bg.contentPath = filePath
@@ -2453,10 +2453,6 @@ end
 
 		print("resume game calling")
 
-		local nativelaert = native.showAlert("MUB","videopath",{"ok"})
-
-		composer.removeHidden()
-
 		if videofilename  ~= nil and videofilename ~= "" then
 
 				if button_idvalue == "cancel" then
@@ -2467,27 +2463,24 @@ end
 
 
 
-					local filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
+					local filePath =  videofilename
 		            -- Play back the recording
 		            local file = io.open( filePath)
 		            
 		            if file then
+		            	
 		                io.close( file )
-		            else
-		            	videofilename="test.mp4"
-			           	filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
-		            end
-
+		            
 					    local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 
 					    Message_date=os.date("%Y-%m-%dT%H:%M:%S")
 						isDeleted="false"
 						Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 						Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-						ImagePath="NULL"
+						ImagePath=""
 						ImageName = ""
 						ImageSize = ""
-						AudioPath="NULL"
+						AudioPath=""
 						VideoPath="DEFAULT"
 						MyUnitBuzz_LongMessage=ChatBox.text
 						From=ContactId
@@ -2503,12 +2496,29 @@ end
 
 					end 
 
-				   Webservice.DOCUMENT_UPLOAD(videofilesize,videofilename,"Videos",get_videomodel)
+
+					 local size1 = lfs.attributes (filePath, "size")
+
+					local fileHandle = io.open(filePath, "rb")
+
+					file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+					io.close( fileHandle )
+
+			            print("mime conversion ",file_inbytearray)
+
+			        	print("bbb ",size1)
+
+			        formatSizeUnits(size1)
+
+				   Webservice.DOCUMENT_UPLOAD(file_inbytearray,"video.mp4","Videos",get_videomodel)
 
 				  sendMeaasage()
 
 
 				end
+
+			end
 
 		end
 
@@ -2832,7 +2842,7 @@ end
 
 		end	
 
-		end
+	end
 
 
 

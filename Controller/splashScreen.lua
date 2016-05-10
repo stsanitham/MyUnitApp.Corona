@@ -251,8 +251,8 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 			end		
 
-
-				
+			--native.showAlert( "MUB", "GCM : "..GCMValue,{ "ok"} )
+					
 			Webservice.Get_SocialMediaTokens(GCMValue,get_userSocialSetting)
 		
 
