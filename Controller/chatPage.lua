@@ -1379,7 +1379,7 @@ end
 
 							    if MessageType == "GROUP" then	
 									
-									image = display.newImageRect( tempGroup, "res/assert/thumbnail.jpg", 200, 170 )
+									image = display.newImageRect( tempGroup, "res/assert/download_default.jpg", 200, 170 )
 								    bg.width = image.contentWidth+5;bg.height = image.contentHeight+23.5
 
 									owner.anchorY=0;owner.anchorX = 0;owner.x=chat.x;owner.y=bg.y+1
@@ -1426,14 +1426,11 @@ end
 									downloadimage.isVisible = true
 									downloadimage:toFront()
 
-
 									downloadimage:addEventListener( "touch", receviednotifyDownload )
-
-
 
 								else
 
-									image = display.newImageRect( tempGroup, "res/assert/thumbnail.jpg", 200, 170 )
+									image = display.newImageRect( tempGroup, "res/assert/download_default.jpg", 200, 170 )
 									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=bg.y+2.5
 
 									bg.width = image.contentWidth+5;bg.height = image.contentHeight+5	
@@ -2453,7 +2450,6 @@ end
 
 		print("resume game calling")
 
-		local nativelaert = native.showAlert("MUB","videopath",{"ok"})
 
 		composer.removeHidden()
 
@@ -2465,18 +2461,20 @@ end
 
 				elseif button_idvalue == "send" then
 
+		            local nativelaert = native.showAlert("MUB","videopath",{"ok"})
 
 
-					local filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
-		            -- Play back the recording
-		            local file = io.open( filePath)
+
+					-- local filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
+		   --          -- Play back the recording
+		   --          local file = io.open( filePath)
 		            
-		            if file then
-		                io.close( file )
-		            else
-		            	videofilename="test.mp4"
-			           	filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
-		            end
+		   --          if file then
+		   --              io.close( file )
+		   --          else
+		   --          	videofilename="test.mp4"
+			  --          	filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
+		   --          end
 
 					    local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 
