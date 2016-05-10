@@ -970,7 +970,7 @@ function Webservice.Get_GetUpComingEvents(postExecution)
 	return response
 end
 
-function Webservice.Get_SocialMediaTokens(postExecution)
+function Webservice.Get_SocialMediaTokens(GCM,postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
@@ -989,6 +989,25 @@ function Webservice.Get_SocialMediaTokens(postExecution)
 
 	end
 
+
+		local Device_OS = system.getInfo("platformName")
+		local Unique_Id = system.getInfo("deviceID")
+		--local Manufacturer = system.getInfo("targetAppStore")
+		local Model = system.getInfo("model")
+		local Version = system.getInfo("appVersionString")
+
+
+	local bodyContent= [["MobDevice":
+	{
+		"DOS": "]] .. Device_OS .. [[",
+		"UQId": "]] .. Unique_Id .. [[",
+		"MOD": "]] .. Model .. [[",
+		"DN": "]] .. Model .. [[",
+		"Ver": "]] .. Version .. [[",
+		"GCMUQId": "]] .. GCM .. [[",
+		
+	}]]
+
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
 	local url = splitUrl(ApplicationConfig.GetSocialMediaTokens)
@@ -996,7 +1015,7 @@ function Webservice.Get_SocialMediaTokens(postExecution)
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
-
+	print( "GCM : "..GCM )
 	local resbody = ""
 	resbody = resbody.."userId="..UserId.."&contactId="..ContactId
 
@@ -1004,7 +1023,7 @@ function Webservice.Get_SocialMediaTokens(postExecution)
 	headers["Content-Length"]= string.len(resbody)
 
 			
-	params={headers = headers}
+	params={headers = headers,body = bodyContent}
 
 	print("request : "..json.encode(params))
 

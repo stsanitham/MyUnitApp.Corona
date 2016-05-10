@@ -9,7 +9,7 @@ local scene = composer.newScene()
 
 local Utility = require( "Utils.Utility" )
 local style = require("res.value.style")
-local OneSignal = require("plugin.OneSignal")
+--local OneSignal = require("plugin.OneSignal")
 --local string = require("res.value.string")
 
 
@@ -228,31 +228,32 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 				
 				--composer.gotoScene( "Controller.flapMenu" )
 
-						function IdsAvailable(userId, pushToken)
+						-- function IdsAvailable(userId, pushToken)
 
-							    GCMValue = userId
+						-- 	    GCMValue = userId
 
-						        composer.gotoScene( "Controller.flapMenu" )
+						--         composer.gotoScene( "Controller.flapMenu" )
 						   
-						    if (pushToken) then -- nil if there was a connection issue or on iOS notification permissions were not accepted.
-						        print("pushToken:" .. pushToken)
-						    end
+						--     if (pushToken) then -- nil if there was a connection issue or on iOS notification permissions were not accepted.
+						--         print("pushToken:" .. pushToken)
+						--     end
 
-						end
+						-- end
 
-						OneSignal.IdsAvailableCallback(IdsAvailable)
+						-- OneSignal.IdsAvailableCallback(IdsAvailable)
 
-						if isSimulator then
+						-- if isSimulator then
 
 
 						        composer.gotoScene( "Controller.flapMenu" )
 
-						end
+						--end
 
 			end		
 
+
 				
-			Webservice.Get_SocialMediaTokens(get_userSocialSetting)
+			Webservice.Get_SocialMediaTokens(GCMValue,get_userSocialSetting)
 		
 
 
@@ -262,34 +263,34 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 				
 
-						function IdsAvailable(userId, pushToken)
+						-- function IdsAvailable(userId, pushToken)
 
 
-						    print("userId:" .. userId)
+						--     print("userId:" .. userId)
 
-						   -- native.showAlert("userId", userId, { "OK" } )
+						--    -- native.showAlert("userId", userId, { "OK" } )
 						     
 						   
-						        GCMValue = userId
+						--         GCMValue = userId
 
-						        local options = {
-								    effect = "slideLeft",
-								    time = Splash_TimeOut,
-								    params = { responseValue=response}
-								}
+						--         local options = {
+						-- 		    effect = "slideLeft",
+						-- 		    time = Splash_TimeOut,
+						-- 		    params = { responseValue=response}
+						-- 		}
 
 
-								composer.gotoScene( "Controller.singInPage", options )
+						-- 		composer.gotoScene( "Controller.singInPage", options )
 						   
-						    if (pushToken) then -- nil if there was a connection issue or on iOS notification permissions were not accepted.
-						        print("pushToken:" .. pushToken)
-						    end
+						--     if (pushToken) then -- nil if there was a connection issue or on iOS notification permissions were not accepted.
+						--         print("pushToken:" .. pushToken)
+						--     end
 
-						end
+						-- end
 
-						OneSignal.IdsAvailableCallback(IdsAvailable)
+						-- OneSignal.IdsAvailableCallback(IdsAvailable)
 
-						if isSimulator then
+						-- if isSimulator then
 
 
 						        local options = {
@@ -301,7 +302,7 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 								composer.gotoScene( "Controller.singInPage", options )
 
-						end
+						--end
 			end
 
 	end

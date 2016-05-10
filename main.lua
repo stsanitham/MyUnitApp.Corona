@@ -12,11 +12,11 @@ local sqlite3 = require( "sqlite3" )
 local json = require( "json" )
 MyUnitBuzzString = require( "res.value.string" )
 local Applicationconfig = require("Utils.ApplicationConfig")
-
+local notifications = require( "plugin.notifications" )
 
 widget.setTheme( "widget_theme_ios" )
 
-local OneSignal = require("plugin.OneSignal")
+--local OneSignal = require("plugin.OneSignal")
 GCMValue = 0
 ga = require("Utils.GoogleAnalytics.ga")
 
@@ -394,9 +394,34 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
 end
 
 
-    OneSignal.Init(ApplicationConfig.OneSignal_Appid, ApplicationConfig.ProjectNumber, DidReceiveRemoteNotification)
+    -- OneSignal.Init(ApplicationConfig.OneSignal_Appid, ApplicationConfig.ProjectNumber, DidReceiveRemoteNotification)
 
-    OneSignal.EnableInAppAlertNotification(false)
+    -- OneSignal.EnableInAppAlertNotification(false)
+
+local function notificationListener( event )
+
+    if ( event.type == "remote" ) then
+        --handle the push notification
+
+
+        
+
+    elseif ( event.type == "remoteRegistration" ) then 
+        --code to register your device with the service
+
+
+        GCMValue = event.token
+
+       -- native.showAlert( "Push Notification", event.token ,{"Ok"} )
+
+   
+    end
+end
+
+notifications.registerForPushNotifications()
+
+--The notification Runtime listener should be handled from within "main.lua"
+Runtime:addEventListener( "notification", notificationListener )
 
 
     ---------Google Analytics-------
@@ -470,6 +495,9 @@ end
 
 --setup the system listener to catch applicationExit etc
 Runtime:addEventListener( "system", onSystemEvent )
+
+
+
 
 
 
