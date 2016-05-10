@@ -308,7 +308,8 @@ local function attachAction( event )
 					time = 200,	
 						params = {
 						contactId = To_ContactId,
-						MessageType = MessageType
+						MessageType = MessageType,
+						sendto = title.text,
 					}
 
 					}
@@ -820,6 +821,42 @@ end
 
 
 
+
+local function videoPlay( event )
+		
+		if event.phase == "began" then
+				display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+				display.getCurrentStage():setFocus( nil )
+
+					local videoname = event.target.id:match( "([^/]+)$" )
+
+					 local filePath = system.pathForFile( videoname, system.DocumentsDirectory )
+		            -- Play back the recording
+		            local file = io.open( filePath)
+		            
+		            if file then
+		                io.close( file )
+
+		               
+		                if event.target.value == "play" then
+		                	print("play")
+
+
+		                	local native = native.showAlert("dsdffdsf","sdfdsfsdf",{"ok"})
+		                	
+	      				end
+
+		            end
+		end
+
+	return true
+end
+
+
+
+
+
 	local function sendMeaasage()
 
 		for i=#MeassageList, 1, -1 do 
@@ -1120,6 +1157,115 @@ end
 
 				end
 
+
+			--------- Video Attachment ---------------
+
+
+				if ChatHistory[i].Video_Path  ~= nil and ChatHistory[i].Video_Path ~= "" and ChatHistory[i].Video_Path ~= "NULL" and ChatHistory[i].Video_Path ~= " " then
+
+					local videoname = ChatHistory[i].Video_Path:match( "([^/]+)$" )
+
+					 local video
+
+					 bg.type = "video"
+
+					 local filePath = system.pathForFile( videoname,system.DocumentsDirectory )
+				 	 local fhd = io.open( filePath )
+
+					  bg.contentPath = filePath
+
+					
+					if fhd then	
+							bg.width=bg.width+25;bg.height=bg.height+20
+
+							local sheetData2 = { width=30, height=30, numFrames=2, sheetContentWidth=60, sheetContentHeight=30 }
+							local sheet1 = graphics.newImageSheet( "res/assert/playpause.png", sheetData2 )
+
+							local sequenceData = {
+				                { name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
+				                { name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
+				                }
+
+							local playIcon = display.newSprite( sheet1, sequenceData )
+							playIcon.x=bg.x-bg.contentWidth/2;playIcon.y=bg.y+bg.contentHeight/2-5
+							playIcon.id=ChatHistory[i].Video_Path
+							playIcon.value="play"
+							playIcon:addEventListener( "touch", videoPlay )
+							playIcon:setSequence( "play" )
+      						playIcon:play()
+							tempGroup:insert(playIcon)
+
+							if ChatHistory[i].Message_From ~= tostring(ContactId) then
+								playIcon.x = bg.x+bg.contentWidth/2
+							end
+					else
+
+						if ChatHistory[i].Video_Path == "DEFAULT" then
+								
+
+								spinner.isVisible=false
+
+								    local options = {
+												    width = 32,
+												    height = 32,
+												    numFrames = 4,
+												    sheetContentWidth = 64,
+												    sheetContentHeight = 64
+												}
+
+									local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
+ 
+								    local image_spinner = widget.newSpinner
+														{
+														    width = 106/4 ,
+														    height = 111/4,
+														    deltaAngle = 10,
+														    sheet = spinnerSingleSheet,
+														    startFrame = 1,
+														    incrementEvery = 20
+														}
+
+										image_spinner.x=bg.x-bg.contentWidth/2;image_spinner.y=bg.y+bg.contentHeight/2
+									    image_spinner:toFront();image_spinner:start()
+
+
+									    image_spinner:start()
+
+									    tempGroup:insert(image_spinner)
+
+									    bg.height = bg.height+20;bg.width = bg.width+15
+
+
+
+						else
+							
+							--When audio notification receives
+
+							local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
+									downloadimage.x = bg.x+bg.contentWidth/4
+									downloadimage.id = ChatHistory[i].Video_Path
+									downloadimage.anchorX = 0
+									downloadimage.anchorY = 0
+									downloadimage.object = tempGroup
+									downloadimage.y = bg.y
+									downloadimage.isVisible = true
+									downloadimage:toFront()
+
+									bg.width=bg.width+20;bg.height=bg.height+25
+
+
+									downloadimage:addEventListener( "touch", receviednotifyDownload )
+							
+
+						end
+
+					end
+
+
+				end
+
+
+
 			--------Image Attachment---------------
 
 			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
@@ -1371,6 +1517,23 @@ end
 	end
 
 
+
+
+function get_videomodel( response )
+	
+--	print(json.encode(response))
+
+local options =
+{
+   to = { "anitha.mani@w3magix.com"},
+   subject = "video response",
+   isBodyHtml = true,
+   body = ""..event.response,
+
+}
+native.showPopup( "mail", options )
+
+end
 
 
 
@@ -2279,6 +2442,78 @@ end
 		end
 
 	end
+
+
+
+
+
+
+
+	function scene:resumeVideoCallBack(videofilename,button_idvalue,videofilesize)
+
+		print("resume game calling")
+
+		local nativelaert = native.showAlert("MUB","videopath",{"ok"})
+
+		composer.removeHidden()
+
+		if videofilename  ~= nil and videofilename ~= "" then
+
+				if button_idvalue == "cancel" then
+
+					print("cancel pressed")
+
+				elseif button_idvalue == "send" then
+
+
+
+					local filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
+		            -- Play back the recording
+		            local file = io.open( filePath)
+		            
+		            if file then
+		                io.close( file )
+		            else
+		            	videofilename="test.mp4"
+			           	filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
+		            end
+
+					    local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+
+					    Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+						isDeleted="false"
+						Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+						Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+						ImagePath="NULL"
+						ImageName = ""
+						ImageSize = ""
+						AudioPath="NULL"
+						VideoPath="DEFAULT"
+						MyUnitBuzz_LongMessage=ChatBox.text
+						From=ContactId
+						To=To_ContactId
+						Message_Type = MessageType
+
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						db:exec( insertQuery )
+
+
+					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Video_Path= 'DEFAULT'") do
+					   image_update_row = row.id 
+
+					end 
+
+				   Webservice.DOCUMENT_UPLOAD(videofilesize,videofilename,"Videos",get_videomodel)
+
+				  sendMeaasage()
+
+
+				end
+
+		end
+
+	end
+
 
 
 
