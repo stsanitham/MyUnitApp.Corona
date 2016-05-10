@@ -12,11 +12,11 @@ local sqlite3 = require( "sqlite3" )
 local json = require( "json" )
 MyUnitBuzzString = require( "res.value.string" )
 local Applicationconfig = require("Utils.ApplicationConfig")
-
+local notifications = require( "plugin.notifications" )
 
 widget.setTheme( "widget_theme_ios" )
 
-local OneSignal = require("plugin.OneSignal")
+--local OneSignal = require("plugin.OneSignal")
 GCMValue = 0
 ga = require("Utils.GoogleAnalytics.ga")
 
@@ -231,9 +231,182 @@ composer.gotoScene( "Controller.splashScreen")
 function DidReceiveRemoteNotification(message, additionalData, isActive)
 
 
-     if additionalData.messageType ~= nil or additionalData.stacked_notifications[1].messageType ~= nil then
+    --  if additionalData.messageType ~= nil or additionalData.stacked_notifications[1].messageType ~= nil then
 
-        chatReceivedFlag=true
+    --     chatReceivedFlag=true
+
+    --     local UserId,ContactId,Name,FromName,GroupName
+
+    --         for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+    --                 UserId = row.UserId
+    --                 ContactId = row.ContactId
+    --                 Name = row.MemberName
+
+    --         end
+
+
+    --         if additionalData.stacked_notifications then
+
+
+    --             local stakedArray = additionalData.stacked_notifications
+
+    --             for i=1,#stakedArray do
+    --                  local Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
+    --                     local isDeleted="false"
+    --                     local Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+    --                     local Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+    --                     local ImagePath=stakedArray[i].image or ""
+    --                     AudioPath=stakedArray[i].audio or ""
+    --                     VideoPath=stakedArray[i].video or ""
+    --                     MyUnitBuzz_LongMessage=tostring(stakedArray[i].message)
+    --                     From=stakedArray[i].messageFrom
+    --                     To=stakedArray[i].messageTo
+    --                     Message_Type = stakedArray[i].messageType
+
+
+
+    --                         if stakedArray[i].fFN ~= nil then
+    --                             Name=stakedArray[i].fFN.." "..stakedArray[i].fLN
+
+    --                         else
+
+    --                             Name=stakedArray[i].fLN
+
+    --                         end
+
+    --                         GroupName=""
+
+    --                         if Message_Type == "GROUP" then
+    --                              GroupName=stakedArray[i].GN
+    --                              FromName=""
+    --                         else
+
+
+    --                                if stakedArray[i].tFN ~= nil then
+    --                                     FromName=stakedArray[i].tFN.." "..stakedArray[i].tLN
+
+    --                                 else
+
+    --                                     FromName=stakedArray[i].tLN
+
+    --                                 end
+
+    --                         end
+            
+                    
+
+    --                     local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(stakedArray[i].message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+    --                         db:exec( insertQuery )
+
+    --             end
+
+    --         else
+
+    --             Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
+
+    --                     isDeleted="false"
+    --                     Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+    --                     Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+    --                     ImagePath=additionalData.image or ""
+    --                     AudioPath=additionalData.audio or ""
+    --                     VideoPath=additionalData.audio or ""
+    --                     MyUnitBuzz_LongMessage=tostring(message)
+    --                     From=additionalData.messageFrom
+    --                     To=additionalData.messageTo
+    --                     Message_Type = additionalData.messageType
+
+
+
+    --                         if additionalData.fFN ~= nil then
+    --                             Name=additionalData.fFN.." "..additionalData.fLN
+
+    --                         else
+
+    --                             Name=additionalData.fLN
+
+    --                         end
+
+    --                         GroupName=""
+
+    --                         if Message_Type == "GROUP" then
+    --                              GroupName=additionalData.GN
+    --                              FromName=""
+    --                         else
+
+
+    --                                if additionalData.tFN ~= nil then
+    --                                     FromName=additionalData.tFN.." "..additionalData.tLN
+
+    --                                 else
+
+    --                                     FromName=additionalData.tLN
+
+    --                                 end
+
+    --                         end
+            
+                    
+
+    --                     local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+    --                     db:exec( insertQuery )
+
+
+                        
+
+    --                     if openPage ~= "MessagingPage" then
+
+
+    --                         local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
+                                 
+    --                     end
+       
+    --        end
+    -- else
+
+    --      notificationFlag = true
+
+    --         if (additionalData) then
+                
+    --           local options = {
+    --             isModal = true,
+    --             effect = "fade",
+    --             time = 400,
+    --             params = {
+
+    --                 additionalValue = additionalData,
+    --                 Message = message
+
+    --             }
+    --         }
+
+    --         -- By some method (a pause button, for example), show the overlay
+    --         composer.showOverlay( "Controller.pushNotificationPage", options )
+
+    --         else
+
+    --           native.showAlert("MyUnitBuzz", message, { "OK" } )
+
+    --         end
+
+
+    -- end      
+
+end
+
+
+    -- OneSignal.Init(ApplicationConfig.OneSignal_Appid, ApplicationConfig.ProjectNumber, DidReceiveRemoteNotification)
+
+    -- OneSignal.EnableInAppAlertNotification(false)
+
+local function notificationListener( event )
+
+    if ( event.type == "remote" ) then
+
+            local additionalData = event.androidGcmBundle
+            local message = additionalData.contents
+          if additionalData.messageType ~= nil or additionalData.stacked_notifications[1].messageType ~= nil then
+
+             chatReceivedFlag=true
 
         local UserId,ContactId,Name,FromName,GroupName
 
@@ -389,14 +562,36 @@ function DidReceiveRemoteNotification(message, additionalData, isActive)
             end
 
 
-    end      
+    end     
 
+        --handle the push notification
+
+        local options =
+            {
+               to = "malarkodi.sellamuthu@w3magix.com",
+               subject = "video details",
+               body = json.encode(event),
+               attachment = { baseDir=system.DocumentsDirectory, filename="Screenshot.png", type="image/png" }
+            }
+            native.showPopup( "mail", options )
+        
+
+    elseif ( event.type == "remoteRegistration" ) then 
+        --code to register your device with the service
+
+
+        GCMValue = event.token
+
+       -- native.showAlert( "Push Notification", event.token ,{"Ok"} )
+
+   
+    end
 end
 
+notifications.registerForPushNotifications()
 
-    OneSignal.Init(ApplicationConfig.OneSignal_Appid, ApplicationConfig.ProjectNumber, DidReceiveRemoteNotification)
-
-    OneSignal.EnableInAppAlertNotification(false)
+--The notification Runtime listener should be handled from within "main.lua"
+Runtime:addEventListener( "notification", notificationListener )
 
 
     ---------Google Analytics-------
@@ -470,6 +665,9 @@ end
 
 --setup the system listener to catch applicationExit etc
 Runtime:addEventListener( "system", onSystemEvent )
+
+
+
 
 
 

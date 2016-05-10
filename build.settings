@@ -27,15 +27,15 @@ settings =
             publisherId = "com.coronalabs",
             supportedPlatforms = { iphone = true, android = true },
         },
-
+         ["plugin.notifications"] =
+        {
+            publisherId = "com.coronalabs"
+        },
         ["CoronaProvider.native.popup.social"] =
         {
             publisherId = "com.coronalabs"
         },
-        ["plugin.OneSignal"] =
-	    {
-	        publisherId = "com.onesignal",
-	    },
+       
 	    ["plugin.google.play.services"] =
 	    {
 	        publisherId = "com.coronalabs",

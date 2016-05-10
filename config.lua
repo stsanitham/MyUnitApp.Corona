@@ -9,6 +9,22 @@ application =
         yAlign = "center",
         audioPlayFrequency = 22050,
 	},
+
+	 notification = 
+    {
+        google =
+        {
+            projectNumber = "800876064299"
+        },
+
+        iphone =
+		{
+			types =
+			{
+				"badge", "sound", "alert", "newsstand"
+			}
+		}
+    }  
 }
 
 

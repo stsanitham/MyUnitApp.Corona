@@ -23,7 +23,7 @@ local menuBtn
 local filePath
 local okBtn,okBtn_txt,cancelBtn,cancelBtn_txt
 --local userAction="cancel"
-
+local videoFilePath,videofilesize
 openPage="videoPage"
 
 local r                 -- media object for audio recording
@@ -336,7 +336,7 @@ local function onComplete( eventvideo )
 
 			end
 
-		    local videoFilePath = string.sub(eventvideo.url,8,-1)
+		    videoFilePath = eventvideo.url
 		    local savedVideoFileName = "video"..os.date("%Y%m%d%H%M%S")..videoFileExtension
 		    local savedVideoDirectory = system.DocumentsDirectory
 
@@ -350,11 +350,11 @@ local function onComplete( eventvideo )
 
 
 
-       -- copyFile( savedVideoFileName, videoFilePath , savedVideoFileName, savedVideoDirectory, true )
+    --   if copyFile( savedVideoFileName, videoFilePath , savedVideoFileName, savedVideoDirectory, true ) then
 
        -- saveValue(videoFilePath, savedVideoFileName)
 
-		local al = native.showAlert("Video Name", videoFilePath .."        "..savedVideoFileName,{"ok"})	
+		--local al = native.showAlert("Video Name", videoFilePath .."        "..savedVideoFileName,{"ok"})	
 
         video_playBtn.isVisible = true
 
@@ -374,7 +374,7 @@ local function onComplete( eventvideo )
 					-- videofile.anchorY = 0
 
 
-    --end
+   -- end
 
 
 
@@ -389,9 +389,6 @@ local function onComplete( eventvideo )
         	 media.playVideo(eventvideo.url, media.RemoteSource, true, onCompleteVideo )
 
         	 videourlname = eventvideo.url
-
-        	 videourlname:removeSelf()
-        	 videourlname = nil
 
         	-- end
 
@@ -771,13 +768,16 @@ end
 		elseif phase == "did" then
 
 
-			--if userAction == "send" then
+			if userAction == "send" then
 
-			    event.parent:resumeVideoCallBack(videonamedetail,userAction,videofilesize)
+			    event.parent:resumeVideoCallBack(videoFilePath,userAction,videofilesize)
 
-			if userAction == "cancel" then
 
-				local filePath = system.pathForFile( videonamedetail, system.DocumentsDirectory )
+			elseif userAction == "cancel" then
+
+
+				local filePath = system.pathForFile( videoFilePath, media.RemoteSource )
+
 
 				if filePath then
 
