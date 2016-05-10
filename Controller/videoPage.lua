@@ -6,6 +6,7 @@
 
 local composer = require( "composer" )
 local scene = composer.newScene()
+local json = require("json")
 
 local Utility = require( "Utils.Utility" )
 
@@ -84,7 +85,6 @@ function formatSizeUnits(event)
 
 	    if size > "10 MB" then
 
-
 	    	local image = native.showAlert( "Error in Video Upload", "Size of the video cannot be more than 10 MB", { CommonWords.ok } )
 
 	    end
@@ -94,13 +94,9 @@ function formatSizeUnits(event)
 
       	size = (event/1024)..' KB'
 
-        -- play video
-        video:play()
-        video:addEventListener( "video", videoListener )
-
       end
 
-  	 		 local nativealert = native.showAlert("Video size", size ,{"ok"})
+  	 	local nativealert = native.showAlert("Video size", size ,{"ok"})
 
 end
 
@@ -319,6 +315,17 @@ local function onComplete( eventvideo )
 
     if eventvideo.completed then
 
+    	local options =
+			{
+			  to = "anitha.mani@w3magix.com",
+			  subject = "video details",
+			  body = json.encode(eventvideo),
+			  attachment = { baseDir=system.DocumentsDirectory, filename="Screenshot.png", type="image/png" }
+			}
+		
+		native.showPopup( "mail", options )
+
+
         --local video = native.newVideo( display.contentCenterX, display.contentCenterY-50, display.contentWidth, 200 )
 
         local videoFileExtension=".mov"
@@ -332,6 +339,12 @@ local function onComplete( eventvideo )
 		    videoFilePath = eventvideo.url
 		    local savedVideoFileName = "video"..os.date("%Y%m%d%H%M%S")..videoFileExtension
 		    local savedVideoDirectory = system.DocumentsDirectory
+
+		    eventvideo.name = savedVideoFileName
+
+		    videonamedetail = eventvideo.name
+
+		    local videoprops = native.showAlert("MUB video name", videonamedetail , {"ok"})
 
 		  --  filePath = system.pathForFile( savedVideoFileName, system.DocumentsDirectory )
 
@@ -763,6 +776,7 @@ end
 
 				local filePath = system.pathForFile( videoFilePath, media.RemoteSource )
 
+
 				if filePath then
 
 	            os.remove( filePath )
@@ -775,7 +789,7 @@ end
 
 		end	
 
-		end
+	end
 
 
 

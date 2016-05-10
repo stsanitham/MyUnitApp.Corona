@@ -1172,13 +1172,13 @@ end
 
 				if ChatHistory[i].Video_Path  ~= nil and ChatHistory[i].Video_Path ~= "" and ChatHistory[i].Video_Path ~= "NULL" and ChatHistory[i].Video_Path ~= " " then
 
-					local videoname = ChatHistory[i].Video_Path
+					local videoname = ChatHistory[i].Video_Path:match( "([^/]+)$" )
 
 					 local video
 
 					 bg.type = "video"
 
-					 local filePath = system.pathForFile( videoname,media.RemoteSource )
+					 local filePath = system.pathForFile( videoname,system.DocumentsDirectory )
 				 	 local fhd = io.open( filePath )
 
 					  bg.contentPath = filePath
@@ -1388,7 +1388,7 @@ end
 
 							    if MessageType == "GROUP" then	
 									
-									image = display.newImageRect( tempGroup, "res/assert/thumbnail.jpg", 200, 170 )
+									image = display.newImageRect( tempGroup, "res/assert/download_default.jpg", 200, 170 )
 								    bg.width = image.contentWidth+5;bg.height = image.contentHeight+23.5
 
 									owner.anchorY=0;owner.anchorX = 0;owner.x=chat.x;owner.y=bg.y+1
@@ -1442,7 +1442,7 @@ end
 
 								else
 
-									image = display.newImageRect( tempGroup, "res/assert/thumbnail.jpg", 200, 170 )
+									image = display.newImageRect( tempGroup, "res/assert/download_default.jpg", 200, 170 )
 									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=bg.y+2.5
 
 									bg.width = image.contentWidth+5;bg.height = image.contentHeight+5	
@@ -2461,6 +2461,9 @@ end
 
 		print("resume game calling")
 
+
+		composer.removeHidden()
+
 		if videofilename  ~= nil and videofilename ~= "" then
 
 				if button_idvalue == "cancel" then
@@ -2470,25 +2473,32 @@ end
 				elseif button_idvalue == "send" then
 
 
+		            local nativelaert = native.showAlert("MUB","videopath",{"ok"})
 
-					local filePath =  videofilename
+
+
+					local filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
 		            
 		            if file then
 
 		                io.close( file )
-		            
+		            else
+		            	videofilename="test.mp4"
+			           	filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
+		            end
+
 					    local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 
 					    Message_date=os.date("%Y-%m-%dT%H:%M:%S")
 						isDeleted="false"
 						Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 						Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-						ImagePath=""
+						ImagePath="NULL"
 						ImageName = ""
 						ImageSize = ""
-						AudioPath=""
+						AudioPath="NULL"
 						VideoPath="DEFAULT"
 						MyUnitBuzz_LongMessage=ChatBox.text
 						From=ContactId
@@ -2504,29 +2514,12 @@ end
 
 					end 
 
-
-					 local size1 = lfs.attributes (filePath, "size")
-
-					local fileHandle = io.open(filePath, "rb")
-
-					file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
-
-					io.close( fileHandle )
-
-			            print("mime conversion ",file_inbytearray)
-
-			        	print("bbb ",size1)
-
-			        formatSizeUnits(size1)
-
-				   Webservice.DOCUMENT_UPLOAD(file_inbytearray,"video.mp4","Videos",get_videomodel)
+				   Webservice.DOCUMENT_UPLOAD(videofilesize,videofilename,"Videos",get_videomodel)
 
 				  sendMeaasage()
 
 
 				end
-
-			end
 
 		end
 
@@ -2850,7 +2843,7 @@ end
 
 		end	
 
-	end
+		end
 
 
 
