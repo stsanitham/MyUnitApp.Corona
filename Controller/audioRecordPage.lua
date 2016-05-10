@@ -56,6 +56,8 @@ return true
 
 end
 
+
+
 local function audioAction( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
@@ -171,11 +173,13 @@ function scene:create( event )
 	title:addEventListener( "touch", closeDetails )
 	back_icon:addEventListener( "touch", closeDetails )
 
-
-
 MainGroup:insert(sceneGroup)
 
 end
+
+
+
+
 
 function scene:show( event )
 

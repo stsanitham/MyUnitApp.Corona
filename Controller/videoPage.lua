@@ -21,7 +21,7 @@ local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title
 local menuBtn
 local filePath
 local okBtn,okBtn_txt,cancelBtn,cancelBtn_txt
-local userAction="cancel"
+--local userAction="cancel"
 
 openPage="videoPage"
 
@@ -43,13 +43,13 @@ local PHOTO_FUNCTION = media.SavedPhotosAlbum
 				display.getCurrentStage():setFocus( event.target )
 		elseif event.phase == "ended" then
 				display.getCurrentStage():setFocus( nil )
-				if event.target.id =="background" then
 
-				elseif event.target.id == "ok" then
-					userAction="ok"
-					composer.hideOverlay()
-				else
-					composer.hideOverlay()
+				if event.target.id == "background" then
+
+				elseif event.target.id == "backbg" or event.target.id == "title" or event.target.id == "back" then
+
+					composer.hideOverlay("slideRight", 300)
+
 				end
 
 		end
@@ -58,84 +58,6 @@ local PHOTO_FUNCTION = media.SavedPhotosAlbum
 
 	end
 
-
-
-	local function onKeyEventDetail( event )
-
-	        local phase = event.phase
-	        local keyName = event.keyName
-
-	    if phase == "up" then
-
-	        if keyName=="back" then
-
-	        	composer.hideOverlay( "slideRight", 300 )
-
-	        	return true
-	            
-	        end
-
-	    end
-
-	        return false
-	 end
-
-
-
-
-
-local function onComplete( event )
-
-    if event.completed then
-
-        local video = native.newVideo( display.contentCenterX+90, display.contentCenterY, 400, 280 )
-        --video.rotation = 90
-				    -- video.x=title.x
-				    -- video.y= 85
-					-- video.id="video object"
-					-- video.width = 640
-					-- video.anchorX=0
-					-- video.anchorY = 0
-        
-
-        local function videoListener( event )
-            print( "Event phase: " .. event.phase )
-
-            if event.errorCode then
-                 native.showAlert( "Error!", event.errorMessage, { "OK" } )
-            end
-
-        end
-
-        -- load a remote video
-        video:load( event.url, media.RemoteSource )
-
-        video:addEventListener( "video", videoListener )
-        -- play video
-        video:play()
-
-		--video:pause()
-		--video:removeSelf()
-		--video = nil
-
-
-    end
-end
-
-
-
-
-	-- local function onVideoComplete( event )
-
-	--    if ( event.completed ) then
-
-	--       media.playVideo( event.url, media.RemoteSource, true, videoPlayBackDone )
-	--       print( "video duration : ",event.duration )
-	--       print( "video size : ",event.fileSize )
-
-	--    end
-
-	-- end
 
 
 
@@ -154,9 +76,17 @@ function formatSizeUnits(event)
 	  
 	  elseif (event > 10485760) then
 
-	    print("highest size of the image ",size)
+	    --print("highest size of the image ",size)
 
-	    local image = native.showAlert( "Error in Video Upload", "Size of the video cannot be more than 10 MB", { CommonWords.ok } )
+	    --local image = native.showAlert( "Error in Video Upload", "Size of the video cannot be more than 10 MB", { CommonWords.ok } )
+
+	    size=(event/10485760)..' MB'
+
+	    if size > "10 MB" then
+
+	    	local image = native.showAlert( "Error in Video Upload", "Size of the video cannot be more than 10 MB", { CommonWords.ok } )
+
+	    end
 
 	       
       elseif (event>=1024)  then   
@@ -177,19 +107,58 @@ end
 
 
 
+
+
+
+
+
+
+
+
+	local function onKeyEventDetail( event )
+
+	        local phase = event.phase
+	        local keyName = event.keyName
+
+	    if phase == "up" then
+
+	        if keyName=="back" or keyName == "a" then
+
+	        	composer.hideOverlay( "slideRight", 300 )
+
+	        	return true
+	            
+	        end
+
+	    end
+
+	        return false
+	 end
+
+
+
+
+
 local function copyVideoFile(videoPath,dstName,dstPath)
   local rfilePath=videoPath
   local wfilePath=system.pathForFile(dstName,dstPath)
   local rfh=io.open(rfilePath,"rb")
   local wfh=io.open(wfilePath,"wb")
+
   if not(wfh) then
+
+  	--local video1 = native.showAlert("111","error1",{"ok"})
     return false
   else
     local data=rfh:read("*a")
     if not(data) then
+
+    	--local video2 = native.showAlert("222","error2",{"ok"})
       return false
     else
       if not(wfh:write(data)) then
+
+      	--local video3 = native.showAlert("333","error3",{"ok"})
         return false
       end
     end
@@ -203,15 +172,164 @@ end
 
 
 
-    local function onVideoComplete ( event )
+function copyFile( srcName, srcPath, dstName, dstPath, overwrite )
  
-        local video = event.target
+    local results = false
+ 
+    local srcPath = doesFileExist( srcName, srcPath )
+ 
+    if srcPath == false then
+        -- Source file doesn't exist
+        return nil
+    end
+ 
+    -- Check to see if destination file already exists
+    if not overwrite then
 
-        local baseDir = system.DocumentsDirectory
+    local alert1 = native.showAlert("MUB video","dfgdfg",{"ok"})
 
-       if (event.completed) then
 
-			local videoFileExtension=".mov"
+        if fileLib.doesFileExist( dstName, dstPath ) then
+            -- Don't overwrite the file
+            return 1
+        end
+    end
+ 
+    -- Copy the source file to the destination file
+    --
+    local rfilePath = system.pathForFile( srcName, srcPath )
+    local wfilePath = system.pathForFile( dstName, dstPath )
+ 
+    local rfh = io.open( rfilePath, "rb" )
+ 
+    local wfh = io.open( wfilePath, "wb" )
+ 
+    if  not wfh then
+        print( "writeFileName open error!" )
+        return false            -- error
+    else
+        -- Read the file from the Resource directory and write it to the destination directory
+        local data = rfh:read( "*a" )
+        if not data then
+            print( "read error!" )
+            return false    -- error
+        else
+            if not wfh:write( data ) then
+                print( "write error!" )
+                return false    -- error
+            end
+        end
+    end
+ 
+    results = 2     -- file copied
+ 
+    -- Clean up our file handles
+    rfh:close()
+    wfh:close()
+
+ 
+    return results
+
+end
+
+
+
+
+
+--     local function onVideoComplete ( event )
+ 
+--         local video = event.target
+
+--         local baseDir = system.DocumentsDirectory
+
+--        if (event.completed) then
+
+-- 			local videoFileExtension=".mov"
+
+-- 			if (system.getInfo("platformName")=="Android") then
+
+-- 			videoFileExtension=".mp4"
+
+-- 			end
+
+-- 				--  local sourcePath = string.sub(event.url,6,-1)
+
+-- 				--  local destPath = system.pathForFile( videoname, baseDir )
+
+-- 				--  print( " s,d = ", sourcePath, destPath )
+
+-- 		    local videoFilePath = string.sub(event.url,8,-1)
+-- 		    local savedVideoFileName = "video"..os.date("%Y%m%d%H%M%S")..videoFileExtension
+-- 		    local savedVideoDirectory = system.DocumentsDirectory
+
+-- 		    local al = native.showAlert("Video Name", videoFilePath .."        "..savedVideoFileName.."        "..savedVideoDirectory,{"ok"})	
+
+
+-- 		    if (copyVideoFile(videoFilePath,savedVideoFileName,savedVideoDirectory)) then
+
+-- 			        videoPreview.isVisible = true
+
+-- 			        video_selectionLayout.isVisible = true
+-- 			        video_selectionCancel.isVisible = true
+-- 			        video_selectionSend.isVisible = true
+-- 			        video_selectionCancelTick.isVisible = true
+-- 			        video_selectionSendTick.isVisible = true
+
+-- 				    videofile = native.newVideo( display.contentCenterX, display.contentCenterY, 320, 350) 
+				 
+
+-- 					videofile:load( savedVideoFileName , savedVideoDirectory )
+
+-- 					videofile:play()
+
+-- 				--	videofile:pause()
+-- 				--	videofile:removeSelf()
+-- 				--	videofile = nil
+
+-- 		    end
+  
+--         formatSizeUnits(videofilesize)
+
+-- 	    end
+
+-- 		local nativealert = native.showAlert("Video Properties", event.duration .."        "..event.fileSize.."        "..event.url,{"ok"})	
+
+-- end
+
+
+
+
+
+local saveValue = function( videoFilePath, savedVideoFileName )
+-- will save specified value to specified file
+local videoFilePath = videoFilePath
+local savedVideoFileName = savedVideoFileName
+
+local path = system.pathForFile( videoFilePath, system.
+DocumentsDirectory )
+-- io.open opens a file at path. returns nil if no file found
+local file = io.open( path, "w+" )
+if file then
+
+	local filwewe = native.showAlert("Mdshgfjsdf", "dfsfsdf" , {"ok"})
+-- write game score to the text file
+file:write( savedVideoFileName )
+io.close( file )
+end
+end
+
+
+
+
+local function onComplete( eventvideo )
+
+    if eventvideo.completed then
+
+	    local value = native.showAlert("Video ", eventvideo, {"ok"})
+
+        --local video = native.newVideo( display.contentCenterX, display.contentCenterY-50, display.contentWidth, 200 )
+
+        local videoFileExtension=".mov"
 
 			if (system.getInfo("platformName")=="Android") then
 
@@ -219,73 +337,97 @@ end
 
 			end
 
-				--  local sourcePath = string.sub(event.url,6,-1)
-
-				--  local destPath = system.pathForFile( videoname, baseDir )
-
-				--  print( " s,d = ", sourcePath, destPath )
-
-		    local videoFilePath = string.sub(event.url,8,-1)
+		    local videoFilePath = string.sub(eventvideo.url,8,-1)
 		    local savedVideoFileName = "video"..os.date("%Y%m%d%H%M%S")..videoFileExtension
 		    local savedVideoDirectory = system.DocumentsDirectory
 
-
-		    if (copyVideoFile(videoFilePath,savedVideoFileName,savedVideoDirectory)) then
-
-			        videoPreview.isVisible = true
-
-				    videofile = native.newVideo( display.contentCenterX, display.contentCenterY, 320, 350)
-				 --    videofile.x=title.x
-				 --    videofile.y= title_bg.y+title_bg.contentHeight + 15
-					-- videofile.id="video object"
-					-- videofile.width = 250
-					-- videofile.anchorX=0
-					-- videofile.anchorY = 0
-
-					videofile:load( savedVideoFileName , savedVideoDirectory )
-
-					videofile:play()
-
-				--	videofile:pause()
-				--	videofile:removeSelf()
-				--	videofile = nil
-
-		    end
+		  --  filePath = system.pathForFile( savedVideoFileName, system.DocumentsDirectory )
 
 
-	        print( "video duration : ",event.duration )
-		    print( "video size : ",event.fileSize )
+       -- copyFile( savedVideoFileName, videoFilePath , savedVideoFileName, savedVideoDirectory, true )
 
-    
-			-- local video = native.newVideo( display.contentCenterX, display.contentCenterY, 320, 350 )
+       -- saveValue(videoFilePath, savedVideoFileName)
 
-			-- local function videoListener( event )
-			-- print( "Event phase: " .. event.phase )
+		local al = native.showAlert("Video Name", videoFilePath .."        "..savedVideoFileName,{"ok"})	
 
-			-- if event.errorCode then
-			-- native.showAlert( "Error!", event.errorMessage, { "OK" } )
-			-- end
-			-- end
+        video_playBtn.isVisible = true
 
-			-- -- Load a video and jump to 0:30
-			-- video:load( "sample1.mp4", system.DocumentsDirectory )
-			-- video:seek( 30 )
+        video_selectionLayout.isVisible = true
+        video_selectionCancel.isVisible = true
+        video_selectionSend.isVisible = true
+        video_selectionCancelTick.isVisible = true
+        video_selectionSendTick.isVisible = true
 
-			-- -- Add video event listener 
-			-- video:addEventListener( "video", videoListener )
+    --end
 
 
-		--videofilesize = event.fileSize
-		--videourl = event.url
 
-        formatSizeUnits(videofilesize)
+        local function onPlayButtonTouch(event)
 
-	    end
+        	-- local file = io.open( videoFilePath)
+		            
+		    -- if file then
 
-		local nativealert = native.showAlert("Video Properties", event.duration .."        "..event.fileSize.."        "..event.url,{"ok"})	
+		        -- io.close( file )
 
+        	 media.playVideo(eventvideo.url, media.RemoteSource, true, onCompleteVideo )
+
+        	 videourlname = eventvideo.url
+
+        	 videourlname:removeSelf()
+        	 videourlname = nil
+
+        	-- end
+
+        	 --local nativealert = native.showAlert("Video width and height", eventvideo.fileSize.."      "..eventvideo.duration ,{"ok"})
+
+        	 videofilesize = eventvideo.fileSize
+
+             formatSizeUnits(videofilesize)
+        	
+        end
+
+
+        video_playBtn:addEventListener("touch",onPlayButtonTouch)
+
+       
+        print( "video duration : ",event.duration )
+	    print( "video size : ",event.fileSize )
+
+
+
+    end
 end
 
+
+
+
+local function onSelectionButtonTouch( event )
+
+		if event.phase == "began" then
+				display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+				display.getCurrentStage():setFocus( nil )
+
+			if event.target.id == "send" then
+
+			    composer.hideOverlay("slideRight", 300)
+
+				userAction="send"
+			else
+				
+				composer.hideOverlay("slideRight", 300)
+
+				userAction="cancel"
+			end
+
+			
+		end
+
+	return true
+
+	
+end
 
 
 
@@ -348,6 +490,12 @@ end
 
 
 
+
+
+
+
+
+
 	------------------------------------------------------
 
 	function scene:create( event )
@@ -385,24 +533,23 @@ end
 		back_icon_bg.anchorX=0
 		back_icon_bg.anchorY=0
 		back_icon_bg.alpha=0.01
+		back_icon_bg.id = "backbg"
 		back_icon_bg:setFillColor(0)
 		back_icon_bg.y= title_bg.y-8
 
 		back_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",20/2,30/2)
 		back_icon.x= back_icon_bg.x + 5
 		back_icon.anchorX=0
+		back_icon.id = "back"
 		back_icon.anchorY=0
 		back_icon:setFillColor(0)
 		back_icon.y= title_bg.y - 8
 
-		title = display.newText(sceneGroup,"Video",0,0,native.systemFont,18)
+		title = display.newText(sceneGroup,"",0,0,native.systemFont,18)
 		title.anchorX = 0
+		title.id = "title"
 		title.x=back_icon.x+18;title.y = title_bg.y
 		title:setFillColor(0)
-
-		title:addEventListener( "touch", closeDetails )
-		back_icon_bg:addEventListener( "touch", closeDetails )
-		back_icon:addEventListener( "touch", closeDetails )
 
 
 	MainGroup:insert(sceneGroup)
@@ -419,13 +566,72 @@ end
 		
 		if phase == "will" then
 
+			if event.params then
 
-			videoPreview = display.newImageRect( sceneGroup, "res/assert/videopreview.png", W-60, 150 )
+				contactId_value = event.params.contactId
+				MessageType_value = event.params.MessageType
+				sendto = event.params.sendto
+
+			end
+
+			title.text = "Send to "..sendto
+
+			videoPreview = display.newImageRect( sceneGroup, "res/assert/video-pg.png", W, 200 )
 			videoPreview.x=title.x;videoPreview.y= title_bg.y+title_bg.contentHeight + 15
 			videoPreview.width = W-60
 			videoPreview.id="video preview"
+			videoPreview.isVisible = true
 			videoPreview.anchorX=0
 			videoPreview.anchorY = 0
+
+
+			video_playBtn = display.newImageRect(sceneGroup,"res/assert/play.png", 35,30)
+			video_playBtn.x = videoPreview.x + videoPreview.contentWidth/2
+			video_playBtn.y = videoPreview.y + videoPreview.contentHeight/2
+			video_playBtn:setFillColor(0)
+			video_playBtn.value = "play"
+			video_playBtn.isVisible = false
+
+
+			video_selectionLayout = display.newRect(sceneGroup,0,0,W-100,35)
+			video_selectionLayout.x=title.x+20; video_selectionLayout.y= videoPreview.y+videoPreview.contentHeight + 20
+			video_selectionLayout.isVisible = false
+			video_selectionLayout:setFillColor(0,0,0,0.2)
+			video_selectionLayout.anchorX=0
+			video_selectionLayout.anchorY = 0
+
+
+			video_selectionCancel = display.newRect(sceneGroup,0,0,video_selectionLayout.contentWidth/2+1,35)
+			video_selectionCancel.x=title.x+20; video_selectionCancel.y= videoPreview.y+videoPreview.contentHeight + 20
+			video_selectionCancel.isVisible = false
+			video_selectionCancel:setFillColor(1,0,0,0.5)
+			video_selectionCancel.anchorX=0
+			video_selectionCancel.anchorY = 0
+
+
+			video_selectionCancelTick = display.newImageRect(sceneGroup,"res/assert/closemark.png", 20,20)
+			video_selectionCancelTick.x = video_selectionCancel.x + video_selectionCancel.contentWidth/2
+			video_selectionCancelTick.y = video_selectionCancel.y + video_selectionCancel.contentHeight/2
+			video_selectionCancelTick.value = "cancel"
+			video_selectionCancelTick:setFillColor(0,0,0)
+			video_selectionCancelTick.isVisible = false
+
+
+			video_selectionSend = display.newRect(sceneGroup,0,0,video_selectionLayout.contentWidth/2+1,35)
+			video_selectionSend.x=video_selectionLayout.contentWidth/2+50; video_selectionSend.y= videoPreview.y+videoPreview.contentHeight + 20
+			video_selectionSend.isVisible = false
+			video_selectionSend:setFillColor(Utils.convertHexToRGB(color.darkgreen))
+			video_selectionSend.anchorX=0
+			video_selectionSend.anchorY = 0
+
+
+			video_selectionSendTick = display.newImageRect(sceneGroup,"res/assert/tickmark.png", 20,20)
+			video_selectionSendTick.x = video_selectionSend.x + video_selectionSend.contentWidth/2
+			video_selectionSendTick.y = video_selectionSend.y + video_selectionSend.contentHeight/2
+			video_selectionSendTick:setFillColor(0,0,0)
+			video_selectionSendTick.value = "send"
+			video_selectionSendTick.isVisible = false
+
 
 ----------------------------------------------- record video button --------------------------------------------------------------			
 
@@ -496,6 +702,11 @@ end
 
 			menuBtn:addEventListener("touch",menuTouch)
 
+
+			title:addEventListener( "touch", closeDetails )
+			back_icon_bg:addEventListener( "touch", closeDetails )
+			back_icon:addEventListener( "touch", closeDetails )
+
 			recordvideo_button:addEventListener("touch",onVideoButtonTouch)
 			recordvideo_icon:addEventListener("touch",onVideoButtonTouch)
 			recordvideo_text:addEventListener("touch",onVideoButtonTouch)
@@ -504,6 +715,10 @@ end
 			selectvideo_icon:addEventListener("touch",onVideoButtonTouch)
 			selectvideo_text:addEventListener("touch",onVideoButtonTouch)
 
+			video_selectionCancelTick:addEventListener("touch",onSelectionButtonTouch)
+            video_selectionSendTick:addEventListener("touch",onSelectionButtonTouch)
+
+     
 			Runtime:addEventListener( "key", onKeyEventDetail )
 			
 		end	
@@ -521,6 +736,11 @@ end
 
 		if event.phase == "will" then
 
+
+			title:removeEventListener( "touch", closeDetails )
+			back_icon_bg:removeEventListener( "touch", closeDetails )
+			back_icon:removeEventListener( "touch", closeDetails )
+
 			recordvideo_button:removeEventListener("touch",onVideoButtonTouch)
 			recordvideo_icon:removeEventListener("touch",onVideoButtonTouch)
 			recordvideo_text:removeEventListener("touch",onVideoButtonTouch)
@@ -533,6 +753,24 @@ end
 
 
 		elseif phase == "did" then
+
+
+			--if userAction == "send" then
+
+			    event.parent:resumeVideoCallBack(savedVideoFileName,userAction,videofilesize)
+
+			if userAction == "cancel" then
+
+				local filePath = system.pathForFile( savedVideoFileName, system.DocumentsDirectory )
+
+				if filePath then
+
+	            os.remove( filePath )
+
+	        	end
+
+			end
+
 
 
 		end	

@@ -79,7 +79,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-4"
 
 
 
-----[[---------IOS Live----------------
+--[[---------IOS Live----------------
 
 IsLive = true
 

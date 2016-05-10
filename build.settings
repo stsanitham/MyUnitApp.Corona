@@ -6,7 +6,7 @@ settings =
 	{
 		
 		default = "portrait",
-		supported = { "portrait", }
+		supported = {"portrait"}
 	},
 
 	build =
