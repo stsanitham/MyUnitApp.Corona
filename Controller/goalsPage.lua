@@ -54,6 +54,8 @@ local function onTimer ( event )
 end
 
 
+
+
 local function editEvent( event)
 
 	if event.phase == "ended" then
@@ -61,17 +63,15 @@ local function editEvent( event)
 		if webView then	webView:removeSelf( );webView=nil end
 
 		Runtime:removeEventListener( "key", onKeyEvent )
-
-
-		
+	
 		local options = {
-    effect = "fromRight",
-    time = 500,
-  	params = {
-					content = content,
-					goalsid = goalsid
-					
-				}
+		    effect = "fromRight",
+		    time = 500,
+  			params = {
+
+				content = content,
+				goalsid = goalsid
+			}
 		}
 
 		composer.showOverlay( "Controller.editGoalsPage",options )
@@ -81,6 +81,8 @@ local function editEvent( event)
 return true
 
 end
+
+
 
 
 local function onKeyEvent( event )
@@ -104,7 +106,7 @@ local function onKeyEvent( event )
 
             elseif BackFlag == true then
 
-			 os.exit() 
+				os.exit() 
 
             end
             
@@ -114,6 +116,8 @@ local function onKeyEvent( event )
 
         return false
  end
+
+
 
 
 
@@ -150,7 +154,6 @@ function scene:resumeGame(isEdited)
 		local alert = native.showAlert(  Goals.PageTitle,Goals.SuccessMsg, { "OK" } )
 
 	end
-
 
 
 	Webservice.GET_MYUNITAPP_GOALS(get_Goals)

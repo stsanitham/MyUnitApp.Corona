@@ -24,13 +24,13 @@ local Background,BgText,title_bg,title
 
 local menuBtn
 
-openPage="pushNotificationListPage"
+openPage = "pushNotificationListPage"
 
 local RecentTab_Topvalue = 70
 
 local back_icon,short_msg_txt,short_msg_delete,short_msg_edit
 
-local  messageList_array = {}
+local messageList_array = {}
 
 local careerListArray = {}
 
@@ -77,11 +77,13 @@ local sentMessage_detail
 
 			    display.getCurrentStage():setFocus( nil )
 
+			    if webView then webView:removeSelf( );webView=nil end
+
 				composer.hideOverlay("slideRight",300)
 
 			end
 
-		return true
+		   return true
 
 		end
 
@@ -92,26 +94,27 @@ local sentMessage_detail
 
 		  Request_response = response
 
-		       if Request_response == true then
+	       if Request_response == true then
 
-		      		 Utils.SnackBar(MessagePage.DeleteSuccess)
+	         	if webView then webView:removeSelf( );webView=nil end
 
-						local function onTimer ( event )
+	      		 Utils.SnackBar(MessagePage.DeleteSuccess)
 
-								DeleteMessageGroup.isVisible = false
+					local function onTimer ( event )
 
-								status = "deleted"
+							DeleteMessageGroup.isVisible = false
 
-								composer.hideOverlay("slideRight",500)
+							status = "deleted"
 
+							composer.hideOverlay("slideRight",500)
 
-						end
+					end
 
-        		     timer.performWithDelay(1000, onTimer )
+    		     timer.performWithDelay(1000, onTimer )
 
-		       end
+	       end
 
-        end
+       end
 
 
 
@@ -120,7 +123,6 @@ local sentMessage_detail
 	function onDeleteOptionsTouch( event )
 
         if event.phase == "began" then
-
 
     	elseif event.phase == "ended" then
 
@@ -136,11 +138,117 @@ local sentMessage_detail
 
 	        		DeleteMessageGroup.isVisible = false
 
+						if Details.MyUnitBuzzLongMessage ~= nil then
+
+							local test = Details.MyUnitBuzzLongMessage
+
+							content = test
+
+							local saveData = [[<!DOCTYPE html>
+							<html>
+
+							<head>
+							<meta charset="utf-8">
+							<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+							</head>]]..test..[[</html>]]
+
+
+				            local path = system.pathForFile( "longmessage.html",system.DocumentsDirectory )
+
+							local file, errorString = io.open( path, "w+" )
+
+									if not file then
+
+									print( "File error: " .. errorString )
+
+									else
+
+									file:write( saveData )
+
+									
+									webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 150 )
+
+									webView.hasBackground = false
+									webView.x = short_msg_txt.x - 7
+									webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
+
+									webView.anchorX=0;webView.anchorY=0
+									webView:request( "longmessage.html", system.DocumentsDirectory )
+
+									messagedetail_scrollView:insert( webView)
+
+								    file:close()
+
+								    end
+
+						    file = nil
+
+							end
+
+
         		    Webservice.DeleteMyUnitBuzzMessages(message_id,getDeletionresponse)
 
 	        	elseif event.target.id == "reject" then
 
-					DeleteMessageGroup.isVisible = false
+					                DeleteMessageGroup.isVisible = false
+
+									if Details.MyUnitBuzzLongMessage ~= nil then
+
+									 --    long_msg_text= display.newText(sceneGroup,detail_value.MyUnitBuzzLongMessage,0,0,W-30,0,native.systemFont,14)
+										-- long_msg_text.x = 12
+										-- long_msg_text.y = short_msg_txt.y+short_msg_txt.contentHeight+12
+										-- long_msg_text.anchorX=0
+										-- long_msg_text.anchorY = 0
+										-- Utils.CssforTextView(long_msg_text,sp_labelName)
+										-- long_msg_text:setFillColor(0)
+
+										-- messagedetail_scrollView:insert(long_msg_text)
+
+										local test = Details.MyUnitBuzzLongMessage
+
+										content = test
+
+										local saveData = [[<!DOCTYPE html>
+										<html>
+
+										<head>
+										<meta charset="utf-8">
+										<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+										</head>]]..test..[[</html>]]
+
+
+							            local path = system.pathForFile( "longmessage.html",system.DocumentsDirectory )
+
+										local file, errorString = io.open( path, "w+" )
+
+												if not file then
+
+												print( "File error: " .. errorString )
+
+												else
+
+												file:write( saveData )
+
+												
+												webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 150 )
+
+												webView.hasBackground = false
+												webView.x = short_msg_txt.x - 7
+												webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
+
+												webView.anchorX=0;webView.anchorY=0
+												webView:request( "longmessage.html", system.DocumentsDirectory )
+
+												messagedetail_scrollView:insert( webView)
+
+											    file:close()
+
+											    end
+
+									    file = nil
+
+										end
+
 
 	        	end
         
@@ -164,6 +272,8 @@ local sentMessage_detail
 
 
 		                if event.target.id == "deleteoption" then
+
+		                	if webView then webView:removeSelf( );webView=nil end
 
 					    GetDeleteMessageAlertPopup()
 
@@ -317,6 +427,8 @@ end
 
 		    print("********************************* : ", detail_value)
 
+		    Details = detail_value
+
 
 			back_icon_bg = display.newRect(sceneGroup,0,0,20,20)
 			back_icon_bg.x= 5
@@ -357,7 +469,7 @@ end
 			short_msg_edit.anchorX=0
 			short_msg_edit.anchorY=0
 			short_msg_edit.id = "editoption"
-			short_msg_edit.isVisible = true
+			short_msg_edit.isVisible = false
 			short_msg_edit:setFillColor(0)
 			short_msg_edit.y= title_bg.y - 12
 
@@ -427,17 +539,62 @@ end
 
 			if detail_value.MyUnitBuzzLongMessage ~= nil then
 
-		    long_msg_text= display.newText(sceneGroup,detail_value.MyUnitBuzzLongMessage,0,0,W-30,0,native.systemFont,14)
-			long_msg_text.x = 12
-			long_msg_text.y = short_msg_txt.y+short_msg_txt.contentHeight+12
-			long_msg_text.anchorX=0
-			long_msg_text.anchorY = 0
-			Utils.CssforTextView(long_msg_text,sp_labelName)
-			long_msg_text:setFillColor(0)
-			messagedetail_scrollView:insert(long_msg_text)
+		 --    long_msg_text= display.newText(sceneGroup,detail_value.MyUnitBuzzLongMessage,0,0,W-30,0,native.systemFont,14)
+			-- long_msg_text.x = 12
+			-- long_msg_text.y = short_msg_txt.y+short_msg_txt.contentHeight+12
+			-- long_msg_text.anchorX=0
+			-- long_msg_text.anchorY = 0
+			-- Utils.CssforTextView(long_msg_text,sp_labelName)
+			-- long_msg_text:setFillColor(0)
+
+			-- messagedetail_scrollView:insert(long_msg_text)
+
+			local test = detail_value.MyUnitBuzzLongMessage
+
+			content = test
+
+			local saveData = [[<!DOCTYPE html>
+			<html>
+
+			<head>
+			<meta charset="utf-8">
+			<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+			</head>]]..test..[[</html>]]
+
+
+            local path = system.pathForFile( "longmessage.html",system.DocumentsDirectory )
+
+			local file, errorString = io.open( path, "w+" )
+
+			if not file then
+
+			print( "File error: " .. errorString )
+
+			else
+
+			file:write( saveData )
+
+			
+			webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 150 )
+
+			webView.hasBackground = false
+			webView.x = short_msg_txt.x - 7
+			webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
+
+			webView.anchorX=0;webView.anchorY=0
+			webView:request( "longmessage.html", system.DocumentsDirectory )
+
+			sceneGroup:insert(webView)
+
+			messagedetail_scrollView:insert( webView)
+
+		    file:close()
+
+		end
+
+		    file = nil
 
 			end
-
 
 	    end
 
@@ -456,7 +613,7 @@ end
 				if IsOwner == true then
 
 				short_msg_delete:addEventListener("touch",onDeleteAction)
-				short_msg_edit:addEventListener("touch",onDeleteAction)
+			--	short_msg_edit:addEventListener("touch",onDeleteAction)
 
 			    end
 
@@ -488,6 +645,8 @@ end
 			  						DeleteMessageGroup[DeleteMessageGroup.numChildren] = nil
 			  	 	end
             end
+
+             if webView then webView:removeSelf( );webView=nil end
 
 
 
