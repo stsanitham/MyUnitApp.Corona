@@ -1108,9 +1108,6 @@ local tabBarGroup = display.newGroup( )
 	function scene:resumeGame(value,EditArray,pagevalue)
 
 
-					print( "*********test*********" )
-
-
 
 	    if value == "edit" then
 
@@ -1139,21 +1136,31 @@ local tabBarGroup = display.newGroup( )
 
 			print( "@@@@@@@@@@@@@@@@@@@" )
 
+			local function waitTimer( event )
 
-				local options = {
-						isModal = true,
-						effect = "slideLeft",
-						time = 1,
-						params = {
-						messagelistvalues = EditArray
+				if openPage == "pushNotificationListPage" then
+
+					local options = {
+							isModal = true,
+							effect = "slideLeft",
+							time = 1,
+							params = {
+							messagelistvalues = EditArray
+						}
 					}
-				}
 
-			composer.showOverlay( "Controller.pushNotificationDetailPage", options )
+				composer.showOverlay( "Controller.pushNotificationDetailPage", options )
+
+				end
+
+			end
+
+
+			timer.performWithDelay( 500, waitTimer )
 
 		elseif value == "back" then
 
-				Runtime:addEventListener( "key", onKeyEvent )
+				
 
 	   -- search.isVisible=true
 
@@ -1171,67 +1178,74 @@ local tabBarGroup = display.newGroup( )
 			 	local function waitTimer( event )
 
 
-				if messagelistvalue.MessageStatus == "SCHEDULE" then
+			 		if openPage == "pushNotificationListPage" then
+
+					 		Runtime:addEventListener( "key", onKeyEvent )
 
 
-						for j=1, #messageList_array do 
-
-							display.remove(messageList_array[#messageList_array])
-							messageList_array[#messageList_array] = nil
-						end
+						if messagelistvalue.MessageStatus == "SCHEDULE" then
 
 
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+								for j=1, #messageList_array do 
+
+									display.remove(messageList_array[#messageList_array])
+									messageList_array[#messageList_array] = nil
+								end
 
 
-				elseif messagelistvalue.MessageStatus == "SENT" then
-
-						for j=1, #sentmessageList_array do 
-
-							display.remove(sentmessageList_array[#sentmessageList_array])
-							sentmessageList_array[#sentmessageList_array] = nil
-						end
+							Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
 
 
-					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+						elseif messagelistvalue.MessageStatus == "SENT" then
+
+								for j=1, #sentmessageList_array do 
+
+									display.remove(sentmessageList_array[#sentmessageList_array])
+									sentmessageList_array[#sentmessageList_array] = nil
+								end
 
 
-				elseif messagelistvalue.MessageStatus == "DRAFT" then
+							Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
 
 
-						for j=1, #draftmessageList_array do 
-
-							display.remove(draftmessageList_array[#draftmessageList_array])
-							draftmessageList_array[#draftmessageList_array] = nil
-						end
+						elseif messagelistvalue.MessageStatus == "DRAFT" then
 
 
-						function getDraftMessageList1(response)
+								for j=1, #draftmessageList_array do 
+
+									display.remove(draftmessageList_array[#draftmessageList_array])
+									draftmessageList_array[#draftmessageList_array] = nil
+								end
 
 
-							draftmessagelist_response = response
+								function getDraftMessageList1(response)
 
 
-								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
+									draftmessagelist_response = response
 
-									DraftMessageCreation_list(draftmessagelist_response)
-									NoDraftMessage.isVisible=false
 
-								else
+										if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
 
-									NoDraftMessage.isVisible=true
+											DraftMessageCreation_list(draftmessagelist_response)
+											NoDraftMessage.isVisible=false
+
+										else
+
+											NoDraftMessage.isVisible=true
+
+										end
+
 
 								end
 
 
-						end
+							Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
+		               
 
 
-					Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
-               
+						 end
 
-
-				 end
+					end
 
 
 				end

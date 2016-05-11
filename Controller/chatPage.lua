@@ -1072,7 +1072,7 @@ end
 
 
 					
-					if fhd or ChatHistory[i].Audio_Path == "DEFAULT" then	
+					if fhd then	
 
 							spinner.isVisible=false
 
@@ -2299,12 +2299,7 @@ end
 
 			audiosize = size
 
-			ChatBox_bg.isVisible = true
-
-			sendBtn_bg.isVisible = true
-
-			sendBtn.isVisible = true
-
+	
 			local q = "UPDATE pu_MyUnitBuzz_Message SET Audio_Path='"..audiopath.."' WHERE id='"..audio_update_row.."';"
 			db:exec( q )
 
@@ -2317,7 +2312,7 @@ end
 				Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 				Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 				ImagePath= ""
-				AudioPath=audiopath or""
+				AudioPath=audiopath or ""
 				VideoPath="NULL"
 				MyUnitBuzz_LongMessage=ChatBox.text
 				From=ContactId
@@ -2337,7 +2332,13 @@ end
 
 	function scene:updateAudio(dataFileName)
 
-		ChatBox.isVisible=true
+		ChatBox_bg.isVisible = true
+
+		sendBtn_bg.isVisible = true
+
+		sendBtn.isVisible = true
+
+		--local function timedelayAudioAction(event)
 
 	    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            -- Play back the recording
@@ -2359,7 +2360,7 @@ end
 						ImagePath=""
 						ImageName = ""
 						ImageSize = ""
-						AudioPath=dataFileName
+						AudioPath="DEFAULT"
 						VideoPath=""
 						MyUnitBuzz_LongMessage=ChatBox.text
 						From=ContactId
@@ -2372,7 +2373,7 @@ end
 
 
 
-					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Audio_Path= '"..dataFileName.."'") do
+					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Audio_Path= 'DEFAULT'") do
 					   audio_update_row = row.id 
 
 					end 
@@ -2394,6 +2395,9 @@ end
 
 
 						 sendMeaasage()
+			--end
+
+			--timer = timer.performWithDelay( 100, timedelayAudioAction ,1 )
 
 	end
 

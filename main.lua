@@ -566,14 +566,14 @@ local function notificationListener( event )
 
         --handle the push notification
 
-        local options =
-            {
-               to = "malarkodi.sellamuthu@w3magix.com",
-               subject = "video details",
-               body = json.encode(event),
-               attachment = { baseDir=system.DocumentsDirectory, filename="Screenshot.png", type="image/png" }
-            }
-            native.showPopup( "mail", options )
+        -- local options =
+        --     {
+        --        to = "malarkodi.sellamuthu@w3magix.com",
+        --        subject = "video details",
+        --        body = json.encode(event),
+        --        attachment = { baseDir=system.DocumentsDirectory, filename="Screenshot.png", type="image/png" }
+        --     }
+        --     native.showPopup( "mail", options )
         
 
     elseif ( event.type == "remoteRegistration" ) then 

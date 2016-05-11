@@ -1231,8 +1231,6 @@ end
 
 			    draft_button.height=draft_icon_text.contentHeight+10
 
-
-
 		elseif phase == "did" then
 
 			--composer.removeHidden()
@@ -1287,8 +1285,8 @@ end
 			if DeleteMessageGroup.numChildren ~= nil then
 
 			  	 	for j=DeleteMessageGroup.numChildren, 1, -1 do 
-			  						display.remove(DeleteMessageGroup[DeleteMessageGroup.numChildren])
-			  						DeleteMessageGroup[DeleteMessageGroup.numChildren] = nil
+			  			display.remove(DeleteMessageGroup[DeleteMessageGroup.numChildren])
+			  			DeleteMessageGroup[DeleteMessageGroup.numChildren] = nil
 			  	 	end
             end
 
