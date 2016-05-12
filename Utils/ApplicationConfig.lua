@@ -6,6 +6,7 @@ ApplicationConfig = {}
 
 
 --[[
+
 IsLive = false
 ApplicationConfig.BASE_URL = "http://192.168.1.47:9080"
 ApplicationConfig.IMAGE_BASE_URL = "http://c.dotnetethic.com/"
@@ -20,7 +21,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 
 
-----------Dev---------------
+-----------Dev-----------------
 
 --[[
 
@@ -37,7 +38,8 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 --]]
 
 
------Stagging--------
+
+---------Stagging--------------
 
 ----[[
 
