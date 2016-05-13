@@ -40,11 +40,9 @@ local Details={}
 
 local openPagevalue = "addpage"
 
- local pWidth = display.pixelWidth 
+local pWidth = display.pixelWidth 
 
- local pHeight = display.pixelHeight
-
-
+local pHeight = display.pixelHeight
 
 fieldOffset = 0
 
@@ -52,11 +50,11 @@ local deviceModel = system.getInfo( "model" )
 
 if isIos then
 
-if (deviceModel == "iPhone") then	
+	if (deviceModel == "iPhone") then	
 
-	 fieldOffset = 80
+		 fieldOffset = 80
 
-end
+	end
 
 end
 

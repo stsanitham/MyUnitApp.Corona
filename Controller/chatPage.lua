@@ -200,13 +200,9 @@ end
 
 		intiscale()
 
-		photoname = "image"..os.date("%Y%m%d%H%M%S")..".jpg"
+		photoname = "image"..os.date("%Y%m%d%H%M%S")..".png"
 
         display.save(photo,photoname,system.DocumentsDirectory)
-
-        photo:removeSelf()
-
-        photo = nil
 
 
 		  local options =  {
@@ -214,6 +210,7 @@ end
 							time = 400,	
 								params = {
 								imageselected = photoname,
+								image = photo,
 								sendto = title.text,
 								contactId = To_ContactId,
 								MessageType = MessageType
@@ -222,6 +219,10 @@ end
 							}
 
 			composer.showOverlay("Controller.imagePreviewPage",options)
+
+		photo:removeSelf()
+
+        photo = nil
 
 
         path = system.pathForFile( photoname, baseDir)

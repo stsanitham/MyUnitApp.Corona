@@ -34,6 +34,9 @@ openPage="imagePreviewPage"
 
 local BackFlag = false
 
+local W = display.contentWidth;
+local H= display.contentHeight
+
 
 
 --------------------------------------------------
@@ -86,6 +89,54 @@ local function onKeyEvent( event )
 
 
 
+		local function rescale(pwidth1,pheight1)
+					
+					if pwidth1> W or pheight1 > H then
+
+						pwidth1 = pwidth1/2
+						pheight1 = pheight1/2
+
+						intiscale(pwidth1,pheight1)
+
+					else
+
+						photowidth = pwidth1
+
+				        photoheight = pheight1
+               
+						return false
+
+					end
+				end
+
+
+
+
+		local function intiscale(pwidth,pheight)
+			
+			if pwidth > W or pheight > H then
+
+				pwidth= pwidth/2
+				pheight = pheight/2
+
+				rescale(pwidth,pheight)
+
+			else
+
+				photowidth = pwidth
+
+				photoheight = pheight
+
+				return false
+
+			end
+
+		end
+
+
+
+
+
 
 	local function onButtonTouch( event )
 
@@ -116,6 +167,12 @@ local function onKeyEvent( event )
 	                 
 				end
 
+				if event.target.id == "background" then
+
+                       
+
+				end
+
 		end
 
 	  return true
@@ -132,6 +189,7 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 		Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+		Background.id = "background"
 		Background.x=W/2;Background.y=H/2
 
 		tabBar = display.newRect(sceneGroup,W/2,0,W,40)
@@ -184,86 +242,76 @@ function scene:show( event )
         if event.params then
 
         	photoview = event.params.imageselected
+        	imageview = event.params.image
         	contactId = event.params.contactId
         	messageType = event.params.MessageType
         	sendto = event.params.sendto
+
+        	print("Imageview photo : ",imageview)
 
         end
 
 
 		title.text = "Send to "..sendto
 
+		intiscale(imageview.width,imageview.height)
 
-		local photo = display.newImageRect( sceneGroup,photoview,baseDir, W-40, 200 )
-		photo.x = 20
+
+		photo = display.newImageRect( sceneGroup,photoview,baseDir, 0 , 0 )
+		photo.x = 0
 		photo.anchorX = 0
 		photo.anchorY= 0
-		photo.y = title_bg.y + 25
+		photo.y = title_bg.y+17
+		photo.width = photowidth
+		photo.height = photoheight
 
 
-------------------------------------- image cancel button -------------------------------------------
-
-	    cancel_button = display.newRect(sceneGroup,0,0,W-50,26)
-		cancel_button.x = W/2 - W/3 + 5
-		cancel_button.y = photo.y + photo.contentHeight +20
-		cancel_button.width = W - 225
-		cancel_button.anchorX = 0
-		cancel_button.anchorY=0
-		cancel_button:setFillColor( 0,0,0,0.7 )
-		cancel_button.id="cancel"
-
-		cancel_icon = display.newImageRect("res/assert/drafticon.png",16,14)
-		cancel_icon.id = "cancel icon"
-		sceneGroup:insert(cancel_icon)
-		cancel_icon.anchorY=0
-		cancel_icon.anchorX=0
-		cancel_icon.x= cancel_button.x + 6
-		cancel_icon.y= cancel_button.y+cancel_button.contentHeight/2-cancel_icon.contentHeight/2
-
-		cancel_icon_text = display.newText(sceneGroup,CommonWords.cancel,0,0,cancel_button.contentWidth-12,0,native.systemFont,14)
-		cancel_icon_text.anchorX=0
-		cancel_icon_text.anchorY=0
-		cancel_icon_text.id = "cancel_icon_text"
-		cancel_icon_text.x=cancel_icon.x+cancel_icon.contentWidth+ 5
-		cancel_icon_text.y=cancel_icon.y
-		Utils.CssforTextView(cancel_icon_text,sp_primarybutton)
-
-	    cancel_button.height=cancel_icon_text.contentHeight+10
+------------------------------------- image send button -------------------------------------------   
 
 
- ------------------------------------- image send button -------------------------------------------       
-
-	    image_send_button = display.newRect(sceneGroup,0,0,W-50,26)
-		image_send_button.x = W/2 +10
-		image_send_button.y = photo.y + photo.contentHeight +20
-		image_send_button.width = W - 235
-		image_send_button.anchorX = 0
-		image_send_button.anchorY=0
-		image_send_button:setFillColor(Utils.convertHexToRGB(color.darkgreen))
+        image_send_button = display.newRect( sceneGroup, 0,0, W/2, 45 )
+		image_send_button.x=0;image_send_button.y=H-45
 		image_send_button.id="send"
+		image_send_button.anchorX=0;image_send_button.anchorY=0
+		image_send_button:setFillColor( Utils.convertHexToRGB(color.darkGreen) )
 
-		send_icon = display.newImageRect("res/assert/sendmsg.png",16,14)
+	    send_icon = display.newImageRect( sceneGroup, "res/assert/audiosend.png",25,20 )
 		send_icon.id = "send icon"
-		sceneGroup:insert(send_icon)
-		send_icon.anchorY=0
-		send_icon.anchorX=0
-		send_icon.x= image_send_button.x + 6
-		send_icon.y=image_send_button.y+image_send_button.contentHeight/2-send_icon.contentHeight/2
+		send_icon.x=image_send_button.x+20;send_icon.y=image_send_button.y+image_send_button.contentHeight/2
 
-		send_icon_text = display.newText(sceneGroup,MessagePage.Send,0,0,image_send_button.contentWidth-12,0,native.systemFont,14)
-		send_icon_text.anchorX=0
-		send_icon_text.anchorY=0
+		send_icon_text = display.newText( sceneGroup, MessagePage.Send, 0,0,native.systemFont,16 )
+		send_icon_text.x=send_icon.x+25;send_icon_text.y=send_icon.y
 		send_icon_text.id = "send_icon_text"
-		send_icon_text.x=send_icon.x+send_icon.contentWidth+ 5
-		send_icon_text.y=send_icon.y
-		Utils.CssforTextView(send_icon_text,sp_primarybutton)
-
-	    image_send_button.height=send_icon_text.contentHeight+10
+		send_icon_text.anchorX=0
 
 
 
---------------------------------------------- Draft Button ---------------------------------------------------------
+ ------------------------------------- image cancel button -------------------------------------------  
 
+		cancel_button = display.newRect( sceneGroup, 0,0, W/2, 45 )
+		cancel_button.x=W/2;cancel_button.y=H-45
+		cancel_button.id="cancel"
+		cancel_button.anchorX=0;cancel_button.anchorY=0
+		cancel_button:setFillColor( Utils.convertHexToRGB(color.Lytred) )
+
+		cancel_icon = display.newImageRect( sceneGroup, "res/assert/audiocancel.png",25,20 )
+		cancel_icon.id = "cancel icon"
+		cancel_icon.x=cancel_button.x+20;cancel_icon.y=cancel_button.y+cancel_button.contentHeight/2
+
+		cancel_icon_text = display.newText( sceneGroup, CommonWords.cancel, 0,0,native.systemFont,16 )
+		cancel_icon_text.x=cancel_icon.x+25;cancel_icon_text.y=cancel_icon.y
+		cancel_icon_text.id = "cancel_icon_text"
+		cancel_icon_text.anchorX=0
+
+
+
+		image_send_button:addEventListener("touch",onButtonTouch)
+		send_icon:addEventListener("touch",onButtonTouch)
+		send_icon_text:addEventListener("touch",onButtonTouch)
+
+		cancel_button:addEventListener("touch",onButtonTouch)
+		cancel_icon:addEventListener("touch",onButtonTouch)
+		cancel_icon_text:addEventListener("touch",onButtonTouch)
 
 
 
@@ -291,15 +339,9 @@ function scene:show( event )
 
 			Runtime:addEventListener( "key", onKeyEvent )
 
-			cancel_button:addEventListener("touch",onButtonTouch)
-			cancel_icon:addEventListener("touch",onButtonTouch)
-			cancel_icon_text:addEventListener("touch",onButtonTouch)
-
-			image_send_button:addEventListener("touch",onButtonTouch)
-			send_icon:addEventListener("touch",onButtonTouch)
-			send_icon_text:addEventListener("touch",onButtonTouch)
-
 			BackBtn:addEventListener("touch",onButtonTouch)
+
+			Background:addEventListener("touch",onButtonTouch)
 		
 	end	
 	
@@ -329,6 +371,7 @@ end
 		send_icon_text:removeEventListener("touch",onButtonTouch)
 
 		BackBtn:removeEventListener("touch",onButtonTouch)
+		Background:removeEventListener("touch",onButtonTouch)
 
 
 			elseif phase == "did" then
