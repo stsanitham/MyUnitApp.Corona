@@ -206,12 +206,38 @@ end
 
 Utils.makeTimeStamp = function ( dateString )
 
-	local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
-	local year, month, day, hour, minute, seconds =
-	dateString:match(pattern)
-	local timestamp = os.time( {year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false} )
+local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+) ([%+%-])(%d+)%:(%d+):(%d+)"    
+  local xyear, xmonth, xday, xhour, xminute,xseconds, xoffset, xoffsethour, xoffsetmin = dateString:match(pattern)    
 
-	return timestamp;
+  print( xoffset, xoffsethour, xoffsetmin )
+
+  local convertedTimestamp = os.time({year = xyear, month = xmonth,day = xday, hour = xhour, min = xminute, sec = xseconds})    
+  local offset = xoffsethour * 60 * 60 + xoffsetmin*60
+  if xoffset == "-" then 
+    offset = offset * -1 
+  end    
+
+  print( offset )
+
+  return convertedTimestamp - offset
+end
+
+Utils.makeTimeStampwithOffset = function ( dateString )
+
+  local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+) ([%+%-])(%d+)%:(%d+):(%d+)"    
+  local xyear, xmonth, xday, xhour, xminute,xseconds, xoffset, xoffsethour, xoffsetmin = dateString:match(pattern)    
+
+  print( xoffset, xoffsethour, xoffsetmin )
+
+  local convertedTimestamp = os.time({year = xyear, month = xmonth,day = xday, hour = xhour, min = xminute, sec = xseconds})    
+  local offset = xoffsethour * 60 * 60 + xoffsetmin*60
+  if xoffset == "-" then 
+    offset = offset * -1 
+  end    
+
+  print( offset )
+
+  return convertedTimestamp - offset
 end
 
 Utils.GetMonth = function ( monthString)
