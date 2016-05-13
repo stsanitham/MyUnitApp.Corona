@@ -1808,13 +1808,14 @@ local function ChatSendAction( event )
 
 	if ChatBox.text ~= nil and ChatBox.text ~= "" and ChatBox.text ~= " " and ChatBox.text ~= "\n" then
 			
+			print( "%%%%%%%%%%%%%%%" )
 			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 			
 			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
 			isDeleted="false"
 			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-			ImagePath= Imagepath or ""
+			ImagePath= ""
 			AudioPath="NULL"
 			VideoPath="NULL"
 			MyUnitBuzz_LongMessage=ChatBox.text

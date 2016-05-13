@@ -7,7 +7,7 @@ application =
         scale = "normal",
         xAlign = "center",
         yAlign = "center",
-        audioPlayFrequency = 22050,
+        audioPlayFrequency = 44100,
 	},
 
 	 notification = 

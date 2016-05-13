@@ -323,8 +323,6 @@ return format_time(time,format,tzoffset,"")
 end
 
 
-
-
 Utils.CssforTextView = function ( Object,Style )
 
 if Style.Font_Family then Object.font = Style.Font_Family end

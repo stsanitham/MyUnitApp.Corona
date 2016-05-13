@@ -31,6 +31,7 @@ local fSoundPlaying = false   -- sound playback state
 local fSoundPaused = false    -- sound pause state
  local Seconds,Mintues=0,0
 local countdown
+local startBtn_txt,playBtn_txt,stopBtn_txt
 --------------------------------------------------
 
 
@@ -81,9 +82,20 @@ local function audioAction( event )
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 
+
+		if event.target.alpha > 0.6 then
+
 			if event.target.id == "play" then
 
-				    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+
+				startBtn.alpha=0.5
+				startBtn_txt.alpha=0.5
+				playBtn.alpha=0.5
+				playBtn_txt.alpha=0.5
+				stopBtn.alpha=1
+				stopBtn_txt.alpha=1
+
+	    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
 		            
@@ -109,7 +121,12 @@ local function audioAction( event )
 
 			elseif event.target.id == "stop" then
 				
-				
+				startBtn.alpha=1
+				startBtn_txt.alpha=1
+				playBtn.alpha=1
+				playBtn_txt.alpha=1
+				stopBtn.alpha=0.5
+				stopBtn_txt.alpha=0.5
 
 				if r:isRecording() then
 		            r:stopRecording()
@@ -120,7 +137,7 @@ local function audioAction( event )
 		       	end
 
 		       	local isChannel1Playing = audio.isChannelPlaying( 1 )
-				if isChannel1Playing then
+				if isChannel1Playing or isSimulator then
 				    audio.pause( 1 )
 				     keyTips.text = "Recording Paused"
 				end
@@ -130,7 +147,12 @@ local function audioAction( event )
 		         fSoundPaused = false
 		         r:startRecording()
 
-
+		        startBtn.alpha=0.5
+				startBtn_txt.alpha=0.5
+				playBtn.alpha=0.5
+				playBtn_txt.alpha=0.5
+				stopBtn.alpha=1
+				stopBtn_txt.alpha=1
 		        	
 		         countdown = timer.performWithDelay(1000, function()
 
@@ -146,6 +168,7 @@ local function audioAction( event )
 		         keyTips.text = "Recording"
 
 			end
+		end
 
 	end
 
@@ -237,21 +260,39 @@ function scene:show( event )
 		keyTips.x=W/2;keyTips.y=title_bg.y+title_bg.contentHeight
 
 
-		startBtn = display.newImageRect( sceneGroup,"res/assert/audiostart.png",55,50 )
+		startBtn = display.newImageRect( sceneGroup,"res/assert/audiobtnbg.png",65,55 )
 		startBtn.x=W/2-70;startBtn.y=H/2+100
 		startBtn.id="start"
 
 
-		playBtn = display.newImageRect( sceneGroup,"res/assert/audioplay.png",75,65 )
+		startBtn_txt = display.newText( sceneGroup,"Start",0,0,native.systemFont,16 )
+		startBtn_txt.x=startBtn.x;startBtn_txt.y=startBtn.y
+		startBtn_txt.id="start"
+
+
+		playBtn = display.newImageRect( sceneGroup,"res/assert/audiobtnbg.png",65,55 )
 		playBtn.x=W/2;playBtn.y=H/2+100
 		playBtn.id="play"
 		playBtn.play="play"
 
+		playBtn_txt = display.newText( sceneGroup,"Play",0,0,native.systemFont,16 )
+		playBtn_txt.x=playBtn.x;playBtn_txt.y=playBtn.y
+		playBtn_txt.id="start"
 
 
-		stopBtn = display.newImageRect( sceneGroup,"res/assert/audiostop.png",55,50 )
+
+		stopBtn = display.newImageRect( sceneGroup,"res/assert/audiobtnbg.png",65,55 )
 		stopBtn.x=W/2+70;stopBtn.y=H/2+100
 		stopBtn.id="stop"
+
+		stopBtn_txt = display.newText( sceneGroup,"Stop",0,0,native.systemFont,16 )
+		stopBtn_txt.x=stopBtn.x;stopBtn_txt.y=stopBtn.y
+		stopBtn_txt.id="start"
+
+		playBtn.alpha=0.5
+		playBtn_txt.alpha=0.5
+		stopBtn.alpha=0.5
+		stopBtn_txt.alpha=0.5
 
 		okBtn = display.newRect( sceneGroup, 0,0, W/2, 45 )
 		okBtn.x=0;okBtn.y=H-45

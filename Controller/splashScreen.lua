@@ -325,50 +325,45 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 							--local alert = native.showAlert( responseVersion,installedVersion, { CommonWords.ok } )
 
 
-							print("responseVersion : ", responseVersion)
+							-- local contents = " "
+							-- -- Path for the file to read
+							-- local path = system.pathForFile( "version.txt", system.DocumentsDirectory )
 
-							print("installedVersion : ", installedVersion)
+							-- -- Open the file handle
+							-- local file, errorString = io.open( path, "r" )
 
+							-- if not file then
+							--     -- Error occurred; output the cause
+							--     print( "File error: " .. errorString )
+							-- else
+							--     -- Read data from file
+							--     contents = file:read( "*a" )
+							--     -- Output the file contents
+							--     -- Close the file handle
+							--     io.close( file )
+							-- end
 
-							local contents = " "
-							-- Path for the file to read
-							local path = system.pathForFile( "version.txt", system.DocumentsDirectory )
-
-							-- Open the file handle
-							local file, errorString = io.open( path, "r" )
-
-							if not file then
-							    -- Error occurred; output the cause
-							    print( "File error: " .. errorString )
-							else
-							    -- Read data from file
-							    contents = file:read( "*a" )
-							    -- Output the file contents
-							    -- Close the file handle
-							    io.close( file )
-							end
-
-							file = nil
+							-- file = nil
 
 
-							local storedContent = string.gsub( contents, "%.", "", 3 )
+							-- local storedContent = string.gsub( contents, "%.", "", 3 )
 
-							if storedContent < installedVersion then
+							-- if storedContent < installedVersion then
 
-								local found=false
-								db:exec([[select * from sqlite_master where name='logindetails';]],
-								function(...) found=true return 0 end)
+							-- 	local found=false
+							-- 	db:exec([[select * from sqlite_master where name='logindetails';]],
+							-- 	function(...) found=true return 0 end)
 
-								if found then 
-									print('table exists!')
+							-- 	if found then 
+							-- 		print('table exists!')
 
 
-									-- local tablesetup = [[DROP TABLE logindetails;]]
-									-- db:exec( tablesetup )
+							-- 		-- local tablesetup = [[DROP TABLE logindetails;]]
+							-- 		-- db:exec( tablesetup )
 
-								end
+							-- 	end
 
-							end
+							-- end
 
 
 							if (tonumber(responseVersion)<=tonumber(installedVersion)) then
@@ -382,20 +377,29 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 									    	if isAndroid then 
 
-											system.openURL( "market://details?id=com.spanenterprises.myunitbuzz" )
+												system.openURL( "market://details?id=com.spanenterprises.myunitbuzz" )
 
-											os.exit()
+												os.exit()
 
-										elseif isIos then
+											elseif isIos then
 
-											system.openURL( "https://itunes.apple.com/in/app/myunitbuzz/id1068478993?mt=8" )
+												system.openURL( "https://itunes.apple.com/in/app/myunitbuzz/id1068478993?mt=8" )
 											
-										end
+											end
 									     
 									end
 								end
 
-								local alert = native.showAlert("MyUnitBuzz","Update the latest version from the App Store" , { "Update"}, onComplete )
+								if isAndroid then 
+
+									alert = native.showAlert("MyUnitBuzz","Update the latest version from the Play Store" , { "Update"}, onComplete )
+
+								else
+
+
+									alert = native.showAlert("MyUnitBuzz","Update the latest version from the App Store" , { "Update"}, onComplete )
+
+								end
 
 
 							end

@@ -295,10 +295,8 @@ local tempGroup = event_groupArray[#event_groupArray]
 local bgheight = 45
 --os.date("%Y-%m-%dT%H:%m:%S")
 
-       print( "***************************** : "..response.date) 
-
-       
-local timeGMT = Utils.makeTimeStampwithOffset( response.date )
+      
+local timeGMT = Utils.makeTimeStamp( response.date )
 
 
 --date_value = os.date( "%A" , timeGMT )
@@ -328,6 +326,8 @@ if ParentShow == true then
 	--here
 	tempHeight = event_groupArray[#event_groupArray-1][1].y + event_groupArray[#event_groupArray-1][1].height-2
 	end
+
+	print( "****************** : "..timeGMT )
 HeaderDetails[#HeaderDetails+1] = {}
 HeaderDetails[#HeaderDetails].Position = tempHeight
 HeaderDetails[#HeaderDetails].Time = timeGMT
@@ -430,9 +430,8 @@ leftDraw_line.anchorY=0
 leftDraw_line.height = background.height+5
 leftDraw_line.x=W/4;leftDraw_line.y=background.y-5
 
-local Timezone = Utils.GetWeek(os.date( "%p" , timeGMT ))
 
-local time = display.newText(tempGroup,Utils.getTime( timeGMT,"%I:%M \n  "..Timezone,response.TimeZone ),0,0,80,0,native.systemFontBold,12)
+local time = display.newText(tempGroup,os.date( "%I:%M \n  %p",timeGMT ),0,0,80,0,native.systemFontBold,12)
 time.x=W/6
 time.y=background.y+background.contentHeight/2
 Utils.CssforTextView(time,sp_Date_Time)
@@ -500,7 +499,21 @@ DateWise_response=responevalue
 
 		end
 
+
+
+			
+
+
+
 			Processingdate = dateSplit(DateWise_response[1].date)
+
+
+			print( "Compare with start : "..startdate,Processingdate )
+	
+			for j=#HeaderDetails, 1, -1 do 
+				HeaderDetails[#HeaderDetails] = nil
+			end
+
 
 		for i = 1, #DateWise_response do
 
@@ -600,7 +613,7 @@ print( DateWise_response )
 
 			date = dateSplit(DateWise_response[i].date)
 
-			local timeGMT = Utils.makeTimeStampwithOffset( DateWise_response[i].date )
+			local timeGMT = Utils.makeTimeStamp( DateWise_response[i].date )
 
 			if string.find( os.date( "%B %d, %Y" , timeGMT ):upper( ), searchText:upper( )) ~= nil then
 
@@ -759,21 +772,23 @@ local function dayTouch(event)
 
 		addEventBtn.value = timeGMT
 
-	end
+		
 
+		
+
+	
+	end
 return true
 
 end
-
-
 
 local function creatWeek( weekfirstDay,flagValue )
 	--todaydate =  os.date( "%m/%d/%Y" , os.time( t ) )
 
 	for j=week.numChildren, 1, -1 do 
-   		display.remove(week[week.numChildren])
-    	week[week.numChildren] = nil
-	end 
+    display.remove(week[week.numChildren])
+    week[week.numChildren] = nil
+end 
 
 
 weekViewGroup:insert( week )
@@ -795,6 +810,7 @@ end
 weekfirstDay.day = weekfirstDay.day - 1
 	
 	weekStartX = weekView_leftArrow.x
+
 	
 
 	for i=1,7 do
@@ -835,27 +851,29 @@ weekfirstDay.day = weekfirstDay.day - 1
 
 			if CommonWords.language == "Canada English" then
 
-				   weekView_header.text =  weekView_header.text..os.date( " %d " , os.time( weekfirstDay )  )..month..os.date( ", %Y" , os.time( weekfirstDay )  )
+				weekView_header.text =  weekView_header.text..os.date( " %d " , os.time( weekfirstDay )  )..month..os.date( ", %Y" , os.time( weekfirstDay )  )
 
 			else
 
-				   weekView_header.text = weekView_header.text..os.date( month.." %d, %Y" , os.time( weekfirstDay ) )
+				weekView_header.text = weekView_header.text..os.date( month.." %d, %Y" , os.time( weekfirstDay ) )
 
 			end
+
+
+			
 
 		end
 
 		Week_Group:addEventListener( "touch", dayTouch )
 
+	
 		week:insert( Week_Group )
-
 	end
-
 	weekfirstDay.day=weekfirstDay.day-7
 
-		if flagValue then
-			eventList(weekfirstDay)
-		end
+	if flagValue then
+		eventList(weekfirstDay)
+	end
 
 end
 local function searchListener( event )
@@ -1154,7 +1172,7 @@ end
 
 					if -(yView) < tonumber(HeaderDetails[i].Position) then
 
-						print( -(yView),HeaderDetails[i].Position )
+						
 
 							Header_parent_leftText.text = Utils.GetWeek(os.date( "%A" , HeaderDetails[i-1].Time ))
 
@@ -1328,13 +1346,13 @@ function scene:resumeGame(value)
 
 		local function waitTimer( event )
 			if openPage=="eventCalenderPage" then
-					local tempvalue = os.date( '*t' )
-					tempvalue.day = tempvalue.day - os.date( "%w" ) 
+
+
+					local temp = os.date( '*t' )
+					temp.day = temp.day - os.date( "%w" ) 
 					weekViewTouchFlag=true
 					ParentShow=true
-
-					
-					creatWeek(tempvalue,true)
+					creatWeek(temp,true)
 
 			end
 		end
@@ -1377,9 +1395,6 @@ function scene:resumeGame(value,EditArray)
 
 	elseif value == "details" then
 
-		print( "@@@@@@@@@@@@@@@@@@@" )
-
-
 			local options = {
 					isModal = true,
 					effect = "slideLeft",
@@ -1399,20 +1414,11 @@ function scene:resumeGame(value,EditArray)
 
 		local function waitTimer( event )
 			if openPage=="eventCalenderPage" then
-
-
-			local tempvalue = os.date( '*t' )
-					tempvalue.day = tempvalue.day - os.date( "%w" ) 
-					startdate = os.date( "%m/%d/%Y" , os.time( tempvalue )).." 12:00:00 AM"
-
-					tempvalue.day = tempvalue.day + 7
-
-					enddate = os.date( "%m/%d/%Y" , os.time( tempvalue )).." 11:59:59 PM"
-					local temp = os.date( '*t' )
-					temp.day = temp.day - os.date( "%w" ) 
+			
 					weekViewTouchFlag=true
 					ParentShow=true
-					creatWeek(temp,true)
+					creatWeek(os.date('*t',makeTimeStamp(startdate)),true)
+
 
 			end
 		end

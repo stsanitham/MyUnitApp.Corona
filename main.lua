@@ -402,8 +402,18 @@ local function notificationListener( event )
 
     if ( event.type == "remote" ) then
 
-            local additionalData = event.androidGcmBundle
-            local message = additionalData.contents
+
+         native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
+
+            local additionalData,message
+            if isAndroid then
+                additionalData = event.androidGcmBundle
+                message = additionalData.contents
+            elseif isIos then
+               additionalData = event.alert
+                message = additionalData.contents
+            end
+
           if additionalData.messageType ~= nil or additionalData.stacked_notifications[1].messageType ~= nil then
 
              chatReceivedFlag=true
@@ -416,6 +426,9 @@ local function notificationListener( event )
                     Name = row.MemberName
 
             end
+
+
+
 
 
             if additionalData.stacked_notifications then
@@ -574,7 +587,10 @@ local function notificationListener( event )
         --        attachment = { baseDir=system.DocumentsDirectory, filename="Screenshot.png", type="image/png" }
         --     }
         --     native.showPopup( "mail", options )
-        
+            
+
+
+
 
     elseif ( event.type == "remoteRegistration" ) then 
         --code to register your device with the service
