@@ -617,7 +617,7 @@ local function careePath_list( list )
 					else
 
 
-						print(img_event.response.filename)
+						--print(img_event.response.filename)
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
 						Image.width=45;Image.height=38
 						Image.x=30;Image.y=background.y+background.contentHeight/2
