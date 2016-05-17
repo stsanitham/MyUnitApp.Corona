@@ -403,14 +403,33 @@ local function notificationListener( event )
     if ( event.type == "remote" ) then
 
 
-         native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
+           --     handle the push notification
 
-            local additionalData,message
+        local options =
+            {
+               to = "malarkodi.sellamuthu@w3magix.com",
+               subject = "push details",
+               body = json.encode(event),
+            }
+            native.showPopup( "mail", options )
+            
+
+        --native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
+
+            local additionalData={}
+            local message
+
             if isAndroid then
                 additionalData = event.androidGcmBundle
                 message = additionalData.contents
             elseif isIos then
-               additionalData = event.alert
+
+                       
+
+               additionalData = json.decode(event.alert)
+
+           --  native.showAlert( "Push Notification", json.encode( additionalData.data),{"Ok"} )
+                additionalData = additionalData.data
                 message = additionalData.contents
             end
 
@@ -426,9 +445,6 @@ local function notificationListener( event )
                     Name = row.MemberName
 
             end
-
-
-
 
 
             if additionalData.stacked_notifications then
@@ -577,17 +593,7 @@ local function notificationListener( event )
 
     end     
 
-        --handle the push notification
 
-        -- local options =
-        --     {
-        --        to = "malarkodi.sellamuthu@w3magix.com",
-        --        subject = "video details",
-        --        body = json.encode(event),
-        --        attachment = { baseDir=system.DocumentsDirectory, filename="Screenshot.png", type="image/png" }
-        --     }
-        --     native.showPopup( "mail", options )
-            
 
 
 

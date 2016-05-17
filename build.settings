@@ -42,6 +42,8 @@ settings =
 	        supportedPlatforms = { android=true, ["android-kindle"]=true },
 	    },
 
+	    
+
 
 	["CoronaProvider.native.popup.quickLook"] =
 	    {

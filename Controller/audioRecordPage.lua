@@ -75,6 +75,25 @@ return true
 end
 
 
+local function audioPlayComplete( event )
+
+	print( "complete" )
+
+	    if ( event.completed ) then
+
+	    		keyTips.text = "Playing Completed"
+
+	    		startBtn.alpha=1
+				startBtn_txt.alpha=1
+				playBtn.alpha=1
+				playBtn_txt.alpha=1
+				stopBtn.alpha=0.5
+				stopBtn_txt.alpha=0.5
+
+		end
+end
+
+
 
 local function audioAction( event )
 	if event.phase == "began" then
@@ -95,7 +114,7 @@ local function audioAction( event )
 				stopBtn.alpha=1
 				stopBtn_txt.alpha=1
 
-	    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+	   				 local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
 		            
@@ -105,19 +124,31 @@ local function audioAction( event )
 		                fSoundPaused = false
 
 		                local isChannelPaused = audio.isChannelPaused( 1 )
+
+		                local isChannel1Playing = audio.isChannelPlaying( 1 )
+
 						if isChannel1Playing then
+
 						    audio.pause( 1 )
-						end
-		                	local isChannel1Playing = audio.isChannelPlaying( 1 )
-							if isChannel1Playing then
-							else
-								playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
-								audio.play( playbackSoundHandle, { channel=1, loops=-1 } )
+
+						elseif isChannelPaused then
+
+							audio.resume( 1 )
+
+						else
+							local isChannel1Active = audio.isChannelActive( 1 )
+							if isChannel1Active then
+							    audio.stop( 1 );audio.dispose( 1 )
 							end
 
+							playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
+							audio.play( playbackSoundHandle, { channel=1, loops=1,onComplete = audioPlayComplete } )
+						
 						end  
 
-		            keyTips.text = "Playing"
+		           		 keyTips.text = "Playing"
+
+		        	end
 
 			elseif event.target.id == "stop" then
 				
@@ -379,6 +410,15 @@ end
 		if event.phase == "will" then
 
 		elseif phase == "did" then
+
+			if r:isRecording() then
+		            r:stopRecording()
+
+		    end
+
+
+		    r = nil;
+		    
 
 			local isChannel1Playing = audio.isChannelPlaying( 1 )
 				if isChannel1Playing then

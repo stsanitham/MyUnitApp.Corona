@@ -1018,6 +1018,12 @@ end
 			bg.width = chat.contentWidth+10;bg.height = chat.contentHeight+10
 			bg.chat=chat.text
 
+			if chat.text:len() > 450 then
+
+				bg.width = bg.width - 10
+
+			end
+
 
 			local owner
 
@@ -1073,9 +1079,9 @@ end
 
 
 					
-					if fhd then	
+					if fhd or ChatHistory[i].Audio_Path == "DEFAULT" then	
 
-							spinner.isVisible=false
+							spinner_hide ()
 
 							bg.width=bg.width+25;bg.height=bg.height+30
 
@@ -1494,12 +1500,12 @@ end
 									time.x=bg.x-2.5
 
 				if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
-				bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-			else
-				time.x=bg.x+bg.contentWidth-time.contentWidth-2.5
-				bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
-			end
+				else
+					time.x=bg.x+bg.contentWidth-time.contentWidth-2.5
+					bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
+				end
 
 
 
@@ -1532,15 +1538,15 @@ function get_videomodel( response )
 	
 --	print(json.encode(response))
 
-local options =
-{
-   to = { "anitha.mani@w3magix.com"},
-   subject = "video response",
-   isBodyHtml = true,
-   body = ""..event.response,
+-- local options =
+-- {
+--    to = { "anitha.mani@w3magix.com"},
+--    subject = "video response",
+--    isBodyHtml = true,
+--    body = ""..event.response,
 
-}
-native.showPopup( "mail", options )
+-- }
+-- native.showPopup( "mail", options )
 
 end
 
