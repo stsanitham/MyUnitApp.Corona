@@ -656,6 +656,9 @@ local function appexit( response )
     
 end
 
+
+
+
 local function onSystemEvent( event )
     
     if (event.type == "applicationStart") then
@@ -664,10 +667,9 @@ local function onSystemEvent( event )
            
     elseif ( event.type == "applicationSuspend" ) then
 
-        --Webservice.UpdateLastActivityDate(appexit)
+      -- Webservice.UpdateLastActivityDate(appexit)
         
     elseif ( event.type == "applicationOpen" ) then
-
 
       --  chatReceivedFlag=true
 
@@ -678,6 +680,8 @@ local function onSystemEvent( event )
     end
 
 end
+
+
 
 --setup the system listener to catch applicationExit etc
 Runtime:addEventListener( "system", onSystemEvent )

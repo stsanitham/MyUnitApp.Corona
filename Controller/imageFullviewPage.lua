@@ -317,8 +317,9 @@ function scene:show( event )
 	    downImg_bg.alpha=0.01
 
 
-	    downImg = display.newImageRect(sceneGroup,"res/assert/save.png",20,20)
+	    downImg = display.newImageRect(sceneGroup,"res/assert/save2.png",20,20)
 	    downImg.x=downImg_bg.x;downImg.y=downImg_bg.y
+	    downImg:setFillColor(0)
 	    downImg.filename = photoview
 	    downImg.id="download"
 
