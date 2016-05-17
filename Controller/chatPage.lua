@@ -1436,10 +1436,9 @@ end
 									downloadimage.isVisible = true
 									downloadimage:toFront()
 
+									
 
 									downloadimage:addEventListener( "touch", receviednotifyDownload )
-
-
 
 								else
 
