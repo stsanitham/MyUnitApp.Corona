@@ -973,19 +973,16 @@ end
 
                         if page == "edit" then
 
-	                       shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
-						   longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
-
+	                        shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
+						    longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
 					   		short_msg_charlimit.text = (250 - shortmsg_textbox.text:len()).." "..MessagePage.characters
 
 				        	long_msg_charlimit.text = (1000 - longmsg_textbox.text:len()).." "..MessagePage.characters
 
-
-						back_icon:addEventListener("touch",closeMessagePage)
-						back_icon_bg:addEventListener("touch",closeMessagePage)
-						title:addEventListener("touch",closeMessagePage)
-
+							back_icon:addEventListener("touch",closeMessagePage)
+							back_icon_bg:addEventListener("touch",closeMessagePage)
+							title:addEventListener("touch",closeMessagePage)
                        	
                         end
 
