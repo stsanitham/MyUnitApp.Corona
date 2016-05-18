@@ -633,18 +633,38 @@ local function TextLimitation( event )
 							end
 
 
-					        if (string.len(event.target.text) <= 0) then
+					        if (string.len(event.target.text) <= 0 ) then
 
 					       	      short_msg_charlimit.text = "250"..MessagePage.characters
 
 					        end
 
 
+					        -- if (event.target.text == "\n") then
+
+             --                     shortmsg_textbox.text
+					        -- 	 short_msg_charlimit.text = "250"..MessagePage.characters
+
+					        -- end
+
+
 					        if (event.newCharacters=="\n") then
 
-							shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
+							  shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
 
-							native.setKeyboardFocus( longmsg_textbox )
+							  if shortmsg_textbox.text == "" then
+
+								short_msg_charlimit.text = "250".. MessagePage.characters
+
+								native.setKeyboardFocus( longmsg_textbox )
+
+							  elseif shortmsg_textbox.text ~= "" then
+
+								short_msg_charlimit.text = 250 - string.len(shortmsg_textbox.text).. MessagePage.characters
+
+								native.setKeyboardFocus( longmsg_textbox )
+
+							  end
 
 						    end
 
@@ -698,9 +718,22 @@ local function TextLimitation( event )
 
 							if (event.newCharacters=="\n") then
 
-							longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
+							    longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
 
-							native.setKeyboardFocus( nil )
+							  if longmsg_textbox.text == "" then
+
+								long_msg_charlimit.text = "1000".. MessagePage.characters
+
+								native.setKeyboardFocus( nil )
+
+							  elseif longmsg_textbox.text ~= "" then
+
+								long_msg_charlimit.text = 1000 - string.len(longmsg_textbox.text).. MessagePage.characters
+
+								native.setKeyboardFocus( nil )
+
+							  end
+
 
 								if (pHeight <= 960) then
 
