@@ -953,27 +953,26 @@ end
 					bg.x = W-65
 					bg.anchorX = 1
 
-
 			  local filePath = system.pathForFile( ChatHistory[i].Message_From..".png",system.TemporaryDirectory )
 			  local fhd = io.open( filePath )
 
 			  local Image
 
-					 if fhd then
+					if fhd then
 
 							Image = display.newImageRect(tempGroup,ChatHistory[i].Message_From..".png",system.TemporaryDirectory,45,38)
 							io.close( fhd )
 
 					else
-								Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+							Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 
 					end
 
-										Image.x=W-35;Image.y=bg.y+bg.height/2
+								Image.x=W-35;Image.y=bg.y+bg.height/2
 
-										local mask = graphics.newMask( "res/assert/masknew.png" )
+								local mask = graphics.newMask( "res/assert/masknew.png" )
 
-										Image:setMask( mask )
+								Image:setMask( mask )
 
 			else
 
@@ -984,7 +983,6 @@ end
 							if not Image then
 								Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 								Image.x=30;Image.y=bg.y+bg.height/2
-
 							end
 
 										Image.x=30;Image.y=bg.y+bg.height/2
@@ -998,8 +996,8 @@ end
 
 
 
-			local chat	
 
+			local chat	
 
 			if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
 
@@ -1014,10 +1012,8 @@ end
 			chat.anchorY=0;chat.anchorX = 0;chat.x=bg.x+5;chat.y=bg.y
 			tempGroup:insert( chat )
 
-		
 			bg.width = chat.contentWidth+10;bg.height = chat.contentHeight+10
 			bg.chat=chat.text
-
 
 			local owner
 
@@ -1035,7 +1031,6 @@ end
 				bg.height = bg.height+20
 
 				if ChatHistory[i].Message_From == tostring(ContactId) then
-
 					owner.text = MemberName
 				else
 					owner.text = ChatHistory[i].ToName or "(~No Name)"
@@ -1068,11 +1063,9 @@ end
 					 local filePath = system.pathForFile( audioname,system.DocumentsDirectory )
 				 	 local fhd = io.open( filePath )
 
-					  bg.contentPath = filePath
+					 bg.contentPath = filePath
 
 
-
-					
 					if fhd then	
 
 							spinner.isVisible=false
@@ -1088,7 +1081,8 @@ end
 				                }
 				           --chat.text=""
 
-				           chat.size=14
+				            chat.size=14
+
 							local playIcon = display.newSprite( sheet1, sequenceData )
 							playIcon.x=bg.x-bg.contentWidth/2;playIcon.y=bg.y+bg.contentHeight/2
 							playIcon.id=ChatHistory[i].Audio_Path
@@ -1101,11 +1095,11 @@ end
 							if ChatHistory[i].Message_From ~= tostring(ContactId) then
 								playIcon.x = bg.x+bg.contentWidth/2
 							end
+
 					else
 
 						if ChatHistory[i].Audio_Path == "DEFAULT" then
 								
-
 								spinner.isVisible=false
 
 								    local options = {
@@ -1138,8 +1132,6 @@ end
 
 									    bg.height = bg.height+20;bg.width = bg.width+20
 
-
-
 						else
 							
 							--When audio notification receives
@@ -1156,9 +1148,7 @@ end
 
 									bg.width=bg.width+20;bg.height=bg.height+25
 
-
 									downloadimage:addEventListener( "touch", receviednotifyDownload )
-							
 
 						end
 
@@ -1173,7 +1163,7 @@ end
 
 				if ChatHistory[i].Video_Path  ~= nil and ChatHistory[i].Video_Path ~= "" and ChatHistory[i].Video_Path ~= "NULL" and ChatHistory[i].Video_Path ~= " " then
 
-					local videoname = ChatHistory[i].Video_Path:match( "([^/]+)$" )
+					 local videoname = ChatHistory[i].Video_Path:match( "([^/]+)$" )
 
 					 local video
 
@@ -1182,7 +1172,7 @@ end
 					 local filePath = system.pathForFile( videoname,system.DocumentsDirectory )
 				 	 local fhd = io.open( filePath )
 
-					  bg.contentPath = filePath
+					 bg.contentPath = filePath
 
 					
 					if fhd then	
@@ -1212,40 +1202,37 @@ end
 
 						if ChatHistory[i].Video_Path == "DEFAULT" then
 								
-
 								spinner.isVisible=false
 
 								    local options = {
-												    width = 32,
-												    height = 32,
-												    numFrames = 4,
-												    sheetContentWidth = 64,
-												    sheetContentHeight = 64
-												}
+													    width = 32,
+													    height = 32,
+													    numFrames = 4,
+													    sheetContentWidth = 64,
+													    sheetContentHeight = 64
+												    }
 
 									local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
  
 								    local image_spinner = widget.newSpinner
-														{
-														    width = 106/4 ,
-														    height = 111/4,
-														    deltaAngle = 10,
-														    sheet = spinnerSingleSheet,
-														    startFrame = 1,
-														    incrementEvery = 20
-														}
 
-										image_spinner.x=bg.x-bg.contentWidth/2;image_spinner.y=bg.y+bg.contentHeight/2
-									    image_spinner:toFront();image_spinner:start()
+													{
+													    width = 106/4 ,
+													    height = 111/4,
+													    deltaAngle = 10,
+													    sheet = spinnerSingleSheet,
+													    startFrame = 1,
+													    incrementEvery = 20
+													}
 
+									image_spinner.x=bg.x-bg.contentWidth/2;image_spinner.y=bg.y+bg.contentHeight/2
+								    image_spinner:toFront();image_spinner:start()
 
-									    image_spinner:start()
+								    image_spinner:start()
 
-									    tempGroup:insert(image_spinner)
+								    tempGroup:insert(image_spinner)
 
-									    bg.height = bg.height+20;bg.width = bg.width+15
-
-
+								    bg.height = bg.height+20;bg.width = bg.width+15
 
 						else
 							
@@ -1263,14 +1250,11 @@ end
 
 									bg.width=bg.width+20;bg.height=bg.height+25
 
-
 									downloadimage:addEventListener( "touch", receviednotifyDownload )
-							
 
 						end
 
 					end
-
 
 				end
 
@@ -1291,48 +1275,47 @@ end
 				
 					if fhd or ChatHistory[i].Image_Path == "DEFAULT" then	
 
-								spinner.isVisible=false
+							spinner.isVisible=false
 
-							    if MessageType == "GROUP" then	
-										
-									image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
-									image.id = ChatHistory[i].Image_Path
+						    if MessageType == "GROUP" then	
+									
+								image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+								image.id = ChatHistory[i].Image_Path
 
-									bg.width = image.contentWidth+5
-									bg.height = image.contentHeight+23.5
+								bg.width = image.contentWidth+5
+								bg.height = image.contentHeight+23.5
 
-									owner.anchorY=0
-									owner.anchorX = 0
-									owner.x=chat.x
-									owner.y=bg.y+1
+								owner.anchorY=0
+								owner.anchorX = 0
+								owner.x=chat.x
+								owner.y=bg.y+1
 
-									image.anchorY=0
-									image.anchorX = 0
-									image.x=bg.x+2.5
+								image.anchorY=0
+								image.anchorX = 0
+								image.x=bg.x+2.5
 
-									image.y=owner.y+20	
+								image.y=owner.y+20	
 
-								else
+							else
 
-								    image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
-								    image.id = ChatHistory[i].Image_Path
+							    image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+							    image.id = ChatHistory[i].Image_Path
 
-									image.anchorY=0
-									image.anchorX = 0
-									image.x=bg.x+2.5
-									image.y=bg.y+2.5
+								image.anchorY=0
+								image.anchorX = 0
+								image.x=bg.x+2.5
+								image.y=bg.y+2.5
 
-									bg.width = image.contentWidth+5
-									bg.height = image.contentHeight+5
+								bg.width = image.contentWidth+5
+								bg.height = image.contentHeight+5
 
-								end
+							end
 
 							io.close( fhd )
 
 					else
 
-					
-
+				
 						if ChatHistory[i].Image_Path == "DEFAULT" then
 
 								image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
@@ -1349,7 +1332,6 @@ end
 									bg.width = image.contentWidth+5
 									bg.height = image.contentHeight+5	
 
-
 								end
 						
 
@@ -1364,7 +1346,7 @@ end
 												    sheetContentHeight = 64
 												}
 
-										local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
+									    local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
 
 								local image_spinner = widget.newSpinner
 
@@ -1377,15 +1359,13 @@ end
 												    incrementEvery = 20
 												}
 
-												image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
-											    image_spinner:toFront();image_spinner:start()
+									    image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
+									    image_spinner:toFront();image_spinner:start()
 
-											   tempGroup:insert(image_spinner)
+									    tempGroup:insert(image_spinner)
 
 						else
-							--When image notification recive
-
-
+							--When image notification receive
 
 							    if MessageType == "GROUP" then	
 									
@@ -1407,7 +1387,7 @@ end
 
 									local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
  
-								    local image_spinner = widget.newSpinner
+								   		local image_spinner = widget.newSpinner
 														{
 														    width = 106/4 ,
 														    height = 111/4,
@@ -1436,10 +1416,7 @@ end
 									downloadimage.isVisible = true
 									downloadimage:toFront()
 
-
 									downloadimage:addEventListener( "touch", receviednotifyDownload )
-
-
 
 								else
 
@@ -1463,7 +1440,6 @@ end
 									downloadimage:addEventListener( "touch", receviednotifyDownload )
 
 								end
-
 						end
 
 					end	
@@ -1491,7 +1467,7 @@ end
 
 			if ChatHistory[i].Message_From == tostring(ContactId) then
 				chat.x = bg.x-bg.contentWidth+5
-									time.x=bg.x-2.5
+				time.x=bg.x-2.5
 
 				if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
 				bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
@@ -1506,13 +1482,10 @@ end
 			if ChatHistory[i].Message_From == tostring(ContactId) then
 				arrow.x=bg.x+2
 				arrow:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-
 			else
-			
-			arrow:scale( -1, 1 )
-			arrow.x=arrow.x+2
-			arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
-
+				arrow:scale( -1, 1 )
+				arrow.x=arrow.x+2
+				arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
 			end
 
 			chatScroll:insert(tempGroup)

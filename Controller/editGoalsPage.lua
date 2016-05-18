@@ -214,7 +214,7 @@ local path = system.pathForFile( "ckeditor.html",system.DocumentsDirectory )
 		    print( "File error: " .. errorString )
 		else
 		    -- Write data to file
-		    file:write( ckeditor.htmlContent.."'"..test.."'"..ckeditor.endHtml )
+		    file:write( ckeditor.htmlContent.."'"..test.."'"..ckeditor.endHtml..""..ckeditor.buttonHtml )
 		    -- Close the file handle
 
 		   --     local options =
@@ -231,7 +231,7 @@ local path = system.pathForFile( "ckeditor.html",system.DocumentsDirectory )
 					 webView.hasBackground = false
 
 					 webView.anchorX=0;webView.anchorY=0
-					webView:request( "ckeditor.html", system.DocumentsDirectory )
+					 webView:request( "ckeditor.html", system.DocumentsDirectory )
 
 					webView:addEventListener( "urlRequest", webListener )
 

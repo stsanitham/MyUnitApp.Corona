@@ -22,29 +22,19 @@ ckeditor.htmlContent = [[
 <body>
 
 
+
 	<br>
 
 		<form id="sumbit" type="submit" align="center" >
 
-			<textarea cols="80" id="UnitGoals" name="UnitGoals" rows="10">		
+
+			<textarea cols="80" id="UnitGoals" name="UnitGoals" rows="10">	
+
 			</textarea>
 
-        <Button onclick=get_action(this) align="center" name="data" type="button" width="58" height="48" style="width=200px; height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 110px;"> Submit </Button>
-	
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
 
 	</form>
+
 
 	<script>
 
@@ -71,38 +61,44 @@ ckeditor.htmlContent = [[
 			if(htmldata.length > 1 )
 			{
 
-								
 						var texttemp="corona:close"+ckvalue;
 			 			window.location.href = texttemp; 
-											
-					
-
 
 			}else{
 
 				
 				sweetAlert("Please enter Unit Goals");
-
 		
 			}
-
-
        		
 		}
 
 
-CKEDITOR.instances.UnitGoals.setData(decodeURIComponent(]]
+    CKEDITOR.instances.UnitGoals.setData(decodeURIComponent(
+
+]]
 
 
+ckeditor.buttonHtml = [[<Button onclick=get_action(this) align="center" name="data" type="button" width="58" height="48" style="width=200px; height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 110px;"> Submit </Button>
 
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+
+]]
 	ckeditor.endHtml = [[.replace(/\+/g, '%20')));  
 
-		 
 
 	</script>
-
-
-
 
 
 

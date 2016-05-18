@@ -258,8 +258,7 @@ function scene:show( event )
 
 
 		photo = display.newImageRect( sceneGroup,photoview,baseDir, 0 , 0 )
-		photo.x = 0
-		photo.anchorX = 0
+		photo.x = display.contentCenterX
 		photo.anchorY= 0
 		photo.y = title_bg.y+17
 		photo.width = photowidth
