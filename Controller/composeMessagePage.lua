@@ -586,9 +586,12 @@ end
 local function TextLimitation( event )
 
 	   if event.phase == "began" then
-						 
+
+	    	print("began")
 
 	   elseif event.phase == "submitted" then
+
+	    	print("submitted")
 
 				    if event.target.id =="longmessage" then
 
@@ -602,33 +605,34 @@ local function TextLimitation( event )
 
 				   end
 
-			--scrollTo(0)
-
 					
-					  if (pHeight <= 960) then
+				  if (pHeight <= 960) then
 
-		                    moveFieldsDown()
+	                    moveFieldsDown()
 
-		              end
+	              end
+
 
 
 
 	   elseif event.phase == "editing" then
 
+	   	 	print("editing")
+
 					if event.target.id =="shortmessage" then
 
 							if (string.len(event.target.text) > 250) then
 
-							event.target.text = event.target.text:sub(1, 250)
+								event.target.text = event.target.text:sub(1, 250)
 
 							end
 
 
 							if (string.len(event.target.text) <= 250) then
 
-							      counttext = 250 - string.len(event.target.text).. MessagePage.characters
+								      counttext = 250 - string.len(event.target.text).. MessagePage.characters
 
-							      short_msg_charlimit.text = counttext
+								      short_msg_charlimit.text = counttext
 
 							end
 
@@ -640,31 +644,39 @@ local function TextLimitation( event )
 					        end
 
 
-					        -- if (event.target.text == "\n") then
-
-             --                     shortmsg_textbox.text
-					        -- 	 short_msg_charlimit.text = "250"..MessagePage.characters
-
-					        -- end
-
 
 					        if (event.newCharacters=="\n") then
 
-							  shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
+								 shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
 
-							  if shortmsg_textbox.text == "" then
+								  	if ( (event.startPosition == 1) and string.find( shortmsg_textbox.text , "", 1 )) then
 
-								short_msg_charlimit.text = "250".. MessagePage.characters
+										short_msg_charlimit.text = "250".. MessagePage.characters
 
-								native.setKeyboardFocus( longmsg_textbox )
+										native.setKeyboardFocus( longmsg_textbox )
 
-							  elseif shortmsg_textbox.text ~= "" then
+								    else 
 
-								short_msg_charlimit.text = 250 - string.len(shortmsg_textbox.text).. MessagePage.characters
 
-								native.setKeyboardFocus( longmsg_textbox )
+									    if isAndroid then
 
-							  end
+									  	shortlen = string.len(shortmsg_textbox.text) - 1
+
+										short_msg_charlimit.text = 250 - shortlen.. MessagePage.characters
+
+										native.setKeyboardFocus( longmsg_textbox )
+
+										elseif isIos then
+
+										shortlen = string.len(shortmsg_textbox.text)
+
+										short_msg_charlimit.text = 250 - shortlen.. MessagePage.characters
+
+										native.setKeyboardFocus( longmsg_textbox )
+
+										end
+
+								    end
 
 						    end
 
@@ -680,37 +692,40 @@ local function TextLimitation( event )
 					end
 
 
+------------------------------------long message--------------------------------------
 
 					if event.target.id =="longmessage" then
 
+
 							if (string.len(event.target.text) > 1000) then
 
-							event.target.text = event.target.text:sub(1, 1000)
+								event.target.text = event.target.text:sub(1, 1000)
 
 							end
+
 
 
 							if (string.len(event.target.text) <= 1000) then
 
-							       countlongtext = 1000 - string.len(event.target.text) .. MessagePage.characters
+							        countlongtext = 1000 - string.len(event.target.text) .. MessagePage.characters
 
-							       long_msg_charlimit.text = countlongtext
+							        long_msg_charlimit.text = countlongtext
 
 							end
 
 
 
-						       if (string.len(event.target.text) <= 0) then
+					       if (string.len(event.target.text) <= 0) then
 
-						       	 long_msg_charlimit.text = "1000"..MessagePage.characters
+					       	 	long_msg_charlimit.text = "1000"..MessagePage.characters
 
-						       end
+					       end
 
                                  
-						        if (pHeight <= 960) then
+					        if (pHeight <= 960) then
 
-		                                moveFieldsUp()
-		                        end
+	                                moveFieldsUp()
+	                        end
 
 
 
@@ -718,28 +733,45 @@ local function TextLimitation( event )
 
 							if (event.newCharacters=="\n") then
 
-							    longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
+								  	   longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
 
-							  if longmsg_textbox.text == "" then
-
-								long_msg_charlimit.text = "1000".. MessagePage.characters
-
-								native.setKeyboardFocus( nil )
-
-							  elseif longmsg_textbox.text ~= "" then
-
-								long_msg_charlimit.text = 1000 - string.len(longmsg_textbox.text).. MessagePage.characters
-
-								native.setKeyboardFocus( nil )
-
-							  end
+								  	   longtext = longmsg_textbox.text
 
 
-								if (pHeight <= 960) then
+								 	if ( (event.startPosition == 1) and string.find( longmsg_textbox.text , "", 1 )) then
 
-								 moveFieldsDown()
+										long_msg_charlimit.text = "1000".. MessagePage.characters
 
-								end
+										native.setKeyboardFocus( nil )
+
+									else 
+
+											if isAndroid then
+
+										  	longlen = string.len(longmsg_textbox.text) - 1
+
+											long_msg_charlimit.text = 1000 - longlen.. MessagePage.characters
+
+											native.setKeyboardFocus( nil )
+
+											elseif isIos then
+
+											longlen = string.len(longmsg_textbox.text)
+
+											long_msg_charlimit.text = 1000 - longlen.. MessagePage.characters
+
+											native.setKeyboardFocus( nil )
+
+											end
+
+								    end
+
+
+									if (pHeight <= 960) then
+
+									 moveFieldsDown()
+
+									end
 
 							end
 
@@ -758,26 +790,21 @@ local function TextLimitation( event )
 
 	        elseif event.phase == "ended" then
 
-				    if event.target.id =="longmessage" then
-
-				   		native.setKeyboardFocus( nil )
+	        	print("editing")
 
 
-				   		       if (pHeight <= 960) then
+				   if event.target.id =="longmessage" then
 
-								 moveFieldsDown()
+									native.setKeyboardFocus( nil )
 
-								end
+				  end
 
-				   end
 
-     --               -- scrollTo(0)
+				  if (pHeight <= 960) then
 
-					  if (pHeight <= 960) then
+	                    moveFieldsDown()
 
-		                    moveFieldsDown()
-
-		              end
+	              end
 
 		  end
 
@@ -947,7 +974,7 @@ end
 
 				short_msg_charlimit = display.newText(sceneGroup,MessagePage.ShortMsgLimit,0,0,native.systemFont,14)
 				short_msg_charlimit.anchorX = 0
-				short_msg_charlimit.x=W-120
+				short_msg_charlimit.x=W-123
 				short_msg_charlimit.anchorY = 0
 				short_msg_charlimit.y = shortmsg_textbox.y+shortmsg_textbox.contentHeight+2
 				short_msg_charlimit:setFillColor(0)
