@@ -104,15 +104,24 @@ local function audioAction( event )
 		                fSoundPlaying = true
 		                fSoundPaused = false
 
-		                local isChannelPaused = audio.isChannelPaused( 1 )
-						if isChannel1Playing then
-						    audio.pause( 1 )
-						end
-		                	local isChannel1Playing = audio.isChannelPlaying( 1 )
-							if isChannel1Playing then
+		              
+		                	local isChannelPaused = audio.isChannelPaused( 1 )
+							if isChannelPaused then
+
+								audio.resume( 1 )
+
 							else
+
+								local isChannelActive = audio.isChannelActive( 1 ) 
+							
+								if isChannelActive then
+
+									audio.pause( 1 );audio.stop(1);audio.dispose(1)
+
+								end
+
 								playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
-								audio.play( playbackSoundHandle, { channel=1, loops=-1 } )
+								audio.play( playbackSoundHandle, { channel=1 } )
 							end
 
 						end  
@@ -334,7 +343,7 @@ function scene:show( event )
 		    dataFileName = dataFileName .. ".aif"
 		else
 		    if isIos then
-		        dataFileName = dataFileName .. ".aif"
+		        dataFileName = dataFileName .. ".wav"
 		    elseif isAndroid then
 		        dataFileName = dataFileName .. ".wav"
 		    else
@@ -380,8 +389,15 @@ end
 
 		elseif phase == "did" then
 
-			local isChannel1Playing = audio.isChannelPlaying( 1 )
-				if isChannel1Playing then
+
+				if r:isRecording() then
+		            r:stopRecording()
+		            timer.cancel(countdown)
+		       	end
+
+
+			local isChannelActive = audio.isChannelActive( 1 ) 
+				if isChannelActive then
 
 					audio.pause( 1 );audio.stop(1);audio.dispose(1)
 

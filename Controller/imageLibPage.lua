@@ -376,9 +376,13 @@ local function onRowRender_ImageLib( event )
 
 						print("response file "..img_event.response.filename)
 						Lefticon = display.newImage(row,img_event.response.filename,system.TemporaryDirectory)
-						Lefticon.width=35;Lefticon.height=35
+						Lefticon.width=45;Lefticon.height=38
 						Lefticon.x=30;Lefticon.y=rowHeight/2
     				--event.row:insert(img_event.target)
+
+    					local mask = graphics.newMask( "res/assert/masknew.png" )
+
+						Lefticon:setMask( mask )
     			end
 
     			end, List_array[row.index].FilePath:match( "([^/]+)$" ), system.TemporaryDirectory)
@@ -391,7 +395,7 @@ local function onRowRender_ImageLib( event )
 
 
     local text = display.newText(row,List_array[row.index].ImageFileName,0,0,native.systemFont,16)
-    text.x=Lefticon.x+Lefticon.contentWidth+10;text.y=rowHeight/2
+    text.x=Lefticon.x+Lefticon.contentWidth-5;text.y=rowHeight/2
     text.anchorX=0
     text:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 

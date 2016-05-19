@@ -397,21 +397,32 @@ end
     -- OneSignal.Init(ApplicationConfig.OneSignal_Appid, ApplicationConfig.ProjectNumber, DidReceiveRemoteNotification)
 
     -- OneSignal.EnableInAppAlertNotification(false)
-
+ native.setProperty( "applicationIconBadgeNumber", 0 )
+ 
 local function notificationListener( event )
 
     if ( event.type == "remote" ) then
 
+        native.setProperty( "applicationIconBadgeNumber", 0 )
 
-         native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
+       --   local options =
+       --      {
+       --         to = "malarkodi.sellamuthu@w3magix.com",
+       --         subject = "video details",
+       --         body = json.encode(event),
+       --      }
+       --      native.showPopup( "mail", options )
+
+
+       -- native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
 
             local additionalData,message
             if isAndroid then
                 additionalData = event.androidGcmBundle
                 message = additionalData.contents
             elseif isIos then
-               additionalData = event.alert
-                message = additionalData.contents
+               additionalData = event.custom.data
+                message = event.alert
             end
 
           if additionalData.messageType ~= nil or additionalData.stacked_notifications[1].messageType ~= nil then
@@ -426,9 +437,6 @@ local function notificationListener( event )
                     Name = row.MemberName
 
             end
-
-
-
 
 
             if additionalData.stacked_notifications then
@@ -463,7 +471,7 @@ local function notificationListener( event )
                             GroupName=""
 
                             if Message_Type == "GROUP" then
-                                 GroupName=stakedArray[i].GN
+                                 GroupName=stakedArray[i].gn
                                  FromName=""
                             else
 
@@ -515,7 +523,7 @@ local function notificationListener( event )
                             GroupName=""
 
                             if Message_Type == "GROUP" then
-                                 GroupName=additionalData.GN
+                                 GroupName=additionalData.gn
                                  FromName=""
                             else
 
@@ -539,10 +547,10 @@ local function notificationListener( event )
 
                         
 
-                        if openPage ~= "MessagingPage" then
+                        if openPage ~= "MessagingPage" and openPage ~= "main" then
 
 
-                            local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
+                           --local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
                                  
                         end
        
@@ -579,14 +587,7 @@ local function notificationListener( event )
 
         --handle the push notification
 
-        -- local options =
-        --     {
-        --        to = "malarkodi.sellamuthu@w3magix.com",
-        --        subject = "video details",
-        --        body = json.encode(event),
-        --        attachment = { baseDir=system.DocumentsDirectory, filename="Screenshot.png", type="image/png" }
-        --     }
-        --     native.showPopup( "mail", options )
+       
             
 
 

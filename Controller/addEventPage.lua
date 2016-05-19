@@ -881,6 +881,8 @@ end
 
 local function get_CreateTickler( response )
 
+	status="added"
+
 	if response.TicklerId ~= nil then
 
 		if response.TicklerId > 0 then
@@ -3592,7 +3594,10 @@ end
 
 				event.parent:resumeGame(status,UpdateValue)
 
+			elseif status == "added" then
+				event.parent:resumeGame(status)
 			else
+
 				status="back"
 				event.parent:resumeGame(status)
 

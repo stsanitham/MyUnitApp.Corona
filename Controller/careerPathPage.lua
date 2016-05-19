@@ -313,12 +313,17 @@ print("here")
 					else
 
 						if Image then
-
+						Image:removeSelf();Image=nil
 						print(img_event.response.filename)
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
-						Image.width=35;Image.height=35
+						Image.width=45;Image.height=38
 						Image.x=30;Image.y=background.y+background.contentHeight/2
     				--event.row:insert(img_event.target)
+
+
+    				local mask = graphics.newMask( "res/assert/masknew.png" )
+
+					Image:setMask( mask )
 
     			    else
 

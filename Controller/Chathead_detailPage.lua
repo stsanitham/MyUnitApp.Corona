@@ -681,7 +681,18 @@ local function CreateGroupMemberList( list )
 
 									Image:setMask( mask )
 
-		local Name_txt = display.newText(tempGroup,ContactList[i].First_Name.." "..ContactList[i].Last_Name,0,0,native.systemFont,14)
+		local name
+
+		if ContactList[i].First_Name ~= nil then 
+			name = ContactList[i].First_Name.." "..ContactList[i].Last_Name
+		else
+
+			name = ContactList[i].Last_Name
+
+
+		end
+
+		local Name_txt = display.newText(tempGroup,name,0,0,native.systemFont,14)
 		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
 		Name_txt.anchorX=0
 		Utils.CssforTextView(Name_txt,sp_labelName)

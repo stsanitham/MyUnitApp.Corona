@@ -41,7 +41,11 @@ settings =
 	        publisherId = "com.coronalabs",
 	        supportedPlatforms = { android=true, ["android-kindle"]=true },
 	    },
-
+["CoronaProvider.native.popup.activity"] =
+        {
+            publisherId = "com.coronalabs",
+           -- supportedPlatforms = { iphone=true, ["iphone-sim"]=true },
+        },
 
 	["CoronaProvider.native.popup.quickLook"] =
 	    {
@@ -68,7 +72,7 @@ settings =
 	{
 		plist =
 		{
-
+			CFBundleVersion = "1.2.5",
 			--CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
 			CFBundleIdentifier="com.spanenterprises.MUBDev",
 	

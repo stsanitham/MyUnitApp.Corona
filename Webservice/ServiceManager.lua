@@ -1248,7 +1248,7 @@ print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 		"allDay": ]]..tostring(allDay)..[[,
 		"Location": ']]..Location..[[',
 		"Description": ']]..Description..[[',
-		"AppointmentPurpose":  ]]..check(AppointmentPurpose)..[[,
+		"AppointmentPurpose":  ']]..check(AppointmentPurpose)..[[',
 		"AppointmentPurposeOther":  ']]..AppointmentPurposeOther..[[',
 		"Priority":  ]]..Priority..[[,
 		"TimeZone": ']]..TimeZone..[[',
@@ -2060,6 +2060,8 @@ function Webservice.AddTeamMemberToChatGroup(groupid,contacts,postExecution)
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
     local resbody = "userId="..UserId.."&groupId="..groupid
+
+    contacts[#contacts+1] = ContactId
 
     groupmembers = json.encode(contacts)
 

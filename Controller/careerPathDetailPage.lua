@@ -787,8 +787,8 @@ function scene:show( event )
 					height =H-RecentTab_Topvalue+ProfileImage.contentHeight,
 					--hideBackground = true,
 					isBounceEnabled=false,
-					horizontalScrollingDisabled = true,
-					verticalScrollingDisabled = false,
+					horizontalScrollDisabled = true,
+					--verticalScrollDisabled = true,
 					listener = observableScroll
 				}
 

@@ -21,7 +21,7 @@ application =
 		{
 			types =
 			{
-				"badge", "sound", "alert", "newsstand"
+				"badge", "sound", "alert", "custom"
 			}
 		}
     }  
