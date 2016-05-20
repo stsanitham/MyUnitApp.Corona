@@ -603,7 +603,6 @@ end
 
 
 
-
 local function TextLimitation( event )
 
        if event.phase == "began" then
@@ -626,7 +625,7 @@ local function TextLimitation( event )
 
                    end
 
-                    
+                   
                   if (pHeight <= 960) then
 
                         moveFieldsDown()
@@ -676,7 +675,7 @@ local function TextLimitation( event )
 
                                         native.setKeyboardFocus( longmsg_textbox )
 
-                                    else 
+                                    else
 
 
                                         if isAndroid then
@@ -742,7 +741,7 @@ local function TextLimitation( event )
 
                            end
 
-                                 
+                                
                             if (pHeight <= 960) then
 
                                     moveFieldsUp()
@@ -765,7 +764,7 @@ local function TextLimitation( event )
 
                                         native.setKeyboardFocus( nil )
 
-                                    else 
+                                    else
 
                                             if isAndroid then
 
@@ -804,7 +803,7 @@ local function TextLimitation( event )
 
                             end
 
-                                   
+                                  
                     end
 
 
@@ -994,7 +993,7 @@ end
 
 				short_msg_charlimit = display.newText(sceneGroup,MessagePage.ShortMsgLimit,0,0,native.systemFont,14)
 				short_msg_charlimit.anchorX = 0
-				short_msg_charlimit.x=W-120
+				short_msg_charlimit.x=W-123
 				short_msg_charlimit.anchorY = 0
 				short_msg_charlimit.y = shortmsg_textbox.y+shortmsg_textbox.contentHeight+2
 				short_msg_charlimit:setFillColor(0)
@@ -1053,19 +1052,16 @@ end
 
                         if page == "edit" then
 
-	                       shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
-						   longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
-
+	                        shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
+						    longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
 					   		short_msg_charlimit.text = (250 - shortmsg_textbox.text:len()).." "..MessagePage.characters
 
 				        	long_msg_charlimit.text = (1000 - longmsg_textbox.text:len()).." "..MessagePage.characters
 
-
-						back_icon:addEventListener("touch",closeMessagePage)
-						back_icon_bg:addEventListener("touch",closeMessagePage)
-						title:addEventListener("touch",closeMessagePage)
-
+							back_icon:addEventListener("touch",closeMessagePage)
+							back_icon_bg:addEventListener("touch",closeMessagePage)
+							title:addEventListener("touch",closeMessagePage)
                        	
                         end
 

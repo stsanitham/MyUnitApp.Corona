@@ -662,6 +662,7 @@ end
 
 				spinner.isVisible=false
 
+
 				local options = {
 				    width = 32,
 				    height = 32,
@@ -1458,8 +1459,6 @@ end
 									downloadimage.y = image.y+image.contentHeight/2-25
 									downloadimage.isVisible = true
 									downloadimage:toFront()
-
-									
 
 									downloadimage:addEventListener( "touch", receviednotifyDownload )
 
