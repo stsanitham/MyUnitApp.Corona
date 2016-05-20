@@ -12,7 +12,8 @@ require( "Webservice.ServiceManager" )
 local style = require("res.value.style")
 local scheduledMessageGroup = require( "Controller.scheduledMessageGroup" )
 local json = require("json")
-
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
 local timePicker = require( "Controller.timePicker" )
 local datePicker = require( "Controller.datePicker" )
 
@@ -60,7 +61,13 @@ end
 
 fieldTrans = 200
 
+local UserId,MemberName
 
+for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		UserId = row.UserId
+		MemberName = row.MemberName
+
+end
 
 --------------------------------------------------
 
@@ -356,7 +363,16 @@ end
 
 						IsScheduled = tostring(true)
 
-						Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
+							local ConversionFirstName,ConversionLastName,GroupName
+						local DocumentUpload = {}
+										
+					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+				
+				MessageFileType=""
+
+
+						Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,ConversionFirstName,MessageFileType,shortmsg_textbox.text,longmsg_textbox.text,IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
 
 						ScheduledMessageGroup.isVisible = false
 
@@ -397,7 +413,15 @@ end
 
         else
 
-        	Webservice.SEND_MESSAGE(shortmsg_textbox.text,longmsg_textbox.text,"","","","","","","","","","",method,"","","",get_messagemodel)
+        		local ConversionFirstName,ConversionLastName,GroupName
+						local DocumentUpload = {}
+										
+					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+				
+				MessageFileType=""
+
+        	Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longmsg_textbox.text,"","","","","","","","","","",method,"","","",get_messagemodel)
 
         end
 
@@ -580,176 +604,232 @@ end
 
 
 
-
-
-
 local function TextLimitation( event )
 
-	   if event.phase == "began" then
-						 
+       if event.phase == "began" then
 
-	   elseif event.phase == "submitted" then
+            print("began")
 
-				    if event.target.id =="longmessage" then
+       elseif event.phase == "submitted" then
 
-				   		native.setKeyboardFocus( nil )
+            print("submitted")
 
-				   		 if (pHeight <= 960) then
+                    if event.target.id =="longmessage" then
 
-				   		  moveFieldsDown()
+                           native.setKeyboardFocus( nil )
 
-				   		 end
+                            if (pHeight <= 960) then
 
-				   end
+                             moveFieldsDown()
 
-			--scrollTo(0)
+                            end
 
-					
-					  if (pHeight <= 960) then
+                   end
 
-		                    moveFieldsDown()
+                    
+                  if (pHeight <= 960) then
 
-		              end
+                        moveFieldsDown()
 
-
-
-	   elseif event.phase == "editing" then
-
-					if event.target.id =="shortmessage" then
-
-							if (string.len(event.target.text) > 250) then
-
-							event.target.text = event.target.text:sub(1, 250)
-
-							end
-
-
-							if (string.len(event.target.text) <= 250) then
-
-							      counttext = 250 - string.len(event.target.text).. MessagePage.characters
-
-							      short_msg_charlimit.text = counttext
-
-							end
-
-
-					        if (string.len(event.target.text) <= 0) then
-
-					       	      short_msg_charlimit.text = "250"..MessagePage.characters
-
-					        end
-
-
-					        if (event.newCharacters=="\n") then
-
-							shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
-
-							native.setKeyboardFocus( longmsg_textbox )
-
-						    end
+                  end
 
 
 
-						    if page == "edit" then
 
-						    	short_msg_charlimit.text = counttext
+       elseif event.phase == "editing" then
 
-						    end
+                print("editing")
 
+                    if event.target.id =="shortmessage" then
 
-					end
+                            if (string.len(event.target.text) > 250) then
 
+                                event.target.text = event.target.text:sub(1, 250)
 
-
-					if event.target.id =="longmessage" then
-
-							if (string.len(event.target.text) > 1000) then
-
-							event.target.text = event.target.text:sub(1, 1000)
-
-							end
+                            end
 
 
-							if (string.len(event.target.text) <= 1000) then
+                            if (string.len(event.target.text) <= 250) then
 
-							       countlongtext = 1000 - string.len(event.target.text) .. MessagePage.characters
+                                      counttext = 250 - string.len(event.target.text).. MessagePage.characters
 
-							       long_msg_charlimit.text = countlongtext
+                                      short_msg_charlimit.text = counttext
 
-							end
+                            end
+
+
+                            if (string.len(event.target.text) <= 0 ) then
+
+                                     short_msg_charlimit.text = "250"..MessagePage.characters
+
+                            end
 
 
 
-						       if (string.len(event.target.text) <= 0) then
+                            if (event.newCharacters=="\n") then
 
-						       	 long_msg_charlimit.text = "1000"..MessagePage.characters
+                                 shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
 
-						       end
+                                      if ( (event.startPosition == 1) and string.find( shortmsg_textbox.text , "", 1 )) then
+
+                                        short_msg_charlimit.text = "250".. MessagePage.characters
+
+                                        native.setKeyboardFocus( longmsg_textbox )
+
+                                    else 
+
+
+                                        if isAndroid then
+
+                                          shortlen = string.len(shortmsg_textbox.text) - 1
+
+                                        short_msg_charlimit.text = 250 - shortlen.. MessagePage.characters
+
+                                        native.setKeyboardFocus( longmsg_textbox )
+
+                                        elseif isIos then
+
+                                        shortlen = string.len(shortmsg_textbox.text)
+
+                                        short_msg_charlimit.text = 250 - shortlen.. MessagePage.characters
+
+                                        native.setKeyboardFocus( longmsg_textbox )
+
+                                        end
+
+                                    end
+
+                            end
+
+
+
+                            if page == "edit" then
+
+                                short_msg_charlimit.text = counttext
+
+                            end
+
+
+                    end
+
+
+------------------------------------long message--------------------------------------
+
+                    if event.target.id =="longmessage" then
+
+
+                            if (string.len(event.target.text) > 1000) then
+
+                                event.target.text = event.target.text:sub(1, 1000)
+
+                            end
+
+
+
+                            if (string.len(event.target.text) <= 1000) then
+
+                                    countlongtext = 1000 - string.len(event.target.text) .. MessagePage.characters
+
+                                    long_msg_charlimit.text = countlongtext
+
+                            end
+
+
+
+                           if (string.len(event.target.text) <= 0) then
+
+                                    long_msg_charlimit.text = "1000"..MessagePage.characters
+
+                           end
 
                                  
-						        if (pHeight <= 960) then
+                            if (pHeight <= 960) then
 
-		                                moveFieldsUp()
-		                        end
-
-
-
-							--print( event.newCharacters )
-
-							if (event.newCharacters=="\n") then
-
-							longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
-
-							native.setKeyboardFocus( nil )
-
-								if (pHeight <= 960) then
-
-								 moveFieldsDown()
-
-								end
-
-							end
+                                    moveFieldsUp()
+                            end
 
 
 
-						    if page == "edit" then
+                            --print( event.newCharacters )
 
-						    	long_msg_charlimit.text = countlongtext
+                            if (event.newCharacters=="\n") then
 
-						    end
+                                         longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
 
-		                           
-					end
-
+                                         longtext = longmsg_textbox.text
 
 
-	        elseif event.phase == "ended" then
+                                     if ( (event.startPosition == 1) and string.find( longmsg_textbox.text , "", 1 )) then
 
-				    if event.target.id =="longmessage" then
+                                        long_msg_charlimit.text = "1000".. MessagePage.characters
 
-				   		native.setKeyboardFocus( nil )
+                                        native.setKeyboardFocus( nil )
+
+                                    else 
+
+                                            if isAndroid then
+
+                                              longlen = string.len(longmsg_textbox.text) - 1
+
+                                            long_msg_charlimit.text = 1000 - longlen.. MessagePage.characters
+
+                                            native.setKeyboardFocus( nil )
+
+                                            elseif isIos then
+
+                                            longlen = string.len(longmsg_textbox.text)
+
+                                            long_msg_charlimit.text = 1000 - longlen.. MessagePage.characters
+
+                                            native.setKeyboardFocus( nil )
+
+                                            end
+
+                                    end
 
 
-				   		       if (pHeight <= 960) then
+                                    if (pHeight <= 960) then
 
-								 moveFieldsDown()
+                                     moveFieldsDown()
 
-								end
+                                    end
 
-				   end
+                            end
 
-     --               -- scrollTo(0)
 
-					  if (pHeight <= 960) then
 
-		                    moveFieldsDown()
+                            if page == "edit" then
 
-		              end
+                                long_msg_charlimit.text = countlongtext
 
-		  end
+                            end
+
+                                   
+                    end
+
+
+
+            elseif event.phase == "ended" then
+
+                print("editing")
+
+
+                   if event.target.id =="longmessage" then
+
+                                    native.setKeyboardFocus( nil )
+
+                  end
+
+
+                  if (pHeight <= 960) then
+
+                        moveFieldsDown()
+
+                  end
+
+          end
 
    end
-
 
 
 

@@ -517,7 +517,11 @@ local function TabbarTouch( event )
 				
 		elseif ( event.phase == "submitted" ) then
 
+			native.setKeyboardFocus(nil)
+
 		elseif event.phase == "ended" then
+
+			native.setKeyboardFocus(nil)
 
 		elseif ( event.phase == "editing" ) then
 

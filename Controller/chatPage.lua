@@ -657,6 +657,8 @@ end
 	--    event.target.object:toFront()
 	--    event.target.object:start()
 
+	local nativealert123 = native.showAlert( "MUB", event.target.id , { "ok"})
+
 
 				spinner.isVisible=false
 
@@ -1562,42 +1564,6 @@ end
 function get_imagemodel(response)
 
 
-		Imagepath = response.Abspath
-
-		Imagename = response.FileName
-
-		Imagesize = size
-
-		ChatBox_bg.isVisible = true
-
-		ChatBox.isVisible = true
-
-		sendBtn_bg.isVisible = true
-
-		sendBtn.isVisible = true
-
-		local q = "UPDATE pu_MyUnitBuzz_Message SET Image_Path='"..Imagepath.."' WHERE id='"..image_update_row.."';"
-		db:exec( q )
-
-		--sendMeaasage()
-
-			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
-			
-			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
-			isDeleted="false"
-			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-			ImagePath= Imagepath or ""
-			AudioPath="NULL"
-			VideoPath="NULL"
-			MyUnitBuzz_LongMessage=ChatBox.text
-			From=ContactId
-			To=To_ContactId
-			Message_Type = MessageType
-
-
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
-
 	end
 
 
@@ -1843,8 +1809,18 @@ local function ChatSendAction( event )
 				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
 				db:exec( insertQuery )
 
+				local ConversionFirstName,ConversionLastName,GroupName
+				local DocumentUpload = {}
 
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+				if MessageType == "GROUP" then
+
+					ConversionFirstName="";ConversionLastName="";GroupName=MemberName;DocumentUpload=""
+				else
+					ConversionFirstName="";ConversionLastName=MemberName;GroupName="";DocumentUpload=""
+				end
+						 
+
+			Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 
 
 		    else
@@ -2302,41 +2278,7 @@ end
 
 	function get_audiomodel( response )
 
-				composer.removeHidden()
-
-				ChatBox.isVisible=true
-
-
-			local audiopath = response.Abspath
-
-			local audioname = response.FileName
-
-			audiosize = size
-
-	
-			local q = "UPDATE pu_MyUnitBuzz_Message SET Audio_Path='"..audiopath.."' WHERE id='"..audio_update_row.."';"
-			db:exec( q )
-
-			
-
-				local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 				
-				Message_date=os.date("%Y-%m-%dT%H:%M:%S")
-				isDeleted="false"
-				Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-				Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-				ImagePath= ""
-				AudioPath=audiopath or ""
-				VideoPath="NULL"
-				MyUnitBuzz_LongMessage=ChatBox.text
-				From=ContactId
-				To=To_ContactId
-				Message_Type = MessageType
-
-
-
-				Webservice.SEND_MESSAGE("Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
-
 				--sendMeaasage()
 
 	end
@@ -2397,10 +2339,68 @@ end
 
 						formatSizeUnits(size)
 
+						composer.removeHidden()
+
+						ChatBox.isVisible=true
 
 
 
-						 Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
+					local audioname = dataFileName
+
+					audiosize = size
+
+
+				local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+				
+				Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+				isDeleted="false"
+				Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+				Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+				ImagePath= ""
+				AudioPath=audiopath or ""
+				VideoPath="NULL"
+				MyUnitBuzz_LongMessage=ChatBox.text
+				From=ContactId
+				To=To_ContactId
+				Message_Type = MessageType
+
+				local ConversionFirstName,ConversionLastName,GroupName
+				local DocumentUpload = {}
+
+				if MessageType == "GROUP" then
+
+					ConversionFirstName="";ConversionLastName="";GroupName=MemberName
+						  DocumentUpload = {
+						  	UserId = UserId,
+							        File = file_inbytearray,
+							        FileName = dataFileName,
+							        FileType = "Audios"
+							    }
+
+				else
+					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+				
+							  DocumentUpload = {
+							  	UserId = UserId,
+							        File = file_inbytearray,
+							        FileName = dataFileName,
+							        FileType = "Audios"
+							    }
+
+							
+
+
+
+				end
+
+				MessageFileType="Audios"
+
+				Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,"Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
+
+
+
+						-- Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
 
 
 						 sendMeaasage()
@@ -2453,7 +2453,84 @@ end
 
 					end 
 
-				   Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+
+
+		Imagesize = size
+
+		ChatBox_bg.isVisible = true
+
+		ChatBox.isVisible = true
+
+		sendBtn_bg.isVisible = true
+
+		sendBtn.isVisible = true
+
+		--sendMeaasage()
+
+			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+			
+			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+			isDeleted="false"
+			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+			ImagePath= Imagename or ""
+			AudioPath="NULL"
+			VideoPath="NULL"
+			MyUnitBuzz_LongMessage=ChatBox.text
+			From=ContactId
+			To=To_ContactId
+			Message_Type = MessageType
+
+
+			local path = system.pathForFile( Imagename, system.DocumentsDirectory)
+
+				        local size = lfs.attributes (path, "size")
+
+						local fileHandle = io.open(path, "rb")
+
+						local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+						formatSizeUnits(size)
+
+
+				local ConversionFirstName,ConversionLastName,GroupName
+				local DocumentUpload = {}
+
+				if MessageType == "GROUP" then
+
+					ConversionFirstName="";ConversionLastName="";GroupName=MemberName
+						  DocumentUpload = {
+						  			UserId = UserId,
+							        File = file_inbytearray,
+							        FileName = Imagename,
+							        FileType = "Images"
+							    }
+
+				else
+					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+				
+							  DocumentUpload = {
+							  		UserId = UserId,
+							        File = file_inbytearray,
+							        FileName = Imagename,
+							        FileType = "Images"
+							    }
+
+							
+
+
+
+				end
+
+				MessageFileType="Images"
+
+
+			Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+
+
+				   --Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
 
 				  sendMeaasage()
 

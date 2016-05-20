@@ -107,7 +107,7 @@ local AttachmentFlag = false
 -----------------Function-------------------------
 
 local makeTimeStamp = function ( dateString )
-
+print( "dateString : "..dateString )
 	local pattern = "(%d+)%/(%d+)%/(%d+) (%d+):(%d+) (%a+)"
 	local month,day,year,hour,minute,tzoffset =
 	dateString:match(pattern)
@@ -672,13 +672,14 @@ local function onRowTouch(event)
 		List.isVisible = false
 		QuickContactList.isVisible = false
 		List.textFiled.text = row.name
-		List.textFiled.value = row.name
+		List.textFiled.value = row.id
 
-	
 
 		if List.textFiled.text:lower( ) == "party" then
 
 			ChangeParty()
+
+
 
 		elseif List.textFiled.text:lower( ) == "appointment" then
 
@@ -752,6 +753,19 @@ local function onRowTouch(event)
 			belowOtherGroup.y = 0
 
 		else
+
+
+
+				for i=1,#AddeventPage.purposeArray do
+	  				if AddeventPage.purposeArray[i].value == row.name then
+	  					List.textFiled.value=AddeventPage.purposeArray[i].id
+	  				end
+	 			end
+
+
+	 			print( "value : "..List.textFiled.value )
+
+	 			
 		--AddeventArray[PriorityLbl.count]
 			Other.isVisible = false
 			BottomOther.isVisible = false
@@ -881,9 +895,10 @@ end
 
 local function get_CreateTickler( response )
 
-	status="added"
-
 	if response.TicklerId ~= nil then
+
+
+		status = "added"
 
 		if response.TicklerId > 0 then
 		
@@ -1118,8 +1133,8 @@ local function TouchAction( event )
 
 				if allDay == true then
 
-					EventFrom_time = "00:00"
-					EventTo_time = "00:00"
+					EventFrom_time = "00:00 AM"
+					EventTo_time = "00:00 AM"
 				else
 					EventFrom_time = Event_from_time.text
 					EventTo_time = Event_to_time.text
@@ -1150,6 +1165,7 @@ local function TouchAction( event )
 				function get_GetUserPreferencebyUserId( response )
 
 
+					print( "color response : "..json.encode(response ))
 
 				local colorCode
 
@@ -1217,7 +1233,7 @@ local function TouchAction( event )
 
 
 
-						if end_time <= start_time then
+						if end_time <= start_time and allDay ~= true then
 
 								ErrorIcon.isVisible=true
 
@@ -1254,7 +1270,9 @@ local function TouchAction( event )
 
 						end
 							
-								local start_time,end_time
+						local start_time,end_time
+
+						print( "startdate : "..startdate.."\n"..enddate )
 
 						if string.find( startdate, "PM") then
 
@@ -1269,7 +1287,7 @@ local function TouchAction( event )
 						end
 
 
-						if end_time <= start_time then
+						if end_time <= start_time and allDay ~= true then
 
 								ErrorIcon.isVisible=true
 
@@ -1286,12 +1304,10 @@ local function TouchAction( event )
 				end
 
 				print( "****************here****************" )
+
 				Webservice.GetUserPreferencebyUserId(get_GetUserPreferencebyUserId)
 
-				
-
-
-				
+								
 				
 			elseif event.target.id == "AppintmentWith_plus" then
 
@@ -3593,11 +3609,11 @@ end
 			if status == "details" then
 
 				event.parent:resumeGame(status,UpdateValue)
-
 			elseif status == "added" then
-				event.parent:resumeGame(status)
-			else
 
+				event.parent:resumeGame(status)
+
+			else
 				status="back"
 				event.parent:resumeGame(status)
 

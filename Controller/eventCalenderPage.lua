@@ -1451,6 +1451,7 @@ function scene:resumeGame(value,EditArray)
 			local temp = os.date( '*t' )
 			temp.day = temp.day - os.date( "%w" ) 
 			weekViewTouchFlag=true
+			ParentShow=true
 			creatWeek(temp,true)
 
 

@@ -249,6 +249,8 @@ function scene:show( event )
 
         	print("Imageview photo : ",imageview)
 
+        	print("photoview : ",photoview)
+
         end
 
 
