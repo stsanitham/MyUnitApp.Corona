@@ -2811,7 +2811,7 @@ end
 
 		if event.phase == "will" then
 
-			Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+			    Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 				Runtime:removeEventListener( "key", onKeyEvent )
 				image_name_close:removeEventListener( "touch", ImageClose )
 

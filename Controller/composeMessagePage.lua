@@ -29,6 +29,8 @@ local menuBtn, test
 
 local back_icon_bg, back_icon
 
+local Imagepath = "";Imagename = "";Imagesize = ""
+
 openPage="pushNotificationListPage"
 
 local RecentTab_Topvalue = 70
@@ -40,6 +42,8 @@ local status
 local Details={}
 
 local openPagevalue = "addpage"
+
+local PHOTO_FUNCTION = media.PhotoLibrary 
 
 local pWidth = display.pixelWidth 
 
@@ -82,21 +86,145 @@ end
 
 
 
-local function onIconsTouch( event )
-	
-	if event.phase == "began" then
 
-		native.setKeyboardFocus(nil)
-		display.getCurrentStage():setFocus( event.target )
 
-	elseif event.phase == "ended" then
+local function selectionComplete ( event )
+ 
+        local photo = event.target
 
-	    display.getCurrentStage():setFocus( nil )
+        local baseDir = system.DocumentsDirectory
+
+        if photo then
+
+        photo.x = display.contentCenterX
+		photo.y = display.contentCenterY
+		local w = photo.width
+		local h = photo.height
+		print( "w,h = ".. w .."," .. h )
+
+		local function rescale()
+					
+					if photo.width > W or photo.height > H then
+
+						photo.width = photo.width/2
+						photo.height = photo.height/2
+
+						intiscale()
+
+					else
+               
+						return false
+
+					end
+				end
+
+		function intiscale()
+			
+			if photo.width > W or photo.height > H then
+
+				photo.width = photo.width/2
+				photo.height = photo.height/2
+
+				rescale()
+
+			else
+
+				return false
+
+			end
+
+		end
+
+		intiscale()
+
+		photoname = "image"..os.date("%Y%m%d%H%M%S")..".png"
+
+
+
+        display.save(photo,photoname,system.DocumentsDirectory)
+
+		photo:removeSelf()
+
+        photo = nil
+
+
+        path = system.pathForFile( photoname, baseDir)
+
+        local size1 = lfs.attributes (path, "size")
+
+		local fileHandle = io.open(path, "rb")
+
+		file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+		io.close( fileHandle )
+
+            print("mime conversion ",file_inbytearray)
+
+        	print("bbb ",size1)
+
+        formatSizeUnits(size1)
+
+
+				local function uploadImage(  )
+
+						    function get_imagemodel(response)
+
+						    	print("get image model called : its response is here ~~~~~~~~~~~~~~~~")
+
+									Imagepath = response.Abspath
+
+									Imagename = response.FileName
+
+									Imagesize = size
+
+
+									filename_title.isVisible = true
+
+									filename.isVisible = true
+
+									filename_close.isVisible = true
+
+									filename.text = photoname
+
+
+										    function ImageClose(event)
+
+														filename.text = ""
+
+														filename.isVisible = false
+
+														filename_title.isVisible = false
+
+														filename_close.isVisible = false
+
+														os.remove( path )
+
+											end
+
+
+				                    filename_close:addEventListener("touch",ImageClose)
+
+							 end
+
+
+					 Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+				end
+
+
+        uploadImage()
+
+	else
 
 	end
 
-	return true
 end
+
+
+
+
+
+
 
 
 
@@ -142,7 +270,7 @@ end
 												effect = "slideRight",
 
 												time = 300,
-												params = { editpagevalue = list_values, page_val = "editpage"}
+												params = { editpagevalue = list_values, page_val = "editpage", Imagepathname = Imagepath}
 					
 												}
                            
@@ -231,6 +359,8 @@ end
 
 								longmsg_textbox.text = ""
 
+								longmsg_textbox.isVisible = false
+
 								longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
 
 								short_msg_charlimit.text = MessagePage.ShortMsgLimit
@@ -277,6 +407,12 @@ end
 	    end
 
 	end
+
+
+
+
+
+
 
 
 
@@ -340,6 +476,8 @@ end
 
 
 
+
+
     function onScheduleButtonTouch( event )
 
 			if event.phase == "began" then
@@ -357,7 +495,15 @@ end
 
 						IsScheduled = tostring(true)
 
-						Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello",IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
+				        	if Imagepath ~= nil or Imagepath ~= null or Imagepath ~= "" then
+
+				        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
+
+				            else
+
+				               Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
+
+				            end
 
 						ScheduledMessageGroup.isVisible = false
 
@@ -398,7 +544,18 @@ end
 
         else
 
-        	Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello","","","","","","","","","","",method,"","","",get_messagemodel)
+
+        	if Imagepath ~= nil or Imagepath ~= null or Imagepath ~= "" then
+
+
+        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
+
+            else
+
+               Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","","","","",method,"","","",get_messagemodel)
+
+            end
+
 
         end
 
@@ -809,25 +966,106 @@ local function TextLimitation( event )
 
 
 
-function string.urlEncode( str )
-	if ( str ) then
-		str = string.gsub( str, "\n", "\r\n" )
-		str = string.gsub( str, "([^%w ])",
-			function (c) return string.format( "%%%02X", string.byte(c) ) end )
-		str = string.gsub( str, " ", "+" )
+
+
+ function formatSizeUnits(event)
+
+      if (event>=1073741824) then 
+
+      	size=(event/1073741824)..' GB'
+
+      print("size of the image11 ",size)
+
+
+      elseif (event>=1048576) then   
+
+       	size=(event/1048576)..' MB'
+
+      print("size of the image 22",size)
+
+	  
+	  elseif (event > 10485760) then
+
+	  print("highest size of the image ",size)
+
+	    local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+
+	       
+      elseif (event>=1024)  then   
+
+      	size = (event/1024)..' KB'
+
+       print("size of the image 33",size)
+
+      else      
+
+  	  end
+
+
+end
+
+
+
+
+
+local function onIconsTouch( event )
+
+	if event.phase == "began" then
+
+	elseif event.phase == "ended" then
+
+		if event.target.id =="camera" then
+
+				if media.hasSource( media.Camera ) then
+				timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+				end )
+
+			    else
+
+			    	local image1 = native.showAlert( "Camera Unavailable", "Camera is not supported in this device", { CommonWords.ok } )
+
+				end
+
+		elseif event.target.id == "gallery" then
+
+				if media.hasSource( PHOTO_FUNCTION  ) then
+				timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+				end )
+				end
+
+		end
+
 	end
-	return str
+
+return true
 end
 
 
-function urlDecode( str )
-    assert( type(str)=='string', "urlDecode: input not a string" )
-    str = string.gsub (str, "+", " ")
-    str = string.gsub (str, "%%(%x%x)",
-        function(h) return string.char(tonumber(h,16)) end)
-    str = string.gsub (str, "\r\n", "\n")
-    return str
-end
+
+
+
+
+
+	function string.urlEncode( str )
+		if ( str ) then
+			str = string.gsub( str, "\n", "\r\n" )
+			str = string.gsub( str, "([^%w ])",
+				function (c) return string.format( "%%%02X", string.byte(c) ) end )
+			str = string.gsub( str, " ", "+" )
+		end
+		return str
+	end
+
+
+
+	function urlDecode( str )
+	    assert( type(str)=='string', "urlDecode: input not a string" )
+	    str = string.gsub (str, "+", " ")
+	    str = string.gsub (str, "%%(%x%x)",
+	        function(h) return string.char(tonumber(h,16)) end)
+	    str = string.gsub (str, "\r\n", "\n")
+	    return str
+	end
 
 
 
@@ -882,7 +1120,6 @@ end
 
 
 
-
 		    if 1 == string.find( url, "corona:close" ) then
 		        -- Close the web popup
 
@@ -928,6 +1165,16 @@ end
 
 					shortmsg_textbox.isVisible = false
 				end
+
+
+				if y > -120 then
+
+					longmsg_textbox.isVisible = true
+				else
+
+					longmsg_textbox.isVisible = false
+				end
+
 
 		    elseif ( phase == "ended" ) then 
 
@@ -1050,7 +1297,7 @@ end
 			hideBackground = true,
 			isBounceEnabled=false,
 			horizontalScrollDisabled = true,
-			bottomPadding = 20,
+			bottomPadding = 35,
 			friction = .4,
    			listener = composemsg_scrollListener,
 		    }
@@ -1143,7 +1390,7 @@ end
 				-- --longmsg_textbox.y=longmsg_title.y+ longmsg_title.height+7
 
 
-		        content = "hai hello"
+		        content = "hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham."
 
 			    test= string.urlEncode(content)
 
@@ -1176,6 +1423,9 @@ end
 				end
 
 				file = nil
+
+
+				local json_file_by_get = jsonFile( network.request( "http://www.yourserver.com/your_json_file.php?parameter1=value1&parameter2=value2&parameter3=value3", "GET", networkListener ) )
 
 
 
@@ -1247,18 +1497,10 @@ end
 				camera_icon = display.newImageRect("res/assert/camera1.png",40,35)
 				camera_icon.x=W/2 - W/3 - 15
 				camera_icon.anchorX=0
-				camera_icon.anchorY=0
 				camera_icon.id= "camera"
+				camera_icon.anchorY=0
 				camera_icon.y = icons_holder_bg.y + 7.5
 				camera_icon:addEventListener("touch",onIconsTouch)
-				scrollView:insert(camera_icon)
-
-
-				camera_icon = display.newImageRect("res/assert/camera1.png",40,35)
-				camera_icon.x=W/2 - W/3 - 15
-				camera_icon.anchorX=0
-				camera_icon.anchorY=0
-				camera_icon.y = icons_holder_bg.y + 7.5
 				scrollView:insert(camera_icon)
 
 
@@ -1319,15 +1561,6 @@ end
 				scrollView:insert(gallery_icon)
 
 
-                gallery_icon = display.newImageRect("res/assert/gallery1.png",40,35)
-				gallery_icon.x= W/2 - W/3 - 15
-				gallery_icon.anchorX=0
-				gallery_icon.anchorY=0
-				gallery_icon.y = camera_icon.y + camera_icon.contentHeight + 35
-				scrollView:insert(gallery_icon)
-
-
-
 				gallery_icon_txt = display.newText(MessagePage.Gallery,0,0,native.systemFont,14)
 				gallery_icon_txt.anchorX = 0
 				gallery_icon_txt.anchorY = 0
@@ -1375,11 +1608,44 @@ end
 				scrollView:insert(Contact_icon_txt)
 
 
+---------------------------------------- File name and its title ------------------------------------------
+
+
+				filename_title = display.newText("File Name",0,0,native.systemFont,14)
+				filename_title.anchorX = 0
+				filename_title.anchorY = 0
+				filename_title.x = 10
+				filename_title.isVisible = false
+				filename_title.y = icons_holder_bg.y+icons_holder_bg.contentHeight+15
+				filename_title:setFillColor(0)
+				scrollView:insert(filename_title)
+
+
+				filename = display.newText(MessagePage.Audio,0,0,native.systemFont,14)
+				filename.anchorX = 0
+				filename.anchorY = 0
+				filename.isVisible = false
+				filename.x = filename_title.x 
+				filename.y = filename_title.y+filename_title.contentHeight+10
+				filename:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				scrollView:insert(filename)
+
+
+				filename_close = display.newImageRect("res/assert/icon-close.png",20,20)
+				filename_close.anchorX = 0
+				filename_close.anchorY = 0
+				filename_close.isVisible = false
+				filename_close.x = W - 35
+				filename_close.y = filename_title.y+filename_title.contentHeight+8
+				scrollView:insert(filename_close)
+
+
 ------------------------------------------ Schedule Button -----------------------------------------------
 
 			    schedule_button = display.newRect(0,0,W-50,26)
 				schedule_button.x = W/2 - W/3 - 45
-				schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				schedule_button.y = filename.y + filename.contentHeight +15
+				--schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
 				--schedule_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				schedule_button.width = W - 210
 				schedule_button.anchorX = 0
@@ -1415,7 +1681,8 @@ end
 
 			    send_button = display.newRect(0,0,W-50,26)
 				send_button.x = W/2 - 35
-				send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				send_button.y = filename.y + filename.contentHeight +15
+				--send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
 				--send_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				send_button.width = W - 235
 				send_button.anchorX = 0
@@ -1449,7 +1716,8 @@ end
 
 			    draft_button = display.newRect(0,0,W-50,26)
 				draft_button.x = W/2 + W/3 - 50
-				draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				draft_button.y = filename.y + filename.contentHeight +15
+				--draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
 				--draft_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				draft_button.width = W - 225
 				draft_button.anchorX = 0

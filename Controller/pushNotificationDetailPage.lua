@@ -24,6 +24,8 @@ local Background,BgText,title_bg,title
 
 local menuBtn
 
+local reciveImageFlag=false
+
 openPage = "pushNotificationListPage"
 
 local RecentTab_Topvalue = 70
@@ -575,10 +577,11 @@ end
 			file:write( saveData )
 
 			
-			webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 150 )
+			webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 260 )
 
 			webView.hasBackground = false
 			webView.x = short_msg_txt.x - 7
+			webView.height =  H - 260 
 			webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
 
 			webView.anchorX=0;webView.anchorY=0
@@ -596,7 +599,53 @@ end
 
 			end
 
-	    end
+
+
+
+
+		if detail_value.ImageFilePath ~= null then
+
+						local function recivedNetwork( event )
+						    if ( event.isError ) then
+						        print( "Network error - download failed: ", event.response )
+						    elseif ( event.phase == "began" ) then
+						        print( "Progress Phase: began" )
+						    elseif ( event.phase == "ended" ) then
+						        print( "Displaying response image file" )
+						        reciveImageFlag=true
+
+								myImage = display.newImage( event.response.filename, event.response.baseDirectory, display.viewableContentWidth, display.contentHeight )
+								myImage.y = webView.y+webView.height+20
+								myImage.x = display.contentCenterX
+								myImage.anchorY=0
+								--myImage.width = display.viewableContentWidth - 20
+								--myImage.height = display.viewableContentHeight - 200
+								myImage.width = 100
+								myImage.height = 100
+
+							    sceneGroup:insert(myImage)
+
+			                    messagedetail_scrollView:insert( myImage)
+						  		
+						    end
+						end
+
+
+		local testimage = 
+
+			network.download(
+			detail_value.ImageFilePath,
+			"GET",
+			recivedNetwork,
+			detail_value.ImageFilePath:match( "([^/]+)$" ),
+			system.DocumentsDirectory
+			)
+
+		end
+
+
+ end
+
 
 	      -- sceneGroup:insert(messagedetail_scrollView)
             
