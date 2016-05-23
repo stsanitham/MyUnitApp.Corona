@@ -1306,6 +1306,9 @@ end
 
 				 Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
 
+
+				 local call = native.showAlert("MUB",ChatHistory[i].Image_Path.."   "..Imagename,{"ok"})
+
 				 local image
 
 				 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
@@ -2473,7 +2476,7 @@ end
 			isDeleted="false"
 			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-			ImagePath= Imagename or ""
+			ImagePath= photoviewname or ""
 			AudioPath="NULL"
 			VideoPath="NULL"
 			MyUnitBuzz_LongMessage=ChatBox.text
@@ -2526,7 +2529,7 @@ end
 				MessageFileType="Images"
 
 
-			Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+			      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 
 
 				   --Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
