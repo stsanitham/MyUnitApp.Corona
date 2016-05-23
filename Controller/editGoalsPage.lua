@@ -138,6 +138,8 @@ local function webListener( event )
 
         shouldLoad = false
 
+        print(url)
+
 
         updatedresponse = urlDecode(url)
 

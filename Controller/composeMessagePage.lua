@@ -12,6 +12,8 @@ require( "Webservice.ServiceManager" )
 local style = require("res.value.style")
 local scheduledMessageGroup = require( "Controller.scheduledMessageGroup" )
 local json = require("json")
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
 
 local timePicker = require( "Controller.timePicker" )
 local datePicker = require( "Controller.datePicker" )
@@ -186,6 +188,21 @@ local function selectionComplete ( event )
 
 									filename.text = photoname
 
+									schedule_button.y = filename.y + filename.contentHeight +15
+									schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+									schedule_icon_text.y= schedule_icon.y
+									schedule_button.height=schedule_icon_text.contentHeight+10
+
+									send_button.y = filename.y + filename.contentHeight +15
+									send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+									send_icon_text.y= send_icon.y
+									send_button.height=send_icon_text.contentHeight+10
+
+									draft_button.y = filename.y + filename.contentHeight +15
+									draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+									draft_icon_text.y= draft_icon.y
+									draft_button.height=draft_icon_text.contentHeight+10
+
 
 										    function ImageClose(event)
 
@@ -198,6 +215,24 @@ local function selectionComplete ( event )
 														filename_close.isVisible = false
 
 														os.remove( path )
+
+														schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+														schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+														schedule_icon_text.y= schedule_icon.y
+
+														schedule_button.height=schedule_icon_text.contentHeight+10
+
+														send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+														send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+														send_icon_text.y= send_icon.y
+
+														send_button.height=send_icon_text.contentHeight+10
+
+														draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+														draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+														draft_icon_text.y= draft_icon.y
+
+														draft_button.height=draft_icon_text.contentHeight+10
 
 											end
 
@@ -656,7 +691,7 @@ end
 
 
 
-	        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (longmsg_textbox.text == "" or longmsg_textbox.text == nil) then
+	        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (test == "" or test == nil) then
 
 	        	        validation = false
 
@@ -668,7 +703,7 @@ end
 	        end
 
 
-	        if (longmsg_textbox.text ~= "" or longmsg_textbox.text ~= nil) and (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) then
+	        if (test ~= "" or test ~= nil) and (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) then
 
 	        	        validation = false
 
@@ -1033,6 +1068,33 @@ local function onIconsTouch( event )
 				end )
 				end
 
+		elseif event.target.id == "audio" then
+
+					for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+							UserId = row.UserId
+							ContactId = row.ContactId
+							MemberName = row.MemberName
+
+					end
+
+			    local MessageType=""
+
+			    print("contact id:",ContactId)
+
+			    local options = {
+
+				      		effect = "fromTop",
+							time = 200,	
+								params = {
+								contactId = ContactId,
+								MessageType = MessageType,
+								page = "compose"
+							}
+
+							}
+
+		    composer.showOverlay( "Controller.audioRecordPage",options)
+
 		end
 
 	end
@@ -1043,108 +1105,153 @@ end
 
 
 
+local function webListener( event )
+    local shouldLoad = true
+
+    local url = event.url
+
+    print( "here" )
+    if 1 == string.find( url, "corona:close" ) then
+        -- Close the web popup
+
+        shouldLoad = false
+
+        print(url)
+
+
+        updatedresponse = urlDecode(url)
+
+
+        updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
+
+        print( "updatedresponse : "..updatedresponse )
+
+        if webView then webView:removeSelf( );webView=nil end
+
+       -- Webservice.SaveMyUnitBuzzGoals(Goalsid,updatedresponse,get_SaveMyUnitBuzzGoals)
+
+    end
+
+    if event.errorCode then
+        -- Error loading page
+        print( "Error: " .. tostring( event.errorMessage ) )
+        shouldLoad = false
+    end
+
+    return shouldLoad
+end
 
 
 
-	function string.urlEncode( str )
-		if ( str ) then
-			str = string.gsub( str, "\n", "\r\n" )
-			str = string.gsub( str, "([^%w ])",
-				function (c) return string.format( "%%%02X", string.byte(c) ) end )
-			str = string.gsub( str, " ", "+" )
-		end
-		return str
-	end
 
 
+		-- local function webListener( event )
+		--     local shouldLoad = true
 
-	function urlDecode( str )
-	    assert( type(str)=='string', "urlDecode: input not a string" )
-	    str = string.gsub (str, "+", " ")
-	    str = string.gsub (str, "%%(%x%x)",
-	        function(h) return string.char(tonumber(h,16)) end)
-	    str = string.gsub (str, "\r\n", "\n")
-	    return str
-	end
+		--     local url = event.url
+
+		--     print( "here",event.url.. "  "..event.type)
+
+		--     	updatedresponse = urlDecode(url)
+
+		--         updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
+
+		--         print( "updatedresponse : "..updatedresponse )
 
 
 
 
 
-		local function webListener( event )
-		    local shouldLoad = true
+		-- 			-- local function networkListener( event )
 
-		    local url = event.url
+		-- 			-- 	print(event.response)
 
-		    print( "here",url )
+		-- 			-- if ( event.isError ) then
+		-- 			-- local alert = native.showAlert( "Corona", event.response, { "OK"} )
+		-- 			-- else
+		-- 			-- local pattern = ">%d%d,%d%d%d<"
+		-- 			-- local buyPrice = string.sub(event.response, string.find(event.response, pattern))
+		-- 			-- -- local alert = native.showAlert( "Corona", string.sub(buyPrice, 2, -2), { "OK"} )
+		-- 			-- local junkLength = string.len(event.response);
+		-- 			-- local sellJunk = string.find(event.response, pattern)
+		-- 			-- local  sellPriceJunk= string.sub(event.response, sellJunk+50, sellJunk-junkLength+1000)
+		-- 			-- local sellPrice = string.sub(sellPriceJunk, string.find(sellPriceJunk, pattern))
 
-		   -- local test = CKEDITOR.instances.UnitGoals.getData()
+		-- 			-- local alert = native.showAlert( "Corona", string.sub(buyPrice,2,-2).." and "..string.sub(sellPrice,2,-2), { "OK"} )
 
-		   -- print(test)
+		-- 			-- end
+		-- 			-- end
 
-		-- updatedresponse = urlDecode(url)
+		-- 			-- network.request( event.url, "GET", networkListener )
 
-        -- updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
 
-		-- local test= string.urlEncode(url)
+		--    -- local test = CKEDITOR.instances.UnitGoals.getData()
 
-		-- content = test
+		--    -- print(test)
 
-		--  print( "here content ",test )
+		-- -- updatedresponse = urlDecode(url)
 
-		-- local saveData = [[<!DOCTYPE html>
-		-- <html>
+  --       -- updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
 
-		-- <head>
-		-- <meta charset="utf-8">
-		-- <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-		-- </head>]]..test..[[</html>]]
+		-- -- local test= string.urlEncode(url)
 
-		-- -- Path for the file to write
-		-- local path = system.pathForFile( "ckeditor.html", system.DocumentsDirectory )
+		-- -- content = test
 
-		-- -- Open the file handle
-		-- local file, errorString = io.open( path, "w" )
+		-- --  print( "here content ",test )
 
-		-- if not file then
-		--     -- Error occurred; output the cause
-		--     print( "File error: " .. errorString )
-		-- else
-		--     -- Write data to file
-		--     file:write( saveData )
-		--     -- Close the file handle
-		--     io.close( file )
+		-- -- local saveData = [[<!DOCTYPE html>
+		-- -- <html>
+
+		-- -- <head>
+		-- -- <meta charset="utf-8">
+		-- -- <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		-- -- </head>]]..test..[[</html>]]
+
+		-- -- -- Path for the file to write
+		-- -- local path = system.pathForFile( "ckeditor.html", system.DocumentsDirectory )
+
+		-- -- -- Open the file handle
+		-- -- local file, errorString = io.open( path, "w" )
+
+		-- -- if not file then
+		-- --     -- Error occurred; output the cause
+		-- --     print( "File error: " .. errorString )
+		-- -- else
+		-- --     -- Write data to file
+		-- --     file:write( saveData )
+		-- --     -- Close the file handle
+		-- --     io.close( file )
+		-- -- end
+
+		-- -- file = nil
+
+
+
+		--     if 1 == string.find( url, "corona:close" ) then
+		--         -- Close the web popup
+
+		--         shouldLoad = false
+
+		--         -- updatedresponse = urlDecode(url)
+
+		--         -- updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
+
+		--         -- print( "updatedresponse : "..updatedresponse )
+
+		--          if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
+
+		--         -- Webservice.SaveMyUnitBuzzGoals(Goalsid,updatedresponse,get_SaveMyUnitBuzzGoals)
+
+		--     end
+
+		--     if event.errorCode then
+		--         -- Error loading page
+		--         print( "Error: " .. tostring( event.errorMessage ) )
+		--         shouldLoad = false
+		--     end
+
+		--     return shouldLoad
 		-- end
-
-		-- file = nil
-
-
-
-		    if 1 == string.find( url, "corona:close" ) then
-		        -- Close the web popup
-
-		        shouldLoad = false
-
-		        -- updatedresponse = urlDecode(url)
-
-		        -- updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
-
-		        -- print( "updatedresponse : "..updatedresponse )
-
-		         if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
-
-		        -- Webservice.SaveMyUnitBuzzGoals(Goalsid,updatedresponse,get_SaveMyUnitBuzzGoals)
-
-		    end
-
-		    if event.errorCode then
-		        -- Error loading page
-		        print( "Error: " .. tostring( event.errorMessage ) )
-		        shouldLoad = false
-		    end
-
-		    return shouldLoad
-		end
 
 
 
@@ -1157,6 +1264,21 @@ end
 		    elseif ( phase == "moved" ) then 
 
 			local x, y = scrollView:getContentPosition()
+
+				-- if filename.isVisible == true then
+
+				-- 		scrollView.bottomPadding = 100
+
+				-- 		print("FileName")
+
+				-- else    
+
+				-- 	    print("not FileName")
+
+				-- 	    scrollView.bottomPadding = 35
+
+				-- end
+
 
 				if y > -30 then
 
@@ -1202,13 +1324,22 @@ end
 
 				display.getCurrentStage():setFocus( event.target )
 
+
 			elseif event.phase == "ended" then
 
 			    display.getCurrentStage():setFocus( nil )
 
 		            native.setKeyboardFocus(nil)
 
-				    composer.hideOverlay("slideRight",300)		
+		            if status == "chat" then
+
+				       composer.hideOverlay("slideRight",300)		
+
+				    else
+ 
+				       composer.gotoScene("Controller.pushNotificationListPage","slideRight",300)		
+
+				    end
 
 				   -- scrollTo(0)
 
@@ -1282,8 +1413,12 @@ end
 		
 		if phase == "will" then
 
+			if event.params then
+
 			status=event.params.page
 			Details = event.params.Details
+
+		    end
 
 			sceneevent = event
 
@@ -1297,7 +1432,7 @@ end
 			hideBackground = true,
 			isBounceEnabled=false,
 			horizontalScrollDisabled = true,
-			bottomPadding = 35,
+			bottomPadding = 60,
 			friction = .4,
    			listener = composemsg_scrollListener,
 		    }
@@ -1394,6 +1529,8 @@ end
 
 			    test= string.urlEncode(content)
 
+			    print("test value : ",test)
+
 				local path = system.pathForFile( "ckeditor.html",system.DocumentsDirectory )
 
 				local file, errorString = io.open( path, "w+" )
@@ -1425,8 +1562,6 @@ end
 				file = nil
 
 
-				local json_file_by_get = jsonFile( network.request( "http://www.yourserver.com/your_json_file.php?parameter1=value1&parameter2=value2&parameter3=value3", "GET", networkListener ) )
-
 
 
 				long_msg_charlimit = display.newText(MessagePage.LongMsgLimit,0,0,native.systemFont,14)
@@ -1447,8 +1582,8 @@ end
 
                         if page == "edit" then
 
-	                       shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
-						   longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
+	                        shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
+						    longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
 
 					   		short_msg_charlimit.text = (250 - shortmsg_textbox.text:len()).." "..MessagePage.characters
@@ -1456,9 +1591,9 @@ end
 				        	long_msg_charlimit.text = (1000 - longmsg_textbox.text:len()).." "..MessagePage.characters
 
 
-						back_icon:addEventListener("touch",closeMessagePage)
-						back_icon_bg:addEventListener("touch",closeMessagePage)
-						title:addEventListener("touch",closeMessagePage)
+							back_icon:addEventListener("touch",closeMessagePage)
+							back_icon_bg:addEventListener("touch",closeMessagePage)
+							title:addEventListener("touch",closeMessagePage)
 
                        	
                         end
@@ -1535,8 +1670,10 @@ end
                 audio_icon = display.newImageRect("res/assert/audio1.png",40,35)
 				audio_icon.x= W/2 + W/3 - 15
 				audio_icon.anchorX=0
+				audio_icon.id = "audio"
 				audio_icon.anchorY=0
 				audio_icon.y = video_icon.y
+				audio_icon:addEventListener("touch",onIconsTouch)
 				scrollView:insert(audio_icon)
 
 
@@ -1611,7 +1748,7 @@ end
 ---------------------------------------- File name and its title ------------------------------------------
 
 
-				filename_title = display.newText("File Name",0,0,native.systemFont,14)
+				filename_title = display.newText("Image Name",0,0,native.systemFont,14)
 				filename_title.anchorX = 0
 				filename_title.anchorY = 0
 				filename_title.x = 10
@@ -1644,8 +1781,8 @@ end
 
 			    schedule_button = display.newRect(0,0,W-50,26)
 				schedule_button.x = W/2 - W/3 - 45
-				schedule_button.y = filename.y + filename.contentHeight +15
-				--schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				--schedule_button.y = filename.y + filename.contentHeight +15
+				schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
 				--schedule_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				schedule_button.width = W - 210
 				schedule_button.anchorX = 0
@@ -1681,8 +1818,8 @@ end
 
 			    send_button = display.newRect(0,0,W-50,26)
 				send_button.x = W/2 - 35
-				send_button.y = filename.y + filename.contentHeight +15
-				--send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				--send_button.y = filename.y + filename.contentHeight +15
+				send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
 				--send_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				send_button.width = W - 235
 				send_button.anchorX = 0
@@ -1716,8 +1853,8 @@ end
 
 			    draft_button = display.newRect(0,0,W-50,26)
 				draft_button.x = W/2 + W/3 - 50
-				draft_button.y = filename.y + filename.contentHeight +15
-				--draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				--draft_button.y = filename.y + filename.contentHeight +15
+				draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
 				--draft_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				draft_button.width = W - 225
 				draft_button.anchorX = 0

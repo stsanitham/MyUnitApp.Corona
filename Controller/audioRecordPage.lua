@@ -65,7 +65,21 @@ local function closeDetails( event )
 		                	io.close( file );print("removed")
 		                	os.remove(filePath)
 		                end
-				composer.hideOverlay()
+
+
+						            if pagevalue == "chat" then
+
+								        composer.hideOverlay()
+
+								    else
+
+								    	print("closing audio page")
+
+								    	composer.hideOverlay()
+
+								    	--composer.gotoScene("Controller.composeMessagePage","slideRight",200)
+
+								    end
 			end
 
 	end
@@ -255,6 +269,17 @@ function scene:show( event )
 	
 	if phase == "will" then
 
+		if event.params then
+
+			contactid = event.params.contactId 
+			messagetype = event.params.MessageType 
+			pagevalue = event.params.page 
+
+			print(contactid.."   "..messagetype.."   "..pagevalue)
+
+		end
+
+
 		keyTips = display.newText( sceneGroup, "Press ‘Start’ to record",  0,0,native.systemFont,16 )
 		keyTips:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 		keyTips.x=W/2;keyTips.y=title_bg.y+title_bg.contentHeight
@@ -370,6 +395,8 @@ function scene:show( event )
 MainGroup:insert(sceneGroup)
 
 end
+
+
 
 	function scene:hide( event )
 

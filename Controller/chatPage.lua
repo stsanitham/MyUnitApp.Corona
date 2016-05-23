@@ -331,7 +331,8 @@ local function attachAction( event )
 							time = 200,	
 								params = {
 								contactId = To_ContactId,
-								MessageType = MessageType
+								MessageType = MessageType,
+								page = "chat"
 							}
 
 							}
