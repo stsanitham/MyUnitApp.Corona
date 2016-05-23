@@ -1406,6 +1406,25 @@ function scene:resumeGame(value,EditArray)
 
 		composer.showOverlay( "Controller.eventCal_DetailPage", options )
 
+	elseif value == "deleted" then
+
+		Runtime:addEventListener( "key", onKeyEvent )
+
+    		search.isVisible=true
+
+		local function waitTimer( event )
+			if openPage=="eventCalenderPage" then
+			
+					weekViewTouchFlag=true
+					ParentShow=true
+					creatWeek(os.date('*t',makeTimeStamp(startdate)),true)
+
+
+			end
+		end
+
+		timer.performWithDelay( 500, waitTimer )
+
 	elseif value == "back" then
 
 			Runtime:addEventListener( "key", onKeyEvent )
@@ -1433,6 +1452,7 @@ function scene:resumeGame(value,EditArray)
     		search.isVisible=true
 
 		local function waitTimer( event )
+			
 			if openPage=="eventCalenderPage" then
 			
 					-- weekViewTouchFlag=true

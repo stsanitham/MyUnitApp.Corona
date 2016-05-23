@@ -130,8 +130,8 @@ local function audioAction( event )
 
 			elseif event.target.id == "stop" then
 				
-				startBtn.alpha=1
-				startBtn_txt.alpha=1
+				startBtn.alpha=0.5
+				startBtn_txt.alpha=0.5
 				playBtn.alpha=1
 				playBtn_txt.alpha=1
 				stopBtn.alpha=0.5
