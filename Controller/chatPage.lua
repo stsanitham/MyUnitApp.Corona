@@ -332,7 +332,8 @@ local function attachAction( event )
 							time = 200,	
 								params = {
 								contactId = To_ContactId,
-								MessageType = MessageType
+								MessageType = MessageType,
+								page = "chat"
 							}
 
 							}
@@ -981,27 +982,26 @@ end
 					bg.x = W-65
 					bg.anchorX = 1
 
-
 			  local filePath = system.pathForFile( ChatHistory[i].Message_From..".png",system.TemporaryDirectory )
 			  local fhd = io.open( filePath )
 
 			  local Image
 
-					 if fhd then
+					if fhd then
 
 							Image = display.newImageRect(tempGroup,ChatHistory[i].Message_From..".png",system.TemporaryDirectory,45,38)
 							io.close( fhd )
 
 					else
-								Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+							Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 
 					end
 
-										Image.x=W-35;Image.y=bg.y+bg.height/2
+								Image.x=W-35;Image.y=bg.y+bg.height/2
 
-										local mask = graphics.newMask( "res/assert/masknew.png" )
+								local mask = graphics.newMask( "res/assert/masknew.png" )
 
-										Image:setMask( mask )
+								Image:setMask( mask )
 
 			else
 
@@ -1012,7 +1012,6 @@ end
 							if not Image then
 								Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 								Image.x=30;Image.y=bg.y+bg.height/2
-
 							end
 
 										Image.x=30;Image.y=bg.y+bg.height/2
@@ -1026,8 +1025,8 @@ end
 
 
 
-			local chat	
 
+			local chat	
 
 			if ChatHistory[i].MyUnitBuzz_Message:len() > 40 then
 
@@ -1042,7 +1041,6 @@ end
 			chat.anchorY=0;chat.anchorX = 0;chat.x=bg.x+5;chat.y=bg.y
 			tempGroup:insert( chat )
 
-		
 			bg.width = chat.contentWidth+10;bg.height = chat.contentHeight+10
 			bg.chat=chat.text
 
@@ -1069,7 +1067,6 @@ end
 				bg.height = bg.height+20
 
 				if ChatHistory[i].Message_From == tostring(ContactId) then
-
 					owner.text = MemberName
 				else
 					owner.text = ChatHistory[i].ToName or "(~No Name)"
@@ -1102,11 +1099,8 @@ end
 					 local filePath = system.pathForFile( audioname,system.DocumentsDirectory )
 				 	 local fhd = io.open( filePath )
 
-					  bg.contentPath = filePath
+					 bg.contentPath = filePath
 
-
-
-					
 
 					if fhd or ChatHistory[i].Audio_Path == "DEFAULT"  then	
 
@@ -1123,7 +1117,8 @@ end
 				                }
 				           --chat.text=""
 
-				           chat.size=14
+				            chat.size=14
+
 							local playIcon = display.newSprite( sheet1, sequenceData )
 							playIcon.x=bg.x-bg.contentWidth/2;playIcon.y=bg.y+bg.contentHeight/2
 							playIcon.id=ChatHistory[i].Audio_Path
@@ -1136,11 +1131,11 @@ end
 							if ChatHistory[i].Message_From ~= tostring(ContactId) then
 								playIcon.x = bg.x+bg.contentWidth/2
 							end
+
 					else
 
 						if ChatHistory[i].Audio_Path == "DEFAULT" then
 								
-
 								spinner.isVisible=false
 
 								    local options = {
@@ -1173,8 +1168,6 @@ end
 
 									    bg.height = bg.height+20;bg.width = bg.width+20
 
-
-
 						else
 							
 							--When audio notification receives
@@ -1191,20 +1184,19 @@ end
 
 									bg.width=bg.width+20;bg.height=bg.height+30
 
+
 									 if MessageType == "GROUP" then
 
 									 	downloadimage.y= downloadimage.y+20
 
 									 end
-
+					
 
 									downloadimage:addEventListener( "touch", receviednotifyDownload )
-							
 
 						end
 
 					end
-
 
 				end
 
@@ -1227,7 +1219,7 @@ end
 				
 					if fhd or ChatHistory[i].Image_Path == "DEFAULT" then	
 
-								spinner.isVisible=false
+							spinner.isVisible=false
 
 								spinner_hide()
 
@@ -1236,43 +1228,41 @@ end
 									image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
 									image.id = ChatHistory[i].Image_Path
 
-									bg.width = image.contentWidth+5
-									bg.height = image.contentHeight+23.5
 
-									owner.anchorY=0
-									owner.anchorX = 0
-									owner.x=chat.x
-									owner.y=bg.y+1
+								bg.width = image.contentWidth+5
+								bg.height = image.contentHeight+23.5
 
-									image.anchorY=0
-									image.anchorX = 0
-									image.x=bg.x+2.5
+								owner.anchorY=0
+								owner.anchorX = 0
+								owner.x=chat.x
+								owner.y=bg.y+1
 
-									image.y=owner.y+20	
+								image.anchorY=0
+								image.anchorX = 0
+								image.x=bg.x+2.5
 
-								else
+								image.y=owner.y+20	
 
-								    image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
-								    image.id = ChatHistory[i].Image_Path
+							else
 
-									image.anchorY=0
-									image.anchorX = 0
-									image.x=bg.x+2.5
-									image.y=bg.y+2.5
+							    image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+							    image.id = ChatHistory[i].Image_Path
 
-									bg.width = image.contentWidth+5
-									bg.height = image.contentHeight+5
+								image.anchorY=0
+								image.anchorX = 0
+								image.x=bg.x+2.5
+								image.y=bg.y+2.5
 
-								end
+								bg.width = image.contentWidth+5
+								bg.height = image.contentHeight+5
+
+							end
 
 							io.close( fhd )
 
 					else
 
 							--When image notification recive
-
-
-
 							    if MessageType == "GROUP" then	
 									
 									image = display.newImageRect( tempGroup, "res/assert/download_default.jpg", 200, 170 )
@@ -1281,6 +1271,7 @@ end
 									owner.anchorY=0;owner.anchorX = 0;owner.x=chat.x;owner.y=bg.y+1
 									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=owner.y+20	
 									
+				
 									local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
 									downloadimage.x = image.x+image.contentWidth/2-25
 									downloadimage.id = ChatHistory[i].Image_Path
@@ -1315,7 +1306,6 @@ end
 										downloadimage:addEventListener( "touch", receviednotifyDownload )
 
 								end
-
 						end
 
 			
@@ -1343,7 +1333,7 @@ end
 
 			if ChatHistory[i].Message_From == tostring(ContactId) then
 				chat.x = bg.x-bg.contentWidth+5
-									time.x=bg.x-2.5
+				time.x=bg.x-2.5
 
 				if owner ~= nil then print("$$$ : "..owner.text);owner.x=chat.x end
 					bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
@@ -1358,13 +1348,10 @@ end
 			if ChatHistory[i].Message_From == tostring(ContactId) then
 				arrow.x=bg.x+2
 				arrow:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-
 			else
-			
-			arrow:scale( -1, 1 )
-			arrow.x=arrow.x+2
-			arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
-
+				arrow:scale( -1, 1 )
+				arrow.x=arrow.x+2
+				arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
 			end
 
 			chatScroll:insert(tempGroup)
@@ -1404,6 +1391,13 @@ function get_imagemodel(response)
 
 
 	end
+
+
+
+
+
+
+	
 
 
 
@@ -2771,7 +2765,7 @@ end
 
 		if event.phase == "will" then
 
-			Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+			    Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 				Runtime:removeEventListener( "key", onKeyEvent )
 				image_name_close:removeEventListener( "touch", ImageClose )
 

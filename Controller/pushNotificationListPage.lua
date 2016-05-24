@@ -319,7 +319,7 @@ local tabBarGroup = display.newGroup( )
 			     	end
 
 
-				local Messagedetail_txt = display.newText(tempGroup,draftmessagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
+				local Messagedetail_txt = display.newText(tempGroup,draftmessagelist[i].MyUnitBuzzMessage,0,0,W-45,0,native.systemFont,14)
 				Messagedetail_txt.x=12
 				Messagedetail_txt.y=background.y+7
 				Messagedetail_txt.anchorX=0
@@ -336,6 +336,46 @@ local tabBarGroup = display.newGroup( )
 					Message_time.y=background.y+45
 
 				end
+
+
+
+
+     --            print("ImagePath Details : "..imagepath)
+
+                local attachment_img = display.newImageRect(tempGroup,"res/assert/attached.png",20,20)
+				attachment_img.anchorX=0
+				attachment_img.x = W-35
+				attachment_img.isVisible = false
+				attachment_img.y=background.y+7
+				attachment_img.anchorY = 0
+            
+
+                local attachimage 
+             
+         
+				if draftmessagelist[i].ImageFilePath == null then
+
+					attachimage = "null"
+					
+				else
+
+                    attachimage = draftmessagelist[i].ImageFilePath
+
+				end
+
+
+
+				if attachimage ~= "null" then
+
+					attachment_img.isVisible = true
+
+				else
+
+					attachment_img.isVisible = false
+
+				end
+
+
 		
 
 				local line = display.newRect(tempGroup,W/2,background.y,W,1)
@@ -499,7 +539,7 @@ local tabBarGroup = display.newGroup( )
 				-- end
 
 
-				local Messagedetail_txt = display.newText(tempGroup,sentmessagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
+				local Messagedetail_txt = display.newText(tempGroup,sentmessagelist[i].MyUnitBuzzMessage,0,0,W-45,0,native.systemFont,14)
 				Messagedetail_txt.x=12
 				Messagedetail_txt.y=background.y+7
 				Messagedetail_txt.anchorX=0
@@ -517,6 +557,45 @@ local tabBarGroup = display.newGroup( )
 					Message_time.y=background.y+45
 
 				end
+
+
+
+     --            print("ImagePath Details : "..imagepath)
+
+                local attachment_img = display.newImageRect(tempGroup,"res/assert/attached.png",20,20)
+				attachment_img.anchorX=0
+				attachment_img.x = W-35
+				attachment_img.isVisible = false
+				attachment_img.y=background.y+7
+				attachment_img.anchorY = 0
+            
+
+                local attachimage 
+             
+         
+				if sentmessagelist[i].ImageFilePath == null then
+
+					attachimage = "null"
+					
+				else
+
+                    attachimage = sentmessagelist[i].ImageFilePath
+
+				end
+
+
+
+				if attachimage ~= "null" then
+
+					attachment_img.isVisible = true
+
+				else
+
+					attachment_img.isVisible = false
+
+				end
+
+
 		
 
 				-- local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
@@ -625,7 +704,7 @@ local tabBarGroup = display.newGroup( )
 				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
-    --             print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
+             --  print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
 
 				-- if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
@@ -634,6 +713,7 @@ local tabBarGroup = display.newGroup( )
 			 --    else
 
 				-- 	local t = os.date( "*t" )
+				
 				-- 	t.day=t.day-1
 
 				-- 	if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
@@ -711,7 +791,7 @@ local tabBarGroup = display.newGroup( )
 
 				
 
-				local Messagedetail_txt = display.newText(tempGroup,messagelist[i].MyUnitBuzzMessage,0,0,W-30,0,native.systemFont,14)
+				local Messagedetail_txt = display.newText(tempGroup,messagelist[i].MyUnitBuzzMessage,0,0,W-45,0,native.systemFont,14)
 				Messagedetail_txt.x=12
 				Messagedetail_txt.y=background.y+7
 				Messagedetail_txt.anchorX=0
@@ -730,9 +810,52 @@ local tabBarGroup = display.newGroup( )
 				end
 
 
+
+
+     --            print("ImagePath Details : "..imagepath)
+
+                local attachment_img = display.newImageRect(tempGroup,"res/assert/attached.png",20,20)
+				attachment_img.anchorX=0
+				attachment_img.x = W-35
+				attachment_img.isVisible = false
+				attachment_img.y=background.y+7
+				attachment_img.anchorY = 0
+            
+
+                local attachimage 
+             
+         
+				if messagelist[i].ImageFilePath == null then
+
+					attachimage = "null"
+					
+				else
+
+                    attachimage = messagelist[i].ImageFilePath
+
+				end
+
+
+
+				if attachimage ~= "null" then
+
+					attachment_img.isVisible = true
+
+				else
+
+					attachment_img.isVisible = false
+
+				end
+
+
+
+
+
+
 				-- local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
 				-- right_img.anchorX=0
 				-- right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
+
 
 				local line = display.newRect(tempGroup,W/2,background.y,W,1)
 				line.y=background.y+background.contentHeight-line.contentHeight
@@ -1790,6 +1913,8 @@ end
 				page_value_name = event.params.page_val
 
 				editpagevalues = event.params.editpagevalue
+
+				Imagepath = event.params.Imagepathname
 
 				if page_value_name == "editpage" then
 

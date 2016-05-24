@@ -275,9 +275,11 @@ function scene:hide( event )
 
 			Runtime:removeEventListener( "key", onKeyEvent )
 
-		elseif phase == "did" then
-
+			
 			if webView then webView:removeSelf( );webView=nil end
+
+
+		elseif phase == "did" then
 
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
