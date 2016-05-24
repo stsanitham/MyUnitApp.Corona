@@ -52,9 +52,33 @@ local function closeDetails( event )
 		           		if file then
 		                	io.close( file )
 							userAction="ok"
-							composer.hideOverlay()
+
+									if pagevalue == "chat" then
+
+										composer.hideOverlay()
+
+								    elseif pagevalue ~= "chat" then
+
+												local options = 
+												{
+													isModal = true,
+													effect = "slideRight",
+													time = 200,
+													params = {
+													filename = dataFileName,
+													targetaction = "audio"
+													}
+												}
+
+
+								  			composer.gotoScene("Controller.composeMessagePage",options)
+
+								    end
+
 						else
+
 							toast.show("Please record the audio to proceed", {duration = 'long', gravity = 'Bottom', offset = {0, 128}})  
+
 						end
 			else
 
@@ -71,13 +95,13 @@ local function closeDetails( event )
 
 								        composer.hideOverlay()
 
-								    else
+								    elseif event.target.id == "backicon" or pagevalue ~= "chat" then
 
 								    	print("closing audio page")
 
-								    	composer.hideOverlay()
+								    	--composer.hideOverlay()
 
-								    	--composer.gotoScene("Controller.composeMessagePage","slideRight",200)
+								    	composer.gotoScene("Controller.composeMessagePage","slideRight",200)
 
 								    end
 			end
@@ -234,6 +258,7 @@ function scene:create( event )
 	back_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",20/2,30/2)
 	back_icon.x= back_icon_bg.x + 5
 	back_icon.anchorX=0
+	back_icon.id="backicon"
 	back_icon.anchorY=0
 	back_icon:setFillColor(0)
 	back_icon.y= title_bg.y - 8
@@ -276,6 +301,14 @@ function scene:show( event )
 			pagevalue = event.params.page 
 
 			print(contactid.."   "..messagetype.."   "..pagevalue)
+
+		end
+
+		if pagevalue == "compose" then
+
+		composer.removeHidden()
+
+		else
 
 		end
 
@@ -405,6 +438,13 @@ end
 
 		if event.phase == "will" then
 
+			-- if pagevalue == "compose" then
+			-- 	status = "compose"
+			-- 	--event.parent:resumeCall(pagevalue)
+			-- 	composer.hideOverlay( )
+			-- end
+
+
 		elseif phase == "did" then
 
 			local isChannel1Playing = audio.isChannelPlaying( 1 )
@@ -416,7 +456,32 @@ end
 
 			if userAction == "ok" then
 
-				event.parent:updateAudio(dataFileName)
+					if pagevalue == "compose" then
+
+
+						-- print("datafilename ",dataFileName)
+
+
+	     --                local options = 
+						-- 	{
+						-- 		isModal = true,
+						-- 		effect = "slideRight",
+						-- 		time = 200,
+						-- 		params = {
+						-- 		filename = dataFileName,
+						-- 		pagevaluename = "audio"
+						-- 		}
+						-- 	}
+
+
+			  	-- 		composer.gotoScene("Controller.composeMessagePage",options)
+
+
+					else
+
+					event.parent:updateAudio(dataFileName)
+
+				    end
 
 			else
 

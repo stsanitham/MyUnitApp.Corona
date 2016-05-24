@@ -43,6 +43,8 @@ local status
 
 local Details={}
 
+local Audiopath, Audioname, Audiosize
+
 local openPagevalue = "addpage"
 
 local PHOTO_FUNCTION = media.PhotoLibrary 
@@ -67,6 +69,8 @@ end
 
 fieldTrans = 200
 
+local targetaction = "compose"
+
 
 
 --------------------------------------------------
@@ -90,6 +94,29 @@ end
 
 
 
+
+
+-- function scene:resumeCall(value)
+
+-- 	print( "*********test*********" )
+
+--     if value == "compose" then
+
+-- 				local options = {
+-- 					isModal = true,
+-- 					effect = "slideLeft",
+-- 					time = 100,
+-- 			    }
+
+-- 		composer.showOverlay( "Controller.composeMessagePage", options )
+
+--     end
+
+-- end
+
+
+
+
 local function selectionComplete ( event )
  
         local photo = event.target
@@ -103,6 +130,11 @@ local function selectionComplete ( event )
 		local w = photo.width
 		local h = photo.height
 		print( "w,h = ".. w .."," .. h )
+
+
+		photowidth1 = photo.width
+
+		photoheight1 = photo.height
 
 		local function rescale()
 					
@@ -260,6 +292,25 @@ end
 
 
 
+	function get_audiomodel1(response)
+
+		print("\n\n\n SuccessMessage : Audio Response : \n\n ", json.encode(response))
+
+		audiolist_values = response
+
+		local options = {
+
+				effect = "slideRight",
+				time = 300,
+				params = { audiovalues = audiolist_values }
+	    }
+
+		composer.gotoScene("Controller.pushNotificationListPage",options)
+
+
+	end
+
+
 
 
 
@@ -290,22 +341,46 @@ end
 
 	                            if openPagevalue == "addpage" then
 
+
+	                            	photowidth = photowidth1
+
+									photoheight = photoheight1
+
+									
+								--	if targetaction ~= "audio" then
+
 									sceneevent.parent:resumeCall(list_values)
 
 									spinner.y=H/2-75
 
 									composer.hideOverlay()
 
+								--	else
+
+										-- local options = {
+        		-- 								effect = "slideRight",
+										-- 		time = 300,
+										-- 		params = { audiopathvalue = Audiopath , audiofilevalue = Audioname , audiofilesize = Audiosize }
+									 --    }
+
+										-- composer.gotoScene("Controller.pushNotificationListPage",options)
+
+								--	end
+
 								--	scrollTo(0)
 
 								elseif openPagevalue ~= "addpage" then
+
+									photowidth = photowidth1
+
+									photoheight = photoheight1
 
 											  local options =
 												{
 												effect = "slideRight",
 
 												time = 300,
-												params = { editpagevalue = list_values, page_val = "editpage", Imagepathname = Imagepath}
+												params = { editpagevalue = list_values, page_val = "editpage", Imagepathname = Imagepath, photowidth, photoheight}
 					
 												}
                            
@@ -348,11 +423,30 @@ end
 
 	                            if openPagevalue == "addpage" then
 
+	                            	photowidth = photowidth1
+
+									photoheight = photoheight1
+
+									
+								--	if targetaction ~= "audio" then
+
 									sceneevent.parent:resumeCall(list_values)
 
 									spinner.y=H/2-75
 
 									composer.hideOverlay()
+
+									-- else
+
+									-- 		local options = {
+        	-- 									effect = "slideRight",
+									-- 			time = 300,
+									-- 			params = { audiopathvalue = Audiopath , audiofilevalue = Audioname , audiofilesize = Audiosize }
+									--         }
+
+									-- 	  composer.gotoScene("Controller.pushNotificationListPage",options)
+
+									-- end
 
 								--	scrollTo(0)
 
@@ -377,7 +471,7 @@ end
 
 					end
 
-        		     timer.performWithDelay(1000, onTimer )
+        		timer.performWithDelay(1000, onTimer )
 
 	    end
 
@@ -407,11 +501,31 @@ end
 
 	                            if openPagevalue == "addpage" then
 
+	                            	photowidth = photowidth1
+
+									photoheight = photoheight1
+
+
+									--if targetaction ~= "audio" then
+
 									sceneevent.parent:resumeCall(list_values)
 
 									spinner.y=H/2-75
 
 									composer.hideOverlay()
+
+									-- else
+
+									-- 		local options = {
+        	-- 									effect = "slideRight",
+									-- 			time = 300,
+									-- 			params = { audiopathvalue = Audiopath , audiofilevalue = Audioname , audiofilesize = Audiosize }
+									--     }
+
+									-- 	composer.gotoScene("Controller.pushNotificationListPage",options)
+
+
+									-- end
 
 								--	scrollTo(0)
 
@@ -442,11 +556,6 @@ end
 	    end
 
 	end
-
-
-
-
-
 
 
 
@@ -530,15 +639,29 @@ end
 
 						IsScheduled = tostring(true)
 
-				        	if Imagepath ~= nil or Imagepath ~= null or Imagepath ~= "" then
+				        	if Imagepath ~= nil and Imagepath ~= null and Imagepath ~= "" and Imagepath ~= "" then
 
 				        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
-				            else
+				            -- else
 
-				               Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
+				            --    Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
 
 				            end
+
+
+
+			            if Audiopath ~=nil and Audiopath ~= null and Audiopath ~= "" and Audiopath ~= "" then
+
+			            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel1)
+
+			            -- else
+
+			            -- 	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","","","","",method,"","","",get_audiomodel1)
+
+			            end
+
+
 
 						ScheduledMessageGroup.isVisible = false
 
@@ -580,16 +703,39 @@ end
         else
 
 
-        	if Imagepath ~= nil or Imagepath ~= null or Imagepath ~= "" then
+        	if Imagepath ~= nil and Imagepath ~= null and Imagepath ~= "" and Imagepath ~= " " then
+
+        		print("image path send value")
 
 
         	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
-            else
+            -- else
 
-               Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","","","","",method,"","","",get_messagemodel)
+            --    Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","","","","",method,"","","",get_messagemodel)
 
             end
+
+
+
+
+         --   print("Audioname value : #################### ",Audioname)
+
+
+
+            if Audiopath ~= nil and Audiopath ~= null and Audiopath ~= "" and Audiopath ~= " " then
+
+            	print("audio path send value")
+
+
+            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel1)
+
+            -- else
+
+            -- 	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","","","","",method,"","","",get_audiomodel1)
+
+            end
+
 
 
         end
@@ -761,6 +907,9 @@ function urlDecode( str )
     str = string.gsub (str, "\r\n", "\n")
     return str
 end
+
+
+
 
 
 
@@ -1007,14 +1156,14 @@ local function TextLimitation( event )
 
       if (event>=1073741824) then 
 
-      	size=(event/1073741824)..' GB'
+      	size =(event/1073741824)..' GB'
 
       print("size of the image11 ",size)
 
 
       elseif (event>=1048576) then   
 
-       	size=(event/1048576)..' MB'
+       	size =(event/1048576)..' MB'
 
       print("size of the image 22",size)
 
@@ -1038,6 +1187,7 @@ local function TextLimitation( event )
 
 
 end
+
 
 
 
@@ -1093,7 +1243,7 @@ local function onIconsTouch( event )
 
 							}
 
-		    composer.showOverlay( "Controller.audioRecordPage",options)
+		    composer.gotoScene( "Controller.audioRecordPage",options)
 
 		end
 
@@ -1101,6 +1251,7 @@ local function onIconsTouch( event )
 
 return true
 end
+
 
 
 
@@ -1143,115 +1294,6 @@ end
 
 
 
-
-
-		-- local function webListener( event )
-		--     local shouldLoad = true
-
-		--     local url = event.url
-
-		--     print( "here",event.url.. "  "..event.type)
-
-		--     	updatedresponse = urlDecode(url)
-
-		--         updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
-
-		--         print( "updatedresponse : "..updatedresponse )
-
-
-
-
-
-		-- 			-- local function networkListener( event )
-
-		-- 			-- 	print(event.response)
-
-		-- 			-- if ( event.isError ) then
-		-- 			-- local alert = native.showAlert( "Corona", event.response, { "OK"} )
-		-- 			-- else
-		-- 			-- local pattern = ">%d%d,%d%d%d<"
-		-- 			-- local buyPrice = string.sub(event.response, string.find(event.response, pattern))
-		-- 			-- -- local alert = native.showAlert( "Corona", string.sub(buyPrice, 2, -2), { "OK"} )
-		-- 			-- local junkLength = string.len(event.response);
-		-- 			-- local sellJunk = string.find(event.response, pattern)
-		-- 			-- local  sellPriceJunk= string.sub(event.response, sellJunk+50, sellJunk-junkLength+1000)
-		-- 			-- local sellPrice = string.sub(sellPriceJunk, string.find(sellPriceJunk, pattern))
-
-		-- 			-- local alert = native.showAlert( "Corona", string.sub(buyPrice,2,-2).." and "..string.sub(sellPrice,2,-2), { "OK"} )
-
-		-- 			-- end
-		-- 			-- end
-
-		-- 			-- network.request( event.url, "GET", networkListener )
-
-
-		--    -- local test = CKEDITOR.instances.UnitGoals.getData()
-
-		--    -- print(test)
-
-		-- -- updatedresponse = urlDecode(url)
-
-  --       -- updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
-
-		-- -- local test= string.urlEncode(url)
-
-		-- -- content = test
-
-		-- --  print( "here content ",test )
-
-		-- -- local saveData = [[<!DOCTYPE html>
-		-- -- <html>
-
-		-- -- <head>
-		-- -- <meta charset="utf-8">
-		-- -- <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-		-- -- </head>]]..test..[[</html>]]
-
-		-- -- -- Path for the file to write
-		-- -- local path = system.pathForFile( "ckeditor.html", system.DocumentsDirectory )
-
-		-- -- -- Open the file handle
-		-- -- local file, errorString = io.open( path, "w" )
-
-		-- -- if not file then
-		-- --     -- Error occurred; output the cause
-		-- --     print( "File error: " .. errorString )
-		-- -- else
-		-- --     -- Write data to file
-		-- --     file:write( saveData )
-		-- --     -- Close the file handle
-		-- --     io.close( file )
-		-- -- end
-
-		-- -- file = nil
-
-
-
-		--     if 1 == string.find( url, "corona:close" ) then
-		--         -- Close the web popup
-
-		--         shouldLoad = false
-
-		--         -- updatedresponse = urlDecode(url)
-
-		--         -- updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
-
-		--         -- print( "updatedresponse : "..updatedresponse )
-
-		--          if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
-
-		--         -- Webservice.SaveMyUnitBuzzGoals(Goalsid,updatedresponse,get_SaveMyUnitBuzzGoals)
-
-		--     end
-
-		--     if event.errorCode then
-		--         -- Error loading page
-		--         print( "Error: " .. tostring( event.errorMessage ) )
-		--         shouldLoad = false
-		--     end
-
-		--     return shouldLoad
-		-- end
 
 
 
@@ -1318,36 +1360,171 @@ end
 
 
 
-		local function closeMessagePage( event )
+	local function closeMessagePage( event )
 
-			if event.phase == "began" then
+		if event.phase == "began" then
 
-				display.getCurrentStage():setFocus( event.target )
+			display.getCurrentStage():setFocus( event.target )
 
 
-			elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 
-			    display.getCurrentStage():setFocus( nil )
+		    display.getCurrentStage():setFocus( nil )
 
-		            native.setKeyboardFocus(nil)
+	            native.setKeyboardFocus(nil)
 
-		            if status == "chat" then
+	            if status == "chat" then
 
-				       composer.hideOverlay("slideRight",300)		
+			       composer.hideOverlay("slideRight",300)		
 
-				    else
- 
-				       composer.gotoScene("Controller.pushNotificationListPage","slideRight",300)		
+			    else
 
-				    end
+			       composer.gotoScene("Controller.pushNotificationListPage","slideRight",300)		
 
-				   -- scrollTo(0)
+			    end
 
-			end
-
-		return true
+			   -- scrollTo(0)
 
 		end
+
+	return true
+
+	end
+
+
+
+
+
+local function composeAudioUpdate(audiovalue)
+
+
+	    local filePath = system.pathForFile( audiovalue, system.DocumentsDirectory )
+		            -- Play back the recording
+		            local file = io.open( filePath)
+		            
+		            if file then
+		                io.close( file )
+		            else
+		            	audiovalue="test.wav"
+			           	filePath = system.pathForFile( audiovalue, system.DocumentsDirectory )
+		            end
+
+
+					 	local path = system.pathForFile( audiovalue, system.DocumentsDirectory)
+
+				        local size2 = lfs.attributes (path, "size")
+
+						local fileHandle = io.open(path, "rb")
+
+						local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+						formatSizeUnits(size2)
+
+
+					    print("path     : ",path)
+
+
+									function get_audiomodel( response )
+
+										    composer.removeHidden()
+
+											local audiopath = response.Abspath
+
+											local audioname = response.FileName
+
+											local audiosize = size
+
+
+											Audiopath = audiopath
+											Audioname = audioname
+											Audiosize = audiosize
+
+
+											print(Audiopath.."       ".."\n"..Audioname.."      ".."\n".."        "..Audiosize)
+
+
+										if audioname ~= nil then
+
+
+										      filename_title.isVisible = true
+
+										      filename.isVisible = true
+
+											  filename_close.isVisible = true
+
+
+											  filename_title.text = "Audio Name"
+
+											  filename.text = audioname
+
+
+											  	schedule_button.y = filename.y + filename.contentHeight +15
+												schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+												schedule_icon_text.y= schedule_icon.y
+												schedule_button.height=schedule_icon_text.contentHeight+10
+
+												send_button.y = filename.y + filename.contentHeight +15
+												send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+												send_icon_text.y= send_icon.y
+												send_button.height=send_icon_text.contentHeight+10
+
+												draft_button.y = filename.y + filename.contentHeight +15
+												draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+												draft_icon_text.y= draft_icon.y
+												draft_button.height=draft_icon_text.contentHeight+10
+
+											--  composeAudioUpdate(filenameval)
+
+
+										else
+
+										end
+
+
+
+											function ImageClose(event)
+
+													filename.text = ""
+
+													filename.isVisible = false
+
+													filename_title.isVisible = false
+
+													filename_close.isVisible = false
+
+													os.remove( path )
+
+													schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+													schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+													schedule_icon_text.y= schedule_icon.y
+
+													schedule_button.height=schedule_icon_text.contentHeight+10
+
+													send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+													send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+													send_icon_text.y= send_icon.y
+
+													send_button.height=send_icon_text.contentHeight+10
+
+													draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+													draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+													draft_icon_text.y= draft_icon.y
+
+													draft_button.height=draft_icon_text.contentHeight+10
+
+										end
+
+
+											filename_close:addEventListener("touch",ImageClose)
+
+
+									end
+
+
+
+					Webservice.DOCUMENT_UPLOAD(file_inbytearray,audiovalue,"Audios",get_audiomodel)
+
+end
 
 
 
@@ -1413,14 +1590,25 @@ end
 		
 		if phase == "will" then
 
-			if event.params then
+				if event.params and openPagevalue == "addPage" then
 
-			status=event.params.page
-			Details = event.params.Details
+				status=event.params.page
+				Details = event.params.Details
 
-		    end
+			    end
 
-			sceneevent = event
+			
+				sceneevent = event
+
+
+			if sceneevent.params then
+
+				filenameval = event.params.filename
+
+			    print("********************** : ",filenameval)
+
+			end
+
 
 
 			scrollView = widget.newScrollView
@@ -1883,6 +2071,51 @@ end
 
 			    draft_button.height=draft_icon_text.contentHeight+10
 
+
+
+
+				 if filenameval ~= nil then
+
+				 	targetaction = "audio"
+
+
+				--       filename_title.isVisible = true
+
+				--       filename.isVisible = true
+
+				-- 	  filename_close.isVisible = true
+
+
+				-- 	  filename_title.text = "Audio Name"
+
+				-- 	  filename.text = filenameval
+
+
+				-- 	  	schedule_button.y = filename.y + filename.contentHeight +15
+				-- 		schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+				-- 		schedule_icon_text.y= schedule_icon.y
+				-- 		schedule_button.height=schedule_icon_text.contentHeight+10
+
+				-- 		send_button.y = filename.y + filename.contentHeight +15
+				-- 		send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+				-- 		send_icon_text.y= send_icon.y
+				-- 		send_button.height=send_icon_text.contentHeight+10
+
+				-- 		draft_button.y = filename.y + filename.contentHeight +15
+				-- 		draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+				-- 		draft_icon_text.y= draft_icon.y
+				-- 		draft_button.height=draft_icon_text.contentHeight+10
+
+				 	  composeAudioUpdate(filenameval)
+
+
+				 else
+
+				 end
+
+
+
+
 		elseif phase == "did" then
 
 			--composer.removeHidden()
@@ -1894,7 +2127,7 @@ end
 			title:addEventListener("touch",closeMessagePage)
 
 			shortmsg_textbox:addEventListener( "userInput", TextLimitation )
-			longmsg_textbox:addEventListener( "userInput", TextLimitation )
+			--longmsg_textbox:addEventListener( "userInput", TextLimitation )
 			Background:addEventListener("touch",FocusComplete)
 
 			send_button:addEventListener("touch",onSendButtonTouchAction)
