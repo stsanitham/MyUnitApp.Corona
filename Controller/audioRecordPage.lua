@@ -57,13 +57,17 @@ local function closeDetails( event )
 
 										composer.hideOverlay()
 
-								    elseif pagevalue ~= "chat" then
+								    elseif pagevalue == "compose" then
+
+								    	local column = native.showAlert("Audio path",pagevalue,{"ok"})
+
+								    	   local function onTimer(event)
 
 												local options = 
 												{
 													isModal = true,
 													effect = "slideRight",
-													time = 200,
+													time = 600,
 													params = {
 													filename = dataFileName,
 													targetaction = "audio"
@@ -72,6 +76,10 @@ local function closeDetails( event )
 
 
 								  			composer.gotoScene("Controller.composeMessagePage",options)
+
+								  		    end
+
+								  			timer.performWithDelay(1000,onTimer)
 
 								    end
 
@@ -242,7 +250,7 @@ local function audioAction( event )
 			end
 		end
 
-	end
+	
 
 return true
 
