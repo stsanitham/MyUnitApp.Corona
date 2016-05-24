@@ -42,8 +42,6 @@ settings =
 	        supportedPlatforms = { android=true, ["android-kindle"]=true },
 	    },
 
-	    
-
 
 	["CoronaProvider.native.popup.quickLook"] =
 	    {
@@ -70,9 +68,9 @@ settings =
 	{
 		plist =
 		{
-
-			--CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
-			CFBundleIdentifier="com.spanenterprises.MUBDev",
+			CFBundleVersion = "1.2.6",
+			CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
+			--CFBundleIdentifier="com.spanenterprises.MUBDev",
 	
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, 

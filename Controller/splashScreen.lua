@@ -365,6 +365,8 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 							-- end
 
+							--local alert = native.showAlert( "MyUnitBuzz", tostring(responseVersion)..","..tostring(installedVersion), { "OK" } )
+
 
 							if (tonumber(responseVersion)<=tonumber(installedVersion)) then
 

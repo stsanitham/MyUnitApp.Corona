@@ -237,7 +237,7 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		baseDir = system.DocumentsDirectory
+		   baseDir = system.DocumentsDirectory
  
         if event.params then
 
@@ -249,6 +249,8 @@ function scene:show( event )
 
         	print("Imageview photo : ",imageview)
 
+        	print("photoview : ",photoview)
+
         end
 
 
@@ -258,13 +260,12 @@ function scene:show( event )
 
 
 		photo = display.newImageRect( sceneGroup,photoview,baseDir, 0 , 0 )
-		photo.x = 0
-		photo.anchorX = 0
+		photo.x = display.contentCenterX
+		--photo.anchorX = 0
 		photo.anchorY= 0
-		photo.y = title_bg.y+17
+		photo.y = title_bg.y+15
 		photo.width = photowidth
 		photo.height = photoheight
-
 
 ------------------------------------- image send button -------------------------------------------   
 
@@ -283,7 +284,6 @@ function scene:show( event )
 		send_icon_text.x=send_icon.x+25;send_icon_text.y=send_icon.y
 		send_icon_text.id = "send_icon_text"
 		send_icon_text.anchorX=0
-
 
 
  ------------------------------------- image cancel button -------------------------------------------  
@@ -314,38 +314,38 @@ function scene:show( event )
 		cancel_icon_text:addEventListener("touch",onButtonTouch)
 
 
+		--    path = system.pathForFile( photoview, baseDir)
 
-  --       path = system.pathForFile( photoview, baseDir)
+		--    local size = lfs.attributes (path, "size")
 
-  --       local size = lfs.attributes (path, "size")
+		--    local fileHandle = io.open(path, "rb")
 
-		-- local fileHandle = io.open(path, "rb")
+		--    file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
 
-		-- file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+		--    io.close( fileHandle )
 
-		-- io.close( fileHandle )
+		--    print("mime conversion ",file_inbytearray)
 
-  --       print("mime conversion ",file_inbytearray)
+		--    print("bbb ",size)
 
-  --       print("bbb ",size)
+        --    formatSizeUnits(size)
 
-        	--formatSizeUnits(size)
+        --    sendImage()
 
-        	--sendImage()
 
 	elseif phase == "did" then
 
-			menuBtn:addEventListener("touch",menuTouch)
+		menuBtn:addEventListener("touch",menuTouch)
 
-			Runtime:addEventListener( "key", onKeyEvent )
+		Runtime:addEventListener( "key", onKeyEvent )
 
-			BackBtn:addEventListener("touch",onButtonTouch)
+		BackBtn:addEventListener("touch",onButtonTouch)
 
-			Background:addEventListener("touch",onButtonTouch)
+		Background:addEventListener("touch",onButtonTouch)
 		
 	end	
 	
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 

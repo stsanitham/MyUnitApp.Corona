@@ -21,7 +21,6 @@ ckeditor.htmlContent = [[
 
 <body>
 
-
 	<br>
 
 		<form id="sumbit" type="submit" align="center" >
@@ -63,50 +62,33 @@ ckeditor.htmlContent = [[
 
 			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
 
-
 			var htmldata = CKEDITOR.instances.UnitGoals.document.getBody().getText()
-
 
 			//alert(htmldata.length)
 			if(htmldata.length > 1 )
 			{
-
-								
-						var texttemp="corona:close"+ckvalue;
-			 			window.location.href = texttemp; 
-											
+				var texttemp="corona:close"+ckvalue;
+	 			window.location.href = texttemp; 
 					
-
-
-			}else{
-
-				
+			}
+			
+			else
+			{
 				sweetAlert("Please enter Unit Goals");
-
 		
 			}
-
-
        		
 		}
 
 
 CKEDITOR.instances.UnitGoals.setData(decodeURIComponent(]]
 
-
-
 	ckeditor.endHtml = [[.replace(/\+/g, '%20')));  
-
-		 
 
 	</script>
 
+<!-- <button id="submit" onclick="myFunction()">Submit</button> -->
 
-
-
-
-
-	<!-- <button id="submit" onclick="myFunction()">Submit</button> -->
 </body>
 
 </html>

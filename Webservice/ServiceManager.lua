@@ -244,7 +244,7 @@ end
 
 
 
-function Webservice.SEND_MESSAGE(message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,audiopath,audioname,audiosize,pushmethod,From,To,Message_Type,postExecution)
+function Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,audiopath,audioname,audiosize,pushmethod,From,To,Message_Type,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -293,9 +293,8 @@ if Message_Type ~= nil and Message_Type ~= "" then
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
    "UserId": "]]..UserId..[[",
    "EmailAddress": "]]..EmailAddess..[[",
-	"ImageFilePath": "]]..imagepath..[[",
-	 "ImageFileName": "]]..imagename..[[",
-	  "ImageFileSize": "]]..imagesize..[[",
+   
+
 	  "AudioFilePath": "]]..audiopath..[[",
 	 "AudioFileName": "]]..audioname..[[",
 	  "AudioFileSize": "]]..audiosize..[[",
@@ -304,6 +303,13 @@ if Message_Type ~= nil and Message_Type ~= "" then
 	  "MessageType": "]]..Message_Type..[[",
 
     "TimeZone": "]]..TimeZone..[[",
+    "ConversionFirstName": "]]..ConversionFirstName..[[",
+    "ConversionLastName": "]]..ConversionLastName..[[",
+    "GroupName": "]]..GroupName..[[",
+    "IsSendNow": "false",
+    "MessageFileType": "]]..MessageFileType..[[",
+    
+    "DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 }
 ]]
 
@@ -418,6 +424,9 @@ function Webservice.LOGIN_ACCESS(Device_OS,Unique_Id,Model,Version,GCM,UnitNumbe
 	method="POST"
 
 	local url = splitUrl(ApplicationConfig.LOGIN_ACCESS)
+
+	print( "Method URL : "..url )
+	
 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
@@ -460,6 +469,8 @@ local resbody =
 
 
 	print("url :"..resbody)
+
+	print("url :"..json.encode(headers))
 	
 	request.new( ApplicationConfig.LOGIN_ACCESS,method,params,postExecution)
 
@@ -1248,7 +1259,7 @@ print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 		"allDay": ]]..tostring(allDay)..[[,
 		"Location": ']]..Location..[[',
 		"Description": ']]..Description..[[',
-		"AppointmentPurpose":  ]]..check(AppointmentPurpose)..[[,
+		"AppointmentPurpose":  ']]..check(AppointmentPurpose)..[[',
 		"AppointmentPurposeOther":  ']]..AppointmentPurposeOther..[[',
 		"Priority":  ]]..Priority..[[,
 		"TimeZone": ']]..TimeZone..[[',
@@ -2060,6 +2071,8 @@ function Webservice.AddTeamMemberToChatGroup(groupid,contacts,postExecution)
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
     local resbody = "userId="..UserId.."&groupId="..groupid
+
+    contacts[#contacts+1] = ContactId
 
     groupmembers = json.encode(contacts)
 

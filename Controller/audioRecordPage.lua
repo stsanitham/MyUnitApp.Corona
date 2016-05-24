@@ -123,22 +123,25 @@ local function audioAction( event )
 		                fSoundPlaying = true
 		                fSoundPaused = false
 
-		                local isChannelPaused = audio.isChannelPaused( 1 )
 
-		                local isChannel1Playing = audio.isChannelPlaying( 1 )
+		              
+		                	local isChannelPaused = audio.isChannelPaused( 1 )
+							if isChannelPaused then
 
-						if isChannel1Playing then
+								audio.resume( 1 )
 
-						    audio.pause( 1 )
+							else
 
-						elseif isChannelPaused then
+								local isChannelActive = audio.isChannelActive( 1 ) 
+							
+								if isChannelActive then
 
-							audio.resume( 1 )
+									audio.pause( 1 );audio.stop(1);audio.dispose(1)
 
-						else
-							local isChannel1Active = audio.isChannelActive( 1 )
-							if isChannel1Active then
-							    audio.stop( 1 );audio.dispose( 1 )
+								end
+
+								playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
+								audio.play( playbackSoundHandle, { channel=1 } )
 							end
 
 							playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
@@ -152,8 +155,8 @@ local function audioAction( event )
 
 			elseif event.target.id == "stop" then
 				
-				startBtn.alpha=1
-				startBtn_txt.alpha=1
+				startBtn.alpha=0.5
+				startBtn_txt.alpha=0.5
 				playBtn.alpha=1
 				playBtn_txt.alpha=1
 				stopBtn.alpha=0.5
@@ -365,7 +368,7 @@ function scene:show( event )
 		    dataFileName = dataFileName .. ".aif"
 		else
 		    if isIos then
-		        dataFileName = dataFileName .. ".aif"
+		        dataFileName = dataFileName .. ".wav"
 		    elseif isAndroid then
 		        dataFileName = dataFileName .. ".wav"
 		    else
@@ -411,17 +414,16 @@ end
 
 		elseif phase == "did" then
 
-			if r:isRecording() then
+
+
+				if r:isRecording() then
 		            r:stopRecording()
+		            timer.cancel(countdown)
+		       	end
 
-		    end
 
-
-		    r = nil;
-		    
-
-			local isChannel1Playing = audio.isChannelPlaying( 1 )
-				if isChannel1Playing then
+			local isChannelActive = audio.isChannelActive( 1 ) 
+				if isChannelActive then
 
 					audio.pause( 1 );audio.stop(1);audio.dispose(1)
 

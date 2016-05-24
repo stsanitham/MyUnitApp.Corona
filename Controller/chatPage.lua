@@ -140,6 +140,7 @@ end
 
   	  end
 
+						
 
 end
 
@@ -371,16 +372,21 @@ local function AttachmentTouch( event )
 
 	elseif event.phase == "ended" then
 		print( AttachmentGroup.alpha )
-		if AttachmentGroup.alpha <= 0.3 then
-			AttachmentGroup.yScale=0.1
-			AttachmentGroup.alpha = 1
 
-			transition.from( AttachmentGroup, {time=300,alpha=1} )
-			transition.scaleTo( AttachmentGroup, {yScale=1.0, time=300 } )
-			
-		else
+		if attachment_icon.isVisible == true then
 
-			transition.to( AttachmentGroup, {time=300,alpha=0,yScale=0.01} )
+			if AttachmentGroup.alpha <= 0.3 then
+				AttachmentGroup.yScale=0.1
+				AttachmentGroup.alpha = 1
+
+				transition.from( AttachmentGroup, {time=300,alpha=1} )
+				transition.scaleTo( AttachmentGroup, {yScale=1.0, time=300 } )
+				
+			else
+
+				transition.to( AttachmentGroup, {time=300,alpha=0,yScale=0.01} )
+
+			end
 
 		end
 
@@ -405,6 +411,8 @@ local function createAttachment( )
 				icons_holder_bg.y = tabBar.y+tabBar.height+10
 				icons_holder_bg:setFillColor( 1,1,1)
 
+				icons_holder_bg.height = icons_holder_bg.height/2
+
 -------------------------------------------- Camera ---------------------------------------------------
 
 				camera_icon = display.newImageRect(AttachmentGroup,"res/assert/camera1.png",40,35)
@@ -423,49 +431,32 @@ local function createAttachment( )
 				camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
 				camera_icon_txt:setFillColor(0)
 
--------------------------------------------- Video ---------------------------------------------------
+-- -------------------------------------------- Video ---------------------------------------------------
 
-				video_icon = display.newImageRect(AttachmentGroup,"res/assert/video1.png",40,35)
-				video_icon.x= W/2 - 12
-				video_icon.anchorX=0
-				video_icon.anchorY=0
-				video_icon.y = camera_icon.y
-				video_icon.id="video"
-				video_icon:addEventListener( "touch", attachAction )
-
-
-				video_icon_txt = display.newText(AttachmentGroup,MessagePage.Video,0,0,native.systemFont,14)
-				video_icon_txt.anchorX = 0
-				video_icon_txt.anchorY = 0
-				video_icon_txt.x = video_icon.x 
-				video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
-				video_icon_txt:setFillColor(0)
-
--------------------------------------------- Audio ---------------------------------------------------
-
-                audio_icon = display.newImageRect(AttachmentGroup,"res/assert/audio1.png",40,35)
-				audio_icon.x= W/2 + W/3 - 30
-				audio_icon.anchorX=0
-				audio_icon.anchorY=0
-				audio_icon.y = video_icon.y
-				audio_icon.id="audio"
-				audio_icon:addEventListener( "touch", attachAction )
+-- 				video_icon = display.newImageRect(AttachmentGroup,"res/assert/video1.png",40,35)
+-- 				video_icon.x= W/2 - 12
+-- 				video_icon.anchorX=0
+-- 				video_icon.anchorY=0
+-- 				video_icon.y = camera_icon.y
+-- 				video_icon.id="video"
+-- 				video_icon:addEventListener( "touch", attachAction )
 
 
-				audio_icon_txt = display.newText(AttachmentGroup,MessagePage.Audio,0,0,native.systemFont,14)
-				audio_icon_txt.anchorX = 0
-				audio_icon_txt.anchorY = 0
-				audio_icon_txt.x = audio_icon.x 
-				audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
-				audio_icon_txt:setFillColor(0)
+-- 				video_icon_txt = display.newText(AttachmentGroup,MessagePage.Video,0,0,native.systemFont,14)
+-- 				video_icon_txt.anchorX = 0
+-- 				video_icon_txt.anchorY = 0
+-- 				video_icon_txt.x = video_icon.x 
+-- 				video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
+-- 				video_icon_txt:setFillColor(0)
+
 
 -------------------------------------------- Gallery ---------------------------------------------------
 
                 gallery_icon = display.newImageRect(AttachmentGroup,"res/assert/gallery1.png",40,35)
-				gallery_icon.x= W/2 - W/3 
+				gallery_icon.x= W/2 - 12
 				gallery_icon.anchorX=0
 				gallery_icon.anchorY=0
-				gallery_icon.y = camera_icon.y + camera_icon.contentHeight + 35
+				gallery_icon.y = camera_icon.y 
 				gallery_icon.id="gallery"
 				gallery_icon:addEventListener( "touch", attachAction )
 
@@ -478,44 +469,68 @@ local function createAttachment( )
 				gallery_icon_txt:setFillColor(0)
 
 
--------------------------------------------- Location ---------------------------------------------------
-
-                Location_icon = display.newImageRect(AttachmentGroup,"res/assert/location1.png",40,35)
-				Location_icon.x= W/2 - 12
-				Location_icon.anchorX=0
-				Location_icon.anchorY=0
-				Location_icon.y = gallery_icon.y
-				Location_icon.id="location"
-				Location_icon:addEventListener( "touch", attachAction )
+-------------------------------------------- Audio ---------------------------------------------------
 
 
 
-				Location_icon_txt = display.newText(AttachmentGroup,MessagePage.Location,0,0,native.systemFont,14)
-				Location_icon_txt.anchorX = 0
-				Location_icon_txt.anchorY = 0
-				Location_icon_txt.x = Location_icon.x - 10
-				Location_icon_txt.y = Location_icon.y+Location_icon.contentHeight+5
-				Location_icon_txt:setFillColor(0)
+
+                audio_icon = display.newImageRect(AttachmentGroup,"res/assert/audio1.png",40,35)
+				audio_icon.x= W/2 + W/3 - 30
+				audio_icon.anchorX=0
+				audio_icon.anchorY=0
+				audio_icon.y = gallery_icon.y
+				audio_icon.id="audio"
+				audio_icon:addEventListener( "touch", attachAction )
 
 
--------------------------------------------- Contact ---------------------------------------------------
-
-                Contact_icon = display.newImageRect(AttachmentGroup,"res/assert/user1.png",40,35)
-				Contact_icon.x= W/2 + W/3 - 30
-				Contact_icon.anchorX=0
-				Contact_icon.anchorY=0
-				Contact_icon.y = Location_icon.y
-				Contact_icon.id="contact"
-				Contact_icon:addEventListener( "touch", attachAction )
+				audio_icon_txt = display.newText(AttachmentGroup,MessagePage.Audio,0,0,native.systemFont,14)
+				audio_icon_txt.anchorX = 0
+				audio_icon_txt.anchorY = 0
+				audio_icon_txt.x = audio_icon.x 
+				audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
+				audio_icon_txt:setFillColor(0)
 
 
 
-				Contact_icon_txt = display.newText(AttachmentGroup,MessagePage.Contact,0,0,native.systemFont,14)
-				Contact_icon_txt.anchorX = 0
-				Contact_icon_txt.anchorY = 0
-				Contact_icon_txt.x = Contact_icon.x - 7
-				Contact_icon_txt.y = Contact_icon.y+Contact_icon.contentHeight+5
-				Contact_icon_txt:setFillColor(0)
+
+-- -------------------------------------------- Location ---------------------------------------------------
+
+--                 Location_icon = display.newImageRect(AttachmentGroup,"res/assert/location1.png",40,35)
+-- 				Location_icon.x= W/2 - 12
+-- 				Location_icon.anchorX=0
+-- 				Location_icon.anchorY=0
+-- 				Location_icon.y = camera_icon.y
+-- 				Location_icon.id="location"
+-- 				Location_icon:addEventListener( "touch", attachAction )
+
+
+
+-- 				Location_icon_txt = display.newText(AttachmentGroup,MessagePage.Location,0,0,native.systemFont,14)
+-- 				Location_icon_txt.anchorX = 0
+-- 				Location_icon_txt.anchorY = 0
+-- 				Location_icon_txt.x = Location_icon.x - 10
+-- 				Location_icon_txt.y = Location_icon.y+Location_icon.contentHeight+5
+-- 				Location_icon_txt:setFillColor(0)
+
+
+-- -------------------------------------------- Contact ---------------------------------------------------
+
+--                 Contact_icon = display.newImageRect(AttachmentGroup,"res/assert/user1.png",40,35)
+-- 				Contact_icon.x= W/2 + W/3 - 30
+-- 				Contact_icon.anchorX=0
+-- 				Contact_icon.anchorY=0
+-- 				Contact_icon.y = Location_icon.y
+-- 				Contact_icon.id="contact"
+-- 				Contact_icon:addEventListener( "touch", attachAction )
+
+
+
+-- 				Contact_icon_txt = display.newText(AttachmentGroup,MessagePage.Contact,0,0,native.systemFont,14)
+-- 				Contact_icon_txt.anchorX = 0
+-- 				Contact_icon_txt.anchorY = 0
+-- 				Contact_icon_txt.x = Contact_icon.x - 7
+-- 				Contact_icon_txt.y = Contact_icon.y+Contact_icon.contentHeight+5
+-- 				Contact_icon_txt:setFillColor(0)
 end 
 
 
@@ -647,8 +662,11 @@ end
 	--    event.target.object:toFront()
 	--    event.target.object:start()
 
+	--local nativealert123 = native.showAlert( "MUB", event.target.id , { "ok"})
+
 
 				spinner.isVisible=false
+
 
 				local options = {
 				    width = 32,
@@ -730,12 +748,19 @@ local function audioPlay( event )
 		elseif event.phase == "ended" then
 				display.getCurrentStage():setFocus( nil )
 
+
+
+
 					local audioname = event.target.id:match( "([^/]+)$" )
 
-					--native.showAlert( "MUB", "audioname" ,{"ok"} )
+
+
 					if not audioname then
 						audioname = event.target.id
 					end
+
+
+
 
 					 local filePath = system.pathForFile( audioname, system.DocumentsDirectory )
 		            -- Play back the recording
@@ -743,9 +768,6 @@ local function audioPlay( event )
 		            
 		            if file then
 		                io.close( file )
-
-		                	
-
 		               
 		                if event.target.value == "play" then
                	
@@ -773,24 +795,30 @@ local function audioPlay( event )
 										end
 
 
-
-
 									event.target:setSequence( "pause" )
 			      					event.target:play()
 			      					event.target.value="pause"
-			      					if event.target.channel == 2 then
-			      					 	audio.resume( 2 )
-
-			      					end
+			      					
 
 								else
 
-									local laserSound = audio.loadSound( filePath )
-					                local laserChannel = audio.play( laserSound,{channel=2,onComplete = audioPlayComplete} )
-					                event.target:setSequence( "pause" )
-			      					event.target:play()
-			      					event.target.value="pause"
-			      					event.target.channel=2
+									if  audio.isChannelPaused( 2 ) then
+										audio.resume( 2 )
+
+									else
+
+										 local filePath = system.pathForFile( audioname, system.DocumentsDirectory )
+										local laserSound = audio.loadStream( audioname, system.DocumentsDirectory )
+
+										audio.play( laserSound,{ channel=2,onComplete = audioPlayComplete } )
+										audio.setMaxVolume( 1, { channel=2 } )
+							                event.target:setSequence( "pause" )
+					      					event.target:play()
+					      					event.target.value="pause"
+
+
+					      			end
+
 								end
 			           
 
@@ -1079,9 +1107,10 @@ end
 
 
 					
-					if fhd or ChatHistory[i].Audio_Path == "DEFAULT" then	
 
-							spinner_hide ()
+					if fhd or ChatHistory[i].Audio_Path == "DEFAULT"  then	
+
+							spinner_hide()
 
 							bg.width=bg.width+25;bg.height=bg.height+30
 
@@ -1156,118 +1185,17 @@ end
 									downloadimage.anchorX = 0
 									downloadimage.anchorY = 0
 									downloadimage.object = tempGroup
-									downloadimage.y = bg.y
+									downloadimage.y = bg.y+5
 									downloadimage.isVisible = true
 									downloadimage:toFront()
 
-									bg.width=bg.width+20;bg.height=bg.height+25
+									bg.width=bg.width+20;bg.height=bg.height+30
 
+									 if MessageType == "GROUP" then
 
-									downloadimage:addEventListener( "touch", receviednotifyDownload )
-							
+									 	downloadimage.y= downloadimage.y+20
 
-						end
-
-					end
-
-
-				end
-
-
-			--------- Video Attachment ---------------
-
-
-				if ChatHistory[i].Video_Path  ~= nil and ChatHistory[i].Video_Path ~= "" and ChatHistory[i].Video_Path ~= "NULL" and ChatHistory[i].Video_Path ~= " " then
-
-					local videoname = ChatHistory[i].Video_Path:match( "([^/]+)$" )
-
-					 local video
-
-					 bg.type = "video"
-
-					 local filePath = system.pathForFile( videoname,system.DocumentsDirectory )
-				 	 local fhd = io.open( filePath )
-
-					  bg.contentPath = filePath
-
-					
-					if fhd then	
-							bg.width=bg.width+25;bg.height=bg.height+20
-
-							local sheetData2 = { width=30, height=30, numFrames=2, sheetContentWidth=60, sheetContentHeight=30 }
-							local sheet1 = graphics.newImageSheet( "res/assert/playpause.png", sheetData2 )
-
-							local sequenceData = {
-				                { name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
-				                { name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
-				                }
-
-							local playIcon = display.newSprite( sheet1, sequenceData )
-							playIcon.x=bg.x-bg.contentWidth/2;playIcon.y=bg.y+bg.contentHeight/2-5
-							playIcon.id=ChatHistory[i].Video_Path
-							playIcon.value="play"
-							playIcon:addEventListener( "touch", videoPlay )
-							playIcon:setSequence( "play" )
-      						playIcon:play()
-							tempGroup:insert(playIcon)
-
-							if ChatHistory[i].Message_From ~= tostring(ContactId) then
-								playIcon.x = bg.x+bg.contentWidth/2
-							end
-					else
-
-						if ChatHistory[i].Video_Path == "DEFAULT" then
-								
-
-								spinner.isVisible=false
-
-								    local options = {
-												    width = 32,
-												    height = 32,
-												    numFrames = 4,
-												    sheetContentWidth = 64,
-												    sheetContentHeight = 64
-												}
-
-									local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
- 
-								    local image_spinner = widget.newSpinner
-														{
-														    width = 106/4 ,
-														    height = 111/4,
-														    deltaAngle = 10,
-														    sheet = spinnerSingleSheet,
-														    startFrame = 1,
-														    incrementEvery = 20
-														}
-
-										image_spinner.x=bg.x-bg.contentWidth/2;image_spinner.y=bg.y+bg.contentHeight/2
-									    image_spinner:toFront();image_spinner:start()
-
-
-									    image_spinner:start()
-
-									    tempGroup:insert(image_spinner)
-
-									    bg.height = bg.height+20;bg.width = bg.width+15
-
-
-
-						else
-							
-							--When audio notification receives
-
-							local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
-									downloadimage.x = bg.x+bg.contentWidth/4
-									downloadimage.id = ChatHistory[i].Video_Path
-									downloadimage.anchorX = 0
-									downloadimage.anchorY = 0
-									downloadimage.object = tempGroup
-									downloadimage.y = bg.y
-									downloadimage.isVisible = true
-									downloadimage:toFront()
-
-									bg.width=bg.width+20;bg.height=bg.height+25
+									 end
 
 
 									downloadimage:addEventListener( "touch", receviednotifyDownload )
@@ -1288,6 +1216,8 @@ end
 
 				 Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
 
+
+
 				 local image
 
 				 local filePath = system.pathForFile( Imagename,system.DocumentsDirectory )
@@ -1298,6 +1228,8 @@ end
 					if fhd or ChatHistory[i].Image_Path == "DEFAULT" then	
 
 								spinner.isVisible=false
+
+								spinner_hide()
 
 							    if MessageType == "GROUP" then	
 										
@@ -1337,58 +1269,6 @@ end
 
 					else
 
-					
-
-						if ChatHistory[i].Image_Path == "DEFAULT" then
-
-								image = display.newImageRect( tempGroup, "res/assert/detail_defalut.jpg", 200, 170 )
-								image.id = ChatHistory[i].Image_Path;bg.width = image.contentWidth+5;bg.height = image.contentHeight+23.5
-
-								if MessageType == "GROUP" then	
-
-									owner.anchorY=0;owner.anchorX = 0;owner.x=chat.x;owner.y=bg.y+1 
-									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=owner.y+20
-									bg.width = image.contentWidth+5
-									bg.height = image.contentHeight+23.5
-								else
-									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=bg.y+2.5
-									bg.width = image.contentWidth+5
-									bg.height = image.contentHeight+5	
-
-
-								end
-						
-
-								spinner.isVisible=false
-
-
-								local options = {
-												    width = 32,
-												    height = 32,
-												    numFrames = 4,
-												    sheetContentWidth = 64,
-												    sheetContentHeight = 64
-												}
-
-										local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
-
-								local image_spinner = widget.newSpinner
-
-												{
-												    width = 106/4 ,
-												    height = 111/4,
-												    deltaAngle = 10,
-												    sheet = spinnerSingleSheet,
-												    startFrame = 1,
-												    incrementEvery = 20
-												}
-
-												image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
-											    image_spinner:toFront();image_spinner:start()
-
-											   tempGroup:insert(image_spinner)
-
-						else
 							--When image notification recive
 
 
@@ -1401,60 +1281,6 @@ end
 									owner.anchorY=0;owner.anchorX = 0;owner.x=chat.x;owner.y=bg.y+1
 									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=owner.y+20	
 									
-									spinner.isVisible=false
-
-								    local options = {
-												    width = 32,
-												    height = 32,
-												    numFrames = 4,
-												    sheetContentWidth = 64,
-												    sheetContentHeight = 64
-												}
-
-									local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
- 
-								    local image_spinner = widget.newSpinner
-														{
-														    width = 106/4 ,
-														    height = 111/4,
-														    deltaAngle = 10,
-														    sheet = spinnerSingleSheet,
-														    startFrame = 1,
-														    incrementEvery = 20
-														}
-
-										image_spinner.x=image.x-image.contentWidth/2;image_spinner.y=image.y+image.contentHeight/2
-									    image_spinner:toFront();image_spinner:start()
-
-
-									    image_spinner.isVisible = false
-
-									    tempGroup:insert(image_spinner)
-
-
-									local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
-									downloadimage.x = image.x+image.contentWidth/2-25
-									downloadimage.id = ChatHistory[i].Image_Path
-									downloadimage.anchorX = 0
-									downloadimage.anchorY = 0
-									--downloadimage.object = image_spinner
-									downloadimage.y = image.y+image.contentHeight/2-25
-									downloadimage.isVisible = true
-									downloadimage:toFront()
-
-
-									downloadimage:addEventListener( "touch", receviednotifyDownload )
-
-
-
-								else
-
-									image = display.newImageRect( tempGroup, "res/assert/download_default.jpg", 200, 170 )
-									image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=bg.y+2.5
-
-									bg.width = image.contentWidth+5;bg.height = image.contentHeight+5	
-
-
 									local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
 									downloadimage.x = image.x+image.contentWidth/2-25
 									downloadimage.id = ChatHistory[i].Image_Path
@@ -1465,14 +1291,34 @@ end
 									downloadimage.isVisible = true
 									downloadimage:toFront()
 
-
 									downloadimage:addEventListener( "touch", receviednotifyDownload )
+
+								else
+
+										image = display.newImageRect( tempGroup, "res/assert/download_default.jpg", 200, 170 )
+										image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=bg.y+2.5
+
+										bg.width = image.contentWidth+5;bg.height = image.contentHeight+5	
+
+
+										local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
+										downloadimage.x = image.x+image.contentWidth/2-25
+										downloadimage.id = ChatHistory[i].Image_Path
+										downloadimage.anchorX = 0
+										downloadimage.anchorY = 0
+										downloadimage.object = tempGroup
+										downloadimage.y = image.y+image.contentHeight/2-25
+										downloadimage.isVisible = true
+										downloadimage:toFront()
+
+
+										downloadimage:addEventListener( "touch", receviednotifyDownload )
 
 								end
 
 						end
 
-					end	
+			
 
 
 				if ChatHistory[i].Message_From == tostring(ContactId) then
@@ -1491,7 +1337,7 @@ end
 				
 			local arrow = display.newImageRect( tempGroup, "res/assert/whitetriangle.png", 8, 8 )
 			arrow.x=bg.x-5
-			arrow.y=bg.y-0.3
+			arrow.y=bg.y
 			arrow.anchorY=0
 
 
@@ -1548,6 +1394,7 @@ function get_videomodel( response )
 -- }
 -- native.showPopup( "mail", options )
 
+
 end
 
 
@@ -1555,42 +1402,6 @@ end
 
 function get_imagemodel(response)
 
-
-		Imagepath = response.Abspath
-
-		Imagename = response.FileName
-
-		Imagesize = size
-
-		ChatBox_bg.isVisible = true
-
-		ChatBox.isVisible = true
-
-		sendBtn_bg.isVisible = true
-
-		sendBtn.isVisible = true
-
-		local q = "UPDATE pu_MyUnitBuzz_Message SET Image_Path='"..Imagepath.."' WHERE id='"..image_update_row.."';"
-		db:exec( q )
-
-		--sendMeaasage()
-
-			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
-			
-			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
-			isDeleted="false"
-			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-			ImagePath= Imagepath or ""
-			AudioPath="NULL"
-			VideoPath="NULL"
-			MyUnitBuzz_LongMessage=ChatBox.text
-			From=ContactId
-			To=To_ContactId
-			Message_Type = MessageType
-
-
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 
 	end
 
@@ -1645,7 +1456,7 @@ function get_imagemodel(response)
 			-- 	 end 
 			-- end
 
-			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront();attachment_icon_bg:toFront( )
 		    		
 		    end
 
@@ -1666,6 +1477,7 @@ local function deleteAction( event )
 
 				local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.value..[[;]]
 				db:exec( q )
+				
 				sendMeaasage()
 
 		elseif event.target.id == "copy" then
@@ -1717,7 +1529,7 @@ function get_sendMssage(response)
 
     end
 
-	sendMeaasage()
+		
 
 end
 
@@ -1837,9 +1649,20 @@ local function ChatSendAction( event )
 				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
 				db:exec( insertQuery )
 
+				local ConversionFirstName,ConversionLastName,GroupName
+				local DocumentUpload = {}
 
-			Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+				if MessageType == "GROUP" then
 
+					ConversionFirstName="";ConversionLastName="";GroupName=MemberName;DocumentUpload=""
+				else
+					ConversionFirstName="";ConversionLastName=MemberName;GroupName="";DocumentUpload=""
+				end
+						 
+
+			Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+
+			sendMeaasage()
 
 		    else
 
@@ -1871,6 +1694,8 @@ local function ChatSendAction( event )
 
 
 					    Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+
+					    sendMeaasage()
 
                    end
                    end
@@ -2296,41 +2121,7 @@ end
 
 	function get_audiomodel( response )
 
-				composer.removeHidden()
-
-				ChatBox.isVisible=true
-
-
-			local audiopath = response.Abspath
-
-			local audioname = response.FileName
-
-			audiosize = size
-
-	
-			local q = "UPDATE pu_MyUnitBuzz_Message SET Audio_Path='"..audiopath.."' WHERE id='"..audio_update_row.."';"
-			db:exec( q )
-
-			
-
-				local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 				
-				Message_date=os.date("%Y-%m-%dT%H:%M:%S")
-				isDeleted="false"
-				Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-				Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-				ImagePath= ""
-				AudioPath=audiopath or ""
-				VideoPath="NULL"
-				MyUnitBuzz_LongMessage=ChatBox.text
-				From=ContactId
-				To=To_ContactId
-				Message_Type = MessageType
-
-
-
-				Webservice.SEND_MESSAGE("Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
-
 				--sendMeaasage()
 
 	end
@@ -2349,16 +2140,11 @@ end
 		--local function timedelayAudioAction(event)
 
 	    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+
+
 		            -- Play back the recording
 		            local file = io.open( filePath)
 		            
-		            if file then
-		                io.close( file )
-		            else
-		            	dataFileName="test.wav"
-			           	filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
-		            end
-
 		                local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 
 					    Message_date=os.date("%Y-%m-%dT%H:%M:%S")
@@ -2368,7 +2154,7 @@ end
 						ImagePath=""
 						ImageName = ""
 						ImageSize = ""
-						AudioPath="DEFAULT"
+						AudioPath=dataFileName
 						VideoPath=""
 						MyUnitBuzz_LongMessage=ChatBox.text
 						From=ContactId
@@ -2381,13 +2167,10 @@ end
 
 
 
-					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Audio_Path= 'DEFAULT'") do
+					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Audio_Path= '"..dataFileName.."'") do
 					   audio_update_row = row.id 
 
 					end 
-
-					
-
 
 					 	local path = system.pathForFile( dataFileName, system.DocumentsDirectory)
 
@@ -2399,7 +2182,68 @@ end
 
 						formatSizeUnits(size)
 
-						 Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
+						composer.removeHidden()
+
+						ChatBox.isVisible=true
+
+
+
+					local audioname = dataFileName
+
+					audiosize = size
+
+
+				local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+				
+				Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+				isDeleted="false"
+				Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+				Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+				ImagePath= ""
+				AudioPath=audiopath or ""
+				VideoPath="NULL"
+				MyUnitBuzz_LongMessage=ChatBox.text
+				From=ContactId
+				To=To_ContactId
+				Message_Type = MessageType
+
+				local ConversionFirstName,ConversionLastName,GroupName
+				local DocumentUpload = {}
+
+				if MessageType == "GROUP" then
+
+					ConversionFirstName="";ConversionLastName="";GroupName=MemberName
+						  DocumentUpload = {
+						  	UserId = UserId,
+							        File = file_inbytearray,
+							        FileName = dataFileName,
+							        FileType = "Audios"
+							    }
+
+				else
+					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+				
+							  DocumentUpload = {
+							  	UserId = UserId,
+							        File = file_inbytearray,
+							        FileName = dataFileName,
+							        FileType = "Audios"
+							    }
+
+							
+
+
+
+				end
+
+				MessageFileType="Audios"
+
+				Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,"Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
+
+
+
+						-- Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
 
 
 						 sendMeaasage()
@@ -2452,7 +2296,84 @@ end
 
 					end 
 
-				   Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+
+
+		Imagesize = size
+
+		ChatBox_bg.isVisible = true
+
+		ChatBox.isVisible = true
+
+		sendBtn_bg.isVisible = true
+
+		sendBtn.isVisible = true
+
+		--sendMeaasage()
+
+			local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+			
+			Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+			isDeleted="false"
+			Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+			Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+			ImagePath= photoviewname or ""
+			AudioPath="NULL"
+			VideoPath="NULL"
+			MyUnitBuzz_LongMessage=ChatBox.text
+			From=ContactId
+			To=To_ContactId
+			Message_Type = MessageType
+
+
+			local path = system.pathForFile( Imagename, system.DocumentsDirectory)
+
+				        local size = lfs.attributes (path, "size")
+
+						local fileHandle = io.open(path, "rb")
+
+						local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+						formatSizeUnits(size)
+
+
+				local ConversionFirstName,ConversionLastName,GroupName
+				local DocumentUpload = {}
+
+				if MessageType == "GROUP" then
+
+					ConversionFirstName="";ConversionLastName="";GroupName=MemberName
+						  DocumentUpload = {
+						  			UserId = UserId,
+							        File = file_inbytearray,
+							        FileName = Imagename,
+							        FileType = "Images"
+							    }
+
+				else
+					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+				
+							  DocumentUpload = {
+							  		UserId = UserId,
+							        File = file_inbytearray,
+							        FileName = Imagename,
+							        FileType = "Images"
+							    }
+
+							
+
+
+
+				end
+
+				MessageFileType="Images"
+
+
+			      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+
+
+				   --Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
 
 				  sendMeaasage()
 
@@ -2485,7 +2406,6 @@ end
 				elseif button_idvalue == "send" then
 
 
-		            local nativelaert = native.showAlert("MUB","videopath",{"ok"})
 
 
 
@@ -2740,12 +2660,19 @@ function scene:show( event )
 
 		------------------------------------------- attachment icon -----------------------------------------
 
+		
 
 		attachment_icon = display.newImageRect(sceneGroup,"res/assert/attached.png",20,20)
 		attachment_icon.x= W-40;attachment_icon.y = tabBar.y+35
-		attachment_icon:setFillColor( 0 )
 		attachment_icon.isVisible = true
-		attachment_icon:addEventListener( "touch", AttachmentTouch )
+		
+
+		attachment_icon_bg = display.newRect( sceneGroup, W-40, tabBar.y+35, 60, 40 )
+		attachment_icon_bg.x=attachment_icon.x
+		attachment_icon_bg.y=attachment_icon.y
+		attachment_icon_bg:setFillColor( 0.3,0.2,0 )
+		attachment_icon_bg.alpha=0.01
+		attachment_icon_bg:addEventListener( "touch", AttachmentTouch )
 
 
 		createAttachment()
