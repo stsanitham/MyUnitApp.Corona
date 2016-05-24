@@ -30,6 +30,8 @@ local menuBtn, test
 
 local back_icon_bg, back_icon
 
+local filename ,filename_title, filename_close
+
 local Imagepath = "";Imagename = "";Imagesize = ""
 
 openPage="pushNotificationListPage"
@@ -42,7 +44,7 @@ local status
 
 local Details={}
 
-local Audiopath, Audioname, Audiosize
+local Audiopath=""; Audioname=""; Audiosize=""
 
 local openPagevalue = "addpage"
 
@@ -363,25 +365,15 @@ end
 									photoheight = photoheight1
 
 									
-								--	if targetaction ~= "audio" then
+									if targetaction == "compose" then
 
 									sceneevent.parent:resumeCall(list_values)
 
 									spinner.y=H/2-75
 
 									composer.hideOverlay()
-
-								--	else
-
-										-- local options = {
-        		-- 								effect = "slideRight",
-										-- 		time = 300,
-										-- 		params = { audiopathvalue = Audiopath , audiofilevalue = Audioname , audiofilesize = Audiosize }
-									 --    }
-
-										-- composer.gotoScene("Controller.pushNotificationListPage",options)
-
-								--	end
+									
+									end
 
 								--	scrollTo(0)
 
@@ -444,7 +436,7 @@ end
 									photoheight = photoheight1
 
 									
-								--	if targetaction ~= "audio" then
+									if targetaction == "compose" then
 
 									sceneevent.parent:resumeCall(list_values)
 
@@ -452,17 +444,7 @@ end
 
 									composer.hideOverlay()
 
-									-- else
-
-									-- 		local options = {
-        	-- 									effect = "slideRight",
-									-- 			time = 300,
-									-- 			params = { audiopathvalue = Audiopath , audiofilevalue = Audioname , audiofilesize = Audiosize }
-									--         }
-
-									-- 	  composer.gotoScene("Controller.pushNotificationListPage",options)
-
-									-- end
+								   end
 
 								--	scrollTo(0)
 
@@ -522,7 +504,7 @@ end
 									photoheight = photoheight1
 
 
-									--if targetaction ~= "audio" then
+									if targetaction == "compose" then
 
 									sceneevent.parent:resumeCall(list_values)
 
@@ -530,18 +512,7 @@ end
 
 									composer.hideOverlay()
 
-									-- else
-
-									-- 		local options = {
-        	-- 									effect = "slideRight",
-									-- 			time = 300,
-									-- 			params = { audiopathvalue = Audiopath , audiofilevalue = Audioname , audiofilesize = Audiosize }
-									--     }
-
-									-- 	composer.gotoScene("Controller.pushNotificationListPage",options)
-
-
-									-- end
+									end
 
 								--	scrollTo(0)
 
@@ -685,8 +656,14 @@ end
 
 						ScheduledMessageGroup.isVisible = false
 
-						longmsg_textbox.isVisible = true
-    	                shortmsg_textbox.isVisible = true
+									local function onTimer(event)
+
+									longmsg_textbox.isVisible = true
+			    	                shortmsg_textbox.isVisible = true
+
+			    	                end
+
+    	                timer.performWithDelay(500,onTimer)
 
 						end
 
@@ -700,9 +677,14 @@ end
 
 						ScheduledMessageGroup.isVisible = false
 
-		     			longmsg_textbox.isVisible = true
-						shortmsg_textbox.isVisible = true
+					     		    local function onTimer(event)
 
+									longmsg_textbox.isVisible = true
+			    	                shortmsg_textbox.isVisible = true
+
+			    	                end
+
+    	                timer.performWithDelay(500,onTimer)
 				end
 
 		    end
@@ -1495,11 +1477,11 @@ local function composeAudioUpdate(audiovalue)
 
 										    composer.removeHidden()
 
-											local audiopath = response.Abspath
+											audiopath = response.Abspath
 
-											local audioname = response.FileName
+											audioname = response.FileName
 
-											local audiosize = size
+											audiosize = size
 
 
 											Audiopath = audiopath
@@ -1558,6 +1540,8 @@ local function composeAudioUpdate(audiovalue)
 													filename_title.isVisible = false
 
 													filename_close.isVisible = false
+
+													Audiopath = ""
 
 													os.remove( path )
 
@@ -1828,31 +1812,31 @@ end
 				scrollView:insert(long_msg_charlimit)
 
 
-				if sceneevent.params then
+				-- if sceneevent.params then
 
-                        detailvalues = sceneevent.params.Details
-                        page = sceneevent.params.value
+    --                     detailvalues = sceneevent.params.Details
+    --                     page = sceneevent.params.value
 
-                        print("detailvalues : "..json.encode(detailvalues))
+    --                     print("detailvalues : "..json.encode(detailvalues))
 
-                        if page == "edit" then
+    --                     if page == "edit" then
 
-	                        shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
-						    longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
+	   --                      shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
+				-- 		    longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
 
 
-					   		short_msg_charlimit.text = (250 - shortmsg_textbox.text:len()).." "..MessagePage.characters
+				-- 	   		short_msg_charlimit.text = (250 - shortmsg_textbox.text:len()).." "..MessagePage.characters
 
-				        	long_msg_charlimit.text = (1000 - longmsg_textbox.text:len()).." "..MessagePage.characters
+				--         	long_msg_charlimit.text = (1000 - longmsg_textbox.text:len()).." "..MessagePage.characters
 
-							back_icon:addEventListener("touch",closeMessagePage)
-							back_icon_bg:addEventListener("touch",closeMessagePage)
-							title:addEventListener("touch",closeMessagePage)
+				-- 			back_icon:addEventListener("touch",closeMessagePage)
+				-- 			back_icon_bg:addEventListener("touch",closeMessagePage)
+				-- 			title:addEventListener("touch",closeMessagePage)
 
                        	
-                        end
+    --                     end
 
-			    end
+			 --    end
 
 
 

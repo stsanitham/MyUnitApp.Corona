@@ -67,7 +67,7 @@ local function closeDetails( event )
 												{
 													isModal = true,
 													effect = "slideRight",
-													time = 600,
+													time = 200,
 													params = {
 													filename = dataFileName,
 													targetaction = "audio"
@@ -121,25 +121,6 @@ return true
 end
 
 
-local function audioPlayComplete( event )
-
-	print( "complete" )
-
-	    if ( event.completed ) then
-
-	    		keyTips.text = "Playing Completed"
-
-	    		startBtn.alpha=1
-				startBtn_txt.alpha=1
-				playBtn.alpha=1
-				playBtn_txt.alpha=1
-				stopBtn.alpha=0.5
-				stopBtn_txt.alpha=0.5
-
-		end
-end
-
-
 
 local function audioAction( event )
 	if event.phase == "began" then
@@ -160,7 +141,7 @@ local function audioAction( event )
 				stopBtn.alpha=1
 				stopBtn_txt.alpha=1
 
-	   				 local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+	    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
 		            
@@ -169,40 +150,25 @@ local function audioAction( event )
 		                fSoundPlaying = true
 		                fSoundPaused = false
 
-
-		              
-		                	local isChannelPaused = audio.isChannelPaused( 1 )
-							if isChannelPaused then
-
-								audio.resume( 1 )
-
+		                local isChannelPaused = audio.isChannelPaused( 1 )
+						if isChannel1Playing then
+						    audio.pause( 1 )
+						end
+		                	local isChannel1Playing = audio.isChannelPlaying( 1 )
+							if isChannel1Playing then
 							else
-
-								local isChannelActive = audio.isChannelActive( 1 ) 
-							
-								if isChannelActive then
-
-									audio.pause( 1 );audio.stop(1);audio.dispose(1)
-
-								end
-
 								playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
-								audio.play( playbackSoundHandle, { channel=1 } )
+								audio.play( playbackSoundHandle, { channel=1, loops=-1 } )
 							end
 
-							playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
-							audio.play( playbackSoundHandle, { channel=1, loops=1,onComplete = audioPlayComplete } )
-						
 						end  
 
-		           		 keyTips.text = "Playing"
-
-		        	end
+		            keyTips.text = "Playing"
 
 			elseif event.target.id == "stop" then
 				
-				startBtn.alpha=0.5
-				startBtn_txt.alpha=0.5
+				startBtn.alpha=1
+				startBtn_txt.alpha=1
 				playBtn.alpha=1
 				playBtn_txt.alpha=1
 				stopBtn.alpha=0.5
@@ -434,7 +400,7 @@ function scene:show( event )
 		    dataFileName = dataFileName .. ".aif"
 		else
 		    if isIos then
-		        dataFileName = dataFileName .. ".wav"
+		        dataFileName = dataFileName .. ".aif"
 		    elseif isAndroid then
 		        dataFileName = dataFileName .. ".wav"
 		    else
@@ -489,16 +455,8 @@ end
 
 		elseif phase == "did" then
 
-
-
-				if r:isRecording() then
-		            r:stopRecording()
-		            timer.cancel(countdown)
-		       	end
-
-
-			local isChannelActive = audio.isChannelActive( 1 ) 
-				if isChannelActive then
+			local isChannel1Playing = audio.isChannelPlaying( 1 )
+				if isChannel1Playing then
 
 					audio.pause( 1 );audio.stop(1);audio.dispose(1)
 
@@ -508,23 +466,24 @@ end
 
 					if pagevalue == "compose" then
 
+						composer.hideOverlay()
 
 						-- print("datafilename ",dataFileName)
 
 
-	     --                local options = 
-						-- 	{
-						-- 		isModal = true,
-						-- 		effect = "slideRight",
-						-- 		time = 200,
-						-- 		params = {
-						-- 		filename = dataFileName,
-						-- 		pagevaluename = "audio"
-						-- 		}
-						-- 	}
+	      --               local options = 
+							-- {
+							-- 	isModal = true,
+							-- 	effect = "slideRight",
+							-- 	time = 200,
+							-- 	params = {
+							-- 	filename = dataFileName,
+							-- 	pagevaluename = "audio"
+							-- 	}
+							-- }
 
 
-			  	-- 		composer.gotoScene("Controller.composeMessagePage",options)
+			  		-- 	composer.gotoScene("Controller.composeMessagePage",options)
 
 
 					else

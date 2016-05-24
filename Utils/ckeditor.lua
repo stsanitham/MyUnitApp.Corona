@@ -48,22 +48,22 @@ ckeditor.htmlContent = [[
 
 		function get_action(form) {
 
-
 			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
 
 			var htmldata = CKEDITOR.instances.UnitGoals.document.getBody().getText()
 
 			//alert(htmldata.length)
 			if(htmldata.length > 1 )
+
 			{
 
+				var texttemp="corona:close"+ckvalue;
+	 			window.location.href = texttemp; 
 
-						var texttemp="corona:close"+ckvalue;
-			 			window.location.href = texttemp; 
+			}
+			else
+			{
 
-			}else{
-
->>>>>>> 393d6750960cefc1727f5901c1f06295111961df
 				sweetAlert("Please enter Unit Goals");
 		
 			}
@@ -77,22 +77,23 @@ ckeditor.htmlContent = [[
 ]]
 
 
-ckeditor.buttonHtml = [[<Button onclick=get_action(this) align="center" name="data" type="button" width="58" height="48" style="width=200px; height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 110px;"> Submit </Button>
+	ckeditor.buttonHtml = [[<Button onclick=get_action(this) align="center" name="data" type="button" width="58" height="48" style="width=200px; height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 110px;"> Submit </Button>
 
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
 
-]]
+	]]
+
 	ckeditor.endHtml = [[.replace(/\+/g, '%20')));  
 
 

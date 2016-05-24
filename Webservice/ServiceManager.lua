@@ -244,7 +244,8 @@ end
 
 
 
-function Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,audiopath,audioname,audiosize,pushmethod,From,To,Message_Type,postExecution)
+
+function Webservice.SEND_MESSAGE(message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,audiopath,audioname,audiosize,pushmethod,From,To,Message_Type,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -293,8 +294,9 @@ if Message_Type ~= nil and Message_Type ~= "" then
   "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
    "UserId": "]]..UserId..[[",
    "EmailAddress": "]]..EmailAddess..[[",
-   
-
+	"ImageFilePath": "]]..imagepath..[[",
+	 "ImageFileName": "]]..imagename..[[",
+	  "ImageFileSize": "]]..imagesize..[[",
 	  "AudioFilePath": "]]..audiopath..[[",
 	 "AudioFileName": "]]..audioname..[[",
 	  "AudioFileSize": "]]..audiosize..[[",
@@ -303,13 +305,6 @@ if Message_Type ~= nil and Message_Type ~= "" then
 	  "MessageType": "]]..Message_Type..[[",
 
     "TimeZone": "]]..TimeZone..[[",
-    "ConversionFirstName": "]]..ConversionFirstName..[[",
-    "ConversionLastName": "]]..ConversionLastName..[[",
-    "GroupName": "]]..GroupName..[[",
-    "IsSendNow": "false",
-    "MessageFileType": "]]..MessageFileType..[[",
-    
-    "DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 }
 ]]
 
@@ -349,6 +344,7 @@ end
 	return response
 
 end
+
 
 
 
