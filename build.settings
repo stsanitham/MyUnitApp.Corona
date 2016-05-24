@@ -42,11 +42,7 @@ settings =
 	        supportedPlatforms = { android=true, ["android-kindle"]=true },
 	    },
 
-	    ["CoronaProvider.native.popup.activity"] =
-        {
-            publisherId = "com.coronalabs",
-           -- supportedPlatforms = { iphone=true, ["iphone-sim"]=true },
-        },
+	   
 
 	["CoronaProvider.native.popup.quickLook"] =
 	    {
