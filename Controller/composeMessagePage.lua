@@ -117,6 +117,93 @@ end
 
 
 
+
+
+			 function uploadImage(  )
+
+						    function get_imagemodel(response)
+
+						    	print("get image model called : its response is here ~~~~~~~~~~~~~~~~")
+
+									Imagepath = response.Abspath
+
+									Imagename = response.FileName
+
+									Imagesize = size
+
+
+									filename_title.isVisible = true
+
+									filename.isVisible = true
+
+									filename_close.isVisible = true
+
+									filename.text = photoname
+
+									schedule_button.y = filename.y + filename.contentHeight +15
+									schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+									schedule_icon_text.y= schedule_icon.y
+									schedule_button.height=schedule_icon_text.contentHeight+10
+
+									send_button.y = filename.y + filename.contentHeight +15
+									send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+									send_icon_text.y= send_icon.y
+									send_button.height=send_icon_text.contentHeight+10
+
+									draft_button.y = filename.y + filename.contentHeight +15
+									draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+									draft_icon_text.y= draft_icon.y
+									draft_button.height=draft_icon_text.contentHeight+10
+
+
+										    function ImageClose(event)
+
+														filename.text = ""
+
+														filename.isVisible = false
+
+														filename_title.isVisible = false
+
+														filename_close.isVisible = false
+
+														Imagepath = ""
+
+														os.remove( path )
+
+														schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+														schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+														schedule_icon_text.y= schedule_icon.y
+
+														schedule_button.height=schedule_icon_text.contentHeight+10
+
+														send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+														send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+														send_icon_text.y= send_icon.y
+
+														send_button.height=send_icon_text.contentHeight+10
+
+														draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+														draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+														draft_icon_text.y= draft_icon.y
+
+														draft_button.height=draft_icon_text.contentHeight+10
+
+											end
+
+
+				                    filename_close:addEventListener("touch",ImageClose)
+
+							 end
+
+
+					 Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+
+			end
+
+
+
+
 local function selectionComplete ( event )
  
         local photo = event.target
@@ -199,91 +286,15 @@ local function selectionComplete ( event )
         formatSizeUnits(size1)
 
 
-				local function uploadImage(  )
+	    local function onTimer(event)
 
-						    function get_imagemodel(response)
+			uploadImage()
 
-						    	print("get image model called : its response is here ~~~~~~~~~~~~~~~~")
+	    end
 
-									Imagepath = response.Abspath
+       timer.performWithDelay(1500, onTimer )
 
-									Imagename = response.FileName
-
-									Imagesize = size
-
-
-									filename_title.isVisible = true
-
-									filename.isVisible = true
-
-									filename_close.isVisible = true
-
-									filename.text = photoname
-
-									schedule_button.y = filename.y + filename.contentHeight +15
-									schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-									schedule_icon_text.y= schedule_icon.y
-									schedule_button.height=schedule_icon_text.contentHeight+10
-
-									send_button.y = filename.y + filename.contentHeight +15
-									send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-									send_icon_text.y= send_icon.y
-									send_button.height=send_icon_text.contentHeight+10
-
-									draft_button.y = filename.y + filename.contentHeight +15
-									draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-									draft_icon_text.y= draft_icon.y
-									draft_button.height=draft_icon_text.contentHeight+10
-
-
-										    function ImageClose(event)
-
-														filename.text = ""
-
-														filename.isVisible = false
-
-														filename_title.isVisible = false
-
-														filename_close.isVisible = false
-
-														os.remove( path )
-
-														schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-														schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-														schedule_icon_text.y= schedule_icon.y
-
-														schedule_button.height=schedule_icon_text.contentHeight+10
-
-														send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-														send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-														send_icon_text.y= send_icon.y
-
-														send_button.height=send_icon_text.contentHeight+10
-
-														draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-														draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-														draft_icon_text.y= draft_icon.y
-
-														draft_button.height=draft_icon_text.contentHeight+10
-
-											end
-
-
-				                    filename_close:addEventListener("touch",ImageClose)
-
-							 end
-
-
-					 Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
-
-				end
-
-
-        uploadImage()
-
-	else
-
-	end
+     end
 
 end
 
@@ -639,28 +650,34 @@ end
 
 						IsScheduled = tostring(true)
 
-				        	if Imagepath ~= nil and Imagepath ~= null and Imagepath ~= "" and Imagepath ~= "" then
 
-				        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
-				            -- else
+					    if (shortmsg_textbox.text ~= "") and (Imagepath == nil or Imagepath == null or Imagepath == "" or Imagepath == " ") and (Audiopath == nil or Audiopath == null or Audiopath == "" or Audiopath == " ") then
+			                
+			                 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
 
-				            --    Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
-
-				            end
+					    end
 
 
 
-			            if Audiopath ~=nil and Audiopath ~= null and Audiopath ~= "" and Audiopath ~= "" then
+			        	if (shortmsg_textbox.text ~= "") and (Imagepath ~= nil and Imagepath ~= null and Imagepath ~= "" and Imagepath ~= " ") then
 
-			            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel1)
+			        		print("image path send value")
 
-			            -- else
-
-			            -- 	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","","","","",method,"","","",get_audiomodel1)
+			        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
 			            end
 
+
+
+
+			            if (shortmsg_textbox.text ~= "") and (Audiopath ~= nil and Audiopath ~= null and Audiopath ~= "" and Audiopath ~= " ") then
+
+			            	print("audio path send value")
+
+			            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel1)
+
+			            end
 
 
 						ScheduledMessageGroup.isVisible = false
@@ -703,36 +720,36 @@ end
         else
 
 
-        	if Imagepath ~= nil and Imagepath ~= null and Imagepath ~= "" and Imagepath ~= " " then
+
+					    print("send message ^^^^^^")
+
+					    print(shortmsg_textbox.text)
+
+
+		    if (shortmsg_textbox.text ~= "") and (Imagepath == nil or Imagepath == null or Imagepath == "" or Imagepath == " ") and (Audiopath == nil or Audiopath == null or Audiopath == "" or Audiopath == " ") then
+                
+                 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","","","","",method,"","","",get_messagemodel)
+
+		    end
+
+
+
+        	if (shortmsg_textbox.text ~= "") and (Imagepath ~= nil and Imagepath ~= null and Imagepath ~= "" and Imagepath ~= " ") then
 
         		print("image path send value")
 
-
         	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
-
-            -- else
-
-            --    Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","","","","",method,"","","",get_messagemodel)
 
             end
 
 
 
 
-         --   print("Audioname value : #################### ",Audioname)
-
-
-
-            if Audiopath ~= nil and Audiopath ~= null and Audiopath ~= "" and Audiopath ~= " " then
+            if (shortmsg_textbox.text ~= "") and (Audiopath ~= nil and Audiopath ~= null and Audiopath ~= "" and Audiopath ~= " ") then
 
             	print("audio path send value")
 
-
             	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel1)
-
-            -- else
-
-            -- 	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","","","","",method,"","","",get_audiomodel1)
 
             end
 
@@ -808,6 +825,7 @@ end
 	        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (test ~= "" or test ~= nil) then
 
 					    if event.target.id == "send" or event.target.id == "send icon" or event.target.id == "send_icon_text" then
+
 
 					        sendMessage("SEND")
 	                        
@@ -1397,7 +1415,6 @@ end
 
 local function composeAudioUpdate(audiovalue)
 
-
 	    local filePath = system.pathForFile( audiovalue, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
@@ -1409,12 +1426,9 @@ local function composeAudioUpdate(audiovalue)
 			           	filePath = system.pathForFile( audiovalue, system.DocumentsDirectory )
 		            end
 
+				        local size2 = lfs.attributes (filePath, "size")
 
-					 	local path = system.pathForFile( audiovalue, system.DocumentsDirectory)
-
-				        local size2 = lfs.attributes (path, "size")
-
-						local fileHandle = io.open(path, "rb")
+						local fileHandle = io.open(filePath, "rb")
 
 						local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
 
