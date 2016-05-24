@@ -26,6 +26,8 @@ local menuBtn
 
 local reciveImageFlag=false
 
+local webView
+
 openPage = "pushNotificationListPage"
 
 local RecentTab_Topvalue = 70
@@ -98,11 +100,12 @@ local sentMessage_detail
 
 	       if Request_response == true then
 
-	         	if webView then webView:removeSelf( );webView=nil end
-
 	      		 Utils.SnackBar(MessagePage.DeleteSuccess)
 
 					local function onTimer ( event )
+
+	         	          if webView then webView:removeSelf( );webView=nil end
+
 
 							DeleteMessageGroup.isVisible = false
 
@@ -167,11 +170,12 @@ local sentMessage_detail
 
 									file:write( saveData )
 
-									
-									webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 150 )
+					
+									webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 260 )
 
 									webView.hasBackground = false
 									webView.x = short_msg_txt.x - 7
+									webView.height =  H - 260 
 									webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
 
 									webView.anchorX=0;webView.anchorY=0
@@ -231,11 +235,12 @@ local sentMessage_detail
 
 												file:write( saveData )
 
-												
-												webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 150 )
+				
+												webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 260 )
 
 												webView.hasBackground = false
 												webView.x = short_msg_txt.x - 7
+												webView.height =  H - 260 
 												webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
 
 												webView.anchorX=0;webView.anchorY=0
@@ -244,6 +249,7 @@ local sentMessage_detail
 												messagedetail_scrollView:insert( webView)
 
 											    file:close()
+
 
 											    end
 
@@ -351,6 +357,113 @@ local sentMessage_detail
 
 
 
+local function audioPlay( event )
+			if event.phase == "began" then
+				display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+				display.getCurrentStage():setFocus( nil )
+
+					local audioname = event.target.id:match( "([^/]+)$" )
+
+					--native.showAlert( "MUB", "audioname" ,{"ok"} )
+					if not audioname then
+						audioname = event.target.id
+					end
+
+					 local filePath = system.pathForFile( audioname, system.DocumentsDirectory )
+		            -- Play back the recording
+		            local file = io.open( filePath)
+		            
+		            if file then
+		                io.close( file )
+
+		               
+		                if event.target.value == "play" then
+               	
+
+		                	 local isChannel1Playing = audio.isChannelPlaying( 2 )
+								if isChannel1Playing or isSimulator then
+
+									 -- for i=#MeassageList, 1, -1 do 
+										-- 		local group = MeassageList[#MeassageList]
+
+										-- 		for j=group.numChildren, 1, -1 do 
+
+													
+
+										-- 			if group[j].value == "pause" then
+
+										-- 				group[j]:setSequence( "play" )
+										-- 				group[j].value="play"
+	      			-- 									group[j]:play()
+
+										-- 			end
+
+									 --   		 	end
+												
+										-- end
+
+
+
+
+									event.target:setSequence( "pause" )
+			      					event.target:play()
+			      					event.target.value="pause"
+			      					if event.target.channel == 2 then
+			      					 	audio.resume( 2 )
+
+			      					end
+
+								else
+
+									local laserSound = audio.loadSound( filePath )
+					                local laserChannel = audio.play( laserSound,{channel=2,onComplete = audioPlayComplete} )
+					                event.target:setSequence( "pause" )
+			      					event.target:play()
+			      					event.target.value="pause"
+			      					event.target.channel=2
+								end
+			           
+
+	      				elseif event.target.value == "pause" then
+	      						print( "pause" )
+	      						 local isChannel1Playing = audio.isChannelPlaying( 2 )
+									if isChannel1Playing or isSimulator then
+									    audio.pause( 2 )
+									end
+									     event.target:setSequence( "play" )
+				      					event.target:play()
+				      					event.target.value="play"
+									
+
+									
+
+	      				end
+
+		            else
+
+		            end
+
+		-- network.download(
+		-- event.target.id,
+		-- "GET",
+		-- recivedNetwork,
+		-- event.target.id:match( "([^/]+)$" ),
+		-- system.DocumentsDirectory
+		-- )
+
+		end
+
+	return true
+end
+
+
+
+
+
+
+
+
 
 ------------------------------------------------------
 
@@ -402,6 +515,12 @@ end
 				messagelistvalue = event.params.messagelistvalues
 
 				print("\n\n\n Message Detail Values : \n\n ", json.encode(messagelistvalue))
+
+				 -- photowidth = event.params.photowidthval
+
+				 -- photoheight = event.params.photoheightval
+
+				 -- print(photowidth.."    "..photoheight)
 
 			end
 
@@ -605,6 +724,16 @@ end
 
 		if detail_value.ImageFilePath ~= null then
 
+
+						Imagenametext= display.newText(sceneGroup,detail_value.ImageFileName,0,0,W-80,0,native.systemFont,14)
+						Imagenametext.x=W/2+35
+						Imagenametext.y= webView.y+webView.contentHeight+12
+						Imagenametext.anchorY = 0
+						Utils.CssforTextView(Imagenametext,sp_labelName)
+						Imagenametext:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+						messagedetail_scrollView:insert(Imagenametext)
+
+
 						local function recivedNetwork( event )
 						    if ( event.isError ) then
 						        print( "Network error - download failed: ", event.response )
@@ -615,7 +744,7 @@ end
 						        reciveImageFlag=true
 
 								myImage = display.newImage( event.response.filename, event.response.baseDirectory, display.viewableContentWidth, display.contentHeight )
-								myImage.y = webView.y+webView.height+20
+								myImage.y = Imagenametext.y+Imagenametext.contentHeight+12
 								myImage.x = display.contentCenterX
 								myImage.anchorY=0
 								--myImage.width = display.viewableContentWidth - 20
@@ -642,6 +771,65 @@ end
 			)
 
 		end
+
+
+
+
+
+
+				if detail_value.AudioFilePath ~= null then
+
+
+						audionametext= display.newText(sceneGroup,detail_value.AudioFileName,0,0,W-80,0,native.systemFont,14)
+						audionametext.x=W/2+40
+						audionametext.y= webView.y+webView.contentHeight+12
+						--audionametext.anchorX=0
+						audionametext.anchorY = 0
+						Utils.CssforTextView(audionametext,sp_labelName)
+						audionametext:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+						messagedetail_scrollView:insert(audionametext)
+
+
+					 local audioname = detail_value.AudioFilePath:match( "([^/]+)$" )
+
+					 local audio
+
+
+					 filePath = system.pathForFile( audioname,system.DocumentsDirectory )
+				 	 local fhd = io.open( filePath )
+
+
+							spinner.isVisible=false
+
+							local bg = display.newRect( display.contentCenterX,0,W-250,50 )
+							bg.y = audionametext.y+audionametext.contentHeight+12
+							bg.anchorY =0
+							bg.x = display.contentCenterX
+							bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+							sceneGroup:insert(bg)
+							messagedetail_scrollView:insert(bg)
+
+							local sheetData2 = { width=30, height=30, numFrames=2, sheetContentWidth=60, sheetContentHeight=30 }
+							local sheet1 = graphics.newImageSheet( "res/assert/playpause.png", sheetData2 )
+
+							local sequenceData = {
+				                { name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
+				                { name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
+				                }
+
+							local playIcon = display.newSprite( sheet1, sequenceData )
+							playIcon.x=bg.x+bg.contentWidth/2-35;playIcon.y=bg.y+bg.contentHeight/2 
+							playIcon.id=detail_value.AudioFilePath
+							playIcon.value="play"
+					     	playIcon:addEventListener( "touch", audioPlay )
+							playIcon:setSequence( "play" )
+      						playIcon:play()
+							sceneGroup:insert(playIcon)
+							messagedetail_scrollView:insert(playIcon)
+
+
+					end
+
 
 
  end

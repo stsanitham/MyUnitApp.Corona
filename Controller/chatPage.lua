@@ -367,6 +367,7 @@ end
 
 
 
+
 local function AttachmentTouch( event )
 
 	if event.phase == "began" then
@@ -714,6 +715,8 @@ end
 	return true
 	end
 
+
+
 local function audioPlayComplete( event )
 
 	print( "complete" )
@@ -742,6 +745,8 @@ local function audioPlayComplete( event )
 
 		end
 end
+
+
 
 local function audioPlay( event )
 			if event.phase == "began" then
@@ -1391,14 +1396,6 @@ function get_imagemodel(response)
 
 
 	end
-
-
-
-
-
-
-	
-
 
 
 
