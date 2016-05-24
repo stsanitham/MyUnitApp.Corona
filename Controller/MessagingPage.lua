@@ -452,6 +452,18 @@ local function Broadcast_list( list )
 
 			end
 
+			if Position_txt.text:lower() == "audio" then
+				Position_txt.text = "Audio"
+
+			elseif Position_txt.text:lower() == "image" then
+				Position_txt.text = "Image"
+
+			elseif Position_txt.text:lower() == "video" then
+				Position_txt.text = "Video"
+
+			end
+
+
 			local time = makeTimeStamp(list[i].Update_Time_Stamp)
 
 			print( os.date( "%b %d, %Y %I:%M %p",time ))

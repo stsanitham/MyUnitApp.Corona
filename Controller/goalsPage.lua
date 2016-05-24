@@ -208,7 +208,6 @@ function get_Goals(response)
 
 		local t = response.MyUnitBuzzGoals
 
-
 		content = t
 
 		local saveData = [[<!DOCTYPE html>
@@ -251,11 +250,10 @@ function get_Goals(response)
 
 end
 
-Webservice.GET_MYUNITAPP_GOALS(get_Goals)
+	Webservice.GET_MYUNITAPP_GOALS(get_Goals)
 
-
-menuBtn:addEventListener("touch",menuTouch)
-BgText:addEventListener("touch",menuTouch)
+	menuBtn:addEventListener("touch",menuTouch)
+	BgText:addEventListener("touch",menuTouch)
 
 	Runtime:addEventListener( "key", onKeyEvent )
 

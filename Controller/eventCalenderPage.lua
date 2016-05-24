@@ -1406,11 +1406,11 @@ function scene:resumeGame(value,EditArray)
 
 		composer.showOverlay( "Controller.eventCal_DetailPage", options )
 
-	elseif value == "back" then
+	elseif value == "deleted" then
 
-			Runtime:addEventListener( "key", onKeyEvent )
+		Runtime:addEventListener( "key", onKeyEvent )
 
-    search.isVisible=true
+    		search.isVisible=true
 
 		local function waitTimer( event )
 			if openPage=="eventCalenderPage" then
@@ -1424,6 +1424,62 @@ function scene:resumeGame(value,EditArray)
 		end
 
 		timer.performWithDelay( 500, waitTimer )
+
+	elseif value == "back" then
+
+			Runtime:addEventListener( "key", onKeyEvent )
+
+    		search.isVisible=true
+
+		local function waitTimer( event )
+			if openPage=="eventCalenderPage" then
+			
+					-- weekViewTouchFlag=true
+					-- ParentShow=true
+					-- creatWeek(os.date('*t',makeTimeStamp(startdate)),true)
+
+
+			end
+		end
+
+		timer.performWithDelay( 500, waitTimer )
+
+
+	elseif value == "added" then
+
+				Runtime:addEventListener( "key", onKeyEvent )
+
+    		search.isVisible=true
+
+		local function waitTimer( event )
+			
+			if openPage=="eventCalenderPage" then
+			
+					-- weekViewTouchFlag=true
+					-- ParentShow=true
+					-- creatWeek(os.date('*t',makeTimeStamp(startdate)),true)
+					local t = os.date( '*t' )
+
+
+			t.day = t.day - os.date( "%w" ) 
+			ProcessingCount_total = 7
+			startdate = os.date( "%m/%d/%YT%H:%m:%S %p" , os.time( t ))
+			t.day = t.day + 6
+			Processingdate = os.date( "%Y-%m-%d" , os.time( t ))
+			startdate = dateSplit(startdate).." 12:00:00 AM"
+			enddate = os.date( "%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
+			local temp = os.date( '*t' )
+			temp.day = temp.day - os.date( "%w" ) 
+			weekViewTouchFlag=true
+			ParentShow=true
+			creatWeek(temp,true)
+
+
+			end
+		end
+
+		timer.performWithDelay( 500, waitTimer )
+
 
 		
 
@@ -1463,7 +1519,7 @@ function scene:show( event )
 			horizontalScrollingDisabled = false,
 			verticalScrollingDisabled = false,
 			hideScrollBar=true,
-			friction = .6,
+			friction = .2,
 			listener = EventCalender_scrollListener
 			}
 

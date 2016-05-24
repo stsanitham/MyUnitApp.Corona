@@ -741,7 +741,10 @@ local display_details = {}
 		if event.phase == "will" then
 
 				if status == "edit" then
-					event.parent:resumeGame(status,Details)
+					event.parent:resumeGame(status,detail_value)
+
+				elseif status == "deleted" then
+					event.parent:resumeGame(status,detail_value)
 				else
 					status="back"
 					event.parent:resumeGame(status)

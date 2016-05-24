@@ -38,52 +38,55 @@ return true
 end
 
 
-local function downloadAction(filename)
+-- local function downloadAction(filename)
 
-			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+-- 			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+
+
+-- 					native.showAlert( imageName.text, ResourceLibrary.Download_alert, { CommonWords.ok} )
 						
-					local path = system.pathForFile("/storage/sdcard1/"..filename)                         -- Change this path to the path of an image on your computer
-					------------------------------------------------------------------------
-					--------------------------- Read ----------------------------
-						local file, reason = io.open( localpath, "r" )                               -- Open the image in read mode
-						local contents
-						if file then
-						    contents = file:read( "*a" )                                        -- Read contents
-						    io.close( file )                                                    -- Close the file (Important!)
-						else
-						    print("Invalid path")
-						    return
-						end
+-- 					local path = system.pathForFile("/storage/sdcard1/"..filename)                         -- Change this path to the path of an image on your computer
+-- 					------------------------------------------------------------------------
+-- 					--------------------------- Read ----------------------------
+-- 						local file, reason = io.open( localpath, "r" )                               -- Open the image in read mode
+-- 						local contents
+-- 						if file then
+-- 						    contents = file:read( "*a" )                                        -- Read contents
+-- 						    io.close( file )                                                    -- Close the file (Important!)
+-- 						else
+-- 						    print("Invalid path")
+-- 						    return
+-- 						end
 
-					--------------------------- Write ----------------------------
+-- 					--------------------------- Write ----------------------------
 	
-						local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+-- 						local file = io.open( path, "w" )                                    -- Open the destination path in write mode
 		
-							if file then
-							    file:write(contents)                                                -- Writes the contents to a file
-							    io.close(file)                                                      -- Close the file (Important!)
-							else
-								path = system.pathForFile("/storage/sdcard0/"..filename)
-								local file = io.open( path, "w" )                                    -- Open the destination path in write mode
-								if file then
-								    file:write(contents)                                                -- Writes the contents to a file
-								    io.close(file)                                                      -- Close the file (Important!)
-								else
-								   path = system.pathForFile("/storage/sdcard/"..filename)
-									local file = io.open( path, "w" )                                    -- Open the destination path in write mode
-									if file then
-										file:write(contents)                                                -- Writes the contents to a file
-										io.close(file)                                                      -- Close the file (Important!)
-									else
-									    print("Error")
-									    return
-									 end
-								 end
-							end
+-- 							if file then
+-- 							    file:write(contents)                                                -- Writes the contents to a file
+-- 							    io.close(file)                                                      -- Close the file (Important!)
+-- 							else
+-- 								path = system.pathForFile("/storage/sdcard0/"..filename)
+-- 								local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+-- 								if file then
+-- 								    file:write(contents)                                                -- Writes the contents to a file
+-- 								    io.close(file)                                                      -- Close the file (Important!)
+-- 								else
+-- 								   path = system.pathForFile("/storage/sdcard/"..filename)
+-- 									local file = io.open( path, "w" )                                    -- Open the destination path in write mode
+-- 									if file then
+-- 										file:write(contents)                                                -- Writes the contents to a file
+-- 										io.close(file)                                                      -- Close the file (Important!)
+-- 									else
+-- 									    print("Error")
+-- 									    return
+-- 									 end
+-- 								 end
+-- 							end
 
-								native.showAlert( imageName.text, ResourceLibrary.Download_alert, { CommonWords.ok} )
+								
 
-end
+-- end
 			local function showShare(fileNameString)
 
 				print( "fileNameString : "..fileNameString )
@@ -232,9 +235,7 @@ local function listTouch( event )
 						elseif event.id =="download" then
 
 							--downloadAction(event.filename..".png")
-
-
-			local function onComplete( event )
+	local function onComplete( event )
 
 			if event.action == "clicked" then
 
@@ -285,7 +286,7 @@ local function listTouch( event )
 								 end
 								end
 
-							native.showAlert( event.filename..".png", ResourceLibrary.Download_alert, { CommonWords.ok} )
+							native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
 							-- native.showAlert( filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
 end
@@ -294,11 +295,9 @@ end
 
 end
 
+				native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
-								native.showAlert( event.filename..".png", ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
-
-
-						end
+	end
 
 
 
