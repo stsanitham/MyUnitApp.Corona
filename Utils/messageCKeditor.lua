@@ -46,8 +46,11 @@ ckeditor.htmlContent = [[
 
 
 
-		function get_action(form) {
+		function get_action() {
 
+
+				var texttemp="corona:close hi";
+			 			window.location.href = texttemp; 
 
 			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
 
@@ -98,7 +101,7 @@ ckeditor.buttonHtml = [[<Button onclick=get_action(this) align="center" name="da
 	</script>
 
 
-	
+get_action()
 
 	<!-- <button id="submit" onclick="myFunction()">Submit</button> -->
 </body>
