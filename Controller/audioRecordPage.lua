@@ -59,27 +59,29 @@ local function closeDetails( event )
 
 								    elseif pagevalue == "compose" then
 
-								    	local column = native.showAlert("Audio path",pagevalue,{"ok"})
+								    -- 	local column = native.showAlert("Audio path",pagevalue,{"ok"})
 
-								    	   local function onTimer(event)
+								    -- 	   local function onTimer(event)
 
-												local options = 
-												{
-													isModal = true,
-													effect = "slideRight",
-													time = 200,
-													params = {
-													filename = dataFileName,
-													targetaction = "audio"
-													}
-												}
+												-- local options = 
+												-- {
+												-- 	isModal = true,
+												-- 	effect = "slideRight",
+												-- 	time = 200,
+												-- 	params = {
+												-- 	filename = dataFileName,
+												-- 	targetaction = "audio"
+												-- 	}
+												-- }
 
 
-								  			composer.gotoScene("Controller.composeMessagePage",options)
+								  		-- 	composer.gotoScene("Controller.composeMessagePage",options)
 
-								  		    end
+								  		--     end
 
-								  			timer.performWithDelay(1000,onTimer)
+								  		-- 	timer.performWithDelay(1000,onTimer)
+
+								  		composer.hideOverlay()
 
 								    end
 
@@ -99,19 +101,19 @@ local function closeDetails( event )
 		                end
 
 
-						            if pagevalue == "chat" then
+						           -- if pagevalue == "chat" then
 
 								        composer.hideOverlay()
 
-								    elseif event.target.id == "backicon" or pagevalue ~= "chat" then
+								   -- elseif event.target.id == "backicon" or pagevalue ~= "chat" then
 
-								    	print("closing audio page")
+								    --	print("closing audio page")
 
-								    	--composer.hideOverlay()
+								    --	composer.hideOverlay()
 
-								    	composer.gotoScene("Controller.composeMessagePage","slideRight",200)
+								    	--composer.gotoScene("Controller.composeMessagePage","slideRight",200)
 
-								    end
+								  --  end
 			end
 
 	end
@@ -302,6 +304,7 @@ function scene:show( event )
 	
 	if phase == "will" then
 
+
 		if event.params then
 
 			contactid = event.params.contactId 
@@ -312,13 +315,6 @@ function scene:show( event )
 
 		end
 
-		if pagevalue == "compose" then
-
-		composer.removeHidden()
-
-		else
-
-		end
 
 
 		keyTips = display.newText( sceneGroup, "Press ‘Start’ to record",  0,0,native.systemFont,16 )
@@ -466,8 +462,6 @@ end
 
 					if pagevalue == "compose" then
 
-						composer.hideOverlay()
-
 						-- print("datafilename ",dataFileName)
 
 
@@ -483,7 +477,13 @@ end
 							-- }
 
 
-			  		-- 	composer.gotoScene("Controller.composeMessagePage",options)
+			  		-- 	composer.showOverlay("Controller.composeMessagePage",options)
+
+			  		composer.hideOverlay()
+
+			  		--event.parent:updateAudio(dataFileName,"audio")
+
+			  		--event.parent:updateAudio(dataFileName)
 
 
 					else

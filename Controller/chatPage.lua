@@ -2122,6 +2122,7 @@ end
 
 	function scene:updateAudio(dataFileName)
 
+
 		ChatBox_bg.isVisible = true
 
 		sendBtn_bg.isVisible = true
@@ -2241,6 +2242,7 @@ end
 			--end
 
 			--timer = timer.performWithDelay( 100, timedelayAudioAction ,1 )
+
 
 	end
 

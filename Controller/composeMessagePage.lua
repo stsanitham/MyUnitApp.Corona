@@ -126,89 +126,6 @@ end
 
 
 
-			 function uploadImage(  )
-
-						    function get_imagemodel(response)
-
-						    	print("get image model called : its response is here ~~~~~~~~~~~~~~~~")
-
-									Imagepath = response.Abspath
-
-									Imagename = response.FileName
-
-									Imagesize = size
-
-
-									filename_title.isVisible = true
-
-									filename.isVisible = true
-
-									filename_close.isVisible = true
-
-									filename.text = photoname
-
-									schedule_button.y = filename.y + filename.contentHeight +15
-									schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-									schedule_icon_text.y= schedule_icon.y
-									schedule_button.height=schedule_icon_text.contentHeight+10
-
-									send_button.y = filename.y + filename.contentHeight +15
-									send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-									send_icon_text.y= send_icon.y
-									send_button.height=send_icon_text.contentHeight+10
-
-									draft_button.y = filename.y + filename.contentHeight +15
-									draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-									draft_icon_text.y= draft_icon.y
-									draft_button.height=draft_icon_text.contentHeight+10
-
-
-										    function ImageClose(event)
-
-														filename.text = ""
-
-														filename.isVisible = false
-
-														filename_title.isVisible = false
-
-														filename_close.isVisible = false
-
-														Imagepath = ""
-
-														os.remove( path )
-
-														schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-														schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-														schedule_icon_text.y= schedule_icon.y
-
-														schedule_button.height=schedule_icon_text.contentHeight+10
-
-														send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-														send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-														send_icon_text.y= send_icon.y
-
-														send_button.height=send_icon_text.contentHeight+10
-
-														draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-														draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-														draft_icon_text.y= draft_icon.y
-
-														draft_button.height=draft_icon_text.contentHeight+10
-
-											end
-
-
-				                    filename_close:addEventListener("touch",ImageClose)
-
-							 end
-
-
-					 Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
-
-
-			end
-
-
 
 
 local function selectionComplete ( event )
@@ -268,7 +185,6 @@ local function selectionComplete ( event )
 		photoname = "image"..os.date("%Y%m%d%H%M%S")..".png"
 
 
-
         display.save(photo,photoname,system.DocumentsDirectory)
 
 		photo:removeSelf()
@@ -294,6 +210,86 @@ local function selectionComplete ( event )
 
 
 	    local function onTimer(event)
+
+			local function uploadImage()
+
+						    function get_imagemodel(response)
+
+						    	print("get image model called : its response is here ~~~~~~~~~~~~~~~~")
+
+									Imagepath = response.Abspath
+
+									Imagename = response.FileName
+
+									Imagesize = size
+
+
+									filename_title.isVisible = true
+
+									filename.isVisible = true
+
+									filename_close.isVisible = true
+
+									filename.text = photoname
+
+									schedule_button.y = filename.y + filename.contentHeight +15
+									schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+									schedule_icon_text.y= schedule_icon.y
+									schedule_button.height=schedule_icon_text.contentHeight+10
+
+									send_button.y = filename.y + filename.contentHeight +15
+									send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+									send_icon_text.y= send_icon.y
+									send_button.height=send_icon_text.contentHeight+10
+
+									draft_button.y = filename.y + filename.contentHeight +15
+									draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+									draft_icon_text.y= draft_icon.y
+									draft_button.height=draft_icon_text.contentHeight+10
+
+
+										    function ImageClose(event)
+
+														filename.text = ""
+
+														filename.isVisible = false
+
+														filename_title.isVisible = false
+
+														filename_close.isVisible = false
+
+														os.remove( path )
+
+														schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+														schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+														schedule_icon_text.y= schedule_icon.y
+
+														schedule_button.height=schedule_icon_text.contentHeight+10
+
+														send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+														send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+														send_icon_text.y= send_icon.y
+
+														send_button.height=send_icon_text.contentHeight+10
+
+														draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+														draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+														draft_icon_text.y= draft_icon.y
+
+														draft_button.height=draft_icon_text.contentHeight+10
+
+											end
+
+
+				                    filename_close:addEventListener("touch",ImageClose)
+
+							 end
+
+
+					 Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+
+			end
 
 			uploadImage()
 
@@ -334,9 +330,12 @@ end
 
 	function get_messagemodel(response)
 
-		print("\n\n\n SuccessMessage : Response : \n\n ", json.encode(response))
+		print("\n\n\n SuccessMessage : Response in this page: \n\n ", json.encode(response))
 
 		list_values = response
+
+
+		listupdationvalues = list_values
 
 		if list_values.MessageStatus == "SEND" then
 
@@ -364,38 +363,44 @@ end
 
 									photoheight = photoheight1
 
-									
-									if targetaction == "compose" then
 
-									sceneevent.parent:resumeCall(list_values)
+                                    spinner.y=H/2-75
 
-									spinner.y=H/2-75
+                                    reloadlistvalues = json.encode(listupdationvalues)
 
-									composer.hideOverlay()
-									
-									end
+
+									  local options =
+												{
+												effect = "slideRight",
+												time = 300,
+												params = { pushlistvalues = reloadlistvalues,page = "compose"}
+					
+									   }
+
+
+									composer.gotoScene("Controller.pushNotificationListPage",options)
 
 								--	scrollTo(0)
 
-								elseif openPagevalue ~= "addpage" then
+								-- elseif openPagevalue ~= "addpage" then
 
-									photowidth = photowidth1
+								-- 	photowidth = photowidth1
 
-									photoheight = photoheight1
+								-- 	photoheight = photoheight1
 
-											  local options =
-												{
-												effect = "slideRight",
+								-- 			  local options =
+								-- 				{
+								-- 				effect = "slideRight",
 
-												time = 300,
-												params = { editpagevalue = list_values, page_val = "editpage", Imagepathname = Imagepath, photowidth, photoheight}
+								-- 				time = 300,
+								-- 				params = { editpagevalue = list_values, page_val = "editpage", Imagepathname = Imagepath, photowidth, photoheight}
 					
-												}
+								-- 				}
                            
 
-									spinner.y=H/2-75
+								-- 	spinner.y=H/2-75
 
-									composer.gotoScene("Controller.pushNotificationListPage",options)
+								-- 	composer.showOverlay("Controller.pushNotificationListPage",options)
 
 								--	scrollTo(0)
 
@@ -435,33 +440,46 @@ end
 
 									photoheight = photoheight1
 
-									
-									if targetaction == "compose" then
+									reloadlistvalues = json.encode(listupdationvalues)
 
-									sceneevent.parent:resumeCall(list_values)
 
-									spinner.y=H/2-75
+									-- sceneevent.parent:resumeCall(list_values)
 
-									composer.hideOverlay()
+									-- spinner.y=H/2-75
 
-								   end
+									-- composer.hideOverlay()
 
-								--	scrollTo(0)
+									 spinner.y=H/2-75
 
-								elseif openPagevalue ~= "addpage" then
 
 									  local options =
-										{
-										effect = "slideRight",
+												{
+												effect = "slideRight",
 
-										time = 300,
-										params = { editpagevalue = list_values, page_val = "editpage"}
+												time = 300,
+												params = { pushlistvalues = reloadlistvalues,page = "compose"}
+					
+									   }
 
-										}
-
-									spinner.y=H/2-75
 
 									composer.gotoScene("Controller.pushNotificationListPage",options)
+
+
+
+								-- elseif openPagevalue ~= "addpage" then
+
+								-- 	  local options =
+								-- 		{
+								-- 		effect = "slideRight",
+
+								-- 		time = 300,
+								-- 		params = { editpagevalue = list_values, page_val = "editpage"}
+
+								-- 		}
+
+								-- 	spinner.y=H/2-75
+
+								-- 	composer.showOverlay("Controller.pushNotificationListPage",options)
 
 								--	scrollTo(0)
 
@@ -504,32 +522,38 @@ end
 									photoheight = photoheight1
 
 
-									if targetaction == "compose" then
+									 spinner.y=H/2-75
 
-									sceneevent.parent:resumeCall(list_values)
-
-									spinner.y=H/2-75
-
-									composer.hideOverlay()
-
-									end
-
-								--	scrollTo(0)
-
-								elseif openPagevalue ~= "addpage" then
-
-									 local options =
-										{
-
-										time = 300,
-										params = { editpagevalue = list_values, page_val = "editpage"}
-
-										}
+									 reloadlistvalues = json.encode(listupdationvalues)
 
 
-									spinner.y=H/2-75
+									  local options =
+												{
+												effect = "slideRight",
+
+												time = 300,
+												params = { pushlistvalues = reloadlistvalues,page = "compose"}
+					
+									   }
+
 
 									composer.gotoScene("Controller.pushNotificationListPage",options)
+								
+
+								-- elseif openPagevalue ~= "addpage" then
+
+								-- 	 local options =
+								-- 		{
+
+								-- 		time = 300,
+								-- 		params = { editpagevalue = list_values, page_val = "editpage"}
+
+								-- 		}
+
+
+								-- 	spinner.y=H/2-75
+
+								-- 	composer.showOverlay("Controller.pushNotificationListPage",options)
 
 								--	scrollTo(0)
 
@@ -1296,7 +1320,7 @@ local function onIconsTouch( event )
 
 							}
 
-		    composer.gotoScene( "Controller.audioRecordPage",options)
+		    composer.showOverlay( "Controller.audioRecordPage",options)
 
 		end
 
@@ -1443,6 +1467,7 @@ end
 	return true
 
 	end
+
 
 
 
@@ -1693,7 +1718,7 @@ end
 				shortmsg_title.anchorX = 0
 				shortmsg_title.x=shortmsg_star.x + 7
 				shortmsg_title.anchorY=0
-				shortmsg_title.y = shortmsg_star.y - 3
+				shortmsg_title.y = shortmsg_star.y
 				shortmsg_title:setFillColor(0)
 				scrollView:insert(shortmsg_title)
 
@@ -1740,7 +1765,7 @@ end
 				longmsg_title.anchorX = 0
 				longmsg_title.x=longmsg_star.x + 7
 				longmsg_title.anchorY = 0
-				longmsg_title.y = longmsg_star.y - 3
+				longmsg_title.y = longmsg_star.y 
 				longmsg_title:setFillColor(0)
 				scrollView:insert(longmsg_title)
 
@@ -2210,9 +2235,11 @@ end
 
 		if event.phase == "will" then
 
-			if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
 
-			composer.removeHidden()
+		--	if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
+
+
+	     	composer.removeHidden()
 
 				if datePicker then datePicker.clear() end
 
@@ -2236,12 +2263,22 @@ end
 
 				end
 
+
+				-- if page == "compose" then
+
+				-- 	event.parent:resumeGame("details",Details,"details")
+				-- end
+
+
+
+
+
 				back_icon:removeEventListener("touch",closeMessagePage)
 			    back_icon_bg:removeEventListener("touch",closeMessagePage)
 			    title:removeEventListener("touch",closeMessagePage)
 
 			    shortmsg_textbox:removeEventListener( "userInput", TextLimitation)
-				--longmsg_textbox:removeEventListener( "userInput", TextLimitation)
+				longmsg_textbox:removeEventListener( "urlRequest", webListener )
 				Background:removeEventListener("touch",FocusComplete)
 
 				send_button:removeEventListener("touch",onSendButtonTouchAction)

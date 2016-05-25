@@ -45,6 +45,8 @@ local BackFlag = false
 
 local tabBarGroup = display.newGroup( )
 
+local pagingvalue = "listpage"
+
 
 
 --------------------------------------------------
@@ -99,34 +101,6 @@ local tabBarGroup = display.newGroup( )
 
 
 
-		local function composeMessage( event )
-
-			if event.phase == "began" then
-					display.getCurrentStage():setFocus( event.target )
-			elseif event.phase == "ended" then
-					display.getCurrentStage():setFocus( nil )
-
-					local options = {
-						effect = "slideLeft",
-						time = 300,
-						params = {
-						         pagevalue = "addpage"
-						        }
-			            }
-
-					Runtime:removeEventListener( "key", onKeyEvent )
-
-			        composer.showOverlay( "Controller.composeMessagePage", options )
-
-			end
-
-		    return true
-			
-		end
-
-
-
-
 		local function onKeyEvent( event )
 
 		        local phase = event.phase
@@ -159,6 +133,37 @@ local tabBarGroup = display.newGroup( )
 
 		        return false
 		 end
+
+
+
+
+
+		local function composeMessage( event )
+
+			if event.phase == "began" then
+					display.getCurrentStage():setFocus( event.target )
+			elseif event.phase == "ended" then
+					display.getCurrentStage():setFocus( nil )
+
+					local options = {
+						effect = "slideLeft",
+						time = 300,
+						params = {
+						         pagevalue = "addpage"
+						        }
+			            }
+
+					Runtime:removeEventListener( "key", onKeyEvent )
+
+			        composer.gotoScene( "Controller.composeMessagePage", options )
+
+			end
+
+		    return true
+			
+		end
+
+
 
 
 
@@ -977,264 +982,270 @@ local tabBarGroup = display.newGroup( )
 
 
 
-		function updateAudioValues(audiovalues)
-
-			print("ertertet64636265642563452345623")
-
-				if  audiovalues.MessageStatus == "SCHEDULE" and tab_Group.id =="schedule" then
-
-					print("schedule coming")
-
-						tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
-						tab_Sent_txt:setFillColor(0)
-						tab_Draft_txt:setFillColor(0)
-
-						tab_Group_bottombar.isVisible = true
-						tab_Group_bottombar.y = tabBg.y+29.5
-						tab_Group_bottombar.x = W/2 - W/3
 
 
-						for j=1, #messageList_array do 
 
-							display.remove(messageList_array[#messageList_array])
-							messageList_array[#messageList_array] = nil
-						end
+
+
+
+	-- 	function updateAudioValues(audiovalues)
+
+	-- 		print("ertertet64636265642563452345623")
+
+	-- 			if  audiovalues.MessageStatus == "SCHEDULE" and tab_Group.id =="schedule" then
+
+	-- 				print("schedule coming")
+
+	-- 					tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
+	-- 					tab_Sent_txt:setFillColor(0)
+	-- 					tab_Draft_txt:setFillColor(0)
+
+	-- 					tab_Group_bottombar.isVisible = true
+	-- 					tab_Group_bottombar.y = tabBg.y+29.5
+	-- 					tab_Group_bottombar.x = W/2 - W/3
+
+
+	-- 					for j=1, #messageList_array do 
+
+	-- 						display.remove(messageList_array[#messageList_array])
+	-- 						messageList_array[#messageList_array] = nil
+	-- 					end
 
          
 
-			local function getScheduleMessageList(response)
+	-- 		local function getScheduleMessageList(response)
 
-				messagelist_response = response
+	-- 			messagelist_response = response
 
-					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
+	-- 				if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
 							
-						MessageCreation_list(messagelist_response)
-						NoScheduleMessage.isVisible=false
+	-- 					MessageCreation_list(messagelist_response)
+	-- 					NoScheduleMessage.isVisible=false
 
-						     for j = 1, #sentmessageList_array do
+	-- 					     for j = 1, #sentmessageList_array do
 
-			                	display.remove(sentmessageList_array[#sentmessageList_array])
-							    sentmessageList_array[#sentmessageList_array] = nil
+	-- 		                	display.remove(sentmessageList_array[#sentmessageList_array])
+	-- 						    sentmessageList_array[#sentmessageList_array] = nil
 
-					         end
-
-
-					         for j = 1, #draftmessageList_array do
-
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
-
-					         end
+	-- 				         end
 
 
-					else
+	-- 				         for j = 1, #draftmessageList_array do
 
-						NoScheduleMessage.isVisible=true
+	-- 		                	display.remove(draftmessageList_array[#draftmessageList_array])
+	-- 						    draftmessageList_array[#draftmessageList_array] = nil
 
-							 for j = 1, #sentmessageList_array do
-
-			                	display.remove(sentmessageList_array[#sentmessageList_array])
-							    sentmessageList_array[#sentmessageList_array] = nil
-
-					         end
+	-- 				         end
 
 
-					         for j = 1, #draftmessageList_array do
+	-- 				else
 
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
+	-- 					NoScheduleMessage.isVisible=true
 
-					         end
+	-- 						 for j = 1, #sentmessageList_array do
 
+	-- 		                	display.remove(sentmessageList_array[#sentmessageList_array])
+	-- 						    sentmessageList_array[#sentmessageList_array] = nil
 
-					end
-
-			   end
-
+	-- 				         end
 
 
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+	-- 				         for j = 1, #draftmessageList_array do
+
+	-- 		                	display.remove(draftmessageList_array[#draftmessageList_array])
+	-- 						    draftmessageList_array[#draftmessageList_array] = nil
+
+	-- 				         end
+
+
+	-- 				end
+
+	-- 		   end
+
+
+
+	-- 				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
 
                 
 
-	elseif  audiovalues.MessageStatus == "SEND" and tab_Message.id=="sent" then
+	-- elseif  audiovalues.MessageStatus == "SEND" and tab_Message.id=="sent" then
 
-					print("sent coming")
-
-
-				tab_Schedule_txt:setFillColor( 0 )
-				tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-				tab_Draft_txt:setFillColor(0)
-
-				tab_Group_bottombar.isVisible = true
-				tab_Group_bottombar.y = tabBg.y+29.5
-				tab_Group_bottombar.x = W/2
+	-- 				print("sent coming")
 
 
-				for j=1, #sentmessageList_array do 
+	-- 			tab_Schedule_txt:setFillColor( 0 )
+	-- 			tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+	-- 			tab_Draft_txt:setFillColor(0)
 
-							display.remove(sentmessageList_array[#sentmessageList_array])
-							sentmessageList_array[#sentmessageList_array] = nil
-				end
+	-- 			tab_Group_bottombar.isVisible = true
+	-- 			tab_Group_bottombar.y = tabBg.y+29.5
+	-- 			tab_Group_bottombar.x = W/2
+
+
+	-- 			for j=1, #sentmessageList_array do 
+
+	-- 						display.remove(sentmessageList_array[#sentmessageList_array])
+	-- 						sentmessageList_array[#sentmessageList_array] = nil
+	-- 			end
 
 
 
-			   local function getSentMessageList(response)
+	-- 		   local function getSentMessageList(response)
 
-				  sentmessage_response = response
+	-- 			  sentmessage_response = response
 
-					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
+	-- 				if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
 							
-						SentMessageCreation_list(sentmessage_response)
-						NoSentMessage.isVisible=false
+	-- 					SentMessageCreation_list(sentmessage_response)
+	-- 					NoSentMessage.isVisible=false
 
-						    for j = 1, #draftmessageList_array do
+	-- 					    for j = 1, #draftmessageList_array do
 
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
+	-- 		                	display.remove(draftmessageList_array[#draftmessageList_array])
+	-- 						    draftmessageList_array[#draftmessageList_array] = nil
 
-					         end
-
-
-					         for j = 1 , #messageList_array do
-
-			                	display.remove(messageList_array[#messageList_array])
-							    messageList_array[#messageList_array] = nil
-
-					         end
-
-					else
-
-						NoSentMessage.isVisible=true
-
-							for j = 1, #draftmessageList_array do
-
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
-
-					         end
+	-- 				         end
 
 
-					         for j = 1, #messageList_array do
+	-- 				         for j = 1 , #messageList_array do
 
-			                	display.remove(messageList_array[#messageList_array])
-							    messageList_array[#messageList_array] = nil
+	-- 		                	display.remove(messageList_array[#messageList_array])
+	-- 						    messageList_array[#messageList_array] = nil
 
-					         end
+	-- 				         end
+
+	-- 				else
+
+	-- 					NoSentMessage.isVisible=true
+
+	-- 						for j = 1, #draftmessageList_array do
+
+	-- 		                	display.remove(draftmessageList_array[#draftmessageList_array])
+	-- 						    draftmessageList_array[#draftmessageList_array] = nil
+
+	-- 				         end
 
 
-					end
+	-- 				         for j = 1, #messageList_array do
+
+	-- 		                	display.remove(messageList_array[#messageList_array])
+	-- 						    messageList_array[#messageList_array] = nil
+
+	-- 				         end
 
 
-			    end
+	-- 				end
+
+
+	-- 		    end
 
 
 
-					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+	-- 				Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
 			    
 
 
-  elseif  audiovalues.MessageStatus == "DRAFT" and tab_Contact.id == "draft" then
+ --  elseif  audiovalues.MessageStatus == "DRAFT" and tab_Contact.id == "draft" then
 
-					print("draft coming")
-
-
-
-				tab_Schedule_txt:setFillColor( 0 )
-				tab_Sent_txt:setFillColor(0)
-				tab_Draft_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor) )
-
-				tab_Group_bottombar.isVisible = true
-				tab_Group_bottombar.y = tabBg.y+29.5
-				tab_Group_bottombar.x = W/2 + W/3
+	-- 				print("draft coming")
 
 
 
-						for j=1, #draftmessageList_array do 
+	-- 			tab_Schedule_txt:setFillColor( 0 )
+	-- 			tab_Sent_txt:setFillColor(0)
+	-- 			tab_Draft_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor) )
 
-							display.remove(draftmessageList_array[#draftmessageList_array])
-							draftmessageList_array[#draftmessageList_array] = nil
-						end
-
-
-
-						function getDraftMessageList1(response)
-
-
-							draftmessagelist_response = response
-
-
-								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
-
-									DraftMessageCreation_list(draftmessagelist_response)
-									NoDraftMessage.isVisible=false
-									NoScheduleMessage.isVisible=false
-									NoSentMessage.isVisible=false
-
-										for j = 1, #sentmessageList_array do
-
-										display.remove(sentmessageList_array[#sentmessageList_array])
-										sentmessageList_array[#sentmessageList_array] = nil
-
-										end
-
-
-										for j = 1 , #messageList_array do
-
-										display.remove(messageList_array[#messageList_array])
-										messageList_array[#messageList_array] = nil
-
-										end
-
-
-								else
-
-									NoDraftMessage.isVisible=true
-
-
-										for j = 1, #sentmessageList_array do
-
-										display.remove(sentmessageList_array[#sentmessageList_array])
-										sentmessageList_array[#sentmessageList_array] = nil
-
-										end
-
-
-										for j = 1 , #messageList_array do
-
-										display.remove(messageList_array[#messageList_array])
-										messageList_array[#messageList_array] = nil
-
-										end
+	-- 			tab_Group_bottombar.isVisible = true
+	-- 			tab_Group_bottombar.y = tabBg.y+29.5
+	-- 			tab_Group_bottombar.x = W/2 + W/3
 
 
 
-								end
+	-- 					for j=1, #draftmessageList_array do 
+
+	-- 						display.remove(draftmessageList_array[#draftmessageList_array])
+	-- 						draftmessageList_array[#draftmessageList_array] = nil
+	-- 					end
 
 
-						end
+
+	-- 					function getDraftMessageList1(response)
 
 
-					Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
+	-- 						draftmessagelist_response = response
+
+
+	-- 							if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
+
+	-- 								DraftMessageCreation_list(draftmessagelist_response)
+	-- 								NoDraftMessage.isVisible=false
+	-- 								NoScheduleMessage.isVisible=false
+	-- 								NoSentMessage.isVisible=false
+
+	-- 									for j = 1, #sentmessageList_array do
+
+	-- 									display.remove(sentmessageList_array[#sentmessageList_array])
+	-- 									sentmessageList_array[#sentmessageList_array] = nil
+
+	-- 									end
+
+
+	-- 									for j = 1 , #messageList_array do
+
+	-- 									display.remove(messageList_array[#messageList_array])
+	-- 									messageList_array[#messageList_array] = nil
+
+	-- 									end
+
+
+	-- 							else
+
+	-- 								NoDraftMessage.isVisible=true
+
+
+	-- 									for j = 1, #sentmessageList_array do
+
+	-- 									display.remove(sentmessageList_array[#sentmessageList_array])
+	-- 									sentmessageList_array[#sentmessageList_array] = nil
+
+	-- 									end
+
+
+	-- 									for j = 1 , #messageList_array do
+
+	-- 									display.remove(messageList_array[#messageList_array])
+	-- 									messageList_array[#messageList_array] = nil
+
+	-- 									end
+
+
+
+	-- 							end
+
+
+	-- 					end
+
+
+	-- 				Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
                
 				
-				 end
+	-- 			 end
 
-		end
-
-
+	-- 	end
 
 
 
 
-		function scene:resumeCall(list_values)
-
-			print("ertertet64636265642563452345623")
 
 
-				if  list_values.MessageStatus == "SCHEDULE" and tab_Group.id =="schedule" then
+		local function resumeCallList(listview_values)
 
-					print("schedule coming")
+	 		print("ertertet64636265642563452345623 : "..listview_values)
+
+	  			if tab_Message.id=="schedule" then
+
+
+	 				print("schedule coming 55555")
 
 						tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
 						tab_Sent_txt:setFillColor(0)
@@ -1308,9 +1319,9 @@ local tabBarGroup = display.newGroup( )
 
                 
 
-	elseif  list_values.MessageStatus == "SEND" and tab_Message.id=="sent" then
+	 elseif  tab_Message.id=="sent" then
 
-					print("sent coming")
+	 				print("sent coming 55555")
 
 
 				tab_Schedule_txt:setFillColor( 0 )
@@ -1385,9 +1396,9 @@ local tabBarGroup = display.newGroup( )
 			    
 
 
-  elseif  list_values.MessageStatus == "DRAFT" and tab_Contact.id == "draft" then
+   elseif  tab_Message.id=="draft" then
 
-					print("draft coming")
+					print("draft coming 5555")
 
 				tab_Schedule_txt:setFillColor( 0 )
 				tab_Sent_txt:setFillColor(0)
@@ -1399,11 +1410,11 @@ local tabBarGroup = display.newGroup( )
 
 
 
-						for j=1, #draftmessageList_array do 
+						-- for j=1, #draftmessageList_array do 
 
-							display.remove(draftmessageList_array[#draftmessageList_array])
-							draftmessageList_array[#draftmessageList_array] = nil
-						end
+						-- 	display.remove(draftmessageList_array[#draftmessageList_array])
+						-- 	draftmessageList_array[#draftmessageList_array] = nil
+						-- end
 
 
 
@@ -1475,9 +1486,8 @@ local tabBarGroup = display.newGroup( )
 				-- 	composer.hideOverlay( "slideRight", 300 )
 
 
-				 end
+		 end
 
-		--	end
 
 
 		end
@@ -2011,6 +2021,7 @@ end
 
 function scene:create( event )
 
+
 	local sceneGroup = self.view
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
@@ -2074,6 +2085,17 @@ end
 		if phase == "will" then
 
 
+			if event.params then
+
+				list_values = event.params.pushlistvalues
+				pagingvalue = event.params.page
+
+			end
+
+			totalvalues = list_values
+
+
+			
 			NoScheduleMessage = display.newText( sceneGroup,MessagePage.NoMessage, 0,0,0,0,native.systemFontBold,16)
 			NoScheduleMessage.x=W/2;NoScheduleMessage.y=H/2
 			NoScheduleMessage.isVisible=false
@@ -2214,19 +2236,16 @@ end
 			end
 
 
+			-- if event.params then
+
+			-- 	audiopathvalues = event.params.audiovalues
+
+			-- 	print(json.encode(audiopathvalues))
 
 
-			if event.params then
+			-- 	updateAudioValues(audiopathvalues)
 
-				audiopathvalues = event.params.audiovalues
-
-				print(json.encode(audiopathvalues))
-
-
-				updateAudioValues(audiopathvalues)
-
-			end
-
+			-- end
 
 
 
@@ -2282,37 +2301,44 @@ end
 
 
 
-			if event.params then
 
-				page_value_name = event.params.page_val
+			if pagingvalue == "listpage" then	
 
-				editpagevalues = event.params.editpagevalue
 
-				Imagepath = event.params.Imagepathname
+			-- 	page_value_name = event.params.page_val
 
-				-- photowidthvalue = event.params.photowidth
+			-- 	editpagevalues = event.params.editpagevalue
 
-				-- photoheightvalue = event.params.photoheight
+			-- 	Imagepath = event.params.Imagepathname
 
-				-- print(photowidthvalue.."                          "..photoheightvalue)
+			-- 	-- photowidthvalue = event.params.photowidth
 
-				if page_value_name == "editpage" then
+			-- 	-- photoheightvalue = event.params.photoheight
 
-					scene:resumeCall(editpagevalues)
+			-- 	-- print(photowidthvalue.."                          "..photoheightvalue)
 
-				end
+			-- 	if page_value_name == "editpage" then
 
-			else
+			-- 		scene:resumeCall(editpagevalues)
 
-		            if IsOwner == true then
+			-- 	end
 
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+			-- else
 
-				    else
+	            if IsOwner == true then
 
-				    Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
 
-				    end
+			    else
+
+			    Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+
+			    end
+
+			elseif pagingvalue == "compose" then
+
+				resumeCallList(totalvalues)
+
 		    end
 
 
