@@ -55,7 +55,7 @@ meggageeditor.htmlContent = [[
 			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
 
 			var texttemp="corona:close"+ckvalue;
-			window.location.href = texttemp; 
+			//window.location.href = window.location.href; 
 
 			
        		
