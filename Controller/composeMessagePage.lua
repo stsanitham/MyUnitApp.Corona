@@ -17,7 +17,7 @@ local db = sqlite3.open( path )
 local timePicker = require( "Controller.timePicker" )
 local datePicker = require( "Controller.datePicker" )
 
-local ck_editor = require('Utils.ckeditor')
+local ck_editor = require('Utils.messageCKeditor')
 
 
 --------------- Initialization -------------------
@@ -56,6 +56,8 @@ local pHeight = display.pixelHeight
 
 fieldOffset = 0
 
+local longmsg_textbox
+
 local deviceModel = system.getInfo( "model" )
 
 if isIos then
@@ -67,6 +69,10 @@ if isIos then
 	end
 
 end
+
+local longMessage = ""
+
+local defalutValue="corona:open"
 
 fieldTrans = 200
 
@@ -345,7 +351,7 @@ end
 
 								shortmsg_textbox.placeholder = MessagePage.ShortMessage_Placeholder		
 
-								longmsg_textbox.text = ""
+								longMessage = ""
 
 								longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
 
@@ -424,7 +430,7 @@ end
 
 								shortmsg_textbox.placeholder = MessagePage.ShortMessage_Placeholder		
 
-								longmsg_textbox.text = ""
+								longMessage = ""
 
 								longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
 
@@ -502,7 +508,7 @@ end
 
 								shortmsg_textbox.placeholder = MessagePage.ShortMessage_Placeholder		
 
-								longmsg_textbox.text = ""
+								longMessage = ""
 
 								longmsg_textbox.isVisible = false
 
@@ -583,9 +589,9 @@ end
 		    end
 
 
-		    if longmsg_textbox.text == nil  then
+		    if longMessage == nil  then
 
-		    	longmsg_textbox.text = ""
+		    	longMessage = ""
 
 		    end
 
@@ -653,7 +659,7 @@ end
 
 					    if (shortmsg_textbox.text ~= "") and (Imagepath == nil or Imagepath == null or Imagepath == "" or Imagepath == " ") and (Audiopath == nil or Audiopath == null or Audiopath == "" or Audiopath == " ") then
 			                
-			                 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
+			                 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
 
 					    end
 
@@ -662,7 +668,7 @@ end
 
 			        		print("image path send value")
 
-			        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
+			        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
 			            end
 
@@ -673,7 +679,7 @@ end
 
 			            	print("audio path send value")
 
-			            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",IsScheduled,Date.text,Time.text,"","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel1)
+			            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel1)
 
 			            end
 
@@ -732,7 +738,7 @@ end
 
 		    if (shortmsg_textbox.text ~= "") and (Imagepath == nil or Imagepath == null or Imagepath == "" or Imagepath == " ") and (Audiopath == nil or Audiopath == null or Audiopath == "" or Audiopath == " ") then
                 
-                 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","","","","",method,"","","",get_messagemodel)
+                 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","","","","",method,"","","",get_messagemodel)
 
 		    end
 
@@ -742,7 +748,7 @@ end
 
         		print("image path send value")
 
-        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
+        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
             end
 
@@ -753,7 +759,7 @@ end
 
             	print("audio path send value")
 
-            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,"hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.","","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel1)
+            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel1)
 
             end
 
@@ -790,96 +796,106 @@ end
 
     	    local validation = false
 
+    	    defalutValue = "corona:close"
+
   	    	native.setKeyboardFocus(nil)
 
     	    display.getCurrentStage():setFocus( nil )
 
-    	    status="normal"
+    	    local function senTimerFun( time_event )
 
+	    	    status="normal"
 
-			if (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) or (test == "" or test == nil) then
+	    	    print( "Length = "..longMessage:len() )
 
-				    if event.target.id == "send" or event.target.id == "send icon" or event.target.id == "send_icon_text" then 
+				if (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) or (longMessage:len() < 62  or longMessage == nil) then
 
-						local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
+					    if event.target.id == "send" or event.target.id == "send icon" or event.target.id == "send_icon_text" then 
 
-					elseif event.target.id == "draft" or event.target.id == "draft icon" or event.target.id == "draft_icon_text" then
+							local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
 
-						local alert = native.showAlert( MessagePage.SavingFailed , MessagePage.ErrorText , { CommonWords.ok } )
-
-				    elseif event.target.id == "schedule" or event.target.id == "schedule icon" or event.target.id == "schedule_icon_text" then
-
-						local alert = native.showAlert( MessagePage.SchedulingFailed , MessagePage.ErrorText , { CommonWords.ok } )
-
-				    ScheduledMessageGroup.isVisible = false
-
-				    longmsg_textbox.isVisible = true
-
-				    shortmsg_textbox.isVisible = true
-
-				    end
-
-				return false
-
-	        end
-
-
-
-
-	        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (test ~= "" or test ~= nil) then
-
-					    if event.target.id == "send" or event.target.id == "send icon" or event.target.id == "send_icon_text" then
-
-
-					        sendMessage("SEND")
-	                        
 						elseif event.target.id == "draft" or event.target.id == "draft icon" or event.target.id == "draft_icon_text" then
 
-						    sendMessage("DRAFT")
+							local alert = native.showAlert( MessagePage.SavingFailed , MessagePage.ErrorText , { CommonWords.ok } )
 
-						elseif event.target.id == "schedule" or event.target.id == "schedule icon" or event.target.id == "schedule_icon_text" then
+					    elseif event.target.id == "schedule" or event.target.id == "schedule icon" or event.target.id == "schedule_icon_text" then
 
-	    	    	        GetScheduleMessageAlertPopup()
+							local alert = native.showAlert( MessagePage.SchedulingFailed , MessagePage.ErrorText , { CommonWords.ok } )
 
-							ScheduledMessageGroup.isVisible = true
+					    ScheduledMessageGroup.isVisible = false
 
-							longmsg_textbox.isVisible = false
-							shortmsg_textbox.isVisible = false
+					    longmsg_textbox.isVisible = true
 
-							sendMessage("SCHEDULE")
-							
-						else
+					    shortmsg_textbox.isVisible = true
 
 					    end
 
-				  return false
+					return false
 
-	        end
-
-
+		        end
 
 
-	        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (test == "" or test == nil) then
-
-	        	        validation = false
-
-    	    	    	SetError("* ".."Enter the Long Message",longmsg_textbox)
-
-    	    	    	return false
 
 
-	        end
+		        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (test ~= "" or test ~= nil) then
+
+						    if event.target.id == "send" or event.target.id == "send icon" or event.target.id == "send_icon_text" then
 
 
-	        if (test ~= "" or test ~= nil) and (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) then
+						        sendMessage("SEND")
+		                        
+							elseif event.target.id == "draft" or event.target.id == "draft icon" or event.target.id == "draft_icon_text" then
 
-	        	        validation = false
+							    sendMessage("DRAFT")
 
-    	    	    	SetError("* ".."Enter the Short Message",shortmsg_textbox)
+							elseif event.target.id == "schedule" or event.target.id == "schedule icon" or event.target.id == "schedule_icon_text" then
 
-    	    	    	return false
+		    	    	        GetScheduleMessageAlertPopup()
 
-	        end
+								ScheduledMessageGroup.isVisible = true
+
+								longmsg_textbox.isVisible = false
+								shortmsg_textbox.isVisible = false
+
+								sendMessage("SCHEDULE")
+								
+							else
+
+						    end
+
+					  return false
+
+		        end
+
+
+
+
+		        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (longMessage == "" or longMessage == nil) then
+
+		        	        validation = false
+
+	    	    	    	SetError("* ".."Enter the Long Message",longmsg_textbox)
+
+	    	    	    	return false
+
+
+		        end
+
+
+		        if (test ~= "" or test ~= nil) and (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) then
+
+		        	        validation = false
+
+	    	    	    	SetError("* ".."Enter the Short Message",shortmsg_textbox)
+
+	    	    	    	return false
+
+		        end
+
+
+		    end
+
+		    sendTimer = timer.performWithDelay( 1000, senTimerFun )
 
 ---------------------------
 
@@ -1076,99 +1092,6 @@ local function TextLimitation( event )
                     end
 
 
-------------------------------------long message--------------------------------------
-
-                    if event.target.id =="longmessage" then
-
-
-                            if (string.len(event.target.text) > 1000) then
-
-                                event.target.text = event.target.text:sub(1, 1000)
-
-                            end
-
-
-
-                            if (string.len(event.target.text) <= 1000) then
-
-                                    countlongtext = 1000 - string.len(event.target.text) .. MessagePage.characters
-
-                                    long_msg_charlimit.text = countlongtext
-
-                            end
-
-
-
-                           if (string.len(event.target.text) <= 0) then
-
-                                    long_msg_charlimit.text = "1000"..MessagePage.characters
-
-                           end
-
-                                
-                            if (pHeight <= 960) then
-
-                                    moveFieldsUp()
-                            end
-
-
-
-                            --print( event.newCharacters )
-
-                            if (event.newCharacters=="\n") then
-
-                                         longmsg_textbox.text = string.gsub( longmsg_textbox.text,"%\n","" )
-
-                                         longtext = longmsg_textbox.text
-
-
-                                     if ( (event.startPosition == 1) and string.find( longmsg_textbox.text , "", 1 )) then
-
-                                        long_msg_charlimit.text = "1000".. MessagePage.characters
-
-                                        native.setKeyboardFocus( nil )
-
-                                    else
-
-                                            if isAndroid then
-
-                                              longlen = string.len(longmsg_textbox.text) - 1
-
-                                            long_msg_charlimit.text = 1000 - longlen.. MessagePage.characters
-
-                                            native.setKeyboardFocus( nil )
-
-                                            elseif isIos then
-
-                                            longlen = string.len(longmsg_textbox.text)
-
-                                            long_msg_charlimit.text = 1000 - longlen.. MessagePage.characters
-
-                                            native.setKeyboardFocus( nil )
-
-                                            end
-
-                                    end
-
-
-                                    if (pHeight <= 960) then
-
-                                     moveFieldsDown()
-
-                                    end
-
-                            end
-
-
-
-                            if page == "edit" then
-
-                                long_msg_charlimit.text = countlongtext
-
-                            end
-
-                                  
-                    end
 
 
 
@@ -1338,25 +1261,28 @@ local function webListener( event )
 
     local url = event.url
 
-    print( "here" )
-    if 1 == string.find( url, "corona:close" ) then
+    	print( "here"..url )
+    
+    if 1 == string.find( url, defalutValue ) then
         -- Close the web popup
+        print( "here" )
 
         shouldLoad = false
 
-        print(url)
+       -- print(url)
 
 
         updatedresponse = urlDecode(url)
 
 
-        updatedresponse = (string.sub( updatedresponse, 13,updatedresponse:len()-1 ))
+        longMessage = (string.sub( updatedresponse, 13,updatedresponse:len() ))
 
-        print( "updatedresponse : "..updatedresponse )
+        print( "updatedresponse : "..longMessage:len() )
 
-        if webView then webView:removeSelf( );webView=nil end
 
-       -- Webservice.SaveMyUnitBuzzGoals(Goalsid,updatedresponse,get_SaveMyUnitBuzzGoals)
+
+
+        defalutValue="corona:open"
 
     end
 
@@ -1366,9 +1292,8 @@ local function webListener( event )
         shouldLoad = false
     end
 
-    return shouldLoad
+    return false
 end
-
 
 
 
@@ -1789,13 +1714,11 @@ end
 				-- --longmsg_textbox.y=longmsg_title.y+ longmsg_title.height+7
 
 
-		        content = "hai hello Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham."
+		        content = "hai hello Where do by H. Rackham."
 
 			    test= string.urlEncode(content)
 
-			    print("test value : ",test)
-
-				local path = system.pathForFile( "ckeditor.html",system.DocumentsDirectory )
+				local path = system.pathForFile( "messageCKeditor.html",system.DocumentsDirectory )
 
 				local file, errorString = io.open( path, "w+" )
 
@@ -1805,18 +1728,19 @@ end
 
 				else
 
-				    file:write( ckeditor.htmlContent.."'"..test.."'"..ckeditor.endHtml.."" )
+				    file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml.."" )
 
 							 longmsg_textbox = native.newWebView(10,longmsg_title.y+longmsg_title.contentHeight+ 7, W - 15, 185)
 
 							 longmsg_textbox.hasBackground = false
 
 							 longmsg_textbox.anchorX=0;longmsg_textbox.anchorY=0
-							 longmsg_textbox:request( "ckeditor.html", system.DocumentsDirectory )
+							 longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
 
 							 longmsg_textbox:addEventListener( "urlRequest", webListener )
-
 							 scrollView:insert( longmsg_textbox)
+
+
 
 
 				    file:close()
@@ -1847,12 +1771,12 @@ end
     --                     if page == "edit" then
 
 	   --                      shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
-				-- 		    longmsg_textbox.text = detailvalues.MyUnitBuzzLongMessage
+				-- 		    longMessage = detailvalues.MyUnitBuzzLongMessage
 
 
 				-- 	   		short_msg_charlimit.text = (250 - shortmsg_textbox.text:len()).." "..MessagePage.characters
 
-				--         	long_msg_charlimit.text = (1000 - longmsg_textbox.text:len()).." "..MessagePage.characters
+				--         	long_msg_charlimit.text = (1000 - longMessage:len()).." "..MessagePage.characters
 
 				-- 			back_icon:addEventListener("touch",closeMessagePage)
 				-- 			back_icon_bg:addEventListener("touch",closeMessagePage)
@@ -2204,6 +2128,8 @@ end
 			shortmsg_textbox:addEventListener( "userInput", TextLimitation )
 			--longmsg_textbox:addEventListener( "userInput", TextLimitation )
 			Background:addEventListener("touch",FocusComplete)
+
+			
 
 			send_button:addEventListener("touch",onSendButtonTouchAction)
 			send_icon:addEventListener("touch",onSendButtonTouchAction)

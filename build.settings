@@ -43,11 +43,6 @@ settings =
 	    },
 
 
-	["CoronaProvider.native.popup.quickLook"] =
-	    {
-	        publisherId = "com.coronalabs",
-	        supportedPlatforms = { iphone = true },
-	    },
    
 	   
     },

@@ -74,9 +74,6 @@ local function closeDetails( event )
 												-- 	}
 												-- }
 
-
-								  		-- 	composer.gotoScene("Controller.composeMessagePage",options)
-
 								  		--     end
 
 								  		-- 	timer.performWithDelay(1000,onTimer)
@@ -130,8 +127,9 @@ local function audioAction( event )
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 
-
 		if event.target.alpha > 0.6 then
+
+
 
 			if event.target.id == "play" then
 
@@ -143,9 +141,9 @@ local function audioAction( event )
 				stopBtn.alpha=1
 				stopBtn_txt.alpha=1
 
-	    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
-		            -- Play back the recording
-		            local file = io.open( filePath)
+	   			local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+			            -- Play back the recording
+		        local file = io.open( filePath)
 		            
 		            if file then
 		                io.close( file )
@@ -167,10 +165,12 @@ local function audioAction( event )
 
 		            keyTips.text = "Playing"
 
+		           
+
 			elseif event.target.id == "stop" then
 				
-				startBtn.alpha=1
-				startBtn_txt.alpha=1
+				startBtn.alpha=0.5
+				startBtn_txt.alpha=0.5
 				playBtn.alpha=1
 				playBtn_txt.alpha=1
 				stopBtn.alpha=0.5
@@ -462,6 +462,10 @@ end
 
 					if pagevalue == "compose" then
 
+<<<<<<< HEAD
+=======
+						
+>>>>>>> origin/MUB_V1.2.1
 						-- print("datafilename ",dataFileName)
 
 
@@ -485,10 +489,13 @@ end
 
 			  		--event.parent:updateAudio(dataFileName)
 
+			  			event.parent:updateAudio(dataFileName)
+
+
 
 					else
 
-					event.parent:updateAudio(dataFileName)
+						event.parent:updateAudio(dataFileName)
 
 				    end
 
