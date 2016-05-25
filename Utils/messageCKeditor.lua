@@ -1,6 +1,6 @@
-ckeditor={}
+meggageeditor={}
 
-ckeditor.htmlContent = [[
+meggageeditor.htmlContent = [[
 <!DOCTYPE html>
 <html>
 
@@ -23,7 +23,7 @@ ckeditor.htmlContent = [[
 
 	<br>
 
-		<form id="sumbit" type="submit" align="center" >
+			<form id="sumbit" type="submit" align="center">
 
 
 			<textarea cols="80" id="UnitGoals" name="UnitGoals" rows="10">	
@@ -36,41 +36,42 @@ ckeditor.htmlContent = [[
 
 	<script>
 
-
+	
+			
+	
 		CKEDITOR.replace( 'UnitGoals', {
 			fullPage: true,
 			extraPlugins: 'docprops',
 			allowedContent: true,
-			htmlEncodeOutput: true,
+			htmlEncodeOutput: false,
 		} );
 
 
 
 		function get_action() {
 
-
-				var texttemp="corona:close hi";
-			 			window.location.href = texttemp; 
+ 	
 
 			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
 
-			var htmldata = CKEDITOR.instances.UnitGoals.document.getBody().getText()
+			var texttemp="corona:close"+ckvalue;
+			window.location.href = texttemp; 
 
-			//alert(htmldata.length)
-			if(htmldata.length > 1 )
-			{
-
-
-						var texttemp="corona:close"+ckvalue;
-			 			window.location.href = texttemp; 
-
-			}else{
-
-				sweetAlert("Please enter Unit Goals");
-		
-			}
+			
        		
 		}
+
+		var repeater;
+
+function doWork() {
+
+ 		get_action()
+ 		repeater = setTimeout(doWork, 1000);
+
+ 		
+}
+
+doWork();
 
 
 
@@ -79,7 +80,7 @@ ckeditor.htmlContent = [[
 ]]
 
 
-ckeditor.buttonHtml = [[<Button onclick=get_action(this) align="center" name="data" type="button" width="58" height="48" style="width=200px; height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 110px;"> Submit </Button>
+meggageeditor.buttonHtml = [[<Button onclick=get_action(this) align="center" name="data" type="button" width="58" height="48" style="width=200px; height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 110px;"> Submit </Button>
 
 <p><br></p>
 <p><br></p>
@@ -95,13 +96,13 @@ ckeditor.buttonHtml = [[<Button onclick=get_action(this) align="center" name="da
 <p><br></p>
 
 ]]
-	ckeditor.endHtml = [[.replace(/\+/g, '%20')));  
+	meggageeditor.endHtml = [[.replace(/\+/g, '%20')));  
 
 
 	</script>
 
 
-get_action()
+
 
 	<!-- <button id="submit" onclick="myFunction()">Submit</button> -->
 </body>

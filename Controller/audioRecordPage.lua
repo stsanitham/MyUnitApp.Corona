@@ -75,7 +75,7 @@ local function closeDetails( event )
 												}
 
 
-								  			composer.gotoScene("Controller.composeMessagePage",options)
+								  				composer.gotoScene("Controller.composeMessagePage",options)
 
 								  		    end
 
@@ -128,8 +128,9 @@ local function audioAction( event )
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 
-
 		if event.target.alpha > 0.6 then
+
+
 
 			if event.target.id == "play" then
 
@@ -141,9 +142,9 @@ local function audioAction( event )
 				stopBtn.alpha=1
 				stopBtn_txt.alpha=1
 
-	    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
-		            -- Play back the recording
-		            local file = io.open( filePath)
+	   			local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+			            -- Play back the recording
+		        local file = io.open( filePath)
 		            
 		            if file then
 		                io.close( file )
@@ -165,10 +166,12 @@ local function audioAction( event )
 
 		            keyTips.text = "Playing"
 
+		           
+
 			elseif event.target.id == "stop" then
 				
-				startBtn.alpha=1
-				startBtn_txt.alpha=1
+				startBtn.alpha=0.5
+				startBtn_txt.alpha=0.5
 				playBtn.alpha=1
 				playBtn_txt.alpha=1
 				stopBtn.alpha=0.5
@@ -216,7 +219,7 @@ local function audioAction( event )
 			end
 		end
 
-	
+	end
 
 return true
 
@@ -466,8 +469,7 @@ end
 
 					if pagevalue == "compose" then
 
-						composer.hideOverlay()
-
+						
 						-- print("datafilename ",dataFileName)
 
 
@@ -485,10 +487,13 @@ end
 
 			  		-- 	composer.gotoScene("Controller.composeMessagePage",options)
 
+			  			event.parent:updateAudio(dataFileName)
+
+
 
 					else
 
-					event.parent:updateAudio(dataFileName)
+						event.parent:updateAudio(dataFileName)
 
 				    end
 
