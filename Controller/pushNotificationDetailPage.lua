@@ -24,6 +24,8 @@ local Background,BgText,title_bg,title
 
 local menuBtn
 
+local photowidth = "";photoheight =""
+
 local reciveImageFlag=false
 
 local webView
@@ -520,7 +522,16 @@ end
 
 				 -- photoheight = event.params.photoheightval
 
-				 -- print(photowidth.."    "..photoheight)
+					--  if photowidth ~= "" and photoheight ~= "" then
+
+					--  print("width and height values : ",photowidth.."    "..photoheight)
+
+					--  else
+
+					-- 	photowidth = ""
+					-- 	photoheight = ""
+
+					--  end 
 
 			end
 
@@ -724,14 +735,13 @@ end
 
 		if detail_value.ImageFilePath ~= null then
 
-
-						Imagenametext= display.newText(sceneGroup,detail_value.ImageFileName,0,0,W-80,0,native.systemFont,14)
-						Imagenametext.x=W/2+35
-						Imagenametext.y= webView.y+webView.contentHeight+12
-						Imagenametext.anchorY = 0
-						Utils.CssforTextView(Imagenametext,sp_labelName)
-						Imagenametext:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-						messagedetail_scrollView:insert(Imagenametext)
+						-- Imagenametext= display.newText(sceneGroup,detail_value.ImageFileName,0,0,W-80,0,native.systemFont,14)
+						-- Imagenametext.x=W/2+35
+						-- Imagenametext.y= webView.y+webView.contentHeight+12
+						-- Imagenametext.anchorY = 0
+						-- Utils.CssforTextView(Imagenametext,sp_labelName)
+						-- Imagenametext:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+						-- messagedetail_scrollView:insert(Imagenametext)
 
 
 						local function recivedNetwork( event )
@@ -744,7 +754,8 @@ end
 						        reciveImageFlag=true
 
 								myImage = display.newImage( event.response.filename, event.response.baseDirectory, display.viewableContentWidth, display.contentHeight )
-								myImage.y = Imagenametext.y+Imagenametext.contentHeight+12
+								--myImage.y = Imagenametext.y+Imagenametext.contentHeight+12
+								myImage.y = webView.y+webView.contentHeight+12
 								myImage.x = display.contentCenterX
 								myImage.anchorY=0
 								--myImage.width = display.viewableContentWidth - 20
@@ -769,6 +780,7 @@ end
 			detail_value.ImageFilePath:match( "([^/]+)$" ),
 			system.DocumentsDirectory
 			)
+
 
 		end
 
@@ -884,6 +896,8 @@ end
             end
 
              if webView then webView:removeSelf( );webView=nil end
+
+             if testimage then testimage:removeSelf();testimage = nil end
 
 
 

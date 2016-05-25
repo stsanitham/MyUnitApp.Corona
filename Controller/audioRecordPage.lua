@@ -57,7 +57,7 @@ local function closeDetails( event )
 
 										composer.hideOverlay()
 
-								    elseif pagevalue == "compose" then
+								    else 
 
 								    -- 	local column = native.showAlert("Audio path",pagevalue,{"ok"})
 
@@ -118,6 +118,8 @@ local function closeDetails( event )
 return true
 
 end
+
+
 
 
 
@@ -311,7 +313,7 @@ function scene:show( event )
 			messagetype = event.params.MessageType 
 			pagevalue = event.params.page 
 
-			print(contactid.."   "..messagetype.."   "..pagevalue)
+			print(contactid.."   "..pagevalue)
 
 		end
 
@@ -462,10 +464,6 @@ end
 
 					if pagevalue == "compose" then
 
-<<<<<<< HEAD
-=======
-						
->>>>>>> origin/MUB_V1.2.1
 						-- print("datafilename ",dataFileName)
 
 
@@ -483,15 +481,11 @@ end
 
 			  		-- 	composer.showOverlay("Controller.composeMessagePage",options)
 
-			  		composer.hideOverlay()
-
 			  		--event.parent:updateAudio(dataFileName,"audio")
 
 			  		--event.parent:updateAudio(dataFileName)
 
-			  			event.parent:updateAudio(dataFileName)
-
-
+			  		    event.parent:updateRecordedAudio(dataFileName,"audiopage")
 
 					else
 
@@ -505,6 +499,12 @@ end
 
 				local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 	            os.remove( filePath )
+
+	            if pagevalue == "compose" then
+
+	            event.parent:CancelRecordedAudio("")
+
+	            end
 
 			end
 
