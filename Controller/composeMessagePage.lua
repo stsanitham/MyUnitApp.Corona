@@ -580,38 +580,33 @@ end
     	 		shortmsg_textbox.isVisible = false
 
 
-	function onTimePickerTouch(event)
+				function onTimePickerTouch(event)
 
-	    	local function getValue(time)
+					    	local function getValue(time)
 
-				Time.text = time
+								Time.text = time
 
-			end
-
-
-	    	local function getDateValue(time)
-
-				Date.text = time
-
-			end
+							end
 
 
-		if event.target.id == "time" then
+					    	local function getDateValue(time)
 
-			timePicker.getTimeValue(getValue)
+								Date.text = time
 
-		elseif event.target.id == "date" then
-
-			datePicker.getTimeValue(getDateValue)
-
-		end  
-
-    end
+							end
 
 
+						if event.target.id == "time" then
 
+							timePicker.getTimeValue(getValue)
 
+						elseif event.target.id == "date" then
 
+							datePicker.getTimeValue(getDateValue)
+
+						end  
+
+			    end
 
 
 
@@ -641,8 +636,6 @@ end
 
 
 			        	if (shortmsg_textbox.text ~= "") and (Imagepath ~= nil and Imagepath ~= null and Imagepath ~= "" and Imagepath ~= " ") then
-
-			        		print("image path send value")
 
 			        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
