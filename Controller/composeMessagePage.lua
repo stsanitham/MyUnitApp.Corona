@@ -24,11 +24,9 @@ local ck_editor = require('Utils.messageCKeditor')
 
 local W = display.contentWidth;H= display.contentHeight
 
-local Background,BgText
-
-local menuBtn, test
-
-local back_icon_bg, back_icon
+local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title,scrollView,shortmsg_star,shortmsg_title,shortmsg_textbox,short_msg_charlimit,longmsg_star
+local longmsg_title,long_msg_charlimit,attachment_icon,icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt,filename_title,filename,filename_close,schedule_button
+local schedule_icon,schedule_icon_text,send_button,send_icon,send_icon_text,draft_button,draft_icon,draft_icon_text
 
 local filename ,filename_title, filename_close
 
@@ -74,7 +72,7 @@ local longMessage = ""
 
 local defalutValue="corona:open"
 
-fieldTrans = 200
+local fieldTrans = 200
 
 local UserId,MemberName
 
@@ -102,36 +100,6 @@ local function closeDetails( event )
 return true
 
 end
-
-
-
-
-
-
-
--- function scene:resumeCall(value)
-
--- 	print( "*********test*********" )
-
---     if value == "compose" then
-
--- 				local options = {
--- 					isModal = true,
--- 					effect = "slideLeft",
--- 					time = 100,
--- 			    }
-
--- 		composer.showOverlay( "Controller.composeMessagePage", options )
-
---     end
-
--- end
-
-
-
-
-
-
 
 
 local function selectionComplete ( event )
@@ -1254,11 +1222,11 @@ local function webListener( event )
 
     local url = event.url
 
-    	print( "here"..url )
+    	--print( "here"..url )
     
     if 1 == string.find( url, defalutValue ) then
         -- Close the web popup
-        print( "here" )
+        --print( "here" )
 
         shouldLoad = false
 
@@ -1586,8 +1554,8 @@ end
 
 				if event.params and openPagevalue == "addPage" then
 
-				status=event.params.page
-				Details = event.params.Details
+					status=event.params.page
+					Details = event.params.Details
 
 			    end
 
@@ -1598,8 +1566,6 @@ end
 			if sceneevent.params then
 
 				filenameval = event.params.filename
-
-			    print("********************** : ",filenameval)
 
 			end
 
@@ -2125,16 +2091,8 @@ end
 			
 
 			send_button:addEventListener("touch",onSendButtonTouchAction)
-			send_icon:addEventListener("touch",onSendButtonTouchAction)
-			send_icon_text:addEventListener("touch",onSendButtonTouchAction)
-
 			draft_button:addEventListener("touch",onSendButtonTouchAction)
-			draft_icon:addEventListener("touch",onSendButtonTouchAction)
-			draft_icon_text:addEventListener("touch",onSendButtonTouchAction)
-
 			schedule_button:addEventListener("touch",onSendButtonTouchAction)
-			schedule_icon:addEventListener("touch",onSendButtonTouchAction)
-			schedule_icon_text:addEventListener("touch",onSendButtonTouchAction)
 
 			Runtime:addEventListener( "key", onKeyEventDetail )
 			
@@ -2201,16 +2159,10 @@ end
 				Background:removeEventListener("touch",FocusComplete)
 
 				send_button:removeEventListener("touch",onSendButtonTouchAction)
-				send_icon:removeEventListener("touch",onSendButtonTouchAction)
-				send_icon_text:removeEventListener("touch",onSendButtonTouchAction)
 
 				draft_button:removeEventListener("touch",onSendButtonTouchAction)
-				draft_icon:removeEventListener("touch",onSendButtonTouchAction)
-				draft_icon_text:removeEventListener("touch",onSendButtonTouchAction)
 
 				schedule_button:removeEventListener("touch",onSendButtonTouchAction)
-				schedule_icon:removeEventListener("touch",onSendButtonTouchAction)
-				schedule_icon_text:removeEventListener("touch",onSendButtonTouchAction)
 
 
 				Runtime:removeEventListener( "key", onKeyEventDetail )

@@ -67,7 +67,6 @@ function doWork() {
 
  		get_action()
  		repeater = setTimeout(doWork, 1000);
-
  		
 }
 
