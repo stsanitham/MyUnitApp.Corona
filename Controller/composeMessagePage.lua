@@ -1694,7 +1694,8 @@ end
 							 longmsg_textbox.hasBackground = false
 
 							 longmsg_textbox.anchorX=0;longmsg_textbox.anchorY=0
-							 longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
+							 params="test"
+							 longmsg_textbox:request( "messageCKeditor.html?" .. params, system.DocumentsDirectory )
 
 							 longmsg_textbox:addEventListener( "urlRequest", webListener )
 							 scrollView:insert( longmsg_textbox)

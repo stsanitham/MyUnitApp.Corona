@@ -217,8 +217,7 @@ local function audioAction( event )
 
 			end
 		end
-
-	end
+end
 
 return true
 
@@ -462,10 +461,7 @@ end
 
 					if pagevalue == "compose" then
 
-<<<<<<< HEAD
-=======
-						
->>>>>>> origin/MUB_V1.2.1
+
 						-- print("datafilename ",dataFileName)
 
 
