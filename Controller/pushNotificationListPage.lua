@@ -999,6 +999,8 @@ local pagingvalue = "listpage"
 
 			    audiovalues = json.decode(audiovalues)
 
+			   -- local nativeal = native.showAlert("MUB AUDIO",audiovalues,{"ok"})
+
 				if  audiovalues.MessageStatus == "SCHEDULE" and tab_Group.id =="schedule" then
 
 					print("schedule coming")
@@ -2213,13 +2215,13 @@ end
 			end
 
 
-			if event.params then
+			-- if event.params then
 
-				audiopathvalues = event.params.audiovalues
+			-- 	audiopathvalues = event.params.audiovalues
 
-				updateAudioValues(audiopathvalues)
+			-- 	updateAudioValues(audiopathvalues)
 
-			end
+			-- end
 
 
 

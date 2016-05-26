@@ -30,6 +30,14 @@ local menuBtn, test
 
 local back_icon_bg, back_icon
 
+local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title,scrollView,shortmsg_star,shortmsg_title,shortmsg_textbox,short_msg_charlimit,longmsg_star,longmsg_title,
+long_msg_charlimit
+
+local attachment_icon,icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,
+Contact_icon,Contact_icon_txt,filename_title,filename,filename_close
+
+local schedule_button,schedule_icon,schedule_icon_textsend_button,send_icon,send_icon_text,draft_button,draft_icon,draft_icon_text
+
 local filename ,filename_title, filename_close
 
 local photowid = "";photoheig = ""
@@ -177,7 +185,10 @@ local function get_imagemodel(response)
 
 						filename_close.isVisible = false
 
+						Imagepath = ""
+
 						os.remove( Imagepath )
+
 
 						schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
 						schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
@@ -320,7 +331,7 @@ end
 
 				effect = "slideRight",
 				time = 300,
-				params = { audiovalues = audiolist_values }
+				params = { pushlistvalues = audiolist_values,page = "compose"}
 	    }
 
 		composer.gotoScene("Controller.pushNotificationListPage",options)
@@ -335,7 +346,7 @@ local function get_audiomodel1(response)
 
     	print("get audio model called : its response is here ~~~~~~~~~~~~~~~~"..json.encode(response))
 
-    	local audioalert = native.showAlert("Audio File",response.Abspath,{"ok"})
+    	--local audioalert = native.showAlert("Audio File",response.Abspath,{"ok"})
 
 			Audiopath = response.Abspath
 
@@ -376,6 +387,8 @@ local function get_audiomodel1(response)
 						filename_title.isVisible = false
 
 						filename_close.isVisible = false
+
+						Audiopath = ""
 
 						os.remove( Audiopath )
 
@@ -1281,31 +1294,34 @@ function scene:updateRecordedAudio( dataFileName,audiopagename )
 
 		timer.performWithDelay(500,onTimerRecord)
 
-	local nn = native.showAlert("MUB","HELLO Message" ,{"ok"})
+
+	--local nn = native.showAlert("MUB","HELLO Message" ,{"ok"})
+
 
 	       dataFileName1 = dataFileName
 
 	       audiopagename = "audiopage"
 
-		   local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+
+		   local filePath = system.pathForFile( dataFileName1, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
 		            
-		            if file then
-		                io.close( file )
-		            else
-		            	audiovalue="test.wav"
-			           	filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
-		            end
+			            if file then
+			                io.close( file )
+			            else
+			            	audiovalue="test.wav"
+				           	filePath = system.pathForFile( dataFileName1, system.DocumentsDirectory )
+			            end
 
-				        local size2 = lfs.attributes (filePath, "size")
 
-						local fileHandle = io.open(filePath, "rb")
+					        local size2 = lfs.attributes(filePath, "size")
 
-						local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+							local fileHandle = io.open(filePath, "rb")
 
-						formatSizeUnits(size2)
+							local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
 
+							formatSizeUnits(size2)
 
 
 		Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName1,"Audios",get_audiomodel1)
@@ -1737,7 +1753,7 @@ end
 			
 				sceneevent = event
 
-				composer.removeHidden()
+			--	composer.removeHidden()
 
 
 			if sceneevent.params then
@@ -2214,44 +2230,44 @@ end
 
 
 
-				 if filenameval ~= nil then
+				--  if filenameval ~= nil then
 
-				 	targetaction = "audio"
-
-
-				--       filename_title.isVisible = true
-
-				--       filename.isVisible = true
-
-				-- 	  filename_close.isVisible = true
+				--  	targetaction = "audio"
 
 
-				-- 	  filename_title.text = "Audio Name"
+				-- --       filename_title.isVisible = true
 
-				-- 	  filename.text = filenameval
+				-- --       filename.isVisible = true
 
-
-				-- 	  	schedule_button.y = filename.y + filename.contentHeight +15
-				-- 		schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-				-- 		schedule_icon_text.y= schedule_icon.y
-				-- 		schedule_button.height=schedule_icon_text.contentHeight+10
-
-				-- 		send_button.y = filename.y + filename.contentHeight +15
-				-- 		send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-				-- 		send_icon_text.y= send_icon.y
-				-- 		send_button.height=send_icon_text.contentHeight+10
-
-				-- 		draft_button.y = filename.y + filename.contentHeight +15
-				-- 		draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-				-- 		draft_icon_text.y= draft_icon.y
-				-- 		draft_button.height=draft_icon_text.contentHeight+10
-
-				 	  composeAudioUpdate(filenameval)
+				-- -- 	  filename_close.isVisible = true
 
 
-				 else
+				-- -- 	  filename_title.text = "Audio Name"
 
-				 end
+				-- -- 	  filename.text = filenameval
+
+
+				-- -- 	  	schedule_button.y = filename.y + filename.contentHeight +15
+				-- -- 		schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+				-- -- 		schedule_icon_text.y= schedule_icon.y
+				-- -- 		schedule_button.height=schedule_icon_text.contentHeight+10
+
+				-- -- 		send_button.y = filename.y + filename.contentHeight +15
+				-- -- 		send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+				-- -- 		send_icon_text.y= send_icon.y
+				-- -- 		send_button.height=send_icon_text.contentHeight+10
+
+				-- -- 		draft_button.y = filename.y + filename.contentHeight +15
+				-- -- 		draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+				-- -- 		draft_icon_text.y= draft_icon.y
+				-- -- 		draft_button.height=draft_icon_text.contentHeight+10
+
+				--  	  composeAudioUpdate(filenameval)
+
+
+				--  else
+
+				 --end
 
 
 
@@ -2302,15 +2318,11 @@ end
 
 		if event.phase == "will" then
 
-
-			-- if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
-			-- if shortmsg_textbox then shortmsg_textbox:removeSelf( );shortmsg_textbox=nil end
-
-
-	     	composer.removeHidden()
-
 	  --    	if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
 			-- if shortmsg_textbox then shortmsg_textbox:removeSelf( );shortmsg_textbox=nil end
+
+			 composer.removeHidden()
+
 
 				if datePicker then datePicker.clear() end
 
@@ -2341,7 +2353,7 @@ end
 				-- end
 
 
-
+               -- composer.removeHidden()
 
 
 				back_icon:removeEventListener("touch",closeMessagePage)
@@ -2349,7 +2361,7 @@ end
 			    title:removeEventListener("touch",closeMessagePage)
 
 			    shortmsg_textbox:removeEventListener( "userInput", TextLimitation)
-				longmsg_textbox:removeEventListener( "urlRequest", webListener )
+				--longmsg_textbox:removeEventListener( "urlRequest", webListener )
 				Background:removeEventListener("touch",FocusComplete)
 
 				send_button:removeEventListener("touch",onSendButtonTouchAction)

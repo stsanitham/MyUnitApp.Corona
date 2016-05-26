@@ -59,9 +59,9 @@ local function closeDetails( event )
 
 								    else 
 
-								    -- 	local column = native.showAlert("Audio path",pagevalue,{"ok"})
+								   		-- 	local column = native.showAlert("Audio path",pagevalue,{"ok"})
 
-								    -- 	   local function onTimer(event)
+								   		-- 	   local function onTimer(event)
 
 												-- local options = 
 												-- {
@@ -88,6 +88,7 @@ local function closeDetails( event )
 
 						end
 			else
+
 
 				 local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            local file = io.open( filePath)
@@ -197,12 +198,12 @@ local function audioAction( event )
 		         fSoundPaused = false
 		         r:startRecording()
 
-		        startBtn.alpha=0.5
-				startBtn_txt.alpha=0.5
-				playBtn.alpha=0.5
-				playBtn_txt.alpha=0.5
-				stopBtn.alpha=1
-				stopBtn_txt.alpha=1
+		         startBtn.alpha=0.5
+				 startBtn_txt.alpha=0.5
+				 playBtn.alpha=0.5
+				 playBtn_txt.alpha=0.5
+				 stopBtn.alpha=1
+				 stopBtn_txt.alpha=1	
 		        	
 		         countdown = timer.performWithDelay(1000, function()
 
@@ -464,26 +465,7 @@ end
 
 					if pagevalue == "compose" then
 
-						-- print("datafilename ",dataFileName)
-
-
-	      --               local options = 
-							-- {
-							-- 	isModal = true,
-							-- 	effect = "slideRight",
-							-- 	time = 200,
-							-- 	params = {
-							-- 	filename = dataFileName,
-							-- 	pagevaluename = "audio"
-							-- 	}
-							-- }
-
-
-			  		-- 	composer.showOverlay("Controller.composeMessagePage",options)
-
-			  		--event.parent:updateAudio(dataFileName,"audio")
-
-			  		--event.parent:updateAudio(dataFileName)
+						composer.removeHidden()
 
 			  		    event.parent:updateRecordedAudio(dataFileName,"audiopage")
 
