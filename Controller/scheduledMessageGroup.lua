@@ -158,7 +158,7 @@ function GetScheduleMessageAlertPopup()
 
 	acceptschedule_button.height = acceptschedule_button_text.contentHeight+10
 
-
+print( "********************" )
 	MainGroup:insert(ScheduledMessageGroup)
 
 

@@ -125,39 +125,54 @@ end
 
 	local function attachClose(event)
 
+		if event.phase == "ended" then
 
-		if event.valuestring == "image" then
+				if event.target.valuestring == "image" then
 
-			filename.text = ""
+					filename.text = ""
 
-			filename.isVisible = false
+					filename.isVisible = false
 
-			filename_title.isVisible = false
+					filename_title.isVisible = false
 
-			filename_close.isVisible = false
+					filename_close.isVisible = false
 
-			os.remove( event.filepath )
+					os.remove( event.target.filepath )
 
-			composePage.y = composePage.y-45
+					composePage.y = composePage.y-45
+
+					if Audio_filename_title.isVisible == true then
+						Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
+						Audio_filename.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
+						Audio_filename_close.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
+					end
 
 
+				elseif event.target.valuestring == "audio" then
 
+					Audio_filename.text = ""
 
-		elseif event.valuestring == "audio" then
+					Audio_filename.isVisible = false
 
-			Audio_filename.text = ""
+					Audio_filename_title.isVisible = false
 
-			Audio_filename.isVisible = false
+					Audio_filename_close.isVisible = false
 
-			Audio_filename_title.isVisible = false
+					os.remove( event.target.filepath )
 
-			Audio_filename_close.isVisible = false
+					composePage.y = composePage.y-45
 
-			os.remove( event.filepath )
+						if filename_title.isVisible == true then
+						filename_title.y = tabBar.y+tabBar.contentHeight+15
+						filename.y=filename_title.y+filename_title.contentHeight+5
+						filename_close.y=filename_title.y+filename_title.contentHeight+5
+					end
+							
+				end
+		end
 
-			composePage.y = composePage.y-45
-					
-		end	
+	return true
+
 	end
 
 
@@ -245,9 +260,9 @@ local function selectionComplete ( event )
 
         	print("bbb ",size1)
 
-        formatSizeUnits(size1)
+       	 formatSizeUnits(size1)
 
-	
+		
 
 			filename_title.isVisible = true
 
@@ -259,12 +274,18 @@ local function selectionComplete ( event )
 
 			filename.text = photoname
 
-			-- if Audio_filename.isVisible == true then
-			-- 	filename_title.y=
-			-- 	filename
-			-- 	filename_close
+			if Audio_filename.isVisible == true then
+				filename_title.y=Audio_filename.y+20
+			
 
-			-- end
+			else
+
+				filename_title.y = tabBar.y+tabBar.contentHeight+15
+
+			end
+
+				filename.y=filename_title.y+filename_title.contentHeight+5
+				filename_close.y=filename_title.y+filename_title.contentHeight+5
 
 			composePage.y = composePage.y+45
 
@@ -299,52 +320,6 @@ end
 
 
 
-local function get_audiomodel1(response)
-
-    	print("get audio model called : its response is here ~~~~~~~~~~~~~~~~"..json.encode(response))
-
-    	--local audioalert = native.showAlert("Audio File",response.Abspath,{"ok"})
-
-			Audiopath = response.Abspath
-
-			Audioname = response.FileName
-
-			Audiosize = size
-
-
-			filename_title.isVisible = true
-
-			filename.isVisible = true
-
-			filename_close.isVisible = true
-
-			filename.text = Audioname
-
-		
-			    local function ImageClose(event)
-
-						filename.text = ""
-
-						filename.isVisible = false
-
-						filename_title.isVisible = false
-
-						filename_close.isVisible = false
-
-						Audiopath = ""
-
-						os.remove( Audiopath )
-
-					
-				end
-
-        filename_close:addEventListener("touch",ImageClose)
-
-end
-
-
-
-
 
 
 
@@ -359,7 +334,6 @@ end
 
 		if list_values.MessageStatus == "SEND" then
 
-		        Utils.SnackBar(MessagePage.SentSuccess)
 
 				      		 	shortmsg_textbox.text = ""
 
@@ -438,7 +412,7 @@ end
 
 		if list_values.MessageStatus == "DRAFT" then
 
-		      		 Utils.SnackBar(MessagePage.DraftSuccess)
+		      		
 
 				      		 	shortmsg_textbox.text = ""
 
@@ -516,7 +490,7 @@ end
 
 	    if list_values.MessageStatus == "SCHEDULE" then
 
-		      		 Utils.SnackBar(MessagePage.ScheduledSuccess)
+		      		 
 
 				      		 	shortmsg_textbox.text = ""
 
@@ -590,160 +564,14 @@ end
 
 
 
+local function sendAction( method,IsScheduled,Date,Time )
 
-
-
-
-    local function sendMessage ( method )
-
-		    if shortmsg_textbox.text == nil  then
-
-		    	shortmsg_textbox.text = ""
-
-		    end
-
-
-		    if longMessage == nil  then
-
-		    	longMessage = ""
-
-		    end
-
-
-	    if method == "SCHEDULE" then
-
-	        	ScheduledMessageGroup.isVisible = true
-
-	        	longmsg_textbox.isVisible = false
-    	 		shortmsg_textbox.isVisible = false
-
-
-					function onTimePickerTouch(event)
-
-						    	local function getValue(time)
-
-									Time.text = time
-
-								end
-
-
-						    	local function getDateValue(time)
-
-									Date.text = time
-
-								end
-
-
-								if event.target.id == "time" then
-
-									timePicker.getTimeValue(getValue)
-
-								elseif event.target.id == "date" then
-
-									datePicker.getTimeValue(getDateValue)
-
-								end  
-
-				    end
-
-
-
-    			function onScheduleButtonTouch( event )
-
-					if event.phase == "began" then
-
-
-					elseif event.phase == "ended" then
-
-						native.setKeyboardFocus(nil)
-
-							if event.target.id == "set-time" then
-
-								if Date.text ~= "Date" and Time.text ~= "Time" then
-
-									IsScheduled = tostring(true)
-
-
-					 				    if (shortmsg_textbox.text ~= "") and (Imagepath == nil or Imagepath == null or Imagepath == "" or Imagepath == " ") and (Audiopath == nil or Audiopath == null or Audiopath == "" or Audiopath == " ") then
-			                
-			              				   Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
-
-					 				    end
-
-
-			        					if (shortmsg_textbox.text ~= "") and (Imagepath ~= nil and Imagepath ~= null and Imagepath ~= "" and Imagepath ~= " ") then
-
-			        	 					  Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
-
-			          					 end
-
-
-
-
-			           					if (shortmsg_textbox.text ~= "") and (Audiopath ~= nil and Audiopath ~= null and Audiopath ~= "" and Audiopath ~= " ") then
-
-
-			            					 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
-
-			           					end
-
-
-										ScheduledMessageGroup.isVisible = false
-
-										local function onTimer(event)
-
-										longmsg_textbox.isVisible = true
-				    	                shortmsg_textbox.isVisible = true
-
-				    	                end
-
-    	               					 timer.performWithDelay(500,onTimer)
-
-								end
-
-							elseif event.target.id == "closealert" then
-
-			 					print("close alert")
-
-			 					if datePicker then datePicker.clear() end
-
-								if timePicker then timePicker.clear() end
-
-								ScheduledMessageGroup.isVisible = false
-
-					     		    local function onTimer(event)
-
-									longmsg_textbox.isVisible = true
-			    	                shortmsg_textbox.isVisible = true
-
-			    	                end
-
-    	                			timer.performWithDelay(500,onTimer)
-				end
-
-		    end
-
-	    end
-
-	        Time_bg:addEventListener("touch",onTimePickerTouch)
-	        TimeSelect_icon:addEventListener("touch",onTimePickerTouch)
-	        Time:addEventListener("touch",onTimePickerTouch)
-
-	        Date_bg:addEventListener("touch",onTimePickerTouch)
-	        Date:addEventListener("touch",onTimePickerTouch)
-	        DateSelect_icon:addEventListener("touch",onTimePickerTouch)
-
-	 		acceptschedule_button:addEventListener("touch",onScheduleButtonTouch) 	
-	        Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
-
-        else
-
-
-		    if (shortmsg_textbox.text ~= "") and (filename.text == "" and filename.isVisible == false )  and (Audio_filename.text == "" and Audio_filename.isVisible == false) then
+--IsScheduled,Date.text,Time.text
+	  if (shortmsg_textbox.text ~= "") and (filename.text == "" and filename.isVisible == false )  and (Audio_filename.text == "" and Audio_filename.isVisible == false) then
                 
                 -- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","","","","",method,"","","",get_messagemodel)
 
-                Webservice.SEND_MESSAGE("","","","","",shortmsg_textbox.text,longMessage,"","","","","","","","","","",method,"","","",get_messagemodel)
+                Webservice.SEND_MESSAGE("","","","","",shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"","","","","","","",method,"","","",get_messagemodel)
 
 
 		    end
@@ -790,7 +618,7 @@ end
 						MessageFileType="Images"
 
 
-					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,"","","","",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
+					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
 
 
 
@@ -844,12 +672,145 @@ end
 				MessageFileType="Audios"
 
 
-				Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,"","","","",filename.text,filename.text,Imagesize,"","","",method,"","","",get_audiomodel)
+				Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_audiomodel)
 
             	-- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
             end
 
+end
+
+
+
+    local function sendMessage ( method )
+
+		    if shortmsg_textbox.text == nil  then
+
+		    	shortmsg_textbox.text = ""
+
+		    end
+
+
+		    if longMessage == nil  then
+
+		    	longMessage = ""
+
+		    end
+
+
+	    if method == "SCHEDULE" then
+
+
+	    		GetScheduleMessageAlertPopup()
+
+	        	ScheduledMessageGroup.isVisible = true
+
+	        	longmsg_textbox.isVisible = false
+    	 		shortmsg_textbox.isVisible = false
+
+
+					function onTimePickerTouch(event)
+
+						    	local function getValue(time)
+
+									Time.text = time
+
+								end
+
+
+						    	local function getDateValue(time)
+
+									Date.text = time
+
+								end
+
+
+								if event.target.id == "time" then
+
+									timePicker.getTimeValue(getValue)
+
+								elseif event.target.id == "date" then
+
+									datePicker.getTimeValue(getDateValue)
+
+								end  
+
+				    end
+
+
+
+    			function onScheduleButtonTouch( event )
+
+					if event.phase == "began" then
+
+
+					elseif event.phase == "ended" then
+
+						native.setKeyboardFocus(nil)
+
+							if event.target.id == "set-time" then
+
+								if Date.text ~= "Date" and Time.text ~= "Time" then
+
+									IsScheduled = tostring(true)
+--IsScheduled,Date.text,Time.text
+
+					 				   
+									sendAction(method,IsScheduled,Date.text,Time.text)
+
+
+										ScheduledMessageGroup.isVisible = false
+
+										local function onTimer(event)
+
+										longmsg_textbox.isVisible = true
+				    	                shortmsg_textbox.isVisible = true
+
+				    	                end
+
+    	               					 timer.performWithDelay(500,onTimer)
+
+								end
+
+							elseif event.target.id == "closealert" then
+
+			 					print("close alert")
+
+			 					if datePicker then datePicker.clear() end
+
+								if timePicker then timePicker.clear() end
+
+								ScheduledMessageGroup.isVisible = false
+
+					     		    local function onTimer(event)
+
+									longmsg_textbox.isVisible = true
+			    	                shortmsg_textbox.isVisible = true
+
+			    	                end
+
+    	                			timer.performWithDelay(500,onTimer)
+				end
+
+		    end
+
+	    end
+
+	        Time_bg:addEventListener("touch",onTimePickerTouch)
+	        TimeSelect_icon:addEventListener("touch",onTimePickerTouch)
+	        Time:addEventListener("touch",onTimePickerTouch)
+
+	        Date_bg:addEventListener("touch",onTimePickerTouch)
+	        Date:addEventListener("touch",onTimePickerTouch)
+	        DateSelect_icon:addEventListener("touch",onTimePickerTouch)
+
+	 		acceptschedule_button:addEventListener("touch",onScheduleButtonTouch) 	
+	        Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
+
+        else
+
+
+		  	sendAction(method,"","","")
 
 
         end
@@ -1344,16 +1305,22 @@ function scene:updateRecordedAudio( dataFileName,audiopagename )
 
 			Audio_filename.text = dataFileName1
 
-			-- if Audio_filename.isVisible == true then
-			-- 	filename_title.y=
-			-- 	filename
-			-- 	filename_close
+			if filename.isVisible == true then
 
-			-- end
+				Audio_filename_title.y=filename.y+20
+			
+
+			else
+
+				Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
+
+			end
+
+				Audio_filename.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
+				Audio_filename_close.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
 
 			composePage.y = composePage.y+45
 
-	--	Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName1,"Audios",get_audiomodel1)
 	
 end
 
@@ -1368,7 +1335,8 @@ local function attachAction( event )
 
 			shortmsg_textbox.isVisible=true
 				
-				AttachmentGroup.alpha=0	
+				AttachmentGroup.alpha=0
+				AttachmentGroup:toFront( )
 
 		if event.target.id =="camera" then
 
@@ -1452,9 +1420,8 @@ local function webListener( event )
 
         shouldLoad = false
 
-        print(url)
-
-
+        longmsg_textbox.isVisible=false
+       
         updatedresponse = urlDecode(url)
 
 
@@ -1505,6 +1472,7 @@ local function webListener( event )
 					
 				     file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml..""..meggageeditor.buttonHtml )
  					longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
+ 					longmsg_textbox.isVisible=true
  					file:close()
  				end
  				file=nil
@@ -1514,7 +1482,7 @@ local function webListener( event )
  		else
 
  			longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
-
+ 			longmsg_textbox.isVisible=true
 
 
  			 sendMessage(method)
@@ -1662,6 +1630,8 @@ local function AttachmentTouch( event )
 				shortmsg_textbox.isVisible=true
 				
 				AttachmentGroup.alpha=0	
+				AttachmentGroup.yScale = 0.01
+
 				--transition.to( AttachmentGroup, {time=300,alpha=0,yScale=0.01} )
 
 			end
@@ -2093,15 +2063,17 @@ end
 --camera_icon:addEventListener("touch",attachAction)
 
 
-		createAttachment( )
+	
+
+		sceneGroup:insert( composePage )
+
+			createAttachment( )
 		AttachmentGroup.anchorX=0;AttachmentGroup.anchorY=0
 		AttachmentGroup.alpha=0
 		AttachmentGroup.y=AttachmentGroup.y+68
 		AttachmentGroup.anchorChildren = true
 
-		composePage:insert( AttachmentGroup )
-
-		sceneGroup:insert( composePage )
+		sceneGroup:insert( AttachmentGroup )
 
 	
 

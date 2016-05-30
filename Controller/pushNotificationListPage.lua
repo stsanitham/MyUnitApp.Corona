@@ -1238,10 +1238,14 @@ local pagingvalue = "listpage"
 
 		local function resumeCallList(listview_values)
 
+			print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" )
+
 
 	 		decodedvalue = json.decode(listview_values)
 
 	  			if decodedvalue.MessageStatus == "SCHEDULE" then
+
+	  						Utils.SnackBar(MessagePage.ScheduledSuccess)
 
 						tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
 						tab_Sent_txt:setFillColor(0)
@@ -1309,6 +1313,8 @@ local pagingvalue = "listpage"
                 
 
 	 elseif  decodedvalue.MessageStatus == "SEND" then
+
+	 		Utils.SnackBar(MessagePage.SentSuccess)
 
 
 				tab_Schedule_txt:setFillColor( 0 )
@@ -1379,6 +1385,9 @@ local pagingvalue = "listpage"
 			    
 
    elseif  decodedvalue.MessageStatus == "DRAFT" then
+
+
+   				 Utils.SnackBar(MessagePage.DraftSuccess)
 
 				tab_Schedule_txt:setFillColor( 0 )
 				tab_Sent_txt:setFillColor(0)
@@ -1470,11 +1479,13 @@ local pagingvalue = "listpage"
 
 	        Runtime:addEventListener( "key", onKeyEvent )
 
+
 	           	local function waitTimer( event )
 
 
 				if messagelistvalue.MessageStatus == "SCHEDULE" then
 
+					
 
 						for j=1, #messageList_array do 
 
@@ -1488,6 +1499,9 @@ local pagingvalue = "listpage"
 
 				elseif messagelistvalue.MessageStatus == "SENT" then
 
+
+		       			 
+
 						for j=1, #sentmessageList_array do 
 
 							display.remove(sentmessageList_array[#sentmessageList_array])
@@ -1500,6 +1514,7 @@ local pagingvalue = "listpage"
 
 				elseif messagelistvalue.MessageStatus == "DRAFT" then
 
+						
 
 						for j=1, #draftmessageList_array do 
 
@@ -1619,6 +1634,8 @@ local pagingvalue = "listpage"
 			-- end
 
 			 	local function waitTimer( event )
+
+
 
 
 			 		if openPage == "pushNotificationListPage" then

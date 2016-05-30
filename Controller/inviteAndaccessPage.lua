@@ -523,7 +523,7 @@ local function CreateList(list,scrollView)
 
 		if feedArray[i].ImagePath ~= nil then
 
-					Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+					local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			--Image.anchorY=0
 						Image.x=30;Image.y=background.y+background.contentHeight/2
 
@@ -536,6 +536,7 @@ local function CreateList(list,scrollView)
 					else
 
 					if Image then
+
 						Image:removeSelf();Image=nil
 						
 						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
