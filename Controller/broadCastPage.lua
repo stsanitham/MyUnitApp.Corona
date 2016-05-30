@@ -133,7 +133,7 @@ local function groupBackground_Touch( event )
 			 local options = {
 								effect = "flipFadeOutIn",
 								time = 200,	
-								params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
+								params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,typevalue = event.target.typevalue}
 							 }
 
 					    composer.gotoScene( "Controller.chatPage", options )
@@ -359,6 +359,7 @@ local function GroupCreation_list( list )
 		background.id=list[i].Contact_Id
 		background.alpha=0.01
 		background.value = list[i]
+		background.typevalue = list[i].MyUnitBuzzGroupType
 		print( "Listy : "..json.encode(list[i]) )
 
 		local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)

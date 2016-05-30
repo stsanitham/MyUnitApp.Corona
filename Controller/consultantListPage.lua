@@ -665,8 +665,6 @@ local function TabbarTouch( event )
 
 	end
 
-
-
 	
 
 

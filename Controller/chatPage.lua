@@ -631,8 +631,6 @@ end
 			end
 
 			holdLevel=0
-
-				
 				
 		end
 
@@ -1599,6 +1597,8 @@ end
 
 
 
+
+
 local function ChatSendAction( event )
 	if event.phase == "began" then
 
@@ -2503,6 +2503,7 @@ function scene:show( event )
 
 			if event.params then
 				nameval = event.params.tabbuttonValue2
+				pagevalue = event.params.typevalue
 
 			end
 
@@ -2527,7 +2528,16 @@ function scene:show( event )
 
 			if ContactDetails.MyUnitBuzzGroupId ~= nil then
 
-				MessageType = "GROUP"
+				if ContactDetails.MyUnitBuzzGroupType == "BROADCAST" then
+
+					MessageType = "BROADCAST"
+
+				else
+
+					MessageType = "GROUP"
+
+				end
+
 
 			else
 
@@ -2537,15 +2547,7 @@ function scene:show( event )
 
 
 
-			if ContactDetails.MyUnitBuzzGroupType == "BROADCAST" then
-
-					GroupTypeValue = "BROADCAST"
-
-			else
-
-					GroupTypeValue = "GROUP"
-			end
-
+			
 
 		
 		if ContactDetails.Message_Type then

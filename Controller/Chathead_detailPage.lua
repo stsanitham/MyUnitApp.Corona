@@ -766,6 +766,9 @@ function scene:show( event )
 				Message_Type = event.params.MessageType
 				GroupType_Value = event.params.GroupTypeValue
 
+
+				--print("TypeValue : "..GroupType_Value)
+
 				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
 					ContactId = row.ContactId
@@ -1253,7 +1256,6 @@ function scene:show( event )
 					end
 
 
-					
 
 					MapDisplayArray[#MapDisplayArray].x=maptap.x+90
 					MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
@@ -1261,19 +1263,19 @@ function scene:show( event )
 					MapDisplayArray[#MapDisplayArray]:addEventListener("touch",MapShowing)
 
 
+					myMap_rect = display.newRect(mapGroup,20, 20, 280, 360)
+					myMap_rect.x = display.contentCenterX
+					myMap_rect.y = display.contentCenterY-myMap_rect.contentHeight/2
+					myMap_rect.strokeWidth = 1
+					myMap_rect:setStrokeColor( 0.5 )
+					myMap_rect.anchorY=0
+					
 
-						myMap_rect = display.newRect(mapGroup,20, 20, 280, 360)
-						myMap_rect.x = display.contentCenterX
-						myMap_rect.y = display.contentCenterY-myMap_rect.contentHeight/2
-						myMap_rect.strokeWidth = 1
-						myMap_rect:setStrokeColor( 0.5 )
-						myMap_rect.anchorY=0
-
-							map_title = display.newText(mapGroup,CareerPath.Location,0,0,native.systemFont,16)
-				map_title.x=myMap_rect.x-myMap_rect.contentWidth/2+10
-				map_title.y=myMap_rect.y+15
-				map_title.anchorX=0
-				Utils.CssforTextView(map_title,sp_labelName)
+					map_title = display.newText(mapGroup,CareerPath.Location,0,0,native.systemFont,16)
+					map_title.x=myMap_rect.x-myMap_rect.contentWidth/2+10
+					map_title.y=myMap_rect.y+15
+					map_title.anchorX=0
+					Utils.CssforTextView(map_title,sp_labelName)
 
 				local location =""
 
@@ -1400,18 +1402,20 @@ function scene:show( event )
 		    end	
 
 
-		ga.enterScene("Unit Career Path")
+			ga.enterScene("Unit Career Path")
 
-	    Runtime:addEventListener("key",onKeycareerDetail)
+		    Runtime:addEventListener("key",onKeycareerDetail)
 
-		MainGroup:insert(sceneGroup)
+			MainGroup:insert(sceneGroup)
 
-			print( Message_Type )
-			if Message_Type == "GROUP" and GroupType_Value == "GROUP" then
+
+			print( "MessageType : "..Message_Type )
+
+			if Message_Type == "GROUP"  then
 
 				Webservice.GetMessageGroupTeamMemberList(contactId,"GROUP",get_MessageGroupTeamMemberList)
 				
-			elseif  Message_Type == "GROUP" and GroupType_Value == "BROADCAST" then
+			elseif  Message_Type == "BROADCAST" then
 
 				Webservice.GetMessageGroupTeamMemberList(contactId,"BROADCAST",get_MessageGroupTeamMemberList)
 
