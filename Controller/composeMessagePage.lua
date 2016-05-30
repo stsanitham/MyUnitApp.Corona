@@ -56,6 +56,8 @@ local status
 
 local Details={}
 
+local composePage = display.newGroup( )
+
 local Audiopath=""; Audioname=""; Audiosize=""
 
 local openPagevalue = "addpage"
@@ -106,6 +108,7 @@ local targetaction = "compose"
 --------------------------------------------------
 
 
+
 -----------------Function-------------------------
 
 local function closeDetails( event )
@@ -117,6 +120,40 @@ local function closeDetails( event )
 	end
 
 return true
+
+end
+
+local function uploadImage(  )
+	filename_title.isVisible = true
+
+			filename.isVisible = true
+
+			filename_close.isVisible = true
+
+			filename.text = photoname
+
+			composePage.y = composePage.y+45
+
+					function ImageClose(event)
+
+								filename.text = ""
+
+								filename.isVisible = false
+
+								filename_title.isVisible = false
+
+								filename_close.isVisible = false
+
+								Imagepath = ""
+
+								os.remove( Imagepath )
+
+								composePage.y = composePage.y-45
+					
+						end
+
+        filename_close:addEventListener("touch",ImageClose)
+
 
 end
 
@@ -132,8 +169,6 @@ local function selectionComplete ( event )
 		photo.y = display.contentCenterY
 		local w = photo.width
 		local h = photo.height
-		print( "w,h = ".. w .."," .. h )
-
 
 		photowidth1 = photo.width
 
@@ -200,7 +235,7 @@ local function selectionComplete ( event )
 
         formatSizeUnits(size1)
 
-			
+	
 
 		uploadImage()
 
@@ -256,21 +291,7 @@ local function get_audiomodel1(response)
 
 			filename.text = Audioname
 
-			schedule_button.y = filename.y + filename.contentHeight +15
-			schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-			schedule_icon_text.y= schedule_icon.y
-			schedule_button.height=schedule_icon_text.contentHeight+10
-
-			send_button.y = filename.y + filename.contentHeight +15
-			send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-			send_icon_text.y= send_icon.y
-			send_button.height=send_icon_text.contentHeight+10
-
-			draft_button.y = filename.y + filename.contentHeight +15
-			draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-			draft_icon_text.y= draft_icon.y
-			draft_button.height=draft_icon_text.contentHeight+10
-
+		
 			    function ImageClose(event)
 
 						filename.text = ""
@@ -285,24 +306,7 @@ local function get_audiomodel1(response)
 
 						os.remove( Audiopath )
 
-						schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-						schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-						schedule_icon_text.y= schedule_icon.y
-
-						schedule_button.height=schedule_icon_text.contentHeight+10
-
-						send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-						send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-						send_icon_text.y= send_icon.y
-
-						send_button.height=send_icon_text.contentHeight+10
-
-						draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-						draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-						draft_icon_text.y= draft_icon.y
-
-						draft_button.height=draft_icon_text.contentHeight+10
-
+					
 				end
 
         filename_close:addEventListener("touch",ImageClose)
@@ -585,101 +589,98 @@ end
     	 		shortmsg_textbox.isVisible = false
 
 
-				function onTimePickerTouch(event)
+					function onTimePickerTouch(event)
 
-					    	local function getValue(time)
+						    	local function getValue(time)
 
-								Time.text = time
+									Time.text = time
 
-							end
-
-
-					    	local function getDateValue(time)
-
-								Date.text = time
-
-							end
+								end
 
 
-						if event.target.id == "time" then
+						    	local function getDateValue(time)
 
-							timePicker.getTimeValue(getValue)
+									Date.text = time
 
-						elseif event.target.id == "date" then
-
-							datePicker.getTimeValue(getDateValue)
-
-						end  
-
-			    end
+								end
 
 
+								if event.target.id == "time" then
 
-    function onScheduleButtonTouch( event )
+									timePicker.getTimeValue(getValue)
 
-			if event.phase == "began" then
+								elseif event.target.id == "date" then
 
+									datePicker.getTimeValue(getDateValue)
 
-			elseif event.phase == "ended" then
+								end  
 
-				native.setKeyboardFocus(nil)
-
-				if event.target.id == "set-time" then
-
-					print("accept icon pressed")
-
-						if Date.text ~= "Date" and Time.text ~= "Time" then
-
-						IsScheduled = tostring(true)
+				    end
 
 
-					    if (shortmsg_textbox.text ~= "") and (Imagepath == nil or Imagepath == null or Imagepath == "" or Imagepath == " ") and (Audiopath == nil or Audiopath == null or Audiopath == "" or Audiopath == " ") then
+
+    			function onScheduleButtonTouch( event )
+
+					if event.phase == "began" then
+
+
+					elseif event.phase == "ended" then
+
+						native.setKeyboardFocus(nil)
+
+							if event.target.id == "set-time" then
+
+								if Date.text ~= "Date" and Time.text ~= "Time" then
+
+									IsScheduled = tostring(true)
+
+
+					 				    if (shortmsg_textbox.text ~= "") and (Imagepath == nil or Imagepath == null or Imagepath == "" or Imagepath == " ") and (Audiopath == nil or Audiopath == null or Audiopath == "" or Audiopath == " ") then
 			                
-			                 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
+			              				   Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"","","","","","","",method,"","","",get_messagemodel)
 
-					    end
-
-
-			        	if (shortmsg_textbox.text ~= "") and (Imagepath ~= nil and Imagepath ~= null and Imagepath ~= "" and Imagepath ~= " ") then
-
-			        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
-
-			            end
+					 				    end
 
 
+			        					if (shortmsg_textbox.text ~= "") and (Imagepath ~= nil and Imagepath ~= null and Imagepath ~= "" and Imagepath ~= " ") then
+
+			        	 					  Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
+
+			          					 end
 
 
-			            if (shortmsg_textbox.text ~= "") and (Audiopath ~= nil and Audiopath ~= null and Audiopath ~= "" and Audiopath ~= " ") then
-
-			            	print("audio path send value")
-
-			            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
-
-			            end
 
 
-						ScheduledMessageGroup.isVisible = false
+			           					if (shortmsg_textbox.text ~= "") and (Audiopath ~= nil and Audiopath ~= null and Audiopath ~= "" and Audiopath ~= " ") then
 
-									local function onTimer(event)
 
-									longmsg_textbox.isVisible = true
-			    	                shortmsg_textbox.isVisible = true
+			            					 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
-			    	                end
+			           					end
 
-    	                timer.performWithDelay(500,onTimer)
 
-						end
+										ScheduledMessageGroup.isVisible = false
 
-				elseif event.target.id == "closealert" then
+										local function onTimer(event)
 
-			 			print("close alert")
+										longmsg_textbox.isVisible = true
+				    	                shortmsg_textbox.isVisible = true
 
-			 			if datePicker then datePicker.clear() end
+				    	                end
 
-						if timePicker then timePicker.clear() end
+    	               					 timer.performWithDelay(500,onTimer)
 
-						ScheduledMessageGroup.isVisible = false
+								end
+
+							elseif event.target.id == "closealert" then
+
+			 					print("close alert")
+
+			 					if datePicker then datePicker.clear() end
+
+								if timePicker then timePicker.clear() end
+
+								ScheduledMessageGroup.isVisible = false
 
 					     		    local function onTimer(event)
 
@@ -688,7 +689,7 @@ end
 
 			    	                end
 
-    	                timer.performWithDelay(500,onTimer)
+    	                			timer.performWithDelay(500,onTimer)
 				end
 
 		    end
@@ -709,8 +710,7 @@ end
         else
 
 
-
-		    if (shortmsg_textbox.text ~= "") and (Imagepath == nil or Imagepath == null or Imagepath == "" or Imagepath == " ") and (Audiopath == nil or Audiopath == null or Audiopath == "" or Audiopath == " ") then
+		    if (shortmsg_textbox.text ~= "") and (filename.text == "" or filename.text == nil)  and (Audiopath == nil or Audiopath == null or Audiopath == "" or Audiopath == " ") then
                 
                  Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","","","","",method,"","","",get_messagemodel)
 
@@ -718,11 +718,51 @@ end
 
 
 
-        	if (shortmsg_textbox.text ~= "") and (Imagepath ~= nil and Imagepath ~= null and Imagepath ~= "" and Imagepath ~= " ") then
+        	if (shortmsg_textbox.text ~= "") and (filename.text ~= "" or filename.text ~= nil) then
 
-        		print("image path send value")
+        		print("sending with image")
 
-        	   Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
+		        	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+					
+					ImagePath= filename.text or ""
+					AudioPath="NULL"
+					VideoPath="NULL"
+					MyUnitBuzz_LongMessage=longMessage
+
+
+					local path = system.pathForFile( filename.text, system.DocumentsDirectory)
+
+						        local size = lfs.attributes (path, "size")
+
+								local fileHandle = io.open(path, "rb")
+
+								local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+								formatSizeUnits(size)
+
+
+						local ConversionFirstName,ConversionLastName,GroupName
+						local DocumentUpload = {}
+
+							ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+						
+									  DocumentUpload = {
+									  		UserId = UserId,
+									        File = file_inbytearray,
+									        FileName = filename.text,
+									        FileType = "Images"
+									    }
+
+							
+						MessageFileType="Images"
+
+
+					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,"","","","",ImagePath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
+
+
+
+        	   --Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
             end
 
@@ -1231,6 +1271,10 @@ local function attachAction( event )
 
 	elseif event.phase == "ended" then
 
+			shortmsg_textbox.isVisible=true
+				
+				AttachmentGroup.alpha=0	
+
 		if event.target.id =="camera" then
 
 				if media.hasSource( media.Camera ) then
@@ -1539,22 +1583,7 @@ local function composeAudioUpdate(audiovalue)
 											  filename.text = audioname
 
 
-											  	schedule_button.y = filename.y + filename.contentHeight +15
-												schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-												schedule_icon_text.y= schedule_icon.y
-												schedule_button.height=schedule_icon_text.contentHeight+10
-
-												send_button.y = filename.y + filename.contentHeight +15
-												send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-												send_icon_text.y= send_icon.y
-												send_button.height=send_icon_text.contentHeight+10
-
-												draft_button.y = filename.y + filename.contentHeight +15
-												draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-												draft_icon_text.y= draft_icon.y
-												draft_button.height=draft_icon_text.contentHeight+10
-
-											--  composeAudioUpdate(filenameval)
+												--  composeAudioUpdate(filenameval)
 
 
 										else
@@ -1577,24 +1606,7 @@ local function composeAudioUpdate(audiovalue)
 
 													os.remove( path )
 
-													schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-													schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-													schedule_icon_text.y= schedule_icon.y
-
-													schedule_button.height=schedule_icon_text.contentHeight+10
-
-													send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-													send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-													send_icon_text.y= send_icon.y
-
-													send_button.height=send_icon_text.contentHeight+10
-
-													draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-													draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-													draft_icon_text.y= draft_icon.y
-
-													draft_button.height=draft_icon_text.contentHeight+10
-
+													
 										end
 
 
@@ -1855,8 +1867,6 @@ end
 		
 		if phase == "will" then
 
-			print("show called")
-
 				if event.params and openPagevalue == "addPage" then
 
 					status=event.params.page
@@ -1878,21 +1888,21 @@ end
 
 
 
-			scrollView = widget.newScrollView
-			{
-			top = RecentTab_Topvalue,
-			left = 0,
-			width = W,
-			height =H-RecentTab_Topvalue,
-			hideBackground = true,
-			isBounceEnabled=false,
-			horizontalScrollDisabled = true,
-			bottomPadding = 60,
-			friction = .4,
-   			listener = composemsg_scrollListener,
-		    }
+			-- scrollView = widget.newScrollView
+			-- {
+			-- top = RecentTab_Topvalue,
+			-- left = 0,
+			-- width = W,
+			-- height =H-RecentTab_Topvalue,
+			-- hideBackground = true,
+			-- isBounceEnabled=false,
+			-- horizontalScrollDisabled = true,
+			-- bottomPadding = 60,
+			-- friction = .4,
+   -- 			listener = composemsg_scrollListener,
+		 --    }
 
-		    sceneGroup:insert( scrollView )
+		 --    sceneGroup:insert( scrollView )
 
 
 ---------------------------------------------- Short Message ----------------------------------------------------------
@@ -1901,17 +1911,17 @@ end
 				shortmsg_star.anchorX = 0
 				shortmsg_star.anchorY = 0
 				shortmsg_star.x=10
-				shortmsg_star.y = tabBar.y+tabBar.contentHeight-60
+				shortmsg_star.y = tabBar.y+tabBar.contentHeight+15
 				shortmsg_star:setFillColor(1,0,0)
-				scrollView:insert(shortmsg_star)
+				composePage:insert(shortmsg_star)
 				
-				shortmsg_title = display.newText(sceneGroup,MessagePage.ShortMessage,0,0,native.systemFont,14)
+				shortmsg_title = display.newText(MessagePage.ShortMessage,0,0,native.systemFont,14)
 				shortmsg_title.anchorX = 0
 				shortmsg_title.x=shortmsg_star.x + 7
 				shortmsg_title.anchorY=0
 				shortmsg_title.y = shortmsg_star.y
 				shortmsg_title:setFillColor(0)
-				scrollView:insert(shortmsg_title)
+				composePage:insert(shortmsg_title)
 
 
 				shortmsg_textbox = native.newTextBox( 10,shortmsg_title.y+ shortmsg_title.height+7, W - 20, EditBoxStyle.height+25)
@@ -1929,7 +1939,7 @@ end
 				shortmsg_textbox:setReturnKey( "next" )
 				shortmsg_textbox.inputType = "default"
 				--sceneGroup:insert(shortmsg_textbox)
-				scrollView:insert(shortmsg_textbox)
+				composePage:insert(shortmsg_textbox)
 				--shortmsg_textbox.x=10
 				--shortmsg_textbox.y=shortmsg_title.y+ shortmsg_title.height+7
 
@@ -1940,7 +1950,7 @@ end
 				short_msg_charlimit.anchorY = 0
 				short_msg_charlimit.y = shortmsg_textbox.y+shortmsg_textbox.contentHeight+2
 				short_msg_charlimit:setFillColor(0)
-				scrollView:insert(short_msg_charlimit)
+				composePage:insert(short_msg_charlimit)
 
 ---------------------------------------------- Long Message ----------------------------------------------------------
 
@@ -1950,7 +1960,7 @@ end
 				longmsg_star.anchorY=0
 				longmsg_star.y = short_msg_charlimit.y+short_msg_charlimit.contentHeight
 				longmsg_star:setFillColor(1,0,0)
-				scrollView:insert(longmsg_star)
+				composePage:insert(longmsg_star)
 
 
 				longmsg_title = display.newText(MessagePage.LongMessage,0,0,native.systemFont,14)
@@ -1959,7 +1969,7 @@ end
 				longmsg_title.anchorY = 0
 				longmsg_title.y = longmsg_star.y 
 				longmsg_title:setFillColor(0)
-				scrollView:insert(longmsg_title)
+				composePage:insert(longmsg_title)
 
 
 				-- longmsg_textbox = native.newTextBox( 10,longmsg_title.y+ longmsg_title.height+7, W - 20, EditBoxStyle.height+40)
@@ -2010,7 +2020,7 @@ end
 							 longmsg_textbox:addEventListener( "urlRequest", webListener )
 
 
-							 scrollView:insert( longmsg_textbox)
+							 composePage:insert( longmsg_textbox)
 
 
 
@@ -2031,7 +2041,7 @@ end
 				long_msg_charlimit.y = longmsg_textbox.y+longmsg_textbox.contentHeight+5
 				long_msg_charlimit:setFillColor(0)
 				long_msg_charlimit.isVisible=false
-				scrollView:insert(long_msg_charlimit)
+				composePage:insert(long_msg_charlimit)
 
 
 				-- if sceneevent.params then
@@ -2070,7 +2080,11 @@ end
 		AttachmentGroup.y=AttachmentGroup.y+68
 		AttachmentGroup.anchorChildren = true
 
-		sceneGroup:insert( AttachmentGroup )
+		composePage:insert( AttachmentGroup )
+
+		sceneGroup:insert( composePage )
+
+	
 
 ---------------------------------------- File name and its title ------------------------------------------
 
@@ -2080,9 +2094,9 @@ end
 				filename_title.anchorY = 0
 				filename_title.x = 10
 				filename_title.isVisible = false
-				filename_title.y = icons_holder_bg.y+icons_holder_bg.contentHeight+15
+				filename_title.y = tabBar.y+tabBar.contentHeight+15
 				filename_title:setFillColor(0)
-				scrollView:insert(filename_title)
+				sceneGroup:insert(filename_title)
 
 
 				filename = display.newText(MessagePage.Audio,0,0,native.systemFont,14)
@@ -2090,9 +2104,9 @@ end
 				filename.anchorY = 0
 				filename.isVisible = false
 				filename.x = filename_title.x 
-				filename.y = filename_title.y+filename_title.contentHeight+10
+				filename.y = filename_title.y+filename_title.contentHeight+5
 				filename:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-				scrollView:insert(filename)
+				sceneGroup:insert(filename)
 
 
 				filename_close = display.newImageRect("res/assert/icon-close.png",20,20)
@@ -2101,156 +2115,8 @@ end
 				filename_close.isVisible = false
 				filename_close.x = W - 35
 				filename_close.y = filename_title.y+filename_title.contentHeight+8
-				scrollView:insert(filename_close)
+				sceneGroup:insert(filename_close)
 
-
------------------------------------------- Schedule Button -----------------------------------------------
-
-			    schedule_button = display.newRect(0,0,W-50,26)
-				schedule_button.x = W/2 - W/3 - 45
-				--schedule_button.y = filename.y + filename.contentHeight +15
-				schedule_button.y = longmsg_textbox.y+longmsg_textbox.contentHeight+30
-				--schedule_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
-				schedule_button.width = W - 210
-				schedule_button.anchorX = 0
-				schedule_button.anchorY=0
-				schedule_button:setFillColor( 0,0.5,0.8 )
-				schedule_button.id="schedule"
-				scrollView:insert(schedule_button)
-
-
-				schedule_icon = display.newImageRect("res/assert/schedule.png",16,14)
-				schedule_icon.id = "schedule icon"
-				scrollView:insert(schedule_icon)
-				schedule_icon.anchorY=0
-				schedule_icon.anchorX=0
-				schedule_icon.x= schedule_button.x + 6
-				schedule_icon.y=schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-
-
-				schedule_icon_text = display.newText(MessagePage.ScheduleText,0,0,schedule_button.contentWidth-12,0,native.systemFont,14)
-				schedule_icon_text.anchorX=0
-				schedule_icon_text.id = "schedule_icon_text"
-				schedule_icon_text.anchorY=0
-				schedule_icon_text.x=schedule_icon.x+schedule_icon.contentWidth+ 5
-				schedule_icon_text.y=schedule_icon.y
-				Utils.CssforTextView(schedule_icon_text,sp_primarybutton)
-				scrollView:insert(schedule_icon_text)
-
-			    schedule_button.height=schedule_icon_text.contentHeight+10
-
-
-
---------------------------------------------- Send Button ---------------------------------------------------------
-
-			    send_button = display.newRect(0,0,W-50,26)
-				send_button.x = W/2 - 35
-				--send_button.y = filename.y + filename.contentHeight +15
-				send_button.y =  longmsg_textbox.y+longmsg_textbox.contentHeight+30
-				--send_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
-				send_button.width = W - 235
-				send_button.anchorX = 0
-				send_button.anchorY=0
-				send_button:setFillColor(Utils.convertHexToRGB(color.darkgreen))
-				send_button.id="send"
-				scrollView:insert(send_button)
-
-				send_icon = display.newImageRect("res/assert/sendmsg.png",16,14)
-				send_icon.id = "send icon"
-				send_icon.anchorY=0
-				send_icon.anchorX=0
-				send_icon.x= send_button.x + 6
-				send_icon.y=send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-				scrollView:insert(send_icon)
-
-				send_icon_text = display.newText(MessagePage.Send,0,0,send_button.contentWidth-12,0,native.systemFont,14)
-				send_icon_text.anchorX=0
-				send_icon_text.anchorY=0
-				send_icon_text.id = "send_icon_text"
-				send_icon_text.x=send_icon.x+send_icon.contentWidth+ 5
-				send_icon_text.y=send_icon.y
-				Utils.CssforTextView(send_icon_text,sp_primarybutton)
-				scrollView:insert(send_icon_text)
-
-			    send_button.height=send_icon_text.contentHeight+10
-
-
-
---------------------------------------------- Draft Button ---------------------------------------------------------
-
-			    draft_button = display.newRect(0,0,W-50,26)
-				draft_button.x = W/2 + W/3 - 50
-				--draft_button.y = filename.y + filename.contentHeight +15
-				draft_button.y =  longmsg_textbox.y+longmsg_textbox.contentHeight+30
-				--draft_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
-				draft_button.width = W - 225
-				draft_button.anchorX = 0
-				draft_button.anchorY=0
-				draft_button:setFillColor( 0,0,0,0.7 )
-				draft_button.id="draft"
-				scrollView:insert(draft_button)
-
-
-				draft_icon = display.newImageRect("res/assert/drafticon.png",16,14)
-				draft_icon.id = "draft icon"
-				scrollView:insert(draft_icon)
-				draft_icon.anchorY=0
-				draft_icon.anchorX=0
-				draft_icon.x= draft_button.x + 6
-				draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-
-				draft_icon_text = display.newText(MessagePage.DraftText,0,0,send_button.contentWidth-12,0,native.systemFont,14)
-				draft_icon_text.anchorX=0
-				draft_icon_text.anchorY=0
-				draft_icon_text.id = "draft_icon_text"
-				draft_icon_text.x=draft_icon.x+draft_icon.contentWidth+ 5
-				draft_icon_text.y=draft_icon.y
-				Utils.CssforTextView(draft_icon_text,sp_primarybutton)
-				scrollView:insert(draft_icon_text)
-
-			    draft_button.height=draft_icon_text.contentHeight+10
-
-
-
-
-				--  if filenameval ~= nil then
-
-				--  	targetaction = "audio"
-
-
-				-- --       filename_title.isVisible = true
-
-				-- --       filename.isVisible = true
-
-				-- -- 	  filename_close.isVisible = true
-
-
-				-- -- 	  filename_title.text = "Audio Name"
-
-				-- -- 	  filename.text = filenameval
-
-
-				-- -- 	  	schedule_button.y = filename.y + filename.contentHeight +15
-				-- -- 		schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-				-- -- 		schedule_icon_text.y= schedule_icon.y
-				-- -- 		schedule_button.height=schedule_icon_text.contentHeight+10
-
-				-- -- 		send_button.y = filename.y + filename.contentHeight +15
-				-- -- 		send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-				-- -- 		send_icon_text.y= send_icon.y
-				-- -- 		send_button.height=send_icon_text.contentHeight+10
-
-				-- -- 		draft_button.y = filename.y + filename.contentHeight +15
-				-- -- 		draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-				-- -- 		draft_icon_text.y= draft_icon.y
-				-- -- 		draft_button.height=draft_icon_text.contentHeight+10
-
-				--  	  composeAudioUpdate(filenameval)
-
-
-				--  else
-
-				 --end
 
 
 
@@ -2269,12 +2135,7 @@ end
 			--longmsg_textbox:addEventListener( "urlRequest", webListener )
 			Background:addEventListener("touch",FocusComplete)
 
-			
-
-			send_button:addEventListener("touch",onSendButtonTouchAction)
-			draft_button:addEventListener("touch",onSendButtonTouchAction)
-			schedule_button:addEventListener("touch",onSendButtonTouchAction)
-
+	
 			Runtime:addEventListener( "key", onKeyEventDetail )
 			
 		end	
@@ -2339,13 +2200,7 @@ end
 				--longmsg_textbox:removeEventListener( "urlRequest", webListener )
 				Background:removeEventListener("touch",FocusComplete)
 
-				send_button:removeEventListener("touch",onSendButtonTouchAction)
-
-				draft_button:removeEventListener("touch",onSendButtonTouchAction)
-
-				schedule_button:removeEventListener("touch",onSendButtonTouchAction)
-
-
+			
 				Runtime:removeEventListener( "key", onKeyEventDetail )
 
 			end	
