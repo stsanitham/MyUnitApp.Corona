@@ -120,8 +120,6 @@ end
 
 
 
-
-
 -- function scene:resumeCall(value)
 
 -- 	print( "*********test*********" )
@@ -1383,8 +1381,6 @@ local function onIconsTouch( event )
 							}
 
 							}
-
-
 
 			--if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
 			--if shortmsg_textbox then shortmsg_textbox:removeSelf( );shortmsg_textbox=nil end
