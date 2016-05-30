@@ -502,12 +502,7 @@ local function TabbarTouch( event )
 
 				current_textField = event.target;	
 
-			if (current_textField.id == "groupSubject") then
-
-			   native.setKeyboardFocus(current_textField)
-
-			end
-
+	
 				current_textField.size=14
 
 				if "*" == event.target.text:sub(1,1) then
@@ -537,7 +532,6 @@ local function TabbarTouch( event )
 
 						groupSubjectname = event.target.text
 
-						print("group subject name ############################ : ",groupSubjectname)
 				end
 		 end
     end

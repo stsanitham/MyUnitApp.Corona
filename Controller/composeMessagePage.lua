@@ -123,38 +123,47 @@ return true
 
 end
 
-local function uploadImage(  )
-	filename_title.isVisible = true
+	local function attachClose(event)
 
-			filename.isVisible = true
 
-			filename_close.isVisible = true
+		if event.valuestring == "image" then
 
-			filename.text = photoname
+			filename.text = ""
 
-			composePage.y = composePage.y+45
+			filename.isVisible = false
 
-					function ImageClose(event)
+			filename_title.isVisible = false
 
-								filename.text = ""
+			filename_close.isVisible = false
 
-								filename.isVisible = false
+			os.remove( event.filepath )
 
-								filename_title.isVisible = false
+			composePage.y = composePage.y-45
 
-								filename_close.isVisible = false
 
-								Imagepath = ""
 
-								os.remove( Imagepath )
 
-								composePage.y = composePage.y-45
+		elseif event.valuestring == "audio" then
+
+			Audio_filename.text = ""
+
+			Audio_filename.isVisible = false
+
+			Audio_filename_title.isVisible = false
+
+			Audio_filename_close.isVisible = false
+
+			os.remove( event.filepath )
+
+			composePage.y = composePage.y-45
 					
-						end
+		end	
+	end
 
-        filename_close:addEventListener("touch",ImageClose)
 
 
+local function uploadAudio( )
+	-- body
 end
 
 local function selectionComplete ( event )
@@ -219,7 +228,7 @@ local function selectionComplete ( event )
         photo = nil
 
 
-        path = system.pathForFile( photoname, baseDir)
+        local path = system.pathForFile( photoname, baseDir)
 
         local size1 = lfs.attributes (path, "size")
 
@@ -237,7 +246,24 @@ local function selectionComplete ( event )
 
 	
 
-		uploadImage()
+			filename_title.isVisible = true
+
+			filename.isVisible = true
+
+			filename_close.isVisible = true
+
+			filename_close.filepath = path
+
+			filename.text = photoname
+
+			-- if Audio_filename.isVisible == true then
+			-- 	filename_title.y=
+			-- 	filename
+			-- 	filename_close
+
+			-- end
+
+			composePage.y = composePage.y+45
 
 
      end
@@ -292,7 +318,7 @@ local function get_audiomodel1(response)
 			filename.text = Audioname
 
 		
-			    function ImageClose(event)
+			    local function ImageClose(event)
 
 						filename.text = ""
 
@@ -710,15 +736,18 @@ end
         else
 
 
-		    if (shortmsg_textbox.text ~= "") and (filename.text == "" or filename.text == nil)  and (Audiopath == nil or Audiopath == null or Audiopath == "" or Audiopath == " ") then
+		    if (shortmsg_textbox.text ~= "") and (filename.text == "" and filename.isVisible == false )  and (Audio_filename.text == "" and Audio_filename.isVisible == false) then
                 
-                 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","","","","",method,"","","",get_messagemodel)
+                -- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","","","","",method,"","","",get_messagemodel)
+
+                Webservice.SEND_MESSAGE("","","","","",shortmsg_textbox.text,longMessage,"","","","","","","","","","",method,"","","",get_messagemodel)
+
 
 		    end
 
 
 
-        	if (shortmsg_textbox.text ~= "") and (filename.text ~= "" or filename.text ~= nil) then
+        	if (shortmsg_textbox.text ~= "") and (filename.text ~= "" and filename.isVisible == true ) then
 
         		print("sending with image")
 
@@ -732,13 +761,13 @@ end
 
 					local path = system.pathForFile( filename.text, system.DocumentsDirectory)
 
-						        local size = lfs.attributes (path, "size")
+						        local Imagesize = lfs.attributes (path, "size")
 
 								local fileHandle = io.open(path, "rb")
 
 								local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
 
-								formatSizeUnits(size)
+								formatSizeUnits(Imagesize)
 
 
 						local ConversionFirstName,ConversionLastName,GroupName
@@ -758,7 +787,7 @@ end
 						MessageFileType="Images"
 
 
-					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,"","","","",ImagePath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
+					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,"","","","",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
 
 
 
@@ -769,11 +798,52 @@ end
 
 
 
-            if (shortmsg_textbox.text ~= "") and (Audiopath ~= nil and Audiopath ~= null and Audiopath ~= "" and Audiopath ~= " ") then
+            if (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) then
 
             	print("audio path send value")
 
-            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
+
+            	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+				
+			
+				ImagePath= ""
+				AudioPath=Audio_filename.text or ""
+				VideoPath="NULL"
+				MyUnitBuzz_LongMessage=longMessage
+
+
+							local path = system.pathForFile( Audio_filename.text, system.DocumentsDirectory)
+
+						    local Audiosize = lfs.attributes (path, "size")
+
+							local fileHandle = io.open(path, "rb")
+
+							local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+							formatSizeUnits(Audiosize)
+			
+				local ConversionFirstName,ConversionLastName,GroupName
+				local DocumentUpload = {}
+
+
+				
+					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+				
+							  DocumentUpload = {
+							  	UserId = UserId,
+							        File = file_inbytearray,
+							        FileName = Audio_filename.text,
+							        FileType = "Audios"
+							    }
+
+			
+				MessageFileType="Audios"
+
+
+				Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,"","","","",filename.text,filename.text,Imagesize,"","","",method,"","","",get_audiomodel)
+
+            	-- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
             end
 
@@ -1236,6 +1306,9 @@ function scene:updateRecordedAudio( dataFileName,audiopagename )
 
 	       audiopagename = "audiopage"
 
+	       --audio work
+
+
 
 		   local filePath = system.pathForFile( dataFileName1, system.DocumentsDirectory )
 		            -- Play back the recording
@@ -1258,7 +1331,26 @@ function scene:updateRecordedAudio( dataFileName,audiopagename )
 							formatSizeUnits(size2)
 
 
-		Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName1,"Audios",get_audiomodel1)
+			Audio_filename_title.isVisible = true
+
+			Audio_filename.isVisible = true
+
+			Audio_filename_close.isVisible = true
+
+			Audio_filename_close.filepath = filePath
+
+			Audio_filename.text = dataFileName1
+
+			-- if Audio_filename.isVisible == true then
+			-- 	filename_title.y=
+			-- 	filename
+			-- 	filename_close
+
+			-- end
+
+			composePage.y = composePage.y+45
+
+	--	Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName1,"Audios",get_audiomodel1)
 	
 end
 
@@ -1369,6 +1461,31 @@ local function webListener( event )
 
         print( "updatedresponse : "..longMessage:len() )
 
+        local method = ""
+ 			
+ 			if string.find( longMessage, "Send" ) then
+
+ 				method="SEND"
+
+ 				longMessage = string.gsub( longMessage, "Send", "" )
+
+ 			elseif string.find( longMessage, "Draft" ) then
+
+ 				method="DRAFT"
+
+ 				longMessage = string.gsub( longMessage, "Draft", "" )
+
+
+ 			elseif string.find( longMessage, "Schedule" ) then
+
+ 				method="SCHEDULE"
+
+ 				longMessage = string.gsub( longMessage, "Schedule", "" )
+
+
+
+ 			end
+
 
        if  shortmsg_textbox.text:len() < 1 then
 
@@ -1397,7 +1514,9 @@ local function webListener( event )
 
  			longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
 
- 			 sendMessage("SEND")
+
+
+ 			 sendMessage(method)
 
 
 
@@ -1519,107 +1638,6 @@ end
 
 	end
 
-
-
-
-
-
-local function composeAudioUpdate(audiovalue)
-
-	    local filePath = system.pathForFile( audiovalue, system.DocumentsDirectory )
-		            -- Play back the recording
-		            local file = io.open( filePath)
-		            
-		            if file then
-		                io.close( file )
-		            else
-		            	audiovalue="test.wav"
-			           	filePath = system.pathForFile( audiovalue, system.DocumentsDirectory )
-		            end
-
-				        local size2 = lfs.attributes (filePath, "size")
-
-						local fileHandle = io.open(filePath, "rb")
-
-						local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
-
-						formatSizeUnits(size2)
-
-
-					    print("path     : ",path)
-
-
-									function get_audiomodel( response )
-
-										    composer.removeHidden()
-
-											audiopath = response.Abspath
-
-											audioname = response.FileName
-
-											audiosize = size
-
-
-											Audiopath = audiopath
-											Audioname = audioname
-											Audiosize = audiosize
-
-
-											print(Audiopath.."       ".."\n"..Audioname.."      ".."\n".."        "..Audiosize)
-
-
-										if audioname ~= nil then
-
-
-										      filename_title.isVisible = true
-
-										      filename.isVisible = true
-
-											  filename_close.isVisible = true
-
-
-											  filename_title.text = "Audio Name"
-
-											  filename.text = audioname
-
-
-												--  composeAudioUpdate(filenameval)
-
-
-										else
-
-										end
-
-
-
-											function ImageClose(event)
-
-													filename.text = ""
-
-													filename.isVisible = false
-
-													filename_title.isVisible = false
-
-													filename_close.isVisible = false
-
-													Audiopath = ""
-
-													os.remove( path )
-
-													
-										end
-
-
-											filename_close:addEventListener("touch",ImageClose)
-
-
-									end
-
-
-
-					Webservice.DOCUMENT_UPLOAD(file_inbytearray,audiovalue,"Audios",get_audiomodel)
-
-end
 
 
 local function AttachmentTouch( event )
@@ -2099,7 +2117,7 @@ end
 				sceneGroup:insert(filename_title)
 
 
-				filename = display.newText(MessagePage.Audio,0,0,native.systemFont,14)
+				filename = display.newText("",0,0,native.systemFont,14)
 				filename.anchorX = 0
 				filename.anchorY = 0
 				filename.isVisible = false
@@ -2114,8 +2132,46 @@ end
 				filename_close.anchorY = 0
 				filename_close.isVisible = false
 				filename_close.x = W - 35
+				filename_close.valuestring = "image"
 				filename_close.y = filename_title.y+filename_title.contentHeight+8
 				sceneGroup:insert(filename_close)
+
+       			 filename_close:addEventListener("touch",attachClose)
+
+
+---------------------------------------- Audio name and its title ------------------------------------------
+
+
+				Audio_filename_title = display.newText("Audio Name",0,0,native.systemFont,14)
+				Audio_filename_title.anchorX = 0
+				Audio_filename_title.anchorY = 0
+				Audio_filename_title.x = 10
+				Audio_filename_title.isVisible = false
+				Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
+				Audio_filename_title:setFillColor(0)
+				sceneGroup:insert(Audio_filename_title)
+
+
+				Audio_filename = display.newText("",0,0,native.systemFont,14)
+				Audio_filename.anchorX = 0
+				Audio_filename.anchorY = 0
+				Audio_filename.isVisible = false
+				Audio_filename.x = Audio_filename_title.x 
+				Audio_filename.y = Audio_filename_title.y+Audio_filename_title.contentHeight+5
+				Audio_filename:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				sceneGroup:insert(Audio_filename)
+
+
+				Audio_filename_close = display.newImageRect("res/assert/icon-close.png",20,20)
+				Audio_filename_close.anchorX = 0
+				Audio_filename_close.anchorY = 0
+				Audio_filename_close.isVisible = false
+				Audio_filename_close.x = W - 35
+				Audio_filename_close.valuestring = "audio"
+				Audio_filename_close.y = Audio_filename_title.y+Audio_filename_title.contentHeight+8
+				sceneGroup:insert(Audio_filename_close)
+
+        		Audio_filename_close:addEventListener("touch",attachClose)
 
 
 
