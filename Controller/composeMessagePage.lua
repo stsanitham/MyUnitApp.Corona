@@ -166,6 +166,9 @@ local function uploadAudio( )
 	-- body
 end
 
+
+
+
 local function selectionComplete ( event )
  
         local photo = event.target
@@ -1413,8 +1416,6 @@ local function attachAction( event )
 							}
 
 							}
-
-
 
 			--if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
 			--if shortmsg_textbox then shortmsg_textbox:removeSelf( );shortmsg_textbox=nil end
