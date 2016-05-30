@@ -21,9 +21,7 @@ meggageeditor.htmlContent = [[
 
 <body>
 
-	<br>
-
-			<form id="sumbit" type="submit" align="center">
+			<form id="sumbit" type="submit" align="center" >
 
 
 			<textarea cols="80" id="UnitGoals" name="UnitGoals" rows="10">	
@@ -36,41 +34,48 @@ meggageeditor.htmlContent = [[
 
 	<script>
 
-	
-			
-	
-		CKEDITOR.replace( 'UnitGoals', {
-			fullPage: true,
-			extraPlugins: 'docprops',
-			allowedContent: true,
-			htmlEncodeOutput: false,
-		} );
+
+  CKEDITOR.replace( 'UnitGoals', {
+    toolbar: [
+    { name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ , 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
+    { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+
+    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+    { name: 'links', items: [ 'Link', 'Unlink' ] },
+    { name: 'insert', items: [ 'Image' ] },
+ 
+    { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+    { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+]
+});
 
 
 
-		function get_action() {
 
- 	
+		function get_action(form) {
 
 			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
 
-			var texttemp="corona:close"+ckvalue;
-			//window.location.href = window.location.href; 
+			var htmldata = CKEDITOR.instances.UnitGoals.document.getBody().getText()
 
-			
+			//alert(htmldata.length)
+			if(htmldata.length > 1 )
+
+			{
+
+				var texttemp="corona:close"+ckvalue;
+	 			window.location.href = texttemp; 
+
+			}
+			else
+			{
+
+				//sweetAlert("Please enter the long text");
+		
+			}
        		
 		}
-
-		var repeater;
-
-function doWork() {
-
- 		get_action()
- 		repeater = setTimeout(doWork, 1000);
- 		
-}
-
-doWork();
 
 
 
@@ -79,29 +84,39 @@ doWork();
 ]]
 
 
-meggageeditor.buttonHtml = [[<Button onclick=get_action(this) align="center" name="data" type="button" width="58" height="48" style="width=200px; height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 110px;"> Submit </Button>
+	meggageeditor.buttonHtml = [[
+	
+	
 
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
-<p><br></p>
+<div style="text-align:center;">
+  <Button onclick=get_action(this) align="left" name="data" type="button" width="58" height="48" style=" height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none;margin:10px 5px"> Schedule </Button>
+  <Button onclick=get_action(this) align="center" name="data" type="button" width="58" height="48" style=" height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 5px"> Send </Button>
+  <Button onclick=get_action(this) align="right" name="data" type="button" width="58" height="48" style=" height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 5px"> Draft </Button>
 
-]]
+</div>
+
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+	<p><br></p>
+
+	]]
+
 	meggageeditor.endHtml = [[.replace(/\+/g, '%20')));  
 
 
 	</script>
 
 
-
+	
 
 	<!-- <button id="submit" onclick="myFunction()">Submit</button> -->
 </body>

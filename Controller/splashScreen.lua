@@ -396,7 +396,7 @@ local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id I
 
 									alert = native.showAlert("MyUnitBuzz","Update the latest version from the Play Store" , { "Update"}, onComplete )
 
-								else
+								elseif isIos then
 
 
 									alert = native.showAlert("MyUnitBuzz","Update the latest version from the App Store" , { "Update"}, onComplete )
