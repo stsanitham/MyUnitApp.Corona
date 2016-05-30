@@ -220,8 +220,7 @@ local function audioAction( event )
 
 			end
 		end
-
-	end
+end
 
 return true
 

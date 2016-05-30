@@ -94,8 +94,6 @@ local pagingvalue = "listpage"
 
 		local function onTimer ( event )
 
-			print( "event time completion" )
-
 			BackFlag = false
 
 		end
@@ -261,7 +259,6 @@ local pagingvalue = "listpage"
 
 
 			for i=1,#draftmessagelist do
-		      print("here")
 
 		        NoSentMessage.isVisible = false
 		        NoScheduleMessage.isVisible = false
@@ -301,7 +298,6 @@ local pagingvalue = "listpage"
 				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 				
 
-                   print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
 
 					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
@@ -447,7 +443,6 @@ local pagingvalue = "listpage"
 						    time = 100,
 						}
 
-						print("************************************************************")
 
 			if IsOwner == true then
 
@@ -468,7 +463,6 @@ local pagingvalue = "listpage"
 
 
 			for i=1,#sentmessagelist do
-		        print("here")
 
 		        NoScheduleMessage.isVisible = false
 		        NoDraftMessage.isVisible = false
@@ -523,8 +517,6 @@ local pagingvalue = "listpage"
 				Utils.CssforTextView(Message_time,sp_labelName)
 				Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 				
-
-	                print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
 
 					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
@@ -725,8 +717,6 @@ local pagingvalue = "listpage"
 
 
 			for i=1,#messagelist do
-		      print("here")
-
 		        NoSentMessage.isVisible = false
 		        NoDraftMessage.isVisible = false
 
@@ -802,7 +792,6 @@ local pagingvalue = "listpage"
 			 --    end
 
 
-			    print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
 
 					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
@@ -1249,11 +1238,10 @@ local pagingvalue = "listpage"
 
 		local function resumeCallList(listview_values)
 
+
 	 		decodedvalue = json.decode(listview_values)
 
 	  			if decodedvalue.MessageStatus == "SCHEDULE" then
-
-	 				print("schedule coming 55555")
 
 						tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
 						tab_Sent_txt:setFillColor(0)
@@ -1321,8 +1309,6 @@ local pagingvalue = "listpage"
                 
 
 	 elseif  decodedvalue.MessageStatus == "SEND" then
-
-	 				print("sent coming 55555")
 
 
 				tab_Schedule_txt:setFillColor( 0 )
@@ -1393,8 +1379,6 @@ local pagingvalue = "listpage"
 			    
 
    elseif  decodedvalue.MessageStatus == "DRAFT" then
-
-					print("draft coming 5555")
 
 				tab_Schedule_txt:setFillColor( 0 )
 				tab_Sent_txt:setFillColor(0)
@@ -1479,12 +1463,10 @@ local pagingvalue = "listpage"
        
 		function scene:resumeGame(value,messagelistvalue)
 
-			print("!!!!!!!!!!!!!!!!!!!!!!!!!ertertet")
 
 
 			if value == "back" then
 
-            print( "^^^^^^^^^^^^^^^^^^^^^^" )
 
 	        Runtime:addEventListener( "key", onKeyEvent )
 
@@ -1592,14 +1574,10 @@ local pagingvalue = "listpage"
 				}
 
 
-				print("************************************************** : ", json.encode(Details))
-
 
 				composer.showOverlay( "Controller.composeMessagePage", options )
 
 		elseif value == "details" then
-
-			print( "@@@@@@@@@@@@@@@@@@@" )
 
 			local function waitTimer( event )
 
@@ -1773,8 +1751,6 @@ local function TabbarTouch( event )
 			
 			if event.target.id == "schedule" then
 
-				print("schedule clicked")
-
 				tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 				tab_Sent_txt:setFillColor(0)
 				tab_Draft_txt:setFillColor(0)
@@ -1843,8 +1819,6 @@ local function TabbarTouch( event )
 
 			elseif event.target.id == "sent" then
 
-				print("sent clicked")
-
 				tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 				tab_Draft_txt:setFillColor(0)
 				tab_Schedule_txt:setFillColor(0)
@@ -1912,8 +1886,6 @@ local function TabbarTouch( event )
 				Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
 				
 			elseif event.target.id == "draft" then
-
-				print("draft clicked")
 
 				tab_Draft_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 				tab_Sent_txt:setFillColor(0)

@@ -24,11 +24,9 @@ local ck_editor = require('Utils.messageCKeditor')
 
 local W = display.contentWidth;H= display.contentHeight
 
-local Background,BgText
-
-local menuBtn, test
-
-local back_icon_bg, back_icon
+local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title,scrollView,shortmsg_star,shortmsg_title,shortmsg_textbox,short_msg_charlimit,longmsg_star
+local longmsg_title,long_msg_charlimit,attachment_icon,icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt,filename_title,filename,filename_close,schedule_button
+local schedule_icon,schedule_icon_text,send_button,send_icon,send_icon_text,draft_button,draft_icon,draft_icon_text
 
 local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title,scrollView,shortmsg_star,shortmsg_title,shortmsg_textbox,short_msg_charlimit,longmsg_star,longmsg_title,
 long_msg_charlimit
@@ -70,6 +68,12 @@ local pHeight = display.pixelHeight
 
 fieldOffset = 0
 
+local AttachmentGroup = display.newGroup( )
+
+local attachment_icon,attachment_icon_bg
+
+local longmsg_textbox
+
 
 local deviceModel = system.getInfo( "model" )
 
@@ -87,7 +91,7 @@ local longMessage = ""
 
 local defalutValue="corona:open"
 
-fieldTrans = 200
+local fieldTrans = 200
 
 local UserId,MemberName
 
@@ -115,6 +119,7 @@ local function closeDetails( event )
 return true
 
 end
+
 
 
 
@@ -225,6 +230,8 @@ end
 
 
 
+=======
+>>>>>>> origin/MUB_V1.2.1
 local function selectionComplete ( event )
  
         local photo = event.target
@@ -873,9 +880,10 @@ end
 
     	elseif phase=="ended" then
 
-    	    local validation = false
+    		  defalutValue = "corona="
 
-    	    defalutValue = "corona:close"
+    	    local validation = false
+   	    
 
   	    	native.setKeyboardFocus(nil)
 
@@ -1329,7 +1337,7 @@ end
 
 
 
-local function onIconsTouch( event )
+local function attachAction( event )
 
 	if event.phase == "began" then
 
@@ -1405,11 +1413,19 @@ end
 local function webListener( event )
     local shouldLoad = true
 
+
+
     local url = event.url
 
-    if 1 == string.find( url, defalutValue ) then
+    	--print( "json : "..json.encode(event) )
+    
+    if 1 == string.find( url, "corona:close" ) then
+        -- Close the web popup
+        --print( "here" )
 
         shouldLoad = false
+
+        print(url)
 
 
         updatedresponse = urlDecode(url)
@@ -1420,8 +1436,40 @@ local function webListener( event )
         print( "updatedresponse : "..longMessage:len() )
 
 
-        defalutValue="corona:open"
+       if  shortmsg_textbox.text:len() < 1 then
 
+		local test= string.urlEncode(longMessage)
+
+				local path = system.pathForFile( "messageCKeditor.html",system.DocumentsDirectory )
+
+				local file, errorString = io.open( path, "w+" )
+
+				if not file then
+
+				    print( "File error: " .. errorString )
+
+				else
+
+					
+				     file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml..""..meggageeditor.buttonHtml )
+ 					longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
+ 					file:close()
+ 				end
+ 				file=nil
+
+ 				local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
+
+ 		else
+
+ 			longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
+
+ 			 sendMessage("SEND")
+
+
+
+ 		end
+
+  
     end
 
     if event.errorCode then
@@ -1672,6 +1720,173 @@ local function composeAudioUpdate(audiovalue)
 end
 
 
+local function AttachmentTouch( event )
+
+	if event.phase == "began" then
+
+	elseif event.phase == "ended" then
+		print( AttachmentGroup.alpha )
+
+		if attachment_icon.isVisible == true then
+
+			if AttachmentGroup.alpha <= 0.3 then
+				AttachmentGroup.yScale=0.1
+				AttachmentGroup.alpha = 1
+				shortmsg_textbox.isVisible=false
+
+				transition.from( AttachmentGroup, {time=300,alpha=1} )
+				transition.scaleTo( AttachmentGroup, {yScale=1.0, time=300 } )
+				
+			else
+				shortmsg_textbox.isVisible=true
+				
+				AttachmentGroup.alpha=0	
+				--transition.to( AttachmentGroup, {time=300,alpha=0,yScale=0.01} )
+
+			end
+
+		end
+
+	end
+
+return true
+end
+
+local function createAttachment( )
+	
+------------------------------------------- Icons Holder --------------------------------------------
+
+				icons_holder_bg = display.newRect(AttachmentGroup,0,0,W,EditBoxStyle.height+115)
+				icons_holder_bg.x=0
+				icons_holder_bg.anchorX=0
+				icons_holder_bg.anchorY=0
+				icons_holder_bg.strokeWidth = 1
+				icons_holder_bg:setStrokeColor( 0,0,0,0.1)
+				icons_holder_bg.y = tabBar.y+tabBar.height+10
+				icons_holder_bg:setFillColor( 1,1,1)
+
+				icons_holder_bg.height = icons_holder_bg.height/2
+
+-------------------------------------------- Camera ---------------------------------------------------
+
+				camera_icon = display.newImageRect(AttachmentGroup,"res/assert/camera1.png",40,35)
+				camera_icon.x=W/2 - W/3
+				camera_icon.anchorX=0
+				camera_icon.anchorY=0
+				camera_icon.y = icons_holder_bg.y + 7.5
+				camera_icon.id="camera"
+				camera_icon:addEventListener( "touch", attachAction )
+
+
+				camera_icon_txt = display.newText(AttachmentGroup,MessagePage.Camera,0,0,native.systemFont,14)
+				camera_icon_txt.anchorX = 0
+				camera_icon_txt.anchorY = 0
+				camera_icon_txt.x = camera_icon.x - 7
+				camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
+				camera_icon_txt:setFillColor(0)
+
+-- -------------------------------------------- Video ---------------------------------------------------
+
+-- 				video_icon = display.newImageRect(AttachmentGroup,"res/assert/video1.png",40,35)
+-- 				video_icon.x= W/2 - 12
+-- 				video_icon.anchorX=0
+-- 				video_icon.anchorY=0
+-- 				video_icon.y = camera_icon.y
+-- 				video_icon.id="video"
+-- 				video_icon:addEventListener( "touch", attachAction )
+
+
+-- 				video_icon_txt = display.newText(AttachmentGroup,MessagePage.Video,0,0,native.systemFont,14)
+-- 				video_icon_txt.anchorX = 0
+-- 				video_icon_txt.anchorY = 0
+-- 				video_icon_txt.x = video_icon.x 
+-- 				video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
+-- 				video_icon_txt:setFillColor(0)
+
+
+-------------------------------------------- Gallery ---------------------------------------------------
+
+                gallery_icon = display.newImageRect(AttachmentGroup,"res/assert/gallery1.png",40,35)
+				gallery_icon.x= W/2 - 12
+				gallery_icon.anchorX=0
+				gallery_icon.anchorY=0
+				gallery_icon.y = camera_icon.y 
+				gallery_icon.id="gallery"
+				gallery_icon:addEventListener( "touch", attachAction )
+
+
+				gallery_icon_txt = display.newText(AttachmentGroup,MessagePage.Gallery,0,0,native.systemFont,14)
+				gallery_icon_txt.anchorX = 0
+				gallery_icon_txt.anchorY = 0
+				gallery_icon_txt.x = gallery_icon.x - 5
+				gallery_icon_txt.y = gallery_icon.y+gallery_icon.contentHeight+5
+				gallery_icon_txt:setFillColor(0)
+
+
+-------------------------------------------- Audio ---------------------------------------------------
+
+
+
+
+                audio_icon = display.newImageRect(AttachmentGroup,"res/assert/audio1.png",40,35)
+				audio_icon.x= W/2 + W/3 - 30
+				audio_icon.anchorX=0
+				audio_icon.anchorY=0
+				audio_icon.y = gallery_icon.y
+				audio_icon.id="audio"
+				audio_icon:addEventListener( "touch", attachAction )
+
+
+				audio_icon_txt = display.newText(AttachmentGroup,MessagePage.Audio,0,0,native.systemFont,14)
+				audio_icon_txt.anchorX = 0
+				audio_icon_txt.anchorY = 0
+				audio_icon_txt.x = audio_icon.x 
+				audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
+				audio_icon_txt:setFillColor(0)
+
+
+
+
+-- -------------------------------------------- Location ---------------------------------------------------
+
+--                 Location_icon = display.newImageRect(AttachmentGroup,"res/assert/location1.png",40,35)
+-- 				Location_icon.x= W/2 - 12
+-- 				Location_icon.anchorX=0
+-- 				Location_icon.anchorY=0
+-- 				Location_icon.y = camera_icon.y
+-- 				Location_icon.id="location"
+-- 				Location_icon:addEventListener( "touch", attachAction )
+
+
+
+-- 				Location_icon_txt = display.newText(AttachmentGroup,MessagePage.Location,0,0,native.systemFont,14)
+-- 				Location_icon_txt.anchorX = 0
+-- 				Location_icon_txt.anchorY = 0
+-- 				Location_icon_txt.x = Location_icon.x - 10
+-- 				Location_icon_txt.y = Location_icon.y+Location_icon.contentHeight+5
+-- 				Location_icon_txt:setFillColor(0)
+
+
+-- -------------------------------------------- Contact ---------------------------------------------------
+
+--                 Contact_icon = display.newImageRect(AttachmentGroup,"res/assert/user1.png",40,35)
+-- 				Contact_icon.x= W/2 + W/3 - 30
+-- 				Contact_icon.anchorX=0
+-- 				Contact_icon.anchorY=0
+-- 				Contact_icon.y = Location_icon.y
+-- 				Contact_icon.id="contact"
+-- 				Contact_icon:addEventListener( "touch", attachAction )
+
+
+
+-- 				Contact_icon_txt = display.newText(AttachmentGroup,MessagePage.Contact,0,0,native.systemFont,14)
+-- 				Contact_icon_txt.anchorX = 0
+-- 				Contact_icon_txt.anchorY = 0
+-- 				Contact_icon_txt.x = Contact_icon.x - 7
+-- 				Contact_icon_txt.y = Contact_icon.y+Contact_icon.contentHeight+5
+-- 				Contact_icon_txt:setFillColor(0)
+end 
+
 
 
 ------------------------------------------------------
@@ -1724,6 +1939,19 @@ function scene:create( event )
 	title:setFillColor(0)
 
 
+	attachment_icon = display.newImageRect(sceneGroup,"res/assert/attached.png",20,20)
+	attachment_icon.x= W-40;attachment_icon.y = tabBar.y+35
+	attachment_icon.isVisible = true
+		
+
+	attachment_icon_bg = display.newRect( sceneGroup, W-40, tabBar.y+35, 60, 40 )
+	attachment_icon_bg.x=attachment_icon.x
+	attachment_icon_bg.y=attachment_icon.y
+	attachment_icon_bg:setFillColor( 0.3,0.2,0 )
+	attachment_icon_bg.alpha=0.01
+	attachment_icon_bg:addEventListener( "touch", AttachmentTouch )
+
+
 MainGroup:insert(sceneGroup)
 
 end
@@ -1741,8 +1969,8 @@ end
 
 				if event.params and openPagevalue == "addPage" then
 
-				status=event.params.page
-				Details = event.params.Details
+					status=event.params.page
+					Details = event.params.Details
 
 			    end
 
@@ -1755,8 +1983,6 @@ end
 			if sceneevent.params then
 
 				filenameval = event.params.filename
-
-			    print("********************** : ",filenameval)
 
 			end
 
@@ -1785,7 +2011,7 @@ end
 				shortmsg_star.anchorX = 0
 				shortmsg_star.anchorY = 0
 				shortmsg_star.x=10
-				shortmsg_star.y = tabBar.y+tabBar.contentHeight-45
+				shortmsg_star.y = tabBar.y+tabBar.contentHeight-60
 				shortmsg_star:setFillColor(1,0,0)
 				scrollView:insert(shortmsg_star)
 				
@@ -1832,7 +2058,7 @@ end
 				longmsg_star.anchorX = 0
 				longmsg_star.x=10
 				longmsg_star.anchorY=0
-				longmsg_star.y = short_msg_charlimit.y+short_msg_charlimit.contentHeight+5
+				longmsg_star.y = short_msg_charlimit.y+short_msg_charlimit.contentHeight
 				longmsg_star:setFillColor(1,0,0)
 				scrollView:insert(longmsg_star)
 
@@ -1879,18 +2105,21 @@ end
 
 				else
 
-				    file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml.."" )
+				     file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml..""..meggageeditor.buttonHtml )
 
-							 longmsg_textbox = native.newWebView(10,longmsg_title.y+longmsg_title.contentHeight+ 7, W - 15, 185)
+							 longmsg_textbox = native.newWebView(10,longmsg_title.y+longmsg_title.contentHeight, W - 12, 310)
 
 							 longmsg_textbox.hasBackground = false
 
 							 longmsg_textbox.isVisible = true
 
 							 longmsg_textbox.anchorX=0;longmsg_textbox.anchorY=0
+							 params="test"
 							 longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
 
 							 longmsg_textbox:addEventListener( "urlRequest", webListener )
+
+
 							 scrollView:insert( longmsg_textbox)
 
 
@@ -1911,6 +2140,7 @@ end
 				long_msg_charlimit.x=W-125
 				long_msg_charlimit.y = longmsg_textbox.y+longmsg_textbox.contentHeight+5
 				long_msg_charlimit:setFillColor(0)
+				long_msg_charlimit.isVisible=false
 				scrollView:insert(long_msg_charlimit)
 
 
@@ -1941,149 +2171,16 @@ end
 			 --    end
 
 
-
-------------------------------------------- attachment icon -----------------------------------------
-
-
-				attachment_icon = display.newImageRect("res/assert/attached.png",20,20)
-				attachment_icon.x= longmsg_textbox.width - 20
-				attachment_icon.anchorX=0
-				attachment_icon.anchorY=0
-				attachment_icon.isVisible = false
-				attachment_icon.y = long_msg_charlimit.y - 20
-				attachment_icon:toFront()
+--camera_icon:addEventListener("touch",attachAction)
 
 
-------------------------------------------- Icons Holder --------------------------------------------
+		createAttachment( )
+		AttachmentGroup.anchorX=0;AttachmentGroup.anchorY=0
+		AttachmentGroup.alpha=0
+		AttachmentGroup.y=AttachmentGroup.y+68
+		AttachmentGroup.anchorChildren = true
 
-				icons_holder_bg = display.newRect(0,0,W-20,EditBoxStyle.height+115)
-				icons_holder_bg.x=10
-				icons_holder_bg.anchorX=0
-				icons_holder_bg.anchorY=0
-				icons_holder_bg.strokeWidth = 1
-				icons_holder_bg:setStrokeColor( 0,0,0,0.1)
-				icons_holder_bg.y = long_msg_charlimit.y+long_msg_charlimit.height+10
-				icons_holder_bg:setFillColor( 1,1,1,0.8)
-				scrollView:insert(icons_holder_bg)
-
--------------------------------------------- Camera ---------------------------------------------------
-
-
-				camera_icon = display.newImageRect("res/assert/camera1.png",40,35)
-				camera_icon.x=W/2 - W/3 - 15
-				camera_icon.anchorX=0
-				camera_icon.id= "camera"
-				camera_icon.anchorY=0
-				camera_icon.y = icons_holder_bg.y + 7.5
-				camera_icon:addEventListener("touch",onIconsTouch)
-				scrollView:insert(camera_icon)
-
-
-				camera_icon_txt = display.newText(MessagePage.Camera,0,0,native.systemFont,14)
-				camera_icon_txt.anchorX = 0
-				camera_icon_txt.anchorY = 0
-				camera_icon_txt.x = camera_icon.x - 7
-				camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
-				camera_icon_txt:setFillColor(0)
-				scrollView:insert(camera_icon_txt)
-
--------------------------------------------- Video ---------------------------------------------------
-
-				video_icon = display.newImageRect("res/assert/video1.png",40,35)
-				video_icon.x= W/2 - 12
-				video_icon.anchorX=0
-				video_icon.anchorY=0
-				video_icon.y = camera_icon.y
-				scrollView:insert(video_icon)
-
-
-				video_icon_txt = display.newText(MessagePage.Video,0,0,native.systemFont,14)
-				video_icon_txt.anchorX = 0
-				video_icon_txt.anchorY = 0
-				video_icon_txt.x = video_icon.x 
-				video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
-				video_icon_txt:setFillColor(0)
-				scrollView:insert(video_icon_txt)
-
--------------------------------------------- Audio ---------------------------------------------------
-
-                audio_icon = display.newImageRect("res/assert/audio1.png",40,35)
-				audio_icon.x= W/2 + W/3 - 15
-				audio_icon.anchorX=0
-				audio_icon.id = "audio"
-				audio_icon.anchorY=0
-				audio_icon.y = video_icon.y
-				audio_icon:addEventListener("touch",onIconsTouch)
-				scrollView:insert(audio_icon)
-
-
-				audio_icon_txt = display.newText(MessagePage.Audio,0,0,native.systemFont,14)
-				audio_icon_txt.anchorX = 0
-				audio_icon_txt.anchorY = 0
-				audio_icon_txt.x = audio_icon.x 
-				audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
-				audio_icon_txt:setFillColor(0)
-				scrollView:insert(audio_icon_txt)
-
--------------------------------------------- Gallery ---------------------------------------------------
-
-
-                gallery_icon = display.newImageRect("res/assert/gallery1.png",40,35)
-				gallery_icon.x= W/2 - W/3 - 15
-				gallery_icon.anchorX=0
-				gallery_icon.anchorY=0
-				gallery_icon.id= "gallery"
-				gallery_icon.y = camera_icon.y + camera_icon.contentHeight + 35
-				gallery_icon:addEventListener("touch",onIconsTouch)
-				scrollView:insert(gallery_icon)
-
-
-				gallery_icon_txt = display.newText(MessagePage.Gallery,0,0,native.systemFont,14)
-				gallery_icon_txt.anchorX = 0
-				gallery_icon_txt.anchorY = 0
-				gallery_icon_txt.x = gallery_icon.x - 5
-				gallery_icon_txt.y = gallery_icon.y+gallery_icon.contentHeight+5
-				gallery_icon_txt:setFillColor(0)
-				scrollView:insert(gallery_icon_txt)
-
-
--------------------------------------------- Location ---------------------------------------------------
-
-                Location_icon = display.newImageRect("res/assert/location1.png",40,35)
-				Location_icon.x= W/2 - 12
-				Location_icon.anchorX=0
-				Location_icon.anchorY=0
-				Location_icon.y = gallery_icon.y
-				scrollView:insert(Location_icon)
-
-
-				Location_icon_txt = display.newText(MessagePage.Location,0,0,native.systemFont,14)
-				Location_icon_txt.anchorX = 0
-				Location_icon_txt.anchorY = 0
-				Location_icon_txt.x = Location_icon.x - 10
-				Location_icon_txt.y = Location_icon.y+Location_icon.contentHeight+5
-				Location_icon_txt:setFillColor(0)
-				scrollView:insert(Location_icon_txt)
-
-
--------------------------------------------- Contact ---------------------------------------------------
-
-                Contact_icon = display.newImageRect("res/assert/user1.png",40,35)
-				Contact_icon.x= W/2 + W/3 - 15
-				Contact_icon.anchorX=0
-				Contact_icon.anchorY=0
-				Contact_icon.y = Location_icon.y
-				scrollView:insert(Contact_icon)
-
-
-				Contact_icon_txt = display.newText(MessagePage.Contact,0,0,native.systemFont,14)
-				Contact_icon_txt.anchorX = 0
-				Contact_icon_txt.anchorY = 0
-				Contact_icon_txt.x = Contact_icon.x - 7
-				Contact_icon_txt.y = Contact_icon.y+Contact_icon.contentHeight+5
-				Contact_icon_txt:setFillColor(0)
-				scrollView:insert(Contact_icon_txt)
-
+		sceneGroup:insert( AttachmentGroup )
 
 ---------------------------------------- File name and its title ------------------------------------------
 
@@ -2122,7 +2219,7 @@ end
 			    schedule_button = display.newRect(0,0,W-50,26)
 				schedule_button.x = W/2 - W/3 - 45
 				--schedule_button.y = filename.y + filename.contentHeight +15
-				schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				schedule_button.y = longmsg_textbox.y+longmsg_textbox.contentHeight+30
 				--schedule_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				schedule_button.width = W - 210
 				schedule_button.anchorX = 0
@@ -2159,7 +2256,7 @@ end
 			    send_button = display.newRect(0,0,W-50,26)
 				send_button.x = W/2 - 35
 				--send_button.y = filename.y + filename.contentHeight +15
-				send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				send_button.y =  longmsg_textbox.y+longmsg_textbox.contentHeight+30
 				--send_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				send_button.width = W - 235
 				send_button.anchorX = 0
@@ -2194,7 +2291,7 @@ end
 			    draft_button = display.newRect(0,0,W-50,26)
 				draft_button.x = W/2 + W/3 - 50
 				--draft_button.y = filename.y + filename.contentHeight +15
-				draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+				draft_button.y =  longmsg_textbox.y+longmsg_textbox.contentHeight+30
 				--draft_button.y = long_msg_charlimit.y+long_msg_charlimit.height+18
 				draft_button.width = W - 225
 				draft_button.anchorX = 0
@@ -2285,16 +2382,8 @@ end
 			
 
 			send_button:addEventListener("touch",onSendButtonTouchAction)
-			send_icon:addEventListener("touch",onSendButtonTouchAction)
-			send_icon_text:addEventListener("touch",onSendButtonTouchAction)
-
 			draft_button:addEventListener("touch",onSendButtonTouchAction)
-			draft_icon:addEventListener("touch",onSendButtonTouchAction)
-			draft_icon_text:addEventListener("touch",onSendButtonTouchAction)
-
 			schedule_button:addEventListener("touch",onSendButtonTouchAction)
-			schedule_icon:addEventListener("touch",onSendButtonTouchAction)
-			schedule_icon_text:addEventListener("touch",onSendButtonTouchAction)
 
 			Runtime:addEventListener( "key", onKeyEventDetail )
 			
@@ -2361,16 +2450,10 @@ end
 				Background:removeEventListener("touch",FocusComplete)
 
 				send_button:removeEventListener("touch",onSendButtonTouchAction)
-				send_icon:removeEventListener("touch",onSendButtonTouchAction)
-				send_icon_text:removeEventListener("touch",onSendButtonTouchAction)
 
 				draft_button:removeEventListener("touch",onSendButtonTouchAction)
-				draft_icon:removeEventListener("touch",onSendButtonTouchAction)
-				draft_icon_text:removeEventListener("touch",onSendButtonTouchAction)
 
 				schedule_button:removeEventListener("touch",onSendButtonTouchAction)
-				schedule_icon:removeEventListener("touch",onSendButtonTouchAction)
-				schedule_icon_text:removeEventListener("touch",onSendButtonTouchAction)
 
 
 				Runtime:removeEventListener( "key", onKeyEventDetail )
