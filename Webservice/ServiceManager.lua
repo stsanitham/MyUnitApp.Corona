@@ -1956,7 +1956,7 @@ end
 
 
 
-function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,postExecution)
+function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,grouptypevalue,postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
@@ -1986,7 +1986,8 @@ function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,postE
 	  "UserId": "]]..UserId..[[",
 	  "MyUnitBuzzGroupName": "]]..groupname..[[",
 	  "Description": "]]..description..[[",
-	  "IsActive": "]]..tostring(stateinfo)..[["
+	  "IsActive": "]]..tostring(stateinfo)..[[",
+	  "MyUnitBuzzGroupType": "]]..grouptypevalue..[["
 	   } ]]
 
     params={headers = headers,body = resbody}
@@ -2002,7 +2003,8 @@ end
 
 
 
-function Webservice.GetChatMessageGroupList(postExecution)
+
+function Webservice.GetChatMessageGroupList(groupType,postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
@@ -2028,7 +2030,7 @@ function Webservice.GetChatMessageGroupList(postExecution)
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-    local resbody = "?userId="..UserId.."&contactId="..ContactId
+    local resbody = "?userId="..UserId.."&contactId="..ContactId.."&groupType="..groupType
 
 	params={headers = headers}
 
@@ -2038,6 +2040,10 @@ function Webservice.GetChatMessageGroupList(postExecution)
 	
 	return response
 end
+
+
+
+
 
 
 function Webservice.AddTeamMemberToChatGroup(groupid,contacts,postExecution)
@@ -2166,7 +2172,7 @@ function Webservice.DeleteMyUnitBuzzMessages(messageId,postExecution)
 	return response
 end
 
-function Webservice.GetMessageGroupTeamMemberList(groupid,postExecution)
+function Webservice.GetMessageGroupTeamMemberList(groupid,groupType,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -2197,7 +2203,7 @@ function Webservice.GetMessageGroupTeamMemberList(groupid,postExecution)
 
 
 
-	local resbody="?userId="..UserId.."&groupId="..groupid
+	local resbody="?userId="..UserId.."&groupId="..groupid.."&groupType="..groupType
 	params={headers = headers}
 
 	request.new(ApplicationConfig.GetMessageGroupTeamMemberList..resbody,method,params,postExecution)

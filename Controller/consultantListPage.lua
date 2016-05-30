@@ -22,7 +22,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
 
-local menuBtn,tabButtons,chattabBar
+local menuBtn,tabButtons,chattabBar,pagervalue
 
 openPage="MessagingPage"
 
@@ -84,6 +84,18 @@ local function consultantTounch( event )
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 
+
+					if pageid_value == "group" then
+
+						pagervalue = "group"
+
+					else
+						pagervalue = "broadcast"
+
+				    end
+
+
+
 				if addGroupid_value == "addGroup" then
 
 					--selectcontact_checkbox.isOn = true
@@ -91,10 +103,11 @@ local function consultantTounch( event )
 				else
 
  				    local options = {
-								effect = "flipFadeOutIn",
+						    effect = "flipFadeOutIn",
 							time = 200,	
 							params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
 							}
+
 
 				    composer.gotoScene( "Controller.chatPage", options )
 
@@ -355,8 +368,30 @@ local function TabbarTouch( event )
 		   if event.action == "clicked" then
 		        local i = event.index
 		        if i == 1 then  
+		        	
 
-		        	composer.gotoScene("Controller.groupPage","slideRight",300)
+					if grouptypevalue == "GROUP" then
+
+ 				        local options = {
+							effect = "slideRight",
+							time = 300,	
+							params = { pagevalue = grouptypevalue}
+							}
+
+		        		composer.gotoScene("Controller.groupPage",options)
+
+		            elseif grouptypevalue == "BROADCAST" then
+
+
+ 				        local options = {
+							effect = "slideRight",
+							time = 300,	
+							params = { pagevalue = grouptypevalue}
+							}
+
+		            	composer.gotoScene("Controller.broadCastPage",options)
+
+		        	end
 
 		        end
 
@@ -390,105 +425,46 @@ local function TabbarTouch( event )
 
 		GroupSubject.text = ""
 
+		groupSubjectname = ""
+
 		groupid_value = groupcreation_response.MyUnitBuzzGroupId
+
+		grouptypevalue = groupcreation_response.MyUnitBuzzGroupType
 
 
 		    function getAddedMembersInGroup(response)
 
 		    	if response == "Success" then
 
-		    		local alert = native.showAlert( ChatPage.GroupCreated ,ChatPage.GroupCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+		    		if grouptypevalue == "GROUP" then
+
+	    				local alert = native.showAlert( ChatPage.GroupCreated ,ChatPage.GroupCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+
+		    	    else
+
+		    	    	local alert = native.showAlert( "BroadCast List Created" ,"BroadCast List created successfully", { CommonWords.ok }, onGroupCreationComplete )
+
+		    	    end
 
 		    	end
 
 		    end
 
-		Webservice.AddTeamMemberToChatGroup(groupid_value,selected_Contact,getAddedMembersInGroup)
+					if grouptypevalue == "BROADCAST" then
+
+						 Webservice.AddTeamMemberToChatGroup(groupid_value,selected_Contact,getAddedMembersInGroup)
+
+					elseif grouptypevalue == "GROUP" then
+
+						 Webservice.AddTeamMemberToChatGroup(groupid_value,selected_Contact,getAddedMembersInGroup)
+
+				    end
 
 	 end 
 
 
 
-	local function createGroup(event)
 
-		if event.phase == "began" then
-			
-			native.setKeyboardFocus(nil)
-
-		elseif event.phase == "ended" then
-
-		      local validation = true
-
-              native.setKeyboardFocus(nil)
-
-
-			      if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == ChatDetails.GroupSubjectError or GroupSubject.text == GroupSubject.id then
-		            
-		             validation=false
-
-			     	 SetError(ChatDetails.GroupSubjectError,GroupSubject)
-
-			      else
-
-			      	 GroupSubject.text = groupSubjectname
-
-			      end
-
-
---------------------------------------------------------------------------------------
-
-			      if(validation == true) then
-
-				      	GroupSubject.text = groupSubjectname
-
-				      	for i=1,#selected_Contact do
-
-				      		selected_Contact[i]=nil
-
-				      	end
-
-				      	 
-				      	for i=1,#careerListArray do
-
-				      		local tempGroup = careerListArray[i]
-
-				      		
-
-				      		for j=1,tempGroup.numChildren do
-
-				      			if tempGroup[j].id == "email_Checkbox" then
-
-				      				print( "check box")
-
-					      			if tostring(tempGroup[j].isOn) == "true" then
-
-					      				selected_Contact[#selected_Contact+1] = tempGroup[j].value
-
-					      			end
-					      		end
-					      	end
-
-
-				       	end
-
-				      	 if #selected_Contact>0 then
-
-				      	 	    Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",getChatGroupCreation)
-		                 
-		                 else
-
-		                    print("group not created")
-
-		                       local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addLimit, { CommonWords.ok }, onComplete )
-
-		                 end
-
-			      end
----------------------------------------------------------------------------------------
-
-		 end
-
-	end
 
 
 
@@ -502,13 +478,9 @@ local function TabbarTouch( event )
 
 				current_textField = event.target;	
 
-			if (current_textField.id == "groupSubject") then
-
-			   native.setKeyboardFocus(current_textField)
-
-			end
-
 				current_textField.size=14
+
+				groupSubjectname = ""
 
 				if "*" == event.target.text:sub(1,1) then
 					event.target.text=""
@@ -527,6 +499,7 @@ local function TabbarTouch( event )
 
 				 if (current_textField.id == "groupSubject") then
 
+
 				 	if event.target.text:len() > 25 then
 
 						event.target.text = event.target.text:sub(1,25)
@@ -541,6 +514,156 @@ local function TabbarTouch( event )
 				end
 		 end
     end
+
+
+
+
+
+
+
+
+	local function createGroup(event)
+
+		if event.phase == "began" then
+			
+			native.setKeyboardFocus(nil)
+
+		elseif event.phase == "ended" then
+
+		      local validation = true
+
+              native.setKeyboardFocus(nil)
+
+
+                if pageid_value == "group" then
+
+				      if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == ChatDetails.GroupSubjectError or GroupSubject.text == GroupSubject.id then
+			            
+			             validation=false
+
+				     	 SetError(ChatDetails.GroupSubjectError,GroupSubject)
+
+				      elseif GroupSubject.text ~= "" or GroupSubject.text  ~= GroupSubject.placeholder or GroupSubject.text  ~= ChatDetails.GroupSubjectError or GroupSubject.text  ~= GroupSubject.id then
+
+				      	 GroupSubject.text = groupSubjectname
+
+				      end
+
+				end
+
+
+
+                if pageid_value == "broadcast" then
+
+				      if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
+ 
+				       	print("null value")
+
+			             GroupSubject.text = ""
+
+				      elseif GroupSubject.text ~= "" or GroupSubject.text  ~= GroupSubject.placeholder or GroupSubject.text  ~= ChatDetails.GroupSubjectError or GroupSubject.text  ~= GroupSubject.id then
+
+				      	 GroupSubject.text = groupSubjectname
+
+				      	 print("not null value")
+
+				      end
+
+			    end
+
+--------------------------------------------------------------------------------------
+                 
+
+			      if(validation == true) then
+
+				      	GroupSubject.text = groupSubjectname
+
+				      	for i=1,#selected_Contact do
+
+				      		selected_Contact[i]=nil
+
+				      	end
+
+				      	 
+				      	for i=1,#careerListArray do
+
+				      		local tempGroup = careerListArray[i]
+
+				      		
+					      		for j=1,tempGroup.numChildren do
+
+					      			if tempGroup[j].id == "email_Checkbox" then
+
+					      				print( "check box")
+
+						      			if tostring(tempGroup[j].isOn) == "true" then
+
+						      				selected_Contact[#selected_Contact+1] = tempGroup[j].value
+
+						      			end
+						      		
+						      		end
+
+						      	 end
+
+
+				       	end
+
+
+
+					      	 if pageid_value == "group" then
+
+					      	 	 if #selected_Contact>0 then
+
+					      	 	     Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",getChatGroupCreation)
+				                 
+				                 else
+
+				                    print("group not created")
+
+				                      local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addLimit, { CommonWords.ok }, onComplete )
+
+				                 end
+
+			                 end
+
+
+
+			                  if pageid_value == "broadcast" then
+
+				                  	if #selected_Contact>0 then
+
+					                  		if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
+
+						                  		 --GroupSubject.text = #selected_Contact.." recipients"
+
+								      	 	     Webservice.CreateMessageChatGroup(#selected_Contact.." recipients","","true","BROADCAST",getChatGroupCreation)
+
+							      	 	    else
+
+							      	 	    	 GroupSubject.text = GroupSubject.text
+
+								      	 	     Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",getChatGroupCreation)
+
+							      	 	    end
+				                 
+					                else
+
+					                       print("group not created")
+
+					                       local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addLimit, { CommonWords.ok }, onComplete )
+
+					                end
+
+				              end
+
+
+			      end
+---------------------------------------------------------------------------------------
+
+		 end
+
+	end
 
 
 local function careePath_list( list )
@@ -706,8 +829,6 @@ local function careePath_list( list )
 
 		else
 
-		
-
 	    end
 
 
@@ -837,6 +958,7 @@ function scene:create( event )
 	backbutton.y=subjectBar.y +12
 	backbutton.anchorY=0
 
+
 	GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-80, 25)
 	GroupSubject.id="groupSubject"
 	GroupSubject.y = subjectBar.y +20
@@ -855,7 +977,7 @@ function scene:create( event )
 	create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
 	create_groupicon.y=subjectBar.y +20
 
-    Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
+	Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
 
 MainGroup:insert(sceneGroup)
@@ -875,8 +997,7 @@ function scene:show( event )
 
 			addGroupid_value = event.params.addGroupid
 
-			print("addGroupid_value",addGroupid_value )
-
+			pageid_value = event.params.page_id
 		end
 
 
@@ -925,9 +1046,19 @@ tab_Group_txt = display.newText( tabBarGroup, ChatPage.Group ,0,0,native.systemF
 tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
 tab_Group_txt:setFillColor( 0.3 )
 
-	    if addGroupid_value == "addGroup" then
+	    if addGroupid_value == "addGroup" and pageid_value == "group" then
 
 	    	RecentTab_Topvalue = 115
+
+			--GroupSubject.isVisible = false
+
+	    elseif addGroupid_value == "addGroup" and pageid_value == "broadcast" then
+
+	    	RecentTab_Topvalue = 115
+
+	    	--GroupSubject.isVisible = false
+
+	    	--Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
 	    else
 
@@ -962,7 +1093,7 @@ tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Cont
 tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 if overlay then overlay:removeSelf( );overlay=nil end
 overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
-	overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
+overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
 
 sceneGroup:insert( tabBarGroup )
 
@@ -972,7 +1103,10 @@ sceneGroup:insert( tabBarGroup )
 		menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)
 		backbutton:addEventListener("touch",backactionTouch)
+
 		GroupSubject:addEventListener("userInput",textField)
+	   
+
 		create_groupicon:addEventListener("touch",createGroup)
 
    		Runtime:addEventListener( "key", onKeyEvent )
@@ -997,7 +1131,9 @@ end
 			BgText:removeEventListener("touch",menuTouch)
 			Runtime:removeEventListener( "key", onKeyEvent )
 			backbutton:removeEventListener("touch",backactionTouch)
+
 			GroupSubject:removeEventListener("userInput",textField)
+		  
 			create_groupicon:removeEventListener("touch",createGroup)
 
 			composer.removeHidden()

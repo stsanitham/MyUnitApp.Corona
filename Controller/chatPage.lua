@@ -46,6 +46,8 @@ local MeassageList={}
 
 local MessageType=""
 
+local GroupTypeValue = ""
+
 local Imagename = ""
 
 local Imagepath = ""
@@ -1548,7 +1550,8 @@ local function DetailAction( event )
 							time = 200,	
 								params = {
 								contactId = To_ContactId,
-								MessageType = MessageType
+								MessageType = MessageType,
+								GroupTypeValue = GroupTypeValue,
 							}
 
 							}
@@ -2531,6 +2534,7 @@ function scene:show( event )
 
 			if event.params then
 				nameval = event.params.tabbuttonValue2
+
 			end
 
 			composer.removeHidden()
@@ -2540,6 +2544,7 @@ function scene:show( event )
 
 
 		ContactDetails = event.params.contactDetails
+
 
 		print( "ContactDetails : "..json.encode(ContactDetails) )
 
@@ -2560,6 +2565,18 @@ function scene:show( event )
 				MessageType = "INDIVIDUAL"
 
 			end
+
+
+
+			if ContactDetails.MyUnitBuzzGroupType == "BROADCAST" then
+
+					GroupTypeValue = "BROADCAST"
+
+			else
+
+					GroupTypeValue = "GROUP"
+			end
+
 
 		
 		if ContactDetails.Message_Type then

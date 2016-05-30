@@ -21,7 +21,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText,pageTitle,changeList_order_icon
 
-local menuBtn,contactId,Message_Type
+local menuBtn,contactId,Message_Type,PageValueType
 
 local Details = {}
 
@@ -764,6 +764,7 @@ function scene:show( event )
 
 				contactId = event.params.contactId
 				Message_Type = event.params.MessageType
+				GroupType_Value = event.params.GroupTypeValue
 
 				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
@@ -776,6 +777,7 @@ function scene:show( event )
 				titleBar.isVisible=false
 
 				titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
 			local function get_MessageGroupTeamMemberList( response )
 
 				-- print( "coming here" )
@@ -1405,10 +1407,14 @@ function scene:show( event )
 		MainGroup:insert(sceneGroup)
 
 			print( Message_Type )
-			if Message_Type == "GROUP" then
+			if Message_Type == "GROUP" and GroupType_Value == "GROUP" then
 
-				Webservice.GetMessageGroupTeamMemberList(contactId,get_MessageGroupTeamMemberList)
+				Webservice.GetMessageGroupTeamMemberList(contactId,"GROUP",get_MessageGroupTeamMemberList)
 				
+			elseif  Message_Type == "GROUP" and GroupType_Value == "BROADCAST" then
+
+				Webservice.GetMessageGroupTeamMemberList(contactId,"BROADCAST",get_MessageGroupTeamMemberList)
+
 			else
 
 				Webservice.GetContactInformation(contactId,get_avtiveTeammemberDetails)
@@ -1420,6 +1426,10 @@ function scene:show( event )
 	
 
 end
+
+
+
+
 
 function scene:hide( event )
 

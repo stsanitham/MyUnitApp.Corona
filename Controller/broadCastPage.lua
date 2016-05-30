@@ -79,7 +79,7 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 		    local options = {
 						effect = "crossFade",
 						time = 500,	
-						params = { addGroupid = addGroupBtn.id }
+						params = { addGroupid = addGroupBtn.id, page_id = "broadcast"}
 						}
 
 	        composer.gotoScene( "Controller.consultantListPage", options )
@@ -443,7 +443,7 @@ end
 		title.anchorX = 0
 		title.x=5;title.y = title_bg.y
 		title:setFillColor(0)
-		title.text = ChatPage.Group
+		title.text = "Broadcast List"
 
 		-- addGroupBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/2,66/2.2 )
 		-- addGroupBtn.x=W-40
@@ -478,7 +478,7 @@ end
 		create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
 		create_groupicon.y=subjectBar.y +20
 
-		NoEvent = display.newText( sceneGroup, ChatPage.NoGroup , 0,0,0,0,native.systemFontBold,16)
+		NoEvent = display.newText( sceneGroup, "No Broadcast List Found" , 0,0,0,0,native.systemFontBold,16)
 		NoEvent.x=W/2;NoEvent.y=H/2
 		NoEvent.isVisible=false
 		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
@@ -524,26 +524,25 @@ end
 		addGroupBtn:addEventListener("touch",addGroupAction)
 	    end
 
+
 			 function getGroupListresponse(response )
 
 				grouplist_response = response
 
-						
+						if grouplist_response ~= nil and #grouplist_response ~= 0 then
+								
+								NoEvent.text = ""
 
-							if grouplist_response ~= nil and #grouplist_response ~= 0 then
-									
-									NoEvent.text=""
+								GroupCreation_list(grouplist_response)
 
-									GroupCreation_list(grouplist_response)
+						else
 
-							else
+								NoEvent.isVisible=true
 
-							NoEvent.isVisible=true
-
-							end
+						end
 				end
 
-			Webservice.GetChatMessageGroupList(getGroupListresponse)
+			Webservice.GetChatMessageGroupList("BROADCAST",getGroupListresponse)
 
 			--Tabbar---
 
@@ -589,9 +588,7 @@ CreateTabBarIcons()
 	tab_Group_btn.anchorY=0
 
 
-	
-
-tab_Group_txt = display.newText( tabBarGroup, ChatPage.Group ,0,0,native.systemFont,11 )
+tab_Group_txt = display.newText( tabBarGroup, "Broadcast List" ,0,0,native.systemFont,11 )
 tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
 tab_Group_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 

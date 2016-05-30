@@ -40,7 +40,7 @@ local RecentTab_Topvalue = 75
 
 local header_value = ""
 
-local Image
+local Image,page_id
 
 local byNameArray = {}
 
@@ -79,7 +79,7 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 		    local options = {
 						effect = "crossFade",
 						time = 500,	
-						params = { addGroupid = addGroupBtn.id }
+						params = { addGroupid = addGroupBtn.id , page_id = "group"}
 						}
 
 	        composer.gotoScene( "Controller.consultantListPage", options )
@@ -500,6 +500,11 @@ end
 		
 		if phase == "will" then
 
+			if event.params then
+
+				pagename = event.params.pagevalue
+			end
+
 					groupList_scrollview = widget.newScrollView
 				{
 					top = RecentTab_Topvalue-5,
@@ -524,26 +529,79 @@ end
 		addGroupBtn:addEventListener("touch",addGroupAction)
 	    end
 
+
+
+
 			 function getGroupListresponse(response )
 
 				grouplist_response = response
 
-						
+						if grouplist_response ~= nil and #grouplist_response ~= 0 then
+								
+								NoEvent.text = ""
 
-							if grouplist_response ~= nil and #grouplist_response ~= 0 then
-									
-									NoEvent.text=""
+								GroupCreation_list(grouplist_response)
 
-									GroupCreation_list(grouplist_response)
+						else
 
-							else
+								NoEvent.isVisible=true
 
-							NoEvent.isVisible=true
-
-							end
+						end
 				end
 
-			Webservice.GetChatMessageGroupList(getGroupListresponse)
+
+			Webservice.GetChatMessageGroupList("GROUP",getGroupListresponse)
+
+
+			 -- function getGroupListresponse(response )
+
+				-- grouplist_response = response
+
+				-- print("grouplist_response : "..grouplist_response)
+
+				-- 			if grouplist_response ~= nil and #grouplist_response ~= 0 then
+									
+				-- 					NoEvent.text=""
+
+				-- 					GroupCreation_list(grouplist_response)
+
+				-- 			else
+
+				-- 					if pagename == "group" then
+
+				-- 						NoEvent.isVisible=true
+
+				-- 				    elseif pagename == "broadcast" then
+
+				-- 				    	NoEvent.isVisible=true
+
+				-- 				    	NoEvent.text = "No Broadcast List Found"
+
+				-- 				    end
+
+				-- 			end
+				-- end
+
+
+
+
+				-- 		local groupTypevalue
+
+
+				-- 		if pagename == "group" then
+
+				-- 			groupTypevalue = "GROUP"
+
+				-- 		    Webservice.GetChatMessageGroupList(groupTypevalue,getGroupListresponse)
+
+				-- 		elseif pagename == "broadcast" then
+
+				-- 			groupTypevalue = "BROADCAST"
+
+				-- 			Webservice.GetChatMessageGroupList(groupTypevalue,getGroupListresponse)
+
+				-- 		end
+
 
 			--Tabbar---
 
