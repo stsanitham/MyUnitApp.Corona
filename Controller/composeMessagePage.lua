@@ -28,9 +28,23 @@ local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title,scr
 local longmsg_title,long_msg_charlimit,attachment_icon,icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt,filename_title,filename,filename_close,schedule_button
 local schedule_icon,schedule_icon_text,send_button,send_icon,send_icon_text,draft_button,draft_icon,draft_icon_text
 
+local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title,scrollView,shortmsg_star,shortmsg_title,shortmsg_textbox,short_msg_charlimit,longmsg_star,longmsg_title,
+long_msg_charlimit
+
+local attachment_icon,icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,
+Contact_icon,Contact_icon_txt,filename_title,filename,filename_close
+
+local schedule_button,schedule_icon,schedule_icon_textsend_button,send_icon,send_icon_text,draft_button,draft_icon,draft_icon_text
+
 local filename ,filename_title, filename_close
 
-local Imagepath = "";Imagename = "";Imagesize = ""
+local photowid = "";photoheig = ""
+
+local photowidth1 = "";photoheight1 = ""
+
+local shortmsg_textbox,longmsg_textbox
+
+--local Imagepath = "";Imagename = "";Imagesize = ""
 
 openPage="pushNotificationListPage"
 
@@ -59,6 +73,7 @@ local AttachmentGroup = display.newGroup( )
 local attachment_icon,attachment_icon_bg
 
 local longmsg_textbox
+
 
 local deviceModel = system.getInfo( "model" )
 
@@ -104,7 +119,6 @@ local function closeDetails( event )
 return true
 
 end
-
 
 local function selectionComplete ( event )
  
@@ -186,94 +200,10 @@ local function selectionComplete ( event )
 
         formatSizeUnits(size1)
 
+			
 
-	    local function onTimer(event)
+		uploadImage()
 
-			local function uploadImage()
-
-						    function get_imagemodel(response)
-
-						    	print("get image model called : its response is here ~~~~~~~~~~~~~~~~")
-
-									Imagepath = response.Abspath
-
-									Imagename = response.FileName
-
-									Imagesize = size
-
-
-									filename_title.isVisible = true
-
-									filename.isVisible = true
-
-									filename_close.isVisible = true
-
-									filename.text = photoname
-
-									schedule_button.y = filename.y + filename.contentHeight +15
-									schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-									schedule_icon_text.y= schedule_icon.y
-									schedule_button.height=schedule_icon_text.contentHeight+10
-
-									send_button.y = filename.y + filename.contentHeight +15
-									send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-									send_icon_text.y= send_icon.y
-									send_button.height=send_icon_text.contentHeight+10
-
-									draft_button.y = filename.y + filename.contentHeight +15
-									draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-									draft_icon_text.y= draft_icon.y
-									draft_button.height=draft_icon_text.contentHeight+10
-
-
-										    function ImageClose(event)
-
-														filename.text = ""
-
-														filename.isVisible = false
-
-														filename_title.isVisible = false
-
-														filename_close.isVisible = false
-
-														os.remove( path )
-
-														schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-														schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-														schedule_icon_text.y= schedule_icon.y
-
-														schedule_button.height=schedule_icon_text.contentHeight+10
-
-														send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-														send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-														send_icon_text.y= send_icon.y
-
-														send_button.height=send_icon_text.contentHeight+10
-
-														draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
-														draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-														draft_icon_text.y= draft_icon.y
-
-														draft_button.height=draft_icon_text.contentHeight+10
-
-											end
-
-
-				                    filename_close:addEventListener("touch",ImageClose)
-
-							 end
-
-
-					 Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
-
-
-			end
-
-			uploadImage()
-
-	    end
-
-       timer.performWithDelay(1500, onTimer )
 
      end
 
@@ -284,23 +214,102 @@ end
 
 
 
-	function get_audiomodel1(response)
+	function get_audiomodel(response)
 
 		print("\n\n\n SuccessMessage : Audio Response : \n\n ", json.encode(response))
 
-		audiolist_values = response
+		audiolist_values = json.encode(response)
 
 		local options = {
 
 				effect = "slideRight",
 				time = 300,
-				params = { audiovalues = audiolist_values }
+				params = { pushlistvalues = audiolist_values,page = "compose"}
 	    }
 
 		composer.gotoScene("Controller.pushNotificationListPage",options)
 
 
 	end
+
+
+
+
+local function get_audiomodel1(response)
+
+    	print("get audio model called : its response is here ~~~~~~~~~~~~~~~~"..json.encode(response))
+
+    	--local audioalert = native.showAlert("Audio File",response.Abspath,{"ok"})
+
+			Audiopath = response.Abspath
+
+			Audioname = response.FileName
+
+			Audiosize = size
+
+
+			filename_title.isVisible = true
+
+			filename.isVisible = true
+
+			filename_close.isVisible = true
+
+			filename.text = Audioname
+
+			schedule_button.y = filename.y + filename.contentHeight +15
+			schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+			schedule_icon_text.y= schedule_icon.y
+			schedule_button.height=schedule_icon_text.contentHeight+10
+
+			send_button.y = filename.y + filename.contentHeight +15
+			send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+			send_icon_text.y= send_icon.y
+			send_button.height=send_icon_text.contentHeight+10
+
+			draft_button.y = filename.y + filename.contentHeight +15
+			draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+			draft_icon_text.y= draft_icon.y
+			draft_button.height=draft_icon_text.contentHeight+10
+
+			    function ImageClose(event)
+
+						filename.text = ""
+
+						filename.isVisible = false
+
+						filename_title.isVisible = false
+
+						filename_close.isVisible = false
+
+						Audiopath = ""
+
+						os.remove( Audiopath )
+
+						schedule_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+						schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+						schedule_icon_text.y= schedule_icon.y
+
+						schedule_button.height=schedule_icon_text.contentHeight+10
+
+						send_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+						send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+						send_icon_text.y= send_icon.y
+
+						send_button.height=send_icon_text.contentHeight+10
+
+						draft_button.y = icons_holder_bg.y + icons_holder_bg.contentHeight +15
+						draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+						draft_icon_text.y= draft_icon.y
+
+						draft_button.height=draft_icon_text.contentHeight+10
+
+				end
+
+        filename_close:addEventListener("touch",ImageClose)
+
+end
+
+
 
 
 
@@ -644,7 +653,7 @@ end
 
 			            	print("audio path send value")
 
-			            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel1)
+			            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,IsScheduled,Date.text,Time.text,"","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
 			            end
 
@@ -724,7 +733,7 @@ end
 
             	print("audio path send value")
 
-            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel1)
+            	 Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
             end
 
@@ -1156,6 +1165,63 @@ end
 
 
 
+function scene:CancelRecordedAudio(data)
+
+	shortmsg_textbox.isVisible = true
+
+	longmsg_textbox.isVisible = true
+
+end
+
+
+
+
+function scene:updateRecordedAudio( dataFileName,audiopagename )
+
+		local function onTimerRecord( event )
+
+			shortmsg_textbox.isVisible = true
+
+			longmsg_textbox.isVisible = true
+
+		end
+
+		timer.performWithDelay(500,onTimerRecord)
+
+
+	--local nn = native.showAlert("MUB","HELLO Message" ,{"ok"})
+
+
+	       dataFileName1 = dataFileName
+
+	       audiopagename = "audiopage"
+
+
+		   local filePath = system.pathForFile( dataFileName1, system.DocumentsDirectory )
+		            -- Play back the recording
+		            local file = io.open( filePath)
+		            
+			            if file then
+			                io.close( file )
+			            else
+			            	audiovalue="test.wav"
+				           	filePath = system.pathForFile( dataFileName1, system.DocumentsDirectory )
+			            end
+
+
+					        local size2 = lfs.attributes(filePath, "size")
+
+							local fileHandle = io.open(filePath, "rb")
+
+							local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+							formatSizeUnits(size2)
+
+
+		Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName1,"Audios",get_audiomodel1)
+	
+end
+
 
 
 
@@ -1168,8 +1234,9 @@ local function attachAction( event )
 		if event.target.id =="camera" then
 
 				if media.hasSource( media.Camera ) then
-				timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
-				end )
+
+					timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+					end )
 
 			    else
 
@@ -1180,8 +1247,10 @@ local function attachAction( event )
 		elseif event.target.id == "gallery" then
 
 				if media.hasSource( PHOTO_FUNCTION  ) then
-				timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
-				end )
+
+					timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+					end )
+
 				end
 
 		elseif event.target.id == "audio" then
@@ -1209,6 +1278,14 @@ local function attachAction( event )
 
 							}
 
+
+
+			--if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
+			--if shortmsg_textbox then shortmsg_textbox:removeSelf( );shortmsg_textbox=nil end
+
+			longmsg_textbox.isVisible = false
+			shortmsg_textbox.isVisible = false
+
 		    composer.showOverlay( "Controller.audioRecordPage",options)
 
 		end
@@ -1216,6 +1293,7 @@ local function attachAction( event )
 	end
 
 return true
+
 end
 
 
@@ -1238,6 +1316,7 @@ local function webListener( event )
         shouldLoad = false
 
         print(url)
+
 
         updatedresponse = urlDecode(url)
 
@@ -1277,6 +1356,7 @@ local function webListener( event )
  			 sendMessage("SEND")
 
 
+
  		end
 
   
@@ -1301,6 +1381,11 @@ end
 		    local phase = event.phase
 
 		    if ( phase == "began" ) then 
+
+		    	shortmsg_textbox.isVisible = true
+		    	longmsg_textbox.isVisible = true
+
+
 		    elseif ( phase == "moved" ) then 
 
 			local x, y = scrollView:getContentPosition()
@@ -1319,23 +1404,24 @@ end
 
 				-- end
 
+            
+						if y > -30 then
 
-				if y > -30 then
+							shortmsg_textbox.isVisible = true
+						else
 
-					shortmsg_textbox.isVisible = true
-				else
-
-					shortmsg_textbox.isVisible = false
-				end
+							shortmsg_textbox.isVisible = false
+						end
 
 
-				if y > -120 then
+						if y > -120 then
 
-					longmsg_textbox.isVisible = true
-				else
+							longmsg_textbox.isVisible = true
+						else
 
-					longmsg_textbox.isVisible = false
-				end
+							longmsg_textbox.isVisible = false
+						end
+
 
 
 		    elseif ( phase == "ended" ) then 
@@ -1699,6 +1785,8 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
+	print("create called")
+
 
     Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
@@ -1767,6 +1855,8 @@ end
 		
 		if phase == "will" then
 
+			print("show called")
+
 				if event.params and openPagevalue == "addPage" then
 
 					status=event.params.page
@@ -1776,6 +1866,8 @@ end
 
 			
 				sceneevent = event
+
+			--	composer.removeHidden()
 
 
 			if sceneevent.params then
@@ -1831,6 +1923,7 @@ end
 				shortmsg_textbox.anchorY=0
 				shortmsg_textbox.width = W-20
 				shortmsg_textbox.value=""
+				shortmsg_textbox.isVisible = true
 				shortmsg_textbox.id = "shortmessage"
 				shortmsg_textbox.hasBackground = true
 				shortmsg_textbox:setReturnKey( "next" )
@@ -1907,6 +2000,8 @@ end
 							 longmsg_textbox = native.newWebView(10,longmsg_title.y+longmsg_title.contentHeight, W - 12, 310)
 
 							 longmsg_textbox.hasBackground = false
+
+							 longmsg_textbox.isVisible = true
 
 							 longmsg_textbox.anchorX=0;longmsg_textbox.anchorY=0
 							 params="test"
@@ -2118,44 +2213,44 @@ end
 
 
 
-				 if filenameval ~= nil then
+				--  if filenameval ~= nil then
 
-				 	targetaction = "audio"
-
-
-				--       filename_title.isVisible = true
-
-				--       filename.isVisible = true
-
-				-- 	  filename_close.isVisible = true
+				--  	targetaction = "audio"
 
 
-				-- 	  filename_title.text = "Audio Name"
+				-- --       filename_title.isVisible = true
 
-				-- 	  filename.text = filenameval
+				-- --       filename.isVisible = true
 
-
-				-- 	  	schedule_button.y = filename.y + filename.contentHeight +15
-				-- 		schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
-				-- 		schedule_icon_text.y= schedule_icon.y
-				-- 		schedule_button.height=schedule_icon_text.contentHeight+10
-
-				-- 		send_button.y = filename.y + filename.contentHeight +15
-				-- 		send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-				-- 		send_icon_text.y= send_icon.y
-				-- 		send_button.height=send_icon_text.contentHeight+10
-
-				-- 		draft_button.y = filename.y + filename.contentHeight +15
-				-- 		draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-				-- 		draft_icon_text.y= draft_icon.y
-				-- 		draft_button.height=draft_icon_text.contentHeight+10
-
-				 	  composeAudioUpdate(filenameval)
+				-- -- 	  filename_close.isVisible = true
 
 
-				 else
+				-- -- 	  filename_title.text = "Audio Name"
 
-				 end
+				-- -- 	  filename.text = filenameval
+
+
+				-- -- 	  	schedule_button.y = filename.y + filename.contentHeight +15
+				-- -- 		schedule_icon.y= schedule_button.y+schedule_button.contentHeight/2-schedule_icon.contentHeight/2
+				-- -- 		schedule_icon_text.y= schedule_icon.y
+				-- -- 		schedule_button.height=schedule_icon_text.contentHeight+10
+
+				-- -- 		send_button.y = filename.y + filename.contentHeight +15
+				-- -- 		send_icon.y= send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
+				-- -- 		send_icon_text.y= send_icon.y
+				-- -- 		send_button.height=send_icon_text.contentHeight+10
+
+				-- -- 		draft_button.y = filename.y + filename.contentHeight +15
+				-- -- 		draft_icon.y= draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
+				-- -- 		draft_icon_text.y= draft_icon.y
+				-- -- 		draft_button.height=draft_icon_text.contentHeight+10
+
+				--  	  composeAudioUpdate(filenameval)
+
+
+				--  else
+
+				 --end
 
 
 
@@ -2171,7 +2266,7 @@ end
 			title:addEventListener("touch",closeMessagePage)
 
 			shortmsg_textbox:addEventListener( "userInput", TextLimitation )
-			--longmsg_textbox:addEventListener( "userInput", TextLimitation )
+			--longmsg_textbox:addEventListener( "urlRequest", webListener )
 			Background:addEventListener("touch",FocusComplete)
 
 			
@@ -2198,11 +2293,11 @@ end
 
 		if event.phase == "will" then
 
+	  --    	if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
+			-- if shortmsg_textbox then shortmsg_textbox:removeSelf( );shortmsg_textbox=nil end
 
-		--	if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
+			 composer.removeHidden()
 
-
-	     	composer.removeHidden()
 
 				if datePicker then datePicker.clear() end
 
@@ -2233,7 +2328,7 @@ end
 				-- end
 
 
-
+               -- composer.removeHidden()
 
 
 				back_icon:removeEventListener("touch",closeMessagePage)
@@ -2241,7 +2336,7 @@ end
 			    title:removeEventListener("touch",closeMessagePage)
 
 			    shortmsg_textbox:removeEventListener( "userInput", TextLimitation)
-				longmsg_textbox:removeEventListener( "urlRequest", webListener )
+				--longmsg_textbox:removeEventListener( "urlRequest", webListener )
 				Background:removeEventListener("touch",FocusComplete)
 
 				send_button:removeEventListener("touch",onSendButtonTouchAction)
