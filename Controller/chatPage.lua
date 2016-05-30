@@ -375,7 +375,7 @@ local function AttachmentTouch( event )
 	if event.phase == "began" then
 
 	elseif event.phase == "ended" then
-		print( AttachmentGroup.alpha )
+		print( "AttachmentGroup.alpha : ",AttachmentGroup.alpha)
 
 		if attachment_icon.isVisible == true then
 
@@ -556,6 +556,7 @@ end
 	        	display.getCurrentStage():setFocus( nil )
 	            chatScroll:takeFocus( event )
 	            holdLevel=0
+	             Deleteicon.isVisible=false
 	            chatHoldflag=false
 	        end
 
@@ -586,6 +587,7 @@ end
 
 				if selectedForDelete ~= nil then 
 
+
 					if Copyicon.type ~= "text" then
 
 						Copyicon.isVisible = false
@@ -608,35 +610,49 @@ end
 				event.target.group:insert( selectedForDelete )
 
 				print("delete Action")
+				
 			else
 
 				if event.target.type == "image" and selectedForDelete == nil then
 
-					imageviewname = event.target.imageviewname
 
-				local options = {
-					      		effect = "fromTop",
-								time = 200,	
-								params = {
-									imagenameval = imageviewname,
-								}
-								}
+					local imageviewname = event.target.imageviewname
+
+					local filePath = system.pathForFile( imageviewname, system.DocumentsDirectory )
+			            -- Play back the recording
+			            local file = io.open( filePath)
+			            
+			            if file then
+
+			                io.close( file )
+
+							
+
+							local options = {
+							      		effect = "fromTop",
+										time = 200,	
+										params = {
+											imagenameval = imageviewname,
+										}
+										}
 
 
-					composer.showOverlay("Controller.imageFullviewPage",options)
+							composer.showOverlay("Controller.imageFullviewPage",options)
 
+						end
 			    end
-
 
 			end
 
-			holdLevel=0
+			holdLevel=0	
 				
 		end
 
 	return true
 
 	end
+
+
 
 
 
@@ -651,6 +667,10 @@ end
 	  		
 	    end
 	end
+
+
+
+
 
 
 
