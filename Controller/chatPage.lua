@@ -1658,41 +1658,7 @@ local function ChatSendAction( event )
 
 			sendMeaasage()
 
-		    else
-
-		    	if Imagename ~= nil or Imagename ~= "" then
-
-		    		if ChatBox.text ~= nil and ChatBox.text ~= "" then
-
-
-		            local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
-					
-					Message_date=os.date("%Y-%m-%dT%H:%M:%S")
-					isDeleted="false"
-					Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-					Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-					ImagePath=Imagepath
-					ImageName = Imagename
-					ImageSize = Imagesize
-					AudioPath="NULL"
-					VideoPath="NULL"
-					MyUnitBuzz_LongMessage=ChatBox.text
-					From=ContactId
-					To=To_ContactId
-					Message_Type = MessageType
-
-
-					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Image','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
-					db:exec( insertQuery )
-
-
-
-					    Webservice.SEND_MESSAGE(ChatBox.text,ChatBox.text,"","","","",ImagePath,ImageName,ImageSize,"","","","SEND",From,To,Message_Type,get_sendMssage)
-
-					    sendMeaasage()
-
-                   end
-                   end
+		 		    	
 	         end
 
 	end

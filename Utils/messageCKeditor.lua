@@ -53,7 +53,7 @@ meggageeditor.htmlContent = [[
 
 
 
-		function get_action(form) {
+		function get_action(value) {
 
 			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
 
@@ -64,7 +64,7 @@ meggageeditor.htmlContent = [[
 
 			{
 
-				var texttemp="corona:close"+ckvalue;
+				var texttemp="corona:close" + value + ckvalue;
 	 			window.location.href = texttemp; 
 
 			}
@@ -89,9 +89,9 @@ meggageeditor.htmlContent = [[
 	
 
 <div style="text-align:center;">
-  <Button onclick=get_action(this) align="left" name="data" type="button" width="58" height="48" style=" height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none;margin:10px 5px"> Schedule </Button>
-  <Button onclick=get_action(this) align="center" name="data" type="button" width="58" height="48" style=" height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 5px"> Send </Button>
-  <Button onclick=get_action(this) align="right" name="data" type="button" width="58" height="48" style=" height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 5px"> Draft </Button>
+  <Button onclick=get_action("Schedule") align="left" name="data" type="button" width="58" height="48" style=" height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none;margin:10px 5px"> Schedule </Button>
+  <Button onclick=get_action("Send") align="center" name="data" type="button" width="58" height="48" style=" height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 5px"> Send </Button>
+  <Button onclick=get_action("Draft") align="right" name="data" type="button" width="58" height="48" style=" height:35px; background-color:#e92568; padding:10px; color:#fff; font-size:15px; border:none; margin:10px 5px"> Draft </Button>
 
 </div>
 

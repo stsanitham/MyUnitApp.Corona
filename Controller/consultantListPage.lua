@@ -645,6 +645,7 @@ local function TabbarTouch( event )
 
 								      	 	     Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",getChatGroupCreation)
 
+
 							      	 	    end
 				                 
 					                else
@@ -657,13 +658,16 @@ local function TabbarTouch( event )
 
 				              end
 
-
 			      end
 ---------------------------------------------------------------------------------------
 
 		 end
 
 	end
+
+
+
+	
 
 
 local function careePath_list( list )
