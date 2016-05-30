@@ -230,8 +230,6 @@ end
 
 
 
-=======
->>>>>>> origin/MUB_V1.2.1
 local function selectionComplete ( event )
  
         local photo = event.target
