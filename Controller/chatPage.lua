@@ -556,7 +556,7 @@ end
 	        	display.getCurrentStage():setFocus( nil )
 	            chatScroll:takeFocus( event )
 	            holdLevel=0
-	             Deleteicon.isVisible=false
+	            Deleteicon.isVisible=false
 	            chatHoldflag=false
 	        end
 
@@ -567,11 +567,15 @@ end
 
 			if holdLevel > 25 then
 
-				Deleteicon.value=event.target.id
+				Deleteicon.detail=event.target.id
 				Deleteicon.type=event.target.type
 				Deleteicon.contentPath=event.target.contentPath
 
 				Copyicon.type = event.target.type
+
+
+				--local native22 = native.showAlert("MUB",Deleteicon.detail.."    "..Deleteicon.type.."    "..Deleteicon.contentPath,{"ok"})
+
 
 					if Copyicon.type ~= "text" then
 
@@ -583,7 +587,7 @@ end
 
 					end
 				
-				Copyicon.value = event.target.chat
+				Copyicon.detail = event.target.chat
 
 				if selectedForDelete ~= nil then 
 
@@ -1474,11 +1478,15 @@ function get_imagemodel(response)
 
 
 
+
 local function deleteAction( event )
 
 	if event.phase == "ended" then
  
 		if event.target.id == "delete" then
+
+
+			--local nn = native.showAlert("ffff",event.target.value,{"ok"})
 
 				if event.target.type ~= "text" then
 
