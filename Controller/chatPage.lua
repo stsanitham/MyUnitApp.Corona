@@ -1424,8 +1424,11 @@ function get_imagemodel(response)
 
 
 
+
 	local function printTimeSinceStart( event )
 
+
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
 
 			if chatHoldflag == true then
 
@@ -1436,21 +1439,20 @@ function get_imagemodel(response)
 						Deleteicon.isVisible=true
 						--Copyicon.isVisible=true
 
-					if Copyicon.type ~= "text" then
+								if Copyicon.type ~= "text" then
 
-						Copyicon.isVisible = false
+									Copyicon.isVisible = false
 
-					else
+								else
 
-						Copyicon.isVisible = true
+									Copyicon.isVisible = true
 
-					end
+								end
 
 
 						attachment_icon.isVisible = false
 
 					end
-
 			end
 
 			if reciveImageFlag == true then
@@ -1470,11 +1472,9 @@ function get_imagemodel(response)
 			-- 	 selectedForDelete:removeSelf();selectedForDelete=nil 
 			-- 	 end 
 			-- end
-
-			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront();attachment_icon_bg:toFront( )
-		    		
+		    	
+		    	
 		    end
-
 
 
 
@@ -1494,15 +1494,14 @@ local function deleteAction( event )
 
 				end
 
-				local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.value..[[;]]
+				local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.detail..[[;]]
 				db:exec( q )
 				
 				sendMeaasage()
 
 		elseif event.target.id == "copy" then
 						
-
-						pasteboard.copy( "string", event.target.value)
+						pasteboard.copy( "string", event.target.detail)
 
 						toast.show(ChatPage.Message_Copied, {duration = 'long', gravity = 'Center', offset = {0, 128}})  
 
@@ -1526,6 +1525,18 @@ local function deleteAction( event )
 return true
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
