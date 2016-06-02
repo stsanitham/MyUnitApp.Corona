@@ -66,35 +66,39 @@ isSentText = true
 
 
 
+
 	local function onCloseTouch( event )
-		if event.phase == "began" then
-				display.getCurrentStage():setFocus( event.target )
+			
+			 if event.phase == "began" then
+					display.getCurrentStage():setFocus( event.target )
 
-				native.setKeyboardFocus( nil )
+					native.setKeyboardFocus( nil )
 
-		 elseif ( event.phase == "moved" ) then
-	        local dy = math.abs( ( event.y - event.yStart ) )
-	        -- If the touch on the button has moved more than 10 pixels,
-	        -- pass focus back to the scroll view so it can continue scrolling
+			 elseif ( event.phase == "moved" ) then
+		        
+		        local dy = math.abs( ( event.y - event.yStart ) )
+		        -- If the touch on the button has moved more than 10 pixels,
+		        -- pass focus back to the scroll view so it can continue scrolling
 
-	        if ( dy > 10 ) then
-	        	display.getCurrentStage():setFocus( nil )
-	            popup_scroll:takeFocus( event )
-	        end
-	    
+				    if ( dy > 10 ) then
+				        	display.getCurrentStage():setFocus( nil )
+				            popup_scroll:takeFocus( event )
+				    end
+				    
 
-	        elseif event.phase == "ended" then
-	        display.getCurrentStage():setFocus( nil )
+			  elseif event.phase == "ended" then
+				        display.getCurrentStage():setFocus( nil )
 
-	        print("close",popUpGroup.numChildren)
-	       for j=popUpGroup.numChildren, 1, -1 do 
-							display.remove(popUpGroup[popUpGroup.numChildren])
-							popUpGroup[popUpGroup.numChildren] = nil
-		 	end
+				        print("close",popUpGroup.numChildren)
+				       for j=popUpGroup.numChildren, 1, -1 do 
+										display.remove(popUpGroup[popUpGroup.numChildren])
+										popUpGroup[popUpGroup.numChildren] = nil
+					 	end
 
-	    end
+			  end
 
-	    return true
+		   
+		  return true
 
 	end
 

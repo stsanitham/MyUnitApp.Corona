@@ -2125,7 +2125,7 @@ end
 
 
 
-function Webservice.GetMessagessListbyMessageStatus(status,postExecution)
+function Webservice.GetMessagessListbyMessageStatus(status,pagesize,pagenumber,postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
@@ -2151,7 +2151,7 @@ function Webservice.GetMessagessListbyMessageStatus(status,postExecution)
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-    local resbody = "?userId="..UserId.."&status="..status
+    local resbody = "?userId="..UserId.."&status="..status.."&pageSize="..pagesize.."&page="..pagenumber
 
 	params={headers = headers}
 
