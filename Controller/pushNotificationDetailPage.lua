@@ -28,11 +28,11 @@ local photowidth = "";photoheight =""
 
 local reciveImageFlag=false
 
-local webView
-
 openPage = "pushNotificationListPage"
 
 local RecentTab_Topvalue = 70
+
+local webView
 
 local back_icon,short_msg_txt,short_msg_delete,short_msg_edit
 
@@ -78,6 +78,14 @@ local sentMessage_detail
 			if event.phase == "began" then
 
 				display.getCurrentStage():setFocus( event.target )
+
+					 -- if testimage then testimage:removeSelf();testimage = nil end
+
+				  --    network.cancel(testimage)
+
+				  --    os.remove(imagepathvalue)
+
+				  --    reciveImageFlag=false
 
 			elseif event.phase == "ended" then
 
@@ -707,7 +715,7 @@ end
 			file:write( saveData )
 
 			
-			webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 260 )
+		    webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 260 )
 
 			webView.hasBackground = false
 			webView.x = short_msg_txt.x - 7
@@ -771,21 +779,22 @@ end
 						end
 
 
-		local testimage = 
 
-			network.download(
-			detail_value.ImageFilePath,
-			"GET",
-			recivedNetwork,
-			detail_value.ImageFilePath:match( "([^/]+)$" ),
-			system.DocumentsDirectory
-			)
+					local testimage = 
 
-
-		end
+						network.download(
+						detail_value.ImageFilePath,
+						"GET",
+						recivedNetwork,
+						detail_value.ImageFilePath:match( "([^/]+)$" ),
+						system.DocumentsDirectory
+						)
 
 
+					end
 
+
+					imagepathvalue = detail_value.ImageFilePath
 
 
 
@@ -895,10 +904,10 @@ end
 			  	 	end
             end
 
-             if webView then webView:removeSelf( );webView=nil end
 
              if testimage then testimage:removeSelf();testimage = nil end
 
+				network.cancel(testimage)
 
 
 		elseif phase == "did" then
@@ -918,13 +927,17 @@ end
 						event.parent:resumeGame(status,messagelistvalue)
 				end
 
-
+                
+             if webView then webView:removeSelf( );webView=nil end
 
 				menuBtn:removeEventListener("touch",menuTouch)
 
 				back_icon:removeEventListener("touch",closeDetails)
 			    back_icon_bg:removeEventListener("touch",closeDetails)
 				title:removeEventListener("touch",closeDetails)
+
+
+				
 
 
 			if IsOwner == true then

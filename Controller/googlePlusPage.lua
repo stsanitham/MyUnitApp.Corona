@@ -309,14 +309,14 @@ end
 end
 end
 
+
+
 local function getgoogleplus_stream( event )
 	if ( event.isError ) then
 
 		print("error")
 
 	else
-
-
 
 		local response =  json.decode(event.response)
 

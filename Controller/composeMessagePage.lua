@@ -1413,8 +1413,6 @@ end
 local function webListener( event )
     local shouldLoad = true
 
-
-
     local url = event.url
 
     	--print( "json : "..json.encode(event) )
@@ -1462,24 +1460,25 @@ local function webListener( event )
 
        if  shortmsg_textbox.text:len() < 1 then
 
-		local test= string.urlEncode(longMessage)
+		        local test= string.urlEncode(longMessage)
 
 				local path = system.pathForFile( "messageCKeditor.html",system.DocumentsDirectory )
 
 				local file, errorString = io.open( path, "w+" )
 
-				if not file then
+					if not file then
 
-				    print( "File error: " .. errorString )
+					    print( "File error: " .. errorString )
 
-				else
+					else
 
-					
-				     file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml..""..meggageeditor.buttonHtml )
- 					longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
- 					longmsg_textbox.isVisible=true
- 					file:close()
- 				end
+						
+					     file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml..""..meggageeditor.buttonHtml )
+	 					longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
+	 					longmsg_textbox.isVisible=true
+	 					file:close()
+	 				end
+
  				file=nil
 
  				local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
@@ -1489,14 +1488,10 @@ local function webListener( event )
  			--longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
  			--longmsg_textbox.isVisible=true
 
-
- 			 sendMessage(method)
-
-
+ 			sendMessage(method)
 
  		end
 
-  
     end
 
     if event.errorCode then

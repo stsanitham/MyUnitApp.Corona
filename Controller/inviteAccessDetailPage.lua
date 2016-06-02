@@ -210,25 +210,47 @@ end
 		Request_response = response
 
 
-	    function onCompletion(event)
+		    function onCompletion(event)
 
-	       if "clicked"==event.action then
+		       if "clicked"==event.action then
 
-	       	print("on complete action done [[[[[[[[[[[[[[[[[[[[980890890890]]]]]]]]]]]]]]]]]]]]]]]]]")
+		       	print("on complete action done [[[[[[[[[[[[[[[[[[[[980890890890]]]]]]]]]]]]]]]]]]]]]]]]]")
 
-			 AlertGroup.isVisible = false
-
-
-			 -- ContactIdValue = contactId
-
-			 -- print("ContactIdVlaue after assigning"..ContactIdValue)
+				 AlertGroup.isVisible = false
 
 
-	         composer.hideOverlay()
+				 -- ContactIdValue = contactId
 
-	       end
+				 -- print("ContactIdVlaue after assigning"..ContactIdValue)
 
-         end
+
+		         composer.hideOverlay()
+
+		       end
+
+	         end
+
+
+
+	          function onCompletion1(event)
+
+		       if "clicked"==event.action then
+
+		       	print("on complete action done [[[[[[[[[[[[[[[[[[[[980890890890]]]]]]]]]]]]]]]]]]]]]]]]] 666666666")
+
+				 AlertGroup.isVisible = true
+
+				 -- ContactIdValue = contactId
+
+				 -- print("ContactIdVlaue after assigning"..ContactIdValue)
+
+
+		        -- composer.hideOverlay()
+
+		       end
+
+	         end
+
 
 
 
@@ -254,19 +276,19 @@ end
 
          	 elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
 		
-		     elseif Request_response == "ADDREQUEST" then
+		     elseif Request_response == "REQUEST" then
 
-		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
 
 		 	     elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
 
          	 end
 
@@ -278,19 +300,19 @@ end
 
 	 	     elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
 		
-		     elseif Request_response == "ADDREQUEST" then
+		     elseif Request_response == "REQUEST" then
 
-		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
 
 		 	 elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
 
          	 end
 
@@ -302,19 +324,19 @@ end
 
 	 	     elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
 
          	 elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
 		
-		     elseif Request_response == "ADDREQUEST" then
+		     elseif Request_response == "REQUEST" then
 
-		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
 
 		 	     elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
 
          	 end
 
@@ -844,7 +866,7 @@ end
 
 	       local time = Utils.makeTimeStamp(invitedetail_value.UpdateTimeStamp)
 
-		   local activity_time = tostring(os.date("%m/%d/%Y %I:%M %p",time))
+		   local activity_time = tostring(os.date("%m/%d/%Y %I:%m %p",time))
 
 		display_details[#display_details+1] = display.newText(InviteAccessDetail.ActivityOn,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))

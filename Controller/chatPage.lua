@@ -375,7 +375,7 @@ local function AttachmentTouch( event )
 	if event.phase == "began" then
 
 	elseif event.phase == "ended" then
-		print( AttachmentGroup.alpha )
+		print( "AttachmentGroup.alpha : ",AttachmentGroup.alpha)
 
 		if attachment_icon.isVisible == true then
 
@@ -556,6 +556,7 @@ end
 	        	display.getCurrentStage():setFocus( nil )
 	            chatScroll:takeFocus( event )
 	            holdLevel=0
+	            Deleteicon.isVisible=false
 	            chatHoldflag=false
 	        end
 
@@ -566,11 +567,15 @@ end
 
 			if holdLevel > 25 then
 
-				Deleteicon.value=event.target.id
+				Deleteicon.detail=event.target.id
 				Deleteicon.type=event.target.type
 				Deleteicon.contentPath=event.target.contentPath
 
 				Copyicon.type = event.target.type
+
+
+				--local native22 = native.showAlert("MUB",Deleteicon.detail.."    "..Deleteicon.type.."    "..Deleteicon.contentPath,{"ok"})
+
 
 					if Copyicon.type ~= "text" then
 
@@ -582,9 +587,10 @@ end
 
 					end
 				
-				Copyicon.value = event.target.chat
+				Copyicon.detail = event.target.chat
 
 				if selectedForDelete ~= nil then 
+
 
 					if Copyicon.type ~= "text" then
 
@@ -608,37 +614,49 @@ end
 				event.target.group:insert( selectedForDelete )
 
 				print("delete Action")
+				
 			else
 
 				if event.target.type == "image" and selectedForDelete == nil then
 
-					imageviewname = event.target.imageviewname
 
-				local options = {
-					      		effect = "fromTop",
-								time = 200,	
-								params = {
-									imagenameval = imageviewname,
-								}
-								}
+					local imageviewname = event.target.imageviewname
+
+					local filePath = system.pathForFile( imageviewname, system.DocumentsDirectory )
+			            -- Play back the recording
+			            local file = io.open( filePath)
+			            
+			            if file then
+
+			                io.close( file )
+
+							
+
+							local options = {
+							      		effect = "fromTop",
+										time = 200,	
+										params = {
+											imagenameval = imageviewname,
+										}
+										}
 
 
-					composer.showOverlay("Controller.imageFullviewPage",options)
+							composer.showOverlay("Controller.imageFullviewPage",options)
 
+						end
 			    end
-
 
 			end
 
-			holdLevel=0
-
-				
+			holdLevel=0	
 				
 		end
 
 	return true
 
 	end
+
+
 
 
 
@@ -653,6 +671,10 @@ end
 	  		
 	    end
 	end
+
+
+
+
 
 
 
@@ -920,12 +942,19 @@ end
 			ChatHistory[#ChatHistory+1] = row
 
 		end
-
 		
 
 		local dateVlaue=""
 
 		for i=1,#ChatHistory do
+
+				-- if ChatHistory[i].Message_Type == "BROADCAST" and ChatHistory[i].Message_From ~= tostring(ContactId) then
+
+				-- 	local BROADCAST = native.showAlert("aaaa",ChatHistory[i].MyUnitBuzz_Message,{"ok"})
+
+				-- 	MessageType = "INDIVIDUAL"
+
+				-- end
 
 			if ChatHistory[i].Message_Type:lower() == MessageType:lower() then
 
@@ -1179,7 +1208,7 @@ end
 							
 							--When audio notification receives
 
-							local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
+							  local downloadimage = display.newImageRect(tempGroup,"res/assert/download_image.jpg", 45, 45 )
 									downloadimage.x = bg.x+bg.contentWidth/4
 									downloadimage.id = ChatHistory[i].Audio_Path
 									downloadimage.anchorX = 0
@@ -1209,13 +1238,12 @@ end
 
 
 
+ 
 			--------Image Attachment---------------
 
 			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
 
 				 Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
-
-
 
 				 local image
 
@@ -1231,10 +1259,9 @@ end
 								spinner_hide()
 
 							    if MessageType == "GROUP" then	
-										
-									image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
-									image.id = ChatHistory[i].Image_Path
-
+									
+								image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+								image.id = ChatHistory[i].Image_Path
 
 								bg.width = image.contentWidth+5
 								bg.height = image.contentHeight+23.5
@@ -1346,8 +1373,10 @@ end
 					bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 				else
+
 					time.x=bg.x+bg.contentWidth-time.contentWidth-2.5
 					bg:setFillColor( Utils.convertHexToRGB(color.Gray) )
+
 				end
 
 
@@ -1356,9 +1385,11 @@ end
 				arrow.x=bg.x+2
 				arrow:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 			else
-				arrow:scale( -1, 1 )
+
+			    arrow:scale( -1, 1 )
 				arrow.x=arrow.x+2
 				arrow:setFillColor( Utils.convertHexToRGB(color.Gray) )
+
 			end
 
 			chatScroll:insert(tempGroup)
@@ -1374,27 +1405,26 @@ end
 
 
 
-function get_videomodel( response )
-	
---	print(json.encode(response))
+	function get_videomodel( response )
+		
+		--	print(json.encode(response))
 
--- local options =
--- {
---    to = { "anitha.mani@w3magix.com"},
---    subject = "video response",
---    isBodyHtml = true,
---    body = ""..event.response,
+		-- local options =
+		-- {
+		--    to = { "anitha.mani@w3magix.com"},
+		--    subject = "video response",
+		--    isBodyHtml = true,
+		--    body = ""..event.response,
 
--- }
--- native.showPopup( "mail", options )
+		-- }
+		-- native.showPopup( "mail", options )
 
-
-end
-
+	end
 
 
 
-function get_imagemodel(response)
+
+	function get_imagemodel(response)
 
 
 	end
@@ -1404,6 +1434,7 @@ function get_imagemodel(response)
 
 	local function printTimeSinceStart( event )
 
+			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
 
 			if chatHoldflag == true then
 
@@ -1414,27 +1445,25 @@ function get_imagemodel(response)
 						Deleteicon.isVisible=true
 						--Copyicon.isVisible=true
 
-					if Copyicon.type ~= "text" then
+						if Copyicon.type ~= "text" then
 
-						Copyicon.isVisible = false
-
-					else
-
-						Copyicon.isVisible = true
-
-					end
+							Copyicon.isVisible = false
+						else
+							Copyicon.isVisible = true
+						end
 
 
 						attachment_icon.isVisible = false
 
 					end
-
 			end
+
 
 			if reciveImageFlag == true then
 				reciveImageFlag=false
 				sendMeaasage()
 			end
+
 
 		    if chatReceivedFlag==true then
 
@@ -1448,58 +1477,57 @@ function get_imagemodel(response)
 			-- 	 selectedForDelete:removeSelf();selectedForDelete=nil 
 			-- 	 end 
 			-- end
-
-			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront();attachment_icon_bg:toFront( )
-		    		
-		    end
+		    	
+    end
 
 
 
 
-local function deleteAction( event )
 
-	if event.phase == "ended" then
- 
-		if event.target.id == "delete" then
+	local function deleteAction( event )
 
-				if event.target.type ~= "text" then
+		if event.phase == "ended" then
+	 
+			if event.target.id == "delete" then
 
-					os.remove( event.target.contentPath )
+					if event.target.type ~= "text" then
+
+						os.remove( event.target.contentPath )
+
+					end
+
+					local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.detail..[[;]]
+					db:exec( q )
+					
+					sendMeaasage()
+
+			elseif event.target.id == "copy" then
+							
+							pasteboard.copy( "string", event.target.detail)
+
+							toast.show(ChatPage.Message_Copied, {duration = 'long', gravity = 'Center', offset = {0, 128}})  
+
+			end		
+						Copyicon.isVisible=false
+						Deleteicon.isVisible=false
+
+						attachment_icon.isVisible = true
+
+				if selectedForDelete ~= nil then 
+
+					 if selectedForDelete.y ~= nil then
+
+					 selectedForDelete:removeSelf();selectedForDelete=nil 
+					 end 
 
 				end
 
-				local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.value..[[;]]
-				db:exec( q )
-				
-				sendMeaasage()
+		end
 
-		elseif event.target.id == "copy" then
-						
-
-						pasteboard.copy( "string", event.target.value)
-
-						toast.show(ChatPage.Message_Copied, {duration = 'long', gravity = 'Center', offset = {0, 128}})  
-
-		end		
-					Copyicon.isVisible=false
-					Deleteicon.isVisible=false
-
-					attachment_icon.isVisible = true
-
-			if selectedForDelete ~= nil then 
-
-				 if selectedForDelete.y ~= nil then
-
-				 selectedForDelete:removeSelf();selectedForDelete=nil 
-				 end 
-
-			end
+	    return true
 
 	end
 
-return true
-
-end
 
 
 
@@ -1520,9 +1548,7 @@ function get_sendMssage(response)
 
     	recordBtn.isVisible = true
 
-    end
-
-		
+    end	
 
 end
 
@@ -1599,6 +1625,8 @@ end
 
 
 
+
+
 local function ChatSendAction( event )
 	if event.phase == "began" then
 
@@ -1649,12 +1677,38 @@ local function ChatSendAction( event )
 				if MessageType == "GROUP" then
 
 					ConversionFirstName="";ConversionLastName="";GroupName=MemberName;DocumentUpload=""
-				else
+
+				elseif MessageType == "INDIVIDUAL" then
+
 					ConversionFirstName="";ConversionLastName=MemberName;GroupName="";DocumentUpload=""
+
+				else
+
+					if MessageType == "BROADCAST" then
+
+						if IsOwner == true then
+
+							ConversionFirstName="";ConversionLastName="";GroupName=MemberName;DocumentUpload=""
+
+						else
+                    
+                            ConversionFirstName="";ConversionLastName=MemberName;GroupName="";DocumentUpload=""
+
+                        end
+
+                    end
+
 				end
 						 
+			         --   if MessageType == "BROADCAST" and IsOwner ~= true then
 
-			Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+			            --Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,"INDIVIDUAL",get_sendMssage)
+
+			        --    else
+
+						Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+			            
+			         --   end
 
 			sendMeaasage()
 
@@ -2200,9 +2254,15 @@ end
 
 				MessageFileType="Audios"
 
-				Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,"Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
+					--if MessageType == "BROADCAST" and IsOwner ~= true then
 
+				     --   Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,"INDIVIDUAL",get_sendMssage)
 
+				   -- else
+
+					    Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,"Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
+
+	               -- end
 
 						-- Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
 
@@ -2333,10 +2393,16 @@ end
 
 				ChatBox.text = ""
 
+						-- if MessageType == "BROADCAST" and IsOwner ~= true then
 
-			      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+					 --            Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,"INDIVIDUAL",get_sendMssage)
+
+					 --    else
 
 
+					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+
+		               -- end
 
 				   --Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
 
@@ -2503,6 +2569,7 @@ function scene:show( event )
 
 			if event.params then
 				nameval = event.params.tabbuttonValue2
+				pagevalue = event.params.typevalue
 
 			end
 
@@ -2527,7 +2594,24 @@ function scene:show( event )
 
 			if ContactDetails.MyUnitBuzzGroupId ~= nil then
 
-				MessageType = "GROUP"
+					if ContactDetails.MyUnitBuzzGroupType == "BROADCAST" then
+
+							--if IsOwner == true then
+
+							MessageType = "BROADCAST"
+
+						    -- else
+
+						    --MessageType = "INDIVIDUAL"
+
+		                    -- end
+
+					else
+
+						MessageType = "GROUP"
+
+					end
+
 
 			else
 
@@ -2537,15 +2621,7 @@ function scene:show( event )
 
 
 
-			if ContactDetails.MyUnitBuzzGroupType == "BROADCAST" then
-
-					GroupTypeValue = "BROADCAST"
-
-			else
-
-					GroupTypeValue = "GROUP"
-			end
-
+			
 
 		
 		if ContactDetails.Message_Type then

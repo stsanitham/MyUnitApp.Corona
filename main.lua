@@ -584,6 +584,8 @@ local function notificationListener( event )
                         Message_Type = additionalData.messageType
 
 
+                       -- local native = native.showAlert("dsadsadsdas",Message_Type,{"ok"})
+
 
                             if additionalData.fFN ~= nil then
                                 Name=additionalData.fFN.." "..additionalData.fLN

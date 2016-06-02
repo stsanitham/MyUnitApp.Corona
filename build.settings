@@ -42,9 +42,6 @@ settings =
 	        supportedPlatforms = { android=true, ["android-kindle"]=true },
 	    },
 
-
-   
-	   
     },
     
 

@@ -531,26 +531,27 @@ local function CreateList(list,scrollView)
 				"GET",
 				
 				function ( img_event )
+
 					if ( img_event.isError ) then
 						print ( "Network error - download failed" )
 					else
 
-					if Image then
+									if Image then
 
-						Image:removeSelf();Image=nil
-						
-						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
-						Image.width=35;Image.height=35
-						--Image.anchorY=0
-						Image.x=30;Image.y=background.y+background.contentHeight/2
-    				--event.row:insert(img_event.target)
+										Image:removeSelf();Image=nil
+										
+										Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+										Image.width=35;Image.height=35
+										--Image.anchorY=0
+										Image.x=30;Image.y=background.y+background.contentHeight/2
+				    				--event.row:insert(img_event.target)
 
-    			    else
+				    			    else
 
-						Image:removeSelf();Image=nil
+										Image:removeSelf();Image=nil
 
-					 end
-    			end
+									 end
+    			    end
 
     			end, "inviteaccess"..feedArray[i].MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory)
 		else
@@ -947,6 +948,24 @@ end
 	       end
 
          end
+
+
+
+     --     function onCompletion1(event)
+
+		   --         if "clicked"==event.action then
+
+					--  AlertGroup.isVisible = false
+
+					--  ContactIdValue = Details.MyUnitBuzzRequestAccessId
+
+					--  popUpGroup.isVisible = true
+							
+					-- --Webservice.GetMyUnitBuzzRequestAccesses(status,get_GetMyUnitBuzzRequestAccesses)
+
+			  --      end
+
+     --     end
 
 
 

@@ -218,6 +218,7 @@ function scene:create( event )
 
 					---Check Facebook , Twitter and Google+----
 
+
 					if row.GoogleUsername ~="" and row.GoogleToken ~="" and row.GoogleTokenSecret ~="" and row.GoogleUserId ~="" then
 
 						isGoogle=true
@@ -239,9 +240,9 @@ function scene:create( event )
 
 
 
-
-
 					------------------
+
+					
         
 
         end

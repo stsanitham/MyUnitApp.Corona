@@ -10,6 +10,7 @@ meggageeditor.htmlContent = [[
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<title></title>
 	<script src="http://cdn.ckeditor.com/4.5.7/standard-all/ckeditor.js"></script>
+	<script type="text/javascript" src="/jquery/charactercount.js"></script>
 	<link href="path_to_css/apprise-v2.min.css" rel="stylesheet" type="text/css" />
 
 <script src="path_to_jquery"></script>
@@ -36,12 +37,13 @@ meggageeditor.htmlContent = [[
 
 
   CKEDITOR.replace( 'UnitGoals', {
+
     toolbar: [
     { name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ , 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
     { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
 
     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
-    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ]},
     { name: 'links', items: [ 'Link', 'Unlink' ] },
     { name: 'insert', items: [ 'Image' ] },
  
@@ -80,8 +82,6 @@ meggageeditor.htmlContent = [[
 
        		
 		}
-
-
 
     CKEDITOR.instances.UnitGoals.setData(decodeURIComponent(
 

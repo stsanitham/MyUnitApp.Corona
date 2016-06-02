@@ -285,26 +285,366 @@ end
 
 								end
 
+								 emailnotifybox.isVisible = true
+								 emailnotifytext.isVisible = true
+
+								 if textnotifytext.isVisible == true and textnotifybox.isVisible == true then
+
+								 	print("i am here")
+
+										 	if emailnotifytext.isVisible == true and emailnotifybox.isVisible == true then
+
+										 		print("77777777")
+
+										 		  --  if Phone.text == "" or Phone.text == Phone_placeholder then
+
+										 		  --  	print("$%$%$%$%$%$%$%$%$%$%$%$%")
+
+										 		  --        Phone_bg.y = textnotifytext.y+3
+														 -- Phone.y = textnotifytext.y+3
+														 -- Phone_bottom.y= Phone.y+10
+
+														 -- Password_bg.y = Phone_bg.y+Phone_bg.height+7
+														 -- Password.y = Phone_bg.y+Phone_bg.height+7
+														 -- Password_bottom.y = Password.y+10
+
+
+										 		  --   end
+
+													 	 Phone_bg.y = textnotifytext.y+3
+														 Phone.y = textnotifytext.y+3
+														 Phone_bottom.y= Phone.y+10
+
+														 Password_bg.y = Phone_bg.y+Phone_bg.height+7
+														 Password.y = Phone_bg.y+Phone_bg.height+10
+														 Password_bottom.y = Password.y+10
+
+										 	else
+
+										 		print("000000")
+
+													 	Phone_bg.y = Email_bg.y+Email_bg.height+7
+														Phone.y = Email_bg.y+Email_bg.height+7
+														Phone_bottom.y= Phone.y+10
+
+										    end
+
+
+								     Phone_bg.y = textnotifytext.y+3
+									 Phone.y = textnotifytext.y+3
+									 Phone_bottom.y= Phone.y+10
+
+								 	 textnotifybox.y = Phone_bottom.y + 15
+								     textnotifytext.y= Phone_bottom.y + 15
+
+									 Password_bg.y = textnotifytext.y+textnotifytext.height+12
+									 Password.y = textnotifytext.y+textnotifytext.height+15
+									 Password_bottom.y = Password.y+10
+
+									 PasswordHelptext.y= Password_bottom.y + 18
+									 GeneratePasstext.y= PasswordHelptext.y + 20
+
+									 MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+									 MKRank.y=MKRank_bg.y+5
+									 rankText_icon.y=MKRank_bg.y
+
+									 Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+									 Comment.y = Comment_bg.y
+
+									 sumbitBtn.y = Comment.y+Comment.height/2+20
+									 sumbitBtn_lbl.y=sumbitBtn.y
+
+									 sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+									 sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+									 sumbitBtn_lbl.x = sumbitBtn.x+16
+
+								 else
+
+
+								 	print("email not null %%%%%%%%")
+
+								 Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
+								 Phone.y = emailnotifytext.y+emailnotifytext.height+14
+								 Phone_bottom.y= Phone.y+10
+
+								 Password_bg.y = Phone_bg.y+Phone_bg.height+7
+								 Password.y = Phone_bg.y+Phone_bg.height+14
+								 Password_bottom.y = Password.y+10
+
+								 PasswordHelptext.y= Password_bottom.y + 18
+								 GeneratePasstext.y= PasswordHelptext.y + 20
+
+								 MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+								 MKRank.y=MKRank_bg.y+5
+								 rankText_icon.y=MKRank_bg.y
+
+								 Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+								 Comment.y = Comment_bg.y
+
+								 sumbitBtn.y = Comment.y+Comment.height/2+20
+								 sumbitBtn_lbl.y=sumbitBtn.y
+
+								 sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+								 sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+								 sumbitBtn_lbl.x = sumbitBtn.x+16
+
+								end
+
+
 							Webservice.CheckExistsRequestStatus(0,Email.text,getemailexistresponse)
 
 							native.setKeyboardFocus(nil)
 
-						    elseif Email.text ~= nil and Email.text ~= "" and not Utils.emailValidation(Email.text) then
+				elseif  not Utils.emailValidation(Email.text) then
 
                                  SetError("* ".."Enter the valid Email",Email)
 
+
+                                 emailnotifybox.isVisible = false
+								 emailnotifytext.isVisible = false
+
+								if textnotifytext.isVisible == true and textnotifybox.isVisible == true then
+
+									print("567567567567756756756")
+
+									 Phone_bg.y = Email_bg.y+Email_bg.height+7
+									 Phone.y = Email_bg.y+Email_bg.height+7
+									 Phone_bottom.y= Phone.y+10
+
+									 textnotifybox.y = Phone_bottom.y + 15
+								     textnotifytext.y= Phone_bottom.y + 15
+
+									 Password_bg.y = textnotifybox.y+textnotifybox.height-2
+									 Password.y = textnotifybox.y+textnotifybox.height-2
+									 Password_bottom.y = Password.y+10
+
+									 PasswordHelptext.y= Password_bottom.y + 18
+									 GeneratePasstext.y= PasswordHelptext.y + 20
+
+									 MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+									 MKRank.y=MKRank_bg.y+5
+									 rankText_icon.y=MKRank_bg.y
+
+									 Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+									 Comment.y = Comment_bg.y
+
+									 sumbitBtn.y = Comment.y+Comment.height/2+20
+									 sumbitBtn_lbl.y=sumbitBtn.y
+
+									 sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+									 sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+									 sumbitBtn_lbl.x = sumbitBtn.x+16
+
+
+								else
+
+
+									     --                Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
+														-- Phone.y = emailnotifytext.y+emailnotifytext.height+7
+														-- Phone_bottom.y= Phone.y+10
+
+												  --       Password_bg.y = Phone_bg.y+Phone_bg.height+4
+														-- Password.y = Phone_bg.y+Phone_bg.height+4
+														-- Password_bottom.y = Password.y+10
+
+										print("fdshdfshdfshudfshdfhjsdfhjsdfhjshdfsudsf")
+
+										if emailnotifytext.isVisible == true and emailnotifybox.isVisible == true then
+
+												 Password_bg.y = Phone_bg.y+Phone_bg.height+12
+												 Password.y = Phone_bg.y+Phone_bg.height+20
+												 Password_bottom.y = Password.y+10
+
+
+												 if Phone.text == "" or Phone.text == Phone_placeholder then
+
+														Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
+														Phone.y = emailnotifytext.y+emailnotifytext.height+7
+														Phone_bottom.y= Phone.y+10
+
+												        Password_bg.y = Phone_bg.y+Phone_bg.height+7
+														Password.y = Phone_bg.y+Phone_bg.height+7
+														Password_bottom.y = Password.y+10
+
+												 end
+
+										else
+	   
+											--      Password_bg.y = Phone_bg.y+Phone_bg.height+12
+											-- 	 Password.y = Phone_bg.y+Phone_bg.height+15
+											-- 	 Password_bottom.y = Password.y+10
+
+											-- print("mmmmmm")
+
+
+										end
+
+
+											-- if Phone.text == "" or Phone.text == Phone_placeholder then
+
+											-- 	print("phone null %%%%%%%%%%%%")
+
+											-- 		Phone_bg.y = Email_bg.y+Email_bg.height+7
+											-- 		Phone.y = Email_bg.y+Email_bg.height+7
+											-- 		Phone_bottom.y= Phone.y+10
+
+											-- 		Password_bg.y = Phone_bg.y+Phone_bg.height+7
+											-- 		Password.y = Phone_bg.y+Phone_bg.height+7
+											-- 		Password_bottom.y = Password.y+10
+
+											-- end
+
+										 Phone_bg.y = Email_bg.y+Email_bg.height+7
+										 Phone.y = Email_bg.y+Email_bg.height+7
+										 Phone_bottom.y= Phone.y+10
+
+										 Password_bg.y = Phone_bg.y+Phone_bg.height+7
+										 Password.y = Phone_bg.y+Phone_bg.height+7
+										 Password_bottom.y = Password.y+10
+
+										 PasswordHelptext.y= Password_bottom.y + 18
+										 GeneratePasstext.y= PasswordHelptext.y + 20
+
+										 MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+										 MKRank.y=MKRank_bg.y+5
+										 rankText_icon.y=MKRank_bg.y
+
+										 Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+										 Comment.y = Comment_bg.y
+
+										 sumbitBtn.y = Comment.y+Comment.height/2+20
+										 sumbitBtn_lbl.y=sumbitBtn.y
+
+										 sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+										 sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+										 sumbitBtn_lbl.x = sumbitBtn.x+16
+
+								end
+
+
                                  native.setKeyboardFocus(nil)
 
-                            else
+         --                    elseif Email.text == nil or Email.text == ""  or Email.text == EmailAddress_placeholder or  SetError("* ".."Enter the valid Email",Email) and Phone.text ~= nil and Phone.text~= "" and Utils.PhoneMasking(tostring(text)) then
+
+                                 
+         --                         print("88888888888787686787678678678678")
+
+         --                         emailnotifybox.isVisible = false
+								 -- emailnotifytext.isVisible = false
+
+								 -- Phone_bg.y = Email_bg.y+Email_bg.height+7
+								 -- Phone.y = Email_bg.y+Email_bg.height+7
+								 -- Phone_bottom.y= Phone.y+10
+
+								 -- textnotifybox.isVisible = true
+								 -- textnotifytext.isVisible = true
+
+         --                         textnotifybox.y = Phone_bottom.y + 15
+								 -- textnotifytext.y= Phone_bottom.y + 15
+
+								 -- Password_bg.y = textnotifytext.y+textnotifytext.contentHeight+12
+								 -- Password.y = textnotifytext.y+textnotifytext.contentHeight+15
+								 -- Password_bottom.y = Password.y+10
+
+								 -- PasswordHelptext.y= Password_bottom.y + 18
+								 -- GeneratePasstext.y= PasswordHelptext.y + 20
+
+								 -- MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+								 -- MKRank.y=MKRank_bg.y+5
+								 -- rankText_icon.y=MKRank_bg.y
+
+								 -- Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+								 -- Comment.y = Comment_bg.y
+
+								 -- sumbitBtn.y = Comment.y+Comment.height/2+20
+								 -- sumbitBtn_lbl.y=sumbitBtn.y
+
+								 -- sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+								 -- sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+								 -- sumbitBtn_lbl.x = sumbitBtn.x+16
+
+
+                  else
 
 							native.setKeyboardFocus(Phone)
 
-						    end
+				  end
 
 						elseif(event.target.id == "Phone") then
 
-							native.setKeyboardFocus(Password)
+							if Phone.text ~= nil and Phone.text~= "" and Utils.PhoneMasking(tostring(text)) then
 
+								 textnotifybox.isVisible = true
+								 textnotifytext.isVisible = true
+
+                                 textnotifybox.y = Phone_bottom.y + 15
+								 textnotifytext.y= Phone_bottom.y + 15
+
+								 Password_bg.y = textnotifytext.y+textnotifytext.contentHeight+12
+								 Password.y = textnotifytext.y+textnotifytext.contentHeight+15
+								 Password_bottom.y = Password.y+10
+
+								 PasswordHelptext.y= Password_bottom.y + 18
+								 GeneratePasstext.y= PasswordHelptext.y + 20
+
+								 MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+								 MKRank.y=MKRank_bg.y+5
+								 rankText_icon.y=MKRank_bg.y
+
+								 Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+								 Comment.y = Comment_bg.y
+
+								 sumbitBtn.y = Comment.y+Comment.height/2+20
+								 sumbitBtn_lbl.y=sumbitBtn.y
+
+								 sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+								 sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+								 sumbitBtn_lbl.x = sumbitBtn.x+16
+
+
+							     native.setKeyboardFocus(Password)
+
+							elseif Phone.text == nil or Phone.text == ""  or Phone.text == Phone_placeholder then
+
+								 textnotifybox.isVisible = false
+								 textnotifytext.isVisible = false
+
+								 -- if SetError("* ".."Enter the valid Email",Email) then
+
+								 -- 	print("herererererererererer")
+
+								 -- 	Password_bg.y = Phone_bg.y+Phone_bg.height+7
+								 --    Password.y = Phone_bg.y+Phone_bg.height+7
+								 --    Password_bottom.y = Password.y+10
+
+								 -- end
+
+								 Password_bg.y = Phone_bg.y+Phone_bg.height+7
+								 Password.y = Phone_bg.y+Phone_bg.height+15
+								 Password_bottom.y = Password.y+10
+
+								 PasswordHelptext.y= Password_bottom.y + 18
+								 GeneratePasstext.y= PasswordHelptext.y + 20
+
+								 MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+								 MKRank.y=MKRank_bg.y+5
+								 rankText_icon.y=MKRank_bg.y
+
+								 Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+								 Comment.y = Comment_bg.y
+
+								 sumbitBtn.y = Comment.y+Comment.height/2+20
+								 sumbitBtn_lbl.y=sumbitBtn.y
+
+								 sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+								 sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+								 sumbitBtn_lbl.x = sumbitBtn.x+16
+
+
+							   native.setKeyboardFocus(Password)
+
+
+						    end
 
 						elseif(event.target.id == "Password") then
 
@@ -810,6 +1150,7 @@ function scene:create( event )
 	    })
 	    emailnotifybox.width= 20
 	    emailnotifybox.height = 20
+	    emailnotifybox.isVisible = false
 	    emailnotifybox.anchorX= 0
 
 	    sceneGroup:insert(emailnotifybox)
@@ -820,17 +1161,20 @@ function scene:create( event )
 	    emailnotifytext.anchorX=0
 	    emailnotifytext:setFillColor(0,0,0)
 	    emailnotifytext.y= Email_bottom.y + 15
+	    emailnotifytext.isVisible = false
 	    sceneGroup:insert(emailnotifytext)
 
 
 -----------------------------------phone------------------------------------------
 		Phone_bg = display.newRect(W/2, emailnotifytext.y+emailnotifytext.height+7, W-20, 25)
 		Phone_bg.alpha = 0.01
+		Phone_bg.y = Email_bg.y+Email_bg.height+7
 		sceneGroup:insert(Phone_bg)
 
 		Phone = native.newTextField(W/2+3, emailnotifytext.y+emailnotifytext.height+15, W-20, 25)
 		Phone.id="Phone"
 		Phone.size=14	
+		Phone.y = Email_bg.y+Email_bg.height+7
 		Phone.anchorX = 0
 		Phone.x = 15
 		--Phone.text = "(111) 111 -1111"
@@ -856,6 +1200,7 @@ function scene:create( event )
 		})
 		textnotifybox.width= 20
 		textnotifybox.height = 20
+		textnotifybox.isVisible = false
 		textnotifybox.anchorX= 0
 
 		sceneGroup:insert(textnotifybox)
@@ -865,6 +1210,7 @@ function scene:create( event )
 		textnotifytext:setFillColor(0,0,0)
 		textnotifytext.anchorX=0
 		textnotifytext.y= Phone_bottom.y + 15
+		textnotifytext.isVisible = false
 		sceneGroup:insert(textnotifytext)
 
 
@@ -873,6 +1219,7 @@ function scene:create( event )
 		
 		Password_bg = display.newRect(W/2, textnotifytext.y+textnotifytext.contentHeight+12, W-20, 25)
 		Password_bg.alpha = 0.01
+		Password_bg.y = Phone_bg.y+Phone_bg.height+7
 		sceneGroup:insert(Password_bg)
 
 		Password = native.newTextField(W/2+3, textnotifytext.y+textnotifytext.height+15, W-20, 25)
@@ -880,7 +1227,8 @@ function scene:create( event )
 		Password.size=14	
 		Password.anchorX = 0
 		Password.x = 15
-		Password.y = textnotifytext.y+textnotifytext.contentHeight+15
+		Password.y = Phone_bg.y+Phone_bg.height+7
+		--Password.y = textnotifytext.y+textnotifytext.contentHeight+15
 		Password:setReturnKey( "next" )
 		Password.hasBackground = false
 		Password.placeholder="Password"
