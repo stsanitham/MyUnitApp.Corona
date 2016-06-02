@@ -369,6 +369,11 @@ local display_details = {}
 		local start_timeGMT = Utils.makeTimeStamp( detail_value.startdate.." "..tzoffset )
 		local end_timeGMT = Utils.makeTimeStamp( detail_value.enddate.." "..tzoffset )
 
+
+		Details.startdate = detail_value.startdate
+
+		Details.enddate = detail_value.enddate
+
 		TicklerId = Details.TicklerId
 		CalendarId = Details.CalendarId
 		CalendarName = Details.CalendarName
@@ -750,10 +755,10 @@ local display_details = {}
 		if event.phase == "will" then
 
 				if status == "edit" then
-					event.parent:resumeGame(status,detail_value)
+					event.parent:resumeGame(status,Details)
 
 				elseif status == "deleted" then
-					event.parent:resumeGame(status,detail_value)
+					event.parent:resumeGame(status,Details)
 				else
 					status="back"
 					event.parent:resumeGame(status)

@@ -152,14 +152,13 @@ local function CreateTabBarIcons( )
 
     if IsOwner == true then
 
-	tab_broadcast_btn = display.newImageRect( tabBarGroup, "res/assert/resource.png", 35/1.4, 31/1.4 )
-	tab_broadcast_btn.x=tab_Boradcast.x
-	tab_broadcast_btn.y=tab_Boradcast.y+tab_broadcast_btn.contentHeight/2-8
-	tab_broadcast_btn.anchorY=0
-	tab_broadcast_btn:setFillColor( 0 )
+		tab_broadcast_btn = display.newImageRect( tabBarGroup, "res/assert/resource.png", 35/1.4, 31/1.4 )
+		tab_broadcast_btn.x=tab_Boradcast.x
+		tab_broadcast_btn.y=tab_Boradcast.y+tab_broadcast_btn.contentHeight/2-8
+		tab_broadcast_btn.anchorY=0
+		tab_broadcast_btn:setFillColor( 0 )
 
     end
-
 
 
 	tab_Contact_btn = display.newImageRect( tabBarGroup, "res/assert/Consultant.png", 35/1.4, 31/1.4 )

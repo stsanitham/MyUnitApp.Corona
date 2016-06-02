@@ -263,6 +263,27 @@ local function selectionComplete ( event )
 
 		
 
+
+			if Audio_filename.isVisible == true then
+
+				if filename_title.isVisiblee == false then
+						filename_title.y=Audio_filename.y+20
+						composePage.y = composePage.y+45
+				end
+
+			
+			
+
+			else
+
+				composePage.y = composePage.y+45
+
+				filename_title.y = tabBar.y+tabBar.contentHeight+15
+
+			end
+
+
+
 			filename_title.isVisible = true
 
 			filename.isVisible = true
@@ -273,21 +294,10 @@ local function selectionComplete ( event )
 
 			filename.text = photoname
 
-			if Audio_filename.isVisible == true then
-				filename_title.y=Audio_filename.y+20
-			
-
-			else
-
-
-				filename_title.y = tabBar.y+tabBar.contentHeight+15
-
-			end
-
 				filename.y=filename_title.y+filename_title.contentHeight+5
 				filename_close.y=filename_title.y+filename_title.contentHeight+5
 
-			composePage.y = composePage.y+45
+			
 
 
      end
@@ -513,8 +523,6 @@ end
 									photoheight = photoheight1
 
 
-									 spinner.y=H/2-75
-
 									 reloadlistvalues = json.encode(listupdationvalues)
 
 
@@ -576,11 +584,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 
                 spinner.y=H/2-80
 
-		    end
-
-
-
-        	if (shortmsg_textbox.text ~= "") and (filename.text ~= "" and filename.isVisible == true ) then
+		  elseif (shortmsg_textbox.text ~= "") and (filename.text ~= "" and filename.isVisible == true ) then
 
         		print("sending with image")
 
@@ -625,16 +629,11 @@ local function sendAction( method,IsScheduled,Date,Time )
 
 					      	spinner_show()
 
-					      	spinner.y=H/2-80
+					      	spinner.y=H/2-30
 
         	   --Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
-            end
-
-
-
-
-            if (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) then
+           elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) then
 
             	print("audio path send value")
 
@@ -682,9 +681,15 @@ local function sendAction( method,IsScheduled,Date,Time )
 
 				spinner_show()
 
-				 spinner.y=H/2-80
+				 spinner.y=H/2-20
 
             	-- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
+
+            end
+
+            if Audio_filename.isVisible == true and filename.isVisible == true then
+
+            	 spinner.y=H/2+12
 
             end
 
@@ -1293,6 +1298,23 @@ function scene:updateRecordedAudio( dataFileName,audiopagename )
 							formatSizeUnits(size2)
 
 
+
+			if filename.isVisible == true then
+
+				if Audio_filename_title.isVisible == false then
+					Audio_filename_title.y=filename.y+20
+					composePage.y = composePage.y+45
+				end
+
+			else
+
+				Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
+				composePage.y = composePage.y+45
+
+			end
+
+
+
 			Audio_filename_title.isVisible = true
 
 			Audio_filename.isVisible = true
@@ -1303,21 +1325,11 @@ function scene:updateRecordedAudio( dataFileName,audiopagename )
 
 			Audio_filename.text = dataFileName1
 
-			if filename.isVisible == true then
-
-				Audio_filename_title.y=filename.y+20
-			
-
-			else
-
-				Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
-
-			end
 
 				Audio_filename.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
 				Audio_filename_close.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
 
-			composePage.y = composePage.y+45
+			
 
 	
 end
@@ -1404,18 +1416,10 @@ end
 
 
 local function webListener( event )
-    local shouldLoad = true
-
     local url = event.url
-
-    	--print( "json : "..json.encode(event) )
-    
+   
     if 1 == string.find( url, "corona:close" ) then
-        -- Close the web popup
-        --print( "here" )
-
-        shouldLoad = false
-
+     
         longmsg_textbox.isVisible=false
        
         updatedresponse = urlDecode(url)
@@ -1489,7 +1493,6 @@ local function webListener( event )
     if event.errorCode then
         -- Error loading page
         print( "Error: " .. tostring( event.errorMessage ) )
-        shouldLoad = false
     end
 
     return false
@@ -1848,6 +1851,13 @@ end
 		
 		if phase == "will" then
 
+			
+
+
+		elseif phase == "did" then
+
+			--composer.removeHidden()
+
 				if event.params and openPagevalue == "addPage" then
 
 					status=event.params.page
@@ -1953,25 +1963,6 @@ end
 				composePage:insert(longmsg_title)
 
 
-				-- longmsg_textbox = native.newTextBox( 10,longmsg_title.y+ longmsg_title.height+7, W - 20, EditBoxStyle.height+40)
-				-- longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
-				-- longmsg_textbox.isEditable = true
-				-- longmsg_textbox.size=14
-				-- longmsg_textbox.anchorX = 0
-				-- longmsg_textbox.height = EditBoxStyle.height + 40
-				-- longmsg_textbox.anchorY=0
-				-- longmsg_textbox.width = W-20
-				-- longmsg_textbox.value=""
-				-- longmsg_textbox.id = "longmessage"
-				-- longmsg_textbox.isVisible = true
-				-- longmsg_textbox.hasBackground = true
-				-- --longmsg_textbox:setReturnKey( "done" )
-				-- longmsg_textbox.inputType = "default"
-				-- sceneGroup:insert(longmsg_textbox)
-				-- --longmsg_textbox.x=10
-				-- --longmsg_textbox.y=longmsg_title.y+ longmsg_title.height+7
-
-
 		        content = ""
 
 			    test= string.urlEncode(content)
@@ -2024,35 +2015,6 @@ end
 				long_msg_charlimit.isVisible=false
 				composePage:insert(long_msg_charlimit)
 
-
-				-- if sceneevent.params then
-
-    --                     detailvalues = sceneevent.params.Details
-    --                     page = sceneevent.params.value
-
-    --                     print("detailvalues : "..json.encode(detailvalues))
-
-    --                     if page == "edit" then
-
-	   --                      shortmsg_textbox.text = detailvalues.MyUnitBuzzMessage
-				-- 		    longMessage = detailvalues.MyUnitBuzzLongMessage
-
-
-				-- 	   		short_msg_charlimit.text = (250 - shortmsg_textbox.text:len()).." "..MessagePage.characters
-
-				--         	long_msg_charlimit.text = (1000 - longMessage:len()).." "..MessagePage.characters
-
-				-- 			back_icon:addEventListener("touch",closeMessagePage)
-				-- 			back_icon_bg:addEventListener("touch",closeMessagePage)
-				-- 			title:addEventListener("touch",closeMessagePage)
-
-                       	
-    --                     end
-
-			 --    end
-
-
---camera_icon:addEventListener("touch",attachAction)
 
 
 	
@@ -2140,11 +2102,6 @@ end
 
 
 
-
-
-		elseif phase == "did" then
-
-			--composer.removeHidden()
 
 			menuBtn:addEventListener("touch",menuTouch)
 

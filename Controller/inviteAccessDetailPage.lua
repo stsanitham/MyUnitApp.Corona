@@ -459,39 +459,11 @@ end
 
 
 
-local function GrandProcess()
+local function GrandProcess(id_value)
 
-    id_value = "Grant Access From Open"
-	     GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
-       
-end
-
-
-local function GrandProcess1()
-
-    id_value = "Grant Access From Deny"
 	GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
        
 end
-
-
-local function DenyProcess()
-	id_value = "Deny Access"
-
-	 GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
-
-end
-
-
-local function ProvideAccess()
-	id_value = "Provide Access"
-
-	GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
-
-end
-
-
-
 
 
 
@@ -507,35 +479,23 @@ local function onButtonTouchAction( event )
 			
 			display.getCurrentStage():setFocus( nil )
 
-			id_value =  event.target.id
+			local id_value =  event.target.id
 
 				if id_value == "Block Access" then
 
 					 Block()
 
-				elseif id_value == "Grant Access From Open" then
-
-					 GrandProcess()
-
-				elseif id_value == "Grant Access From Deny" then
-
-					 GrandProcess1()
-
+		
 				elseif id_value == "Remove Access" then
 
 					 RemoveProcess()
 
-				elseif id_value == "Deny Access" then
+				else
 
-					 DenyProcess()
-
-				elseif id_value == "Provide Access" then
-
-					 ProvideAccess()
+						GrandProcess(id_value)
 
 				end
 
-			print("%%%%%%%%%%%%%%%%%%%%%%%%%%%", event.target.id )
 	end
 
 return true

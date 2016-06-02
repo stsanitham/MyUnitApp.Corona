@@ -826,7 +826,6 @@ end
 
 		     elseif popupText.text == CommonWords.GrantAccessText then
 
-                    print("************************"..id_name)
 
 	            		if id_name == "Grant Access From Deny" then
 
@@ -841,7 +840,9 @@ end
 	            			RequesteddateValue.isVisible = false
 	            			Requesteddate_bottom.isVisible = false
 
+	            			textnotifytext:setFillColor( 0.4 )
 	            			Password_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+	            			Password_bg:setFillColor( 0.6 )
 							Password_titlestar.y= Password_bg.y + 5
 							Password_titletext.y= Password_bg.y+ 5
 							PasswordValue.y =Password_titletext.y+Password_titletext.height+7
@@ -941,63 +942,62 @@ end
 
 if  PhoneDetailValue.text == "" or PhoneDetailValue.text == "null" or PhoneDetailValue.text == PhoneDetailValue.id or PhoneDetailValue.text:len()<14 or PhoneDetailValue.text == PopupGroup.PhoneRequired then
 
-	print("phone null so here (((((((((((((((((((")
 
 		validation = false
 
-			  if popupText.text == CommonWords.DenyAccessText then
+				  if popupText.text == CommonWords.DenyAccessText then
 
-			  	textnotifytext.isVisible = false
-			  	textnotifybox.isVisible = false
+					  	textnotifytext.isVisible = false
+					  	textnotifybox.isVisible = false
 
-		      Password_bg.isVisible = false
-		      Password_titlestar.isVisible = false
-		      Password_titletext.isVisible = false
-		      Password_bottom.isVisible = false
-		      PasswordValue.isVisible = false
-		      PasswordHelptext.isVisible = false
-		      GeneratePasstext.isVisible = false
-		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-			  processbutton_text.y=processbutton.y
+				      Password_bg.isVisible = false
+				      Password_titlestar.isVisible = false
+				      Password_titletext.isVisible = false
+				      Password_bottom.isVisible = false
+				      PasswordValue.isVisible = false
+				      PasswordHelptext.isVisible = false
+				      GeneratePasstext.isVisible = false
+				      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+					  processbutton_text.y=processbutton.y
 
-			  deny_bg.y = Requesteddate_bottom.y + 45
-			  deny_Value.y=deny_bg.y
-			  processbutton.y = deny_Value.y+deny_Value.contentHeight - 10
-			  processbutton_text.y=processbutton.y
+					  deny_bg.y = Requesteddate_bottom.y + 45
+					  deny_Value.y=deny_bg.y
+					  processbutton.y = deny_Value.y+deny_Value.contentHeight - 10
+					  processbutton_text.y=processbutton.y
 
-			 elseif popupText.text == CommonWords.ProvideAccessText then
-
-
-			 	Requesteddate_bg.isVisible = false
-			 	RequesteddateValue.isVisible = false
-			 	Requesteddate_title.isVisible = false
-			 	Requesteddate_bottom.isVisible = false
-
-			  Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.contentHeight+7
-		      Password_titlestar.y= Password_bg.y+7
-		      Password_titletext.y= Password_bg.y+7
-		      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
-		      Password_bottom.y= PasswordValue.y +9.5
-		      PasswordHelptext.y= Password_bottom.y + 12
-		      GeneratePasstext.y= PasswordHelptext.y + 20
-		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-			  processbutton_text.y=processbutton.y
+				 elseif popupText.text == CommonWords.ProvideAccessText then
 
 
-		     else
+				 		Requesteddate_bg.isVisible = false
+				 		RequesteddateValue.isVisible = false
+				 		Requesteddate_title.isVisible = false
+				 		Requesteddate_bottom.isVisible = false
+
+					  Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.contentHeight+7
+				      Password_titlestar.y= Password_bg.y+7
+				      Password_titletext.y= Password_bg.y+7
+				      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
+				      Password_bottom.y= PasswordValue.y +9.5
+				      PasswordHelptext.y= Password_bottom.y + 12
+				      GeneratePasstext.y= PasswordHelptext.y + 20
+				      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+					  processbutton_text.y=processbutton.y
 
 
-		      Password_bg.y =  Requesteddate_bottom.y+Requesteddate_bottom.contentHeight+7
-		      Password_titlestar.y= Password_bg.y+7
-		      Password_titletext.y= Password_bg.y+7
-		      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
-		      Password_bottom.y= PasswordValue.y +9.5
-		      PasswordHelptext.y= Password_bottom.y + 12
-		      GeneratePasstext.y= PasswordHelptext.y + 20
-		      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
-			  processbutton_text.y=processbutton.y
+			     else
 
-			 end
+
+			      Password_bg.y =  Requesteddate_bottom.y+Requesteddate_bottom.contentHeight+7
+			      Password_titlestar.y= Password_bg.y+7
+			      Password_titletext.y= Password_bg.y+7
+			      PasswordValue.y =Password_titletext.y+Password_titletext.contentHeight+8
+			      Password_bottom.y= PasswordValue.y +9.5
+			      PasswordHelptext.y= Password_bottom.y + 12
+			      GeneratePasstext.y= PasswordHelptext.y + 20
+			      processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
+				  processbutton_text.y=processbutton.y
+
+				 end
 
 
 else
@@ -1566,8 +1566,9 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 -----------------------------------password detail-------------------------------------------------
 
         Password_bg = display.newRect(W/2,Requesteddate_bg.y+15, W-50, 25)
-		Password_bg.isVisible = true
-		Password_bg.alpha = 0.01
+		--Password_bg.isVisible = true
+		--Password_bg.alpha = 0.01
+		Password_bg:setFillColor( 0.6 )
 		Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
 		popup_scroll:insert(Password_bg)
 

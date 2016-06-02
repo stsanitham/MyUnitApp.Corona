@@ -208,9 +208,11 @@ local function onKeyEvent( event )
 
  local function CreateTabBarIcons( )
 
-	if tab_Group_btn ~= nil then tab_Group_btn:removeSelf( );tab_Group_btn=nil end
-	if tab_Message_btn then tab_Message_btn:removeSelf( );tab_Message_btn=nil end
-	if tab_Contact_btn then tab_Contact_btn:removeSelf( );tab_Contact_btn=nil end
+	if tab_Group_btn ~= nil then if tab_Group_btn.y then tab_Group_btn:removeSelf( );tab_Group_btn=nil end end
+	if tab_Message_btn ~= nil then if tab_Message_btn.y then tab_Message_btn:removeSelf( );tab_Message_btn=nil end end
+	if tab_Contact_btn ~= nil then if tab_Contact_btn.y then tab_Contact_btn:removeSelf( );tab_Contact_btn=nil end end
+	if tab_broadcast_btn ~= nil then if tab_broadcast_btn.y then tab_broadcast_btn:removeSelf( );tab_broadcast_btn=nil end end
+
 
 	tab_Group_btn = display.newImageRect( tabBarGroup, "res/assert/group.png", 35/1.4, 31/1.4 )
 	tab_Group_btn.x=tab_Group.x
@@ -218,16 +220,28 @@ local function onKeyEvent( event )
 	tab_Group_btn.anchorY=0
 
 
+
 	tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats.png", 35/1.4, 31/1.4 )
 	tab_Message_btn.x=tab_Message.x
 	tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
 	tab_Message_btn.anchorY=0
+
+    if IsOwner == true then
+
+		tab_broadcast_btn = display.newImageRect( tabBarGroup, "res/assert/resource.png", 35/1.4, 31/1.4 )
+		tab_broadcast_btn.x=tab_Boradcast.x
+		tab_broadcast_btn.y=tab_Boradcast.y+tab_broadcast_btn.contentHeight/2-8
+		tab_broadcast_btn.anchorY=0
+		tab_broadcast_btn:setFillColor( 0 )
+
+    end
 
 
 	tab_Contact_btn = display.newImageRect( tabBarGroup, "res/assert/Consultant.png", 35/1.4, 31/1.4 )
 	tab_Contact_btn.x=tab_Contact.x
 	tab_Contact_btn.y=tab_Contact.y+tab_Contact_btn.contentHeight/2-8
 	tab_Contact_btn.anchorY=0
+
 
 end
 
@@ -290,7 +304,55 @@ local function TabbarTouch( event )
 
 					transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
 					transition.to( tab_Message_btn, { time=200, delay=100, xScale=1,yScale=1 , onComplete=listener1} )
+			elseif event.target.id == "broadcast" then
 
+
+				CreateTabBarIcons()
+
+
+					tab_broadcast_btn:removeSelf( );tab_broadcast_btn=nil
+
+					tab_broadcast_btn = display.newImageRect( tabBarGroup, "res/assert/resource.png", 35/1.4, 31/1.4 )
+					tab_broadcast_btn.x=tab_Boradcast.x
+					tab_broadcast_btn.y=tab_Boradcast.y+tab_broadcast_btn.contentHeight/2-8
+					tab_broadcast_btn.anchorY=0
+					tab_broadcast_btn:scale(0.1,0.1)
+					tab_broadcast_btn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+					tab_Broadcast_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					tab_Message_txt:setFillColor( 0.3 )
+					tab_Contact_txt:setFillColor(  0.3  )
+					tab_Group_txt:setFillColor(  0.3  )
+
+					local circle = display.newCircle( tabBarGroup, tab_broadcast_btn.x, tab_broadcast_btn.y+tab_broadcast_btn.contentHeight/2, 25 )
+					circle.strokeWidth=4
+					circle:scale(0.1,0.1)
+					circle.alpha=0.3
+					circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+					local function listener1( obj )
+
+						circle:removeSelf( );circle=nil
+						tab_broadcast_btn:scale(0.8,0.8)
+
+					    overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+					    overlay.y=tabBg.y+6;overlay.x=tab_broadcast_btn.x
+
+					        local options = {
+									time = 300,	  
+									params = { tabbuttonValue3 =event.target.id}
+									}
+
+				   composer.gotoScene( "Controller.broadCastPage", options )
+					end
+
+					if overlay then overlay:removeSelf( );overlay=nil end
+
+					transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
+					transition.to( tab_broadcast_btn, { time=220, delay=100, xScale=1.3,yScale=1.3 , onComplete=listener1} )
+
+   				
 
 
 			elseif event.target.id == "group" then
@@ -1025,6 +1087,8 @@ function scene:show( event )
 		end
 
 
+
+
 tabBg = display.newRect( tabBarGroup, W/2, H-40, W, 40 )
 tabBg.anchorY=0
 tabBg.strokeWidth = 1
@@ -1038,11 +1102,27 @@ tab_Group.id="group"
 tab_Group:setFillColor( 0.2 )
 
 tab_Message = display.newRect(tabBarGroup,0,0,70,40)
-tab_Message.x=W/2;tab_Message.y=tabBg.y
+if IsOwner == true then
+tab_Message.x=W/2-W/8
+else
+tab_Message.x = W/2
+end
+tab_Message.y=tabBg.y
 tab_Message.anchorY=0
 tab_Message.alpha=0.01
 tab_Message.id="message"
 tab_Message:setFillColor( 0.2 )
+
+if IsOwner == true then
+tab_Boradcast = display.newRect(tabBarGroup,0,0,70,40)
+tab_Boradcast.x=W/2+W/10;tab_Boradcast.y=tabBg.y
+tab_Boradcast.anchorY=0
+tab_Boradcast.alpha=0.01
+tab_Boradcast.id="broadcast"
+tab_Boradcast:setFillColor( 0.2 )
+
+tab_Boradcast:addEventListener( "touch", TabbarTouch )
+end
 
 tab_Contact = display.newRect(tabBarGroup,0,0,70,40)
 tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
@@ -1069,6 +1149,27 @@ CreateTabBarIcons()
 tab_Group_txt = display.newText( tabBarGroup, ChatPage.Group ,0,0,native.systemFont,11 )
 tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
 tab_Group_txt:setFillColor( 0.3 )
+
+if IsOwner == true then
+tab_Broadcast_txt = display.newText( tabBarGroup,  "Boradcast",0,0,native.systemFont,11 )
+tab_Broadcast_txt.x=tab_broadcast_btn.x;tab_Broadcast_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
+tab_Broadcast_txt:setFillColor( 0.3 )
+end
+
+
+tab_Message_txt = display.newText( tabBarGroup,ChatPage.Chats ,0,0,native.systemFont,11 )
+tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
+tab_Message_txt:setFillColor( 0.3 )
+
+tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List  ,0,0,native.systemFont,11 )
+tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
+tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+if overlay then overlay:removeSelf( );overlay=nil end
+overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
+
+sceneGroup:insert( tabBarGroup )
+
 
 	    if addGroupid_value == "addGroup" and pageid_value == "group" then
 
@@ -1108,18 +1209,6 @@ tab_Group_txt:setFillColor( 0.3 )
 		
 
 
-tab_Message_txt = display.newText( tabBarGroup,ChatPage.Chats ,0,0,native.systemFont,11 )
-tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
-tab_Message_txt:setFillColor( 0.3 )
-
-tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List  ,0,0,native.systemFont,11 )
-tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
-tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-if overlay then overlay:removeSelf( );overlay=nil end
-overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
-overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
-
-sceneGroup:insert( tabBarGroup )
 
 	elseif phase == "did" then
 

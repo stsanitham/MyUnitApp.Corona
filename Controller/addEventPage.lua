@@ -2622,6 +2622,7 @@ function scene:create( event )
 	if event.params.Details ~= nil then
 
 			isUpdate  = true
+
 			UpdateValue = event.params.Details
 
 			CalendarId = UpdateValue.CalendarId
@@ -2638,6 +2639,8 @@ function scene:create( event )
 			end
 
 			TicklerId = UpdateValue.TicklerId
+
+			print( json.encode(UpdateValue) )
 
 	end
 
@@ -3475,7 +3478,7 @@ function scene:show( event )
 		  		Addinvitees.contactinfo=value[1]
 		  	end
 
-
+		  	print( "UpdateValue.AppointmentPurpose : "..UpdateValue.AppointmentPurpose )
 
 	  		if UpdateValue.AppointmentPurpose ~= nil then
 
