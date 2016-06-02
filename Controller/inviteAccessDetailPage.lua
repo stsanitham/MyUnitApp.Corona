@@ -292,7 +292,7 @@ end
 
          	 end
 
-         elseif id_value == "Grant Access" then
+         elseif id_value == "Grant Access From Deny" then
 
 	 	    if Request_response == "SUCCESS" then
 
@@ -315,6 +315,32 @@ end
 		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
 
          	 end
+
+
+         elseif id_value == "Grant Access From Open" then
+
+	 	    if Request_response == "SUCCESS" then
+
+	 	    	grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
+
+	 	     elseif Request_response == "GRANT" then
+
+         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
+
+         	 elseif Request_response == "REMOVE" then
+
+		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
+		
+		     elseif Request_response == "REQUEST" then
+
+		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
+
+		 	 elseif Request_response == "BLOCK" then
+
+		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
+
+         	 end
+
 
 	 	elseif id_value == "Provide Access" then
 
@@ -459,11 +485,39 @@ end
 
 
 
-local function GrandProcess(id_value)
+local function GrandProcess()
 
+    id_value = "Grant Access From Open"
+	     GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
+       
+end
+
+
+local function GrandProcess1()
+
+    id_value = "Grant Access From Deny"
 	GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
        
 end
+
+
+local function DenyProcess()
+	id_value = "Deny Access"
+
+	 GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
+
+end
+
+
+local function ProvideAccess()
+	id_value = "Provide Access"
+
+	GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
+
+end
+
+
+
 
 
 
@@ -479,23 +533,35 @@ local function onButtonTouchAction( event )
 			
 			display.getCurrentStage():setFocus( nil )
 
-			local id_value =  event.target.id
+			id_value =  event.target.id
 
 				if id_value == "Block Access" then
 
 					 Block()
 
-		
+				elseif id_value == "Grant Access From Open" then
+
+					 GrandProcess()
+
+				elseif id_value == "Grant Access From Deny" then
+
+					 GrandProcess1()
+
 				elseif id_value == "Remove Access" then
 
 					 RemoveProcess()
 
-				else
+				elseif id_value == "Deny Access" then
 
-						GrandProcess(id_value)
+					 DenyProcess()
+
+				elseif id_value == "Provide Access" then
+
+					 ProvideAccess()
 
 				end
 
+			print("%%%%%%%%%%%%%%%%%%%%%%%%%%%", event.target.id )
 	end
 
 return true
