@@ -1238,9 +1238,6 @@ local pagingvalue = "listpage"
 
 		local function resumeCallList(listview_values)
 
-			print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" )
-
-
 	 		decodedvalue = json.decode(listview_values)
 
 	  			if decodedvalue.MessageStatus == "SCHEDULE" then
@@ -2060,6 +2057,7 @@ end
 
 			end
 
+			composer.removeHidden(  )
 	         
 			totalvalues = list_values
 

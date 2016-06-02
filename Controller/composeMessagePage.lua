@@ -12,17 +12,19 @@ require( "Webservice.ServiceManager" )
 local style = require("res.value.style")
 local scheduledMessageGroup = require( "Controller.scheduledMessageGroup" )
 local json = require("json")
+local lfs = require ("lfs")
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 local timePicker = require( "Controller.timePicker" )
 local datePicker = require( "Controller.datePicker" )
-
+local mime=require('mime')
+local socket=require('socket')
 local ck_editor = require('Utils.messageCKeditor')
 
 
 --------------- Initialization -------------------
 
-local W = display.contentWidth;H= display.contentHeight
+local W = display.contentWidth;local H= display.contentHeight
 
 local Background,tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title,scrollView,shortmsg_star,shortmsg_title,shortmsg_textbox,short_msg_charlimit,longmsg_star
 local longmsg_title,long_msg_charlimit,attachment_icon,icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt,filename_title,filename,filename_close,schedule_button
@@ -162,7 +164,7 @@ end
 
 					composePage.y = composePage.y-45
 
-						if filename_title.isVisible == true then
+					if filename_title.isVisible == true then
 						filename_title.y = tabBar.y+tabBar.contentHeight+15
 						filename.y=filename_title.y+filename_title.contentHeight+5
 						filename_close.y=filename_title.y+filename_title.contentHeight+5
@@ -246,7 +248,7 @@ local function selectionComplete ( event )
         photo = nil
 
 
-        local path = system.pathForFile( photoname, baseDir)
+        local path = system.pathForFile( photoname, system.DocumentsDirectory)
 
         local size1 = lfs.attributes (path, "size")
 
@@ -256,11 +258,8 @@ local function selectionComplete ( event )
 
 		io.close( fileHandle )
 
-            print("mime conversion ",file_inbytearray)
 
-        	print("bbb ",size1)
-
-       	 formatSizeUnits(size1)
+          	 formatSizeUnits(size1)
 
 		
 
@@ -279,6 +278,7 @@ local function selectionComplete ( event )
 			
 
 			else
+
 
 				filename_title.y = tabBar.y+tabBar.contentHeight+15
 
@@ -571,8 +571,11 @@ local function sendAction( method,IsScheduled,Date,Time )
                 
                 -- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","","","","",method,"","","",get_messagemodel)
 
+                
+
                 Webservice.SEND_MESSAGE("","","","","",shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"","","","","","","",method,"","","",get_messagemodel)
 
+                spinner_show()
 
 		    end
 
@@ -617,10 +620,11 @@ local function sendAction( method,IsScheduled,Date,Time )
 							
 						MessageFileType="Images"
 
+					
 
 					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
 
-
+					      	spinner_show()
 
         	   --Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
@@ -672,7 +676,10 @@ local function sendAction( method,IsScheduled,Date,Time )
 				MessageFileType="Audios"
 
 
+
 				Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_audiomodel)
+
+				spinner_show()
 
             	-- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
@@ -1149,11 +1156,7 @@ local function TextLimitation( event )
                 print("editing")
 
 
-                   if event.target.id =="longmessage" then
-
-                                    native.setKeyboardFocus( nil )
-
-                  end
+                  native.setKeyboardFocus( nil )
 
 
                   if (pHeight <= 960) then
@@ -1251,6 +1254,8 @@ end
 
 
 function scene:updateRecordedAudio( dataFileName,audiopagename )
+
+	composer.removeHidden(  )
 
 		local function onTimerRecord( event )
 
@@ -1481,8 +1486,8 @@ local function webListener( event )
 
  		else
 
- 			longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
- 			longmsg_textbox.isVisible=true
+ 			--longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
+ 			--longmsg_textbox.isVisible=true
 
 
  			 sendMessage(method)
@@ -1980,7 +1985,7 @@ end
 				-- --longmsg_textbox.y=longmsg_title.y+ longmsg_title.height+7
 
 
-		        content = "hai hello Where do by H. Rackham."
+		        content = ""
 
 			    test= string.urlEncode(content)
 
@@ -2183,7 +2188,7 @@ end
 
 		if event.phase == "will" then
 
-	  --    	if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
+			if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
 			-- if shortmsg_textbox then shortmsg_textbox:removeSelf( );shortmsg_textbox=nil end
 
 			 composer.removeHidden()

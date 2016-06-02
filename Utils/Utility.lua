@@ -1,4 +1,5 @@
 
+local socket = require( "socket" ) 
 
 Utils = {}
 function doesFileExist( fname, path )
@@ -93,7 +94,7 @@ end
 Utils.getIpAddress = function ( )
 local someRandomIP = "192.168.1.122" 
 local someRandomPort = "3102" 
-local mySocket = socket.udp() 
+local mySocket = socket.udp()
 mySocket:setpeername(someRandomIP,someRandomPort) 
 local myDevicesIpAddress, somePortChosenByTheOS = mySocket:getsockname()
 

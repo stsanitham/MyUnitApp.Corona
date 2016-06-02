@@ -67,6 +67,8 @@ meggageeditor.htmlContent = [[
 				var texttemp="corona:close" + value + ckvalue;
 	 			window.location.href = texttemp; 
 
+	 			return false;
+
 			}
 			else
 			{
@@ -74,6 +76,8 @@ meggageeditor.htmlContent = [[
 				//sweetAlert("Please enter the long text");
 		
 			}
+
+
        		
 		}
 
