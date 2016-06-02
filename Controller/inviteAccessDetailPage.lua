@@ -461,8 +461,16 @@ end
 
 local function GrandProcess()
 
-    id_value = "Grant Access"
+    id_value = "Grant Access From Open"
 	     GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
+       
+end
+
+
+local function GrandProcess1()
+
+    id_value = "Grant Access From Deny"
+	GetPopUp(invitedetail_value.MyUnitBuzzRequestAccessId,invitedetail_value.EmailAddress,invitedetail_value.PhoneNumber,invitedetail_value.PhoneNumber,invitedetail_value.MkRankLevel,invitedetail_value.UpdateTimeStamp,id_value,invitedetail_value,page_flag1)
        
 end
 
@@ -503,28 +511,29 @@ local function onButtonTouchAction( event )
 
 				if id_value == "Block Access" then
 
-					Block()
+					 Block()
 
-				elseif id_value == "Grant Access" then
+				elseif id_value == "Grant Access From Open" then
 
-					GrandProcess()
+					 GrandProcess()
+
+				elseif id_value == "Grant Access From Deny" then
+
+					 GrandProcess1()
 
 				elseif id_value == "Remove Access" then
 
-					RemoveProcess()
-
+					 RemoveProcess()
 
 				elseif id_value == "Deny Access" then
 
-					DenyProcess()
-
+					 DenyProcess()
 
 				elseif id_value == "Provide Access" then
 
-					ProvideAccess()
+					 ProvideAccess()
 
 				end
-
 
 			print("%%%%%%%%%%%%%%%%%%%%%%%%%%%", event.target.id )
 	end
@@ -630,13 +639,13 @@ end
 
 			if event.params then
 
-		     invitedetail_value = event.params.inviteDetails
+			     invitedetail_value = event.params.inviteDetails
 
-		     invite_status = event.params.checkstatus
+			     invite_status = event.params.checkstatus
 
-			 print("############################ Invite / Access Details...................." , json.encode(invitedetail_value) )
+				 print("############################ Invite / Access Details...................." , json.encode(invitedetail_value) )
 
-			 print("############################ Invite / Access Status...................." , invite_status)
+				 print("############################ Invite / Access Status...................." , invite_status)
 
 			     menuBtn:addEventListener("touch",menuTouch)
 
@@ -966,7 +975,7 @@ end
 					grantaccess_button.strokeWidth = 1
 					grantaccess_button.cornerRadius = 2
 					grantaccess_button.width = W-190
-					grantaccess_button.id="Grant Access"
+					grantaccess_button.id="Grant Access From Deny"
 					grantaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( grantaccess_button )
 
@@ -1056,7 +1065,7 @@ end
 					grantaccess_button.strokeWidth = 1
 					grantaccess_button.cornerRadius = 2
 					grantaccess_button.width = W-190
-					grantaccess_button.id="Grant Access"
+					grantaccess_button.id="Grant Access From Open"
 					grantaccess_button:addEventListener("touch",onButtonTouchAction)
 					scroll_View:insert( grantaccess_button )
 

@@ -4,16 +4,16 @@
 --
 ----------------------------------------------------------------------------------
 
-local composer = require( "composer" )
+local composer = require("composer")
 local scene = composer.newScene()
-local widget = require( "widget" )
-local Utility = require( "Utils.Utility" )
-local lfs = require ("lfs")
+local widget = require("widget")
+local Utility = require("Utils.Utility")
+local lfs = require("lfs")
 local mime = require("mime")
 local json = require("json")
 
-local timePicker = require( "Controller.timePicker" )
-local datePicker = require( "Controller.datePicker" )
+local timePicker = require("Controller.timePicker")
+local datePicker = require("Controller.datePicker")
 
 --------------- Initialization -------------------
 
@@ -3475,7 +3475,7 @@ function scene:show( event )
 		  		Addinvitees.contactinfo=value[1]
 		  	end
 
-		  	print( "\n\n\n\n list : \n\n"..json.encode(UpdateValue) )
+
 
 	  		if UpdateValue.AppointmentPurpose ~= nil then
 
@@ -3483,11 +3483,12 @@ function scene:show( event )
 	  				if AddeventPage.purposeArray[i].id == UpdateValue.AppointmentPurpose then
 	  					PurposeLbl.text = AddeventPage.purposeArray[i].value
 	  					PurposeLbl.value=AddeventPage.purposeArray[i].id
-	  					print("check = "..PurposeLbl.value)
+	  					print("check = "..PurposeLbl.value.." "..PurposeLbl.text)
 	  				end
 	  			end
 	   			
 	  		end
+
 
 	  		if UpdateValue.Priority ~= nil then
 

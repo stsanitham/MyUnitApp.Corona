@@ -147,6 +147,7 @@ function onAccessButtonTouch( event )
     end
 
 
+
 local function GrandProcess(value)
 
 	id_value = "Grant Access"
@@ -154,6 +155,7 @@ local function GrandProcess(value)
           GetPopUp(value.MyUnitBuzzRequestAccessId,value.EmailAddress,value.Mobile,value.HomePhoneNumber,value.WorkPhoneNumber,value.OtherPhoneNumber,id_value,value,page_flagval)
          
 end
+
 
 local function RemoveProcess(value)
 	id_value = "Remove Access"
@@ -243,9 +245,7 @@ local function ActionTouch( event )
 
 				elseif event.target.id == "grant" then
 
-						
-
-
+					
 					Details = event.target.value
 
 					GrandProcess(event.target.value)
