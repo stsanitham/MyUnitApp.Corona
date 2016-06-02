@@ -68,6 +68,7 @@ meggageeditor.htmlContent = [[
 
 				var texttemp="corona:close" + value + ckvalue;
 	 			window.location.href = texttemp; 
+	 			//window.location.href = ""; 
 
 	 			return false;
 

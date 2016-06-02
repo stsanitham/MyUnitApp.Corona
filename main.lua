@@ -156,6 +156,7 @@ end
 
 
 function spinner_hide ()
+    spinner.y=H/2-45
     spinner.isVisible=false
     spinnerBg:toBack( )
     spinnerBg.alpha=1

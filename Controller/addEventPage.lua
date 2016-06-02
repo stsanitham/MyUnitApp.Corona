@@ -3334,7 +3334,6 @@ function scene:show( event )
 
 	  		if UpdateValue.TicklerType == 1 then
 
-
 	  			changeAppointment()
 
 	  		elseif UpdateValue.TicklerType == 2 then
@@ -3475,6 +3474,8 @@ function scene:show( event )
 
 		  		Addinvitees.contactinfo=value[1]
 		  	end
+
+		  	print( "\n\n\n\n list : \n\n"..json.encode(UpdateValue) )
 
 	  		if UpdateValue.AppointmentPurpose ~= nil then
 

@@ -325,12 +325,9 @@ end
 
 	function get_messagemodel(response)
 
-		print("\n\n\n SuccessMessage : Response in this page: \n\n ", json.encode(response))
+		local list_values = response
 
-		list_values = response
-
-
-		listupdationvalues = list_values
+		local listupdationvalues = list_values
 
 		if list_values.MessageStatus == "SEND" then
 
@@ -347,7 +344,7 @@ end
 
 								long_msg_charlimit.text = MessagePage.LongMsgLimit
 
-					local function onTimer ( event )
+				--	local function onTimer ( event )
 
 
 	                            if openPagevalue == "addpage" then
@@ -358,7 +355,7 @@ end
 									photoheight = photoheight1
 
 
-                                    spinner.y=H/2-75
+                                
 
                                     reloadlistvalues = json.encode(listupdationvalues)
 
@@ -401,9 +398,9 @@ end
 								end
 
 
-					end
+					-- end
 
-        		timer.performWithDelay(1000, onTimer )
+     --    		timer.performWithDelay(1000, onTimer )
 
 	    end
 
@@ -577,6 +574,8 @@ local function sendAction( method,IsScheduled,Date,Time )
 
                 spinner_show()
 
+                spinner.y=H/2-80
+
 		    end
 
 
@@ -625,6 +624,8 @@ local function sendAction( method,IsScheduled,Date,Time )
 					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
 
 					      	spinner_show()
+
+					      	spinner.y=H/2-80
 
         	   --Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
@@ -681,6 +682,8 @@ local function sendAction( method,IsScheduled,Date,Time )
 
 				spinner_show()
 
+				 spinner.y=H/2-80
+
             	-- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
             end
@@ -691,18 +694,8 @@ end
 
     local function sendMessage ( method )
 
-		    if shortmsg_textbox.text == nil  then
-
-		    	shortmsg_textbox.text = ""
-
-		    end
-
-
-		    if longMessage == nil  then
-
-		    	longMessage = ""
-
-		    end
+		    if shortmsg_textbox.text == nil  then shortmsg_textbox.text = "" end
+		    if longMessage == nil  then longMessage = "" end
 
 
 	    if method == "SCHEDULE" then
@@ -1471,9 +1464,8 @@ local function webListener( event )
 					    print( "File error: " .. errorString )
 
 					else
-
-						
-					     file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml..""..meggageeditor.buttonHtml )
+			
+					    file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml..""..meggageeditor.buttonHtml )
 	 					longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
 	 					longmsg_textbox.isVisible=true
 	 					file:close()
@@ -1485,8 +1477,8 @@ local function webListener( event )
 
  		else
 
- 			--longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
- 			--longmsg_textbox.isVisible=true
+ 			longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
+ 			longmsg_textbox.isVisible=true
 
  			sendMessage(method)
 
