@@ -623,6 +623,8 @@ function onAccessButtonTouch( event )
 	 end
 
 
+
+
 local function CreateGroupMemberList( list )
 
 
@@ -890,6 +892,8 @@ function scene:show( event )
 			local function get_avtiveTeammemberDetails( response)
 
 				print("Career Detail Response ",json.encode(response))
+
+				--local nativeee = native.showAlert("MUB",json.encode(response),{"OK"})
 
 				Details = response
 

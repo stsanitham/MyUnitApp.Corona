@@ -150,12 +150,15 @@ local function CreateTabBarIcons( )
 	tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
 	tab_Message_btn.anchorY=0
 
+    if IsOwner == true then
 
 	tab_broadcast_btn = display.newImageRect( tabBarGroup, "res/assert/resource.png", 35/1.4, 31/1.4 )
 	tab_broadcast_btn.x=tab_Boradcast.x
 	tab_broadcast_btn.y=tab_Boradcast.y+tab_broadcast_btn.contentHeight/2-8
 	tab_broadcast_btn.anchorY=0
 	tab_broadcast_btn:setFillColor( 0 )
+
+    end
 
 
 
@@ -246,7 +249,9 @@ end
 					tab_Group_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 					tab_Message_txt:setFillColor( 0.3 )
 					tab_Contact_txt:setFillColor(  0.3  )
+					if IsOwner == true then
 					tab_Broadcast_txt:setFillColor( 0.3 )
+				    end
 
 					local circle = display.newCircle( tabBarGroup, tab_Group_btn.x, tab_Group_btn.y+tab_Group_btn.contentHeight/2, 25 )
 					circle.strokeWidth=4
@@ -303,7 +308,9 @@ end
 
 					tab_Group_txt:setFillColor( 0.3 )
 					tab_Message_txt:setFillColor( 0.3 )
+					if IsOwner == true then
 					tab_Broadcast_txt:setFillColor( 0.3 )
+				    end
 					tab_Contact_txt:setFillColor(  Utils.convertHexToRGB(color.tabBarColor)  )
 
 
@@ -743,18 +750,27 @@ tab_Group.id="group"
 tab_Group:setFillColor( 0.2 )
 
 tab_Message = display.newRect(tabBarGroup,0,0,70,40)
-tab_Message.x=W/2-W/8;tab_Message.y=tabBg.y
+if IsOwner == true then
+tab_Message.x=W/2-W/8
+else
+tab_Message.x = W/2
+end
+tab_Message.y=tabBg.y
 tab_Message.anchorY=0
 tab_Message.alpha=0.01
 tab_Message.id="message"
 tab_Message:setFillColor( 0.2 )
 
+if IsOwner == true then
 tab_Boradcast = display.newRect(tabBarGroup,0,0,70,40)
 tab_Boradcast.x=W/2+W/10;tab_Boradcast.y=tabBg.y
 tab_Boradcast.anchorY=0
 tab_Boradcast.alpha=0.01
 tab_Boradcast.id="broadcast"
 tab_Boradcast:setFillColor( 0.2 )
+
+tab_Boradcast:addEventListener( "touch", TabbarTouch )
+end
 
 tab_Contact = display.newRect(tabBarGroup,0,0,70,40)
 tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
@@ -766,7 +782,6 @@ tab_Contact:setFillColor( 0.2 )
 tab_Group:addEventListener( "touch", TabbarTouch )
 tab_Message:addEventListener( "touch", TabbarTouch )
 tab_Contact:addEventListener( "touch", TabbarTouch )
-tab_Boradcast:addEventListener( "touch", TabbarTouch )
 
 CreateTabBarIcons()
 
@@ -788,9 +803,11 @@ tab_Message_txt = display.newText( tabBarGroup,  ChatPage.Chats,0,0,native.syste
 tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
 tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
+if IsOwner == true then
 tab_Broadcast_txt = display.newText( tabBarGroup,  "Boradcast",0,0,native.systemFont,11 )
 tab_Broadcast_txt.x=tab_broadcast_btn.x;tab_Broadcast_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
 tab_Broadcast_txt:setFillColor( 0.3 )
+end
 
 tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List ,0,0,native.systemFont,11 )
 tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5

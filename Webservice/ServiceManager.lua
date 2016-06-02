@@ -279,66 +279,68 @@ function Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupNam
 local v
 
 if Message_Type ~= nil and Message_Type ~= "" then
-	
- v = [[
 
-{
-  "MyUnitBuzzLongMessage": "]]..longmessage..[[",
-  "MyUnitBuzzMessage": " ",
-  "IsScheduled": " ",	
-  "ScheduledDate": " ",	
-  "ScheduledTime": " ",	
-  "VideoFilePath": "]]..videopath..[[",
-  "MessageStatus": "]]..pushmethod..[[",
-  "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
-   "UserId": "]]..UserId..[[",
-   "EmailAddress": "]]..EmailAddess..[[",
-   
+			v = [[
 
-	  "AudioFilePath": "]]..audiopath..[[",
-	 "AudioFileName": "]]..audioname..[[",
-	  "AudioFileSize": "]]..audiosize..[[",
-	  "From": "]]..From..[[",
-	  "To": "]]..To..[[",
-	  "MessageType": "]]..Message_Type..[[",
+			{
+			"MyUnitBuzzLongMessage": "]]..longmessage..[[",
+			"MyUnitBuzzMessage": " ",
+			"IsScheduled": " ",	
+			"ScheduledDate": " ",	
+			"ScheduledTime": " ",	
+			"VideoFilePath": "]]..videopath..[[",
+			"MessageStatus": "]]..pushmethod..[[",
+			"MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
+			"UserId": "]]..UserId..[[",
+			"EmailAddress": "]]..EmailAddess..[[",
 
-    "TimeZone": "]]..TimeZone..[[",
-    "ConversionFirstName": "]]..ConversionFirstName..[[",
-    "ConversionLastName": "]]..ConversionLastName..[[",
-    "GroupName": "]]..GroupName..[[",
-    "IsSendNow": "false",
-    "MessageFileType": "]]..MessageFileType..[[",
-    
-    "DocumentUpload": ]]..json.encode(DocumentUpload)..[[
-}
-]]
+
+			"AudioFilePath": "]]..audiopath..[[",
+			"AudioFileName": "]]..audioname..[[",
+			"AudioFileSize": "]]..audiosize..[[",
+			"From": "]]..From..[[",
+			"To": "]]..To..[[",
+			"MessageType": "]]..Message_Type..[[",
+
+			"TimeZone": "]]..TimeZone..[[",
+			"ConversionFirstName": "]]..ConversionFirstName..[[",
+			"ConversionLastName": "]]..ConversionLastName..[[",
+			"GroupName": "]]..GroupName..[[",
+			"IsSendNow": "false",
+			"MessageFileType": "]]..MessageFileType..[[",
+
+			"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
+			}
+			]]
+
 
 else
 
-	 v = [[
-{
-  "MyUnitBuzzMessage": "]]..message..[[",
-  "MyUnitBuzzLongMessage": "]]..longmessage..[[",
-  "IsScheduled": "]]..IsScheduled..[[",	
-  "ScheduledDate": "]]..ScheduledDate..[[",	
-  "ScheduledTime": "]]..ScheduledTime..[[",	
-  "VideoFilePath": "]]..videopath..[[",
-  "MessageStatus": "]]..pushmethod..[[",
-  "MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
-  "UserId": "]]..UserId..[[",
-  "EmailAddress": "]]..EmailAddess..[[",
-  "AudioFilePath": "]]..audiopath..[[",
-  "AudioFileName": "]]..audioname..[[",
-  "AudioFileSize": "]]..audiosize..[[",
-  "TimeZone": "]]..TimeZone..[[",
-  "ConversionFirstName": "]]..ConversionFirstName..[[",
-    "ConversionLastName": "]]..ConversionLastName..[[",
-    "GroupName": "]]..GroupName..[[",
-    "IsSendNow": "false",
-      "MessageFileType": "]]..MessageFileType..[[",
-  "DocumentUpload": ]]..json.encode(DocumentUpload)..[[
-}
-]]
+		v = [[
+
+		{
+		"MyUnitBuzzMessage": "]]..message..[[",
+		"MyUnitBuzzLongMessage": "]]..longmessage..[[",
+		"IsScheduled": "]]..IsScheduled..[[",	
+		"ScheduledDate": "]]..ScheduledDate..[[",	
+		"ScheduledTime": "]]..ScheduledTime..[[",	
+		"VideoFilePath": "]]..videopath..[[",
+		"MessageStatus": "]]..pushmethod..[[",
+		"MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
+		"UserId": "]]..UserId..[[",
+		"EmailAddress": "]]..EmailAddess..[[",
+		"AudioFilePath": "]]..audiopath..[[",
+		"AudioFileName": "]]..audioname..[[",
+		"AudioFileSize": "]]..audiosize..[[",
+		"TimeZone": "]]..TimeZone..[[",
+		"ConversionFirstName": "]]..ConversionFirstName..[[",
+		"ConversionLastName": "]]..ConversionLastName..[[",
+		"GroupName": "]]..GroupName..[[",
+		"IsSendNow": "false",
+		"MessageFileType": "]]..MessageFileType..[[",
+		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
+		}
+		]]
 
 end
 
@@ -1638,6 +1640,8 @@ function Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,G
 
     if idvalue == "Deny Access" then
 
+    	isSentText = false
+
 	 resbody = [[{
 		"UserId": ']]..UserId..[[',
 		"EmailAddress": ']]..Email..[[',
@@ -1989,18 +1993,36 @@ function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,group
 	end
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+    
 
-	 local resbody = [[{
-	  "UserId": "]]..UserId..[[",
-	  "MyUnitBuzzGroupName": "]]..groupname..[[",
-	  "Description": "]]..description..[[",
-	  "IsActive": "]]..tostring(stateinfo)..[[",
-	  "MyUnitBuzzGroupType": "]]..grouptypevalue..[["
-	   } ]]
+    local resbody
+
+	if grouptypevalue == "BROADCAST" then
+
+		  resbody = [[{
+		  "UserId": "]]..UserId..[[",
+		  "MyUnitBuzzGroupName": "]]..groupname..[[",
+		  "Description": "]]..description..[[",
+		  "IsActive": "]]..tostring(stateinfo)..[[",
+		  "MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
+		  "ContactId":"]]..ContactId..[[",
+		   } ]]
+
+	else
+
+		  resbody = [[{
+		  "UserId": "]]..UserId..[[",
+		  "MyUnitBuzzGroupName": "]]..groupname..[[",
+		  "Description": "]]..description..[[",
+		  "IsActive": "]]..tostring(stateinfo)..[[",
+		  "MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
+		   } ]]
+
+	end
 
     params={headers = headers,body = resbody}
 
-	print("request : "..json.encode(params))
+	print("create group request : "..json.encode(params))
 
 	request.new(ApplicationConfig.CreateMessageChatGroup,method,params,postExecution)
 	

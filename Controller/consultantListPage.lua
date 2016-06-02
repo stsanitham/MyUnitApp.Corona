@@ -112,8 +112,7 @@ local function consultantTounch( event )
 				    composer.gotoScene( "Controller.chatPage", options )
 
 			    end
-
-	end
+	      end
 
 	return true
 
@@ -131,18 +130,34 @@ local function backactionTouch(event)
 
 		display.getCurrentStage():setFocus( nil )
 
+
+		if pageid_value == "group" then
+
 		    local options = {
 				effect = "slideRight",
 				time = 300,	
 				}
 
-		composer.gotoScene( "Controller.groupPage", options )
+		    composer.gotoScene( "Controller.groupPage", options )
+
+     	elseif pageid_value == "broadcast" then
+
+		    local options = {
+				effect = "slideRight",
+				time = 300,	
+				}
+
+		     composer.gotoScene( "Controller.broadCastPage", options )
+
+	    end
 
 		native.setKeyboardFocus(nil)
 
 	end
 
 end
+
+
 
 
 local function onTimer ( event )
@@ -152,6 +167,8 @@ local function onTimer ( event )
 	BackFlag = false
 
 end
+
+
 
 
 local function onKeyEvent( event )
@@ -186,6 +203,9 @@ local function onKeyEvent( event )
         return false
  end
 
+
+
+
  local function CreateTabBarIcons( )
 
 	if tab_Group_btn ~= nil then tab_Group_btn:removeSelf( );tab_Group_btn=nil end
@@ -198,12 +218,10 @@ local function onKeyEvent( event )
 	tab_Group_btn.anchorY=0
 
 
-
 	tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats.png", 35/1.4, 31/1.4 )
 	tab_Message_btn.x=tab_Message.x
 	tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
 	tab_Message_btn.anchorY=0
-
 
 
 	tab_Contact_btn = display.newImageRect( tabBarGroup, "res/assert/Consultant.png", 35/1.4, 31/1.4 )
@@ -211,8 +229,9 @@ local function onKeyEvent( event )
 	tab_Contact_btn.y=tab_Contact.y+tab_Contact_btn.contentHeight/2-8
 	tab_Contact_btn.anchorY=0
 
-
 end
+
+
 
 
 local function TabbarTouch( event )
@@ -332,7 +351,9 @@ local function TabbarTouch( event )
 
     return true 
 
-	end
+end
+
+
 
 
 	local function onSwitchPress( event )
@@ -350,6 +371,7 @@ local function TabbarTouch( event )
 	    end
 
 	end
+
 
 
 
@@ -442,7 +464,7 @@ local function TabbarTouch( event )
 
 		    	    else
 
-		    	    	local alert = native.showAlert( "BroadCast List Created" ,"BroadCast List created successfully", { CommonWords.ok }, onGroupCreationComplete )
+		    	    	local alert = native.showAlert( ChatPage.BroadcastListCreated ,ChatPage.BroadcastListCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
 		    	    end
 
@@ -637,7 +659,7 @@ local function TabbarTouch( event )
 
 						                  		 --GroupSubject.text = #selected_Contact.." recipients"
 
-								      	 	     Webservice.CreateMessageChatGroup(#selected_Contact.." recipients","","true","BROADCAST",getChatGroupCreation)
+								      	 	     Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",getChatGroupCreation)
 
 							      	 	    else
 
