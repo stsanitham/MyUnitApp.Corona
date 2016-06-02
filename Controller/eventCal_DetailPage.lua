@@ -86,28 +86,31 @@ local display_details = {}
 
 
 
+
 		local function closeDetails( event )
-		if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
-
 			
-		composer.hideOverlay( "slideRight", 300 )
+			if event.phase == "began" then
+				display.getCurrentStage():setFocus( event.target )
+
+			elseif event.phase == "ended" then
+				display.getCurrentStage():setFocus( nil )
+					
+				composer.hideOverlay( "slideRight", 300 )
+
+			end
+
+			return true
 
 		end
 
-		return true
 
-		end
+
 
 		function get_DeleteTicklerEvent( response )
 			
 			if response.OperationStatus == 0 then
 
 				status = "deleted"
-
-				
 
 				composer.hideOverlay( "slideRight", 300 )
 
@@ -116,6 +119,8 @@ local display_details = {}
 			end
 
 		end
+
+
 
 
 		local function EditOption( event )
@@ -143,9 +148,9 @@ local display_details = {}
 
 			elseif event.target.id == "edit" then
 
-				status="edit"
+					status="edit"
 
-				composer.hideOverlay()
+					composer.hideOverlay()
 			
 			end
 
@@ -156,43 +161,47 @@ local display_details = {}
 		end
 				
 
-		
+
+
+			
 		local function AttachmentDownload( event )
-		if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
 
-		system.openURL( ApplicationConfig.IMAGE_BASE_URL..""..event.target.value )
+			if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
 
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+
+			system.openURL( ApplicationConfig.IMAGE_BASE_URL..""..event.target.value )
+
+			end
+
+			return true
 		end
 
-		return true
-		end
 
 
 
-	local function onKeyEventDetail( event )
+		local function onKeyEventDetail( event )
 
-        local phase = event.phase
-        local keyName = event.keyName
+	        local phase = event.phase
+	        local keyName = event.keyName
 
-        if phase == "up" then
+		       if phase == "up" then
 
-        if keyName=="back" then
+			        if keyName=="back" then
 
-        	
+			        	composer.hideOverlay( "slideRight", 300 )
+			            
+			            return true
+			            
+			        end
 
-        	composer.hideOverlay( "slideRight", 300 )
-            
-            return true
-            
-        end
+		       end
 
-    end
+	        return false
+	    end
 
-        return false
- end
 
 
 		------------------------------------------------------
