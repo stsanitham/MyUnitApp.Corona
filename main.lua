@@ -535,16 +535,7 @@ local function notificationListener( event )
 
 
       
-       --   local options =
-       --      {
-       --         to = "malarkodi.sellamuthu@w3magix.com",
-       --         subject = "video details",
-       --         body = json.encode(event),
-       --      }
-       --      native.showPopup( "mail", options )
 
-
-       -- native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
 
             if isAndroid then
                 additionalData = event.androidGcmBundle

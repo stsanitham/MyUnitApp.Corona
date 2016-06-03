@@ -1682,19 +1682,15 @@ local function ChatSendAction( event )
 
 					ConversionFirstName="";ConversionLastName=MemberName;GroupName="";DocumentUpload=""
 
-				else
+				elseif MessageType == "BROADCAST" then
 
-					if MessageType == "BROADCAST" then
+					if IsOwner == true then
 
-						if IsOwner == true then
+						ConversionFirstName="";ConversionLastName="";GroupName=MemberName;DocumentUpload=""
 
-							ConversionFirstName="";ConversionLastName="";GroupName=MemberName;DocumentUpload=""
-
-						else
+					else
                     
-                            ConversionFirstName="";ConversionLastName=MemberName;GroupName="";DocumentUpload=""
-
-                        end
+                        ConversionFirstName="";ConversionLastName=MemberName;GroupName="";DocumentUpload=""
 
                     end
 

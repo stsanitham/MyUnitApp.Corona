@@ -78,6 +78,8 @@ local function bgTouch( event )
 		display.getCurrentStage():setFocus( event.target )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
+
+		print('bg touch')
 	end
 
 	return true

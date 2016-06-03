@@ -262,10 +262,15 @@ local function selectionComplete ( event )
           	formatSizeUnits(size1)
 
 
-			if Audio_filename.isVisible == true then
+			if Audio_filename_title.isVisible == true then
 
-				if filename_title.isVisiblee == false and Audio_filename.y ==  tabBar.y+tabBar.contentHeight+15  then
-					
+
+				print( Audio_filename_title.y , tabBar.y+tabBar.contentHeight+15  )
+
+				if filename_title.isVisible == false and Audio_filename_title.y ==  tabBar.y+tabBar.contentHeight+15  then
+
+						print( "############" )
+
 						filename_title.y=Audio_filename.y+20
 						composePage.y = composePage.y+45
 					
@@ -274,8 +279,12 @@ local function selectionComplete ( event )
 
 			else
 
-				composePage.y = composePage.y+45
-				filename_title.y = tabBar.y+tabBar.contentHeight+15
+
+				if filename_title.isVisible == false then
+
+					composePage.y = composePage.y+45
+					filename_title.y = tabBar.y+tabBar.contentHeight+15
+				end
 
 			end
 
@@ -1272,19 +1281,20 @@ function scene:updateRecordedAudio( dataFileName,audiopagename )
 
 
 
-			if filename.isVisible == true then
+			if filename_title.isVisible == true then
 
-				if Audio_filename_title.isVisible == false and filename.y == tabBar.y+tabBar.contentHeight+15  then
+				print( filename_title.y , tabBar.y+tabBar.contentHeight+15  )
+				if Audio_filename_title.isVisible == false and filename_title.y == tabBar.y+tabBar.contentHeight+15  then
 
 						Audio_filename_title.y=filename.y+20
 						composePage.y = composePage.y+45
 				end
 
 			else
-
-				Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
-				composePage.y = composePage.y+45
-
+				if Audio_filename_title.isVisible == false then
+					Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
+					composePage.y = composePage.y+45
+				end
 			end
 
 

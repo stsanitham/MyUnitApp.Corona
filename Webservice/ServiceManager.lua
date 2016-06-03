@@ -309,10 +309,10 @@ if Message_Type ~= nil and Message_Type ~= "" then
 			"IsSendNow": "false",
 			"MessageFileType": "]]..MessageFileType..[[",
 
-			"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 			}
 			]]
 
+--			"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 
 else
 
@@ -338,11 +338,15 @@ else
 		"GroupName": "]]..GroupName..[[",
 		"IsSendNow": "false",
 		"MessageFileType": "]]..MessageFileType..[[",
-		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 		}
 		]]
+--		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 
 end
+
+       
+
+       native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
 
 
 	params={headers = headers,body = v}
