@@ -2804,7 +2804,7 @@ tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Mess
 tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 if IsOwner == true then
-tab_Broadcast_txt = display.newText( tabBarGroup,  "Boradcast",0,0,native.systemFont,11 )
+tab_Broadcast_txt = display.newText( tabBarGroup,ChatPage.Broadcast,0,0,native.systemFont,11 )
 tab_Broadcast_txt.x=tab_broadcast_btn.x;tab_Broadcast_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
 tab_Broadcast_txt:setFillColor( 0.3 )
 end

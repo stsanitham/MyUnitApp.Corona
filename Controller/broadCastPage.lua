@@ -59,36 +59,37 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 
 
 
-	local function onTimer ( event )
+local function onTimer ( event )
 
-		print( "event time completion" )
+	print( "event time completion" )
 
-		BackFlag = false
+	BackFlag = false
 
-	end
+end
 
 
-    local function addGroupAction(event)
 
-	 	 if event.phase == "began" then
-	 	 	print( "here" )
-         elseif event.phase == "ended" then
+local function addGroupAction(event)
 
-         composer.removeHidden()
+ 	 if event.phase == "began" then
+ 	 	print( "here" )
+     elseif event.phase == "ended" then
 
-		    local options = {
-						effect = "crossFade",
-						time = 500,	
-						params = { addGroupid = addGroupBtn.id, page_id = "broadcast"}
-						}
+     composer.removeHidden()
 
-	        composer.gotoScene( "Controller.consultantListPage", options )
+	    local options = {
+					effect = "crossFade",
+					time = 500,	
+					params = { addGroupid = addGroupBtn.id, page_id = "broadcast"}
+					}
 
-         end
+        composer.gotoScene( "Controller.consultantListPage", options )
 
-	    return true
+     end
 
-    end
+    return true
+
+end
 
 
 
@@ -682,7 +683,7 @@ tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Mess
 tab_Message_txt:setFillColor( 0.3 )
 
 if IsOwner == true then
-tab_Broadcast_txt = display.newText( tabBarGroup,  "Boradcast",0,0,native.systemFont,11 )
+tab_Broadcast_txt = display.newText( tabBarGroup, ChatPage.Broadcast,0,0,native.systemFont,11 )
 tab_Broadcast_txt.x=tab_broadcast_btn.x;tab_Broadcast_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
 tab_Broadcast_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 end
