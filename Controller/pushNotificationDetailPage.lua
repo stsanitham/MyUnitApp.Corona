@@ -641,43 +641,43 @@ end
 
 					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
-					short_msg_timedate.text =  os.date("%B %d, %Y",time).."  "..os.date("%I:%M %p",time)
+						short_msg_timedate.text =  os.date("%B %d, %Y",time).."  "..os.date("%I:%M %p",time)
 
-					short_msg_timedate.x = W-150
+						short_msg_timedate.x = W-150
 
 				    else 
 
 
-					local t = os.date( "*t" )
-					t.day=t.day-1
+						local t = os.date( "*t" )
+						t.day=t.day-1
 
-					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
+						if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
 
-						short_msg_timedate.text = ChatPage.Yesterday.."  "..os.date("%I:%M %p",time)
-						short_msg_timedate.x = W-150
+							short_msg_timedate.text = ChatPage.Yesterday.."  "..os.date("%I:%M %p",time)
+							short_msg_timedate.x = W-150
 
-					else
+						else
 
-						short_msg_timedate.text = os.date("%B %d, %Y",time).."  "..os.date("%I:%M %p",time)
-						short_msg_timedate.x = W-150
+							short_msg_timedate.text = os.date("%B %d, %Y",time).."  "..os.date("%I:%M %p",time)
+							short_msg_timedate.x = W-150
 
-					end
+						end
 
 			     	end
 
 		
 
-			short_msg_txt= display.newText(sceneGroup,detail_value.MyUnitBuzzMessage,0,0,W-80,0,native.systemFont,14)
-			short_msg_txt.x=12
-			short_msg_txt.y= short_msg_timedate.y+short_msg_timedate.contentHeight+12
-			short_msg_txt.anchorX=0
-			short_msg_txt.anchorY = 0
-			Utils.CssforTextView(short_msg_txt,sp_labelName)
-			short_msg_txt:setFillColor(0)
-			messagedetail_scrollView:insert(short_msg_txt)
+					short_msg_txt= display.newText(sceneGroup,detail_value.MyUnitBuzzMessage,0,0,W-80,0,native.systemFont,14)
+					short_msg_txt.x=12
+					short_msg_txt.y= short_msg_timedate.y+short_msg_timedate.contentHeight+12
+					short_msg_txt.anchorX=0
+					short_msg_txt.anchorY = 0
+					Utils.CssforTextView(short_msg_txt,sp_labelName)
+					short_msg_txt:setFillColor(0)
+					messagedetail_scrollView:insert(short_msg_txt)
 
 
-		if detail_value.MyUnitBuzzLongMessage ~= nil then
+	if detail_value.MyUnitBuzzLongMessage ~= nil then
 
 		 --    long_msg_text= display.newText(sceneGroup,detail_value.MyUnitBuzzLongMessage,0,0,W-30,0,native.systemFont,14)
 			-- long_msg_text.x = 12
@@ -731,9 +731,113 @@ end
 
 		    file:close()
 
-		end
+	end
 
 		    file = nil
+
+
+
+
+
+	if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null then
+
+					local function recivedNetwork( event )
+					    if ( event.isError ) then
+					        print( "Network error - download failed: ", event.response )
+					    elseif ( event.phase == "began" ) then
+					        print( "Progress Phase: began" )
+					    elseif ( event.phase == "ended" ) then
+					        print( "Displaying response image file" )
+					        reciveImageFlag=true
+
+							myImage = display.newImage( event.response.filename, event.response.baseDirectory, display.viewableContentWidth, display.contentHeight )
+							--myImage.y = Imagenametext.y+Imagenametext.contentHeight+12
+							myImage.y = webView.y+webView.contentHeight+12
+							myImage.x = display.contentCenterX
+							myImage.anchorY=0
+							--myImage.width = display.viewableContentWidth - 20
+							--myImage.height = display.viewableContentHeight - 200
+							myImage.width = 100
+							myImage.height = 100
+
+						    sceneGroup:insert(myImage)
+
+		                    messagedetail_scrollView:insert( myImage)
+
+
+
+
+					        audionametext= display.newText(sceneGroup,detail_value.AudioFileName,0,0,W-80,0,native.systemFont,14)
+							audionametext.x=W/2+40
+							audionametext.y= myImage.y+myImage.contentHeight+12
+							--audionametext.anchorX=0
+							audionametext.anchorY = 0
+							Utils.CssforTextView(audionametext,sp_labelName)
+							audionametext:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+							messagedetail_scrollView:insert(audionametext)
+
+
+							local audioname = detail_value.AudioFilePath:match( "([^/]+)$" )
+							local audio
+
+							filePath = system.pathForFile( audioname,system.DocumentsDirectory )
+							local fhd = io.open( filePath )
+
+
+							spinner.isVisible=false
+
+							local bg = display.newRect( display.contentCenterX,0,W-250,50 )
+							bg.y = audionametext.y+audionametext.contentHeight+12
+							bg.anchorY =0
+							bg.x = display.contentCenterX
+							bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+							sceneGroup:insert(bg)
+							messagedetail_scrollView:insert(bg)
+
+							local sheetData2 = { width=30, height=30, numFrames=2, sheetContentWidth=60, sheetContentHeight=30 }
+							local sheet1 = graphics.newImageSheet( "res/assert/playpause.png", sheetData2 )
+
+							local sequenceData = {
+							{ name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
+							{ name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
+							}
+
+							local playIcon = display.newSprite( sheet1, sequenceData )
+							playIcon.x=bg.x+bg.contentWidth/2-35;playIcon.y=bg.y+bg.contentHeight/2 
+							playIcon.id=detail_value.AudioFilePath
+							playIcon.value="play"
+							playIcon:addEventListener( "touch", audioPlay )
+							playIcon:setSequence( "play" )
+							playIcon:play()
+							sceneGroup:insert(playIcon)
+							messagedetail_scrollView:insert(playIcon)
+
+					  		
+					    end
+					    
+					end
+
+
+
+					local testimage = 
+
+						network.download(
+						detail_value.ImageFilePath,
+						"GET",
+						recivedNetwork,
+						detail_value.ImageFilePath:match( "([^/]+)$" ),
+						system.DocumentsDirectory
+						)
+
+					end
+
+
+		            imagepathvalue = detail_value.ImageFilePath
+			
+
+
+	end
+
 
 
 
@@ -778,8 +882,6 @@ end
 				detail_value.ImageFilePath:match( "([^/]+)$" ),
 				system.DocumentsDirectory
 				)
-
-			end
 
 
 		imagepathvalue = detail_value.ImageFilePath
@@ -840,6 +942,7 @@ end
 			messagedetail_scrollView:insert(playIcon)
 
 	end
+
 
 
 
