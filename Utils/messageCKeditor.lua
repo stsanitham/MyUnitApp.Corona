@@ -65,10 +65,18 @@ meggageeditor.htmlContent = [[
 			if(htmldata.length > 1 )
 
 			{
-
+				var x = document.URL;
 				var texttemp="corona:close" + value + ckvalue;
 	 			window.location.href = texttemp; 
-	 			//window.location.href = ""; 
+
+
+	 			var myVar = setInterval(myTimer, 500);
+
+	 			function myTimer() {
+				    window.location.href = x; 
+
+				}
+
 
 	 			return false;
 

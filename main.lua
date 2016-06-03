@@ -630,6 +630,12 @@ local function notificationListener( event )
                            --local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
                                  
                         end
+
+                          if openPage ~= "main" then
+
+                            native.setProperty( "applicationIconBadgeNumber", 0 )
+                            system.cancelNotification()
+                        end
        
           
         else

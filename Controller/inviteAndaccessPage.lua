@@ -762,21 +762,6 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 				end
 
-
-
-			-- for i=1,#response do
-
-			-- 	if response[i].IsOwner == true then
-
-
-			-- 	else
-
-			--	listValue[#listValue+1] = response[i]	
-
-			--	end
-
-			--end
-
 				print( "here !!!!!!!"..#listValue )	
 			CreateList(listValue,scrollView)
 
@@ -798,13 +783,11 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 				end
 
-
 		end
 
 	end
 
 end
-
 
 
 

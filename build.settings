@@ -31,10 +31,12 @@ settings =
         {
             publisherId = "com.coronalabs"
         },
-        ["CoronaProvider.native.popup.social"] =
-        {
-            publisherId = "com.coronalabs"
-        },
+      
+["CoronaProvider.native.popup.quickLook"] =
+    {
+        publisherId = "com.coronalabs",
+        supportedPlatforms = { iphone = true },
+    },
        
 	    ["plugin.google.play.services"] =
 	    {

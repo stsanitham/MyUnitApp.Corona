@@ -49,7 +49,9 @@ local tabBarGroup = display.newGroup( )
 
 local pagingvalue = "listpage"
 
-
+local pageCount = 0
+local totalListCount = 0
+local notifyFlag = false
 
 --------------------------------------------------
 
@@ -1013,7 +1015,9 @@ local pagingvalue = "listpage"
 
 			local function getScheduleMessageList(response)
 
-				messagelist_response = response
+				messagelist_response = response.ChatMessageList
+
+
 
 					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
 							
@@ -1060,9 +1064,9 @@ local pagingvalue = "listpage"
 
 			   end
 
+			   		pageCount = pageCount+1
 
-
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
                 
 
@@ -1090,7 +1094,7 @@ local pagingvalue = "listpage"
 
 			   local function getSentMessageList(response)
 
-				  sentmessage_response = response
+				  sentmessage_response = response.ChatMessageList
 
 					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
 							
@@ -1138,8 +1142,8 @@ local pagingvalue = "listpage"
 			    end
 
 
-
-					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+			    	pageCount = pageCount+1
+					Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 			    
 
 
@@ -1170,7 +1174,7 @@ local pagingvalue = "listpage"
 						function getDraftMessageList1(response)
 
 
-							draftmessagelist_response = response
+							draftmessagelist_response = response.ChatMessageList
 
 
 								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
@@ -1223,8 +1227,8 @@ local pagingvalue = "listpage"
 
 						end
 
-
-					Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
+						pageCount = pageCount+1
+					Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
                
 				
 				 end
@@ -1262,7 +1266,9 @@ local pagingvalue = "listpage"
 
 			local function getScheduleMessageList(response)
 
-				messagelist_response = response
+				messagelist_response = response.ChatMessageList
+
+					print( "############################" )
 
 					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
 							
@@ -1305,8 +1311,8 @@ local pagingvalue = "listpage"
 					         end
 					end
 			   end
-
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+			   		pageCount = pageCount+1
+					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
                 
 
 	 elseif  decodedvalue.MessageStatus == "SEND" then
@@ -1332,7 +1338,7 @@ local pagingvalue = "listpage"
 
 			   local function getSentMessageList(response)
 
-				  sentmessage_response = response
+				  sentmessage_response = response.ChatMessageList
 
 					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
 							
@@ -1377,8 +1383,9 @@ local pagingvalue = "listpage"
 
 			    end
 
+			    	pageCount = pageCount+1
 
-					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+					Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 			    
 
    elseif  decodedvalue.MessageStatus == "DRAFT" then
@@ -1404,7 +1411,7 @@ local pagingvalue = "listpage"
 
 						function getDraftMessageList1(response)
 
-							draftmessagelist_response = response
+							draftmessagelist_response = response.ChatMessageList
 
 
 								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
@@ -1455,7 +1462,7 @@ local pagingvalue = "listpage"
 						end
 
 
-					Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
+					Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
                
 
 		 end
@@ -1490,8 +1497,8 @@ local pagingvalue = "listpage"
 							messageList_array[#messageList_array] = nil
 						end
 
-
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+						pageCount = pageCount+1
+					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
 
 				elseif messagelistvalue.MessageStatus == "SENT" then
@@ -1505,8 +1512,8 @@ local pagingvalue = "listpage"
 							sentmessageList_array[#sentmessageList_array] = nil
 						end
 
-
-					Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+						pageCount = pageCount + 1
+					Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 
 
 				elseif messagelistvalue.MessageStatus == "DRAFT" then
@@ -1523,7 +1530,7 @@ local pagingvalue = "listpage"
 						function getDraftMessageList1(response)
 
 
-							draftmessagelist_response = response
+							draftmessagelist_response = response.ChatMessageList
 
 
 								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
@@ -1540,8 +1547,8 @@ local pagingvalue = "listpage"
 
 						end
 
-
-					Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
+						pageCount  =pageCount+1
+					Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
                
 
 
@@ -1649,8 +1656,8 @@ local pagingvalue = "listpage"
 									messageList_array[#messageList_array] = nil
 								end
 
-
-							Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+							pageCount = pageCount+1
+							Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
 
 						elseif messagelistvalue.MessageStatus == "SENT" then
@@ -1661,8 +1668,8 @@ local pagingvalue = "listpage"
 									sentmessageList_array[#sentmessageList_array] = nil
 								end
 
-
-							Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+							pageCount = pageCount +1 
+							Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 
 
 						elseif messagelistvalue.MessageStatus == "DRAFT" then
@@ -1678,7 +1685,7 @@ local pagingvalue = "listpage"
 								function getDraftMessageList1(response)
 
 
-									draftmessagelist_response = response
+									draftmessagelist_response = response.ChatMessageList
 
 
 										if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
@@ -1695,8 +1702,9 @@ local pagingvalue = "listpage"
 
 								end
 
+								pageCount = pageCount+1
 
-							Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList1)
+							Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
 		               
 
 
@@ -1762,8 +1770,11 @@ local function TabbarTouch( event )
 		if event.phase == "began" then 
 
 		elseif event.phase == "ended" then
+
+			pageCount = 0
 			
 			if event.target.id == "schedule" then
+
 
 				tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 				tab_Sent_txt:setFillColor(0)
@@ -1780,7 +1791,7 @@ local function TabbarTouch( event )
 
 					local function getScheduleMessageList(response)
 
-					messagelist_response = response
+						messagelist_response = response.ChatMessageList
 
 						if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
 
@@ -1828,8 +1839,9 @@ local function TabbarTouch( event )
 
 				   end
 
+				   pageCount = pageCount+1
 
-				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
 			elseif event.target.id == "sent" then
 
@@ -1849,7 +1861,7 @@ local function TabbarTouch( event )
 
 				local function getSentMessageList(response)
 
-				sentmessage_response = response
+				sentmessage_response = response.ChatMessageList
 
 					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
 							
@@ -1896,8 +1908,8 @@ local function TabbarTouch( event )
 
 			    end
 
-
-				Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+			    pageCount = pageCount +1 
+				Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 				
 			elseif event.target.id == "draft" then
 
@@ -1918,7 +1930,7 @@ local function TabbarTouch( event )
 
 				local function getDraftMessageList(response)
 
-				draftmessage_response = response
+				draftmessage_response = response.ChatMessageList
 
 					if draftmessage_response ~= nil and #draftmessage_response ~= 0 and draftmessage_response ~= "" then
 							
@@ -1967,8 +1979,8 @@ local function TabbarTouch( event )
 			     end
 
 
-
-				Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList)
+			     pageCount = pageCount+1
+				Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList)
 
 			    
 			end
@@ -2038,7 +2050,38 @@ MainGroup:insert(sceneGroup)
 
 end
 
+	local function notification_scrollListener( event )
 
+		    local phase = event.phase
+		    if ( phase == "began" ) then 
+		    elseif ( phase == "moved" ) then 
+		    elseif ( phase == "ended" ) then 
+		    end
+
+		    -- In the event a scroll limit is reached...
+		    if ( event.limitReached ) then
+		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+
+		        	if FeedNextUrl ~= nil then
+		        		spinner_show()
+						getFeeds = network.request( FeedNextUrl, "GET", feed_Load )
+
+					end
+
+
+		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+
+		        	spinner_show()
+
+        			getFeeds = network.request( "https://graph.facebook.com/"..userid.."/feed?access_token="..asscesToken, "GET", feed_networkListener )
+
+		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
+		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		        end
+		    end
+
+		    return true
+	end
 
 
 
@@ -2174,7 +2217,7 @@ end
 							isBounceEnabled=false,
 							horizontalScrollingDisabled = true,
 							verticalScrollingDisabled = false,
-							--listener = MessageList_scrollListener,
+							listener = notification_scrollListener,
 						}
 
 
@@ -2194,7 +2237,7 @@ end
 							isBounceEnabled=false,
 							horizontalScrollingDisabled = true,
 							verticalScrollingDisabled = false,
-							--listener = MessageList_scrollListener,
+							listener = notification_scrollListener,
 						}
 
 		    sceneGroup:insert(messagelist_scrollView)
@@ -2226,7 +2269,9 @@ end
 
 			function getScheduleMessageList(response)
 
-				messagelist_response = response
+					print( "############################" )
+
+				messagelist_response = response.ChatMessageList
 
 					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
 							
@@ -2246,7 +2291,7 @@ end
 			function getSentMessageList(response)
 
 
-				sentmessage_response = response
+				sentmessage_response = response.ChatMessageList
 
 					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
 							
@@ -2287,14 +2332,14 @@ end
 			-- 	end
 
 			-- else
-
+			pageCount = pageCount +1
 	            if IsOwner == true then
 
-				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
 			    else
 
-			    Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+			    Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 
 			    end
 
