@@ -376,23 +376,24 @@ local function DraftMessageCreation_list( draftmessagelist )
 		end
 
 
-		-- if messagelist[i].ImageFilePath ~= null and messagelist[i].AudioFilePath ~= null then
-		--    attachimage = messagelist[i].ImageFilePath
-		--    attachaudio = messagelist[i].AudioFilePath
-		-- else
-		--    attachimage = "null"
-		--    attachaudio = "null"	
-		-- end
+		if draftmessagelist[i].ImageFilePath ~= null and draftmessagelist[i].AudioFilePath ~= null then
+		   attachimage = draftmessagelist[i].ImageFilePath
+		   attachaudio = draftmessagelist[i].AudioFilePath
+		else
+		   attachimage = "null"
+		   attachaudio = "null"	
+		end
 
 
-		-- if attachimage ~= "null" and attachaudio ~= "null" then
+		if attachimage ~= "null" and attachaudio ~= "null" then
 	 
-		-- 	attachment_img.x = W-70
-		-- 	attachment_img.isVisible = true
-		-- 	attachment_audio.x = W-35
-		-- 	attachment_audio.isVisible = true
+			attachment_img.x = W-70
+			attachment_img.isVisible = true
 
-		-- end
+			attachment_audio.x = W-35
+			attachment_audio.isVisible = true
+				
+		end
 
 
 		local line = display.newRect(tempGroup,W/2,background.y,W,1)
@@ -564,23 +565,25 @@ local function SentMessageCreation_list( sentmessagelist )
 		end
 
 
-		-- if messagelist[i].ImageFilePath ~= null and messagelist[i].AudioFilePath ~= null then
-		--    attachimage = messagelist[i].ImageFilePath
-		--    attachaudio = messagelist[i].AudioFilePath
-		-- else
-		--    attachimage = "null"
-		--    attachaudio = "null"	
-		-- end
+	
+		if sentmessagelist[i].ImageFilePath ~= null and sentmessagelist[i].AudioFilePath ~= null then
+		   attachimage = sentmessagelist[i].ImageFilePath
+		   attachaudio = sentmessagelist[i].AudioFilePath
+		else
+		   attachimage = "null"
+		   attachaudio = "null"	
+		end
 
 
-		-- if attachimage ~= "null" and attachaudio ~= "null" then
+		if attachimage ~= "null" and attachaudio ~= "null" then
 	 
-		-- 	attachment_img.x = W-70
-		-- 	attachment_img.isVisible = true
-		-- 	attachment_audio.x = W-35
-		-- 	attachment_audio.isVisible = true
+			attachment_img.x = W-70
+			attachment_img.isVisible = true
 
-		-- end
+			attachment_audio.x = W-35
+			attachment_audio.isVisible = true
+				
+		end
 
 
 
@@ -753,23 +756,23 @@ local function MessageCreation_list( messagelist )
 
 
 
-				-- if messagelist[i].ImageFilePath ~= null and messagelist[i].AudioFilePath ~= null then
-				-- 	attachimage = messagelist[i].ImageFilePath
-				-- 	attachaudio = messagelist[i].AudioFilePath
-				-- else
-				-- 	attachimage = "null"
-				-- 	attachaudio = "null"	
-				-- end
+				if messagelist[i].ImageFilePath ~= null and messagelist[i].AudioFilePath ~= null then
+					attachimage = messagelist[i].ImageFilePath
+					attachaudio = messagelist[i].AudioFilePath
+				else
+					attachimage = "null"
+					attachaudio = "null"	
+				end
 
 
-				-- if attachimage ~= "null" and attachaudio ~= "null" then
+				if attachimage ~= "null" and attachaudio ~= "null" then
 
-				-- 		attachment_img.x = W-70
-				-- 		attachment_img.isVisible = true
-				-- 		attachment_audio.x = W-35
-				-- 		attachment_audio.isVisible = true
+						attachment_img.x = W-70
+						attachment_img.isVisible = true
+						attachment_audio.x = W-35
+						attachment_audio.isVisible = true
 
-				-- end
+				end
 
 
 				local line = display.newRect(tempGroup,W/2,background.y,W,1)
