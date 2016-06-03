@@ -662,36 +662,36 @@ end
 
 				      	GroupSubject.text = groupSubjectname
 
-				      	for i=1,#selected_Contact do
+					      	for i=1,#selected_Contact do
 
-				      		selected_Contact[i]=nil
+					      		selected_Contact[i]=nil
 
-				      	end
+					      	end
 
 				      	 
-				      	for i=1,#careerListArray do
+					      	for i=1,#careerListArray do
 
-				      		local tempGroup = careerListArray[i]
+					      		local tempGroup = careerListArray[i]
 
-				      		
-					      		for j=1,tempGroup.numChildren do
+					      		
+						      		for j=1,tempGroup.numChildren do
 
-					      			if tempGroup[j].id == "email_Checkbox" then
+						      			if tempGroup[j].id == "email_Checkbox" then
 
-					      				print( "check box")
+						      				print( "check box")
 
-						      			if tostring(tempGroup[j].isOn) == "true" then
+							      			if tostring(tempGroup[j].isOn) == "true" then
 
-						      				selected_Contact[#selected_Contact+1] = tempGroup[j].value
+							      				selected_Contact[#selected_Contact+1] = tempGroup[j].value
 
-						      			end
-						      		
-						      		end
+							      			end
+							      		
+							      		end
 
-						      	 end
+							      	 end
 
 
-				       	end
+					       	end
 
 
 
@@ -705,7 +705,7 @@ end
 
 				                    print("group not created")
 
-				                      local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addLimit, { CommonWords.ok }, onComplete )
+				                      local alert = native.showAlert( ChatPage.addTeamMember, ChatPage.addLimit, { CommonWords.ok }, onComplete )
 
 				                 end
 
@@ -736,11 +736,12 @@ end
 
 					                       print("group not created")
 
-					                       local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addLimit, { CommonWords.ok }, onComplete )
+					                       local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addBroadcastLimit , { CommonWords.ok }, onComplete )
 
 					                end
 
 				              end
+
 
 			      end
 ---------------------------------------------------------------------------------------
@@ -1151,7 +1152,7 @@ tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.co
 tab_Group_txt:setFillColor( 0.3 )
 
 if IsOwner == true then
-tab_Broadcast_txt = display.newText( tabBarGroup,  "Boradcast",0,0,native.systemFont,11 )
+tab_Broadcast_txt = display.newText( tabBarGroup,ChatPage.Broadcast,0,0,native.systemFont,11 )
 tab_Broadcast_txt.x=tab_broadcast_btn.x;tab_Broadcast_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
 tab_Broadcast_txt:setFillColor( 0.3 )
 end
@@ -1173,23 +1174,25 @@ sceneGroup:insert( tabBarGroup )
 
 	    if addGroupid_value == "addGroup" and pageid_value == "group" then
 
-	    	RecentTab_Topvalue = 115
+		    	RecentTab_Topvalue = 115
 
-			--GroupSubject.isVisible = false
+				--GroupSubject.isVisible = false
 
 	    elseif addGroupid_value == "addGroup" and pageid_value == "broadcast" then
 
-	    	RecentTab_Topvalue = 115
+		    	RecentTab_Topvalue = 115
 
-	    	--GroupSubject.isVisible = false
+		    	title.text = ChatPage.Broadcast
 
-	    	--Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
+	    	    --GroupSubject.isVisible = false
 
+	    	    --Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 	    else
 
 	    	RecentTab_Topvalue = 75
 
 	    end
+	    
 
 
 		consultantList_scrollview = widget.newScrollView
