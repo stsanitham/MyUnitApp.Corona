@@ -1699,16 +1699,11 @@ local function ChatSendAction( event )
                     end
 
 				end
-						 
-			         --   if MessageType == "BROADCAST" and IsOwner ~= true then
-
-			            --Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,"INDIVIDUAL",get_sendMssage)
-
-			        --    else
+				
 
 						Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 			            
-			         --   end
+			       
 
 			sendMeaasage()
 
@@ -2277,16 +2272,11 @@ end
 
 				MessageFileType="Audios"
 
-					--if MessageType == "BROADCAST" and IsOwner ~= true then
-
-				     --   Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,"INDIVIDUAL",get_sendMssage)
-
-				   -- else
+			
 
 					    Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,"Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
 
-	               -- end
-
+	              
 						-- Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
 
 
@@ -2416,16 +2406,10 @@ end
 
 				ChatBox.text = ""
 
-						-- if MessageType == "BROADCAST" and IsOwner ~= true then
-
-					 --            Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,"INDIVIDUAL",get_sendMssage)
-
-					 --    else
-
-
+					
 					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 
-		               -- end
+		               
 
 				   --Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
 
@@ -2619,15 +2603,8 @@ function scene:show( event )
 
 					if ContactDetails.MyUnitBuzzGroupType == "BROADCAST" then
 
-							--if IsOwner == true then
-
 							MessageType = "BROADCAST"
 
-						    -- else
-
-						    --MessageType = "INDIVIDUAL"
-
-		                    -- end
 
 					else
 
