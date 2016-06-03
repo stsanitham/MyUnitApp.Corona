@@ -49,6 +49,8 @@ local tabBarGroup = display.newGroup( )
 
 local pagingvalue = "listpage"
 
+local listType = ""
+
 local pageCount = 0
 local totalListCount = 0
 local notifyFlag = false
@@ -230,11 +232,7 @@ end
 
 local function DraftMessageCreation_list( draftmessagelist )
 
-	messagelist_scrollView:scrollToPosition
-				{
-				    y = 0,
-				    time = 100,
-				}
+
 
 
 	if IsOwner == true then
@@ -244,10 +242,17 @@ local function DraftMessageCreation_list( draftmessagelist )
 		compose_msg_icon:toFront()
     end
 
+    if notifyFlag == true then
 
-	for j=1, #draftmessageList_array do 
-		display.remove(draftmessageList_array[#draftmessageList_array])
-		draftmessageList_array[#draftmessageList_array] = nil
+		for j=1, #draftmessageList_array do 
+			display.remove(draftmessageList_array[#draftmessageList_array])
+			draftmessageList_array[#draftmessageList_array] = nil
+		end
+			messagelist_scrollView:scrollToPosition
+				{
+				    y = 0,
+				    time = 100,
+				}
 	end
 
 
@@ -398,11 +403,6 @@ end
 
 local function SentMessageCreation_list( sentmessagelist )
 
-	messagelist_scrollView:scrollToPosition
-	{
-	    y = 0,
-	    time = 100,
-	}
 
 
 	if IsOwner == true then
@@ -412,10 +412,20 @@ local function SentMessageCreation_list( sentmessagelist )
 		compose_msg_icon:toFront()
     end
 
+    if notifyFlag == true then
 
-	for j=1, #sentmessageList_array do	
-		display.remove(sentmessageList_array[#sentmessageList_array])
-		sentmessageList_array[#sentmessageList_array] = nil
+		for j=1, #sentmessageList_array do	
+			display.remove(sentmessageList_array[#sentmessageList_array])
+			sentmessageList_array[#sentmessageList_array] = nil
+		end
+
+
+	messagelist_scrollView:scrollToPosition
+	{
+	    y = 0,
+	    time = 100,
+	}
+
 	end
 
 
@@ -566,11 +576,7 @@ end
 
 local function MessageCreation_list( messagelist )
 
-		messagelist_scrollView:scrollToPosition
-		{
-		y = 0,
-		time = 100,
-		}
+	
 
         if IsOwner == true then
 
@@ -581,11 +587,18 @@ local function MessageCreation_list( messagelist )
 
 	    end
 
+	      if notifyFlag == true then
 
-		for j=1, #messageList_array do 
-			display.remove(messageList_array[#messageList_array])
-			messageList_array[#messageList_array] = nil
-		end
+				for j=1, #messageList_array do 
+					display.remove(messageList_array[#messageList_array])
+					messageList_array[#messageList_array] = nil
+				end
+					messagelist_scrollView:scrollToPosition
+					{
+					y = 0,
+					time = 100,
+					}
+			end
 
 
 		for i=1,#messagelist do
@@ -737,7 +750,9 @@ local function MessageCreation_list( messagelist )
 
 function getScheduleMessageList(response)
 
-		messagelist_response = response
+		listType = "SCHEDULE"
+
+		messagelist_response = response.ChatMessageList
 
 		if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
 
@@ -783,767 +798,7 @@ function getScheduleMessageList(response)
 
 	timer.performWithDelay(200,onTimer) 
 
-<<<<<<< HEAD
-							-- 		if(messageList_array[#messageList_array-1]) ~= nil then
-							-- 		tempHeight = messageList_array[#messageList_array-1][1].y + messageList_array[#messageList_array-1][1].height+3
-							-- 		end
-
-							-- 	parentTitle.anchorY = 0
-							-- 	parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
-							-- 	parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
-
-								
-							-- 	parent_centerText = display.newText(tempGroup,Message_time.text,0,0,native.systemFontBold,14)
-								
-
-							-- 	parent_centerText.x=W/2
-							-- 	parent_centerText.anchorX=0
-							-- 	parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
-
-							-- 	background.y=parentTitle.y+background.contentHeight/2
-
-						
-
-							-- end
-
-
-			    --  end
-
-
-				
-
-				local Messagedetail_txt = display.newText(tempGroup,messagelist[i].MyUnitBuzzMessage,0,0,W-45,0,native.systemFont,14)
-				Messagedetail_txt.x=12
-				Messagedetail_txt.y=background.y+7
-				Messagedetail_txt.anchorX=0
-				Messagedetail_txt.anchorY = 0
-				Utils.CssforTextView(Messagedetail_txt,sp_labelName)
-				Messagedetail_txt:setFillColor(0,0,0)
-
-				if Messagedetail_txt.text:len() > 60 then
-
-					Messagedetail_txt.text = Messagedetail_txt.text:sub(1,60).."..."
-					background.height = 65
-					Messagedetail_txt.y=background.y+7
-
-					Message_time.y=background.y+45
-
-				end
-
-
-
-
-     --            print("ImagePath Details : "..imagepath)
-
-                local attachment_img = display.newImageRect(tempGroup,"res/assert/imagesave1.png",20,20)
-				attachment_img.anchorX=0
-				attachment_img.x = W-35
-				attachment_img.isVisible = false
-				attachment_img.y=background.y+7
-				attachment_img.anchorY = 0
-
-
-
-				local attachment_audio = display.newImageRect(tempGroup,"res/assert/audiorecorded.png",22,22)
-				attachment_audio.anchorX=0
-				attachment_audio.x = W-35
-				attachment_audio.isVisible = false
-				attachment_audio.y=background.y+7
-				attachment_audio.anchorY = 0
-            
-
-            
-
-                local attachimage , attachaudio
-  
----------------------------------image attach--------------------------------------           
-         
-				if messagelist[i].ImageFilePath == null then
-
-					attachimage = "null"
-					
-				else
-
-                    attachimage = messagelist[i].ImageFilePath
-
-				end
-
-
-
-				if attachimage ~= "null" then
-
-					attachment_img.isVisible = true
-
-				else
-
-					attachment_img.isVisible = false
-
-				end
-
-----------------------------------audio attach--------------------------------------
-
-				if messagelist[i].AudioFilePath == null then
-
-					attachaudio = "null"
-					
-				else
-
-                    attachaudio = messagelist[i].AudioFilePath
-
-				end
-
-
-
-				if attachaudio ~= "null" then
-
-					attachment_audio.isVisible = true
-
-				else
-
-					attachment_audio.isVisible = false
-
-				end
-
-
-
-
-
-
-
-				-- local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
-				-- right_img.anchorX=0
-				-- right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
-
-
-				local line = display.newRect(tempGroup,W/2,background.y,W,1)
-				line.y=background.y+background.contentHeight-line.contentHeight
-				line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-	
-
-				messagelist_scrollView:insert(tempGroup)
-
-				background:addEventListener( "touch", MessageDetailPage )
-
-			end
-
-		end
-
-
-
-
-
-
-
-
-
-
-		function updateAudioValues(audiovalues)
-
-			print("ertertet64636265642563452345623")
-
-			    audiovalues = json.decode(audiovalues)
-
-			   -- local nativeal = native.showAlert("MUB AUDIO",audiovalues,{"ok"})
-
-				if  audiovalues.MessageStatus == "SCHEDULE" and tab_Group.id =="schedule" then
-
-					print("schedule coming")
-
-						tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
-						tab_Sent_txt:setFillColor(0)
-						tab_Draft_txt:setFillColor(0)
-
-						tab_Group_bottombar.isVisible = true
-						tab_Group_bottombar.y = tabBg.y+29.5
-						tab_Group_bottombar.x = W/2 - W/3
-
-
-						for j=1, #messageList_array do 
-
-							display.remove(messageList_array[#messageList_array])
-							messageList_array[#messageList_array] = nil
-						end
-
-         
-
-			local function getScheduleMessageList(response)
-
-				messagelist_response = response.ChatMessageList
-
-
-
-					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
-							
-						MessageCreation_list(messagelist_response)
-						NoScheduleMessage.isVisible=false
-
-						     for j = 1, #sentmessageList_array do
-
-			                	display.remove(sentmessageList_array[#sentmessageList_array])
-							    sentmessageList_array[#sentmessageList_array] = nil
-
-					         end
-
-
-					         for j = 1, #draftmessageList_array do
-
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
-
-					         end
-
-
-					else
-
-						NoScheduleMessage.isVisible=true
-
-							 for j = 1, #sentmessageList_array do
-
-			                	display.remove(sentmessageList_array[#sentmessageList_array])
-							    sentmessageList_array[#sentmessageList_array] = nil
-
-					         end
-
-
-					         for j = 1, #draftmessageList_array do
-
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
-
-					         end
-
-
-					end
-
-			   end
-
-			   		pageCount = pageCount+1
-
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
-
-                
-
-	elseif  audiovalues.MessageStatus == "SEND" and tab_Message.id=="sent" then
-
-					print("sent coming")
-
-
-				tab_Schedule_txt:setFillColor( 0 )
-				tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-				tab_Draft_txt:setFillColor(0)
-
-				tab_Group_bottombar.isVisible = true
-				tab_Group_bottombar.y = tabBg.y+29.5
-				tab_Group_bottombar.x = W/2
-
-
-				for j=1, #sentmessageList_array do 
-
-							display.remove(sentmessageList_array[#sentmessageList_array])
-							sentmessageList_array[#sentmessageList_array] = nil
-				end
-
-
-
-			   local function getSentMessageList(response)
-
-				  sentmessage_response = response.ChatMessageList
-
-					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
-							
-						SentMessageCreation_list(sentmessage_response)
-						NoSentMessage.isVisible=false
-
-						    for j = 1, #draftmessageList_array do
-
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
-
-					         end
-
-
-					         for j = 1 , #messageList_array do
-
-			                	display.remove(messageList_array[#messageList_array])
-							    messageList_array[#messageList_array] = nil
-
-					         end
-
-					else
-
-						NoSentMessage.isVisible=true
-
-							for j = 1, #draftmessageList_array do
-
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
-
-					         end
-
-
-					         for j = 1, #messageList_array do
-
-			                	display.remove(messageList_array[#messageList_array])
-							    messageList_array[#messageList_array] = nil
-
-					         end
-
-
-					end
-
-
-			    end
-
-
-			    	pageCount = pageCount+1
-					Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
-			    
-
-
-  elseif  audiovalues.MessageStatus == "DRAFT" and tab_Contact.id == "draft" then
-
-					print("draft coming")
-
-
-
-				tab_Schedule_txt:setFillColor( 0 )
-				tab_Sent_txt:setFillColor(0)
-				tab_Draft_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor) )
-
-				tab_Group_bottombar.isVisible = true
-				tab_Group_bottombar.y = tabBg.y+29.5
-				tab_Group_bottombar.x = W/2 + W/3
-
-
-
-						for j=1, #draftmessageList_array do 
-
-							display.remove(draftmessageList_array[#draftmessageList_array])
-							draftmessageList_array[#draftmessageList_array] = nil
-						end
-
-
-
-						function getDraftMessageList1(response)
-
-
-							draftmessagelist_response = response.ChatMessageList
-
-
-								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
-
-									DraftMessageCreation_list(draftmessagelist_response)
-									NoDraftMessage.isVisible=false
-									NoScheduleMessage.isVisible=false
-									NoSentMessage.isVisible=false
-
-										for j = 1, #sentmessageList_array do
-
-										display.remove(sentmessageList_array[#sentmessageList_array])
-										sentmessageList_array[#sentmessageList_array] = nil
-
-										end
-
-
-										for j = 1 , #messageList_array do
-
-										display.remove(messageList_array[#messageList_array])
-										messageList_array[#messageList_array] = nil
-
-										end
-
-
-								else
-
-									NoDraftMessage.isVisible=true
-
-
-										for j = 1, #sentmessageList_array do
-
-										display.remove(sentmessageList_array[#sentmessageList_array])
-										sentmessageList_array[#sentmessageList_array] = nil
-
-										end
-
-
-										for j = 1 , #messageList_array do
-
-										display.remove(messageList_array[#messageList_array])
-										messageList_array[#messageList_array] = nil
-
-										end
-
-
-
-								end
-
-
-						end
-
-						pageCount = pageCount+1
-					Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
-               
-				
-				 end
-
-		end
-
-
-
-
-
-
-		local function resumeCallList(listview_values)
-
-	 		decodedvalue = json.decode(listview_values)
-
-	  			if decodedvalue.MessageStatus == "SCHEDULE" then
-
-	  						Utils.SnackBar(MessagePage.ScheduledSuccess)
-
-						tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
-						tab_Sent_txt:setFillColor(0)
-						tab_Draft_txt:setFillColor(0)
-
-						tab_Group_bottombar.isVisible = true
-						tab_Group_bottombar.y = tabBg.y+29.5
-						tab_Group_bottombar.x = W/2 - W/3
-
-
-						for j=1, #messageList_array do 
-
-							display.remove(messageList_array[#messageList_array])
-							messageList_array[#messageList_array] = nil
-						end
-     
-
-			local function getScheduleMessageList(response)
-
-				messagelist_response = response.ChatMessageList
-
-					print( "############################" )
-
-					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
-							
-						MessageCreation_list(messagelist_response)
-						NoScheduleMessage.isVisible=false
-
-						     for j = 1, #sentmessageList_array do
-
-			                	display.remove(sentmessageList_array[#sentmessageList_array])
-							    sentmessageList_array[#sentmessageList_array] = nil
-
-					         end
-
-
-					         for j = 1, #draftmessageList_array do
-
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
-
-					         end
-
-
-					else
-
-						NoScheduleMessage.isVisible=true
-
-							 for j = 1, #sentmessageList_array do
-
-			                	display.remove(sentmessageList_array[#sentmessageList_array])
-							    sentmessageList_array[#sentmessageList_array] = nil
-
-					         end
-
-
-					         for j = 1, #draftmessageList_array do
-
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
-
-					         end
-					end
-			   end
-			   		pageCount = pageCount+1
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
-                
-
-	 elseif  decodedvalue.MessageStatus == "SEND" then
-
-	 		Utils.SnackBar(MessagePage.SentSuccess)
-
-
-				tab_Schedule_txt:setFillColor( 0 )
-				tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-				tab_Draft_txt:setFillColor(0)
-
-				tab_Group_bottombar.isVisible = true
-				tab_Group_bottombar.y = tabBg.y+29.5
-				tab_Group_bottombar.x = W/2
-
-
-				for j=1, #sentmessageList_array do 
-
-							display.remove(sentmessageList_array[#sentmessageList_array])
-							sentmessageList_array[#sentmessageList_array] = nil
-				end
-
-
-			   local function getSentMessageList(response)
-
-				  sentmessage_response = response.ChatMessageList
-
-					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
-							
-						SentMessageCreation_list(sentmessage_response)
-						NoSentMessage.isVisible=false
-
-						    for j = 1, #draftmessageList_array do
-
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
-
-					         end
-
-
-					         for j = 1 , #messageList_array do
-
-			                	display.remove(messageList_array[#messageList_array])
-							    messageList_array[#messageList_array] = nil
-
-					         end
-
-					else
-
-						NoSentMessage.isVisible=true
-
-							for j = 1, #draftmessageList_array do
-
-			                	display.remove(draftmessageList_array[#draftmessageList_array])
-							    draftmessageList_array[#draftmessageList_array] = nil
-
-					         end
-
-
-					         for j = 1, #messageList_array do
-
-			                	display.remove(messageList_array[#messageList_array])
-							    messageList_array[#messageList_array] = nil
-
-					         end
-
-					end
-
-			    end
-
-			    	pageCount = pageCount+1
-
-					Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
-			    
-
-   elseif  decodedvalue.MessageStatus == "DRAFT" then
-
-
-   				 Utils.SnackBar(MessagePage.DraftSuccess)
-
-				tab_Schedule_txt:setFillColor( 0 )
-				tab_Sent_txt:setFillColor(0)
-				tab_Draft_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor) )
-
-				tab_Group_bottombar.isVisible = true
-				tab_Group_bottombar.y = tabBg.y+29.5
-				tab_Group_bottombar.x = W/2 + W/3
-
-
-						for j=1, #draftmessageList_array do 
-
-							display.remove(draftmessageList_array[#draftmessageList_array])
-							draftmessageList_array[#draftmessageList_array] = nil
-						end
-
-
-						function getDraftMessageList1(response)
-
-							draftmessagelist_response = response.ChatMessageList
-
-
-								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
-
-									DraftMessageCreation_list(draftmessagelist_response)
-									NoDraftMessage.isVisible=false
-									NoScheduleMessage.isVisible=false
-									NoSentMessage.isVisible=false
-
-										for j = 1, #sentmessageList_array do
-
-										display.remove(sentmessageList_array[#sentmessageList_array])
-										sentmessageList_array[#sentmessageList_array] = nil
-
-										end
-
-
-										for j = 1 , #messageList_array do
-
-										display.remove(messageList_array[#messageList_array])
-										messageList_array[#messageList_array] = nil
-
-										end
-
-
-								else
-
-									NoDraftMessage.isVisible=true
-
-
-										for j = 1, #sentmessageList_array do
-
-										display.remove(sentmessageList_array[#sentmessageList_array])
-										sentmessageList_array[#sentmessageList_array] = nil
-
-										end
-
-
-										for j = 1 , #messageList_array do
-
-										display.remove(messageList_array[#messageList_array])
-										messageList_array[#messageList_array] = nil
-
-										end
-
-								end
-
-						end
-
-
-					Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
-               
-
-		 end
-
-		end
-
-
-
-
-
-       
-		function scene:resumeGame(value,messagelistvalue)
-
-
-
-			if value == "back" then
-
-
-	        Runtime:addEventListener( "key", onKeyEvent )
-
-
-	           	local function waitTimer( event )
-
-
-				if messagelistvalue.MessageStatus == "SCHEDULE" then
-
-					
-
-						for j=1, #messageList_array do 
-
-							display.remove(messageList_array[#messageList_array])
-							messageList_array[#messageList_array] = nil
-						end
-
-						pageCount = pageCount+1
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
-
-
-				elseif messagelistvalue.MessageStatus == "SENT" then
-
-
-		       			 
-
-						for j=1, #sentmessageList_array do 
-
-							display.remove(sentmessageList_array[#sentmessageList_array])
-							sentmessageList_array[#sentmessageList_array] = nil
-						end
-
-						pageCount = pageCount + 1
-					Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
-
-
-				elseif messagelistvalue.MessageStatus == "DRAFT" then
-
-						
-
-						for j=1, #draftmessageList_array do 
-
-							display.remove(draftmessageList_array[#draftmessageList_array])
-							draftmessageList_array[#draftmessageList_array] = nil
-						end
-
-
-						function getDraftMessageList1(response)
-
-
-							draftmessagelist_response = response.ChatMessageList
-
-
-								if draftmessagelist_response ~= nil and #draftmessagelist_response ~= 0 and draftmessagelist_response ~= "" then
-
-									DraftMessageCreation_list(draftmessagelist_response)
-									NoDraftMessage.isVisible=false
-
-								else
-
-									NoDraftMessage.isVisible=true
-
-								end
-
-
-						end
-
-						pageCount  =pageCount+1
-					Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
-               
-
-
-				 end
-
-
-				end
-
-				 	timer.performWithDelay( 500, waitTimer )
-
-			end
-
-
-		end
-
-
-
-
-		
-
-
-
-	function scene:resumeGame(value,EditArray,pagevalue)
-
-
-
-	    if value == "edit" then
-
-
-	    	pagevalue = "editpage"
-
-					local options = {
-						isModal = true,
-						effect = "slideLeft",
-						time = 300,
-						params = {
-						Details = EditArray,
-						value = "edit",
-						page = pagevalue
-=======
 end
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
 
 
 
@@ -1551,7 +806,9 @@ end
 
 function getSentMessageList(response)
 
-	    sentmessage_response = response
+		listType = "SENT"
+
+	    sentmessage_response = response.ChatMessageList
 
 		if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
 
@@ -1608,7 +865,9 @@ end
 
  function getDraftMessageList(response)
 
-       draftmessage_response = response
+ 	listType = "DRAFT"
+
+       draftmessage_response = response.ChatMessageList
 
 	   if draftmessage_response ~= nil and #draftmessage_response ~= 0 and draftmessage_response ~= "" then
 
@@ -1622,16 +881,11 @@ end
 		        end
 
 
-<<<<<<< HEAD
-							pageCount = pageCount+1
-							Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
-=======
 		        for j = 1, #messageList_array do
 	            	display.remove(messageList_array[#messageList_array])
 				    messageList_array[#messageList_array] = nil
 		        end
 
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
 
 		    DraftMessageCreation_list(draftmessage_response)
 
@@ -1643,14 +897,9 @@ end
 				timer.performWithDelay(200,onTimer)
 
 
-<<<<<<< HEAD
-							pageCount = pageCount +1 
-							Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
-=======
 			    NoScheduleMessage.isVisible=false
 				NoSentMessage.isVisible=false
 
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
 
 				for j = 1, #sentmessageList_array do
 				    display.remove(sentmessageList_array[#sentmessageList_array])
@@ -1670,10 +919,6 @@ end
  end
 
 
-<<<<<<< HEAD
-									draftmessagelist_response = response.ChatMessageList
-=======
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
 
 
 
@@ -1694,21 +939,16 @@ function updateAudioValues(audiovalues)
 			tab_Group_bottombar.x = W/2 - W/3
 
 
-<<<<<<< HEAD
-								pageCount = pageCount+1
-
-							Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
-		               
-=======
 			for j=1, #messageList_array do 
 				display.remove(messageList_array[#messageList_array])
 				messageList_array[#messageList_array] = nil
 			end
        
 
-	        getScheduleMessageList()
-			Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
+	      --  getScheduleMessageList()
+				pageCount = pageCount+1
+
+				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
                 
 	elseif  audiovalues.MessageStatus == "SEND" and tab_Message.id=="sent" then
@@ -1728,9 +968,11 @@ function updateAudioValues(audiovalues)
 			end
 
 
-            getSentMessageList()
-			Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
-			    
+           -- getSentMessageList()
+			
+			pageCount = pageCount+1
+			Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
+			     
 
      elseif  audiovalues.MessageStatus == "DRAFT" and tab_Contact.id == "draft" then
 
@@ -1750,9 +992,11 @@ function updateAudioValues(audiovalues)
 			end
 
 
-			getDraftMessageList()			
-			Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList)
-               
+		--	getDraftMessageList()			
+			
+			pageCount = pageCount+1
+			Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
+                              
 				
 	end
 
@@ -1786,10 +1030,11 @@ local function resumeCallList(listview_values)
 				end
 
 
-			getScheduleMessageList()
+			--getScheduleMessageList()
 
-			Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
-                
+			pageCount = pageCount+1
+			Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
+                  
 
 	  elseif  decodedvalue.MessageStatus == "SEND" then
 
@@ -1809,27 +1054,18 @@ local function resumeCallList(listview_values)
 				end
 
 
-            getSentMessageList()
+           -- getSentMessageList()
 			  
-			Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
-			    
+				pageCount = pageCount+1
+
+					Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
+			    			    
 
       elseif  decodedvalue.MessageStatus == "DRAFT" then
 
-<<<<<<< HEAD
-		elseif event.phase == "ended" then
-
-			pageCount = 0
-			
-			if event.target.id == "schedule" then
-
-
-				tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-=======
    				Utils.SnackBar(MessagePage.DraftSuccess)
 
 				tab_Schedule_txt:setFillColor( 0 )
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
 				tab_Sent_txt:setFillColor(0)
 				tab_Draft_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor) )
 				tab_Group_bottombar.isVisible = true
@@ -1842,13 +1078,11 @@ local function resumeCallList(listview_values)
 					draftmessageList_array[#draftmessageList_array] = nil
 				end
 
-<<<<<<< HEAD
-						messagelist_response = response.ChatMessageList
-=======
-            getDraftMessageList()
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
+            --getDraftMessageList()
 
-		    Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList)
+            pageCount = pageCount+1
+
+			Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
                
 
       end
@@ -1869,7 +1103,8 @@ function ListLoad(messagelistvalue)
 				messageList_array[#messageList_array] = nil
 			end
 
-		    Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+			pageCount = pageCount+1
+		    Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
 
 	elseif messagelistvalue.MessageStatus == "SENT" then
@@ -1879,8 +1114,8 @@ function ListLoad(messagelistvalue)
 				display.remove(sentmessageList_array[#sentmessageList_array])
 				sentmessageList_array[#sentmessageList_array] = nil
 			end
-
-		    Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+			pageCount = pageCount +1 
+		    Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 
 
 	elseif messagelistvalue.MessageStatus == "DRAFT" then
@@ -1890,19 +1125,13 @@ function ListLoad(messagelistvalue)
 				display.remove(draftmessageList_array[#draftmessageList_array])
 				draftmessageList_array[#draftmessageList_array] = nil
 			end
-
-		    Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList)
+			pageCount = pageCount+1
+		    Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList)
  
 	end
 
-<<<<<<< HEAD
-				   pageCount = pageCount+1
-
-				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
-=======
 end
 
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
 
 
 
@@ -1917,11 +1146,7 @@ function scene:resumeGame(value,messagelistvalue)
 
 				ListLoad(messagelistvalue)
 
-<<<<<<< HEAD
-				sentmessage_response = response.ChatMessageList
-=======
 			end
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
 
 		timer.performWithDelay( 500, waitTimer )
 
@@ -1980,10 +1205,6 @@ function scene:resumeGame(value,EditArray,pagevalue)
 
 		        timer.performWithDelay( 500, waitTimer )
 
-<<<<<<< HEAD
-			    pageCount = pageCount +1 
-				Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
-=======
 	   elseif value == "back" then
 			
 			 	local function waitTimer( event )
@@ -1993,7 +1214,6 @@ function scene:resumeGame(value,EditArray,pagevalue)
 					 		Runtime:addEventListener( "key", onKeyEvent )
 
                             ListLoad(messagelistvalue)
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
 				
 					end
 
@@ -2011,10 +1231,83 @@ end
 
 
 
-<<<<<<< HEAD
-				draftmessage_response = response.ChatMessageList
-=======
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
+	local function MessageList_scrollListener( event )
+
+		    local phase = event.phase
+
+		    if ( phase == "began" ) then 
+
+		    elseif ( phase == "moved" ) then
+
+		    elseif ( phase == "ended" ) then 
+
+		    end
+
+
+		    if ( event.limitReached ) then
+
+		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+
+		        			
+						notifyFlag = false
+
+		        		pageCount = pageCount+1
+
+
+		        		print( "listType : "..listType )
+		   			
+						if listType == "DRAFT" then
+
+							Webservice.GetMessagessListbyMessageStatus(listType,10,pageCount,getDraftMessageList)
+
+						elseif listType == "SENT" then
+
+							print( "Hello" )
+							
+							Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
+						
+						elseif listType == "SCHEDULE" then
+
+							Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
+
+						end
+
+
+		        	
+		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+
+
+		        	notifyFlag = true
+
+		        		pageCount = 0
+						
+						if listType == "DRAFT" then
+
+							Webservice.GetMessagessListbyMessageStatus(listType,10,pageCount,getDraftMessageList)
+
+						elseif listType == "SENT" then
+							
+							Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
+						
+						elseif listType == "SCHEDULE" then
+
+							Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
+
+						end
+
+		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
+
+		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+
+		        end
+
+		    end
+
+		    return true
+	end
+
+
+
 
 
 
@@ -2024,6 +1317,8 @@ local function TabbarTouch( event )
 		if event.phase == "began" then 
 
 		elseif event.phase == "ended" then
+
+		pageCount = 0
 			
 			if event.target.id == "schedule" then
 
@@ -2041,9 +1336,10 @@ local function TabbarTouch( event )
 
 					composer.removeHidden()
 
-				getScheduleMessageList()
+				--getScheduleMessageList()
 
-				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+				pageCount = pageCount + 1
+				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
 
 			elseif event.target.id == "sent" then
@@ -2062,9 +1358,10 @@ local function TabbarTouch( event )
 
 					composer.removeHidden()
 
-				getSentMessageList()
+			--	getSentMessageList()
 
-				Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+				pageCount = pageCount+1
+				Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 				
 			elseif event.target.id == "draft" then
 
@@ -2082,14 +1379,10 @@ local function TabbarTouch( event )
 					NoScheduleMessage.isVisible = false
 					NoDraftMessage.isVisible = false
 
-<<<<<<< HEAD
-			     pageCount = pageCount+1
-				Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList)
-=======
-				getDraftMessageList()
+				--getDraftMessageList()
 
-				Webservice.GetMessagessListbyMessageStatus("DRAFT",getDraftMessageList)
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
+				pageCount = pageCount+1
+				Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList)
 
 			    
 			end
@@ -2159,38 +1452,7 @@ MainGroup:insert(sceneGroup)
 
 end
 
-	local function notification_scrollListener( event )
 
-		    local phase = event.phase
-		    if ( phase == "began" ) then 
-		    elseif ( phase == "moved" ) then 
-		    elseif ( phase == "ended" ) then 
-		    end
-
-		    -- In the event a scroll limit is reached...
-		    if ( event.limitReached ) then
-		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
-
-		        	if FeedNextUrl ~= nil then
-		        		spinner_show()
-						getFeeds = network.request( FeedNextUrl, "GET", feed_Load )
-
-					end
-
-
-		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
-
-		        	spinner_show()
-
-        			getFeeds = network.request( "https://graph.facebook.com/"..userid.."/feed?access_token="..asscesToken, "GET", feed_networkListener )
-
-		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
-		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
-		        end
-		    end
-
-		    return true
-	end
 
 
 
@@ -2311,7 +1573,7 @@ function scene:show( event )
 							isBounceEnabled=false,
 							horizontalScrollingDisabled = true,
 							verticalScrollingDisabled = false,
-							listener = notification_scrollListener,
+							listener = MessageList_scrollListener,
 						}
 
 
@@ -2331,7 +1593,7 @@ function scene:show( event )
 							isBounceEnabled=false,
 							horizontalScrollingDisabled = true,
 							verticalScrollingDisabled = false,
-							listener = notification_scrollListener,
+							listener = MessageList_scrollListener,
 						}
 
 		    sceneGroup:insert(messagelist_scrollView)
@@ -2344,98 +1606,18 @@ elseif phase == "did" then
 
 			composer.removeHidden()
 			compose_msg_icon:toFront()
-<<<<<<< HEAD
-
-
-
-
-
-
-			function getScheduleMessageList(response)
-
-					print( "############################" )
-
-				messagelist_response = response.ChatMessageList
-
-					if messagelist_response ~= nil and #messagelist_response ~= 0 and messagelist_response ~= "" then
-							
-						MessageCreation_list(messagelist_response)
-						NoScheduleMessage.isVisible=false
-
-					else
-
-						NoScheduleMessage.isVisible=true
-
-					end
-
-			end
-
-
-
-			function getSentMessageList(response)
-
-
-				sentmessage_response = response.ChatMessageList
-
-					if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
-							
-						SentMessageCreation_list(sentmessage_response)
-						NoSentMessage.isVisible=false
-
-					else
-
-						NoSentMessage.isVisible=true
-
-					end
-
-
-			end
-
-
-
-
-			if pagingvalue == "listpage" then	
-
-
-			-- 	page_value_name = event.params.page_val
-
-			-- 	editpagevalues = event.params.editpagevalue
-
-			-- 	Imagepath = event.params.Imagepathname
-
-			-- 	-- photowidthvalue = event.params.photowidth
-
-			-- 	-- photoheightvalue = event.params.photoheight
-
-			-- 	-- print(photowidthvalue.."                          "..photoheightvalue)
-
-			-- 	if page_value_name == "editpage" then
-
-			-- 		scene:resumeCall(editpagevalues)
-
-			-- 	end
-
-			-- else
-			pageCount = pageCount +1
-	            if IsOwner == true then
-
-				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
-
-			    else
-
-			    Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
-
-			    end
-=======
 				
 			if pagingvalue == "listpage" then	
 
 		            if IsOwner == true then
-					Webservice.GetMessagessListbyMessageStatus("SCHEDULE",getScheduleMessageList)
+		            	listType = "SCHEDULE"
+		            	pageCount = pageCount+1 
+						Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 				    else
-				    Webservice.GetMessagessListbyMessageStatus("SENT",getSentMessageList)
+				    	listType = "SENT"
+				    	pageCount = pageCount+1
+				    	Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 				    end
->>>>>>> 935953cfdeed8339e4d40c5b75db6144afb9dedc
 
 			elseif pagingvalue == "compose" then
 

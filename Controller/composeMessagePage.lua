@@ -266,9 +266,12 @@ local function selectionComplete ( event )
 
 			if Audio_filename.isVisible == true then
 
-				if filename_title.isVisiblee == false then
+				if filename_title.isVisiblee == false and Audio_filename.y ==  tabBar.y+tabBar.contentHeight+15  then
+					
 						filename_title.y=Audio_filename.y+20
 						composePage.y = composePage.y+45
+					
+
 				end
 
 			
@@ -310,8 +313,6 @@ end
 
 
 	function get_audiomodel(response)
-
-		print("\n\n\n SuccessMessage : Audio Response : \n\n ", json.encode(response))
 
 		audiolist_values = json.encode(response)
 
@@ -586,8 +587,6 @@ local function sendAction( method,IsScheduled,Date,Time )
 
 		  elseif (shortmsg_textbox.text ~= "") and (filename.text ~= "" and filename.isVisible == true ) then
 
-        		print("sending with image")
-
 		        	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 					
 					ImagePath= filename.text or ""
@@ -634,8 +633,6 @@ local function sendAction( method,IsScheduled,Date,Time )
         	   --Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
            elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) then
-
-            	print("audio path send value")
 
 
             	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
@@ -779,7 +776,6 @@ end
 
 							elseif event.target.id == "closealert" then
 
-			 					print("close alert")
 
 			 					if datePicker then datePicker.clear() end
 
@@ -860,7 +856,6 @@ end
 
 	    	    status="normal"
 
-	    	    print( "Length = "..longMessage:len() )
 
 				if (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) or (longMessage:len() < 62  or longMessage == nil) then
 
@@ -1041,11 +1036,8 @@ local function TextLimitation( event )
 
        if event.phase == "began" then
 
-            print("began")
-
        elseif event.phase == "submitted" then
 
-            print("submitted")
 
                     if event.target.id =="longmessage" then
 
@@ -1070,8 +1062,6 @@ local function TextLimitation( event )
 
 
        elseif event.phase == "editing" then
-
-                print("editing")
 
                     if event.target.id =="shortmessage" then
 
@@ -1151,9 +1141,6 @@ local function TextLimitation( event )
 
             elseif event.phase == "ended" then
 
-                print("editing")
-
-
                   native.setKeyboardFocus( nil )
 
 
@@ -1208,19 +1195,14 @@ local function TextLimitation( event )
 
       	size =(event/1073741824)..' GB'
 
-      print("size of the image11 ",size)
-
 
       elseif (event>=1048576) then   
 
        	size =(event/1048576)..' MB'
 
-      print("size of the image 22",size)
-
 	  
 	  elseif (event > 10485760) then
 
-	  print("highest size of the image ",size)
 
 	    local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
 
@@ -1229,7 +1211,6 @@ local function TextLimitation( event )
 
       	size = (event/1024)..' KB'
 
-       print("size of the image 33",size)
 
       else      
 
@@ -1301,9 +1282,10 @@ function scene:updateRecordedAudio( dataFileName,audiopagename )
 
 			if filename.isVisible == true then
 
-				if Audio_filename_title.isVisible == false then
-					Audio_filename_title.y=filename.y+20
-					composePage.y = composePage.y+45
+				if Audio_filename_title.isVisible == false and filename.y == tabBar.y+tabBar.contentHeight+15  then
+
+						Audio_filename_title.y=filename.y+20
+						composePage.y = composePage.y+45
 				end
 
 			else
@@ -1381,8 +1363,6 @@ local function attachAction( event )
 
 			    local MessageType=""
 
-			    print("contact id:",ContactId)
-
 			    local options = {
 
 				      		effect = "fromTop",
@@ -1426,8 +1406,6 @@ local function webListener( event )
 
 
         longMessage = (string.sub( updatedresponse, 13,updatedresponse:len() ))
-
-        print( "updatedresponse : "..longMessage:len() )
 
         local method = ""
  			
@@ -1609,8 +1587,6 @@ local function AttachmentTouch( event )
 	if event.phase == "began" then
 
 	elseif event.phase == "ended" then
-		print( AttachmentGroup.alpha )
-
 		if attachment_icon.isVisible == true then
 
 			if AttachmentGroup.alpha <= 0.3 then
@@ -1780,8 +1756,6 @@ end
 function scene:create( event )
 
 	local sceneGroup = self.view
-
-	print("create called")
 
 
     Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
