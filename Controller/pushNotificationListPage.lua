@@ -376,6 +376,25 @@ local function DraftMessageCreation_list( draftmessagelist )
 		end
 
 
+		-- if messagelist[i].ImageFilePath ~= null and messagelist[i].AudioFilePath ~= null then
+		--    attachimage = messagelist[i].ImageFilePath
+		--    attachaudio = messagelist[i].AudioFilePath
+		-- else
+		--    attachimage = "null"
+		--    attachaudio = "null"	
+		-- end
+
+
+		-- if attachimage ~= "null" and attachaudio ~= "null" then
+	 
+		-- 	attachment_img.x = W-70
+		-- 	attachment_img.isVisible = true
+		-- 	attachment_audio.x = W-35
+		-- 	attachment_audio.isVisible = true
+
+		-- end
+
+
 		local line = display.newRect(tempGroup,W/2,background.y,W,1)
 		line.y=background.y+background.contentHeight-line.contentHeight
 		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
@@ -545,6 +564,26 @@ local function SentMessageCreation_list( sentmessagelist )
 		end
 
 
+		-- if messagelist[i].ImageFilePath ~= null and messagelist[i].AudioFilePath ~= null then
+		--    attachimage = messagelist[i].ImageFilePath
+		--    attachaudio = messagelist[i].AudioFilePath
+		-- else
+		--    attachimage = "null"
+		--    attachaudio = "null"	
+		-- end
+
+
+		-- if attachimage ~= "null" and attachaudio ~= "null" then
+	 
+		-- 	attachment_img.x = W-70
+		-- 	attachment_img.isVisible = true
+		-- 	attachment_audio.x = W-35
+		-- 	attachment_audio.isVisible = true
+
+		-- end
+
+
+
 		local line = display.newRect(tempGroup,W/2,background.y,W,1)
 		line.y=background.y+background.contentHeight-line.contentHeight
 		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
@@ -711,6 +750,26 @@ local function MessageCreation_list( messagelist )
 				else
 					attachment_audio.isVisible = false
 				end
+
+
+
+				-- if messagelist[i].ImageFilePath ~= null and messagelist[i].AudioFilePath ~= null then
+				-- 	attachimage = messagelist[i].ImageFilePath
+				-- 	attachaudio = messagelist[i].AudioFilePath
+				-- else
+				-- 	attachimage = "null"
+				-- 	attachaudio = "null"	
+				-- end
+
+
+				-- if attachimage ~= "null" and attachaudio ~= "null" then
+
+				-- 		attachment_img.x = W-70
+				-- 		attachment_img.isVisible = true
+				-- 		attachment_audio.x = W-35
+				-- 		attachment_audio.isVisible = true
+
+				-- end
 
 
 				local line = display.newRect(tempGroup,W/2,background.y,W,1)
@@ -1355,7 +1414,7 @@ function scene:show( event )
 
 			end
 
-			composer.removeHidden(  )
+			composer.removeHidden()
 	         
 			totalvalues = list_values
 

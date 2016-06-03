@@ -896,18 +896,20 @@ end
 
 			Runtime:removeEventListener("key",onKeyEventDetail)
 
-			if DeleteMessageGroup.numChildren ~= nil then
+            if webView then webView:removeSelf( );webView=nil end
 
-			  	 	for j=DeleteMessageGroup.numChildren, 1, -1 do 
-			  						display.remove(DeleteMessageGroup[DeleteMessageGroup.numChildren])
-			  						DeleteMessageGroup[DeleteMessageGroup.numChildren] = nil
-			  	 	end
-            end
+				if DeleteMessageGroup.numChildren ~= nil then
+
+				  	 	for j=DeleteMessageGroup.numChildren, 1, -1 do 
+				  						display.remove(DeleteMessageGroup[DeleteMessageGroup.numChildren])
+				  						DeleteMessageGroup[DeleteMessageGroup.numChildren] = nil
+				  	 	end
+	            end
 
 
              if testimage then testimage:removeSelf();testimage = nil end
 
-				network.cancel(testimage)
+			  network.cancel(testimage)
 
 
 		elseif phase == "did" then
@@ -928,7 +930,6 @@ end
 				end
 
                 
-             if webView then webView:removeSelf( );webView=nil end
 
 				menuBtn:removeEventListener("touch",menuTouch)
 

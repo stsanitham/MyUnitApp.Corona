@@ -259,25 +259,19 @@ local function selectionComplete ( event )
 		io.close( fileHandle )
 
 
-          	 formatSizeUnits(size1)
-
-		
+          	formatSizeUnits(size1)
 
 
 			if Audio_filename.isVisible == true then
 
 				if filename_title.isVisiblee == false then
-						filename_title.y=Audio_filename.y+20
-						composePage.y = composePage.y+45
+					filename_title.y=Audio_filename.y+20
+					composePage.y = composePage.y+45
 				end
-
-			
-			
 
 			else
 
 				composePage.y = composePage.y+45
-
 				filename_title.y = tabBar.y+tabBar.contentHeight+15
 
 			end
@@ -294,10 +288,8 @@ local function selectionComplete ( event )
 
 			filename.text = photoname
 
-				filename.y=filename_title.y+filename_title.contentHeight+5
-				filename_close.y=filename_title.y+filename_title.contentHeight+5
-
-			
+			filename.y=filename_title.y+filename_title.contentHeight+5
+			filename_close.y=filename_title.y+filename_title.contentHeight+5
 
 
      end
