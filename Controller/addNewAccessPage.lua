@@ -81,10 +81,75 @@ local function rankToptouch( event )
 end
 
 
+
+
 	local function touchBg( event )
 		if event.phase == "began" then
 
 		elseif event.phase == "ended" then
+
+						if Phone.text ~= nil and Phone.text~= "" and Utils.PhoneMasking(tostring(text)) then
+
+									 textnotifybox.isVisible = true
+									 textnotifytext.isVisible = true
+
+						             textnotifybox.y = Phone_bottom.y + 15
+									 textnotifytext.y= Phone_bottom.y + 15
+
+									 Password_bg.y = textnotifytext.y+textnotifytext.contentHeight+12
+									 Password.y = textnotifytext.y+textnotifytext.contentHeight+15
+									 Password_bottom.y = Password.y+10
+
+									 PasswordHelptext.y= Password_bottom.y + 18
+									 GeneratePasstext.y= PasswordHelptext.y + 20
+
+									 MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+									 MKRank.y=MKRank_bg.y+5
+									 rankText_icon.y=MKRank_bg.y
+
+									 Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+									 Comment.y = Comment_bg.y
+
+									 sumbitBtn.y = Comment.y+Comment.height/2+20
+									 sumbitBtn_lbl.y=sumbitBtn.y
+
+									 sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+									 sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+									 sumbitBtn_lbl.x = sumbitBtn.x+16
+
+
+								     native.setKeyboardFocus(Password)
+
+						elseif Phone.text == nil or Phone.text == ""  or Phone.text == Phone_placeholder then
+
+									 textnotifybox.isVisible = false
+									 textnotifytext.isVisible = false
+
+									 Password_bg.y = Phone_bg.y+Phone_bg.height+7
+									 Password.y = Phone_bg.y+Phone_bg.height+15
+									 Password_bottom.y = Password.y+10
+
+									 PasswordHelptext.y= Password_bottom.y + 18
+									 GeneratePasstext.y= PasswordHelptext.y + 20
+
+									 MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+									 MKRank.y=MKRank_bg.y+5
+									 rankText_icon.y=MKRank_bg.y
+
+									 Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+									 Comment.y = Comment_bg.y
+
+									 sumbitBtn.y = Comment.y+Comment.height/2+20
+									 sumbitBtn_lbl.y=sumbitBtn.y
+
+									 sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+									 sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+									 sumbitBtn_lbl.x = sumbitBtn.x+16
+
+
+								   native.setKeyboardFocus(Password)
+
+						end
 
 				native.setKeyboardFocus(nil)
 
@@ -657,11 +722,21 @@ end
 					scrollTo( 0 )
 
 
-			elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 
 				scrollTo( 0 )
 					
-					event.target:setSelection(event.target.text:len(),event.target.text:len())
+				event.target:setSelection(event.target.text:len(),event.target.text:len())
+
+				   if isIos then
+
+						if (event.target.id == "Phone") then
+
+	                         background:addEventListener("touch",touchBg)
+
+						end
+
+				   end
 
 			if(event.target.id == "Comments") then
 
@@ -672,7 +747,7 @@ end
 			end
 
 
-
+			
 		elseif ( event.phase == "editing" ) then
 
 			if event.target.id == "Comments" then
