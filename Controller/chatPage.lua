@@ -26,7 +26,7 @@ local H= display.contentHeight
 
 local Background,BgText
 
-local AttachmentGroup = display.newGroup( )
+local AttachmentGroup = display.newGroup()
 
 local menuBtn,tabButtons,chattabBar,chatScroll,BackBtn,tabBar,title_bg,title,Deleteicon,Copyicon
 
@@ -60,24 +60,25 @@ local image_update_row,audio_update_row
 
 local holdLevel
 
-local chatHoldflag=false
+local chatHoldflag = false
 
 local selectedForDelete
 
-local tabBarGroup = display.newGroup( )
+local tabBarGroup = display.newGroup()
 
-local ChatScrollContent = display.newGroup( )
+local ChatScrollContent = display.newGroup()
 
 local UserId,ContactId,To_ContactId
 
-local PHOTO_FUNCTION = media.PhotoLibrary 
+local PHOTO_FUNCTION = media.SavedPhotosAlbum
 
 local icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		UserId = row.UserId
-		ContactId = row.ContactId
-		MemberName = row.MemberName
+
+	UserId = row.UserId
+	ContactId = row.ContactId
+	MemberName = row.MemberName
 
 end
 
@@ -151,22 +152,19 @@ end
     
 
 
-    
-
-
-    local function selectionComplete ( event )
+local function selectionComplete ( event )
  
         local photo = event.target
 
         local baseDir = system.DocumentsDirectory
 
-        if photo then
+    if photo then
 
         photo.x = display.contentCenterX
 		photo.y = display.contentCenterY
 		local w = photo.width
 		local h = photo.height
-		print( "w,h = ".. w .."," .. h )
+		print( " w,h = ".. w .."," .. h )
 
 		local function rescale()
 					

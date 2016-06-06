@@ -75,7 +75,7 @@ local function addGroupAction(event)
  	 	print( "here" )
      elseif event.phase == "ended" then
 
-     composer.removeHidden()
+        composer.removeHidden()
 
 	    local options = {
 					effect = "crossFade",
