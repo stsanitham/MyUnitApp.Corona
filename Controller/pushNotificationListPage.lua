@@ -837,7 +837,11 @@ function getScheduleMessageList(response)
 				
 		else
 	                 local function onTimer( event )
-					    NoScheduleMessage.isVisible=true
+
+	          			print( "#messageList_array " ..#messageList_array)
+	                 	if #messageList_array <= 0 then
+					    	NoScheduleMessage.isVisible=true
+					    end
 					 end
 					 timer.performWithDelay(200,onTimer)
 
@@ -870,6 +874,8 @@ function getSentMessageList(response)
 
 		listType = "SENT"
 
+		print( "send @#$" )
+
 	    sentmessage_response = response.ChatMessageList
 
 		if sentmessage_response ~= nil and #sentmessage_response ~= 0 and sentmessage_response ~= "" then
@@ -896,7 +902,13 @@ function getSentMessageList(response)
 		else
 
 			    local function onTimer( event )
-					NoSentMessage.isVisible=true
+
+			    	
+
+
+					if  #sentmessageList_array <= 0 then
+						NoSentMessage.isVisible=true
+					end
 				end
 				timer.performWithDelay(200,onTimer)
 
@@ -954,7 +966,9 @@ end
 	else
 
 			    local function onTimer( event )
-					    NoDraftMessage.isVisible=true
+			    		if #draftmessageList_array <= 0 then 
+					    	NoDraftMessage.isVisible=true
+					    end
 				end
 				timer.performWithDelay(200,onTimer)
 
@@ -1072,9 +1086,8 @@ end
 
 local function resumeCallList(listview_values)
 
-	 decodedvalue = json.decode(listview_values)
 
-	  if decodedvalue.MessageStatus == "SCHEDULE" then
+	  if listview_values== "SCHEDULE" then
 
 				Utils.SnackBar(MessagePage.ScheduledSuccess)
 
@@ -1098,7 +1111,7 @@ local function resumeCallList(listview_values)
 			Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
                   
 
-	  elseif  decodedvalue.MessageStatus == "SEND" then
+	  elseif  listview_values == "SEND" then
 
 		 		Utils.SnackBar(MessagePage.SentSuccess)
 
@@ -1123,7 +1136,7 @@ local function resumeCallList(listview_values)
 					Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 			    			    
 
-      elseif  decodedvalue.MessageStatus == "DRAFT" then
+      elseif  listview_values == "DRAFT" then
 
    				Utils.SnackBar(MessagePage.DraftSuccess)
 
@@ -1199,7 +1212,8 @@ end
 
        
 function scene:resumeGame(value,messagelistvalue)
-
+		pageCount = 0
+		notifyFlag = false
     if value == "back" then
 
 	    Runtime:addEventListener( "key", onKeyEvent )
@@ -1221,7 +1235,8 @@ end
 
 
 function scene:resumeGame(value,EditArray,pagevalue)
-
+			pageCount = 0
+			notifyFlag = false
 	    if value == "edit" then
 
 	    	pagevalue = "editpage"
@@ -1239,6 +1254,9 @@ function scene:resumeGame(value,EditArray,pagevalue)
 
 					}
 				}
+
+		print("\n\n\n Edit Detail Values : \n\n ", json.encode(EditArray))
+
 
 				composer.showOverlay( "Controller.composeMessagePage", options )
 

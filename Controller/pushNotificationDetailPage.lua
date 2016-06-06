@@ -308,17 +308,17 @@ local sentMessage_detail
 									end
 
 
-									-- local options = {
-									-- 		isModal = true,
-									-- 		effect = "slideRight",
-									-- 		time = 300,
-									-- 		params = {
-									-- 		editvalues = messagelistvalue , pagevalue = "editpage"
-									-- 	}
-									-- }
+									local options = {
+											isModal = true,
+											effect = "slideRight",
+											time = 300,
+											params = {
+											editvalues = messagelistvalue , pagevalue = "editpage"
+										}
+									}
 
 
-				                    --   composer.gotoScene("Controller.composeMessagePage",options)
+				                      --composer.gotoScene("Controller.composeMessagePage",options)
 
 
 									status="edit"
@@ -609,7 +609,7 @@ end
 			short_msg_edit.anchorX=0
 			short_msg_edit.anchorY=0
 			short_msg_edit.id = "editoption"
-			short_msg_edit.isVisible = false
+			short_msg_edit.isVisible = true
 			short_msg_edit:setFillColor(0)
 			short_msg_edit.y= title_bg.y - 12
 
@@ -964,7 +964,7 @@ end
 				if IsOwner == true then
 
 				short_msg_delete:addEventListener("touch",onDeleteAction)
-			--	short_msg_edit:addEventListener("touch",onDeleteAction)
+				short_msg_edit:addEventListener("touch",onDeleteAction)
 
 			    end
 

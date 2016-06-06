@@ -315,18 +315,9 @@ end
 
 	function get_audiomodel(response)
 
-		audiolist_values = json.encode(response)
+		
 
-		local options = {
-
-				effect = "slideRight",
-				time = 300,
-				params = { pushlistvalues = audiolist_values,page = "compose"}
-	    }
-
-		composer.gotoScene("Controller.pushNotificationListPage",options)
-
-
+	
 	end
 
 
@@ -337,235 +328,7 @@ end
 
 	function get_messagemodel(response)
 
-		local list_values = response
-
-		local listupdationvalues = list_values
-
-		if list_values.MessageStatus == "SEND" then
-
-
-				      		 	shortmsg_textbox.text = ""
-
-								shortmsg_textbox.placeholder = MessagePage.ShortMessage_Placeholder		
-
-								longMessage = ""
-
-								longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
-
-								short_msg_charlimit.text = MessagePage.ShortMsgLimit
-
-								long_msg_charlimit.text = MessagePage.LongMsgLimit
-
-				--	local function onTimer ( event )
-
-
-	                            if openPagevalue == "addpage" then
-
-
-	                            	photowidth = photowidth1
-
-									photoheight = photoheight1
-
-
-                                
-
-                                    reloadlistvalues = json.encode(listupdationvalues)
-
-
-									  local options =
-												{
-												effect = "slideRight",
-												time = 300,
-												params = { pushlistvalues = reloadlistvalues,page = "compose"}
-					
-									   }
-
-
-									composer.gotoScene("Controller.pushNotificationListPage",options)
-
-								--	scrollTo(0)
-
-								-- elseif openPagevalue ~= "addpage" then
-
-								-- 	photowidth = photowidth1
-
-								-- 	photoheight = photoheight1
-
-								-- 			  local options =
-								-- 				{
-								-- 				effect = "slideRight",
-
-								-- 				time = 300,
-								-- 				params = { editpagevalue = list_values, page_val = "editpage", Imagepathname = Imagepath, photowidth, photoheight}
-					
-								-- 				}
-                           
-
-								-- 	spinner.y=H/2-75
-
-								-- 	composer.showOverlay("Controller.pushNotificationListPage",options)
-
-								--	scrollTo(0)
-
-								end
-
-
-					-- end
-
-     --    		timer.performWithDelay(1000, onTimer )
-
-	    end
-
-
-
-
-		if list_values.MessageStatus == "DRAFT" then
-
-		      		
-
-				      		 	shortmsg_textbox.text = ""
-
-								shortmsg_textbox.placeholder = MessagePage.ShortMessage_Placeholder		
-
-								longMessage = ""
-
-								longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
-
-								short_msg_charlimit.text = MessagePage.ShortMsgLimit
-
-								long_msg_charlimit.text = MessagePage.LongMsgLimit
-
-					local function onTimer ( event )
-
-	                            if openPagevalue == "addpage" then
-
-	                            	photowidth = photowidth1
-
-									photoheight = photoheight1
-
-									reloadlistvalues = json.encode(listupdationvalues)
-
-
-									-- sceneevent.parent:resumeCall(list_values)
-
-									-- spinner.y=H/2-75
-
-									-- composer.hideOverlay()
-
-									 spinner.y=H/2-75
-
-
-									  local options =
-												{
-												effect = "slideRight",
-
-												time = 300,
-												params = { pushlistvalues = reloadlistvalues,page = "compose"}
-					
-									   }
-
-
-									composer.gotoScene("Controller.pushNotificationListPage",options)
-
-
-
-								-- elseif openPagevalue ~= "addpage" then
-
-								-- 	  local options =
-								-- 		{
-								-- 		effect = "slideRight",
-
-								-- 		time = 300,
-								-- 		params = { editpagevalue = list_values, page_val = "editpage"}
-
-								-- 		}
-
-								-- 	spinner.y=H/2-75
-
-								-- 	composer.showOverlay("Controller.pushNotificationListPage",options)
-
-								--	scrollTo(0)
-
-								end
-
-					end
-
-        		timer.performWithDelay(1000, onTimer )
-
-	    end
-
-
-
-
-	    if list_values.MessageStatus == "SCHEDULE" then
-
-		      		 
-
-				      		 	shortmsg_textbox.text = ""
-
-								shortmsg_textbox.placeholder = MessagePage.ShortMessage_Placeholder		
-
-								longMessage = ""
-
-								longmsg_textbox.isVisible = false
-
-								longmsg_textbox.placeholder = MessagePage.LongMessage_Placeholder
-
-								short_msg_charlimit.text = MessagePage.ShortMsgLimit
-
-								long_msg_charlimit.text = MessagePage.LongMsgLimit
-
-					local function onTimer ( event )
-						
-
-	                            if openPagevalue == "addpage" then
-
-	                            	photowidth = photowidth1
-
-									photoheight = photoheight1
-
-
-									 reloadlistvalues = json.encode(listupdationvalues)
-
-
-									  local options =
-												{
-												effect = "slideRight",
-
-												time = 300,
-												params = { pushlistvalues = reloadlistvalues,page = "compose"}
-					
-									   }
-
-
-									composer.gotoScene("Controller.pushNotificationListPage",options)
-								
-
-								-- elseif openPagevalue ~= "addpage" then
-
-								-- 	 local options =
-								-- 		{
-
-								-- 		time = 300,
-								-- 		params = { editpagevalue = list_values, page_val = "editpage"}
-
-								-- 		}
-
-
-								-- 	spinner.y=H/2-75
-
-								-- 	composer.showOverlay("Controller.pushNotificationListPage",options)
-
-								--	scrollTo(0)
-
-								end
-
-
-					end
-
-        		     timer.performWithDelay(1000, onTimer )
-
-	    end
+		
 
 	end
 
@@ -585,6 +348,18 @@ local function sendAction( method,IsScheduled,Date,Time )
                 spinner_show()
 
                 spinner.y=H/2-80
+
+
+                local options = {
+
+				effect = "slideRight",
+				time = 300,
+				params = { pushlistvalues = method,page = "compose"}
+	    }
+
+		composer.gotoScene("Controller.pushNotificationListPage",options)
+
+
 
 		  elseif (shortmsg_textbox.text ~= "") and (filename.text ~= "" and filename.isVisible == true ) then
 
@@ -630,6 +405,15 @@ local function sendAction( method,IsScheduled,Date,Time )
 					      	spinner_show()
 
 					      	spinner.y=H/2-30
+
+					      	local options = {
+
+							effect = "slideRight",
+							time = 300,
+							params = { pushlistvalues = method,page = "compose"}
+				    }
+
+					composer.gotoScene("Controller.pushNotificationListPage",options)
 
         	   --Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
@@ -680,6 +464,15 @@ local function sendAction( method,IsScheduled,Date,Time )
 				spinner_show()
 
 				 spinner.y=H/2-20
+
+				 local options = {
+
+				effect = "slideRight",
+				time = 300,
+				params = { pushlistvalues = method,page = "compose"}
+	    }
+
+		composer.gotoScene("Controller.pushNotificationListPage",options)
 
             	-- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
@@ -1834,10 +1627,14 @@ end
 
 			--composer.removeHidden()
 
-				if event.params and openPagevalue == "addPage" then
+
+				if event.params then
 
 					status=event.params.page
 					Details = event.params.Details
+
+					print("\n\n\n Message Detail Values : \n\n ", json.encode(Details))
+
 
 			    end
 
@@ -1910,6 +1707,10 @@ end
 				--shortmsg_textbox.x=10
 				--shortmsg_textbox.y=shortmsg_title.y+ shortmsg_title.height+7
 
+				if Details ~= nil then
+					shortmsg_textbox.text = Details.MyUnitBuzzMessage
+				end
+				
 
 				short_msg_charlimit = display.newText(MessagePage.ShortMsgLimit,0,0,native.systemFont,14)
 				short_msg_charlimit.anchorX = 0
@@ -1939,7 +1740,13 @@ end
 				composePage:insert(longmsg_title)
 
 
+				
+
 		        content = ""
+
+		        if Details ~= nil then
+					content = Details.MyUnitBuzzLongMessage
+				end
 
 			    test= string.urlEncode(content)
 
@@ -2041,6 +1848,17 @@ end
 
        			 filename_close:addEventListener("touch",attachClose)
 
+       			 if Details ~= nil and Details.ImageFilePath ~= nil then
+					--detail_value.ImageFilePath:match( "([^/]+)$" ),
+					filename_title.isVisible = true
+					filename.isVisible = true
+					filename_close.isVisible = true
+					filename.text = Details.ImageFilePath:match( "([^/]+)$" )
+					filename_close.filepath = Details.ImageFilePath:match( "([^/]+)$" )
+
+					composePage.y = composePage.y+45
+
+				end
 
 ---------------------------------------- Audio name and its title ------------------------------------------
 
@@ -2077,6 +1895,18 @@ end
         		Audio_filename_close:addEventListener("touch",attachClose)
 
 
+        		if Details ~= nil and Details.AudioFilePath ~= nil then
+					--detail_value.ImageFilePath:match( "([^/]+)$" ),
+					if Details.ImageFilePath ~= nil th
+					Audio_filename_title.isVisible = true
+					Audio_filename.isVisible = true
+					Audio_filename_close.isVisible = true
+					Audio_filename.text = Details.AudioFilePath:match( "([^/]+)$" )
+					Audio_filename_close.filepath = Details.AudioFilePath:match( "([^/]+)$" )
+
+					composePage.y = composePage.y+45
+
+				end
 
 
 			menuBtn:addEventListener("touch",menuTouch)

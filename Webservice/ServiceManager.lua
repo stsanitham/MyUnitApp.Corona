@@ -308,11 +308,12 @@ if Message_Type ~= nil and Message_Type ~= "" then
 			"GroupName": "]]..GroupName..[[",
 			"IsSendNow": "false",
 			"MessageFileType": "]]..MessageFileType..[[",
+			"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 
 			}
 			]]
 
---			"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
+--			
 
 else
 
@@ -338,6 +339,7 @@ else
 		"GroupName": "]]..GroupName..[[",
 		"IsSendNow": "false",
 		"MessageFileType": "]]..MessageFileType..[[",
+		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 		}
 		]]
 --		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
