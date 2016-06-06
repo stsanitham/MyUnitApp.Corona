@@ -28,6 +28,8 @@ openPage="MessagingPage"
 
 local BackFlag = false
 
+local totalcareerlist
+
 local newtworkArray = {}
 
 local checkedstate = 0
@@ -443,6 +445,32 @@ end
 
 		    end
 
+
+				    if addGroupid_value == "addGroup" and pageid_value == "broadcast" then
+
+					    if checkedstate > 0 then
+
+					   		 count_details.isVisible = true
+
+					  		  count_details.text = checkedstate.." selected"
+
+
+				      		-- totalcareerlist = switch.totalvalue - 1
+
+				        --     print("test @@@@@@@@@@@@@@@@@@@@@@@ : "..checkedstate.."/"..totalcareerlist)
+
+				        --     count_details.x = W-55
+
+				        --     count_details.text = checkedstate.."/"..totalcareerlist
+
+					    else
+
+				  		    count_details.isVisible = false
+
+					    end
+
+					end
+
 	end
 
 
@@ -547,15 +575,17 @@ end
 
 		    end
 
-					if grouptypevalue == "BROADCAST" then
 
-						 Webservice.AddTeamMemberToChatGroup(groupid_value,selected_Contact,getAddedMembersInGroup)
+			if grouptypevalue == "BROADCAST" then
 
-					elseif grouptypevalue == "GROUP" then
+				 Webservice.AddTeamMemberToChatGroup(groupid_value,selected_Contact,getAddedMembersInGroup)
 
-						 Webservice.AddTeamMemberToChatGroup(groupid_value,selected_Contact,getAddedMembersInGroup)
+			elseif grouptypevalue == "GROUP" then
 
-				    end
+				 Webservice.AddTeamMemberToChatGroup(groupid_value,selected_Contact,getAddedMembersInGroup)
+
+		    end
+
 
 	 end 
 
@@ -607,7 +637,7 @@ end
 
 						groupSubjectname = event.target.text
 
-						print("group subject name ############################ : ",groupSubjectname)
+						--print("group subject name ############################ : ",groupSubjectname)
 				end
 		 end
     end
@@ -653,16 +683,12 @@ end
                 if pageid_value == "broadcast" then
 
 				      if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
- 
-				       	 print("null value")
 
 			             GroupSubject.text = ""
 
 				      elseif GroupSubject.text ~= "" or GroupSubject.text  ~= GroupSubject.placeholder or GroupSubject.text  ~= ChatDetails.GroupSubjectError or GroupSubject.text  ~= GroupSubject.id then
 
 				      	 GroupSubject.text = groupSubjectname
-
-				      	 print("not null value")
 
 				      end
 
@@ -683,6 +709,7 @@ end
 
 				      	 
 					      	for i=1,#careerListArray do
+
 
 					      		local tempGroup = careerListArray[i]
 
@@ -915,6 +942,7 @@ local function careePath_list( list )
 		selectcontact_checkbox.width= 20
 		selectcontact_checkbox.height = 20
 		selectcontact_checkbox.anchorX=0
+		selectcontact_checkbox.totalvalue = #list
 		selectcontact_checkbox.key="checkbox"
 		selectcontact_checkbox.value = contactidvalue
 		selectcontact_checkbox.x = background.x+background.contentWidth/2-33
@@ -1046,6 +1074,13 @@ function scene:create( event )
 	title:setFillColor(0)
 
 	title.text = ChatPage.Consultant_List
+
+	count_details = display.newText(sceneGroup,"",0,0,native.systemFont,18)
+	count_details.anchorX = 0
+	count_details.isVisible = false
+	count_details.x= W-105;count_details.y = title_bg.y
+	count_details:setFillColor(0)
+
 
 	subjectBar = display.newRect(sceneGroup,W/2,0,W,40)
 	subjectBar.y=title_bg.y+15
@@ -1201,6 +1236,8 @@ sceneGroup:insert( tabBarGroup )
 		    	title.text = ChatPage.Broadcast
 
 		    	GroupSubject.placeholder = ChatPage.broadcastSubject
+
+		    	count_details.isVisible = true
 
 	    	    --GroupSubject.isVisible = false
 
