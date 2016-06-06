@@ -30,6 +30,8 @@ local BackFlag = false
 
 local newtworkArray = {}
 
+local checkedstate = 0
+
 local NameArray = {}
 
 local consultantList_scrollview
@@ -85,14 +87,14 @@ local function consultantTounch( event )
 			display.getCurrentStage():setFocus( nil )
 
 
-					if pageid_value == "group" then
+				if pageid_value == "group" then
 
-						pagervalue = "group"
+					pagervalue = "group"
 
-					else
-						pagervalue = "broadcast"
+				else
+					pagervalue = "broadcast"
 
-				    end
+			    end
 
 
 
@@ -117,6 +119,8 @@ local function consultantTounch( event )
 	return true
 
 end
+
+
 
 
 
@@ -420,19 +424,27 @@ end
 
 	local function onSwitchPress( event )
 
-	    local switch = event.target
+		local switch = event.target
 
-	    print( "Switch with ID '"..switch.id.."' is on: "..tostring(switch.isOn) )
+		print( "Switch with ID '"..switch.id.."' is on: "..tostring(switch.isOn) )
 
-	    if tostring(switch.isOn) == "true" then
+		    if tostring(switch.isOn) == "true" then
 
-			local contactid = switch.value
+				local contactid = switch.value
 
-			print("contact_id value : ",contactid) 
+				print("contact_id value : ", contactid) 
 
-	    end
+				checkedstate = checkedstate + 1
+
+
+			elseif tostring(switch.isOn) == "false" then
+
+			 	checkedstate = checkedstate - 1
+
+		    end
 
 	end
+
 
 
 
@@ -442,6 +454,7 @@ end
 		object.text=displaystring
 		object.size=10
 		object:setTextColor(1,0,0)
+
 	end
 
 
@@ -621,17 +634,17 @@ end
 
                 if pageid_value == "group" then
 
-				      if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == ChatDetails.GroupSubjectError or GroupSubject.text == GroupSubject.id then
+				     if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == ChatDetails.GroupSubjectError or GroupSubject.text == GroupSubject.id then
 			            
 			             validation=false
 
 				     	 SetError(ChatDetails.GroupSubjectError,GroupSubject)
 
-				      elseif GroupSubject.text ~= "" or GroupSubject.text  ~= GroupSubject.placeholder or GroupSubject.text  ~= ChatDetails.GroupSubjectError or GroupSubject.text  ~= GroupSubject.id then
+				     elseif GroupSubject.text ~= "" or GroupSubject.text  ~= GroupSubject.placeholder or GroupSubject.text  ~= ChatDetails.GroupSubjectError or GroupSubject.text  ~= GroupSubject.id then
 
 				      	 GroupSubject.text = groupSubjectname
 
-				      end
+				     end
 
 				end
 
@@ -641,7 +654,7 @@ end
 
 				      if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
  
-				       	print("null value")
+				       	 print("null value")
 
 			             GroupSubject.text = ""
 
@@ -658,7 +671,7 @@ end
 --------------------------------------------------------------------------------------
                  
 
-			      if(validation == true) then
+			    if(validation == true) then
 
 				      	GroupSubject.text = groupSubjectname
 
@@ -673,25 +686,26 @@ end
 
 					      		local tempGroup = careerListArray[i]
 
-					      		
 						      		for j=1,tempGroup.numChildren do
 
 						      			if tempGroup[j].id == "email_Checkbox" then
 
-						      				print( "check box")
+							      			print( "check box")
 
 							      			if tostring(tempGroup[j].isOn) == "true" then
 
 							      				selected_Contact[#selected_Contact+1] = tempGroup[j].value
 
+							      				--print(selected_Contact[#selected_Contact+1])
+
 							      			end
-							      		
+
 							      		end
 
-							      	 end
-
+							      	end
 
 					       	end
+
 
 
 
@@ -710,6 +724,7 @@ end
 				                 end
 
 			                 end
+
 
 
 
@@ -743,7 +758,8 @@ end
 				              end
 
 
-			      end
+
+			    end
 ---------------------------------------------------------------------------------------
 
 		 end
@@ -1184,6 +1200,8 @@ sceneGroup:insert( tabBarGroup )
 
 		    	title.text = ChatPage.Broadcast
 
+		    	GroupSubject.placeholder = ChatPage.broadcastSubject
+
 	    	    --GroupSubject.isVisible = false
 
 	    	    --Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
@@ -1192,7 +1210,7 @@ sceneGroup:insert( tabBarGroup )
 	    	RecentTab_Topvalue = 75
 
 	    end
-	    
+
 
 
 		consultantList_scrollview = widget.newScrollView
