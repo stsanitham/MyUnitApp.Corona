@@ -622,7 +622,7 @@ local function notificationListener( event )
                                  
                         end
 
-                          if openPage ~= "main" then
+                        if openPage ~= "main" then
 
                             native.setProperty( "applicationIconBadgeNumber", 0 )
                             system.cancelNotification()
@@ -631,7 +631,7 @@ local function notificationListener( event )
           
         else
 
-             notificationFlag = true
+                notificationFlag = true
 
                 if (additionalData) then
                     
