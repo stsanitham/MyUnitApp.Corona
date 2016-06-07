@@ -67,7 +67,7 @@ local function onKeyEvent( event )
 
         	isRotate = false
 
-        	Runtime:removeEventListener("enterFrame", animate) 
+        	if webView then webView:removeSelf( );webView=nil end
 
         	composer.hideOverlay( "slideRight", 300 )
 
@@ -97,7 +97,7 @@ local function onKeyEvent( event )
 
 								isRotate = false
 
-								Runtime:removeEventListener("enterFrame", animate) 
+								if webView then webView:removeSelf( );webView=nil end
 
 								composer.hideOverlay( "slideRight", 300 )
 
@@ -105,48 +105,64 @@ local function onKeyEvent( event )
 
 							    isRotate = true
 
-								refresh.rotation = 1
+								trans = transition.to(refresh,{delay=200,time=10000,rotation=2700})
 
-								refresh.anchorX = 0.5
-								refresh.anchorY = 0.5
+							        if isRotate == true then
 
-								local function animate(event)
+										function getRefreshedSpecialRecognition_PageContent(response)
 
-									if isRotate == true then
+												isRotate = false
+												transition.cancel()
+												refresh.rotation = 0
 
-									  refresh.rotation = refresh.rotation + 9
+														if response.PageContent ~= nil and response.PageContent ~= "" then
 
-											  local function onTimer ( event )
+															webView.isVisible = true
+
+																local t = response.PageContent
+
+																local saveData = [[<!DOCTYPE html>
+																<html>
+																<head>
+																<meta charset="utf-8">
+																<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+																</head>]]..t..[[</html>]]
+
+																local path = system.pathForFile( "specialRecognition.html", system.DocumentsDirectory )
+																local file, errorString = io.open( path, "w" )
+
+																if not file then
+																    print( "File error: " .. errorString )
+																else
+																    file:write( saveData )
+																    io.close( file )
+																end
+
+																file = nil
+
+															webView:request( "specialRecognition.html", system.DocumentsDirectory )
+
+														else
+
+															webView.isVisible = false
+
+															NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
+															NoEvent.x=W/2;NoEvent.y=H/2
+															NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+													end
+
+									    end
 
 
-														function getRefreshedSpecialRecognition_PageContent(response)
+							        Webservice.GetSpecialRecognitionPageContent(sr_eventid,getRefreshedSpecialRecognition_PageContent)
 
-														    isRotate = true
-
-															if response.PageContent ~= nil and response.PageContent ~= "" then
-
-																isRotate = false
-
-																refresh.rotation = 1
-
-															end
-
-														end
+							        spinner.isVisible=false
+ 
+				             end
 
 
-										      Webservice.GetSpecialRecognitionPageContent(sr_eventid,getRefreshedSpecialRecognition_PageContent)
-
-										      end
-
-								      timer.performWithDelay(1000, onTimer )
-		 
-								    end
-
-								end
-
-								Runtime:addEventListener("enterFrame", animate) 
-
-					end
+				end
 
 		end
 
@@ -206,7 +222,8 @@ function scene:create( event )
 		if IsOwner then
 
 		refresh = display.newImageRect( sceneGroup, "res/assert/refreshicon.png",20,20 )
-		refresh.anchorX = 0
+		refresh.anchorX = 0.5
+		refresh.anchorY = 0.5
 		refresh.id = "refresh"
 		refresh.x = W-25;refresh.y = title_bg.y
 
