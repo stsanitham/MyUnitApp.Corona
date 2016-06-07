@@ -2678,7 +2678,9 @@ function scene:show( event )
 		sendBtn = display.newImageRect( ChatScrollContent, "res/assert/msg_send.png", 25,20 )
 		sendBtn.x=ChatBox_bg.x+ChatBox_bg.contentWidth+5
 		sendBtn.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2-sendBtn.contentHeight/2
-		sendBtn.anchorY=0;sendBtn.anchorX=0
+		sendBtn.anchorY=0;
+		sendBtn.anchorX=0
+
 
 		sendBtn_bg = display.newRect( ChatScrollContent, sendBtn.x+5, sendBtn.y+5, 45,45 )
 		sendBtn_bg:setFillColor( 0,0,0,0.01 )
