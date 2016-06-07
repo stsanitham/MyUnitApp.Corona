@@ -16,6 +16,7 @@ CommonWords.InviteAccessText = "Invite / Acceso"
 CommonWords.DenyAccessText = "Acceso denegado"
 CommonWords.ProvideAccessText = "Proveer acceso"
 CommonWords.GrantAccessText = "Autorizará el acceso"
+CommonWords.SpecialRecognitionText = "Reconocimiento especial"
 
 
 
@@ -459,3 +460,9 @@ ChatPage.BroadcastListCreated = "Lista de difusión de creación"
 ChatPage.BroadcastListCreationSuccess = "Lista de difusión creado correctamente"
 ChatPage.BroadcastRecipients = "destinatarios"
 ChatPage.Broadcast = "Emisión"
+
+
+
+SpecialRecognition = {}
+
+SpecialRecognition.NoEvent = "No se han encontrado Reconocimientos Especiales"

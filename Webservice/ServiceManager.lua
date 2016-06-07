@@ -133,6 +133,8 @@ function Webservice.GET_LIST_OF_RANKS(postExecution)
 end
 
 
+
+
 function Webservice.REQUEST_ACCESS(page,requestFromStatus,issentMail,issentText,directorName,directorEmail,firstName,lastName,Email,Phone,UnitNumber,Password,MKRank,Comment,postExecution)
 
 	local request_value = {}
@@ -2078,7 +2080,7 @@ end
 
 
 
-function Webservice.AddTeamMemberToChatGroup(groupid,contacts,postExecution)
+function Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupid,contacts,postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
@@ -2106,9 +2108,20 @@ function Webservice.AddTeamMemberToChatGroup(groupid,contacts,postExecution)
 
     local resbody = "userId="..UserId.."&groupId="..groupid
 
-    contacts[#contacts+1] = ContactId
 
-    groupmembers = json.encode(contacts)
+	    if grouptypevalue == "GROUP" then
+
+	    contacts[#contacts+1] = ContactId
+
+	    groupmembers = json.encode(contacts)
+
+	    else
+
+	    contacts[#contacts+1] = ""
+
+	    groupmembers = json.encode(contacts)
+
+	    end
 
 
     params={headers = headers,body = groupmembers}
@@ -2280,6 +2293,8 @@ function Webservice.DeleteMyUnitBuzzMessages(messageId,postExecution)
 	return response
 end
 
+
+
 function Webservice.GetMessageGroupTeamMemberList(groupid,groupType,postExecution)
 
 	local request_value = {}
@@ -2323,6 +2338,8 @@ function Webservice.GetMessageGroupTeamMemberList(groupid,groupType,postExecutio
 end
 
 
+
+
 function Webservice.UpdateLastActivityDate(postExecution)
 
 	local request_value = {}
@@ -2364,6 +2381,99 @@ function Webservice.UpdateLastActivityDate(postExecution)
 	
 	return response
 end
+
+
+
+
+
+function Webservice.GetAllSpecialRecognitions(postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+
+	method="GET"
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	local url = splitUrl(ApplicationConfig.GetAllSpecialRecognitions)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+	local resbody="?userId="..UserId
+
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetAllSpecialRecognitions..resbody,method,params,postExecution)
+
+    print("request for special recognition list : "..json.encode(params))
+
+	
+	return response
+end
+
+
+
+
+function Webservice.GetSpecialRecognitionPageContent(sr_eventid,postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+
+	method="GET"
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	local url = splitUrl(ApplicationConfig.GetSpecialRecognitionPageContent)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+	local resbody="?userId="..UserId.."&specialRecognitionId="..sr_eventid
+
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetSpecialRecognitionPageContent..resbody,method,params,postExecution)
+
+    print("request for special recognition details : "..json.encode(params))
+
+	
+	return response
+end
+
+
 
 
 

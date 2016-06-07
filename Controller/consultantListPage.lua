@@ -578,11 +578,11 @@ end
 
 			if grouptypevalue == "BROADCAST" then
 
-				 Webservice.AddTeamMemberToChatGroup(groupid_value,selected_Contact,getAddedMembersInGroup)
+				 Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupid_value,selected_Contact,getAddedMembersInGroup)
 
 			elseif grouptypevalue == "GROUP" then
 
-				 Webservice.AddTeamMemberToChatGroup(groupid_value,selected_Contact,getAddedMembersInGroup)
+				 Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupid_value,selected_Contact,getAddedMembersInGroup)
 
 		    end
 
