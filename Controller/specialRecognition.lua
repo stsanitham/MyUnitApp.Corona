@@ -63,7 +63,6 @@ end
 
 
 
-
 local function onKeyEvent( event )
 
         local phase = event.phase
@@ -85,7 +84,7 @@ local function onKeyEvent( event )
 
             elseif BackFlag == true then
 
-				os.exit() 
+			 os.exit() 
 
             end
             
@@ -95,7 +94,6 @@ local function onKeyEvent( event )
 
         return false
  end
-
 
 
 
@@ -219,7 +217,7 @@ function scene:show( event )
 					print( "Listy : "..json.encode(list[i]) )
 
 
-					rightArrowPointer = display.newImageRect( sceneGroup, "res/assert/rightarrow.png", 20,20 )
+					local rightArrowPointer = display.newImageRect( sceneGroup, "res/assert/rightarrow.png", 20,20 )
 					rightArrowPointer.x=25;
 					rightArrowPointer.y=background.y+background.height/2-1
 					rightArrowPointer.id="specialRecognition_arrow"
