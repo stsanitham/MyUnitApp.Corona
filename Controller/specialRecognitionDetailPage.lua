@@ -395,6 +395,8 @@ function scene:hide( event )
 
 	elseif phase == "did" then
 
+		 event.parent:resumeGame()
+
 
 	end	
 

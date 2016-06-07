@@ -101,7 +101,7 @@ local function onKeyEvent( event )
 
 
 
- local function onButtonTouch( event )
+ local function RefreshAllAction( event )
 
 	if event.phase == "began" then
 
@@ -110,6 +110,9 @@ local function onKeyEvent( event )
 	elseif event.phase == "ended" then
 
 		   display.getCurrentStage():setFocus( nil )
+
+
+		   print( "here again" )
 
 			   if event.target.id == "refresh_list" then
 
@@ -153,6 +156,9 @@ local function Background_Touch( event )
 	elseif event.phase == "ended" then
 
 		display.getCurrentStage():setFocus( nil )
+
+
+			refresh_list:removeEventListener("touch",RefreshAllAction)
 
 		    local options = {
 							effect = "flipFadeOutIn",
@@ -322,7 +328,7 @@ function scene:show( event )
 
 		Runtime:addEventListener( "key", onKeyEvent )
 
-		refresh_list:addEventListener("touch",onButtonTouch)
+		refresh_list:addEventListener("touch",RefreshAllAction)
 		
 	end	
 	
@@ -331,6 +337,11 @@ MainGroup:insert(sceneGroup)
 end
 
 
+	function scene:resumeGame()
+
+		refresh_list:addEventListener("touch",RefreshAllAction)
+
+	end
 
 
 function scene:hide( event )
@@ -342,7 +353,7 @@ function scene:hide( event )
 
 		Runtime:removeEventListener( "key", onKeyEvent )
 
-		refresh_list:removeEventListener("touch",onButtonTouch)
+		refresh_list:removeEventListener("touch",RefreshAllAction)
 
 
 	elseif phase == "did" then
