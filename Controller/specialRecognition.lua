@@ -27,6 +27,8 @@ local menuBtn
 
 local specialRecognitionListArray = {}
 
+local refresh_list
+
 local BackFlag = false
 
 openPage="specialRecognition"
@@ -100,6 +102,51 @@ local function onKeyEvent( event )
 
 
 
+ local function onButtonTouch( event )
+
+	if event.phase == "began" then
+
+			display.getCurrentStage():setFocus( event.target )
+
+	elseif event.phase == "ended" then
+
+		   display.getCurrentStage():setFocus( nil )
+
+			   if event.target.id == "refresh_list" then
+
+
+						 function getAllRefreshedSpecialRecognition(response )
+
+							Refreshed_response = response
+
+									if Refreshed_response ~= nil and #Refreshed_response ~= 0 and Refreshed_response ~= "" then
+											
+											NoEvent.text = ""
+
+											SpecialRecognitionList(Refreshed_response)
+
+									else
+
+											NoEvent.isVisible=true
+
+									end
+							end
+
+
+						Webservice.GetAllSpecialRecognitions(getAllRefreshedSpecialRecognition)
+				
+
+		       end
+
+	end
+
+end
+
+
+
+
+
+
 local function Background_Touch( event )
 
 	if event.phase == "began" then
@@ -163,6 +210,14 @@ function scene:create( event )
 		title.x=5;title.y = title_bg.y
 		title:setFillColor(0)
 
+	    refresh_list = display.newImageRect( sceneGroup, "res/assert/refreshAll.png",20,20 )
+		refresh_list.anchorX = 0
+		refresh_list.anchorY = 0
+		refresh_list.id = "refresh_list"
+		refresh_list.x = W-35;refresh_list.y = title_bg.y-10
+		refresh_list:setFillColor(0)
+		
+
 		NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent , 0,0,0,0,native.systemFontBold,16)
 		NoEvent.x=W/2;NoEvent.y=H/2
 		NoEvent.isVisible=false
@@ -214,7 +269,7 @@ function scene:show( event )
 					background.id=list[i].SpecialRecognitionId
 					background.alpha=0.01
 					background.value = list[i]
-					print( "Listy : "..json.encode(list[i]) )
+					--print( "Listy : "..json.encode(list[i]) )
 
 
 					local rightArrowPointer = display.newImageRect( sceneGroup, "res/assert/rightarrow.png", 20,20 )
@@ -268,6 +323,8 @@ function scene:show( event )
 		menuBtn:addEventListener("touch",menuTouch)
 
 		Runtime:addEventListener( "key", onKeyEvent )
+
+		refresh_list:addEventListener("touch",onButtonTouch)
 		
 	end	
 	
@@ -285,8 +342,9 @@ function scene:hide( event )
 
 	if event.phase == "will" then
 
-
 		Runtime:removeEventListener( "key", onKeyEvent )
+
+		refresh_list:removeEventListener("touch",onButtonTouch)
 
 
 	elseif phase == "did" then

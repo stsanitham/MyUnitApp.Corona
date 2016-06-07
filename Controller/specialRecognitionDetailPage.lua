@@ -29,6 +29,8 @@ local isRotate = false
 
 local webView
 
+local tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title,refresh_icon_bg,refresh
+
 openPage="specialRecognition"
 
 
@@ -82,89 +84,106 @@ local function onKeyEvent( event )
 
 
 
+ local function onBackgroundTouch( event )
+
+ 	if event.phase == "began" then
+
+ 		 display.getCurrentStage():setFocus( event.target )
+
+ 	elseif event.phase == "ended" then
+
+ 	     display.getCurrentStage():setFocus( nil )
+
+    end
+
+ end
+
+
+
+
 
  local function onButtonTouch( event )
 
-		if event.phase == "began" then
+	if event.phase == "began" then
 
 				   display.getCurrentStage():setFocus( event.target )
 
-		elseif event.phase == "ended" then
+	elseif event.phase == "ended" then
 
-				   display.getCurrentStage():setFocus( nil )
+		   display.getCurrentStage():setFocus( nil )
 
-					if event.target.id == "backbtn" or event.target.id == "titlename" then
+		if event.target.id == "backbtn" or event.target.id == "titlename" then
+
+				isRotate = false
+
+				if webView then webView:removeSelf( );webView=nil end
+
+				composer.hideOverlay( "slideRight", 300 )
+
+		elseif event.target.id == "refresh" then
+
+			    isRotate = true
+
+				trans = transition.to(refresh,{delay=200,time=10000,rotation=2700})
+
+			        if isRotate == true then
+
+						function getRefreshedSpecialRecognition_PageContent(response)
 
 								isRotate = false
+								transition.cancel()
+								refresh.rotation = 0
 
-								if webView then webView:removeSelf( );webView=nil end
+										if response.PageContent ~= nil and response.PageContent ~= "" then
 
-								composer.hideOverlay( "slideRight", 300 )
+											webView.isVisible = true
 
-					elseif event.target.id == "refresh" then
+												local t = response.PageContent
 
-							    isRotate = true
+												local saveData = [[<!DOCTYPE html>
+												<html>
+												<head>
+												<meta charset="utf-8">
+												<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+												</head>]]..t..[[</html>]]
 
-								trans = transition.to(refresh,{delay=200,time=10000,rotation=2700})
+												local path = system.pathForFile( "specialRecognition.html", system.DocumentsDirectory )
+												local file, errorString = io.open( path, "w" )
 
-							        if isRotate == true then
+												if not file then
+												    print( "File error: " .. errorString )
+												else
+												    file:write( saveData )
+												    io.close( file )
+												end
 
-										function getRefreshedSpecialRecognition_PageContent(response)
+												file = nil
 
-												isRotate = false
-												transition.cancel()
-												refresh.rotation = 0
+											webView:request( "specialRecognition.html", system.DocumentsDirectory )
 
-														if response.PageContent ~= nil and response.PageContent ~= "" then
+										else
 
-															webView.isVisible = true
+											webView.isVisible = false
 
-																local t = response.PageContent
+											NoEvent = display.newText( sceneGroup,"No "..response.UserPageName.." Found", 0,0,0,0,native.systemFontBold,16)
+											NoEvent.x=W/2;NoEvent.y=H/2
+											NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-																local saveData = [[<!DOCTYPE html>
-																<html>
-																<head>
-																<meta charset="utf-8">
-																<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-																</head>]]..t..[[</html>]]
+									end
 
-																local path = system.pathForFile( "specialRecognition.html", system.DocumentsDirectory )
-																local file, errorString = io.open( path, "w" )
-
-																if not file then
-																    print( "File error: " .. errorString )
-																else
-																    file:write( saveData )
-																    io.close( file )
-																end
-
-																file = nil
-
-															webView:request( "specialRecognition.html", system.DocumentsDirectory )
-
-														else
-
-															webView.isVisible = false
-
-															NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
-															NoEvent.x=W/2;NoEvent.y=H/2
-															NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-
-													end
-
-									    end
+					    end
 
 
-							        Webservice.GetSpecialRecognitionPageContent(sr_eventid,getRefreshedSpecialRecognition_PageContent)
+			        Webservice.GetSpecialRecognitionPageContent(sr_eventid,getRefreshedSpecialRecognition_PageContent)
 
-							        spinner.isVisible=false
- 
-				             end
+			        spinner.isVisible=false
 
+                    end
 
-				end
 
 		end
+
+	end
 
 end
 
@@ -179,6 +198,7 @@ function scene:create( event )
 	
 		Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 		Background.x=W/2;Background.y=H/2
+		Background.id = "background"
 
 		tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 		tabBar.y=tabBar.contentHeight/2
@@ -221,18 +241,29 @@ function scene:create( event )
 
 		if IsOwner then
 
-		refresh = display.newImageRect( sceneGroup, "res/assert/refreshicon.png",20,20 )
+		refresh_icon_bg = display.newRect(sceneGroup,0,0,60,30)
+		refresh_icon_bg.x= W-60
+		refresh_icon_bg.anchorX=0
+		refresh_icon_bg.id = "refresh"
+		refresh_icon_bg.anchorY=0
+		refresh_icon_bg.alpha=0.01
+		refresh_icon_bg:setFillColor(1)
+		refresh_icon_bg.y= title_bg.y-15
+
+	    refresh = display.newImageRect( sceneGroup, "res/assert/refreshicon.png",20,20 )
 		refresh.anchorX = 0.5
 		refresh.anchorY = 0.5
 		refresh.id = "refresh"
-		refresh.x = W-25;refresh.y = title_bg.y
+		refresh.x = W-25;refresh.y = refresh_icon_bg.y+15
+
+		refresh:addEventListener("touch",onButtonTouch)
+		refresh_icon_bg:addEventListener("touch",onButtonTouch)
 
 	    end
 
-		-- NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent , 0,0,0,0,native.systemFontBold,16)
-		-- NoEvent.x=W/2;NoEvent.y=H/2
-		-- NoEvent.isVisible=false
-		-- NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+	   -- Background:addEventListener("touch",onBackgroundTouch)
+
+	
 
 MainGroup:insert(sceneGroup)
 
@@ -306,9 +337,12 @@ function scene:show( event )
 								sceneGroup:insert( webView )
 
 							else
-								NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
+
+								--NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
+								NoEvent = display.newText( sceneGroup, "No "..response.UserPageName.." Found", 0,0,0,0,native.systemFontBold,16)
 								NoEvent.x=W/2;NoEvent.y=H/2
 								NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+
 							end
 
 
@@ -321,14 +355,9 @@ function scene:show( event )
 	elseif phase == "did" then
 
 		Runtime:addEventListener( "key", onKeyEvent )
-
 		menuBtn:addEventListener("touch",menuTouch)
-
 		back_icon:addEventListener("touch",onButtonTouch)
-
 		title:addEventListener("touch",onButtonTouch)
-
-		refresh:addEventListener("touch",onButtonTouch)
 		
 	end	
 	
@@ -351,11 +380,13 @@ function scene:hide( event )
 		Runtime:addEventListener( "key", onKeyEvent )
 		back_icon:removeEventListener("touch",onButtonTouch)
 		title:removeEventListener("touch",onButtonTouch)
+
+		if IsOwner then
 		refresh:removeEventListener("touch",onButtonTouch)
+		refresh_icon_bg:removeEventListener("touch",onButtonTouch)
+	    end
 
 		isRotate = false
-
-		Runtime:removeEventListener( "enterFrame", animate )
 
 	elseif phase == "did" then
 

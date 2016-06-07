@@ -58,8 +58,6 @@ local sentMessage_detail
 			native.setKeyboardFocus(nil)
 			display.getCurrentStage():setFocus( event.target )
 
-			display.getCurrentStage():setFocus( event.target )
-
 			elseif event.phase == "ended" then
 
 			display.getCurrentStage():setFocus( nil )
