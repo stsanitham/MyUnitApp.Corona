@@ -2078,7 +2078,7 @@ end
 
 
 
-function Webservice.AddTeamMemberToChatGroup(groupid,contacts,postExecution)
+function Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupid,contacts,postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
@@ -2106,9 +2106,20 @@ function Webservice.AddTeamMemberToChatGroup(groupid,contacts,postExecution)
 
     local resbody = "userId="..UserId.."&groupId="..groupid
 
-    contacts[#contacts+1] = ContactId
 
-    groupmembers = json.encode(contacts)
+	    if grouptypevalue == "GROUP" then
+
+	    contacts[#contacts+1] = ContactId
+
+	    groupmembers = json.encode(contacts)
+
+	    else
+
+	    contacts[#contacts+1] = ""
+
+	    groupmembers = json.encode(contacts)
+
+	    end
 
 
     params={headers = headers,body = groupmembers}
