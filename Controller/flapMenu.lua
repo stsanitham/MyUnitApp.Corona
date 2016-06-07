@@ -632,6 +632,35 @@ function scene:show( event )
 
 
 
+----Special Recognition
+
+			rect = display.newRect(0,0,panel.width,1)
+			rect.x = menuArray_display[#menuArray_display].x;
+			rect.anchorX=0
+			rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
+			rect:setFillColor(0)
+			flapScroll:insert( rect )
+
+			menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
+			menuArray_display[#menuArray_display].anchorY=0
+			menuArray_display[#menuArray_display].anchorX=0
+			menuArray_display[#menuArray_display].alpha=0.01
+			menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+			menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight
+			flapScroll:insert( menuArray_display[#menuArray_display] )
+			menuArray_display[#menuArray_display].name = "SpecialRecognition"
+			menuArray_display[#menuArray_display].id="specialRecognition"
+			menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
+
+			specialRecognitionLbl = display.newText(CommonWords.SpecialRecognitionText,0,0,panel.contentWidth,0,native.systemFontBold,16)
+			specialRecognitionLbl.anchorX = 0
+			specialRecognitionLbl.x=5
+			specialRecognitionLbl.y= rect.y+15
+			flapScroll:insert( specialRecognitionLbl )
+
+
+
+
 if IsOwner == true then
 
 --Invite/Access

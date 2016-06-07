@@ -14,6 +14,7 @@ CommonWords.InviteAccessText = "Invite/Access"
 CommonWords.DenyAccessText = "Deny Access"
 CommonWords.ProvideAccessText = "Provide Access"
 CommonWords.GrantAccessText = "Grant Access"
+CommonWords.SpecialRecognitionText = "Special Recognition"
 
 Month = {}
 
@@ -454,3 +455,9 @@ ChatPage.BroadcastListCreated = "Broadcast List Created"
 ChatPage.BroadcastListCreationSuccess = "Broadcast List created successfully"
 ChatPage.BroadcastRecipients = "recipients"
 ChatPage.Broadcast = "Broadcast"
+
+
+
+SpecialRecognition = {}
+
+SpecialRecognition.NoEvent = "No Special Recognitions Found"

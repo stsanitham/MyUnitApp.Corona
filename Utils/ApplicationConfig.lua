@@ -23,7 +23,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 -----------Dev-----------------
 
---[[
+----[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
@@ -41,7 +41,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 ---------Stagging--------------
 
-----[[
+--[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -195,4 +195,9 @@ ApplicationConfig.GetMessageGroupTeamMemberList = ApplicationConfig.BASE_URL.."/
 ApplicationConfig.UpdateLastActivityDate = ApplicationConfig.BASE_URL.."/MyUnitBuzz/UpdateLastActivityDate"
 
 ApplicationConfig.GetContactInformation = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetContactInformation"
+
+ApplicationConfig.GetAllSpecialRecognitions = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetAllSpecialRecognitions"
+
+ApplicationConfig.GetSpecialRecognitionPageContent = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetSpecialRecognitionPageContent"
+
 
