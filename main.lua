@@ -607,12 +607,12 @@ local function notificationListener( event )
 
                             end
             
-                    
+                        if UserId ~= nil and Utils.encrypt(tostring(message)) ~= nil and Message_date ~= nil and isDeleted ~= nil and Created_TimeStamp ~= nil and Updated_TimeStamp ~= nil and ImagePath ~= nil and AudioPath ~= nil and VideoPath ~= nil and MyUnitBuzz_LongMessage ~= nil and From ~= nil and To ~= nil and Message_Type ~= nil and Name ~= nil and FromName ~= nil and GroupName ~= nil then
 
-                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
-                        db:exec( insertQuery )
+                            local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+                            db:exec( insertQuery )
 
-
+                        end
                         
 
                         if openPage ~= "MessagingPage" and openPage ~= "main" then

@@ -62,7 +62,9 @@ local holdLevel
 
 local chatHoldflag=false
 
-local selectedForDelete
+local selectedForDelete = {}
+
+local selectedForDeleteID = {}
 
 local tabBarGroup = display.newGroup( )
 
@@ -290,38 +292,7 @@ local function attachAction( event )
 
 		elseif event.target.id == "video" then
 
-			-- --print( "video" )
 
-			-- 	if ( media.hasSource( PHOTO_FUNCTION ) ) then
-
-			-- 	timer.performWithDelay( 100, function() media.selectVideo( { listener = onVideoComplete, mediaSource = PHOTO_FUNCTION } ) 
-			-- 	end )
-
-			-- 	else
-
-			-- 	native.showAlert( "Video Capture Failed", "This device does not have a photo library.", { CommonWords.ok  } )
-
-			-- 	end
-
-
-			-- 	Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
-			-- 	ChatBox.isVisible=false
-
-			 local options = {
-		      		effect = "slideRight",
-					time = 200,	
-						params = {
-						contactId = To_ContactId,
-						MessageType = MessageType,
-						sendto = title.text,
-					}
-
-					}
-
-			ChatBox.isVisible=false
-
-
-			composer.showOverlay( "Controller.videoPage",options)
 
 
 
@@ -415,7 +386,7 @@ local function createAttachment( )
 				icons_holder_bg.y = tabBar.y+tabBar.height+10
 				icons_holder_bg:setFillColor( 1,1,1)
 
-				icons_holder_bg.height = icons_holder_bg.height/2
+				--icons_holder_bg.height = icons_holder_bg.height/2
 
 -------------------------------------------- Camera ---------------------------------------------------
 
@@ -435,23 +406,7 @@ local function createAttachment( )
 				camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
 				camera_icon_txt:setFillColor(0)
 
--- -------------------------------------------- Video ---------------------------------------------------
 
--- 				video_icon = display.newImageRect(AttachmentGroup,"res/assert/video1.png",40,35)
--- 				video_icon.x= W/2 - 12
--- 				video_icon.anchorX=0
--- 				video_icon.anchorY=0
--- 				video_icon.y = camera_icon.y
--- 				video_icon.id="video"
--- 				video_icon:addEventListener( "touch", attachAction )
-
-
--- 				video_icon_txt = display.newText(AttachmentGroup,MessagePage.Video,0,0,native.systemFont,14)
--- 				video_icon_txt.anchorX = 0
--- 				video_icon_txt.anchorY = 0
--- 				video_icon_txt.x = video_icon.x 
--- 				video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
--- 				video_icon_txt:setFillColor(0)
 
 
 -------------------------------------------- Gallery ---------------------------------------------------
@@ -495,7 +450,23 @@ local function createAttachment( )
 				audio_icon_txt:setFillColor(0)
 
 
+-------------------------------------------- Video ---------------------------------------------------
 
+				video_icon = display.newImageRect(AttachmentGroup,"res/assert/video1.png",40,35)
+				video_icon.x= W/2 - W/3
+				video_icon.anchorX=0
+				video_icon.anchorY=0
+				video_icon.y = audio_icon.y+audio_icon.contentHeight+30
+				video_icon.id="video"
+				video_icon:addEventListener( "touch", attachAction )
+
+
+				video_icon_txt = display.newText(AttachmentGroup,MessagePage.Video,0,0,native.systemFont,14)
+				video_icon_txt.anchorX = 0
+				video_icon_txt.anchorY = 0
+				video_icon_txt.x = video_icon.x 
+				video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
+				video_icon_txt:setFillColor(0)
 
 -- -------------------------------------------- Location ---------------------------------------------------
 
@@ -567,9 +538,12 @@ end
 
 			if holdLevel > 25 then
 
-				Deleteicon.detail=event.target.id
+				Deleteicon.detail=selectedForDeleteID
 				Deleteicon.type=event.target.type
 				Deleteicon.contentPath=event.target.contentPath
+
+
+				selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id, filetype = event.target.type, contentPath = event.target.contentPath}
 
 				Copyicon.type = event.target.type
 
@@ -589,7 +563,7 @@ end
 				
 				Copyicon.detail = event.target.chat
 
-				if selectedForDelete ~= nil then 
+				if #selectedForDelete ~= 0 then 
 
 
 					if Copyicon.type ~= "text" then
@@ -602,22 +576,27 @@ end
 
 					end
 
-					if selectedForDelete.y ~= nil then
-					 selectedForDelete:removeSelf();selectedForDelete=nil 
+					for i=1,#selectedForDelete do
+						if selectedForDelete[i].y ~= nil then
+						 selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
 
-					-- attachment_icon.isVisible =true
-					 end 
+						-- attachment_icon.isVisible =true
+						 end
+
+						 selectedForDeleteID[i]=nil
+					end
+
 				end
 
-				selectedForDelete = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
-				selectedForDelete:setFillColor( 0.3,0.6,0.5,0.4 )
-				event.target.group:insert( selectedForDelete )
+				selectedForDelete[#selectedForDelete+1] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
+				selectedForDelete[#selectedForDelete]:setFillColor( 0.3,0.6,0.5,0.4 )
+				event.target.group:insert( selectedForDelete[#selectedForDelete] )
 
 				print("delete Action")
 				
 			else
 
-				if event.target.type == "image" and selectedForDelete == nil then
+				if event.target.type == "image" and #selectedForDelete == 0 then
 
 
 					local imageviewname = event.target.imageviewname
@@ -644,6 +623,15 @@ end
 							composer.showOverlay("Controller.imageFullviewPage",options)
 
 						end
+				else
+
+					selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id,filetype = event.target.type,contentPath = event.target.contentPath}
+
+					selectedForDelete[#selectedForDelete+1] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
+					selectedForDelete[#selectedForDelete]:setFillColor( 0.3,0.6,0.5,0.4 )
+					event.target.group:insert( selectedForDelete[#selectedForDelete] )
+					print( "more selecting ")
+
 			    end
 
 			end
@@ -1490,14 +1478,22 @@ end
 	 
 			if event.target.id == "delete" then
 
-					if event.target.type ~= "text" then
+			print( json.encode(selectedForDeleteID) )
 
-						os.remove( event.target.contentPath )
+					for i=1,#selectedForDeleteID do
+
+						local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..selectedForDeleteID[i].id..[[;]]
+						db:exec( q )
+
+						print( selectedForDeleteID[i].type )
+
+						if selectedForDeleteID[i].filetype ~= "text" then
+
+							os.remove( selectedForDeleteID[i].contentPath )
+
+						end
 
 					end
-
-					local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..event.target.detail..[[;]]
-					db:exec( q )
 					
 					sendMeaasage()
 
@@ -1513,15 +1509,14 @@ end
 
 						attachment_icon.isVisible = true
 
-				if selectedForDelete ~= nil then 
+				for i=1,#selectedForDelete do
+						if selectedForDelete[i].y ~= nil then
+						 selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
 
-					 if selectedForDelete.y ~= nil then
-
-					 selectedForDelete:removeSelf();selectedForDelete=nil 
-					 end 
-
-				end
-
+						-- attachment_icon.isVisible =true
+						 end
+						 selectedForDeleteID[i]=nil
+					end
 		end
 
 	    return true
@@ -2107,11 +2102,14 @@ end
 
 	    	attachment_icon.isVisible = true
 
-	    	if selectedForDelete ~= nil then 
-					if selectedForDelete.y ~= nil then
-					 selectedForDelete:removeSelf();selectedForDelete=nil 
-					 end 
-				end
+	    	for i=1,#selectedForDelete do
+						if selectedForDelete[i].y ~= nil then
+						 selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
+
+						-- attachment_icon.isVisible =true
+						 end
+						 selectedForDeleteID[i]=nil
+					end
 
 	    elseif ( phase == "moved" ) then print( "Scroll view was moved" )
 	    elseif ( phase == "ended" ) then print( "Scroll view was released" )

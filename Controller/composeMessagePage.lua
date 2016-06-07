@@ -1861,7 +1861,7 @@ end
 				end
 
 ---------------------------------------- Audio name and its title ------------------------------------------
-
+	
 
 				Audio_filename_title = display.newText("Audio Name",0,0,native.systemFont,14)
 				Audio_filename_title.anchorX = 0
@@ -1872,6 +1872,10 @@ end
 				Audio_filename_title:setFillColor(0)
 				sceneGroup:insert(Audio_filename_title)
 
+
+					if Details ~= nil and Details.ImageFilePath ~= nil and Details.AudioFilePath ~= nil then
+						Audio_filename_title.y=filename_title.y+35
+					end
 
 				Audio_filename = display.newText("",0,0,native.systemFont,14)
 				Audio_filename.anchorX = 0
@@ -1897,7 +1901,9 @@ end
 
         		if Details ~= nil and Details.AudioFilePath ~= nil then
 					--detail_value.ImageFilePath:match( "([^/]+)$" ),
-					if Details.ImageFilePath ~= nil th
+				
+
+
 					Audio_filename_title.isVisible = true
 					Audio_filename.isVisible = true
 					Audio_filename_close.isVisible = true

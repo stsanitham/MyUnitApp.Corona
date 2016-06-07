@@ -347,10 +347,6 @@ else
 end
 
        
-
-       native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
-
-
 	params={headers = headers,body = v}
 
 	print("Send Message Request :"..(v))
