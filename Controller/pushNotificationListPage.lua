@@ -1212,7 +1212,7 @@ end
 
        
 function scene:resumeGame(value,messagelistvalue)
-		pageCount = 0
+		
 		notifyFlag = false
     if value == "back" then
 
@@ -1235,7 +1235,7 @@ end
 
 
 function scene:resumeGame(value,EditArray,pagevalue)
-			pageCount = 0
+			
 			notifyFlag = false
 	    if value == "edit" then
 
@@ -1334,7 +1334,7 @@ end
 		        		pageCount = pageCount+1
 
 
-		        		print( "listType : "..listType )
+		        		native.showAlert( "MUB", pageCount , { "ok"})
 		   			
 						if listType == "DRAFT" then
 
@@ -1359,7 +1359,7 @@ end
 
 		        	notifyFlag = true
 
-		        		pageCount = 0
+		        		pageCount = 1
 						
 						if listType == "DRAFT" then
 
@@ -1383,6 +1383,7 @@ end
 
 		    end
 
+		  
 		    return true
 	end
 
