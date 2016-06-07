@@ -1214,6 +1214,9 @@ end
 function scene:resumeGame(value,messagelistvalue)
 		
 		notifyFlag = false
+
+		
+
     if value == "back" then
 
 	    Runtime:addEventListener( "key", onKeyEvent )
@@ -1293,7 +1296,7 @@ function scene:resumeGame(value,EditArray,pagevalue)
 
 					 		Runtime:addEventListener( "key", onKeyEvent )
 
-                            ListLoad(messagelistvalue)
+                         --   ListLoad(messagelistvalue)
 				
 					end
 
@@ -1332,9 +1335,6 @@ end
 						notifyFlag = false
 
 		        		pageCount = pageCount+1
-
-
-		        		native.showAlert( "MUB", pageCount , { "ok"})
 		   			
 						if listType == "DRAFT" then
 
@@ -1400,6 +1400,7 @@ local function TabbarTouch( event )
 		elseif event.phase == "ended" then
 
 		pageCount = 0
+		messagelist_scrollView:scrollTo( "top", { time=1000 } )
 			
 			if event.target.id == "schedule" then
 
