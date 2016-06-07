@@ -69,6 +69,7 @@ local function onKeyEvent( event )
 
         	if webView then webView:removeSelf( );webView=nil end
 
+
         	composer.hideOverlay( "slideRight", 300 )
 
                return true
@@ -98,6 +99,7 @@ local function onKeyEvent( event )
 								isRotate = false
 
 								if webView then webView:removeSelf( );webView=nil end
+
 
 								composer.hideOverlay( "slideRight", 300 )
 
@@ -164,6 +166,7 @@ local function onKeyEvent( event )
 
 				end
 
+
 		end
 
 end
@@ -224,6 +227,7 @@ function scene:create( event )
 		refresh = display.newImageRect( sceneGroup, "res/assert/refreshicon.png",20,20 )
 		refresh.anchorX = 0.5
 		refresh.anchorY = 0.5
+
 		refresh.id = "refresh"
 		refresh.x = W-25;refresh.y = title_bg.y
 
@@ -301,6 +305,7 @@ function scene:show( event )
 
 								webView = native.newWebView( display.contentCenterX, display.contentCenterY+35, display.viewableContentWidth, display.viewableContentHeight-80 )
 								--webView.anchorY=0
+
 								webView.hasBackground=false
 								webView:request( "specialRecognition.html", system.DocumentsDirectory )
 								sceneGroup:insert( webView )

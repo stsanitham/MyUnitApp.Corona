@@ -62,7 +62,6 @@ end
 
 
 
-
 local function onKeyEvent( event )
 
         local phase = event.phase
@@ -86,6 +85,7 @@ local function onKeyEvent( event )
 
 			 os.exit() 
 
+
             end
             
         end
@@ -94,10 +94,6 @@ local function onKeyEvent( event )
 
         return false
  end
-
-
-
-
 
 
 local function Background_Touch( event )
@@ -218,6 +214,7 @@ function scene:show( event )
 
 
 					local rightArrowPointer = display.newImageRect( sceneGroup, "res/assert/rightarrow.png", 20,20 )
+
 					rightArrowPointer.x=25;
 					rightArrowPointer.y=background.y+background.height/2-1
 					rightArrowPointer.id="specialRecognition_arrow"

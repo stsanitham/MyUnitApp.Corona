@@ -14,7 +14,7 @@ local style = require("res.value.style")
 local json = require("json")
 
 local status = "normal"
-
+local testimage
 
 --------------- Initialization -------------------
 
@@ -819,7 +819,7 @@ end
 
 
 
-					local testimage = 
+					testimage = 
 
 						network.download(
 						detail_value.ImageFilePath,
@@ -873,7 +873,7 @@ end
 
 
 
-			local testimage = 
+			testimage = 
 
 				network.download(
 				detail_value.ImageFilePath,
@@ -1000,7 +1000,6 @@ end
 	            end
 
 
-             if testimage then testimage:removeSelf();testimage = nil end
 
 			  network.cancel(testimage)
 

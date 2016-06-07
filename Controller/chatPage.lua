@@ -160,6 +160,10 @@ end
  
         local photo = event.target
 
+   --  
+
+        print( "Selected photo : "..json.encode(event) )
+
         local baseDir = system.DocumentsDirectory
 
         if photo then
@@ -169,6 +173,16 @@ end
 		local w = photo.width
 		local h = photo.height
 		print( "w,h = ".. w .."," .. h )
+
+
+		 --                local options =
+			-- {
+			--    to = { "malarkodi.sellamuthu@w3magix.com" },
+			--    subject = "Corona Mail",
+			--     body = "content : "..photo.x.." and "..photo.width,
+			   
+			-- }
+   --          native.showPopup("mail", options)
 
 		local function rescale()
 					
@@ -317,8 +331,8 @@ local function attachAction( event )
 
 		elseif event.target.id == "gallery" then
 
-				if media.hasSource( PHOTO_FUNCTION  ) then
-				timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+				if media.hasSource( media.SavedPhotosAlbum  ) then
+				timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = media.SavedPhotosAlbum } ) 
 				end )
 				end
 
@@ -1833,7 +1847,7 @@ end
 			
 			if event.target.id == "message" then
 
-				title.text = ChatPage.Chats
+				--title.text = ChatPage.Chats
 
 
 			elseif event.target.id == "broadcast" then
