@@ -71,6 +71,7 @@ local function onKeyEvent( event )
 
         	if webView then webView:removeSelf( );webView=nil end
 
+
         	composer.hideOverlay( "slideRight", 300 )
 
                return true
@@ -119,6 +120,7 @@ local function onKeyEvent( event )
 				if webView then webView:removeSelf( );webView=nil end
 
 				composer.hideOverlay( "slideRight", 300 )
+
 
 		elseif event.target.id == "refresh" then
 
@@ -179,6 +181,7 @@ local function onKeyEvent( event )
 			        spinner.isVisible=false
 
                     end
+
 
 
 		end
@@ -253,6 +256,7 @@ function scene:create( event )
 	    refresh = display.newImageRect( sceneGroup, "res/assert/refreshicon.png",20,20 )
 		refresh.anchorX = 0.5
 		refresh.anchorY = 0.5
+
 		refresh.id = "refresh"
 		refresh.x = W-25;refresh.y = refresh_icon_bg.y+15
 
@@ -330,8 +334,9 @@ function scene:show( event )
 
 								file = nil
 
-								webView = native.newWebView( display.contentCenterX, 70, display.viewableContentWidth, display.viewableContentHeight-80 )
-								webView.anchorY=0
+								webView = native.newWebView( display.contentCenterX, display.contentCenterY+35, display.viewableContentWidth, display.viewableContentHeight-80 )
+								--webView.anchorY=0
+
 								webView.hasBackground=false
 								webView:request( "specialRecognition.html", system.DocumentsDirectory )
 								sceneGroup:insert( webView )

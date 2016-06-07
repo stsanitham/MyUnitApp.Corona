@@ -308,7 +308,7 @@ if Message_Type ~= nil and Message_Type ~= "" then
 			"ConversionFirstName": "]]..ConversionFirstName..[[",
 			"ConversionLastName": "]]..ConversionLastName..[[",
 			"GroupName": "]]..GroupName..[[",
-			"IsSendNow": "false",
+			"IsSendNow": "true",
 			"MessageFileType": "]]..MessageFileType..[[",
 			"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 
@@ -339,7 +339,7 @@ else
 		"ConversionFirstName": "]]..ConversionFirstName..[[",
 		"ConversionLastName": "]]..ConversionLastName..[[",
 		"GroupName": "]]..GroupName..[[",
-		"IsSendNow": "false",
+		"IsSendNow": "true",
 		"MessageFileType": "]]..MessageFileType..[[",
 		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 		}
@@ -348,7 +348,7 @@ else
 
 end
 
-       
+
 	params={headers = headers,body = v}
 
 	print("Send Message Request :"..(v))

@@ -1901,9 +1901,6 @@ end
 
         		if Details ~= nil and Details.AudioFilePath ~= nil then
 					--detail_value.ImageFilePath:match( "([^/]+)$" ),
-				
-
-
 					Audio_filename_title.isVisible = true
 					Audio_filename.isVisible = true
 					Audio_filename_close.isVisible = true
