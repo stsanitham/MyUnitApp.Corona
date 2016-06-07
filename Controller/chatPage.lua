@@ -610,33 +610,52 @@ end
 				
 			else
 
-				if event.target.type == "image" and #selectedForDelete == 0 then
+				if (event.target.type == "image" or  event.target.type == "video")  and #selectedForDelete == 0  then
+
+					if event.target.type == "image" then
+
+						local imageviewname = event.target.imageviewname
+
+						local filePath = system.pathForFile( imageviewname, system.DocumentsDirectory )
+				            -- Play back the recording
+				            local file = io.open( filePath)
+				            
+				            if file then
+
+				                io.close( file )
+
+								
+
+								local options = {
+								      		effect = "fromTop",
+											time = 200,	
+											params = {
+												pagename="image",
+												imagenameval = imageviewname,
+											}
+											}
 
 
-					local imageviewname = event.target.imageviewname
+								composer.showOverlay("Controller.imageFullviewPage",options)
 
-					local filePath = system.pathForFile( imageviewname, system.DocumentsDirectory )
-			            -- Play back the recording
-			            local file = io.open( filePath)
-			            
-			            if file then
+							end
 
-			                io.close( file )
+						else
 
-							
-
-							local options = {
-							      		effect = "fromTop",
-										time = 200,	
-										params = {
-											imagenameval = imageviewname,
-										}
-										}
+									local options = {
+								      		effect = "fromTop",
+											time = 200,	
+											params = {
+												pagename = "video",
+												imagenameval = event.target.contentPath,
+											}
+											}
 
 
-							composer.showOverlay("Controller.imageFullviewPage",options)
+								composer.showOverlay("Controller.imageFullviewPage",options)
 
 						end
+
 				else
 
 					selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id,filetype = event.target.type,contentPath = event.target.contentPath}
@@ -1239,7 +1258,14 @@ end
 				end
 
 
+					--------Image Attachment---------------
 
+			if ChatHistory[i].Video_Path  ~= nil and ChatHistory[i].Video_Path ~= "" then
+
+				 bg.type = "video"
+				 bg.contentPath = ChatHistory[i].Video_Path
+
+			end
  
 			--------Image Attachment---------------
 
@@ -1674,6 +1700,21 @@ local function ChatSendAction( event )
 			Message_Type = MessageType
 
 
+			if string.find(ChatBox.text,"https://") or string.find(ChatBox.text,"http://") then
+
+
+				  ChatBox.text =  ChatBox.text:match("https?://www%.[^/]+(/v/%d+/)%w+")
+
+				  local pattern = "https?://[%w-_%.%?%.:/%+=&]+"
+
+				  print( "URL value : "..string.match(ChatBox.text, pattern)  )
+
+
+				VideoPath=string.match(ChatBox.text, pattern)
+
+			end
+
+			
 		    --	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
 				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )

@@ -32,7 +32,7 @@ openPage="imageFullviewPage"
 
 local BackFlag = false
 
-
+local webView
 
 --------------------------------------------------
 
@@ -275,6 +275,7 @@ function scene:show( event )
 
 		title.text = photoview
 
+		if event.params.pagename == "image" then
 
 		photo = display.newImage( photoview, baseDir )
 		photo.anchorY=0
@@ -328,6 +329,20 @@ function scene:show( event )
 
 		end
 
+		photo:addEventListener("touch",onBackButtonTouch)
+	else
+
+		title.text= title.text:sub(1,32).."..."
+		print( "video page" )
+
+
+		webView = native.newWebView( display.contentCenterX, display.contentCenterY+35, display.viewableContentWidth, display.viewableContentHeight-80 )
+		webView.hasBackground=false
+		webView:request( event.params.imagenameval )
+		sceneGroup:insert( webView )
+
+	end
+
 
 
 
@@ -339,7 +354,6 @@ function scene:show( event )
 
 			BackBtn:addEventListener("touch", onBackButtonTouch)
 			title:addEventListener("touch", onBackButtonTouch)
-			photo:addEventListener("touch",onBackButtonTouch)
 			Background:addEventListener("touch",onBackButtonTouch)
 		
 	end	
@@ -358,12 +372,16 @@ end
 
 		if event.phase == "will" then
 
-
+		if webView then webView:removeSelf( );webView=nil end
 		Runtime:removeEventListener( "key", onKeyEvent )
 
 		BackBtn:removeEventListener("touch", onBackButtonTouch)
 		title:removeEventListener("touch", onBackButtonTouch)
-		photo:removeEventListener("touch",onBackButtonTouch)
+		if photo ~= nil then
+			photo:removeEventListener("touch",onBackButtonTouch)
+			photo=nil
+		end
+
 		Background:removeEventListener("touch",onBackButtonTouch)
 
 
