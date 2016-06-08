@@ -578,24 +578,37 @@ openPage="signInPage"
 									elseif event.phase == "ended" then
 									display.getCurrentStage():setFocus( nil )
 
-									if event.target.id == "forget" then
+								    	if event.target.id == "forget" then
 
-										local options = {
-										    effect = "slideLeft",
-										    time = 600,
-										}
+												local options = 
+												{
+												    effect = "slideLeft",
+												    time = 600,
+												}
 
-										composer.gotoScene( "Controller.forgetPasswordPage", options )
+											    composer.gotoScene( "Controller.forgetPasswordPage", options )
 
 
-										elseif event.target.id == "request" then
+										elseif event.target.id == "teammember_request" then
 
-											local options = {
-										    effect = "slideLeft",
-										    time = 600,
-										}
+												local options = 
+												{
+												    effect = "slideLeft",
+												    time = 600,
+												}
 
-											composer.gotoScene( "Controller.request_Access_Page", options)
+												composer.gotoScene( "Controller.request_Access_Page", options)
+
+
+										elseif event.target.id == "director_request" then
+
+												local options = 
+												{
+												    effect = "slideLeft",
+												    time = 600,
+											    }
+
+												composer.gotoScene( "Controller.registrationScreen", options)
 
 										end
 
@@ -771,12 +784,70 @@ function scene:create( event )
 	Utils.CssforTextView(signinBtn_text,sp_primarybutton)	
 
 
-	requestBtn = display.newText(sceneGroup,LoginPage.Request_Button,0,0,native.systemFont,14)
-	requestBtn.x=W/2
-	requestBtn.y=signinBtn.y+signinBtn.contentHeight/2+40
-	requestBtn:setFillColor(Utils.convertHexToRGB(color.blue))
-	requestBtn.id="request"
+	-- requestBtn = display.newText(sceneGroup,LoginPage.Request_Button,0,0,native.systemFont,14)
+	-- requestBtn.x=W/2
+	-- requestBtn.y=signinBtn.y+signinBtn.contentHeight/2+40
+	-- requestBtn:setFillColor(Utils.convertHexToRGB(color.blue))
+	-- requestBtn.id="request"
+
 	--requestBtn.isVisible=false
+
+
+	TM_RequestBtn = display.newRect(sceneGroup,0,0,W-60,45)
+	TM_RequestBtn.x=W/2-W/3+30;TM_RequestBtn.y = signinBtn.y+30
+	TM_RequestBtn.width = 150
+	TM_RequestBtn:setFillColor(0,0,0,0.4) 
+	TM_RequestBtn.anchorY=0
+	TM_RequestBtn.id="teammember_request"
+
+
+	TM_Requesttext = display.newText(sceneGroup,RegistrationScreen.UnitMember,0,0,display.contentWidth - 30,0,native.systemFontBold,14)
+	TM_Requesttext.x=TM_RequestBtn.x - TM_RequestBtn.contentWidth/2+10
+	TM_Requesttext.width = display.contentWidth - 30
+	TM_Requesttext.y=TM_RequestBtn.y+10
+	TM_Requesttext:setFillColor(0)
+	TM_Requesttext.anchorY=0
+	TM_Requesttext.anchorX=0
+
+
+	TM_RequestAccesstext = display.newText(sceneGroup,RegistrationScreen.RequestAccessText,0,0,display.contentWidth - 10,0,native.systemFont,13)
+	TM_RequestAccesstext.x=TM_RequestBtn.x - TM_RequestBtn.contentWidth/2 +10
+	TM_RequestAccesstext.y=TM_Requesttext.y+TM_Requesttext.contentHeight+7
+	TM_RequestAccesstext.width = display.contentWidth - 10
+	TM_RequestAccesstext:setFillColor(0)
+	TM_RequestAccesstext.anchorY=0
+	TM_RequestAccesstext.anchorX=0
+	--Utils.CssforTextView(TM_Requesttext,sp_primarybutton)	
+
+	TM_RequestBtn.height= TM_Requesttext.contentHeight+TM_RequestAccesstext.contentHeight+30
+
+
+	Director_RequestBtn = display.newRect(sceneGroup,0,0,W-60,45)
+	Director_RequestBtn.x=W/2+W/3-30;Director_RequestBtn.y = signinBtn.y+30
+	Director_RequestBtn.width = 140
+	Director_RequestBtn.anchorY = 0
+	Director_RequestBtn:setFillColor(0,0,0,0.4) 
+	Director_RequestBtn.id="director_request"
+
+	Director_Requesttext = display.newText(sceneGroup,RegistrationScreen.Director,0,0,Director_RequestBtn.contentWidth-12,0,native.systemFontBold,14)
+	Director_Requesttext.x=Director_RequestBtn.x - Director_RequestBtn.contentWidth/2+10
+	Director_Requesttext.y=Director_RequestBtn.y+10
+	Director_Requesttext.anchorY=0
+	Director_Requesttext:setFillColor(0)
+	Director_Requesttext.anchorX=0
+
+	Director_Accounttext = display.newText(sceneGroup,RegistrationScreen.CreateAccount,0,0,display.contentWidth - 10,0,native.systemFont,13)
+	Director_Accounttext.x=Director_RequestBtn.x - Director_RequestBtn.contentWidth/2 +10
+	Director_Accounttext.y=Director_Requesttext.y+Director_Requesttext.contentHeight+7
+	Director_Accounttext.width = display.contentWidth - 10
+	Director_Accounttext:setFillColor(0)
+	Director_Accounttext.anchorY=0
+	Director_Accounttext.anchorX=0
+	--Utils.CssforTextView(Director_Requesttext,sp_primarybutton)	
+
+	Director_RequestBtn.height= Director_Requesttext.contentHeight+Director_Accounttext.contentHeight+30
+
+
 
 end
 
@@ -824,7 +895,8 @@ function scene:show( event )
 
 			Background:addEventListener("touch",touchBg)
 			forgettBtn:addEventListener("touch",touchAction)
-			requestBtn:addEventListener("touch",touchAction)
+			TM_RequestBtn:addEventListener("touch",touchAction)
+			Director_RequestBtn:addEventListener("touch",touchAction)
 			signinBtn:addEventListener("touch",signinBtnRelease)
 			signinBtn_text:addEventListener("touch",signinBtnRelease)
 
@@ -843,7 +915,6 @@ function scene:show( event )
 				if event.phase == "will" then
 
 
-
 				elseif phase == "did" then
 
 					Runtime:removeEventListener( "enterFrame", pushTest )
@@ -851,10 +922,10 @@ function scene:show( event )
 
 					Background:removeEventListener("touch",touchBg)
 					forgettBtn:removeEventListener("touch",touchAction)
-					requestBtn:removeEventListener("touch",touchAction)
+					TM_RequestBtn:removeEventListener("touch",touchAction)
+					Director_RequestBtn:removeEventListener("touch",touchAction)
 					signinBtn:removeEventListener("touch",signinBtnRelease)
 					signinBtn_text:removeEventListener("touch",signinBtnRelease)
-
 
 
 				end	

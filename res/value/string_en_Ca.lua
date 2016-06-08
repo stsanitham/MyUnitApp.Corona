@@ -380,6 +380,9 @@ InviteAccessDetail.Phone="Phone"
 InviteAccessDetail.MKRank = "MK Rank "
 InviteAccessDetail.ActivityOn = "Activity On"
 InviteAccessDetail.Comments = "Comments"
+InviteAccessDetail.NoDeniedAccess = "No list of Denied Access found"
+InviteAccessDetail.NoPendingRequest = "No Pending Requests found"
+InviteAccessDetail.NoTMAccess = "No list of Team Members without Access found"
 
 
 ChatDetails = {}
@@ -461,3 +464,11 @@ ChatPage.Broadcast = "Broadcast"
 SpecialRecognition = {}
 
 SpecialRecognition.NoEvent = "No Special Recognitions Found"
+
+
+RegistrationScreen = {}
+
+RegistrationScreen.CreateAccount = "Create an Account"
+RegistrationScreen.UnitMember = "Unit Member"
+RegistrationScreen.Director = "Director"
+RegistrationScreen.RequestAccessText = "Request Access"

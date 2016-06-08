@@ -201,7 +201,7 @@ local function Block(value)
 
         GetAlertPopup()
 
-		AlertText.text = "Block"
+		AlertText.text = CommonWords.Block
 		AlertContentText.text = CareerPath.BlockAccess
 		print("block access occurred text value ",AlertContentText.text)
 
@@ -715,7 +715,7 @@ function scene:create( event )
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-	title = display.newText(sceneGroup,"Contacts with Access",0,0,native.systemFont,18)
+	title = display.newText(sceneGroup,FlapMenu.Contacts_with_Access,0,0,native.systemFont,18)
 	title.anchorX = 0
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
@@ -771,17 +771,18 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 				if status == "DENY" then
 
-					NoEvent.text="No list of Denied Access found"
+					NoEvent.text=InviteAccessDetail.NoDeniedAccess
 
 				elseif status == "OPEN" then
 
-					NoEvent.text="No Pending Requests found"
+					NoEvent.text=InviteAccessDetail.NoPendingRequest
 
 				elseif status == "ADDREQUEST" then
 
-					NoEvent.text="No list of Team Members without Access found"
+					NoEvent.text=InviteAccessDetail.NoTMAccess
 
 				end
+
 
 		end
 
@@ -797,10 +798,10 @@ function reloadInvitAccess(reloadstatus)
 
 	status = reloadstatus
 
-	if reloadstatus == "GRANT" then title.text = "Contacts with Access" end
-	if reloadstatus == "DENY" then title.text = "Denied Access" end
-	if reloadstatus == "OPEN" then title.text = "Pending Requests" end
-	if reloadstatus == "ADDREQUEST" then title.text = "Team Member without Access" end
+	if reloadstatus == "GRANT" then title.text = FlapMenu.Contacts_with_Access end
+	if reloadstatus == "DENY" then title.text = FlapMenu.Denied_Access end
+	if reloadstatus == "OPEN" then title.text = FlapMenu.Pending_Requests end
+	if reloadstatus == "ADDREQUEST" then title.text = FlapMenu.TeamMember_without_Access end
 
 	Webservice.GetMyUnitBuzzRequestAccesses(reloadstatus,get_GetMyUnitBuzzRequestAccesses)
 
