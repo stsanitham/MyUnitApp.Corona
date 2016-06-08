@@ -385,6 +385,10 @@ InviteAccessDetail.MKRank = "MK Rango"
 InviteAccessDetail.ActivityOn = "En la actividad"
 InviteAccessDetail.Comments = "comentarios"
 
+InviteAccessDetail.NoDeniedAccess = "No hay una lista de acceso denegado encontrado"
+InviteAccessDetail.NoPendingRequest = "No se encontraron Peticiones pendientes"
+InviteAccessDetail.NoTMAccess = "No hay una lista de integrantes del equipo sin acceso encontrados"
+
 
 ChatDetails = {}
 
@@ -466,3 +470,11 @@ ChatPage.Broadcast = "Emisión"
 SpecialRecognition = {}
 
 SpecialRecognition.NoEvent = "No se han encontrado Reconocimientos Especiales"
+
+
+RegistrationScreen = {}
+
+RegistrationScreen.CreateAccount = "Crea una cuenta"
+RegistrationScreen.UnitMember = "unidad de miembros"
+RegistrationScreen.Director = "Director"
+RegistrationScreen.RequestAccessText = "Solicitar acceso"
