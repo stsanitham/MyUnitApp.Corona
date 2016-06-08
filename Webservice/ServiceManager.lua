@@ -273,6 +273,7 @@ function Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupNam
 		AccessToken = row.AccessToken
 		ContactId = row.ContactId
 		EmailAddess = row.EmailAddess
+		ConversionLastName  = row.MemberName
 
 	end
 
