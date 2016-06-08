@@ -138,7 +138,6 @@ local columnData =
 
 local function onTimer ( event )
 
-	print( "event time completion" )
 
 	BackFlag = false
 
@@ -154,7 +153,6 @@ end
 
         if keyName=="back" then
 
-        	print("keyName....")
 
         	if BackFlag == false then
 
@@ -203,9 +201,6 @@ local function listTouch( event )
 
 			if event.target.id == "addEvent" then
 
-				print( "add event" )
-
-				print( os.date( "%m/%d/%Y" ,  event.target.value )) 
 
 				local options = {
 					isModal = true,
@@ -327,7 +322,6 @@ if ParentShow == true then
 	tempHeight = event_groupArray[#event_groupArray-1][1].y + event_groupArray[#event_groupArray-1][1].height-2
 	end
 
-	print( "****************** : "..timeGMT )
 HeaderDetails[#HeaderDetails+1] = {}
 HeaderDetails[#HeaderDetails].Position = tempHeight
 HeaderDetails[#HeaderDetails].Time = timeGMT
@@ -459,8 +453,6 @@ end
 local function createEventlist(responevalue,timeValue)
 
 
-print( "**"..#responevalue  )
-
 DateWise_response=responevalue
 
 		local function onTimer( event )
@@ -508,8 +500,7 @@ DateWise_response=responevalue
 			Processingdate = dateSplit(DateWise_response[1].date)
 
 
-			print( "Compare with start : "..startdate,Processingdate )
-	
+
 			for j=#HeaderDetails, 1, -1 do 
 				HeaderDetails[#HeaderDetails] = nil
 			end
@@ -574,9 +565,7 @@ HaveField = false
 
 --DateWise_response=response
 
-print( DateWise_response )
-
-					
+				
 		ProcessingCount =0 
 
 		for j=#event_groupArray, 1, -1 do 
@@ -720,8 +709,6 @@ local function eventList( timeValue )
 
 	function get_TicklerEvents(response)
 
-		print( "***************************************************")
-
 		createEventlist(response,timeValue)
 
 
@@ -752,8 +739,6 @@ local function dayTouch(event)
 
 		event.target[1]:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-		print("checking : ".. event.target.Processingdate,os.date( "%Y-%m-%d" ,os.time(os.date( '*t' ))) )
-
 		if event.target.Processingdate == os.date( "%Y-%m-%d" ,os.time(os.date( '*t' ))) then
 			event.target[1]:setFillColor( 0,0,1 )
 		end
@@ -763,8 +748,6 @@ local function dayTouch(event)
 		Processingdate = event.target.Processingdate
 		ParentShow=true
 		weekViewTouchFlag = true
-
-		print( os.date( "%m/%d/%Y" ,  os.time(event.target.value) )) 
 
 		eventList(event.target.value)
 
@@ -880,11 +863,9 @@ local function searchListener( event )
 
     if ( event.phase == "began" ) then
         -- user begins editing defaultField
-        print( event.text )
 
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
-        print( event.target.text )
         search.text = ""
         NoEvent.text = EventCalender.NoEvent
         native.setKeyboardFocus( nil )
@@ -901,8 +882,6 @@ local function searchListener( event )
 				Processingdate = os.date( "%Y-%m-%d" , os.time( searchweektime ))
 
 				ParentShow = true
-
-				print( "123 : "..json.encode(DateWise_response ))
 
     			searchEventlist(DateWise_response,searchweektime,event.text)
 
@@ -960,7 +939,6 @@ local function todayAction( event )
 		Processingdate = dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( Upcoming )))
 		ParentShow=true
 		weekViewTouchFlag = true
-		print("Processingdate : "..Processingdate)
 		createEventlist(response,Upcoming)
 	end
 
@@ -983,14 +961,11 @@ local function weekViewSwipe( event )
 		display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
-		print("currentweek .. "..currentweek)
 		search.text = ""
 		NoEvent.text = EventCalender.NoEvent
 		native.setKeyboardFocus( nil )
 
 		if weekViewTouchFlag == false then
-
-			print("calling")
 
 					if event.target.id  == "leftSwipe" then
 
@@ -1069,8 +1044,6 @@ local function weekViewSwipe( event )
 
 						--eventList(weekViewSwipevalue)
 
-						print(startdate,enddate)
-
 						creatWeek(weekViewSwipevalue,true)
 
 						
@@ -1120,9 +1093,7 @@ local function calenderAction( event )
 		if startdate ~= selectedMonth.."/"..selectedDay.."/"..selectedYear.." 12:00:00 AM" then
 				startdate =  selectedMonth.."/"..selectedDay.."/"..selectedYear.." 12:00:00 AM"
 				enddate = selectedMonth.."/"..selectedDay.."/"..selectedYear.." 11:59:59 PM"
-				print("start date : "..startdate )
 				Processingdate = selectedYear.."-"..selectedMonth.."-"..selectedDay
-				print("Processingdate : "..Processingdate )
 				--dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( t )))
 				ParentShow=true
 
@@ -1141,7 +1112,6 @@ local function calenderAction( event )
 end 
 
 local function unrequire( m )
- print( "unrequire" )
  package.loaded[m] = nil
     _G[m] = nil
  	package.loaded["res.value.string_es_Us"] = nil
@@ -1153,9 +1123,6 @@ end
 	local function EventCalender_scrollListener( event )
 
 		    local phase = event.phase
-
-
-		    print( "here" )
 		    if ( phase == "began" ) then 
 		    elseif ( phase == "moved" ) then
 			
@@ -1167,8 +1134,6 @@ end
 					if HeaderDetails[i-1] ~= nil then
 
 					local xView, yView = scrollView:getContentPosition()
-
-					print( yView,HeaderDetails[i].Position)
 
 					if -(yView) < tonumber(HeaderDetails[i].Position) then
 
@@ -1193,13 +1158,13 @@ end
 
 		    -- In the event a scroll limit is reached...
 		    if ( event.limitReached ) then
-		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+		        if ( event.direction == "up" ) then 
 
 		        	
-		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+		        elseif ( event.direction == "down" ) then
 
-		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
-		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		        elseif ( event.direction == "left" ) then
+		        elseif ( event.direction == "right" ) then
 		        end
 		    end
 
@@ -1217,14 +1182,13 @@ function scene:create( event )
 
 		openPage="eventCalenderPage"
 
-	print( langid,countryid )
 
 	--("res.value.string")
 
-	if package.loaded["res.value.string_es_Us"] then print( "spani finish" ) unrequire("res.value.string_es_Us") end
-	if package.loaded["res.value.string_fr_Ca"] then print( "string_fr_Ca finish" ) unrequire("res.value.string_fr_Ca") end
-	if package.loaded["res.value.string_en_Ca"] then print( "string_en_Ca finish" ) unrequire("res.value.string_en_Ca") end
-	if package.loaded["res.value.string"] then print( "string finish" ) unrequire("res.value.string") end
+	if package.loaded["res.value.string_es_Us"] then unrequire("res.value.string_es_Us") end
+	if package.loaded["res.value.string_fr_Ca"] then unrequire("res.value.string_fr_Ca") end
+	if package.loaded["res.value.string_en_Ca"] then unrequire("res.value.string_en_Ca") end
+	if package.loaded["res.value.string"] then  unrequire("res.value.string") end
 	
 
 	if langid == "2"  and countryid == "1" then
@@ -1335,8 +1299,6 @@ end
 function scene:resumeGame(value)
 
 	if value == "back" then
-
-		print( "^^^^^^^^^^^^^^^^^^^^^^" )
 
 	Runtime:addEventListener( "key", onKeyEvent )
 

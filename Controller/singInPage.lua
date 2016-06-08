@@ -454,11 +454,6 @@ openPage="signInPage"
 
 			elseif ( event.phase == "editing" ) then
 
-				print("newCharacters : ",event.newCharacters )
-		        print( "oldText : ",event.oldText )
-		        print( "startPosition",event.startPosition )
-		        print( "text : ",event.text )
-		        print( "_______________________________________\n" )
 				if current_textField.id == "Unit Number / Director name" then
 
 						if event.text:len() > 50 then
