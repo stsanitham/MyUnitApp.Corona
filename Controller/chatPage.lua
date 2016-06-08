@@ -1690,21 +1690,21 @@ local function ChatSendAction( event )
 
 				if MessageType == "GROUP" then
 
-					ConversionFirstName="";ConversionLastName="";GroupName=MemberName;DocumentUpload=""
+					ConversionFirstName="";ConversionLastName="";GroupName=title.text;DocumentUpload=""
 
 				elseif MessageType == "INDIVIDUAL" then
 
-					ConversionFirstName="";ConversionLastName=MemberName;GroupName="";DocumentUpload=""
+					ConversionFirstName="";ConversionLastName=title.text;GroupName="";DocumentUpload=""
 
 				elseif MessageType == "BROADCAST" then
 
 					if IsOwner == true then
 
-						ConversionFirstName="";ConversionLastName="";GroupName=MemberName;DocumentUpload=""
+						ConversionFirstName="";ConversionLastName=title.text;GroupName=title.text;DocumentUpload=""
 
 					else
                     
-                        ConversionFirstName="";ConversionLastName=MemberName;GroupName="";DocumentUpload=""
+                        ConversionFirstName="";ConversionLastName=title.text;GroupName="";DocumentUpload=""
 
                     end
 

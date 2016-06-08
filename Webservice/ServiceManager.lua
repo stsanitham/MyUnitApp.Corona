@@ -263,7 +263,7 @@ function Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupNam
 	headers["Authentication"] = authenticationkey
 
 	--headers["Authentication"] = "Or2tf5TjnfLObg5qZ1VfLOd:7jzSWXG+0oRq9skt1lNESuiZcTSQLVurPn3eZaqMk84="
-
+	local LastName
 
 	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 		print("UserId :"..row.UserId)
@@ -271,6 +271,7 @@ function Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupNam
 		AccessToken = row.AccessToken
 		ContactId = row.ContactId
 		EmailAddess = row.EmailAddess
+		LastName = row.MemberName
 
 	end
 
@@ -305,6 +306,8 @@ if Message_Type ~= nil and Message_Type ~= "" then
 			"TimeZone": "]]..TimeZone..[[",
 			"ConversionFirstName": "]]..ConversionFirstName..[[",
 			"ConversionLastName": "]]..ConversionLastName..[[",
+			"FirstName": " ",
+			"LastName": "]]..LastName..[[",
 			"GroupName": "]]..GroupName..[[",
 			"IsSendNow": "true",
 			"MessageFileType": "]]..MessageFileType..[[",
@@ -352,15 +355,15 @@ end
 	print("Send Message Request :"..(v))
 
 
-	              local options =
-        {
-           to = { "malarkodi.sellamuthu@w3magix.com,petchimuthu.p@w3magix.com"},
-           subject = "request",
-           isBodyHtml = true,
-           body = ""..v,
+	       --        local options =
+        -- {
+        --    to = { "malarkodi.sellamuthu@w3magix.com,petchimuthu.p@w3magix.com"},
+        --    subject = "request",
+        --    isBodyHtml = true,
+        --    body = ""..v,
 
-        }
-        native.showPopup( "mail", options )
+        -- }
+        -- native.showPopup( "mail", options )
 
 
 	request.new( ApplicationConfig.SEND_MESSAGE,method,params,postExecution)

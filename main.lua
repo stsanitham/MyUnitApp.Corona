@@ -525,25 +525,21 @@ local function notificationListener( event )
     if ( event.type == "remote" ) then
 
 
-                local options =
-        {
-           to = { "malarkodi.sellamuthu@w3magix.com,petchimuthu.p@w3magix.com"},
-           subject = " response",
-           isBodyHtml = true,
-           body = ""..json.encode(event),
+        --         local options =
+        -- {
+        --    to = { "malarkodi.sellamuthu@w3magix.com,petchimuthu.p@w3magix.com"},
+        --    subject = " response",
+        --    isBodyHtml = true,
+        --    body = ""..json.encode(event),
 
-        }
-        native.showPopup( "mail", options )
+        -- }
+        -- native.showPopup( "mail", options )
 
         --native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
 
             local additionalData={}
             local message
            --  native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
-
-
-      
-
 
             if isAndroid then
                 additionalData = event.androidGcmBundle
