@@ -602,7 +602,7 @@ end
 			--messagedetail_scrollView:insert(short_msg_delete)
 
 
-			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/editicon.png",23,23)
+			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/edit-48.png",23,23)
 			short_msg_edit.x= short_msg_delete.x - 35
 			short_msg_edit.anchorX=0
 			short_msg_edit.anchorY=0

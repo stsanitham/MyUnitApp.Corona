@@ -86,6 +86,25 @@ local function bgTouch( event )
 
 end
 
+local function addMemberAction( event )
+
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+
+		print('addMemberAction  touch')
+
+
+		
+	end
+
+	return true
+
+end
+
+
+
 local function emailTouch( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -771,7 +790,7 @@ function scene:show( event )
 				GroupType_Value = event.params.GroupTypeValue
 
 
-				--print("TypeValue : "..GroupType_Value)
+				print("TypeValue : "..Message_Type)
 
 				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
@@ -863,6 +882,14 @@ function scene:show( event )
 				Career_Username.name = "userName"
 				Career_Username.fontSize=24
 				Career_Username:addEventListener("touch",closeDetails)
+
+
+				if Message_Type == "GROUP" or Message_Type == "BROADCAST" then
+					local addRecipient = display.newImageRect( sceneGroup, "res/assert/contacts-access.png", 20, 20 )
+					addRecipient.anchorY=0
+					addRecipient.x=W-30;addRecipient.y = titleBar_icon_bg.y+5
+					addRecipient:addEventListener( "touch", addMemberAction )
+				end
 
 				RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight
 

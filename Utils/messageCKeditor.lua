@@ -45,7 +45,7 @@ meggageeditor.htmlContent = [[
     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
     { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ]},
     { name: 'links', items: [ 'Link', 'Unlink' ] },
-    { name: 'insert', items: [ 'Image' ] },
+    { name: 'insert', items: [ 'Image','MediaEmbed'] },
  
     { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
     { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
@@ -60,6 +60,7 @@ meggageeditor.htmlContent = [[
 			var ckvalue = encodeURIComponent(CKEDITOR.instances.UnitGoals.getData());
 
 			var htmldata = CKEDITOR.instances.UnitGoals.document.getBody().getText()
+
 
 			//alert(htmldata.length)
 			if(htmldata.length > 1 )
