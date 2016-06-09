@@ -309,31 +309,6 @@ local function selectionComplete ( event )
 end
 
 
-
-
-
-
-	function get_audiomodel(response)
-
-		
-
-	
-	end
-
-
-
-
-
-
-
-	function get_messagemodel(response)
-
-		
-
-	end
-
-
-
 local function sendAction( method,IsScheduled,Date,Time )
 
 --IsScheduled,Date.text,Time.text
@@ -459,7 +434,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 
 
 
-				Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_audiomodel)
+				Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
 
 				spinner_show()
 

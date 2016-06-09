@@ -1089,7 +1089,7 @@ local function resumeCallList(listview_values)
 
 	  if listview_values== "SCHEDULE" then
 
-				Utils.SnackBar(MessagePage.ScheduledSuccess)
+				
 
 				tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
 				tab_Sent_txt:setFillColor(0)
@@ -1113,7 +1113,7 @@ local function resumeCallList(listview_values)
 
 	  elseif  listview_values == "SEND" then
 
-		 		Utils.SnackBar(MessagePage.SentSuccess)
+		 		
 
 				tab_Schedule_txt:setFillColor( 0 )
 				tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
@@ -1138,7 +1138,7 @@ local function resumeCallList(listview_values)
 
       elseif  listview_values == "DRAFT" then
 
-   				Utils.SnackBar(MessagePage.DraftSuccess)
+   			
 
 				tab_Schedule_txt:setFillColor( 0 )
 				tab_Sent_txt:setFillColor(0)
@@ -1475,7 +1475,21 @@ local function TabbarTouch( event )
 
 end
 
+	function get_messagemodel(response)
 
+			if response.MessageStatus == "SEND" then
+				Utils.SnackBar(MessagePage.SentSuccess)
+			elseif response.MessageStatus == "DRAFT" then
+				Utils.SnackBar(MessagePage.DraftSuccess)
+			elseif response.MessageStatus == "SCHEDULE" then
+				
+				Utils.SnackBar(MessagePage.ScheduledSuccess)
+
+			end
+			print( "********************** retrun from send action ***************" )
+			resumeCallList(totalvalues)
+
+	end
 
 
 ------------------------------------------------------
@@ -1703,7 +1717,7 @@ elseif phase == "did" then
 
 			elseif pagingvalue == "compose" then
 
-					resumeCallList(totalvalues)
+					
 
 		    end
 

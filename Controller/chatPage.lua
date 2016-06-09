@@ -644,8 +644,6 @@ end
 
 			                io.close( file )
 
-							
-
 							local options = {
 							      		effect = "fromTop",
 										time = 200,	
@@ -938,6 +936,8 @@ end
 
 
 	local function sendMeaasage()
+
+
 
 		for i=#MeassageList, 1, -1 do 
 				display.remove(MeassageList[#MeassageList])
@@ -1712,10 +1712,16 @@ local function ChatSendAction( event )
 				
 
 						Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
-			            
+			        	    
 			       
+						ChatBox.text = ""
 
+						native.setKeyboardFocus( ChatBox )
 			sendMeaasage()
+
+
+			
+
 
 		 		    	
 	         end

@@ -93,6 +93,10 @@ function scene:show( event )
 
 			function get_userSocialSetting(response)
 
+				
+				
+				isSendNow = response.IsSendNow
+
 				if response.MyUnitBuzzContacts.IsOwner ~= nil then
 
 						IsOwner = response.MyUnitBuzzContacts.IsOwner

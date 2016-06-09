@@ -279,6 +279,12 @@ function Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupNam
 
 local v
 
+if DocumentUpload == "" then
+	DocumentUpload=  "' '"
+else
+	DocumentUpload = "["..json.encode(DocumentUpload).."]"
+end
+
 if Message_Type ~= nil and Message_Type ~= "" then
 
 			v = [[
@@ -309,9 +315,9 @@ if Message_Type ~= nil and Message_Type ~= "" then
 			"FirstName": " ",
 			"LastName": "]]..LastName..[[",
 			"GroupName": "]]..GroupName..[[",
-			"IsSendNow": "true",
+			"IsSendNow": "]]..tostring(isSendNow)..[[",
 			"MessageFileType": "]]..MessageFileType..[[",
-			"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
+			"DocumentUpload": ]]..(DocumentUpload)..[[
 
 			}
 			]]
@@ -340,7 +346,7 @@ else
 		"ConversionFirstName": "]]..ConversionFirstName..[[",
 		"ConversionLastName": "]]..ConversionLastName..[[",
 		"GroupName": "]]..GroupName..[[",
-		"IsSendNow": "true",
+		"IsSendNow": "]]..tostring(isSendNow)..[[",
 		"MessageFileType": "]]..MessageFileType..[[",
 		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 		}

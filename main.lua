@@ -13,7 +13,7 @@ local json = require( "json" )
 MyUnitBuzzString = require( "res.value.string" )
 local Applicationconfig = require("Utils.ApplicationConfig")
 local notifications = require( "plugin.notifications" )
-
+local isSendNow
 widget.setTheme( "widget_theme_ios" )
 
 --local OneSignal = require("plugin.OneSignal")
