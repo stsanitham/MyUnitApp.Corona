@@ -29,7 +29,11 @@ local List , scrollView
 
 local RecentTab_Topvalue = 70
 
-local countryArray = RegistrationScreen.countryArray
+local countryArray = {}
+
+local countryArrayDetail = {}
+
+--local countryArray = RegistrationScreen.countryArray
 
 local languageArray = RegistrationScreen.languageArray
 
@@ -161,9 +165,15 @@ local function onRowRender( event )
 
     ------------------ to set the list of array items in the list ------------------------
 
-        if List.arrayName == countryArray then
+        if countryArray then
 
-             rowTitle = display.newText( row, List.arrayName[row.index], 0, 0, nil, 14 )
+            print("&&&&&&&&&&& " ..json.encode(countryArray))
+
+             rowTitle = display.newText( row, countryArray[row.index].name, 0, 0, nil, 14 )
+
+             row.name = countryArray[row.index].name
+             row.value = countryArray[row.index]
+
         else
 
              rowTitle = display.newText( row, List.arrayName[row.index], 0, 0, nil, 14 )
@@ -185,7 +195,21 @@ local function onRowRender( event )
 
     -------------to make the tick mark for the item that has been selected ----------
 
-        if List.arrayName == countryArray or List.arrayName == languageArray or List.arrayName == languageArray1 or List.arrayName == positionArray then
+
+      if List.arrayName == countryArray then
+
+              if List.label == countryArray[row.index].name then
+
+                    tick.isVisible = true
+
+              else
+                    tick.isVisible = false
+              end
+
+        end
+
+
+        if List.arrayName == languageArray or List.arrayName == languageArray1 or List.arrayName == positionArray then
 
                 print(List.label.."  "..List.arrayName[row.index])
 
@@ -259,10 +283,10 @@ local function onRowTouch(event)
             List.isVisible = false
 
 
-            if List.arrayName == countryArray then
+            if countryArray then
 
                  row.id = row.index
-                 row.name = List.arrayName[row.index]
+                 row.name = countryArray[row.index].name
 
                  print("Country : "..row.id.." "..row.name)
 
@@ -289,6 +313,7 @@ local function onRowTouch(event)
 
                  row.id = row.index
                  row.name = List.arrayName[row.index]
+
 
                  print("Position : "..row.id.." "..row.name)
 
@@ -319,7 +344,7 @@ end
 
 
 
-local function CreateList(event,list,bg)
+local function CreateList(event,list,List_bg)
 
                     if event == "country" then
 
@@ -331,6 +356,7 @@ local function CreateList(event,list,bg)
                         list.x = List_bg.x
                         list.y = List_bg.y
                         list.width = List_bg.width-1.5
+
 
                     elseif event == "language" then
 
@@ -344,7 +370,8 @@ local function CreateList(event,list,bg)
 
                             end
 
-                        List_bg.height = 73
+
+                        List_bg.height = 49.5
                         list.height = List_bg.height
                         List_bg.y = Country_bg.y+Country_bg.height+28
                         List.y = List_bg.y
@@ -356,7 +383,7 @@ local function CreateList(event,list,bg)
 
                     elseif event == "position" then
 
-                        List_bg.height = 100.5
+                        List_bg.height = 78
                         list.height = List_bg.height
                         List_bg.y = Language_bg.y+Language_bg.height+28
                         List.y = List_bg.y
@@ -370,17 +397,43 @@ local function CreateList(event,list,bg)
                     list:deleteAllRows()
 
 
-                for i = 1, #List.arrayName do
+                    if event == "country" then
 
-                    list:insertRow(
-                        {
-                            isCategory = false,
-                            rowHeight = 36,
-                            rowColor = { default={0.9}, over={0.8} },
-                        }
-                    )
+                        print("coming to country list")
 
-                end
+
+                            for i = 1, #countryArray do
+
+                                list:insertRow(
+                                    {
+                                        isCategory = false,
+                                        rowHeight = 36,
+                                        rowColor = { default={0.9}, over={0.8} },
+                                    }
+                                )
+
+                            end
+
+                    else
+
+
+                            for i = 1, #List.arrayName do
+
+                                list:insertRow(
+                                    {
+                                        isCategory = false,
+                                        rowHeight = 36,
+                                        rowColor = { default={0.9}, over={0.8} },
+                                    }
+                                )
+
+                            end
+
+
+
+
+                    end
+
 
 end
 
@@ -664,6 +717,19 @@ local function backAction( event )
 
             display.getCurrentStage():setFocus( nil )
 
+                if event.target.id == "cancel" then
+
+                      local options = {
+                                    effect = "slideRight",
+                                    time = 300,   
+                                    }
+
+                                    composer.gotoScene( "Controller.singInPage", options )
+
+                       return true
+
+                end
+
             webView.isVisible = true
 
             CreateAccountBtn.isVisible = true
@@ -711,6 +777,7 @@ local function backAction( event )
             registerBtn.isVisible = false
             registerBtn_lbl.isVisible = false
             registerBtn.isVisible = false
+            cancelBtn_lbl.isVisible = false
 
             scrollView.isVisible = false
 
@@ -744,12 +811,56 @@ local function TouchSelection( event )
                                             List.isVisible = true
                                             List_bg.isVisible = true
 
-                                            List.arrayName = countryArray
-                                            List.label = CountryLbl.text
+                                               -- List.arrayName = countryArray
+                                               -- List.label = CountryLbl.text
 
-                                            print("%%%%%%% "..List.label)
 
-                                            CreateList("country",List,List_bg)
+                                             local function getCountryList(response)
+
+                                                        if response ~= nil then
+
+                                                            countryArray = response
+
+                                                            for i=1,#countryArray do
+
+                                                                if countryArray[i].CountryName ~= nil then
+
+                                                                    countryArray[i].name = countryArray[i].CountryName
+
+                                                                    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
+
+                                                                end
+
+                                                                if countryArray[i].CountryCode ~= nil then
+                                                                    
+                                                                    countryArray[i].countrycode = countryArray[i].CountryCode
+
+                                                                    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
+
+                                                                end
+
+                                                                 -- List.arrayName = countryArray[i].name
+
+                                                                 -- List.countrycode =  countryArray[i].countrycode
+
+                                                                 -- print("List.arrayName : "..countryArray[1].name.." "..countryArray[2].name)
+                                                                 -- print(List.countrycode)
+
+                                                                 CreateList("country",List,List_bg)
+
+                                                            end
+
+                                                        end
+
+
+                                             end
+
+                                             Webservice.GetAllCountry(getCountryList)
+
+
+                                           -- print("%%%%%%% "..List.label)
+
+                                           -- CreateList("country",List,List_bg)
                                         
                                     else
                                             List_bg.isVisible = false
@@ -793,6 +904,8 @@ local function TouchSelection( event )
                                             List.isVisible = true
                                             List_bg.isVisible = true
 
+                                            cancelBtn_lbl.isVisible = false
+
                                             List.arrayName = positionArray
                                             List.label = PositionLbl.text
 
@@ -802,6 +915,8 @@ local function TouchSelection( event )
                                             List_bg.isVisible = false
                                             List:deleteAllRows()
                                             List.isVisible = false
+
+                                            cancelBtn_lbl.isVisible = true
 
                                     end
 
@@ -895,7 +1010,7 @@ function scene:create( event )
     BgText.anchorX=0
 
 
-    local t = "<p><span style=\"color: #bb0444;\"><span style=\"font-size: 24px;\"><strong>MyUnitBuzz</strong></p>\n\n<p>MyUnitBuzz is a complimentary communication app that offers Mary Kay Directors and NSDs a new and innovative way to connect with their Unit and an easier way for them to share exciting news and event details.&nbsp;</p>\n\n<p>With MyUnitBuzz, you can instantly share exciting news, pictures, and even send event invitations and training materials.&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>MyUnitBuzz Features:&nbsp;</strong></p>\n\n<ul>\n\t<li>\n\t<p>Customizable Messages</p>\n\t</li>\n\t<li>\n\t<p>Event Calendar</p>\n\t</li>\n\t<li>\n\t<p>Social Media</p>\n\t</li>\n\t<li>\n\t<p>Unit Career Path</p>\n\t</li>\n\t<li>\n\t<p>Unit Goals</p>\n\t</li>\n\t<li>\n\t<p>Image Library</p>\n\t</li>\n\t<li>\n\t<p>Document Library&nbsp;</p>\n\t</li>\n\t<li>\n\t<p>Chat&nbsp;</p>\n\t</li>\n\t<li>\n\t<p>Invite/Access&nbsp;</p>\n\t</li>\n</ul>\n\n<p>&nbsp;</p>\n\n<p><strong><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\">Who can use MyUnitBuzz?&nbsp;</strong></p>\n\n<p>MyUnitBuzz is exclusively designed for Mary Kay Directors and NSDs, who are existing UnitWise members, to use to communicate with their Unit. Independent Beauty Consultants are able to join after being granted access to their Director&rsquo;s or NSD&rsquo;s MyUnitBuzz group.&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p><strong><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\">How do I Invite my Unit to MyUnitBuzz?</strong></p>\n\n<p>It&rsquo;s easier than you might think to invite your Unit to MyUnitBuzz!&nbsp;</p>\n\n<p>To let your Unit join you in the MyUnitBuzz app, provide them your Unit number, their user email address, and the temporary password that you&rsquo;ve created.&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p><strong><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\">What can MyUnitBuzz do for my Unit members?&nbsp;</strong></p>\n\n<p>Invite your Unit to your MyUnitBuzz app and start sharing team goals and important information with ease! With features like the event calendar, your Unit members can view details and see their assigned tasks during an event.&nbsp;</p>\n\n<p>You&nbsp;can also keep your Unit members on track by sharing important goals and accomplishments through the app. Plus, you can share training documents to keep them up to date, too!&nbsp;</p>\n\n<p>And you can do all this and more right from the palm of your hand!</p>\n"
+    local t = "<p><span style=\"color: #bb0444;\"><span style=\"font-size: 24px;\"><strong>MyUnitBuzz</strong></p>\n\n<p>MyUnitBuzz is a complimentary communication app that offers Mary Kay Directors and NSDs a new and innovative way to connect with their Unit and an easier way for them to share exciting news and event details.&nbsp;</p>\n\n<p>With MyUnitBuzz, you can instantly share exciting news, pictures, and even send event invitations and training materials.&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>MyUnitBuzz Features:&nbsp;</strong></p>\n\n<ul>\n\t<li>\n\t<p>Customizable Messages</p>\n\t</li>\n\t<li>\n\t<p>Event Calendar</p>\n\t</li>\n\t<li>\n\t<p>Social Media</p>\n\t</li>\n\t<li>\n\t<p>Unit Career Path</p>\n\t</li>\n\t<li>\n\t<p>Unit Goals</p>\n\t</li>\n\t<li>\n\t<p>Image Library</p>\n\t</li>\n\t<li>\n\t<p>Document Library&nbsp;</p>\n\t</li>\n\t<li>\n\t<p>Chat&nbsp;</p>\n\t</li>\n\t<li>\n\t<p>Invite/Access&nbsp;</p><li>\n\t<p>Special Recognition</p>\n\t</li>\n\t</li>\n</ul>\n\n<p>&nbsp;</p>\n\n<p><strong><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\">Who can use MyUnitBuzz?&nbsp;</strong></p>\n\n<p>MyUnitBuzz is exclusively designed for Mary Kay Directors and NSDs, who are existing UnitWise members, to use to communicate with their Unit. Independent Beauty Consultants are able to join after being granted access to their Director&rsquo;s or NSD&rsquo;s MyUnitBuzz group.&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p><strong><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\">How do I Invite my Unit to MyUnitBuzz?</strong></p>\n\n<p>It&rsquo;s easier than you might think to invite your Unit to MyUnitBuzz!&nbsp;</p>\n\n<p>To let your Unit join you in the MyUnitBuzz app, provide them your Unit number, their user email address, and the temporary password that you&rsquo;ve created.&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p><strong><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\">What can MyUnitBuzz do for my Unit members?&nbsp;</strong></p>\n\n<p>Invite your Unit to your MyUnitBuzz app and start sharing team goals and important information with ease! With features like the event calendar, your Unit members can view details and see their assigned tasks during an event.&nbsp;</p>\n\n<p>You&nbsp;can also keep your Unit members on track by sharing important goals and accomplishments through the app. Plus, you can share training documents to keep them up to date, too!&nbsp;</p>\n\n<p>And you can do all this and more right from the palm of your hand!</p>\n"
 
     --local t = "<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>MyUnitBuzz</strong></p>\n\n<p>MyUnitBuzz is a complimentary communication app that offers Mary Kay Directors and NSDs a new and innovative way to connect with their Unit and an easier way for them to share exciting news and event details.&nbsp;</p>\n\n<p>With MyUnitBuzz, you can instantly share exciting news, pictures, and even send event invitations and training materials.&nbsp;</p>\n\n<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>MyUnitBuzz Features:&nbsp;</strong></p>\n\n<ul>\n\t<li>\n\t<p>Customizable Messages</p>\n\t</li>\n\t<li>\n\t<p>Event Calendar</p>\n\t</li>\n\t<li>\n\t<p>Social Media</p>\n\t</li>\n\t<li>\n\t<p>Unit Career Path</p>\n\t</li>\n\t<li>\n\t<p>Unit Goals</p>\n\t</li>\n\t<li>\n\t<p>Image Library</p>\n\t</li>\n\t<li>\n\t<p>Document Library&nbsp;</p>\n\t</li>\n</ul>\n\n<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>Who can use MyUnitBuzz?&nbsp;</strong></p>\n\n<p>MyUnitBuzz is exclusively designed for Mary Kay Directors and NSDs, who are existing UnitWise members, to use to communicate with their Unit. Independent Beauty Consultants are able to join after being granted access to their Director&rsquo;s or NSD&rsquo;s MyUnitBuzz group.&nbsp;</p>\n\n<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>How do I Invite my Unit to MyUnitBuzz?</strong></p>\n\n<p>It&rsquo;s easier than you might think to invite your Unit to MyUnitBuzz!&nbsp;</p>\n\n<p>To let your Unit join you in the MyUnitBuzz app, provide them your Unit number, their user email address, and the temporary password that you&rsquo;ve created.&nbsp;</p>\n\n<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>What can MyUnitBuzz do for my Unit members?&nbsp;</strong></p>\n\n<p>Invite your Unit to your MyUnitBuzz app and start sharing team goals and important information with ease! With features like the event calendar, your Unit members can view details and see their assigned tasks during an event.&nbsp;</p>\n\n<p>You can also keep your Unit members on track by sharing important goals and accomplishments through the app. Plus, you can share training documents to keep them up to date, too!&nbsp;</p>\n\n<p>And you can do all this and more right from the palm of your hand!</p>\n"
 
@@ -1347,15 +1462,17 @@ function scene:show( event )
                                         -- cancelBtn.id="Register"
 
 
-                                        cancelBtn_lbl = display.newText( sceneGroup,"Cancel",0,0,native.systemFont,13 )
+                                        cancelBtn_lbl = display.newText( sceneGroup,CommonWords.cancel,0,0,native.systemFont,13 )
                                         cancelBtn_lbl.y=registerBtn.y+40
                                         cancelBtn_lbl.x = W - 60
+                                        cancelBtn_lbl.id = "cancel"
                                         cancelBtn_lbl:setFillColor( 0,0,0.5 )
                                         cancelBtn_lbl.anchorX=0
 
 
                                         backBtn_bg:addEventListener("touch",backAction)
                                         page_title:addEventListener("touch",backAction)
+                                        cancelBtn_lbl:addEventListener("touch",backAction)
                                         registerBtn:addEventListener( "touch", registerBtnRelease )
 
 
@@ -1385,6 +1502,7 @@ function scene:show( event )
                                                 hideBackground = true,
                                                 isBounceEnabled = false,
                                                 noLines = true,
+                                                bottomPadding = 23
                                                -- listener = scrollListener
                                             }
                                         )
