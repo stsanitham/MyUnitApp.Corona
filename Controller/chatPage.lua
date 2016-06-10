@@ -2557,6 +2557,28 @@ end
 	end
 
 
+	function scene:resumeEditGame(contactId)
+
+		print("resume game")
+
+				      local options = {
+				      		effect = "fromTop",
+							time = 200,	
+								params = {
+								contactId = contactId,
+								MessageType = MessageType,
+								GroupTypeValue = GroupTypeValue,
+							}
+
+							}
+
+
+			ChatBox.isVisible=false
+		    composer.showOverlay( "Controller.Chathead_detailPage", options )
+
+	end
+
+
 
 ------------------------------------------------------
 

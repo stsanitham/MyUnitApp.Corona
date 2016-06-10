@@ -48,6 +48,10 @@ local header_value = ""
 
 local Image
 
+local editContacts = {}
+
+local editId
+
 local selected_Contact={}
 
 local byNameArray = {}
@@ -122,6 +126,19 @@ local function consultantTounch( event )
 
 end
 
+local function bgTouch( event )
+
+	if event.phase == "began" then
+		--display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		--display.getCurrentStage():setFocus( nil )
+
+		print('bg touch')
+	end
+
+	return true
+
+end
 
 
 
@@ -167,8 +184,6 @@ end
 
 
 local function onTimer ( event )
-
-	print( "event time completion" )
 
 	BackFlag = false
 
@@ -263,8 +278,6 @@ local function TabbarTouch( event )
 			if event.target.id == "message" then
 
 				title.text = ChatPage.Chats
-
-				print( "Messages" )
 
 			    	CreateTabBarIcons()
 
@@ -428,13 +441,9 @@ end
 
 		local switch = event.target
 
-		print( "Switch with ID '"..switch.id.."' is on: "..tostring(switch.isOn) )
-
 		    if tostring(switch.isOn) == "true" then
 
 				local contactid = switch.value
-
-				print("contact_id value : ", contactid) 
 
 				checkedstate = checkedstate + 1
 
@@ -446,7 +455,7 @@ end
 		    end
 
 
-				    if addGroupid_value == "addGroup" and pageid_value == "broadcast" then
+				  --  if addGroupid_value == "addGroup" and pageid_value == "broadcast"  then
 
 					    if checkedstate > 0 then
 
@@ -469,7 +478,7 @@ end
 
 					    end
 
-					end
+					--end
 
 	end
 
@@ -493,30 +502,41 @@ end
 		   if event.action == "clicked" then
 		        local i = event.index
 		        if i == 1 then  
-		        	
+		      --[[
 
-					if grouptypevalue == "GROUP" then
+addGroupid_value
+editMember
+editId]]  		if addGroupid_value ~= "editMember" then
 
- 				        local options = {
-							effect = "slideRight",
-							time = 300,	
-							params = { pagevalue = grouptypevalue}
-							}
+						if grouptypevalue == "GROUP" then
 
-		        		composer.gotoScene("Controller.groupPage",options)
+	 				        local options = {
+								effect = "slideRight",
+								time = 300,	
+								params = { pagevalue = grouptypevalue}
+								}
 
-		            elseif grouptypevalue == "BROADCAST" then
+			        		composer.gotoScene("Controller.groupPage",options)
+
+			            elseif grouptypevalue == "BROADCAST" then
 
 
- 				        local options = {
-							effect = "slideRight",
-							time = 300,	
-							params = { pagevalue = grouptypevalue}
-							}
+	 				        local options = {
+								effect = "slideRight",
+								time = 300,	
+								params = { pagevalue = grouptypevalue}
+								}
 
-		            	composer.gotoScene("Controller.broadCastPage",options)
+			            	composer.gotoScene("Controller.broadCastPage",options)
 
-		        	end
+			        	end
+
+			        else
+
+			        	composer.hideOverlay()
+
+
+			        end
 
 		        end
 
@@ -530,31 +550,10 @@ end
 		        local i = event.index
 		        if i == 1 then  
 
-		        	print("success")
-
 		        end
 
 		    end
     end
-
-
-
-
-
-
-	 function getChatGroupCreation(response )
-
-		groupcreation_response = response
-
-		print("Response after group creation $$$$$$$$$$$$$$$$$$$$$$$$$$$$$ : ", json.encode(groupcreation_response))
-
-		GroupSubject.text = ""
-
-		groupSubjectname = ""
-
-		groupid_value = groupcreation_response.MyUnitBuzzGroupId
-
-		grouptypevalue = groupcreation_response.MyUnitBuzzGroupType
 
 
 		    function getAddedMembersInGroup(response)
@@ -574,6 +573,24 @@ end
 		    	end
 
 		    end
+
+
+
+	 function getChatGroupCreation(response )
+
+		groupcreation_response = response
+
+
+		GroupSubject.text = ""
+
+		groupSubjectname = ""
+
+		groupid_value = groupcreation_response.MyUnitBuzzGroupId
+
+		grouptypevalue = groupcreation_response.MyUnitBuzzGroupType
+
+
+
 
 
 			if grouptypevalue == "BROADCAST" then
@@ -657,6 +674,8 @@ end
 
 		elseif event.phase == "ended" then
 
+					print( "**************** here *****************" )
+
 		      local validation = true
 
               native.setKeyboardFocus(nil)
@@ -717,8 +736,6 @@ end
 
 						      			if tempGroup[j].id == "email_Checkbox" then
 
-							      			print( "check box")
-
 							      			if tostring(tempGroup[j].isOn) == "true" then
 
 							      				selected_Contact[#selected_Contact+1] = tempGroup[j].value
@@ -736,15 +753,24 @@ end
 
 
 
-					      	 if pageid_value == "group" then
+					      	 if pageid_value:lower() == "group" then
 
 					      	 	 if #selected_Contact>0 then
 
-					      	 	     Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",getChatGroupCreation)
+					      	 	 	if addGroupid_value ~= "editMember" then
+
+					      	 	     	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",getChatGroupCreation)
+
+					      	 	    else
+
+					      	 	    	grouptypevalue = pageid_value:upper()
+
+				 						Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
+
+
+					      	 	    end
 				                 
 				                 else
-
-				                    print("group not created")
 
 				                      local alert = native.showAlert( ChatPage.addTeamMember, ChatPage.addLimit, { CommonWords.ok }, onComplete )
 
@@ -755,15 +781,26 @@ end
 
 
 
-			                  if pageid_value == "broadcast" then
+			                  if pageid_value:lower() == "broadcast" then
 
 				                  	if #selected_Contact>0 then
 
 					                  		if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
 
 						                  		 --GroupSubject.text = #selected_Contact.." recipients"
+						                  		 if addGroupid_value ~= "editMember" then
 
-								      	 	     Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",getChatGroupCreation)
+
+								      	 	   		Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",getChatGroupCreation)
+
+								      	 	   	 else
+
+								      	 	    	grouptypevalue = pageid_value:upper()
+
+							 						Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
+
+
+								      	 	    end
 
 							      	 	    else
 
@@ -775,8 +812,6 @@ end
 							      	 	    end
 				                 
 					                else
-
-					                       print("group not created")
 
 					                       local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addBroadcastLimit , { CommonWords.ok }, onComplete )
 
@@ -926,11 +961,14 @@ local function careePath_list( list )
 		line.y=background.y+background.contentHeight-line.contentHeight
 		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
-		if addGroupid_value =="addGroup" then
+		if addGroupid_value =="addGroup" or addGroupid_value == "editMember" then
 
 		contactidvalue =  list[i].Contact_Id
 
-		selectcontact_checkbox = widget.newSwitch(
+
+
+
+		local selectcontact_checkbox = widget.newSwitch(
 		{
 		left = 15,
 		top = Position_txt.y-5,
@@ -950,12 +988,21 @@ local function careePath_list( list )
 
 		tempGroup:insert(selectcontact_checkbox)
 
-		print("value of  checkbox : ",contactidvalue)
 
 		subjectBar.isVisible = true
 		GroupSubject.isVisible = true
 		create_groupicon.isVisible = true
 		backbutton.isVisible = true
+		if addGroupid_value == "editMember" then
+			for j=1,#editContacts do
+
+				if tonumber(contactidvalue) == tonumber(editContacts[j]) then
+					selectcontact_checkbox:setState( { isOn=true, isAnimated=true, onComplete=onSwitchPress } )
+
+				end
+
+			end
+		end
 
 
 		else
@@ -996,7 +1043,6 @@ function get_Activeteammember(response)
 				
 --NameArray
 
-print("size = "..#Listresponse_array)
 
 						for i=1,#Listresponse_array do
 
@@ -1011,8 +1057,6 @@ print("size = "..#Listresponse_array)
 								end
 
 							
-
-							print(list_Name)
 
 							local temp = {}
 
@@ -1136,6 +1180,8 @@ function scene:show( event )
 			addGroupid_value = event.params.addGroupid
 
 			pageid_value = event.params.page_id
+
+			editContacts = event.params.contacts
 		end
 
 
@@ -1242,6 +1288,23 @@ sceneGroup:insert( tabBarGroup )
 	    	    --GroupSubject.isVisible = false
 
 	    	    --Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
+
+	   	elseif addGroupid_value == "editMember" and (pageid_value:lower() == "group" or pageid_value:lower() == "broadcast") then
+
+	   			RecentTab_Topvalue = 115
+
+		    	title.text = "Edit Member"
+
+		    	GroupSubject.placeholder = ChatPage.broadcastSubject
+
+		    	count_details.isVisible = true
+
+		    	GroupSubject.text =  event.params.name
+
+		    	editId = event.params.contactId
+
+		    	count_details.text = #editContacts.." Selected"
+
 	    else
 
 	    	RecentTab_Topvalue = 75
@@ -1255,7 +1318,7 @@ sceneGroup:insert( tabBarGroup )
 			top = RecentTab_Topvalue-5,
 			left = 0,
 			width = W,
-			height =H-RecentTab_Topvalue-50+5,
+			height =H-RecentTab_Topvalue-45,
 			hideBackground = true,
             backgroundColor = {0,0,0,0.6},
 			isBounceEnabled=false,
@@ -1270,11 +1333,10 @@ sceneGroup:insert( tabBarGroup )
 
 	elseif phase == "did" then
 
-
+		Background:addEventListener( "touch", bgTouch )
 		menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)
 		backbutton:addEventListener("touch",backactionTouch)
-
 		GroupSubject:addEventListener("userInput",textField)
 	   
 
@@ -1307,11 +1369,17 @@ end
 		  
 			create_groupicon:removeEventListener("touch",createGroup)
 
+
+
 			composer.removeHidden()
 
 		elseif phase == "did" then
 
-		
+				if addGroupid_value == "editMember" then
+
+				 event.parent:resumeEditGame(editId)
+
+			end
 
 		end	
 

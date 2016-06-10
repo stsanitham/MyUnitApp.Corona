@@ -45,6 +45,8 @@ local RecentTab_Topvalue
 
 ContactIdValue = 0
 
+local contactCount = {}
+
 local ProfileImage,careerDetail_scrollview
 
 pagevalue = "careerPathPage"
@@ -93,7 +95,13 @@ local function addMemberAction( event )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
-		print('addMemberAction  touch')
+					    local options = {
+						effect = "crossFade",
+						time = 500,	
+						params = { addGroupid = "editMember" , page_id = Message_Type:lower(),contacts = contactCount,name = Career_Username.text,contactId = contactId}
+						}
+
+	        composer.showOverlay( "Controller.consultantListPage", options )
 
 
 		
@@ -450,179 +458,6 @@ end
 
 
 
-
-
-function onAccessButtonTouch( event )
-
-    if event.phase == "began" then
-
-    elseif event.phase == "ended" then
-
-        native.setKeyboardFocus(nil)
-
---------------------------------------remove method -----------------------------------------------------
-
-			       if id_value == "Remove Access" then
-
-
-			    	    AlertGroup.isVisible = true
-
-			            reqaccess_id = Details.ContactId
-						reqaccess_from = "Contacts"
-					    accessStatus = "REMOVE"
-
-						print("contactid details",reqaccess_id,reqaccess_from,accessStatus)
-
-			        	if event.target.id == "accept" then
-
-			        		AlertGroup.isVisible = false
-
-		        			Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
-
-			        	elseif event.target.id == "reject" then
-
-							 print("making it invisible")
-
-							  AlertGroup.isVisible = false
-
-			        	end
-
-			        end
-
-------------------------------------------block method-------------------------------------------------
-
-			       if id_value == "Block Access" then
-
-			    	    AlertGroup.isVisible = true
-
-			            reqaccess_id = Details.ContactId
-						reqaccess_from = "Contacts"
-					    accessStatus = "BLOCK"
-
-						print("contactid details",reqaccess_id,reqaccess_from,accessStatus)
-
-
-			        	if event.target.id == "accept" then
-
-			        		AlertGroup.isVisible = false
-
-		        			Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
-
-			        	elseif event.target.id == "reject" then
-
-							 print("making it invisible")
-
-							  AlertGroup.isVisible = false
-
-			        	end
-			        end
-          end
-
-    end
-
-
-
-	 local function OnPasswordGeneration(event)
-
-	 	 if event.phase == "began" then
-
-         elseif event.phase == "ended" then
-
-         local function getGeneratedPassword( response )
-
-         	print("GENERATED PASSWORD OUTPUT "..response)
-
-         end
-
-         Webservice.GeneratePassword(getGeneratedPassword)
-
-         end
-
-	 end
-
-
-
-
- local function onButtonTouch(event)
-
- 	 local phase = event.phase
-
- 	 id_value = event.target.id
-
-
-    if ( phase == "began" ) then 
-
-			display.getCurrentStage():setFocus( event.target )
-  
-    elseif ( phase == "ended") then 
-
-			display.getCurrentStage():setFocus( nil )
-
-    if id_value == "Grant Access" then
-
-    	 contactid_career = Details.ContactId
-
-          GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details,pagevalue)
-
-	elseif id_value == "Remove Access" then
-
-	  print("remove access pressed") 
-
-
-	  GetAlertPopup()
-
-	  accept_button:addEventListener("touch",onAccessButtonTouch)
-	  reject_button:addEventListener("touch",onAccessButtonTouch)
-
-
-	elseif id_value == "Provide Access" then
-
-	  print("provide access pressed") 
-
-	  contactid_career = Details.ContactId
-
-	  GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details,pagevalue)
-
-        
-	 
-	elseif id_value == "Deny Access" then
-
-
-	    contactid_career = Details.ContactId
-
-	    GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details,pagevalue)
-
-        
-	elseif id_value == "Block Access" then
-
-	  print("block access pressed") 
-
-	 -- local block_alert = native.showAlert("Block", CareerPath.BlockAccess, { CareerPath.ToBlock , CareerPath.NotToBlock } , onBlockClickComplete)
-
-       GetAlertPopup()
-
-		AlertText.text = CommonWords.Block 
-		AlertContentText.text = CareerPath.BlockAccess
-		print("block access occurred text value ",AlertContentText.text)
-
-		accept_button_text.text = CareerPath.ToBlock
-		reject_button_text.text = CareerPath.NotToBlock
-
-	  accept_button:addEventListener("touch",onAccessButtonTouch)
-	  reject_button:addEventListener("touch",onAccessButtonTouch)
-
-    end
-
-
-    end
-
-    return true
-
- end
-
-
-
-
 	local function onKeycareerDetail( event )
 
 	        local phase = event.phase
@@ -679,6 +514,8 @@ local function CreateGroupMemberList( list )
 		background.x=W/2;background.y=tempHeight
 		background.alpha=0.01
 		background.value = ContactList[i]
+
+		contactCount[#contactCount+1] = ContactList[i].Contact_Id
 
 		  local filePath = system.pathForFile( ContactList[i].Contact_Id..".png",system.TemporaryDirectory )
 		  local fhd = io.open( filePath )
@@ -806,41 +643,10 @@ function scene:show( event )
 
 			local function get_MessageGroupTeamMemberList( response )
 
-				-- print( "coming here" )
-				-- title_bg = display.newRect(sceneGroup,0,0,W,30)
-				-- title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-				-- title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-
-				-- title = display.newText(sceneGroup,FlapMenu.chatMessageTitle,0,0,native.systemFont,18)
-				-- title.anchorX = 0
-				-- title.x=5;title.y = title_bg.y
-				-- title:setFillColor(0)
-
-				-- title.text = "< "..response.MyUnitBuzzGroupName
-				-- title:addEventListener( "touch", closeDetails )
-
-				-- 	RecentTab_Topvalue = 75
-
-
-				-- 		consultantList_scrollview = widget.newScrollView
-				-- {
-				-- 	top = RecentTab_Topvalue-5,
-				-- 	left = 0,
-				-- 	width = W,
-				-- 	height =H-RecentTab_Topvalue-50+5,
-				-- 	hideBackground = true,
-		  --           backgroundColor = {0,0,0,0.6},
-				-- 	isBounceEnabled=false,
-				-- 	horizontalScrollingDisabled = true,
-				-- 	verticalScrollingDisabled = false
-				-- }
-
-		  --       sceneGroup:insert(consultantList_scrollview)
-
-				--CreateGroupMemberList(response)
-
 
 				Details = response
+
+				json.encode( Details )
 
 				if Details.ImagePath ~= nil then
 					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
@@ -1444,14 +1250,10 @@ function scene:show( event )
 
 			print( "MessageType : "..Message_Type )
 
-			if Message_Type == "GROUP"  then
+			if Message_Type == "GROUP" or Message_Type == "BROADCAST" then
 
-				Webservice.GetMessageGroupTeamMemberList(contactId,"GROUP",get_MessageGroupTeamMemberList)
+				Webservice.GetMessageGroupTeamMemberList(contactId,Message_Type,get_MessageGroupTeamMemberList)
 				
-			elseif  Message_Type == "BROADCAST" then
-
-				Webservice.GetMessageGroupTeamMemberList(contactId,"BROADCAST",get_MessageGroupTeamMemberList)
-
 			else
 
 				Webservice.GetContactInformation(contactId,get_avtiveTeammemberDetails)

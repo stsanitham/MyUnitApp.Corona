@@ -73,7 +73,7 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 	 	 if event.phase == "began" then
 	 	 	print( "here" )
          elseif event.phase == "ended" then
-
+         print( "addGroupBtn.id : " ..addGroupBtn.id )
          composer.removeHidden()
 
 		    local options = {
