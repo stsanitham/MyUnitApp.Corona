@@ -1115,26 +1115,24 @@ local function resumeCallList(listview_values)
 
 		 		
 
-				tab_Schedule_txt:setFillColor( 0 )
-				tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-				tab_Draft_txt:setFillColor(0)
-				tab_Group_bottombar.isVisible = true
-				tab_Group_bottombar.y = tabBg.y+29.5
-				tab_Group_bottombar.x = W/2
+				-- tab_Schedule_txt:setFillColor( 0 )
+				-- tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+				-- tab_Draft_txt:setFillColor(0)
+				-- tab_Group_bottombar.isVisible = true
+				-- tab_Group_bottombar.y = tabBg.y+29.5
+				-- tab_Group_bottombar.x = W/2
 
 
-				for j=1, #sentmessageList_array do 
-							display.remove(sentmessageList_array[#sentmessageList_array])
-							sentmessageList_array[#sentmessageList_array] = nil
-				end
+				-- for j=1, #sentmessageList_array do 
+				-- 			display.remove(sentmessageList_array[#sentmessageList_array])
+				-- 			sentmessageList_array[#sentmessageList_array] = nil
+				-- end
 
 
-           -- getSentMessageList()
+    --        -- getSentMessageList()
 			  
-				pageCount = pageCount+1
-
-					Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
-			    			    
+				  	pageCount = pageCount+1
+				   Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 
       elseif  listview_values == "DRAFT" then
 
@@ -1475,9 +1473,14 @@ local function TabbarTouch( event )
 
 end
 
+
 	function get_messagemodel(response)
 
-			if response.MessageStatus == "SEND" then
+
+
+	    local listener = {}
+			function listener:timer( event )
+			    			if response.MessageStatus == "SEND" then
 				Utils.SnackBar(MessagePage.SentSuccess)
 			elseif response.MessageStatus == "DRAFT" then
 				Utils.SnackBar(MessagePage.DraftSuccess)
@@ -1486,8 +1489,17 @@ end
 				Utils.SnackBar(MessagePage.ScheduledSuccess)
 
 			end
-			print( "********************** retrun from send action ***************" )
-			resumeCallList(totalvalues)
+			-- -- print( "********************** retrun from send action ***************" )
+
+
+						pageCount=0
+		            	listType = "SCHEDULE"
+		            	pageCount = pageCount+1 
+						Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
+				 
+			end
+
+			timer.performWithDelay( 1500, listener )
 
 	end
 

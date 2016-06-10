@@ -309,6 +309,7 @@ local function selectionComplete ( event )
 end
 
 
+
 local function sendAction( method,IsScheduled,Date,Time )
 
 --IsScheduled,Date.text,Time.text
@@ -332,7 +333,14 @@ local function sendAction( method,IsScheduled,Date,Time )
 				params = { pushlistvalues = method,page = "compose"}
 	    }
 
-		composer.gotoScene("Controller.pushNotificationListPage",options)
+	    local listener = {}
+			function listener:timer( event )
+			    composer.gotoScene("Controller.pushNotificationListPage",options)
+			end
+
+			timer.performWithDelay( 1000, listener )
+
+		
 
 
 
@@ -388,8 +396,12 @@ local function sendAction( method,IsScheduled,Date,Time )
 							params = { pushlistvalues = method,page = "compose"}
 				    }
 
-					composer.gotoScene("Controller.pushNotificationListPage",options)
+	    local listener = {}
+			function listener:timer( event )
+			    composer.gotoScene("Controller.pushNotificationListPage",options)
+			end
 
+			timer.performWithDelay( 1000, listener )
         	   --Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
            elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) then
@@ -447,8 +459,12 @@ local function sendAction( method,IsScheduled,Date,Time )
 				params = { pushlistvalues = method,page = "compose"}
 	    }
 
-		composer.gotoScene("Controller.pushNotificationListPage",options)
+	    local listener = {}
+			function listener:timer( event )
+			    composer.gotoScene("Controller.pushNotificationListPage",options)
+			end
 
+			timer.performWithDelay( 1000, listener )
             	-- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
             end
@@ -1521,6 +1537,9 @@ end
 
 
 
+
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -1595,7 +1614,7 @@ end
 		
 		if phase == "will" then
 
-			
+			composer.removeHidden()
 
 
 		elseif phase == "did" then

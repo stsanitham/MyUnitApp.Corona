@@ -82,7 +82,6 @@ for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 end
 
 
-
 --------------------------------------------------
 
 
