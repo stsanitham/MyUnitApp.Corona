@@ -788,6 +788,48 @@ local function backAction( event )
 end
 
 
+local function getCountryList(response)
+
+if response ~= nil then
+
+countryArray = response
+
+for i=1,#countryArray do
+
+if countryArray[i].CountryName ~= nil then
+
+    countryArray[i].name = countryArray[i].CountryName
+
+    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
+
+end
+
+if countryArray[i].CountryCode ~= nil then
+    
+    countryArray[i].countrycode = countryArray[i].CountryCode
+
+    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
+
+end
+
+ -- List.arrayName = countryArray[i].name
+
+ -- List.countrycode =  countryArray[i].countrycode
+
+ -- print("List.arrayName : "..countryArray[1].name.." "..countryArray[2].name)
+ -- print(List.countrycode)
+
+ 
+
+end
+
+end
+
+
+end
+
+
+
 
 
 local function TouchSelection( event )
@@ -815,52 +857,9 @@ local function TouchSelection( event )
                                                -- List.label = CountryLbl.text
 
 
-                                             local function getCountryList(response)
-
-                                                        if response ~= nil then
-
-                                                            countryArray = response
-
-                                                            for i=1,#countryArray do
-
-                                                                if countryArray[i].CountryName ~= nil then
-
-                                                                    countryArray[i].name = countryArray[i].CountryName
-
-                                                                    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
-
-                                                                end
-
-                                                                if countryArray[i].CountryCode ~= nil then
-                                                                    
-                                                                    countryArray[i].countrycode = countryArray[i].CountryCode
-
-                                                                    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
-
-                                                                end
-
-                                                                 -- List.arrayName = countryArray[i].name
-
-                                                                 -- List.countrycode =  countryArray[i].countrycode
-
-                                                                 -- print("List.arrayName : "..countryArray[1].name.." "..countryArray[2].name)
-                                                                 -- print(List.countrycode)
-
-                                                                 CreateList("country",List,List_bg)
-
-                                                            end
-
-                                                        end
-
-
-                                             end
-
-                                             Webservice.GetAllCountry(getCountryList)
-
-
                                            -- print("%%%%%%% "..List.label)
 
-                                           -- CreateList("country",List,List_bg)
+                                        CreateList("country",List,List_bg)
                                         
                                     else
                                             List_bg.isVisible = false
@@ -1084,6 +1083,8 @@ function scene:show( event )
     elseif phase == "did" then
 
         composer.removeHidden()
+
+        Webservice.GetAllCountry(getCountryList)
 
         Runtime:addEventListener( "key", onKeyEvent )
 
