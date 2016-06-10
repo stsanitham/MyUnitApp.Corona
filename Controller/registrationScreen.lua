@@ -35,9 +35,13 @@ local countryArrayDetail = {}
 
 --local countryArray = RegistrationScreen.countryArray
 
-local languageArray = RegistrationScreen.languageArray
+--local languageArray = RegistrationScreen.languageArray
 
-local languageArray1 = RegistrationScreen.languageArray1
+--local languageArray1 = RegistrationScreen.languageArray1
+
+local languageArray = {}
+
+local languageArrayDetail = {}
 
 local positionArray = RegistrationScreen.positionArray
 
@@ -154,6 +158,7 @@ local function onKeyEvent( event )
 
 
 
+
 local function onRowRender( event )
 
     local row = event.row
@@ -163,20 +168,45 @@ local function onRowRender( event )
 
     local rowTitle
 
+
     ------------------ to set the list of array items in the list ------------------------
 
         if countryArray then
-
-            print("&&&&&&&&&&& " ..json.encode(countryArray))
 
              rowTitle = display.newText( row, countryArray[row.index].name, 0, 0, nil, 14 )
 
              row.name = countryArray[row.index].name
              row.value = countryArray[row.index]
 
+
+                   if CountryLbl.text == RegistrationScreen.CountryUsaText then
+
+                                List.arrayName = languageArray
+
+                                print(" List.arrayName".. json.encode(List.arrayName))
+
+                    elseif CountryLbl.text == RegistrationScreen.CountryCanadaText then
+
+                                List.arrayName = languageArray
+
+                    end
+
+
+        elseif languageArray then  
+
+            print("675567567567675675675675657675676767567675675")
+
+            print("row render")
+
+             rowTitle = display.newText( row, languageArray[row.index].name, 0, 0, nil, 14 )
+
+             row.name = languageArray[row.index].name
+             row.value = languageArray[row.index]
+             row.languageId = languageArray[row.index].languageId
+
         else
 
-             rowTitle = display.newText( row, List.arrayName[row.index], 0, 0, nil, 14 )
+             rowTitle = display.newText( row, languageArray[row.index].name, 0, 0, nil, 14 )
 
         end
 
@@ -196,36 +226,190 @@ local function onRowRender( event )
     -------------to make the tick mark for the item that has been selected ----------
 
 
-      if List.arrayName == countryArray then
+          if List.label == countryArray[row.index].name  then
 
-              if List.label == countryArray[row.index].name then
+                tick.isVisible = true
 
-                    tick.isVisible = true
+          else
 
-              else
-                    tick.isVisible = false
-              end
+                tick.isVisible = false
 
-        end
+          end
 
 
-        if List.arrayName == languageArray or List.arrayName == languageArray1 or List.arrayName == positionArray then
 
-                print(List.label.."  "..List.arrayName[row.index])
+        -- if List.arrayName == languageArray or List.arrayName == languageArray1 or List.arrayName == positionArray then
 
-                  if List.label == List.arrayName[row.index] then
+        --         print(List.label.."  "..List.arrayName[row.index])
 
-                        tick.isVisible = true
+        --           if List.label == List.arrayName[row.index] then
 
-                  else
-                        tick.isVisible = false
-                  end
+        --                 tick.isVisible = true
 
-        end
+        --           else
+        --                 tick.isVisible = false
+        --           end
+
+        -- end
 
     -----------------------------------------------------------------------------------
 
 end
+
+
+
+
+
+
+local function CreateList(event,list,List_bg)
+
+                    if event == "country" then
+
+                        List_bg.height = 72.75
+                        list.height = List_bg.height
+                        List_bg.y = Marykay_bg.y+Marykay_bg.height+28
+                        List.y = List_bg.y
+
+                        list.x = List_bg.x
+                        list.y = List_bg.y
+                        list.width = List_bg.width-1.5
+
+
+                    elseif event == "language" then
+
+                            -- if CountryLbl.text == RegistrationScreen.CountryUsaText then
+
+                            --     List.arrayName = languageArray
+
+                            -- elseif CountryLbl.text == RegistrationScreen.CountryCanadaText then
+
+                            --     List.arrayName = languageArray1
+
+                            -- end
+
+
+                       -- List_bg.height = 49.5
+                        List_bg.height = 72.75
+                        list.height = List_bg.height
+                        List_bg.y = Country_bg.y+Country_bg.height+28
+                        List.y = List_bg.y
+
+                        list.x = List_bg.x
+                        list.y = List_bg.y
+                        list.width = List_bg.width-1.5
+
+
+                    elseif event == "position" then
+
+                        List_bg.height = 78
+                        list.height = List_bg.height
+                        List_bg.y = Language_bg.y+Language_bg.height+28
+                        List.y = List_bg.y
+
+                        list.x = List_bg.x
+                        list.y = List_bg.y
+                        list.width = List_bg.width-1.5
+
+                    end
+
+                    list:deleteAllRows()
+
+
+                    if event == "country" then
+
+                        print("coming to country list")
+
+
+                            for i = 1, #countryArray do
+
+                                list:insertRow(
+                                    {
+                                        isCategory = false,
+                                        rowHeight = 36,
+                                        rowColor = { default={0.9}, over={0.8} },
+                                    }
+                                )
+
+                            end
+
+                    elseif event == "language" then
+
+                        print("coming to language list")
+
+                            for i = 1, #languageArray do
+
+                                list:insertRow(
+                                    {
+                                        isCategory = false,
+                                        rowHeight = 36,
+                                        rowColor = { default={0.9}, over={0.8} },
+                                    }
+                                )
+
+                            end
+
+                    elseif event == "position" then
+
+                            for i = 1, #List.arrayName do
+
+                                list:insertRow(
+                                    {
+                                        isCategory = false,
+                                        rowHeight = 36,
+                                        rowColor = { default={0.9}, over={0.8} },
+                                    }
+                                )
+
+                            end
+
+
+
+
+                    end
+
+
+end
+
+
+
+
+
+
+local function getLanguageDetails( response )
+
+      if response ~= nil then
+
+        languageArray = response
+
+                for i=1,#languageArray do
+
+                if languageArray[i].LanguageName ~= nil then
+
+                    languageArray[i].name = languageArray[i].LanguageName
+
+                    languageArrayDetail[#languageArrayDetail+1] = languageArray[i]
+
+                end
+
+                if languageArray[i].LanguageId ~= nil then
+                    
+                    languageArray[i].languageId = languageArray[i].LanguageId
+
+                    languageArrayDetail[#languageArrayDetail+1] = languageArray[i]
+
+                end
+
+                    --Webservice.GetCountryLanguagesbyCountryCode(countryArray[i].countrycode,getLanguageDetails)
+
+
+                end
+
+
+        end
+
+end
+
+
 
 
 
@@ -287,23 +471,29 @@ local function onRowTouch(event)
 
                  row.id = row.index
                  row.name = countryArray[row.index].name
+                 row.countrycode = countryArray[row.index].countrycode
 
                  print("Country : "..row.id.." "..row.name)
 
                              CountryLbl.text = row.name
                              CountryLbl.value = row.id
+                             CountryLbl.countrycode = row.countrycode
+
+                             Webservice.GetCountryLanguagesbyCountryCode(CountryLbl.countrycode,getLanguageDetails)
 
 
-            elseif List.arrayName == languageArray or List.arrayName == languageArray1 then
+            elseif languageArray then
 
                  row.id = row.index
-                 row.name = List.arrayName[row.index]
+                 row.name = languageArray[row.index].name
+                 row.languageid = languageArray[row.index].languageId
 
                  print("Language : "..row.id.." "..row.name)
 
 
                              LanguageLbl.text = row.name
                              LanguageLbl.value = row.id
+                             LanguageLbl.languageId = row.languageid
 
                              LanguageLbl:setFillColor( 0 )
                              LanguageLbl.size = 14
@@ -341,101 +531,6 @@ local function onRowTouch(event)
 end
 
 
-
-
-
-local function CreateList(event,list,List_bg)
-
-                    if event == "country" then
-
-                        List_bg.height = 72.75
-                        list.height = List_bg.height
-                        List_bg.y = Marykay_bg.y+Marykay_bg.height+28
-                        List.y = List_bg.y
-
-                        list.x = List_bg.x
-                        list.y = List_bg.y
-                        list.width = List_bg.width-1.5
-
-
-                    elseif event == "language" then
-
-                            if CountryLbl.text == RegistrationScreen.CountryUsaText then
-
-                                List.arrayName = languageArray
-
-                            elseif CountryLbl.text == RegistrationScreen.CountryCanadaText then
-
-                                List.arrayName = languageArray1
-
-                            end
-
-
-                        List_bg.height = 49.5
-                        list.height = List_bg.height
-                        List_bg.y = Country_bg.y+Country_bg.height+28
-                        List.y = List_bg.y
-
-                        list.x = List_bg.x
-                        list.y = List_bg.y
-                        list.width = List_bg.width-1.5
-
-
-                    elseif event == "position" then
-
-                        List_bg.height = 78
-                        list.height = List_bg.height
-                        List_bg.y = Language_bg.y+Language_bg.height+28
-                        List.y = List_bg.y
-
-                        list.x = List_bg.x
-                        list.y = List_bg.y
-                        list.width = List_bg.width-1.5
-
-                    end
-
-                    list:deleteAllRows()
-
-
-                    if event == "country" then
-
-                        print("coming to country list")
-
-
-                            for i = 1, #countryArray do
-
-                                list:insertRow(
-                                    {
-                                        isCategory = false,
-                                        rowHeight = 36,
-                                        rowColor = { default={0.9}, over={0.8} },
-                                    }
-                                )
-
-                            end
-
-                    else
-
-
-                            for i = 1, #List.arrayName do
-
-                                list:insertRow(
-                                    {
-                                        isCategory = false,
-                                        rowHeight = 36,
-                                        rowColor = { default={0.9}, over={0.8} },
-                                    }
-                                )
-
-                            end
-
-
-
-
-                    end
-
-
-end
 
 
 
@@ -788,42 +883,47 @@ local function backAction( event )
 end
 
 
+
+
 local function getCountryList(response)
 
-if response ~= nil then
+        if response ~= nil then
 
-countryArray = response
+        countryArray = response
 
-for i=1,#countryArray do
+                for i=1,#countryArray do
 
-if countryArray[i].CountryName ~= nil then
+                if countryArray[i].CountryName ~= nil then
 
-    countryArray[i].name = countryArray[i].CountryName
+                    countryArray[i].name = countryArray[i].CountryName
 
-    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
+                    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
 
-end
+                end
 
-if countryArray[i].CountryCode ~= nil then
-    
-    countryArray[i].countrycode = countryArray[i].CountryCode
+                if countryArray[i].CountryCode ~= nil then
+                    
+                    countryArray[i].countrycode = countryArray[i].CountryCode
 
-    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
+                    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
 
-end
+                end
 
- -- List.arrayName = countryArray[i].name
+                 -- List.arrayName = countryArray[i].name
 
- -- List.countrycode =  countryArray[i].countrycode
+                 -- List.countrycode =  countryArray[i].countrycode
 
- -- print("List.arrayName : "..countryArray[1].name.." "..countryArray[2].name)
- -- print(List.countrycode)
+                 -- print("List.arrayName : "..countryArray[1].name.." "..countryArray[2].name)
+                 -- print(List.countrycode)
 
- 
 
-end
+                   -- Webservice.GetCountryLanguagesbyCountryCode(countryArray[i].countrycode,getLanguageDetails)
 
-end
+
+                end
+
+
+        end
 
 
 end
@@ -854,10 +954,8 @@ local function TouchSelection( event )
                                             List_bg.isVisible = true
 
                                                -- List.arrayName = countryArray
-                                               -- List.label = CountryLbl.text
+                                            List.label = CountryLbl.text
 
-
-                                           -- print("%%%%%%% "..List.label)
 
                                         CreateList("country",List,List_bg)
                                         
@@ -879,8 +977,10 @@ local function TouchSelection( event )
                                             List.isVisible = true
                                             List_bg.isVisible = true
 
-                                            List.arrayName = languageArray
+                                          --  List.arrayName = languageArray
                                             List.label = LanguageLbl.text
+
+                                           -- print("List.label : "..List.arrayName)
 
                                             CreateList("language",List,List_bg)
                                         
@@ -1084,7 +1184,11 @@ function scene:show( event )
 
         composer.removeHidden()
 
+
         Webservice.GetAllCountry(getCountryList)
+
+       -- Webservice.GetCountryLanguagesbyCountryCode(countryArray[row.index].countrycode,getLanguageDetails)
+
 
         Runtime:addEventListener( "key", onKeyEvent )
 

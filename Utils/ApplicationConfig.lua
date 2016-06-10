@@ -202,6 +202,8 @@ ApplicationConfig.GetSpecialRecognitionPageContent = ApplicationConfig.BASE_URL.
 
 ApplicationConfig.GetAllCountry = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetAllCountry"
 
+ApplicationConfig.GetCountryLanguagesbyCountryCode = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetCountryLanguagesbyCountryCode"
+
 ApplicationConfig.GetPositionbyCountryIdandLanguageId = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetPositionbyCountryIdandLanguageId"
 
 
