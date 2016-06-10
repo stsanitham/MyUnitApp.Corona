@@ -91,6 +91,15 @@ end
 end
 
 
+Utils.marykayid_Validation = function(marykay)
+if (marykay:match("http://www.marykay.com/")) then
+  return true
+else
+  return false                
+end
+end
+
+
 Utils.getIpAddress = function ( )
 local someRandomIP = "192.168.1.122" 
 local someRandomPort = "3102" 
