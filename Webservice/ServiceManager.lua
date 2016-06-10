@@ -2477,6 +2477,122 @@ end
 
 
 
+function Webservice.GetAllCountry(postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+
+	method="GET"
+
+
+		local found=false
+		db:exec([[select * from sqlite_master where name='logindetails';]],
+		function(...) found=true return 0 end)
+
+		if found then 
+		print('table exists!')
+
+		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+			UserId = row.UserId
+			AccessToken = row.AccessToken
+			ContactId = row.ContactId
+			UnitNumberValue = row.UnitNumberOrDirector
+			langid = row.LanguageId
+			countryid = row.CountryId
+		end
+
+	          headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	    else
+
+	    	  headers["UserAuthorization"]= ""
+
+		end
+
+
+	local url = splitUrl(ApplicationConfig.GetAllCountry)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetAllCountry,method,params,postExecution)
+
+    print("Get all country request : "..json.encode(params))
+
+	
+	return response
+end
+
+
+
+
+
+function Webservice.GetPositionbyCountryIdandLanguageId(countrycode,languageid,postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+
+	method="GET"
+
+
+		local found=false
+		db:exec([[select * from sqlite_master where name='logindetails';]],
+		function(...) found=true return 0 end)
+
+		if found then 
+		print('table exists!')
+
+		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+			UserId = row.UserId
+			AccessToken = row.AccessToken
+			ContactId = row.ContactId
+			UnitNumberValue = row.UnitNumberOrDirector
+			langid = row.LanguageId
+			countryid = row.CountryId
+		end
+
+	          headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	    else
+
+	    	  headers["UserAuthorization"]= ""
+
+		end
+
+
+	local url = splitUrl(ApplicationConfig.GetPositionbyCountryIdandLanguageId)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+	local resbody="?countryCode="..countrycode.."&languageId="..languageid
+
+	params={headers = headers}
+
+	request.new(ApplicationConfig.GetPositionbyCountryIdandLanguageId..resbody,method,params,postExecution)
+
+    print("request for special recognition details : "..json.encode(params))
+
+	
+	return response
+end
 
 
 

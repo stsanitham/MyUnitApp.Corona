@@ -567,6 +567,8 @@ local function searchRender( event )
 end
 
 
+
+
 local function searchTouch(event) 
 
     local row = event.row
@@ -1806,7 +1808,6 @@ if response ~= nil then
 	searchArraytotal = response
 
 	for i=1,#searchArraytotal do
-
 
 
 		if searchArraytotal[i].FirstName ~= nil then
