@@ -175,28 +175,14 @@ local function onRowRender( event )
     print("renderArray "..json.encode(renderArray))
 
 
-    if List.arrayName == countryArray then
-
-    ------------------ to set the list of array items in the list ------------------------
-
-             rowTitle = display.newText( row, countryArray[row.index].name, 0, 0, nil, 14 )
-
-             row.name = countryArray[row.index].name
-             row.value = countryArray[row.index].countrycode
-
-             print("********** ".. row.name.." ".. row.value)
 
 
-    elseif  List.arrayName == languageArray then
+             rowTitle = display.newText( row, renderArray[row.index].langname, 0, 0, nil, 14 )
 
-             rowTitle = display.newText( row, languageArray[row.index].langname, 0, 0, nil, 14 )
+             row.name = renderArray[row.index].langname
+             row.value = renderArray[row.index].languageId
 
-             row.name = countryArray[row.index].langname
-             row.value = countryArray[row.index].languageId
-
-             print("********** language ".. row.name.." ".. row.value)
-
-    end
+    
 
 
         rowTitle:setFillColor( 0 )
@@ -213,7 +199,7 @@ local function onRowRender( event )
     -------------to make the tick mark for the item that has been selected ----------
 
 
-          if List.label == countryArray[row.index].name  then
+          if List.label == renderArray[row.index].name  then
 
                 tick.isVisible = true
 
@@ -333,9 +319,7 @@ end
 
 local function getLanguageDetails( response )
 
-    print("*************")
-
-    languageArray = response
+  -- languageArray = response
 
 
       if response ~= nil then
@@ -387,13 +371,14 @@ local function onRowTouch(event)
             List_bg.isVisible = false
             List:deleteAllRows()
             List.isVisible = false
+           local renderArray = event.target.arrayName
 
 
-            if countryArray then
+            if renderArray then
 
                  row.id = row.index
-                 row.name = countryArray[row.index].name
-                 row.countrycode = countryArray[row.index].countrycode
+                 row.name = renderArray[row.index].name
+                 row.countrycode = renderArray[row.index].countrycode
 
                  print("Country : "..row.id.." "..row.name)
 
