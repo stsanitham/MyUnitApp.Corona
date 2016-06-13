@@ -1614,7 +1614,7 @@ end
 		
 		if phase == "will" then
 
-			composer.removeHidden()
+			--composer.removeHidden()
 
 
 		elseif phase == "did" then
