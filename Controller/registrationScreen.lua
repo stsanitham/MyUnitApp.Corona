@@ -318,38 +318,9 @@ end
 
 local function getPositionDetails( response )
 
-  print("position response : "..json.encode(response))
-
       if response ~= nil then
 
         positionArray = response
-
-                for i=1,#positionArray do
-
-                -- if positionArray[i].LanguageName ~= nil then
-
-                --     positionArray[i].name = positionArray[i].LanguageName
-
-                -- end
-
-                -- if positionArray[i].LanguageId ~= nil then
-                    
-                --     positionArray[i].countrycode = positionArray[i].LanguageId
-
-                -- end
-
-              end
-
-
-                     -- languageArray = languageArray
-
-                     -- CreateList("language",List,List_bg)
-
-               -- LanguageLbl.text = languagename
-               -- LanguageLbl.languageId = languageId
-
-               -- LanguageLbl:setFillColor( 0 )
-               -- LanguageLbl.size = 14
 
 
         end
@@ -365,8 +336,6 @@ end
 
 
 local function getLanguageDetails( response )
-
-    print("*************")
 
       if response ~= nil then
 
@@ -413,9 +382,9 @@ local function getLanguageDetails( response )
 
              Webservice.GetPositionbyCountryIdandLanguageId( CountryLbl.countrycode ,LanguageLbl.languageId,getPositionDetails)
 
-                     -- languageArray = languageArray
+               -- languageArray = languageArray
 
-                     -- CreateList("language",List,List_bg)
+               -- CreateList("language",List,List_bg)
 
                -- LanguageLbl.text = languagename
                -- LanguageLbl.languageId = languageId
@@ -452,75 +421,18 @@ local function onRowTouch(event)
             print("row touch render array : "..json.encode(renderArray))
 
 
-          --  if renderArray then
-
                  row.id = row.index
                  row.name = countryArray[row.index].name
                  row.countrycode = countryArray[row.index].countrycode
 
-                 print("Country 123456 : "..row.countrycode.." "..row.name)
 
-                             CountryLbl.text = row.name
-                             CountryLbl.value = row.id
-                             CountryLbl.countrycode = row.countrycode
-
-
-                           --  if CountryLbl.text == "USA" then
-
-                                Webservice.GetCountryLanguagesbyCountryCode( CountryLbl.countrycode,getLanguageDetails)
-
-                           --  else
-
-                              --  Webservice.GetCountryLanguagesbyCountryCode("CA",getLanguageDetails)
-
-                          --    end
+                 CountryLbl.text = row.name
+                 CountryLbl.value = row.id
+                 CountryLbl.countrycode = row.countrycode
 
 
-          --  end
+                Webservice.GetCountryLanguagesbyCountryCode( CountryLbl.countrycode,getLanguageDetails)
 
-
-            -- if languageArray then
-
-            --     --print("dsdfdf "..json.encode(languageArray))
-
-            --     -- row.id = row.index
-            --      row.languagename = languageArray[row.index].langname
-            --      row.languageid = languageArray[row.index].languageId
-
-            --      print("Language : "..row.languagename)
-
-
-            --                  LanguageLbl.text = row.languagename
-            --                  LanguageLbl.value = row.id
-            --                  LanguageLbl.languageId = row.languageid
-
-            --                  LanguageLbl:setFillColor( 0 )
-            --                  LanguageLbl.size = 14
-
-
-            -- elseif List.arrayName == positionArray then
-
-            --      row.id = row.index
-            --      row.name = List.arrayName[row.index]
-
-
-            --      print("Position : "..row.id.." "..row.name)
-
-            --                  PositionLbl.text = row.name
-
-            --                  if PositionLbl.text:len() > 22 then
-
-            --                      PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
-
-            --                  end
-
-            --                  PositionLbl.value = row.id
-
-            --                  PositionLbl:setFillColor( 0 )
-            --                  PositionLbl.size = 14
-
-
-            -- end
 
             scrollTo(0)
 
