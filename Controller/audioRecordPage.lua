@@ -397,13 +397,9 @@ function scene:show( event )
 		if "simulator" == system.getInfo("environment") then
 		    dataFileName = dataFileName .. ".aif"
 		else
-		    if isIos then
-		        dataFileName = dataFileName .. ".aif"
-		    elseif isAndroid then
+		 
 		        dataFileName = dataFileName .. ".wav"
-		    else
-		    	print("Unknown OS " .. platformName )
-		    end
+		    
 		end
 		print (dataFileName)
 
