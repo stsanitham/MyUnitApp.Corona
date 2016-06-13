@@ -348,7 +348,7 @@ else
 		"GroupName": "]]..GroupName..[[",
 		"IsSendNow": "]]..tostring(isSendNow)..[[",
 		"MessageFileType": "]]..MessageFileType..[[",
-		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
+		"DocumentUpload": ]]..(DocumentUpload)..[[
 		}
 		]]
 --		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
@@ -361,15 +361,15 @@ end
 	print("Send Message Request :"..(v))
 
 
-	              local options =
-        {
-           to = { "malarkodi.sellamuthu@w3magix.com,petchimuthu.p@w3magix.com"},
-           subject = "request",
-           isBodyHtml = true,
-           body = ""..v,
+	       --        local options =
+        -- {
+        --    to = { "malarkodi.sellamuthu@w3magix.com,petchimuthu.p@w3magix.com"},
+        --    subject = "request",
+        --    isBodyHtml = true,
+        --    body = ""..v,
 
-        }
-        native.showPopup( "mail", options )
+        -- }
+        -- native.showPopup( "mail", options )
 
 
 	request.new( ApplicationConfig.SEND_MESSAGE,method,params,postExecution)

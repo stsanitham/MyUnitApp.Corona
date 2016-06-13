@@ -141,7 +141,7 @@ end
 
 					os.remove( event.target.filepath )
 
-					composePage.y = composePage.y-45
+					scrollView.y = scrollView.y-45
 
 					if Audio_filename_title.isVisible == true then
 						Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
@@ -162,7 +162,7 @@ end
 
 					os.remove( event.target.filepath )
 
-					composePage.y = composePage.y-45
+					scrollView.y = scrollView.y-45
 
 					if filename_title.isVisible == true then
 						filename_title.y = tabBar.y+tabBar.contentHeight+15
@@ -272,7 +272,7 @@ local function selectionComplete ( event )
 						print( "############" )
 
 						filename_title.y=Audio_filename.y+20
-						composePage.y = composePage.y+45
+						scrollView.y = scrollView.y+45
 					
 
 			end
@@ -282,7 +282,7 @@ local function selectionComplete ( event )
 
 				if filename_title.isVisible == false then
 
-					composePage.y = composePage.y+45
+					scrollView.y = scrollView.y+45
 					filename_title.y = tabBar.y+tabBar.contentHeight+15
 				end
 
@@ -1071,13 +1071,13 @@ function scene:updateRecordedAudio( dataFileName,audiopagename )
 				if Audio_filename_title.isVisible == false and filename_title.y == tabBar.y+tabBar.contentHeight+15  then
 
 						Audio_filename_title.y=filename.y+20
-						composePage.y = composePage.y+45
+						scrollView.y = scrollView.y+45
 				end
 
 			else
 				if Audio_filename_title.isVisible == false then
 					Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
-					composePage.y = composePage.y+45
+					scrollView.y = scrollView.y+45
 				end
 			end
 
@@ -1646,21 +1646,21 @@ end
 
 
 
-			-- scrollView = widget.newScrollView
-			-- {
-			-- top = RecentTab_Topvalue,
-			-- left = 0,
-			-- width = W,
-			-- height =H-RecentTab_Topvalue,
-			-- hideBackground = true,
-			-- isBounceEnabled=false,
-			-- horizontalScrollDisabled = true,
-			-- bottomPadding = 60,
-			-- friction = .4,
-   -- 			listener = composemsg_scrollListener,
-		 --    }
+			scrollView = widget.newScrollView
+			{
+			top = RecentTab_Topvalue,
+			left = 0,
+			width = W,
+			height =H-RecentTab_Topvalue,
+			hideBackground = true,
+			isBounceEnabled=false,
+			horizontalScrollDisabled = true,
+			bottomPadding = 60,
+			friction = .4,
+   			listener = composemsg_scrollListener,
+		    }
 
-		 --    sceneGroup:insert( scrollView )
+		    sceneGroup:insert( scrollView )
 
 
 ---------------------------------------------- Short Message ----------------------------------------------------------
@@ -1669,9 +1669,9 @@ end
 				shortmsg_star.anchorX = 0
 				shortmsg_star.anchorY = 0
 				shortmsg_star.x=10
-				shortmsg_star.y = tabBar.y+tabBar.contentHeight+15
+				shortmsg_star.y = 0
 				shortmsg_star:setFillColor(1,0,0)
-				composePage:insert(shortmsg_star)
+				scrollView:insert(shortmsg_star)
 				
 				shortmsg_title = display.newText(MessagePage.ShortMessage,0,0,native.systemFont,14)
 				shortmsg_title.anchorX = 0
@@ -1679,7 +1679,7 @@ end
 				shortmsg_title.anchorY=0
 				shortmsg_title.y = shortmsg_star.y
 				shortmsg_title:setFillColor(0)
-				composePage:insert(shortmsg_title)
+				scrollView:insert(shortmsg_title)
 
 
 				shortmsg_textbox = native.newTextBox( 10,shortmsg_title.y+ shortmsg_title.height+7, W - 20, EditBoxStyle.height+25)
@@ -1697,7 +1697,7 @@ end
 				shortmsg_textbox:setReturnKey( "next" )
 				shortmsg_textbox.inputType = "default"
 				--sceneGroup:insert(shortmsg_textbox)
-				composePage:insert(shortmsg_textbox)
+				scrollView:insert(shortmsg_textbox)
 				--shortmsg_textbox.x=10
 				--shortmsg_textbox.y=shortmsg_title.y+ shortmsg_title.height+7
 
@@ -1712,7 +1712,7 @@ end
 				short_msg_charlimit.anchorY = 0
 				short_msg_charlimit.y = shortmsg_textbox.y+shortmsg_textbox.contentHeight+2
 				short_msg_charlimit:setFillColor(0)
-				composePage:insert(short_msg_charlimit)
+				scrollView:insert(short_msg_charlimit)
 
 ---------------------------------------------- Long Message ----------------------------------------------------------
 
@@ -1722,7 +1722,7 @@ end
 				longmsg_star.anchorY=0
 				longmsg_star.y = short_msg_charlimit.y+short_msg_charlimit.contentHeight
 				longmsg_star:setFillColor(1,0,0)
-				composePage:insert(longmsg_star)
+				scrollView:insert(longmsg_star)
 
 
 				longmsg_title = display.newText(MessagePage.LongMessage,0,0,native.systemFont,14)
@@ -1731,7 +1731,7 @@ end
 				longmsg_title.anchorY = 0
 				longmsg_title.y = longmsg_star.y 
 				longmsg_title:setFillColor(0)
-				composePage:insert(longmsg_title)
+				scrollView:insert(longmsg_title)
 
 
 				
@@ -1769,7 +1769,7 @@ end
 							 longmsg_textbox:addEventListener( "urlRequest", webListener )
 
 
-							 composePage:insert( longmsg_textbox)
+							 scrollView:insert( longmsg_textbox)
 
 
 
@@ -1790,13 +1790,13 @@ end
 				long_msg_charlimit.y = longmsg_textbox.y+longmsg_textbox.contentHeight+5
 				long_msg_charlimit:setFillColor(0)
 				long_msg_charlimit.isVisible=false
-				composePage:insert(long_msg_charlimit)
+				scrollView:insert(long_msg_charlimit)
 
 
 
-	
+		--composePage:insert( scrollView )
 
-		sceneGroup:insert( composePage )
+		sceneGroup:insert( scrollView )
 
 			createAttachment( )
 		AttachmentGroup.anchorX=0;AttachmentGroup.anchorY=0
@@ -1850,7 +1850,7 @@ end
 					filename.text = Details.ImageFilePath:match( "([^/]+)$" )
 					filename_close.filepath = Details.ImageFilePath:match( "([^/]+)$" )
 
-					composePage.y = composePage.y+45
+					scrollView.y = scrollView.y+45
 
 				end
 
@@ -1898,7 +1898,7 @@ end
 					Audio_filename.text = Details.AudioFilePath:match( "([^/]+)$" )
 					Audio_filename_close.filepath = Details.AudioFilePath:match( "([^/]+)$" )
 
-					composePage.y = composePage.y+45
+					scrollView.y = scrollView.y+45
 
 				end
 

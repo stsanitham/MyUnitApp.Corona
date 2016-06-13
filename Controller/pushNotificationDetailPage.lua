@@ -750,15 +750,34 @@ end
 					        print( "Displaying response image file" )
 					        reciveImageFlag=true
 
-							myImage = display.newImage( event.response.filename, event.response.baseDirectory, display.viewableContentWidth, display.contentHeight )
-							--myImage.y = Imagenametext.y+Imagenametext.contentHeight+12
-							myImage.y = webView.y+webView.contentHeight+12
-							myImage.x = display.contentCenterX
-							myImage.anchorY=0
-							--myImage.width = display.viewableContentWidth - 20
-							--myImage.height = display.viewableContentHeight - 200
-							myImage.width = 100
-							myImage.height = 100
+
+						myImage = display.newImage( event.response.filename, event.response.baseDirectory )
+								myImage.anchorY=0
+								myImage.y=110
+								myImage.x=W/2
+
+
+						
+						if myImage.width > myImage.height then
+							myImage.height = 150
+							myImage.width = display.contentWidth-40
+							myImage.y=webView.y+webView.contentHeight+12
+
+						else
+								if myImage.height > H-110 then
+
+									myImage.height = H-100
+									myImage.width = W-60
+
+								else
+									myImage.y=webView.y+webView.contentHeight+12
+								end
+
+								if myImage.width > W-60 then
+									myImage.width = W-60
+								end
+
+						 end
 
 						    sceneGroup:insert(myImage)
 
@@ -854,19 +873,42 @@ end
 					        print( "Displaying response image file" )
 					        reciveImageFlag=true
 
-							myImage = display.newImage( event.response.filename, event.response.baseDirectory, display.viewableContentWidth, display.contentHeight )
-							--myImage.y = Imagenametext.y+Imagenametext.contentHeight+12
-							myImage.y = webView.y+webView.contentHeight+12
-							myImage.x = display.contentCenterX
-							myImage.anchorY=0
-							--myImage.width = display.viewableContentWidth - 20
-							--myImage.height = display.viewableContentHeight - 200
-							myImage.width = 100
-							myImage.height = 100
+						
+								myImage = display.newImage( event.response.filename, event.response.baseDirectory )
+								myImage.anchorY=0
+								myImage.x=W/2
+								myImage.y=webView.y+webView.contentHeight+12
 
-						    sceneGroup:insert(myImage)
+								sceneGroup:insert(myImage)
 
-		                    messagedetail_scrollView:insert( myImage)
+		                   		 messagedetail_scrollView:insert( myImage)
+
+
+						
+						if myImage.contentWidth > myImage.contentHeight then
+
+							print( "###############" )
+							myImage.height = 150
+							myImage.width = display.contentWidth-60
+							myImage.y=webView.y+webView.contentHeight+12
+
+						else
+								if myImage.contentHeight > H-110 then
+
+									myImage.height = H-100
+									myImage.width = W-60
+
+								else
+									myImage.y=webView.y+webView.contentHeight+12
+								end
+
+								if myImage.contentWidth > W-60 then
+									myImage.width = W-60
+								end
+
+						 end
+
+						
 					  		
 					    end
 					end
