@@ -167,13 +167,14 @@ local function onRowRender( event )
     local rowWidth = row.contentWidth
 
     local rowTitle
+
     local renderArray
 
-    renderArray = List.arrayName
+
+    renderArray = event.target.arrayName
 
 
     print("renderArray "..json.encode(renderArray))
-
 
 
     ------------------ to set the list of array items in the list ------------------------
@@ -254,20 +255,19 @@ local function CreateList(event,list,List_bg)
 
                     elseif event == "language" then
 
-                            -- if CountryLbl.text == RegistrationScreen.CountryUsaText then
+                            if CountryLbl.text == RegistrationScreen.CountryUsaText then
 
-                            --     List.label = languageArray
+                                List.label = languageArray
 
-                            -- elseif CountryLbl.text == RegistrationScreen.CountryCanadaText then
+                            elseif CountryLbl.text == RegistrationScreen.CountryCanadaText then
 
-                            --     List.label = languageArray
+                                List.label = languageArray
 
-                            -- end
+                            end
 
 
                        -- List_bg.height = 49.5
-                       -- List_bg.height = 72.75
-                       List_bg.height = 37
+                        List_bg.height = 72.75
                         list.height = List_bg.height
                         List_bg.y = Country_bg.y+Country_bg.height+28
                         List.y = List_bg.y
@@ -317,34 +317,9 @@ end
 
 
 
-
-
-local function getPositionDetails( response )
-
-      if response ~= nil then
-
-
-           for i=1,#positionArray do
-
-            positionArray[i] = nil
-
-         end
-
-
-
-        end
-end
-
-
-
-
-
-
-
-
-
-
 local function getLanguageDetails( response )
+
+    print("*************")
 
       if response ~= nil then
 
@@ -355,43 +330,19 @@ local function getLanguageDetails( response )
             end
 
 
-            -- for i=1,#response do
-
-            --     if response[i].LanguageName ~= nil then
-
-            --          languageArray[#languageArray+1] = {langname = response[i].LanguageName , languageId = response[i].LanguageId}
-
-            --    end
-
-            -- end
-
-
-      
-
-                for i=1,#response do
-
+            for i=1,#response do
 
                 if response[i].LanguageName ~= nil then
 
-                    languageArray[#languageArray+1] = {name = response[i].LanguageName,countrycode = response[i].LanguageId}
+                     languageArray[#languageArray+1] = {langname = response[i].LanguageName , languageId = response[i].LanguageId}
 
+               end
 
-                end
+            end
 
+                      List.arrayName = languageArray
 
-              end
-
-
-
-                LanguageLbl.text = response[1].LanguageName
-                LanguageLbl.countrycode = response[1].LanguageId
-
-
-             Webservice.GetPositionbyCountryIdandLanguageId( CountryLbl.countrycode ,response[1].LanguageId,getPositionDetails)
-
-               -- languageArray = languageArray
-
-               -- CreateList("language",List,List_bg)
+                     -- CreateList("language",List,List_bg)
 
                -- LanguageLbl.text = languagename
                -- LanguageLbl.languageId = languageId
@@ -409,6 +360,8 @@ end
 
 
 
+
+
 local function onRowTouch(event) 
 
     local row = event.row
@@ -420,38 +373,71 @@ local function onRowTouch(event)
             List.isVisible = false
 
 
-            renderArray = {}
+            local renderArray 
 
-            renderArray = List.arrayName 
-            tempLable = List.label
+            renderArray = event.target.arrayName 
 
 
-            print("row touch render array : "..json.encode(renderArray))
-
+          --  if renderArray then
 
                  row.id = row.index
                  row.name = renderArray[row.index].name
                  row.countrycode = renderArray[row.index].countrycode
 
-                 print( "Check : "..json.encode(row) )
+                 print("Country : "..row.id.." "..row.name)
 
-                 tempLable.text = row.name
-                 tempLable.value = row.id
-                 tempLable.countrycode = row.countrycode
+                             CountryLbl.text = row.name
+                             CountryLbl.value = row.id
+                             CountryLbl.countrycode = row.countrycode
+
+                             Webservice.GetCountryLanguagesbyCountryCode(CountryLbl.countrycode,getLanguageDetails)
 
 
-                 if List.value == "country" then
+          --  end
 
-                     Webservice.GetCountryLanguagesbyCountryCode( row.countrycode,getLanguageDetails)
 
-                elseif List.value == "language" then
+            -- if languageArray then
 
-                     Webservice.GetPositionbyCountryIdandLanguageId( CountryLbl.countrycode ,row.countrycode,getPositionDetails)
+            --     --print("dsdfdf "..json.encode(languageArray))
 
-                elseif List.value == "position" then
+            --     -- row.id = row.index
+            --      row.languagename = languageArray[row.index].langname
+            --      row.languageid = languageArray[row.index].languageId
 
-                end
+            --      print("Language : "..row.languagename)
 
+
+            --                  LanguageLbl.text = row.languagename
+            --                  LanguageLbl.value = row.id
+            --                  LanguageLbl.languageId = row.languageid
+
+            --                  LanguageLbl:setFillColor( 0 )
+            --                  LanguageLbl.size = 14
+
+
+            -- elseif List.arrayName == positionArray then
+
+            --      row.id = row.index
+            --      row.name = List.arrayName[row.index]
+
+
+            --      print("Position : "..row.id.." "..row.name)
+
+            --                  PositionLbl.text = row.name
+
+            --                  if PositionLbl.text:len() > 22 then
+
+            --                      PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
+
+            --                  end
+
+            --                  PositionLbl.value = row.id
+
+            --                  PositionLbl:setFillColor( 0 )
+            --                  PositionLbl.size = 14
+
+
+            -- end
 
             scrollTo(0)
 
@@ -864,28 +850,29 @@ local function getCountryList(response)
 
         if response ~= nil then
 
-        --countryArray = response
+       -- countryArray = response
 
-        --arrayName
+                for i=1,#countryArray do
 
-        for i=1,#countryArray do
+                if countryArray[i].CountryName ~= nil then
 
-            countryArray[i] = nil
+                    countryArray[i].name = countryArray[i].CountryName
 
-        end
+                    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
 
-                for i=1,#response do
-
-                if response[i].CountryName ~= nil then
-
-                    countryArray[#countryArray+1] = {name = response[i].CountryName,countrycode=response[i].CountryCode}
-                   
                 end
 
+                if countryArray[i].CountryCode ~= nil then
+                    
+                    countryArray[i].countrycode = countryArray[i].CountryCode
 
+                    countryArrayDetail[#countryArrayDetail+1] = countryArray[i]
 
-                CountryLbl.text = countryArray[1].name
-                CountryLbl.countrycode = countryArray[1].countrycode
+                end
+
+                List.arrayName = countryArray
+
+                 -- List.arrayName = countryArray[i].name
 
                  -- List.countrycode =  countryArray[i].countrycode
 
@@ -893,7 +880,7 @@ local function getCountryList(response)
                  -- print(List.countrycode)
 
 
-                   Webservice.GetCountryLanguagesbyCountryCode(countryArray[1].countrycode,getLanguageDetails)
+                   -- Webservice.GetCountryLanguagesbyCountryCode(countryArray[i].countrycode,getLanguageDetails)
 
 
                 end
@@ -930,8 +917,8 @@ local function TouchSelection( event )
                                             List_bg.isVisible = true
 
                                             List.arrayName = countryArray
-                                            List.label = CountryLbl
-                                            List.value = "country"
+                                            List.label = CountryLbl.text
+
 
                                           --  print( "::::::::::: 111"..json.encode(countryArray).." "..CountryLbl.text)
 
@@ -960,8 +947,7 @@ local function TouchSelection( event )
 
                                             print( "::::::::::: "..json.encode(languageArray).." "..LanguageLbl.text)
 
-                                            List.label = LanguageLbl
-                                              List.value = "language"
+                                            List.label = LanguageLbl.text
 
                                             CreateList("language",List,List_bg)
                                         
@@ -987,8 +973,8 @@ local function TouchSelection( event )
                                             cancelBtn_lbl.isVisible = false
 
                                             List.arrayName = positionArray
-                                            List.label = PositionLbl
-                                              List.value = "position"
+                                            List.label = PositionLbl.text
+
                                             CreateList("position",List,List_bg)
                                         
                                     else
@@ -1165,6 +1151,13 @@ function scene:show( event )
 
         composer.removeHidden()
 
+
+        Webservice.GetAllCountry(getCountryList)
+
+       -- Webservice.GetCountryLanguagesbyCountryCode(countryArray[row.index].countrycode,getLanguageDetails)
+
+
+        Runtime:addEventListener( "key", onKeyEvent )
 
 
                 function createAccount( event )
@@ -1606,11 +1599,6 @@ function scene:show( event )
 
                             end
 
-                                    Webservice.GetAllCountry(getCountryList)
-
-
-                                    Runtime:addEventListener( "key", onKeyEvent )
-
                     end
 
                 return true
@@ -1619,9 +1607,6 @@ function scene:show( event )
 
 
         CreateAccountBtn:addEventListener("touch",createAccount)
-
-
-
         
     end 
     
