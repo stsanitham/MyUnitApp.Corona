@@ -1185,7 +1185,7 @@ function scene:show( event )
 		end
 
 
-
+if addGroupid_value ~= "editMember" then
 
 tabBg = display.newRect( tabBarGroup, W/2, H-40, W, 40 )
 tabBg.anchorY=0
@@ -1267,6 +1267,8 @@ overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4
 overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
 
 sceneGroup:insert( tabBarGroup )
+
+end
 
 
 	    if addGroupid_value == "addGroup" and pageid_value == "group" then
