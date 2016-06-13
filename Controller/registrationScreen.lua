@@ -169,34 +169,37 @@ local function onRowRender( event )
     local rowTitle
 
 
-    ------------------ to set the list of array items in the list ------------------------
+    renderArray = event.target.arrayName
 
-        if countryArray then
+
+    print("renderArray "..json.encode(renderArray))
+
+
+    if List.arrayName == countryArray then
+
+    ------------------ to set the list of array items in the list ------------------------
 
              rowTitle = display.newText( row, countryArray[row.index].name, 0, 0, nil, 14 )
 
              row.name = countryArray[row.index].name
-             row.value = countryArray[row.index]
+             row.value = countryArray[row.index].countrycode
+
+             print("********** ".. row.name.." ".. row.value)
 
 
+    elseif  List.arrayName == languageArray then
 
-        elseif languageArray then  
+             rowTitle = display.newText( row, languageArray[row.index].langname, 0, 0, nil, 14 )
 
-             rowTitle = display.newText( row, languageArray[row.index].name, 0, 0, nil, 14 )
+             row.name = countryArray[row.index].langname
+             row.value = countryArray[row.index].languageId
 
-             row.name = languageArray[row.index].name
-             row.value = languageArray[row.index]
-             row.languageId = languageArray[row.index].languageId
+             print("********** language ".. row.name.." ".. row.value)
 
-        else
+    end
 
-             rowTitle = display.newText( row, positionArray[row.index].name, 0, 0, nil, 14 )
-
-        end
 
         rowTitle:setFillColor( 0 )
-
-        -- Align the label left and vertically centered
         rowTitle.anchorX = 0
         rowTitle.x = 15
         rowTitle.y = rowHeight * 0.5
@@ -245,6 +248,11 @@ end
 
 
 
+
+
+
+
+
 local function CreateList(event,list,List_bg)
 
                     if event == "country" then
@@ -263,11 +271,11 @@ local function CreateList(event,list,List_bg)
 
                             -- if CountryLbl.text == RegistrationScreen.CountryUsaText then
 
-                            --     List.arrayName = languageArray
+                            --     List.label = languageArray
 
                             -- elseif CountryLbl.text == RegistrationScreen.CountryCanadaText then
 
-                            --     List.arrayName = languageArray1
+                            --     List.label = languageArray
 
                             -- end
 
@@ -299,7 +307,9 @@ local function CreateList(event,list,List_bg)
                     list:deleteAllRows()
 
 
-                         for i=1 , #list.arrayName do 
+
+                         for i = 1, #List.arrayName do
+
 
                                 list:insertRow(
                                     {
@@ -309,7 +319,8 @@ local function CreateList(event,list,List_bg)
                                     }
                                 )
 
-                        end
+
+                            end
 
 
 
@@ -322,32 +333,127 @@ end
 
 local function getLanguageDetails( response )
 
+    print("*************")
+
+    languageArray = response
+
+
       if response ~= nil then
+            for i=1,#languageArray do
 
-        -- for i=1,#languageArray do
+                languageArray[i]=nil
 
-        --     languageArray[i]=nil
-        -- end
-
-      --  languageArray = response
-
-                for i=1,#response do
-
-                    if response[i].LanguageName ~= nil then
-
-                         languageArray[#languageArray+1] = {langname = response[i].LanguageName , languageId = response[i].LanguageId}
-
-                   end
-
-                   
-
-                    --Webservice.GetCountryLanguagesbyCountryCode(countryArray[i].countrycode,getLanguageDetails)
+            end
 
 
-                end
+            for i=1,#response do
+
+                if response[i].LanguageName ~= nil then
+
+                     languageArray[#languageArray+1] = {langname = response[i].LanguageName , languageId = response[i].LanguageId}
+
+               end
+
+            end
+
+                      List.arrayName = languageArray
+
+                     -- CreateList("language",List,List_bg)
+
+               -- LanguageLbl.text = languagename
+               -- LanguageLbl.languageId = languageId
+
+               -- LanguageLbl:setFillColor( 0 )
+               -- LanguageLbl.size = 14
 
 
         end
+
+end
+
+
+
+
+
+
+
+
+local function onRowTouch(event) 
+
+    local row = event.row
+
+    if event.phase == 'release' then
+
+            List_bg.isVisible = false
+            List:deleteAllRows()
+            List.isVisible = false
+
+
+            if countryArray then
+
+                 row.id = row.index
+                 row.name = countryArray[row.index].name
+                 row.countrycode = countryArray[row.index].countrycode
+
+                 print("Country : "..row.id.." "..row.name)
+
+                             CountryLbl.text = row.name
+                             CountryLbl.value = row.id
+                             CountryLbl.countrycode = row.countrycode
+
+                             Webservice.GetCountryLanguagesbyCountryCode(CountryLbl.countrycode,getLanguageDetails)
+
+
+            end
+
+
+            if languageArray then
+
+                --print("dsdfdf "..json.encode(languageArray))
+
+                -- row.id = row.index
+                 row.languagename = languageArray[row.index].langname
+                 row.languageid = languageArray[row.index].languageId
+
+                 print("Language : "..row.languagename)
+
+
+                             LanguageLbl.text = row.languagename
+                             LanguageLbl.value = row.id
+                             LanguageLbl.languageId = row.languageid
+
+                             LanguageLbl:setFillColor( 0 )
+                             LanguageLbl.size = 14
+
+
+            elseif List.arrayName == positionArray then
+
+                 row.id = row.index
+                 row.name = List.arrayName[row.index]
+
+
+                 print("Position : "..row.id.." "..row.name)
+
+                             PositionLbl.text = row.name
+
+                             if PositionLbl.text:len() > 22 then
+
+                                 PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
+
+                             end
+
+                             PositionLbl.value = row.id
+
+                             PositionLbl:setFillColor( 0 )
+                             PositionLbl.size = 14
+
+
+            end
+
+            scrollTo(0)
+
+
+    end
 
 end
 
@@ -395,82 +501,6 @@ local function scrollTo(position)
 end
 
 
-
-
-
-local function onRowTouch(event) 
-
-    local row = event.row
-
-    if event.phase == 'release' then
-
-            List_bg.isVisible = false
-            List:deleteAllRows()
-            List.isVisible = false
-
-
-            if countryArray then
-
-                 row.id = row.index
-                 row.name = countryArray[row.index].name
-                 row.countrycode = countryArray[row.index].countrycode
-
-                 print("Country : "..row.id.." "..row.name)
-
-                             CountryLbl.text = row.name
-                             CountryLbl.value = row.id
-                             CountryLbl.countrycode = row.countrycode
-
-                             Webservice.GetCountryLanguagesbyCountryCode(CountryLbl.countrycode,getLanguageDetails)
-
-
-            elseif languageArray then
-
-                 row.id = row.index
-                 row.name = languageArray[row.index].name
-                 row.languageid = languageArray[row.index].languageId
-
-                 print("Language : "..row.id.." "..row.name)
-
-
-                             LanguageLbl.text = row.name
-                             LanguageLbl.value = row.id
-                             LanguageLbl.languageId = row.languageid
-
-                             LanguageLbl:setFillColor( 0 )
-                             LanguageLbl.size = 14
-
-
-            elseif List.arrayName == positionArray then
-
-                 row.id = row.index
-                 row.name = List.arrayName[row.index]
-
-
-                 print("Position : "..row.id.." "..row.name)
-
-                             PositionLbl.text = row.name
-
-                             if PositionLbl.text:len() > 22 then
-
-                                 PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
-
-                             end
-
-                             PositionLbl.value = row.id
-
-                             PositionLbl:setFillColor( 0 )
-                             PositionLbl.size = 14
-
-
-            end
-
-            scrollTo(0)
-
-
-    end
-
-end
 
 
 
@@ -899,6 +929,9 @@ local function TouchSelection( event )
                                             List.label = CountryLbl.text
 
 
+                                            print( "::::::::::: 111"..json.encode(countryArray).." "..CountryLbl.text)
+
+
                                         CreateList("country",List,List_bg)
                                         
                                     else
@@ -920,9 +953,10 @@ local function TouchSelection( event )
                                             List_bg.isVisible = true
 
                                             List.arrayName = languageArray
-                                            List.label = LanguageLbl.text
 
-                                           -- print("List.label : "..List.arrayName)
+                                            print( "::::::::::: "..json.encode(languageArray).." "..LanguageLbl.text)
+
+                                            List.label = LanguageLbl.text
 
                                             CreateList("language",List,List_bg)
                                         
@@ -1354,6 +1388,7 @@ function scene:show( event )
                                         CountryLbl.x=W/2 - 20
                                         CountryLbl.y=Marykay_bg.y+Marykay_bg.height+12
                                         scrollView:insert(CountryLbl)
+
 
 
                                         Country_icon = display.newImageRect(scrollView,"res/assert/right-arrow(gray-).png",15/2,30/2 )
