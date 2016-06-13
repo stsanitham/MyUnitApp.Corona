@@ -161,6 +161,8 @@ local function onKeyEvent( event )
 
 local function onRowRender( event )
 
+print("___________________________________________________ "..json.encode(event.target))
+
     local row = event.row
 
     local rowHeight = row.contentHeight
@@ -191,17 +193,35 @@ local function onRowRender( event )
                    --  end
 
 
+       -- end
+
+
         elseif languageArray then  
 
-            -- print("675567567567675675675675657675676767567675675")
 
-            -- print("row render")
+                for i=1,#languageArray do
 
-             rowTitle = display.newText( row, languageArray[row.index].name, 0, 0, nil, 14 )
+                            languagename = languageArray[i].LanguageName
 
-             row.name = languageArray[row.index].name
-             row.value = languageArray[row.index]
-             row.languageId = languageArray[row.index].languageId
+                            languageId = languageArray[i].LanguageId
+
+                            print(languagename.." "..languageId)
+
+
+                            rowTitle = display.newText( row, languagename, 0, 0, nil, 14 )
+
+                            row.name = languagename
+                            row.value = languageArray[row.index]
+                            row.languageId = languageId
+
+                end
+
+
+             -- print("675567567567675675675675657675676767567675675")
+
+             -- print("row render")
+
+          
 
         else
 
@@ -260,6 +280,11 @@ end
 
 
 
+
+
+
+
+
 local function CreateList(event,list,List_bg)
 
                     if event == "country" then
@@ -278,11 +303,11 @@ local function CreateList(event,list,List_bg)
 
                             -- if CountryLbl.text == RegistrationScreen.CountryUsaText then
 
-                            --     List.arrayName = languageArray
+                            --     List.label = languageArray
 
                             -- elseif CountryLbl.text == RegistrationScreen.CountryCanadaText then
 
-                            --     List.arrayName = languageArray1
+                            --     List.label = languageArray
 
                             -- end
 
@@ -314,7 +339,7 @@ local function CreateList(event,list,List_bg)
                     list:deleteAllRows()
 
 
-                    if event == "country" then
+                    if event == "country"  then
 
                         print("coming to country list")
 
@@ -331,13 +356,18 @@ local function CreateList(event,list,List_bg)
 
                             end
 
+
                     elseif event == "language" then
 
                         print("coming to language list")
 
-                            -- for i = 1, #languageArray do
+                           for i = 1, #languageArray do
 
-                            if languageArray then
+                            --if languageArray then
+
+                                print(languageArray[i].LanguageName)
+
+                                --list.label = languageArray[i].LanguageName
 
                                 list:insertRow(
                                     {
@@ -378,9 +408,13 @@ end
 
 local function getLanguageDetails( response )
 
+    print("*************")
+
       if response ~= nil then
 
         languageArray = response
+
+        print("languageArray     "..json.encode(languageArray))
 
                -- CreateList("language",list,List_bg)
 
@@ -390,9 +424,16 @@ local function getLanguageDetails( response )
 
                             languageId = languageArray[i].LanguageId
 
-                            print(languagename.." "..languageId)
+                            print(languagename.."                                         "..languageId)
 
                 end
+
+                             LanguageLbl.text = languagename
+                             LanguageLbl.languageId = languageId
+
+                             LanguageLbl:setFillColor( 0 )
+                             LanguageLbl.size = 14
+
 
                 -- if languageArray[i].LanguageName ~= nil then
 
@@ -417,6 +458,92 @@ local function getLanguageDetails( response )
 
 
         end
+
+end
+
+
+
+
+
+
+
+
+local function onRowTouch(event) 
+
+    local row = event.row
+
+    if event.phase == 'release' then
+
+            List_bg.isVisible = false
+            List:deleteAllRows()
+            List.isVisible = false
+
+
+            if countryArray then
+
+                 row.id = row.index
+                 row.name = countryArray[row.index].name
+                 row.countrycode = countryArray[row.index].countrycode
+
+                 print("Country : "..row.id.." "..row.name)
+
+                             CountryLbl.text = row.name
+                             CountryLbl.value = row.id
+                             CountryLbl.countrycode = row.countrycode
+
+                             Webservice.GetCountryLanguagesbyCountryCode(CountryLbl.countrycode,getLanguageDetails)
+
+
+            end
+
+
+            if languageArray then
+
+                --print("dsdfdf "..json.encode(languageArray))
+
+                 row.id = row.index
+                 row.languagename = languagename
+                 row.languageid = languageId
+
+                 print("Language : "..row.languagename)
+
+
+                             LanguageLbl.text = row.languagename
+                             LanguageLbl.value = row.id
+                             LanguageLbl.languageId = row.languageid
+
+                             LanguageLbl:setFillColor( 0 )
+                             LanguageLbl.size = 14
+
+
+            elseif List.arrayName == positionArray then
+
+                 row.id = row.index
+                 row.name = List.arrayName[row.index]
+
+
+                 print("Position : "..row.id.." "..row.name)
+
+                             PositionLbl.text = row.name
+
+                             if PositionLbl.text:len() > 22 then
+
+                                 PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
+
+                             end
+
+                             PositionLbl.value = row.id
+
+                             PositionLbl:setFillColor( 0 )
+                             PositionLbl.size = 14
+
+
+            end
+
+            scrollTo(0)
+
+
+    end
 
 end
 
@@ -464,87 +591,6 @@ local function scrollTo(position)
 end
 
 
-
-
-
-local function onRowTouch(event) 
-
-    local row = event.row
-
-    if event.phase == 'release' then
-
-            List_bg.isVisible = false
-            List:deleteAllRows()
-            List.isVisible = false
-
-
-            if countryArray then
-
-                 row.id = row.index
-                 row.name = countryArray[row.index].name
-                 row.countrycode = countryArray[row.index].countrycode
-
-                 print("Country : "..row.id.." "..row.name)
-
-                             CountryLbl.text = row.name
-                             CountryLbl.value = row.id
-                             CountryLbl.countrycode = row.countrycode
-
-                             Webservice.GetCountryLanguagesbyCountryCode(CountryLbl.countrycode,getLanguageDetails)
-
-
-            end
-
-
-            if languageArray then
-
-                print("dsdfdf "..json.encode(languageArray))
-
-                 row.id = row.index
-                 row.languagename = languagename
-                 row.languageid = languageId
-
-                 print("Language : "..row.id.." "..row.languagename)
-
-
-                             LanguageLbl.text = row.languagename
-                             LanguageLbl.value = row.id
-                             LanguageLbl.languageId = row.languageid
-
-                             LanguageLbl:setFillColor( 0 )
-                             LanguageLbl.size = 14
-
-
-            elseif List.arrayName == positionArray then
-
-                 row.id = row.index
-                 row.name = List.arrayName[row.index]
-
-
-                 print("Position : "..row.id.." "..row.name)
-
-                             PositionLbl.text = row.name
-
-                             if PositionLbl.text:len() > 22 then
-
-                                 PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
-
-                             end
-
-                             PositionLbl.value = row.id
-
-                             PositionLbl:setFillColor( 0 )
-                             PositionLbl.size = 14
-
-
-            end
-
-            scrollTo(0)
-
-
-    end
-
-end
 
 
 
