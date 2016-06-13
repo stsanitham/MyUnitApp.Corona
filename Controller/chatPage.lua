@@ -307,7 +307,21 @@ local function attachAction( event )
 		elseif event.target.id == "video" then
 
 
+			   local options = {
+				      		effect = "fromTop",
+							time = 200,	
+								params = {
+								contactId = To_ContactId,
+								MessageType = MessageType,
+								page = "chat"
+							}
 
+							}
+
+
+			ChatBox.isVisible=false
+
+		    composer.showOverlay( "Controller.messagePage",options)
 
 
 		elseif event.target.id == "audio" then

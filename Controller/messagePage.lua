@@ -232,50 +232,6 @@ end
 
 
 
-local function MessageLimitation( event )
-
-	   if event.phase == "began" then
-
-	   	print( "123" )
-
-	   elseif event.phase == "submitted" then
-
-			   
-		   if event.target.id =="messagecontent" then
-
-		   		native.setKeyboardFocus( nil )
-
-		   		native.setKeyboardFocus( feed_url )
-
-		   end
-
-	   elseif event.phase == "editing" then
-
-	  
-
-		if (string.len(event.target.text) > 160) then
-
-		       event.target.text = event.target.text:sub(1, 160)
-		end
-
-		print( event.newCharacters )
-
-	    if (event.newCharacters=="\n") then
-
-
-			Message_content.text = string.gsub( Message_content.text,"%\n","" )
-
-			native.setKeyboardFocus( nil )
-			
-			native.setKeyboardFocus( feed_url )
-
-		end
-
-	end
-
-end
-
-
 	local function bgTouch( event )
 
 	if event.phase == "began" then
@@ -291,334 +247,7 @@ end
 	end
 
 
---------------------------------------------------- message sending functions----------------------------------------
 
-
-	function MessageSending( Request_response )
-
-	print("response after sending message ",Request_response)
-
-	end
-
-
-
-	function get_messagemodel(response)
-
-		MessageSending(response)
-
-		print("SuccessMessage")
-
-		if response.MessageStatus == "SEND" then
-
-		local sentalert = native.showAlert( Message.SuccessMsg, Message.SuccessContent, { CommonWords.ok })
-
-	    elseif response.MessageStatus == "DRAFT" then
-
-		local sentalert = native.showAlert( Message.SuccessMsg, Message.DraftContent, { CommonWords.ok })
-
-		else
-
-		end
-
-		Message_content.text = ""
-
-		Message_content.placeholder = Message.Message_placeholder 
-		
-		feed_url.isVisible = true
-
-		feed_url.text = ""
-
-		Imagepath = ""
-
-		Imagename = ""
-
-		Imagesize = ""
-
-		url_dropdown.text = "YouTube"
-
-			image_name_png.text = ""
-
-			upload_button.isVisible = true
-
-			image_content_bg.isVisible = true
-
-			image_name_close.isVisible = false
-
-			upload_text.isVisible = true
-
-			photodetail_bg.isVisible = false
-
-	end
-
-
-
-    local function sendMessage ( method )
-
-		    if Message_content.text == nil  then
-
-		    	Message_content.text = ""
-
-		    end
-
-
-		Webservice.SEND_MESSAGE(Message_content.text,feed_url.text,Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
-
-    end
-
-    ----------------------------------------------------------------
-
-
-
--------------------image sending functions------------------------------
-
-  
-
-
-	function get_imagemodel(response)
-
-		print("SuccessMessage")
-
-		print( "content : "..response.Abspath )
-
-		--local sentalert = native.showAlert( Message.SuccessMsgForImage, Message.SuccessContentForImage, { CommonWords.ok })
-
-		Imagepath = response.Abspath
-
-		Imagename = response.FileName
-
-		Imagesize = size
-
-		print("Imagesize................",Imagesize)
-
-			image_name_png.isVisible = true
-
-			photodetail_bg.isVisible = true
-
-			image_name_png.text = Imagename
-
-			image_content_bg.isVisible = true
-
-			upload_button.isVisible = false
-
-			upload_text.isVisible = false
-
-			image_name_close.isVisible = true
-
-   --          local options =
-			-- {
-			--    to = { "anitha.mani@w3magix.com" },
-			--    subject = "Corona Mail",
-			--     body = "content : "..response.Abspath,
-			   
-			-- }
-   --          native.showPopup("mail", options)
-
-	end
-
-
-
-    local function sendImage( )
-
-	Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
-
-    end
-
------------------------------------------------------------------------
-
-
-	-- function onComplete12( event )
-	-- 	print("success")
-	-- end
-
-
-    function formatSizeUnits(event)
-
-      if (event>=1073741824) then 
-
-      	size=(event/1073741824)..' GB'
-
-      print("size of the image11 ",size)
-
-
-      elseif (event>=1048576) then   
-
-       	size=(event/1048576)..' MB'
-
-      print("size of the image 22",size)
-
-	  
-	  elseif (event > 10485760) then
-
-	  print("highest size of the image ",size)
-
-	    local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
-
-	       
-      elseif (event>=1024)  then   
-
-      	size = (event/1024)..' KB'
-
-       print("size of the image 33",size)
-
-      else      
-
-  	  end
-
-      --  local alert = native.showAlert(Message.FileSelect, size, {"OK"} , onComplete12)
-
-	end
-
-
-
-
-
-     local function selectionComplete ( event )
-
-        print(event.target)
- 
-        local photo = event.target
-
-	    
-	 --    local options =
-		-- {
-		--    to = { "anitha.mani@w3magix.com" },
-		--    subject = "Photo Size",
-		--     body = "content : "..photo.size,
-		   
-		-- }
-     --    native.showPopup("mail", options)
-
-
-        local baseDir = system.DocumentsDirectory
-
-        if photo then
-
-        photo.x = display.contentCenterX
-		photo.y = display.contentCenterY
-		local w = photo.width
-		local h = photo.height
-		print( "w,h = ".. w .."," .. h )
-
-		local function rescale()
-					
-					if photo.width > W or photo.height > H then
-
-						photo.width = photo.width/2
-						photo.height = photo.height/2
-
-						intiscale()
-
-					else
-               
-						return false
-
-					end
-				end
-
-		function intiscale()
-			
-			if photo.width > W or photo.height > H then
-
-				photo.width = photo.width/2
-				photo.height = photo.height/2
-
-				rescale()
-
-			else
-
-				return false
-
-			end
-
-		end
-
-			intiscale()
-
-		photoname = "photo.jpg"
-
-        display.save(photo,photoname,system.DocumentsDirectory)
-
-        photo:removeSelf()
-
-        photo = nil
-
-
-        path = system.pathForFile( photoname, baseDir)
-
-        local size = lfs.attributes (path, "size")
-
-		local fileHandle = io.open(path, "rb")
-
-		file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
-
-		io.close( fileHandle )
-
-            print("mime conversion ",file_inbytearray)
-
-        	print("bbb ",size)
-
-        	formatSizeUnits(size)
-
-        	sendImage()
-
-	else
-
-	end
-
-end
-
-
-
-local function onComplete(event)
-
-	if "clicked"==event.action then
-
-		local i = event.index 
-
-	if 1 == i then
-
-		if media.hasSource( PHOTO_FUNCTION  ) then
-		timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
-		end )
-	    end
-
-	elseif 2 == i then
-
-		if media.hasSource( media.Camera ) then
-        timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
-		end )
-	    end
-
-		end
-
-end
-
-end
-
-
-    function onImageButtonTouch( event )
-
-    	local phase = event.phase
-
-    	if phase=="began" then
-
-    		display.getCurrentStage():setFocus( event.target )
-
-	
-    	elseif phase=="ended" then
-
-    	display.getCurrentStage():setFocus( nil )
-
-    	--sendMessage("SEND")
-
-        local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
-
-	
-	return true
-
-    end
-
-    end
 
 
 
@@ -640,32 +269,6 @@ end
   	    	native.setKeyboardFocus(nil)
 
     	    display.getCurrentStage():setFocus( nil )
-
-
-			if (Message_content.text == "" or Message_content.text == nil) and (feed_url.text == "" or feed_url.text == nil) and (Imagepath == "" or Imagepath == nil) then
-
-
-					if url_dropdown.text == "YouTube" or url_dropdown.text == "Vimeo" or url_dropdown.text == "Facebook" or url_dropdown.text == "Yahoo" then
-
-				    if event.target.id == "send" then
-
-					local alert = native.showAlert( Message.ErrorTitle, Message.ErrorMessage, { CommonWords.ok } )
-
-					elseif event.target.id == "draft" then
-
-					local alert = native.showAlert( "Saving Failed", Message.ErrorMessage, { CommonWords.ok } )
-
-				    end
-
-					return false
-
-				    else
-
-			    	--sendMessage("SEND")
-
-			        end
-
-	        end
 
 
     	    if url_dropdown.text == "YouTube" then
@@ -714,17 +317,7 @@ end
 
     	    	 	print("success loop")
 
-    	    	 	  if event.target.id == "send" then
-
-    	    			 sendMessage("SEND")	
-
-    	    			 elseif event.target.id == "draft" then
-
-    	    			 sendMessage("DRAFT")
-
-    	    			 else	
-
-    	    		end
+    	    	 	 
 
     	    end
 
@@ -778,18 +371,7 @@ end
 
     	    	 	-- sendMessage("SEND")
 
-    	    	 	 if event.target.id == "send" then
-
-    	    			 sendMessage("SEND")	
-
-    	    			 elseif event.target.id == "draft" then
-
-    	    			 sendMessage("DRAFT")
-
-    	    			 else	
-
-    	    	    end
-
+    	    	 	 
     	    end
 
     	elseif url_dropdown.text == "Facebook" then
@@ -845,18 +427,7 @@ end
 
     	    	 	 --sendMessage("SEND")
 
-    	    	 	  if event.target.id == "send" then
-
-    	    			 sendMessage("SEND")	
-
-    	    			 elseif event.target.id == "draft" then
-
-    	    			 sendMessage("DRAFT")
-
-    	    			 else	
-
-    	    		end
-
+    	    	 	 
     	    end
 
     	    elseif url_dropdown.text == "Yahoo" then
@@ -925,18 +496,7 @@ end
     	    	 	print("success loop")
 
     	    	 	-- sendMessage("SEND")
-    	    	 	 if event.target.id == "send" then
-
-    	    			 sendMessage("SEND")	
-
-    	    			 elseif event.target.id == "draft" then
-
-    	    			 sendMessage("DRAFT")
-
-    	    			 else	
-
-    	    		 end
-
+    	    	 	
     	    end
 
 		 end
@@ -969,68 +529,8 @@ end
 
 
 
-	function ImageClose(event)
-
-	    local phase = event.phase
-
-		if phase=="began" then
-
-			display.getCurrentStage():setFocus( event.target )
-
-			--native.setKeyboardFocus(nil)
-
-		elseif phase=="ended" then
-
-			display.getCurrentStage():setFocus( nil )
-
-			image_name_png.text = ""
-
-			upload_button.isVisible = true
-
-			image_content_bg.isVisible = true
-
-			image_name_close.isVisible = false
-
-			photodetail_bg.isVisible = false
-
-			upload_text.isVisible = true
-
-			print("imagepath..........................",Imagepath)
-
-			os.remove( path )
-
-            print("imagepath removal..........................",os.remove( path ))
-
-		end
-
-	end
 
 
-
-	local pushTest = function( event )
-
-	    if notificationFlag == false then
-
-	    	--feed_url.isVisible=true
-
-	    	feed_url_bg.isVisible = true
-
-	    	Message_content_bg.isVisible = false
-
-	    	Message_content.isVisible = true
-		
-	    elseif notificationFlag == true then
-
-	    	feed_url.isVisible=false
-
-	    	feed_url_bg.isVisible = true
-
-	    	Message_content.isVisible = false
-
-	    	Message_content_bg.isVisible = true
-		
-	    end
-	end
 
 
 local function onTimer ( event )
@@ -1082,188 +582,22 @@ local function onKeyEvent( event )
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
+	Background.alpha = 0.01
 
-	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
-	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-
-	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
-	menuBtn.anchorX=0
-	menuBtn.x=10;menuBtn.y=20;
-
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-	BgText.anchorX=0
-
-	title_bg = display.newRect(sceneGroup,0,0,W,30)
-	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-
-	title = display.newText(sceneGroup,"",0,0,native.systemFont,18)
-	title.anchorX = 0
-	title.x=5;title.y = title_bg.y
-	title:setFillColor(0)
-
-	--------------textbox for message--------------
-
-	Message_content_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+60)
-  	Message_content_bg:setStrokeColor(0,0,0,0.4)
-  	Message_content_bg.x = title_bg.x-title_bg.contentWidth/2+160
-  	Message_content_bg.y =title_bg.y+ title_bg.contentHeight/2+55
-  	Message_content_bg.hasBackground = true
-	Message_content_bg.strokeWidth = 1
-
-
-	Message_content = native.newTextBox( Message_content_bg.width,Message_content_bg.height,W-20, EditBoxStyle.height+70)
-	Message_content.placeholder = Message.Message_placeholder 
-	Message_content.isEditable = true
-	Message_content.size=14
-	Message_content.value=""
-	Message_content.id = "messagecontent"
-	Message_content.hasBackground = true
-	Message_content:setReturnKey( "done" )
-	Message_content.inputType = "default"
-	sceneGroup:insert(Message_content)
-	Message_content.x=title_bg.x-title_bg.contentWidth/2+160;Message_content.y=title_bg.y+ title_bg.contentHeight/2+55
-
-
-
-	-----------------upload button------------------
-
-	image_content_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+45)
-  	image_content_bg:setStrokeColor(0,0,0,0.2)
-  	image_content_bg.x = Message_content_bg.x
-  	image_content_bg.hasBackground = true
-  	image_content_bg.anchorY=0
-  	image_content_bg.y = Message_content_bg.y + Message_content.contentHeight/2 + 12
-	image_content_bg.strokeWidth = 1
-
-	upload_button = display.newRect(sceneGroup,0,0,W,10)
-	upload_button.x=image_content_bg.x-image_content_bg.contentWidth/2 + 64
-	upload_button.width = W-210
-	upload_button.anchorY=0
-	upload_button.y = image_content_bg.y+2
-	upload_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
-	upload_button.id="upload"
-
-	image_content_bg.height = image_content_bg.height+upload_button.contentHeight
-
-
-
-	upload_icon = display.newImageRect("res/assert/upload.png",16,15)
-	upload_icon.id = "image upload"
-	sceneGroup:insert(upload_icon)
-	upload_icon.x= upload_button.x - upload_button.contentWidth/2+15
-	upload_icon.y=upload_button.y
-
-	upload_button_text = display.newText(sceneGroup,Message.UploadButtonText,0,0,90,45,native.systemFont,12)
-	upload_button_text.x=upload_icon.x + upload_icon.contentWidth/2+3
-	upload_button_text.y=upload_button.y+5
-	upload_button_text.anchorX=0;upload_button_text.anchorY=0
-	Utils.CssforTextView(upload_button_text,sp_primarybutton)
-
-	upload_button.height = upload_button.height+upload_button_text.height/2
-	upload_icon.y=upload_button.y+upload_button.contentHeight/2
-
-	upload_button_text.y=upload_icon.y-upload_icon.contentHeight/2-6
-
-	if upload_button_text.text == "Add Image" then
-		upload_button_text.y=upload_icon.y-upload_icon.contentHeight/2
-	end
-
-------------------------border for inner upload text and default image------------------------------
-
-	inner_imgcontent_bg = display.newRect( sceneGroup, 0,0 , W/2-18,upload_button.height)
-  	inner_imgcontent_bg:setStrokeColor(0,0,0,0.2)
-  	inner_imgcontent_bg.x = image_content_bg.x-image_content_bg.contentWidth/2+ 190
-  	inner_imgcontent_bg.y = image_content_bg.y+2
-  	inner_imgcontent_bg.anchorY=0
-  	inner_imgcontent_bg.hasBackground = false
-	inner_imgcontent_bg.strokeWidth = 1
-
-	upload_text = display.newText(Message.UploadImageText,image_content_bg.x-image_content_bg.contentWidth/2+ 127,image_content_bg.y,native.systemFont,11)
-	upload_text.value = "uploadtext"
-	upload_text.id="uploadtext"
-	--upload_text.alpha=0.8
-	upload_text:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-	upload_text.y=inner_imgcontent_bg.y+inner_imgcontent_bg.contentHeight/2-upload_text.contentHeight/2
-	upload_text.x=inner_imgcontent_bg.x-inner_imgcontent_bg.contentWidth/2+2
-	upload_text.anchorX=0
-	upload_text.anchorY=0
-	upload_text.isVisible = true
-	sceneGroup:insert(upload_text)
-
-	----------------------border for default image----------------------------------------------------
-
-	inner_default_bg = display.newRect( sceneGroup, 0,0 , 30, upload_button.height)
-  	inner_default_bg:setStrokeColor(0,0,0,0.15)
-  	inner_default_bg:setFillColor(0,0,0,0.2)
-  	inner_default_bg.anchorY=0;inner_default_bg.anchorX=0
-  	inner_default_bg.x = inner_imgcontent_bg.x+inner_imgcontent_bg.contentWidth/2
-  	inner_default_bg.y = inner_imgcontent_bg.y+inner_imgcontent_bg.contentHeight/2-inner_default_bg.contentHeight/2-1
-  	inner_default_bg.hasBackground = true
-	inner_default_bg.strokeWidth = 1
-
-	upload_defaultimage = display.newImageRect("res/assert/img.png",28,19)
-	upload_defaultimage.id = "default image"
-	sceneGroup:insert(upload_defaultimage)
-	upload_defaultimage.x= inner_default_bg.x +inner_default_bg.contentWidth/2
-	upload_defaultimage.y=inner_default_bg.y+inner_default_bg.contentHeight/2
-
-	upload_defaulttext = display.newText(Message.MaximumUpload,image_content_bg.x-image_content_bg.contentWidth/2 + 10,image_content_bg.y+ 30,W-40,0,native.systemFont,11.5)
-	upload_defaulttext.value = "defaulttext"
-	upload_defaulttext.id="defaulttext"
-	upload_defaulttext:setFillColor( 0,0,0,0.5)
-	upload_defaulttext.x=image_content_bg.x-image_content_bg.contentWidth/2 + 10
-	upload_defaulttext.y=upload_button.y +upload_button.contentHeight+1
-	upload_defaulttext.anchorX=0;upload_defaulttext.anchorY=0
-	upload_defaulttext.isVisible = true	
-	sceneGroup:insert(upload_defaulttext)
-
-
-	photodetail_bg = display.newRect( sceneGroup, 0,0 , W/2+92, EditBoxStyle.height)
-  	photodetail_bg:setStrokeColor(0,0,0,0.12)
-  	photodetail_bg.x = image_content_bg.x-image_content_bg.contentWidth/2+ 134
-  	photodetail_bg.y = upload_button.y+upload_button.contentHeight/2
-  	photodetail_bg.isVisible=false
-  	photodetail_bg.hasBackground = false
-	photodetail_bg.strokeWidth = 1
-
-
-
-	--------------image name & image name cancel-------------------------
-
-	image_name_png = display.newText(sceneGroup,"",Message_content_bg.x,Message_content_bg.y + Message_content.contentHeight/2 + 30,native.systemFont,14)
-	image_name_png.text = ""
-	image_name_png.value = "imagenamepng"
-	image_name_png.id="imagenamepng"
-	image_name_png:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
-	image_name_png.x = photodetail_bg.x - 75
-	image_name_png.y=photodetail_bg.y 
-	image_name_png.isVisible = false
-	--image_name_png.anchorX=0
-
-	image_name_close = display.newImageRect("res/assert/icon-close.png",20,20)
-	image_name_close.id = "image close"
-	image_name_close.anchorX=0
-	sceneGroup:insert(image_name_close)
-	image_name_close.x= photodetail_bg.x + photodetail_bg.contentWidth/2 - 30
-	image_name_close.isVisible = false
-	image_name_close.y=Message_content_bg.y + Message_content.contentHeight/2 +27
-
+	
 
     --------------url dropdown for selection-------
 
 
     video_outer_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+130)
-  	video_outer_bg:setStrokeColor(0,0,0,0.12)
+  	video_outer_bg:setStrokeColor(Utils.convertHexToRGB(color.tabBarColor))
   	--video_outer_bg:setFillColor(0,0,0,0.2)
-  	video_outer_bg.x = image_content_bg.x
-  	video_outer_bg.y = image_content_bg.y+image_content_bg.height+video_outer_bg.contentHeight/2
+  	video_outer_bg.x = W/2
+  	video_outer_bg.y = H/2
   	video_outer_bg.hasBackground = true
 	video_outer_bg.strokeWidth = 1
 
-	url_dropdown_bg = display.newRect(sceneGroup,W/2, image_content_bg.y+30, W-37, EditBoxStyle.height)
+	url_dropdown_bg = display.newRect(sceneGroup,W/2, video_outer_bg.y, W-37, EditBoxStyle.height)
 	url_dropdown_bg.id="eventname"
 	url_dropdown_bg.x = W/2
 	url_dropdown_bg.y = video_outer_bg.y- video_outer_bg.contentHeight/2 + 15
@@ -1301,14 +635,14 @@ local function onKeyEvent( event )
 
 	feed_url = native.newTextField(0, 0, W-70 , EditBoxStyle.height)
 	feed_url.id = "video url"
-	feed_url.anchorX=0
+	--feed_url.anchorX=0
 	feed_url.size=14
 	feed_url.value=""
 	feed_url.hasBackground = true
 	feed_url.inputType = "url"
 	feed_url.isVisible = true
 	sceneGroup:insert(feed_url)
-	feed_url.x=title_bg.x-title_bg.contentWidth/2+20
+	feed_url.x=display.contentWidth/2- 15
 	feed_url.y=url_textcontent.y+ url_textcontent.contentHeight/2+20
 
 	feed_url_bg = display.newRect( sceneGroup, W/2+10, feed_url.y, W-70, EditBoxStyle.height)
@@ -1361,70 +695,6 @@ local function onKeyEvent( event )
 	Utils.CssforTextView(feed_cancelbutton_text,sp_primarybutton)
 
 
-	--------send button----------------------
-
-	send_button = display.newRect(sceneGroup,0,0,W-50,26)
-	send_button.x=Message_content.x-75
-	send_button.y = video_outer_bg.y + video_outer_bg.contentHeight/2 +10
-	send_button.width = W-175
-	send_button.anchorY=0
-	send_button:setFillColor( Utils.convertHexToRGB(color.darkgreen) )
-	send_button.id="send"
-
-
-
-	send_icon = display.newImageRect("res/assert/send.png",16,14)
-	send_icon.id = "send icon"
-	sceneGroup:insert(send_icon)
-	send_icon.anchorY=0
-	send_icon.x= send_button.x - send_button.contentWidth/2+10
-	send_icon.y=send_button.y+send_button.contentHeight/2-send_icon.contentHeight/2
-
-	send_button_text = display.newText(sceneGroup,Message.SendButton,0,0,send_button.contentWidth-12,0,native.systemFont,14)
-	send_button_text.anchorX=0
-	send_button_text.anchorY=0
-	send_button_text.x=send_icon.x+10
-	send_button_text.y=send_icon.y
-	Utils.CssforTextView(send_button_text,sp_primarybutton)
-
-	send_button.height=send_button_text.contentHeight+10
-
-
-	--------draft button----------------------
-
-	draft_button = display.newRect(sceneGroup,0,0,W-50,26)
-	draft_button.x=Message_content.x+75
-	draft_button.y =send_button.y 
-	draft_button.width = W-175
-	draft_button.anchorY=0
-	draft_button:setFillColor( 0,0,0,0.7 )
-	draft_button.id="draft"
-
-	draft_icon = display.newImageRect("res/assert/draft.png",16,14)
-	draft_icon.id = "draft icon"
-	draft_icon.anchorY=0
-	sceneGroup:insert(draft_icon)
-	draft_icon.x= draft_button.x - draft_button.contentWidth/2+15
-	draft_icon.y=draft_button.y+draft_button.contentHeight/2-draft_icon.contentHeight/2
-
-	draft_button_text = display.newText(sceneGroup,Message.DraftButton,0,0,draft_button.contentWidth-12,0,native.systemFont,14)
-	draft_button_text.x=draft_icon.x+10
-	draft_button_text.y=draft_icon.y
-	draft_button_text.anchorY=0
-	draft_button_text.anchorX=0
-	Utils.CssforTextView(draft_button_text,sp_primarybutton)
-
-	draft_button.height= draft_button_text.contentHeight+10
-
-
-	-- photodetail_bg = display.newRect( sceneGroup, 0,0 , W/2+90, EditBoxStyle.height)
- --  	photodetail_bg:setStrokeColor(0,0,0,0.12)
- --  	photodetail_bg.x = image_content_bg.x-image_content_bg.contentWidth/2+ 134
- --  	photodetail_bg.y = upload_button.y
- --  	photodetail_bg.isVisible=false
- --  	photodetail_bg.hasBackground = false
-	-- photodetail_bg.strokeWidth = 1
-
 
     MainGroup:insert(sceneGroup)
 
@@ -1458,7 +728,7 @@ end
   	}
 
 		VideoTypeList.x=url_dropdown_bg.x
-		VideoTypeList.y= image_content_bg.y+image_content_bg.contentHeight+5
+		VideoTypeList.y= video_outer_bg.y+video_outer_bg.contentHeight+5
 	--	VideoTypeList.y=EventnameTop.y+EventnameTop.height/2
 		VideoTypeList.height = 150
 		VideoTypeList.width = url_dropdown_bg.contentWidth-2
@@ -1485,20 +755,11 @@ end
 
 	elseif phase == "did" then
 
-		composer.removeHidden()
-
-	send_button:addEventListener("touch",onSendButtonTouch)	
-	draft_button:addEventListener("touch",onSendButtonTouch)	
-	upload_button:addEventListener("touch",onImageButtonTouch)
 	feed_cancelbutton:addEventListener("touch",onCancelButtonTouch)
-	Message_content:addEventListener( "userInput", MessageLimitation )
 	--url_dropdown_bg:addEventListener("touch",urlSelection)
 	feed_url:addEventListener("userInput",textfield)
 	url_dropdown_bg:addEventListener("touch",onTouchAction)
-	menuBtn:addEventListener("touch",menuTouch)
-    BgText:addEventListener("touch",menuTouch)
-    Runtime:addEventListener( "enterFrame", pushTest )
-    Background:addEventListener("touch",FocusComplete)
+    Background:addEventListener("touch",bgTouch)
     image_name_close:addEventListener( "touch", ImageClose )
 
     Runtime:addEventListener( "key", onKeyEvent )
@@ -1519,19 +780,11 @@ end
 
 	if event.phase == "will" then
 
-	Runtime:removeEventListener( "enterFrame", pushTest )
-	upload_button:removeEventListener("touch",onImageButtonTouch)
 	feed_cancelbutton:removeEventListener("touch",onCancelButtonTouch)
 	url_dropdown_bg:removeEventListener("touch",onTouchAction)
-	menuBtn:removeEventListener("touch",menuTouch)
-	BgText:removeEventListener("touch",menuTouch)
-	Message_content:removeEventListener( "userInput", MessageLimitation )
 	--url_dropdown_bg:removeEventListener("touch",urlSelection)
 	feed_url:removeEventListener("userInput",textfield)
-	send_button:removeEventListener("touch",onSendButtonTouch)	
-	draft_button:removeEventListener("touch",onSendButtonTouch)	
 	Background:removeEventListener("touch",FocusComplete)
-	image_name_close:removeEventListener( "touch", ImageClose )
 
 	Runtime:removeEventListener( "key", onKeyEvent )
 
