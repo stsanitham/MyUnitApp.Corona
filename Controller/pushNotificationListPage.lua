@@ -1267,18 +1267,20 @@ function scene:resumeGame(value,EditArray,pagevalue)
 
 					if openPage == "pushNotificationListPage" then
 
-						local options = 
-						{
-							isModal = true,
-							effect = "slideLeft",
-							time = 1,
-							params = 
-							{
-								messagelistvalues = EditArray
-							}
-						}
+					-- 	local options = 
+					-- 	{
+					-- 		isModal = true,
+					-- 		effect = "slideLeft",
+					-- 		time = 1,
+					-- 		params = 
+					-- 		{
+					-- 			messagelistvalues = EditArray
+					-- 		}
+					-- 	}
 
-					composer.showOverlay( "Controller.pushNotificationDetailPage", options )
+					-- composer.showOverlay( "Controller.pushNotificationDetailPage", options )
+
+						Runtime:addEventListener( "key", onKeyEvent )
 
 					end
 
@@ -1476,7 +1478,23 @@ end
 
 	function get_messagemodel(response)
 
+			for j=1, #messageList_array do 
 
+				display.remove(messageList_array[#messageList_array])
+				messageList_array[#messageList_array] = nil
+			end
+
+			for j=1, #sentmessageList_array do 
+
+				display.remove(sentmessageList_array[#sentmessageList_array])
+				sentmessageList_array[#sentmessageList_array] = nil
+			end
+
+			for j=1, #draftmessageList_array do 
+
+				display.remove(draftmessageList_array[#draftmessageList_array])
+				draftmessageList_array[#draftmessageList_array] = nil
+			end
 
 	    local listener = {}
 			function listener:timer( event )

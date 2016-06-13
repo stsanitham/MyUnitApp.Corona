@@ -282,7 +282,7 @@ local v
 if DocumentUpload == "" then
 	DocumentUpload=  "' '"
 else
-	DocumentUpload = "["..json.encode(DocumentUpload).."]"
+	DocumentUpload = json.encode(DocumentUpload)
 end
 
 if Message_Type ~= nil and Message_Type ~= "" then

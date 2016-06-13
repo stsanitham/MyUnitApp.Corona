@@ -341,8 +341,83 @@ local function sendAction( method,IsScheduled,Date,Time )
 			timer.performWithDelay( 1000, listener )
 
 		
+		 elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) and (filename.text ~= "" and filename.isVisible == true ) then
+
+		 	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+					
+					ImagePath= filename.text or ""
+					AudioPath=Audio_filename.text or ""
+					VideoPath="NULL"
+					MyUnitBuzz_LongMessage=longMessage
 
 
+					local imgpath = system.pathForFile( filename.text, system.DocumentsDirectory)
+
+						        local Imagesize = lfs.attributes (imgpath, "size")
+
+								local fileHandle = io.open(imgpath, "rb")
+
+								local Img_file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+								formatSizeUnits(Imagesize)
+
+
+						local ConversionFirstName,ConversionLastName,GroupName
+						local DocumentUpload = {}
+
+							ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+						
+									  DocumentUpload[1] = {
+									  		UserId = UserId,
+									        File = Img_file_inbytearray,
+									        FileName = filename.text,
+									        FileType = "Images"
+									    }
+							local audio_path = system.pathForFile( Audio_filename.text, system.DocumentsDirectory)
+
+						    local Audiosize = lfs.attributes (audio_path, "size")
+
+							local audio_fileHandle = io.open(audio_path, "rb")
+
+							local audio_file_inbytearray = mime.b64( audio_fileHandle:read( "*a" ) )
+
+							formatSizeUnits(Audiosize)
+			
+				
+							  DocumentUpload [2]= {
+							  	UserId = UserId,
+							        File = audio_file_inbytearray,
+							        FileName = Audio_filename.text,
+							        FileType = "Audios"
+							    }
+
+			
+						--MessageFileType="Audios"
+							
+						MessageFileType="Images"
+
+					
+
+					 Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
+
+					spinner_show()
+
+					spinner.y=H/2-30
+
+					      	local options = {
+
+							effect = "slideRight",
+							time = 300,
+							params = { pushlistvalues = method,page = "compose"}
+				   			 }
+
+					    	local listener = {}
+							function listener:timer( event )
+							    composer.gotoScene("Controller.pushNotificationListPage",options)
+							end
+
+			timer.performWithDelay( 1000, listener )
 
 		  elseif (shortmsg_textbox.text ~= "") and (filename.text ~= "" and filename.isVisible == true ) then
 

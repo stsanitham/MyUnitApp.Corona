@@ -469,13 +469,13 @@ local function Broadcast_list( list )
 
 			local profilrPic=""
 			if ContactId == list[i].Message_From then
-				Name=list[i].Message_To
-				profilrPic=list[i].ToName
+				Name=list[i].ToName
+				profilrPic=list[i].Message_To
 
 			elseif ContactId == list[i].Message_To then
 
-				profilrPic=list[i].Message_From
-				Name=list[i].FromName
+				profilrPic=list[i].FromName
+				Name=list[i].Message_From
 				
 			else
 				
