@@ -176,27 +176,26 @@ local function onRowRender( event )
              rowTitle = display.newText( row, countryArray[row.index].name, 0, 0, nil, 14 )
 
              row.name = countryArray[row.index].name
-             row.value = countryArray[row.index]
+             row.value = countryArray[row.index].countrycode
 
+             print("********** ".. row.name.." ".. row.value)
 
-                   if CountryLbl.text == RegistrationScreen.CountryUsaText then
+                   -- if CountryLbl.text == RegistrationScreen.CountryUsaText then
 
-                                List.arrayName = languageArray
+                   --              List.arrayName = languageArray
 
-                                print(" List.arrayName".. json.encode(List.arrayName))
+                   --  elseif CountryLbl.text == RegistrationScreen.CountryCanadaText then
 
-                    elseif CountryLbl.text == RegistrationScreen.CountryCanadaText then
+                   --              List.arrayName = languageArray
 
-                                List.arrayName = languageArray
-
-                    end
+                   --  end
 
 
         elseif languageArray then  
 
-            print("675567567567675675675675657675676767567675675")
+            -- print("675567567567675675675675657675676767567675675")
 
-            print("row render")
+            -- print("row render")
 
              rowTitle = display.newText( row, languageArray[row.index].name, 0, 0, nil, 14 )
 
@@ -336,7 +335,9 @@ local function CreateList(event,list,List_bg)
 
                         print("coming to language list")
 
-                            for i = 1, #languageArray do
+                            -- for i = 1, #languageArray do
+
+                            if languageArray then
 
                                 list:insertRow(
                                     {
@@ -381,28 +382,38 @@ local function getLanguageDetails( response )
 
         languageArray = response
 
+               -- CreateList("language",list,List_bg)
+
                 for i=1,#languageArray do
 
-                if languageArray[i].LanguageName ~= nil then
+                            languagename = languageArray[i].LanguageName
 
-                    languageArray[i].name = languageArray[i].LanguageName
+                            languageId = languageArray[i].LanguageId
 
-                    languageArrayDetail[#languageArrayDetail+1] = languageArray[i]
+                            print(languagename.." "..languageId)
 
                 end
 
-                if languageArray[i].LanguageId ~= nil then
+                -- if languageArray[i].LanguageName ~= nil then
+
+                --     languageArray[i].languagename = languageArray[i].LanguageName
+
+                --     languageArrayDetail[#languageArrayDetail+1] = languageArray[i]
+
+                -- end
+
+                -- if languageArray[i].LanguageId ~= nil then
                     
-                    languageArray[i].languageId = languageArray[i].LanguageId
+                --     languageArray[i].languageId = languageArray[i].LanguageId
 
-                    languageArrayDetail[#languageArrayDetail+1] = languageArray[i]
+                --     languageArrayDetail[#languageArrayDetail+1] = languageArray[i]
 
-                end
+                -- end
 
-                    --Webservice.GetCountryLanguagesbyCountryCode(countryArray[i].countrycode,getLanguageDetails)
+                --     --Webservice.GetCountryLanguagesbyCountryCode(countryArray[i].countrycode,getLanguageDetails)
 
 
-                end
+                -- end
 
 
         end
@@ -482,16 +493,21 @@ local function onRowTouch(event)
                              Webservice.GetCountryLanguagesbyCountryCode(CountryLbl.countrycode,getLanguageDetails)
 
 
-            elseif languageArray then
+            end
+
+
+            if languageArray then
+
+                print("dsdfdf "..json.encode(languageArray))
 
                  row.id = row.index
-                 row.name = languageArray[row.index].name
-                 row.languageid = languageArray[row.index].languageId
+                 row.languagename = languagename
+                 row.languageid = languageId
 
-                 print("Language : "..row.id.." "..row.name)
+                 print("Language : "..row.id.." "..row.languagename)
 
 
-                             LanguageLbl.text = row.name
+                             LanguageLbl.text = row.languagename
                              LanguageLbl.value = row.id
                              LanguageLbl.languageId = row.languageid
 
