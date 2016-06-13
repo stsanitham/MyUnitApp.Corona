@@ -172,7 +172,7 @@ local function onRowRender( event )
     renderArray = List.arrayName
 
 
-    print("renderArray "..json.encode(renderArray))
+    --print("renderArray "..json.encode(renderArray))
 
 
 
