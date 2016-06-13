@@ -2652,7 +2652,7 @@ function Webservice.GetPositionbyCountryIdandLanguageId(countrycode,languageid,p
 
 	request.new(ApplicationConfig.GetPositionbyCountryIdandLanguageId..resbody,method,params,postExecution)
 
-    print("request for special recognition details : "..json.encode(params))
+    print("request for special recognition position details : "..json.encode(params))
 
 	
 	return response
