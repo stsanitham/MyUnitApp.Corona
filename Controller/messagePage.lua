@@ -506,33 +506,22 @@ end
     end
 
 
+local function onCancelButtonTouch( event )
+    if event.phase == "began" then
+            display.getCurrentStage():setFocus( event.target )
+              print( "23312" )
+    elseif event.phase == "ended" then
+            display.getCurrentStage():setFocus( nil )
+            print( "sdfsdf sdfds" )
+            feed_url.text = ""
+    end
 
-	function onCancelButtonTouch(event)
+return true
 
-	    local phase = event.phase
-
-		if phase=="began" then
-
-			display.getCurrentStage():setFocus( event.target )
-
-			--native.setKeyboardFocus(nil)
-
-		elseif phase=="ended" then
-
-			display.getCurrentStage():setFocus( nil )
-
-			feed_url.text = ""
-
-		end
-
-	end
+end
 
 
-
-
-
-
-
+	
 local function onTimer ( event )
 
 	print( "event time completion" )
@@ -710,7 +699,8 @@ end
 
 	if phase == "will" then
 
-  		EventnameTop_bg = display.newRect( VideoUrlGroup, url_dropdown_bg.x , H/2+111.5, url_dropdown_bg.contentWidth, 125)
+  		EventnameTop_bg = display.newRect( VideoUrlGroup, url_dropdown_bg.x , url_dropdown_bg.y+url_dropdown_bg.contentHeight/2, url_dropdown_bg.contentWidth, 125)
+       -- EventnameTop_bg
   		EventnameTop_bg:setFillColor(0,0,0)
 
   	    VideoTypeList = widget.newTableView
