@@ -204,12 +204,12 @@ local function onRowRender( event )
 
            
 
-          if CountryLbl.text == row.name  or  LanguageLbl.text == row.name or  PositionLbl.text == row.name then
+          if CountryLbl.text == row.name  or  LanguageLbl.text == row.name or  PositionLabelValue == row.name then
 
 
               print(" true tick")
 
-              print(PositionLbl.text .. "     0000000     "..renderArray[row.index].name)
+             -- print(PositionLabelValue.. "     0000000     "..renderArray[row.index].name)
                 tick.isVisible = true
 
           else
@@ -290,7 +290,7 @@ local function CreateList(event,list,List_bg)
 
                     elseif event == "position" then
 
-                        List_bg.height = 78
+                        List_bg.height = 77
                         list.height = List_bg.height
                         List_bg.y = Language_bg.y+Language_bg.height+28
                         List.y = List_bg.y
@@ -356,6 +356,8 @@ local function getPositionDetails( response )
 
                 PositionLbl.text = response[1].PositionName
                 PositionLbl.countrycode = response[1].PositionId
+
+                PositionLabelValue = PositionLbl.text
 
 
                              --  if PositionLbl.text:len() > 22 then
@@ -481,9 +483,17 @@ local function onRowTouch(event)
 
                               if PositionLbl.text:len() > 22 then
 
-                                 PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
+                                 PositionLabelValue = PositionLbl.text
 
-                             end
+                                 PositionLbl.text =  PositionLabelValue:sub(1,22)..".."
+
+                              elseif PositionLbl.text:len() <= 22 then
+
+                                 PositionLabelValue = PositionLbl.text
+
+                                 PositionLbl.text =  PositionLabelValue
+
+                              end
 
                 end
 
@@ -601,8 +611,6 @@ local function RegistrationProcess( )
 
                     Register_response = response
 
-                        print("response after registeration validation ",Register_response)
-
 
                         submit_spinner.isVisible = false
 
@@ -625,12 +633,12 @@ local function RegistrationProcess( )
                         LanguageLbl.text = languageArray[1].name
                         PositionLbl.text = positionArray[1].name
                         
-                      
-                        if Register_response.StatusType == "Success"  then
+                        
+                          if Register_response.StatusType == "Success"  then
 
-                          alertFun(RegistrationScreen.SuccessMessage,1)
+                            alertFun(RegistrationScreen.SuccessMessage,1)
 
-                        end
+                          end
 
 
                  end
@@ -998,17 +1006,17 @@ local function getCountryList(response)
 
 
 
-                CountryLbl.text = countryArray[1].name
-                CountryLbl.countrycode = countryArray[1].countrycode
-                CountryLbl.countryId = countryArray[1].countryId
+                    CountryLbl.text = countryArray[1].name
+                    CountryLbl.countrycode = countryArray[1].countrycode
+                    CountryLbl.countryId = countryArray[1].countryId
 
-                 -- List.countrycode =  countryArray[i].countrycode
+                     -- List.countrycode =  countryArray[i].countrycode
 
-                 -- print("List.arrayName : "..countryArray[1].name.." "..countryArray[2].name)
-                 -- print(List.countrycode)
+                     -- print("List.arrayName : "..countryArray[1].name.." "..countryArray[2].name)
+                     -- print(List.countrycode)
 
 
-                   Webservice.GetCountryLanguagesbyCountryCode(countryArray[1].countrycode,getLanguageDetails)
+                    Webservice.GetCountryLanguagesbyCountryCode(countryArray[1].countrycode,getLanguageDetails)
 
 
                 end
@@ -1148,20 +1156,22 @@ local function addevent_scrollListener(event )
 
             elseif ( phase == "moved" ) then 
 
-                        if y > -30 then
-
+                        if y > -20 then
                             FirstName.isVisible = true
                             FirstName_bottom.isVisible = true
-                            Name.isVisible = true
-                            Name_bottom.isVisible = true
-
                         else
-
                             FirstName.isVisible = false
                             FirstName_bottom.isVisible = false
+                        end
+
+
+
+                        if y > -30 then
+                            Name.isVisible = true
+                            Name_bottom.isVisible = true
+                        else
                             Name.isVisible = false
                             Name_bottom.isVisible = false
-
                         end
 
 
@@ -1281,8 +1291,6 @@ function scene:show( event )
 
         composer.removeHidden()
 
-
-
                 function createAccount( event )
 
                     if event.phase == "began" then
@@ -1300,20 +1308,21 @@ function scene:show( event )
                                 initialvalue = "createaccount"
 
 
-                                scrollView = widget.newScrollView
-                                {
-                                top = 35,
-                                left = 0,
-                                width = W,
-                                height = H-35,
-                                hideBackground = true,
-                                isBounceEnabled=false,
-                                horizontalScrollDisabled = true,
-                                friction = .4,
-                                listener = addevent_scrollListener,
-                                }
+                                        scrollView = widget.newScrollView
+                                        {
+                                        top = 35,
+                                        left = 0,
+                                        width = W,
+                                        height = H-35,
+                                        hideBackground = true,
+                                        isBounceEnabled=false,
+                                        horizontalScrollDisabled = true,
+                                        friction = .4,
+                                        bottomPadding = 50,
+                                        listener = addevent_scrollListener,
+                                        }
 
-                                sceneGroup:insert( scrollView )
+                                        sceneGroup:insert( scrollView )
 
 
                                         scrollView.isVisible = true
@@ -1657,25 +1666,27 @@ function scene:show( event )
                                         -- cancelBtn.id="Register"
 
 
-                                        cancelBtn_lbl = display.newText( sceneGroup,CommonWords.cancel,0,0,native.systemFont,13 )
-                                        cancelBtn_lbl.y=registerBtn.y+40
+                                        cancelBtn_lbl = display.newText( scrollView,CommonWords.cancel,0,0,native.systemFont,13 )
+                                        cancelBtn_lbl.y= Position_bg.y+Position_bg.height/2+40
                                         cancelBtn_lbl.x = W - 60
                                         cancelBtn_lbl.id = "cancel"
                                         cancelBtn_lbl:setFillColor( 0,0,0.5 )
                                         cancelBtn_lbl.anchorX=0
+                                        scrollView:insert(cancelBtn_lbl)
+
 
 
                                         backBtn_bg:addEventListener("touch",backAction)
                                         page_title:addEventListener("touch",backAction)
                                         cancelBtn_lbl:addEventListener("touch",backAction)
-                                        registerBtn:addEventListener( "touch", registerBtnRelease )
+                                        registerBtn:addEventListener("touch", registerBtnRelease)
 
 
-                                        FirstName:addEventListener( "userInput", textfield )
-                                        Name:addEventListener( "userInput", textfield )
-                                        Email:addEventListener( "userInput", textfield )
-                                        Phone:addEventListener( "userInput", textfield )
-                                        Marykay:addEventListener( "userInput", textfield )
+                                        FirstName:addEventListener("userInput", textfield)
+                                        Name:addEventListener("userInput", textfield)
+                                        Email:addEventListener("userInput", textfield)
+                                        Phone:addEventListener("userInput", textfield)
+                                        Marykay:addEventListener("userInput", textfield)
 
 
                                         List_bg = display.newRect( scrollView,W/2,Marykay_bg.y+Marykay_bg.height+28,W-20,50)
@@ -1722,7 +1733,6 @@ function scene:show( event )
                             end
 
                                     Webservice.GetAllCountry(getCountryList)
-
 
                                     Runtime:addEventListener( "key", onKeyEvent )
 
