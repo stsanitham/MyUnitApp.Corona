@@ -474,8 +474,8 @@ local function Broadcast_list( list )
 
 			elseif ContactId == list[i].Message_To then
 
-				profilrPic=list[i].FromName
-				Name=list[i].Message_From
+				profilrPic=list[i].Message_From
+				Name=list[i].FromName
 				
 			else
 				

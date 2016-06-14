@@ -446,7 +446,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 							ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
 
 						
-									  DocumentUpload = {
+									  DocumentUpload[1] = {
 									  		UserId = UserId,
 									        File = file_inbytearray,
 									        FileName = filename.text,
@@ -509,7 +509,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
 
 				
-							  DocumentUpload = {
+							  DocumentUpload[1] = {
 							  	UserId = UserId,
 							        File = file_inbytearray,
 							        FileName = Audio_filename.text,
@@ -1614,6 +1614,18 @@ end
 
 
 
+	local function attachDownload( event )
+	    if ( event.isError ) then
+	        print( "Network error - download failed: ", event.response )
+	    elseif ( event.phase == "began" ) then
+	        print( "Progress Phase: began" )
+	    elseif ( event.phase == "ended" ) then
+	        print( "Displaying response image file" )
+	  		
+	    end
+	end
+
+
 
 ------------------------------------------------------
 
@@ -1927,6 +1939,16 @@ end
 
 					scrollView.y = scrollView.y+45
 
+
+							network.download(
+								Details.ImageFilePath,
+								"GET",
+								attachDownload,
+								Details.ImageFilePath:match( "([^/]+)$" ),
+								system.DocumentsDirectory
+								)
+
+
 				end
 
 ---------------------------------------- Audio name and its title ------------------------------------------
@@ -1974,6 +1996,16 @@ end
 					Audio_filename_close.filepath = Details.AudioFilePath:match( "([^/]+)$" )
 
 					scrollView.y = scrollView.y+45
+
+
+							network.download(
+								Details.AudioFilePath,
+								"GET",
+								attachDownload,
+								Details.AudioFilePath:match( "([^/]+)$" ),
+								system.DocumentsDirectory
+								)
+
 
 				end
 
