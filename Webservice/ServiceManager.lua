@@ -2665,6 +2665,79 @@ end
 
 
 
+function Webservice.MubDirectorRegister(FirstName,LastName,EmailAddress,PhoneNumber,MaryKayId,Country,Language,PositionId,postExecution)
+	
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	method="POST"
+
+
+	local url = splitUrl(ApplicationConfig.MubDirectorRegister)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+
+		local found=false
+		db:exec([[select * from sqlite_master where name='logindetails';]],
+		function(...) found=true return 0 end)
+
+		if found then 
+				print('table exists!')
+
+				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+					UserId = row.UserId
+					AccessToken = row.AccessToken
+					ContactId = row.ContactId
+					UnitNumberValue = row.UnitNumberOrDirector
+					langid = row.LanguageId
+					countryid = row.CountryId
+				end
+
+	            headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+	    else
+
+	    	    headers["UserAuthorization"]= ""
+
+		end
+
+
+		 local resbody = [[{
+
+		    "FirstName": ']]..FirstName..[[',
+		    "LastName": ']]..LastName..[[',
+		    "EmailAddress": ']]..EmailAddress..[[',
+		    "PhoneNumber": ']]..PhoneNumber..[[',
+			"MaryKayId": ']]..MaryKayId..[[',
+			"Country": ]]..Country..[[,
+			"Language": ]]..Language..[[,
+			"Position": ]]..PositionId..[[,
+		
+		} ]]
+
+
+    params={headers = headers,body = resbody}
+
+	print("request for MUB Director Register : "..resbody)
+
+	request.new(ApplicationConfig.MubDirectorRegister,method,params,postExecution)
+	
+	return response
+	
+end
+
+
+
+
+
+
 
 
 

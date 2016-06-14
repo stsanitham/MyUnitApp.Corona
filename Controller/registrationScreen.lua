@@ -105,7 +105,7 @@ local function onKeyEvent( event )
 
         if phase == "up" then
 
-        if keyName=="back" or keyName == "a" then
+        if keyName=="back" then
 
             if BackFlag == false then
 
@@ -198,8 +198,18 @@ local function onRowRender( event )
     -------------to make the tick mark for the item that has been selected ----------
 
 
-          if List.label == renderArray[row.index].name  then
+    -- print("List.label                         "..json.encode(renderArray))
 
+
+
+           
+
+          if CountryLbl.text == row.name  or  LanguageLbl.text == row.name or  PositionLbl.text == row.name then
+
+
+              print(" true tick")
+
+              print(PositionLbl.text .. "     0000000     "..renderArray[row.index].name)
                 tick.isVisible = true
 
           else
@@ -242,6 +252,8 @@ local function CreateList(event,list,List_bg)
 
                     if event == "country" then
 
+                        --List_bg.height = 72.75
+
                         List_bg.height = 72.75
                         list.height = List_bg.height
                         List_bg.y = Marykay_bg.y+Marykay_bg.height+28
@@ -266,8 +278,8 @@ local function CreateList(event,list,List_bg)
 
 
                        -- List_bg.height = 49.5
-                       -- List_bg.height = 72.75
-                       List_bg.height = 37
+                        List_bg.height = 72.75
+                        --List_bg.height = 39
                         list.height = List_bg.height
                         List_bg.y = Country_bg.y+Country_bg.height+28
                         List.y = List_bg.y
@@ -275,7 +287,6 @@ local function CreateList(event,list,List_bg)
                         list.x = List_bg.x
                         list.y = List_bg.y
                         list.width = List_bg.width-1.5
-
 
                     elseif event == "position" then
 
@@ -287,6 +298,7 @@ local function CreateList(event,list,List_bg)
                         list.x = List_bg.x
                         list.y = List_bg.y
                         list.width = List_bg.width-1.5
+
 
                     end
 
@@ -328,8 +340,29 @@ local function getPositionDetails( response )
 
             positionArray[i] = nil
 
-         end
+            end
 
+
+              for i=1,#response do
+
+                  if response[i].PositionName ~= nil then
+
+                      positionArray[#positionArray+1] = {name = response[i].PositionName,countrycode = response[i].PositionId}
+
+                  end
+
+              end
+
+
+                PositionLbl.text = response[1].PositionName
+                PositionLbl.countrycode = response[1].PositionId
+
+
+                             --  if PositionLbl.text:len() > 22 then
+
+                             --     PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
+
+                             -- end
 
 
         end
@@ -366,21 +399,15 @@ local function getLanguageDetails( response )
             -- end
 
 
-      
+              for i=1,#response do
 
-                for i=1,#response do
+                  if response[i].LanguageName ~= nil then
 
+                      languageArray[#languageArray+1] = {name = response[i].LanguageName,countrycode = response[i].LanguageId}
 
-                if response[i].LanguageName ~= nil then
-
-                    languageArray[#languageArray+1] = {name = response[i].LanguageName,countrycode = response[i].LanguageId}
-
-
-                end
-
+                  end
 
               end
-
 
 
                 LanguageLbl.text = response[1].LanguageName
@@ -432,12 +459,14 @@ local function onRowTouch(event)
                  row.id = row.index
                  row.name = renderArray[row.index].name
                  row.countrycode = renderArray[row.index].countrycode
+                 row.countryId = renderArray[row.index].countryId
 
                  print( "Check : "..json.encode(row) )
 
                  tempLable.text = row.name
                  tempLable.value = row.id
                  tempLable.countrycode = row.countrycode
+                 tempLable.countryId = row.countryId
 
 
                  if List.value == "country" then
@@ -449,6 +478,12 @@ local function onRowTouch(event)
                      Webservice.GetPositionbyCountryIdandLanguageId( CountryLbl.countrycode ,row.countrycode,getPositionDetails)
 
                 elseif List.value == "position" then
+
+                              if PositionLbl.text:len() > 22 then
+
+                                 PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
+
+                             end
 
                 end
 
@@ -510,6 +545,41 @@ end
 
 
 
+
+  local function alertFun(value,flag)
+
+          local function onComplete( event )
+
+               if event.action == "clicked" then
+
+                    local i = event.index
+
+                      if i == 1 then  
+
+                          if flag == 1 then
+
+                                local options = {
+                                effect = "slideRight",
+                                time = 600,
+                                }
+                                composer.gotoScene( "Controller.singInPage", options )
+
+                           end
+                    
+                      end
+               end
+          end
+
+      local alert = native.showAlert( "Registration Completed" , value, { CommonWords.ok }, onComplete )
+
+  end 
+
+
+
+
+
+
+
 local function RegistrationProcess( )
 
         if  submit_spinner.isVisible == false then
@@ -527,26 +597,54 @@ local function RegistrationProcess( )
             submit_spinner:start( )
 
 
-            local function onTimer( event )
+                function getregistrationDetail( response )
 
-                submit_spinner.isVisible = false
+                    Register_response = response
 
-                registerBtn.width = registerBtn_lbl.width+20
-                registerBtn_lbl.x=registerBtn.x-registerBtn.contentWidth/2+15
-                submit_spinner.x=registerBtn_lbl.x+registerBtn_lbl.contentWidth+17
-                registerBtn.width = registerBtn_lbl.contentWidth+15
-                registerBtn.x=W/2-registerBtn.contentWidth/2
-                registerBtn_lbl.x = registerBtn.x+5
+                        print("response after registeration validation ",Register_response)
 
-                submit_spinner:stop( )
-                
-            end
 
-            timer.performWithDelay(10000,onTimer)
+                        submit_spinner.isVisible = false
+
+                        registerBtn.width = registerBtn_lbl.width+20
+                        registerBtn_lbl.x=registerBtn.x-registerBtn.contentWidth/2+15
+                        submit_spinner.x=registerBtn_lbl.x+registerBtn_lbl.contentWidth+17
+                        registerBtn.width = registerBtn_lbl.contentWidth+15
+                        registerBtn.x=W/2-registerBtn.contentWidth/2
+                        registerBtn_lbl.x = registerBtn.x+5
+
+                        submit_spinner:stop( )
+
+
+                        FirstName.text = ""
+                        Name.text = ""
+                        Email.text = ""
+                        Phone.text = ""
+                        Marykay.text = ""
+                        CountryLbl.text = countryArray[1].name
+                        LanguageLbl.text = languageArray[1].name
+                        PositionLbl.text = positionArray[1].name
+                        
+                      
+                        if Register_response.StatusType == "Success"  then
+
+                          alertFun(RegistrationScreen.SuccessMessage,1)
+
+                        end
+
+
+                 end
+
+
+                -- print(FirstName.text.."\n"..Name.text.."\n"..Email.text.."\n"..Phone.text.."\n"..Marykay.text.."\n"..tempLable.countryId.."\n"..LanguageLbl.countrycode.."\n"..PositionLbl.text.."\n"..PositionLbl.countrycode)
+
+                 Webservice.MubDirectorRegister(FirstName.text,Name.text,Email.text,Phone.text,Marykay.text,tempLable.countryId,LanguageLbl.countrycode,PositionLbl.countrycode,getregistrationDetail)
 
         end
 
 end
+
+
 
 
 
@@ -608,19 +706,21 @@ local function registerBtnRelease(event )
 
 --------------------- Marykay validation ------------------------
 
-                    if Marykay.text ~= "" and Marykay.text ~= Marykay.id and Marykay.text ~= "* "..RequestAccess.Marykayid_error and Marykay.text ~= Marykay.Marykayid_placeholder then
+                    if Marykay.text == "" or Marykay.text == Marykay.id or Marykay.text == "* "..RequestAccess.Marykayid_error or Marykay.text == Marykay.placeholder then
 
-                            if not Utils.marykayid_Validation( Marykay.text ) then
+                          --  if not Utils.marykayid_Validation( Marykay.text ) then
 
                             validation=false
                             SetError("* "..RequestAccess.Marykayidinvalid_error,Marykay)
      
-                            end
+                          --  end
 
-                    else
+                          print("tfryrtyrty")
 
-                            validation=false
-                            SetError("* "..RequestAccess.Marykayid_error,Marykay)
+                   -- else
+
+                           -- validation=false
+                           -- SetError("* "..RequestAccess.Marykayid_error,Marykay)
 
                     end
 
@@ -739,11 +839,28 @@ local function textfield( event )
 
     elseif ( event.phase == "editing" ) then
 
+
+        if(event.target.id == "First Name") or (event.target.id == "Last Name") then
+
             if event.text:len() > 50 then
 
                 event.target.text = event.target.text:sub(1,50)
 
             end
+
+        end
+
+
+
+        if(event.target.id == "Email") then
+
+            if event.text:len() > 100 then
+
+                event.target.text = event.target.text:sub(1,100)
+
+            end
+
+        end
 
 
 
@@ -864,9 +981,6 @@ local function getCountryList(response)
 
         if response ~= nil then
 
-        --countryArray = response
-
-        --arrayName
 
         for i=1,#countryArray do
 
@@ -878,7 +992,7 @@ local function getCountryList(response)
 
                 if response[i].CountryName ~= nil then
 
-                    countryArray[#countryArray+1] = {name = response[i].CountryName,countrycode=response[i].CountryCode}
+                    countryArray[#countryArray+1] = {name = response[i].CountryName,countrycode=response[i].CountryCode,countryId = response[i].CountryId}
                    
                 end
 
@@ -886,6 +1000,7 @@ local function getCountryList(response)
 
                 CountryLbl.text = countryArray[1].name
                 CountryLbl.countrycode = countryArray[1].countrycode
+                CountryLbl.countryId = countryArray[1].countryId
 
                  -- List.countrycode =  countryArray[i].countrycode
 
@@ -961,7 +1076,7 @@ local function TouchSelection( event )
                                             print( "::::::::::: "..json.encode(languageArray).." "..LanguageLbl.text)
 
                                             List.label = LanguageLbl
-                                              List.value = "language"
+                                            List.value = "language"
 
                                             CreateList("language",List,List_bg)
                                         
@@ -988,7 +1103,8 @@ local function TouchSelection( event )
 
                                             List.arrayName = positionArray
                                             List.label = PositionLbl
-                                              List.value = "position"
+                                            List.value = "position"
+
                                             CreateList("position",List,List_bg)
                                         
                                     else
@@ -1189,11 +1305,10 @@ function scene:show( event )
                                 top = 35,
                                 left = 0,
                                 width = W,
-                                height =H-35,
+                                height = H-35,
                                 hideBackground = true,
                                 isBounceEnabled=false,
                                 horizontalScrollDisabled = true,
-                                bottomPadding = 70,
                                 friction = .4,
                                 listener = addevent_scrollListener,
                                 }
@@ -1581,8 +1696,8 @@ function scene:show( event )
                                                 onRowTouch = onRowTouch,
                                                 hideBackground = true,
                                                 isBounceEnabled = false,
+                                                bottomPadding = 24,
                                                 noLines = true,
-                                                bottomPadding = 23
                                                -- listener = scrollListener
                                             }
                                         )

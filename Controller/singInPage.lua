@@ -897,7 +897,7 @@ function scene:create( event )
 	Director_Requesttext.anchorX=0
 
 
-	Director_Requesticon = display.newImageRect(sceneGroup,"res/assert/create-account.png",14,14)
+	Director_Requesticon = display.newImageRect(sceneGroup,"res/assert/create-account.png",15,12)
 	Director_Requesticon.x=W/2+25
 	Director_Requesticon.id="director_request"
 	Director_Requesticon:setFillColor(0)

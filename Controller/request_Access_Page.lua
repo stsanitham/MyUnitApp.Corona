@@ -190,76 +190,76 @@ local function RequestProcess()
 			submit_spinner:start( )
 
 
-	function get_requestAccess(response)
+						function get_requestAccess(response)
 
-			Request_response = response
+								Request_response = response
 
-			print("response after unit number validation ",Request_response)
+								print("response after unit number validation ",Request_response)
 
-			submit_spinner.isVisible=false
-			sumbitBtn.width = sumbitBtn_lbl.width+20
-			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
-			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
-			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-			sumbitBtn_lbl.x = sumbitBtn.x+5
+								submit_spinner.isVisible=false
+								sumbitBtn.width = sumbitBtn_lbl.width+20
+								sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
+								submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
+								sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
+								sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+								sumbitBtn_lbl.x = sumbitBtn.x+5
 
-			submit_spinner:stop( )
+								submit_spinner:stop( )
 
-							UnitNumber.text = ""
-							DirectorName.text = ""
-							DirectorEmail.text = ""
-							FirstName.text = ""
-							Name.text = ""
-							Email.text = ""
-							Phone.text = ""
-							MKRank.text = "-Select MK Rank-"
-							MKRank.value = "-Select MK Rank-"
-							Comment.text = ""
+												UnitNumber.text = ""
+												DirectorName.text = ""
+												DirectorEmail.text = ""
+												FirstName.text = ""
+												Name.text = ""
+												Email.text = ""
+												Phone.text = ""
+												MKRank.text = "-Select MK Rank-"
+												MKRank.value = "-Select MK Rank-"
+												Comment.text = ""
 
-						
-		if Request_response == "REQUEST"  then
+											
+							if Request_response == "REQUEST"  then
 
-			alertFun(RequestAccess.REQUEST,0)
+								alertFun(RequestAccess.REQUEST,0)
 
-		elseif Request_response == "FIRSTREQUEST" then
+							elseif Request_response == "FIRSTREQUEST" then
 
-			alertFun(RequestAccess.FIRSTREQUEST,1)
+								alertFun(RequestAccess.FIRSTREQUEST,1)
 
-		elseif Request_response == "MUBNOTAGREE" then
+							elseif Request_response == "MUBNOTAGREE" then
 
-			alertFun(RequestAccess.MUBNOTAGREE,1)	
+								alertFun(RequestAccess.MUBNOTAGREE,1)	
 
-		elseif Request_response == "OPEN" then
+							elseif Request_response == "OPEN" then
 
-			alertFun(RequestAccess.OPEN,1)
-						
-		elseif Request_response == "GRANT" then
+								alertFun(RequestAccess.OPEN,1)
+											
+							elseif Request_response == "GRANT" then
 
-			alertFun(RequestAccess.GRANT,1)
+								alertFun(RequestAccess.GRANT,1)
 
-		elseif Request_response == "SUCCESS" then
+							elseif Request_response == "SUCCESS" then
 
-			alertFun(RequestAccess.FIRSTREQUEST,1)
+								alertFun(RequestAccess.FIRSTREQUEST,1)
 
-		elseif Request_response == "NOUNITNUMBER" then
+							elseif Request_response == "NOUNITNUMBER" then
 
-			SetError("* "..RequestAccess.NOUNITNUMBER,UnitNumber)
+								SetError("* "..RequestAccess.NOUNITNUMBER,UnitNumber)
 
-		elseif Request_response == "BLOCK"  then
+							elseif Request_response == "BLOCK"  then
 
-			alertFun(RequestAccess.BLOCK,0)
+								alertFun(RequestAccess.BLOCK,0)
 
-		elseif Request_response == "DENY" then
+							elseif Request_response == "DENY" then
 
-			alertFun(RequestAccess.DENY,0)
+								alertFun(RequestAccess.DENY,0)
 
-		elseif Request_response == "FAIL" then
+							elseif Request_response == "FAIL" then
 
-			alertFun(RequestAccess.FAIL,0)
-		end
+								alertFun(RequestAccess.FAIL,0)
+							end
 
-		end
+							end
 
 		print("unit number@@@@@@@@@@@@@@@@@@@@@@@ : "..UnitNumber.text)
 					
