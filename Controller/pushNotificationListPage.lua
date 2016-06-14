@@ -217,6 +217,8 @@ local function MessageDetailPage(event)
 		}
 	}
 
+				print("\n\n\n Before Detail Values : \n\n ", json.encode(event.target.value))
+
 	Runtime:removeEventListener( "key", onKeyEvent )
 
 	composer.showOverlay( "Controller.pushNotificationDetailPage", options )
@@ -1279,6 +1281,8 @@ function scene:resumeGame(value,EditArray,pagevalue)
 								messagelistvalues = EditArray
 							}
 						}
+
+						print( "EditArray : "..json.encode(EditArray) )
 
 					composer.showOverlay( "Controller.pushNotificationDetailPage", options )
 

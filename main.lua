@@ -555,85 +555,90 @@ local function notificationListener( event )
           if additionalData.messageType ~= nil then
 
             
-
-        local UserId,ContactId,Name,FromName,GroupName
-
-            for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-                    UserId = row.UserId
-                    ContactId = row.ContactId
-                    Name = row.MemberName
-
-            end
+                    --For Chat recevier-----
 
 
-                Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
+                        local UserId,ContactId,Name,FromName,GroupName
 
-                        isDeleted="false"
-                        Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-                        Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-                        ImagePath=additionalData.image or ""
-                        AudioPath=additionalData.audio or ""
-                        VideoPath=additionalData.audio or ""
-                        MyUnitBuzz_LongMessage=tostring(message)
-                        From=additionalData.messageFrom
-                        To=additionalData.messageTo
-                        Message_Type = additionalData.messageType
-
-
-                       -- local native = native.showAlert("dsadsadsdas",Message_Type,{"ok"})
-
-
-                            if additionalData.fFN ~= nil then
-                                Name=additionalData.fFN.." "..additionalData.fLN
-
-                            else
-
-                                Name=additionalData.fLN
+                            for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+                                    UserId = row.UserId
+                                    ContactId = row.ContactId
+                                    Name = row.MemberName
 
                             end
 
-                            GroupName=""
 
-                            if Message_Type == "GROUP" then
-                                 GroupName=additionalData.gn
-                                 FromName=""
-                            else
+                                Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
 
-
-                                   if additionalData.tFN ~= nil then
-                                        FromName=additionalData.tFN.." "..additionalData.tLN
-
-                                    else
-
-                                        FromName=additionalData.tLN
-
-                                    end
-
-                            end
-            
-                    
-
-                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
-                        db:exec( insertQuery )
+                                        isDeleted="false"
+                                        Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+                                        Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+                                        ImagePath=additionalData.image or ""
+                                        AudioPath=additionalData.audio or ""
+                                        VideoPath=additionalData.audio or ""
+                                        MyUnitBuzz_LongMessage=tostring(message)
+                                        From=additionalData.messageFrom
+                                        To=additionalData.messageTo
+                                        Message_Type = additionalData.messageType
 
 
-                        
-
-                        if openPage ~= "MessagingPage" and openPage ~= "main" then
+                                       -- local native = native.showAlert("dsadsadsdas",Message_Type,{"ok"})
 
 
-                           --local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
-                                 
-                        end
+                                            if additionalData.fFN ~= nil then
+                                                Name=additionalData.fFN.." "..additionalData.fLN
 
-                        if openPage ~= "main" then
+                                            else
 
-                            native.setProperty( "applicationIconBadgeNumber", 0 )
-                            system.cancelNotification()
-                        end
+                                                Name=additionalData.fLN
+
+                                            end
+
+                                            GroupName=""
+
+                                            if Message_Type == "GROUP" then
+                                                 GroupName=additionalData.gn
+                                                 FromName=""
+                                            else
+
+
+                                                   if additionalData.tFN ~= nil then
+                                                        FromName=additionalData.tFN.." "..additionalData.tLN
+
+                                                    else
+
+                                                        FromName=additionalData.tLN
+
+                                                    end
+
+                                            end
+                            
+                                    
+
+                                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+                                        db:exec( insertQuery )
+
+
+                                        
+
+                                        if openPage ~= "MessagingPage" and openPage ~= "main" then
+
+
+                                           --local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
+                                                 
+                                        end
+
+                                        if openPage ~= "main" then
+
+                                            native.setProperty( "applicationIconBadgeNumber", 0 )
+                                            system.cancelNotification()
+                                        end
        
           
         else
+
+
+            ----Message Receiver------
 
                 notificationFlag = true
 
@@ -652,7 +657,7 @@ local function notificationListener( event )
                 }
 
                 -- By some method (a pause button, for example), show the overlay
-                composer.showOverlay( "Controller.pushNotificationPage", options )
+                --composer.showOverlay( "Controller.pushNotificationPage", options )
 
                 else
 
