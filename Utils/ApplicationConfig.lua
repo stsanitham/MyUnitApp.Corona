@@ -206,4 +206,6 @@ ApplicationConfig.GetCountryLanguagesbyCountryCode = ApplicationConfig.BASE_URL.
 
 ApplicationConfig.GetPositionbyCountryIdandLanguageId = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetPositionbyCountryIdandLanguageId"
 
+ApplicationConfig.MubDirectorRegister = ApplicationConfig.BASE_URL.."/MyUnitBuzz/MubDirectorRegister"
+
 
