@@ -244,7 +244,7 @@ end
 
 
 
-function Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,audiopath,audioname,audiosize,pushmethod,From,To,Message_Type,postExecution)
+function Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,audiopath,audioname,audiosize,pushmethod,From,To,Message_Type,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -300,7 +300,7 @@ if Message_Type ~= nil and Message_Type ~= "" then
 			"MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
 			"UserId": "]]..UserId..[[",
 			"EmailAddress": "]]..EmailAddess..[[",
-
+			"MyUnitBuzzMessageId": "]]..MessageId..[[",
 
 			"AudioFilePath": "]]..audiopath..[[",
 			"AudioFileName": "]]..audioname..[[",
@@ -339,6 +339,7 @@ else
 		"MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
 		"UserId": "]]..UserId..[[",
 		"EmailAddress": "]]..EmailAddess..[[",
+		"MyUnitBuzzMessageId": "]]..MessageId..[[",
 		"AudioFilePath": "]]..audiopath..[[",
 		"AudioFileName": "]]..audioname..[[",
 		"AudioFileSize": "]]..audiosize..[[",

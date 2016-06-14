@@ -196,6 +196,8 @@ local function audioAction( event )
 			elseif event.target.id == "start" then
 				 fSoundPlaying = false
 		         fSoundPaused = false
+		        filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+				r = media.newRecording(filePath)
 		         r:startRecording()
 
 		         startBtn.alpha=0.5
@@ -403,8 +405,7 @@ function scene:show( event )
 		end
 		print (dataFileName)
 
-		filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
-		r = media.newRecording(filePath)
+	
 
 
 		timerCount = display.newText( sceneGroup, "00:00",0,0,native.systemFont,70)
@@ -446,6 +447,9 @@ end
 			-- 	composer.hideOverlay( )
 			-- end
 
+
+			  r:stopRecording()
+			  r=nil
 
 		elseif phase == "did" then
 

@@ -1065,7 +1065,7 @@ end
 			--	event.parent:resumeGame(status,messagelistvalue)
 
 
-				if status == "edit" then
+				if status == "edit" or status == "deleted" then
 
 					    print("edit values ************* : ",json.encode(messagelistvalue))
 

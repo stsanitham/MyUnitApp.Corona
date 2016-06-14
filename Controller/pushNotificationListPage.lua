@@ -1306,6 +1306,26 @@ function scene:resumeGame(value,EditArray,pagevalue)
 	     timer.performWithDelay( 500, waitTimer )
 
 
+	   elseif value == "deleted" then
+			
+			 	local function waitTimer( event )
+
+			 		if openPage == "pushNotificationListPage" then
+
+					 		Runtime:addEventListener( "key", onKeyEvent )
+
+					 		pageCount = 0
+
+                            ListLoad(messagelistvalue)
+				
+					end
+
+				end
+
+
+	     timer.performWithDelay( 500, waitTimer )
+
+
 	end
 
 end

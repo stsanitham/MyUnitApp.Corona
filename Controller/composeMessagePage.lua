@@ -21,7 +21,7 @@ local mime=require('mime')
 local socket=require('socket')
 local ck_editor = require('Utils.messageCKeditor')
 
-
+local MessageId = 0
 --------------- Initialization -------------------
 
 local W = display.contentWidth;local H= display.contentHeight
@@ -319,7 +319,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 
                 
 
-                Webservice.SEND_MESSAGE("","","","","",shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"","","","","","","",method,"","","",get_messagemodel)
+                Webservice.SEND_MESSAGE(MessageId,"","","","","",shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"","","","","","","",method,"","","",get_messagemodel)
 
                 spinner_show()
 
@@ -399,7 +399,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 
 					
 
-					 Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
+					 Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
 
 					spinner_show()
 
@@ -458,7 +458,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 
 					
 
-					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
+					      Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
 
 					      	spinner_show()
 
@@ -521,7 +521,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 
 
 
-				Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
+				Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
 
 				spinner_show()
 
@@ -1717,7 +1717,14 @@ end
 					print("\n\n\n Message Detail Values : \n\n ", json.encode(Details))
 
 
+					if Details ~= nil then
+						MessageId = Details.MyUnitBuzzMessageId
+					end
+
 			    end
+
+
+
 
 			
 				sceneevent = event
