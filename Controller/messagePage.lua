@@ -51,8 +51,6 @@ local PHOTO_FUNCTION = media.PhotoLibrary
 
 ---------------------Function----------------------
 
-
-
 local function closeDetails( event )
 	if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
