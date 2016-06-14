@@ -182,7 +182,7 @@ local function onRowRender( event )
 
        row.name = renderArray[row.index].name
        row.value = renderArray[row.index].countrycode
-
+       row.countryId = renderArray[row.index].countryId
 
         rowTitle:setFillColor( 0 )
         rowTitle.anchorX = 0
@@ -636,9 +636,9 @@ local function RegistrationProcess( )
                  end
 
 
-                -- print(FirstName.text.."\n"..Name.text.."\n"..Email.text.."\n"..Phone.text.."\n"..Marykay.text.."\n"..tempLable.countryId.."\n"..LanguageLbl.countrycode.."\n"..PositionLbl.text.."\n"..PositionLbl.countrycode)
+                 print(FirstName.text.."\n"..Name.text.."\n"..Email.text.."\n"..Phone.text.."\n"..Marykay.text.."\n"..CountryLbl.countryId.."\n"..LanguageLbl.countrycode.."\n"..PositionLbl.text.."\n"..PositionLbl.countrycode)
 
-                 Webservice.MubDirectorRegister(FirstName.text,Name.text,Email.text,Phone.text,Marykay.text,tempLable.countryId,LanguageLbl.countrycode,PositionLbl.countrycode,getregistrationDetail)
+                 Webservice.MubDirectorRegister(FirstName.text,Name.text,Email.text,Phone.text,Marykay.text,CountryLbl.countryId,LanguageLbl.countrycode,PositionLbl.countrycode,getregistrationDetail)
 
         end
 
