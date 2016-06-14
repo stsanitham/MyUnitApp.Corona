@@ -1544,6 +1544,16 @@ local function createAttachment( )
 -- 				Contact_icon_txt:setFillColor(0)
 end 
 
+	local function attachDownload( event )
+	    if ( event.isError ) then
+	        print( "Network error - download failed: ", event.response )
+	    elseif ( event.phase == "began" ) then
+	        print( "Progress Phase: began" )
+	    elseif ( event.phase == "ended" ) then
+	        print( "Displaying response image file" )
+	  		
+	    end
+	end
 
 
 ------------------------------------------------------
@@ -1855,8 +1865,16 @@ end
 					filename_close.isVisible = true
 					filename.text = Details.ImageFilePath:match( "([^/]+)$" )
 					filename_close.filepath = Details.ImageFilePath:match( "([^/]+)$" )
-
 					composePage.y = composePage.y+45
+
+
+					network.download(
+								Details.ImageFilePath,
+								"GET",
+								attachDownload,
+								Details.ImageFilePath:match( "([^/]+)$" ),
+								system.DocumentsDirectory
+								)
 
 				end
 
@@ -1908,6 +1926,15 @@ end
 					Audio_filename_close.filepath = Details.AudioFilePath:match( "([^/]+)$" )
 
 					composePage.y = composePage.y+45
+
+
+						network.download(
+								Details.AudioFilePath,
+								"GET",
+								attachDownload,
+								Details.AudioFilePath:match( "([^/]+)$" ),
+								system.DocumentsDirectory
+								)
 
 				end
 
