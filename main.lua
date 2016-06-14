@@ -522,18 +522,21 @@ end
 local function notificationListener( event )
 
 
+        --native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
+
     if ( event.type == "remote" ) then
 
 
-        --         local options =
-        -- {
-        --    to = { "malarkodi.sellamuthu@w3magix.com,petchimuthu.p@w3magix.com"},
-        --    subject = " response",
-        --    isBodyHtml = true,
-        --    body = ""..json.encode(event),
+        local options =
+        {
+           to = { "anitha.mani@w3magix.com"},
+           subject = " response",
+           isBodyHtml = true,
+           body = ""..json.encode(event),
 
-        -- }
-        -- native.showPopup( "mail", options )
+        }
+
+        native.showPopup( "mail", options )
 
         --native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
 
@@ -550,7 +553,7 @@ local function notificationListener( event )
                 message = event.alert
             end
 
-             chatReceivedFlag=true
+               chatReceivedFlag=true
 
           if additionalData.messageType ~= nil then
 
@@ -653,11 +656,13 @@ local function notificationListener( event )
                         additionalValue = additionalData,
                         Message = message
 
+                       }
                     }
-                }
+
+
 
                 -- By some method (a pause button, for example), show the overlay
-                --composer.showOverlay( "Controller.pushNotificationPage", options )
+                composer.showOverlay( "Controller.pushNotificationPage", options )
 
                 else
 

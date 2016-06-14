@@ -263,7 +263,6 @@ local function CreateList(event,list,List_bg)
                         list.y = List_bg.y
                         list.width = List_bg.width-1.5
 
-
                     elseif event == "language" then
 
                             -- if CountryLbl.text == RegistrationScreen.CountryUsaText then
@@ -335,39 +334,39 @@ local function getPositionDetails( response )
 
       if response ~= nil then
 
+              for i=1,#positionArray do
 
-           for i=1,#positionArray do
+                  positionArray[i] = nil
 
-            positionArray[i] = nil
-
-            end
+              end
 
 
               for i=1,#response do
 
                   if response[i].PositionName ~= nil then
 
-                      positionArray[#positionArray+1] = {name = response[i].PositionName,countrycode = response[i].PositionId}
+                      positionArray[#positionArray+1] = {name = response[i].PositionName, countrycode = response[i].PositionId}
 
                   end
 
               end
 
 
-                PositionLbl.text = response[1].PositionName
-                PositionLbl.countrycode = response[1].PositionId
+              PositionLbl.text = response[1].PositionName
+              PositionLbl.countrycode = response[1].PositionId
 
-                PositionLabelValue = PositionLbl.text
-
-
-                             --  if PositionLbl.text:len() > 22 then
-
-                             --     PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
-
-                             -- end
+              PositionLabelValue = PositionLbl.text
 
 
-        end
+             --  if PositionLbl.text:len() > 22 then
+
+             --     PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
+
+             --  end
+
+
+      end
+
 end
 
 
@@ -580,7 +579,7 @@ end
                end
           end
 
-      local alert = native.showAlert( "Registration Completed" , value, { CommonWords.ok }, onComplete )
+      local alert = native.showAlert( RegistrationScreen.RegistrationCompleted , value, { CommonWords.ok }, onComplete )
 
   end 
 

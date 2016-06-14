@@ -496,3 +496,6 @@ RegistrationScreen.SelectPosition = "- Sélectionnez Position -"
 RegistrationScreen.SelectLanguage = "- Choisir la langue -"
 RegistrationScreen.SelectLanguage_Errormsg = "* Choisir la langue"
 RegistrationScreen.SelectPosition_Errormsg = "* Sélectionnez Position"
+RegistrationScreen.RegistrationCompleted = "Enregistrement terminé"
+RegistrationScreen.SuccessMessage = "Votre inscription est terminée avec succès et une notification par courrier électronique sera reçu peu de temps !"
+
