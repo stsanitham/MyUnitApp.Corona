@@ -266,6 +266,7 @@ function scene:show( event )
 		photo.width = photowidth
 		photo.height = photoheight
 
+
 ------------------------------------- image send button -------------------------------------------   
 
 

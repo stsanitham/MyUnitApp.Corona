@@ -22,6 +22,8 @@ local Background, BgText, Message_content, send_button, send_button_text, url_dr
 
       urlhelp_text
 
+      local image_send_button,send_icon,cancel_button,cancel_icon,cancel_icon_text
+
 local menuBtn
 
 openPage="messagePage"
@@ -105,7 +107,7 @@ local function onTouchAction( event )
 
 					feed_url.isVisible = true
 
-					feed_url_bg.isVisible = false
+					feed_url_bg.isVisible = true
 
 				else
 
@@ -170,7 +172,7 @@ local function VideoType_Touch( event )
 
 				feed_url.isVisible = true
 
-				feed_url_bg.isVisible = false
+				feed_url_bg.isVisible = true
 
 			end
 
@@ -566,14 +568,14 @@ local function onKeyEvent( event )
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
-	Background.alpha = 0.01
+	Background.alpha = 0.5
 
 	
 
     --------------url dropdown for selection-------
 
 
-    video_outer_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+130)
+    video_outer_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+195)
   	video_outer_bg:setStrokeColor(Utils.convertHexToRGB(color.tabBarColor))
   	--video_outer_bg:setFillColor(0,0,0,0.2)
   	video_outer_bg.x = W/2
@@ -584,12 +586,22 @@ local function onKeyEvent( event )
 	url_dropdown_bg = display.newRect(sceneGroup,W/2, video_outer_bg.y, W-37, EditBoxStyle.height)
 	url_dropdown_bg.id="eventname"
 	url_dropdown_bg.x = W/2
-	url_dropdown_bg.y = video_outer_bg.y- video_outer_bg.contentHeight/2 + 15
+	url_dropdown_bg.y = video_outer_bg.y- video_outer_bg.contentHeight/2 + 50
 	url_dropdown_bg.anchorY=0
 	url_dropdown_bg:setStrokeColor(0,0,0,0.2)
 	url_dropdown_bg.strokeWidth = 1
 	url_dropdown_bg.hasBackground = false
 	--sceneGroup:insert(url_dropdown_bg)
+
+
+    local titleBg = display.newRect(sceneGroup,0,0,video_outer_bg.contentWidth,35)
+    titleBg.x = video_outer_bg.x;titleBg.y = video_outer_bg.y-video_outer_bg.contentHeight/2+titleBg.contentHeight/2
+    titleBg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+     local titleBg_text = display.newText(sceneGroup,"Video",0,0,native.systemFont,14)
+    titleBg_text.x = titleBg.x-titleBg.contentWidth+5;titleBg_text.y = titleBg.y
+    titleBg_text.anchorX = 0
+    titleBg_text:setTextColor(1)
 
 
     -------------dropdown contents---------------
@@ -653,15 +665,6 @@ local function onKeyEvent( event )
 
 
 
-	------------example text for url---------
-
-	urlhelp_text = display.newText(sceneGroup,"Eg.https://www.youtube.com/watch?v=qOmDoZCuFtM", 0, 0,W-30,0,native.systemFont, 11)
-	urlhelp_text.x = url_dropdown_bg.x + 5
-	urlhelp_text.width = W - 30
-	--urlhelp_text.align = "center"
-	urlhelp_text.y = feed_url_bg.y+ feed_url_bg.contentHeight/2+urlhelp_text.contentHeight/2+5
-	urlhelp_text:setFillColor( 0, 0, 0 , 0.7)
-
 		----------cancel button------------------
 
 	feed_cancelbutton = display.newRect( sceneGroup, 0,0 , 60, EditBoxStyle.height-3)
@@ -669,7 +672,7 @@ local function onKeyEvent( event )
   	feed_cancelbutton:setFillColor(0,0,0,0.45)
   	feed_cancelbutton.cornerRadius = 2
   	feed_cancelbutton.x = feed_url_bg.x+feed_url_bg.contentWidth/2
-  	feed_cancelbutton.y = urlhelp_text.y+urlhelp_text.contentHeight/2+feed_cancelbutton.contentHeight/2+5
+  	feed_cancelbutton.y =feed_url_bg.y+ feed_url_bg.contentHeight/2+feed_cancelbutton.contentHeight/2+5
   	feed_cancelbutton.hasBackground = true
 	feed_cancelbutton.strokeWidth = 1
 
@@ -679,6 +682,42 @@ local function onKeyEvent( event )
 	Utils.CssforTextView(feed_cancelbutton_text,sp_primarybutton)
 
 
+
+------------------------------------- image send button -------------------------------------------   
+
+
+        image_send_button = display.newRect( sceneGroup, 0,0, video_outer_bg.contentWidth/2-1, 45 )
+        image_send_button.x=video_outer_bg.x-video_outer_bg.contentWidth/2+1;image_send_button.y=video_outer_bg.y+video_outer_bg.contentHeight/2-image_send_button.contentHeight-1
+        image_send_button.id="send"
+        image_send_button.anchorX=0;image_send_button.anchorY=0
+        image_send_button:setFillColor( Utils.convertHexToRGB(color.darkGreen) )
+
+        send_icon = display.newImageRect( sceneGroup, "res/assert/audiosend.png",25,20 )
+        send_icon.id = "send icon"
+        send_icon.x=image_send_button.x+20;send_icon.y=image_send_button.y+image_send_button.contentHeight/2
+
+        send_icon_text = display.newText( sceneGroup, MessagePage.Send, 0,0,native.systemFont,16 )
+        send_icon_text.x=send_icon.x+25;send_icon_text.y=send_icon.y
+        send_icon_text.id = "send_icon_text"
+        send_icon_text.anchorX=0
+
+
+ ------------------------------------- image cancel button -------------------------------------------  
+
+        cancel_button = display.newRect( sceneGroup, 0,0, video_outer_bg.contentWidth/2-1, 45 )
+        cancel_button.x=image_send_button.x+image_send_button.contentWidth+1;cancel_button.y=video_outer_bg.y+video_outer_bg.contentHeight/2-image_send_button.contentHeight-1
+        cancel_button.id="cancel"
+        cancel_button.anchorX=0;cancel_button.anchorY=0
+        cancel_button:setFillColor( Utils.convertHexToRGB(color.Lytred) )
+
+        cancel_icon = display.newImageRect( sceneGroup, "res/assert/audiocancel.png",25,20 )
+        cancel_icon.id = "cancel icon"
+        cancel_icon.x=cancel_button.x+20;cancel_icon.y=cancel_button.y+cancel_button.contentHeight/2
+
+        cancel_icon_text = display.newText( sceneGroup, CommonWords.cancel, 0,0,native.systemFont,16 )
+        cancel_icon_text.x=cancel_icon.x+25;cancel_icon_text.y=cancel_icon.y
+        cancel_icon_text.id = "cancel_icon_text"
+        cancel_icon_text.anchorX=0
 
     MainGroup:insert(sceneGroup)
 
@@ -695,7 +734,7 @@ end
 	if phase == "will" then
 
   		EventnameTop_bg = display.newRect( VideoUrlGroup, url_dropdown_bg.x , url_dropdown_bg.y+url_dropdown_bg.contentHeight/2, url_dropdown_bg.contentWidth, 125)
-       -- EventnameTop_bg
+        EventnameTop_bg.y = url_dropdown_bg.y+EventnameTop_bg.contentHeight/2+url_dropdown_bg.contentHeight
   		EventnameTop_bg:setFillColor(0,0,0)
 
   	    VideoTypeList = widget.newTableView
@@ -713,7 +752,7 @@ end
   	}
 
 		VideoTypeList.x=url_dropdown_bg.x
-		VideoTypeList.y= video_outer_bg.y+video_outer_bg.contentHeight+5
+		VideoTypeList.y= EventnameTop_bg.y-EventnameTop_bg.contentHeight/2
 	--	VideoTypeList.y=EventnameTop.y+EventnameTop.height/2
 		VideoTypeList.height = 150
 		VideoTypeList.width = url_dropdown_bg.contentWidth-2
@@ -723,7 +762,11 @@ end
 		VideoUrlGroup:insert(VideoTypeList)
 
 		sceneGroup:insert(VideoUrlGroup)
-		
+	
+
+
+
+
 
 ---------------
 
