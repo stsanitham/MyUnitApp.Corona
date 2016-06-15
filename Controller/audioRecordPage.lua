@@ -46,6 +46,16 @@ local function closeDetails( event )
 
 			elseif event.target.id == "ok" then
 
+
+						if r:isRecording() then
+				            r:stopRecording()
+				            timer.cancel(countdown)
+
+				            keyTips.text = "Recording Stopped"
+
+				       	end
+
+		       	
 				    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            local file = io.open( filePath)
 		            
