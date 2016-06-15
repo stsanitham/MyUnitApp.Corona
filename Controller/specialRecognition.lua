@@ -300,9 +300,11 @@ function scene:show( event )
 
 
 
-		 function getAllSpecialRecognition(response )
+		 function getAllSpecialRecognition(response)
 
 			specialRecognition_response = response
+
+			print("................."..json.encode(response))
 
 					if specialRecognition_response ~= nil and #specialRecognition_response ~= 0 then
 							
@@ -337,11 +339,17 @@ MainGroup:insert(sceneGroup)
 end
 
 
+
+
+
 	function scene:resumeGame()
 
 		refresh_list:addEventListener("touch",RefreshAllAction)
 
 	end
+
+
+
 
 
 function scene:hide( event )

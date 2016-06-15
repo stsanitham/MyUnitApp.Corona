@@ -27,6 +27,16 @@ local menuBtn
 
 local isRotate = false
 
+local spListArray = {}
+
+local List_array = {}
+
+local RecentTab_Topvalue = 75
+
+local header_value = ""
+
+local specialRecognitionListScroll
+
 local webView
 
 local tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title,refresh_icon_bg,refresh
@@ -260,12 +270,30 @@ function scene:create( event )
 		refresh.id = "refresh"
 		refresh.x = W-25;refresh.y = refresh_icon_bg.y+15
 
-		refresh:addEventListener("touch",onButtonTouch)
-		refresh_icon_bg:addEventListener("touch",onButtonTouch)
+		--refresh:addEventListener("touch",onButtonTouch)
+		--refresh_icon_bg:addEventListener("touch",onButtonTouch)
 
 	    end
 
 	   -- Background:addEventListener("touch",onBackgroundTouch)
+
+
+			specialRecognitionListScroll = widget.newScrollView
+				{
+				top = RecentTab_Topvalue-5,
+				left = 0,
+				width = W,
+				height =H-RecentTab_Topvalue+5,
+				hideBackground = true,
+				isBounceEnabled=false,
+				horizontalScrollingDisabled = false,
+				verticalScrollingDisabled = false,
+			    -- listener = scrollListener
+			}
+
+			sceneGroup:insert(specialRecognitionListScroll)
+
+
 
 	
 
@@ -291,70 +319,91 @@ function scene:show( event )
 
 			sr_eventid = event.params.specialRecognition_id
 
-			print(json.encode(sr_eventdetails).."        "..json.encode(sr_eventid))
+			print("SP DETAIL PAGE"..json.encode(sr_eventdetails).."        "..json.encode(sr_eventid))
 
 		end
 
 		title.text = sr_eventdetails.ReportName
 
+		reportType = sr_eventdetails.ReportType
 
 
-		function getSpecialRecognition_PageContent(response)
 
-						    sr_detailresponse = response.PageContent
+					if tonumber(reportType) == 0 then
 
-							if response.PageContent ~= nil and response.PageContent ~= "" then
-
-								local t = response.PageContent
-
-								content = t
-
-								local saveData = [[<!DOCTYPE html>
-								<html>
-								<head>
-								<meta charset="utf-8">
-								<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-								</head>]]..t..[[</html>]]
-
-								-- Path for the file to write
-								local path = system.pathForFile( "specialRecognition.html", system.DocumentsDirectory )
-
-								-- Open the file handle
-								local file, errorString = io.open( path, "w" )
-
-								if not file then
-								    -- Error occurred; output the cause
-								    print( "File error: " .. errorString )
-								else
-								    -- Write data to file
-								    file:write( saveData )
-								    -- Close the file handle
-								    io.close( file )
-								end
-
-								file = nil
-
-								webView = native.newWebView( display.contentCenterX, display.contentCenterY+35, display.viewableContentWidth, display.viewableContentHeight-80 )
-								--webView.anchorY=0
-
-								webView.hasBackground=false
-								webView:request( "specialRecognition.html", system.DocumentsDirectory )
-								sceneGroup:insert( webView )
-
-							else
-
-								--NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
-								NoEvent = display.newText( sceneGroup, "No "..response.UserPageName.." Found", 0,0,0,0,native.systemFontBold,16)
-								NoEvent.x=W/2;NoEvent.y=H/2
-								NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-
-							end
+									function getSpecialRecognition_JsonContent(sp_jsonresponse)
 
 
-		end
+										        print("JSON content 11111: "..sp_jsonresponse)
+
+									end
 
 
-        Webservice.GetSpecialRecognitionPageContent(sr_eventid,getSpecialRecognition_PageContent)
+			        	   Webservice.GetSpecialRecognitionJsonContent(sr_eventid,getSpecialRecognition_JsonContent)
+
+			        elseif tonumber(reportType) == 1 then
+
+
+									function getSpecialRecognition_PageContent(response)
+
+										    sr_detailresponse = response.PageContent
+
+											if response.PageContent ~= nil and response.PageContent ~= "" then
+
+												local t = response.PageContent
+
+												content = t
+
+												local saveData = [[<!DOCTYPE html>
+												<html>
+												<head>
+												<meta charset="utf-8">
+												<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+												</head>]]..t..[[</html>]]
+
+												-- Path for the file to write
+												local path = system.pathForFile( "specialRecognition.html", system.DocumentsDirectory )
+
+												-- Open the file handle
+												local file, errorString = io.open( path, "w" )
+
+												if not file then
+												    -- Error occurred; output the cause
+												    print( "File error: " .. errorString )
+												else
+												    -- Write data to file
+												    file:write( saveData )
+												    -- Close the file handle
+												    io.close( file )
+												end
+
+												file = nil
+
+												webView = native.newWebView( display.contentCenterX, display.contentCenterY+35, display.viewableContentWidth, display.viewableContentHeight-80 )
+												--webView.anchorY=0
+
+												webView.hasBackground=false
+												webView:request( "specialRecognition.html", system.DocumentsDirectory )
+												sceneGroup:insert( webView )
+
+											else
+
+												--NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
+												NoEvent = display.newText( sceneGroup, "No ".."response.UserPageName".." Found", 0,0,0,0,native.systemFontBold,16)
+												NoEvent.x=W/2;NoEvent.y=H/2
+												NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+											end
+
+
+									end
+
+
+
+			               Webservice.GetSpecialRecognitionPageContent(sr_eventid,getSpecialRecognition_PageContent)
+
+			        end
+
 
 
 	elseif phase == "did" then
@@ -392,6 +441,13 @@ function scene:hide( event )
 	    end
 
 		isRotate = false
+
+
+		for j=1,#spListArray do 
+			if spListArray[j] then spListArray[j]:removeSelf();spListArray[j] = nil	end
+		end
+
+
 
 	elseif phase == "did" then
 

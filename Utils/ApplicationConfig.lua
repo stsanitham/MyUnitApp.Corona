@@ -208,4 +208,6 @@ ApplicationConfig.GetPositionbyCountryIdandLanguageId = ApplicationConfig.BASE_U
 
 ApplicationConfig.MubDirectorRegister = ApplicationConfig.BASE_URL.."/MyUnitBuzz/MubDirectorRegister"
 
+ApplicationConfig.GetSpecialRecognitionJsonContent = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetSpecialRecognitionJsonContent"
+
 

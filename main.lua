@@ -572,7 +572,7 @@ local function notificationListener( event )
                             end
 
 
-                                Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
+                                        Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
 
                                         isDeleted="false"
                                         Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
