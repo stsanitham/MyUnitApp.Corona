@@ -2507,7 +2507,7 @@ function Webservice.GetSpecialRecognitionJsonContent(sr_eventid,postExecution)
 	local headers = {}
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
 	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")''
+	headers["UniqueId"] = system.getInfo("deviceID")
 	headers["Accept"] = "application/json"
 	headers["Content-Type"] = "application/json"
 
