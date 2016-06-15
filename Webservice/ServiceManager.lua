@@ -246,7 +246,7 @@ end
 
 
 
-function Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,audiopath,audioname,audiosize,pushmethod,From,To,Message_Type,postExecution)
+function Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,message,longmessage,IsScheduled,ScheduledDate,ScheduledTime,videopath,imagepath,imagename,imagesize,audiopath,audioname,audiosize,pushmethod,From,To,Message_Type,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -265,7 +265,7 @@ function Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupNam
 	headers["Authentication"] = authenticationkey
 
 	--headers["Authentication"] = "Or2tf5TjnfLObg5qZ1VfLOd:7jzSWXG+0oRq9skt1lNESuiZcTSQLVurPn3eZaqMk84="
-
+	local LastName
 
 	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 		print("UserId :"..row.UserId)
@@ -273,13 +273,19 @@ function Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupNam
 		AccessToken = row.AccessToken
 		ContactId = row.ContactId
 		EmailAddess = row.EmailAddess
-		ConversionLastName  = row.MemberName
+		LastName = row.MemberName
 
 	end
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
 local v
+
+if DocumentUpload == "" then
+	DocumentUpload=  "' '"
+else
+	DocumentUpload = json.encode(DocumentUpload)
+end
 
 if Message_Type ~= nil and Message_Type ~= "" then
 
@@ -296,7 +302,7 @@ if Message_Type ~= nil and Message_Type ~= "" then
 			"MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
 			"UserId": "]]..UserId..[[",
 			"EmailAddress": "]]..EmailAddess..[[",
-
+			"MyUnitBuzzMessageId": "]]..MessageId..[[",
 
 			"AudioFilePath": "]]..audiopath..[[",
 			"AudioFileName": "]]..audioname..[[",
@@ -308,10 +314,12 @@ if Message_Type ~= nil and Message_Type ~= "" then
 			"TimeZone": "]]..TimeZone..[[",
 			"ConversionFirstName": "]]..ConversionFirstName..[[",
 			"ConversionLastName": "]]..ConversionLastName..[[",
+			"FirstName": " ",
+			"LastName": "]]..LastName..[[",
 			"GroupName": "]]..GroupName..[[",
-			"IsSendNow": "true",
+			"IsSendNow": "]]..tostring(isSendNow)..[[",
 			"MessageFileType": "]]..MessageFileType..[[",
-			"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
+			"DocumentUpload": ]]..(DocumentUpload)..[[
 
 			}
 			]]
@@ -333,6 +341,7 @@ else
 		"MessageDate": "]]..os.date("%m/%d/%Y %I:%M:%S %p")..[[",
 		"UserId": "]]..UserId..[[",
 		"EmailAddress": "]]..EmailAddess..[[",
+		"MyUnitBuzzMessageId": "]]..MessageId..[[",
 		"AudioFilePath": "]]..audiopath..[[",
 		"AudioFileName": "]]..audioname..[[",
 		"AudioFileSize": "]]..audiosize..[[",
@@ -340,9 +349,9 @@ else
 		"ConversionFirstName": "]]..ConversionFirstName..[[",
 		"ConversionLastName": "]]..ConversionLastName..[[",
 		"GroupName": "]]..GroupName..[[",
-		"IsSendNow": "true",
+		"IsSendNow": "]]..tostring(isSendNow)..[[",
 		"MessageFileType": "]]..MessageFileType..[[",
-		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
+		"DocumentUpload": ]]..(DocumentUpload)..[[
 		}
 		]]
 --		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
@@ -353,6 +362,18 @@ end
 	params={headers = headers,body = v}
 
 	print("Send Message Request :"..(v))
+
+
+	       --        local options =
+        -- {
+        --    to = { "malarkodi.sellamuthu@w3magix.com,petchimuthu.p@w3magix.com"},
+        --    subject = "request",
+        --    isBodyHtml = true,
+        --    body = ""..v,
+
+        -- }
+        -- native.showPopup( "mail", options )
+
 
 	request.new( ApplicationConfig.SEND_MESSAGE,method,params,postExecution)
 	

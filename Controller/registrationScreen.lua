@@ -45,6 +45,7 @@ local languageArrayDetail = {}
 
 local positionArray = RegistrationScreen.positionArray
 
+
 local refresh_list
 
 local leftPadding = 15
@@ -67,6 +68,7 @@ local function closeDetails( event )
             display.getCurrentStage():setFocus( nil )
 
     end
+
 
 return true
 
@@ -92,9 +94,8 @@ local function SetError( displaystring, object )
         object.size=10
         object:setTextColor(1,0,0)
 
+
 end
-
-
 
 
 
@@ -143,6 +144,7 @@ local function onKeyEvent( event )
                           end
 
             end
+
 
             
         end
@@ -546,9 +548,6 @@ local function scrollTo(position)
 
 
 end
-
-
-
 
 
 
@@ -1778,6 +1777,7 @@ function scene:hide( event )
 
     end 
 
+
 end
 
 
@@ -1787,6 +1787,7 @@ end
 function scene:destroy( event )
 
     local sceneGroup = self.view
+
 
 
 end

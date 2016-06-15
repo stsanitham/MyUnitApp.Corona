@@ -21,7 +21,7 @@ local mime=require('mime')
 local socket=require('socket')
 local ck_editor = require('Utils.messageCKeditor')
 
-
+local MessageId = 0
 --------------- Initialization -------------------
 
 local W = display.contentWidth;local H= display.contentHeight
@@ -141,7 +141,7 @@ end
 
 					os.remove( event.target.filepath )
 
-					composePage.y = composePage.y-45
+					scrollView.y = scrollView.y-45
 
 					if Audio_filename_title.isVisible == true then
 						Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
@@ -162,7 +162,7 @@ end
 
 					os.remove( event.target.filepath )
 
-					composePage.y = composePage.y-45
+					scrollView.y = scrollView.y-45
 
 					if filename_title.isVisible == true then
 						filename_title.y = tabBar.y+tabBar.contentHeight+15
@@ -272,7 +272,7 @@ local function selectionComplete ( event )
 						print( "############" )
 
 						filename_title.y=Audio_filename.y+20
-						composePage.y = composePage.y+45
+						scrollView.y = scrollView.y+45
 					
 
 			end
@@ -282,7 +282,7 @@ local function selectionComplete ( event )
 
 				if filename_title.isVisible == false then
 
-					composePage.y = composePage.y+45
+					scrollView.y = scrollView.y+45
 					filename_title.y = tabBar.y+tabBar.contentHeight+15
 				end
 
@@ -310,30 +310,6 @@ end
 
 
 
-
-
-
-	function get_audiomodel(response)
-
-		
-
-	
-	end
-
-
-
-
-
-
-
-	function get_messagemodel(response)
-
-		
-
-	end
-
-
-
 local function sendAction( method,IsScheduled,Date,Time )
 
 --IsScheduled,Date.text,Time.text
@@ -343,7 +319,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 
                 
 
-                Webservice.SEND_MESSAGE("","","","","",shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"","","","","","","",method,"","","",get_messagemodel)
+                Webservice.SEND_MESSAGE(MessageId,"","","","","",shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"","","","","","","",method,"","","",get_messagemodel)
 
                 spinner_show()
 
@@ -357,9 +333,91 @@ local function sendAction( method,IsScheduled,Date,Time )
 				params = { pushlistvalues = method,page = "compose"}
 	    }
 
-		composer.gotoScene("Controller.pushNotificationListPage",options)
+	    local listener = {}
+			function listener:timer( event )
+			    composer.gotoScene("Controller.pushNotificationListPage",options)
+			end
+
+			timer.performWithDelay( 1000, listener )
+
+		
+		 elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) and (filename.text ~= "" and filename.isVisible == true ) then
+
+		 	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+					
+					ImagePath= filename.text or ""
+					AudioPath=Audio_filename.text or ""
+					VideoPath="NULL"
+					MyUnitBuzz_LongMessage=longMessage
 
 
+					local imgpath = system.pathForFile( filename.text, system.DocumentsDirectory)
+
+						        local Imagesize = lfs.attributes (imgpath, "size")
+
+								local fileHandle = io.open(imgpath, "rb")
+
+								local Img_file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+								formatSizeUnits(Imagesize)
+
+
+						local ConversionFirstName,ConversionLastName,GroupName
+						local DocumentUpload = {}
+
+							ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+						
+									  DocumentUpload[1] = {
+									  		UserId = UserId,
+									        File = Img_file_inbytearray,
+									        FileName = filename.text,
+									        FileType = "Images"
+									    }
+							local audio_path = system.pathForFile( Audio_filename.text, system.DocumentsDirectory)
+
+						    local Audiosize = lfs.attributes (audio_path, "size")
+
+							local audio_fileHandle = io.open(audio_path, "rb")
+
+							local audio_file_inbytearray = mime.b64( audio_fileHandle:read( "*a" ) )
+
+							formatSizeUnits(Audiosize)
+			
+				
+							  DocumentUpload [2]= {
+							  	UserId = UserId,
+							        File = audio_file_inbytearray,
+							        FileName = Audio_filename.text,
+							        FileType = "Audios"
+							    }
+
+			
+						--MessageFileType="Audios"
+							
+						MessageFileType="Images"
+
+					
+
+					 Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
+
+					spinner_show()
+
+					spinner.y=H/2-30
+
+					      	local options = {
+
+							effect = "slideRight",
+							time = 300,
+							params = { pushlistvalues = method,page = "compose"}
+				   			 }
+
+					    	local listener = {}
+							function listener:timer( event )
+							    composer.gotoScene("Controller.pushNotificationListPage",options)
+							end
+
+			timer.performWithDelay( 1000, listener )
 
 		  elseif (shortmsg_textbox.text ~= "") and (filename.text ~= "" and filename.isVisible == true ) then
 
@@ -388,7 +446,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 							ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
 
 						
-									  DocumentUpload = {
+									  DocumentUpload[1] = {
 									  		UserId = UserId,
 									        File = file_inbytearray,
 									        FileName = filename.text,
@@ -400,7 +458,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 
 					
 
-					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
+					      Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
 
 					      	spinner_show()
 
@@ -413,8 +471,12 @@ local function sendAction( method,IsScheduled,Date,Time )
 							params = { pushlistvalues = method,page = "compose"}
 				    }
 
-					composer.gotoScene("Controller.pushNotificationListPage",options)
+	    local listener = {}
+			function listener:timer( event )
+			    composer.gotoScene("Controller.pushNotificationListPage",options)
+			end
 
+			timer.performWithDelay( 1000, listener )
         	   --Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
            elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) then
@@ -447,7 +509,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
 
 				
-							  DocumentUpload = {
+							  DocumentUpload[1] = {
 							  	UserId = UserId,
 							        File = file_inbytearray,
 							        FileName = Audio_filename.text,
@@ -459,7 +521,7 @@ local function sendAction( method,IsScheduled,Date,Time )
 
 
 
-				Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_audiomodel)
+				Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
 
 				spinner_show()
 
@@ -472,8 +534,12 @@ local function sendAction( method,IsScheduled,Date,Time )
 				params = { pushlistvalues = method,page = "compose"}
 	    }
 
-		composer.gotoScene("Controller.pushNotificationListPage",options)
+	    local listener = {}
+			function listener:timer( event )
+			    composer.gotoScene("Controller.pushNotificationListPage",options)
+			end
 
+			timer.performWithDelay( 1000, listener )
             	-- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
             end
@@ -1028,7 +1094,8 @@ end
 
 function scene:updateRecordedAudio( dataFileName,audiopagename )
 
-	composer.removeHidden(  )
+	print( "!@#" )
+	--composer.removeHidden(  )
 
 		local function onTimerRecord( event )
 
@@ -1080,13 +1147,13 @@ function scene:updateRecordedAudio( dataFileName,audiopagename )
 				if Audio_filename_title.isVisible == false and filename_title.y == tabBar.y+tabBar.contentHeight+15  then
 
 						Audio_filename_title.y=filename.y+20
-						composePage.y = composePage.y+45
+						scrollView.y = scrollView.y+45
 				end
 
 			else
 				if Audio_filename_title.isVisible == false then
 					Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
-					composePage.y = composePage.y+45
+					scrollView.y = scrollView.y+45
 				end
 			end
 
@@ -1556,6 +1623,21 @@ end
 	end
 
 
+
+
+	local function attachDownload( event )
+	    if ( event.isError ) then
+	        print( "Network error - download failed: ", event.response )
+	    elseif ( event.phase == "began" ) then
+	        print( "Progress Phase: began" )
+	    elseif ( event.phase == "ended" ) then
+	        print( "Displaying response image file" )
+	  		
+	    end
+	end
+
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -1630,7 +1712,7 @@ end
 		
 		if phase == "will" then
 
-			
+			--composer.removeHidden()
 
 
 		elseif phase == "did" then
@@ -1646,7 +1728,14 @@ end
 					print("\n\n\n Message Detail Values : \n\n ", json.encode(Details))
 
 
+					if Details ~= nil then
+						MessageId = Details.MyUnitBuzzMessageId
+					end
+
 			    end
+
+
+
 
 			
 				sceneevent = event
@@ -1662,21 +1751,21 @@ end
 
 
 
-			-- scrollView = widget.newScrollView
-			-- {
-			-- top = RecentTab_Topvalue,
-			-- left = 0,
-			-- width = W,
-			-- height =H-RecentTab_Topvalue,
-			-- hideBackground = true,
-			-- isBounceEnabled=false,
-			-- horizontalScrollDisabled = true,
-			-- bottomPadding = 60,
-			-- friction = .4,
-   -- 			listener = composemsg_scrollListener,
-		 --    }
+			scrollView = widget.newScrollView
+			{
+			top = RecentTab_Topvalue,
+			left = 0,
+			width = W,
+			height =H-RecentTab_Topvalue,
+			hideBackground = true,
+			isBounceEnabled=false,
+			horizontalScrollDisabled = true,
+			bottomPadding = 60,
+			friction = .4,
+   			listener = composemsg_scrollListener,
+		    }
 
-		 --    sceneGroup:insert( scrollView )
+		    sceneGroup:insert( scrollView )
 
 
 ---------------------------------------------- Short Message ----------------------------------------------------------
@@ -1685,9 +1774,9 @@ end
 				shortmsg_star.anchorX = 0
 				shortmsg_star.anchorY = 0
 				shortmsg_star.x=10
-				shortmsg_star.y = tabBar.y+tabBar.contentHeight+15
+				shortmsg_star.y = 0
 				shortmsg_star:setFillColor(1,0,0)
-				composePage:insert(shortmsg_star)
+				scrollView:insert(shortmsg_star)
 				
 				shortmsg_title = display.newText(MessagePage.ShortMessage,0,0,native.systemFont,14)
 				shortmsg_title.anchorX = 0
@@ -1695,7 +1784,7 @@ end
 				shortmsg_title.anchorY=0
 				shortmsg_title.y = shortmsg_star.y
 				shortmsg_title:setFillColor(0)
-				composePage:insert(shortmsg_title)
+				scrollView:insert(shortmsg_title)
 
 
 				shortmsg_textbox = native.newTextBox( 10,shortmsg_title.y+ shortmsg_title.height+7, W - 20, EditBoxStyle.height+25)
@@ -1713,7 +1802,7 @@ end
 				shortmsg_textbox:setReturnKey( "next" )
 				shortmsg_textbox.inputType = "default"
 				--sceneGroup:insert(shortmsg_textbox)
-				composePage:insert(shortmsg_textbox)
+				scrollView:insert(shortmsg_textbox)
 				--shortmsg_textbox.x=10
 				--shortmsg_textbox.y=shortmsg_title.y+ shortmsg_title.height+7
 
@@ -1728,7 +1817,7 @@ end
 				short_msg_charlimit.anchorY = 0
 				short_msg_charlimit.y = shortmsg_textbox.y+shortmsg_textbox.contentHeight+2
 				short_msg_charlimit:setFillColor(0)
-				composePage:insert(short_msg_charlimit)
+				scrollView:insert(short_msg_charlimit)
 
 ---------------------------------------------- Long Message ----------------------------------------------------------
 
@@ -1738,7 +1827,7 @@ end
 				longmsg_star.anchorY=0
 				longmsg_star.y = short_msg_charlimit.y+short_msg_charlimit.contentHeight
 				longmsg_star:setFillColor(1,0,0)
-				composePage:insert(longmsg_star)
+				scrollView:insert(longmsg_star)
 
 
 				longmsg_title = display.newText(MessagePage.LongMessage,0,0,native.systemFont,14)
@@ -1747,7 +1836,7 @@ end
 				longmsg_title.anchorY = 0
 				longmsg_title.y = longmsg_star.y 
 				longmsg_title:setFillColor(0)
-				composePage:insert(longmsg_title)
+				scrollView:insert(longmsg_title)
 
 
 				
@@ -1785,7 +1874,7 @@ end
 							 longmsg_textbox:addEventListener( "urlRequest", webListener )
 
 
-							 composePage:insert( longmsg_textbox)
+							 scrollView:insert( longmsg_textbox)
 
 
 
@@ -1806,13 +1895,13 @@ end
 				long_msg_charlimit.y = longmsg_textbox.y+longmsg_textbox.contentHeight+5
 				long_msg_charlimit:setFillColor(0)
 				long_msg_charlimit.isVisible=false
-				composePage:insert(long_msg_charlimit)
+				scrollView:insert(long_msg_charlimit)
 
 
 
-	
+		--composePage:insert( scrollView )
 
-		sceneGroup:insert( composePage )
+		sceneGroup:insert( scrollView )
 
 			createAttachment( )
 		AttachmentGroup.anchorX=0;AttachmentGroup.anchorY=0
@@ -1866,6 +1955,7 @@ end
 					filename.text = Details.ImageFilePath:match( "([^/]+)$" )
 					filename_close.filepath = Details.ImageFilePath:match( "([^/]+)$" )
 					composePage.y = composePage.y+45
+
 
 
 					network.download(
@@ -1925,7 +2015,17 @@ end
 					Audio_filename.text = Details.AudioFilePath:match( "([^/]+)$" )
 					Audio_filename_close.filepath = Details.AudioFilePath:match( "([^/]+)$" )
 
-					composePage.y = composePage.y+45
+					scrollView.y = scrollView.y+45
+
+
+							network.download(
+								Details.AudioFilePath,
+								"GET",
+								attachDownload,
+								Details.AudioFilePath:match( "([^/]+)$" ),
+								system.DocumentsDirectory
+								)
+
 
 
 						network.download(

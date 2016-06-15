@@ -322,13 +322,14 @@ openPage="signInPage"
 			end
 
 		
-
+			local tablesetup = [[DROP TABLE pu_MyUnitBuzz_Message;]]
+			db:exec( tablesetup )
 		
 
 			local tablesetup = [[CREATE TABLE IF NOT EXISTS logindetails (id INTEGER PRIMARY KEY autoincrement, UnitNumberOrDirector, EmailAddess, PhoneNumber, Status, UserId, GoogleUsername, GoogleToken, GoogleTokenSecret, GoogleUserId, FacebookUsername, FacebookAccessToken, TwitterUsername, TwitterToken, TwitterTokenSecret, ProfileImageUrl, AccessToken, ContactId, ContactDisplay, LanguageId, CountryId, MemberName, MemberEmail );]]
 			db:exec( tablesetup )
 
-			local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id INTEGER PRIMARY KEY autoincrement,User_Id,MyUnitBuzz_Message,Message_Status,Message_Date,Is_Deleted,Create_Time_Stamp,Update_Time_Stamp,Image_Path,Audio_Path,Video_Path,MyUnitBuzz_Long_Message,Message_From,Message_To,Message_Type,ToName,FromName,GroupName);]]
+			local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id INTEGER PRIMARY KEY autoincrement,User_Id,MyUnitBuzz_Message,Message_Status,Message_Date,Is_Deleted,Create_Time_Stamp,Update_Time_Stamp,Image_Path,Audio_Path,Video_Path,MyUnitBuzz_Long_Message,Message_From,Message_To,Message_Type,FromName,ToName,GroupName);]]
 			db:exec( tablesetup_chat )
 
 
@@ -454,11 +455,6 @@ openPage="signInPage"
 
 			elseif ( event.phase == "editing" ) then
 
-				print("newCharacters : ",event.newCharacters )
-		        print( "oldText : ",event.oldText )
-		        print( "startPosition",event.startPosition )
-		        print( "text : ",event.text )
-		        print( "_______________________________________\n" )
 				if current_textField.id == "Unit Number / Director name" then
 
 						if event.text:len() > 50 then

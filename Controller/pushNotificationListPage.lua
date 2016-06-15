@@ -1091,7 +1091,7 @@ local function resumeCallList(listview_values)
 
 	  if listview_values== "SCHEDULE" then
 
-				Utils.SnackBar(MessagePage.ScheduledSuccess)
+				
 
 				tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
 				tab_Sent_txt:setFillColor(0)
@@ -1115,32 +1115,30 @@ local function resumeCallList(listview_values)
 
 	  elseif  listview_values == "SEND" then
 
-		 		Utils.SnackBar(MessagePage.SentSuccess)
+		 		
 
-				tab_Schedule_txt:setFillColor( 0 )
-				tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-				tab_Draft_txt:setFillColor(0)
-				tab_Group_bottombar.isVisible = true
-				tab_Group_bottombar.y = tabBg.y+29.5
-				tab_Group_bottombar.x = W/2
-
-
-				for j=1, #sentmessageList_array do 
-							display.remove(sentmessageList_array[#sentmessageList_array])
-							sentmessageList_array[#sentmessageList_array] = nil
-				end
+				-- tab_Schedule_txt:setFillColor( 0 )
+				-- tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+				-- tab_Draft_txt:setFillColor(0)
+				-- tab_Group_bottombar.isVisible = true
+				-- tab_Group_bottombar.y = tabBg.y+29.5
+				-- tab_Group_bottombar.x = W/2
 
 
-           -- getSentMessageList()
+				-- for j=1, #sentmessageList_array do 
+				-- 			display.remove(sentmessageList_array[#sentmessageList_array])
+				-- 			sentmessageList_array[#sentmessageList_array] = nil
+				-- end
+
+
+    --        -- getSentMessageList()
 			  
-				pageCount = pageCount+1
-
-					Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
-			    			    
+				  	pageCount = pageCount+1
+				   Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 
       elseif  listview_values == "DRAFT" then
 
-   				Utils.SnackBar(MessagePage.DraftSuccess)
+   			
 
 				tab_Schedule_txt:setFillColor( 0 )
 				tab_Sent_txt:setFillColor(0)
@@ -1263,7 +1261,7 @@ function scene:resumeGame(value,EditArray,pagevalue)
 		print("\n\n\n Edit Detail Values : \n\n ", json.encode(EditArray))
 
 
-				composer.showOverlay( "Controller.composeMessagePage", options )
+				composer.gotoScene( "Controller.composeMessagePage", options )
 
 		elseif value == "details" then
 
@@ -1271,20 +1269,21 @@ function scene:resumeGame(value,EditArray,pagevalue)
 
 					if openPage == "pushNotificationListPage" then
 
-						local options = 
-						{
-							isModal = true,
-							effect = "slideLeft",
-							time = 1,
-							params = 
-							{
-								messagelistvalues = EditArray
-							}
-						}
+					-- 	local options = 
+					-- 	{
+					-- 		isModal = true,
+					-- 		effect = "slideLeft",
+					-- 		time = 1,
+					-- 		params = 
+					-- 		{
+					-- 			messagelistvalues = EditArray
+					-- 		}
+					-- 	}
 
-						print( "EditArray : "..json.encode(EditArray) )
 
-					composer.showOverlay( "Controller.pushNotificationDetailPage", options )
+					-- composer.showOverlay( "Controller.pushNotificationDetailPage", options )
+
+						Runtime:addEventListener( "key", onKeyEvent )
 
 					end
 
@@ -1301,6 +1300,26 @@ function scene:resumeGame(value,EditArray,pagevalue)
 					 		Runtime:addEventListener( "key", onKeyEvent )
 
                          --   ListLoad(messagelistvalue)
+				
+					end
+
+				end
+
+
+	     timer.performWithDelay( 500, waitTimer )
+
+
+	   elseif value == "deleted" then
+			
+			 	local function waitTimer( event )
+
+			 		if openPage == "pushNotificationListPage" then
+
+					 		Runtime:addEventListener( "key", onKeyEvent )
+
+					 		pageCount = 0
+
+                            ListLoad(messagelistvalue)
 				
 					end
 
@@ -1480,6 +1499,50 @@ local function TabbarTouch( event )
 end
 
 
+	function get_messagemodel(response)
+
+			for j=1, #messageList_array do 
+
+				display.remove(messageList_array[#messageList_array])
+				messageList_array[#messageList_array] = nil
+			end
+
+			for j=1, #sentmessageList_array do 
+
+				display.remove(sentmessageList_array[#sentmessageList_array])
+				sentmessageList_array[#sentmessageList_array] = nil
+			end
+
+			for j=1, #draftmessageList_array do 
+
+				display.remove(draftmessageList_array[#draftmessageList_array])
+				draftmessageList_array[#draftmessageList_array] = nil
+			end
+
+	    local listener = {}
+			function listener:timer( event )
+			    			if response.MessageStatus == "SEND" then
+				Utils.SnackBar(MessagePage.SentSuccess)
+			elseif response.MessageStatus == "DRAFT" then
+				Utils.SnackBar(MessagePage.DraftSuccess)
+			elseif response.MessageStatus == "SCHEDULE" then
+				
+				Utils.SnackBar(MessagePage.ScheduledSuccess)
+
+			end
+			-- -- print( "********************** retrun from send action ***************" )
+
+
+						pageCount=0
+		            	listType = "SCHEDULE"
+		            	pageCount = pageCount+1 
+						Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
+				 
+			end
+
+			timer.performWithDelay( 1500, listener )
+
+	end
 
 
 ------------------------------------------------------
@@ -1707,7 +1770,7 @@ elseif phase == "did" then
 
 			elseif pagingvalue == "compose" then
 
-					resumeCallList(totalvalues)
+					
 
 		    end
 

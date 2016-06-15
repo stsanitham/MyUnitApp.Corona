@@ -247,9 +247,6 @@ end
 
 
 
-
-
-
     function onSendButtonTouch(event)
 
     	local phase = event.phase

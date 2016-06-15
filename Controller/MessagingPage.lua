@@ -468,13 +468,31 @@ local function Broadcast_list( list )
 			local Name = ""
 
 			local profilrPic=""
-			if MemberName == list[i].ToName then
+
+
+			print( "Name From : "..list[i].FromName.." To : "..list[i].ToName )
+			if ContactId == list[i].Message_From then
+					print( "here" )
+				Name=list[i].ToName
+				profilrPic=list[i].Message_To
+			
+
+			elseif ContactId == list[i].Message_To then
+				print( "not here" )
 				Name=list[i].FromName
 				profilrPic=list[i].Message_From
-			else
-				profilrPic=list[i].Message_To
-				Name=list[i].ToName
+					
+				
 			end
+
+		--if ContactId == list[i].Message_To then
+		-- 	  if MemberName == list[i].ToName then
+		--         Name=list[i].FromName
+		--         profilrPic=list[i].Message_From
+		--       elseif MemberName == list[i].FromName then
+		--         profilrPic=list[i].Message_To
+		--         Name=list[i].ToName
+		--       end
 
 
 			 local filePath = system.pathForFile( profilrPic..".png",system.TemporaryDirectory )
@@ -581,7 +599,9 @@ local function Broadcast_list( list )
 
 						if list[i].Message_Status == "UPDATE" and list[k].Message_Status == "UPDATE" then
 
-							new_msgCount=new_msgCount+1
+							if list[i].Message_From == list[k].Message_From then
+								new_msgCount=new_msgCount+1
+							end
 
 						end
 

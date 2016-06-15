@@ -44,6 +44,8 @@ local messagedetail_scrollView
 
 local sentMessage_detail
 
+local request,request1
+
 --------------------------------------------------
 
 
@@ -424,7 +426,7 @@ local function audioPlay( event )
 
 								else
 
-									local laserSound = audio.loadSound( filePath )
+									local laserSound = audio.loadSound( audioname, system.DocumentsDirectory  )
 					                local laserChannel = audio.play( laserSound,{channel=2,onComplete = audioPlayComplete} )
 					                event.target:setSequence( "pause" )
 			      					event.target:play()
@@ -467,7 +469,28 @@ end
 
 
 
+local function scrollListener(event )
 
+		    local phase = event.phase
+		    if ( phase == "began" ) then 
+		    elseif ( phase == "moved" ) then 
+
+
+			local x, y = messagedetail_scrollView:getContentPosition()
+
+
+			if y > -65 then
+
+
+				webView.isVisible = true
+			else
+
+				webView.isVisible = false
+			end
+
+		end
+
+	end
 
 
 
@@ -553,6 +576,7 @@ end
 					isBounceEnabled=false,
 					horizontalScrollDisabled = true,
 					hideScrollBar = true,
+					listener = scrollListener,
 				}
 
 
@@ -562,8 +586,6 @@ end
 
 
  function DisplayDetailValues( detail_value)
-
-		    print("********************************* : ", detail_value)
 
 		    Details = detail_value
 
@@ -590,16 +612,16 @@ end
 
 
 
-            if IsOwner == true then
+	            if IsOwner == true then
 
-			short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",19,17)
-			short_msg_delete.x= W-25
-			short_msg_delete.anchorX=0
-			short_msg_delete.id = "deleteoption"
-			short_msg_delete.anchorY=0
-			short_msg_delete:setFillColor(0)
-			short_msg_delete.y= title_bg.y - 8
-			--messagedetail_scrollView:insert(short_msg_delete)
+				short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",19,17)
+				short_msg_delete.x= W-25
+				short_msg_delete.anchorX=0
+				short_msg_delete.id = "deleteoption"
+				short_msg_delete.anchorY=0
+				short_msg_delete:setFillColor(0)
+				short_msg_delete.y= title_bg.y - 8
+				--messagedetail_scrollView:insert(short_msg_delete)
 
 
 			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/edit-48.png",23,23)
@@ -611,13 +633,14 @@ end
 			short_msg_edit:setFillColor(0)
 			short_msg_edit.y= title_bg.y - 12
 
-		    else
 
-		    	--short_msg_txt.width = W-40
-		    	--short_msg_txt.x=back_icon.x + 8
-			    --short_msg_txt.y= back_icon.y
+			    else
 
-			end
+			    	--short_msg_txt.width = W-40
+			    	--short_msg_txt.x=back_icon.x + 8
+				    --short_msg_txt.y= back_icon.y
+
+				end
 
 
             
@@ -675,19 +698,87 @@ end
 					messagedetail_scrollView:insert(short_msg_txt)
 
 
-	if detail_value.MyUnitBuzzLongMessage ~= nil then
 
-		 --    long_msg_text= display.newText(sceneGroup,detail_value.MyUnitBuzzLongMessage,0,0,W-30,0,native.systemFont,14)
-			-- long_msg_text.x = 12
-			-- long_msg_text.y = short_msg_txt.y+short_msg_txt.contentHeight+12
-			-- long_msg_text.anchorX=0
-			-- long_msg_text.anchorY = 0
-			-- Utils.CssforTextView(long_msg_text,sp_labelName)
-			-- long_msg_text:setFillColor(0)
+local function CreateImage( filename )
+		myImage = display.newImage(filename , system.DocumentsDirectory  )
+								myImage.anchorY=0
+								myImage.y=webView.y+webView.contentHeight+12
+								myImage.x=W/2
 
-			-- messagedetail_scrollView:insert(long_msg_text)
+						spinner.isVisible=false
+						
+						if myImage.width > myImage.height then
+							myImage.height = 150
+							myImage.width = display.contentWidth-40
+							myImage.y=webView.y+webView.contentHeight+12
 
-			local test = detail_value.MyUnitBuzzLongMessage
+						else
+								if myImage.height > H-110 then
+
+									myImage.height = H-100
+									myImage.width = W-60
+
+								else
+									myImage.y=webView.y+webView.contentHeight+12
+								end
+
+								if myImage.width > W-60 then
+									myImage.width = W-60
+								end
+
+						 end
+
+						    sceneGroup:insert(myImage)
+
+		                    messagedetail_scrollView:insert( myImage)
+end
+
+local function CreateAudio(filename)
+
+
+							local audioname = filename
+							local audio
+
+							filePath = system.pathForFile( audioname,system.DocumentsDirectory )
+							local fhd = io.open( filePath )
+
+
+							spinner.isVisible=false
+
+							local bg = display.newRect( display.contentCenterX,0,W-250,50 )
+
+							if myImage ~= nil and myImage.y ~= nil then
+								bg.y = myImage.y+myImage.contentHeight+12
+							else
+								bg.y = webView.y+webView.contentHeight+12
+							end
+							bg.anchorY =0
+							bg.x = display.contentCenterX
+							bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+							sceneGroup:insert(bg)
+							messagedetail_scrollView:insert(bg)
+
+							local sheetData2 = { width=30, height=30, numFrames=2, sheetContentWidth=60, sheetContentHeight=30 }
+							local sheet1 = graphics.newImageSheet( "res/assert/playpause.png", sheetData2 )
+
+							local sequenceData = {
+							{ name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
+							{ name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
+							}
+
+							local playIcon = display.newSprite( sheet1, sequenceData )
+							playIcon.x=bg.x+bg.contentWidth/2-35;playIcon.y=bg.y+bg.contentHeight/2 
+							playIcon.id=detail_value.AudioFilePath
+							playIcon.value="play"
+							playIcon:addEventListener( "touch", audioPlay )
+							playIcon:setSequence( "play" )
+							playIcon:play()
+							sceneGroup:insert(playIcon)
+							messagedetail_scrollView:insert(playIcon)
+
+end
+
+	local test = detail_value.MyUnitBuzzLongMessage
 
 			content = test
 
@@ -729,17 +820,16 @@ end
 
 		    file:close()
 
-	end
+			end
 
 		    file = nil
 
 
+if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null then
 
 
 
-	if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null then
-
-					local function recivedNetwork( event )
+					local function audiorecivedNetwork( event )
 					    if ( event.isError ) then
 					        print( "Network error - download failed: ", event.response )
 					    elseif ( event.phase == "began" ) then
@@ -748,101 +838,16 @@ end
 					        print( "Displaying response image file" )
 					        reciveImageFlag=true
 
-							myImage = display.newImage( event.response.filename, event.response.baseDirectory, display.viewableContentWidth, display.contentHeight )
-							--myImage.y = Imagenametext.y+Imagenametext.contentHeight+12
-							myImage.y = webView.y+webView.contentHeight+12
-							myImage.x = display.contentCenterX
-							myImage.anchorY=0
-							--myImage.width = display.viewableContentWidth - 20
-							--myImage.height = display.viewableContentHeight - 200
-							myImage.width = 100
-							myImage.height = 100
 
-						    sceneGroup:insert(myImage)
-
-		                    messagedetail_scrollView:insert( myImage)
+							CreateAudio(event.response.filename)
 
 
-
-
-					        audionametext= display.newText(sceneGroup,detail_value.AudioFileName,0,0,W-80,0,native.systemFont,14)
-							audionametext.x=W/2+40
-							audionametext.y= myImage.y+myImage.contentHeight+12
-							--audionametext.anchorX=0
-							audionametext.anchorY = 0
-							Utils.CssforTextView(audionametext,sp_labelName)
-							audionametext:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-							messagedetail_scrollView:insert(audionametext)
-
-
-							local audioname = detail_value.AudioFilePath:match( "([^/]+)$" )
-							local audio
-
-							filePath = system.pathForFile( audioname,system.DocumentsDirectory )
-							local fhd = io.open( filePath )
-
-
-							spinner.isVisible=false
-
-							local bg = display.newRect( display.contentCenterX,0,W-250,50 )
-							bg.y = audionametext.y+audionametext.contentHeight+12
-							bg.anchorY =0
-							bg.x = display.contentCenterX
-							bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-							sceneGroup:insert(bg)
-							messagedetail_scrollView:insert(bg)
-
-							local sheetData2 = { width=30, height=30, numFrames=2, sheetContentWidth=60, sheetContentHeight=30 }
-							local sheet1 = graphics.newImageSheet( "res/assert/playpause.png", sheetData2 )
-
-							local sequenceData = {
-							{ name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
-							{ name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
-							}
-
-							local playIcon = display.newSprite( sheet1, sequenceData )
-							playIcon.x=bg.x+bg.contentWidth/2-35;playIcon.y=bg.y+bg.contentHeight/2 
-							playIcon.id=detail_value.AudioFilePath
-							playIcon.value="play"
-							playIcon:addEventListener( "touch", audioPlay )
-							playIcon:setSequence( "play" )
-							playIcon:play()
-							sceneGroup:insert(playIcon)
-							messagedetail_scrollView:insert(playIcon)
 
 					  		
 					    end
 					    
 					end
 
-
-
-					testimage = 
-
-						network.download(
-						detail_value.ImageFilePath,
-						"GET",
-						recivedNetwork,
-						detail_value.ImageFilePath:match( "([^/]+)$" ),
-						system.DocumentsDirectory
-						)
-
-					end
-
-
-		            imagepathvalue = detail_value.ImageFilePath
-			
-
-
-	end
-
-
-
-
-
-		if detail_value.ImageFilePath ~= null then
-
-
 					local function recivedNetwork( event )
 					    if ( event.isError ) then
 					        print( "Network error - download failed: ", event.response )
@@ -852,92 +857,158 @@ end
 					        print( "Displaying response image file" )
 					        reciveImageFlag=true
 
-							myImage = display.newImage( event.response.filename, event.response.baseDirectory, display.viewableContentWidth, display.contentHeight )
-							--myImage.y = Imagenametext.y+Imagenametext.contentHeight+12
-							myImage.y = webView.y+webView.contentHeight+12
-							myImage.x = display.contentCenterX
-							myImage.anchorY=0
-							--myImage.width = display.viewableContentWidth - 20
-							--myImage.height = display.viewableContentHeight - 200
-							myImage.width = 100
-							myImage.height = 100
 
-						    sceneGroup:insert(myImage)
+							CreateImage(event.response.filename)
 
-		                    messagedetail_scrollView:insert( myImage)
-					  		
-					    end
+								local filePath = system.pathForFile( detail_value.AudioFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
+								local fhd = io.open( filePath )
+
+							if fhd then
+								CreateAudio(detail_value.AudioFilePath:match( "([^/]+)$" ))
+							else
+
+								request = network.download(
+								detail_value.AudioFilePath,
+								"GET",
+								audiorecivedNetwork,
+								detail_value.AudioFilePath:match( "([^/]+)$" ),
+								system.DocumentsDirectory
+								)
+
+							end
+
+						end
 					end
 
 
+		            imagepathvalue = detail_value.ImageFilePath
 
-			testimage = 
 
-				network.download(
-				detail_value.ImageFilePath,
-				"GET",
-				recivedNetwork,
-				detail_value.ImageFilePath:match( "([^/]+)$" ),
-				system.DocumentsDirectory
-				)
+		
 
+					local filePath = system.pathForFile( detail_value.ImageFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
+					local fhd = io.open( filePath )
+
+						if fhd then
+							CreateImage(detail_value.ImageFilePath:match( "([^/]+)$" ))
+
+							local filePath = system.pathForFile( detail_value.AudioFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
+								local fhd = io.open( filePath )
+
+							if fhd then
+								CreateAudio(detail_value.AudioFilePath:match( "([^/]+)$" ))
+							else
+
+								spinner.isVisible=true
+
+								request1 = network.download(
+								detail_value.AudioFilePath,
+								"GET",
+								audiorecivedNetwork,
+								detail_value.AudioFilePath:match( "([^/]+)$" ),
+								system.DocumentsDirectory
+								)
+
+							end
+
+						else
+
+							spinner.isVisible=true
+
+							request = network.download(
+							detail_value.ImageFilePath,
+							"GET",
+							recivedNetwork,
+							detail_value.ImageFilePath:match( "([^/]+)$" ),
+							system.DocumentsDirectory
+							)
+
+						end
+				
+
+			
+
+
+		elseif detail_value.ImageFilePath ~= null then
+
+				local function recivedNetwork( event )
+					    if ( event.isError ) then
+					        print( "Network error - download failed: ", event.response )
+					    elseif ( event.phase == "began" ) then
+					        print( "Progress Phase: began" )
+					    elseif ( event.phase == "ended" ) then
+					        print( "Displaying response image file" )
+					        reciveImageFlag=true
+
+
+							CreateImage(event.response.filename)
+
+
+						end
+					end
+						local filePath = system.pathForFile( detail_value.ImageFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
+					local fhd = io.open( filePath )
+
+						if fhd then
+							CreateImage(detail_value.ImageFilePath:match( "([^/]+)$" ))
+						else
+
+							spinner.isVisible=true
+
+							request = network.download(
+							detail_value.ImageFilePath,
+							"GET",
+							recivedNetwork,
+							detail_value.ImageFilePath:match( "([^/]+)$" ),
+							system.DocumentsDirectory
+							)
+
+						end
+				
 
 		imagepathvalue = detail_value.ImageFilePath
 
-	end
+
+	elseif detail_value.AudioFilePath ~= null then
+
+
+					local function audiorecivedNetwork( event )
+					    if ( event.isError ) then
+					        print( "Network error - download failed: ", event.response )
+					    elseif ( event.phase == "began" ) then
+					        print( "Progress Phase: began" )
+					    elseif ( event.phase == "ended" ) then
+					        print( "Displaying response image file" )
+					        reciveImageFlag=true
+
+
+							CreateAudio(event.response.filename)
 
 
 
+					  		
+					    end
+					    
+					end
 
-	if detail_value.AudioFilePath ~= null then
+			local filePath = system.pathForFile( detail_value.AudioFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
+								local fhd = io.open( filePath )
 
+						if fhd then
+							CreateAudio(detail_value.AudioFilePath:match( "([^/]+)$" ))
+						else
 
-			audionametext= display.newText(sceneGroup,detail_value.AudioFileName,0,0,W-80,0,native.systemFont,14)
-			audionametext.x=W/2+40
-			audionametext.y= webView.y+webView.contentHeight+12
-			--audionametext.anchorX=0
-			audionametext.anchorY = 0
-			Utils.CssforTextView(audionametext,sp_labelName)
-			audionametext:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-			messagedetail_scrollView:insert(audionametext)
+							spinner.isVisible=true
 
+							request = network.download(
+							detail_value.AudioFilePath,
+							"GET",
+							audiorecivedNetwork,
+							detail_value.AudioFilePath:match( "([^/]+)$" ),
+							system.DocumentsDirectory
+							)
 
-			local audioname = detail_value.AudioFilePath:match( "([^/]+)$" )
-
-			local audio
-
-
-			filePath = system.pathForFile( audioname,system.DocumentsDirectory )
-			local fhd = io.open( filePath )
-
-
-			spinner.isVisible=false
-
-			local bg = display.newRect( display.contentCenterX,0,W-250,50 )
-			bg.y = audionametext.y+audionametext.contentHeight+12
-			bg.anchorY =0
-			bg.x = display.contentCenterX
-			bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-			sceneGroup:insert(bg)
-			messagedetail_scrollView:insert(bg)
-
-			local sheetData2 = { width=30, height=30, numFrames=2, sheetContentWidth=60, sheetContentHeight=30 }
-			local sheet1 = graphics.newImageSheet( "res/assert/playpause.png", sheetData2 )
-
-			local sequenceData = {
-			{ name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
-			{ name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
-			}
-
-			local playIcon = display.newSprite( sheet1, sequenceData )
-			playIcon.x=bg.x+bg.contentWidth/2-35;playIcon.y=bg.y+bg.contentHeight/2 
-			playIcon.id=detail_value.AudioFilePath
-			playIcon.value="play"
-			playIcon:addEventListener( "touch", audioPlay )
-			playIcon:setSequence( "play" )
-			playIcon:play()
-			sceneGroup:insert(playIcon)
-			messagedetail_scrollView:insert(playIcon)
+						end
 
 	end
 
@@ -1000,7 +1071,12 @@ end
 
 
 			  network.cancel(testimage)
+			  network.cancel(request)
+			  network.cancel(request1)
 
+			  audio.resume( 2 );audio.stop( 2 );audio.dispose( 2 )
+			  
+			  audio.dispose( 2 )
 
 		elseif phase == "did" then
                
@@ -1008,7 +1084,7 @@ end
 			--	event.parent:resumeGame(status,messagelistvalue)
 
 
-				if status == "edit" then
+				if status == "edit" or status == "deleted" then
 
 					    print("edit values ************* : ",json.encode(messagelistvalue))
 

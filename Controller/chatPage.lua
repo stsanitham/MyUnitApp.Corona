@@ -83,7 +83,7 @@ for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
 end
 
-
+local MessageId = 0
 
 --------------------------------------------------
 
@@ -960,6 +960,8 @@ end
 
 	local function sendMeaasage()
 
+
+
 		for i=#MeassageList, 1, -1 do 
 				display.remove(MeassageList[#MeassageList])
 				MeassageList[#MeassageList] = nil
@@ -1732,7 +1734,7 @@ local function ChatSendAction( event )
 		    --	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
 				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
-				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..title.text..[[',']]..title.text..[[');]]
 				db:exec( insertQuery )
 
 				local ConversionFirstName,ConversionLastName,GroupName
@@ -1740,32 +1742,38 @@ local function ChatSendAction( event )
 
 				if MessageType == "GROUP" then
 
-					ConversionFirstName="";ConversionLastName="";GroupName=MemberName;DocumentUpload=""
+					ConversionFirstName="";ConversionLastName="";GroupName=title.text;DocumentUpload=""
 
 				elseif MessageType == "INDIVIDUAL" then
 
-					ConversionFirstName="";ConversionLastName=MemberName;GroupName="";DocumentUpload=""
+					ConversionFirstName="";ConversionLastName=title.text;GroupName="";DocumentUpload=""
 
 				elseif MessageType == "BROADCAST" then
 
 					if IsOwner == true then
 
-						ConversionFirstName="";ConversionLastName="";GroupName=MemberName;DocumentUpload=""
+						ConversionFirstName="";ConversionLastName=title.text;GroupName=title.text;DocumentUpload=""
 
 					else
                     
-                        ConversionFirstName="";ConversionLastName=MemberName;GroupName="";DocumentUpload=""
+                        ConversionFirstName="";ConversionLastName=title.text;GroupName="";DocumentUpload=""
 
                     end
 
 				end
 				
 
-						Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
-			            
+						Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+			        	    
 			       
+						ChatBox.text = ""
 
+						native.setKeyboardFocus( ChatBox )
 			sendMeaasage()
+
+
+			
+
 
 		 		    	
 	         end
@@ -2257,7 +2265,7 @@ end
 						To=To_ContactId
 						Message_Type = MessageType
 
-						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Audio','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Audio','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..title.text..[[',']]..title.text..[[');]]
 						db:exec( insertQuery )
 
 
@@ -2320,7 +2328,7 @@ end
 					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
 
 				
-							  DocumentUpload = {
+							  DocumentUpload[1] = {
 							  	UserId = UserId,
 							        File = file_inbytearray,
 							        FileName = dataFileName,
@@ -2337,7 +2345,7 @@ end
 
 			
 
-					    Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,"Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
+					    Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,"Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
 
 	              
 						-- Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
@@ -2385,7 +2393,7 @@ end
 						To=To_ContactId
 						Message_Type = MessageType
 
-						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Image','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Image','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..title.text..[[',']]..title.text..[[');]]
 						db:exec( insertQuery )
 
 
@@ -2452,7 +2460,7 @@ end
 					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
 
 				
-							  DocumentUpload = {
+							  DocumentUpload[1] = {
 							  		UserId = UserId,
 							        File = file_inbytearray,
 							        FileName = Imagename,
@@ -2470,7 +2478,7 @@ end
 				ChatBox.text = ""
 
 					
-					      Webservice.SEND_MESSAGE(ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+					      Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 
 		               
 
@@ -2538,7 +2546,7 @@ end
 						To=To_ContactId
 						Message_Type = MessageType
 
-						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..title.text..[[',']]..MemberName..[[',']]..title.text..[[');]]
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..title.text..[[',']]..title.text..[[');]]
 						db:exec( insertQuery )
 
 
@@ -2721,7 +2729,19 @@ function scene:show( event )
 			title.text = ContactDetails.GroupName or ContactDetails.MyUnitBuzzGroupName
 		else
 
-			title.text = ContactDetails.Name or ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
+			
+
+			if ContactId == ContactDetails.Message_From then
+
+				title.text = ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
+			else
+				title.text = ContactDetails.FromName or ContactDetails.MyUnitBuzzGroupName
+			end
+
+			if ContactDetails.Name ~= nil then
+				title.text = ContactDetails.Name
+			end
+			
 		end
 
 

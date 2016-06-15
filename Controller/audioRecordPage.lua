@@ -90,6 +90,14 @@ local function closeDetails( event )
 			else
 
 
+				if r:isRecording() then
+		            r:stopRecording()
+		            timer.cancel(countdown)
+
+		            keyTips.text = "Recording Stopped"
+
+		       	end
+
 				 local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            local file = io.open( filePath)
 		            
@@ -196,6 +204,8 @@ local function audioAction( event )
 			elseif event.target.id == "start" then
 				 fSoundPlaying = false
 		         fSoundPaused = false
+		        filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+				r = media.newRecording(filePath)
 		         r:startRecording()
 
 		         startBtn.alpha=0.5
@@ -397,18 +407,13 @@ function scene:show( event )
 		if "simulator" == system.getInfo("environment") then
 		    dataFileName = dataFileName .. ".aif"
 		else
-		    if isIos then
-		        dataFileName = dataFileName .. ".aif"
-		    elseif isAndroid then
+		 
 		        dataFileName = dataFileName .. ".wav"
-		    else
-		    	print("Unknown OS " .. platformName )
-		    end
+		    
 		end
 		print (dataFileName)
 
-		filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
-		r = media.newRecording(filePath)
+	
 
 
 		timerCount = display.newText( sceneGroup, "00:00",0,0,native.systemFont,70)
@@ -451,6 +456,9 @@ end
 			-- end
 
 
+			  r:stopRecording()
+			  r=nil
+
 		elseif phase == "did" then
 
 			local isChannel1Playing = audio.isChannelPlaying( 1 )
@@ -464,9 +472,9 @@ end
 
 					if pagevalue == "compose" then
 
-						composer.removeHidden()
+						print( "here" )
 
-			  		    event.parent:updateRecordedAudio(dataFileName,"audiopage")
+						  event.parent:updateRecordedAudio(dataFileName,"audiopage")
 
 					else
 
@@ -483,7 +491,7 @@ end
 
 	            if pagevalue == "compose" then
 
-	            event.parent:CancelRecordedAudio("")
+	            	event.parent:CancelRecordedAudio("")
 
 	            end
 

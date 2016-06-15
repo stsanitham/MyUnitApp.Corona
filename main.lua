@@ -13,7 +13,7 @@ local json = require( "json" )
 MyUnitBuzzString = require( "res.value.string" )
 local Applicationconfig = require("Utils.ApplicationConfig")
 local notifications = require( "plugin.notifications" )
-
+local isSendNow
 widget.setTheme( "widget_theme_ios" )
 
 --local OneSignal = require("plugin.OneSignal")
@@ -302,7 +302,7 @@ if launchArgs and launchArgs.notification then
             
                     
 
-                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..FromName..[[',']]..Name..[[',']]..GroupName..[[');]]
                         db:exec( insertQuery )
 
 
@@ -538,6 +538,7 @@ local function notificationListener( event )
 
         native.showPopup( "mail", options )
 
+
         --native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )
 
             local additionalData={}
@@ -605,6 +606,7 @@ local function notificationListener( event )
                                             else
 
 
+                                  
                                                    if additionalData.tFN ~= nil then
                                                         FromName=additionalData.tFN.." "..additionalData.tLN
 
