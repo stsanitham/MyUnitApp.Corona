@@ -44,6 +44,8 @@ local messagedetail_scrollView
 
 local sentMessage_detail
 
+local request,request1
+
 --------------------------------------------------
 
 
@@ -426,7 +428,7 @@ local function audioPlay( event )
 
 								else
 
-									local laserSound = audio.loadSound( filePath )
+									local laserSound = audio.loadSound( audioname, system.DocumentsDirectory  )
 					                local laserChannel = audio.play( laserSound,{channel=2,onComplete = audioPlayComplete} )
 					                event.target:setSequence( "pause" )
 			      					event.target:play()
@@ -701,10 +703,10 @@ end
 local function CreateImage( filename )
 		myImage = display.newImage(filename , system.DocumentsDirectory  )
 								myImage.anchorY=0
-								myImage.y=110
+								myImage.y=webView.y+webView.contentHeight+12
 								myImage.x=W/2
 
-
+						spinner.isVisible=false
 						
 						if myImage.width > myImage.height then
 							myImage.height = 150
@@ -745,7 +747,12 @@ local function CreateAudio(filename)
 							spinner.isVisible=false
 
 							local bg = display.newRect( display.contentCenterX,0,W-250,50 )
-							bg.y = myImage.y+myImage.contentHeight+12
+
+							if myImage ~= nil and myImage.y ~= nil then
+								bg.y = myImage.y+myImage.contentHeight+12
+							else
+								bg.y = webView.y+webView.contentHeight+12
+							end
 							bg.anchorY =0
 							bg.x = display.contentCenterX
 							bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
@@ -861,7 +868,7 @@ if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null the
 								CreateAudio(detail_value.AudioFilePath:match( "([^/]+)$" ))
 							else
 
-								network.download(
+								request = network.download(
 								detail_value.AudioFilePath,
 								"GET",
 								audiorecivedNetwork,
@@ -893,7 +900,9 @@ if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null the
 								CreateAudio(detail_value.AudioFilePath:match( "([^/]+)$" ))
 							else
 
-								network.download(
+								spinner.isVisible=true
+
+								request1 = network.download(
 								detail_value.AudioFilePath,
 								"GET",
 								audiorecivedNetwork,
@@ -905,7 +914,9 @@ if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null the
 
 						else
 
-							network.download(
+							spinner.isVisible=true
+
+							request = network.download(
 							detail_value.ImageFilePath,
 							"GET",
 							recivedNetwork,
@@ -943,7 +954,9 @@ if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null the
 							CreateImage(detail_value.ImageFilePath:match( "([^/]+)$" ))
 						else
 
-							network.download(
+							spinner.isVisible=true
+
+							request = network.download(
 							detail_value.ImageFilePath,
 							"GET",
 							recivedNetwork,
@@ -986,7 +999,9 @@ if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null the
 							CreateAudio(detail_value.AudioFilePath:match( "([^/]+)$" ))
 						else
 
-							network.download(
+							spinner.isVisible=true
+
+							request = network.download(
 							detail_value.AudioFilePath,
 							"GET",
 							audiorecivedNetwork,
@@ -1057,7 +1072,12 @@ end
 
 
 			  network.cancel(testimage)
+			  network.cancel(request)
+			  network.cancel(request1)
 
+			  audio.resume( 2 );audio.stop( 2 );audio.dispose( 2 )
+			  
+			  audio.dispose( 2 )
 
 		elseif phase == "did" then
                

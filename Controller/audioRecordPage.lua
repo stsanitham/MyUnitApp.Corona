@@ -90,6 +90,14 @@ local function closeDetails( event )
 			else
 
 
+				if r:isRecording() then
+		            r:stopRecording()
+		            timer.cancel(countdown)
+
+		            keyTips.text = "Recording Stopped"
+
+		       	end
+
 				 local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
 		            local file = io.open( filePath)
 		            
@@ -464,9 +472,9 @@ end
 
 					if pagevalue == "compose" then
 
-						composer.removeHidden()
+						print( "here" )
 
-			  		    event.parent:updateRecordedAudio(dataFileName,"audiopage")
+						  event.parent:updateRecordedAudio(dataFileName,"audiopage")
 
 					else
 
@@ -483,7 +491,7 @@ end
 
 	            if pagevalue == "compose" then
 
-	            event.parent:CancelRecordedAudio("")
+	            	event.parent:CancelRecordedAudio("")
 
 	            end
 

@@ -2652,7 +2652,19 @@ function scene:show( event )
 			title.text = ContactDetails.GroupName or ContactDetails.MyUnitBuzzGroupName
 		else
 
-			title.text = ContactDetails.Name or ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
+			
+
+			if ContactId == ContactDetails.Message_From then
+
+				title.text = ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
+			else
+				title.text = ContactDetails.FromName or ContactDetails.MyUnitBuzzGroupName
+			end
+
+			if ContactDetails.Name ~= nil then
+				title.text = ContactDetails.Name
+			end
+			
 		end
 
 

@@ -1259,7 +1259,7 @@ function scene:resumeGame(value,EditArray,pagevalue)
 		print("\n\n\n Edit Detail Values : \n\n ", json.encode(EditArray))
 
 
-				composer.showOverlay( "Controller.composeMessagePage", options )
+				composer.gotoScene( "Controller.composeMessagePage", options )
 
 		elseif value == "details" then
 

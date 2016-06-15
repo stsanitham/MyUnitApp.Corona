@@ -1094,7 +1094,8 @@ end
 
 function scene:updateRecordedAudio( dataFileName,audiopagename )
 
-	composer.removeHidden(  )
+	print( "!@#" )
+	--composer.removeHidden(  )
 
 		local function onTimerRecord( event )
 

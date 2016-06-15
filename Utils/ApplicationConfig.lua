@@ -61,7 +61,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 IsLive = true
 
-ApplicationConfig.Version = "/Android/1.2.5"	    --1.2.2
+ApplicationConfig.Version = "/Android/1.2.7"	    --1.2.2
 
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.com/"..ApplicationConfig.Version
 

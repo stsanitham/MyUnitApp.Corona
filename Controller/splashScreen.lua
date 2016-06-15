@@ -218,12 +218,14 @@ function scene:show( event )
 			end
 
 
+			
+
 
 				local q = [[UPDATE logindetails SET ProfileImageUrl=']]..profileImageUrl..[[',GoogleUsername=']]..GoogleUsername..[[',GoogleToken=']]..GoogleToken..[[',GoogleTokenSecret=']]..GoogleTokenSecret..[[',GoogleUserId=']]..GoogleUserId..[[',FacebookUsername=']]..FacebookUsername..[[',FacebookAccessToken=']]..FacebookAccessToken..[[',TwitterUsername=']]..TwitterUsername..[[',TwitterToken=']]..TwitterToken..[[',TwitterTokenSecret=']]..TwitterTokenSecret..[[' WHERE id=1;]]
 				db:exec( q )
 
 
-local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id INTEGER PRIMARY KEY autoincrement,User_Id,MyUnitBuzz_Message,Message_Status,Message_Date,Is_Deleted,Create_Time_Stamp,Update_Time_Stamp,Image_Path,Audio_Path,Video_Path,MyUnitBuzz_Long_Message,Message_From,Message_To,Message_Type,ToName,FromName,GroupName);]]
+			local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id INTEGER PRIMARY KEY autoincrement,User_Id,MyUnitBuzz_Message,Message_Status,Message_Date,Is_Deleted,Create_Time_Stamp,Update_Time_Stamp,Image_Path,Audio_Path,Video_Path,MyUnitBuzz_Long_Message,Message_From,Message_To,Message_Type,FromName,ToName,GroupName);]]
 			db:exec( tablesetup_chat )
 
 			
