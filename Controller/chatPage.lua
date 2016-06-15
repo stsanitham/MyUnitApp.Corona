@@ -1274,7 +1274,7 @@ end
 				end
 
 
-					--------Image Attachment---------------
+					--------video Attachment---------------
 
 			if ChatHistory[i].Video_Path  ~= nil and ChatHistory[i].Video_Path ~= "" then
 
@@ -1285,8 +1285,9 @@ end
  
 			--------Image Attachment---------------
 
-			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" then
+			if ChatHistory[i].Image_Path  ~= nil and ChatHistory[i].Image_Path ~= "" and ChatHistory[i].Image_Path ~= "NULL" then
 
+				print( "Here >>>>>>>>>> "..ChatHistory[i].Image_Path )
 				 Imagename = ChatHistory[i].Image_Path:match( "([^/]+)$" )
 
 				 local image
@@ -2499,14 +2500,14 @@ end
 
 
 
-	function scene:resumeVideoCallBack(videofilename,button_idvalue,videofilesize)
+	function scene:resumeVideocall(button_idvalue,url)
 
-		print("resume game calling")
+		print("resume game calling"..url)
 
 
 		composer.removeHidden()
 
-		if videofilename  ~= nil and videofilename ~= "" then
+		if url  ~= nil and url ~= "" then
 
 				if button_idvalue == "cancel" then
 
@@ -2516,20 +2517,6 @@ end
 
 
 
-
-
-					local filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
-		            -- Play back the recording
-		            local file = io.open( filePath)
-		            
-		            if file then
-
-		                io.close( file )
-		            else
-		            	videofilename="test.mp4"
-			           	filePath = system.pathForFile( videofilename, system.DocumentsDirectory )
-		            end
-
 					    local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 
 					    Message_date=os.date("%Y-%m-%dT%H:%M:%S")
@@ -2537,16 +2524,16 @@ end
 						Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 						Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
 						ImagePath="NULL"
-						ImageName = ""
-						ImageSize = ""
+						ImageName = "NULL"
+						ImageSize = "NULL"
 						AudioPath="NULL"
-						VideoPath="DEFAULT"
-						MyUnitBuzz_LongMessage=ChatBox.text
+						VideoPath=url or "NULL"
+						MyUnitBuzz_LongMessage=url
 						From=ContactId
 						To=To_ContactId
 						Message_Type = MessageType
 
-						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..title.text..[[',']]..title.text..[[');]]
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(url)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..title.text..[[',']]..title.text..[[');]]
 						db:exec( insertQuery )
 
 
@@ -2555,7 +2542,6 @@ end
 
 					end 
 
-				   Webservice.DOCUMENT_UPLOAD(videofilesize,videofilename,"Videos",get_videomodel)
 
 				  sendMeaasage()
 

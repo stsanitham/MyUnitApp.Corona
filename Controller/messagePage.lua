@@ -46,8 +46,12 @@ local VideoTypeArray = {"YouTube","Vimeo","Facebook","Yahoo"}
 
 local messageGroup , photo
 
+local status = ""
+
 local PHOTO_FUNCTION = media.PhotoLibrary 	
 
+
+local url 
 ---------------------------------------------------
 
 
@@ -249,7 +253,7 @@ end
 
 
 
-    function onSendButtonTouch(event)
+    function OnSendAndCancelTouch(event)
 
     	local phase = event.phase
 
@@ -260,246 +264,218 @@ end
 	
     	elseif phase=="ended" then
 
+        print( "here coming" )
 
-    	    local validation = false
+            if event.target.id == "cancel" then
 
-  	    	native.setKeyboardFocus(nil)
+                status = "cancel"
 
-    	    display.getCurrentStage():setFocus( nil )
+                composer.hideOverlay( )
 
+            elseif event.target.id == "send" then
 
-    	    if url_dropdown.text == "YouTube" then
+                	    local validation = false
 
-    	    	local youtube_textentry = feed_url.text
+              	    	native.setKeyboardFocus(nil)
 
-    	    	if youtube_textentry ~= nil and youtube_textentry ~= "" then
+                	    display.getCurrentStage():setFocus( nil )
 
-    	    		print("youtube selection  ; "..youtube_textentry)
 
-    	    		local Url = "http://www.youtube.com/watch?"
-    	    		local Url1 = "https://www.youtube.com/watch?"
-    	    		local Url2 = "https://youtu.be/"
+                	    if url_dropdown.text == "YouTube" then
 
-    	    		if string.find(youtube_textentry,Url) or string.find(youtube_textentry,Url1) or string.find(youtube_textentry,Url2) then
-    	      	    		
-    	    			 print("message")
+                	    	local youtube_textentry = feed_url.text
 
-    	    			 if event.target.id == "send" then
+                	    	if youtube_textentry ~= nil and youtube_textentry ~= "" then
 
-    	    			 sendMessage("SEND")	
+                	    		print("youtube selection  ; "..youtube_textentry)
 
-    	    			 elseif event.target.id == "draft" then
+                	    		local Url = "http://www.youtube.com/watch?"
+                	    		local Url1 = "https://www.youtube.com/watch?"
+                	    		local Url2 = "https://youtu.be/"
 
-    	    			 sendMessage("DRAFT")
+                	    		if string.find(youtube_textentry,Url) or string.find(youtube_textentry,Url1) or string.find(youtube_textentry,Url2) then
+                	      	    		
+                	    			 print("message")
+                                     status = "send"
 
-    	    			 else	
+                	    			url = youtube_textentry
 
-    	    			 end
+                                    composer.hideOverlay()
 
-    	    			 return false
+                	    		else
 
-    	    	    else
+                	    	    	print ( "error message")
 
-    	    	    	print ( "error message")
+                	    	    	validation = false
 
-    	    	    	validation = false
+                	    	    	SetError("* "..Message.YoutubeUrlError,feed_url)
 
-    	    	    	SetError("* "..Message.YoutubeUrlError,feed_url)
+                	    	    	return false
 
-    	    	    	return false
+                	    	    end
 
-    	    	    end
+                	    	 else
 
-    	    	 else
+                	    	 	print("success loop")
 
-    	    	 	print("success loop")
+                	    	 	 
 
-    	    	 	 
+                	    end
 
-    	    end
+            	
+             		elseif url_dropdown.text == "Vimeo" then
 
-	
- 		elseif url_dropdown.text == "Vimeo" then
+                	    	local youtube_textentry = feed_url.text
 
-    	    	local youtube_textentry = feed_url.text
+                	    	if youtube_textentry ~= nil and youtube_textentry ~= "" then
 
-    	    	if youtube_textentry ~= nil and youtube_textentry ~= "" then
+                	    		print("viemo selection  ; "..youtube_textentry)
 
-    	    		print("viemo selection  ; "..youtube_textentry)
+                	    		local Url = "http://vimeo.com/"
+                	    		local Url1 = "https://vimeo.com/"
 
-    	    		local Url = "http://vimeo.com/"
-    	    		local Url1 = "https://vimeo.com/"
+                	    		if string.find(youtube_textentry,Url) or string.find(youtube_textentry,Url1) then
+                	      	    		
+                	    			 print("message")
 
-    	    		if string.find(youtube_textentry,Url) or string.find(youtube_textentry,Url1) then
-    	      	    		
-    	    			 print("message")
+                                    status = "send"
 
-    	    			-- sendMessage("SEND")	
+                                    url = youtube_textentry
 
-    	    			 if event.target.id == "send" then
+                                    composer.hideOverlay()
 
-    	    			 sendMessage("SEND")	
+                	    	    else
 
-    	    			 elseif event.target.id == "draft" then
+                	    	    	print ( "error message")
 
-    	    			 sendMessage("DRAFT")
+                	    	    	validation = false
 
-    	    			 else	
+                	    	    	SetError("* "..Message.VimeoUrlError,feed_url)
 
-    	    			 end
+                	    	    	return false
 
-    	    			 return false
+                	    	    end
 
-    	    	    else
+                	    	 else
 
-    	    	    	print ( "error message")
+                	    	 	print("success loop")
 
-    	    	    	validation = false
+                	    	 	-- sendMessage("SEND")
 
-    	    	    	SetError("* "..Message.VimeoUrlError,feed_url)
+                	    	 	 
+                	    end
 
-    	    	    	return false
+                	elseif url_dropdown.text == "Facebook" then
 
-    	    	    end
+                	    	local facebook_textentry = feed_url.text
 
-    	    	 else
+                	    	if facebook_textentry ~= nil and facebook_textentry ~= "" then
 
-    	    	 	print("success loop")
+                	    		print("facebook selection  ; "..facebook_textentry)
 
-    	    	 	-- sendMessage("SEND")
+                	    		local Url = "http://www.facebook.com/video"
+                	    		local Url1 = "https://www.facebook.com/video"
+                	    		local Url2 = "http://www.facebook.com/photo"
+                	    		local Url3 = "https://www.facebook.com/photo"
 
-    	    	 	 
-    	    end
+                	    		if string.find(facebook_textentry,Url) or string.find(facebook_textentry,Url1)
 
-    	elseif url_dropdown.text == "Facebook" then
+                	    		or string.find(facebook_textentry,Url2) or string.find(facebook_textentry,Url3) then
+                	      	    		
+                	    			 print("message")
 
-    	    	local facebook_textentry = feed_url.text
+                	    			 --sendMessage("SEND")	
 
-    	    	if facebook_textentry ~= nil and facebook_textentry ~= "" then
+                	    			  status = "send"
 
-    	    		print("facebook selection  ; "..facebook_textentry)
+                                    url = youtube_textentry
 
-    	    		local Url = "http://www.facebook.com/video"
-    	    		local Url1 = "https://www.facebook.com/video"
-    	    		local Url2 = "http://www.facebook.com/photo"
-    	    		local Url3 = "https://www.facebook.com/photo"
+                                    composer.hideOverlay()
+                                    
+                	    	    else
 
-    	    		if string.find(facebook_textentry,Url) or string.find(facebook_textentry,Url1)
+                	    	    	print ( "error message")
 
-    	    		or string.find(facebook_textentry,Url2) or string.find(facebook_textentry,Url3) then
-    	      	    		
-    	    			 print("message")
+                	    	    	validation = false
 
-    	    			 --sendMessage("SEND")	
+                	    	    	SetError("* "..Message.FacebookUrlError,feed_url)
 
-    	    			  if event.target.id == "send" then
+                	    	    	return false
 
-    	    			 sendMessage("SEND")	
+                	    	    end
 
-    	    			 elseif event.target.id == "draft" then
+                	    	 else
 
-    	    			 sendMessage("DRAFT")
+                	    	 	print("success loop")
 
-    	    			 else	
+                	    	 	 --sendMessage("SEND")
 
-    	    			 end
+                	    	 	 
+                	    end
 
-    	    			 return false
+                	    elseif url_dropdown.text == "Yahoo" then
 
-    	    	    else
+                	    	local yahoo_textentry = feed_url.text
 
-    	    	    	print ( "error message")
+                	    	if yahoo_textentry ~= nil and yahoo_textentry ~= "" then
 
-    	    	    	validation = false
+                	    		print("yahoo selection  ; "..yahoo_textentry)
 
-    	    	    	SetError("* "..Message.FacebookUrlError,feed_url)
+                	    		local Url = "http://video.yahoo.com/watch?"
+                	    		local Url1 = "http://comedy.video.yahoo.com"
+                	    		local Url2 = "http://animalvideos.yahoo.com"
+                	    		local Url3 = "http://video.yahoo.com/watchmojo"
+                	    		local Url4 = "http://video.yahoo.com/momentsofmotherhood" 
+                	    		local Url5 = "http://video.yahoo.com/tlc"
+                	    		local Url6 = "https://video.yahoo.com/watch?"
+                	    		local Url7 = "https://comedy.video.yahoo.com"
+                	    		local Url8 = "https://animalvideos.yahoo.com"
+                	    		local Url9 = "https://video.yahoo.com/watchmojo"
+                	    		local Url10 = "https://video.yahoo.com/momentsofmotherhood"
+                	    		local Url11 = "https://video.yahoo.com/tlc"
+                	    		local Url12 = "https://news.yahoo.com/video"
 
-    	    	    	return false
 
-    	    	    end
+                	    		if string.find(yahoo_textentry,Url) or string.find(yahoo_textentry,Url1) or string.find(yahoo_textentry,Url2)
 
-    	    	 else
+                	    		or string.find(yahoo_textentry,Url3) or string.find(yahoo_textentry,Url4) or string.find(yahoo_textentry,Url5) or string.find(yahoo_textentry,Url6) 
 
-    	    	 	print("success loop")
+                	    		or string.find(yahoo_textentry,Url7) or string.find(yahoo_textentry,Url8) or string.find(yahoo_textentry,Url9) 
 
-    	    	 	 --sendMessage("SEND")
+                	    		or string.find(yahoo_textentry,Url10) or string.find(yahoo_textentry,Url11) or string.find(yahoo_textentry,Url12) then
+                	      	    		
+                	    			 status = "send"
 
-    	    	 	 
-    	    end
+                                    url = youtube_textentry
 
-    	    elseif url_dropdown.text == "Yahoo" then
+                                    composer.hideOverlay()
 
-    	    	local yahoo_textentry = feed_url.text
+                	    	    else
 
-    	    	if yahoo_textentry ~= nil and yahoo_textentry ~= "" then
+                	    	    	print ( "error message")
 
-    	    		print("yahoo selection  ; "..yahoo_textentry)
+                	    	    	validation = false
 
-    	    		local Url = "http://video.yahoo.com/watch?"
-    	    		local Url1 = "http://comedy.video.yahoo.com"
-    	    		local Url2 = "http://animalvideos.yahoo.com"
-    	    		local Url3 = "http://video.yahoo.com/watchmojo"
-    	    		local Url4 = "http://video.yahoo.com/momentsofmotherhood" 
-    	    		local Url5 = "http://video.yahoo.com/tlc"
-    	    		local Url6 = "https://video.yahoo.com/watch?"
-    	    		local Url7 = "https://comedy.video.yahoo.com"
-    	    		local Url8 = "https://animalvideos.yahoo.com"
-    	    		local Url9 = "https://video.yahoo.com/watchmojo"
-    	    		local Url10 = "https://video.yahoo.com/momentsofmotherhood"
-    	    		local Url11 = "https://video.yahoo.com/tlc"
-    	    		local Url12 = "https://news.yahoo.com/video"
+                	    	    	SetError("* "..Message.YahooUrlError,feed_url)
 
+                	    	    	return false
 
-    	    		if string.find(yahoo_textentry,Url) or string.find(yahoo_textentry,Url1) or string.find(yahoo_textentry,Url2)
+                	    	    end
 
-    	    		or string.find(yahoo_textentry,Url3) or string.find(yahoo_textentry,Url4) or string.find(yahoo_textentry,Url5) or string.find(yahoo_textentry,Url6) 
+                	    	 else
 
-    	    		or string.find(yahoo_textentry,Url7) or string.find(yahoo_textentry,Url8) or string.find(yahoo_textentry,Url9) 
+                	    	 	print("success loop")
 
-    	    		or string.find(yahoo_textentry,Url10) or string.find(yahoo_textentry,Url11) or string.find(yahoo_textentry,Url12) then
-    	      	    		
-    	    			 print("message")
+                	    	 	-- sendMessage("SEND")
+                	    	 	
+                	    end
 
-    	    			-- sendMessage("SEND")	
-
-    	    			 if event.target.id == "send" then
-
-    	    			 sendMessage("SEND")	
-
-    	    			 elseif event.target.id == "draft" then
-
-    	    			 sendMessage("DRAFT")
-
-    	    			 else	
-
-    	    			 end
-
-    	    			 return false
-
-    	    	    else
-
-    	    	    	print ( "error message")
-
-    	    	    	validation = false
-
-    	    	    	SetError("* "..Message.YahooUrlError,feed_url)
-
-    	    	    	return false
-
-    	    	    end
-
-    	    	 else
-
-    	    	 	print("success loop")
-
-    	    	 	-- sendMessage("SEND")
-    	    	 	
-    	    end
-
-		 end
+		   
+                       end
+            end
 
     	end
-
+return true
     end
 
 
@@ -599,7 +575,7 @@ local function onKeyEvent( event )
     titleBg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
      local titleBg_text = display.newText(sceneGroup,"Video",0,0,native.systemFont,14)
-    titleBg_text.x = titleBg.x-titleBg.contentWidth+5;titleBg_text.y = titleBg.y
+    titleBg_text.x = titleBg.x-titleBg.contentWidth/2+5;titleBg_text.y = titleBg.y
     titleBg_text.anchorX = 0
     titleBg_text:setTextColor(1)
 
@@ -719,6 +695,9 @@ local function onKeyEvent( event )
         cancel_icon_text.id = "cancel_icon_text"
         cancel_icon_text.anchorX=0
 
+         image_send_button:addEventListener("touch",OnSendAndCancelTouch)
+        cancel_button:addEventListener("touch",OnSendAndCancelTouch)
+
     MainGroup:insert(sceneGroup)
 
 end
@@ -783,6 +762,8 @@ end
 
 	elseif phase == "did" then
 
+       
+
 	feed_cancelbutton:addEventListener("touch",onCancelButtonTouch)
 	--url_dropdown_bg:addEventListener("touch",urlSelection)
 	feed_url:addEventListener("userInput",textfield)
@@ -818,8 +799,14 @@ end
 
 	elseif phase == "did" then
 
-	composer.removeHidden()
+        if status == "cancel" then
+            event.parent:resumeVideocall(status,"")
+        else
 
+            print( url )
+            event.parent:resumeVideocall(status,url)
+
+        end
 	end	
 
 	end
