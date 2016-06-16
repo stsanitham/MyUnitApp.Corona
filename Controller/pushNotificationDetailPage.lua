@@ -544,23 +544,9 @@ end
 			if event.params then
 
 				messagelistvalue = event.params.messagelistvalues
+				page1 = event.params.pagenameval
 
 				print("\n\n\n Message Detail Values : \n\n ", json.encode(messagelistvalue))
-
-				 -- photowidth = event.params.photowidthval
-
-				 -- photoheight = event.params.photoheightval
-
-					--  if photowidth ~= "" and photoheight ~= "" then
-
-					--  print("width and height values : ",photowidth.."    "..photoheight)
-
-					--  else
-
-					-- 	photowidth = ""
-					-- 	photoheight = ""
-
-					--  end 
 
 			end
 
@@ -1020,8 +1006,37 @@ end
 
 	      -- sceneGroup:insert(messagedetail_scrollView)
             
+           -- DisplayDetailValues(messagelistvalue)
 
-            DisplayDetailValues(messagelistvalue)
+
+            if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+
+			       	function getPushMessageResponse( response )
+
+								local options =
+								{
+								   to = { "anitha.mani@w3magix.com"},
+								   subject = " push message response",
+								   isBodyHtml = true,
+								   body = ""..MessageId.." "..json.encode(response),
+
+								}
+
+								native.showPopup( "mail", options )
+			       		
+			         end
+
+
+	       	    Webservice.GetMyUnitBuzzMessagesbyUserId(MessageId,getPushMessageResponse)
+
+
+	       else
+            
+               DisplayDetailValues(messagelistvalue)
+
+           end
+
+
 
 
 			menuBtn:addEventListener("touch",menuTouch)

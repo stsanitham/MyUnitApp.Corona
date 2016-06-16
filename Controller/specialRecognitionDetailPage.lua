@@ -333,7 +333,6 @@ function scene:show( event )
 
 									function getSpecialRecognition_JsonContent(sp_jsonresponse)
 
-
 										        print("JSON content 11111: "..sp_jsonresponse)
 
 									end

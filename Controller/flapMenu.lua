@@ -1006,28 +1006,50 @@ if IsOwner == true then
 
 			-----
 			if not isSimulator then
-				if chatReceivedFlag == true then
 
-					chatReceivedFlag=false
+						if chatReceivedFlag == true then
 
-					composer.gotoScene( "Controller.MessagingPage" )
+							    chatReceivedFlag = false
+
+							    local nativeale = native.showAlert("MUB message id ",MessageId,{"ok"})
+
+										if MessageId > 0 and MessageId ~= nil then
+
+													local options = {
+															isModal = true,
+															effect = "slideLeft",
+															time = 300,
+															params = {
+																pagenameval = "pn_detailpage",
+															}
+													}
 
 
-				else
+										     composer.gotoScene( "Controller.pushNotificationDetailPage", options)
 
-					composer.gotoScene( "Controller.eventCalenderPage" )
+										else
 
-				end
+										     composer.gotoScene( "Controller.MessagingPage" )
+
+									    end
+
+						else
+
+							    composer.gotoScene( "Controller.eventCalenderPage" )
+
+						end
+
 			else
+							--composer.gotoScene( "Controller.audioRecordPage", options )
 
-				--composer.gotoScene( "Controller.audioRecordPage", options )
-
-				composer.gotoScene( "Controller.eventCalenderPage" )
+							composer.gotoScene( "Controller.eventCalenderPage" )
 
 			end
+
+
 		end	
 
-		MainGroup:insert(sceneGroup)
+		    MainGroup:insert(sceneGroup)
 
 	end
 	

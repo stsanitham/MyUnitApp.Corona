@@ -210,4 +210,6 @@ ApplicationConfig.MubDirectorRegister = ApplicationConfig.BASE_URL.."/MyUnitBuzz
 
 ApplicationConfig.GetSpecialRecognitionJsonContent = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetSpecialRecognitionJsonContent"
 
+ApplicationConfig.GetMyUnitBuzzMessagesbyUserId = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMyUnitBuzzMessagesbyUserId"
+
 

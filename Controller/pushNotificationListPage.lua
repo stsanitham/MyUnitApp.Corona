@@ -212,16 +212,19 @@ local function MessageDetailPage(event)
 			time = 300,
 			params = {
 			messagelistvalues = event.target.value,
+			pagenameval = "pn_listpage",
 			photowidthval = widthv,
 			photoheightval = heightv
 		}
 	}
 
-				print("\n\n\n Before Detail Values : \n\n ", json.encode(event.target.value))
+			print("\n\n\n Before Detail Values : \n\n ", json.encode(event.target.value))
 
-	Runtime:removeEventListener( "key", onKeyEvent )
+	        Runtime:removeEventListener( "key", onKeyEvent )
 
-	composer.showOverlay( "Controller.pushNotificationDetailPage", options )
+
+		    composer.showOverlay( "Controller.pushNotificationDetailPage", options )
+
     
     end
 
@@ -1617,7 +1620,12 @@ function scene:show( event )
 				list_values = event.params.pushlistvalues
 				pagingvalue = event.params.page
 
+					if event.params.pageee ~= nil then
+	                      pagevaluenamee = event.params.pageee
+					end
+
 			end
+			
 
 			composer.removeHidden()
 	         
