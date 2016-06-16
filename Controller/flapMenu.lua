@@ -1005,9 +1005,9 @@ if IsOwner == true then
 					flapScroll:insert( Logout_text )
 
 			-----
-			if isSimulator then
+			if not isSimulator then
 
-					local nativeale = native.showAlert("MUB message id ",MessageId,{"ok"})
+					--local nativeale = native.showAlert("MUB message id ",MessageId,{"ok"})
 						if chatReceivedFlag == true then
 
 							    chatReceivedFlag = false
