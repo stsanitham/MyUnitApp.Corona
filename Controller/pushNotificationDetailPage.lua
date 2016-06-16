@@ -544,23 +544,9 @@ end
 			if event.params then
 
 				messagelistvalue = event.params.messagelistvalues
+				page1 = event.params.pagenameval
 
 				print("\n\n\n Message Detail Values : \n\n ", json.encode(messagelistvalue))
-
-				 -- photowidth = event.params.photowidthval
-
-				 -- photoheight = event.params.photoheightval
-
-					--  if photowidth ~= "" and photoheight ~= "" then
-
-					--  print("width and height values : ",photowidth.."    "..photoheight)
-
-					--  else
-
-					-- 	photowidth = ""
-					-- 	photoheight = ""
-
-					--  end 
 
 			end
 
@@ -641,6 +627,24 @@ end
 				    --short_msg_txt.y= back_icon.y
 
 				end
+local function makeTimeStamp( dateString )
+   local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
+   local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
+   local timestamp = os.time(
+      { year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false }
+   )
+   local offset = 0
+   if ( tzoffset ) then
+      if ( tzoffset == "+" or tzoffset == "-" ) then  -- We have a timezone
+         offset = offsethour * 60 + offsetmin
+         if ( tzoffset == "-" ) then
+            offset = offset * -1
+         end
+         timestamp = timestamp + offset
+      end
+   end
+   return timestamp
+end
 
 
             
@@ -825,7 +829,7 @@ end
 		    file = nil
 
 
-if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null then
+if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null and detail_value.AudioFilePath ~= "" then
 
 
 
@@ -969,7 +973,7 @@ if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null the
 		imagepathvalue = detail_value.ImageFilePath
 
 
-	elseif detail_value.AudioFilePath ~= null then
+	elseif detail_value.AudioFilePath ~= null and detail_value.AudioFilePath ~= "" then
 
 
 					local function audiorecivedNetwork( event )
@@ -1012,19 +1016,7 @@ if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null the
 
 	end
 
-
-
-
-end
-
-
-	      -- sceneGroup:insert(messagedetail_scrollView)
-            
-
-            DisplayDetailValues(messagelistvalue)
-
-
-			menuBtn:addEventListener("touch",menuTouch)
+menuBtn:addEventListener("touch",menuTouch)
 
 			back_icon:addEventListener("touch",closeDetails)
 			back_icon_bg:addEventListener("touch",closeDetails)
@@ -1038,6 +1030,52 @@ end
 			    end
 
             Runtime:addEventListener( "key", onKeyEventDetail )
+
+
+end
+
+
+	      -- sceneGroup:insert(messagedetail_scrollView)
+            
+           -- DisplayDetailValues(messagelistvalue)
+
+
+            if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+
+			       	function getPushMessageResponse( response )
+
+								-- local options =
+								-- {
+								--    to = { "anitha.mani@w3magix.com"},
+								--    subject = " push message response",
+								--    isBodyHtml = true,
+								--    body = ""..MessageId.." "..json.encode(response),
+
+								-- }
+
+								-- native.showPopup( "mail", options )
+
+								 DisplayDetailValues(response)
+			       		
+			         end
+
+
+	       	    Webservice.GetMyUnitBuzzMessagesbyUserId(MessageId,getPushMessageResponse)
+
+
+	       else
+            
+               DisplayDetailValues(messagelistvalue)
+
+
+
+
+           end
+
+
+
+
+			
 			
 		end	
 		

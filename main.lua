@@ -34,6 +34,8 @@ TimeZone = ""
 
 chatReceivedFlag=false
 
+MessageId = "0"
+
 --com.spanenterprises.MUBDev
 
 --CommonApp/DirectorApp
@@ -212,18 +214,49 @@ end
 
 
 
-panel = widget.newPanel{
-location = "left",
-onComplete = panelTransDone,
-width = display.contentWidth * 0.8,
-height = H,
-speed = menuTransTime,
-inEasing = easing.outCubic,
-outEasing = easing.outCubic
-}
+    panel = widget.newPanel{
+    location = "left",
+    onComplete = panelTransDone,
+    width = display.contentWidth * 0.8,
+    height = H,
+    speed = menuTransTime,
+    inEasing = easing.outCubic,
+    outEasing = easing.outCubic
+    }
 
 
-composer.gotoScene( "Controller.splashScreen")
+    composer.gotoScene( "Controller.splashScreen")
+
+
+ --  if openPage == "main" then
+                        
+ --                          local options = {
+ --                            isModal = true,
+ --                            effect = "fade",
+ --                            time = 400,
+ --                            params = {
+
+ --                                additionalValue1 = additionalData,
+ --                                Message1= message,
+ --                                MessageIdValue1 = "4019",
+ --                                pagername = "main",
+
+ --                               }
+ --                            }
+
+ --                        print("additionalData   "..additionalData)
+
+
+ --                        -- By some method (a pause button, for example), show the overlay
+ --                        --composer.showOverlay( "Controller.pushNotificationPage", options )
+
+ --                          composer.gotoScene("Controller.pushNotificationDetailPage",options)
+
+ -- else
+
+ --    composer.gotoScene( "Controller.splashScreen")
+
+ -- end
 
    
 --composer.gotoScene( "Controller.pushNotificationPage")
@@ -235,25 +268,27 @@ if launchArgs and launchArgs.notification then
             if isAndroid then
                 additionalData = launchArgs.notification.androidGcmBundle
                 message = additionalData.contents
+                MessageId = additionalData.pnmid
             elseif isIos then
-               additionalData = launchArgs.notification.custom.data
+                additionalData = launchArgs.notification.custom.data
                 message = launchArgs.notification.alert
+                MessageId = additionalData.pnmid
             end
 
              chatReceivedFlag=true
 
           if additionalData.messageType ~= nil then
 
-            
+               --chatReceivedFlag=true
+        
+                local UserId,ContactId,Name,FromName,GroupName
 
-        local UserId,ContactId,Name,FromName,GroupName
+                    for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+                            UserId = row.UserId
+                            ContactId = row.ContactId
+                            Name = row.MemberName
 
-            for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-                    UserId = row.UserId
-                    ContactId = row.ContactId
-                    Name = row.MemberName
-
-            end
+                    end
 
 
         
@@ -320,22 +355,32 @@ if launchArgs and launchArgs.notification then
 
              notificationFlag = true
 
+             chatReceivedFlag=true
+
+
                 if (additionalData) then
-                    
-                  local options = {
-                    isModal = true,
-                    effect = "fade",
-                    time = 400,
-                    params = {
 
-                        additionalValue = additionalData,
-                        Message = message
+                    local al2 = native.showAlert( "PN Launch Message 123", MessageId, { "OK" } )
 
-                    }
-                }
+                            
+                          local options = {
+                            isModal = true,
+                            effect = "fade",
+                            time = 400,
+                            params = {
 
-                -- By some method (a pause button, for example), show the overlay
-                composer.showOverlay( "Controller.pushNotificationPage", options )
+                                additionalValue = json.encode(additionalData),
+                                Message = launch_message,
+                                MessageId = launch_messageid,
+                                pagername = "mainpage"
+
+                            }
+                         }
+
+                         -- By some method (a pause button, for example), show the overlay
+                         -- composer.showOverlay( "Controller.pushNotificationPage", options )
+                         -- composer.showOverlay("Controller.pushNotificationDetailPage", options )
+
 
                 else
 
@@ -346,6 +391,11 @@ if launchArgs and launchArgs.notification then
 
         end
 end
+
+
+
+
+
 
 
 function DidReceiveRemoteNotification(message, additionalData, isActive)
@@ -518,6 +568,12 @@ end
 
     -- OneSignal.EnableInAppAlertNotification(false)
 
+
+
+
+
+
+
  
 local function notificationListener( event )
 
@@ -548,6 +604,7 @@ local function notificationListener( event )
             if isAndroid then
                 additionalData = event.androidGcmBundle
                 message = additionalData.contents
+                messagidvalue = additionalData.pnmid
             elseif isIos then
 
                additionalData = event.custom.data
@@ -647,24 +704,59 @@ local function notificationListener( event )
 
                 notificationFlag = true
 
+                chatReceivedFlag = true
+
                 if (additionalData) then
-                    
-                  local options = {
-                    isModal = true,
-                    effect = "fade",
-                    time = 400,
-                    params = {
 
-                        additionalValue = additionalData,
-                        Message = message
+                       if openPage == "main" or openPage == "spalshPage" then
 
-                       }
-                    }
+                              if isAndroid then
+
+                                     additionalData = event.androidGcmBundle
+                                     message = additionalData.contents
+                                     messagidvalue = additionalData.pnmid
 
 
+                                -- local options =
+                                -- {
+                                --    to = { "anitha.mani@w3magix.com"},
+                                --    subject = " response",
+                                --    isBodyHtml = true,
+                                --    body = ""..json.encode(additionalData).."\n"..message.."\n"..messagidvalue,
 
-                -- By some method (a pause button, for example), show the overlay
-                composer.showOverlay( "Controller.pushNotificationPage", options )
+                                -- }
+
+                                -- native.showPopup( "mail", options )
+
+
+                                
+                                  local options = {
+                                    isModal = true,
+                                    effect = "fade",
+                                    time = 400,
+                                    params = {
+
+                                         additionalValue = json.encode(additionalData),
+                                         Message = message,
+                                         MessageId = messagidvalue,
+                                         pagername = "mainpage",
+
+                                       }
+                                    }
+
+
+
+                                -- By some method (a pause button, for example), show the overlay
+                                --composer.showOverlay( "Controller.pushNotificationPage", options )
+
+                                  composer.gotoScene("Controller.pushNotificationDetailPage",options)
+
+                                end
+
+                          else
+
+
+                          end
 
                 else
 
