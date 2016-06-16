@@ -1026,7 +1026,6 @@ if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and d
 	end
 
             menuBtn:addEventListener("touch",menuTouch)
-
 			back_icon:addEventListener("touch",closeDetails)
 			back_icon_bg:addEventListener("touch",closeDetails)
 			title:addEventListener("touch",closeDetails)

@@ -222,7 +222,7 @@ local function CreateHorizontalTable( sceneGroup , List )
 				for i=1,#reportArray do
 
 
-					
+				
 
 					reportArrayList[#reportArrayList+1] = display.newGroup()
 
@@ -230,37 +230,68 @@ local function CreateHorizontalTable( sceneGroup , List )
 
 					local Image 
 
-					local tempHeight = 75
 
-					local background = display.newRect(tempGroup,0,0,W,50)
+					local tempHeight = -14
+
+					local background = display.newRect(tempGroup,0,0,H-45,60)
 
 					if(reportArrayList[#reportArrayList-1]) ~= nil then
 						tempHeight = reportArrayList[#reportArrayList-1][1].y + reportArrayList[#reportArrayList-1][1].height+3
 					end
 
-					background.anchorY = 0
-					background.x=W/2;background.y=tempHeight
-					background:setFillColor( 0.6 )
-					--	background.id=list[i].Contact_Id
-					--background.alpha=0.01
+						if i == 1 then
+						background.x=W/2+90;background.y=tempHeight*5
+
+						else
+						background.x=W/2+90;background.y=tempHeight
+						end
+					background.alpha=0.01
+
+					if parentFlag == true then
+						parentFlag=false
 
 
+						parentTitle = display.newRect(tempGroup,0,0,W,25)
+						if(reportArrayList[#reportArrayList-1]) ~= nil then
+							--here
+							tempHeight = reportArrayList[#reportArrayList-1][1].y + reportArrayList[#reportArrayList-1][1].height/2+10
+						end
 
 
-						HorizontalScroll:insert(tempGroup)
+						parentTitle.anchorY = 0
+						parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
+						parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
+						parent_centerText = display.newText(tempGroup,"Header",0,0,native.systemFontBold,14)
+						parent_centerText.x=5
+						parent_centerText.anchorX=0
+						parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
+
+						background.y=parentTitle.y+background.contentHeight/2
+
+
+						for k,v in pairs( reportArray[i] ) do
+						    print( "KEY: "..k.." | ".."VALUE: "..v )
+						end
+
+
+					HorizontalScroll:insert(tempGroup)
 
 				end
 
 
+				
+
+			
+
+
+		end
+
+
+
 -- HorizontalScroll.horizontalScrollDisabled=false
 -- HorizontalScroll.verticalScrollDisabled=true
-HorizontalScroll.rotation = 90
+
 				--print( "Lenght : "..reportArray[1] )
-
-
-
-
-		
 
 
 
@@ -291,6 +322,24 @@ local function scrollListener( event )
     return true
 end
 
+
+local function onRowRender( event )
+
+    -- Get reference to the row group
+    local row = event.row
+
+    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
+    local rowHeight = row.contentHeight
+    local rowWidth = row.contentWidth
+
+    local rowTitle = display.newText( row, "Row " .. row.index, 0, 0, nil, 14 )
+    rowTitle:setFillColor( 0 )
+
+    -- Align the label left and vertically centered
+    rowTitle.anchorX = 0
+    rowTitle.x = 0
+    rowTitle.y = rowHeight * 0.5
+end
 ------------------------------------------------------
 
 function scene:create( event )
@@ -407,16 +456,20 @@ function scene:show( event )
 				        top = 70,
 				        width = W,
 				        height = H-75,
-				        horizontalScrollDisabled = false,
-				        verticalScrollDisabled = false,
-				        isBounceEnabled=false,
-				       listener = scrollListener
+				      --  horizontalScrollDisabled = true,
+				       -- verticalScrollDisabled = false,
+				        --isBounceEnabled=false,
+				        hideScrollBar=true,
+				      -- listener = scrollListener
 				    }
 				)
-	-- HorizontalScroll.anchorX = 1
-	-- HorizontalScroll.anchorY = 0.5
 
 
+
+		 -- HorizontalScroll.anchorX = 1
+		 -- HorizontalScroll.anchorY = 0.5
+
+		 sceneGroup:insert( HorizontalScroll )
 		if event.params then
 
 			sr_eventdetails = event.params.specialRecognition_Details
@@ -441,9 +494,8 @@ function scene:show( event )
 												sp_jsonresponse = 	json.decode(sp_jsonresponse)
 
 										      --  print("JSON content 11111: "..#sp_jsonresponse.data)
-
-										        CreateHorizontalTable(sceneGroup,sp_jsonresponse)
-
+										      	parentFlag=true
+										       CreateHorizontalTable(sceneGroup,sp_jsonresponse)
 
 									end
 
