@@ -1007,14 +1007,12 @@ if IsOwner == true then
 			-----
 			if not isSimulator then
 
-					--local nativeale = native.showAlert("MUB message id ",MessageId,{"ok"})
 						if chatReceivedFlag == true then
 
 							    chatReceivedFlag = false
 
-							    
 
-										if MessageId ~= 0 and MessageId ~= nil then
+										if MessageId ~= "0" and MessageId ~= nil and MessageId ~= "" then
 
 													local options = {
 															isModal = true,
@@ -1026,11 +1024,11 @@ if IsOwner == true then
 													}
 
 
-										     composer.gotoScene( "Controller.pushNotificationDetailPage", options)
+										      composer.gotoScene( "Controller.pushNotificationDetailPage", options)
 
 										else
 
-										     composer.gotoScene( "Controller.MessagingPage" )
+										      composer.gotoScene( "Controller.MessagingPage" )
 
 									    end
 

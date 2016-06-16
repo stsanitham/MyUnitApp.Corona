@@ -264,15 +264,15 @@ end
 
 
 if launchArgs and launchArgs.notification then
+
      local additionalData,message
+
             if isAndroid then
                 additionalData = launchArgs.notification.androidGcmBundle
                 message = additionalData.contents
-                MessageId = additionalData.pnmid
             elseif isIos then
                 additionalData = launchArgs.notification.custom.data
                 message = launchArgs.notification.alert
-                MessageId = additionalData.pnmid
             end
 
              chatReceivedFlag=true
@@ -360,26 +360,9 @@ if launchArgs and launchArgs.notification then
 
                 if (additionalData) then
 
-                    local al2 = native.showAlert( "PN Launch Message 123", MessageId, { "OK" } )
 
-                            
-                          local options = {
-                            isModal = true,
-                            effect = "fade",
-                            time = 400,
-                            params = {
-
-                                additionalValue = json.encode(additionalData),
-                                Message = launch_message,
-                                MessageId = launch_messageid,
-                                pagername = "mainpage"
-
-                            }
-                         }
-
-                         -- By some method (a pause button, for example), show the overlay
-                         -- composer.showOverlay( "Controller.pushNotificationPage", options )
-                         -- composer.showOverlay("Controller.pushNotificationDetailPage", options )
+                MessageId = additionalData.pnmid
+            
 
 
                 else
@@ -604,10 +587,9 @@ local function notificationListener( event )
             if isAndroid then
                 additionalData = event.androidGcmBundle
                 message = additionalData.contents
-                messagidvalue = additionalData.pnmid
             elseif isIos then
 
-               additionalData = event.custom.data
+                additionalData = event.custom.data
                 message = event.alert
             end
 
@@ -714,7 +696,7 @@ local function notificationListener( event )
 
                                      additionalData = event.androidGcmBundle
                                      message = additionalData.contents
-                                     messagidvalue = additionalData.pnmid
+                                     MessageId = additionalData.pnmid
 
 
                                 -- local options =
@@ -728,29 +710,8 @@ local function notificationListener( event )
 
                                 -- native.showPopup( "mail", options )
 
-
-                                
-                                  local options = {
-                                    isModal = true,
-                                    effect = "fade",
-                                    time = 400,
-                                    params = {
-
-                                         additionalValue = json.encode(additionalData),
-                                         Message = message,
-                                         MessageId = messagidvalue,
-                                         pagername = "mainpage",
-
-                                       }
-                                    }
-
-
-
-                                -- By some method (a pause button, for example), show the overlay
-                                --composer.showOverlay( "Controller.pushNotificationPage", options )
-
-                                  composer.gotoScene("Controller.pushNotificationDetailPage",options)
-
+                              
+                   
                                 end
 
                           else
