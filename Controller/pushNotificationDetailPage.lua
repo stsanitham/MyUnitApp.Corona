@@ -1016,7 +1016,7 @@ if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null and
 
 	end
 
-menuBtn:addEventListener("touch",menuTouch)
+		menuBtn:addEventListener("touch",menuTouch)
 
 			back_icon:addEventListener("touch",closeDetails)
 			back_icon_bg:addEventListener("touch",closeDetails)
