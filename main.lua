@@ -672,7 +672,7 @@ local function notificationListener( event )
 
         GCMValue = event.token
 
-       native.showAlert( "Push Notification", event.token ,{"Ok"} )
+     --  native.showAlert( "Push Notification", event.token ,{"Ok"} )
 
    
     end
