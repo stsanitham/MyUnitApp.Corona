@@ -377,8 +377,8 @@ function scene:create( event )
 				height =H-RecentTab_Topvalue+5,
 				hideBackground = true,
 				isBounceEnabled=false,
-				horizontalScrollingDisabled = false,
-				verticalScrollingDisabled = false,
+				horizontalScrollingDisabled = true,
+				verticalScrollingDisabled = true,
 			    --listener = scrollListener
 			}
 
@@ -411,7 +411,7 @@ function scene:show( event )
 				        width = W,
 				        height = H-75,
 				        horizontalScrollDisabled = true,
-				        verticalScrollDisabled = false,
+				        verticalScrollDisabled = true,
 				       listener = scrollListener
 				    }
 				)
