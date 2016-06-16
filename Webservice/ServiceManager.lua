@@ -330,7 +330,7 @@ else
 
 		{
 		"MyUnitBuzzMessage": "]]..message..[[",
-		"MyUnitBuzzLongMessage": "]]..longmessage..[[",
+		"MyUnitBuzzLongMessage": "]]..string.urlEncode(longmessage)..[[",
 		"IsScheduled": "]]..IsScheduled..[[",	
 		"ScheduledDate": "]]..ScheduledDate..[[",	
 		"ScheduledTime": "]]..ScheduledTime..[[",	

@@ -1972,6 +1972,14 @@ end
 				sceneGroup:insert(Audio_filename_title)
 
 
+				if filename.text ~= "" and Details ~= nil and Details.AudioFilePath ~= nil  then
+
+					Audio_filename_title.y = Audio_filename_title.y + 45
+
+
+				end
+
+
 				Audio_filename = display.newText("",0,0,native.systemFont,14)
 				Audio_filename.anchorX = 0
 				Audio_filename.anchorY = 0

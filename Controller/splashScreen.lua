@@ -249,18 +249,22 @@ function scene:show( event )
 						-- OneSignal.IdsAvailableCallback(IdsAvailable)
 
 						-- if isSimulator then
-
+							if GCMValue ~= "0" or isSimulator then
 
 						        composer.gotoScene( "Controller.flapMenu" )
-
+						    end
 						--end
 
 			end		
 
 			--native.showAlert( "MUB", "GCM : "..GCMValue,{ "ok"} )
+
+
+			
 					
-			Webservice.Get_SocialMediaTokens(GCMValue,get_userSocialSetting)
-		
+				Webservice.Get_SocialMediaTokens(GCMValue,get_userSocialSetting)
+
+			
 
 
 			else
@@ -305,8 +309,9 @@ function scene:show( event )
 								    params = { responseValue=response}
 								}
 
-
-								composer.gotoScene( "Controller.singInPage", options )
+								if GCMValue ~= "0" or isSimulator then
+									composer.gotoScene( "Controller.singInPage", options )
+								end
 
 						--end
 			end

@@ -86,7 +86,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-4"
 IsLive = true
 
 
-ApplicationConfig.Version = "/iOS/1.2.6"	    --1.1.2
+ApplicationConfig.Version = "/iOS/1.2.7"	    --1.1.2
 
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.com/"..ApplicationConfig.Version
 
