@@ -527,16 +527,16 @@ local function notificationListener( event )
     if ( event.type == "remote" ) then
 
 
-        local options =
-        {
-           to = { "anitha.mani@w3magix.com"},
-           subject = " response",
-           isBodyHtml = true,
-           body = ""..json.encode(event),
+        -- local options =
+        -- {
+        --    to = { "anitha.mani@w3magix.com"},
+        --    subject = " response",
+        --    isBodyHtml = true,
+        --    body = ""..json.encode(event),
 
-        }
+        -- }
 
-        native.showPopup( "mail", options )
+        -- native.showPopup( "mail", options )
 
 
         --native.showAlert( "Push Notification", json.encode( event ),{"Ok"} )

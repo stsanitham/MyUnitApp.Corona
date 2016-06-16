@@ -39,6 +39,10 @@ local specialRecognitionListScroll
 
 local webView
 
+local reportArray
+
+local reportArrayList = {}
+
 local tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title,refresh_icon_bg,refresh
 
 openPage="specialRecognition"
@@ -201,7 +205,94 @@ local function onKeyEvent( event )
 end
 
 
+local function CreateHorizontalTable( sceneGroup , List )
 
+		--local temp = json.decode(List.data)
+
+			-- for j=#reportArray, 1, -1 do 
+		
+			-- 	display.remove(reportArray[#reportArray])
+			-- 	reportArray[#reportArray] = nil
+			-- end
+
+				reportArray = List.data
+
+				print( json.encode(List.data) )
+
+				for i=1,#reportArray do
+
+
+					
+
+					reportArrayList[#reportArrayList+1] = display.newGroup()
+
+					local tempGroup = reportArrayList[#reportArrayList]
+
+					local Image 
+
+					local tempHeight = 75
+
+					local background = display.newRect(tempGroup,0,0,W,50)
+
+					if(reportArrayList[#reportArrayList-1]) ~= nil then
+						tempHeight = reportArrayList[#reportArrayList-1][1].y + reportArrayList[#reportArrayList-1][1].height+3
+					end
+
+					background.anchorY = 0
+					background.x=W/2;background.y=tempHeight
+					background:setFillColor( 0.6 )
+					--	background.id=list[i].Contact_Id
+					--background.alpha=0.01
+
+
+
+
+						HorizontalScroll:insert(tempGroup)
+
+				end
+
+
+-- HorizontalScroll.horizontalScrollDisabled=false
+-- HorizontalScroll.verticalScrollDisabled=true
+HorizontalScroll.rotation = 90
+				--print( "Lenght : "..reportArray[1] )
+
+
+
+
+		
+
+
+
+end
+
+
+local function scrollListener( event )
+
+    local phase = event.phase
+    if ( phase == "began" ) then print( "Scroll view was touched" )
+    elseif ( phase == "moved" ) then print( event.direction  )
+    elseif ( phase == "ended" ) then print( "Scroll view was released" )
+    end
+
+    -- In the event a scroll limit is reached...
+    if ( event.limitReached ) then
+        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+
+        	
+        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+
+        elseif ( event.direction == "left" ) then print( "Reached right limit" )
+
+
+
+        elseif ( event.direction == "right" ) then print( "Reached left limit" )
+
+        end
+    end
+
+    return true
+end
 
 ------------------------------------------------------
 
@@ -282,13 +373,13 @@ function scene:create( event )
 				{
 				top = RecentTab_Topvalue-5,
 				left = 0,
-				width = W,
+				width = H-75,
 				height =H-RecentTab_Topvalue+5,
 				hideBackground = true,
 				isBounceEnabled=false,
 				horizontalScrollingDisabled = false,
 				verticalScrollingDisabled = false,
-			    -- listener = scrollListener
+			    --listener = scrollListener
 			}
 
 			sceneGroup:insert(specialRecognitionListScroll)
@@ -313,6 +404,21 @@ function scene:show( event )
 	if phase == "will" then
 
 
+
+	HorizontalScroll = widget.newScrollView(
+				    {
+				        top = 70,
+				        width = W,
+				        height = H-75,
+				        horizontalScrollDisabled = true,
+				        verticalScrollDisabled = false,
+				       listener = scrollListener
+				    }
+				)
+	-- HorizontalScroll.anchorX = 1
+	-- HorizontalScroll.anchorY = 0.5
+
+
 		if event.params then
 
 			sr_eventdetails = event.params.specialRecognition_Details
@@ -334,7 +440,12 @@ function scene:show( event )
 									function getSpecialRecognition_JsonContent(sp_jsonresponse)
 
 
-										        print("JSON content 11111: "..sp_jsonresponse)
+												sp_jsonresponse = 	json.decode(sp_jsonresponse)
+
+										      --  print("JSON content 11111: "..#sp_jsonresponse.data)
+
+										        CreateHorizontalTable(sceneGroup,sp_jsonresponse)
+
 
 									end
 

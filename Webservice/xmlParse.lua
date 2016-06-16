@@ -49,8 +49,18 @@ function request.new(url, method, params,listner)
 		
 				print ( "URL : "..url.."\n\n RESPONSE: " .. event.response )
 
+				local response 
 
-		local response = json.decode(event.response)
+	-- if string.find(url,"/MyUnitBuzz/GetSpecialRecognitionJsonContent") then
+
+
+	-- 	response = (event.response)
+	-- else
+
+
+		response = json.decode(event.response)
+
+	--end
 
 
 		spinner_hide()

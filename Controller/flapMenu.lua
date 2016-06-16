@@ -1009,6 +1009,7 @@ if IsOwner == true then
 				if chatReceivedFlag == true then
 
 					chatReceivedFlag=false
+					
 
 					composer.gotoScene( "Controller.MessagingPage" )
 
