@@ -622,6 +622,7 @@ function scene:show( event )
 
 		elseif phase == "did" then
 
+
 				contactId = event.params.contactId
 				Message_Type = event.params.MessageType
 				GroupType_Value = event.params.GroupTypeValue

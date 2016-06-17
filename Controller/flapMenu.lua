@@ -1005,7 +1005,7 @@ if IsOwner == true then
 					flapScroll:insert( Logout_text )
 
 			-----
-			if not isSimulator then
+			if  not isSimulator then
 
 						if chatReceivedFlag == true then
 

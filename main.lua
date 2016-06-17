@@ -18,6 +18,7 @@ widget.setTheme( "widget_theme_ios" )
 
 --local OneSignal = require("plugin.OneSignal")
 GCMValue = 0
+
 ga = require("Utils.GoogleAnalytics.ga")
 
 local launchArgs = ...
@@ -254,13 +255,10 @@ if launchArgs and launchArgs.notification then
                             UserId = row.UserId
                             ContactId = row.ContactId
                             Name = row.MemberName
-
                     end
 
-
         
-                Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
-
+                        Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
                         isDeleted="false"
                         Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
                         Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
@@ -276,12 +274,10 @@ if launchArgs and launchArgs.notification then
 
                             if additionalData.fFN ~= nil then
                                 Name=additionalData.fFN.." "..additionalData.fLN
-
                             else
-
                                 Name=additionalData.fLN
-
                             end
+
 
                             GroupName=""
 
@@ -289,15 +285,10 @@ if launchArgs and launchArgs.notification then
                                  GroupName=additionalData.gn
                                  FromName=""
                             else
-
-
-                                   if additionalData.tFN ~= nil then
+                                    if additionalData.tFN ~= nil then
                                         FromName=additionalData.tFN.." "..additionalData.tLN
-
                                     else
-
                                         FromName=additionalData.tLN
-
                                     end
 
                             end
@@ -312,7 +303,6 @@ if launchArgs and launchArgs.notification then
 
                         if openPage ~= "MessagingPage" and openPage ~= "main" then
 
-
                            --local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
                                  
                         end
@@ -320,23 +310,20 @@ if launchArgs and launchArgs.notification then
           
         else
 
-             notificationFlag = true
+                     notificationFlag = true
 
-             chatReceivedFlag=true
-
-
-                if (additionalData) then
+                     chatReceivedFlag=true
 
 
-                MessageId = additionalData.pnmid
-            
+                    if (additionalData) then
 
+                     MessageId = additionalData.pnmid
+                    --MessageId = "0"
+                    else
 
-                else
+                      native.showAlert("MyUnitBuzz", message, { "OK" } )
 
-                  native.showAlert("MyUnitBuzz", message, { "OK" } )
-
-                end
+                    end
 
 
         end
@@ -472,6 +459,7 @@ local function notificationListener( event )
                                      additionalData = event.androidGcmBundle
                                      message = additionalData.contents
                                      MessageId = additionalData.pnmid
+                                    -- MessageId = "0"
 
 
                                 -- local options =

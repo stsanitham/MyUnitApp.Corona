@@ -108,7 +108,9 @@ local function consultantTounch( event )
 
 					--selectcontact_checkbox.isOn = true
 
-				else
+				elseif addGroupid_value == "editMember" then
+
+			    else
 
  				    local options = {
 						    effect = "flipFadeOutIn",
@@ -125,6 +127,9 @@ local function consultantTounch( event )
 	return true
 
 end
+
+
+
 
 local function bgTouch( event )
 
@@ -504,39 +509,39 @@ end
 		        if i == 1 then  
 		      --[[
 
-addGroupid_value
-editMember
-editId]]  		if addGroupid_value ~= "editMember" then
+        addGroupid_value
+		editMember
+		editId]]  		    if addGroupid_value ~= "editMember" then
 
-						if grouptypevalue == "GROUP" then
+								if grouptypevalue == "GROUP" then
 
-	 				        local options = {
-								effect = "slideRight",
-								time = 300,	
-								params = { pagevalue = grouptypevalue}
-								}
+			 				        local options = {
+										effect = "slideRight",
+										time = 300,	
+										params = { pagevalue = grouptypevalue}
+										}
 
-			        		composer.gotoScene("Controller.groupPage",options)
+					        		composer.gotoScene("Controller.groupPage",options)
 
-			            elseif grouptypevalue == "BROADCAST" then
-
-
-	 				        local options = {
-								effect = "slideRight",
-								time = 300,	
-								params = { pagevalue = grouptypevalue}
-								}
-
-			            	composer.gotoScene("Controller.broadCastPage",options)
-
-			        	end
-
-			        else
-
-			        	composer.hideOverlay()
+					            elseif grouptypevalue == "BROADCAST" then
 
 
-			        end
+			 				        local options = {
+										effect = "slideRight",
+										time = 300,	
+										params = { pagevalue = grouptypevalue}
+										}
+
+					            	composer.gotoScene("Controller.broadCastPage",options)
+
+					        	end
+
+					        else
+
+					        	composer.hideOverlay()
+
+
+					        end
 
 		        end
 
@@ -558,19 +563,36 @@ editId]]  		if addGroupid_value ~= "editMember" then
 
 		    function getAddedMembersInGroup(response)
 
-		    	if response == "Success" then
+			    	if response == "Success" then
 
-		    		if grouptypevalue == "GROUP" then
+						    		if addGroupid_value ~= "editMember" then
 
-	    				local alert = native.showAlert( ChatPage.GroupCreated ,ChatPage.GroupCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+									    		if grouptypevalue == "GROUP" then
 
-		    	    else
+								    				local alert = native.showAlert( ChatPage.GroupCreated ,ChatPage.GroupCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
-		    	    	local alert = native.showAlert( ChatPage.BroadcastListCreated ,ChatPage.BroadcastListCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+									    	    else
 
-		    	    end
+									    	    	local alert = native.showAlert( ChatPage.BroadcastListCreated ,ChatPage.BroadcastListCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
-		    	end
+									    	    end
+
+									 elseif addGroupid_value == "editMember" then
+
+									 			if grouptypevalue == "GROUP" then
+
+								    				local alert = native.showAlert( "Group Updated" ,"Group updated successfully", { CommonWords.ok }, onGroupCreationComplete )
+
+									    	    else
+
+									    	    	local alert = native.showAlert( "Broadcast List Updated" ,"Broadcast List updated successfully", { CommonWords.ok }, onGroupCreationComplete )
+
+									    	    end
+
+
+									 end
+
+			    	end
 
 		    end
 
@@ -1379,9 +1401,11 @@ end
 
 				if addGroupid_value == "editMember" then
 
+					print("editId"..editId)
+
 				 event.parent:resumeEditGame(editId)
 
-			end
+			    end
 
 		end	
 
