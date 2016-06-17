@@ -695,7 +695,7 @@ function scene:show( event )
 		elseif phase == "did" then
 
 
-			print( "!!!!!!!!!!!!!!!!" )
+			print( "!!!!!!!!!!!!!!!!"..event.params.contactId )
 
 				contactId = event.params.contactId
 

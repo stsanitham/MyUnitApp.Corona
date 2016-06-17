@@ -112,8 +112,56 @@ local function onKeyEvent( event )
  	     display.getCurrentStage():setFocus( nil )
 
     end
-
+return true
  end
+
+
+ local function ListCliked( event )
+
+ 	if event.phase == "began" then
+
+ 		 display.getCurrentStage():setFocus( event.target )
+
+ 	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
+		local dx = math.abs( ( event.x - event.xStart ) )
+
+		if ( dy > 10 ) or ( dx > 10 ) then
+			display.getCurrentStage():setFocus( nil )
+			HorizontalScroll:takeFocus( event )
+		end
+
+ 	elseif event.phase == "ended" then
+
+ 	     display.getCurrentStage():setFocus( nil )
+
+
+ 	     if event.target.ContactId ~= nil and tonumber(event.target.ContactId) > 0 then
+
+       local options = {
+				      		effect = "fromTop",
+							time = 200,	
+								params = {
+								contactId = event.target.ContactId,
+								MessageType = "SPECIAL",
+								GroupTypeValue = "",
+							}
+
+							}
+
+
+		    composer.showOverlay( "Controller.Chathead_detailPage", options )
+
+ 	     else
+
+ 	     	--native.showAlert( "MyUnitBuzz", "Contact not in our Database",{"OK"})
+
+ 	     end
+
+    end
+return true
+ end
+
 
 
 
@@ -135,7 +183,7 @@ local function onKeyEvent( event )
 
 				if webView then webView:removeSelf( );webView=nil end
 
-				composer.hideOverlay( "slideRight", 300 )
+				composer.gotoScene( "Controller.specialRecognition","slideRight", 300 )
 
 
 		elseif event.target.id == "refresh" then
@@ -207,9 +255,13 @@ local function onKeyEvent( event )
 end
 
 
+local parent_centerText = {}
+
 local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
+			local contact = 0
 
 				    	
+								if v ~= "ContactId" and k ~= "ContactId" then
 
 						    			local ColoumWidth = W/3
 
@@ -233,26 +285,28 @@ local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
 
 										if source == "parent" then
 
-											parent_centerText = display.newText(tempGroup,"Header",0,0,native.systemFontBold,14)
+											parent_centerText[#parent_centerText+1] = display.newText(tempGroup,"Header",0,0,native.systemFontBold,14)
 
 										else
 
-											parent_centerText = display.newText(tempGroup,"Header",0,0,native.systemFont,14)
+											parent_centerText[#parent_centerText+1] = display.newText(tempGroup,"Header",0,0,native.systemFont,14)
 
 										end
 
-										parent_centerText.x=coloumArray[#coloumArray].x + 5
-										parent_centerText.anchorX=0
-										parent_centerText.y=coloumArray[#coloumArray].y+coloumArray[#coloumArray].contentHeight/2
-										parent_centerText.text = k
-										parent_centerText:setTextColor( 0 )					
+										parent_centerText[#parent_centerText].x=coloumArray[#coloumArray].x + 5
+										parent_centerText[#parent_centerText].anchorX=0
+										parent_centerText[#parent_centerText].y=coloumArray[#coloumArray].y+coloumArray[#coloumArray].contentHeight/2
+										parent_centerText[#parent_centerText].text = k
+										parent_centerText[#parent_centerText]:setTextColor( 0 )					
 
+
+									
 
 											if source == "parent" then
-												if parent_centerText.contentWidth > coloumArray[#coloumArray].width  then
-													coloumArray[#coloumArray].width = parent_centerText.contentWidth+15
+												if parent_centerText[#parent_centerText].contentWidth > coloumArray[#coloumArray].width  then
+													coloumArray[#coloumArray].width = parent_centerText[#parent_centerText].contentWidth+15
 												end
-												widthArray[#widthArray+1] = coloumArray[#coloumArray].contentWidth-2
+												widthArray[#widthArray+1] = coloumArray[#coloumArray].contentWidth-2	
 
 											else
 
@@ -261,6 +315,36 @@ local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
 												
 
 											end
+
+										
+										
+											
+
+										else
+
+											contact = k
+
+												print( "contact : "..contact )
+
+												if tonumber(contact) ~= nil then
+
+													if tonumber(contact) > 0 then
+
+														print( "**********************" )
+														
+														parent_centerText[#parent_centerText-1]:setTextColor( 0,0,1 )
+													end
+
+												end
+
+										
+
+											
+
+										end
+
+
+										return contact
 
 								
 end
@@ -335,7 +419,7 @@ local function CreateHorizontalTable( sceneGroup , List )
 						    		totalCount = totalCount + 1
 
 						    		print( "Here" )
-						   			CreateRow( tempHeight,tempGroup,totalCount,count,k,v,"parent" )
+						   			background.ContactId = CreateRow( tempHeight,tempGroup,totalCount,count,k,v,"parent" )
 										
 								else
 									--coloumArray[1].contactId = 
@@ -365,7 +449,9 @@ local function CreateHorizontalTable( sceneGroup , List )
 
 										    		totalCount = totalCount + 1
 
-										   			CreateRow( background.y,tempGroup,totalCount,count,v,k,"child" )
+										   			background.ContactId =  CreateRow( background.y,tempGroup,totalCount,count,v,k,"child" )
+
+										   			print( "background.ContactId : "..background.ContactId )
 														
 												else
 													--coloumArray[1].contactId = 
@@ -376,6 +462,9 @@ local function CreateHorizontalTable( sceneGroup , List )
 
 											
 										end
+
+
+										background:addEventListener( "touch", ListCliked )
 
 										
 			
@@ -548,7 +637,7 @@ function scene:show( event )
 	if phase == "will" then
 
 
-
+		composer.removeHidden(  )
 	HorizontalScroll = widget.newScrollView(
 				    {
 				        top = 70,
@@ -680,6 +769,10 @@ MainGroup:insert(sceneGroup)
 end
 
 
+function scene:resumeGame( ContactIdValue )
+
+
+end
 
 
 function scene:hide( event )
@@ -711,7 +804,7 @@ function scene:hide( event )
 
 	elseif phase == "did" then
 
-		 event.parent:resumeGame()
+		-- event.parent:resumeGame()
 
 
 	end	

@@ -166,7 +166,7 @@ local function Background_Touch( event )
 							params = { specialRecognition_Details = event.target.value, specialRecognition_id = event.target.id}
 						 }
 
-		    composer.showOverlay( "Controller.specialRecognitionDetailPage", options )
+		    composer.gotoScene( "Controller.specialRecognitionDetailPage", options )
 
 			
 	end
@@ -243,6 +243,8 @@ function scene:show( event )
 	if phase == "will" then
 
 
+		composer.removeHidden(  )
+		
 		 function SpecialRecognitionList( list )
 
 				for j=#specialRecognitionListArray, 1, -1 do 
@@ -370,7 +372,6 @@ function scene:hide( event )
 	end	
 
 end
-
 
 
 
