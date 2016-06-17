@@ -680,16 +680,6 @@ local function notificationListener( event )
                                         local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                                         db:exec( insertQuery )
 
-
-                                        
-
-                                        if openPage ~= "MessagingPage" and openPage ~= "main" then
-
-
-                                           --local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
-                                                 
-                                        end
-
                                         if openPage ~= "main" then
 
                                             native.setProperty( "applicationIconBadgeNumber", 0 )

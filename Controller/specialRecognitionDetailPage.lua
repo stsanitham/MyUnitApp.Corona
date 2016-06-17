@@ -47,7 +47,9 @@ local tabBar,menuBtn,BgText,title_bg,back_icon_bg,back_icon,title,refresh_icon_b
 
 openPage="specialRecognition"
 
+local coloumArray = {}
 
+	local widthArray = {}
 --------------------------------------------------
 
 
@@ -205,6 +207,64 @@ local function onKeyEvent( event )
 end
 
 
+local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
+
+				    	
+
+						    			local ColoumWidth = W/3
+
+							    			if count == 3 then
+							    				ColoumWidth = W/2
+							    			end
+
+										coloumArray[#coloumArray+1] = display.newRect(tempGroup,0,0,ColoumWidth,35)
+										coloumArray[#coloumArray].anchorY = 0
+										coloumArray[#coloumArray].anchorX = 0
+										coloumArray[#coloumArray].x=0;coloumArray[#coloumArray].y=tempHeight
+										coloumArray[#coloumArray].strokeWidth = 2
+										coloumArray[#coloumArray]:setFillColor(0,0,0,0)
+										coloumArray[#coloumArray]:setStrokeColor( 0,0,0,0.3 )
+
+											if totalCount > 1 then
+
+												coloumArray[#coloumArray].x = coloumArray[#coloumArray-1].x+coloumArray[#coloumArray-1].width
+
+											end
+
+										if source == "parent" then
+
+											parent_centerText = display.newText(tempGroup,"Header",0,0,native.systemFontBold,14)
+
+										else
+
+											parent_centerText = display.newText(tempGroup,"Header",0,0,native.systemFont,14)
+
+										end
+
+										parent_centerText.x=coloumArray[#coloumArray].x + 5
+										parent_centerText.anchorX=0
+										parent_centerText.y=coloumArray[#coloumArray].y+coloumArray[#coloumArray].contentHeight/2
+										parent_centerText.text = k
+										parent_centerText:setTextColor( 0 )					
+
+
+											if source == "parent" then
+												if parent_centerText.contentWidth > coloumArray[#coloumArray].width  then
+													coloumArray[#coloumArray].width = parent_centerText.contentWidth+15
+												end
+												widthArray[#widthArray+1] = coloumArray[#coloumArray].contentWidth-2
+
+											else
+
+												print( totalCount )
+												coloumArray[#coloumArray].width = widthArray[totalCount]
+												
+
+											end
+
+								
+end
+
 local function CreateHorizontalTable( sceneGroup , List )
 
 		--local temp = json.decode(List.data)
@@ -217,7 +277,10 @@ local function CreateHorizontalTable( sceneGroup , List )
 
 				reportArray = List.data
 
-				print( json.encode(List.data) )
+				--print( json.encode(List.data) )
+
+
+			
 
 				for i=1,#reportArray do
 
@@ -231,58 +294,93 @@ local function CreateHorizontalTable( sceneGroup , List )
 					local Image 
 
 
-					local tempHeight = -14
+					local tempHeight = 0
 
-					local background = display.newRect(tempGroup,0,0,H-45,60)
+					local background = display.newRect(tempGroup,0,0,H-45,35)
 
-					if(reportArrayList[#reportArrayList-1]) ~= nil then
-						tempHeight = reportArrayList[#reportArrayList-1][1].y + reportArrayList[#reportArrayList-1][1].height+3
-					end
-
-						if i == 1 then
-						background.x=W/2+90;background.y=tempHeight*5
-
-						else
-						background.x=W/2+90;background.y=tempHeight
+						if(reportArrayList[#reportArrayList-1]) ~= nil then
+							tempHeight = reportArrayList[#reportArrayList-1][1].y + reportArrayList[#reportArrayList-1][1].height
 						end
-					background.alpha=0.01
+
+				
+						background.x=W/2;background.y=tempHeight
+						background.anchorY=0
+						
+						background.alpha=0.01
+
+						--background:setFillColor( math.random(),math.random(),math.random() )
+
+						local count = 0
+							for k,v in pairs(reportArray[i]) do
+						     count = count + 1
+							end
 
 					if parentFlag == true then
 						parentFlag=false
 
+										
+						local totalCount = 0 
 
-						parentTitle = display.newRect(tempGroup,0,0,W,25)
-						if(reportArrayList[#reportArrayList-1]) ~= nil then
-							--here
-							tempHeight = reportArrayList[#reportArrayList-1][1].y + reportArrayList[#reportArrayList-1][1].height/2+10
-						end
-
-
-						parentTitle.anchorY = 0
-						parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
-						parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
-						parent_centerText = display.newText(tempGroup,"Header",0,0,native.systemFontBold,14)
-						parent_centerText.x=5
-						parent_centerText.anchorX=0
-						parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
-
-						background.y=parentTitle.y+background.contentHeight/2
+						--print( (reportArray[i]) )
 
 
 						for k,v in pairs( reportArray[i] ) do
-						    print( "KEY: "..k.." | ".."VALUE: "..v )
+						   -- print( "KEY: "..k.." | ".."VALUE: "..v )
+
+
+						    --	print( count , totalCount  )
+
+						    	if count ~= totalCount then
+
+						    		totalCount = totalCount + 1
+
+						    		print( "Here" )
+						   			CreateRow( tempHeight,tempGroup,totalCount,count,k,v,"parent" )
+										
+								else
+									--coloumArray[1].contactId = 
+
+								end
+
+
+
+							
 						end
 
+						background.y= coloumArray[#coloumArray-1].y+background.contentHeight
 
-					HorizontalScroll:insert(tempGroup)
+					end
 
-				end
+					
+									
+										local totalCount = 0 
+
+										for k,v in pairs( reportArray[i] ) do
+										   -- print( "KEY: "..k.." | ".."VALUE: "..v )
 
 
-				
+										    	--print( count , totalCount  )
 
+										    	if count ~= totalCount then
+
+										    		totalCount = totalCount + 1
+
+										   			CreateRow( background.y,tempGroup,totalCount,count,v,k,"child" )
+														
+												else
+													--coloumArray[1].contactId = 
+
+												end
+
+
+
+											
+										end
+
+										
 			
 
+				HorizontalScroll:insert(tempGroup)
 
 		end
 
@@ -460,6 +558,7 @@ function scene:show( event )
 				       -- verticalScrollDisabled = false,
 				        --isBounceEnabled=false,
 				        hideScrollBar=true,
+				        hideBackground=true,
 				      -- listener = scrollListener
 				    }
 				)

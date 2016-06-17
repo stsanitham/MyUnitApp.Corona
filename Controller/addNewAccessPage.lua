@@ -22,6 +22,8 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
 
+--https://play.google.com/store/apps/details?id=com.orgware.PregnancyWorkoutAdvisor
+
 --------------- Initialization -------------------
 
 local W = display.contentWidth;
