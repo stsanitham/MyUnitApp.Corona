@@ -93,7 +93,15 @@ local request,request1
 
 			    if webView then webView:removeSelf( );webView=nil end
 
-				composer.hideOverlay("slideRight",300)
+							    if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+
+							    	composer.gotoScene("Controller.pushNotificationListPage","slideRight",300)
+
+							    else
+
+								    composer.hideOverlay("slideRight",300)
+
+								end
 
 			end
 
@@ -627,6 +635,7 @@ end
 				    --short_msg_txt.y= back_icon.y
 
 				end
+				
 local function makeTimeStamp( dateString )
    local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
    local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
@@ -829,7 +838,7 @@ end
 		    file = nil
 
 
-if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null and detail_value.AudioFilePath ~= "" then
+if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and detail_value.AudioFilePath ~= null and detail_value.AudioFilePath ~= "" then
 
 
 
@@ -933,7 +942,7 @@ if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null and
 			
 
 
-		elseif detail_value.ImageFilePath ~= null then
+		elseif detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" then
 
 				local function recivedNetwork( event )
 					    if ( event.isError ) then
@@ -1016,8 +1025,7 @@ if detail_value.ImageFilePath ~= null and detail_value.AudioFilePath ~= null and
 
 	end
 
-		menuBtn:addEventListener("touch",menuTouch)
-
+            menuBtn:addEventListener("touch",menuTouch)
 			back_icon:addEventListener("touch",closeDetails)
 			back_icon_bg:addEventListener("touch",closeDetails)
 			title:addEventListener("touch",closeDetails)
@@ -1036,8 +1044,7 @@ end
 
 
 	      -- sceneGroup:insert(messagedetail_scrollView)
-            
-           -- DisplayDetailValues(messagelistvalue)
+           
 
 
             if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
@@ -1066,8 +1073,6 @@ end
 	       else
             
                DisplayDetailValues(messagelistvalue)
-
-
 
 
            end
