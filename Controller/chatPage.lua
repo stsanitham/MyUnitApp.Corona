@@ -624,62 +624,68 @@ end
 				
 			else
 
-				if (event.target.type == "image" or  event.target.type == "video")  and #selectedForDelete == 0  then
-
-					if event.target.type == "image" then
-
-						local imageviewname = event.target.imageviewname
-
-						local filePath = system.pathForFile( imageviewname, system.DocumentsDirectory )
-				            -- Play back the recording
-				            local file = io.open( filePath)
-				            
-				            if file then
-
-				                io.close( file )
-
-								
-
-								local options = {
-								      		effect = "fromTop",
-											time = 200,	
-											params = {
-												pagename="image",
-												imagenameval = imageviewname,
-											}
-											}
+							print("*****************")
 
 
-								composer.showOverlay("Controller.imageFullviewPage",options)
+							 if (event.target.type == "image" or  event.target.type == "video" )  and #selectedForDelete == 0  then
 
-							end
+								    if event.target.type == "image"  then
 
-						else
+										local imageviewname = event.target.imageviewname
 
-									local options = {
-								      		effect = "fromTop",
-											time = 200,	
-											params = {
-												pagename = "video",
-												imagenameval = event.target.contentPath,
-											}
-											}
+										local filePath = system.pathForFile( imageviewname, system.DocumentsDirectory )
+								            -- Play back the recording
+								            local file = io.open( filePath)
+								            
+								            if file then
+
+								                io.close( file )
+
+												
+
+												local options = {
+												      		effect = "fromTop",
+															time = 200,	
+															params = {
+																pagename="image",
+																imagenameval = imageviewname,
+															}
+															}
 
 
-								composer.showOverlay("Controller.imageFullviewPage",options)
+												composer.showOverlay("Controller.imageFullviewPage",options)
 
-						end
+											end
 
-				else
+									elseif event.target.type == "video"  then
 
-					selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id,filetype = event.target.type,contentPath = event.target.contentPath}
+												local options = {
+											      		effect = "fromTop",
+														time = 200,	
+														params = {
+															pagename = "video",
+															imagenameval = event.target.contentPath,
+														}
+														}
 
-					selectedForDelete[#selectedForDelete+1] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
-					selectedForDelete[#selectedForDelete]:setFillColor( 0.3,0.6,0.5,0.4 )
-					event.target.group:insert( selectedForDelete[#selectedForDelete] )
-					print( "more selecting ")
 
-			    end
+											composer.showOverlay("Controller.imageFullviewPage",options)
+
+								    else
+
+									end
+
+							else
+
+								selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id,filetype = event.target.type,contentPath = event.target.contentPath}
+
+								selectedForDelete[#selectedForDelete+1] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
+								selectedForDelete[#selectedForDelete]:setFillColor( 0.3,0.6,0.5,0.4 )
+								event.target.group:insert( selectedForDelete[#selectedForDelete] )
+								print( "more selecting ")
+
+						    end
+
 
 			end
 
@@ -1054,6 +1060,7 @@ end
 
 					bg.x = W-65
 					bg.anchorX = 1
+
 
 			  local filePath = system.pathForFile( ChatHistory[i].Message_From..".png",system.TemporaryDirectory )
 			  local fhd = io.open( filePath )
@@ -2565,6 +2572,7 @@ end
 	end
 
 
+
 	function scene:resumeEditGame(contactId)
 
 		print("resume game")
@@ -2664,8 +2672,19 @@ function scene:show( event )
 
 	elseif phase == "did" then
 
+        if event.params then
 
-		ContactDetails = event.params.contactDetails
+        	if event.params.contactDetails ~= nil then
+
+		        ContactDetails = event.params.contactDetails
+
+		    else
+
+		    	ContactDetails = ""
+
+		    end
+
+	    end
 
 
 		print( "ContactDetails : "..json.encode(ContactDetails) )

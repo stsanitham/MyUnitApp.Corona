@@ -275,7 +275,7 @@ function scene:show( event )
 
 		title.text = photoview
 
-		if event.params.pagename == "image" then
+	if event.params.pagename == "image" then
 
 		photo = display.newImage( photoview, baseDir )
 		photo.anchorY=0
@@ -330,7 +330,8 @@ function scene:show( event )
 		end
 
 		photo:addEventListener("touch",onBackButtonTouch)
-	else
+
+	elseif event.params.pagename == "video" then
 
 		title.text= title.text:sub(1,32).."..."
 		print( "video page" )
@@ -340,6 +341,9 @@ function scene:show( event )
 		webView.hasBackground=false
 		webView:request( event.params.imagenameval )
 		sceneGroup:insert( webView )
+
+    elseif event.params.pagename == "text" then
+
 
 	end
 
