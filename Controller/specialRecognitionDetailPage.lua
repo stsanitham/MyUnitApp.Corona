@@ -279,7 +279,10 @@ local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
 
 											if totalCount > 1 then
 
-												coloumArray[#coloumArray].x = coloumArray[#coloumArray-1].x+coloumArray[#coloumArray-1].width
+												if coloumArray[#coloumArray-1] ~= nil then
+
+													coloumArray[#coloumArray].x = coloumArray[#coloumArray-1].x+coloumArray[#coloumArray-1].width
+												end
 
 											end
 
@@ -297,6 +300,7 @@ local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
 										parent_centerText[#parent_centerText].anchorX=0
 										parent_centerText[#parent_centerText].y=coloumArray[#coloumArray].y+coloumArray[#coloumArray].contentHeight/2
 										parent_centerText[#parent_centerText].text = k
+										parent_centerText[#parent_centerText].value = v
 										parent_centerText[#parent_centerText]:setTextColor( 0 )					
 
 
@@ -324,15 +328,18 @@ local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
 
 											contact = k
 
-												print( "contact : "..contact )
-
 												if tonumber(contact) ~= nil then
 
 													if tonumber(contact) > 0 then
 
-														print( "**********************" )
-														
-														parent_centerText[#parent_centerText-1]:setTextColor( 0,0,1 )
+														parent_centerText[#parent_centerText].id = contact
+
+														for j=0,count-1 do
+															if string.find(parent_centerText[#parent_centerText-j].value:lower( ),"consultant") then
+																parent_centerText[#parent_centerText-j]:setTextColor( 0,0,1 )
+															end
+
+														end
 													end
 
 												end
@@ -360,10 +367,13 @@ local function CreateHorizontalTable( sceneGroup , List )
 			-- end
 
 				reportArray = List.data
+				print( "*******************************" )
+				print( json.encode(reportArray) )
 
-				--print( json.encode(List.data) )
+				if reportArray == nil then
 
-
+					reportArray = List
+				end
 			
 
 				for i=1,#reportArray do
@@ -681,7 +691,7 @@ function scene:show( event )
 
 												sp_jsonresponse = 	json.decode(sp_jsonresponse)
 
-										      --  print("JSON content 11111: "..#sp_jsonresponse.data)
+										      print("JSON content 11111: "..json.encode(sp_jsonresponse))
 										      	parentFlag=true
 										       CreateHorizontalTable(sceneGroup,sp_jsonresponse)
 
