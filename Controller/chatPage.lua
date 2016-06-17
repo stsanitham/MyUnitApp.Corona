@@ -2575,7 +2575,9 @@ end
 
 	function scene:resumeEditGame(contactId)
 
-		print("resume game")
+		print("resume game 12345")
+
+		print("contactId ************ "..contactId)
 
 				      local options = {
 				      		effect = "fromTop",

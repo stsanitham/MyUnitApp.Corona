@@ -579,6 +579,8 @@ end
 
 									 elseif addGroupid_value == "editMember" then
 
+
+
 									 			if grouptypevalue == "GROUP" then
 
 								    				local alert = native.showAlert( "Group Updated" ,"Group updated successfully", { CommonWords.ok }, onGroupCreationComplete )
@@ -825,6 +827,7 @@ end
 								      	 	    end
 
 							      	 	    else
+
 
 							      	 	    	 GroupSubject.text = GroupSubject.text
 
@@ -1328,6 +1331,8 @@ end
 		    	editId = event.params.contactId
 
 		    	count_details.text = #editContacts.." Selected"
+
+
 
 	    else
 

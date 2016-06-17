@@ -2148,7 +2148,7 @@ function Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupid,contacts,pos
 
     params={headers = headers,body = groupmembers}
 
-	print("contact request : "..json.encode(params))
+	print("contact request : \n\n\n\n\n "..json.encode(params).."\n\n\n\n\n\n\n")
 
 	request.new(ApplicationConfig.AddTeamMemberToChatGroup.."?"..resbody,method,params,postExecution)
 	

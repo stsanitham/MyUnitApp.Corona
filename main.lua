@@ -238,6 +238,8 @@ if launchArgs and launchArgs.notification then
             if isAndroid then
                 additionalData = launchArgs.notification.androidGcmBundle
                 message = additionalData.contents
+                MessageId = additionalData.pnmid
+
             elseif isIos then
                 additionalData = launchArgs.notification.custom.data
                 message = launchArgs.notification.alert
@@ -433,6 +435,16 @@ local function notificationListener( event )
                                         local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                                         db:exec( insertQuery )
 
+
+                                        
+
+                                        if openPage ~= "MessagingPage" and openPage ~= "main" then
+
+
+                                           --local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
+                                                 
+                                        end
+
                                         if openPage ~= "main" then
 
                                             native.setProperty( "applicationIconBadgeNumber", 0 )
@@ -451,8 +463,6 @@ local function notificationListener( event )
                 chatReceivedFlag = true
 
                 if (additionalData) then
-
-                       if openPage == "main" or openPage == "spalshPage" then
 
                               if isAndroid then
 
@@ -477,10 +487,6 @@ local function notificationListener( event )
                    
                                 end
 
-                          else
-
-
-                          end
 
                 else
 

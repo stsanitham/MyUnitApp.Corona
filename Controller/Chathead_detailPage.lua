@@ -1296,7 +1296,7 @@ function scene:hide( event )
 
 		elseif phase == "did" then
 
-			event.parent:resumeGame(ContactIdValue)
+			--event.parent:resumeGame(ContactIdValue)
 
 			composer.removeHidden( )
 
