@@ -2617,7 +2617,7 @@ end
 
 				    local options = {
 						effect = "crossFade",
-						time = 500,	
+						time = 100,	
 						params = json.decode(value)
 						}
 
@@ -2635,7 +2635,9 @@ end
 
 
 
-	function scene:resumeEditGame(contactId)
+	function scene:resumeEditGame(editedGroupName,contactId)
+
+		print("Edited Group Name : "..editedGroupName)
 
 		composer.removeHidden()
 
@@ -2652,14 +2654,18 @@ end
 
 
 			ChatBox.isVisible=false
+
+			title.text = editedGroupName
 	
 
-		    local function doAction( event )
-		    	composer.showOverlay( "Controller.Chathead_detailPage", options )
-		    end
+			    local function doAction( event )
+
+			    	composer.showOverlay( "Controller.Chathead_detailPage", options )
+			    	
+			    end
 
 
-		    timer.performWithDelay( 500, doAction,1 )
+		    timer.performWithDelay( 400, doAction,1 )
 
 	end
 

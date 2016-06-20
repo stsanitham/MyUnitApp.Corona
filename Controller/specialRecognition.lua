@@ -319,7 +319,7 @@ function scene:show( event )
 							NoEvent.isVisible=true
 
 					end
-			end
+		end
 
 
 		Webservice.GetAllSpecialRecognitions(getAllSpecialRecognition)

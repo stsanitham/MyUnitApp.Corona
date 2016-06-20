@@ -103,7 +103,7 @@ local function addMemberAction( event )
 
 	     --    composer.showOverlay( "Controller.consultantListPage", options )
 	     	status="editArray"
-	     	composer.hideOverlay( "slideRight", 300 )
+	     	composer.hideOverlay( "slideRight", 100 )
 		
 	end
 

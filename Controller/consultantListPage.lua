@@ -161,9 +161,7 @@ local function backactionTouch(event)
 		display.getCurrentStage():setFocus( nil )
 
 
-		  if addGroupid_value ~= "editMember" then
-
-		  		if pageid_value == "group" then
+		if pageid_value == "group" then
 
 		    local options = {
 				effect = "slideRight",
@@ -182,11 +180,6 @@ local function backactionTouch(event)
 		     composer.gotoScene( "Controller.broadCastPage", options )
 
 	    end
-
-	else
-
-		composer.hideOverlay( )
-	end
 
 		native.setKeyboardFocus(nil)
 
@@ -520,11 +513,7 @@ end
 
         addGroupid_value
 		editMember
-		editId]]  		
-
-		
-
-		    if addGroupid_value ~= "editMember" then
+		editId]]  		    if addGroupid_value ~= "editMember" then
 
 								if grouptypevalue == "GROUP" then
 
@@ -620,6 +609,9 @@ end
 		groupcreation_response = response
 
 
+		print("Group creation name edited : "..json.encode(groupcreation_response))
+
+
 		GroupSubject.text = ""
 
 		groupSubjectname = ""
@@ -628,11 +620,14 @@ end
 
 		grouptypevalue = groupcreation_response.MyUnitBuzzGroupType
 
+
 		local groupId = 0
 
 		if addGroupid_value == "editMember" then
 
 			groupId = editId
+
+		    editedgroupname = groupcreation_response.MyUnitBuzzGroupName
 
 		else
 
@@ -1467,9 +1462,9 @@ end
 
 				if addGroupid_value == "editMember" then
 
-					print("editId"..editId)
+					print("editId"..editId.." "..editedgroupname)
 
-					 event.parent:resumeEditGame(editId)
+					 event.parent:resumeEditGame(editedgroupname,editId)
 
 			    end
 
