@@ -644,15 +644,14 @@ function scene:show( event )
 
 			local function get_MessageGroupTeamMemberList( response )
 
-
 				Details = response
 
 				json.encode( Details )
 
-		
-
+	
 				local path = system.pathForFile( "career"..contactId..".png",system.TemporaryDirectory)
 				local fhd = io.open( path )
+
 
 				-- Determine if file exists
 				if fhd then
@@ -688,7 +687,6 @@ function scene:show( event )
 
 
 				Career_Username = display.newText(sceneGroup,Details.MyUnitBuzzGroupName,0,0,native.systemFont,24)
-			
 				Career_Username.x=leftPadding
 				Career_Username.y=ProfileImage.y+ProfileImage.contentHeight-Career_Username.contentHeight/2-20
 				Career_Username.anchorX=0;Career_Username.anchorY=0
