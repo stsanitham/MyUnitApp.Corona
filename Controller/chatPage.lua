@@ -58,7 +58,7 @@ local MemberName
 
 local image_update_row,audio_update_row
 
-local holdLevel
+local holdLevel = 0
 
 local chatHoldflag=false
 
@@ -542,12 +542,15 @@ end
 
 		if event.phase == "began" then
 			print( "touching" )
-			holdLevel=0
+			
 			chatHoldflag=true
+			holdLevel=0
+
 
 
 		elseif event.phase == "moved" then
-			 local dy = math.abs( ( event.y - event.yStart ) )
+
+			local dy = math.abs( ( event.y - event.yStart ) )
 	        -- If the touch on the button has moved more than 10 pixels,
 	        -- pass focus back to the scroll view so it can continue scrolling
 
@@ -562,7 +565,7 @@ end
 		elseif event.phase == "ended" then
 
 			chatHoldflag=false
-			
+			print( holdLevel )
 
 			if holdLevel > 25 then
 
@@ -616,11 +619,25 @@ end
 
 				end
 
-				selectedForDelete[#selectedForDelete+1] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
-				selectedForDelete[#selectedForDelete]:setFillColor( 0.3,0.6,0.5,0.4 )
-				event.target.group:insert( selectedForDelete[#selectedForDelete] )
+				for i=#MeassageList, 1, -1 do 
+					local group = MeassageList[i]
+						print( "Type : "..group[1].type,group[1].selected )
+						group[1].selected = "false"
+											
+				end
 
-				print("delete Action")
+				print("Select : "..event.target.selected )
+
+				if event.target.selected == "false" then
+
+					event.target.selected = "true"
+					selectedForDelete[#selectedForDelete+1] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
+					selectedForDelete[#selectedForDelete]:setFillColor( 0.3,0.6,0.5,0.4 )
+					event.target.group:insert( selectedForDelete[#selectedForDelete] )
+
+					print("delete Action")
+
+				end
 				
 			else
 
@@ -676,21 +693,29 @@ end
 									end
 
 							else
+									print( "Lenght : "..#selectedForDelete )
 
-								selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id,filetype = event.target.type,contentPath = event.target.contentPath}
+									if #selectedForDelete >= 1 and event.target.selected == "false" then
+										
 
-								selectedForDelete[#selectedForDelete+1] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
-								selectedForDelete[#selectedForDelete]:setFillColor( 0.3,0.6,0.5,0.4 )
-								event.target.group:insert( selectedForDelete[#selectedForDelete] )
-								print( "more selecting ")
+										event.target.selected = "true"
+										selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id,filetype = event.target.type,contentPath = event.target.contentPath}
+
+										selectedForDelete[#selectedForDelete+1] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
+										selectedForDelete[#selectedForDelete]:setFillColor( 0.3,0.6,0.5,0.4 )
+										event.target.group:insert( selectedForDelete[#selectedForDelete] )
+										print( "more selecting ")
+
+
+									end
+								
 
 						    end
 
 
 			end
 
-			holdLevel=0	
-				
+			
 		end
 
 	return true
@@ -791,7 +816,7 @@ local function audioPlayComplete( event )
 
 
 				for i=#MeassageList, 1, -1 do 
-					local group = MeassageList[#MeassageList]
+					local group = MeassageList[i]
 
 						for j=group.numChildren, 1, -1 do 
 
@@ -847,7 +872,7 @@ local function audioPlay( event )
 								if isChannel1Playing or isSimulator then
 
 									 for i=#MeassageList, 1, -1 do 
-												local group = MeassageList[#MeassageList]
+												local group = MeassageList[i]
 
 												for j=group.numChildren, 1, -1 do 
 
@@ -1008,9 +1033,9 @@ end
 
 			local tempGroup = MeassageList[#MeassageList]
 
-			local bg = display.newRect(0,0,W-100,25 )
-			tempGroup:insert(bg);bg.anchorX=0;bg.anchorY=0;bg.id=ChatHistory[i].id;bg.group=tempGroup;bg.type = "text"
-			
+			local bg = display.newRect(tempGroup,0,0,W-100,25 )
+			bg.anchorX=0;bg.anchorY=0;bg.id=ChatHistory[i].id;bg.group=tempGroup;bg.type = "text"
+			bg.selected = "false"
 			bg:addEventListener( "touch", ChatTouch )
 
 
@@ -1022,7 +1047,6 @@ end
 		
 			if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
 
-				print( "coming" ..dateVlaue,ChatHistory[i].Update_Time_Stamp)
 				dateVlaue =ChatHistory[i].Update_Time_Stamp
 
 				dateLable = display.newRect( tempGroup, W/2, bg.y+5, 80,20 )
@@ -1283,7 +1307,7 @@ end
 
 					--------video Attachment---------------
 
-			if ChatHistory[i].Video_Path  ~= nil and ChatHistory[i].Video_Path ~= "" then
+			if ChatHistory[i].Video_Path  ~= nil and ChatHistory[i].Video_Path ~= "" and ChatHistory[i].Video_Path ~= "NULL" then
 
 				 bg.type = "video"
 				 bg.contentPath = ChatHistory[i].Video_Path
@@ -2183,7 +2207,7 @@ end
 	    	Deleteicon.isVisible=false
 	    	Copyicon.isVisible=false
 	    	-- chatReceivedFlag=true
-	    	holdLevel=0
+	    	
 
 	    	attachment_icon.isVisible = true
 
@@ -2197,6 +2221,11 @@ end
 					end
 
 	    elseif ( phase == "moved" ) then print( "Scroll view was moved" )
+
+	    	holdLevel=0
+
+	    	
+
 	    elseif ( phase == "ended" ) then print( "Scroll view was released" )
 
 			transition.to( AttachmentGroup, {time=300,alpha=0,yScale=0.01} )
@@ -2514,6 +2543,9 @@ end
 
 		composer.removeHidden()
 
+
+		ChatBox.isVisible=true
+		
 		if url  ~= nil and url ~= "" then
 
 				if button_idvalue == "cancel" then

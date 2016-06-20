@@ -333,7 +333,7 @@ function scene:show( event )
 
 	elseif event.params.pagename == "video" then
 
-		title.text= title.text:sub(1,32).."..."
+		title.text= title.text:sub(1,30).."..."
 		print( "video page" )
 
 
