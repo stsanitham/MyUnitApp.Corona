@@ -748,7 +748,8 @@ function scene:show( event )
 											else
 
 												--NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
-												NoEvent = display.newText( sceneGroup, "No ".."response.UserPageName".." Found", 0,0,0,0,native.systemFontBold,16)
+												--NoEvent = display.newText( sceneGroup, "No "..response.UserPageName.." Found", 0,0,0,0,native.systemFontBold,16)
+												NoEvent = display.newText( sceneGroup, "No Reports Found", 0,0,0,0,native.systemFontBold,16)
 												NoEvent.x=W/2;NoEvent.y=H/2
 												NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 

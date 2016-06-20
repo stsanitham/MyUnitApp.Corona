@@ -838,8 +838,8 @@ end
 		    file = nil
 
 
-if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and detail_value.AudioFilePath ~= null and detail_value.AudioFilePath ~= "" then
 
+if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and detail_value.AudioFilePath ~= null and detail_value.AudioFilePath ~= "" then
 
 
 					local function audiorecivedNetwork( event )
@@ -1039,52 +1039,42 @@ if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and d
 
             Runtime:addEventListener( "key", onKeyEventDetail )
 
-
-end
-
+ end
 
 	      -- sceneGroup:insert(messagedetail_scrollView)
            
+					            if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
 
+									       	 function getPushMessageResponse( response )
 
-            if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+														-- local options =
+														-- {
+														--    to = { "anitha.mani@w3magix.com"},
+														--    subject = " push message response",
+														--    isBodyHtml = true,
+														--    body = ""..MessageId.." "..json.encode(response),
 
-			       	function getPushMessageResponse( response )
+														-- }
 
-								-- local options =
-								-- {
-								--    to = { "anitha.mani@w3magix.com"},
-								--    subject = " push message response",
-								--    isBodyHtml = true,
-								--    body = ""..MessageId.." "..json.encode(response),
+														-- native.showPopup( "mail", options )
 
-								-- }
+												    DisplayDetailValues(response)
+									       		
+									         end
 
-								-- native.showPopup( "mail", options )
+						       	  		Webservice.GetMyUnitBuzzMessagesbyUserId(MessageId,getPushMessageResponse)
 
-								 DisplayDetailValues(response)
-			       		
-			         end
+						        else
+					            
+					              		DisplayDetailValues(messagelistvalue)
 
-
-	       	    Webservice.GetMyUnitBuzzMessagesbyUserId(MessageId,getPushMessageResponse)
-
-
-	       else
-            
-               DisplayDetailValues(messagelistvalue)
-
-
-           end
-
-
+					            end
 
 
 			
-			
-		end	
+		    end	
 		
-	MainGroup:insert(sceneGroup)
+		MainGroup:insert(sceneGroup)
 
 	end
 
