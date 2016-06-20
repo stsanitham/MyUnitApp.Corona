@@ -2050,7 +2050,7 @@ function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,group
 		  "IsActive": "]]..tostring(stateinfo)..[[",
 		  "MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
 		  "ContactId":"]]..ContactId..[[",
-		  "MyUnitBuzzGroupId":]]..tonumber(groupteammemberids)..[[,
+		  "MyUnitBuzzGroupId":]]..tonumber(grouptmid)..[[,
 		   } ]]
 
 	else
@@ -2061,7 +2061,7 @@ function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,group
 		  "Description": "]]..description..[[",
 		  "IsActive": "]]..tostring(stateinfo)..[[",
 		  "MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
-		  "MyUnitBuzzGroupId":]]..tonumber(groupteammemberids)..[[,
+		  "MyUnitBuzzGroupId":]]..tonumber(grouptmid)..[[,
 		   } ]]
 
 	end
