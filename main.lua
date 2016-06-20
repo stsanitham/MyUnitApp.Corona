@@ -319,8 +319,8 @@ if launchArgs and launchArgs.notification then
 
                     if (additionalData) then
 
-                     MessageId = additionalData.pnmid
-                    --MessageId = "0"
+                      MessageId = additionalData.pnmid
+                      --MessageId = "0"
                     else
 
                       native.showAlert("MyUnitBuzz", message, { "OK" } )
@@ -335,6 +335,7 @@ end
 
 
  
+
 local function notificationListener( event )
 
 
@@ -462,7 +463,7 @@ local function notificationListener( event )
 
                 chatReceivedFlag = true
 
-                if (additionalData) then
+                if additionalData.messageType == nil then
 
                               if isAndroid then
 

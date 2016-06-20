@@ -781,9 +781,22 @@ end
 
 					      	 	 if #selected_Contact>0 then
 
+
+						      	 	 	     if addGroupid_value ~= "editMember" then
+
+						      	 	 	     		groupteammemberids = ""
+
+						      	 	 	     else
+
+						      	 	 	     		groupteammemberids = selected_Contact
+						      	 	 	     end
+
+
+
+
 					      	 	 	if addGroupid_value ~= "editMember" then
 
-					      	 	     	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",getChatGroupCreation)
+					      	 	     	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",groupteammemberids,getChatGroupCreation)
 
 					      	 	    else
 
@@ -809,13 +822,24 @@ end
 
 				                  	if #selected_Contact>0 then
 
+
+						                  		 if addGroupid_value ~= "editMember" then
+
+							      	 	 	     			groupteammemberids = ""
+
+							      	 	 	     else
+
+							      	 	 	     			groupteammemberids = selected_Contact
+							      	 	 	     end
+
+
+
 					                  		if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
 
 						                  		 --GroupSubject.text = #selected_Contact.." recipients"
 						                  		 if addGroupid_value ~= "editMember" then
 
-
-								      	 	   		Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",getChatGroupCreation)
+								      	 	   		Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",groupteammemberids,getChatGroupCreation)
 
 								      	 	   	 else
 
@@ -823,15 +847,15 @@ end
 
 							 						Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
 
-
 								      	 	    end
+
 
 							      	 	    else
 
 
 							      	 	    	 GroupSubject.text = GroupSubject.text
 
-								      	 	     Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",getChatGroupCreation)
+								      	 	     Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",groupteammemberids,getChatGroupCreation)
 
 
 							      	 	    end
