@@ -54,6 +54,8 @@ local editId
 
 local selected_Contact={}
 
+local groupteammemberid = {}
+
 local byNameArray = {}
 
 local Listresponse_array = {}
@@ -784,7 +786,7 @@ end
 
 						      	 	 	     if addGroupid_value ~= "editMember" then
 
-						      	 	 	     		groupteammemberids = ""
+						      	 	 	     		groupteammemberids = 0
 
 						      	 	 	     else
 
@@ -825,7 +827,7 @@ end
 
 						                  		 if addGroupid_value ~= "editMember" then
 
-							      	 	 	     			groupteammemberids = ""
+							      	 	 	     			groupteammemberids = 0
 
 							      	 	 	     else
 

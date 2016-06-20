@@ -1994,7 +1994,7 @@ end
 
 
 
-function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,grouptypevalue,groupteammemberids,postExecution)
+function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,grouptypevalue,grouptmid,postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
@@ -2024,16 +2024,22 @@ function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,group
     local resbody
 
 
-		    if groupteammemberids == "" then
+		    if grouptmid == "" then
 
-		    	groupteammemberids =  json.encode(ContactId)
+		    	 grouptmid = ContactId
+
+		         grouptmid = json.encode(grouptmid)
 
 		    else
+                
+                 grouptmid[#grouptmid+1] = grouptmid
 
-		    	groupteammemberids = json.encode(groupteammemberids)
+		    	 grouptmid = json.encode(grouptmid)
 
 		    end
 
+
+		    print("grouptmid "..grouptmid)
 
 
 	    -- if grouptypevalue == "GROUP" then
@@ -2062,7 +2068,7 @@ function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,group
 		  "IsActive": "]]..tostring(stateinfo)..[[",
 		  "MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
 		  "ContactId":"]]..ContactId..[[",
-		  "GroupTeamMemberIds":]]..groupteammemberids..[[,
+		  "GroupTeamMemberIds":]]..grouptmid..[[,
 		   } ]]
 
 	else
@@ -2073,7 +2079,7 @@ function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,group
 		  "Description": "]]..description..[[",
 		  "IsActive": "]]..tostring(stateinfo)..[[",
 		  "MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
-		  "GroupTeamMemberIds":]]..groupteammemberids..[[,
+		  "GroupTeamMemberIds":]]..grouptmid..[[,
 		   } ]]
 
 	end
