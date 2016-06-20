@@ -2635,16 +2635,11 @@ end
 
 
 
-	function scene:resumeEditGame(contactId)
+	function scene:resumeEditGame(editedGroupName,contactId)
 
-		-- if contactId ~= nil then
-
-		-- 	title.text = groupname
-
-		-- end
+		print("Edited Group Name : "..editedGroupName)
 
 		composer.removeHidden()
-
 
 				      local options = {
 				      		effect = "fromTop",
@@ -2659,11 +2654,15 @@ end
 
 
 			ChatBox.isVisible=false
+
+			title.text = editedGroupName
 	
 
-		    local function doAction( event )
-		    	composer.showOverlay( "Controller.Chathead_detailPage", options )
-		    end
+			    local function doAction( event )
+
+			    	composer.showOverlay( "Controller.Chathead_detailPage", options )
+			    	
+			    end
 
 
 		    timer.performWithDelay( 400, doAction,1 )

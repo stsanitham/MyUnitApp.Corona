@@ -858,11 +858,11 @@ function scene:create( event )
 	TM_Requesttext.anchorX=0
 
 
-	TM_Requesticon	= display.newImageRect(sceneGroup,"res/assert/requestaccess_icon.png",14,14)
+	TM_Requesticon	= display.newImageRect(sceneGroup,"res/assert/requestaccess_icon.png",15,12)
 	TM_Requesticon.x=W/2-125
 	TM_Requesticon.id="teammember_request"
 	TM_Requesticon:setFillColor(0)
-	TM_Requesticon.y=TM_Requesttext.y+TM_Requesttext.contentHeight+14
+	TM_Requesticon.y=TM_Requesttext.y+TM_Requesttext.contentHeight+15
 
 
 	TM_RequestAccesstext = display.newText(sceneGroup,RegistrationScreen.RequestAccessText,0,0,display.contentWidth - 10,0,native.systemFont,11)
@@ -875,7 +875,7 @@ function scene:create( event )
 	TM_RequestAccesstext.anchorX=0
 	--Utils.CssforTextView(TM_Requesttext,sp_primarybutton)	
 
-	local line = display.newRect(sceneGroup,TM_Requesticon.x+TM_RequestAccesstext.x+5,TM_RequestAccesstext.y,TM_RequestAccesstext.width,0.6)
+	local line = display.newRect(sceneGroup,TM_Requesticon.x+TM_RequestAccesstext.x+5,TM_RequestAccesstext.y,TM_RequestAccesstext.width,0.4)
 	      line.width = TM_Requesttext.contentWidth - 110
 		  line.y=TM_RequestAccesstext.y+TM_RequestAccesstext.contentHeight-line.contentHeight+1
 		  line:setFillColor(Utils.convertHexToRGB(sp_primarybutton.Background_Color))
@@ -893,11 +893,11 @@ function scene:create( event )
 	Director_Requesttext.anchorX=0
 
 
-	Director_Requesticon = display.newImageRect(sceneGroup,"res/assert/create-account.png",15,12)
+	Director_Requesticon = display.newImageRect(sceneGroup,"res/assert/create-account.png",15,10)
 	Director_Requesticon.x=W/2+25
 	Director_Requesticon.id="director_request"
 	Director_Requesticon:setFillColor(0)
-	Director_Requesticon.y=Director_Requesttext.y+Director_Requesttext.contentHeight+14
+	Director_Requesticon.y=Director_Requesttext.y+Director_Requesttext.contentHeight+15
 
 
 
@@ -912,7 +912,7 @@ function scene:create( event )
 	--Utils.CssforTextView(Director_Requesttext,sp_primarybutton)
 
 
-	local line1 = display.newRect(sceneGroup,Director_Requesticon.x+Director_Accounttext.x-140,Director_Accounttext.y,Director_Accounttext.width,0.6)
+	local line1 = display.newRect(sceneGroup,Director_Requesticon.x+Director_Accounttext.x-140,Director_Accounttext.y,Director_Accounttext.width,0.4)
 	      line1.width = Director_Accounttext.contentWidth-215
 		  line1.y=Director_Accounttext.y+Director_Accounttext.contentHeight-line.contentHeight+1
 		  line1:setFillColor(Utils.convertHexToRGB(sp_primarybutton.Background_Color))	
