@@ -2024,15 +2024,15 @@ function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,group
     local resbody
 
 
-		    if groupteammemberids == "" then
+		    -- if groupteammemberids == "" then
 
-		    	groupteammemberids =  json.encode(ContactId)
+		    -- 	groupteammemberids =  json.encode(ContactId)
 
-		    else
+		    -- else
 
-		    	groupteammemberids = json.encode(groupteammemberids)
+		    -- 	groupteammemberids = json.encode(groupteammemberids)
 
-		    end
+		    -- end
 
 
 
@@ -2056,31 +2056,31 @@ function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,group
 	if grouptypevalue == "BROADCAST" then
 
 		  resbody = [[{
-		  "UserId": "]]..UserId..[[",
+		  "UserId": ]]..UserId..[[,
 		  "MyUnitBuzzGroupName": "]]..groupname..[[",
 		  "Description": "]]..description..[[",
 		  "IsActive": "]]..tostring(stateinfo)..[[",
 		  "MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
 		  "ContactId":"]]..ContactId..[[",
-		  "GroupTeamMemberIds":]]..groupteammemberids..[[,
+		  "MyUnitBuzzGroupId":]]..tonumber(groupteammemberids)..[[,
 		   } ]]
 
 	else
 
 		  resbody = [[{
-		  "UserId": "]]..UserId..[[",
+		  "UserId": ]]..UserId..[[,
 		  "MyUnitBuzzGroupName": "]]..groupname..[[",
 		  "Description": "]]..description..[[",
 		  "IsActive": "]]..tostring(stateinfo)..[[",
 		  "MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
-		  "GroupTeamMemberIds":]]..groupteammemberids..[[,
+		  "MyUnitBuzzGroupId":]]..tonumber(groupteammemberids)..[[,
 		   } ]]
 
 	end
 
     params={headers = headers,body = resbody}
 
-	print("create group request : "..json.encode(params))
+	print("create group request : "..(resbody))
 
 	request.new(ApplicationConfig.CreateMessageChatGroup,method,params,postExecution)
 	
