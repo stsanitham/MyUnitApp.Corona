@@ -586,28 +586,7 @@ function scene:create( event )
 		title.x=back_icon.x+back_icon.contentWidth+7;title.y = title_bg.y
 		title:setFillColor(0)
 
-		if IsOwner then
-
-		refresh_icon_bg = display.newRect(sceneGroup,0,0,60,30)
-		refresh_icon_bg.x= W-60
-		refresh_icon_bg.anchorX=0
-		refresh_icon_bg.id = "refresh"
-		refresh_icon_bg.anchorY=0
-		refresh_icon_bg.alpha=0.01
-		refresh_icon_bg:setFillColor(1)
-		refresh_icon_bg.y= title_bg.y-15
-
-	    refresh = display.newImageRect( sceneGroup, "res/assert/refreshicon.png",20,20 )
-		refresh.anchorX = 0.5
-		refresh.anchorY = 0.5
-
-		refresh.id = "refresh"
-		refresh.x = W-25;refresh.y = refresh_icon_bg.y+15
-
-		--refresh:addEventListener("touch",onButtonTouch)
-		--refresh_icon_bg:addEventListener("touch",onButtonTouch)
-
-	    end
+		
 
 	   -- Background:addEventListener("touch",onBackgroundTouch)
 
@@ -799,11 +778,7 @@ function scene:hide( event )
 		back_icon:removeEventListener("touch",onButtonTouch)
 		title:removeEventListener("touch",onButtonTouch)
 
-		if IsOwner then
-		refresh:removeEventListener("touch",onButtonTouch)
-		refresh_icon_bg:removeEventListener("touch",onButtonTouch)
-	    end
-
+		
 		isRotate = false
 
 

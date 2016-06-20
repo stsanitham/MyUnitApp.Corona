@@ -849,13 +849,16 @@ end
 						                  		 --GroupSubject.text = #selected_Contact.." recipients"
 						                  		 if addGroupid_value ~= "editMember" then
 
-								      	 	   		Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",groupteammemberids,getChatGroupCreation)
+								      	 	   		Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",0,getChatGroupCreation)
 
 								      	 	   	 else
 
 								      	 	    	grouptypevalue = pageid_value:upper()
 
-							 						Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
+								      	 	    	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true",grouptypevalue,editId,getChatGroupCreation)
+
+
+							 					--	Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
 
 								      	 	    end
 
@@ -863,9 +866,20 @@ end
 							      	 	    else
 
 
-							      	 	    	 GroupSubject.text = GroupSubject.text
+								      	 	      if addGroupid_value ~= "editMember" then
 
-								      	 	     Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",groupteammemberids,getChatGroupCreation)
+								      	 	   		Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",0,getChatGroupCreation)
+
+								      	 	   	 else
+
+								      	 	    	grouptypevalue = pageid_value:upper()
+
+								      	 	    	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,getChatGroupCreation)
+
+
+							 					--	Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
+
+								      	 	    end
 
 
 							      	 	    end
