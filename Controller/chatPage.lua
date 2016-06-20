@@ -2617,7 +2617,7 @@ end
 
 				    local options = {
 						effect = "crossFade",
-						time = 500,	
+						time = 100,	
 						params = json.decode(value)
 						}
 
@@ -2637,7 +2637,14 @@ end
 
 	function scene:resumeEditGame(contactId)
 
+		-- if contactId ~= nil then
+
+		-- 	title.text = groupname
+
+		-- end
+
 		composer.removeHidden()
+
 
 				      local options = {
 				      		effect = "fromTop",
@@ -2659,7 +2666,7 @@ end
 		    end
 
 
-		    timer.performWithDelay( 500, doAction,1 )
+		    timer.performWithDelay( 400, doAction,1 )
 
 	end
 
