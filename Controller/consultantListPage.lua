@@ -1449,16 +1449,14 @@ end
 			create_groupicon:removeEventListener("touch",createGroup)
 
 
-
-			composer.removeHidden()
-
+		
 		elseif phase == "did" then
 
 				if addGroupid_value == "editMember" then
 
 					print("editId"..editId)
 
-				 event.parent:resumeEditGame(editId)
+					 event.parent:resumeEditGame(editId)
 
 			    end
 
