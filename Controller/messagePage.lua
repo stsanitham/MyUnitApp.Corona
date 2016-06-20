@@ -308,7 +308,7 @@ end
 
                 	    	    	validation = false
 
-                	    	    	SetError("* "..Message.YoutubeUrlError,feed_url)
+                	    	    	SetError("*"..Message.YoutubeUrlError,feed_url)
 
                 	    	    	return false
 
@@ -350,7 +350,7 @@ end
 
                 	    	    	validation = false
 
-                	    	    	SetError("* "..Message.VimeoUrlError,feed_url)
+                	    	    	SetError("*"..Message.VimeoUrlError,feed_url)
 
                 	    	    	return false
 
@@ -398,7 +398,7 @@ end
 
                 	    	    	validation = false
 
-                	    	    	SetError("* "..Message.FacebookUrlError,feed_url)
+                	    	    	SetError("*"..Message.FacebookUrlError,feed_url)
 
                 	    	    	return false
 
@@ -456,7 +456,7 @@ end
 
                 	    	    	validation = false
 
-                	    	    	SetError("* "..Message.YahooUrlError,feed_url)
+                	    	    	SetError("*"..Message.YahooUrlError,feed_url)
 
                 	    	    	return false
 
@@ -603,7 +603,7 @@ local function onKeyEvent( event )
 	url_textcontent = display.newText(sceneGroup,Message.UrlHelpText, 0, 0,W-28,0, native.systemFont, 11)
 	url_textcontent.x = url_dropdown_bg.x + 5
 	url_textcontent.y = url_dropdown_bg.y + url_dropdown_bg.contentHeight+17
-	url_textcontent:setFillColor( 0, 0, 0 ,0.2)
+	url_textcontent:setFillColor( 0, 0, 0 ,0.8)
 
 	feed_url = native.newTextField(0, 0, W-70 , EditBoxStyle.height)
 	feed_url.id = "video url"

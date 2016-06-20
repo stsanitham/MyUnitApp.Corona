@@ -615,17 +615,25 @@ end
 
 		grouptypevalue = groupcreation_response.MyUnitBuzzGroupType
 
+		local groupId = 0
 
+		if addGroupid_value == "editMember" then
 
+			groupId = editId
+
+		else
+
+			groupId = groupid_value
+		end
 
 
 			if grouptypevalue == "BROADCAST" then
 
-				 Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupid_value,selected_Contact,getAddedMembersInGroup)
+				 Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupId,selected_Contact,getAddedMembersInGroup)
 
 			elseif grouptypevalue == "GROUP" then
 
-				 Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupid_value,selected_Contact,getAddedMembersInGroup)
+				 Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupId,selected_Contact,getAddedMembersInGroup)
 
 		    end
 
@@ -798,13 +806,15 @@ end
 
 					      	 	 	if addGroupid_value ~= "editMember" then
 
-					      	 	     	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",groupteammemberids,getChatGroupCreation)
+					      	 	     	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",0,getChatGroupCreation)
 
 					      	 	    else
 
 					      	 	    	grouptypevalue = pageid_value:upper()
+
+					      	 	    	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,getChatGroupCreation)
 					      	 	    	
-				 						Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
+				 						--Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
 
 
 					      	 	    end
