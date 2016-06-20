@@ -1994,7 +1994,7 @@ end
 
 
 
-function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,grouptypevalue,grouptmid,postExecution)
+function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,grouptypevalue,groupteammemberids,postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}

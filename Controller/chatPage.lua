@@ -2401,6 +2401,7 @@ end
 
 	function scene:resumeImageCallBack(photoviewname,button_idvalue)
 
+		composer.removeHidden()
 
 		ChatBox.isVisible=true
 
@@ -2599,17 +2600,38 @@ end
 
 		print("resume game")
 
+		composer.removeHidden()
+
 			ChatBox.isVisible=true
+
+	end
+
+	function scene:resumeGame(value)
+
+		print("resume game")
+
+		composer.removeHidden()
+
+			ChatBox.isVisible=true
+
+
+				    local options = {
+						effect = "crossFade",
+						time = 500,	
+						params = json.decode(value)
+						}
+
+	        composer.showOverlay( "Controller.consultantListPage", options )
+
 
 	end
 
 
 
+
 	function scene:resumeEditGame(contactId)
 
-		print("resume game 12345")
-
-		print("contactId ************ "..contactId)
+		composer.removeHidden()
 
 				      local options = {
 				      		effect = "fromTop",
@@ -2624,7 +2646,14 @@ end
 
 
 			ChatBox.isVisible=false
-		    composer.showOverlay( "Controller.Chathead_detailPage", options )
+	
+
+		    local function doAction( event )
+		    	composer.showOverlay( "Controller.Chathead_detailPage", options )
+		    end
+
+
+		    timer.performWithDelay( 500, doAction,1 )
 
 	end
 

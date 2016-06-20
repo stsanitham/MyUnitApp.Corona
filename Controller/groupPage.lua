@@ -420,7 +420,7 @@ local function GroupCreation_list( list )
 		background.alpha=0.01
 		background.value = list[i]
 		background.typevalue = list[i].MyUnitBuzzGroupType
-		print( "Listy : "..json.encode(list[i]) )
+		--print( "Listy : "..json.encode(list[i]) )
 
 		local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 		Image.x=30;Image.y=background.y+background.height/2
@@ -612,59 +612,6 @@ end
 
 
 			Webservice.GetChatMessageGroupList("GROUP",getGroupListresponse)
-
-
-			 -- function getGroupListresponse(response )
-
-				-- grouplist_response = response
-
-				-- print("grouplist_response : "..grouplist_response)
-
-				-- 			if grouplist_response ~= nil and #grouplist_response ~= 0 then
-									
-				-- 					NoEvent.text=""
-
-				-- 					GroupCreation_list(grouplist_response)
-
-				-- 			else
-
-				-- 					if pagename == "group" then
-
-				-- 						NoEvent.isVisible=true
-
-				-- 				    elseif pagename == "broadcast" then
-
-				-- 				    	NoEvent.isVisible=true
-
-				-- 				    	NoEvent.text = "No Broadcast List Found"
-
-				-- 				    end
-
-				-- 			end
-				-- end
-
-
-
-
-				-- 		local groupTypevalue
-
-
-				-- 		if pagename == "group" then
-
-				-- 			groupTypevalue = "GROUP"
-
-				-- 		    Webservice.GetChatMessageGroupList(groupTypevalue,getGroupListresponse)
-
-				-- 		elseif pagename == "broadcast" then
-
-				-- 			groupTypevalue = "BROADCAST"
-
-				-- 			Webservice.GetChatMessageGroupList(groupTypevalue,getGroupListresponse)
-
-				-- 		end
-
-
-			--Tabbar---
 
 
 

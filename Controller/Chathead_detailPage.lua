@@ -53,6 +53,7 @@ pagevalue = "careerPathPage"
 
 local groupMemberListArray = {}
 
+local status 
 --------------------------------------------------
 
 
@@ -95,15 +96,14 @@ local function addMemberAction( event )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
-					    local options = {
-						effect = "crossFade",
-						time = 500,	
-						params = { addGroupid = "editMember" , page_id = Message_Type:lower(),contacts = contactCount,name = Career_Username.text,contactId = contactId}
-						}
+					 --    local options = {
+						-- effect = "crossFade",
+						-- time = 500,	
+						-- }
 
-	        composer.showOverlay( "Controller.consultantListPage", options )
-
-
+	     --    composer.showOverlay( "Controller.consultantListPage", options )
+	     	status="editArray"
+	     	composer.hideOverlay( "slideRight", 300 )
 		
 	end
 
@@ -648,14 +648,21 @@ function scene:show( event )
 
 				json.encode( Details )
 
-				if Details.ImagePath ~= nil then
-					ProfileImage = display.newImage(sceneGroup,"career"..contactId..".png",system.TemporaryDirectory)
+	
+				local path = system.pathForFile( "career"..contactId..".png",system.TemporaryDirectory)
+				local fhd = io.open( path )
+
+
+				-- Determine if file exists
+				if fhd then
+				   ProfileImage = display.newImage("career"..contactId..".png",system.TemporaryDirectory)
+				   fhd:close()
+				else
+				    ProfileImage = display.newImage("res/assert/detail_defalut.jpg")
 				end
 
-				if not ProfileImage then
-					ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
-				end
 
+				sceneGroup:insert( ProfileImage )
 				ProfileImage.width = W;ProfileImage.height = 180
 				ProfileImage.x=W/2;ProfileImage.y=titleBar.y
 				ProfileImage.anchorY=0
@@ -1246,8 +1253,6 @@ function scene:show( event )
 			MainGroup:insert(sceneGroup)
 
 
-			print( "MessageType : "..Message_Type )
-
 			if Message_Type == "GROUP" or Message_Type == "BROADCAST" then
 
 				Webservice.GetMessageGroupTeamMemberList(contactId,Message_Type,get_MessageGroupTeamMemberList)
@@ -1288,14 +1293,20 @@ function scene:hide( event )
 		 	end
 		 end
 
+		 	if ProfileImage ~= nil then ProfileImage:removeSelf();ProfileImage=nil end
 
 		if myMap then myMap:removeSelf();myMap=nil;map_close:removeSelf();map_close=nil end
 
 		elseif phase == "did" then
 
-			--event.parent:resumeGame(ContactIdValue)
+			local params = { addGroupid = "editMember" , page_id = Message_Type:lower(),contacts = contactCount,name = Career_Username.text,contactId = contactId}
 
-			composer.removeHidden( )
+			if status == "editArray" then
+
+				event.parent:resumeGame(json.encode(params),status)
+				
+			end
+
 
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
