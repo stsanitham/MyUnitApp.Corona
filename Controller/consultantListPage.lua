@@ -161,7 +161,9 @@ local function backactionTouch(event)
 		display.getCurrentStage():setFocus( nil )
 
 
-		if pageid_value == "group" then
+		  if addGroupid_value ~= "editMember" then
+
+		  		if pageid_value == "group" then
 
 		    local options = {
 				effect = "slideRight",
@@ -180,6 +182,11 @@ local function backactionTouch(event)
 		     composer.gotoScene( "Controller.broadCastPage", options )
 
 	    end
+
+	else
+
+		composer.hideOverlay( )
+	end
 
 		native.setKeyboardFocus(nil)
 
@@ -513,7 +520,11 @@ end
 
         addGroupid_value
 		editMember
-		editId]]  		    if addGroupid_value ~= "editMember" then
+		editId]]  		
+
+		
+
+		    if addGroupid_value ~= "editMember" then
 
 								if grouptypevalue == "GROUP" then
 

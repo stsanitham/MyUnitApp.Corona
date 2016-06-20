@@ -1305,8 +1305,9 @@ function scene:hide( event )
 
 			if status == "editArray" then
 
+				print( "Json :"..json.encode(params) )
 				event.parent:resumeGame(json.encode(params),status)
-				
+
 			end
 
 

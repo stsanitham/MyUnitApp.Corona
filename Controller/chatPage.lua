@@ -2606,7 +2606,7 @@ end
 
 	end
 
-	function scene:resumeGame(value)
+	function scene:resumeGame(value,status)
 
 		print("resume game")
 
@@ -2621,8 +2621,14 @@ end
 						params = json.decode(value)
 						}
 
-	        composer.showOverlay( "Controller.consultantListPage", options )
 
+
+	         local function doAction( event )
+	        	composer.showOverlay( "Controller.consultantListPage", options )
+		    end
+
+
+		    timer.performWithDelay( 500, doAction,1 )
 
 	end
 
