@@ -882,8 +882,6 @@ function scene:create( event )
 
 
 
-
-
 	Director_Requesttext = display.newText(sceneGroup,RegistrationScreen.Director,0,0,200,0,native.systemFontBold,12)
 	Director_Requesttext.x=W/2+20
 	Director_Requesttext.width=Director_Requesttext.contentWidth
