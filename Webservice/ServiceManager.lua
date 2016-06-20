@@ -1994,7 +1994,7 @@ end
 
 
 
-function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,grouptypevalue,groupteammemberids,postExecution)
+function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,grouptypevalue,grouptmid,postExecution)
 	local request_value = {}
 	local params = {}
 	local headers = {}
@@ -2022,18 +2022,6 @@ function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,group
     
 
     local resbody
-
-
-		    -- if groupteammemberids == "" then
-
-		    -- 	groupteammemberids =  json.encode(ContactId)
-
-		    -- else
-
-		    -- 	groupteammemberids = json.encode(groupteammemberids)
-
-		    -- end
-
 
 
 	    -- if grouptypevalue == "GROUP" then
