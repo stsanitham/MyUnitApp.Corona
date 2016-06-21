@@ -34,6 +34,9 @@ color.today_blue = "#5069f7"
 
 color.tabbar = "#B6B6B6"
 
+color.table1 = "#FBF7EF"
+color.table2 = "#FBEDF2"
+
 
 return color
 

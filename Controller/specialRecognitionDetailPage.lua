@@ -164,9 +164,6 @@ return true
 
 
 
-
-
-
  local function onButtonTouch( event )
 
 	if event.phase == "began" then
@@ -273,7 +270,7 @@ local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
 										coloumArray[#coloumArray].anchorY = 0
 										coloumArray[#coloumArray].anchorX = 0
 										coloumArray[#coloumArray].x=0;coloumArray[#coloumArray].y=tempHeight
-										coloumArray[#coloumArray].strokeWidth = 2
+										coloumArray[#coloumArray].strokeWidth = 1
 										coloumArray[#coloumArray]:setFillColor(0,0,0,0)
 										coloumArray[#coloumArray]:setStrokeColor( 0,0,0,0.3 )
 
@@ -286,16 +283,24 @@ local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
 
 											end
 
+										parent_centerText[#parent_centerText+1] = display.newText(tempGroup,"Header",0,0,100,0,native.systemFont,12)
 										if source == "parent" then
 
-											parent_centerText[#parent_centerText+1] = display.newText(tempGroup,"Header",0,0,native.systemFontBold,14)
-
+											coloumArray[#coloumArray]:setFillColor(Utils.convertHexToRGB(color.Gray))
 										else
+											if #reportArrayList%2 == 0 then
 
-											parent_centerText[#parent_centerText+1] = display.newText(tempGroup,"Header",0,0,native.systemFont,14)
+												coloumArray[#coloumArray]:setFillColor(Utils.convertHexToRGB(color.table2))
+
+											else
+
+												coloumArray[#coloumArray]:setFillColor(Utils.convertHexToRGB(color.table1))
+
+											end
 
 										end
 
+										print( "value : "..k,v )
 										parent_centerText[#parent_centerText].x=coloumArray[#coloumArray].x + 5
 										parent_centerText[#parent_centerText].anchorX=0
 										parent_centerText[#parent_centerText].y=coloumArray[#coloumArray].y+coloumArray[#coloumArray].contentHeight/2
@@ -303,18 +308,17 @@ local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
 										parent_centerText[#parent_centerText].value = v
 										parent_centerText[#parent_centerText]:setTextColor( 0 )					
 
-
 									
 
 											if source == "parent" then
+
 												if parent_centerText[#parent_centerText].contentWidth > coloumArray[#coloumArray].width  then
 													coloumArray[#coloumArray].width = parent_centerText[#parent_centerText].contentWidth+15
 												end
 												widthArray[#widthArray+1] = coloumArray[#coloumArray].contentWidth-2	
-
+												parent_centerText[#parent_centerText]:setTextColor( 1 )	
 											else
 
-												print( totalCount )
 												coloumArray[#coloumArray].width = widthArray[totalCount]
 												
 
@@ -334,9 +338,12 @@ local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
 
 														parent_centerText[#parent_centerText].id = contact
 
+	
 														for j=0,count-1 do
-															if string.find(parent_centerText[#parent_centerText-j].value:lower( ),"consultant") then
-																parent_centerText[#parent_centerText-j]:setTextColor( 0,0,1 )
+															if parent_centerText[#parent_centerText-j] ~= nil then
+																if string.find(parent_centerText[#parent_centerText-j].value:lower( ),"consultant") or string.find(parent_centerText[#parent_centerText-j].value:lower( ),"member")  then
+																	parent_centerText[#parent_centerText-j]:setTextColor( 0,0,1 )
+																end
 															end
 
 														end
@@ -367,9 +374,6 @@ local function CreateHorizontalTable( sceneGroup , List )
 			-- end
 
 				reportArray = List.data
-				print( "*******************************" )
-				print( json.encode(reportArray) )
-
 				if reportArray == nil then
 
 					reportArray = List
@@ -428,7 +432,6 @@ local function CreateHorizontalTable( sceneGroup , List )
 
 						    		totalCount = totalCount + 1
 
-						    		print( "Here" )
 						   			background.ContactId = CreateRow( tempHeight,tempGroup,totalCount,count,k,v,"parent" )
 										
 								else
@@ -461,8 +464,7 @@ local function CreateHorizontalTable( sceneGroup , List )
 
 										   			background.ContactId =  CreateRow( background.y,tempGroup,totalCount,count,v,k,"child" )
 
-										   			print( "background.ContactId : "..background.ContactId )
-														
+													
 												else
 													--coloumArray[1].contactId = 
 
@@ -561,7 +563,7 @@ function scene:create( event )
 
 		title_bg = display.newRect(sceneGroup,0,0,W,30)
 		title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-		title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+		title_bg:setFillColor(0,0,0,0 )
 
 		back_icon_bg = display.newRect(sceneGroup,0,0,20,20)
 		back_icon_bg.x= 5
@@ -627,11 +629,20 @@ function scene:show( event )
 
 
 		composer.removeHidden(  )
+
+		local Title = display.newText(sceneGroup,"",0,0,0,0,native.systemFont,18)
+		Title.x=W/2;Title.y=title_bg.y+title_bg.contentHeight+5
+		Title:setTextColor( 0 )
+
+		local subTitle = display.newText(sceneGroup,"",0,0,0,0,native.systemFont,14)
+		subTitle.x=W/2;subTitle.y=Title.y+Title.contentHeight+10
+		subTitle:setTextColor( 0 )
+
 	HorizontalScroll = widget.newScrollView(
 				    {
-				        top = 70,
+				        top = 140,
 				        width = W,
-				        height = H-75,
+				        height = H-140,
 				      --  horizontalScrollDisabled = true,
 				       -- verticalScrollDisabled = false,
 				        --isBounceEnabled=false,
@@ -653,8 +664,6 @@ function scene:show( event )
 
 			sr_eventid = event.params.specialRecognition_id
 
-			print("SP DETAIL PAGE"..json.encode(sr_eventdetails).."        "..json.encode(sr_eventid))
-
 		end
 
 		title.text = sr_eventdetails.ReportName
@@ -673,6 +682,13 @@ function scene:show( event )
 										      print("JSON content 11111: "..json.encode(sp_jsonresponse))
 										      	parentFlag=true
 										       CreateHorizontalTable(sceneGroup,sp_jsonresponse)
+
+										       if sp_jsonresponse.heading ~= nil then
+
+										       		Title.text  = sp_jsonresponse.heading[1]
+											  		subTitle.text  = sp_jsonresponse.heading[2]
+
+												end
 
 									end
 
@@ -707,7 +723,6 @@ function scene:show( event )
 
 												if not file then
 												    -- Error occurred; output the cause
-												    print( "File error: " .. errorString )
 												else
 												    -- Write data to file
 												    file:write( saveData )

@@ -56,6 +56,8 @@ local Imagesize = ""
 
 local MemberName
 
+local UserName = ""
+
 local image_update_row,audio_update_row
 
 local holdLevel = 0
@@ -574,7 +576,6 @@ end
 				Deleteicon.contentPath=event.target.contentPath
 
 
-				selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id, filetype = event.target.type, contentPath = event.target.contentPath}
 
 				Copyicon.type = event.target.type
 
@@ -608,7 +609,7 @@ end
 					end
 
 					for i=1,#selectedForDelete do
-						if selectedForDelete[i].y ~= nil then
+						if selectedForDelete[i] ~= nil and selectedForDelete[i].y ~= nil then
 						 selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
 
 						-- attachment_icon.isVisible =true
@@ -631,10 +632,12 @@ end
 				if event.target.selected == "false" then
 
 					event.target.selected = "true"
-					selectedForDelete[#selectedForDelete+1] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
-					selectedForDelete[#selectedForDelete]:setFillColor( 0.3,0.6,0.5,0.4 )
-					event.target.group:insert( selectedForDelete[#selectedForDelete] )
+					selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id, filetype = event.target.type, contentPath = event.target.contentPath}
+					selectedForDelete[#selectedForDeleteID] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
+					selectedForDelete[#selectedForDeleteID]:setFillColor( 0.3,0.6,0.5,0.4 )
+					event.target.group:insert( selectedForDelete[#selectedForDeleteID] )
 
+					title.text = #selectedForDelete
 					print("delete Action")
 
 				end
@@ -701,11 +704,47 @@ end
 										event.target.selected = "true"
 										selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id,filetype = event.target.type,contentPath = event.target.contentPath}
 
-										selectedForDelete[#selectedForDelete+1] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
-										selectedForDelete[#selectedForDelete]:setFillColor( 0.3,0.6,0.5,0.4 )
-										event.target.group:insert( selectedForDelete[#selectedForDelete] )
+										selectedForDelete[#selectedForDeleteID] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
+										selectedForDelete[#selectedForDeleteID]:setFillColor( 0.3,0.6,0.5,0.4 )
+										event.target.group:insert( selectedForDelete[#selectedForDeleteID] )
 										print( "more selecting ")
 
+										
+										title.text =#selectedForDeleteID
+									elseif event.target.selected == "true" then
+										for k=1,#selectedForDeleteID do
+											if selectedForDeleteID[k].id == event.target.id then
+												
+												selectedForDeleteID[k].id = 0
+												selectedForDeleteID[k].filetype = ""
+												selectedForDeleteID[k].contentPath = ""
+												selectedForDelete[k]:removeSelf()
+
+											end
+
+										end
+										title.text = tonumber(title.text)-1
+										
+										if tonumber(title.text) == 0 then
+
+											title.text = UserName
+									    	Deleteicon.isVisible=false
+									    	Copyicon.isVisible=false
+									    	-- chatReceivedFlag=true
+									    	
+
+									    	attachment_icon.isVisible = true
+
+									    			for i=1,#selectedForDelete do
+														if selectedForDelete[i].y ~= nil then
+														 selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
+
+														-- attachment_icon.isVisible =true
+														 end
+														 selectedForDeleteID[i]=nil
+													end
+
+										end
 
 									end
 								
@@ -1511,7 +1550,7 @@ end
 	local function printTimeSinceStart( event )
 
 			tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
-
+			
 			if chatHoldflag == true then
 
 				holdLevel=holdLevel+1
@@ -1519,7 +1558,7 @@ end
 					if holdLevel > 25 then
 
 						Deleteicon.isVisible=true
-						--Copyicon.isVisible=true
+
 
 						if Copyicon.type ~= "text" then
 
@@ -1563,48 +1602,98 @@ end
 	local function deleteAction( event )
 
 		if event.phase == "ended" then
+
+			
 	 
 			if event.target.id == "delete" then
 
 			print( json.encode(selectedForDeleteID) )
 
-					for i=1,#selectedForDeleteID do
-
-						local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..selectedForDeleteID[i].id..[[;]]
-						db:exec( q )
-
-						print( selectedForDeleteID[i].type )
-
-						if selectedForDeleteID[i].filetype ~= "text" then
-
-							os.remove( selectedForDeleteID[i].contentPath )
-
-						end
-
-					end
 					
-					sendMeaasage()
+
+					local function onComplete( event )  
+						if event.action == "clicked" then
+
+						    local i = event.index
+								    if i == 1 then
+
+								    	for i=1,#selectedForDeleteID do
+
+											local q = [[DELETE FROM pu_MyUnitBuzz_Message WHERE id=]]..selectedForDeleteID[i].id..[[;]]
+											db:exec( q )
+
+											print( selectedForDeleteID[i].type )
+
+											if selectedForDeleteID[i].filetype ~= "text" then
+
+												os.remove( selectedForDeleteID[i].contentPath )
+
+											end
+
+										end
+										
+										sendMeaasage()
+
+										Copyicon.isVisible=false
+										Deleteicon.isVisible=false
+
+										attachment_icon.isVisible = true
+
+								for i=1,#selectedForDelete do
+									if selectedForDelete[i].y ~= nil then
+									 selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
+
+									-- attachment_icon.isVisible =true
+									 end
+									 selectedForDeleteID[i]=nil
+								end
+
+								title.text = UserName
+								       
+								    elseif i == 2 then
+								    	--Details
+
+								    	
+						   			 end
+						end
+			end
+
+
+			if tonumber(title.text) == 1 then
+
+				local alert = native.showAlert("Delete", "Delete message from "..UserName , { CommonWords.ok , CommonWords.cancel }, onComplete )
+
+			else
+
+			local alert = native.showAlert("Delete", "Delete "..tostring(title.text).." messages from "..UserName , { CommonWords.ok , CommonWords.cancel }, onComplete )
+
+			end
+
+			
 
 			elseif event.target.id == "copy" then
 							
 							pasteboard.copy( "string", event.target.detail)
 
 							toast.show(ChatPage.Message_Copied, {duration = 'long', gravity = 'Center', offset = {0, 128}})  
-
-			end		
-						Copyicon.isVisible=false
+							title.text = UserName		
+							
+								Copyicon.isVisible=false
 						Deleteicon.isVisible=false
 
 						attachment_icon.isVisible = true
 
-				for i=1,#selectedForDelete do
-						if selectedForDelete[i].y ~= nil then
-						 selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
+						for i=1,#selectedForDelete do
+								if selectedForDelete[i].y ~= nil then
+								 selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
 
-						-- attachment_icon.isVisible =true
-						 end
-						 selectedForDeleteID[i]=nil
-					end
+								-- attachment_icon.isVisible =true
+								 end
+								 selectedForDeleteID[i]=nil
+							end
+
+			end		
+					
 		end
 
 	    return true
@@ -1693,6 +1782,28 @@ local function backAction( event )
 	elseif event.phase == "ended" then
 			display.getCurrentStage():setFocus( nil )
 
+
+			if #selectedForDeleteID > 0 then
+							title.text = UserName
+					    	Deleteicon.isVisible=false
+					    	Copyicon.isVisible=false
+					    	-- chatReceivedFlag=true
+					    	
+
+					    	attachment_icon.isVisible = true
+
+					    			for i=1,#selectedForDelete do
+										if selectedForDelete[i].y ~= nil then
+										 selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
+
+										-- attachment_icon.isVisible =true
+										 end
+										 selectedForDeleteID[i]=nil
+									end
+
+			else
+
+
 				      local options = {
 				      		effect = "flipFadeOutIn",
 							time = 200,	
@@ -1700,6 +1811,9 @@ local function backAction( event )
 							}
 
 				    composer.gotoScene( "Controller.MessagingPage", options )
+
+
+			end
 
 	end
 
@@ -1766,7 +1880,7 @@ local function ChatSendAction( event )
 		    --	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
 				print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
-				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..title.text..[[',']]..title.text..[[');]]
+				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
 				db:exec( insertQuery )
 
 				local ConversionFirstName,ConversionLastName,GroupName
@@ -1774,21 +1888,21 @@ local function ChatSendAction( event )
 
 				if MessageType == "GROUP" then
 
-					ConversionFirstName="";ConversionLastName="";GroupName=title.text;DocumentUpload=""
+					ConversionFirstName="";ConversionLastName="";GroupName=UserName;DocumentUpload=""
 
 				elseif MessageType == "INDIVIDUAL" then
 
-					ConversionFirstName="";ConversionLastName=title.text;GroupName="";DocumentUpload=""
+					ConversionFirstName="";ConversionLastName=UserName;GroupName="";DocumentUpload=""
 
 				elseif MessageType == "BROADCAST" then
 
 					if IsOwner == true then
 
-						ConversionFirstName="";ConversionLastName=title.text;GroupName=title.text;DocumentUpload=""
+						ConversionFirstName="";ConversionLastName=UserName;GroupName=UserName;DocumentUpload=""
 
 					else
                     
-                        ConversionFirstName="";ConversionLastName=title.text;GroupName="";DocumentUpload=""
+                        ConversionFirstName="";ConversionLastName=UserName;GroupName="";DocumentUpload=""
 
                     end
 
@@ -2204,27 +2318,11 @@ end
 	   
 	    if ( phase == "began" ) then print( "Scroll view was touched" )
 
-	    	Deleteicon.isVisible=false
-	    	Copyicon.isVisible=false
-	    	-- chatReceivedFlag=true
-	    	
 
-	    	attachment_icon.isVisible = true
-
-	    	for i=1,#selectedForDelete do
-						if selectedForDelete[i].y ~= nil then
-						 selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
-
-						-- attachment_icon.isVisible =true
-						 end
-						 selectedForDeleteID[i]=nil
-					end
 
 	    elseif ( phase == "moved" ) then print( "Scroll view was moved" )
 
-	    	holdLevel=0
-
-	    	
+	        	
 
 	    elseif ( phase == "ended" ) then print( "Scroll view was released" )
 
@@ -2302,7 +2400,7 @@ end
 						To=To_ContactId
 						Message_Type = MessageType
 
-						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Audio','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..title.text..[[',']]..title.text..[[');]]
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Audio','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
 						db:exec( insertQuery )
 
 
@@ -2431,7 +2529,7 @@ end
 						To=To_ContactId
 						Message_Type = MessageType
 
-						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Image','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..title.text..[[',']]..title.text..[[');]]
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Image','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
 						db:exec( insertQuery )
 
 
@@ -2573,7 +2671,7 @@ end
 						To=To_ContactId
 						Message_Type = MessageType
 
-						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(url)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..title.text..[[',']]..title.text..[[');]]
+						local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(url)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
 						db:exec( insertQuery )
 
 
@@ -2652,8 +2750,8 @@ end
 
 
 			
-			title.text = editedGroupName
-	
+			UserName = editedGroupName
+			title.text = UserName
 
 			    local function doAction( event )
 
@@ -2708,16 +2806,17 @@ function scene:create( event )
 	title.text = ChatPage.Chats
 
 	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 15, 15 )
-	Deleteicon.x=W-20;Deleteicon.y=title_bg.y
+	Deleteicon.x=W-60;Deleteicon.y=title_bg.y
 	Deleteicon.isVisible=false
 	Deleteicon.id="delete"
 	Deleteicon:addEventListener( "touch", deleteAction )
 
 	Copyicon = display.newImageRect( sceneGroup, "res/assert/copy-icon.png", 15, 15 )
-	Copyicon.x=W-50;Copyicon.y=title_bg.y
+	Copyicon.x=W-90;Copyicon.y=title_bg.y
 	Copyicon.isVisible=false
 	Copyicon.id="copy"
 	Copyicon:addEventListener( "touch", deleteAction )
+
 
 MainGroup:insert(sceneGroup)
 
@@ -2820,6 +2919,10 @@ function scene:show( event )
 			end
 			
 		end
+
+
+
+		UserName = title.text
 
 
 		ChatBox_bg = display.newRect(ChatScrollContent,0,H-100, W-50, 40 )

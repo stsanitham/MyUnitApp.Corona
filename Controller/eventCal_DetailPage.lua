@@ -142,16 +142,25 @@ local display_details = {}
 				end
 			end
 
-			if event.target.id == "delete" then
+			if detail_value.IsRecurrence == true then 
 
-					local alert = native.showAlert(EventCalender.DeleteTitle, EventCalender.DeleteAlert , { CommonWords.ok , CommonWords.cancel }, onComplete )
+				local alert = native.showAlert(EventCalender.PageTitle, "recurring event" , { CommonWords.ok } )
 
-			elseif event.target.id == "edit" then
 
-					status="edit"
+			else
 
-					composer.hideOverlay()
-			
+				if event.target.id == "delete" then
+
+						local alert = native.showAlert(EventCalender.DeleteTitle, EventCalender.DeleteAlert , { CommonWords.ok , CommonWords.cancel }, onComplete )
+
+				elseif event.target.id == "edit" then
+
+						status="edit"
+
+						composer.hideOverlay()
+				
+				end
+
 			end
 
 		end
