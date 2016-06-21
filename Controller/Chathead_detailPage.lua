@@ -696,7 +696,7 @@ function scene:show( event )
 
 
 				if Message_Type == "GROUP" or Message_Type == "BROADCAST" then
-					local addRecipient = display.newImageRect( sceneGroup, "res/assert/contacts-access.png", 20, 20 )
+					local addRecipient = display.newImageRect( sceneGroup, "res/assert/addmember.png", 18, 15 )
 					addRecipient.anchorY=0
 					addRecipient.x=W-30;addRecipient.y = titleBar_icon_bg.y+5
 					addRecipient:addEventListener( "touch", addMemberAction )
