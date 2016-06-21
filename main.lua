@@ -17,8 +17,8 @@ local isSendNow
 widget.setTheme( "widget_theme_ios" )
 
 --local OneSignal = require("plugin.OneSignal")
-GCMValue = 0
 
+GCMValue = "0"
 ga = require("Utils.GoogleAnalytics.ga")
 
 local launchArgs = ...
@@ -506,7 +506,7 @@ local function notificationListener( event )
 
         GCMValue = event.token
 
-       -- native.showAlert( "Push Notification", event.token ,{"Ok"} )
+     --  native.showAlert( "Push Notification", event.token ,{"Ok"} )
 
    
     end

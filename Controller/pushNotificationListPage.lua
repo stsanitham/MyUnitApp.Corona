@@ -516,7 +516,7 @@ local function SentMessageCreation_list( sentmessagelist )
 
 
 
-		local Messagedetail_txt = display.newText(tempGroup,sentmessagelist[i].MyUnitBuzzMessage,0,0,W-45,0,native.systemFont,14)
+		local Messagedetail_txt = display.newText(tempGroup,sentmessagelist[i].MyUnitBuzzMessage,0,0,W-105,0,native.systemFont,14)
 		Messagedetail_txt.x=12
 		Messagedetail_txt.y=background.y+7
 		Messagedetail_txt.anchorX=0

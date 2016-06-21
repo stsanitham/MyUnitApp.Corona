@@ -376,6 +376,8 @@ openPage="signInPage"
 
 		function get_loginresponse(response)
 
+			isSendNow = response.IsSendNow
+
 			loginProcess(response)
 
 		end
