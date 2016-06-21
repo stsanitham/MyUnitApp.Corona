@@ -144,8 +144,14 @@ local display_details = {}
 
 			if detail_value.IsRecurrence == true then 
 
-				local alert = native.showAlert(EventCalender.PageTitle, "recurring event" , { CommonWords.ok } )
+				if event.target.id == "delete" then
 
+					local alert = native.showAlert(EventCalender.PageTitle, "You can delete this Recurring Event only on the web" , { CommonWords.ok } )
+
+				elseif event.target.id == "edit" then
+					
+					local alert = native.showAlert(EventCalender.PageTitle, "You can edit this Recurring Event only on the web" , { CommonWords.ok } )
+				end
 
 			else
 
