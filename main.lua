@@ -334,6 +334,32 @@ end
 
 
 
+
+
+
+-- -- Decrement the badge number by 1
+-- local function notificationListener( event )
+
+--     if ( event.type == "local" ) then
+--         -- Handle the local notification
+--         local badge_num = native.getProperty( "applicationIconBadgeNumber" )
+--         badge_num = badge_num - 1
+--         native.setProperty( "applicationIconBadgeNumber", badge_num )
+
+--     elseif ( event.type == "remote" ) then
+--         -- Handle the push notification
+--         if ( event.badge and event.badge > 0 ) then 
+--             native.setProperty( "applicationIconBadgeNumber", event.badge - 1 )
+--         end
+--     end
+-- end
+
+-- -- Or clear the badge entirely
+-- native.setProperty( "applicationIconBadgeNumber", 0 )
+
+
+
+
  
 
 local function notificationListener( event )
@@ -503,7 +529,6 @@ local function notificationListener( event )
     elseif ( event.type == "remoteRegistration" ) then 
         --code to register your device with the service
 
-
         GCMValue = event.token
 
      --  native.showAlert( "Push Notification", event.token ,{"Ok"} )
@@ -515,6 +540,7 @@ end
 notifications.registerForPushNotifications()
 
 --The notification Runtime listener should be handled from within "main.lua"
+
 Runtime:addEventListener( "notification", notificationListener )
 
 
@@ -531,6 +557,34 @@ Runtime:addEventListener( "notification", notificationListener )
  --native.setProperty( "applicationIconBadgeNumber", 0 )
 
 -----Runtime Error------
+
+
+
+
+
+
+-- local function onNotification( event )
+
+--   if(event.token ~= nil) then
+--     notification_token = event.token                                                                                                                                                                                                                                                                                                                                                                    
+--   end
+
+--   if event.type == "remoteRegistration" then
+--     native.showAlert( "remoteRegistration", event.token, { "OK" } )                                                                                                                                                                                                                                                                                                                                                                 
+--   elseif event.type == "remote" then
+--     user.getUser(nil, false)
+--     native.showAlert( "Alert", event.alert, { "OK" } )
+--     --native.showAlert( "remote", json.encode( event ), { "OK" } )                                                                                                                                                                                                                                                                                                                                                                    
+--   end
+ 
+-- end
+
+
+-- Runtime:addEventListener( "notification", onNotification)
+
+
+
+
 
 
 

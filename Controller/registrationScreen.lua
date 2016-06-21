@@ -193,8 +193,8 @@ local function onRowRender( event )
 
     ---------------------------------------------------------------------------------------
 
-    local tick = display.newImageRect( row, "res/assert/tick.png", 20,20 )
-    tick.x = rowWidth - 20
+    local tick = display.newImageRect( row, "res/assert/tick.png", 16,16 )
+    tick.x = rowWidth -13
     tick.y = rowHeight * 0.5
 
     -------------to make the tick mark for the item that has been selected ----------
@@ -265,6 +265,7 @@ local function CreateList(event,list,List_bg)
                         list.y = List_bg.y
                         list.width = List_bg.width-1.5
 
+
                     elseif event == "language" then
 
                             -- if CountryLbl.text == RegistrationScreen.CountryUsaText then
@@ -292,9 +293,11 @@ local function CreateList(event,list,List_bg)
                     elseif event == "position" then
 
                         List_bg.height = 77
-                        list.height = List_bg.height
+                        list.height = List_bg.height+20
                         List_bg.y = Language_bg.y+Language_bg.height+28
                         List.y = List_bg.y
+
+                        List.anchorY = -1
 
                         list.x = List_bg.x
                         list.y = List_bg.y
@@ -354,10 +357,15 @@ local function getPositionDetails( response )
               end
 
 
-              PositionLbl.text = response[1].PositionName
+             -- PositionLbl.text = response[1].PositionName
+              PositionLbl.text = "- Select Position -"
               PositionLbl.countrycode = response[1].PositionId
 
               PositionLabelValue = PositionLbl.text
+
+
+              -- PositionLbl:setFillColor( 0 )
+              -- PositionLbl.size = 14
 
 
              --  if PositionLbl.text:len() > 22 then
@@ -413,7 +421,8 @@ local function getLanguageDetails( response )
               end
 
 
-                LanguageLbl.text = response[1].LanguageName
+              --  LanguageLbl.text = response[1].LanguageName
+                LanguageLbl.text = "- Select Language -"
                 LanguageLbl.countrycode = response[1].LanguageId
 
 
@@ -464,12 +473,16 @@ local function onRowTouch(event)
                  row.countrycode = renderArray[row.index].countrycode
                  row.countryId = renderArray[row.index].countryId
 
+
                  print( "Check : "..json.encode(row) )
 
                  tempLable.text = row.name
                  tempLable.value = row.id
                  tempLable.countrycode = row.countrycode
                  tempLable.countryId = row.countryId
+
+                 tempLable.size = 14
+                 tempLable:setTextColor(0)
 
 
                  if List.value == "country" then
@@ -628,8 +641,10 @@ local function RegistrationProcess( )
                         Phone.text = ""
                         Marykay.text = ""
                         CountryLbl.text = countryArray[1].name
-                        LanguageLbl.text = languageArray[1].name
-                        PositionLbl.text = positionArray[1].name
+                        --LanguageLbl.text = languageArray[1].name
+                        LanguageLbl.text = "- Select Language -"
+                       -- PositionLbl.text = positionArray[1].name
+                        PositionLbl.text = "- Select Position -"
                         
                         
                           if Register_response.StatusType == "Success"  then
@@ -740,7 +755,6 @@ local function registerBtnRelease(event )
                             LanguageLbl:setFillColor( 1,0,0 )
                             LanguageLbl.size = 10
                             LanguageLbl.text = RegistrationScreen.SelectLanguage_Errormsg
-
                     end
 
 
@@ -818,6 +832,11 @@ local function textfield( event )
 
                    elseif(event.target.id == "Email") then
 
+                        if not Utils.emailValidation(Email.text) then
+                            validation=false
+                            SetError("* "..RequestAccess.EmailValidation_error,Email)
+                        end
+
                         native.setKeyboardFocus(Phone)
 
 
@@ -846,27 +865,56 @@ local function textfield( event )
     elseif ( event.phase == "editing" ) then
 
 
-        if(event.target.id == "First Name") or (event.target.id == "Last Name") then
+            if(event.target.id == "First Name") or (event.target.id == "Last Name") or (event.target.id == "Marykay_Id") then
 
-            if event.text:len() > 50 then
+                   if event.text:len() > 50 then
 
-                event.target.text = event.target.text:sub(1,50)
+                      event.target.text = event.target.text:sub(1,50)
+
+                      print("reached the limit of 50")
+
+                   end
+
+
+                   if not event.newCharacters:match("[%w%s]+") then
+                       local prevPos = event.startPosition - 1
+                       event.target.text = string.sub( event.target.text,1,prevPos)
+                       print("O")
+                   end
+
 
             end
 
-        end
 
 
+            
+            if (event.target.id == "Marykay_Id") then
 
-        if(event.target.id == "Email") then
+                if event.text:len() > 50 then
 
-            if event.text:len() > 100 then
+                    event.target.text = event.target.text:sub(1,50)
 
-                event.target.text = event.target.text:sub(1,100)
+                end
 
             end
 
-        end
+
+
+            if(event.target.id == "Email") then
+
+                if event.text:len() > 100 then
+
+                    event.target.text = event.target.text:sub(1,100)
+
+                end
+
+                   -- if not event.newCharacters:match("[^!#$%&*()%_=';:?/><|]+") or event.newCharacters:match("[{,}]+") then
+                   --     local prevPos = event.startPosition - 1
+                   --     event.target.text = string.sub( event.target.text,1,prevPos)
+                   --     print("O")
+                   -- end
+
+            end
 
 
 
@@ -879,6 +927,7 @@ local function textfield( event )
                     text = event.target.text:sub(1,event.startPosition )
 
                 end
+
 
 
                 local maskingValue =Utils.PhoneMasking(tostring(text))
@@ -919,17 +968,22 @@ local function backAction( event )
 
                                     composer.gotoScene( "Controller.singInPage", options )
 
-                       return true
+                       --return true
 
                 end
 
-            webView.isVisible = true
+            if webView then 
+              webView.isVisible = true
+            end
 
             CreateAccountBtn.isVisible = true
             CreateAccountBtn_text.isVisible = true
-
+            
+            if List then
             List.isVisible = false
             List_bg.isVisible = false
+
+          end
 
             backBtn_bg.isVisible = false
             backBtn.isVisible = false
@@ -972,7 +1026,7 @@ local function backAction( event )
             registerBtn.isVisible = false
             cancelBtn_lbl.isVisible = false
 
-            scrollView.isVisible = false
+           -- scrollView.isVisible = false
 
         end
 
@@ -1324,23 +1378,24 @@ function scene:show( event )
 
 
                                         scrollView.isVisible = true
+
                                 
                                         backBtn_bg = display.newRect(sceneGroup,0,0,40,30)
                                         backBtn_bg.x=25;backBtn_bg.y=BgText.y+BgText.contentHeight/2+26
-                                        backBtn_bg.id = "back"
+                                        backBtn_bg.id = "cancel"
                                         backBtn_bg.alpha=0.01
 
                                         backBtn = display.newImageRect(sceneGroup,"res/assert/right-arrow(gray-).png",15/2,30/2)
                                         backBtn.x=20;backBtn.y=BgText.y+BgText.contentHeight/2+20
                                         backBtn.xScale=-1
-                                        backBtn.id = "back"
+                                        backBtn.id = "cancel"
                                         backBtn.anchorY=0
                                         backBtn:setFillColor(0)
 
                                         page_title = display.newText(sceneGroup,RegistrationScreen.Registrationtext,0,0,native.systemFont,18)
                                         page_title.x=backBtn.x+18;page_title.y=backBtn.y+8
                                         page_title.anchorX=0
-                                        page_title.id = "back"
+                                        page_title.id = "cancel"
                                         page_title:setFillColor(Utils.convertHexToRGB(color.Black))
 
                                         CreateAccountBtn.isVisible = false
