@@ -62,6 +62,8 @@ local Listresponse_array = {}
 
 local ContactId
 
+local editedgroupname=""
+
 consultantList_array[#consultantList_array+1] = display.newGroup()
 
 
@@ -1461,8 +1463,6 @@ end
 		elseif phase == "did" then
 
 				if addGroupid_value == "editMember" then
-
-					print("editId"..editId.." "..editedgroupname)
 
 					 event.parent:resumeEditGame(editedgroupname,editId)
 

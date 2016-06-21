@@ -53,7 +53,7 @@ pagevalue = "careerPathPage"
 
 local groupMemberListArray = {}
 
-local status 
+local status ="normal"
 --------------------------------------------------
 
 
@@ -1301,11 +1301,14 @@ function scene:hide( event )
 
 			local params = { addGroupid = "editMember" , page_id = Message_Type:lower(),contacts = contactCount,name = Career_Username.text,contactId = contactId}
 
+
+			print( "Status  :"..status )
 			if status == "editArray" then
 
 				print( "Json :"..json.encode(params) )
 				event.parent:resumeGame(json.encode(params),status)
-
+			else
+					event.parent:resumeGameNormal(status)
 			end
 
 

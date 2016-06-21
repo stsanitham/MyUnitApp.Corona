@@ -2596,7 +2596,7 @@ end
 
 
 
-	function scene:resumeGame()
+	function scene:resumeGameNormal(status)
 
 		print("resume game")
 
@@ -2608,13 +2608,11 @@ end
 
 	function scene:resumeGame(value,status)
 
-		print("resume game")
+		print("resume game with values")
 
 		composer.removeHidden()
 
-			ChatBox.isVisible=true
-
-
+		
 				    local options = {
 						effect = "crossFade",
 						time = 100,	
@@ -2653,8 +2651,7 @@ end
 							}
 
 
-			ChatBox.isVisible=false
-
+			
 			title.text = editedGroupName
 	
 
