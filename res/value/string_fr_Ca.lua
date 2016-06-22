@@ -499,3 +499,6 @@ RegistrationScreen.SelectPosition_Errormsg = "* Sélectionnez Position"
 RegistrationScreen.RegistrationCompleted = "Enregistrement terminé"
 RegistrationScreen.SuccessMessage = "Votre inscription est terminée avec succès et une notification par courrier électronique sera reçu peu de temps !"
 
+RegistrationScreen.EmailRegistered = "Email Déjà inscrit"
+RegistrationScreen.EmailRegisteredText = "Cette adresse email est déjà enregistré avec nous!"
+RegistrationScreen.Introduction = "introduction"

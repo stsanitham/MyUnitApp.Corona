@@ -212,4 +212,6 @@ ApplicationConfig.GetSpecialRecognitionJsonContent = ApplicationConfig.BASE_URL.
 
 ApplicationConfig.GetMyUnitBuzzMessagesbyUserId = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMyUnitBuzzMessagesbyUserId"
 
+ApplicationConfig.IsUserAvailable = ApplicationConfig.BASE_URL.."/MyUnitBuzz/IsUserAvailable"
+
 

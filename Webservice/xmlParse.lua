@@ -22,7 +22,7 @@ function request.new(url, method, params,listner)
 	spinner_show()
 
 
-	if string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzzCheckExistsRequestStatus") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") or string.find(url,"/MyUnitBuzzCalendar/CreateQuickcContact") or string.find(url,"/MyUnitBuzz/CheckNotInUnitWiseRegister") or string.find(url,"/MyUnitBuzz/SaveMyUnitBuzzMessages") then
+	if string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzzCheckExistsRequestStatus") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") or string.find(url,"/MyUnitBuzzCalendar/CreateQuickcContact") or string.find(url,"/MyUnitBuzz/CheckNotInUnitWiseRegister") or string.find(url,"/MyUnitBuzz/SaveMyUnitBuzzMessages") or string.find(url,"/MyUnitBuzz/IsUserAvailable") then
 
 		spinner.isVisible=false
 
