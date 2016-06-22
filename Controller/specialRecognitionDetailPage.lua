@@ -252,12 +252,14 @@ return true
 end
 
 
+
+
 local parent_centerText = {}
 
 local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
+			
 			local contact = 0
 
-				    	
 								if v ~= "ContactId" and k ~= "ContactId" then
 
 						    			local ColoumWidth = W/3
@@ -277,7 +279,6 @@ local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
 											if totalCount > 1 then
 
 												if coloumArray[#coloumArray-1] ~= nil then
-
 													coloumArray[#coloumArray].x = coloumArray[#coloumArray-1].x+coloumArray[#coloumArray-1].width
 												end
 
@@ -363,6 +364,10 @@ local function CreateRow( tempHeight,tempGroup,totalCount,count,k,v,source )
 								
 end
 
+
+
+
+
 local function CreateHorizontalTable( sceneGroup , List )
 
 		--local temp = json.decode(List.data)
@@ -414,9 +419,8 @@ local function CreateHorizontalTable( sceneGroup , List )
 							end
 
 					if parentFlag == true then
-						parentFlag=false
+						parentFlag = false
 
-										
 						local totalCount = 0 
 
 						--print( (reportArray[i]) )
@@ -439,10 +443,8 @@ local function CreateHorizontalTable( sceneGroup , List )
 
 								end
 
-
-
-							
 						end
+
 
 						background.y= coloumArray[#coloumArray-1].y+background.contentHeight
 
