@@ -76,6 +76,8 @@ local UserId,ContactId,To_ContactId
 
 local PHOTO_FUNCTION = media.PhotoLibrary 
 
+local deleteMsgCount = 0
+
 local icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
@@ -232,7 +234,7 @@ end
 								params = {
 								imageselected = photoname,
 								image = photo,
-								sendto = title.text,
+								sendto = UserName,
 								contactId = To_ContactId,
 								MessageType = MessageType
 							}
@@ -571,6 +573,9 @@ end
 
 			if holdLevel > 25 then
 
+				if event.target.selected == "false" then
+					print( "here ###" )
+
 				Deleteicon.detail=selectedForDeleteID
 				Deleteicon.type=event.target.type
 				Deleteicon.contentPath=event.target.contentPath
@@ -595,9 +600,6 @@ end
 				
 				Copyicon.detail = event.target.chat
 
-				if #selectedForDelete ~= 0 then 
-
-
 					if Copyicon.type ~= "text" then
 
 						Copyicon.isVisible = false
@@ -618,7 +620,7 @@ end
 						 selectedForDeleteID[i]=nil
 					end
 
-				end
+				
 
 				for i=#MeassageList, 1, -1 do 
 					local group = MeassageList[i]
@@ -629,7 +631,7 @@ end
 
 				print("Select : "..event.target.selected )
 
-				if event.target.selected == "false" then
+					
 
 					event.target.selected = "true"
 					selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id, filetype = event.target.type, contentPath = event.target.contentPath}
@@ -637,7 +639,9 @@ end
 					selectedForDelete[#selectedForDeleteID]:setFillColor( 0.3,0.6,0.5,0.4 )
 					event.target.group:insert( selectedForDelete[#selectedForDeleteID] )
 
-					title.text = #selectedForDelete
+
+					deleteMsgCount = deleteMsgCount + 1
+					title.text = deleteMsgCount
 					print("delete Action")
 
 				end
@@ -647,7 +651,7 @@ end
 							print("*****************")
 
 
-							 if (event.target.type == "image" or  event.target.type == "video" )  and #selectedForDelete == 0  then
+							 if (event.target.type == "image" or  event.target.type == "video" )  and deleteMsgCount == 0  then
 
 								    if event.target.type == "image"  then
 
@@ -698,8 +702,9 @@ end
 							else
 									print( "Lenght : "..#selectedForDelete )
 
-									if #selectedForDelete >= 1 and event.target.selected == "false" then
+									if deleteMsgCount >= 1 and event.target.selected == "false" then
 										
+										print( '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&' )
 
 										event.target.selected = "true"
 										selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id,filetype = event.target.type,contentPath = event.target.contentPath}
@@ -709,8 +714,8 @@ end
 										event.target.group:insert( selectedForDelete[#selectedForDeleteID] )
 										print( "more selecting ")
 
-										
-										title.text =#selectedForDeleteID
+										deleteMsgCount = deleteMsgCount+1
+										title.text =deleteMsgCount
 									elseif event.target.selected == "true" then
 										for k=1,#selectedForDeleteID do
 											if selectedForDeleteID[k].id == event.target.id then
@@ -723,15 +728,27 @@ end
 											end
 
 										end
-										title.text = tonumber(title.text)-1
+										deleteMsgCount = deleteMsgCount-1
+
+										if deleteMsgCount >= 0 then
+											title.text = deleteMsgCount
+										else
+											--title.text = 1
+										end
 										
-										if tonumber(title.text) == 0 then
+										if tonumber(deleteMsgCount) == 0 then
 
 											title.text = UserName
 									    	Deleteicon.isVisible=false
 									    	Copyicon.isVisible=false
 									    	-- chatReceivedFlag=true
 									    	
+									    		for i=#MeassageList, 1, -1 do 
+													local group = MeassageList[i]
+														print( "Type : "..group[1].type,group[1].selected )
+														group[1].selected = "false"
+																			
+												end
 
 									    	attachment_icon.isVisible = true
 
@@ -1186,6 +1203,13 @@ end
 
 			bg.width = chat.contentWidth+10;bg.height = chat.contentHeight+10
 			bg.chat=chat.text
+
+			if string.find(chat.text,"https://") or string.find(chat.text,"http://") then
+
+				bg.type = "video"
+
+			end
+
 
 			if chat.text:len() > 450 then
 
@@ -1659,13 +1683,13 @@ end
 			end
 
 
-			if tonumber(title.text) == 1 then
+			if deleteMsgCount == 1 then
 
 				local alert = native.showAlert("Delete", "Delete message from "..UserName , { CommonWords.ok , CommonWords.cancel }, onComplete )
 
 			else
 
-			local alert = native.showAlert("Delete", "Delete "..tostring(title.text).." messages from "..UserName , { CommonWords.ok , CommonWords.cancel }, onComplete )
+			local alert = native.showAlert("Delete", "Delete "..tostring(deleteMsgCount).." messages", { CommonWords.ok , CommonWords.cancel }, onComplete )
 
 			end
 
@@ -1783,7 +1807,7 @@ local function backAction( event )
 			display.getCurrentStage():setFocus( nil )
 
 
-			if #selectedForDeleteID > 0 then
+			if deleteMsgCount > 0 then
 							title.text = UserName
 					    	Deleteicon.isVisible=false
 					    	Copyicon.isVisible=false
@@ -1800,6 +1824,13 @@ local function backAction( event )
 										 end
 										 selectedForDeleteID[i]=nil
 									end
+
+										for i=#MeassageList, 1, -1 do 
+					local group = MeassageList[i]
+						print( "Type : "..group[1].type,group[1].selected )
+						group[1].selected = "false"
+											
+				end
 
 			else
 
@@ -2806,13 +2837,13 @@ function scene:create( event )
 	title.text = ChatPage.Chats
 
 	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 15, 15 )
-	Deleteicon.x=W-60;Deleteicon.y=title_bg.y
+	Deleteicon.x=W-20;Deleteicon.y=title_bg.y
 	Deleteicon.isVisible=false
 	Deleteicon.id="delete"
 	Deleteicon:addEventListener( "touch", deleteAction )
 
 	Copyicon = display.newImageRect( sceneGroup, "res/assert/copy-icon.png", 15, 15 )
-	Copyicon.x=W-90;Copyicon.y=title_bg.y
+	Copyicon.x=W-50;Copyicon.y=title_bg.y
 	Copyicon.isVisible=false
 	Copyicon.id="copy"
 	Copyicon:addEventListener( "touch", deleteAction )

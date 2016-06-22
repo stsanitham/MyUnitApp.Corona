@@ -1252,8 +1252,11 @@ function scene:show( event )
 
 			MainGroup:insert(sceneGroup)
 
+		--	native.showAlert( "MUB", Message_Type ,{"ok"} )
 
 			if Message_Type == "GROUP" or Message_Type == "BROADCAST" then
+
+
 
 				Webservice.GetMessageGroupTeamMemberList(contactId,Message_Type,get_MessageGroupTeamMemberList)
 				
