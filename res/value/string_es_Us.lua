@@ -500,3 +500,7 @@ RegistrationScreen.SelectLanguage_Errormsg = "* Seleccione el idioma"
 RegistrationScreen.SelectPosition_Errormsg = "* Seleccione Posición"
 RegistrationScreen.RegistrationCompleted = "Registro completado"
 RegistrationScreen.SuccessMessage = "Su registro se ha completado con éxito y una notificación por correo electrónico se recibirá en breve !"
+
+RegistrationScreen.EmailRegistered = "Correo electrónico ya registrado"
+RegistrationScreen.EmailRegisteredText = "Esta dirección de correo electrónico ya se ha registrado con nosotros!"
+RegistrationScreen.Introduction = "Introducción"

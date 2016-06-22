@@ -854,12 +854,11 @@ if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and d
 
 							CreateAudio(event.response.filename)
 
-
-
-					  		
 					    end
 					    
 					end
+
+					
 
 					local function recivedNetwork( event )
 					    if ( event.isError ) then
@@ -936,6 +935,20 @@ if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and d
 							system.DocumentsDirectory
 							)
 
+
+								if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+
+									local request = network.download(
+									ApplicationConfig.IMAGE_BASE_URL..detail_value.ImageFilePath,
+									"GET",
+									recivedNetwork,
+									detail_value.ImageFilePath:match( "([^/]+)$" ),
+									system.DocumentsDirectory
+									)
+
+								end
+
+
 						end
 				
 
@@ -954,12 +967,15 @@ if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and d
 					        reciveImageFlag=true
 
 
+					        print("event.filename "..event.response.filename)
+
 							CreateImage(event.response.filename)
 
 
 						end
 					end
-						local filePath = system.pathForFile( detail_value.ImageFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
+					
+					local filePath = system.pathForFile( detail_value.ImageFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
 					local fhd = io.open( filePath )
 
 						if fhd then
@@ -977,6 +993,22 @@ if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and d
 							)
 
 						end
+
+
+
+						if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+
+							local request = network.download(
+							ApplicationConfig.IMAGE_BASE_URL..detail_value.ImageFilePath,
+							"GET",
+							recivedNetwork,
+							detail_value.ImageFilePath:match( "([^/]+)$" ),
+							system.DocumentsDirectory
+							)
+
+						end
+
+
 				
 
 		imagepathvalue = detail_value.ImageFilePath
@@ -1057,6 +1089,8 @@ if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and d
 														-- }
 
 														-- native.showPopup( "mail", options )
+
+												    print("print statement"..json.encode(response))
 
 												    DisplayDetailValues(response)
 									       		

@@ -65,8 +65,8 @@ settings =
 		plist =
 		{
 			CFBundleVersion = "1.2.7",
-			CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
-			--CFBundleIdentifier="com.spanenterprises.MUBDev",
+			--CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
+			CFBundleIdentifier="com.spanenterprises.MUBDev",
 	
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, 
@@ -100,7 +100,7 @@ settings =
         NSAllowsArbitraryLoads = true,
         NSExceptionDomains =
          {
-          ["com.spanenterprises.MyUnitBuzz"] =
+          ["com.spanenterprises.MUBDev"] =
            {
             NSIncludesSubdomains = true,
             NSThirdPartyExceptionAllowsInsecureHTTPLoads = true

@@ -238,7 +238,7 @@ if launchArgs and launchArgs.notification then
             if isAndroid then
                 additionalData = launchArgs.notification.androidGcmBundle
                 message = additionalData.contents
-                MessageId = additionalData.pnmid
+                --MessageId = additionalData.pnmid
 
             elseif isIos then
                 additionalData = launchArgs.notification.custom.data
@@ -489,7 +489,7 @@ local function notificationListener( event )
 
                 chatReceivedFlag = true
 
-                if additionalData.messageType == nil then
+                if (additionalData) then
 
                               if isAndroid then
 
