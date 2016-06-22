@@ -630,13 +630,13 @@ function scene:show( event )
 
 		composer.removeHidden(  )
 
-		local Title = display.newText(sceneGroup,"",0,0,0,0,native.systemFont,18)
+		local Title = display.newText(sceneGroup,"",0,0,0,0,"Segoe Print",18)
 		Title.x=W/2;Title.y=title_bg.y+title_bg.contentHeight+5
-		Title:setTextColor( 0 )
+		Title:setTextColor( 0,0,1 )
 
-		local subTitle = display.newText(sceneGroup,"",0,0,0,0,native.systemFont,14)
+		local subTitle = display.newText(sceneGroup,"",0,0,0,0,"Segoe Print",14)
 		subTitle.x=W/2;subTitle.y=Title.y+Title.contentHeight+10
-		subTitle:setTextColor( 0 )
+		subTitle:setTextColor( 0,0,1 )
 
 	HorizontalScroll = widget.newScrollView(
 				    {

@@ -100,53 +100,6 @@ local function onKeyEvent( event )
 
 
 
-
- local function RefreshAllAction( event )
-
-	if event.phase == "began" then
-
-			display.getCurrentStage():setFocus( event.target )
-
-	elseif event.phase == "ended" then
-
-		   display.getCurrentStage():setFocus( nil )
-
-
-		   print( "here again" )
-
-			   if event.target.id == "refresh_list" then
-
-
-						 function getAllRefreshedSpecialRecognition(response )
-
-							Refreshed_response = response
-
-									if Refreshed_response ~= nil and #Refreshed_response ~= 0 and Refreshed_response ~= "" then
-											
-											NoEvent.text = ""
-
-											SpecialRecognitionList(Refreshed_response)
-
-									else
-
-											NoEvent.isVisible=true
-
-									end
-							end
-
-
-						Webservice.GetAllSpecialRecognitions(getAllRefreshedSpecialRecognition)
-				
-
-		       end
-
-	end
-
-end
-
-
-
-
 local function Background_Touch( event )
 
 	if event.phase == "began" then
@@ -157,8 +110,6 @@ local function Background_Touch( event )
 
 		display.getCurrentStage():setFocus( nil )
 
-
-			refresh_list:removeEventListener("touch",RefreshAllAction)
 
 		    local options = {
 							effect = "flipFadeOutIn",
@@ -213,13 +164,6 @@ function scene:create( event )
 		title.x=5;title.y = title_bg.y
 		title:setFillColor(0)
 
-	    refresh_list = display.newImageRect( sceneGroup, "res/assert/refreshAll.png",20,20 )
-		refresh_list.anchorX = 0
-		refresh_list.anchorY = 0
-		refresh_list.id = "refresh_list"
-		refresh_list.x = W-35;refresh_list.y = title_bg.y-10
-		refresh_list:setFillColor(0)
-		
 
 		NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent , 0,0,0,0,native.systemFontBold,16)
 		NoEvent.x=W/2;NoEvent.y=H/2
@@ -263,33 +207,42 @@ function scene:show( event )
 
 					local tempHeight = title_bg.y + 30
 
-					local background = display.newRect(tempGroup,0,0,W,18)
+
+					local shadow = display.newImageRect( tempGroup,"res/assert/shadow.png",(W-40)/4-10,32)
+					shadow.x=W/2+W/3+5;shadow.y=tempHeight+2
+					shadow.anchorY = 0
+
+
+					local background = display.newImageRect(tempGroup,"res/assert/listimg.png",W-40,32)
 
 					if(specialRecognitionListArray[#specialRecognitionListArray-1]) ~= nil then
-						tempHeight = specialRecognitionListArray[#specialRecognitionListArray-1][1].y + specialRecognitionListArray[#specialRecognitionListArray-1][1].height+15
+						tempHeight = specialRecognitionListArray[#specialRecognitionListArray-1][1].y + specialRecognitionListArray[#specialRecognitionListArray-1][1].height+5
 					end
 
 					background.anchorY = 0
 					background.x=W/2;background.y=tempHeight
 					background.id=list[i].SpecialRecognitionId
-					background.alpha=0.01
+					--background.alpha=0.01
 					background.value = list[i]
+					background:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 					--print( "Listy : "..json.encode(list[i]) )
 
+					shadow.y=tempHeight
+					
+					if i == #list then
 
-					local rightArrowPointer = display.newImageRect( sceneGroup, "res/assert/rightarrow.png", 20,20 )
-
-					rightArrowPointer.x=25;
-					rightArrowPointer.y=background.y+background.height/2-1
-					rightArrowPointer.id="specialRecognition_arrow"
-					rightArrowPointer.isVisible = true
+							local line = display.newLine( background.x-background.contentWidth/2-1, title_bg.y + 36, background.x-background.contentWidth/2, background.y+background.contentHeight )
+							 line:setStrokeColor( 0.7 )
+							 tempGroup:insert( line )
+							-- line.strokeWidth = 1
+					end
 
 
 					local GroupName_txt = display.newText(tempGroup,list[i].ReportName,0,0,native.systemFont,14)
-					GroupName_txt.x=rightArrowPointer.x+25;GroupName_txt.y=background.y+background.height/2-2
+					GroupName_txt.x=background.x-background.contentWidth/2+5;GroupName_txt.y=background.y+background.height/2
 					GroupName_txt.anchorX=0
 					Utils.CssforTextView(GroupName_txt,sp_labelName)
-					GroupName_txt:setFillColor(0,0,0)
+					GroupName_txt:setFillColor(1)
 
 					sceneGroup:insert(tempGroup)
 
@@ -332,7 +285,6 @@ function scene:show( event )
 
 		Runtime:addEventListener( "key", onKeyEvent )
 
-		refresh_list:addEventListener("touch",RefreshAllAction)
 		
 	end	
 	
@@ -346,7 +298,6 @@ end
 
 	function scene:resumeGame()
 
-		refresh_list:addEventListener("touch",RefreshAllAction)
 
 	end
 
@@ -363,7 +314,6 @@ function scene:hide( event )
 
 		Runtime:removeEventListener( "key", onKeyEvent )
 
-		refresh_list:removeEventListener("touch",RefreshAllAction)
 
 
 	elseif phase == "did" then
