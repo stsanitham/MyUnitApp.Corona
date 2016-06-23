@@ -16,6 +16,7 @@ CommonWords.ProvideAccessText = "Provide Access"
 CommonWords.GrantAccessText = "Grant Access"
 CommonWords.SpecialRecognitionText = "Special Recognition"
 
+
 Month = {}
 
 Month["jan"] = "Jan"
@@ -74,9 +75,9 @@ RequestAccess = {}
 
 RequestAccess.PageTitle = "Request Access"
 --RequestAccess.MUBNOTAGREE = "Oops!!! It seems that your Director has not yet given access to you. Please send the access request to your Director"
-RequestAccess.REQUEST = "Request already sent"
 RequestAccess.MUBNOTAGREE = "Your request for access has been sent successfully"
-RequestAccess.FIRSTREQUEST = "Your Request for Access has been sent successfully"
+RequestAccess.REQUEST = "Request already sent"
+RequestAccess.FIRSTREQUEST = "Your request for access has been sent successfully"
 RequestAccess.OPEN = "Request Access sent"
 RequestAccess.GRANT = "Access already granted"
 RequestAccess.NOUNITNUMBER = "Enter the Valid UnitNumber"
@@ -85,14 +86,14 @@ RequestAccess.DENY = "Access denied already"
 RequestAccess.FAIL = "Enter Valid credentials"
 RequestAccess.FirstName_error = "Enter the First Name"
 RequestAccess.Name_error = "Enter the Last Name"
-RequestAccess.Email_error = "Enter the Email"
 RequestAccess.DirectorName_error = "Enter the Director Name"
 RequestAccess.DirectorEmail_error = "Enter the Director Email Address"
-RequestAccess.EmailValidation_error = "Enter the valid email"
+RequestAccess.Email_error = "Enter the Email"
+RequestAccess.EmailValidation_error = "Enter the valid Email"
 RequestAccess.Phone_error = "Enter the Phone Number"
-RequestAccess.UnitNumber_error = "Enter the Unit Number"
 RequestAccess.Marykayid_error = "Enter the Mary kay Id"
 RequestAccess.Marykayidinvalid_error = "Enter the Mary kay Id"
+RequestAccess.UnitNumber_error = "Enter the Unit Number"
 RequestAccess.FirstName_placeholder = "First Name"
 RequestAccess.LastName_placeholder = "Last Name"
 RequestAccess.EmailAddress_placeholder= "Email"
@@ -105,7 +106,6 @@ RequestAccess.DirectorEmail_placeholder = "Your Director Email"
 RequestAccess.DirectorEmailValidation_error = "Enter the valid Director Email Address"
 RequestAccess.Password_error = "Enter the Password"
 
-
 LoginPage = {}
 
 LoginPage.Unitnumber_placeholder = "Unit Number"
@@ -116,9 +116,9 @@ LoginPage.Forget_Button = "Forgot Password?"
 LoginPage.Request_Button = "Don't have an access? Click here"
 LoginPage.ErrorMessage = "The details you have entered are incorrect. Check again and re-enter the valid details"
 LoginPage.ErrorTitle = "Login Failed"
-LoginPage.setError_Unitnumber = "* Enter the valid Unit number"
-LoginPage.setError_UserName = "* Enter the valid Email Address"
-LoginPage.setError_Password = "* Enter the Password"
+LoginPage.setError_Unitnumber = "*Enter the valid Unit Number"
+LoginPage.setError_UserName = "*Enter the valid Email Address"
+LoginPage.setError_Password = "*Enter the Password"
 
 
 ForgotPassword = {}
@@ -140,8 +140,8 @@ FlapMenu.Contacts_with_Access = "Contacts with Access"
 FlapMenu.Denied_Access = "Denied Access"
 FlapMenu.Pending_Requests = "Pending Requests"
 FlapMenu.TeamMember_without_Access = "Team Member without Access"
-FlapMenu.chatMessageTitle = "Chat"
 FlapMenu.Add_New_Access = "Add New Access"
+FlapMenu.chatMessageTitle = "Chat"
 
 
 
@@ -161,7 +161,7 @@ EventCalender.Attachment = "Attachments"
 EventCalender.Today = "Today"
 EventCalender.Upcoming = "Upcoming"
 EventCalender.Phone = "Phone"
-EventCalender.NoEvent = "There are no Events to show"
+EventCalender.NoEvent = "There are no events to show"
 EventCalender.High="High"
 EventCalender.Normal="Normal"
 EventCalender.Low="Low"
@@ -197,8 +197,6 @@ EventCalender.Successfully="Successfully"
 EventCalender.AddedSuccessfully="added Successfully"
 
 
-
-
 CareerPath = {}
 
 CareerPath.PageTitle="Unit Career Path"
@@ -221,22 +219,20 @@ CareerPath.ToRemove= "Yes, I want to remove"
 CareerPath.NotToRemove = "No, I don't want to remove"
 CareerPath.Call = "Call"
 
-CareerPath.RemovedText = "Contacto elimina de la lista "
-CareerPath.BlockedText = "El acceso de este contacto bloqueado con éxito "
+CareerPath.RemovedText = "Contact removed from the list"
+CareerPath.BlockedText = "This Contact’s Access blocked successfully"
 CareerPath.DeniedText = "Access denied to this Contact"
 CareerPath.GrantSuccessText = "Access granted successfully to this Contact"
 CareerPath.ProvideAccessSuccessText = "Access provided successfully to this Contact"
-CareerPath.AlreadyDenied = "Already Denied"
 CareerPath.AlreadyGranted = "Already Granted"
 CareerPath.AlreadyRemoved = "Already Removed"
 CareerPath.AddRequest = "Add Request"
 CareerPath.AlreadyBlocked = "Already Blocked"
-CareerPath.AlreadyBlockedText = "Contact's Access has been already blocked"
 CareerPath.AlreadyDenied = "Already Denied"
 CareerPath.AlreadyGrantedText = "Contact's Access is already granted"
 CareerPath.AlreadyRemovedText = "Contact's Access is already removed"
 CareerPath.AddRequestText = "A Contact with same email address is already exist"
-
+CareerPath.AlreadyBlockedText = "Contact's Access is already blocked"
 
 
 Goals = {}
@@ -245,14 +241,12 @@ Goals.PageTitle = "Unit Goals"
 Goals.NoGolas = "There are no goals to view as of now"
 Goals.SuccessMsg="Unit Goals Updated Successfully"
 
-
 ResourceLibrary = {}
 
 ResourceLibrary.PageTitle = "Resource"
 ResourceLibrary.Download_alert="Saved to Device Memory"
 ResourceLibrary.SaveOptions_alert = "Are you sure you want to download?"
 ResourceLibrary.NoDocument="No documents are found to view"
-
 
 ImageLibrary = {}
 
@@ -267,10 +261,10 @@ Message.PageTitle = "Message"
 Message.NoImage = "No Messages are found to view"
 Message.Message_placeholder = "Enter your notification message for your Team Members within the 160 character limit"
 Message.SendButton = "Send Now"
-Message.YoutubeUrlError = "Enter a valid YouTube url"
-Message.VimeoUrlError = "Enter a valid Vimeo url"
-Message.FacebookUrlError = "Enter a valid Facebook url"
-Message.YahooUrlError = "Enter a valid Yahoo url"
+Message.YoutubeUrlError = "Enter a valid YouTube URL"
+Message.VimeoUrlError = "Enter a valid Vimeo URL"
+Message.FacebookUrlError = "Enter a valid Facebook URL"
+Message.YahooUrlError = "Enter a valid Yahoo URL"
 Message.AlertTitle = "Invalid Url"
 Message.SuccessMsg = "Success Message"
 Message.FileSelect = "Select File"
@@ -291,18 +285,19 @@ Message.MaximumUpload =  "MyUnitBuzz allows upto 10MB files for each upload. Enj
 Message.Clear = "Clear"
 
 
-
 AddeventPage = {}
 AddeventPage.EventnameArray = {"Appointment","Call","Party","Task"}
 AddeventPage.priorityArray = {{value ="Normal",id=1},{value ="High",id=0},{value ="Low",id=2}}
-AddeventPage.purposeArray = {{value = "Booking",id=16},{value ="Color Appointment",id=14},{value ="Customer Service",id=9},{value ="Double Facial",id=2},{value ="Facial",id=1},{value ="Follow Up",id=8},{value ="Full Circle",id=19},{value ="Initial Appointment",id=17},{value ="On the Go",id=1},{value ="Reschedule",id=18},{value ="Team Building",id=4},{value ="Training",id=5},{value ="2 Day Follow up",id=10},{value ="2 Week Follow up",id=11},{value ="2 Month Follow up",id=12},{value ="Other",id=13}}
+
+--
+AddeventPage.purposeArray = {{value = "Booking",id=16},{value ="Color Appointment",id=14},{value ="Customer Service",id=9},{value ="Double Facial",id=2},{value ="Facial",id=0},{value ="Follow Up",id=8},{value ="Full Circle",id=19},{value ="Initial Appointment",id=17},{value ="On the Go",id=1},{value ="Reschedule",id=18},{value ="Team Building",id=4},{value ="Training",id=5},{value ="2 Day Follow up",id=10},{value ="2 Week Follow up",id=11},{value ="2 Month Follow up",id=12},{value ="Other",id=13}}
 AddeventPage.selectContactGroup = {"--Select Contact Group--"}
 AddeventPage.contactgroup = {"Contact","Lead","Customer","Team Member"}
 AddeventPage.taskStatus = {"Not Started","In-Progress","Completed","Deferred"}
 AddeventPage.partyArray = {"Class","Full Circle","Show","Other"}
 AddeventPage.ImageUploaded="Image Uploaded !"
 AddeventPage.Event_Added="Event Added"
-AddeventPage.other_purpose="* Enter other purpose"
+AddeventPage.other_purpose="*Enter other purpose"
 AddeventPage.Description="Description"
 AddeventPage.New_Event="New Event"
 AddeventPage.Event_Type="Event Type"
@@ -327,9 +322,11 @@ AddeventPage.Select_Contact_Group="Select Contact Group"
 AddeventPage.Contact="Contact"
 AddeventPage.Save="Save"
 AddeventPage.Cancel="Cancel"
-AddeventPage.SelectPurpose = "* Select Purpose"
-AddeventPage.PhoneNumberMandatory = "* Phone Number is mandatory"
+AddeventPage.SelectPurpose = "*Select Purpose"
+AddeventPage.PhoneNumberMandatory = "*Phone Number is mandatory"
 AddeventPage.AppointmentWithPlace = "Appointment With"
+
+
 
 
 Facebook = {}
@@ -365,16 +362,17 @@ PopupGroup.GeneratePasstext = "Generate Password"
 
 PopupGroup.EmailExist = "Email Already Exist"
 PopupGroup.EmailExistText = "A Contact with same email address already exist"
-PopupGroup.PasswordRequired = "* Password is required"
-PopupGroup.PasswordLimit = "* Password should contain atleast 6 characters"
-PopupGroup.PhoneRequired ="* Phone number is required"
-PopupGroup.EmailRequired = "* Email Address is required"
-PopupGroup.PhoneNumRequired = "* Enter the Phone Number"
-PopupGroup.LastNameRequired = "* Enter the Last Name"
-PopupGroup.EmailIdRequired = "* Enter the Email"
+PopupGroup.PasswordRequired = "*Password is required"
+PopupGroup.PasswordLimit = "*Password should contain atleast 6 characters"
+PopupGroup.PhoneRequired = "*Phone number is required"
+PopupGroup.PhoneNumRequired = "*Enter the Phone Number"
+PopupGroup.LastNameRequired = "*Enter the Last Name"
+PopupGroup.EmailRequired = "*Email Address is required"
+PopupGroup.EmailIdRequired = "*Enter the Email"
 PopupGroup.Add = "Add"
 PopupGroup.AddNewAccess = "Add New Access"
 PopupGroup.AddNewAccessText = "Access Added Successfully"
+
 
 
 InviteAccessDetail = {}
@@ -391,7 +389,7 @@ InviteAccessDetail.NoTMAccess = "No list of Team Members without Access found"
 
 ChatDetails = {}
 
-ChatDetails.GroupSubjectError = "* Enter the Group Subject"
+ChatDetails.GroupSubjectError = "*Enter the Group Subject"
 
 
 MessagePage = {}
@@ -420,7 +418,7 @@ MessagePage.ScheduleButtonText = "Yes, I want to schedule for this time"
 MessagePage.ScheduleDate = "Date"
 MessagePage.ScheduleTime = "Time"
 MessagePage.DeleteConfirmText = "Are you sure you want to delete this message?"
-MessagePage.ToDelete = "Yes, I want to delete"
+MessagePage.ToDelete= "Yes, I want to delete"
 MessagePage.NotToDelete = "No, I dont want to delete"
 MessagePage.DeleteText = "Delete"
 MessagePage.NoMessage = "No messages found"
@@ -434,15 +432,14 @@ MessagePage.SavingFailed = "Saving Failed"
 MessagePage.SchedulingFailed = "Scheduling Failed"
 
 
-
 ChatPage = {}
 
 ChatPage.Group = "Group"
 ChatPage.Chats = "Chats"
-ChatPage.Consultant_List = "Consultant List"
+ChatPage.Consultant_List = "Consultants"
 ChatPage.Message_Copied = "Message Copied"
 ChatPage.ImageUploadError = "Error in Image Upload"
-ChatPage.ImageSize ="Size of the image cannot be more than 10 MB"
+ChatPage.ImageSize = "Size of the image cannot be more than 10 MB"
 ChatPage.RecordStartText = "Start Recoding...."
 ChatPage.Today = "TODAY"
 ChatPage.Yesterday = "YESTERDAY"
@@ -456,6 +453,7 @@ ChatPage.addTeamMember = "Add Team Member"
 ChatPage.addLimit = "Please select atleast one team member to create a group"
 ChatPage.addBroadcastLimit = "Please select atleast one team member to create a broadcast list"
 ChatPage.PressAgain = "Press again to exit"
+ChatPage.recordTittle="Record your message"
 ChatPage.NoBroadcastList = "No Broadcast List Found"
 ChatPage.BroadcastList = "Broadcast List"
 ChatPage.BroadcastListCreated = "Broadcast List Created"
@@ -490,12 +488,11 @@ RegistrationScreen.languageArray1 = {"English","French"}
 RegistrationScreen.positionArray = {"Sales Director","Senior Sales Director","Executive Senior Sales Director","Elite Executive Senior Sales Director","National Sales Director"}
 RegistrationScreen.SelectPosition = "- Select Position -"
 RegistrationScreen.SelectLanguage = "- Select Language -"
-RegistrationScreen.SelectLanguage_Errormsg = "* Select Language"
-RegistrationScreen.SelectPosition_Errormsg = "* Select Position"
+RegistrationScreen.SelectLanguage_Errormsg = "*Select Language"
+RegistrationScreen.SelectPosition_Errormsg = "*Select Position"
 RegistrationScreen.RegistrationCompleted = "Registration Completed"
 RegistrationScreen.SuccessMessage = "Your registration is successfully completed and an email notification will be received shortly!"
 
 RegistrationScreen.EmailRegistered = "Email Already Registered"
 RegistrationScreen.EmailRegisteredText = "This email address is already registered with us!"
 RegistrationScreen.Introduction = "Introduction"
-

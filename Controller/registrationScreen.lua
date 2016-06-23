@@ -45,7 +45,6 @@ local languageArrayDetail = {}
 
 local positionArray = RegistrationScreen.positionArray
 
-
 local refresh_list
 
 local leftPadding = 15
@@ -155,6 +154,19 @@ local function onKeyEvent( event )
  end
 
 
+
+
+
+local function touchBg( event )
+    if event.phase == "began" then
+
+    elseif event.phase == "ended" then
+
+        native.setKeyboardFocus(nil)
+
+    end
+    return true
+end
 
 
 
@@ -687,28 +699,28 @@ local function registerBtnRelease(event )
 
 --------------------- FirstName validation ------------------------
 
-                    if FirstName.text == "" or FirstName.text == FirstName.id or FirstName.text == "* "..RequestAccess.FirstName_error then
+                    if FirstName.text == "" or FirstName.text == FirstName.id or FirstName.text == "*"..RequestAccess.FirstName_error then
                     validation=false
-                    SetError("* "..RequestAccess.FirstName_error,FirstName)
+                    SetError("*"..RequestAccess.FirstName_error,FirstName)
                     end
 
 
 --------------------- Name validation ------------------------
 
-                    if Name.text == "" or Name.text == Name.id or Name.text == "* "..RequestAccess.Name_error then
+                    if Name.text == "" or Name.text == Name.id or Name.text == "*"..RequestAccess.Name_error then
                     validation=false
-                    SetError("* "..RequestAccess.Name_error,Name)
+                    SetError("*"..RequestAccess.Name_error,Name)
                     end
 
 
 --------------------- Email validation ------------------------
 
-                    if Email.text ~= "" and Email.text ~= Email.id and Email.text ~= Email.EmailAddress_placeholder and Email.text ~= "* "..RequestAccess.Email_error then
+                    if Email.text ~= "" and Email.text ~= Email.id and Email.text ~= Email.EmailAddress_placeholder and Email.text ~= "*"..RequestAccess.Email_error then
 
                         print("in if condition")
                             if not Utils.emailValidation(Email.text) then
                                 validation=false
-                                SetError("* "..RequestAccess.EmailValidation_error,Email)
+                                SetError("*"..RequestAccess.EmailValidation_error,Email)
                             else
 
                                     local function getEmailValidationStatus(response)
@@ -737,7 +749,7 @@ local function registerBtnRelease(event )
 
                         print("in else condition")
                             validation=false
-                            SetError("* "..RequestAccess.Email_error,Email)
+                            SetError("*"..RequestAccess.Email_error,Email)
 
                     end
 
@@ -745,21 +757,21 @@ local function registerBtnRelease(event )
 
 --------------------- Phone validation ------------------------
 
-                    if Phone.text == "" or Phone.text == "* "..RequestAccess.Phone_error or Phone.text == Phone.id or Phone.text:len() < 14  then
+                    if Phone.text == "" or Phone.text == "*"..RequestAccess.Phone_error or Phone.text == Phone.id or Phone.text:len() < 14  then
                         validation=false
-                        SetError("* "..RequestAccess.Phone_error,Phone)
+                        SetError("*"..RequestAccess.Phone_error,Phone)
                     end
 
 
 
 --------------------- Marykay validation ------------------------
 
-                    if Marykay.text == "" or Marykay.text == Marykay.id or Marykay.text == "* "..RequestAccess.Marykayid_error or Marykay.text == Marykay.placeholder then
+                    if Marykay.text == "" or Marykay.text == Marykay.id or Marykay.text == "*"..RequestAccess.Marykayid_error or Marykay.text == Marykay.placeholder then
 
                           --  if not Utils.marykayid_Validation( Marykay.text ) then
 
                             validation=false
-                            SetError("* "..RequestAccess.Marykayidinvalid_error,Marykay)
+                            SetError("*"..RequestAccess.Marykayidinvalid_error,Marykay)
      
                           --  end
 
@@ -768,7 +780,7 @@ local function registerBtnRelease(event )
                    -- else
 
                            -- validation=false
-                           -- SetError("* "..RequestAccess.Marykayid_error,Marykay)
+                           -- SetError("*"..RequestAccess.Marykayid_error,Marykay)
 
                     end
 
@@ -862,7 +874,7 @@ local function textfield( event )
                             if not Utils.emailValidation(Email.text) then
 
                                 validation=false
-                                SetError("* "..RequestAccess.EmailValidation_error,Email)
+                                SetError("*"..RequestAccess.EmailValidation_error,Email)
 
                                 native.setKeyboardFocus(Phone)
 
@@ -970,28 +982,38 @@ local function textfield( event )
 
 
 
-            if(event.target.id =="Phone") then
+                  if(event.target.id =="Phone") then
 
-                local text = event.target.text
+                      local text = event.target.text
 
-                if event.target.text:len() > event.startPosition then
+                      if event.target.text:len() > event.startPosition then
 
-                    text = event.target.text:sub(1,event.startPosition )
+                          text = event.target.text:sub(1,event.startPosition )
 
-                end
+                      end
 
 
 
-                local maskingValue =Utils.PhoneMasking(tostring(text))
+                      local maskingValue =Utils.PhoneMasking(tostring(text))
 
-                                
-                        event.target.text=maskingValue
+                                      
+                              event.target.text=maskingValue
 
-                        event.target:setSelection(maskingValue:len()+1,maskingValue:len()+1)
+                              event.target:setSelection(maskingValue:len()+1,maskingValue:len()+1)
 
-            
-               end
-    
+                                      -- if isIos then
+
+                                      -- if (event.target.id == "Phone") then
+
+                                      --       Background:addEventListener("touch",touchBg)
+
+                                      -- end
+
+                                      -- end
+
+                  
+                 end
+      
     end
 
 
@@ -1355,6 +1377,8 @@ function scene:create( event )
     backBtn_bg_intro:addEventListener("touch",backAction)
     backBtn_intro:addEventListener("touch",backAction)
     title:addEventListener("touch",backAction)
+
+    Background:addEventListener("touch",touchBg)
 
 
 

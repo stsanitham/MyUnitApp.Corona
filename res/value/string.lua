@@ -116,9 +116,9 @@ LoginPage.Forget_Button = "Forgot Password?"
 LoginPage.Request_Button = "Don't have an access? Click here"
 LoginPage.ErrorMessage = "The details you have entered are incorrect. Check again and re-enter the valid details"
 LoginPage.ErrorTitle = "Login Failed"
-LoginPage.setError_Unitnumber = "* Enter the valid Unit Number"
-LoginPage.setError_UserName = "* Enter the valid Email Address"
-LoginPage.setError_Password = "* Enter the Password"
+LoginPage.setError_Unitnumber = "*Enter the valid Unit Number"
+LoginPage.setError_UserName = "*Enter the valid Email Address"
+LoginPage.setError_Password = "*Enter the Password"
 
 
 ForgotPassword = {}
@@ -297,7 +297,7 @@ AddeventPage.taskStatus = {"Not Started","In-Progress","Completed","Deferred"}
 AddeventPage.partyArray = {"Class","Full Circle","Show","Other"}
 AddeventPage.ImageUploaded="Image Uploaded !"
 AddeventPage.Event_Added="Event Added"
-AddeventPage.other_purpose="* Enter other purpose"
+AddeventPage.other_purpose="*Enter other purpose"
 AddeventPage.Description="Description"
 AddeventPage.New_Event="New Event"
 AddeventPage.Event_Type="Event Type"
@@ -322,8 +322,8 @@ AddeventPage.Select_Contact_Group="Select Contact Group"
 AddeventPage.Contact="Contact"
 AddeventPage.Save="Save"
 AddeventPage.Cancel="Cancel"
-AddeventPage.SelectPurpose = "* Select Purpose"
-AddeventPage.PhoneNumberMandatory = "* Phone Number is mandatory"
+AddeventPage.SelectPurpose = "*Select Purpose"
+AddeventPage.PhoneNumberMandatory = "*Phone Number is mandatory"
 AddeventPage.AppointmentWithPlace = "Appointment With"
 
 
@@ -362,13 +362,13 @@ PopupGroup.GeneratePasstext = "Generate Password"
 
 PopupGroup.EmailExist = "Email Already Exist"
 PopupGroup.EmailExistText = "A Contact with same email address already exist"
-PopupGroup.PasswordRequired = "* Password is required"
-PopupGroup.PasswordLimit = "* Password should contain atleast 6 characters"
-PopupGroup.PhoneRequired = "* Phone number is required"
-PopupGroup.PhoneNumRequired = "* Enter the Phone Number"
-PopupGroup.LastNameRequired = "* Enter the Last Name"
-PopupGroup.EmailRequired = "* Email Address is required"
-PopupGroup.EmailIdRequired = "* Enter the Email"
+PopupGroup.PasswordRequired = "*Password is required"
+PopupGroup.PasswordLimit = "*Password should contain atleast 6 characters"
+PopupGroup.PhoneRequired = "*Phone number is required"
+PopupGroup.PhoneNumRequired = "*Enter the Phone Number"
+PopupGroup.LastNameRequired = "*Enter the Last Name"
+PopupGroup.EmailRequired = "*Email Address is required"
+PopupGroup.EmailIdRequired = "*Enter the Email"
 PopupGroup.Add = "Add"
 PopupGroup.AddNewAccess = "Add New Access"
 PopupGroup.AddNewAccessText = "Access Added Successfully"
@@ -389,7 +389,7 @@ InviteAccessDetail.NoTMAccess = "No list of Team Members without Access found"
 
 ChatDetails = {}
 
-ChatDetails.GroupSubjectError = "* Enter the Group Subject"
+ChatDetails.GroupSubjectError = "*Enter the Group Subject"
 
 
 MessagePage = {}
@@ -488,8 +488,8 @@ RegistrationScreen.languageArray1 = {"English","French"}
 RegistrationScreen.positionArray = {"Sales Director","Senior Sales Director","Executive Senior Sales Director","Elite Executive Senior Sales Director","National Sales Director"}
 RegistrationScreen.SelectPosition = "- Select Position -"
 RegistrationScreen.SelectLanguage = "- Select Language -"
-RegistrationScreen.SelectLanguage_Errormsg = "* Select Language"
-RegistrationScreen.SelectPosition_Errormsg = "* Select Position"
+RegistrationScreen.SelectLanguage_Errormsg = "*Select Language"
+RegistrationScreen.SelectPosition_Errormsg = "*Select Position"
 RegistrationScreen.RegistrationCompleted = "Registration Completed"
 RegistrationScreen.SuccessMessage = "Your registration is successfully completed and an email notification will be received shortly!"
 

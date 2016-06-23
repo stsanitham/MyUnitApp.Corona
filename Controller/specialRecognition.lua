@@ -112,8 +112,9 @@ local function Background_Touch( event )
 
 
 		    local options = {
-							effect = "flipFadeOutIn",
-							time = 200,	
+							--effect = "flipFadeOutIn",
+							effect = "slideLeft",
+							time = 300,	
 							params = { specialRecognition_Details = event.target.value, specialRecognition_id = event.target.id}
 						 }
 

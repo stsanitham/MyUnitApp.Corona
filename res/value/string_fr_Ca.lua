@@ -120,9 +120,9 @@ LoginPage.Forget_Button = "Mot de passe oublié?"
 LoginPage.Request_Button = "Ne pas avoir un accès? Cliquez ici"
 LoginPage.ErrorMessage = "Les informations que vous avez saisies sont incorrectes. Vérifiez à nouveau et re-saisir les informations valides"
 LoginPage.ErrorTitle = "Échec de la connexion"
-LoginPage.setError_Unitnumber = "* Entrez le numéro de valable Unité "
-LoginPage.setError_UserName = "* Entrez le adresse email valide"
-LoginPage.setError_Password = "* Entrez le mot de passe"
+LoginPage.setError_Unitnumber = "*Entrez le numéro de valable Unité "
+LoginPage.setError_UserName = "*Entrez le adresse email valide"
+LoginPage.setError_Password = "*Entrez le mot de passe"
 
 
 ForgotPassword = {}
@@ -302,7 +302,7 @@ AddeventPage.taskStatus = {"non commencé","En cours","terminé","différée"}
 AddeventPage.partyArray = {"Classe","Cercle complet","Montrer","Autre"}
 AddeventPage.ImageUploaded="Image Télécharger!"
 AddeventPage.Event_Added="événement Ajouté"
-AddeventPage.other_purpose="* Entrez autres fins"
+AddeventPage.other_purpose="*Entrez autres fins"
 AddeventPage.Description="La description"
 AddeventPage.New_Event="un nouvel événement"
 AddeventPage.Event_Type="Type d'événement"
@@ -327,8 +327,8 @@ AddeventPage.Select_Contact_Group="Sélectionnez Groupe de contact"
 AddeventPage.Contact="Contact"
 AddeventPage.Save="sauvegarder"
 AddeventPage.Cancel="annuler"
-AddeventPage.SelectPurpose = "* Sélectionner But"
-AddeventPage.PhoneNumberMandatory = "* Numéro de téléphone est obligatoire"
+AddeventPage.SelectPurpose = "*Sélectionner But"
+AddeventPage.PhoneNumberMandatory = "*Numéro de téléphone est obligatoire"
 AddeventPage.AppointmentWithPlace = "Rendez-vous avec"
 
 Facebook = {}
@@ -365,13 +365,13 @@ PopupGroup.GeneratePasstext = "Générer Mot de passe"
 
 PopupGroup.EmailExist = "L'email existe déjà"
 PopupGroup.EmailExistText = "Un contact avec la même adresse e-mail existent déjà"
-PopupGroup.PasswordRequired = "* Mot de passe requis"
-PopupGroup.PasswordLimit = "* Mot de passe doit contenir 6 caractères atleast"
-PopupGroup.PhoneRequired ="* Numéro de téléphone est nécessaire"
-PopupGroup.EmailRequired = "* Adresse e-mail est nécessaire"
-PopupGroup.PhoneNumRequired = "* Entrez le numéro de téléphone"
-PopupGroup.LastNameRequired = "* Entrez le Nom"
-PopupGroup.EmailIdRequired = "* Entrez le courriel"
+PopupGroup.PasswordRequired = "*Mot de passe requis"
+PopupGroup.PasswordLimit = "*Mot de passe doit contenir 6 caractères atleast"
+PopupGroup.PhoneRequired ="*Numéro de téléphone est nécessaire"
+PopupGroup.EmailRequired = "*Adresse e-mail est nécessaire"
+PopupGroup.PhoneNumRequired = "*Entrez le numéro de téléphone"
+PopupGroup.LastNameRequired = "*Entrez le Nom"
+PopupGroup.EmailIdRequired = "*Entrez le courriel"
 PopupGroup.Add = "Ajouter"
 PopupGroup.AddNewAccess = "Ajouter un nouvel accès"
 PopupGroup.AddNewAccessText = "Access Ajouté avec succès"
@@ -392,7 +392,7 @@ InviteAccessDetail.NoTMAccess = "Aucune liste des membres de l'équipe sans acc�
 
 ChatDetails = {}
 
-ChatDetails.GroupSubjectError = "* Entrez le Groupe Sujet"
+ChatDetails.GroupSubjectError = "*Entrez le Groupe Sujet"
 
 
 MessagePage = {}
@@ -494,8 +494,8 @@ RegistrationScreen.languageArray1 = {"Anglais","français"}
 RegistrationScreen.positionArray = {"Directeur des ventes","Directeur Senior Sales","Senior Executive Sales Director","Elite Senior Executive Sales Director","Directeur national des ventes"}
 RegistrationScreen.SelectPosition = "- Sélectionnez Position -"
 RegistrationScreen.SelectLanguage = "- Choisir la langue -"
-RegistrationScreen.SelectLanguage_Errormsg = "* Choisir la langue"
-RegistrationScreen.SelectPosition_Errormsg = "* Sélectionnez Position"
+RegistrationScreen.SelectLanguage_Errormsg = "*Choisir la langue"
+RegistrationScreen.SelectPosition_Errormsg = "*Sélectionnez Position"
 RegistrationScreen.RegistrationCompleted = "Enregistrement terminé"
 RegistrationScreen.SuccessMessage = "Votre inscription est terminée avec succès et une notification par courrier électronique sera reçu peu de temps !"
 

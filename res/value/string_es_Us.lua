@@ -124,9 +124,9 @@ LoginPage.Forget_Button = "¿Se te olvidó tu contraseña?"
 LoginPage.Request_Button = "¿No tienes una conexión? haga clic aquí"
 LoginPage.ErrorMessage = "Los datos que ha introducido son incorrectos. Compruebe de nuevo y volver a entrar en los detalles válidos"
 LoginPage.ErrorTitle = "Error de inicio de sesion"
-LoginPage.setError_Unitnumber = "* Introduce el número de unidad válida"
-LoginPage.setError_UserName = "* Introduzca la dirección de correo electrónico válida"
-LoginPage.setError_Password = "* Introduzca la contraseña"
+LoginPage.setError_Unitnumber = "*Introduce el número de unidad válida"
+LoginPage.setError_UserName = "*Introduzca la dirección de correo electrónico válida"
+LoginPage.setError_Password = "*Introduzca la contraseña"
 
 
 ForgotPassword = {}
@@ -305,7 +305,7 @@ AddeventPage.taskStatus = {"no se ha iniciado","En progreso","terminado","diferi
 AddeventPage.partyArray = {"Clase","Círculo completo","Espectáculo","Otro"}
 AddeventPage.ImageUploaded="Sube la imagen!"
 AddeventPage.Event_Added="evento Agregado"
-AddeventPage.other_purpose="* Ingrese demás propósito"
+AddeventPage.other_purpose="*Ingrese demás propósito"
 AddeventPage.Description="descripción"
 AddeventPage.New_Event="nuevo Evento"
 AddeventPage.Event_Type="Tipo de evento"
@@ -330,8 +330,8 @@ AddeventPage.Select_Contact_Group="Seleccione Grupo de Contacto"
 AddeventPage.Contact="contacto"
 AddeventPage.Save="Guardar"
 AddeventPage.Cancel="cancelar"
-AddeventPage.SelectPurpose = "* Elija un Propósito"
-AddeventPage.PhoneNumberMandatory = "* Número de teléfono es obligatorio"
+AddeventPage.SelectPurpose = "*Elija un Propósito"
+AddeventPage.PhoneNumberMandatory = "*Número de teléfono es obligatorio"
 AddeventPage.AppointmentWithPlace = "Cita con"
 
 
@@ -368,13 +368,13 @@ PopupGroup.GeneratePasstext = "Generar contraseña"
 
 PopupGroup.EmailExist = "De correo electrónico que ya exista"
 PopupGroup.EmailExistText = "Un contacto con la misma dirección de correo electrónico ya existen"
-PopupGroup.PasswordRequired = "* Se requiere contraseña"
-PopupGroup.PasswordLimit = "* La contraseña debe contener menos 6 caracteres"
-PopupGroup.PhoneRequired ="* Se requiere el número de teléfono"
-PopupGroup.EmailRequired = "* Se requiere Dirección de correo electrónico"
-PopupGroup.PhoneNumRequired = "* Introduzca el número de teléfono"
-PopupGroup.LastNameRequired = "* Entre apellido"
-PopupGroup.EmailIdRequired = "* Introduzca el correo electrónico"
+PopupGroup.PasswordRequired = "*Se requiere contraseña"
+PopupGroup.PasswordLimit = "*La contraseña debe contener menos 6 caracteres"
+PopupGroup.PhoneRequired ="*Se requiere el número de teléfono"
+PopupGroup.EmailRequired = "*Se requiere Dirección de correo electrónico"
+PopupGroup.PhoneNumRequired = "*Introduzca el número de teléfono"
+PopupGroup.LastNameRequired = "*Entre apellido"
+PopupGroup.EmailIdRequired = "*Introduzca el correo electrónico"
 PopupGroup.Add = "Añadir"
 PopupGroup.AddNewAccess = "Agregar nuevo acceso"
 PopupGroup.AddNewAccessText = "Acceso añadido correctamente"
@@ -396,7 +396,7 @@ InviteAccessDetail.NoTMAccess = "No hay una lista de integrantes del equipo sin 
 
 ChatDetails = {}
 
-ChatDetails.GroupSubjectError = "* Entrar en el grupo de sujetos"
+ChatDetails.GroupSubjectError = "*Entrar en el grupo de sujetos"
 
 
 MessagePage = {}
@@ -496,8 +496,8 @@ RegistrationScreen.languageArray = {"Inglés","Español"}
 RegistrationScreen.positionArray = {"Director de ventas","Director Senior de Ventas","Senior Executive Director de Ventas","Elite Senior Executive Director de Ventas","Directora Nacional de Ventas"}
 RegistrationScreen.SelectPosition = "- Seleccione Posición -"
 RegistrationScreen.SelectLanguage = "- Seleccione el idioma -"
-RegistrationScreen.SelectLanguage_Errormsg = "* Seleccione el idioma"
-RegistrationScreen.SelectPosition_Errormsg = "* Seleccione Posición"
+RegistrationScreen.SelectLanguage_Errormsg = "*Seleccione el idioma"
+RegistrationScreen.SelectPosition_Errormsg = "*Seleccione Posición"
 RegistrationScreen.RegistrationCompleted = "Registro completado"
 RegistrationScreen.SuccessMessage = "Su registro se ha completado con éxito y una notificación por correo electrónico se recibirá en breve !"
 

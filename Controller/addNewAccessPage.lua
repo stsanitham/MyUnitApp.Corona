@@ -196,8 +196,9 @@ local function RequestProcess()
 			sumbitBtn.width = sumbitBtn.contentWidth+30
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
+			submit_spinner.y = sumbitBtn_lbl.y
 
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+40
+			sumbitBtn.width = sumbitBtn_lbl.contentWidth+50
 			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
 			sumbitBtn_lbl.x = sumbitBtn.x+16
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
@@ -208,7 +209,6 @@ local function RequestProcess()
 
 		    local isSentTextvalue = isSentText
 
-
 		function get_requestAccess(response)
 
 			Request_response = response
@@ -216,8 +216,8 @@ local function RequestProcess()
 			submit_spinner.isVisible=false
 			sumbitBtn.width = sumbitBtn_lbl.width+30
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
-			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+35
+			sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
 			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
 			sumbitBtn_lbl.x = sumbitBtn.x+16
 
@@ -464,7 +464,7 @@ end
 
 				elseif  not Utils.emailValidation(Email.text) then
 
-                                 SetError("* ".."Enter the valid Email",Email)
+                                 SetError("*".."Enter the valid Email",Email)
 
 
                                  emailnotifybox.isVisible = false
@@ -914,34 +914,34 @@ local function onRowTouch( event )
 
 		if Name.text == "" or Name.text == Name.id or Name.text == PopupGroup.LastNameRequired then
 		validation=false
-		SetError("* "..RequestAccess.Name_error,Name)
+		SetError("*"..RequestAccess.Name_error,Name)
 		end
 
 
 		if Email.text == "" or Email.text == Email.id or Email.text == PopupGroup.EmailIdRequired then
 			validation=false
-		SetError("* "..RequestAccess.Email_error,Email)
+		SetError("*"..RequestAccess.Email_error,Email)
 		else
 		if not Utils.emailValidation(Email.text) then
 		validation=false
-		SetError("* "..RequestAccess.Email_error,Email)
+		SetError("*"..RequestAccess.Email_error,Email)
 		end
 		end
 
 
 		if Phone.text == "" or Phone.text == Phone.id or Phone.text:len() < 14 or Phone.text==PopupGroup.PhoneNumRequired then
 			validation=false
-			SetError("* "..RequestAccess.Phone_error,Phone)
+			SetError("*"..RequestAccess.Phone_error,Phone)
 		end
 
 
-		if Password.text == "" or Password.text == Password.id  then
+		if Password.text == "" or Password.text == Password.id or Password.text == "*"..RequestAccess.Password_error then
 			validation=false
-			SetError("* "..RequestAccess.Password_error,Password)
+			SetError("*"..RequestAccess.Password_error,Password)
 			
-		elseif Password.text:len() < 6 or Password.text == PopupGroup.PasswordHelptext then
+		elseif Password.text:len() < 6 or Password.text == "*"..PopupGroup.PasswordHelptext then
 			validation=false
-			SetError("* "..PopupGroup.PasswordHelptext,Password)
+			SetError("*"..PopupGroup.PasswordHelptext,Password)
 			
 		end
 
@@ -1053,7 +1053,7 @@ local function onKeyEvent( event )
 
          	generatedPassword = response
 
-         	if Password.text == PopupGroup.PasswordRequired or Password.text == PopupGroup.PasswordHelptext then
+         	if Password.text == PopupGroup.PasswordRequired or Password.text == "*"..PopupGroup.PasswordHelptext then
 
          	    Password.text = generatedPassword
          	    Password.size=14
