@@ -464,7 +464,7 @@ end
 
 				elseif  not Utils.emailValidation(Email.text) then
 
-                                 SetError("* ".."Enter the valid Email",Email)
+                                 SetError("*".."Enter the valid Email",Email)
 
 
                                  emailnotifybox.isVisible = false
@@ -914,34 +914,34 @@ local function onRowTouch( event )
 
 		if Name.text == "" or Name.text == Name.id or Name.text == PopupGroup.LastNameRequired then
 		validation=false
-		SetError("* "..RequestAccess.Name_error,Name)
+		SetError("*"..RequestAccess.Name_error,Name)
 		end
 
 
 		if Email.text == "" or Email.text == Email.id or Email.text == PopupGroup.EmailIdRequired then
 			validation=false
-		SetError("* "..RequestAccess.Email_error,Email)
+		SetError("*"..RequestAccess.Email_error,Email)
 		else
 		if not Utils.emailValidation(Email.text) then
 		validation=false
-		SetError("* "..RequestAccess.Email_error,Email)
+		SetError("*"..RequestAccess.Email_error,Email)
 		end
 		end
 
 
 		if Phone.text == "" or Phone.text == Phone.id or Phone.text:len() < 14 or Phone.text==PopupGroup.PhoneNumRequired then
 			validation=false
-			SetError("* "..RequestAccess.Phone_error,Phone)
+			SetError("*"..RequestAccess.Phone_error,Phone)
 		end
 
 
-		if Password.text == "" or Password.text == Password.id  then
+		if Password.text == "" or Password.text == Password.id or Password.text == "*"..RequestAccess.Password_error then
 			validation=false
-			SetError("* "..RequestAccess.Password_error,Password)
+			SetError("*"..RequestAccess.Password_error,Password)
 			
-		elseif Password.text:len() < 6 or Password.text == PopupGroup.PasswordHelptext then
+		elseif Password.text:len() < 6 or Password.text == "*"..PopupGroup.PasswordHelptext then
 			validation=false
-			SetError("* "..PopupGroup.PasswordHelptext,Password)
+			SetError("*"..PopupGroup.PasswordHelptext,Password)
 			
 		end
 
@@ -1053,7 +1053,7 @@ local function onKeyEvent( event )
 
          	generatedPassword = response
 
-         	if Password.text == PopupGroup.PasswordRequired or Password.text == PopupGroup.PasswordHelptext then
+         	if Password.text == PopupGroup.PasswordRequired or Password.text == "*"..PopupGroup.PasswordHelptext then
 
          	    Password.text = generatedPassword
          	    Password.size=14

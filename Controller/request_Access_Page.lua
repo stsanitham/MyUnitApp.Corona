@@ -244,7 +244,7 @@ local function RequestProcess()
 
 							elseif Request_response == "NOUNITNUMBER" then
 
-								SetError("* "..RequestAccess.NOUNITNUMBER,UnitNumber)
+								SetError("*"..RequestAccess.NOUNITNUMBER,UnitNumber)
 
 							elseif Request_response == "BLOCK"  then
 
@@ -702,7 +702,7 @@ local function onRowTouch( event )
 
 		if Name.text == "" or Name.text == Name.id then
 		validation=false
-		SetError("* "..RequestAccess.Name_error,Name)
+		SetError("*"..RequestAccess.Name_error,Name)
 		end
 
 
@@ -710,17 +710,17 @@ local function onRowTouch( event )
 
 		if DirectorName.text == "" or DirectorName.text == DirectorName.id then
 		validation=false
-		SetError("* "..RequestAccess.DirectorName_error,DirectorName)
+		SetError("*"..RequestAccess.DirectorName_error,DirectorName)
 		end
 
 		if DirectorEmail.text == "" or DirectorEmail.text == DirectorEmail.id then
 		validation=false
-		SetError("* "..RequestAccess.DirectorEmail_error,DirectorEmail)
+		SetError("*"..RequestAccess.DirectorEmail_error,DirectorEmail)
 		else
 
 			if not Utils.emailValidation(DirectorEmail.text) then
 			validation=false
-			SetError("* "..RequestAccess.DirectorEmailValidation_error,DirectorEmail)
+			SetError("*"..RequestAccess.DirectorEmailValidation_error,DirectorEmail)
 
 			end
 		end
@@ -730,26 +730,26 @@ local function onRowTouch( event )
 
 		if Email.text == "" or Email.text == Email.id then
 			validation=false
-		SetError("* "..RequestAccess.Email_error,Email)
+		SetError("*"..RequestAccess.Email_error,Email)
 		else
 
 		if not Utils.emailValidation(Email.text) then
 		validation=false
-		SetError("* "..RequestAccess.EmailValidation_error,Email)
+		SetError("*"..RequestAccess.EmailValidation_error,Email)
 
 		end
 
 		end
 
-			if Phone.text == "" or Phone.text == "* Enter the Phone Number" or Phone.text == Phone.id or Phone.text:len() < 14  then
+			if Phone.text == "" or Phone.text == "*Enter the Phone Number" or Phone.text == Phone.id or Phone.text:len() < 14  then
 				validation=false
-				SetError("* "..RequestAccess.Phone_error,Phone)
+				SetError("*"..RequestAccess.Phone_error,Phone)
 			end
 
 			if AppName ~= "DirectorApp" then
 				if UnitNumber.text == "" or UnitNumber.text == nil then
 					validation=false
-					SetError("* "..RequestAccess.UnitNumber_error,UnitNumber)
+					SetError("*"..RequestAccess.UnitNumber_error,UnitNumber)
 				end
 			end
 

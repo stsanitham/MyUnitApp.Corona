@@ -783,7 +783,7 @@ end
 
 		        	        validation = false
 
-	    	    	    	SetError("* ".."Enter the Long Message",longmsg_textbox)
+	    	    	    	SetError("*".."Enter the Long Message",longmsg_textbox)
 
 	    	    	    	return false
 
@@ -795,7 +795,7 @@ end
 
 		        	        validation = false
 
-	    	    	    	SetError("* ".."Enter the Short Message",shortmsg_textbox)
+	    	    	    	SetError("*".."Enter the Short Message",shortmsg_textbox)
 
 	    	    	    	return false
 

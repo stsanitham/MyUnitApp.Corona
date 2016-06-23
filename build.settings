@@ -70,6 +70,11 @@ settings =
 	
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, 
+			UIAppFonts = 
+            {
+                "Segoe Print.ttf"
+            },
+            
 			--UIFileSharingEnabled=true,
 			--UIApplicationExitsOnSuspend = true,
 			CoronaWindowMovesWhenKeyboardAppears = true,

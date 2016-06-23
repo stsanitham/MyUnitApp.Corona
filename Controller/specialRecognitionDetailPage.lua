@@ -243,13 +243,13 @@ return true
 
                     end
 
-
-
 		end
 
 	end
 
 end
+
+
 
 
 
@@ -633,18 +633,19 @@ function scene:show( event )
 		composer.removeHidden(  )
 
 		local Title = display.newText(sceneGroup,"",0,0,0,0,"Segoe Print",18)
+		--Title = native.newFont( "CoolCustomFont.ttf", 16 )
 		Title.x=W/2;Title.y=title_bg.y+title_bg.contentHeight+5
 		Title:setTextColor( 0,0,1 )
 
-		local subTitle = display.newText(sceneGroup,"",0,0,0,0,"Segoe Print",14)
+		local subTitle = display.newText(sceneGroup,"",0,0,0,0,"Segoe Print",15)
 		subTitle.x=W/2;subTitle.y=Title.y+Title.contentHeight+10
 		subTitle:setTextColor( 0,0,1 )
 
-	HorizontalScroll = widget.newScrollView(
+	    HorizontalScroll = widget.newScrollView(
 				    {
-				        top = 140,
+				        top = 150,
 				        width = W,
-				        height = H-140,
+				        height = H-150,
 				      --  horizontalScrollDisabled = true,
 				       -- verticalScrollDisabled = false,
 				        --isBounceEnabled=false,
@@ -678,17 +679,33 @@ function scene:show( event )
 
 									function getSpecialRecognition_JsonContent(sp_jsonresponse)
 
+											    sp_jsonresponse = 	json.decode(sp_jsonresponse)
 
-												sp_jsonresponse = 	json.decode(sp_jsonresponse)
-
-										      print("JSON content 11111: "..json.encode(sp_jsonresponse))
+										        print("JSON content 11111: "..json.encode(sp_jsonresponse))
 										      	parentFlag=true
-										       CreateHorizontalTable(sceneGroup,sp_jsonresponse)
+										        CreateHorizontalTable(sceneGroup,sp_jsonresponse)
 
-										       if sp_jsonresponse.heading ~= nil then
 
-										       		Title.text  = sp_jsonresponse.heading[1]
-											  		subTitle.text  = sp_jsonresponse.heading[2]
+										       if sp_jsonresponse.data ~= nil then 
+
+											       if sp_jsonresponse.heading ~= nil and #sp_jsonresponse.data > 0  then
+
+											       		Title.text  = sp_jsonresponse.heading[1]
+												  		subTitle.text  = sp_jsonresponse.heading[2]
+
+												   end
+
+												end
+
+
+
+											   if sp_jsonresponse.data == nil or #sp_jsonresponse.data <= 0 then
+
+													--NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
+													--NoEvent = display.newText( sceneGroup, "No "..response.UserPageName.." Found", 0,0,0,0,native.systemFontBold,16)
+													NoEvent = display.newText( sceneGroup, "No Reports Found", 0,0,0,0,native.systemFontBold,16)
+													NoEvent.x=W/2;NoEvent.y=H/2
+													NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
 												end
 
@@ -751,10 +768,7 @@ function scene:show( event )
 
 											end
 
-
 									end
-
-
 
 			               Webservice.GetSpecialRecognitionPageContent(sr_eventid,getSpecialRecognition_PageContent)
 

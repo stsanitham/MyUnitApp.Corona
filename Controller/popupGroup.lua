@@ -314,7 +314,7 @@ isSentText = true
 
         				 	print("scrolling top")
 
-        				 	scrollTo(0)
+        				 	--scrollTo(0)
 
                            -- popupList_white:addEventListener("touch",touchPopupBg)
                            -- popup_Backgeound:addEventListener("touch",touchPopupBg)
@@ -1063,18 +1063,15 @@ else
 
 				if PasswordValue.text == "" or PasswordValue.text == PasswordValue.id or PasswordValue.text == PopupGroup.PasswordRequired then
 
-					print( "Password error" )
 					validation = false
 
-				SetError(PopupGroup.PasswordRequired,PasswordValue) 
+				    SetError(PopupGroup.PasswordRequired,PasswordValue) 
 
-			    elseif PasswordValue.text:len() < 6 then
-
-			    	print( "pass len" )
+			    elseif PasswordValue.text:len() < 6 or PasswordValue.text == PopupGroup.PasswordLimit then
 
 			    	validation = false
 
-			    SetError(PopupGroup.PasswordLimit,PasswordValue)
+			        SetError(PopupGroup.PasswordLimit,PasswordValue)
 
 				end
 
@@ -1178,8 +1175,10 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 		popup_Backgeound = display.newRect(W/2, H/2, W, H )
 		popup_Backgeound:addEventListener( "touch", touchPopupBg )
+		popup_Backgeound.id= "popuplist"
 		popup_Backgeound.alpha=0.01
 		popUpGroup:insert(popup_Backgeound)
+
 
 		popupTop_bg = display.newRect(leftPadding_value + 140, H/2+ 10, W-20, 385 )
 		popupTop_bg.x = leftPadding_value + 140
@@ -1191,6 +1190,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 	   --  popupTop.strokeWidth=1
 	    popupTop:setFillColor(Utils.convertHexToRGB(color.LtyGray))
 	    popUpGroup:insert(popupTop)
+	    
 
 	    popupText = display.newText("",0,0,native.systemFont,18)
 	    popupText.anchorX = 0
