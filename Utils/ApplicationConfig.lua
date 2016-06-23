@@ -214,4 +214,9 @@ ApplicationConfig.GetMyUnitBuzzMessagesbyUserId = ApplicationConfig.BASE_URL.."/
 
 ApplicationConfig.IsUserAvailable = ApplicationConfig.BASE_URL.."/MyUnitBuzz/IsUserAvailable"
 
+ApplicationConfig.GetChatUnReadMessagesList = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetChatUnReadMessagesList"
+
+ApplicationConfig.UpdateLastChatSyncDate = ApplicationConfig.BASE_URL.."/MyUnitBuzz/UpdateLastChatSyncDate"
+
+
 
