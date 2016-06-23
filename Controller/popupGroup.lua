@@ -1186,11 +1186,11 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 	    popUpGroup:insert(popupTop_bg)
 
 	    popupTop = display.newRect(W/2,H/2-195,298,30)
-	   --  popupTop:setStrokeColor(0,0,0,0.2)
-	   --  popupTop.strokeWidth=1
+	    --  popupTop:setStrokeColor(0,0,0,0.2)
+	    --  popupTop.strokeWidth=1
 	    popupTop:setFillColor(Utils.convertHexToRGB(color.LtyGray))
 	    popUpGroup:insert(popupTop)
-	    
+
 
 	    popupText = display.newText("",0,0,native.systemFont,18)
 	    popupText.anchorX = 0
@@ -1669,7 +1669,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
  if id_value == "Grant Access From Open" then
 
-	 	      idname = "Grant Access From Deny"
+	 	      idname = "Grant Access From Open"
 
 
 	          processbutton_text.text = CommonWords.GrantAccessText
@@ -1877,7 +1877,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 	          if Details.UpdateTimeStamp ~= nil then
 	          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
 	          print("time stamp ",time)
-	          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%m %p",time))
+	          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%M %p",time))
 	          native.setKeyboardFocus( nil )
 	          else
 	          RequesteddateValue.text = ""
@@ -2049,21 +2049,21 @@ elseif id_value == "Grant Access From Deny" then
 
 
 
-          if  PhoneDetailValue.text == nil or PhoneDetailValue.text == "null" then
+           if  PhoneDetailValue.text == nil or PhoneDetailValue.text == "null" then
 
-          	   textnotifybox.isVisible = false
-			   textnotifytext.isVisible = false
-			   print("here12345")
+          	    textnotifybox.isVisible = false
+			    textnotifytext.isVisible = false
+			    print("here12345")
 
-			   MKRankDetail_bg.y =  PhoneDetail_bottom.y+8
-			   MKRankDetail_title.y= MKRankDetail_bg.y+8
-			   MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
-			   MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			   Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			   Requesteddate_title.y= Requesteddate_bg.y + 7
-			   RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			   Requesteddate_bottom.y= RequesteddateValue.y+8.5
-			   Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
+			    MKRankDetail_bg.y =  PhoneDetail_bottom.y+8
+			    MKRankDetail_title.y= MKRankDetail_bg.y+8
+			    MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
+			    MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
+			    Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+			    Requesteddate_title.y= Requesteddate_bg.y + 7
+			    RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
+			    Requesteddate_bottom.y= RequesteddateValue.y+8.5
+			    Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
 				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
 				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
 				PasswordValue.y =Password_titletext.y+Password_titletext.height+7
@@ -2074,19 +2074,19 @@ elseif id_value == "Grant Access From Deny" then
 				processbutton_text.y=processbutton.y
 		  else
 
-		  	print("val not null")
+		    	print("val not null")
 
-		  	  textnotifybox.isVisible = true
-			  textnotifytext.isVisible = true
+		  	    textnotifybox.isVisible = true
+			    textnotifytext.isVisible = true
 
-			  MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.height+5
-			  MKRankDetail_title.y= MKRankDetail_bg.y+8
-			  MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
-			  MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			  Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			  Requesteddate_title.y= Requesteddate_bg.y + 7
-			  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			  Requesteddate_bottom.y= RequesteddateValue.y+8.5
+			    MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.height+5
+			    MKRankDetail_title.y= MKRankDetail_bg.y+8
+			    MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
+			    MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
+			    Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+			    Requesteddate_title.y= Requesteddate_bg.y + 7
+			    RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
+			    Requesteddate_bottom.y= RequesteddateValue.y+8.5
 				Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+7
 				Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
 				Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
@@ -2109,19 +2109,20 @@ elseif id_value == "Grant Access From Deny" then
 			   MKRankDetail_bottom.isVisible = false
 	          end
 
-          if Details.UpdateTimeStamp ~= nil then
-          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
-          print("time stamp ",time)
-          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%m %p",time))
-          native.setKeyboardFocus( nil )
-          else
-          RequesteddateValue.text = ""
-          end
 
-	      print("values event ",EmailDetailValue.text)
+	          if Details.UpdateTimeStamp ~= nil then
+	          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
+	          print("time stamp ",time)
+	          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%M %p",time))
+	          native.setKeyboardFocus( nil )
+	          else
+	          RequesteddateValue.text = ""
+	          end
+
+		      print("values event ",EmailDetailValue.text)
 
 
-             MKRankDetail_bg.isVisible = false
+	         MKRankDetail_bg.isVisible = false
 			 MKRankDetail_title.isVisible = false
 			 MKRankDetailValue.isVisible = false
 		     MKRankDetail_bottom.isVisible = false
@@ -2129,6 +2130,19 @@ elseif id_value == "Grant Access From Deny" then
 		     Requesteddate_title.isVisible = false
 		     RequesteddateValue.isVisible = false
 		     Requesteddate_bottom.isVisible = false
+		    --    Requesteddate_bg.isVisible = true
+		    --    Requesteddate_title.isVisible = true
+		    --    RequesteddateValue.isVisible = true
+		    --    Requesteddate_bottom.isVisible = true
+
+		    --    Requesteddate_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+		    --    Requesteddate_title.y= textnotifytext.y+textnotifytext.contentHeight+15
+		    --    RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.contentHeight+7
+		    --    Requesteddate_bottom.y= RequesteddateValue.y+10
+
+	        --  Password_bg.y =  Requesteddate_bg.y+Requesteddate_bg.height+5
+			-- Password_titlestar.y= RequesteddateValue.y+RequesteddateValue.height+15
+			-- Password_titletext.y= RequesteddateValue.y+RequesteddateValue.height+15
 
 	        Password_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
 			Password_titlestar.y= textnotifytext.y+textnotifytext.contentHeight+15
@@ -2165,6 +2179,7 @@ elseif id_value == "Provide Access" then
 			 	RequesteddateValue.isVisible = false
 			 	Requesteddate_title.isVisible = false
 			 	Requesteddate_bottom.isVisible = false
+
        
 	          if Details.FirstName ~= nil and Details.LastName ~= nil then
 	             NameDetailValue.text = Details.FirstName.." "..Details.LastName
@@ -2357,7 +2372,7 @@ elseif id_value == "Provide Access" then
 	          if Details.UpdateTimeStamp ~= nil then
 	          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
 	          print("time stamp ",time)
-	          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%m %p",time))
+	          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%M %p",time))
 	          native.setKeyboardFocus( nil )
 	          else
 	          RequesteddateValue.text = ""
@@ -2552,7 +2567,7 @@ elseif id_value == "Deny Access" then
           if Details.UpdateTimeStamp ~= nil then
           local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
           print("time stamp ",time)
-          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%m %p",time))
+          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%M %p",time))
           native.setKeyboardFocus( nil )
           else
           RequesteddateValue.text = ""

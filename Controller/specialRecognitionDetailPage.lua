@@ -387,9 +387,6 @@ local function CreateHorizontalTable( sceneGroup , List )
 
 				for i=1,#reportArray do
 
-
-				
-
 					reportArrayList[#reportArrayList+1] = display.newGroup()
 
 					local tempGroup = reportArrayList[#reportArrayList]

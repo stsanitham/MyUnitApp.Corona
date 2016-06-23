@@ -196,8 +196,9 @@ local function RequestProcess()
 			sumbitBtn.width = sumbitBtn.contentWidth+30
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
+			submit_spinner.y = sumbitBtn_lbl.y
 
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+40
+			sumbitBtn.width = sumbitBtn_lbl.contentWidth+50
 			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
 			sumbitBtn_lbl.x = sumbitBtn.x+16
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
@@ -208,7 +209,6 @@ local function RequestProcess()
 
 		    local isSentTextvalue = isSentText
 
-
 		function get_requestAccess(response)
 
 			Request_response = response
@@ -216,8 +216,8 @@ local function RequestProcess()
 			submit_spinner.isVisible=false
 			sumbitBtn.width = sumbitBtn_lbl.width+30
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
-			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+35
+			sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
 			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
 			sumbitBtn_lbl.x = sumbitBtn.x+16
 

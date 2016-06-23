@@ -901,7 +901,7 @@ end
 
 	       local time = Utils.makeTimeStamp(invitedetail_value.UpdateTimeStamp)
 
-		   local activity_time = tostring(os.date("%m/%d/%Y %I:%m %p",time))
+		   local activity_time = tostring(os.date("%m/%d/%Y %I:%M %p",time))
 
 		display_details[#display_details+1] = display.newText(InviteAccessDetail.ActivityOn,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
