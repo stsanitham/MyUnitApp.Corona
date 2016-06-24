@@ -645,11 +645,9 @@ local function onSystemEvent( event )
            
     elseif ( event.type == "applicationSuspend" ) then
 
-      -- Webservice.UpdateLastActivityDate(appexit)
         
     elseif ( event.type == "applicationOpen" ) then
 
-      --  chatReceivedFlag=true
 
     elseif event.type == "applicationResume" then
 

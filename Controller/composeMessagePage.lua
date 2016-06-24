@@ -1322,7 +1322,14 @@ local function webListener( event )
  		else
 
  			longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
- 			longmsg_textbox.isVisible=true
+
+ 			if isIos then
+ 				longmsg_textbox.isVisible=true
+ 			else
+
+ 				longmsg_textbox.isVisible=false
+
+ 			end
 
  			sendMessage(method)
 
@@ -1954,7 +1961,7 @@ end
 					filename_close.isVisible = true
 					filename.text = Details.ImageFilePath:match( "([^/]+)$" )
 					filename_close.filepath = Details.ImageFilePath:match( "([^/]+)$" )
-					composePage.y = composePage.y+45
+					scrollView.y = scrollView.y+45
 
 
 
@@ -1982,7 +1989,7 @@ end
 
 
 
-				if filename.text ~= "" and Details ~= nil and Details.AudioFilePath ~= nil  then
+				if filename.text ~= "" and Details ~= nil and Details.ImageFilePath ~= nil  then
 
 					Audio_filename_title.y = Audio_filename_title.y + 45
 
@@ -2020,8 +2027,8 @@ end
 					Audio_filename.text = Details.AudioFilePath:match( "([^/]+)$" )
 					Audio_filename_close.filepath = Details.AudioFilePath:match( "([^/]+)$" )
 
+					
 					scrollView.y = scrollView.y+45
-
 
 							network.download(
 								Details.AudioFilePath,
@@ -2032,14 +2039,6 @@ end
 								)
 
 
-
-						network.download(
-								Details.AudioFilePath,
-								"GET",
-								attachDownload,
-								Details.AudioFilePath:match( "([^/]+)$" ),
-								system.DocumentsDirectory
-								)
 
 				end
 

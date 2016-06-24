@@ -708,8 +708,6 @@ end
 
 									if deleteMsgCount >= 1 and event.target.selected == "false" then
 										
-										print( '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&' )
-
 										event.target.selected = "true"
 										selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id,filetype = event.target.type,contentPath = event.target.contentPath,contactid = event.target.From}
 
@@ -1216,7 +1214,16 @@ end
 
 			if string.find(chat.text,"https://") or string.find(chat.text,"http://") then
 
-				bg.type = "video"
+					bg.type = "video"
+
+				-- chat.text =  chat.text:match("https?://www%.[^/]+(/v/%d+/)%w+")
+
+				  local pattern = "https?://[%w-_%.%?%.:/%+=&]+"
+
+				  print( "URL value : "..string.match(chat.text, pattern)  )
+
+
+				bg.contentPath=string.match(chat.text, pattern)
 
 			end
 
@@ -1262,8 +1269,6 @@ end
 
 
 			--------audio Attachment---------------
-
-			print( "Status = "..ChatHistory[i].Audio_Path )
 
 				if ChatHistory[i].Audio_Path  ~= nil and ChatHistory[i].Audio_Path ~= "" and ChatHistory[i].Audio_Path ~= "NULL" and ChatHistory[i].Audio_Path ~= " " then
 
