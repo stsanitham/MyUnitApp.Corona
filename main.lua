@@ -39,6 +39,8 @@ MessageId = "0"
 
 MessageIdValue = "0"
 
+chatReceivedPage = "main"
+
 --com.spanenterprises.MUBDev
 
 --CommonApp/DirectorApp
@@ -247,8 +249,7 @@ if launchArgs and launchArgs.notification then
                 message = launchArgs.notification.alert
             end
 
-             chatReceivedFlag=true
-
+            
           if additionalData.messageType ~= nil then
 
                --chatReceivedFlag=true
@@ -296,13 +297,19 @@ if launchArgs and launchArgs.notification then
                                     end
 
                             end
-            
-                    
+                            
 
-                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
-                        db:exec( insertQuery )
+                                                      
+                                                                     
 
+                                     if openPage == "main" and openPage == "spalshPage" then
 
+                                        chatReceivedFlag=true
+
+                                        native.setProperty( "applicationIconBadgeNumber", 0 )
+                                         system.cancelNotification()
+
+                                    end
                         
 
                         if openPage ~= "MessagingPage" and openPage ~= "main" then
@@ -401,7 +408,6 @@ local function notificationListener( event )
 
         -- native.showPopup( "mail", options )
 
-
             local additionalData={}
             local message
 
@@ -414,12 +420,14 @@ local function notificationListener( event )
                 message = event.alert
             end
 
-               chatReceivedFlag=true
+              
 
           if additionalData.messageType ~= nil then
 
             
                     --For Chat recevier-----
+
+
 
 
                         local UserId,ContactId,Name,FromName,GroupName
@@ -477,28 +485,33 @@ local function notificationListener( event )
                                                     end
 
                                             end
+
+                                 
+                                     if openPage == "main" and openPage == "spalshPage" then
+
+                                        chatReceivedFlag=true
+
+                                        native.setProperty( "applicationIconBadgeNumber", 0 )
+                                         system.cancelNotification()
+
+                                    end
                             
-                                    
+                                if openPage == "MessagingPage" and chatReceivedPage == "MessagingPage" then
+
+                                         chatReceivedFlag=true
 
                                         local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
-                                        db:exec( insertQuery )
+                                         db:exec( insertQuery )
+                                else
+
+                                        native.setProperty( "applicationIconBadgeNumber", 0 )
+                                        system.cancelNotification()
 
 
+                                end
+
+                           
                                         
-
-                                        if openPage ~= "MessagingPage" and openPage ~= "main" then
-
-
-                                           --local alert = native.showAlert( "MyUnitBuzz", tostring(message), { "OK" } )
-                                                 
-                                        end
-
-                                        if openPage ~= "main" then
-
-                                            native.setProperty( "applicationIconBadgeNumber", 0 )
-                                            system.cancelNotification()
-                                            
-                                        end
        
           
         else

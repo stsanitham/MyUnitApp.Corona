@@ -26,6 +26,8 @@ local menuBtn, chattabBar , tabButtons
 
 openPage="MessagingPage"
 
+chatReceivedPage = "MessagingPage"
+
 local newtworkArray = {}
 
 local NameArray = {}
@@ -713,6 +715,127 @@ end
 
             sceneGroup:insert(broad_scrollview)
 
+
+
+	local function getChatUnReadMessagesList( response )
+
+
+		      --  local options =
+        -- {
+        --    to = { "malarkodi.sellamuthu@w3magix.com"},
+        --    subject = "response",
+        --    isBodyHtml = true,
+        --    body = ""..json.encode(response),
+
+        -- }
+
+        -- native.showPopup( "mail", options )
+
+        response = json.decode(response)
+				
+		if #response.data > 0 then
+
+			local RecievedArray = response.data
+
+			for i=1,#RecievedArray do
+
+
+
+				 local additionalData={}
+            	local message
+
+            if isAndroid then
+                additionalData = RecievedArray[i]
+                message = additionalData.contents
+            elseif isIos then
+
+                additionalData = RecievedArray[i]
+                message = RecievedArray[i].contents
+            end
+
+               chatReceivedFlag=true
+
+          if additionalData.messageType ~= nil then
+
+            
+                    --For Chat recevier-----
+
+
+                        local UserId,ContactId,Name,FromName,GroupName
+
+                            for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+                                    UserId = row.UserId
+                                    ContactId = row.ContactId
+                                    Name = row.MemberName
+
+                            end
+
+
+                                        Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
+
+                                        isDeleted="false"
+                                        Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+                                        Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+                                        ImagePath=additionalData.image or ""
+                                        AudioPath=additionalData.audio or ""
+                                        VideoPath=additionalData.audio or ""
+                                        MyUnitBuzz_LongMessage=tostring(message)
+                                        From=additionalData.messageFrom
+                                        To=additionalData.messageTo
+                                        Message_Type = additionalData.messageType
+
+
+                                       -- local native = native.showAlert("dsadsadsdas",Message_Type,{"ok"})
+
+
+                                            if additionalData.fFN ~= nil then
+                                                Name=additionalData.fFN.." "..additionalData.fLN
+
+                                            else
+
+                                                Name=additionalData.fLN
+
+                                            end
+
+                                            GroupName=""
+
+                                            if Message_Type == "GROUP" then
+                                                 GroupName=additionalData.gn
+                                                 FromName=""
+                                            else
+
+
+                                  
+                                                   if additionalData.tFN ~= nil then
+                                                        FromName=additionalData.tFN.." "..additionalData.tLN
+
+                                                    else
+
+                                                        FromName=additionalData.tLN
+
+                                                    end
+
+                                            end
+                            
+                                    
+
+                                        local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+                                        db:exec( insertQuery )
+
+
+			end
+
+		end
+
+
+		end
+
+		for i=1,#BroadcastList do
+		    		
+			    		BroadcastList[i]=nil
+
+		end
+
 	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message ORDER BY id DESC ") do
 
 		BroadcastList[#BroadcastList+1] =row
@@ -724,26 +847,56 @@ end
 		Broadcast_list(BroadcastList)
 	end
 
+
+	end
+
+
+		for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message ORDER BY id DESC ") do
+
+		BroadcastList[#BroadcastList+1] =row
+
+	end
+
+	if #BroadcastList ~= nil then
+
+		Broadcast_list(BroadcastList)
+	end
+
+	Webservice.GetChatUnReadMessagesList(getChatUnReadMessagesList)
+
+
 		function printTimeSinceStart( event )
 		    if chatReceivedFlag==true then
 		    	chatReceivedFlag=false
 
-		    	for i=1,#BroadcastList do
-		    		
-		    		BroadcastList[i]=nil
+		    	
 
+		    	local function getupdateLastChatSyncDate( response )
+
+
+		    		for i=1,#BroadcastList do
+		    		
+			    		BroadcastList[i]=nil
+
+			    	end
+
+
+		    		for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message ORDER BY id DESC ") do
+
+						BroadcastList[#BroadcastList+1] =row
+
+					end
+
+					if #BroadcastList ~= nil then
+
+						Broadcast_list(BroadcastList)
+					end
 		    	end
 
-		    	for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message ORDER BY id DESC ") do
 
-					BroadcastList[#BroadcastList+1] =row
+		    	Webservice.UpdateLastChatSyncDate(getupdateLastChatSyncDate)
 
-				end
-
-				if #BroadcastList ~= nil then
-
-					Broadcast_list(BroadcastList)
-				end
+		    	
 		    end
 		end 
 		Runtime:addEventListener( "enterFrame", printTimeSinceStart )
@@ -865,8 +1018,9 @@ sceneGroup:insert( tabBarGroup )
 
 	if event.phase == "will" then
 
+		chatReceivedPage = "Main"
 
-Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+	Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 	menuBtn:removeEventListener("touch",menuTouch)
 	BgText:removeEventListener("touch",menuTouch)
 

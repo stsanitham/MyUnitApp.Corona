@@ -32,6 +32,8 @@ local menuBtn,tabButtons,chattabBar,chatScroll,BackBtn,tabBar,title_bg,title,Del
 
 openPage="MessagingPage"
 
+chatReceivedPage = "MessagingPage"
+
 local BackFlag = false
 
 local ChatBox
@@ -77,6 +79,8 @@ local UserId,ContactId,To_ContactId
 local PHOTO_FUNCTION = media.PhotoLibrary 
 
 local deleteMsgCount = 0
+
+
 
 local icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt
 
@@ -634,7 +638,7 @@ end
 					
 
 					event.target.selected = "true"
-					selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id, filetype = event.target.type, contentPath = event.target.contentPath}
+					selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id, filetype = event.target.type, contentPath = event.target.contentPath,contactid = event.target.From}
 					selectedForDelete[#selectedForDeleteID] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
 					selectedForDelete[#selectedForDeleteID]:setFillColor( 0.3,0.6,0.5,0.4 )
 					event.target.group:insert( selectedForDelete[#selectedForDeleteID] )
@@ -700,14 +704,14 @@ end
 									end
 
 							else
-									print( "Lenght : "..#selectedForDelete )
+									print( "Lenght : "..json.encode(event.target) )
 
 									if deleteMsgCount >= 1 and event.target.selected == "false" then
 										
 										print( '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&' )
 
 										event.target.selected = "true"
-										selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id,filetype = event.target.type,contentPath = event.target.contentPath}
+										selectedForDeleteID[#selectedForDeleteID+1] = { id = event.target.id,filetype = event.target.type,contentPath = event.target.contentPath,contactid = event.target.From}
 
 										selectedForDelete[#selectedForDeleteID] = display.newRect( W/2,event.target.y+event.target.contentHeight/2,W,event.target.contentHeight+15)
 										selectedForDelete[#selectedForDeleteID]:setFillColor( 0.3,0.6,0.5,0.4 )
@@ -716,6 +720,7 @@ end
 
 										deleteMsgCount = deleteMsgCount+1
 										title.text =deleteMsgCount
+										Copyicon.isVisible = false
 									elseif event.target.selected == "true" then
 										for k=1,#selectedForDeleteID do
 											if selectedForDeleteID[k].id == event.target.id then
@@ -723,6 +728,7 @@ end
 												selectedForDeleteID[k].id = 0
 												selectedForDeleteID[k].filetype = ""
 												selectedForDeleteID[k].contentPath = ""
+													selectedForDeleteID[k].contactid = ""
 												selectedForDelete[k]:removeSelf()
 
 											end
@@ -1100,6 +1106,8 @@ end
 			else
 				bg.y=0
 			end
+
+				bg.From =  0
 		
 			if dateVlaue =="" or (Utils.getTime(makeTimeStamp(dateVlaue),"%d/%m/%Y",TimeZone) ~= Utils.getTime(makeTimeStamp(ChatHistory[i].Update_Time_Stamp),"%d/%m/%Y",TimeZone) )then
 
@@ -1140,6 +1148,8 @@ end
 
 					bg.x = W-65
 					bg.anchorX = 1
+
+					bg.From =  ChatHistory[i].Message_From
 
 
 			  local filePath = system.pathForFile( ChatHistory[i].Message_From..".png",system.TemporaryDirectory )
@@ -1608,7 +1618,12 @@ end
 
 			chatReceivedFlag=false
 
-			sendMeaasage()
+			
+			local function getupdateLastChatSyncDate( respose )
+				sendMeaasage()
+			end
+
+			Webservice.UpdateLastChatSyncDate(getupdateLastChatSyncDate)
 			end 
 
 			-- if selectedForDelete ~= nil then 
@@ -1685,11 +1700,16 @@ end
 
 			if deleteMsgCount == 1 then
 
-				local alert = native.showAlert("Delete", "Delete message from "..UserName , { CommonWords.ok , CommonWords.cancel }, onComplete )
+				print( json.encode(selectedForDeleteID[1]) , ContactId )
+				if selectedForDeleteID[1].contactid == ContactId then
+					local alert = native.showAlert("Delete", "Delete message?", { CommonWords.ok , CommonWords.cancel }, onComplete )
+				else
+					local alert = native.showAlert("Delete", "Delete message from "..UserName.."?", { CommonWords.ok , CommonWords.cancel }, onComplete )
+				end
 
 			else
 
-			local alert = native.showAlert("Delete", "Delete "..tostring(deleteMsgCount).." messages", { CommonWords.ok , CommonWords.cancel }, onComplete )
+			local alert = native.showAlert("Delete", "Delete "..tostring(deleteMsgCount).." messages?", { CommonWords.ok , CommonWords.cancel }, onComplete )
 
 			end
 
@@ -2889,8 +2909,6 @@ function scene:show( event )
 	    end
 
 
-		print( "ContactDetails : "..json.encode(ContactDetails) )
-
 		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To or ContactDetails.MyUnitBuzzGroupId
 
 
@@ -3163,7 +3181,7 @@ end
 		local phase = event.phase
 
 		if event.phase == "will" then
-
+				chatReceivedPage = "main"
 			    Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 				Runtime:removeEventListener( "key", onKeyEvent )
 				image_name_close:removeEventListener( "touch", ImageClose )
