@@ -971,9 +971,7 @@ if IsOwner == true then
 					flapScroll:insert( rect )
 
 					--rect.isVisible=false
-
-
-
+					
 
 					--Logout
 
@@ -1004,48 +1002,46 @@ if IsOwner == true then
 
 					flapScroll:insert( Logout_text )
 
-			-----
-			if not isSimulator then
+					-----
+					if not isSimulator then
 
-						if chatReceivedFlag == true then
+									if chatReceivedFlag == true then
 
-							    chatReceivedFlag = false
+										    chatReceivedFlag = false
 
-										if MessageId ~= "0" and MessageId ~= nil then
+												if MessageId ~= "0" and MessageId ~= nil then
 
-													local options = {
-															isModal = true,
-															effect = "slideLeft",
-															time = 300,
-															params = {
-																pagenameval = "pn_detailpage",
+															local options = {
+																	isModal = true,
+																	effect = "slideLeft",
+																	time = 300,
+																	params = {
+																		pagenameval = "pn_detailpage",
+																	}
 															}
-													}
 
+												      composer.gotoScene( "Controller.pushNotificationDetailPage", options)
 
-										      composer.gotoScene( "Controller.pushNotificationDetailPage", options)
+												else
 
-										else
+												      composer.gotoScene( "Controller.MessagingPage" )
 
-										      composer.gotoScene( "Controller.MessagingPage" )
+											    end
 
-									    end
+									else
 
-						else
+										    composer.gotoScene( "Controller.eventCalenderPage" )
 
-							    composer.gotoScene( "Controller.eventCalenderPage" )
+									end
 
-						end
+					else
+									--composer.gotoScene( "Controller.audioRecordPage", options )
 
-			else
-							--composer.gotoScene( "Controller.audioRecordPage", options )
+									composer.gotoScene( "Controller.eventCalenderPage" )
 
-							composer.gotoScene( "Controller.eventCalenderPage" )
+					end
 
-			end
-
-
-		end	
+		    end	
 
 		    MainGroup:insert(sceneGroup)
 
