@@ -37,6 +37,8 @@ chatReceivedFlag=false
 
 MessageId = "0"
 
+MessageIdValue = "0"
+
 --com.spanenterprises.MUBDev
 
 --CommonApp/DirectorApp
@@ -312,21 +314,40 @@ if launchArgs and launchArgs.notification then
           
         else
 
-                     notificationFlag = true
-
-                     chatReceivedFlag=true
+                                 notificationFlag = true
 
 
-                    if (additionalData) then
+                                if (additionalData) then
 
-                      MessageId = additionalData.pnmid
-                      --MessageId = "0"
-                    else
+                                  MessageId = additionalData.pnmid
+                                  --MessageId = "0"
+                                else
 
-                      native.showAlert("MyUnitBuzz", message, { "OK" } )
+                                  native.showAlert("MyUnitBuzz", message, { "OK" } )
 
-                    end
+                                end
 
+
+                                            if MessageId ~= "0" and MessageId ~= nil then
+
+                                                        local options = {
+                                                                isModal = true,
+                                                                effect = "slideLeft",
+                                                                time = 300,
+                                                                params = {
+                                                                    pagenameval = "pn_detailpage",
+                                                                }
+                                                        }
+
+
+                                                  composer.gotoScene( "Controller.pushNotificationDetailPage", options)
+
+                                            else
+
+                                                  composer.gotoScene( "Controller.MessagingPage" )
+
+                                            end
+                                   
 
         end
 end
@@ -491,6 +512,9 @@ local function notificationListener( event )
 
                 if (additionalData) then
 
+
+                    MessageIdValue =  additionalData.pnmid
+
                               if isAndroid then
 
                                      additionalData = event.androidGcmBundle
@@ -640,7 +664,31 @@ local function onSystemEvent( event )
 
     elseif event.type == "applicationResume" then
 
-      --  chatReceivedFlag=true
+                        if chatReceivedFlag == true then
+
+                              chatReceivedFlag = false
+
+                                    if MessageIdValue ~= "0" and MessageIdValue ~= nil then
+
+                                                local options = {
+                                                        isModal = true,
+                                                        effect = "slideLeft",
+                                                        time = 300,
+                                                        params = {
+                                                            pagenameval = "pn_detailpage",
+                                                        }
+                                                }
+
+
+                                          composer.gotoScene( "Controller.pushNotificationDetailPage", options)
+
+                                    else
+
+                                          composer.gotoScene( "Controller.MessagingPage" )
+
+                                    end
+
+                        end
     
     end
 
