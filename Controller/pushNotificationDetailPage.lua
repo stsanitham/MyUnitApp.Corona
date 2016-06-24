@@ -1159,7 +1159,7 @@ if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and d
 				else
 					    status="back"
 
-						event.parent:resumeGame(status,messagelistvalue)
+						--event.parent:resumeGame(status,messagelistvalue)
 				end
 
                 

@@ -209,60 +209,61 @@ local function RequestProcess()
 
 		    local isSentTextvalue = isSentText
 
-		function get_requestAccess(response)
+				function get_requestAccess(response)
 
-			Request_response = response
+					Request_response = response
 
-			submit_spinner.isVisible=false
-			sumbitBtn.width = sumbitBtn_lbl.width+30
-			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
-			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+35
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
-			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-			sumbitBtn_lbl.x = sumbitBtn.x+16
+					submit_spinner.isVisible=false
+					sumbitBtn.width = sumbitBtn_lbl.width+30
+					sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
+					submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+35
+					sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
+					sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+					sumbitBtn_lbl.x = sumbitBtn.x+16
 
-			submit_spinner:stop( )
+					submit_spinner:stop( )
 
-			FirstName.text = ""
-			Name.text = ""
-			Email.text = ""
-			Phone.text = ""
-			Password.text = ""
-			MKRank.text = "-Select MK Rank-"
-			MKRank.value = "-Select MK Rank-"
-			Comment.text = ""
-			emailnotifybox.isOn = true
-			textnotifybox.isOn = true
+					FirstName.text = ""
+					Name.text = ""
+					Email.text = ""
+					Phone.text = ""
+					Password.text = ""
+					MKRank.text = "-Select MK Rank-"
+					MKRank.value = "-Select MK Rank-"
+					Comment.text = ""
+					emailnotifybox.isOn = true
+					textnotifybox.isOn = true
 
-				if Request_response == "SUCCESS" then
+					if Request_response == "SUCCESS" then
 
-				  alert = native.showAlert( PopupGroup.AddNewAccess , PopupGroup.AddNewAccessText , { CommonWords.ok }, onComplete )
+					  alert = native.showAlert( PopupGroup.AddNewAccess , PopupGroup.AddNewAccessText , { CommonWords.ok }, onComplete )
 
-                elseif Request_response == "GRANT" then
+	                elseif Request_response == "GRANT" then
 
-         	 	  granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onComplete)
+	         	 	  granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onComplete)
 
-         	    elseif Request_response == "REMOVE" then
+	         	    elseif Request_response == "REMOVE" then
 
-		 	      Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onComplete)
-		
-		        elseif Request_response == "ADDREQUEST" then
+			 	      Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onComplete)
+			
+			        elseif Request_response == "ADDREQUEST" then
 
-		 	      addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onComplete)
+			 	      addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onComplete)
 
-		 	    elseif Request_response == "BLOCK" then
+			 	    elseif Request_response == "BLOCK" then
 
-		 	      block = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onComplete)
-				
-				end
+			 	      block = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onComplete)
+					
+					end
 
-		    end
+		   		 end
 
-		Webservice.REQUEST_ACCESS(openPage,"WEB",isSentMailvalue,isSentTextvalue,"","",FirstName.text,Name.text,Email.text,Phone.text,"",Password.text,mkRank_id,Comment.text,get_requestAccess)
+			Webservice.REQUEST_ACCESS(openPage,"WEB",isSentMailvalue,isSentTextvalue,"","",FirstName.text,Name.text,Email.text,Phone.text,"",Password.text,mkRank_id,Comment.text,get_requestAccess)
 	
 	end
 
 end
+
 
 
 
@@ -279,21 +280,23 @@ end
 
 
 
+
 	function getemailexistresponse(response)
  
-        email_response = response
+	        email_response = response
 
-	    print("************************Request_response email initial*************************** ",json.encode(email_response))
+		    print("************************Request_response email initial*************************** ",json.encode(email_response))
 
-	    if email_response == true then
+		    if email_response == true then
 
-	    elseif email_response == false then
+		    elseif email_response == false then
 
-	    	 existalert = native.showAlert(PopupGroup.EmailExist, PopupGroup.EmailExistText, { CommonWords.ok} , onCompletionEvent)
+		    	 existalert = native.showAlert(PopupGroup.EmailExist, PopupGroup.EmailExistText, { CommonWords.ok} , onCompletionEvent)
 
-	    end
-
+		    end
+	    
     end
+
 
 
 
