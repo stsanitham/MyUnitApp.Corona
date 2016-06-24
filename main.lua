@@ -489,9 +489,9 @@ local function notificationListener( event )
                                  
                                      if openPage == "main" and openPage == "spalshPage" then
 
-                                        chatReceivedFlag=true
+                                         chatReceivedFlag=true
 
-                                        native.setProperty( "applicationIconBadgeNumber", 0 )
+                                         native.setProperty( "applicationIconBadgeNumber", 0 )
                                          system.cancelNotification()
 
                                     end
@@ -534,6 +534,33 @@ local function notificationListener( event )
                                      message = additionalData.contents
                                      MessageId = additionalData.pnmid
                                     -- MessageId = "0"
+
+                                        if chatReceivedFlag == true then
+
+                                              chatReceivedFlag = false
+
+                                                    if MessageId ~= "0" and MessageId ~= nil then
+
+                                                                local options = {
+                                                                        isModal = true,
+                                                                        effect = "slideLeft",
+                                                                        time = 300,
+                                                                        params = {
+                                                                            pagenameval = "pn_detailpage",
+                                                                        }
+                                                                }
+
+
+                                                          composer.gotoScene( "Controller.pushNotificationDetailPage", options)
+
+                                                    else
+
+                                                          composer.gotoScene( "Controller.MessagingPage" )
+
+                                                    end
+
+                                        end
+    
 
 
                                 -- local options =
@@ -679,33 +706,33 @@ local function onSystemEvent( event )
 
         chatReceivedFlag = true
 
-                        if chatReceivedFlag == true then
+                if chatReceivedFlag == true then
 
-                              chatReceivedFlag = false
+                      chatReceivedFlag = false
 
-                               MessageId = MessageIdValue
+                       MessageId = MessageIdValue
 
-                                    if MessageId ~= "0" and MessageId ~= nil then
+                            if MessageId ~= "0" and MessageId ~= nil then
 
-                                                local options = {
-                                                        isModal = true,
-                                                        effect = "slideLeft",
-                                                        time = 300,
-                                                        params = {
-                                                            pagenameval = "pn_detailpage",
-                                                        }
+                                        local options = {
+                                                isModal = true,
+                                                effect = "slideLeft",
+                                                time = 300,
+                                                params = {
+                                                    pagenameval = "pn_detailpage",
                                                 }
+                                        }
 
 
-                                          composer.gotoScene( "Controller.pushNotificationDetailPage", options)
+                                  composer.gotoScene( "Controller.pushNotificationDetailPage", options)
 
-                                    else
+                            else
 
-                                          composer.gotoScene( "Controller.MessagingPage" )
+                                  composer.gotoScene( "Controller.MessagingPage" )
 
-                                    end
+                            end
 
-                        end
+                end
     
     end
 
