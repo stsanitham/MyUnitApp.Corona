@@ -481,6 +481,28 @@ end
 
 
 
+
+local function onProfileImageTouch(event)
+
+	print("7*^*678678")
+
+		if event.phase == "began" then
+
+			display.getCurrentStage():setFocus( nil )
+
+		elseif event.phase == "ended" then
+
+			display.getCurrentStage():setFocus( nil )
+
+		end
+
+		return true
+
+end
+
+
+
+
 local function CreateGroupMemberList( list )
 
 
@@ -666,6 +688,7 @@ function scene:show( event )
 				ProfileImage.width = W;ProfileImage.height = 180
 				ProfileImage.x=W/2;ProfileImage.y=titleBar.y
 				ProfileImage.anchorY=0
+				ProfileImage:addEventListener("touch",onProfileImageTouch)
 
 				TrasitionBar = display.newRect(sceneGroup,ProfileImage.x,ProfileImage.y,ProfileImage.width,ProfileImage.height)
 				TrasitionBar.anchorY=0

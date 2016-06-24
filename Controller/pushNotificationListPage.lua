@@ -1425,6 +1425,8 @@ local function TabbarTouch( event )
 
 		elseif event.phase == "ended" then
 
+		print("%^$%^$%^$%^$%^")
+
 		pageCount = 0
 		messagelist_scrollView:scrollTo( "top", { time=1000 } )
 			
@@ -1783,9 +1785,9 @@ elseif phase == "did" then
 		    end
 
 
-		menuBtn:addEventListener("touch",menuTouch)
-		compose_msg_icon:addEventListener("touch",composeMessage)
-        Runtime:addEventListener( "key", onKeyEvent )
+			menuBtn:addEventListener("touch",menuTouch)
+			compose_msg_icon:addEventListener("touch",composeMessage)
+	        Runtime:addEventListener( "key", onKeyEvent )
 
     end	
 	

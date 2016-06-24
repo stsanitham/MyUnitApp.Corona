@@ -677,11 +677,17 @@ local function onSystemEvent( event )
 
     elseif event.type == "applicationResume" then
 
+        print("resume25323")
+
+        chatReceivedFlag = true
+
                         if chatReceivedFlag == true then
 
                               chatReceivedFlag = false
 
-                                    if MessageIdValue ~= "0" and MessageIdValue ~= nil then
+                               MessageId = MessageIdValue
+
+                                    if MessageId ~= "0" and MessageId ~= nil then
 
                                                 local options = {
                                                         isModal = true,
