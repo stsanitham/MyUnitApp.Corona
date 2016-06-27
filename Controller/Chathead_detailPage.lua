@@ -102,54 +102,54 @@ local function addMemberAction( event )
 						-- }
 
 	     --    composer.showOverlay( "Controller.consultantListPage", options )
-	     	status="editArray"
-	     	composer.hideOverlay( "slideRight", 100 )
-		
+	     status="editArray"
+	     composer.hideOverlay( "slideRight", 100 )
+	     
+	 end
+
+	 return true
+
 	end
 
-	return true
-
-end
 
 
+	local function emailTouch( event )
+		if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
 
-local function emailTouch( event )
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
-
-		local careerMail =
+			local careerMail =
 			{
-			  to = event.target.value,
+				to = event.target.value,
 			}
- 
-		native.showPopup( "mail", careerMail )
+			
+			native.showPopup( "mail", careerMail )
+
+		end
+
+		return true
 
 	end
 
-	return true
-
-end
 
 
+	local function observableScroll( event )
 
-local function observableScroll( event )
+		local phase = event.phase
+		if ( phase == "began" ) then 
+		elseif ( phase == "moved" ) then 
 
-    local phase = event.phase
-    if ( phase == "began" ) then 
-    elseif ( phase == "moved" ) then 
-
-    	if event.direction ~= nil then
+			if event.direction ~= nil then
 
     	-- print("Direction : "..event.direction)
 
-    	 	if event.direction == "up" then
+    	if event.direction == "up" then
 
-    	 		if TrasitionBar.yScale >= 0.2 then
+    		if TrasitionBar.yScale >= 0.2 then
 
 
-    	 			event.target:scrollTo( "top" , { time=0})
+    			event.target:scrollTo( "top" , { time=0})
 
     	 			--display.getCurrentStage():setFocus(nil)
 
@@ -162,7 +162,7 @@ local function observableScroll( event )
 
     	 			careerDetail_scrollview.y=TrasitionBar.y+TrasitionBar.contentHeight
 
-	   	 			if Career_Username.y >= tabBar.y+30 then
+    	 			if Career_Username.y >= tabBar.y+30 then
 
     	 				Career_Username.y=Career_Username.y-8.8
 
@@ -173,7 +173,7 @@ local function observableScroll( event )
 
     	 			end
 
-  	 			
+    	 			
 
     	 		else
 
@@ -182,7 +182,7 @@ local function observableScroll( event )
 
     	 	elseif event.direction == "down" then
 
-    	 			if TrasitionBar.yScale <= 1 then
+    	 		if TrasitionBar.yScale <= 1 then
 
 
     	 			event.target:scrollTo( "top" , { time=0})
@@ -209,7 +209,7 @@ local function observableScroll( event )
 
     	 			local temp = RecentTab_Topvalue - careerDetail_scrollview.y
 
- 	 			
+    	 			
 
     	 		else
 
@@ -219,25 +219,25 @@ local function observableScroll( event )
     	 	end
 
 
+    	 end
+
+
+    	 
+
+    	 elseif ( phase == "ended" ) then 
     	end
 
-
-  
-
-    elseif ( phase == "ended" ) then 
-    end
-
-   
+    	
   	 -- In the event a scroll limit is reached...
-    if ( event.limitReached ) then
-        if ( event.direction == "up" ) then 
-        elseif ( event.direction == "down" ) then 
-        elseif ( event.direction == "left" ) then 
-        elseif ( event.direction == "right" ) then 
-        end
-    end
-    return true
-end
+  	 if ( event.limitReached ) then
+  	 	if ( event.direction == "up" ) then 
+  	 	elseif ( event.direction == "down" ) then 
+  	 	elseif ( event.direction == "left" ) then 
+  	 	elseif ( event.direction == "right" ) then 
+  	 	end
+  	 end
+  	 return true
+  	end
 
 
 
@@ -260,39 +260,39 @@ end
 
 
 
-	local function phoneCallFunction( event )
-		if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-			elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
+local function phoneCallFunction( event )
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 			--work
 			
 			local callFlag
 
 			local number = string.gsub(event.target.id, "%s+", "")
 
-				number = string.gsub(number,"%(" , "")
+			number = string.gsub(number,"%(" , "")
 				number = string.gsub(number,"%)" , "")
 				number = string.gsub(number,"%-" , "")
 
 
-			print( "Call : "..number )
+				print( "Call : "..number )
 
 			--system.openURL( "tel:"..number)
 
 			callFlag = system.openURL( "tel:"..number )
 
-			 if callFlag == true  then 
+			if callFlag == true  then 
 
 				--fortumo.findService({callFlag}, onFindServiceComplete)
 
-			 else
+			else
 
-			 	if isIos then 
+				if isIos then 
 
-			 		native.showAlert( CareerPath.Call, CareerPath.NoSim, { CommonWords.ok } )
+					native.showAlert( CareerPath.Call, CareerPath.NoSim, { CommonWords.ok } )
 
-			 	end
+				end
 
 			end
 		end
@@ -351,108 +351,108 @@ end
 		Request_response = response
 
 
-	    function onCompletion(event)
+		function onCompletion(event)
 
-	       if "clicked"==event.action then
-
-
-			 AlertGroup.isVisible = false
-
-			 ContactIdValue = contactId
-
-	         composer.hideOverlay()
-
-	       end
-
-         end
+			if "clicked"==event.action then
 
 
+				AlertGroup.isVisible = false
 
-		 if id_value == "Remove Access" then
+				ContactIdValue = contactId
 
-	        local remove_successful= native.showAlert(CommonWords.Remove , CareerPath.RemovedText, { CommonWords.ok} , onCompletion)
+				composer.hideOverlay()
+
+			end
+
+		end
 
 
-		 elseif id_value == "Block Access" then
+
+		if id_value == "Remove Access" then
+
+			local remove_successful= native.showAlert(CommonWords.Remove , CareerPath.RemovedText, { CommonWords.ok} , onCompletion)
+
+
+		elseif id_value == "Block Access" then
 
 			local block_successful = native.showAlert(CommonWords.Block , CareerPath.BlockedText, { CommonWords.ok} , onCompletion)
 
-		 end
+		end
 
 
-         if id_value == "Deny Access" then
+		if id_value == "Deny Access" then
 
-         	 if Request_response == "SUCCESS" then
+			if Request_response == "SUCCESS" then
 
-         	 	denyaccess = native.showAlert(CommonWords.Deny, CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
+				denyaccess = native.showAlert(CommonWords.Deny, CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
 
-         	 elseif Request_response == "GRANT" then
+			elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
-         	 elseif Request_response == "REMOVE" then
+			elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
-		
-		     elseif Request_response == "ADDREQUEST" then
+				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+				
+			elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
 
-		 	     elseif Request_response == "BLOCK" then
+			elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
-         	 end
+			end
 
-         elseif id_value == "Grant Access" then
+		elseif id_value == "Grant Access" then
 
-	 	    if Request_response == "SUCCESS" then
+			if Request_response == "SUCCESS" then
 
-	 	    	grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
+				grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
 
-	 	     elseif Request_response == "GRANT" then
+			elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
-         	 elseif Request_response == "REMOVE" then
+			elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
-		
-		     elseif Request_response == "ADDREQUEST" then
+				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+				
+			elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
 
-		 	 elseif Request_response == "BLOCK" then
+			elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
-         	 end
+			end
 
-	 	elseif id_value == "Provide Access" then
+		elseif id_value == "Provide Access" then
 
-	 	    if Request_response == "SUCCESS" then
+			if Request_response == "SUCCESS" then
 
-	 	    	accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
+				accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
 
-	 	     elseif Request_response == "GRANT" then
+			elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
-         	 elseif Request_response == "REMOVE" then
+			elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
-		
-		     elseif Request_response == "ADDREQUEST" then
+				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+				
+			elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
 
-		 	     elseif Request_response == "BLOCK" then
+			elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
-         	 end
+			end
 
-         end
+		end
 
 	end
 
@@ -460,37 +460,37 @@ end
 
 	local function onKeycareerDetail( event )
 
-	        local phase = event.phase
-	        local keyName = event.keyName
+		local phase = event.phase
+		local keyName = event.keyName
 
-	        if phase == "up" then
+		if phase == "up" then
 
-	        if keyName=="back" then
+			if keyName=="back" then
 
-	        	composer.hideOverlay( "slideRight", 300 )
+				composer.hideOverlay( "slideRight", 300 )
 
-	        	 return true
-	            
-	        end
+				return true
+				
+			end
 
-	    end
+		end
 
-	        return false
-	 end
-
-
+		return false
+	end
 
 
 
-local function onProfileImageTouch(event)
 
-	print("7*^*678678")
+
+	local function onProfileImageTouch(event)
+
+		print("7*^*678678")
 
 		if event.phase == "began" then
 
 			display.getCurrentStage():setFocus( nil )
 
-		elseif event.phase == "ended" then
+			elseif event.phase == "ended" then
 
 			display.getCurrentStage():setFocus( nil )
 
@@ -498,101 +498,101 @@ local function onProfileImageTouch(event)
 
 		return true
 
-end
-
-
-
-
-local function CreateGroupMemberList( list )
-
-
-	for j=#groupMemberListArray, 1, -1 do 
-		
-		display.remove(groupMemberListArray[#groupMemberListArray])
-		groupMemberListArray[#groupMemberListArray] = nil
 	end
 
-	local ContactList = list.Contact
-
-	for i=1,#ContactList do
-      
 
 
-		groupMemberListArray[#groupMemberListArray+1] = display.newGroup()
 
-		local tempGroup = groupMemberListArray[#groupMemberListArray]
+	local function CreateGroupMemberList( list )
 
-		local Image 
 
-		local tempHeight = 0
-
-		local background = display.newRect(tempGroup,0,0,W,50)
-
-		if(groupMemberListArray[#groupMemberListArray-1]) ~= nil then
-			tempHeight = groupMemberListArray[#groupMemberListArray-1][1].y + groupMemberListArray[#groupMemberListArray-1][1].height+3
+		for j=#groupMemberListArray, 1, -1 do 
+			
+			display.remove(groupMemberListArray[#groupMemberListArray])
+			groupMemberListArray[#groupMemberListArray] = nil
 		end
 
-		background.anchorY = 0
-		background.x=W/2;background.y=tempHeight
-		background.alpha=0.01
-		background.value = ContactList[i]
+		local ContactList = list.Contact
 
-		contactCount[#contactCount+1] = ContactList[i].Contact_Id
+		for i=1,#ContactList do
+			
 
-		  local filePath = system.pathForFile( ContactList[i].Contact_Id..".png",system.TemporaryDirectory )
-		  local fhd = io.open( filePath )
 
-		  local Image
+			groupMemberListArray[#groupMemberListArray+1] = display.newGroup()
 
-		 if fhd then
+			local tempGroup = groupMemberListArray[#groupMemberListArray]
 
-			Image = display.newImageRect(tempGroup,ContactList[i].Contact_Id..".png",system.TemporaryDirectory,45,38)
+			local Image 
 
-			io.close( fhd )
+			local tempHeight = 0
 
-		else
+			local background = display.newRect(tempGroup,0,0,W,50)
 
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			if(groupMemberListArray[#groupMemberListArray-1]) ~= nil then
+				tempHeight = groupMemberListArray[#groupMemberListArray-1][1].y + groupMemberListArray[#groupMemberListArray-1][1].height+3
+			end
+
+			background.anchorY = 0
+			background.x=W/2;background.y=tempHeight
+			background.alpha=0.01
+			background.value = ContactList[i]
+
+			contactCount[#contactCount+1] = ContactList[i].Contact_Id
+
+			local filePath = system.pathForFile( ContactList[i].Contact_Id..".png",system.TemporaryDirectory )
+			local fhd = io.open( filePath )
+
+			local Image
+
+			if fhd then
+
+				Image = display.newImageRect(tempGroup,ContactList[i].Contact_Id..".png",system.TemporaryDirectory,45,38)
+
+				io.close( fhd )
+
+			else
+
+				Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+				Image.x=30;Image.y=background.y+background.height/2
+
+			end
+
 			Image.x=30;Image.y=background.y+background.height/2
 
-		end
+			local mask = graphics.newMask( "res/assert/masknew.png" )
 
-					Image.x=30;Image.y=background.y+background.height/2
+			Image:setMask( mask )
 
-						local mask = graphics.newMask( "res/assert/masknew.png" )
+			local name
 
-									Image:setMask( mask )
+			if ContactList[i].First_Name ~= nil then 
+				name = ContactList[i].First_Name.." "..ContactList[i].Last_Name
+			else
 
-		local name
-
-		if ContactList[i].First_Name ~= nil then 
-			name = ContactList[i].First_Name.." "..ContactList[i].Last_Name
-		else
-
-			name = ContactList[i].Last_Name
+				name = ContactList[i].Last_Name
 
 
-		end
+			end
 
-		local Name_txt = display.newText(tempGroup,name,0,0,native.systemFont,14)
-		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
-		Name_txt.anchorX=0
-		Utils.CssforTextView(Name_txt,sp_labelName)
-		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+			local Name_txt = display.newText(tempGroup,name,0,0,native.systemFont,14)
+			Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
+			Name_txt.anchorX=0
+			Utils.CssforTextView(Name_txt,sp_labelName)
+			Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-		local Position_txt = display.newText(tempGroup,ContactList[i].Email_Address,0,0,native.systemFont,14)
-		Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
-		Position_txt.anchorX=0
-		Utils.CssforTextView(Position_txt,sp_fieldValue)
+			local Position_txt = display.newText(tempGroup,ContactList[i].Email_Address,0,0,native.systemFont,14)
+			Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
+			Position_txt.anchorX=0
+			Utils.CssforTextView(Position_txt,sp_fieldValue)
 
-		if Position_txt.text:len() > 26 then		
-			Position_txt.text = string.sub(Position_txt.text,1,26).."..."
-		end
+			if Position_txt.text:len() > 26 then		
+				Position_txt.text = string.sub(Position_txt.text,1,26).."..."
+			end
 
 
-		local line = display.newRect(tempGroup,W/2,background.y,W,1)
-		line.y=background.y+background.contentHeight-line.contentHeight
-		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			local line = display.newRect(tempGroup,W/2,background.y,W,1)
+			line.y=background.y+background.contentHeight-line.contentHeight
+			line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
 
 		--tempGroup.Contact_Id = list[i].Contact_Id
@@ -642,45 +642,45 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		elseif phase == "did" then
+	elseif phase == "did" then
 
 
-				contactId = event.params.contactId
-				Message_Type = event.params.MessageType
-				GroupType_Value = event.params.GroupTypeValue
+		contactId = event.params.contactId
+		Message_Type = event.params.MessageType
+		GroupType_Value = event.params.GroupTypeValue
 
 
-				print("TypeValue : "..Message_Type)
+		print("TypeValue : "..Message_Type)
 
-				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
-					ContactId = row.ContactId
+			ContactId = row.ContactId
 
-				end
+		end
 
-				titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
-				titleBar.anchorY=0
-				titleBar.isVisible=false
+		titleBar = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
+		titleBar.anchorY=0
+		titleBar.isVisible=false
 
-				titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+		titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-			local function get_MessageGroupTeamMemberList( response )
+		local function get_MessageGroupTeamMemberList( response )
 
-				Details = response
+			Details = response
 
-				json.encode( Details )
+			json.encode( Details )
 
-	
-				local path = system.pathForFile( "career"..contactId..".png",system.TemporaryDirectory)
-				local fhd = io.open( path )
+			
+			local path = system.pathForFile( "career"..contactId..".png",system.TemporaryDirectory)
+			local fhd = io.open( path )
 
 
 				-- Determine if file exists
 				if fhd then
-				   ProfileImage = display.newImage("career"..contactId..".png",system.TemporaryDirectory)
-				   fhd:close()
+					ProfileImage = display.newImage("career"..contactId..".png",system.TemporaryDirectory)
+					fhd:close()
 				else
-				    ProfileImage = display.newImage("res/assert/detail_defalut.jpg")
+					ProfileImage = display.newImage("res/assert/detail_defalut.jpg")
 				end
 
 
@@ -728,7 +728,7 @@ function scene:show( event )
 				RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight
 
 				careerDetail_scrollview = widget.newScrollView
-					{
+				{
 					top = 0,
 					left = 0,
 					width = W,
@@ -751,7 +751,7 @@ function scene:show( event )
 
 			end
 
-	
+			
 			local function get_avtiveTeammemberDetails( response)
 
 				print("Career Detail Response ",json.encode(response))
@@ -764,7 +764,7 @@ function scene:show( event )
 				-- print("detailcontactid before assigning"..detailcontactid)
 
 				
-			
+				
 
 				if Details.ImagePath ~= nil then
 					ProfileImage = display.newImage(sceneGroup,contactId..".png",system.TemporaryDirectory)
@@ -800,7 +800,7 @@ function scene:show( event )
 
 
 
-			    if Details.FirstName ~= nil and Details.LastName ~= nil then
+				if Details.FirstName ~= nil and Details.LastName ~= nil then
 
 					Career_Username = display.newText(sceneGroup,Details.FirstName.." "..Details.LastName,0,0,native.systemFont,24)
 
@@ -825,8 +825,8 @@ function scene:show( event )
 
 				RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight
 
-					careerDetail_scrollview = widget.newScrollView
-					{
+				careerDetail_scrollview = widget.newScrollView
+				{
 					top = 0,
 					left = 0,
 					width = W,
@@ -863,21 +863,21 @@ function scene:show( event )
 
 					Details_Display[#Details_Display+1] = display.newText(Details.DateOfBirth,0,0,native.systemFont,18)
 --					Details_Display[#Details_Display+1] = display.newText(os.date( "%B %d, %Y" , timeGMT ),0,0,native.systemFont,18)
-					Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
-					Details_Display[#Details_Display].x=birthday_icon.x+birthday_icon.contentWidth+5
-					Details_Display[#Details_Display].y = birthday_icon.y
-					Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
-					Details_Display[#Details_Display].name = "birthDay"
-					careerDetail_scrollview:insert( Details_Display[#Details_Display] )
-				end
+Details_Display[#Details_Display].anchorX = 0 ;Details_Display[#Details_Display].anchorY=0
+Details_Display[#Details_Display].x=birthday_icon.x+birthday_icon.contentWidth+5
+Details_Display[#Details_Display].y = birthday_icon.y
+Utils.CssforTextView(Details_Display[#Details_Display],sp_fieldValue)
+Details_Display[#Details_Display].name = "birthDay"
+careerDetail_scrollview:insert( Details_Display[#Details_Display] )
+end
 
-				if(Details.AnniversariesDate ~= nil) then
+if(Details.AnniversariesDate ~= nil) then
 
-					local anniversari_icon = display.newImageRect("res/assert/anniversary.png",22,18)
-					anniversari_icon.anchorX = 0 ;anniversari_icon.anchorY=0
-					anniversari_icon.x=leftPadding
-					anniversari_icon.y=Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+15
-					careerDetail_scrollview:insert( anniversari_icon )
+	local anniversari_icon = display.newImageRect("res/assert/anniversary.png",22,18)
+	anniversari_icon.anchorX = 0 ;anniversari_icon.anchorY=0
+	anniversari_icon.x=leftPadding
+	anniversari_icon.y=Details_Display[#Details_Display].y+Details_Display[#Details_Display].contentHeight+15
+	careerDetail_scrollview:insert( anniversari_icon )
 
 					--local timeGMT = makeTimeStamp_career(Details.AnniversariesDate.."T00:00:00")
 
@@ -915,7 +915,7 @@ function scene:show( event )
 
 
 
-			
+				
 				-----------Details_Display---------
 
 				if(Details.RecruitedDate ~= nil) then
@@ -1056,7 +1056,7 @@ function scene:show( event )
 				print("ContactId and event id ",ContactId.."\n"..contactId)
 
 
-		
+				
 
 				Details_Display[#Details_Display+1] = display.newRect( W/2, Details_Display[#Details_Display].y+30, W, 5)
 				Details_Display[#Details_Display].isVisible=false
@@ -1065,229 +1065,229 @@ function scene:show( event )
 
 ---------------------------------------------------End of Access Buttons----------------------------------------------------------------------				
 
-				local totalLenth_count = 0
+local totalLenth_count = 0
 
-				local MapDisplayArray = {}
+local MapDisplayArray = {}
 
-				maptap = display.newRect(sceneGroup,W/2,H-30,W,30)
-				maptap.anchorY=0
-				maptap:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
+maptap = display.newRect(sceneGroup,W/2,H-30,W,30)
+maptap.anchorY=0
+maptap:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 
-				if Details.EmailAddress ~= nil then
+if Details.EmailAddress ~= nil then
 
-				MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/mail.png",33/2,25/2)
-				MapDisplayArray[#MapDisplayArray].x=W/4
-				MapDisplayArray[#MapDisplayArray].id="email"
-				MapDisplayArray[#MapDisplayArray].value = Details.EmailAddress
-				MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
-				MapDisplayArray[#MapDisplayArray]:addEventListener( "touch", emailTouch )
+	MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/mail.png",33/2,25/2)
+	MapDisplayArray[#MapDisplayArray].x=W/4
+	MapDisplayArray[#MapDisplayArray].id="email"
+	MapDisplayArray[#MapDisplayArray].value = Details.EmailAddress
+	MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
+	MapDisplayArray[#MapDisplayArray]:addEventListener( "touch", emailTouch )
 
-				end
-
-				
-				if Details.HomePhoneNumber ~= nil then
-					phoneNum = Details.HomePhoneNumber 
-				end
-				if Details.WorkPhoneNumber ~= nil then
-					phoneNum = Details.WorkPhoneNumber 
-				end
-				if Details.OtherPhoneNumber ~= nil then
-					phoneNum = Details.OtherPhoneNumber 
-				end
-
-				if phoneNum ~= "" then
-					MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/phone.png",32/2,32/2)
-
-					if MapDisplayArray[#MapDisplayArray-1] ~= nil then
-						MapDisplayArray[#MapDisplayArray].x=W/2
-					else
-						MapDisplayArray[#MapDisplayArray].x=W/4
-					end
-					MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
-					MapDisplayArray[#MapDisplayArray].id=phoneNum
-					MapDisplayArray[#MapDisplayArray]:addEventListener("touch",phoneCallFunction)
-				end	
-
-				if Details.ContactsAddress ~= nil then
-
-					MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/map.png",20/2,32/2)
-
-					if MapDisplayArray[#MapDisplayArray-1] ~= nil then
-
-						MapDisplayArray[#MapDisplayArray].x=W/2+(W/2)/2
-
-					else
-
-						MapDisplayArray[#MapDisplayArray].x=W/2
-
-					end
+end
 
 
+if Details.HomePhoneNumber ~= nil then
+	phoneNum = Details.HomePhoneNumber 
+end
+if Details.WorkPhoneNumber ~= nil then
+	phoneNum = Details.WorkPhoneNumber 
+end
+if Details.OtherPhoneNumber ~= nil then
+	phoneNum = Details.OtherPhoneNumber 
+end
 
-					MapDisplayArray[#MapDisplayArray].x=maptap.x+90
-					MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
-					MapDisplayArray[#MapDisplayArray].id = "map"
-					MapDisplayArray[#MapDisplayArray]:addEventListener("touch",MapShowing)
+if phoneNum ~= "" then
+	MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/phone.png",32/2,32/2)
 
+	if MapDisplayArray[#MapDisplayArray-1] ~= nil then
+		MapDisplayArray[#MapDisplayArray].x=W/2
+	else
+		MapDisplayArray[#MapDisplayArray].x=W/4
+	end
+	MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
+	MapDisplayArray[#MapDisplayArray].id=phoneNum
+	MapDisplayArray[#MapDisplayArray]:addEventListener("touch",phoneCallFunction)
+end	
 
-					myMap_rect = display.newRect(mapGroup,20, 20, 280, 360)
-					myMap_rect.x = display.contentCenterX
-					myMap_rect.y = display.contentCenterY-myMap_rect.contentHeight/2
-					myMap_rect.strokeWidth = 1
-					myMap_rect:setStrokeColor( 0.5 )
-					myMap_rect.anchorY=0
-					
+if Details.ContactsAddress ~= nil then
 
-					map_title = display.newText(mapGroup,CareerPath.Location,0,0,native.systemFont,16)
-					map_title.x=myMap_rect.x-myMap_rect.contentWidth/2+10
-					map_title.y=myMap_rect.y+15
-					map_title.anchorX=0
-					Utils.CssforTextView(map_title,sp_labelName)
+	MapDisplayArray[#MapDisplayArray+1] = display.newImageRect(sceneGroup,"res/assert/map.png",20/2,32/2)
 
-				local location =""
+	if MapDisplayArray[#MapDisplayArray-1] ~= nil then
 
-				if Details.ContactsAddress.Address1 ~= nil and Details.ContactsAddress.Address1 ~= "" then
+		MapDisplayArray[#MapDisplayArray].x=W/2+(W/2)/2
 
-					if location:len() > 0  then
+	else
 
-						location = location..","
+		MapDisplayArray[#MapDisplayArray].x=W/2
 
-					end
-
-					location = location..Details.ContactsAddress.Address1
-
-				end
-				if Details.ContactsAddress.Address2 ~= nil and Details.ContactsAddress.Address2 ~= "" then
-
-					if location:len() > 0  then
-
-						location = location..","
-
-					end
-
-					location = location..Details.ContactsAddress.Address2
-					
-				end
-
-				if location:len() > 0  then
-
-						location = location.."\n"
-
-				end
-
-				if Details.ContactsAddress.City ~= nil and Details.ContactsAddress.City ~= "" then
-				
-					location = location..Details.ContactsAddress.City..","
-					
-				end
-				if Details.ContactsAddress.State ~= nil and Details.ContactsAddress.State ~= "" then
-				
-					location = location..Details.ContactsAddress.State..","
-					
-				end
-				
-				if Details.ContactsAddress.Zip ~= nil and Details.ContactsAddress.Zip ~= "" then
-				
-					location = location..Details.ContactsAddress.Zip	
-					
-				end
-
-				if location:sub( location:len() ,location:len()) == "," then
-					location = location:sub( 1 ,location:len()-1)
-				end
-
-				map_location= display.newText(mapGroup,location,0,0,320,0,native.systemFont,14)
-				map_location.x=myMap_rect.x-myMap_rect.contentWidth/2+10
-				map_location.y=myMap_rect.y+25
-				map_location.anchorY=0
-				map_location.anchorX=0
-				Utils.CssforTextView(map_location,sp_fieldValue)
+	end
 
 
-				map_close = display.newImageRect(mapGroup,"res/assert/cancel.png",20,20)
-				map_close.x=myMap_rect.x+myMap_rect.contentWidth/2-15
-				map_close.y=myMap_rect.y+15
-				map_close.id="close"
 
-				map_close_bg = display.newImageRect(mapGroup,"res/assert/cancel.png",35,35)
-				map_close_bg.x=myMap_rect.x+myMap_rect.contentWidth/2-15
-				map_close_bg.y=myMap_rect.y+15
-				map_close_bg.id="close"
-				map_close_bg.alpha=0.01
+	MapDisplayArray[#MapDisplayArray].x=maptap.x+90
+	MapDisplayArray[#MapDisplayArray].y=maptap.y+maptap.contentHeight/2
+	MapDisplayArray[#MapDisplayArray].id = "map"
+	MapDisplayArray[#MapDisplayArray]:addEventListener("touch",MapShowing)
 
-				map_close_bg:addEventListener("touch",MapShowing)
 
-			
-			    	if not isSimulator then
+	myMap_rect = display.newRect(mapGroup,20, 20, 280, 360)
+	myMap_rect.x = display.contentCenterX
+	myMap_rect.y = display.contentCenterY-myMap_rect.contentHeight/2
+	myMap_rect.strokeWidth = 1
+	myMap_rect:setStrokeColor( 0.5 )
+	myMap_rect.anchorY=0
+	
 
-						myMap = native.newMapView( display.contentCenterX, display.contentCenterY+50, 280, 270 )
-						mapGroup:insert(myMap)
-						myMap.isVisible=false
-						myMap.anchorY=0
-						myMap.y=map_location.y+map_location.contentHeight+15
+	map_title = display.newText(mapGroup,CareerPath.Location,0,0,native.systemFont,16)
+	map_title.x=myMap_rect.x-myMap_rect.contentWidth/2+10
+	map_title.y=myMap_rect.y+15
+	map_title.anchorX=0
+	Utils.CssforTextView(map_title,sp_labelName)
 
-						local function locationHandler( event )
+	local location =""
 
-							if ( event.isError ) then
-								print( "Map Error: " .. event.errorMessage )
-							else
-								print( "The specified string is at: " .. event.latitude .. "," .. event.longitude )
-								if myMap then myMap:setCenter( event.latitude, event.longitude ) 
+	if Details.ContactsAddress.Address1 ~= nil and Details.ContactsAddress.Address1 ~= "" then
 
-								local options = 
-								{ 
-								title = CareerPath.Location, 
-								subtitle = location, 
-								imageFile =  "res/assert/map.png",
-							}
-							local result, errorMessage = myMap:addMarker( event.latitude, event.longitude , options )
+		if location:len() > 0  then
 
-							end
-						end
+			location = location..","
 
-					end
+		end
 
-					myMap:requestLocation( location, locationHandler )
-				end
+		location = location..Details.ContactsAddress.Address1
 
+	end
+	if Details.ContactsAddress.Address2 ~= nil and Details.ContactsAddress.Address2 ~= "" then
+
+		if location:len() > 0  then
+
+			location = location..","
+
+		end
+
+		location = location..Details.ContactsAddress.Address2
 		
-			    end
+	end
 
-				if #MapDisplayArray == 1 then
+	if location:len() > 0  then
 
-					MapDisplayArray[#MapDisplayArray].x=W/2
+		location = location.."\n"
+
+	end
+
+	if Details.ContactsAddress.City ~= nil and Details.ContactsAddress.City ~= "" then
+		
+		location = location..Details.ContactsAddress.City..","
+		
+	end
+	if Details.ContactsAddress.State ~= nil and Details.ContactsAddress.State ~= "" then
+		
+		location = location..Details.ContactsAddress.State..","
+		
+	end
+	
+	if Details.ContactsAddress.Zip ~= nil and Details.ContactsAddress.Zip ~= "" then
+		
+		location = location..Details.ContactsAddress.Zip	
+		
+	end
+
+	if location:sub( location:len() ,location:len()) == "," then
+		location = location:sub( 1 ,location:len()-1)
+	end
+
+	map_location= display.newText(mapGroup,location,0,0,320,0,native.systemFont,14)
+	map_location.x=myMap_rect.x-myMap_rect.contentWidth/2+10
+	map_location.y=myMap_rect.y+25
+	map_location.anchorY=0
+	map_location.anchorX=0
+	Utils.CssforTextView(map_location,sp_fieldValue)
+
+
+	map_close = display.newImageRect(mapGroup,"res/assert/cancel.png",20,20)
+	map_close.x=myMap_rect.x+myMap_rect.contentWidth/2-15
+	map_close.y=myMap_rect.y+15
+	map_close.id="close"
+
+	map_close_bg = display.newImageRect(mapGroup,"res/assert/cancel.png",35,35)
+	map_close_bg.x=myMap_rect.x+myMap_rect.contentWidth/2-15
+	map_close_bg.y=myMap_rect.y+15
+	map_close_bg.id="close"
+	map_close_bg.alpha=0.01
+
+	map_close_bg:addEventListener("touch",MapShowing)
+
+	
+	if not isSimulator then
+
+		myMap = native.newMapView( display.contentCenterX, display.contentCenterY+50, 280, 270 )
+		mapGroup:insert(myMap)
+		myMap.isVisible=false
+		myMap.anchorY=0
+		myMap.y=map_location.y+map_location.contentHeight+15
+
+		local function locationHandler( event )
+
+			if ( event.isError ) then
+				print( "Map Error: " .. event.errorMessage )
+			else
+				print( "The specified string is at: " .. event.latitude .. "," .. event.longitude )
+				if myMap then myMap:setCenter( event.latitude, event.longitude ) 
+
+					local options = 
+					{ 
+						title = CareerPath.Location, 
+						subtitle = location, 
+						imageFile =  "res/assert/map.png",
+					}
+					local result, errorMessage = myMap:addMarker( event.latitude, event.longitude , options )
 
 				end
+			end
 
-				sceneGroup:insert(mapGroup)
-				mapGroup.isVisible=false
+		end
 
-			Background:addEventListener("touch",bgTouch)
-			menuBtn:addEventListener("touch",menuTouch)
-			BgText:addEventListener("touch",menuTouch)
+		myMap:requestLocation( location, locationHandler )
+	end
 
-		    end	
+	
+end
+
+if #MapDisplayArray == 1 then
+
+	MapDisplayArray[#MapDisplayArray].x=W/2
+
+end
+
+sceneGroup:insert(mapGroup)
+mapGroup.isVisible=false
+
+Background:addEventListener("touch",bgTouch)
+menuBtn:addEventListener("touch",menuTouch)
+BgText:addEventListener("touch",menuTouch)
+
+end	
 
 
-			ga.enterScene("Unit Career Path")
+ga.enterScene("Unit Career Path")
 
-		    Runtime:addEventListener("key",onKeycareerDetail)
+Runtime:addEventListener("key",onKeycareerDetail)
 
-			MainGroup:insert(sceneGroup)
+MainGroup:insert(sceneGroup)
 
 		--	native.showAlert( "MUB", Message_Type ,{"ok"} )
 
-			if Message_Type == "GROUP" or Message_Type == "BROADCAST" then
+		if Message_Type == "GROUP" or Message_Type == "BROADCAST" then
 
 
 
-				Webservice.GetMessageGroupTeamMemberList(contactId,Message_Type,get_MessageGroupTeamMemberList)
-				
-			else
+			Webservice.GetMessageGroupTeamMemberList(contactId,Message_Type,get_MessageGroupTeamMemberList)
+			
+		else
 
-				Webservice.GetContactInformation(contactId,get_avtiveTeammemberDetails)
+			Webservice.GetContactInformation(contactId,get_avtiveTeammemberDetails)
 
-			end
+		end
 
 	end
 
@@ -1308,58 +1308,58 @@ function scene:hide( event )
 
 		if popUpGroup.numChildren ~= nil then
 			for j=popUpGroup.numChildren, 1, -1 do 
-							display.remove(popUpGroup[popUpGroup.numChildren])
-							popUpGroup[popUpGroup.numChildren] = nil
-		 	end
-		 end
-		 if AlertGroup.numChildren ~= nil then
-		 	for j=AlertGroup.numChildren, 1, -1 do 
-							display.remove(AlertGroup[AlertGroup.numChildren])
-							AlertGroup[AlertGroup.numChildren] = nil
-		 	end
-		 end
+				display.remove(popUpGroup[popUpGroup.numChildren])
+				popUpGroup[popUpGroup.numChildren] = nil
+			end
+		end
+		if AlertGroup.numChildren ~= nil then
+			for j=AlertGroup.numChildren, 1, -1 do 
+				display.remove(AlertGroup[AlertGroup.numChildren])
+				AlertGroup[AlertGroup.numChildren] = nil
+			end
+		end
 
-		 	if ProfileImage ~= nil then ProfileImage:removeSelf();ProfileImage=nil end
+		if ProfileImage ~= nil then ProfileImage:removeSelf();ProfileImage=nil end
 
 		if myMap then myMap:removeSelf();myMap=nil;map_close:removeSelf();map_close=nil end
 
-		elseif phase == "did" then
+	elseif phase == "did" then
 
-			local params = { addGroupid = "editMember" , page_id = Message_Type:lower(),contacts = contactCount,name = Career_Username.text,contactId = contactId}
-
-
-			print( "Status  :"..status )
-			if status == "editArray" then
-
-				print( "Json :"..json.encode(params) )
-				event.parent:resumeGame(json.encode(params),status)
-			else
-					event.parent:resumeGameNormal(status)
-			end
+		local params = { addGroupid = "editMember" , page_id = Message_Type:lower(),contacts = contactCount,name = Career_Username.text,contactId = contactId}
 
 
-			menuBtn:removeEventListener("touch",menuTouch)
-			BgText:removeEventListener("touch",menuTouch)
+		print( "Status  :"..status )
+		if status == "editArray" then
 
-			Runtime:removeEventListener("key",onKeycareerDetail)
-
-		end	
-
-	end
-
-
-	function scene:destroy( event )
-		local sceneGroup = self.view
+			print( "Json :"..json.encode(params) )
+			event.parent:resumeGame(json.encode(params),status)
+		else
+			event.parent:resumeGameNormal(status)
+		end
 
 
+		menuBtn:removeEventListener("touch",menuTouch)
+		BgText:removeEventListener("touch",menuTouch)
 
-	end
+		Runtime:removeEventListener("key",onKeycareerDetail)
+
+	end	
+
+end
 
 
-	scene:addEventListener( "create", scene )
-	scene:addEventListener( "show", scene )
-	scene:addEventListener( "hide", scene )
-	scene:addEventListener( "destroy", scene )
+function scene:destroy( event )
+	local sceneGroup = self.view
 
 
-	return scene
+
+end
+
+
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
+
+
+return scene

@@ -74,15 +74,15 @@ local tabBarRight = "res/assert/tabSelectedRight.png"
 
 
 --------------------------------------------------
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		ContactId = row.ContactId
-	end
+for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	ContactId = row.ContactId
+end
 
 -----------------Function-------------------------
 
 local function consultantTounch( event )
 	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
+		display.getCurrentStage():setFocus( event.target )
 
 
 	elseif ( event.phase == "moved" ) then
@@ -93,51 +93,51 @@ local function consultantTounch( event )
 			consultantList_scrollview:takeFocus( event )
 		end
 
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 
 
-				if pageid_value == "group" then
+		if pageid_value == "group" then
 
-					pagervalue = "group"
+			pagervalue = "group"
 
-				else
-					pagervalue = "broadcast"
+		else
+			pagervalue = "broadcast"
 
-			    end
+		end
 
 
 
-				if addGroupid_value == "addGroup" then
+		if addGroupid_value == "addGroup" then
 
 					--selectcontact_checkbox.isOn = true
 
 				elseif addGroupid_value == "editMember" then
 
-			    else
+				else
 
- 				    local options = {
-						    effect = "flipFadeOutIn",
-							time = 200,	
-							params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
-							}
-
-
-				    composer.gotoScene( "Controller.chatPage", options )
-
-			    end
-	      end
-
-	return true
-
-end
+					local options = {
+						effect = "flipFadeOutIn",
+						time = 200,	
+						params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
+					}
 
 
+					composer.gotoScene( "Controller.chatPage", options )
+
+				end
+			end
+
+			return true
+
+		end
 
 
-local function bgTouch( event )
 
-	if event.phase == "began" then
+
+		local function bgTouch( event )
+
+			if event.phase == "began" then
 		--display.getCurrentStage():setFocus( event.target )
 		elseif event.phase == "ended" then
 		--display.getCurrentStage():setFocus( nil )
@@ -158,30 +158,30 @@ local function backactionTouch(event)
 
 		display.getCurrentStage():setFocus( event.target )
 
-	elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 
 		display.getCurrentStage():setFocus( nil )
 
 
 		if pageid_value == "group" then
 
-		    local options = {
+			local options = {
 				effect = "slideRight",
 				time = 300,	
-				}
+			}
 
-		    composer.gotoScene( "Controller.groupPage", options )
+			composer.gotoScene( "Controller.groupPage", options )
 
-     	elseif pageid_value == "broadcast" then
+		elseif pageid_value == "broadcast" then
 
-		    local options = {
+			local options = {
 				effect = "slideRight",
 				time = 300,	
-				}
+			}
 
-		     composer.gotoScene( "Controller.broadCastPage", options )
+			composer.gotoScene( "Controller.broadCastPage", options )
 
-	    end
+		end
 
 		native.setKeyboardFocus(nil)
 
@@ -203,40 +203,40 @@ end
 
 local function onKeyEvent( event )
 
-        local phase = event.phase
-        local keyName = event.keyName
+	local phase = event.phase
+	local keyName = event.keyName
 
-        if phase == "up" then
+	if phase == "up" then
 
-        if keyName=="back" then
+		if keyName=="back" then
 
-        	if BackFlag == false then
+			if BackFlag == false then
 
-        		Utils.SnackBar(ChatPage.PressAgain)
+				Utils.SnackBar(ChatPage.PressAgain)
 
-        		BackFlag = true
+				BackFlag = true
 
-        		timer.performWithDelay( 3000, onTimer )
+				timer.performWithDelay( 3000, onTimer )
 
-                return true
+				return true
 
-            elseif BackFlag == true then
+			elseif BackFlag == true then
 
-			 os.exit() 
+				os.exit() 
 
-            end
-            
-        end
+			end
+			
+		end
 
-    end
+	end
 
-        return false
- end
-
-
+	return false
+end
 
 
- local function CreateTabBarIcons( )
+
+
+local function CreateTabBarIcons( )
 
 	if tab_Group_btn ~= nil then if tab_Group_btn.y then tab_Group_btn:removeSelf( );tab_Group_btn=nil end end
 	if tab_Message_btn ~= nil then if tab_Message_btn.y then tab_Message_btn:removeSelf( );tab_Message_btn=nil end end
@@ -256,7 +256,7 @@ local function onKeyEvent( event )
 	tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
 	tab_Message_btn.anchorY=0
 
-    if IsOwner == true then
+	if IsOwner == true then
 
 		tab_broadcast_btn = display.newImageRect( tabBarGroup, "res/assert/resource.png", 35/1.4, 31/1.4 )
 		tab_broadcast_btn.x=tab_Boradcast.x
@@ -264,7 +264,7 @@ local function onKeyEvent( event )
 		tab_broadcast_btn.anchorY=0
 		tab_broadcast_btn:setFillColor( 0 )
 
-    end
+	end
 
 
 	tab_Contact_btn = display.newImageRect( tabBarGroup, "res/assert/Consultant.png", 35/1.4, 31/1.4 )
@@ -280,197 +280,197 @@ end
 
 local function TabbarTouch( event )
 
-		if event.phase == "began" then 
+	if event.phase == "began" then 
 
 		elseif event.phase == "ended" then
-			
-			if event.target.id == "message" then
+		
+		if event.target.id == "message" then
 
-				title.text = ChatPage.Chats
+			title.text = ChatPage.Chats
 
-			    	CreateTabBarIcons()
+			CreateTabBarIcons()
 
-			    	tab_Message_btn:removeSelf( );tab_Message_btn=nil
+			tab_Message_btn:removeSelf( );tab_Message_btn=nil
 
-			    	tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats active.png", 35/1.4, 31/1.4 )
-					tab_Message_btn.x=tab_Message.x
-					tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
-					tab_Message_btn.anchorY=0
-					tab_Message_btn:scale(0.1,0.1)
+			tab_Message_btn = display.newImageRect( tabBarGroup, "res/assert/chats active.png", 35/1.4, 31/1.4 )
+			tab_Message_btn.x=tab_Message.x
+			tab_Message_btn.y=tab_Message.y+tab_Message_btn.contentHeight/2-8
+			tab_Message_btn.anchorY=0
+			tab_Message_btn:scale(0.1,0.1)
 
-					tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-					local circle = display.newCircle( tabBarGroup, tab_Message_btn.x, tab_Message_btn.y+tab_Message_btn.contentHeight/2, 25 )
-					circle.strokeWidth=4
-					circle:scale(0.1,0.1)
-					circle.alpha=0.3
-					circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-					circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+			local circle = display.newCircle( tabBarGroup, tab_Message_btn.x, tab_Message_btn.y+tab_Message_btn.contentHeight/2, 25 )
+			circle.strokeWidth=4
+			circle:scale(0.1,0.1)
+			circle.alpha=0.3
+			circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-					tab_Group_txt:setFillColor( 0.3 )
-					tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-					tab_Contact_txt:setFillColor(  0.3  )
-
-
-					local function listener1( obj )
-
-						circle:removeSelf( );circle=nil
-						tab_Message_btn:scale(0.9,0.9)
-					 	
-					 	 overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
-					    overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
-
-					      local options = {
-									time = 300,	 
-									params = { tabbuttonValue3 =event.target.id}
-									}
-
-				    composer.gotoScene( "Controller.MessagingPage", options )
-					end
-
-					if overlay then overlay:removeSelf( );overlay=nil end
-
-					transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
-					transition.to( tab_Message_btn, { time=200, delay=100, xScale=1,yScale=1 , onComplete=listener1} )
-			elseif event.target.id == "broadcast" then
+			tab_Group_txt:setFillColor( 0.3 )
+			tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Contact_txt:setFillColor(  0.3  )
 
 
-				CreateTabBarIcons()
+			local function listener1( obj )
 
+				circle:removeSelf( );circle=nil
+				tab_Message_btn:scale(0.9,0.9)
+				
+				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+				overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
 
-					tab_broadcast_btn:removeSelf( );tab_broadcast_btn=nil
+				local options = {
+					time = 300,	 
+					params = { tabbuttonValue3 =event.target.id}
+				}
 
-					tab_broadcast_btn = display.newImageRect( tabBarGroup, "res/assert/resource.png", 35/1.4, 31/1.4 )
-					tab_broadcast_btn.x=tab_Boradcast.x
-					tab_broadcast_btn.y=tab_Boradcast.y+tab_broadcast_btn.contentHeight/2-8
-					tab_broadcast_btn.anchorY=0
-					tab_broadcast_btn:scale(0.1,0.1)
-					tab_broadcast_btn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-
-					tab_Broadcast_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-					tab_Message_txt:setFillColor( 0.3 )
-					tab_Contact_txt:setFillColor(  0.3  )
-					tab_Group_txt:setFillColor(  0.3  )
-
-					local circle = display.newCircle( tabBarGroup, tab_broadcast_btn.x, tab_broadcast_btn.y+tab_broadcast_btn.contentHeight/2, 25 )
-					circle.strokeWidth=4
-					circle:scale(0.1,0.1)
-					circle.alpha=0.3
-					circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-					circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
-
-					local function listener1( obj )
-
-						circle:removeSelf( );circle=nil
-						tab_broadcast_btn:scale(0.8,0.8)
-
-					    overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
-					    overlay.y=tabBg.y+6;overlay.x=tab_broadcast_btn.x
-
-					        local options = {
-									time = 300,	  
-									params = { tabbuttonValue3 =event.target.id}
-									}
-
-				   composer.gotoScene( "Controller.broadCastPage", options )
-					end
-
-					if overlay then overlay:removeSelf( );overlay=nil end
-
-					transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
-					transition.to( tab_broadcast_btn, { time=220, delay=100, xScale=1.3,yScale=1.3 , onComplete=listener1} )
-
-   				
-
-
-			elseif event.target.id == "group" then
-
-				CreateTabBarIcons()
-
-
-					tab_Group_btn:removeSelf( );tab_Group_btn=nil
-
-					tab_Group_btn = display.newImageRect( tabBarGroup, "res/assert/group active.png", 35/1.4, 31/1.4 )
-					tab_Group_btn.x=tab_Group.x
-					tab_Group_btn.y=tab_Group.y+tab_Group_btn.contentHeight/2-8
-					tab_Group_btn.anchorY=0
-					tab_Group_btn:scale(0.1,0.1)
-
-					tab_Group_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-					tab_Message_txt:setFillColor( 0.3 )
-					tab_Contact_txt:setFillColor(  0.3  )
-
-					local circle = display.newCircle( tabBarGroup, tab_Group_btn.x, tab_Group_btn.y+tab_Group_btn.contentHeight/2, 25 )
-					circle.strokeWidth=4
-					circle:scale(0.1,0.1)
-					circle.alpha=0.3
-					circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-					circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
-
-					local function listener1( obj )
-
-						circle:removeSelf( );circle=nil
-						tab_Group_btn:scale(0.8,0.8)
-
-					    overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
-					    overlay.y=tabBg.y+6;overlay.x=tab_Group_btn.x
-
-					        local options = {
-									time = 300,	  
-									params = { tabbuttonValue3 =event.target.id}
-									}
-
-				    composer.gotoScene( "Controller.groupPage", options )
-					end
-
-					if overlay then overlay:removeSelf( );overlay=nil end
-
-					transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
-					transition.to( tab_Group_btn, { time=220, delay=100, xScale=1.3,yScale=1.3 , onComplete=listener1} )
-
-   				
-
-
-
-			elseif event.target.id == "contact" then
-
-
+				composer.gotoScene( "Controller.MessagingPage", options )
 			end
 
-	    end
+			if overlay then overlay:removeSelf( );overlay=nil end
 
-    return true 
+			transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
+			transition.to( tab_Message_btn, { time=200, delay=100, xScale=1,yScale=1 , onComplete=listener1} )
+		elseif event.target.id == "broadcast" then
+
+
+			CreateTabBarIcons()
+
+
+			tab_broadcast_btn:removeSelf( );tab_broadcast_btn=nil
+
+			tab_broadcast_btn = display.newImageRect( tabBarGroup, "res/assert/resource.png", 35/1.4, 31/1.4 )
+			tab_broadcast_btn.x=tab_Boradcast.x
+			tab_broadcast_btn.y=tab_Boradcast.y+tab_broadcast_btn.contentHeight/2-8
+			tab_broadcast_btn.anchorY=0
+			tab_broadcast_btn:scale(0.1,0.1)
+			tab_broadcast_btn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+			tab_Broadcast_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Message_txt:setFillColor( 0.3 )
+			tab_Contact_txt:setFillColor(  0.3  )
+			tab_Group_txt:setFillColor(  0.3  )
+
+			local circle = display.newCircle( tabBarGroup, tab_broadcast_btn.x, tab_broadcast_btn.y+tab_broadcast_btn.contentHeight/2, 25 )
+			circle.strokeWidth=4
+			circle:scale(0.1,0.1)
+			circle.alpha=0.3
+			circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+			local function listener1( obj )
+
+				circle:removeSelf( );circle=nil
+				tab_broadcast_btn:scale(0.8,0.8)
+
+				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+				overlay.y=tabBg.y+6;overlay.x=tab_broadcast_btn.x
+
+				local options = {
+					time = 300,	  
+					params = { tabbuttonValue3 =event.target.id}
+				}
+
+				composer.gotoScene( "Controller.broadCastPage", options )
+			end
+
+			if overlay then overlay:removeSelf( );overlay=nil end
+
+			transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
+			transition.to( tab_broadcast_btn, { time=220, delay=100, xScale=1.3,yScale=1.3 , onComplete=listener1} )
+
+			
+
+
+		elseif event.target.id == "group" then
+
+			CreateTabBarIcons()
+
+
+			tab_Group_btn:removeSelf( );tab_Group_btn=nil
+
+			tab_Group_btn = display.newImageRect( tabBarGroup, "res/assert/group active.png", 35/1.4, 31/1.4 )
+			tab_Group_btn.x=tab_Group.x
+			tab_Group_btn.y=tab_Group.y+tab_Group_btn.contentHeight/2-8
+			tab_Group_btn.anchorY=0
+			tab_Group_btn:scale(0.1,0.1)
+
+			tab_Group_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Message_txt:setFillColor( 0.3 )
+			tab_Contact_txt:setFillColor(  0.3  )
+
+			local circle = display.newCircle( tabBarGroup, tab_Group_btn.x, tab_Group_btn.y+tab_Group_btn.contentHeight/2, 25 )
+			circle.strokeWidth=4
+			circle:scale(0.1,0.1)
+			circle.alpha=0.3
+			circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+
+			local function listener1( obj )
+
+				circle:removeSelf( );circle=nil
+				tab_Group_btn:scale(0.8,0.8)
+
+				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+				overlay.y=tabBg.y+6;overlay.x=tab_Group_btn.x
+
+				local options = {
+					time = 300,	  
+					params = { tabbuttonValue3 =event.target.id}
+				}
+
+				composer.gotoScene( "Controller.groupPage", options )
+			end
+
+			if overlay then overlay:removeSelf( );overlay=nil end
+
+			transition.to( circle, { time=200, delay=100, xScale=1,yScale=1,alpha=0 } )
+			transition.to( tab_Group_btn, { time=220, delay=100, xScale=1.3,yScale=1.3 , onComplete=listener1} )
+
+			
+
+
+
+		elseif event.target.id == "contact" then
+
+
+		end
+
+	end
+
+	return true 
 
 end
 
 
 
 
-	local function onSwitchPress( event )
+local function onSwitchPress( event )
 
-		local switch = event.target
+	local switch = event.target
 
-		    if tostring(switch.isOn) == "true" then
+	if tostring(switch.isOn) == "true" then
 
-				local contactid = switch.value
+		local contactid = switch.value
 
-				checkedstate = checkedstate + 1
+		checkedstate = checkedstate + 1
 
 
-			elseif tostring(switch.isOn) == "false" then
+	elseif tostring(switch.isOn) == "false" then
 
-			 	checkedstate = checkedstate - 1
+		checkedstate = checkedstate - 1
 
-		    end
+	end
 
 
 				  --  if addGroupid_value == "addGroup" and pageid_value == "broadcast"  then
 
-					    if checkedstate > 0 then
+				  if checkedstate > 0 then
 
-					   		 count_details.isVisible = true
+				  	count_details.isVisible = true
 
-					  		  count_details.text = checkedstate.." selected"
+				  	count_details.text = checkedstate.." selected"
 
 
 				      		-- totalcareerlist = switch.totalvalue - 1
@@ -481,227 +481,227 @@ end
 
 				        --     count_details.text = checkedstate.."/"..totalcareerlist
 
-					    else
+				    else
 
-				  		    count_details.isVisible = false
+				    	count_details.isVisible = false
 
-					    end
+				    end
 
 					--end
 
-	end
+				end
 
 
 
 
 
-	local function SetError( displaystring, object )
+				local function SetError( displaystring, object )
 
-		object.text=displaystring
-		object.size=10
-		object:setTextColor(1,0,0)
+					object.text=displaystring
+					object.size=10
+					object:setTextColor(1,0,0)
 
-	end
-
-
+				end
 
 
 
-	local function onGroupCreationComplete( event )
-		   if event.action == "clicked" then
-		        local i = event.index
-		        if i == 1 then  
+
+
+				local function onGroupCreationComplete( event )
+					if event.action == "clicked" then
+						local i = event.index
+						if i == 1 then  
 		      --[[
 
         addGroupid_value
 		editMember
 		editId]]  		    if addGroupid_value ~= "editMember" then
 
-								if grouptypevalue == "GROUP" then
+		if grouptypevalue == "GROUP" then
 
-			 				        local options = {
-										effect = "slideRight",
-										time = 300,	
-										params = { pagevalue = grouptypevalue}
-										}
+			local options = {
+				effect = "slideRight",
+				time = 300,	
+				params = { pagevalue = grouptypevalue}
+			}
 
-					        		composer.gotoScene("Controller.groupPage",options)
+			composer.gotoScene("Controller.groupPage",options)
 
-					            elseif grouptypevalue == "BROADCAST" then
-
-
-			 				        local options = {
-										effect = "slideRight",
-										time = 300,	
-										params = { pagevalue = grouptypevalue}
-										}
-
-					            	composer.gotoScene("Controller.broadCastPage",options)
-
-					        	end
-
-					        else
-
-					        	composer.hideOverlay()
+		elseif grouptypevalue == "BROADCAST" then
 
 
-					        end
+			local options = {
+				effect = "slideRight",
+				time = 300,	
+				params = { pagevalue = grouptypevalue}
+			}
 
-		        end
+			composer.gotoScene("Controller.broadCastPage",options)
 
-		    end
-    end
+		end
 
+	else
 
-
-	local function onComplete( event )
-		   if event.action == "clicked" then
-		        local i = event.index
-		        if i == 1 then  
-
-		        end
-
-		    end
-    end
+		composer.hideOverlay()
 
 
-		    function getAddedMembersInGroup(response)
+	end
 
-			    	if response == "Success" then
+end
 
-						    		if addGroupid_value ~= "editMember" then
-
-									    		if grouptypevalue == "GROUP" then
-
-								    				local alert = native.showAlert( ChatPage.GroupCreated ,ChatPage.GroupCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
-
-									    	    else
-
-									    	    	local alert = native.showAlert( ChatPage.BroadcastListCreated ,ChatPage.BroadcastListCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
-
-									    	    end
-
-									 elseif addGroupid_value == "editMember" then
+end
+end
 
 
 
-									 			if grouptypevalue == "GROUP" then
+local function onComplete( event )
+	if event.action == "clicked" then
+		local i = event.index
+		if i == 1 then  
 
-								    				local alert = native.showAlert( "Group Updated" ,"Group updated successfully", { CommonWords.ok }, onGroupCreationComplete )
+		end
 
-									    	    else
-
-									    	    	local alert = native.showAlert( "Broadcast List Updated" ,"Broadcast List updated successfully", { CommonWords.ok }, onGroupCreationComplete )
-
-									    	    end
-
-
-									 end
-
-			    	end
-
-		    end
+	end
+end
 
 
+function getAddedMembersInGroup(response)
+
+	if response == "Success" then
+
+		if addGroupid_value ~= "editMember" then
+
+			if grouptypevalue == "GROUP" then
+
+				local alert = native.showAlert( ChatPage.GroupCreated ,ChatPage.GroupCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+
+			else
+
+				local alert = native.showAlert( ChatPage.BroadcastListCreated ,ChatPage.BroadcastListCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+
+			end
+
+		elseif addGroupid_value == "editMember" then
 
 
 
-	 function getChatGroupCreation(response )
+			if grouptypevalue == "GROUP" then
 
-		groupcreation_response = response
+				local alert = native.showAlert( "Group Updated" ,"Group updated successfully", { CommonWords.ok }, onGroupCreationComplete )
+
+			else
+
+				local alert = native.showAlert( "Broadcast List Updated" ,"Broadcast List updated successfully", { CommonWords.ok }, onGroupCreationComplete )
+
+			end
 
 
-		print("Group creation name edited : "..json.encode(groupcreation_response))
+		end
+
+	end
+
+end
 
 
-		GroupSubject.text = ""
+
+
+
+function getChatGroupCreation(response )
+
+	groupcreation_response = response
+
+
+	print("Group creation name edited : "..json.encode(groupcreation_response))
+
+
+	GroupSubject.text = ""
+
+	groupSubjectname = ""
+
+	groupid_value = groupcreation_response.MyUnitBuzzGroupId
+
+	grouptypevalue = groupcreation_response.MyUnitBuzzGroupType
+
+
+	local groupId = 0
+
+	if addGroupid_value == "editMember" then
+
+		groupId = editId
+
+		editedgroupname = groupcreation_response.MyUnitBuzzGroupName
+
+	else
+
+		groupId = groupid_value
+	end
+
+
+	if grouptypevalue == "BROADCAST" then
+
+		Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupId,selected_Contact,getAddedMembersInGroup)
+
+	elseif grouptypevalue == "GROUP" then
+
+		Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupId,selected_Contact,getAddedMembersInGroup)
+
+	end
+
+
+end 
+
+
+
+
+
+
+
+function textField( event )
+
+	if ( event.phase == "began" ) then
+
+		event.target:setTextColor(color.black)
+
+		current_textField = nil
+
+		current_textField = event.target;	
+
+		current_textField.size=14
 
 		groupSubjectname = ""
 
-		groupid_value = groupcreation_response.MyUnitBuzzGroupId
-
-		grouptypevalue = groupcreation_response.MyUnitBuzzGroupType
-
-
-		local groupId = 0
-
-		if addGroupid_value == "editMember" then
-
-			groupId = editId
-
-		    editedgroupname = groupcreation_response.MyUnitBuzzGroupName
-
-		else
-
-			groupId = groupid_value
+		if "*" == event.target.text:sub(1,1) then
+			event.target.text=""
+			current_textField.text = ""
 		end
+		
+	elseif ( event.phase == "submitted" ) then
 
-
-			if grouptypevalue == "BROADCAST" then
-
-				 Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupId,selected_Contact,getAddedMembersInGroup)
-
-			elseif grouptypevalue == "GROUP" then
-
-				 Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupId,selected_Contact,getAddedMembersInGroup)
-
-		    end
-
-
-	 end 
-
-
-
-
-
-
-
-	function textField( event )
-
-		if ( event.phase == "began" ) then
-
-				event.target:setTextColor(color.black)
-
-				current_textField = nil
-
-				current_textField = event.target;	
-
-				current_textField.size=14
-
-				groupSubjectname = ""
-
-				if "*" == event.target.text:sub(1,1) then
-					event.target.text=""
-					current_textField.text = ""
-				end
-				
-		elseif ( event.phase == "submitted" ) then
-
-			native.setKeyboardFocus(nil)
+		native.setKeyboardFocus(nil)
 
 		elseif event.phase == "ended" then
 
-			native.setKeyboardFocus(nil)
+		native.setKeyboardFocus(nil)
 
-		elseif ( event.phase == "editing" ) then
+	elseif ( event.phase == "editing" ) then
 
-				 if (current_textField.id == "groupSubject") then
+		if (current_textField.id == "groupSubject") then
 
 
-				 	if event.target.text:len() > 25 then
+			if event.target.text:len() > 25 then
 
-						event.target.text = event.target.text:sub(1,25)
+				event.target.text = event.target.text:sub(1,25)
 
-						native.setKeyboardFocus(nil)
+				native.setKeyboardFocus(nil)
 
-					end
+			end
 
-						groupSubjectname = event.target.text
+			groupSubjectname = event.target.text
 
 						--print("group subject name ############################ : ",groupSubjectname)
+					end
 				end
-		 end
-    end
+			end
 
 
 
@@ -710,79 +710,79 @@ end
 
 
 
-	local function createGroup(event)
+			local function createGroup(event)
 
-		if event.phase == "began" then
-			
-			native.setKeyboardFocus(nil)
+				if event.phase == "began" then
+					
+					native.setKeyboardFocus(nil)
 
-		elseif event.phase == "ended" then
+					elseif event.phase == "ended" then
 
 					print( "**************** here *****************" )
 
-		      local validation = true
+					local validation = true
 
-              native.setKeyboardFocus(nil)
-
-
-                if pageid_value == "group" then
-
-				     if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == ChatDetails.GroupSubjectError or GroupSubject.text == GroupSubject.id then
-			            
-			             validation=false
-
-				     	 SetError(ChatDetails.GroupSubjectError,GroupSubject)
-
-				     elseif GroupSubject.text ~= "" or GroupSubject.text  ~= GroupSubject.placeholder or GroupSubject.text  ~= ChatDetails.GroupSubjectError or GroupSubject.text  ~= GroupSubject.id then
-
-				      	 GroupSubject.text = groupSubjectname
-
-				     end
-
-				end
+					native.setKeyboardFocus(nil)
 
 
+					if pageid_value == "group" then
 
-                if pageid_value == "broadcast" then
+						if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == ChatDetails.GroupSubjectError or GroupSubject.text == GroupSubject.id then
+							
+							validation=false
 
-				      if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
+							SetError(ChatDetails.GroupSubjectError,GroupSubject)
 
-			             GroupSubject.text = ""
+						elseif GroupSubject.text ~= "" or GroupSubject.text  ~= GroupSubject.placeholder or GroupSubject.text  ~= ChatDetails.GroupSubjectError or GroupSubject.text  ~= GroupSubject.id then
 
-				      elseif GroupSubject.text ~= "" or GroupSubject.text  ~= GroupSubject.placeholder or GroupSubject.text  ~= ChatDetails.GroupSubjectError or GroupSubject.text  ~= GroupSubject.id then
+							GroupSubject.text = groupSubjectname
 
-				      	 GroupSubject.text = groupSubjectname
+						end
 
-				      end
+					end
 
-			    end
+
+
+					if pageid_value == "broadcast" then
+
+						if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
+
+							GroupSubject.text = ""
+
+						elseif GroupSubject.text ~= "" or GroupSubject.text  ~= GroupSubject.placeholder or GroupSubject.text  ~= ChatDetails.GroupSubjectError or GroupSubject.text  ~= GroupSubject.id then
+
+							GroupSubject.text = groupSubjectname
+
+						end
+
+					end
 
 --------------------------------------------------------------------------------------
-                 
-
-			    if(validation == true) then
-
-				      	GroupSubject.text = groupSubjectname
-
-					      	for i=1,#selected_Contact do
-
-					      		selected_Contact[i]=nil
-
-					      	end
-
-				      	 
-					      	for i=1,#careerListArray do
 
 
-					      		local tempGroup = careerListArray[i]
+if(validation == true) then
 
-						      		for j=1,tempGroup.numChildren do
+	GroupSubject.text = groupSubjectname
 
-						      			if tempGroup[j].id == "email_Checkbox" then
+	for i=1,#selected_Contact do
 
-							      			if tostring(tempGroup[j].isOn) == "true" then
+		selected_Contact[i]=nil
 
-							      				selected_Contact[#selected_Contact+1] = tempGroup[j].value
+	end
+
+	
+	for i=1,#careerListArray do
+
+
+		local tempGroup = careerListArray[i]
+
+		for j=1,tempGroup.numChildren do
+
+			if tempGroup[j].id == "email_Checkbox" then
+
+				if tostring(tempGroup[j].isOn) == "true" then
+
+					selected_Contact[#selected_Contact+1] = tempGroup[j].value
 
 							      				--print(selected_Contact[#selected_Contact+1])
 
@@ -792,128 +792,128 @@ end
 
 							      	end
 
-					       	end
+							      end
 
 
 
 
-					      	 if pageid_value:lower() == "group" then
+							      if pageid_value:lower() == "group" then
 
-					      	 	 if #selected_Contact>0 then
-
-
-						      	 	 	     if addGroupid_value ~= "editMember" then
-
-						      	 	 	     		groupteammemberids = 0
-
-						      	 	 	     else
-
-						      	 	 	     		groupteammemberids = selected_Contact
-						      	 	 	     end
+							      	if #selected_Contact>0 then
 
 
+							      		if addGroupid_value ~= "editMember" then
+
+							      			groupteammemberids = 0
+
+							      		else
+
+							      			groupteammemberids = selected_Contact
+							      		end
 
 
-					      	 	 	if addGroupid_value ~= "editMember" then
 
-					      	 	     	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",0,getChatGroupCreation)
 
-					      	 	    else
+							      		if addGroupid_value ~= "editMember" then
 
-					      	 	    	grouptypevalue = pageid_value:upper()
+							      			Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",0,getChatGroupCreation)
 
-					      	 	    	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,getChatGroupCreation)
-					      	 	    	
+							      		else
+
+							      			grouptypevalue = pageid_value:upper()
+
+							      			Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,getChatGroupCreation)
+							      			
 				 						--Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
 
 
-					      	 	    end
-				                 
-				                 else
+				 					end
+				 					
+				 				else
 
-				                      local alert = native.showAlert( ChatPage.addTeamMember, ChatPage.addLimit, { CommonWords.ok }, onComplete )
+				 					local alert = native.showAlert( ChatPage.addTeamMember, ChatPage.addLimit, { CommonWords.ok }, onComplete )
 
-				                 end
+				 				end
 
-			                 end
-
-
-
-
-			                  if pageid_value:lower() == "broadcast" then
-
-				                  	if #selected_Contact>0 then
-
-
-						                  		 if addGroupid_value ~= "editMember" then
-
-							      	 	 	     			groupteammemberids = 0
-
-							      	 	 	     else
-
-							      	 	 	     			groupteammemberids = selected_Contact
-							      	 	 	     end
+				 			end
 
 
 
-					                  		if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
+
+				 			if pageid_value:lower() == "broadcast" then
+
+				 				if #selected_Contact>0 then
+
+
+				 					if addGroupid_value ~= "editMember" then
+
+				 						groupteammemberids = 0
+
+				 					else
+
+				 						groupteammemberids = selected_Contact
+				 					end
+
+
+
+				 					if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
 
 						                  		 --GroupSubject.text = #selected_Contact.." recipients"
 						                  		 if addGroupid_value ~= "editMember" then
 
-								      	 	   		Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",0,getChatGroupCreation)
+						                  		 	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",0,getChatGroupCreation)
 
-								      	 	   	 else
+						                  		 else
 
-								      	 	    	grouptypevalue = pageid_value:upper()
+						                  		 	grouptypevalue = pageid_value:upper()
 
-								      	 	    	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true",grouptypevalue,editId,getChatGroupCreation)
-
-
-							 					--	Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
-
-								      	 	    end
-
-
-							      	 	    else
-
-
-								      	 	      if addGroupid_value ~= "editMember" then
-
-								      	 	   		Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",0,getChatGroupCreation)
-
-								      	 	   	 else
-
-								      	 	    	grouptypevalue = pageid_value:upper()
-
-								      	 	    	Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,getChatGroupCreation)
+						                  		 	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true",grouptypevalue,editId,getChatGroupCreation)
 
 
 							 					--	Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
 
-								      	 	    end
+							 				end
 
 
-							      	 	    end
-				                 
-					                else
-
-					                       local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addBroadcastLimit , { CommonWords.ok }, onComplete )
-
-					                end
-
-				              end
+							 			else
 
 
+							 				if addGroupid_value ~= "editMember" then
 
-			    end
+							 					Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",0,getChatGroupCreation)
+
+							 				else
+
+							 					grouptypevalue = pageid_value:upper()
+
+							 					Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,getChatGroupCreation)
+
+
+							 					--	Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
+
+							 				end
+
+
+							 			end
+							 			
+							 		else
+
+							 			local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addBroadcastLimit , { CommonWords.ok }, onComplete )
+
+							 		end
+
+							 	end
+
+
+
+							 end
 ---------------------------------------------------------------------------------------
 
-		 end
+end
 
-	end
+end
 
-	
+
 
 
 local function careePath_list( list )
@@ -926,36 +926,36 @@ local function careePath_list( list )
 	end
 
 	for i=1,#list do
-      
+		
 
-      if tostring(list[i].Contact_Id) ~= tostring(ContactId) then
+		if tostring(list[i].Contact_Id) ~= tostring(ContactId) then
 
-		careerListArray[#careerListArray+1] = display.newGroup()
+			careerListArray[#careerListArray+1] = display.newGroup()
 
-		local tempGroup = careerListArray[#careerListArray]
+			local tempGroup = careerListArray[#careerListArray]
 
-		local Image 
+			local Image 
 
-		local tempHeight = 0
+			local tempHeight = 0
 
-		local background = display.newRect(tempGroup,0,0,W,50)
+			local background = display.newRect(tempGroup,0,0,W,50)
 
-		if(careerListArray[#careerListArray-1]) ~= nil then
-			tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height+3
-		end
-
-		background.anchorY = 0
-		background.x=W/2;background.y=tempHeight
-		background.id=list[i].Contact_Id
-		background.alpha=0.01
-		background.value = list[i]
-
-		if parentFlag == true then
-			parentFlag=false
-
-
-			parentTitle = display.newRect(tempGroup,0,0,W,25)
 			if(careerListArray[#careerListArray-1]) ~= nil then
+				tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height+3
+			end
+
+			background.anchorY = 0
+			background.x=W/2;background.y=tempHeight
+			background.id=list[i].Contact_Id
+			background.alpha=0.01
+			background.value = list[i]
+
+			if parentFlag == true then
+				parentFlag=false
+
+
+				parentTitle = display.newRect(tempGroup,0,0,W,25)
+				if(careerListArray[#careerListArray-1]) ~= nil then
 				--here
 				tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height/2+10
 			end
@@ -994,7 +994,7 @@ local function careePath_list( list )
 						print ( "Network error - download failed" )
 					else
 
-                        if Image ~= nil then
+						if Image ~= nil then
 
 							if Image.y ~= nil then Image:removeSelf() 
 
@@ -1005,18 +1005,18 @@ local function careePath_list( list )
 							Image.x=30;Image.y=background.y+background.contentHeight/2
 	    				    --event.row:insert(img_event.target)
 
-    				        local mask = graphics.newMask( "res/assert/masknew.png" )
+	    				    local mask = graphics.newMask( "res/assert/masknew.png" )
 
-							Image:setMask( mask )
+	    				    Image:setMask( mask )
 
-					     end
+	    				end
 
-					     end
+	    			end
 
-    			   
-    			    end
+	    			
+	    		end
 
-    			end, list[i].Contact_Id..".png", system.TemporaryDirectory)
+	    		end, list[i].Contact_Id..".png", system.TemporaryDirectory)
 		else
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2
@@ -1048,51 +1048,51 @@ local function careePath_list( list )
 
 		if addGroupid_value =="addGroup" or addGroupid_value == "editMember" then
 
-		contactidvalue =  list[i].Contact_Id
+			contactidvalue =  list[i].Contact_Id
 
 
 
 
-		local selectcontact_checkbox = widget.newSwitch(
-		{
-		left = 15,
-		top = Position_txt.y-5,
-		style = "checkbox",
-		id = "email_Checkbox",
-		initialSwitchState = false,
-		onPress = onSwitchPress
-		})
-		selectcontact_checkbox.width= 20
-		selectcontact_checkbox.height = 20
-		selectcontact_checkbox.anchorX=0
-		selectcontact_checkbox.totalvalue = #list
-		selectcontact_checkbox.key="checkbox"
-		selectcontact_checkbox.value = contactidvalue
-		selectcontact_checkbox.x = background.x+background.contentWidth/2-33
-		selectcontact_checkbox.y=background.y+background.height/2
+			local selectcontact_checkbox = widget.newSwitch(
+			{
+				left = 15,
+				top = Position_txt.y-5,
+				style = "checkbox",
+				id = "email_Checkbox",
+				initialSwitchState = false,
+				onPress = onSwitchPress
+				})
+			selectcontact_checkbox.width= 20
+			selectcontact_checkbox.height = 20
+			selectcontact_checkbox.anchorX=0
+			selectcontact_checkbox.totalvalue = #list
+			selectcontact_checkbox.key="checkbox"
+			selectcontact_checkbox.value = contactidvalue
+			selectcontact_checkbox.x = background.x+background.contentWidth/2-33
+			selectcontact_checkbox.y=background.y+background.height/2
 
-		tempGroup:insert(selectcontact_checkbox)
+			tempGroup:insert(selectcontact_checkbox)
 
 
-		subjectBar.isVisible = true
-		GroupSubject.isVisible = true
-		create_groupicon.isVisible = true
-		backbutton.isVisible = true
-		if addGroupid_value == "editMember" then
-			for j=1,#editContacts do
+			subjectBar.isVisible = true
+			GroupSubject.isVisible = true
+			create_groupicon.isVisible = true
+			backbutton.isVisible = true
+			if addGroupid_value == "editMember" then
+				for j=1,#editContacts do
 
-				if tonumber(contactidvalue) == tonumber(editContacts[j]) then
-					selectcontact_checkbox:setState( { isOn=true, isAnimated=true, onComplete=onSwitchPress } )
+					if tonumber(contactidvalue) == tonumber(editContacts[j]) then
+						selectcontact_checkbox:setState( { isOn=true, isAnimated=true, onComplete=onSwitchPress } )
+
+					end
 
 				end
-
 			end
-		end
 
 
 		else
 
-	    end
+		end
 
 
 
@@ -1125,48 +1125,48 @@ function get_Activeteammember(response)
 	Listresponse_array=response
 
 	if response ~= nil and #response ~= 0 then
-				
+		
 --NameArray
 
 
-						for i=1,#Listresponse_array do
+for i=1,#Listresponse_array do
 
-							local list_Name = Listresponse_array[i].Last_Name
+	local list_Name = Listresponse_array[i].Last_Name
 
-							
+	
 
-								if Listresponse_array[i].First_Name then
+	if Listresponse_array[i].First_Name then
 
-									list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
-
-								end
-
-							
-
-							local temp = {}
-
-							if list_Name:sub(1,1) == " " then
-								list_Name = list_Name:sub( 2,list_Name:len())
-							end
-
-							temp.Name = list_Name
-							temp.CarrierProgress = Listresponse_array[i].Email_Address
-							temp.Contact_Id = Listresponse_array[i].Contact_Id
-							temp.Image_Path = Listresponse_array[i].Image_Path
-							temp.Image_Name = Listresponse_array[i].Image_Name
-
-							byNameArray[#byNameArray+1] = temp
-
-
-						end
-
-								careePath_list(byNameArray)
-
-	else
-
-		NoEvent.isVisible=true
+		list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
 
 	end
+
+	
+
+	local temp = {}
+
+	if list_Name:sub(1,1) == " " then
+		list_Name = list_Name:sub( 2,list_Name:len())
+	end
+
+	temp.Name = list_Name
+	temp.CarrierProgress = Listresponse_array[i].Email_Address
+	temp.Contact_Id = Listresponse_array[i].Contact_Id
+	temp.Image_Path = Listresponse_array[i].Image_Path
+	temp.Image_Name = Listresponse_array[i].Image_Name
+
+	byNameArray[#byNameArray+1] = temp
+
+
+end
+
+careePath_list(byNameArray)
+
+else
+
+	NoEvent.isVisible=true
+
+end
 end
 
 
@@ -1247,7 +1247,7 @@ function scene:create( event )
 	Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
 
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
@@ -1270,174 +1270,174 @@ function scene:show( event )
 		end
 
 
-if addGroupid_value ~= "editMember" then
+		if addGroupid_value ~= "editMember" then
 
-tabBg = display.newRect( tabBarGroup, W/2, H-40, W, 40 )
-tabBg.anchorY=0
-tabBg.strokeWidth = 1
-tabBg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor),0.7 )
+			tabBg = display.newRect( tabBarGroup, W/2, H-40, W, 40 )
+			tabBg.anchorY=0
+			tabBg.strokeWidth = 1
+			tabBg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor),0.7 )
 
-tab_Group = display.newRect(tabBarGroup,0,0,70,40)
-tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
-tab_Group.anchorY=0
-tab_Group.alpha=0.01
-tab_Group.id="group"
-tab_Group:setFillColor( 0.2 )
+			tab_Group = display.newRect(tabBarGroup,0,0,70,40)
+			tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
+			tab_Group.anchorY=0
+			tab_Group.alpha=0.01
+			tab_Group.id="group"
+			tab_Group:setFillColor( 0.2 )
 
-tab_Message = display.newRect(tabBarGroup,0,0,70,40)
-if IsOwner == true then
-tab_Message.x=W/2-W/8
-else
-tab_Message.x = W/2
-end
-tab_Message.y=tabBg.y
-tab_Message.anchorY=0
-tab_Message.alpha=0.01
-tab_Message.id="message"
-tab_Message:setFillColor( 0.2 )
+			tab_Message = display.newRect(tabBarGroup,0,0,70,40)
+			if IsOwner == true then
+				tab_Message.x=W/2-W/8
+			else
+				tab_Message.x = W/2
+			end
+			tab_Message.y=tabBg.y
+			tab_Message.anchorY=0
+			tab_Message.alpha=0.01
+			tab_Message.id="message"
+			tab_Message:setFillColor( 0.2 )
 
-if IsOwner == true then
-tab_Boradcast = display.newRect(tabBarGroup,0,0,70,40)
-tab_Boradcast.x=W/2+W/10;tab_Boradcast.y=tabBg.y
-tab_Boradcast.anchorY=0
-tab_Boradcast.alpha=0.01
-tab_Boradcast.id="broadcast"
-tab_Boradcast:setFillColor( 0.2 )
+			if IsOwner == true then
+				tab_Boradcast = display.newRect(tabBarGroup,0,0,70,40)
+				tab_Boradcast.x=W/2+W/10;tab_Boradcast.y=tabBg.y
+				tab_Boradcast.anchorY=0
+				tab_Boradcast.alpha=0.01
+				tab_Boradcast.id="broadcast"
+				tab_Boradcast:setFillColor( 0.2 )
 
-tab_Boradcast:addEventListener( "touch", TabbarTouch )
-end
+				tab_Boradcast:addEventListener( "touch", TabbarTouch )
+			end
 
-tab_Contact = display.newRect(tabBarGroup,0,0,70,40)
-tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
-tab_Contact.anchorY=0
-tab_Contact.alpha=0.01
-tab_Contact.id="contact"
-tab_Contact:setFillColor( 0.2 )
+			tab_Contact = display.newRect(tabBarGroup,0,0,70,40)
+			tab_Contact.x=W/2+W/3;tab_Contact.y=tabBg.y
+			tab_Contact.anchorY=0
+			tab_Contact.alpha=0.01
+			tab_Contact.id="contact"
+			tab_Contact:setFillColor( 0.2 )
 
-tab_Group:addEventListener( "touch", TabbarTouch )
-tab_Message:addEventListener( "touch", TabbarTouch )
-tab_Contact:addEventListener( "touch", TabbarTouch )
+			tab_Group:addEventListener( "touch", TabbarTouch )
+			tab_Message:addEventListener( "touch", TabbarTouch )
+			tab_Contact:addEventListener( "touch", TabbarTouch )
 
-CreateTabBarIcons()
+			CreateTabBarIcons()
 
-	if tab_Contact_btn then tab_Contact_btn:removeSelf( );tab_Contact_btn=nil end
+			if tab_Contact_btn then tab_Contact_btn:removeSelf( );tab_Contact_btn=nil end
 
-	tab_Contact_btn = display.newImageRect( tabBarGroup, "res/assert/Consultant active.png", 35/1.4, 31/1.4 )
-	tab_Contact_btn.x=tab_Contact.x
-	tab_Contact_btn.y=tab_Contact.y+tab_Contact_btn.contentHeight/2-8
-	tab_Contact_btn.anchorY=0
+			tab_Contact_btn = display.newImageRect( tabBarGroup, "res/assert/Consultant active.png", 35/1.4, 31/1.4 )
+			tab_Contact_btn.x=tab_Contact.x
+			tab_Contact_btn.y=tab_Contact.y+tab_Contact_btn.contentHeight/2-8
+			tab_Contact_btn.anchorY=0
 
-	
+			
 
-tab_Group_txt = display.newText( tabBarGroup, ChatPage.Group ,0,0,native.systemFont,11 )
-tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
-tab_Group_txt:setFillColor( 0.3 )
+			tab_Group_txt = display.newText( tabBarGroup, ChatPage.Group ,0,0,native.systemFont,11 )
+			tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
+			tab_Group_txt:setFillColor( 0.3 )
 
-if IsOwner == true then
-tab_Broadcast_txt = display.newText( tabBarGroup,ChatPage.Broadcast,0,0,native.systemFont,11 )
-tab_Broadcast_txt.x=tab_broadcast_btn.x;tab_Broadcast_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
-tab_Broadcast_txt:setFillColor( 0.3 )
-end
-
-
-tab_Message_txt = display.newText( tabBarGroup,ChatPage.Chats ,0,0,native.systemFont,11 )
-tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
-tab_Message_txt:setFillColor( 0.3 )
-
-tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List  ,0,0,native.systemFont,11 )
-tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
-tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-if overlay then overlay:removeSelf( );overlay=nil end
-overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
-overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
-
-sceneGroup:insert( tabBarGroup )
-
-end
+			if IsOwner == true then
+				tab_Broadcast_txt = display.newText( tabBarGroup,ChatPage.Broadcast,0,0,native.systemFont,11 )
+				tab_Broadcast_txt.x=tab_broadcast_btn.x;tab_Broadcast_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
+				tab_Broadcast_txt:setFillColor( 0.3 )
+			end
 
 
-	    if addGroupid_value == "addGroup" and pageid_value == "group" then
+			tab_Message_txt = display.newText( tabBarGroup,ChatPage.Chats ,0,0,native.systemFont,11 )
+			tab_Message_txt.x=tab_Message_btn.x;tab_Message_txt.y=tab_Message_btn.y+tab_Message_btn.contentHeight+5
+			tab_Message_txt:setFillColor( 0.3 )
 
-		    	RecentTab_Topvalue = 115
+			tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List  ,0,0,native.systemFont,11 )
+			tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
+			tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			if overlay then overlay:removeSelf( );overlay=nil end
+			overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
+			overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
+
+			sceneGroup:insert( tabBarGroup )
+
+		end
+
+
+		if addGroupid_value == "addGroup" and pageid_value == "group" then
+
+			RecentTab_Topvalue = 115
 
 				--GroupSubject.isVisible = false
 
-	    elseif addGroupid_value == "addGroup" and pageid_value == "broadcast" then
+			elseif addGroupid_value == "addGroup" and pageid_value == "broadcast" then
 
-		    	RecentTab_Topvalue = 115
+				RecentTab_Topvalue = 115
 
-		    	title.text = ChatPage.Broadcast
+				title.text = ChatPage.Broadcast
 
-		    	GroupSubject.placeholder = ChatPage.broadcastSubject
+				GroupSubject.placeholder = ChatPage.broadcastSubject
 
-		    	count_details.isVisible = true
+				count_details.isVisible = true
 
 	    	    --GroupSubject.isVisible = false
 
 	    	    --Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
-	   	elseif addGroupid_value == "editMember" and (pageid_value:lower() == "group" or pageid_value:lower() == "broadcast") then
+	    	elseif addGroupid_value == "editMember" and (pageid_value:lower() == "group" or pageid_value:lower() == "broadcast") then
 
-	   			RecentTab_Topvalue = 115
+	    		RecentTab_Topvalue = 115
 
-		    	title.text = "Edit Member"
+	    		title.text = "Edit Member"
 
-		    	GroupSubject.placeholder = ChatPage.broadcastSubject
+	    		GroupSubject.placeholder = ChatPage.broadcastSubject
 
-		    	count_details.isVisible = true
+	    		count_details.isVisible = true
 
-		    	GroupSubject.text =  event.params.name
+	    		GroupSubject.text =  event.params.name
 
-		    	editId = event.params.contactId
+	    		editId = event.params.contactId
 
-		    	count_details.text = #editContacts.." Selected"
-
-
-
-	    else
-
-	    	RecentTab_Topvalue = 75
-
-	    end
+	    		count_details.text = #editContacts.." Selected"
 
 
 
-		consultantList_scrollview = widget.newScrollView
-		{
-			top = RecentTab_Topvalue-5,
-			left = 0,
-			width = W,
-			height =H-RecentTab_Topvalue-45,
-			hideBackground = true,
-            backgroundColor = {0,0,0,0.6},
-			isBounceEnabled=false,
-			horizontalScrollingDisabled = true,
-			verticalScrollingDisabled = false
-		}
+	    	else
 
-        sceneGroup:insert(consultantList_scrollview)
-		
+	    		RecentTab_Topvalue = 75
+
+	    	end
 
 
 
-	elseif phase == "did" then
+	    	consultantList_scrollview = widget.newScrollView
+	    	{
+	    		top = RecentTab_Topvalue-5,
+	    		left = 0,
+	    		width = W,
+	    		height =H-RecentTab_Topvalue-45,
+	    		hideBackground = true,
+	    		backgroundColor = {0,0,0,0.6},
+	    		isBounceEnabled=false,
+	    		horizontalScrollingDisabled = true,
+	    		verticalScrollingDisabled = false
+	    	}
 
-		Background:addEventListener( "touch", bgTouch )
-		menuBtn:addEventListener("touch",menuTouch)
-		BgText:addEventListener("touch",menuTouch)
-		backbutton:addEventListener("touch",backactionTouch)
-		GroupSubject:addEventListener("userInput",textField)
-	   
+	    	sceneGroup:insert(consultantList_scrollview)
+	    	
 
-		create_groupicon:addEventListener("touch",createGroup)
 
-   		Runtime:addEventListener( "key", onKeyEvent )
-		
-	end	
-	
-MainGroup:insert(sceneGroup)
 
-end
+	    elseif phase == "did" then
+
+	    	Background:addEventListener( "touch", bgTouch )
+	    	menuBtn:addEventListener("touch",menuTouch)
+	    	BgText:addEventListener("touch",menuTouch)
+	    	backbutton:addEventListener("touch",backactionTouch)
+	    	GroupSubject:addEventListener("userInput",textField)
+	    	
+
+	    	create_groupicon:addEventListener("touch",createGroup)
+
+	    	Runtime:addEventListener( "key", onKeyEvent )
+	    	
+	    end	
+	    
+	    MainGroup:insert(sceneGroup)
+
+	end
 
 
 	function scene:hide( event )
@@ -1455,36 +1455,36 @@ end
 			backbutton:removeEventListener("touch",backactionTouch)
 
 			GroupSubject:removeEventListener("userInput",textField)
-		  
+			
 			create_groupicon:removeEventListener("touch",createGroup)
 
 
-		
+			
 		elseif phase == "did" then
 
-				if addGroupid_value == "editMember" then
+			if addGroupid_value == "editMember" then
 
-					 event.parent:resumeEditGame(editedgroupname,editId)
+				event.parent:resumeEditGame(editedgroupname,editId)
 
-			    end
+			end
 
 		end	
 
 	end
 
 
-		function scene:destroy( event )
-			local sceneGroup = self.view
+	function scene:destroy( event )
+		local sceneGroup = self.view
 
 
 
-		end
+	end
 
 
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
+	scene:addEventListener( "create", scene )
+	scene:addEventListener( "show", scene )
+	scene:addEventListener( "hide", scene )
+	scene:addEventListener( "destroy", scene )
 
 
-		return scene
+	return scene

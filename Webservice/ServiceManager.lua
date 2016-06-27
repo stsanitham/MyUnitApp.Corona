@@ -34,7 +34,7 @@ local function check(value)
 		value=""
 	else
 	end
-return value
+	return value
 end
 
 
@@ -52,7 +52,7 @@ end
 
 local function creatHeader(method,URL)
 
-local request_value = {}
+	local request_value = {}
 	local params = {}
 	local headers = {}
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
@@ -64,7 +64,7 @@ local request_value = {}
 	local url
 
 
-		url = splitUrl(URL)
+	url = splitUrl(URL)
 
 
 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
@@ -111,19 +111,19 @@ function Webservice.GET_LIST_OF_RANKS(postExecution)
 
 
 
-		canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+
+authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+headers["Authentication"] = authenticationkey
 
 --	print("time : "..headers["Timestamp"])
 
-	resbody =  "?languageId=1&countryId=1&"
+resbody =  "?languageId=1&countryId=1&"
 
-	request_value.url=ApplicationConfig.GET_LIST_OF_RANKS..resbody
-	request_value.headers = headers
-	request_value.method = method
+request_value.url=ApplicationConfig.GET_LIST_OF_RANKS..resbody
+request_value.headers = headers
+request_value.method = method
 	--response = M.xmlParser( request_value)
 	params={headers = headers}
 
@@ -155,11 +155,11 @@ function Webservice.REQUEST_ACCESS(page,requestFromStatus,issentMail,issentText,
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
 
-		local found=false
-		db:exec([[select * from sqlite_master where name='logindetails';]],
+	local found=false
+	db:exec([[select * from sqlite_master where name='logindetails';]],
 		function(...) found=true return 0 end)
 
-		if found then 
+	if found then 
 		print('table exists!')
 
 		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
@@ -171,63 +171,63 @@ function Webservice.REQUEST_ACCESS(page,requestFromStatus,issentMail,issentText,
 			countryid = row.CountryId
 		end
 
-	          headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	    else
-
-	    	  headers["UserAuthorization"]= ""
-
-		end
-
-
-
-    if page == "addNewAccessPage" then
-
-		    v = 
-
-			[[{
-			  "FirstName": "]]..firstName..[[",
-			  "LastName": "]]..lastName..[[",
-			  "EmailAddress": "]]..Email..[[",
-			  "UnitNumber": "]]..UnitNumberValue..[[",
-			  "PhoneNumber": "]]..Phone..[[",
-			  "Password": "]]..Password..[[",
-			  "UserId": "]]..UserId..[[",
-			  "Comments": "]]..Comment..[[",
-			  "RequestFrom": "]]..requestFromStatus..[[",
-			  "MkRankId": "]]..MKRank..[[",
-			  "IsSendText": "]]..tostring(issentText)..[[",
-			  "IsSendMail": "]]..tostring(issentMail)..[[",
-			  "TypeLanguageCountry": {
-			    "LanguageId": "]]..langid..[[",
-			    "CountryId": "]]..countryid..[[",
-			    
-			  },
-			  "IsTeamMember": true,
-			}]]
 	else
 
-			 v = 
+		headers["UserAuthorization"]= ""
 
-	[[{
-	  "FirstName": "]]..firstName..[[",
-	  "LastName": "]]..lastName..[[",
-	  "EmailAddress": "]]..Email..[[",
-	  "PhoneNumber": "]]..Phone..[[",
-	  "Comments": "]]..Comment..[[",
-	  "UnitNumber": "]]..UnitNumber..[[",
-	  "DirectorName": "]]..directorName..[[",
-	  "RequestAccessStatus": "]]..requestFromStatus..[[",
-	  "DirectorEmailAddress": "]]..directorEmail..[[",
-	  "UniqueId": "]]..headers["UniqueId"]..[[",
-	  "MkRankId": "]]..MKRank..[[",
-	  "TypeLanguageCountry": {
-	    "LanguageId": 1,
-	    "CountryId": 1,
-	  },
-	}]]
-  
-    end
+	end
+
+
+
+	if page == "addNewAccessPage" then
+
+		v = 
+
+		[[{
+			"FirstName": "]]..firstName..[[",
+			"LastName": "]]..lastName..[[",
+			"EmailAddress": "]]..Email..[[",
+			"UnitNumber": "]]..UnitNumberValue..[[",
+			"PhoneNumber": "]]..Phone..[[",
+			"Password": "]]..Password..[[",
+			"UserId": "]]..UserId..[[",
+			"Comments": "]]..Comment..[[",
+			"RequestFrom": "]]..requestFromStatus..[[",
+			"MkRankId": "]]..MKRank..[[",
+			"IsSendText": "]]..tostring(issentText)..[[",
+			"IsSendMail": "]]..tostring(issentMail)..[[",
+			"TypeLanguageCountry": {
+				"LanguageId": "]]..langid..[[",
+				"CountryId": "]]..countryid..[[",
+				
+			},
+			"IsTeamMember": true,
+			}]]
+		else
+
+			v = 
+
+			[[{
+				"FirstName": "]]..firstName..[[",
+				"LastName": "]]..lastName..[[",
+				"EmailAddress": "]]..Email..[[",
+				"PhoneNumber": "]]..Phone..[[",
+				"Comments": "]]..Comment..[[",
+				"UnitNumber": "]]..UnitNumber..[[",
+				"DirectorName": "]]..directorName..[[",
+				"RequestAccessStatus": "]]..requestFromStatus..[[",
+				"DirectorEmailAddress": "]]..directorEmail..[[",
+				"UniqueId": "]]..headers["UniqueId"]..[[",
+				"MkRankId": "]]..MKRank..[[",
+				"TypeLanguageCountry": {
+					"LanguageId": 1,
+					"CountryId": 1,
+				},
+				}]]
+				
+			end
 
 	--headers["Content-Type"] = "application/x-www-form-urlencoded"
 	--headers["Content-Length"]= string.len(v)
@@ -279,19 +279,19 @@ function Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastNam
 
 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-local v
+	local v
 
-if DocumentUpload == "" then
-	DocumentUpload=  "' '"
-else
-	DocumentUpload = json.encode(DocumentUpload)
-end
+	if DocumentUpload == "" then
+		DocumentUpload=  "' '"
+	else
+		DocumentUpload = json.encode(DocumentUpload)
+	end
 
-if Message_Type ~= nil and Message_Type ~= "" then
+	if Message_Type ~= nil and Message_Type ~= "" then
 
-			v = [[
+		v = [[
 
-			{
+		{
 			"MyUnitBuzzLongMessage": "]]..longmessage..[[",
 			"MyUnitBuzzMessage": " ",
 			"IsScheduled": " ",	
@@ -321,16 +321,16 @@ if Message_Type ~= nil and Message_Type ~= "" then
 			"MessageFileType": "]]..MessageFileType..[[",
 			"DocumentUpload": ]]..(DocumentUpload)..[[
 
-			}
-			]]
+		}
+		]]
 
 --			
 
 else
 
-		v = [[
+	v = [[
 
-		{
+	{
 		"MyUnitBuzzMessage": "]]..message..[[",
 		"MyUnitBuzzLongMessage": "]]..string.urlEncode(longmessage)..[[",
 		"IsScheduled": "]]..IsScheduled..[[",	
@@ -352,16 +352,16 @@ else
 		"IsSendNow": "]]..tostring(isSendNow)..[[",
 		"MessageFileType": "]]..MessageFileType..[[",
 		"DocumentUpload": ]]..(DocumentUpload)..[[
-		}
-		]]
+	}
+	]]
 --		"DocumentUpload": ]]..json.encode(DocumentUpload)..[[
 
 end
 
 
-	params={headers = headers,body = v}
+params={headers = headers,body = v}
 
-	print("Send Message Request :"..(v))
+print("Send Message Request :"..(v))
 
 
 	       --        local options =
@@ -375,66 +375,66 @@ end
         -- native.showPopup( "mail", options )
 
 
-	request.new( ApplicationConfig.SEND_MESSAGE,method,params,postExecution)
-	
-	return response
+        request.new( ApplicationConfig.SEND_MESSAGE,method,params,postExecution)
+        
+        return response
 
-end
-
-
+    end
 
 
 
-function Webservice.DOCUMENT_UPLOAD(file_inbytearray,filename,filetype,postExecution)
-
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	
-	method="POST"
-
-	local url = splitUrl(ApplicationConfig.DOCUMENT_UPLOAD)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
 
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
-		EmailAddess = row.EmailAddess
+    function Webservice.DOCUMENT_UPLOAD(file_inbytearray,filename,filetype,postExecution)
 
-	end
+    	local request_value = {}
+    	local params = {}
+    	local headers = {}
+    	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+    	headers["IpAddress"] = Utility.getIpAddress()
+    	headers["UniqueId"] = system.getInfo("deviceID")
+    	headers["Accept"] = "application/json"
+    	headers["Content-Type"] = "application/json"
+    	
+    	method="POST"
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+    	local url = splitUrl(ApplicationConfig.DOCUMENT_UPLOAD)
+    	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+    	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+    	headers["Authentication"] = authenticationkey
 
-local v = [[
 
-{
-  "UserId": "]]..UserId..[[",
-  "File": "]]..file_inbytearray..[[",
-  "FileName": "]]..filename..[[",
-  "FileType": "]]..filetype..[[",
-}
-]]
+    	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+    		print("UserId :"..row.UserId)
+    		UserId = row.UserId
+    		AccessToken = row.AccessToken
+    		ContactId = row.ContactId
+    		EmailAddess = row.EmailAddess
+
+    	end
+
+    	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+    	local v = [[
+
+    	{
+    		"UserId": "]]..UserId..[[",
+    		"File": "]]..file_inbytearray..[[",
+    		"FileName": "]]..filename..[[",
+    		"FileType": "]]..filetype..[[",
+    	}
+    	]]
 
  -- "IsOverwrite": "true",
  --  "IsResize": "true",
 
-	params={headers = headers,body = v}
+ params={headers = headers,body = v}
 
-	print("Send Message Request :"..json.encode(params))
+ print("Send Message Request :"..json.encode(params))
 
-	request.new( ApplicationConfig.DOCUMENT_UPLOAD,method,params,postExecution)
-	
-	return response
+ request.new( ApplicationConfig.DOCUMENT_UPLOAD,method,params,postExecution)
+ 
+ return response
 
 end
 
@@ -821,10 +821,10 @@ headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 local resbody = "userid="..string.urlEncode(UserId)
 
 
-	params={headers = headers}
+params={headers = headers}
 
-	request.new(ApplicationConfig.GetAllMyCalendars.."?"..resbody,method,params,postExecution)
-	
+request.new(ApplicationConfig.GetAllMyCalendars.."?"..resbody,method,params,postExecution)
+
 return response
 end
 
@@ -870,15 +870,15 @@ resbody = resbody.."IsPublic="..IsPublic
 
 
 
-	headers["Content-Type"] = "application/x-www-form-urlencoded"
-	headers["Content-Length"]= string.len(resbody)
+headers["Content-Type"] = "application/x-www-form-urlencoded"
+headers["Content-Length"]= string.len(resbody)
 
 
-	params={headers = headers,body=resbody}
+params={headers = headers,body=resbody}
 
-	print("Request :"..json.encode(params))
+print("Request :"..json.encode(params))
 
-	request.new(ApplicationConfig.GetTicklerEvents,method,params,postExecution)
+request.new(ApplicationConfig.GetTicklerEvents,method,params,postExecution)
 
 return response
 end
@@ -922,10 +922,10 @@ function Webservice.Get_TicklerEventsById(Id,postExecution)
 
 
 
-		headers["Content-Type"] = "application/x-www-form-urlencoded"
+	headers["Content-Type"] = "application/x-www-form-urlencoded"
 	headers["Content-Length"]= string.len(resbody)
 
-			
+	
 	params={headers = headers,body=resbody}
 
 	print("request : "..json.encode(params))
@@ -1002,7 +1002,7 @@ function Webservice.Get_GetUpComingEvents(postExecution)
 	headers["Content-Type"] = "application/x-www-form-urlencoded"
 	headers["Content-Length"]= string.len(resbody)
 
-			
+	
 	params={headers = headers,body=resbody}
 
 	print("request : "..json.encode(params))
@@ -1033,212 +1033,212 @@ function Webservice.Get_SocialMediaTokens(GCM,postExecution)
 	end
 
 
-		local Device_OS = system.getInfo("platformName")
-		local Unique_Id = system.getInfo("deviceID")
+	local Device_OS = system.getInfo("platformName")
+	local Unique_Id = system.getInfo("deviceID")
 		--local Manufacturer = system.getInfo("targetAppStore")
 		local Model = system.getInfo("model")
 		local Version = system.getInfo("appVersionString")
 
 
-	local bodyContent= [["MobDevice":
-	{
-		"DOS": "]] .. Device_OS .. [[",
-		"UQId": "]] .. Unique_Id .. [[",
-		"MOD": "]] .. Model .. [[",
-		"DN": "]] .. Model .. [[",
-		"Ver": "]] .. Version .. [[",
-		"GCMUQId": "]] .. GCM .. [[",
-		
-	}]]
+		local bodyContent= [["MobDevice":
+		{
+			"DOS": "]] .. Device_OS .. [[",
+			"UQId": "]] .. Unique_Id .. [[",
+			"MOD": "]] .. Model .. [[",
+			"DN": "]] .. Model .. [[",
+			"Ver": "]] .. Version .. [[",
+			"GCMUQId": "]] .. GCM .. [[",
+			
+			}]]
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+			headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	local url = splitUrl(ApplicationConfig.GetSocialMediaTokens)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+			local url = splitUrl(ApplicationConfig.GetSocialMediaTokens)
+			local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+			authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+			headers["Authentication"] = authenticationkey
 
-	print( "GCM : "..GCM )
-	local resbody = ""
-	resbody = resbody.."userId="..UserId.."&contactId="..ContactId
+			print( "GCM : "..GCM )
+			local resbody = ""
+			resbody = resbody.."userId="..UserId.."&contactId="..ContactId
 
-	headers["Content-Type"] = "application/x-www-form-urlencoded"
-	headers["Content-Length"]= string.len(resbody)
+			headers["Content-Type"] = "application/x-www-form-urlencoded"
+			headers["Content-Length"]= string.len(resbody)
 
 			
-	params={headers = headers,body = bodyContent}
+			params={headers = headers,body = bodyContent}
 
-	print("request : "..json.encode(params))
-
-
-	request.new(ApplicationConfig.GetSocialMediaTokens.."?"..resbody,method,params,postExecution)
-
-	return response
-end
+			print("request : "..json.encode(params))
 
 
-function Webservice.GetLatestVersionCommonApp( platform,postExecution)
+			request.new(ApplicationConfig.GetSocialMediaTokens.."?"..resbody,method,params,postExecution)
+
+			return response
+		end
 
 
-	local VerionUrl
+		function Webservice.GetLatestVersionCommonApp( platform,postExecution)
 
-	if platform == "android" then
+
+			local VerionUrl
+
+			if platform == "android" then
 
 				VerionUrl =  ApplicationConfig.GetLatestVersionCommonAppForAndroid
 
-	elseif platform == "ios" then
+			elseif platform == "ios" then
 
-			VerionUrl = ApplicationConfig.GetLatestVersionCommonAppForIos
+				VerionUrl = ApplicationConfig.GetLatestVersionCommonAppForIos
 
-	end
+			end
 
-local request_value = {}
-	local params = {}
-	local headers = {}
+			local request_value = {}
+			local params = {}
+			local headers = {}
 
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="GET"
-	headers["UserAuthorization"]= ""
+			headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+			headers["IpAddress"] = Utility.getIpAddress()
+			headers["UniqueId"] = system.getInfo("deviceID")
+			headers["Accept"] = "application/json"
+			headers["Content-Type"] = "application/json"
+			method="GET"
+			headers["UserAuthorization"]= ""
 
-	local url = splitUrl(VerionUrl)
+			local url = splitUrl(VerionUrl)
 
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+			local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	
+			
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+			authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+			headers["Authentication"] = authenticationkey
 
-	print("time : "..headers["Timestamp"])
-	print( authenticationkey )
-	params={headers = headers}
-
-
-	request.new( VerionUrl,method,params,postExecution)
-
-	return response
-end
+			print("time : "..headers["Timestamp"])
+			print( authenticationkey )
+			params={headers = headers}
 
 
+			request.new( VerionUrl,method,params,postExecution)
 
-function Webservice.LogOut(logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId,postExecution)
-
-
-local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="GET"
-	headers["UserAuthorization"]= ""
-
-	local url = splitUrl(ApplicationConfig.SignOut)
-
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-
-	print("canonicalizedHeaderString : "..canonicalizedHeaderString)
-
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+			return response
+		end
 
 
-	print( authenticationkey )
-	params={headers = headers}
 
-	local resbody = "userId="..string.urlEncode(logout_Userid).."&contactId="..string.urlEncode(logout_ContactId).."&accessToken="..string.urlEncode(logout_AccessToken).."&uniqueId="..string.urlEncode(logout_uniqueId)
+		function Webservice.LogOut(logout_Userid,logout_ContactId,logout_AccessToken,logout_uniqueId,postExecution)
 
 
-	request.new( ApplicationConfig.SignOut.."?"..resbody,method,params,postExecution)
+			local request_value = {}
+			local params = {}
+			local headers = {}
+			headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+			headers["IpAddress"] = Utility.getIpAddress()
+			headers["UniqueId"] = system.getInfo("deviceID")
+			headers["Accept"] = "application/json"
+			headers["Content-Type"] = "application/json"
+			method="GET"
+			headers["UserAuthorization"]= ""
 
-	return response
-end
+			local url = splitUrl(ApplicationConfig.SignOut)
 
-function Webservice.GetUserPreferencebyUserId(postExecution)
-local request_value = {}
-    local params = {}
-    local headers = {}
-    headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-    headers["IpAddress"] = Utility.getIpAddress()
-    headers["UniqueId"] = system.getInfo("deviceID")
-    headers["Accept"] = "application/json"
-    headers["Content-Type"] = "application/json"
-    method="GET"
+			local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-    local url = splitUrl(ApplicationConfig.GetUserPreferencebyUserId)
+			print("canonicalizedHeaderString : "..canonicalizedHeaderString)
 
-    local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-
-	print("canonicalizedHeaderString : "..canonicalizedHeaderString)
-
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
-
-	    for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-        UserId = row.UserId
-        AccessToken = row.AccessToken
-        ContactId = row.ContactId
-
-    end
-
-    headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
-
-	print( authenticationkey )
-	params={headers = headers}
-
-	local resbody = "userId="..UserId
+			authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+			headers["Authentication"] = authenticationkey
 
 
-	request.new( ApplicationConfig.GetUserPreferencebyUserId.."?"..resbody,method,params,postExecution)
+			print( authenticationkey )
+			params={headers = headers}
 
-	return response
+			local resbody = "userId="..string.urlEncode(logout_Userid).."&contactId="..string.urlEncode(logout_ContactId).."&accessToken="..string.urlEncode(logout_AccessToken).."&uniqueId="..string.urlEncode(logout_uniqueId)
 
-end
 
-function Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection,colorCode,postExecution)
+			request.new( ApplicationConfig.SignOut.."?"..resbody,method,params,postExecution)
+
+			return response
+		end
+
+		function Webservice.GetUserPreferencebyUserId(postExecution)
+			local request_value = {}
+			local params = {}
+			local headers = {}
+			headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+			headers["IpAddress"] = Utility.getIpAddress()
+			headers["UniqueId"] = system.getInfo("deviceID")
+			headers["Accept"] = "application/json"
+			headers["Content-Type"] = "application/json"
+			method="GET"
+
+			local url = splitUrl(ApplicationConfig.GetUserPreferencebyUserId)
+
+			local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+			print("canonicalizedHeaderString : "..canonicalizedHeaderString)
+
+			authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+			headers["Authentication"] = authenticationkey
+
+			for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+				UserId = row.UserId
+				AccessToken = row.AccessToken
+				ContactId = row.ContactId
+
+			end
+
+			headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+			print( authenticationkey )
+			params={headers = headers}
+
+			local resbody = "userId="..UserId
+
+
+			request.new( ApplicationConfig.GetUserPreferencebyUserId.."?"..resbody,method,params,postExecution)
+
+			return response
+
+		end
+
+		function Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection,colorCode,postExecution)
 
 --CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,PhoneNumber,AccessCode,IsConference,CallDirection,colorCode
 
- local request_value = {}
-    local params = {}
-    local headers = {}
-    headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-    headers["IpAddress"] = Utility.getIpAddress()
-    headers["UniqueId"] = system.getInfo("deviceID")
-    headers["Accept"] = "application/json"
-    headers["Content-Type"] = "application/json"
-    method="POST"
+local request_value = {}
+local params = {}
+local headers = {}
+headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+headers["IpAddress"] = Utility.getIpAddress()
+headers["UniqueId"] = system.getInfo("deviceID")
+headers["Accept"] = "application/json"
+headers["Content-Type"] = "application/json"
+method="POST"
 
-    local url
+local url
 
-    if isUpdate == true then
+if isUpdate == true then
 
-        url = splitUrl(ApplicationConfig.UpdateTicklerRecur)
+	url = splitUrl(ApplicationConfig.UpdateTicklerRecur)
 
-    else
+else
 
-        url = splitUrl(ApplicationConfig.CreateTickler)
+	url = splitUrl(ApplicationConfig.CreateTickler)
 
-    end
-    local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-    authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-    headers["Authentication"] = authenticationkey
+end
+local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+headers["Authentication"] = authenticationkey
 
-    for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-        UserId = row.UserId
-        AccessToken = row.AccessToken
-        ContactId = row.ContactId
+for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	UserId = row.UserId
+	AccessToken = row.AccessToken
+	ContactId = row.ContactId
 
-    end
+end
 
-    headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
-    
+headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
 
 
 
@@ -1274,60 +1274,60 @@ end
 
 print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 
-		resbody = [[
-		{
-		"UserId": ]]..UserId..[[,
-		"id": ]]..id..[[,
-		"TicklerId": ]]..TicklerId..[[,
-		"CalendarId": ]]..CalendarId..[[,
-		"CalendarName":  ']]..CalendarName..[[',
-		"TicklerType": ']]..TicklerType..[[',
-		"TicklerStatus": "OPEN",
-		"title": ']]..title..[[',
-		"startdate": ']]..startdate..[[',
-		"enddate": ']]..enddate..[[',
-		"starttime": ']]..starttime..[[',
-		"endtime": ']]..endtime..[[',
-		"allDay": ]]..tostring(allDay)..[[,
-		"Location": ']]..Location..[[',
-		"Description": ']]..Description..[[',
-		"AppointmentPurpose":  ']]..check(AppointmentPurpose)..[[',
-		"AppointmentPurposeOther":  ']]..AppointmentPurposeOther..[[',
-		"Priority":  ]]..Priority..[[,
-		"TimeZone": ']]..TimeZone..[[',
-		"ColorCode":']]..colorCode..[[',
-		"EventAccess":"PUBLIC",
-		"AttachmentName": ']]..check(AttachmentName)..[[',
-		"AttachmentPath": ']]..check(AttachmentPath)..[[',
-		"Attachment":  ']]..check(Attachment)..[[',
-		"Contact":]]..contactInfo..[[,
-		"Invitees":[]]..invitees..[[],
-		"PhoneNumber":']]..PhoneNumber..[[',
-		"AccessCode":']]..AccessCode..[[',
-		"IsConference":]]..tostring(IsConference)..[[,
-		"CallDirection":]]..tostring(CallDirection)..[[
+resbody = [[
+{
+	"UserId": ]]..UserId..[[,
+	"id": ]]..id..[[,
+	"TicklerId": ]]..TicklerId..[[,
+	"CalendarId": ]]..CalendarId..[[,
+	"CalendarName":  ']]..CalendarName..[[',
+	"TicklerType": ']]..TicklerType..[[',
+	"TicklerStatus": "OPEN",
+	"title": ']]..title..[[',
+	"startdate": ']]..startdate..[[',
+	"enddate": ']]..enddate..[[',
+	"starttime": ']]..starttime..[[',
+	"endtime": ']]..endtime..[[',
+	"allDay": ]]..tostring(allDay)..[[,
+	"Location": ']]..Location..[[',
+	"Description": ']]..Description..[[',
+	"AppointmentPurpose":  ']]..check(AppointmentPurpose)..[[',
+	"AppointmentPurposeOther":  ']]..AppointmentPurposeOther..[[',
+	"Priority":  ]]..Priority..[[,
+	"TimeZone": ']]..TimeZone..[[',
+	"ColorCode":']]..colorCode..[[',
+	"EventAccess":"PUBLIC",
+	"AttachmentName": ']]..check(AttachmentName)..[[',
+	"AttachmentPath": ']]..check(AttachmentPath)..[[',
+	"Attachment":  ']]..check(Attachment)..[[',
+	"Contact":]]..contactInfo..[[,
+	"Invitees":[]]..invitees..[[],
+	"PhoneNumber":']]..PhoneNumber..[[',
+	"AccessCode":']]..AccessCode..[[',
+	"IsConference":]]..tostring(IsConference)..[[,
+	"CallDirection":]]..tostring(CallDirection)..[[
 	
-		}
-		]]
+}
+]]
 
 
 
-	params={headers = headers,body = resbody}
+params={headers = headers,body = resbody}
 
-		print("request : "..resbody)
+print("request : "..resbody)
 
 
-	if isUpdate == true then
-		
-			request.new(ApplicationConfig.UpdateTicklerRecur,method,params,postExecution)
+if isUpdate == true then
+	
+	request.new(ApplicationConfig.UpdateTicklerRecur,method,params,postExecution)
 
-	else
+else
 
 	request.new(ApplicationConfig.CreateTickler,method,params,postExecution)
 
-	end
-	
-	return response
+end
+
+return response
 
 end
 
@@ -1362,12 +1362,12 @@ function Webservice.GetContact(searchString,postExecution)
 	
 
 
-local resbody = "userId="..UserId.."&searchString="..searchString
+	local resbody = "userId="..UserId.."&searchString="..searchString
 
 
 	params={headers = headers}
 
-		print("request : "..json.encode(params))
+	print("request : "..json.encode(params))
 
 
 
@@ -1409,33 +1409,33 @@ function Webservice.CreateQuickcContact(Ap_firstName,Ap_lastName,Ap_email,Ap_pho
 	
 
 
-local resbody = [[{
-  "NameDetails": {
-    "FirstName": ']]..Ap_firstName..[[',
-    "LastName": ']]..Ap_lastName..[[',
-    "EmailAddress": ']]..Ap_email..[[',
-  },
-  "EmailAddress": ']]..Ap_email..[[',
-  "Mobile": ']]..Ap_phone..[[',
-  "ContactType": ']]..Ap_contactLbl..[[',
-  "GroupId": 0,
-  ]]
+	local resbody = [[{
+		"NameDetails": {
+			"FirstName": ']]..Ap_firstName..[[',
+			"LastName": ']]..Ap_lastName..[[',
+			"EmailAddress": ']]..Ap_email..[[',
+		},
+		"EmailAddress": ']]..Ap_email..[[',
+		"Mobile": ']]..Ap_phone..[[',
+		"ContactType": ']]..Ap_contactLbl..[[',
+		"GroupId": 0,
+		]]
 
-	params={headers = headers}
+		params={headers = headers}
 
 		print("request : "..json.encode(params))
 
 
 
-	request.new(ApplicationConfig.CreateQuickcContact.."?"..resbody,method,params,postExecution)
-	
-	return response
+		request.new(ApplicationConfig.CreateQuickcContact.."?"..resbody,method,params,postExecution)
+		
+		return response
 
-end
+	end
 
 
 
-function Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,postExecution)
+	function Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,postExecution)
 
 
 	local request_value = {}
@@ -1465,43 +1465,43 @@ function Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,post
 	
 
 
-local resbody = [[{
-  "UserId": ']]..UserId..[[',
-  "TicklerId": ']]..TicklerId..[[',
-  "TimeZone": ']]..TimeZone..[[',
-  "CalendarId": ']]..CalendarId..[[',
-  "id": ']]..id..[[',
-  
-  ]]
+	local resbody = [[{
+		"UserId": ']]..UserId..[[',
+		"TicklerId": ']]..TicklerId..[[',
+		"TimeZone": ']]..TimeZone..[[',
+		"CalendarId": ']]..CalendarId..[[',
+		"id": ']]..id..[[',
+		
+		]]
 
-	params={headers = headers,body = resbody}
+		params={headers = headers,body = resbody}
 
 		print("request : "..json.encode(params))
 
 
-	request.new(ApplicationConfig.DeleteTicklerEvent,method,params,postExecution)
-	
-end
+		request.new(ApplicationConfig.DeleteTicklerEvent,method,params,postExecution)
+		
+	end
 
 
 
-function Webservice.GET_UNITWISE_REGISTER(unitnumber,postExecution)
+	function Webservice.GET_UNITWISE_REGISTER(unitnumber,postExecution)
 
 		local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+		local params = {}
+		local headers = {}
+		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+		headers["IpAddress"] = Utility.getIpAddress()
+		headers["UniqueId"] = system.getInfo("deviceID")
+		headers["Accept"] = "application/json"
+		headers["Content-Type"] = "application/json"
 
-	method="GET"
+		method="GET"
 
-	headers["UserAuthorization"]= ""
+		headers["UserAuthorization"]= ""
 
-	local url = splitUrl(ApplicationConfig.GetUnitWiseRegister)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+		local url = splitUrl(ApplicationConfig.GetUnitWiseRegister)
+		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
 	--print("canonicalizedHeaderString : "..canonicalizedHeaderString)
 
@@ -1523,7 +1523,7 @@ end
 
 function Webservice.SaveAttachmentDetails(id,AttachmentName,AttachmentPath,Attachment,postExecution)
 
-			local request_value = {}
+	local request_value = {}
 	local params = {}
 	local headers = {}
 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
@@ -1550,112 +1550,112 @@ function Webservice.SaveAttachmentDetails(id,AttachmentName,AttachmentPath,Attac
 	
 
 
-local resbody = [[{
-  "UserId": ']]..UserId..[[',
-  "id": ']]..id..[[',
-  "AttachmentName": ']]..AttachmentName..[[',
-  "AttachmentPath": ']]..AttachmentPath..[[',
-  "Attachment": ']]..Attachment..[[',
-  
-  ]]
+	local resbody = [[{
+		"UserId": ']]..UserId..[[',
+		"id": ']]..id..[[',
+		"AttachmentName": ']]..AttachmentName..[[',
+		"AttachmentPath": ']]..AttachmentPath..[[',
+		"Attachment": ']]..Attachment..[[',
+		
+		]]
 
-	params={headers = headers,body = resbody}
+		params={headers = headers,body = resbody}
 
 		print("request : "..json.encode(params))
 
 
-	request.new(ApplicationConfig.SaveAttachmentDetails,method,params,postExecution)
-
-end
-
-
-
-function Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,postExecution)
-
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-
-	method="GET"
-
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+		request.new(ApplicationConfig.SaveAttachmentDetails,method,params,postExecution)
 
 	end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
-
-	local url = splitUrl(ApplicationConfig.RemoveOrBlockContact)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
-
-	print("reqaccess_id for remove or block contact: ",reqaccess_id,reqaccess_from,accessStatus)
 
 
-	local resbody = ""
-	resbody = resbody.."requestAccessId="..reqaccess_id.."&"
-	resbody = resbody.."requestAccessFrom="..reqaccess_from.."&"
-	resbody = resbody.."accessStatus="..accessStatus
+	function Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,postExecution)
+
+		local request_value = {}
+		local params = {}
+		local headers = {}
+		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+		headers["IpAddress"] = Utility.getIpAddress()
+		headers["UniqueId"] = system.getInfo("deviceID")
+		headers["Accept"] = "application/json"
+		headers["Content-Type"] = "application/json"
+
+		method="GET"
+
+		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+			print("UserId :"..row.UserId)
+			UserId = row.UserId
+			AccessToken = row.AccessToken
+			ContactId = row.ContactId
+
+		end
+
+		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+		local url = splitUrl(ApplicationConfig.RemoveOrBlockContact)
+		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+
+		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+		headers["Authentication"] = authenticationkey
+
+		print("reqaccess_id for remove or block contact: ",reqaccess_id,reqaccess_from,accessStatus)
 
 
-	headers["Content-Type"] = "application/x-www-form-urlencoded"
-	headers["Content-Length"]= string.len(resbody)
+		local resbody = ""
+		resbody = resbody.."requestAccessId="..reqaccess_id.."&"
+		resbody = resbody.."requestAccessFrom="..reqaccess_from.."&"
+		resbody = resbody.."accessStatus="..accessStatus
 
 
-	params={headers = headers,body = resbody}
-
-	request.new(ApplicationConfig.RemoveOrBlockContact.."?"..resbody,method,params,postExecution)
-
-    print("request : "..json.encode(params))
-
-	
-	return response
-end
+		headers["Content-Type"] = "application/x-www-form-urlencoded"
+		headers["Content-Length"]= string.len(resbody)
 
 
+		params={headers = headers,body = resbody}
 
+		request.new(ApplicationConfig.RemoveOrBlockContact.."?"..resbody,method,params,postExecution)
 
-function Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,contact_id,isaddedToContact,MyUnitBuzzRequestAccessId,password,postExecution)
+		print("request : "..json.encode(params))
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="POST"
-
-	local url = splitUrl(ApplicationConfig.AccessPermissionDetails)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
-
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
-
+		
+		return response
 	end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
 
-	local countrylanguage = {}
 
-	countrylanguage=[["LanguageId": '1',
+	function Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,GetRquestAccessFrom,MailTemplate,Status,isSentMail,isSentText,contact_id,isaddedToContact,MyUnitBuzzRequestAccessId,password,postExecution)
+
+		local request_value = {}
+		local params = {}
+		local headers = {}
+		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+		headers["IpAddress"] = Utility.getIpAddress()
+		headers["UniqueId"] = system.getInfo("deviceID")
+		headers["Accept"] = "application/json"
+		headers["Content-Type"] = "application/json"
+		method="POST"
+
+		local url = splitUrl(ApplicationConfig.AccessPermissionDetails)
+		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+		headers["Authentication"] = authenticationkey
+
+		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+			print("UserId :"..row.UserId)
+			UserId = row.UserId
+			AccessToken = row.AccessToken
+			ContactId = row.ContactId
+
+		end
+
+		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+
+		local countrylanguage = {}
+
+		countrylanguage=[["LanguageId": '1',
 		"CountryId": '1']]
 
 		print(idvalue)
@@ -1664,215 +1664,215 @@ function Webservice.AccessPermissionDetails(idvalue,Email,PhoneNumber,MkRankId,G
 			MkRankId=""
 		end
 
-    if idvalue == "Deny Access" then
+		if idvalue == "Deny Access" then
 
-    	isSentText = false
+			isSentText = false
 
-	 resbody = [[{
-		"UserId": ']]..UserId..[[',
-		"EmailAddress": ']]..Email..[[',
-		"PhoneNumber": ']]..PhoneNumber..[[',
-		"MkRankId": ']]..MkRankId..[[',
-		"GetRquestAccessFrom": ']]..GetRquestAccessFrom..[[',
-		"MailTemplate": ']]..MailTemplate..[[',
-		"Status": ']]..Status..[[',
-		"TypeLanguageCountry": {]]..countrylanguage..[[},
-		"IsSendMail": ']]..tostring(isSentMail)..[[',
-		"IsSendText": ']]..tostring(isSentText)..[[',
-		"ContactId": ']]..contact_id..[[',
-		"IsAddToContact": ']]..tostring(isaddedToContact)..[[',
-		"MyUnitBuzzRequestAccessId": ']]..MyUnitBuzzRequestAccessId..[[',
-		"Comments": ']]..password..[[',
-	  }]]
+			resbody = [[{
+				"UserId": ']]..UserId..[[',
+				"EmailAddress": ']]..Email..[[',
+				"PhoneNumber": ']]..PhoneNumber..[[',
+				"MkRankId": ']]..MkRankId..[[',
+				"GetRquestAccessFrom": ']]..GetRquestAccessFrom..[[',
+				"MailTemplate": ']]..MailTemplate..[[',
+				"Status": ']]..Status..[[',
+				"TypeLanguageCountry": {]]..countrylanguage..[[},
+				"IsSendMail": ']]..tostring(isSentMail)..[[',
+				"IsSendText": ']]..tostring(isSentText)..[[',
+				"ContactId": ']]..contact_id..[[',
+				"IsAddToContact": ']]..tostring(isaddedToContact)..[[',
+				"MyUnitBuzzRequestAccessId": ']]..MyUnitBuzzRequestAccessId..[[',
+				"Comments": ']]..password..[[',
+				}]]
 
-	else
+			else
 
-		 resbody = [[{
-		"UserId": ']]..UserId..[[',
-		"EmailAddress": ']]..Email..[[',
-		"PhoneNumber": ']]..PhoneNumber..[[',
-		"MkRankId": ']]..MkRankId..[[',
-		"GetRquestAccessFrom": ']]..GetRquestAccessFrom..[[',
-		"MailTemplate": ']]..MailTemplate..[[',
-		"Status": ']]..Status..[[',
-		"TypeLanguageCountry": {]]..countrylanguage..[[},
-		"IsSendMail": ']]..tostring(isSentMail)..[[',
-		"IsSendText": ']]..tostring(isSentText)..[[',
-		"ContactId": ']]..contact_id..[[',
-		"IsAddToContact": ']]..tostring(isaddedToContact)..[[',
-		"MyUnitBuzzRequestAccessId": ']]..MyUnitBuzzRequestAccessId..[[',
-		"Password": ']]..password..[[',
-	  }]]
+				resbody = [[{
+					"UserId": ']]..UserId..[[',
+					"EmailAddress": ']]..Email..[[',
+					"PhoneNumber": ']]..PhoneNumber..[[',
+					"MkRankId": ']]..MkRankId..[[',
+					"GetRquestAccessFrom": ']]..GetRquestAccessFrom..[[',
+					"MailTemplate": ']]..MailTemplate..[[',
+					"Status": ']]..Status..[[',
+					"TypeLanguageCountry": {]]..countrylanguage..[[},
+					"IsSendMail": ']]..tostring(isSentMail)..[[',
+					"IsSendText": ']]..tostring(isSentText)..[[',
+					"ContactId": ']]..contact_id..[[',
+					"IsAddToContact": ']]..tostring(isaddedToContact)..[[',
+					"MyUnitBuzzRequestAccessId": ']]..MyUnitBuzzRequestAccessId..[[',
+					"Password": ']]..password..[[',
+					}]]
 
-	end
+				end
 
-	params={headers = headers,body = resbody}
+				params={headers = headers,body = resbody}
 
-	print("request 123: "..tostring(resbody))
+				print("request 123: "..tostring(resbody))
 
-	request.new(ApplicationConfig.AccessPermissionDetails,method,params,postExecution)
+				request.new(ApplicationConfig.AccessPermissionDetails,method,params,postExecution)
 
-	return response
-end
+				return response
+			end
 
-function Webservice.GetMyUnitBuzzRequestAccessPermissionsDetail(requestId,RequestFrom,Status,postExecution)
+			function Webservice.GetMyUnitBuzzRequestAccessPermissionsDetail(requestId,RequestFrom,Status,postExecution)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+				local request_value = {}
+				local params = {}
+				local headers = {}
+				headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+				headers["IpAddress"] = Utility.getIpAddress()
+				headers["UniqueId"] = system.getInfo("deviceID")
+				headers["Accept"] = "application/json"
+				headers["Content-Type"] = "application/json"
 
-	method="GET"
+				method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+					print("UserId :"..row.UserId)
+					UserId = row.UserId
+					AccessToken = row.AccessToken
+					ContactId = row.ContactId
 
-	end
+				end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+				headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	local url = splitUrl(ApplicationConfig.GetMyUnitBuzzRequestAccessPermissionsDetail)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+				local url = splitUrl(ApplicationConfig.GetMyUnitBuzzRequestAccessPermissionsDetail)
+				local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
-
-
-
-	local resbody="?myUnitBuzzRequestAccessId="..requestId.."&getRquestAccessFrom="..RequestFrom.."&accessStatus="..Status
-	params={headers = headers}
-
-	request.new(ApplicationConfig.GetMyUnitBuzzRequestAccessPermissionsDetail..resbody,method,params,postExecution)
-
-    print("request : "..json.encode(params))
-
-	
-	return response
-end
+				authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+				headers["Authentication"] = authenticationkey
 
 
 
-function Webservice.GeneratePassword(postExecution)
+				local resbody="?myUnitBuzzRequestAccessId="..requestId.."&getRquestAccessFrom="..RequestFrom.."&accessStatus="..Status
+				params={headers = headers}
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+				request.new(ApplicationConfig.GetMyUnitBuzzRequestAccessPermissionsDetail..resbody,method,params,postExecution)
 
-	method="GET"
+				print("request : "..json.encode(params))
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
-
-	end
-
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
-
-	local url = splitUrl(ApplicationConfig.GetGeneratePassword)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
-
-	params={headers = headers}
-
-	request.new(ApplicationConfig.GetGeneratePassword,method,params,postExecution)
-
-    print("request : "..json.encode(params))
-
-	
-	return response
-end
+				
+				return response
+			end
 
 
 
+			function Webservice.GeneratePassword(postExecution)
 
-function Webservice.SaveMyUnitBuzzGoals(GoalsId,GoalsDetail,postExecution)
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="POST"
+				local request_value = {}
+				local params = {}
+				local headers = {}
+				headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+				headers["IpAddress"] = Utility.getIpAddress()
+				headers["UniqueId"] = system.getInfo("deviceID")
+				headers["Accept"] = "application/json"
+				headers["Content-Type"] = "application/json"
 
+				method="GET"
 
-	local url = splitUrl(ApplicationConfig.SaveMyUnitBuzzGoals)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+					print("UserId :"..row.UserId)
+					UserId = row.UserId
+					AccessToken = row.AccessToken
+					ContactId = row.ContactId
 
+				end
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+				headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	end
+				local url = splitUrl(ApplicationConfig.GetGeneratePassword)
+				local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+				authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+				headers["Authentication"] = authenticationkey
 
-	local resbody = [[{
-  "UserId": ']]..UserId..[[',
-  "MyUnitBuzzGoalsId": ']]..GoalsId..[[',
-  "MyUnitBuzzGoals": ']]..GoalsDetail..[[',
-   } ]]
+				params={headers = headers}
 
-	params={headers = headers,body = resbody}
+				request.new(ApplicationConfig.GetGeneratePassword,method,params,postExecution)
 
-	print("request : "..json.encode(params))
+				print("request : "..json.encode(params))
 
-	request.new(ApplicationConfig.SaveMyUnitBuzzGoals,method,params,postExecution)
-	
-	return response
-end
+				
+				return response
+			end
 
 
 
-function Webservice.GetMyUnitBuzzRequestAccesses(status,postExecution)
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="GET"
+
+			function Webservice.SaveMyUnitBuzzGoals(GoalsId,GoalsDetail,postExecution)
+				local request_value = {}
+				local params = {}
+				local headers = {}
+				headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+				headers["IpAddress"] = Utility.getIpAddress()
+				headers["UniqueId"] = system.getInfo("deviceID")
+				headers["Accept"] = "application/json"
+				headers["Content-Type"] = "application/json"
+				method="POST"
 
 
-	local url = splitUrl(ApplicationConfig.GetMyUnitBuzzRequestAccesses)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+				local url = splitUrl(ApplicationConfig.SaveMyUnitBuzzGoals)
+				local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+				authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+				headers["Authentication"] = authenticationkey
 
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+					print("UserId :"..row.UserId)
+					UserId = row.UserId
+					AccessToken = row.AccessToken
+					ContactId = row.ContactId
 
-	end
+				end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+				headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+				local resbody = [[{
+					"UserId": ']]..UserId..[[',
+					"MyUnitBuzzGoalsId": ']]..GoalsId..[[',
+					"MyUnitBuzzGoals": ']]..GoalsDetail..[[',
+					} ]]
+
+					params={headers = headers,body = resbody}
+
+					print("request : "..json.encode(params))
+
+					request.new(ApplicationConfig.SaveMyUnitBuzzGoals,method,params,postExecution)
+					
+					return response
+				end
+
+
+
+				function Webservice.GetMyUnitBuzzRequestAccesses(status,postExecution)
+					local request_value = {}
+					local params = {}
+					local headers = {}
+					headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+					headers["IpAddress"] = Utility.getIpAddress()
+					headers["UniqueId"] = system.getInfo("deviceID")
+					headers["Accept"] = "application/json"
+					headers["Content-Type"] = "application/json"
+					method="GET"
+
+
+					local url = splitUrl(ApplicationConfig.GetMyUnitBuzzRequestAccesses)
+					local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+					authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+					headers["Authentication"] = authenticationkey
+
+
+					for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+						print("UserId :"..row.UserId)
+						UserId = row.UserId
+						AccessToken = row.AccessToken
+						ContactId = row.ContactId
+
+					end
+
+					headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
 	-- local resbody = [[{
  --  "UserId": ']]..UserId..[[',
@@ -1880,15 +1880,15 @@ function Webservice.GetMyUnitBuzzRequestAccesses(status,postExecution)
 
  --   } ]]
 
-   local resbody = "UserId="..UserId.."&status="..status
+ local resbody = "UserId="..UserId.."&status="..status
 
-	params={headers = headers}
+ params={headers = headers}
 
-	print("request : "..json.encode(params))
+ print("request : "..json.encode(params))
 
-	request.new(ApplicationConfig.GetMyUnitBuzzRequestAccesses.."?"..resbody,method,params,postExecution)
-	
-	return response
+ request.new(ApplicationConfig.GetMyUnitBuzzRequestAccesses.."?"..resbody,method,params,postExecution)
+ 
+ return response
 end
 
 
@@ -1926,15 +1926,15 @@ function Webservice.GetActiveChatTeammembersList(status,postExecution)
 
  --   } ]]
 
-   local resbody = "UserId="..UserId
+ local resbody = "UserId="..UserId
 
-	params={headers = headers}
+ params={headers = headers}
 
-	print("request : "..json.encode(params))
+ print("request : "..json.encode(params))
 
-	request.new(ApplicationConfig.GetActiveChatTeammembersList.."?"..resbody,method,params,postExecution)
-	
-	return response
+ request.new(ApplicationConfig.GetActiveChatTeammembersList.."?"..resbody,method,params,postExecution)
+ 
+ return response
 end
 
 
@@ -1973,55 +1973,55 @@ function Webservice.CheckExistsRequestStatus(contactid_val,emailvalue,postExecut
 	 --  "MyUnitBuzzRequestAccessId": ']]..Contactid_value..[[',
 	 --   } ]]
 
-	 		local resbody = [[{
-	  "UserId": ']]..UserId..[[',
-	  "ContactId": ']]..contactid_val..[[',
-	  "EmailAddress": ']]..emailvalue..[[',
-	  "MyUnitBuzzRequestAccessId": ']]..contactid_val..[[',
-	   } ]]
+	 local resbody = [[{
+	 	"UserId": ']]..UserId..[[',
+	 	"ContactId": ']]..contactid_val..[[',
+	 	"EmailAddress": ']]..emailvalue..[[',
+	 	"MyUnitBuzzRequestAccessId": ']]..contactid_val..[[',
+	 	} ]]
 
 
-    params={headers = headers,body = resbody}
+	 	params={headers = headers,body = resbody}
 
-	print("request : "..json.encode(params))
+	 	print("request : "..json.encode(params))
 
-	request.new(ApplicationConfig.CheckExistsRequestStatus,method,params,postExecution)
-	
-	return response
-	
-end
-
-
+	 	request.new(ApplicationConfig.CheckExistsRequestStatus,method,params,postExecution)
+	 	
+	 	return response
+	 	
+	 end
 
 
-function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,grouptypevalue,groupteammemberids,postExecution)
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="POST"
 
-	local url = splitUrl(ApplicationConfig.CreateMessageChatGroup)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	 function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,grouptypevalue,groupteammemberids,postExecution)
+	 	local request_value = {}
+	 	local params = {}
+	 	local headers = {}
+	 	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	 	headers["IpAddress"] = Utility.getIpAddress()
+	 	headers["UniqueId"] = system.getInfo("deviceID")
+	 	headers["Accept"] = "application/json"
+	 	headers["Content-Type"] = "application/json"
+	 	method="POST"
 
-	end
+	 	local url = splitUrl(ApplicationConfig.CreateMessageChatGroup)
+	 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	 	headers["Authentication"] = authenticationkey
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
-    
+	 	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	 		print("UserId :"..row.UserId)
+	 		UserId = row.UserId
+	 		AccessToken = row.AccessToken
+	 		ContactId = row.ContactId
 
-    local resbody
+	 	end
+
+	 	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	 	
+
+	 	local resbody
 
 
 	    -- if grouptypevalue == "GROUP" then
@@ -2041,140 +2041,140 @@ function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,group
 	    -- end
 
 
-	if grouptypevalue == "BROADCAST" then
+	    if grouptypevalue == "BROADCAST" then
 
-		  resbody = [[{
-		  "UserId": ]]..UserId..[[,
-		  "MyUnitBuzzGroupName": "]]..groupname..[[",
-		  "Description": "]]..description..[[",
-		  "IsActive": "]]..tostring(stateinfo)..[[",
-		  "MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
-		  "ContactId":"]]..ContactId..[[",
-		  "MyUnitBuzzGroupId":]]..tonumber(groupteammemberids)..[[,
-		   } ]]
+	    	resbody = [[{
+	    		"UserId": ]]..UserId..[[,
+	    		"MyUnitBuzzGroupName": "]]..groupname..[[",
+	    		"Description": "]]..description..[[",
+	    		"IsActive": "]]..tostring(stateinfo)..[[",
+	    		"MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
+	    		"ContactId":"]]..ContactId..[[",
+	    		"MyUnitBuzzGroupId":]]..tonumber(groupteammemberids)..[[,
+	    		} ]]
 
-	else
+	    	else
 
-		  resbody = [[{
-		  "UserId": ]]..UserId..[[,
-		  "MyUnitBuzzGroupName": "]]..groupname..[[",
-		  "Description": "]]..description..[[",
-		  "IsActive": "]]..tostring(stateinfo)..[[",
-		  "MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
-		  "MyUnitBuzzGroupId":]]..tonumber(groupteammemberids)..[[,
-		   } ]]
+	    		resbody = [[{
+	    			"UserId": ]]..UserId..[[,
+	    			"MyUnitBuzzGroupName": "]]..groupname..[[",
+	    			"Description": "]]..description..[[",
+	    			"IsActive": "]]..tostring(stateinfo)..[[",
+	    			"MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
+	    			"MyUnitBuzzGroupId":]]..tonumber(groupteammemberids)..[[,
+	    			} ]]
 
-	end
+	    		end
 
-    params={headers = headers,body = resbody}
+	    		params={headers = headers,body = resbody}
 
-	print("create group request : "..(resbody))
+	    		print("create group request : "..(resbody))
 
-	request.new(ApplicationConfig.CreateMessageChatGroup,method,params,postExecution)
-	
-	return response
-	
-end
+	    		request.new(ApplicationConfig.CreateMessageChatGroup,method,params,postExecution)
+	    		
+	    		return response
+	    		
+	    	end
 
 
 
 
 
-function Webservice.GetChatMessageGroupList(groupType,postExecution)
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="GET"
+	    	function Webservice.GetChatMessageGroupList(groupType,postExecution)
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
+	    		method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
 
-	end
+	    		end
 
-	local url = splitUrl(ApplicationConfig.GetChatMessageGroupList)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		local url = splitUrl(ApplicationConfig.GetChatMessageGroupList)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-    local resbody = "?userId="..UserId.."&contactId="..ContactId.."&groupType="..groupType
+	    		local resbody = "?userId="..UserId.."&contactId="..ContactId.."&groupType="..groupType
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	print("request : "..json.encode(params))
+	    		print("request : "..json.encode(params))
 
-	request.new(ApplicationConfig.GetChatMessageGroupList..resbody,method,params,postExecution)
-	
-	return response
-end
+	    		request.new(ApplicationConfig.GetChatMessageGroupList..resbody,method,params,postExecution)
+	    		
+	    		return response
+	    	end
 
 
 
 
 
 
-function Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupid,contacts,postExecution)
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="POST"
+	    	function Webservice.AddTeamMemberToChatGroup(grouptypevalue,groupid,contacts,postExecution)
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
+	    		method="POST"
 
-	local url = splitUrl(ApplicationConfig.AddTeamMemberToChatGroup)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		local url = splitUrl(ApplicationConfig.AddTeamMemberToChatGroup)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
 
-	end
+	    		end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-    local resbody = "userId="..UserId.."&groupId="..groupid
+	    		local resbody = "userId="..UserId.."&groupId="..groupid
 
 
-	    if grouptypevalue == "GROUP" then
+	    		if grouptypevalue == "GROUP" then
 
-	    contacts[#contacts+1] = ContactId
+	    			contacts[#contacts+1] = ContactId
 
-	    groupmembers = json.encode(contacts)
+	    			groupmembers = json.encode(contacts)
 
-	    else
+	    		else
 
-	    contacts[#contacts+1] = ""
+	    			contacts[#contacts+1] = ""
 
-	    groupmembers = json.encode(contacts)
+	    			groupmembers = json.encode(contacts)
 
-	    end
+	    		end
 
 
-    params={headers = headers,body = groupmembers}
+	    		params={headers = headers,body = groupmembers}
 
-	print("contact request : \n\n\n\n\n "..json.encode(params).."\n\n\n\n\n\n\n")
+	    		print("contact request : \n\n\n\n\n "..json.encode(params).."\n\n\n\n\n\n\n")
 
-	request.new(ApplicationConfig.AddTeamMemberToChatGroup.."?"..resbody,method,params,postExecution)
-	
-	return response
-	
-end
+	    		request.new(ApplicationConfig.AddTeamMemberToChatGroup.."?"..resbody,method,params,postExecution)
+	    		
+	    		return response
+	    		
+	    	end
 
 
 
@@ -2182,552 +2182,552 @@ end
 
 
 
-function Webservice.GetMessagessListbyMessageStatus(status,postExecution)
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="GET"
+	    	function Webservice.GetMessagessListbyMessageStatus(status,postExecution)
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
+	    		method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
 
-	end
+	    		end
 
-	local url = splitUrl(ApplicationConfig.GetMessagessListbyMessageStatus)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		local url = splitUrl(ApplicationConfig.GetMessagessListbyMessageStatus)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-    local resbody = "?userId="..UserId.."&status="..status
+	    		local resbody = "?userId="..UserId.."&status="..status
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	print("request : "..json.encode(params))
+	    		print("request : "..json.encode(params))
 
-	request.new(ApplicationConfig.GetMessagessListbyMessageStatus..resbody,method,params,postExecution)
-	
-	return response
-end
+	    		request.new(ApplicationConfig.GetMessagessListbyMessageStatus..resbody,method,params,postExecution)
+	    		
+	    		return response
+	    	end
 
 
 
-function Webservice.GetMessagessListbyMessageStatus(status,postExecution)
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="GET"
+	    	function Webservice.GetMessagessListbyMessageStatus(status,postExecution)
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
+	    		method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
 
-	end
+	    		end
 
-	local url = splitUrl(ApplicationConfig.GetMessagessListbyMessageStatus)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		local url = splitUrl(ApplicationConfig.GetMessagessListbyMessageStatus)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-    local resbody = "?userId="..UserId.."&status="..status
+	    		local resbody = "?userId="..UserId.."&status="..status
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	print("request : "..json.encode(params))
+	    		print("request : "..json.encode(params))
 
-	request.new(ApplicationConfig.GetMessagessListbyMessageStatus..resbody,method,params,postExecution)
-	
-	return response
-end
+	    		request.new(ApplicationConfig.GetMessagessListbyMessageStatus..resbody,method,params,postExecution)
+	    		
+	    		return response
+	    	end
 
 
 
-function Webservice.GetMessagessListbyMessageStatus(status,count,pagevalue,postExecution)
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="GET"
+	    	function Webservice.GetMessagessListbyMessageStatus(status,count,pagevalue,postExecution)
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
+	    		method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
 
-	end
+	    		end
 
-	local url = splitUrl(ApplicationConfig.GetMessagessListbyMessageStatus)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		local url = splitUrl(ApplicationConfig.GetMessagessListbyMessageStatus)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-    local resbody = "?userId="..UserId.."&status="..status.."&pageSize="..count.."&page="..pagevalue
+	    		local resbody = "?userId="..UserId.."&status="..status.."&pageSize="..count.."&page="..pagevalue
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	print("request : "..json.encode(params))
+	    		print("request : "..json.encode(params))
 
-	request.new(ApplicationConfig.GetMessagessListbyMessageStatus..resbody,method,params,postExecution)
-	
-	return response
-end
+	    		request.new(ApplicationConfig.GetMessagessListbyMessageStatus..resbody,method,params,postExecution)
+	    		
+	    		return response
+	    	end
 
 
 
-function Webservice.DeleteMyUnitBuzzMessages(messageId,postExecution)
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="GET"
+	    	function Webservice.DeleteMyUnitBuzzMessages(messageId,postExecution)
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
+	    		method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
-	end
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
+	    		end
 
-	local url = splitUrl(ApplicationConfig.DeleteMyUnitBuzzMessages)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		local url = splitUrl(ApplicationConfig.DeleteMyUnitBuzzMessages)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-    local resbody = "?userId="..UserId.."&myUnitBuzzMessageId="..messageId
+	    		local resbody = "?userId="..UserId.."&myUnitBuzzMessageId="..messageId
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	print("request : "..json.encode(params))
+	    		print("request : "..json.encode(params))
 
-	request.new(ApplicationConfig.DeleteMyUnitBuzzMessages..resbody,method,params,postExecution)
-	
-	return response
-end
+	    		request.new(ApplicationConfig.DeleteMyUnitBuzzMessages..resbody,method,params,postExecution)
+	    		
+	    		return response
+	    	end
 
 
 
-function Webservice.GetMessageGroupTeamMemberList(groupid,groupType,postExecution)
+	    	function Webservice.GetMessageGroupTeamMemberList(groupid,groupType,postExecution)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    		method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
 
-	end
+	    		end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	local url = splitUrl(ApplicationConfig.GetMessageGroupTeamMemberList)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		local url = splitUrl(ApplicationConfig.GetMessageGroupTeamMemberList)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
 
 
-	local resbody="?userId="..UserId.."&groupId="..groupid.."&groupType="..groupType
-	params={headers = headers}
+	    		local resbody="?userId="..UserId.."&groupId="..groupid.."&groupType="..groupType
+	    		params={headers = headers}
 
-	request.new(ApplicationConfig.GetMessageGroupTeamMemberList..resbody,method,params,postExecution)
+	    		request.new(ApplicationConfig.GetMessageGroupTeamMemberList..resbody,method,params,postExecution)
 
-    print("request : "..json.encode(params))
+	    		print("request : "..json.encode(params))
 
-	
-	return response
-end
+	    		
+	    		return response
+	    	end
 
 
 
 
-function Webservice.UpdateLastActivityDate(postExecution)
+	    	function Webservice.UpdateLastActivityDate(postExecution)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    		method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
 
-	end
+	    		end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	local url = splitUrl(ApplicationConfig.UpdateLastActivityDate)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		local url = splitUrl(ApplicationConfig.UpdateLastActivityDate)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
 
 
-	local resbody="?userId="..UserId.."&contactId="..ContactId
-	params={headers = headers}
+	    		local resbody="?userId="..UserId.."&contactId="..ContactId
+	    		params={headers = headers}
 
-	request.new(ApplicationConfig.UpdateLastActivityDate..resbody,method,params,postExecution)
+	    		request.new(ApplicationConfig.UpdateLastActivityDate..resbody,method,params,postExecution)
 
-    print("request : "..json.encode(params))
+	    		print("request : "..json.encode(params))
 
-	
-	return response
-end
+	    		
+	    		return response
+	    	end
 
 
 
 
 
-function Webservice.GetAllSpecialRecognitions(postExecution)
+	    	function Webservice.GetAllSpecialRecognitions(postExecution)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    		method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
 
-	end
+	    		end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	local url = splitUrl(ApplicationConfig.GetAllSpecialRecognitions)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		local url = splitUrl(ApplicationConfig.GetAllSpecialRecognitions)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
 
-	local resbody="?userId="..UserId
+	    		local resbody="?userId="..UserId
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	request.new(ApplicationConfig.GetAllSpecialRecognitions..resbody,method,params,postExecution)
+	    		request.new(ApplicationConfig.GetAllSpecialRecognitions..resbody,method,params,postExecution)
 
-    print("request for special recognition list : "..json.encode(params))
+	    		print("request for special recognition list : "..json.encode(params))
 
-	
-	return response
-end
+	    		
+	    		return response
+	    	end
 
 
 
 
-function Webservice.GetSpecialRecognitionPageContent(sr_eventid,postExecution)
+	    	function Webservice.GetSpecialRecognitionPageContent(sr_eventid,postExecution)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    		method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
 
-	end
+	    		end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	local url = splitUrl(ApplicationConfig.GetSpecialRecognitionPageContent)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		local url = splitUrl(ApplicationConfig.GetSpecialRecognitionPageContent)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
 
-	local resbody="?userId="..UserId.."&specialRecognitionId="..sr_eventid
+	    		local resbody="?userId="..UserId.."&specialRecognitionId="..sr_eventid
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	request.new(ApplicationConfig.GetSpecialRecognitionPageContent..resbody,method,params,postExecution)
+	    		request.new(ApplicationConfig.GetSpecialRecognitionPageContent..resbody,method,params,postExecution)
 
-    print("request for special recognition details with report type 1 : "..json.encode(params))
+	    		print("request for special recognition details with report type 1 : "..json.encode(params))
 
-	
-	return response
-end
+	    		
+	    		return response
+	    	end
 
 
 
 
 
 
-function Webservice.GetSpecialRecognitionJsonContent(sr_eventid,postExecution)
+	    	function Webservice.GetSpecialRecognitionJsonContent(sr_eventid,postExecution)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    		method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
 
-	end
+	    		end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	local url = splitUrl(ApplicationConfig.GetSpecialRecognitionJsonContent)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		local url = splitUrl(ApplicationConfig.GetSpecialRecognitionJsonContent)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
 
-	local resbody="?userId="..UserId.."&specialRecognitionId="..sr_eventid
+	    		local resbody="?userId="..UserId.."&specialRecognitionId="..sr_eventid
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	request.new(ApplicationConfig.GetSpecialRecognitionJsonContent..resbody,method,params,postExecution)
+	    		request.new(ApplicationConfig.GetSpecialRecognitionJsonContent..resbody,method,params,postExecution)
 
-    print("request for special recognition details with report type  : "..json.encode(params))
+	    		print("request for special recognition details with report type  : "..json.encode(params))
 
-	
-	return response
-end
+	    		
+	    		return response
+	    	end
 
 
 
 
 
-function Webservice.GetMyUnitBuzzMessagesbyUserId(messageid,postExecution)
+	    	function Webservice.GetMyUnitBuzzMessagesbyUserId(messageid,postExecution)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    		method="GET"
 
-	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		print("UserId :"..row.UserId)
-		UserId = row.UserId
-		AccessToken = row.AccessToken
-		ContactId = row.ContactId
+	    		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    			print("UserId :"..row.UserId)
+	    			UserId = row.UserId
+	    			AccessToken = row.AccessToken
+	    			ContactId = row.ContactId
 
-	end
+	    		end
 
-	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    		headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	local url = splitUrl(ApplicationConfig.GetMyUnitBuzzMessagesbyUserId)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		local url = splitUrl(ApplicationConfig.GetMyUnitBuzzMessagesbyUserId)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
 
-	local resbody="?userId="..UserId.."&myUnitBuzzMessageId="..messageid
+	    		local resbody="?userId="..UserId.."&myUnitBuzzMessageId="..messageid
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	request.new(ApplicationConfig.GetMyUnitBuzzMessagesbyUserId..resbody,method,params,postExecution)
+	    		request.new(ApplicationConfig.GetMyUnitBuzzMessagesbyUserId..resbody,method,params,postExecution)
 
-    print("request for messages by userId  : "..json.encode(params))
+	    		print("request for messages by userId  : "..json.encode(params))
 
-	
-	return response
-end
+	    		
+	    		return response
+	    	end
 
 
 
 
 
-function Webservice.GetAllCountry(postExecution)
+	    	function Webservice.GetAllCountry(postExecution)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    		method="GET"
 
 
-		local found=false
-		db:exec([[select * from sqlite_master where name='logindetails';]],
-		function(...) found=true return 0 end)
+	    		local found=false
+	    		db:exec([[select * from sqlite_master where name='logindetails';]],
+	    			function(...) found=true return 0 end)
 
-		if found then 
-		print('table exists!')
+	    		if found then 
+	    			print('table exists!')
 
-		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-			UserId = row.UserId
-			AccessToken = row.AccessToken
-			ContactId = row.ContactId
-			UnitNumberValue = row.UnitNumberOrDirector
-			langid = row.LanguageId
-			countryid = row.CountryId
-		end
+	    			for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    				UserId = row.UserId
+	    				AccessToken = row.AccessToken
+	    				ContactId = row.ContactId
+	    				UnitNumberValue = row.UnitNumberOrDirector
+	    				langid = row.LanguageId
+	    				countryid = row.CountryId
+	    			end
 
-	          headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    			headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	    else
+	    		else
 
-	    	  headers["UserAuthorization"]= ""
+	    			headers["UserAuthorization"]= ""
 
-		end
+	    		end
 
 
-	local url = splitUrl(ApplicationConfig.GetAllCountry)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		local url = splitUrl(ApplicationConfig.GetAllCountry)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	request.new(ApplicationConfig.GetAllCountry,method,params,postExecution)
+	    		request.new(ApplicationConfig.GetAllCountry,method,params,postExecution)
 
-    print("Get all country request : "..json.encode(params))
+	    		print("Get all country request : "..json.encode(params))
 
-	
-	return response
-end
+	    		
+	    		return response
+	    	end
 
 
 
 
 
 
-function Webservice.GetCountryLanguagesbyCountryCode(countrycode,postExecution)
+	    	function Webservice.GetCountryLanguagesbyCountryCode(countrycode,postExecution)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    		method="GET"
 
 
-		local found=false
-		db:exec([[select * from sqlite_master where name='logindetails';]],
-		function(...) found=true return 0 end)
+	    		local found=false
+	    		db:exec([[select * from sqlite_master where name='logindetails';]],
+	    			function(...) found=true return 0 end)
 
-		if found then 
-		print('table exists!')
+	    		if found then 
+	    			print('table exists!')
 
-		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-			UserId = row.UserId
-			AccessToken = row.AccessToken
-			ContactId = row.ContactId
-			UnitNumberValue = row.UnitNumberOrDirector
-			langid = row.LanguageId
-			countryid = row.CountryId
-		end
+	    			for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    				UserId = row.UserId
+	    				AccessToken = row.AccessToken
+	    				ContactId = row.ContactId
+	    				UnitNumberValue = row.UnitNumberOrDirector
+	    				langid = row.LanguageId
+	    				countryid = row.CountryId
+	    			end
 
-	          headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    			headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	    else
+	    		else
 
-	    	  headers["UserAuthorization"]= ""
+	    			headers["UserAuthorization"]= ""
 
-		end
+	    		end
 
 
-	local url = splitUrl(ApplicationConfig.GetCountryLanguagesbyCountryCode)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		local url = splitUrl(ApplicationConfig.GetCountryLanguagesbyCountryCode)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
 
-	local resbody="?countryCode="..countrycode
+	    		local resbody="?countryCode="..countrycode
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	request.new(ApplicationConfig.GetCountryLanguagesbyCountryCode..resbody,method,params,postExecution)
+	    		request.new(ApplicationConfig.GetCountryLanguagesbyCountryCode..resbody,method,params,postExecution)
 
-    print("request for registration languages details ########## : "..json.encode(params))
-	
-	return response
-end
+	    		print("request for registration languages details ########## : "..json.encode(params))
+	    		
+	    		return response
+	    	end
 
 
 
@@ -2735,63 +2735,63 @@ end
 
 
 
-function Webservice.GetPositionbyCountryIdandLanguageId(countrycode,languageid,postExecution)
+	    	function Webservice.GetPositionbyCountryIdandLanguageId(countrycode,languageid,postExecution)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    		method="GET"
 
 
-		local found=false
-		db:exec([[select * from sqlite_master where name='logindetails';]],
-		function(...) found=true return 0 end)
+	    		local found=false
+	    		db:exec([[select * from sqlite_master where name='logindetails';]],
+	    			function(...) found=true return 0 end)
 
-		if found then 
-		print('table exists!')
+	    		if found then 
+	    			print('table exists!')
 
-		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-			UserId = row.UserId
-			AccessToken = row.AccessToken
-			ContactId = row.ContactId
-			UnitNumberValue = row.UnitNumberOrDirector
-			langid = row.LanguageId
-			countryid = row.CountryId
-		end
+	    			for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    				UserId = row.UserId
+	    				AccessToken = row.AccessToken
+	    				ContactId = row.ContactId
+	    				UnitNumberValue = row.UnitNumberOrDirector
+	    				langid = row.LanguageId
+	    				countryid = row.CountryId
+	    			end
 
-	          headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    			headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	    else
+	    		else
 
-	    	  headers["UserAuthorization"]= ""
+	    			headers["UserAuthorization"]= ""
 
-		end
+	    		end
 
 
-	local url = splitUrl(ApplicationConfig.GetPositionbyCountryIdandLanguageId)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		local url = splitUrl(ApplicationConfig.GetPositionbyCountryIdandLanguageId)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
 
-	local resbody="?countryCode="..countrycode.."&languageId="..languageid
+	    		local resbody="?countryCode="..countrycode.."&languageId="..languageid
 
-	params={headers = headers}
+	    		params={headers = headers}
 
-	request.new(ApplicationConfig.GetPositionbyCountryIdandLanguageId..resbody,method,params,postExecution)
+	    		request.new(ApplicationConfig.GetPositionbyCountryIdandLanguageId..resbody,method,params,postExecution)
 
-    print("request for special recognition position details : "..json.encode(params))
+	    		print("request for special recognition position details : "..json.encode(params))
 
-	
-	return response
-end
+	    		
+	    		return response
+	    	end
 
 
 
@@ -2800,232 +2800,232 @@ end
 
 
 
-function Webservice.MubDirectorRegister(FirstName,LastName,EmailAddress,PhoneNumber,MaryKayId,Country,Language,PositionId,postExecution)
-	
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
-	method="POST"
+	    	function Webservice.MubDirectorRegister(FirstName,LastName,EmailAddress,PhoneNumber,MaryKayId,Country,Language,PositionId,postExecution)
+	    		
+	    		local request_value = {}
+	    		local params = {}
+	    		local headers = {}
+	    		headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    		headers["IpAddress"] = Utility.getIpAddress()
+	    		headers["UniqueId"] = system.getInfo("deviceID")
+	    		headers["Accept"] = "application/json"
+	    		headers["Content-Type"] = "application/json"
+	    		method="POST"
 
 
-	local url = splitUrl(ApplicationConfig.MubDirectorRegister)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    		local url = splitUrl(ApplicationConfig.MubDirectorRegister)
+	    		local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    		authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    		headers["Authentication"] = authenticationkey
 
 
-		local found=false
-		db:exec([[select * from sqlite_master where name='logindetails';]],
-		function(...) found=true return 0 end)
+	    		local found=false
+	    		db:exec([[select * from sqlite_master where name='logindetails';]],
+	    			function(...) found=true return 0 end)
 
-		if found then 
-				print('table exists!')
+	    		if found then 
+	    			print('table exists!')
 
-				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-					UserId = row.UserId
-					AccessToken = row.AccessToken
-					ContactId = row.ContactId
-					UnitNumberValue = row.UnitNumberOrDirector
-					langid = row.LanguageId
-					countryid = row.CountryId
-				end
+	    			for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    				UserId = row.UserId
+	    				AccessToken = row.AccessToken
+	    				ContactId = row.ContactId
+	    				UnitNumberValue = row.UnitNumberOrDirector
+	    				langid = row.LanguageId
+	    				countryid = row.CountryId
+	    			end
 
-	            headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    			headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	    else
+	    		else
 
-	    	    headers["UserAuthorization"]= ""
+	    			headers["UserAuthorization"]= ""
 
-		end
+	    		end
 
 
-		 local resbody = [[{
+	    		local resbody = [[{
 
-		    "FirstName": ']]..FirstName..[[',
-		    "LastName": ']]..LastName..[[',
-		    "EmailAddress": ']]..EmailAddress..[[',
-		    "PhoneNumber": ']]..PhoneNumber..[[',
-			"MaryKayId": ']]..MaryKayId..[[',
-			"Country": ]]..Country..[[,
-			"Language": ]]..Language..[[,
-			"Position": ]]..PositionId..[[,
-		
-		} ]]
+	    			"FirstName": ']]..FirstName..[[',
+	    			"LastName": ']]..LastName..[[',
+	    			"EmailAddress": ']]..EmailAddress..[[',
+	    			"PhoneNumber": ']]..PhoneNumber..[[',
+	    			"MaryKayId": ']]..MaryKayId..[[',
+	    			"Country": ]]..Country..[[,
+	    			"Language": ]]..Language..[[,
+	    			"Position": ]]..PositionId..[[,
+	    			
+	    			} ]]
 
 
-    params={headers = headers,body = resbody}
+	    			params={headers = headers,body = resbody}
 
-	print("request for MUB Director Register : "..resbody)
+	    			print("request for MUB Director Register : "..resbody)
 
-	request.new(ApplicationConfig.MubDirectorRegister,method,params,postExecution)
-	
-	return response
-	
-end
+	    			request.new(ApplicationConfig.MubDirectorRegister,method,params,postExecution)
+	    			
+	    			return response
+	    			
+	    		end
 
 
 
 
 
 
-function Webservice.IsUserAvailable(emailid,postExecution)
+	    		function Webservice.IsUserAvailable(emailid,postExecution)
 
-	local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    			local request_value = {}
+	    			local params = {}
+	    			local headers = {}
+	    			headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    			headers["IpAddress"] = Utility.getIpAddress()
+	    			headers["UniqueId"] = system.getInfo("deviceID")
+	    			headers["Accept"] = "application/json"
+	    			headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    			method="GET"
 
-		local found=false
-		db:exec([[select * from sqlite_master where name='logindetails';]],
-		function(...) found=true return 0 end)
+	    			local found=false
+	    			db:exec([[select * from sqlite_master where name='logindetails';]],
+	    				function(...) found=true return 0 end)
 
-		if found then 
-				print('table exists!')
+	    			if found then 
+	    				print('table exists!')
 
-				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-					UserId = row.UserId
-					AccessToken = row.AccessToken
-					ContactId = row.ContactId
-					UnitNumberValue = row.UnitNumberOrDirector
-					langid = row.LanguageId
-					countryid = row.CountryId
-				end
+	    				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    					UserId = row.UserId
+	    					AccessToken = row.AccessToken
+	    					ContactId = row.ContactId
+	    					UnitNumberValue = row.UnitNumberOrDirector
+	    					langid = row.LanguageId
+	    					countryid = row.CountryId
+	    				end
 
-	            headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    				headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	    else
+	    			else
 
-	    	    headers["UserAuthorization"]= ""
+	    				headers["UserAuthorization"]= ""
 
-		end
+	    			end
 
 
-	local url = splitUrl(ApplicationConfig.IsUserAvailable)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    			local url = splitUrl(ApplicationConfig.IsUserAvailable)
+	    			local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    			authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    			headers["Authentication"] = authenticationkey
 
 
-	local resbody="?emailAddress="..string.urlEncode(emailid)
+	    			local resbody="?emailAddress="..string.urlEncode(emailid)
 
-	params={headers = headers}
+	    			params={headers = headers}
 
-	request.new(ApplicationConfig.IsUserAvailable..resbody,method,params,postExecution)
+	    			request.new(ApplicationConfig.IsUserAvailable..resbody,method,params,postExecution)
 
-    print("request for email address validation ###### : "..json.encode(params))
+	    			print("request for email address validation ###### : "..json.encode(params))
 
-	
-	return response
-end
+	    			
+	    			return response
+	    		end
 
 
-function Webservice.GetChatUnReadMessagesList(postExecution)
+	    		function Webservice.GetChatUnReadMessagesList(postExecution)
 
-local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    			local request_value = {}
+	    			local params = {}
+	    			local headers = {}
+	    			headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    			headers["IpAddress"] = Utility.getIpAddress()
+	    			headers["UniqueId"] = system.getInfo("deviceID")
+	    			headers["Accept"] = "application/json"
+	    			headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    			method="GET"
 
 
-				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-					UserId = row.UserId
-					AccessToken = row.AccessToken
-					ContactId = row.ContactId
-					UnitNumberValue = row.UnitNumberOrDirector
-					langid = row.LanguageId
-					countryid = row.CountryId
-				end
+	    			for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    				UserId = row.UserId
+	    				AccessToken = row.AccessToken
+	    				ContactId = row.ContactId
+	    				UnitNumberValue = row.UnitNumberOrDirector
+	    				langid = row.LanguageId
+	    				countryid = row.CountryId
+	    			end
 
-	            headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    			headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	
+	    			
 
-	local url = splitUrl(ApplicationConfig.GetChatUnReadMessagesList)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    			local url = splitUrl(ApplicationConfig.GetChatUnReadMessagesList)
+	    			local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    			authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    			headers["Authentication"] = authenticationkey
 
 
-	local resbody="?userId="..UserId.."&contactId="..ContactId.."&deviceId="..system.getInfo("deviceID")
+	    			local resbody="?userId="..UserId.."&contactId="..ContactId.."&deviceId="..system.getInfo("deviceID")
 
-	params={headers = headers}
+	    			params={headers = headers}
 
-	request.new(ApplicationConfig.GetChatUnReadMessagesList..resbody,method,params,postExecution)
+	    			request.new(ApplicationConfig.GetChatUnReadMessagesList..resbody,method,params,postExecution)
 
-    print("request for email address validation ###### : "..json.encode(params))
+	    			print("request for email address validation ###### : "..json.encode(params))
 
-	
-	return response
+	    			
+	    			return response
 
 
-end
+	    		end
 
-function Webservice.UpdateLastChatSyncDate(postExecution)
+	    		function Webservice.UpdateLastChatSyncDate(postExecution)
 
-local request_value = {}
-	local params = {}
-	local headers = {}
-	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
-	headers["IpAddress"] = Utility.getIpAddress()
-	headers["UniqueId"] = system.getInfo("deviceID")
-	headers["Accept"] = "application/json"
-	headers["Content-Type"] = "application/json"
+	    			local request_value = {}
+	    			local params = {}
+	    			local headers = {}
+	    			headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	    			headers["IpAddress"] = Utility.getIpAddress()
+	    			headers["UniqueId"] = system.getInfo("deviceID")
+	    			headers["Accept"] = "application/json"
+	    			headers["Content-Type"] = "application/json"
 
-	method="GET"
+	    			method="GET"
 
 
-				for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-					UserId = row.UserId
-					AccessToken = row.AccessToken
-					ContactId = row.ContactId
-					UnitNumberValue = row.UnitNumberOrDirector
-					langid = row.LanguageId
-					countryid = row.CountryId
-				end
+	    			for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	    				UserId = row.UserId
+	    				AccessToken = row.AccessToken
+	    				ContactId = row.ContactId
+	    				UnitNumberValue = row.UnitNumberOrDirector
+	    				langid = row.LanguageId
+	    				countryid = row.CountryId
+	    			end
 
-	            headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+	    			headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
-	
+	    			
 
-	local url = splitUrl(ApplicationConfig.UpdateLastChatSyncDate)
-	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	    			local url = splitUrl(ApplicationConfig.UpdateLastChatSyncDate)
+	    			local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 
-	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
-	headers["Authentication"] = authenticationkey
+	    			authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	    			headers["Authentication"] = authenticationkey
 
 
-	local resbody="?userId="..UserId.."&contactId="..ContactId.."&deviceId="..system.getInfo("deviceID")
+	    			local resbody="?userId="..UserId.."&contactId="..ContactId.."&deviceId="..system.getInfo("deviceID")
 
-	params={headers = headers}
+	    			params={headers = headers}
 
-	request.new(ApplicationConfig.UpdateLastChatSyncDate..resbody,method,params,postExecution)
+	    			request.new(ApplicationConfig.UpdateLastChatSyncDate..resbody,method,params,postExecution)
 
-    print("request for email address validation ###### : "..json.encode(params))
+	    			print("request for email address validation ###### : "..json.encode(params))
 
-	
-	return response
+	    			
+	    			return response
 
 
-end
+	    		end
 
 
 

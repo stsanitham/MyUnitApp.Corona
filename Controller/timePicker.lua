@@ -5,42 +5,42 @@ local W = display.contentWidth;H= display.contentHeight
 
 print( "######"..os.date( "%p" ))
 local Min = {}
-	local Hour = {}
-	for i = 1,60 do Min[i] = (string.format("%02d",i-1)) end
-	for j = 1,12 do Hour[j] = (string.format("%02d",j)) end
+local Hour = {}
+for i = 1,60 do Min[i] = (string.format("%02d",i-1)) end
+for j = 1,12 do Hour[j] = (string.format("%02d",j)) end
 
-	local tz = {"AM","PM"}
+local tz = {"AM","PM"}
 
-		print(TimeZone.." and "..Utils.getTime(os.time(os.date( "!*t" )),"%I",TimeZone))
+print(TimeZone.." and "..Utils.getTime(os.time(os.date( "!*t" )),"%I",TimeZone))
 
-	local columnData = { 
-		{
-			align = "right",
-			width = 125,
-			startIndex = tonumber(string.format("%2d",Utils.getTime(os.time(os.date( "!*t" )),"%I",TimeZone))),
-			labels = Hour,
-		},
-		{
-			align = "center",
-			width = 70,
-			startIndex = tonumber(string.format("%2d",Utils.getTime(os.time(os.date( "!*t" )),"%M",TimeZone))),
-			labels = Min,
-		},
-		{
-			align = "center",
-			width = 65,
-			startIndex = table.indexOf( tz, Utils.getTime(os.time(os.date( "!*t" )),"%p",TimeZone) ),
-			labels = tz,
-		},
-	}
+local columnData = { 
+	{
+		align = "right",
+		width = 125,
+		startIndex = tonumber(string.format("%2d",Utils.getTime(os.time(os.date( "!*t" )),"%I",TimeZone))),
+		labels = Hour,
+	},
+	{
+		align = "center",
+		width = 70,
+		startIndex = tonumber(string.format("%2d",Utils.getTime(os.time(os.date( "!*t" )),"%M",TimeZone))),
+		labels = Min,
+	},
+	{
+		align = "center",
+		width = 65,
+		startIndex = table.indexOf( tz, Utils.getTime(os.time(os.date( "!*t" )),"%p",TimeZone) ),
+		labels = tz,
+	},
+}
 
 
 
-	timePicker.clear  = function ()
-		if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
-		if doneBg then display.remove(doneBg);doneBg=nil end
-		if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
-	end
+timePicker.clear  = function ()
+	if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
+	if doneBg then display.remove(doneBg);doneBg=nil end
+	if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
+end
 
 
 
@@ -48,7 +48,7 @@ timePicker.getTimeValue = function(listner)
 
 
 
-local function showValues( event )
+	local function showValues( event )
 		-- Retrieve the current values from the picker
 		local values = pickerWheel:getValues()
 		
@@ -70,9 +70,9 @@ local function showValues( event )
 
 
 
-if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
-if doneBg then display.remove(doneBg);doneBg=nil end
-if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
+	if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
+	if doneBg then display.remove(doneBg);doneBg=nil end
+	if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
 
 
 

@@ -26,106 +26,106 @@ local backBtn,UnitnumberField,UserName
 
 -----------------Function-------------------------
 
-		local function bgTouch( event )
-			if event.phase == "began" then
-				display.getCurrentStage():setFocus( event.target )
-				elseif event.phase == "ended" then
-				display.getCurrentStage():setFocus( nil )
-				native.setKeyboardFocus(nil)
-			end
+local function bgTouch( event )
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+		native.setKeyboardFocus(nil)
+	end
 
-			return true
+	return true
+end
+
+
+local function SetError( displaystring, object )
+
+	if object.id == "password" then
+		object.isSecure = false
+	end
+
+	object.text=displaystring
+	object.size=10
+	object:setTextColor(1,0,0)
+
+end
+
+
+local function textfield( event )
+
+	if ( event.phase == "began" ) then
+
+		event.target:setTextColor(color.black)
+
+		current_textField = event.target;
+
+		current_textField.size=14	
+
+		if "*" == event.target.text:sub(1,1) then
+			event.target.text=""
 		end
-
-
-       local function SetError( displaystring, object )
-
-			if object.id == "password" then
-				object.isSecure = false
-			end
-
-			object.text=displaystring
-			object.size=10
-			object:setTextColor(1,0,0)
-
-		end
-
-
-		local function textfield( event )
-
-			if ( event.phase == "began" ) then
-
-				event.target:setTextColor(color.black)
-
-				current_textField = event.target;
-
-				current_textField.size=14	
-
-				if "*" == event.target.text:sub(1,1) then
-					event.target.text=""
-				end
 
 		elseif ( event.phase == "ended" ) then
 
 
-		elseif (event.phase == "submitted" ) then
+	elseif (event.phase == "submitted" ) then
 
-				if(current_textField.id == "Unit Number / Director name") then
+		if(current_textField.id == "Unit Number / Director name") then
 
-					native.setKeyboardFocus( UserName )
+			native.setKeyboardFocus( UserName )
 
-				else
+		else
 
-					native.setKeyboardFocus( nil )
+			native.setKeyboardFocus( nil )
 
-				end
-				
+		end
+		
 
-		elseif ( event.phase == "editing" ) then
+	elseif ( event.phase == "editing" ) then
 
-				if(current_textField.id == "Unit Number / Director name") then
+		if(current_textField.id == "Unit Number / Director name") then
 
-					if event.text:len() > 50 then
+			if event.text:len() > 50 then
 
-						event.target.text = event.text:sub(1,50)
-
-					end
-
-					local temp = event.text
-
-					local tempvalue = temp:sub(temp:len(),temp:len())
-
-					if(tempvalue == "(") then
-						event.text = event.text:sub( 1, event.text:len()-1)
-					end
-				elseif (current_textField.id == "Username / Email") then
-					if event.text:len() > 100 then
-
-						event.target.text = event.text:sub(1,100)
-
-					end
-				end
+				event.target.text = event.text:sub(1,50)
 
 			end
 
+			local temp = event.text
+
+			local tempvalue = temp:sub(temp:len(),temp:len())
+
+			if(tempvalue == "(") then
+				event.text = event.text:sub( 1, event.text:len()-1)
+			end
+		elseif (current_textField.id == "Username / Email") then
+			if event.text:len() > 100 then
+
+				event.target.text = event.text:sub(1,100)
+
+			end
 		end
 
+	end
+
+end
 
 
-		local function forgotAction( Request_response )
 
-				if Request_response == "SUCCESS" then
+local function forgotAction( Request_response )
 
-					local alert = native.showAlert( ForgotPassword.PageTitle,ForgotPassword.SuccessMsg, { CommonWords.ok } )
+	if Request_response == "SUCCESS" then
 
-					local options = {
-						    effect = "slideRight",
-						    time = 600,
-						    params = { responseValue=list_response_total}
-							}
-					composer.gotoScene( "Controller.singInPage", options )
+		local alert = native.showAlert( ForgotPassword.PageTitle,ForgotPassword.SuccessMsg, { CommonWords.ok } )
 
-				elseif Request_response == "NOUNITNUMBER" then
+		local options = {
+			effect = "slideRight",
+			time = 600,
+			params = { responseValue=list_response_total}
+		}
+		composer.gotoScene( "Controller.singInPage", options )
+
+	elseif Request_response == "NOUNITNUMBER" then
 
 					--local alert = native.showAlert(  ForgotPassword.PageTitle,LoginPage.ErrorMessage, { "OK" } )
 
@@ -138,174 +138,174 @@ local backBtn,UnitnumberField,UserName
 
 				end
 
-		end
-
-		
-	
-		local function signInRequest(  )
-
-			local Request_response
-
-			native.setKeyboardFocus(nil)
-
-			function get_forgotpassword( response )
-
-				signinBtn.action=true
-				signinBtn_text.action=true
-				Request_response = response
-				forgotAction(Request_response)
 			end
 
-			if AppName == "DirectorApp" then
-
-				Webservice.Forget_Password(Unitnumber_value,UserName.text,get_forgotpassword)
-
-			else
-
-				Webservice.Forget_Password(UnitnumberField.text,UserName.text,get_forgotpassword)
-
-			end
-
-		end
-
-		
-
-		local function backAction( event )
-			if event.phase == "began" then
-
-				display.getCurrentStage():setFocus( event.target )
-
-			elseif event.phase == "ended" then
 			
-				display.getCurrentStage():setFocus( nil )
+			
+			local function signInRequest(  )
 
-					local options = {
-									effect = "slideRight",
-									time = 600,	  
-									}
+				local Request_response
 
-				composer.gotoScene( "Controller.singInPage", options )
-			end
-
-			return true
-
-		end
-
-		local signinBtnRelease = function( event )
-			if event.phase == "began" then
-
-				display.getCurrentStage():setFocus( event.target )
-				if event.target.action == false then
-
-					display.getCurrentStage():setFocus( nil )
-					return false
-
-				end
-
-			elseif event.phase == "ended" then
-				display.getCurrentStage():setFocus( nil )
-
-				print( "sign in request" )
-				signinBtn.action=false
-				signinBtn_text.action=false
-
-				local validation = true
 				native.setKeyboardFocus(nil)
 
-				if AppName ~= "DirectorApp" then
+				function get_forgotpassword( response )
 
-					if UnitnumberField.text == "" or UnitnumberField.text == nil then
-						validation=false
-						SetError(LoginPage.setError_Unitnumber,UnitnumberField)
-					end
-				end
-
-
-
-				if UserName.text == "" then
-
-
-					validation=false
-					SetError(LoginPage.setError_UserName,UserName)
-				else
-
-					if not Utils.emailValidation(UserName.text) then
-						validation=false
-						SetError(LoginPage.setError_UserName,UserName)
-
-					end
-				end
-
-				if(validation == true) then
-
-					signInRequest()
-				else
 					signinBtn.action=true
+					signinBtn_text.action=true
+					Request_response = response
+					forgotAction(Request_response)
+				end
+
+				if AppName == "DirectorApp" then
+
+					Webservice.Forget_Password(Unitnumber_value,UserName.text,get_forgotpassword)
+
+				else
+
+					Webservice.Forget_Password(UnitnumberField.text,UserName.text,get_forgotpassword)
 
 				end
 
+			end
 
-		end
+			
 
+			local function backAction( event )
+				if event.phase == "began" then
 
-	return true
-	end
+					display.getCurrentStage():setFocus( event.target )
 
-	local function touchAction( event )
-
-		if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
-			if event.target.id == "request" then
+					elseif event.phase == "ended" then
+					
+					display.getCurrentStage():setFocus( nil )
 
 					local options = {
-						    effect = "slideLeft",
-						    time = 600,
-							}
+						effect = "slideRight",
+						time = 600,	  
+					}
 
-				composer.gotoScene( "Controller.request_Access_Page", options)
+					composer.gotoScene( "Controller.singInPage", options )
+				end
+
+				return true
+
 			end
-		end
-	return true
-	end 
+
+			local signinBtnRelease = function( event )
+				if event.phase == "began" then
+
+					display.getCurrentStage():setFocus( event.target )
+					if event.target.action == false then
+
+						display.getCurrentStage():setFocus( nil )
+						return false
+
+					end
+
+					elseif event.phase == "ended" then
+					display.getCurrentStage():setFocus( nil )
+
+					print( "sign in request" )
+					signinBtn.action=false
+					signinBtn_text.action=false
+
+					local validation = true
+					native.setKeyboardFocus(nil)
+
+					if AppName ~= "DirectorApp" then
+
+						if UnitnumberField.text == "" or UnitnumberField.text == nil then
+							validation=false
+							SetError(LoginPage.setError_Unitnumber,UnitnumberField)
+						end
+					end
+
+
+
+					if UserName.text == "" then
+
+
+						validation=false
+						SetError(LoginPage.setError_UserName,UserName)
+					else
+
+						if not Utils.emailValidation(UserName.text) then
+							validation=false
+							SetError(LoginPage.setError_UserName,UserName)
+
+						end
+					end
+
+					if(validation == true) then
+
+						signInRequest()
+					else
+						signinBtn.action=true
+
+					end
+
+
+				end
+
+
+				return true
+			end
+
+			local function touchAction( event )
+
+				if event.phase == "began" then
+					display.getCurrentStage():setFocus( event.target )
+					elseif event.phase == "ended" then
+					display.getCurrentStage():setFocus( nil )
+					if event.target.id == "request" then
+
+						local options = {
+							effect = "slideLeft",
+							time = 600,
+						}
+
+						composer.gotoScene( "Controller.request_Access_Page", options)
+					end
+				end
+				return true
+			end 
 
 
 
 
-	local function onTimer ( event )
+			local function onTimer ( event )
 
-	print( "event time completion" )
+				print( "event time completion" )
 
-	BackFlag = false
+				BackFlag = false
 
-end
+			end
 
 
-local function onKeyEvent( event )
+			local function onKeyEvent( event )
 
-        local phase = event.phase
-        local keyName = event.keyName
+				local phase = event.phase
+				local keyName = event.keyName
 
-        if phase == "up" then
+				if phase == "up" then
 
-        if keyName=="back" then
+					if keyName=="back" then
 
-			 	local options = {
-									effect = "slideRight",
-									time = 600,	  
-									}
+						local options = {
+							effect = "slideRight",
+							time = 600,	  
+						}
 
-				composer.gotoScene( "Controller.singInPage", options )
+						composer.gotoScene( "Controller.singInPage", options )
 
-				 return true
+						return true
 
-            end
-            
-        end
+					end
+					
+				end
 
-        return false
- end
+				return false
+			end
 
 
 
@@ -394,7 +394,7 @@ function scene:create( event )
 	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+40;UserName.y=UserName_bg.y
 
 	
-    signinBtn = display.newRect(sceneGroup,0,0,W-60,35)
+	signinBtn = display.newRect(sceneGroup,0,0,W-60,35)
 	signinBtn.x=W/2;signinBtn.y = UserName_bg.y+48
 	signinBtn.width = W-180
 	sceneGroup:insert(signinBtn)
@@ -429,56 +429,56 @@ function scene:show( event )
 
 
 		ga.enterScene("ForgotPassword")
-	
-		elseif phase == "did" then
+		
+	elseif phase == "did" then
 
-			Background:addEventListener("touch",bgTouch)
-			UnitnumberField:addEventListener( "userInput", textfield )
-			UserName:addEventListener( "userInput", textfield )
-			requestBtn:addEventListener("touch",touchAction)
-			signinBtn:addEventListener("touch",signinBtnRelease)
-			signinBtn_text:addEventListener("touch",signinBtnRelease)
-			backBtn_bg:addEventListener("touch",backAction)
-			page_title:addEventListener("touch",backAction)
+		Background:addEventListener("touch",bgTouch)
+		UnitnumberField:addEventListener( "userInput", textfield )
+		UserName:addEventListener( "userInput", textfield )
+		requestBtn:addEventListener("touch",touchAction)
+		signinBtn:addEventListener("touch",signinBtnRelease)
+		signinBtn_text:addEventListener("touch",signinBtnRelease)
+		backBtn_bg:addEventListener("touch",backAction)
+		page_title:addEventListener("touch",backAction)
 
-			Runtime:addEventListener( "key", onKeyEvent )
-
-
-			composer.removeHidden()
-
-		end	
-
-		MainGroup:insert(sceneGroup)
-
-	end
-
-	function scene:hide( event )
-
-		local sceneGroup = self.view
-		local phase = event.phase
-
-		if event.phase == "will" then
-		elseif phase == "did" then
-
-			Runtime:removeEventListener( "key", onKeyEvent )
-
-			end	
-
-		end
+		Runtime:addEventListener( "key", onKeyEvent )
 
 
-		function scene:destroy( event )
-			local sceneGroup = self.view
+		composer.removeHidden()
+
+	end	
+
+	MainGroup:insert(sceneGroup)
+
+end
+
+function scene:hide( event )
+
+	local sceneGroup = self.view
+	local phase = event.phase
+
+	if event.phase == "will" then
+	elseif phase == "did" then
+
+		Runtime:removeEventListener( "key", onKeyEvent )
+
+	end	
+
+end
+
+
+function scene:destroy( event )
+	local sceneGroup = self.view
 
 
 
-		end
+end
 
 
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
 
 
-		return scene
+return scene

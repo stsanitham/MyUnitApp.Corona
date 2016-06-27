@@ -50,7 +50,7 @@ function scene:create( event )
 
 
 
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
@@ -65,50 +65,50 @@ function scene:show( event )
 
 		profileName.text = Director_Name
 
-		elseif phase == "did" then
+	elseif phase == "did" then
 
-			composer.removeHidden()
+		composer.removeHidden()
 
-			menuBtn:addEventListener("touch",menuTouch)
-			BgText:addEventListener("touch",menuTouch)
-
-
-		end	
-		MainGroup:insert(sceneGroup)
-
-	end
-
-	function scene:hide( event )
-
-		local sceneGroup = self.view
-		local phase = event.phase
-
-		if event.phase == "will" then
-
-			menuBtn:removeEventListener("touch",menuTouch)
-			BgText:removeEventListener("touch",menuTouch)
-
-		elseif phase == "did" then
+		menuBtn:addEventListener("touch",menuTouch)
+		BgText:addEventListener("touch",menuTouch)
 
 
+	end	
+	MainGroup:insert(sceneGroup)
 
-		end	
+end
 
-		end
+function scene:hide( event )
 
+	local sceneGroup = self.view
+	local phase = event.phase
 
-		function scene:destroy( event )
-			local sceneGroup = self.view
+	if event.phase == "will" then
+
+		menuBtn:removeEventListener("touch",menuTouch)
+		BgText:removeEventListener("touch",menuTouch)
+
+	elseif phase == "did" then
 
 
 
-		end
+	end	
+
+end
 
 
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
+function scene:destroy( event )
+	local sceneGroup = self.view
 
 
-		return scene
+
+end
+
+
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
+
+
+return scene

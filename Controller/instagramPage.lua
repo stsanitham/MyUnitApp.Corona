@@ -30,13 +30,13 @@ openPage="eventCalenderPage"
 
 local function closeDetails( event )
 	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
+		display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 
 	end
 
-return true
+	return true
 
 end
 
@@ -63,7 +63,7 @@ function scene:create( event )
 	BgText.anchorX=0
 
 
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
@@ -81,38 +81,38 @@ function scene:show( event )
 		
 	end	
 	
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
-	function scene:hide( event )
+function scene:hide( event )
 
-		local sceneGroup = self.view
-		local phase = event.phase
+	local sceneGroup = self.view
+	local phase = event.phase
 
-		if event.phase == "will" then
-
-
-			elseif phase == "did" then
+	if event.phase == "will" then
 
 
-			end	
-
-		end
+	elseif phase == "did" then
 
 
-		function scene:destroy( event )
-			local sceneGroup = self.view
+	end	
+
+end
+
+
+function scene:destroy( event )
+	local sceneGroup = self.view
 
 
 
-		end
+end
 
 
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
 
 
-		return scene
+return scene

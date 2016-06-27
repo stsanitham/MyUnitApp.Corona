@@ -42,13 +42,13 @@ openPage="specialRecognition"
 local function closeDetails( event )
 
 	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
+		display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 
 	end
 
-return true
+	return true
 
 end
 
@@ -66,36 +66,36 @@ end
 
 local function onKeyEvent( event )
 
-        local phase = event.phase
-        local keyName = event.keyName
+	local phase = event.phase
+	local keyName = event.keyName
 
-        if phase == "up" then
+	if phase == "up" then
 
-        if keyName=="back" then
+		if keyName=="back" then
 
-        	if BackFlag == false then
+			if BackFlag == false then
 
-        		Utils.SnackBar(ChatPage.PressAgain)
+				Utils.SnackBar(ChatPage.PressAgain)
 
-        		BackFlag = true
+				BackFlag = true
 
-        		timer.performWithDelay( 3000, onTimer )
+				timer.performWithDelay( 3000, onTimer )
 
-                return true
+				return true
 
-            elseif BackFlag == true then
+			elseif BackFlag == true then
 
-			 os.exit() 
+				os.exit() 
 
 
-            end
-            
-        end
+			end
+			
+		end
 
-    end
+	end
 
-        return false
- end
+	return false
+end
 
 
 
@@ -106,26 +106,26 @@ local function Background_Touch( event )
 		
 		display.getCurrentStage():setFocus( event.target )
 
-	elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 
 		display.getCurrentStage():setFocus( nil )
 
 
-		    local options = {
+		local options = {
 							--effect = "flipFadeOutIn",
 							effect = "slideLeft",
 							time = 300,	
 							params = { specialRecognition_Details = event.target.value, specialRecognition_id = event.target.id}
-						 }
+						}
 
-		    composer.gotoScene( "Controller.specialRecognitionDetailPage", options )
+						composer.gotoScene( "Controller.specialRecognitionDetailPage", options )
 
-			
-	end
+						
+					end
 
-	return true
+					return true
 
-end
+				end
 
 
 
@@ -141,38 +141,38 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 	
-		Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
-		Background.x=W/2;Background.y=H/2
+	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background.x=W/2;Background.y=H/2
 
-		tabBar = display.newRect(sceneGroup,W/2,0,W,40)
-		tabBar.y=tabBar.contentHeight/2
-		tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+	tabBar.y=tabBar.contentHeight/2
+	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-		menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
-		menuBtn.anchorX=0
-		menuBtn.x=10;menuBtn.y=20;
+	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
+	menuBtn.anchorX=0
+	menuBtn.x=10;menuBtn.y=20;
 
-		BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-		BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-		BgText.anchorX=0
+	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
+	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
+	BgText.anchorX=0
 
-		title_bg = display.newRect(sceneGroup,0,0,W,30)
-		title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-		title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-		title = display.newText(sceneGroup,CommonWords.SpecialRecognitionText,0,0,native.systemFont,18)
-		title.anchorX = 0
-		title.x=5;title.y = title_bg.y
-		title:setFillColor(0)
-
-
-		NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent , 0,0,0,0,native.systemFontBold,16)
-		NoEvent.x=W/2;NoEvent.y=H/2
-		NoEvent.isVisible=false
-		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+	title = display.newText(sceneGroup,CommonWords.SpecialRecognitionText,0,0,native.systemFont,18)
+	title.anchorX = 0
+	title.x=5;title.y = title_bg.y
+	title:setFillColor(0)
 
 
-MainGroup:insert(sceneGroup)
+	NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent , 0,0,0,0,native.systemFontBold,16)
+	NoEvent.x=W/2;NoEvent.y=H/2
+	NoEvent.isVisible=false
+	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+
+	MainGroup:insert(sceneGroup)
 
 end
 
@@ -190,39 +190,39 @@ function scene:show( event )
 
 		composer.removeHidden(  )
 		
-		 function SpecialRecognitionList( list )
+		function SpecialRecognitionList( list )
 
-				for j=#specialRecognitionListArray, 1, -1 do 
-					
-					display.remove(specialRecognitionListArray[#specialRecognitionListArray])
-					specialRecognitionListArray[#specialRecognitionListArray] = nil
+			for j=#specialRecognitionListArray, 1, -1 do 
+				
+				display.remove(specialRecognitionListArray[#specialRecognitionListArray])
+				specialRecognitionListArray[#specialRecognitionListArray] = nil
+			end
+
+			for i=1, #list do
+
+				print(" special recognition list here ")
+
+				specialRecognitionListArray[#specialRecognitionListArray+1] = display.newGroup()
+
+				local tempGroup = specialRecognitionListArray[#specialRecognitionListArray]
+
+				local tempHeight = title_bg.y + 30
+
+
+				local shadow = display.newImageRect( tempGroup,"res/assert/shadow.png",(W-40)/4-10,32)
+				shadow.x=W/2+W/3+5;shadow.y=tempHeight+2
+				shadow.anchorY = 0
+
+
+				local background = display.newImageRect(tempGroup,"res/assert/listimg.png",W-40,32)
+
+				if(specialRecognitionListArray[#specialRecognitionListArray-1]) ~= nil then
+					tempHeight = specialRecognitionListArray[#specialRecognitionListArray-1][1].y + specialRecognitionListArray[#specialRecognitionListArray-1][1].height+5
 				end
 
-				for i=1, #list do
-
-			        print(" special recognition list here ")
-
-					specialRecognitionListArray[#specialRecognitionListArray+1] = display.newGroup()
-
-					local tempGroup = specialRecognitionListArray[#specialRecognitionListArray]
-
-					local tempHeight = title_bg.y + 30
-
-
-					local shadow = display.newImageRect( tempGroup,"res/assert/shadow.png",(W-40)/4-10,32)
-					shadow.x=W/2+W/3+5;shadow.y=tempHeight+2
-					shadow.anchorY = 0
-
-
-					local background = display.newImageRect(tempGroup,"res/assert/listimg.png",W-40,32)
-
-					if(specialRecognitionListArray[#specialRecognitionListArray-1]) ~= nil then
-						tempHeight = specialRecognitionListArray[#specialRecognitionListArray-1][1].y + specialRecognitionListArray[#specialRecognitionListArray-1][1].height+5
-					end
-
-					background.anchorY = 0
-					background.x=W/2;background.y=tempHeight
-					background.id=list[i].SpecialRecognitionId
+				background.anchorY = 0
+				background.x=W/2;background.y=tempHeight
+				background.id=list[i].SpecialRecognitionId
 					--background.alpha=0.01
 					background.value = list[i]
 					background:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
@@ -232,113 +232,113 @@ function scene:show( event )
 					
 					if i == #list then
 
-							local line = display.newLine( background.x-background.contentWidth/2-1, title_bg.y + 36, background.x-background.contentWidth/2, background.y+background.contentHeight )
-							 line:setStrokeColor( 0.7 )
-							 tempGroup:insert( line )
+						local line = display.newLine( background.x-background.contentWidth/2-1, title_bg.y + 36, background.x-background.contentWidth/2, background.y+background.contentHeight )
+						line:setStrokeColor( 0.7 )
+						tempGroup:insert( line )
 							-- line.strokeWidth = 1
+						end
+
+
+						local GroupName_txt = display.newText(tempGroup,list[i].ReportName,0,0,native.systemFont,14)
+						GroupName_txt.x=background.x-background.contentWidth/2+5;GroupName_txt.y=background.y+background.height/2
+						GroupName_txt.anchorX=0
+						Utils.CssforTextView(GroupName_txt,sp_labelName)
+						GroupName_txt:setFillColor(1)
+
+						sceneGroup:insert(tempGroup)
+
+						background:addEventListener( "touch", Background_Touch )
+
 					end
-
-
-					local GroupName_txt = display.newText(tempGroup,list[i].ReportName,0,0,native.systemFont,14)
-					GroupName_txt.x=background.x-background.contentWidth/2+5;GroupName_txt.y=background.y+background.height/2
-					GroupName_txt.anchorX=0
-					Utils.CssforTextView(GroupName_txt,sp_labelName)
-					GroupName_txt:setFillColor(1)
-
-					sceneGroup:insert(tempGroup)
-
-					background:addEventListener( "touch", Background_Touch )
-
+					
 				end
-				
-		  end
 
 
 
 
-		 function getAllSpecialRecognition(response)
+				function getAllSpecialRecognition(response)
 
-			specialRecognition_response = response
+					specialRecognition_response = response
 
-			print("................."..json.encode(response))
+					print("................."..json.encode(response))
 
 					if specialRecognition_response ~= nil and #specialRecognition_response ~= 0 then
-							
-							NoEvent.text = ""
+						
+						NoEvent.text = ""
 
-							SpecialRecognitionList(specialRecognition_response)
+						SpecialRecognitionList(specialRecognition_response)
 
 					else
 
-							NoEvent.isVisible=true
+						NoEvent.isVisible=true
 
 					end
+				end
+
+
+				Webservice.GetAllSpecialRecognitions(getAllSpecialRecognition)
+
+
+
+			elseif phase == "did" then
+
+				menuBtn:addEventListener("touch",menuTouch)
+
+				Runtime:addEventListener( "key", onKeyEvent )
+
+				
+			end	
+			
+			MainGroup:insert(sceneGroup)
+
 		end
 
 
-		Webservice.GetAllSpecialRecognitions(getAllSpecialRecognition)
 
 
 
-	elseif phase == "did" then
+		function scene:resumeGame()
 
-		menuBtn:addEventListener("touch",menuTouch)
 
-		Runtime:addEventListener( "key", onKeyEvent )
-
-		
-	end	
-	
-MainGroup:insert(sceneGroup)
-
-end
+		end
 
 
 
 
 
-	function scene:resumeGame()
+		function scene:hide( event )
 
+			local sceneGroup = self.view
+			local phase = event.phase
 
-	end
+			if event.phase == "will" then
 
-
-
-
-
-function scene:hide( event )
-
-	local sceneGroup = self.view
-	local phase = event.phase
-
-	if event.phase == "will" then
-
-		Runtime:removeEventListener( "key", onKeyEvent )
+				Runtime:removeEventListener( "key", onKeyEvent )
 
 
 
-	elseif phase == "did" then
+			elseif phase == "did" then
 
 
-	end	
+			end	
 
-end
+		end
 
 
 
 
-function scene:destroy( event )
+		function scene:destroy( event )
 
-	local sceneGroup = self.view
-
-
-end
+			local sceneGroup = self.view
 
 
-scene:addEventListener( "create", scene )
-scene:addEventListener( "show", scene )
-scene:addEventListener( "hide", scene )
-scene:addEventListener( "destroy", scene )
+		end
 
 
-return scene
+		scene:addEventListener( "create", scene )
+		scene:addEventListener( "show", scene )
+		scene:addEventListener( "hide", scene )
+		scene:addEventListener( "destroy", scene )
+
+
+		return scene

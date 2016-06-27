@@ -58,93 +58,93 @@ local inviteArray={"Contacts with Access","Denied Access","Pending Requests","Te
 
 local function closeDetails( event )
 	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
+		display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 
 	end
 
-return true
+	return true
 
 end
 
 function onAccessButtonTouch( event )
 
-    if event.phase == "began" then
+	if event.phase == "began" then
 
-   elseif ( event.phase == "moved" ) then
-        local dy = math.abs( ( event.y - event.yStart ) )
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
         -- If the touch on the button has moved more than 10 pixels,
         -- pass focus back to the scroll view so it can continue scrolling
         if ( dy > 10 ) then
         	display.getCurrentStage():setFocus( nil )
-            scrollView:takeFocus( event )
+        	scrollView:takeFocus( event )
         end
 
 
-    elseif event.phase == "ended" then
+        elseif event.phase == "ended" then
 
         native.setKeyboardFocus(nil)
 
 --------------------------------------remove method -----------------------------------------------------
 
-			       if id_value == "Remove Access" then
+if id_value == "Remove Access" then
 
 
-			    	    AlertGroup.isVisible = true
+	AlertGroup.isVisible = true
 
-			            reqaccess_id = Details.MyUnitBuzzRequestAccessId
-						reqaccess_from = "Contacts"
-					    accessStatus = "REMOVE"
+	reqaccess_id = Details.MyUnitBuzzRequestAccessId
+	reqaccess_from = "Contacts"
+	accessStatus = "REMOVE"
 
-						print("contactid details",reqaccess_id,reqaccess_from,accessStatus)
+	print("contactid details",reqaccess_id,reqaccess_from,accessStatus)
 
-			        	if event.target.id == "accept" then
+	if event.target.id == "accept" then
 
-			        		AlertGroup.isVisible = false
+		AlertGroup.isVisible = false
 
-		        		Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
+		Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
 
-			        	elseif event.target.id == "reject" then
+	elseif event.target.id == "reject" then
 
-							 print("making it invisible")
+		print("making it invisible")
 
-							  AlertGroup.isVisible = false
+		AlertGroup.isVisible = false
 
-			        	end
+	end
 
-			        end
+end
 
 ------------------------------------------block method-------------------------------------------------
 
-			       if id_value == "Block Access" then
+if id_value == "Block Access" then
 
-			    	    AlertGroup.isVisible = true
+	AlertGroup.isVisible = true
 
-			            reqaccess_id = Details.MyUnitBuzzRequestAccessId
-						reqaccess_from = "Contacts"
-					    accessStatus = "BLOCK"
+	reqaccess_id = Details.MyUnitBuzzRequestAccessId
+	reqaccess_from = "Contacts"
+	accessStatus = "BLOCK"
 
-						print("contactid details",reqaccess_id,reqaccess_from,accessStatus)
+	print("contactid details",reqaccess_id,reqaccess_from,accessStatus)
 
 
-			        	if event.target.id == "accept" then
+	if event.target.id == "accept" then
 
-			        		AlertGroup.isVisible = false
+		AlertGroup.isVisible = false
 
-		        			Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
+		Webservice.RemoveOrBlockContactDetails(reqaccess_id,reqaccess_from,accessStatus,get_removeorblockDetails)
 
-			        	elseif event.target.id == "reject" then
+	elseif event.target.id == "reject" then
 
-							 print("making it invisible")
+		print("making it invisible")
 
-							  AlertGroup.isVisible = false
+		AlertGroup.isVisible = false
 
-			        	end
-			        end
-          end
+	end
+end
+end
 
-    end
+end
 
 
 
@@ -152,15 +152,15 @@ local function GrandProcess(value)
 
 	id_value = "Grant Access"
 
-          GetPopUp(value.MyUnitBuzzRequestAccessId,value.EmailAddress,value.Mobile,value.HomePhoneNumber,value.WorkPhoneNumber,value.OtherPhoneNumber,id_value,value,page_flagval)
-         
+	GetPopUp(value.MyUnitBuzzRequestAccessId,value.EmailAddress,value.Mobile,value.HomePhoneNumber,value.WorkPhoneNumber,value.OtherPhoneNumber,id_value,value,page_flagval)
+	
 end
 
 
 local function RemoveProcess(value)
 	id_value = "Remove Access"
 
-	  print("remove access pressed") 
+	print("remove access pressed") 
 
 	  --local remove_alert = native.showAlert("Remove", CareerPath.RemoveAccess, { CareerPath.ToRemove , CareerPath.NotToRemove} , onBlockClickComplete )
 
@@ -169,293 +169,293 @@ local function RemoveProcess(value)
 	  accept_button:addEventListener("touch",onAccessButtonTouch)
 	  reject_button:addEventListener("touch",onAccessButtonTouch)
 
-end
+	end
 
 
 
-local function DenyProcess(value)
-	id_value = "Deny Access"
+	local function DenyProcess(value)
+		id_value = "Deny Access"
 
-	 GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value,page_flagval)
-
-
-end
+		GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value,page_flagval)
 
 
-local function ProvideAccess(value)
-	id_value = "Provide Access"
-
-	GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value,page_flagval)
+	end
 
 
-end
+	local function ProvideAccess(value)
+		id_value = "Provide Access"
+
+		GetPopUp(value.MyUnitBuzzRequestAccessId,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,value,page_flagval)
 
 
-local function Block(value)
+	end
 
-	id_value = "Block Access"
 
-	print("block access pressed") 
+	local function Block(value)
+
+		id_value = "Block Access"
+
+		print("block access pressed") 
 
 	 -- local block_alert = native.showAlert("Block", CareerPath.BlockAccess, { CareerPath.ToBlock , CareerPath.NotToBlock } , onBlockClickComplete)
 
-        GetAlertPopup()
+	 GetAlertPopup()
 
-		AlertText.text = CommonWords.Block
-		AlertContentText.text = CareerPath.BlockAccess
-		print("block access occurred text value ",AlertContentText.text)
+	 AlertText.text = CommonWords.Block
+	 AlertContentText.text = CareerPath.BlockAccess
+	 print("block access occurred text value ",AlertContentText.text)
 
-		accept_button_text.text = CareerPath.ToBlock
-		reject_button_text.text = CareerPath.NotToBlock
+	 accept_button_text.text = CareerPath.ToBlock
+	 reject_button_text.text = CareerPath.NotToBlock
 
-	accept_button:addEventListener("touch",onAccessButtonTouch)
-	reject_button:addEventListener("touch",onAccessButtonTouch)
+	 accept_button:addEventListener("touch",onAccessButtonTouch)
+	 reject_button:addEventListener("touch",onAccessButtonTouch)
 
-end
-
-
+	end
 
 
-local function ActionTouch( event )
+
+
+	local function ActionTouch( event )
 		if event.phase == "began" then
 			display.getCurrentStage():setFocus( event.target )
 
-	elseif ( event.phase == "moved" ) then
-        local dy = math.abs( ( event.y - event.yStart ) )
+		elseif ( event.phase == "moved" ) then
+			local dy = math.abs( ( event.y - event.yStart ) )
         -- If the touch on the button has moved more than 10 pixels,
         -- pass focus back to the scroll view so it can continue scrolling
         if ( dy > 10 ) then
         	display.getCurrentStage():setFocus( nil )
-            scrollView:takeFocus( event )
+        	scrollView:takeFocus( event )
         end
 
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
-				for i=1,#groupArray do
-				local group = groupArray[i]
-						group[group.numChildren].isVisible = true
-					
-				end
+        elseif event.phase == "ended" then
+        display.getCurrentStage():setFocus( nil )
+        for i=1,#groupArray do
+        	local group = groupArray[i]
+        	group[group.numChildren].isVisible = true
+        	
+        end
 
-				if event.target.id == "block" then
+        if event.target.id == "block" then
 
-					Details = event.target.value
+        	Details = event.target.value
 
-					Block(event.target.value)
+        	Block(event.target.value)
 
-				elseif event.target.id == "grant" then
+        elseif event.target.id == "grant" then
 
-					
-					Details = event.target.value
+        	
+        	Details = event.target.value
 
-					GrandProcess(event.target.value)
+        	GrandProcess(event.target.value)
 
-				elseif event.target.id == "remove" then
+        elseif event.target.id == "remove" then
 
-						Details = event.target.value
+        	Details = event.target.value
 
-					RemoveProcess(event.target.value)
-
-
-				elseif event.target.id == "deny" then
-
-						Details = event.target.value
-
-					DenyProcess(event.target.value)
+        	RemoveProcess(event.target.value)
 
 
-				elseif event.target.id == "provideaccess" then
+        elseif event.target.id == "deny" then
 
-						Details = event.target.value
+        	Details = event.target.value
 
-					ProvideAccess(event.target.value)
-
-				elseif event.target.id == "listBg" then
-
-						Details = event.target.value
+        	DenyProcess(event.target.value)
 
 
-					local Status_Name = event.target.name
+        elseif event.target.id == "provideaccess" then
+
+        	Details = event.target.value
+
+        	ProvideAccess(event.target.value)
+
+        elseif event.target.id == "listBg" then
+
+        	Details = event.target.value
 
 
-						if Status_Name == "GRANT" or Status_Name == "DENY" or Status_Name == "OPEN" or Status_Name == "ADDREQUEST" then
-
-							local options = 
-							{
-							isModal = true,
-							effect = "slideLeft",
-							time = 300,
-							params = {
-							inviteDetails =  Details,checkstatus = Status_Name
-								}
-							}
-
-							composer.showOverlay( "Controller.inviteAccessDetailPage", options )
+        	local Status_Name = event.target.name
 
 
-						end
+        	if Status_Name == "GRANT" or Status_Name == "DENY" or Status_Name == "OPEN" or Status_Name == "ADDREQUEST" then
+
+        		local options = 
+        		{
+        			isModal = true,
+        			effect = "slideLeft",
+        			time = 300,
+        			params = {
+        				inviteDetails =  Details,checkstatus = Status_Name
+        			}
+        		}
+
+        		composer.showOverlay( "Controller.inviteAccessDetailPage", options )
+
+
+        	end
 
 
 
-				end
+        end
 
 
-			print( event.target.id )
-	end
+        print( event.target.id )
+    end
 
-return true
+    return true
 end
 
 
 local function Createmenu( object )
 
 
-local menuGroup = display.newGroup( )
+	local menuGroup = display.newGroup( )
 	
 	--print( "here" )
 	local menuBg = display.newRect(menuGroup,0,0,75,60)
-		 menuBg:setFillColor( 1 )
-		 menuBg.strokeWidth = 1
-		 menuBg.anchorY=0
-		 menuBg.value = object.value
-		 menuBg:setStrokeColor( Utils.convertHexToRGB("#d2d3d4") )
-		 menuBg.y=object.y+5
-		 menuBg.x=object.x-menuBg.contentWidth/2+4
+	menuBg:setFillColor( 1 )
+	menuBg.strokeWidth = 1
+	menuBg.anchorY=0
+	menuBg.value = object.value
+	menuBg:setStrokeColor( Utils.convertHexToRGB("#d2d3d4") )
+	menuBg.y=object.y+5
+	menuBg.x=object.x-menuBg.contentWidth/2+4
 
-		  
+	
 
-		 if status == "DENY" or status == "OPEN" then
+	if status == "DENY" or status == "OPEN" then
 
-		 	menuBg.height = 75
-		 else
-		 	menuBg.height = 35
-		 end
+		menuBg.height = 75
+	else
+		menuBg.height = 35
+	end
 
-		 if status == "ADDREQUEST" then
+	if status == "ADDREQUEST" then
 
-		 	menuBg.width = 90
+		menuBg.width = 90
 
-		 else
+	else
 
-		 	menuBg.width = 75
+		menuBg.width = 75
 
-		 end
+	end
 
-		 if status == "GRANT" then
+	if status == "GRANT" then
 
-		 	Blockbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
-		 	Blockbtn.anchorY=0
-		 	Blockbtn.y=menuBg.y+5;Blockbtn.x=menuBg.x
-		 	Blockbtn:setFillColor( 0.4 )
-		 	Blockbtn.alpha=0.01
-		 	Blockbtn.id="block"
-		 	Blockbtn.value = object.value
+		Blockbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
+		Blockbtn.anchorY=0
+		Blockbtn.y=menuBg.y+5;Blockbtn.x=menuBg.x
+		Blockbtn:setFillColor( 0.4 )
+		Blockbtn.alpha=0.01
+		Blockbtn.id="block"
+		Blockbtn.value = object.value
 
-		 	Blockbtn_txt = display.newText( menuGroup,CommonWords.Block,0,0,native.systemFont,12 )
-		 	Blockbtn_txt:setFillColor( 0.2 )
-		 	Blockbtn_txt.x=Blockbtn.x-18;Blockbtn_txt.y=Blockbtn.y+Blockbtn.contentHeight/2
+		Blockbtn_txt = display.newText( menuGroup,CommonWords.Block,0,0,native.systemFont,12 )
+		Blockbtn_txt:setFillColor( 0.2 )
+		Blockbtn_txt.x=Blockbtn.x-18;Blockbtn_txt.y=Blockbtn.y+Blockbtn.contentHeight/2
 
-		 	Blockbtn:addEventListener( "touch", ActionTouch )
+		Blockbtn:addEventListener( "touch", ActionTouch )
 
-		elseif status == "DENY" then
+	elseif status == "DENY" then
 
-			Grantbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
-		 	Grantbtn.anchorY=0
-		 	Grantbtn.y=menuBg.y+5;Grantbtn.x=menuBg.x
-		 	Grantbtn:setFillColor( 0.4 )
-		 	Grantbtn.alpha=0.01
-		 	Grantbtn.id = "grant"
-		 	Grantbtn.value = object.value
+		Grantbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
+		Grantbtn.anchorY=0
+		Grantbtn.y=menuBg.y+5;Grantbtn.x=menuBg.x
+		Grantbtn:setFillColor( 0.4 )
+		Grantbtn.alpha=0.01
+		Grantbtn.id = "grant"
+		Grantbtn.value = object.value
 
-		 	Grantbtn_txt = display.newText( menuGroup,CommonWords.Grant,0,0,native.systemFont,12 )
-		 	Grantbtn_txt:setFillColor( 0.2 )
-		 	Grantbtn_txt.x=Grantbtn.x-18;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
+		Grantbtn_txt = display.newText( menuGroup,CommonWords.Grant,0,0,native.systemFont,12 )
+		Grantbtn_txt:setFillColor( 0.2 )
+		Grantbtn_txt.x=Grantbtn.x-18;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
 
-		 	removebtn = display.newRect(menuGroup,0,0,menuBg.width,25)
-		 	removebtn.anchorY=0
-		 	removebtn.y=Grantbtn.y+Grantbtn.contentHeight+5;removebtn.x=menuBg.x
-		 	removebtn:setFillColor( 0.4 )
-		 	removebtn.alpha=0.01
-		 	removebtn.id="remove"
-		 	removebtn.value = object.value
+		removebtn = display.newRect(menuGroup,0,0,menuBg.width,25)
+		removebtn.anchorY=0
+		removebtn.y=Grantbtn.y+Grantbtn.contentHeight+5;removebtn.x=menuBg.x
+		removebtn:setFillColor( 0.4 )
+		removebtn.alpha=0.01
+		removebtn.id="remove"
+		removebtn.value = object.value
 
-		 	removebtn_txt = display.newText( menuGroup,CommonWords.Remove,0,0,native.systemFont,12 )
-		 	removebtn_txt:setFillColor( 0.2 )
-		 	removebtn_txt.x=removebtn.x-10;removebtn_txt.y=removebtn.y+removebtn.contentHeight/2
+		removebtn_txt = display.newText( menuGroup,CommonWords.Remove,0,0,native.systemFont,12 )
+		removebtn_txt:setFillColor( 0.2 )
+		removebtn_txt.x=removebtn.x-10;removebtn_txt.y=removebtn.y+removebtn.contentHeight/2
 
-		 	Grantbtn:addEventListener( "touch", ActionTouch )
-		 	removebtn:addEventListener( "touch", ActionTouch )
+		Grantbtn:addEventListener( "touch", ActionTouch )
+		removebtn:addEventListener( "touch", ActionTouch )
 
-		elseif status == "OPEN" then
+	elseif status == "OPEN" then
 
-			Grantbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
-		 	Grantbtn.anchorY=0
-		 	Grantbtn.y=menuBg.y+5;Grantbtn.x=menuBg.x
-		 	Grantbtn:setFillColor( 0.4 )
-		 	Grantbtn.alpha=0.01
-		 	Grantbtn.id="grant"
-		 	Grantbtn.value = object.value
+		Grantbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
+		Grantbtn.anchorY=0
+		Grantbtn.y=menuBg.y+5;Grantbtn.x=menuBg.x
+		Grantbtn:setFillColor( 0.4 )
+		Grantbtn.alpha=0.01
+		Grantbtn.id="grant"
+		Grantbtn.value = object.value
 
-		 	Grantbtn_txt = display.newText( menuGroup,CommonWords.Grant,0,0,native.systemFont,12 )
-		 	Grantbtn_txt:setFillColor( 0.2 )
-		 	Grantbtn_txt.x=Grantbtn.x-18;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
+		Grantbtn_txt = display.newText( menuGroup,CommonWords.Grant,0,0,native.systemFont,12 )
+		Grantbtn_txt:setFillColor( 0.2 )
+		Grantbtn_txt.x=Grantbtn.x-18;Grantbtn_txt.y=Grantbtn.y+Grantbtn.contentHeight/2
 
-		 	denybtn = display.newRect(menuGroup,0,0,menuBg.width,25)
-		 	denybtn.anchorY=0
-		 	denybtn.y=Grantbtn.y+Grantbtn.contentHeight+5;denybtn.x=menuBg.x
-		 	denybtn:setFillColor( 0.4 )
-		 	denybtn.alpha=0.01
-		 	denybtn.id="deny"
-		 	denybtn.value = object.value
+		denybtn = display.newRect(menuGroup,0,0,menuBg.width,25)
+		denybtn.anchorY=0
+		denybtn.y=Grantbtn.y+Grantbtn.contentHeight+5;denybtn.x=menuBg.x
+		denybtn:setFillColor( 0.4 )
+		denybtn.alpha=0.01
+		denybtn.id="deny"
+		denybtn.value = object.value
 
-		 	denybtn_txt = display.newText( menuGroup,CommonWords.Deny,0,0,native.systemFont,12 )
-		 	denybtn_txt:setFillColor( 0.2 )
-		 	denybtn_txt.x=denybtn.x-18;denybtn_txt.y=denybtn.y+denybtn.contentHeight/2
+		denybtn_txt = display.newText( menuGroup,CommonWords.Deny,0,0,native.systemFont,12 )
+		denybtn_txt:setFillColor( 0.2 )
+		denybtn_txt.x=denybtn.x-18;denybtn_txt.y=denybtn.y+denybtn.contentHeight/2
 
-		 	Grantbtn:addEventListener( "touch", ActionTouch )
-		 	denybtn:addEventListener( "touch", ActionTouch )
+		Grantbtn:addEventListener( "touch", ActionTouch )
+		denybtn:addEventListener( "touch", ActionTouch )
 
-		 elseif status == "ADDREQUEST" then
-			Provideacessbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
-		 	Provideacessbtn.anchorY=0
-		 	Provideacessbtn.y=menuBg.y+5;Provideacessbtn.x=menuBg.x
-		 	Provideacessbtn:setFillColor( 0.4 )
-		 	Provideacessbtn.alpha=0.01
-		 	Provideacessbtn.id="provideaccess"
-		 	Provideacessbtn.value = object.value
+	elseif status == "ADDREQUEST" then
+		Provideacessbtn = display.newRect(menuGroup,0,0,menuBg.width,25)
+		Provideacessbtn.anchorY=0
+		Provideacessbtn.y=menuBg.y+5;Provideacessbtn.x=menuBg.x
+		Provideacessbtn:setFillColor( 0.4 )
+		Provideacessbtn.alpha=0.01
+		Provideacessbtn.id="provideaccess"
+		Provideacessbtn.value = object.value
 
-		 	Provideacess_txt = display.newText( menuGroup,CommonWords.ProvideAccess,0,0,native.systemFont,12 )
-		 	Provideacess_txt:setFillColor( 0.2 )
-		 	Provideacess_txt.x=Provideacessbtn.x;Provideacess_txt.y=Provideacessbtn.y+Provideacessbtn.contentHeight/2
+		Provideacess_txt = display.newText( menuGroup,CommonWords.ProvideAccess,0,0,native.systemFont,12 )
+		Provideacess_txt:setFillColor( 0.2 )
+		Provideacess_txt.x=Provideacessbtn.x;Provideacess_txt.y=Provideacessbtn.y+Provideacessbtn.contentHeight/2
 
-		 	
-		 	Provideacessbtn:addEventListener( "touch", ActionTouch )
+		
+		Provideacessbtn:addEventListener( "touch", ActionTouch )
 
 
-		end
+	end
 	return menuGroup
 
 end
 
 local function ListmenuTouch( event )
 	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
+		display.getCurrentStage():setFocus( event.target )
 
 	elseif ( event.phase == "moved" ) then
-        local dy = math.abs( ( event.y - event.yStart ) )
+		local dy = math.abs( ( event.y - event.yStart ) )
         -- If the touch on the button has moved more than 10 pixels,
         -- pass focus back to the scroll view so it can continue scrolling
         if ( dy > 10 ) then
         	display.getCurrentStage():setFocus( nil )
-            scrollView:takeFocus( event )
+        	scrollView:takeFocus( event )
         end
 
 
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
+        elseif event.phase == "ended" then
+        display.getCurrentStage():setFocus( nil )
 			--Createmenu(event.target)
 
-		
+			
 
 			local group = groupArray[event.target.id]
 
@@ -466,29 +466,29 @@ local function ListmenuTouch( event )
 			else
 
 				for i=1,#groupArray do
-				local group = groupArray[i]
-						group[group.numChildren].isVisible = false
+					local group = groupArray[i]
+					group[group.numChildren].isVisible = false
 					
 				end
 
 				group[group.numChildren].isVisible = true
 			end
 
+		end
+
+		return true
+
 	end
 
-return true
-
-end
 
 
+	local function CreateList(list,scrollView)
 
-local function CreateList(list,scrollView)
-
-	local feedArray = list
+		local feedArray = list
 
 
 
-	for i=1,#feedArray do
+		for i=1,#feedArray do
 
 			groupArray[#groupArray+1] = display.newGroup()
 
@@ -497,9 +497,9 @@ local function CreateList(list,scrollView)
 			local tempGroup = groupArray[#groupArray]
 			local bgheight = 65
 
-            local Image 
+			local Image 
 
-		
+			
 			local background = display.newRect(tempGroup,0,0,W,55)
 			local Initial_Height = 0
 
@@ -518,16 +518,16 @@ local function CreateList(list,scrollView)
 
 
 
-		
+			
 
 
-		if feedArray[i].ImagePath ~= nil then
+			if feedArray[i].ImagePath ~= nil then
 
-					local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+				local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			--Image.anchorY=0
-						Image.x=30;Image.y=background.y+background.contentHeight/2
+			Image.x=30;Image.y=background.y+background.contentHeight/2
 
-			    networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
+			networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
 				"GET",
 				
 				function ( img_event )
@@ -536,29 +536,29 @@ local function CreateList(list,scrollView)
 						print ( "Network error - download failed" )
 					else
 
-									if Image then
+						if Image then
 
-										Image:removeSelf();Image=nil
-										
-										Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
-										Image.width=35;Image.height=35
+							Image:removeSelf();Image=nil
+							
+							Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+							Image.width=35;Image.height=35
 										--Image.anchorY=0
 										Image.x=30;Image.y=background.y+background.contentHeight/2
 				    				--event.row:insert(img_event.target)
 
-				    			    else
+				    			else
 
-										Image:removeSelf();Image=nil
+				    				Image:removeSelf();Image=nil
 
-									 end
-    			    end
+				    			end
+				    		end
 
-    			end, "inviteaccess"..feedArray[i].MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory)
+				    		end, "inviteaccess"..feedArray[i].MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory)
 		else
 
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			--Image.anchorY=0
-						Image.x=30;Image.y=background.y+background.contentHeight/2
+			Image.x=30;Image.y=background.y+background.contentHeight/2
 
 		end
 
@@ -568,55 +568,55 @@ local function CreateList(list,scrollView)
 
           --  local nameLabel = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
 
-		    	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
-				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-				Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=background.y+10
-				Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+          Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+          Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+          Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=background.y+10
+          Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
-			if feedArray[i].FirstName ~= nil then
+          if feedArray[i].FirstName ~= nil then
 
-				Display_Group[#Display_Group].text = feedArray[i].FirstName.." "..feedArray[i].LastName
+          	Display_Group[#Display_Group].text = feedArray[i].FirstName.." "..feedArray[i].LastName
 
-			else
+          else
 
-				Display_Group[#Display_Group].text = feedArray[i].LastName
-			
-			end
-
-
-			if feedArray[i].EmailAddress ~= nil then
-
-				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
-				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-				Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
-				Display_Group[#Display_Group]:setFillColor( 0.3 )
-				Display_Group[#Display_Group].text = feedArray[i].EmailAddress
+          	Display_Group[#Display_Group].text = feedArray[i].LastName
+          	
+          end
 
 
-			if feedArray[i].EmailAddress:len() > 33 then
+          if feedArray[i].EmailAddress ~= nil then
 
-				Display_Group[#Display_Group].text = Display_Group[#Display_Group].text:sub(1,33)..".."
-
-			end
-        
-
-			end
-
+          	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+          	Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+          	Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+          	Display_Group[#Display_Group]:setFillColor( 0.3 )
+          	Display_Group[#Display_Group].text = feedArray[i].EmailAddress
 
 
+          	if feedArray[i].EmailAddress:len() > 33 then
 
-			if feedArray[i].PhoneNumber ~= nil and feedArray[i].PhoneNumber ~= "" then
+          		Display_Group[#Display_Group].text = Display_Group[#Display_Group].text:sub(1,33)..".."
 
-				Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
-				Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-				Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
-				Display_Group[#Display_Group]:setFillColor( 0.3 )
-				Display_Group[#Display_Group].text = feedArray[i].PhoneNumber
+          	end
+          	
 
-				background.height = background.height+15
+          end
 
-			end
+
+
+
+          if feedArray[i].PhoneNumber ~= nil and feedArray[i].PhoneNumber ~= "" then
+
+          	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+          	Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+          	Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+          	Display_Group[#Display_Group]:setFillColor( 0.3 )
+          	Display_Group[#Display_Group].text = feedArray[i].PhoneNumber
+
+          	background.height = background.height+15
+
+          end
 
 
 
@@ -633,7 +633,7 @@ local function CreateList(list,scrollView)
 		-- 	--background.height = background.height-((background.height/5)*(5-#Display_Group))+5
 
 
-	
+		
 
 		-- 	 --  group =  Createmenu(background)
 
@@ -642,49 +642,49 @@ local function CreateList(list,scrollView)
   --  				--group.isVisible=false
 
 
-	local line = display.newRect(tempGroup,W/2,background.y,W,1)
-			line.y=background.y+background.contentHeight-line.contentHeight
-			line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+  local line = display.newRect(tempGroup,W/2,background.y,W,1)
+  line.y=background.y+background.contentHeight-line.contentHeight
+  line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
 
-			scrollView:insert(tempGroup)
+  scrollView:insert(tempGroup)
 
-			print( "@@@@@@@@@" )
+  print( "@@@@@@@@@" )
 
 
-	end
+end
 
 end
 
 local function TouchAction( event )
 	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
+		display.getCurrentStage():setFocus( event.target )
 
-			elseif ( event.phase == "moved" ) then
-        local dy = math.abs( ( event.y - event.yStart ) )
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
         -- If the touch on the button has moved more than 10 pixels,
         -- pass focus back to the scroll view so it can continue scrolling
         if ( dy > 10 ) then
         	display.getCurrentStage():setFocus( nil )
-            scrollView:takeFocus( event )
+        	scrollView:takeFocus( event )
         end
 
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
-			if inviteList.isVisible == false then
+        elseif event.phase == "ended" then
+        display.getCurrentStage():setFocus( nil )
+        if inviteList.isVisible == false then
 
-				List_bg:toFront( )
-				inviteList:toFront( )
-				inviteList.isVisible = true
-				List_bg.isVisible = true
-			else
-				inviteList.isVisible = false
-				List_bg.isVisible = false
-			end
-					
-	end
+        	List_bg:toFront( )
+        	inviteList:toFront( )
+        	inviteList.isVisible = true
+        	List_bg.isVisible = true
+        else
+        	inviteList.isVisible = false
+        	List_bg.isVisible = false
+        end
+        
+    end
 
-return true
+    return true
 
 end
 
@@ -734,54 +734,54 @@ end
 function get_GetMyUnitBuzzRequestAccesses(response)
 
 
-		scrollView:scrollToPosition
-		{
-		    y = 0,
-		    time = 200,
-		}
+	scrollView:scrollToPosition
+	{
+		y = 0,
+		time = 200,
+	}
 
 
-		for j=#groupArray, 1, -1 do 
-			display.remove(groupArray[#groupArray])
-			groupArray[#groupArray] = nil
-		end
+	for j=#groupArray, 1, -1 do 
+		display.remove(groupArray[#groupArray])
+		groupArray[#groupArray] = nil
+	end
 
 
 	if response ~= nil then
 		if #response > 0 then
-		
+			
 
-				NoEvent.isVisible=false
+			NoEvent.isVisible=false
 
 
 			local listValue = {}
 
-				for i=1,#response do
+			for i=1,#response do
 
-					listValue[#listValue+1] = response[i]	
+				listValue[#listValue+1] = response[i]	
 
-				end
+			end
 
-				print( "here !!!!!!!"..#listValue )	
+			print( "here !!!!!!!"..#listValue )	
 			CreateList(listValue,scrollView)
 
 		else
 
-				NoEvent.isVisible=true
+			NoEvent.isVisible=true
 
-				if status == "DENY" then
+			if status == "DENY" then
 
-					NoEvent.text=InviteAccessDetail.NoDeniedAccess
+				NoEvent.text=InviteAccessDetail.NoDeniedAccess
 
-				elseif status == "OPEN" then
+			elseif status == "OPEN" then
 
-					NoEvent.text=InviteAccessDetail.NoPendingRequest
+				NoEvent.text=InviteAccessDetail.NoPendingRequest
 
-				elseif status == "ADDREQUEST" then
+			elseif status == "ADDREQUEST" then
 
-					NoEvent.text=InviteAccessDetail.NoTMAccess
+				NoEvent.text=InviteAccessDetail.NoTMAccess
 
-				end
+			end
 
 
 		end
@@ -822,116 +822,116 @@ function scene:show( event )
 
 
 		scrollView = widget.newScrollView
-					{
-					top = RecentTab_Topvalue,
-					left = 0,
-					width = W,
-					height =H-RecentTab_Topvalue,
-					hideBackground = true,
-					isBounceEnabled=false,
-					horizontalScrollDisabled = true,
+		{
+			top = RecentTab_Topvalue,
+			left = 0,
+			width = W,
+			height =H-RecentTab_Topvalue,
+			hideBackground = true,
+			isBounceEnabled=false,
+			horizontalScrollDisabled = true,
 			   		--scrollWidth = W,
-					bottomPadding = 60,
+			   		bottomPadding = 60,
 		   			--listener = Facebook_scrollListener,
-		}
+		   		}
 
 
 
-sceneGroup:insert(scrollView)
+		   		sceneGroup:insert(scrollView)
 
-		
-		status = event.params.status
-	
+		   		
+		   		status = event.params.status
+		   		
 
-		Webservice.GetMyUnitBuzzRequestAccesses(event.params.status,get_GetMyUnitBuzzRequestAccesses)
+		   		Webservice.GetMyUnitBuzzRequestAccesses(event.params.status,get_GetMyUnitBuzzRequestAccesses)
 
-		menuBtn:addEventListener("touch",menuTouch)
-		
-	end	
-	
-MainGroup:insert(sceneGroup)
+		   		menuBtn:addEventListener("touch",menuTouch)
+		   		
+		   	end	
+		   	
+		   	MainGroup:insert(sceneGroup)
 
-end
+		   end
 
-	function scene:hide( event )
+		   function scene:hide( event )
 
-		local sceneGroup = self.view
-		local phase = event.phase
+		   	local sceneGroup = self.view
+		   	local phase = event.phase
 
-		if event.phase == "will" then
+		   	if event.phase == "will" then
 
-			composer.removeHidden()
-
-
-			elseif phase == "did" then
+		   		composer.removeHidden()
 
 
-					for i=1,#networkArray do
-
-						network.cancel(networkArray[i])
-					end
+		   	elseif phase == "did" then
 
 
-					for j=1,#groupArray do 
-						if groupArray[j] then groupArray[j]:removeSelf();groupArray[j] = nil	end
-					end
+		   		for i=1,#networkArray do
+
+		   			network.cancel(networkArray[i])
+		   		end
 
 
-			end	
-
-		end
-
-
-		function scene:destroy( event )
-			local sceneGroup = self.view
+		   		for j=1,#groupArray do 
+		   			if groupArray[j] then groupArray[j]:removeSelf();groupArray[j] = nil	end
+		   		end
 
 
+		   	end	
 
-		end
-
-
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
-
-		function scene:resumeGame()
-
-			composer.removeHidden(true)
+		   end
 
 
-		reloadInvitAccess(status)
-
-	end
+		   function scene:destroy( event )
+		   	local sceneGroup = self.view
 
 
 
-		function get_removeorblockDetails( response)
-
-		Request_response = response
+		   end
 
 
-	    function onCompletion(event)
+		   scene:addEventListener( "create", scene )
+		   scene:addEventListener( "show", scene )
+		   scene:addEventListener( "hide", scene )
+		   scene:addEventListener( "destroy", scene )
 
-	       if "clicked"==event.action then
+		   function scene:resumeGame()
 
-			 AlertGroup.isVisible = false
+		   	composer.removeHidden(true)
 
-			 print( "@@@@@@@@@" )
-			 ContactIdValue = Details.MyUnitBuzzRequestAccessId
 
-			if popUpGroup.numChildren ~= nil then
-			 for j=popUpGroup.numChildren, 1, -1 do 
-								display.remove(popUpGroup[popUpGroup.numChildren])
-								popUpGroup[popUpGroup.numChildren] = nil
-			 end
-			end
+		   	reloadInvitAccess(status)
 
-			Webservice.GetMyUnitBuzzRequestAccesses(status,get_GetMyUnitBuzzRequestAccesses)
+		   end
 
-	       end
 
-         end
+
+		   function get_removeorblockDetails( response)
+
+		   	Request_response = response
+
+
+		   	function onCompletion(event)
+
+		   		if "clicked"==event.action then
+
+		   			AlertGroup.isVisible = false
+
+		   			print( "@@@@@@@@@" )
+		   			ContactIdValue = Details.MyUnitBuzzRequestAccessId
+
+		   			if popUpGroup.numChildren ~= nil then
+		   				for j=popUpGroup.numChildren, 1, -1 do 
+		   					display.remove(popUpGroup[popUpGroup.numChildren])
+		   					popUpGroup[popUpGroup.numChildren] = nil
+		   				end
+		   			end
+
+		   			Webservice.GetMyUnitBuzzRequestAccesses(status,get_GetMyUnitBuzzRequestAccesses)
+
+		   		end
+
+		   	end
 
 
 
@@ -944,7 +944,7 @@ end
 					--  ContactIdValue = Details.MyUnitBuzzRequestAccessId
 
 					--  popUpGroup.isVisible = true
-							
+					
 					-- --Webservice.GetMyUnitBuzzRequestAccesses(status,get_GetMyUnitBuzzRequestAccesses)
 
 			  --      end
@@ -953,104 +953,104 @@ end
 
 
 
-         if Request_response == "SUCCESS" then
+     if Request_response == "SUCCESS" then
 
-			 if id_value == "Remove Access" then
+     	if id_value == "Remove Access" then
 
-			    print("response after removing details ",Request_response)
-		        local remove_successful= native.showAlert(CommonWords.Remove, "Contact removed from the list.", { CommonWords.ok} , onCompletion)
+     		print("response after removing details ",Request_response)
+     		local remove_successful= native.showAlert(CommonWords.Remove, "Contact removed from the list.", { CommonWords.ok} , onCompletion)
 
 
-			 elseif id_value == "Block Access" then
+     	elseif id_value == "Block Access" then
 
-			    print("!!!!! response after blocking details ",Request_response)
-				local block_successful = native.showAlert(CommonWords.Block, "This Contact’s Access blocked successfully.", { CommonWords.ok} , onCompletion)
+     		print("!!!!! response after blocking details ",Request_response)
+     		local block_successful = native.showAlert(CommonWords.Block, "This Contact’s Access blocked successfully.", { CommonWords.ok} , onCompletion)
 
-			 end
+     	end
 		--else
 			--local block_successful = native.showAlert("Block", "Blocking of this Contact’s Access failed.", { CommonWords.ok} )
 		end
 
 
 
-         if id_value == "Deny Access" then
+		if id_value == "Deny Access" then
 
-         	 if Request_response == "SUCCESS" then
+			if Request_response == "SUCCESS" then
 
-         	 	denyaccess = native.showAlert(CommonWords.Deny,  CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
+				denyaccess = native.showAlert(CommonWords.Deny,  CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
 
-         	 elseif Request_response == "GRANT" then
+			elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
-         	 elseif Request_response == "REMOVE" then
+			elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
-		
-		     elseif Request_response == "ADDREQUEST" then
+				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+				
+			elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
 
-		 	 elseif Request_response == "BLOCK" then
+			elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
-         	 end
+			end
 
-         elseif id_value == "Grant Access" then
+		elseif id_value == "Grant Access" then
 
-	 	    if Request_response == "SUCCESS" then
+			if Request_response == "SUCCESS" then
 
-	 	    	grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
+				grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
 
-	 	     elseif Request_response == "GRANT" then
+			elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
-         	 elseif Request_response == "REMOVE" then
+			elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
-		
-		     elseif Request_response == "ADDREQUEST" then
+				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+				
+			elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
 
-		 	 elseif Request_response == "BLOCK" then
+			elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
-         	 end
+			end
 
-	 	elseif id_value == "Provide Access" then
+		elseif id_value == "Provide Access" then
 
-	 	    if Request_response == "SUCCESS" then
+			if Request_response == "SUCCESS" then
 
-	 	    	accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
+				accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
 
-	 	     elseif Request_response == "GRANT" then
+			elseif Request_response == "GRANT" then
 
-         	 	granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
-         	 elseif Request_response == "REMOVE" then
+			elseif Request_response == "REMOVE" then
 
-		 	    Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
-		
-		     elseif Request_response == "ADDREQUEST" then
+				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+				
+			elseif Request_response == "ADDREQUEST" then
 
-		 	    addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText,{ CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText,{ CommonWords.ok} , onCompletion)
 
-		 	 elseif Request_response == "BLOCK" then
+			elseif Request_response == "BLOCK" then
 
-		 	    addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
-         	 end
+			end
 
-         end
+		end
 
 	end
 
 
 
-		return scene
+	return scene
 
- 
+	

@@ -29,7 +29,7 @@ local r                 -- media object for audio recording
 local recButton         -- gui buttons
 local fSoundPlaying = false   -- sound playback state
 local fSoundPaused = false    -- sound pause state
- local Seconds,Mintues=0,0
+local Seconds,Mintues=0,0
 local countdown
 local startBtn_txt,playBtn_txt,stopBtn_txt
 --------------------------------------------------
@@ -39,35 +39,35 @@ local startBtn_txt,playBtn_txt,stopBtn_txt
 
 local function closeDetails( event )
 	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
-			if event.target.id =="background" then
+		display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+		if event.target.id =="background" then
 
-			elseif event.target.id == "ok" then
+		elseif event.target.id == "ok" then
 
 
-						if r:isRecording() then
-				            r:stopRecording()
-				            timer.cancel(countdown)
+			if r:isRecording() then
+				r:stopRecording()
+				timer.cancel(countdown)
 
-				            keyTips.text = "Recording Stopped"
+				keyTips.text = "Recording Stopped"
 
-				       	end
+			end
 
-		       	
-				    local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
-		            local file = io.open( filePath)
-		            
-		           		if file then
-		                	io.close( file )
-							userAction="ok"
+			
+			local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+			local file = io.open( filePath)
+			
+			if file then
+				io.close( file )
+				userAction="ok"
 
-									if pagevalue == "chat" then
+				if pagevalue == "chat" then
 
-										composer.hideOverlay()
+					composer.hideOverlay()
 
-								    else 
+				else 
 
 								   		-- 	local column = native.showAlert("Audio path",pagevalue,{"ok"})
 
@@ -90,36 +90,36 @@ local function closeDetails( event )
 
 								  		composer.hideOverlay()
 
-								    end
+								  	end
 
-						else
+								  else
 
-							toast.show("Please record the audio to proceed", {duration = 'long', gravity = 'Bottom', offset = {0, 128}})  
+								  	toast.show("Please record the audio to proceed", {duration = 'long', gravity = 'Bottom', offset = {0, 128}})  
 
-						end
-			else
+								  end
+								else
 
 
-				if r:isRecording() then
-		            r:stopRecording()
-		            timer.cancel(countdown)
+									if r:isRecording() then
+										r:stopRecording()
+										timer.cancel(countdown)
 
-		            keyTips.text = "Recording Stopped"
+										keyTips.text = "Recording Stopped"
 
-		       	end
+									end
 
-				 local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
-		            local file = io.open( filePath)
-		            
-		           		if file then
-		                	io.close( file );print("removed")
-		                	os.remove(filePath)
-		                end
+									local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+									local file = io.open( filePath)
+									
+									if file then
+										io.close( file );print("removed")
+										os.remove(filePath)
+									end
 
 
 						           -- if pagevalue == "chat" then
 
-								        composer.hideOverlay()
+						           composer.hideOverlay()
 
 								   -- elseif event.target.id == "backicon" or pagevalue ~= "chat" then
 
@@ -130,121 +130,121 @@ local function closeDetails( event )
 								    	--composer.gotoScene("Controller.composeMessagePage","slideRight",200)
 
 								  --  end
-			end
+								end
 
-	end
-
-return true
-
-end
-
-
-
-
-
-local function audioAction( event )
-	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
-
-		if event.target.alpha > 0.6 then
-
-
-
-			if event.target.id == "play" then
-
-
-				startBtn.alpha=0.5
-				startBtn_txt.alpha=0.5
-				playBtn.alpha=0.5
-				playBtn_txt.alpha=0.5
-				stopBtn.alpha=1
-				stopBtn_txt.alpha=1
-
-	   			local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
-			            -- Play back the recording
-		        local file = io.open( filePath)
-		            
-		            if file then
-		                io.close( file )
-		                fSoundPlaying = true
-		                fSoundPaused = false
-
-		                local isChannelPaused = audio.isChannelPaused( 1 )
-						if isChannel1Playing then
-						    audio.pause( 1 )
-						end
-		                	local isChannel1Playing = audio.isChannelPlaying( 1 )
-							if isChannel1Playing then
-							else
-								playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
-								audio.play( playbackSoundHandle, { channel=1, loops=-1 } )
 							end
 
-						end  
+							return true
 
-		            keyTips.text = "Playing"
+						end
 
-		           
 
-			elseif event.target.id == "stop" then
-				
-				startBtn.alpha=0.5
-				startBtn_txt.alpha=0.5
-				playBtn.alpha=1
-				playBtn_txt.alpha=1
-				stopBtn.alpha=0.5
-				stopBtn_txt.alpha=0.5
 
-				if r:isRecording() then
-		            r:stopRecording()
-		            timer.cancel(countdown)
 
-		            keyTips.text = "Recording Stopped"
 
-		       	end
+						local function audioAction( event )
+							if event.phase == "began" then
+								display.getCurrentStage():setFocus( event.target )
+								elseif event.phase == "ended" then
+								display.getCurrentStage():setFocus( nil )
 
-		       	local isChannel1Playing = audio.isChannelPlaying( 1 )
-				if isChannel1Playing or isSimulator then
-				    audio.pause( 1 )
-				     keyTips.text = "Recording Paused"
-				end
+								if event.target.alpha > 0.6 then
 
-			elseif event.target.id == "start" then
-				 fSoundPlaying = false
-		         fSoundPaused = false
-		        filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
-				r = media.newRecording(filePath)
-		         r:startRecording()
 
-		         startBtn.alpha=0.5
-				 startBtn_txt.alpha=0.5
-				 playBtn.alpha=0.5
-				 playBtn_txt.alpha=0.5
-				 stopBtn.alpha=1
-				 stopBtn_txt.alpha=1	
-		        	
-		         countdown = timer.performWithDelay(1000, function()
 
-		         	if Seconds == 60 then
-		         		Seconds=0
-		         		Mintues=Mintues+1
-		         	end
-		         	
-		         	timerCount.text = string.format("%02d",Mintues)..":"..string.format("%02d",Seconds)
-		         	Seconds=Seconds+1
-		         end,-1)
+									if event.target.id == "play" then
 
-		         keyTips.text = "Recording"
 
+										startBtn.alpha=0.5
+										startBtn_txt.alpha=0.5
+										playBtn.alpha=0.5
+										playBtn_txt.alpha=0.5
+										stopBtn.alpha=1
+										stopBtn_txt.alpha=1
+
+										local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+			            -- Play back the recording
+			            local file = io.open( filePath)
+			            
+			            if file then
+			            	io.close( file )
+			            	fSoundPlaying = true
+			            	fSoundPaused = false
+
+			            	local isChannelPaused = audio.isChannelPaused( 1 )
+			            	if isChannel1Playing then
+			            		audio.pause( 1 )
+			            	end
+			            	local isChannel1Playing = audio.isChannelPlaying( 1 )
+			            	if isChannel1Playing then
+			            	else
+			            		playbackSoundHandle = audio.loadStream( dataFileName, system.DocumentsDirectory )
+			            		audio.play( playbackSoundHandle, { channel=1, loops=-1 } )
+			            	end
+
+			            end  
+
+			            keyTips.text = "Playing"
+
+			            
+
+			        elseif event.target.id == "stop" then
+			        	
+			        	startBtn.alpha=0.5
+			        	startBtn_txt.alpha=0.5
+			        	playBtn.alpha=1
+			        	playBtn_txt.alpha=1
+			        	stopBtn.alpha=0.5
+			        	stopBtn_txt.alpha=0.5
+
+			        	if r:isRecording() then
+			        		r:stopRecording()
+			        		timer.cancel(countdown)
+
+			        		keyTips.text = "Recording Stopped"
+
+			        	end
+
+			        	local isChannel1Playing = audio.isChannelPlaying( 1 )
+			        	if isChannel1Playing or isSimulator then
+			        		audio.pause( 1 )
+			        		keyTips.text = "Recording Paused"
+			        	end
+
+			        elseif event.target.id == "start" then
+			        	fSoundPlaying = false
+			        	fSoundPaused = false
+			        	filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
+			        	r = media.newRecording(filePath)
+			        	r:startRecording()
+
+			        	startBtn.alpha=0.5
+			        	startBtn_txt.alpha=0.5
+			        	playBtn.alpha=0.5
+			        	playBtn_txt.alpha=0.5
+			        	stopBtn.alpha=1
+			        	stopBtn_txt.alpha=1	
+			        	
+			        	countdown = timer.performWithDelay(1000, function()
+
+			        		if Seconds == 60 then
+			        			Seconds=0
+			        			Mintues=Mintues+1
+			        		end
+			        		
+			        		timerCount.text = string.format("%02d",Mintues)..":"..string.format("%02d",Seconds)
+			        		Seconds=Seconds+1
+			        		end,-1)
+
+			        	keyTips.text = "Recording"
+
+			        end
+			    end
 			end
+
+			return true
+
 		end
-end
-
-return true
-
-end
 
 
 ------------------------------------------------------
@@ -256,7 +256,7 @@ function scene:create( event )
 	print( "audio record" )
 
 
-    Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 	Background.id="background"
 	Background:addEventListener( "touch", closeDetails )
@@ -279,7 +279,7 @@ function scene:create( event )
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-    back_icon_bg = display.newRect(sceneGroup,0,0,20,20)
+	back_icon_bg = display.newRect(sceneGroup,0,0,20,20)
 	back_icon_bg.x= 5
 	back_icon_bg.anchorX=0
 	back_icon_bg.anchorY=0
@@ -311,7 +311,7 @@ function scene:create( event )
 	title:addEventListener( "touch", closeDetails )
 	back_icon:addEventListener( "touch", closeDetails )
 
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
@@ -413,42 +413,42 @@ function scene:show( event )
 			-- cancelBtn_txt.isVisible=false
 
 
+			
+			if "simulator" == system.getInfo("environment") then
+				dataFileName = dataFileName .. ".aif"
+			else
+				
+				dataFileName = dataFileName .. ".wav"
+				
+			end
+			print (dataFileName)
+
+			
+
+
+			timerCount = display.newText( sceneGroup, "00:00",0,0,native.systemFont,70)
+			timerCount:setFillColor( 0 )
+			timerCount.x=W/2
+			timerCount.y=H/2+10
+
+
+
+			startBtn:addEventListener( "touch", audioAction )
+			playBtn:addEventListener( "touch", audioAction )
+			stopBtn:addEventListener( "touch", audioAction )
+
+
+		elseif phase == "did" then
+
+
+
+			menuBtn:addEventListener("touch",menuTouch)
+			
+		end	
 		
-		if "simulator" == system.getInfo("environment") then
-		    dataFileName = dataFileName .. ".aif"
-		else
-		 
-		        dataFileName = dataFileName .. ".wav"
-		    
-		end
-		print (dataFileName)
+		MainGroup:insert(sceneGroup)
 
-	
-
-
-		timerCount = display.newText( sceneGroup, "00:00",0,0,native.systemFont,70)
-		timerCount:setFillColor( 0 )
-		timerCount.x=W/2
-		timerCount.y=H/2+10
-
-
-
-		startBtn:addEventListener( "touch", audioAction )
-		playBtn:addEventListener( "touch", audioAction )
-		stopBtn:addEventListener( "touch", audioAction )
-
-
-	elseif phase == "did" then
-
-
-
-		menuBtn:addEventListener("touch",menuTouch)
-		
-	end	
-	
-MainGroup:insert(sceneGroup)
-
-end
+	end
 
 
 
@@ -466,65 +466,65 @@ end
 			-- end
 
 
-			  r:stopRecording()
-			  r=nil
+			r:stopRecording()
+			r=nil
 
 		elseif phase == "did" then
 
 			local isChannel1Playing = audio.isChannelPlaying( 1 )
-				if isChannel1Playing then
+			if isChannel1Playing then
 
-					audio.pause( 1 );audio.stop(1);audio.dispose(1)
+				audio.pause( 1 );audio.stop(1);audio.dispose(1)
 
-				end
+			end
 
 			if userAction == "ok" then
 
-					if pagevalue == "compose" then
+				if pagevalue == "compose" then
 
-						print( "here" )
+					print( "here" )
 
-						  event.parent:updateRecordedAudio(dataFileName,"audiopage")
+					event.parent:updateRecordedAudio(dataFileName,"audiopage")
 
-					else
+				else
 
-						event.parent:updateAudio(dataFileName)
+					event.parent:updateAudio(dataFileName)
 
-				    end
+				end
 
 			else
 
 
 
 				local filePath = system.pathForFile( dataFileName, system.DocumentsDirectory )
-	            os.remove( filePath )
+				os.remove( filePath )
 
-	            if pagevalue == "compose" then
+				if pagevalue == "compose" then
 
-	            	event.parent:CancelRecordedAudio("")
+					event.parent:CancelRecordedAudio("")
 
-	            end
+				end
 
 			end
 
 
 		end	
 
-		end
+	end
 
 
-		function scene:destroy( event )
-			local sceneGroup = self.view
+	function scene:destroy( event )
+		local sceneGroup = self.view
 
 
 
-		end
+	end
 
 
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
+	scene:addEventListener( "create", scene )
+	scene:addEventListener( "show", scene )
+	scene:addEventListener( "hide", scene )
+	scene:addEventListener( "destroy", scene )
 
 
-		return scene
+	return scene

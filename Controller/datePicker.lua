@@ -10,14 +10,14 @@ local years = {}
 
 -- Populate the "days" table
 for d = 1, 31 do
-    days[d] = string.format("%02d",d)
+	days[d] = string.format("%02d",d)
 
-    print( days[d] )
+	print( days[d] )
 end
 
 -- Populate the "years" table
 for y = 1, 48 do
-    years[y] = (os.date( "%Y" )-5) + y
+	years[y] = (os.date( "%Y" )-5) + y
 end
 
 -- Configure the picker wheel columns
@@ -25,41 +25,41 @@ local columnData =
 {
     -- Months
     { 
-        align = "right",
-        width = 140,
-        startIndex =tonumber(os.date( "%m" )),
-        labels = monthArray
+    	align = "right",
+    	width = 140,
+    	startIndex =tonumber(os.date( "%m" )),
+    	labels = monthArray
     },
     -- Days
     {
-        align = "center",
-        width = 60,
-        startIndex = tonumber(os.date( "%d" )),
-        labels = days
+    	align = "center",
+    	width = 60,
+    	startIndex = tonumber(os.date( "%d" )),
+    	labels = days
     },
     -- Years
     {
-        align = "center",
-        width = 80,
-        startIndex = 5,
-        labels = years
+    	align = "center",
+    	width = 80,
+    	startIndex = 5,
+    	labels = years
     }
 }
 
 
-	datePicker.clear  = function ()
-		if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
-		if doneBg then display.remove(doneBg);doneBg=nil end
-		if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
+datePicker.clear  = function ()
+	if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
+	if doneBg then display.remove(doneBg);doneBg=nil end
+	if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
 
-	end
+end
 
 
 
 datePicker.getTimeValue = function(listner)
 
 
-local function showValues( event )
+	local function showValues( event )
 		-- Retrieve the current values from the picker
 		local values = pickerWheel:getValues()
 		
@@ -79,9 +79,9 @@ local function showValues( event )
 		return true
 	end
 
-if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
-if doneBg then display.remove(doneBg);doneBg=nil end
-if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
+	if pickerWheel then display.remove(pickerWheel);pickerWheel=nil end
+	if doneBg then display.remove(doneBg);doneBg=nil end
+	if getValuesButton then display.remove(getValuesButton);getValuesButton=nil end
 
 
 

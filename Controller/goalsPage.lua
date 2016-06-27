@@ -32,8 +32,8 @@ local BackFlag = false
 local RecentTab_Topvalue = 40
 
 
-		local content=""
-		local goalsid
+local content=""
+local goalsid
 
 
 --------------------------------------------------
@@ -60,23 +60,23 @@ local function editEvent( event)
 
 	if event.phase == "ended" then
 
-		if webView then	webView:removeSelf( );webView=nil end
+	if webView then	webView:removeSelf( );webView=nil end
 
-		Runtime:removeEventListener( "key", onKeyEvent )
+	Runtime:removeEventListener( "key", onKeyEvent )
 	
-		local options = {
-		    effect = "fromRight",
-		    time = 500,
-  			params = {
+	local options = {
+		effect = "fromRight",
+		time = 500,
+		params = {
 
-				content = content,
-				goalsid = goalsid
-			}
+			content = content,
+			goalsid = goalsid
 		}
+	}
 
-		composer.showOverlay( "Controller.editGoalsPage",options )
+	composer.showOverlay( "Controller.editGoalsPage",options )
 
-	end
+end
 
 return true
 
@@ -87,35 +87,35 @@ end
 
 local function onKeyEvent( event )
 
-        local phase = event.phase
-        local keyName = event.keyName
+	local phase = event.phase
+	local keyName = event.keyName
 
-        if phase == "up" then
+	if phase == "up" then
 
-        if keyName=="back" then
+		if keyName=="back" then
 
-        	if BackFlag == false then
+			if BackFlag == false then
 
-        		Utils.SnackBar(ChatPage.PressAgain)
+				Utils.SnackBar(ChatPage.PressAgain)
 
-        		BackFlag = true
+				BackFlag = true
 
-        		timer.performWithDelay( 3000, onTimer )
+				timer.performWithDelay( 3000, onTimer )
 
-                return true
+				return true
 
-            elseif BackFlag == true then
+			elseif BackFlag == true then
 
 				os.exit() 
 
-            end
-            
-        end
+			end
+			
+		end
 
-    end
+	end
 
-        return false
- end
+	return false
+end
 
 
 
@@ -172,24 +172,24 @@ function scene:show( event )
 
 		ga.enterScene("Unit Goals")
 
-		elseif phase == "did" then
+	elseif phase == "did" then
 
-			composer.removeHidden()
+		composer.removeHidden()
 
-	title_bg = display.newRect(sceneGroup,0,0,W,30)
-	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+		title_bg = display.newRect(sceneGroup,0,0,W,30)
+		title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+		title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-	title = display.newText(sceneGroup,Goals.PageTitle,0,0,native.systemFont,18)
-	title.anchorX = 0
-	title.x=5;title.y = title_bg.y
-	title:setFillColor(0)
+		title = display.newText(sceneGroup,Goals.PageTitle,0,0,native.systemFont,18)
+		title.anchorX = 0
+		title.x=5;title.y = title_bg.y
+		title:setFillColor(0)
 
 
-	editGoals_icon = display.newImageRect( sceneGroup, "res/assert/edit-48.png", 36,28 )
-	editGoals_icon.x=title_bg.x+title_bg.contentWidth/2-20
-	editGoals_icon.y=title_bg.y+title_bg.contentHeight/2 - 17
-	editGoals_icon:addEventListener( "touch", editEvent )
+		editGoals_icon = display.newImageRect( sceneGroup, "res/assert/edit-48.png", 36,28 )
+		editGoals_icon.x=title_bg.x+title_bg.contentWidth/2-20
+		editGoals_icon.y=title_bg.y+title_bg.contentHeight/2 - 17
+		editGoals_icon:addEventListener( "touch", editEvent )
 
 		if not IsOwner then
 
@@ -199,24 +199,24 @@ function scene:show( event )
 
 
 
-function get_Goals(response)
+		function get_Goals(response)
 
 
-		goalsid = response.MyUnitBuzzGoalsId
+			goalsid = response.MyUnitBuzzGoalsId
 
-	if response.MyUnitBuzzGoals ~= nil and response.MyUnitBuzzGoals ~= "" then
+			if response.MyUnitBuzzGoals ~= nil and response.MyUnitBuzzGoals ~= "" then
 
-		local t = response.MyUnitBuzzGoals
+				local t = response.MyUnitBuzzGoals
 
-		content = t
+				content = t
 
-		local saveData = [[<!DOCTYPE html>
-		<html>
+				local saveData = [[<!DOCTYPE html>
+				<html>
 
-		<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-		</head>]]..t..[[</html>]]
+				<head>
+				<meta charset="utf-8">
+				<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+				</head>]]..t..[[</html>]]
 
 		-- Path for the file to write
 		local path = system.pathForFile( "goals.html", system.DocumentsDirectory )
@@ -250,12 +250,12 @@ function get_Goals(response)
 
 end
 
-	Webservice.GET_MYUNITAPP_GOALS(get_Goals)
+Webservice.GET_MYUNITAPP_GOALS(get_Goals)
 
-	menuBtn:addEventListener("touch",menuTouch)
-	BgText:addEventListener("touch",menuTouch)
+menuBtn:addEventListener("touch",menuTouch)
+BgText:addEventListener("touch",menuTouch)
 
-	Runtime:addEventListener( "key", onKeyEvent )
+Runtime:addEventListener( "key", onKeyEvent )
 
 end	
 
@@ -273,16 +273,16 @@ function scene:hide( event )
 
 	if event.phase == "will" then
 
-			Runtime:removeEventListener( "key", onKeyEvent )
+		Runtime:removeEventListener( "key", onKeyEvent )
 
-			
-			if webView then webView:removeSelf( );webView=nil end
+		
+		if webView then webView:removeSelf( );webView=nil end
 
 
-		elseif phase == "did" then
+	elseif phase == "did" then
 
-			menuBtn:removeEventListener("touch",menuTouch)
-			BgText:removeEventListener("touch",menuTouch)
+		menuBtn:removeEventListener("touch",menuTouch)
+		BgText:removeEventListener("touch",menuTouch)
 
 			--editGoals_icon:removeEventListener( "touch", editEvent )
 

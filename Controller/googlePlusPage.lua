@@ -62,32 +62,32 @@ local feedCount=0
 -----------------Function-------------------------
 local function linkTouch( event )
 	if event.phase == "ended" then
-		system.openURL( event.target.value )
-	end
+	system.openURL( event.target.value )
+end
 return true
 end
 
 function makeTimeStamp( dateString )
-   local pattern = "(%d+)%-(%d+)%-(%d+)%a(%d+)%:(%d+)%:([%d%.]+)([Z%p])(%d%d)%:?(%d%d)"
-   local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
-   local timestamp = os.time(
-      { year=year, month=month, day=day, hour=hour, min=minute, sec=seconds }
-   )
-   local offset = 0
-   if ( tzoffset ) then
+	local pattern = "(%d+)%-(%d+)%-(%d+)%a(%d+)%:(%d+)%:([%d%.]+)([Z%p])(%d%d)%:?(%d%d)"
+	local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
+	local timestamp = os.time(
+		{ year=year, month=month, day=day, hour=hour, min=minute, sec=seconds }
+		)
+	local offset = 0
+	if ( tzoffset ) then
       if ( tzoffset == "+" or tzoffset == "-" ) then  -- We have a timezone
 
       	print( "offsethour : "..offsethour )
-         offset = offsethour * 60 + offsetmin
-         if ( tzoffset == "-" ) then
-            offset = offset * -1
-         end
-         timestamp = timestamp + offset
+      	offset = offsethour * 60 + offsetmin
+      	if ( tzoffset == "-" ) then
+      		offset = offset * -1
+      	end
+      	timestamp = timestamp + offset
       end
-   end
+  end
 
 
-   return timestamp
+  return timestamp
 end
 
 function googleplusCallback( res,scrollView,flag )
@@ -116,186 +116,186 @@ function googleplusCallback( res,scrollView,flag )
 
 		local bgsize
 
-	if feedArray[feedCount] ~= nil then
+		if feedArray[feedCount] ~= nil then
 
-		if feedArray[feedCount].object.attachments then
+			if feedArray[feedCount].object.attachments then
 
-			bgsize = 180
-		else
-			bgsize = 68
-		end
+				bgsize = 180
+			else
+				bgsize = 68
+			end
 
 
 
-		local background = display.newRect(tempGroup,0,0,W-80,bgsize)
+			local background = display.newRect(tempGroup,0,0,W-80,bgsize)
 
-		local tempHeight = 20
+			local tempHeight = 20
 
-		if groupArray[#groupArray-1] ~= nil then
+			if groupArray[#groupArray-1] ~= nil then
 
 				tempHeight = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].contentHeight+5
 
+				
+			end
+
+			background.x=W/2+30;background.y=tempHeight
+			background.anchorY = 0
+			background:setFillColor(Utils.convertHexToRGB("#d2d3d4"))
+
+
+			profilePic = display.newImage("usergoogleplus.png", system.TemporaryDirectory)
+			if not profilePic then
+				profilePic = display.newImageRect("assert/twitter_placeholder.png",100,100)
+			end
+			profilePic.width=55;profilePic.height=50
+
+			tempGroup:insert(profilePic)
+
+			local mask = graphics.newMask( "res/assert/mask2.png" )
+
+			profilePic:setMask( mask )
+
+			tempGroup:insert(profilePic)
 			
-		end
-
-		background.x=W/2+30;background.y=tempHeight
-		background.anchorY = 0
-		background:setFillColor(Utils.convertHexToRGB("#d2d3d4"))
 
 
-		profilePic = display.newImage("usergoogleplus.png", system.TemporaryDirectory)
-		if not profilePic then
-			profilePic = display.newImageRect("assert/twitter_placeholder.png",100,100)
-		end
-		profilePic.width=55;profilePic.height=50
-
-					tempGroup:insert(profilePic)
-
-									local mask = graphics.newMask( "res/assert/mask2.png" )
-
-									profilePic:setMask( mask )
-
-		tempGroup:insert(profilePic)
-		
-
-
-		local time =  Utils.makeTimeStamp(feedArray[feedCount].published)
+			local time =  Utils.makeTimeStamp(feedArray[feedCount].published)
 
 
 
-									local timeValue = Utils.getTime(time,"%b-%d-%Y %I:%M %p",TimeZone)
+			local timeValue = Utils.getTime(time,"%b-%d-%Y %I:%M %p",TimeZone)
 
 
-		userTime = display.newText( tempGroup, timeValue, 0, 0, native.systemFont, 11 )
-		userTime.anchorX = 0
-		userTime.anchorY = 0
-		Utils.CssforTextView(userTime,sp_Date_Time)
-		userTime:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			userTime = display.newText( tempGroup, timeValue, 0, 0, native.systemFont, 11 )
+			userTime.anchorX = 0
+			userTime.anchorY = 0
+			Utils.CssforTextView(userTime,sp_Date_Time)
+			userTime:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
 
-		username = display.newText( tempGroup, User_name, 0, 0,100,0, native.systemFont, 14 )
+			username = display.newText( tempGroup, User_name, 0, 0,100,0, native.systemFont, 14 )
 
-		username.anchorX = 0
-		username.anchorY = 0
-		
-		username:setFillColor(41/255,129/255,203/255)
+			username.anchorX = 0
+			username.anchorY = 0
+			
+			username:setFillColor(41/255,129/255,203/255)
 
-		local rowTitle
+			local rowTitle
 
-		if not feedArray[feedCount].title then
+			if not feedArray[feedCount].title then
 
-			rowTitle = display.newText( tempGroup," ", 0, 0,native.systemFont, 18 )
+				rowTitle = display.newText( tempGroup," ", 0, 0,native.systemFont, 18 )
 
-		else
+			else
 
-			local optionsread = {
-			text = feedArray[feedCount].title,
-			x = display.contentCenterX,
-			y = display.contentCenterY,
-			fontSize = 11,
-			width = 220,
-			height = 0,
-			align = "left"
-		}
+				local optionsread = {
+					text = feedArray[feedCount].title,
+					x = display.contentCenterX,
+					y = display.contentCenterY,
+					fontSize = 11,
+					width = 220,
+					height = 0,
+					align = "left"
+				}
 
-		rowTitle = display.newText( optionsread )
+				rowTitle = display.newText( optionsread )
 
-	end
-	tempGroup:insert(rowTitle)
-	rowTitle.anchorX = 0
+			end
+			tempGroup:insert(rowTitle)
+			rowTitle.anchorX = 0
 
-	rowTitle:setFillColor(0)
+			rowTitle:setFillColor(0)
 
-
-	
-
-	background.height = background.height+rowTitle.height
-
-								background.y=tempHeight
-
-								local background_arrow = display.newImageRect( tempGroup, "res/assert/arrow3.png", 11,20 )
-								background_arrow.x=background.x-background.contentWidth/2-background_arrow.contentWidth/2+1
-								background_arrow.y=background.y+background_arrow.contentHeight/2+5
-								background.alpha=0.8
-
-
-	profilePic.x=background.x-background.contentWidth/2-profilePic.contentWidth/2-10
-								profilePic.y=background.y+profilePic.height/2-5
-
-	username.x=profilePic.x+profilePic.contentWidth/2+15
-	username.y=background.y+5
-
-	userTime.x=background.x+background.contentWidth/2-userTime.contentWidth-5
-	userTime.y=background.y+5
-
-	local line = display.newRect( tempGroup, 0, 0, background.contentWidth-10, 1 )
-									line:setFillColor( Utils.convertHexToRGB(color.Gray) )
-									line.x=background.x;line.y=username.y+username.contentHeight+4
-
-	rowTitle.anchorY=0
-	rowTitle.x=username.x
-								rowTitle.y=username.y+username.contentHeight+8
-
-
-	local function postedimg_position( event )
-		if ( event.isError ) then
-			print ( "Network error - download failed" )
-		else
-
-			event.target.width=200
-			event.target.height=100
-
-			tempGroup:insert(event.target)
 
 			
-		end
 
-	end
+			background.height = background.height+rowTitle.height
 
-	if feedArray[feedCount].object.attachments then
+			background.y=tempHeight
 
-		local img = feedArray[feedCount].object.attachments
-		if(img[1].image ~= nil ) then
-			local shared_img = display.loadRemoteImage(img[1].image.url, "GET", postedimg_position, feedCount..".png", system.TemporaryDirectory,100+rowTitle.x,rowTitle.y+rowTitle.contentHeight+55 )
-			
-		
+			local background_arrow = display.newImageRect( tempGroup, "res/assert/arrow3.png", 11,20 )
+			background_arrow.x=background.x-background.contentWidth/2-background_arrow.contentWidth/2+1
+			background_arrow.y=background.y+background_arrow.contentHeight/2+5
+			background.alpha=0.8
 
-		
-			
-		else
 
-			background.height = background.height-110
+			profilePic.x=background.x-background.contentWidth/2-profilePic.contentWidth/2-10
+			profilePic.y=background.y+profilePic.height/2-5
 
-		end
+			username.x=profilePic.x+profilePic.contentWidth/2+15
+			username.y=background.y+5
 
-	end
+			userTime.x=background.x+background.contentWidth/2-userTime.contentWidth-5
+			userTime.y=background.y+5
 
+			local line = display.newRect( tempGroup, 0, 0, background.contentWidth-10, 1 )
+			line:setFillColor( Utils.convertHexToRGB(color.Gray) )
+			line.x=background.x;line.y=username.y+username.contentHeight+4
+
+			rowTitle.anchorY=0
+			rowTitle.x=username.x
+			rowTitle.y=username.y+username.contentHeight+8
+
+
+			local function postedimg_position( event )
+				if ( event.isError ) then
+					print ( "Network error - download failed" )
+				else
+
+					event.target.width=200
+					event.target.height=100
+
+					tempGroup:insert(event.target)
+
+					
+				end
+
+			end
+
+			if feedArray[feedCount].object.attachments then
 
 				local img = feedArray[feedCount].object.attachments
-				local link = display.newText(tempGroup,feedArray[feedCount].url,0,0,native.systemFont,12)
-				link:setFillColor( 0,0,1 )
-				link.anchorX = 0
-				link.anchorY = 0
-				link.value = feedArray[feedCount].url
-				link.x = username.x
-				link.y =  background.y+background.contentHeight-20
-				link:addEventListener( "touch", linkTouch )
+				if(img[1].image ~= nil ) then
+					local shared_img = display.loadRemoteImage(img[1].image.url, "GET", postedimg_position, feedCount..".png", system.TemporaryDirectory,100+rowTitle.x,rowTitle.y+rowTitle.contentHeight+55 )
+					
+					
 
-				if img ~= nil then
+					
+					
+				else
 
-					if rowTitle.text == "" or rowTitle.text == nil then
-						rowTitle.text = img[1].displayName
-					end
+					background.height = background.height-110
+
+				end
+
+			end
+
+
+			local img = feedArray[feedCount].object.attachments
+			local link = display.newText(tempGroup,feedArray[feedCount].url,0,0,native.systemFont,12)
+			link:setFillColor( 0,0,1 )
+			link.anchorX = 0
+			link.anchorY = 0
+			link.value = feedArray[feedCount].url
+			link.x = username.x
+			link.y =  background.y+background.contentHeight-20
+			link:addEventListener( "touch", linkTouch )
+
+			if img ~= nil then
+
+				if rowTitle.text == "" or rowTitle.text == nil then
+					rowTitle.text = img[1].displayName
+				end
 
 				if string.find( link.text, "https:" ) == nil then
 					link.text = img[1].url or "https:"..link.text
 					link.value = link.text
 				end
-				end
+			end
 
-				if link.text:len() > 35 then
-					link.text = string.sub( link.text,1,35).."..."
-				end
+			if link.text:len() > 35 then
+				link.text = string.sub( link.text,1,35).."..."
+			end
 
 
 			local line = display.newLine( link.x, background.y+background.contentHeight-5, link.x+link.contentWidth,  background.y+background.contentHeight-5  )
@@ -303,10 +303,10 @@ function googleplusCallback( res,scrollView,flag )
 			line.strokeWidth = 1
 			tempGroup:insert( line )
 
-	scrollView:insert(tempGroup)
+			scrollView:insert(tempGroup)
 
-end
-end
+		end
+	end
 end
 
 
@@ -323,7 +323,7 @@ local function getgoogleplus_stream( event )
 
 		if response ~= nil then
 
-					print ( "RESPONSE: " .. json.encode(response.items ))
+			print ( "RESPONSE: " .. json.encode(response.items ))
 
 
 			response = response.items
@@ -363,81 +363,81 @@ end
 
 local function Google_scrollListener( event )
 
-		    local phase = event.phase
-		    if ( phase == "began" ) then 
-		    elseif ( phase == "moved" ) then 
-		    elseif ( phase == "ended" ) then 
-		    end
+	local phase = event.phase
+	if ( phase == "began" ) then 
+	elseif ( phase == "moved" ) then 
+		elseif ( phase == "ended" ) then 
+	end
 
 		    -- In the event a scroll limit is reached...
 		    if ( event.limitReached ) then
-		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+		    	if ( event.direction == "up" ) then print( "Reached bottom limit" )
 
-		        	spinner_show()
+		    		spinner_show()
 
-		        	feedProcess = feedProcess + 10
+		    		feedProcess = feedProcess + 10
 
-		        	googleplus =  network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
-		   
+		    		googleplus =  network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
+		    		
 
-		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+		    	elseif ( event.direction == "down" ) then print( "Reached top limit" )
 
-		        		feedProcess = 10
+		    		feedProcess = 10
 
-		        		feedCount = 0
+		    		feedCount = 0
 
-		        		spinner_show()
+		    		spinner_show()
 
- 			        	 googleplus = network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
-		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
-		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
-		        end
+		    		googleplus = network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
+		    	elseif ( event.direction == "left" ) then print( "Reached right limit" )
+		    	elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		    	end
 		    end
 
 		    return true
-	end
+		end
 
 
-	local function onTimer ( event )
+		local function onTimer ( event )
 
-	print( "event time completion" )
+			print( "event time completion" )
 
-	BackFlag = false
+			BackFlag = false
 
-end
+		end
 
 
-local function onKeyEvent( event )
+		local function onKeyEvent( event )
 
-        local phase = event.phase
-        local keyName = event.keyName
+			local phase = event.phase
+			local keyName = event.keyName
 
-        if phase == "up" then
+			if phase == "up" then
 
-        if keyName=="back" then
+				if keyName=="back" then
 
-        	if BackFlag == false then
+					if BackFlag == false then
 
-        		Utils.SnackBar(ChatPage.PressAgain)
+						Utils.SnackBar(ChatPage.PressAgain)
 
-        		BackFlag = true
+						BackFlag = true
 
-        		timer.performWithDelay( 3000, onTimer )
+						timer.performWithDelay( 3000, onTimer )
 
-                return true
+						return true
 
-            elseif BackFlag == true then
+					elseif BackFlag == true then
 
-			 os.exit() 
+						os.exit() 
 
-            end
-            
-        end
+					end
+					
+				end
 
-    end
+			end
 
-        return false
- end
+			return false
+		end
 
 
 ------------------------------------------------------
@@ -461,7 +461,7 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-		title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
@@ -488,12 +488,12 @@ function scene:show( event )
 
 		ga.enterScene("Google +")
 
-		elseif phase == "did" then
+	elseif phase == "did" then
 
-			composer.removeHidden()
+		composer.removeHidden()
 
-			scrollView = widget.newScrollView
-			{
+		scrollView = widget.newScrollView
+		{
 			top = RecentTab_Topvalue,
 			left = 0,
 			width = W,
@@ -501,26 +501,26 @@ function scene:show( event )
 			hideBackground = true,
 			isBounceEnabled=true,
 			horizontalScrollDisabled = true,
-	   		scrollWidth = W,
+			scrollWidth = W,
 			bottomPadding=20,
-   			listener = Google_scrollListener,
-}
+			listener = Google_scrollListener,
+		}
 
 
 
-sceneGroup:insert(scrollView)
+		sceneGroup:insert(scrollView)
 
- googleplus = network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
+		googleplus = network.request( "https://www.googleapis.com/plus/v1/people/"..User_id.."/activities/public/?maxResults="..feedProcess.."&key="..AccessApi, "GET", getgoogleplus_stream )
 
-menuBtn:addEventListener("touch",menuTouch)
-BgText:addEventListener("touch",menuTouch)
+		menuBtn:addEventListener("touch",menuTouch)
+		BgText:addEventListener("touch",menuTouch)
 
-Runtime:addEventListener( "key", onKeyEvent )
+		Runtime:addEventListener( "key", onKeyEvent )
 
 
-end	
+	end	
 
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
@@ -533,30 +533,30 @@ function scene:hide( event )
 		
 		network.cancel( googleplus )
 
-		elseif phase == "did" then
+	elseif phase == "did" then
 
-			menuBtn:removeEventListener("touch",menuTouch)
-			BgText:removeEventListener("touch",menuTouch)
+		menuBtn:removeEventListener("touch",menuTouch)
+		BgText:removeEventListener("touch",menuTouch)
 
-			Runtime:removeEventListener( "key", onKeyEvent )
+		Runtime:removeEventListener( "key", onKeyEvent )
 
-		end	
+	end	
 
-	end
-
-
-	function scene:destroy( event )
-		local sceneGroup = self.view
+end
 
 
-
-	end
-
-
-	scene:addEventListener( "create", scene )
-	scene:addEventListener( "show", scene )
-	scene:addEventListener( "hide", scene )
-	scene:addEventListener( "destroy", scene )
+function scene:destroy( event )
+	local sceneGroup = self.view
 
 
-	return scene
+
+end
+
+
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
+
+
+return scene

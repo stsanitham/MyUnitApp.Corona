@@ -45,27 +45,27 @@ local resourceGridArray = {}
 local function showShare(fileNameString)
 
 
-			    local popupName = "quickLook"
-			    local isAvailable = native.canShowPopup( popupName )
-			    local isSimulator = "simulator" == system.getInfo( "environment" )
+	local popupName = "quickLook"
+	local isAvailable = native.canShowPopup( popupName )
+	local isSimulator = "simulator" == system.getInfo( "environment" )
 
-			    local items =
-			{
-			    { type = "url", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
+	local items =
+	{
+		{ type = "url", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
 			     --{ type = "UIActivityTypePostToFacebook", value = "UIActivityTypePostToFacebook" },
-			      { type = "string", value = " " },
+			     { type = "string", value = " " },
 
-			}
+			 }
 						    -- If it is possible to show the popup
-			    if isAvailable then
-			        
+						    if isAvailable then
+						    	
 
-			        local popupOptions = 
-						    {
+						    	local popupOptions = 
+						    	{
 						        files =  -- Files you wish to load into the quick look preview
 						        { 
-						            { filename=fileNameString, baseDir=system.TemporaryDirectory },
-						      
+						        	{ filename=fileNameString, baseDir=system.TemporaryDirectory },
+						        	
 						        },
 						        startIndex = 1,  -- The file you wish to start the preview at; default is 1
 						        listener = quickLookListener  -- Callback listener
@@ -74,23 +74,23 @@ local function showShare(fileNameString)
 						    -- Show the quick look popup
 						    native.showPopup( "quickLook", popupOptions )
 
-			    else
-			  
+						else
+							
 			            --native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
-			        
+			            
+			        end
 			    end
-end
 
-local function share(fileName)
-		local isAvailable = native.canShowPopup( "social", "share" )
+			    local function share(fileName)
+			    	local isAvailable = native.canShowPopup( "social", "share" )
 
-		print( "fileName : "..fileName )
+			    	print( "fileName : "..fileName )
 
 		    -- If it is possible to show the popup
-		  if isAvailable then
+		    if isAvailable then
 		    	local listener = {}
 		    	function listener:popup( event )
-		    		 native.setKeyboardFocus(nil)
+		    		native.setKeyboardFocus(nil)
 		    	end
 
 		        -- Show the popup
@@ -101,63 +101,63 @@ local function share(fileName)
 		            listener = listener,
 		            image = 
 		            {
-		            { filename = fileName, baseDir = system.TemporaryDirectory },
+		            	{ filename = fileName, baseDir = system.TemporaryDirectory },
 		            },
 		            
 		            })
 		    else
-		 
+		    	
 		            --native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
-		       
+		            
+		        end
+
 		    end
 
-end
+
+		    local function listTouchAction( event)
+		    	
+		    	local tempreverse = string.find(string.reverse( event.value ),"%.")
+		    	fileExt = event.value:sub( event.value:len()-tempreverse+2,event.value:len())
+
+		    	local function networkListener( downloan_event )
+		    		if ( downloan_event.isError ) then
+		    		elseif ( downloan_event.phase == "began" ) then
+		    			elseif ( downloan_event.phase == "ended" ) then
+		    			spinner_hide()
 
 
-local function listTouchAction( event)
-	
-local tempreverse = string.find(string.reverse( event.value ),"%.")
-fileExt = event.value:sub( event.value:len()-tempreverse+2,event.value:len())
+		    			if event.id =="download" then
 
-local function networkListener( downloan_event )
-	if ( downloan_event.isError ) then
-		elseif ( downloan_event.phase == "began" ) then
-			elseif ( downloan_event.phase == "ended" ) then
-			spinner_hide()
+		    				local function onComplete( event )
 
+		    					if event.action == "clicked" then
 
-				if event.id =="download" then
+		    						local i = event.index
 
-					local function onComplete( event )
+		    						if i == 1 then
 
-				if event.action == "clicked" then
+		    							filename = downloan_event.response.filename
 
-				local i = event.index
-
-				if i == 1 then
-
-				filename = downloan_event.response.filename
-
-			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
-						
+		    							local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+		    							
 					local path = system.pathForFile("/storage/sdcard1/"..filename)    --External (SD Card)
 
 					--------------------------- Read ----------------------------
-						local file, reason = io.open( localpath, "r" )                              
-						local contents
-						if file then
+					local file, reason = io.open( localpath, "r" )                              
+					local contents
+					if file then
 						    contents = file:read( "*a" )                                        -- Read contents
 						    io.close( file )                                                    -- Close the file (Important!)
 						else
-						    print("Invalid path")
-						    return
+							print("Invalid path")
+							return
 						end
 
 					--------------------------- Write ----------------------------
-	
+					
 						local file = io.open( path, "w" )                                    -- Open the destination path in write mode
-		
-							if file then
+						
+						if file then
 							    file:write(contents)                                                -- Writes the contents to a file
 							    io.close(file)                                                      -- Close the file (Important!)
 							else
@@ -167,62 +167,62 @@ local function networkListener( downloan_event )
 								    file:write(contents)                                                -- Writes the contents to a file
 								    io.close(file)                                                      -- Close the file (Important!)
 								else
-								   path = system.pathForFile("/storage/sdcard/"..filename)
+									path = system.pathForFile("/storage/sdcard/"..filename)
 									local file = io.open( path, "w" )                                    -- Open the destination path in write mode
 									if file then
 										file:write(contents)                                                -- Writes the contents to a file
 										io.close(file)                                                      -- Close the file (Important!)
 									else
-									    print("Error")
-									    return
-									 end
-								 end
+										print("Error")
+										return
+									end
 								end
+							end
 
 							native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
 							-- native.showAlert( filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
-end
-
-end
-
-end
-
-
-
-				native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
-					
-				elseif event.id =="share" then
-
-						if isAndroid then
-
-							share(downloan_event.response.filename)
-							
-						else
-
-							showShare(downloan_event.response.filename)
-
 						end
+
+					end
 
 				end
 
 
+
+				native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
+				
+			elseif event.id =="share" then
+
+				if isAndroid then
+
+					share(downloan_event.response.filename)
+					
+				else
+
+					showShare(downloan_event.response.filename)
+
+				end
+
 			end
+
+
 		end
+	end
 
-		spinner_show()
+	spinner_show()
 
-local destDir = system.TemporaryDirectory 
-local result, reason = os.remove( system.pathForFile( "imageLib.png", destDir ) )
+	local destDir = system.TemporaryDirectory 
+	local result, reason = os.remove( system.pathForFile( "imageLib.png", destDir ) )
 
 
-network.download(
-	event.value,
-	"GET",
-	networkListener,
-	event.filename,
-	system.TemporaryDirectory
-	)
+	network.download(
+		event.value,
+		"GET",
+		networkListener,
+		event.filename,
+		system.TemporaryDirectory
+		)
 
 
 
@@ -257,35 +257,35 @@ local function onRowRender_DocLib( event )
 
     local tempreverse = string.find(string.reverse( tempValue ),"%.")
 
-	fileExt = tempValue:sub( tempValue:len()-tempreverse+2,tempValue:len())
+    fileExt = tempValue:sub( tempValue:len()-tempreverse+2,tempValue:len())
 
-	print( "file ext : "..fileExt )
+    print( "file ext : "..fileExt )
 
-	if fileExt == "png" or fileExt == "jpg" or fileExt == "jpeg" or fileExt == "gif" or fileExt == "bmp" or fileExt == "tif" then
+    if fileExt == "png" or fileExt == "jpg" or fileExt == "jpeg" or fileExt == "gif" or fileExt == "bmp" or fileExt == "tif" then
 
-		tempValue="res/assert/image-active.png"
+    	tempValue="res/assert/image-active.png"
 
-	elseif fileExt == "doc" or fileExt == "docx" or fileExt == "txt" or fileExt == "xls"  or fileExt == "xlsx" or fileExt == "ppt"  or fileExt == "pptx"  or fileExt == "xps"  or fileExt == "pps" or fileExt == "wma" or fileExt == "pub" or fileExt == "js" or fileExt == "swf" or fileExt == "xml" or fileExt == "html" or fileExt == "htm" or fileExt == "rtf"  then
+    elseif fileExt == "doc" or fileExt == "docx" or fileExt == "txt" or fileExt == "xls"  or fileExt == "xlsx" or fileExt == "ppt"  or fileExt == "pptx"  or fileExt == "xps"  or fileExt == "pps" or fileExt == "wma" or fileExt == "pub" or fileExt == "js" or fileExt == "swf" or fileExt == "xml" or fileExt == "html" or fileExt == "htm" or fileExt == "rtf"  then
 
-			tempValue="res/assert/word-active.png"
+    	tempValue="res/assert/word-active.png"
 
-	elseif fileExt == "pdf" then
+    elseif fileExt == "pdf" then
 
-			tempValue="res/assert/pdf-active.png"
+    	tempValue="res/assert/pdf-active.png"
 
-	elseif fileExt == "mpg" or fileExt == "au" or fileExt == "aac" or fileExt == "aif" or fileExt == "gsm" or fileExt == "mid" or fileExt == "mp3" or fileExt == "rm"  or fileExt == "wav" then
+    elseif fileExt == "mpg" or fileExt == "au" or fileExt == "aac" or fileExt == "aif" or fileExt == "gsm" or fileExt == "mid" or fileExt == "mp3" or fileExt == "rm"  or fileExt == "wav" then
 
-		tempValue="res/assert/audio.png"
-	
-	elseif fileExt == "mpeg" or fileExt == "avi" then
+    	tempValue="res/assert/audio.png"
+    	
+    elseif fileExt == "mpeg" or fileExt == "avi" then
 
-		tempValue="res/assert/video.png"
+    	tempValue="res/assert/video.png"
 
-	else
+    else
 
-		tempValue="res/assert/image-active.png"
+    	tempValue="res/assert/image-active.png"
 
-	end
+    end
 
     local Lefticon = display.newImageRect(row,tempValue,25,25)
     Lefticon.x=30;Lefticon.y=rowHeight/2
@@ -319,37 +319,37 @@ local function onRowRender_DocLib( event )
 
     if isAndroid then
 
-    local downImg_bg = display.newRect(row,0,0,45,35)
-    downImg_bg.x=shareImg_bg.x+shareImg_bg.contentWidth/2+downImg_bg.contentWidth/2;downImg_bg.y=seprate_bg.y
-    downImg_bg.id="download"
-    downImg_bg.alpha=0.01
-    downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
-    downImg_bg.filename = List_array[row.index].DocumentFileName
+    	local downImg_bg = display.newRect(row,0,0,45,35)
+    	downImg_bg.x=shareImg_bg.x+shareImg_bg.contentWidth/2+downImg_bg.contentWidth/2;downImg_bg.y=seprate_bg.y
+    	downImg_bg.id="download"
+    	downImg_bg.alpha=0.01
+    	downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
+    	downImg_bg.filename = List_array[row.index].DocumentFileName
 
-   local downImg = display.newImageRect(row,"res/assert/download.png",15,15)
-    downImg.x=shareImg.x+40;downImg.y=seprate_bg.y
-    downImg.id="download"
-    downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
-    downImg.filename =  List_array[row.index].DocumentFileName
-
-
-    local line = display.newRect(row,W/2,rowHeight/2,W+30,1.1)
-    line.y=rowHeight-1.1
-    line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+    	local downImg = display.newImageRect(row,"res/assert/download.png",15,15)
+    	downImg.x=shareImg.x+40;downImg.y=seprate_bg.y
+    	downImg.id="download"
+    	downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
+    	downImg.filename =  List_array[row.index].DocumentFileName
 
 
-    downImg:addEventListener("touch",listTouch)
-    downImg_bg:addEventListener("touch",listTouch)
-    
-	else
+    	local line = display.newRect(row,W/2,rowHeight/2,W+30,1.1)
+    	line.y=rowHeight-1.1
+    	line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
-		seprate_bg.width = seprate_bg.contentWidth/2
-		seprate_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
-		shareImg_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
-		shareImg.x=seprate_bg.x+seprate_bg.contentWidth/2
-	end
 
-	shareImg_bg:addEventListener("touch",listTouch)
+    	downImg:addEventListener("touch",listTouch)
+    	downImg_bg:addEventListener("touch",listTouch)
+    	
+    else
+
+    	seprate_bg.width = seprate_bg.contentWidth/2
+    	seprate_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
+    	shareImg_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
+    	shareImg.x=seprate_bg.x+seprate_bg.contentWidth/2
+    end
+
+    shareImg_bg:addEventListener("touch",listTouch)
     shareImg:addEventListener("touch",listTouch)
 
     row.ImageId = List_array[row.index].DocumentCategoryId
@@ -365,13 +365,13 @@ local function onRowTouch_DocLib( event )
 	if( "press" == phase ) then
 
 
-	system.openURL( ApplicationConfig.IMAGE_BASE_URL..row.FilePath )
+		system.openURL( ApplicationConfig.IMAGE_BASE_URL..row.FilePath )
 
 	--composer.gotoScene( "Controller.imageSlideView", options )
 
-	elseif ( "release" == phase ) then
+elseif ( "release" == phase ) then
 
-	end
+end
 
 end
 
@@ -384,29 +384,29 @@ local function BgTouch(event)
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 
-		elseif ( event.phase == "moved" ) then
-			local dy = math.abs( ( event.y - event.yStart ) )
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
 
-			if ( dy > 10 ) then
-				display.getCurrentStage():setFocus( nil )
-				ResourceList_scrollview:takeFocus( event )
-			end
-			elseif event.phase == "ended" then
+		if ( dy > 10 ) then
 			display.getCurrentStage():setFocus( nil )
-			
-			if event.target.id == "hide" then
+			ResourceList_scrollview:takeFocus( event )
+		end
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+		
+		if event.target.id == "hide" then
 
-				if changeMenuGroup.isVisible == true then
+			if changeMenuGroup.isVisible == true then
 
-					changeMenuGroup.isVisible=false
-				else
-					changeMenuGroup.isVisible=true
-				end
-
+				changeMenuGroup.isVisible=false
+			else
+				changeMenuGroup.isVisible=true
 			end
-end
 
-return true
+		end
+	end
+
+	return true
 
 end
 
@@ -417,28 +417,28 @@ local function changeListmenuTouch(event)
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 
-		elseif ( event.phase == "moved" ) then
-			local dy = math.abs( ( event.y - event.yStart ) )
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
 
-			if ( dy > 10 ) then
-				display.getCurrentStage():setFocus( nil )
-				ResourceList_scrollview:takeFocus( event )
-			end
-			elseif event.phase == "ended" then
+		if ( dy > 10 ) then
 			display.getCurrentStage():setFocus( nil )
+			ResourceList_scrollview:takeFocus( event )
+		end
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 
-			changeMenuGroup:toFront()
-			
-			if changeMenuGroup.isVisible == true then
+		changeMenuGroup:toFront()
+		
+		if changeMenuGroup.isVisible == true then
 
-				changeMenuGroup.isVisible=false
-			else
+			changeMenuGroup.isVisible=false
+		else
 
-				changeMenuGroup.isVisible=true
-			end
-end
+			changeMenuGroup.isVisible=true
+		end
+	end
 
-return true
+	return true
 
 end
 
@@ -451,24 +451,24 @@ local function imageDetail(event)
 
 	if ( "began" == phase ) then 
 
- 	elseif ( phase == "moved" ) then
+	elseif ( phase == "moved" ) then
 
-        local dy = math.abs(( event.y - event.yStart ))
+		local dy = math.abs(( event.y - event.yStart ))
 
-        if ( dy > 10 ) then
+		if ( dy > 10 ) then
 
-            ResourceList_scrollview:takeFocus( event )
-    end
+			ResourceList_scrollview:takeFocus( event )
+		end
 
-	elseif ( "ended" == phase )  then
+		elseif ( "ended" == phase )  then
 
-	 local imagecount
+		local imagecount
 
-			imagecount = event.target.value
+		imagecount = event.target.value
 
-			print("imagecount ", imagecount)
+		print("imagecount ", imagecount)
 
-	 system.openURL( ApplicationConfig.IMAGE_BASE_URL..List_array[imagecount].FilePath )
+		system.openURL( ApplicationConfig.IMAGE_BASE_URL..List_array[imagecount].FilePath )
 
 	end
 
@@ -484,9 +484,9 @@ local function ResourceGrid_list( gridlist)
 
 	for j=1,#resourceGridArray do 
 
-	if resourceGridArray[j] then resourceGridArray[j]:removeSelf();resourceGridArray[j] = nil	
+		if resourceGridArray[j] then resourceGridArray[j]:removeSelf();resourceGridArray[j] = nil	
 
-	end
+		end
 
 	end
 
@@ -495,9 +495,9 @@ local function ResourceGrid_list( gridlist)
 
 	tempYPos = 5
 
-    for i=1,#List_array do
+	for i=1,#List_array do
 
-    	resourceGridArray[#resourceGridArray+1] = display.newGroup()
+		resourceGridArray[#resourceGridArray+1] = display.newGroup()
 
 		local tempGroup = resourceGridArray[#resourceGridArray]
 
@@ -508,7 +508,7 @@ local function ResourceGrid_list( gridlist)
 		Background.alpha = 1.01
 
 		if processCount < 2  then
-				
+			
 		else
 
 			tempYPos = resourceGridArray[#resourceGridArray-1][1].y + resourceGridArray[#resourceGridArray-1][1].contentHeight + 9
@@ -520,12 +520,12 @@ local function ResourceGrid_list( gridlist)
 		Background.y = tempYPos
 
 
-	  local rect, Lefticonimage, image_bg, image_name , seperate_imagebg, shareImage_bg, shareImage, downImg_bg, downImg, circle_bg
+		local rect, Lefticonimage, image_bg, image_name , seperate_imagebg, shareImage_bg, shareImage, downImg_bg, downImg, circle_bg
 
 
-	  local tempValue = ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
+		local tempValue = ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
 
-	    local tempreverse = string.find(string.reverse( tempValue ),"%.")
+		local tempreverse = string.find(string.reverse( tempValue ),"%.")
 
 		fileExt = tempValue:sub( tempValue:len()-tempreverse+2,tempValue:len())
 
@@ -537,16 +537,16 @@ local function ResourceGrid_list( gridlist)
 
 		elseif fileExt == "doc" or fileExt == "docx" or fileExt == "txt" or fileExt == "xls"  or fileExt == "xlsx" or fileExt == "ppt"  or fileExt == "pptx"  or fileExt == "xps"  or fileExt == "pps" or fileExt == "wma" or fileExt == "pub" or fileExt == "js" or fileExt == "swf" or fileExt == "xml" or fileExt == "html" or fileExt == "htm" or fileExt == "rtf"  then
 
-				tempValue="res/assert/word-active.png"
+			tempValue="res/assert/word-active.png"
 
 		elseif fileExt == "pdf" then
 
-				tempValue="res/assert/pdf-active.png"
+			tempValue="res/assert/pdf-active.png"
 
 		elseif fileExt == "mpg" or fileExt == "au" or fileExt == "aac" or fileExt == "aif" or fileExt == "gsm" or fileExt == "mid" or fileExt == "mp3" or fileExt == "rm"  or fileExt == "wav" then
 
 			tempValue="res/assert/audio.png"
-		
+			
 		elseif fileExt == "mpeg" or fileExt == "avi" then
 
 			tempValue="res/assert/video.png"
@@ -559,120 +559,120 @@ local function ResourceGrid_list( gridlist)
 
 		if i%2 == 0 then
 
-		Background.x= W/2+W/4
+			Background.x= W/2+W/4
 
 		else
-					
-		Background.x=W/4
+			
+			Background.x=W/4
 
 		end
 
-                rect = display.newRect(Background.x, Background.y + Background.contentHeight/2, 149,115)
-				rect:setFillColor(1,1,1,0) 
-				rect:setStrokeColor(0.5) 
-				rect.strokeWidth = 1
-				tempGroup:insert(rect)
+		rect = display.newRect(Background.x, Background.y + Background.contentHeight/2, 149,115)
+		rect:setFillColor(1,1,1,0) 
+		rect:setStrokeColor(0.5) 
+		rect.strokeWidth = 1
+		tempGroup:insert(rect)
 
-                circle_bg = display.newCircle(tempGroup,Background.x,Background.y+ 45, 35 )
-                circle_bg.height = 60
-				circle_bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
+		circle_bg = display.newCircle(tempGroup,Background.x,Background.y+ 45, 35 )
+		circle_bg.height = 60
+		circle_bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
 
-				print("response file "..tempValue)
-				Lefticonimage = display.newImage(tempValue,40,40)
-				Lefticonimage.width=40;Lefticonimage.height=40
-				Lefticonimage.x=Background.x
-				Lefticonimage.y=Background.y + Background.contentHeight/2 - 13	
-				Lefticonimage.value = i	
-				tempGroup:insert(Lefticonimage)
-                Lefticonimage:addEventListener("touch",imageDetail)
+		print("response file "..tempValue)
+		Lefticonimage = display.newImage(tempValue,40,40)
+		Lefticonimage.width=40;Lefticonimage.height=40
+		Lefticonimage.x=Background.x
+		Lefticonimage.y=Background.y + Background.contentHeight/2 - 13	
+		Lefticonimage.value = i	
+		tempGroup:insert(Lefticonimage)
+		Lefticonimage:addEventListener("touch",imageDetail)
 
-				image_bg = display.newRect( Lefticonimage.x, Lefticonimage.y+80, Background.width, 25)
-				image_bg:setFillColor( 0,0,0 )
-				image_bg.alpha = 0.4
-				image_bg.x = Background.x
-				image_bg.y = Background.y+102
-				tempGroup:insert(image_bg)
+		image_bg = display.newRect( Lefticonimage.x, Lefticonimage.y+80, Background.width, 25)
+		image_bg:setFillColor( 0,0,0 )
+		image_bg.alpha = 0.4
+		image_bg.x = Background.x
+		image_bg.y = Background.y+102
+		tempGroup:insert(image_bg)
 
-				print(List_array[i].DocumentFileName)
+		print(List_array[i].DocumentFileName)
 
-				local image_nameString = List_array[i].DocumentFileName
+		local image_nameString = List_array[i].DocumentFileName
 
-				if string.len(List_array[i].DocumentFileName) > 5 then
+		if string.len(List_array[i].DocumentFileName) > 5 then
 
-			    image_nameString=string.sub(List_array[i].DocumentFileName, 1, 5).."..."
+			image_nameString=string.sub(List_array[i].DocumentFileName, 1, 5).."..."
 
-			    end
+		end
 
-			    image_name = display.newText(image_nameString,0,0,native.systemFont,16)
-			    image_name.x=image_bg.x-image_bg.contentWidth/2+ 5;image_name.y=image_bg.y
-			    image_name.anchorX=0
-			    image_name:setFillColor(Utils.convertHexToRGB(color.White))
-			    tempGroup:insert(image_name)
+		image_name = display.newText(image_nameString,0,0,native.systemFont,16)
+		image_name.x=image_bg.x-image_bg.contentWidth/2+ 5;image_name.y=image_bg.y
+		image_name.anchorX=0
+		image_name:setFillColor(Utils.convertHexToRGB(color.White))
+		tempGroup:insert(image_name)
 
-			    seperate_imagebg = display.newRect(image_bg.x,image_bg.y,Background.width/2, 25)
-				seperate_imagebg.anchorX=0
-				seperate_imagebg.x=image_bg.x
-				seperate_imagebg.y=image_bg.y
-				seperate_imagebg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-				tempGroup:insert(seperate_imagebg)
+		seperate_imagebg = display.newRect(image_bg.x,image_bg.y,Background.width/2, 25)
+		seperate_imagebg.anchorX=0
+		seperate_imagebg.x=image_bg.x
+		seperate_imagebg.y=image_bg.y
+		seperate_imagebg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+		tempGroup:insert(seperate_imagebg)
 
-				shareImage_bg = display.newRect(image_bg.x,image_bg.y,27,25)
-				shareImage_bg.x=seperate_imagebg.x+25;shareImage_bg.y=seperate_imagebg.y
-				shareImage_bg.id="share"
-				shareImage_bg.alpha=0.01
-				shareImage_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
-				shareImage_bg.filename = List_array[i].DocumentFileName
-				tempGroup:insert(shareImage_bg)
+		shareImage_bg = display.newRect(image_bg.x,image_bg.y,27,25)
+		shareImage_bg.x=seperate_imagebg.x+25;shareImage_bg.y=seperate_imagebg.y
+		shareImage_bg.id="share"
+		shareImage_bg.alpha=0.01
+		shareImage_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
+		shareImage_bg.filename = List_array[i].DocumentFileName
+		tempGroup:insert(shareImage_bg)
 
-				shareImage = display.newImageRect("res/assert/upload.png",17,17)
-				shareImage.x=shareImage_bg.x
-				shareImage.y=shareImage_bg.y
-				shareImage.id="share"
-				shareImage:setFillColor(Utils.convertHexToRGB(color.White))
-				shareImage.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
-				shareImage.filename = List_array[i].DocumentFileName
-				tempGroup:insert(shareImage)
+		shareImage = display.newImageRect("res/assert/upload.png",17,17)
+		shareImage.x=shareImage_bg.x
+		shareImage.y=shareImage_bg.y
+		shareImage.id="share"
+		shareImage:setFillColor(Utils.convertHexToRGB(color.White))
+		shareImage.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
+		shareImage.filename = List_array[i].DocumentFileName
+		tempGroup:insert(shareImage)
 
 
-				if isAndroid then
+		if isAndroid then
 
-				downImg_bg = display.newRect(image_bg.x,image_bg.y,27,25)
-				downImg_bg.x=shareImage.x+30
-				downImg_bg.y=seperate_imagebg.y
-				downImg_bg.id="download"
-				downImg_bg.alpha=0.01
-				downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
-				downImg_bg.filename = List_array[i].DocumentFileName
-				tempGroup:insert(downImg_bg)
+			downImg_bg = display.newRect(image_bg.x,image_bg.y,27,25)
+			downImg_bg.x=shareImage.x+30
+			downImg_bg.y=seperate_imagebg.y
+			downImg_bg.id="download"
+			downImg_bg.alpha=0.01
+			downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
+			downImg_bg.filename = List_array[i].DocumentFileName
+			tempGroup:insert(downImg_bg)
 
-				downImg = display.newImageRect("res/assert/download.png",17,17)
-				downImg.x=shareImage_bg.x+30
-				downImg.y=shareImage_bg.y
-				downImg.id="download"
-				downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
-				downImg.filename = List_array[i].DocumentFileName
-				tempGroup:insert(downImg)
+			downImg = display.newImageRect("res/assert/download.png",17,17)
+			downImg.x=shareImage_bg.x+30
+			downImg.y=shareImage_bg.y
+			downImg.id="download"
+			downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[i].FilePath
+			downImg.filename = List_array[i].DocumentFileName
+			tempGroup:insert(downImg)
 
-				downImg:addEventListener("touch",listTouch)
-				downImg_bg:addEventListener("touch",listTouch)
+			downImg:addEventListener("touch",listTouch)
+			downImg_bg:addEventListener("touch",listTouch)
 
-				else
+		else
 
-				seperate_imagebg.width = seperate_imagebg.contentWidth/2
-				seperate_imagebg.x=image_bg.x-image_bg.contentWidth/2+ 112
-				shareImage_bg.x=seperate_imagebg.x+seperate_imagebg.contentWidth/2
-				shareImage_bg.x=seperate_imagebg.x+seperate_imagebg.contentWidth/2
-				shareImage.x=shareImage_bg.x+2
-				shareImage.y=shareImage_bg.y
+			seperate_imagebg.width = seperate_imagebg.contentWidth/2
+			seperate_imagebg.x=image_bg.x-image_bg.contentWidth/2+ 112
+			shareImage_bg.x=seperate_imagebg.x+seperate_imagebg.contentWidth/2
+			shareImage_bg.x=seperate_imagebg.x+seperate_imagebg.contentWidth/2
+			shareImage.x=shareImage_bg.x+2
+			shareImage.y=shareImage_bg.y
 
-				end
+		end
 
-				shareImage:addEventListener("touch",listTouch)
-			    shareImage_bg:addEventListener("touch",listTouch)
+		shareImage:addEventListener("touch",listTouch)
+		shareImage_bg:addEventListener("touch",listTouch)
 
-    ResourceList_scrollview:insert(tempGroup)
+		ResourceList_scrollview:insert(tempGroup)
 
- end
+	end
 
 
 end
@@ -684,174 +684,174 @@ local function listPosition_change( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 
-		elseif ( event.phase == "moved" ) then
-			local dy = math.abs( ( event.y - event.yStart ) )
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
 
-			if ( dy > 10 ) then
-				display.getCurrentStage():setFocus( nil )
-				ResourceList_scrollview:takeFocus( event )
-			end
-		elseif event.phase == "ended" then
+		if ( dy > 10 ) then
 			display.getCurrentStage():setFocus( nil )
+			ResourceList_scrollview:takeFocus( event )
+		end
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 
-				local function action()
+		local function action()
 
-					if optionValue == "list" then
+			if optionValue == "list" then
 
-							for j=1,#resourceGridArray do 
-							if resourceGridArray[j] then resourceGridArray[j]:removeSelf();resourceGridArray[j] = nil	end
-							end
+				for j=1,#resourceGridArray do 
+					if resourceGridArray[j] then resourceGridArray[j]:removeSelf();resourceGridArray[j] = nil	end
+				end
 
-							Document_Lib_list:deleteAllRows()
+				Document_Lib_list:deleteAllRows()
 
-							Document_Lib_list:toFront()
+				Document_Lib_list:toFront()
 
-							for i = 1, #List_array do
+				for i = 1, #List_array do
 						    -- Insert a row into the tableView
 						    Document_Lib_list:insertRow{ rowHeight = 45,rowColor = 
 						    {
-						    default = { 1, 1, 1, 0 },
-						    over={ 1, 0.5, 0, 0 },
+						    	default = { 1, 1, 1, 0 },
+						    	over={ 1, 0.5, 0, 0 },
 
-						    }}
-		end
+						    	}}
+						    end
 
-					else    
+						else    
 
-						    ResourceList_scrollview:toFront()
+							ResourceList_scrollview:toFront()
 
 							Document_Lib_list:deleteAllRows()
 
 							ResourceGrid_list(List_array)		
 
+						end
+					end
+
+					if event.target.id == "bg" then
+
+					elseif event.target.id == "list" then
+						changeMenuGroup.isVisible=false
+						optionValue="list"
+						action()
+
+					elseif event.target.id == "grid" then
+						changeMenuGroup.isVisible=false
+						optionValue="grid"
+						action()
+
 					end
 				end
+				
 
-			if event.target.id == "bg" then
+				return true
+			end
 
-			elseif event.target.id == "list" then
-				changeMenuGroup.isVisible=false
-				optionValue="list"
-				action()
 
-			elseif event.target.id == "grid" then
-				changeMenuGroup.isVisible=false
-				optionValue="grid"
-				action()
+			local function onTimer ( event )
+
+				print( "event time completion" )
+
+				BackFlag = false
 
 			end
-		end
-	
-
-return true
-end
 
 
-local function onTimer ( event )
+			local function onKeyEvent( event )
 
-	print( "event time completion" )
+				local phase = event.phase
+				local keyName = event.keyName
 
-	BackFlag = false
+				if phase == "up" then
 
-end
+					if keyName=="back" then
 
+						if BackFlag == false then
 
-local function onKeyEvent( event )
+							Utils.SnackBar(ChatPage.PressAgain)
 
-        local phase = event.phase
-        local keyName = event.keyName
+							BackFlag = true
 
-        if phase == "up" then
+							timer.performWithDelay( 3000, onTimer )
 
-        if keyName=="back" then
+							return true
 
-        	if BackFlag == false then
+						elseif BackFlag == true then
 
-        		Utils.SnackBar(ChatPage.PressAgain)
+							os.exit() 
 
-        		BackFlag = true
+						end
+						
+					end
 
-        		timer.performWithDelay( 3000, onTimer )
+				end
 
-                return true
-
-            elseif BackFlag == true then
-
-			 os.exit() 
-
-            end
-            
-        end
-
-    end
-
-        return false
- end
+				return false
+			end
 
 
-function scene:create( event )
+			function scene:create( event )
 
-	local sceneGroup = self.view
+				local sceneGroup = self.view
 
-	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
-	Background.x=W/2;Background.y=H/2
+				Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+				Background.x=W/2;Background.y=H/2
 
-	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
-	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+				tabBar.y=tabBar.contentHeight/2
+				tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
-	menuBtn.anchorX=0
-	menuBtn.x=10;menuBtn.y=20;
+				menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
+				menuBtn.anchorX=0
+				menuBtn.x=10;menuBtn.y=20;
 
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-	BgText.anchorX=0
+				BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
+				BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
+				BgText.anchorX=0
 
-	title_bg = display.newRect(sceneGroup,0,0,W,30)
-	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+				title_bg = display.newRect(sceneGroup,0,0,W,30)
+				title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+				title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-	title = display.newText(sceneGroup,ResourceLibrary.PageTitle,0,0,native.systemFont,18)
-	title.anchorX = 0
-	title.x=5;title.y = title_bg.y
-	title:setFillColor(0)
+				title = display.newText(sceneGroup,ResourceLibrary.PageTitle,0,0,native.systemFont,18)
+				title.anchorX = 0
+				title.x=5;title.y = title_bg.y
+				title:setFillColor(0)
 
-	changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
-	changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10
-	changeList_order_icon.anchorY=0
+				changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
+				changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10
+				changeList_order_icon.anchorY=0
 
-	changeList_order_touch = display.newRect(sceneGroup,changeList_order_icon.x,changeList_order_icon.y+15,35,35)
-	changeList_order_touch.alpha=0.01
-	changeList_order_touch:addEventListener("touch",changeListmenuTouch)
+				changeList_order_touch = display.newRect(sceneGroup,changeList_order_icon.x,changeList_order_icon.y+15,35,35)
+				changeList_order_touch.alpha=0.01
+				changeList_order_touch:addEventListener("touch",changeListmenuTouch)
 
-	ResourceList_scrollview = widget.newScrollView
-	{
-	top = RecentTab_Topvalue,
-	left = 0,
-	width = W,
-	height =H-RecentTab_Topvalue,
-	hideBackground = true,
-	isBounceEnabled=false,
-	bottomPadding = 10,
+				ResourceList_scrollview = widget.newScrollView
+				{
+					top = RecentTab_Topvalue,
+					left = 0,
+					width = W,
+					height =H-RecentTab_Topvalue,
+					hideBackground = true,
+					isBounceEnabled=false,
+					bottomPadding = 10,
 	--horizontalScrollingDisabled = false,
 	--verticalScrollingDisabled = false,
-	}
+}
 
 
-    sceneGroup:insert(ResourceList_scrollview)
+sceneGroup:insert(ResourceList_scrollview)
 
-	listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
-	listTouch_bg.alpha=0.01
-	listTouch_bg.id = "hide"
+listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
+listTouch_bg.alpha=0.01
+listTouch_bg.id = "hide"
 
-	listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+65,100,80)
-	listBg.strokeWidth = 1
-	listBg.id = "show"
-	listBg:setStrokeColor( 0, 0, 0 , 0.3)
-	listBg.id="bg"
+listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+65,100,80)
+listBg.strokeWidth = 1
+listBg.id = "show"
+listBg:setStrokeColor( 0, 0, 0 , 0.3)
+listBg.id="bg"
 
-	list_Bylist_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y-20, 100, 25 )
+list_Bylist_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y-20, 100, 25 )
 	--list_Bylist_bg:setFillColor( 0,0,0,0.4 )
 	list_Bylist_bg.alpha=0.01
 	list_Bylist_bg.id="list"
@@ -862,7 +862,7 @@ function scene:create( event )
 	list_Bylist:setFillColor(Utils.convertHexToRGB(color.Black))
 	list_Bylist.id="list"
 
-    list_ByGrid_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y+20, 100, 25 )
+	list_ByGrid_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y+20, 100, 25 )
 	list_ByGrid_bg.alpha=0.01
 	--list_ByGrid_bg:setFillColor(0,0,0,0.3)
 	list_ByGrid_bg.id="grid"
@@ -894,18 +894,18 @@ function scene:show( event )
 	if phase == "will" then
 
 
-		elseif phase == "did" then
+	elseif phase == "did" then
 
-			composer.removeHidden()
+		composer.removeHidden()
 
-			ga.enterScene("Resource Library")
+		ga.enterScene("Resource Library")
 
-			function get_allDocument(response)
+		function get_allDocument(response)
 
-				List_array=response
+			List_array=response
 
-				Document_Lib_list = widget.newTableView
-				{
+			Document_Lib_list = widget.newTableView
+			{
 				left = -10,
 				top = 75,
 				height = H-75,
@@ -920,33 +920,33 @@ function scene:show( event )
 		sceneGroup:insert(Document_Lib_list)
 
 		if #List_array == 0  then
-				NoEvent = display.newText( sceneGroup, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
-				NoEvent.x=W/2;NoEvent.y=H/2
-				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+			NoEvent = display.newText( sceneGroup, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
+			NoEvent.x=W/2;NoEvent.y=H/2
+			NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 		end
 
 		for i = 1, #List_array do
 		    -- Insert a row into the tableView
 		    Document_Lib_list:insertRow{ rowHeight = 45,rowColor = 
 		    {
-		    default = { 1, 1, 1, 0 },
-		    over={ 1, 0.5, 0, 0 },
+		    	default = { 1, 1, 1, 0 },
+		    	over={ 1, 0.5, 0, 0 },
 
-		    }}
+		    	}}
+		    end
+
 		end
 
-	end
+		List_array = Webservice.GET_ALL_MYUNITAPP_DOCUMENT(get_allDocument)
 
-	List_array = Webservice.GET_ALL_MYUNITAPP_DOCUMENT(get_allDocument)
+		menuBtn:addEventListener("touch",menuTouch)
+		BgText:addEventListener("touch",menuTouch)
 
-	menuBtn:addEventListener("touch",menuTouch)
-	BgText:addEventListener("touch",menuTouch)
+		Runtime:addEventListener( "key", onKeyEvent )
 
-	Runtime:addEventListener( "key", onKeyEvent )
+	end	
 
-end	
-
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
@@ -958,29 +958,29 @@ function scene:hide( event )
 	if event.phase == "will" then
 
 
-		elseif phase == "did" then
-			menuBtn:removeEventListener("touch",menuTouch)
-			BgText:removeEventListener("touch",menuTouch)
+	elseif phase == "did" then
+		menuBtn:removeEventListener("touch",menuTouch)
+		BgText:removeEventListener("touch",menuTouch)
 
-			Runtime:removeEventListener( "key", onKeyEvent )
+		Runtime:removeEventListener( "key", onKeyEvent )
 
-		end	
+	end	
 
-	end
-
-
-	function scene:destroy( event )
-		local sceneGroup = self.view
+end
 
 
-
-	end
-
-
-	scene:addEventListener( "create", scene )
-	scene:addEventListener( "show", scene )
-	scene:addEventListener( "hide", scene )
-	scene:addEventListener( "destroy", scene )
+function scene:destroy( event )
+	local sceneGroup = self.view
 
 
-	return scene
+
+end
+
+
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
+
+
+return scene

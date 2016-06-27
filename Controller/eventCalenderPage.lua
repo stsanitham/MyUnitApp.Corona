@@ -52,9 +52,9 @@ local db = sqlite3.open( path )
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
-		langid = row.LanguageId
-		countryid = row.CountryId
-		
+	langid = row.LanguageId
+	countryid = row.CountryId
+	
 
 end
 
@@ -93,12 +93,12 @@ local years = {}
 
 -- Populate the "days" table
 for d = 1, 31 do
-    days[d] = d
+	days[d] = d
 end
 
 -- Populate the "years" table
 for y = 1, 48 do
-    years[y] = (os.date( "%Y" )-5) + y
+	years[y] = (os.date( "%Y" )-5) + y
 end
 
 -- Configure the picker wheel columns
@@ -106,24 +106,24 @@ local columnData =
 {
     -- Months
     { 
-        align = "right",
-        width = 140,
-        startIndex =tonumber(os.date( "%m" )),
-        labels = monthArray
+    	align = "right",
+    	width = 140,
+    	startIndex =tonumber(os.date( "%m" )),
+    	labels = monthArray
     },
     -- Days
     {
-        align = "center",
-        width = 60,
-        startIndex = tonumber(os.date( "%d" )),
-        labels = days
+    	align = "center",
+    	width = 60,
+    	startIndex = tonumber(os.date( "%d" )),
+    	labels = days
     },
     -- Years
     {
-        align = "center",
-        width = 80,
-        startIndex = 5,
-        labels = years
+    	align = "center",
+    	width = 80,
+    	startIndex = 5,
+    	labels = years
     }
 }
 
@@ -144,38 +144,38 @@ local function onTimer ( event )
 end
 
 
-	local function onKeyEvent( event )
+local function onKeyEvent( event )
 
-        local phase = event.phase
-        local keyName = event.keyName
+	local phase = event.phase
+	local keyName = event.keyName
 
-        if phase == "up" then
+	if phase == "up" then
 
-        if keyName=="back" then
+		if keyName=="back" then
 
 
-        	if BackFlag == false then
+			if BackFlag == false then
 
-        		Utils.SnackBar(ChatPage.PressAgain)
+				Utils.SnackBar(ChatPage.PressAgain)
 
-        		BackFlag = true
+				BackFlag = true
 
-        		timer.performWithDelay( 2000, onTimer )
+				timer.performWithDelay( 2000, onTimer )
 
-                return true
+				return true
 
-            elseif BackFlag == true then
+			elseif BackFlag == true then
 
-			 os.exit() 
+				os.exit() 
 
-            end
-            
-        end
+			end
+			
+		end
 
-    end
+	end
 
-        return false
- end
+	return false
+end
 
 
 
@@ -185,28 +185,28 @@ local function listTouch( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 
-		elseif ( event.phase == "moved" ) then
-			local dy = math.abs( ( event.y - event.yStart ) )
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
 
-			if ( dy > 10 ) then
-				display.getCurrentStage():setFocus( nil )
-				scrollView:takeFocus( event )
-			end
-
-			elseif event.phase == "ended" then
-			search.text = ""
-			NoEvent.text = EventCalender.NoEvent
-			native.setKeyboardFocus( nil )
+		if ( dy > 10 ) then
 			display.getCurrentStage():setFocus( nil )
+			scrollView:takeFocus( event )
+		end
 
-			if event.target.id == "addEvent" then
+		elseif event.phase == "ended" then
+		search.text = ""
+		NoEvent.text = EventCalender.NoEvent
+		native.setKeyboardFocus( nil )
+		display.getCurrentStage():setFocus( nil )
+
+		if event.target.id == "addEvent" then
 
 
-				local options = {
-					isModal = true,
-					effect = "slideLeft",
-					time = 10,
-					params = {
+			local options = {
+				isModal = true,
+				effect = "slideLeft",
+				time = 10,
+				params = {
 					details = event.target.value,
 					calendarId = CalendarId,
 					calendarName = CalendarName,
@@ -220,13 +220,13 @@ local function listTouch( event )
 			composer.showOverlay( "Controller.addEventPage", options )
 
 
-			else
+		else
 
-					local options = {
-					isModal = true,
-					effect = "slideLeft",
-					time = 500,
-					params = {
+			local options = {
+				isModal = true,
+				effect = "slideLeft",
+				time = 500,
+				params = {
 					details = event.target.value
 				}
 			}
@@ -237,12 +237,12 @@ local function listTouch( event )
 
 			composer.showOverlay( "Controller.eventCal_DetailPage", options )
 
-			end
+		end
 
 
-end
+	end
 
-return true
+	return true
 end
 
 
@@ -274,13 +274,13 @@ local function display_calenderList(response)
 if headerGroup then
 
 	for j=#headerGroup, 1, -1 do 
-				display.remove(headerGroup[#headerGroup])
-				headerGroup[#headerGroup] = nil
+		display.remove(headerGroup[#headerGroup])
+		headerGroup[#headerGroup] = nil
 	end
 
 end
 
-		
+
 
 
 event_groupArray[#event_groupArray+1] = display.newGroup()
@@ -290,7 +290,7 @@ local tempGroup = event_groupArray[#event_groupArray]
 local bgheight = 45
 --os.date("%Y-%m-%dT%H:%m:%S")
 
-      
+
 local timeGMT = Utils.makeTimeStamp( response.date )
 
 
@@ -320,7 +320,7 @@ if ParentShow == true then
 	if(event_groupArray[#event_groupArray-1]) ~= nil then
 	--here
 	tempHeight = event_groupArray[#event_groupArray-1][1].y + event_groupArray[#event_groupArray-1][1].height-2
-	end
+end
 
 HeaderDetails[#HeaderDetails+1] = {}
 HeaderDetails[#HeaderDetails].Position = tempHeight
@@ -347,7 +347,7 @@ Utils.CssforTextView(parent_centerText,sp_subHeader)
 
 
 local month = Utils.GetMonth(os.date( "%b" , timeGMT ))
- 
+
 if CommonWords.language == "Canada English" then
 
 	parent_centerText.text = os.date( " %d " , timeGMT )..month..os.date( ", %Y" , timeGMT )
@@ -387,7 +387,7 @@ if tempHeight == 0 then
 	Utils.CssforTextView(Header_parent_centerText,sp_subHeader)
 
 	local month = Utils.GetMonth(os.date( "%b" , timeGMT ))
- 
+	
 	if CommonWords.language == "Canada English" then
 
 		Header_parent_centerText.text = os.date( " %d " , timeGMT )..month..os.date( ", %Y" , timeGMT )
@@ -453,105 +453,105 @@ end
 local function createEventlist(responevalue,timeValue)
 
 
-DateWise_response=responevalue
+	DateWise_response=responevalue
 
-		local function onTimer( event )
-			   weekViewTouchFlag=false
+	local function onTimer( event )
+		weekViewTouchFlag=false
+	end
+
+	weekswipeTimer = timer.performWithDelay( 600, onTimer )
+	
+	ProcessingCount =0 
+
+	if event_groupArray then 
+		for j=#event_groupArray, 1, -1 do 
+			display.remove(event_groupArray[#event_groupArray])
+			event_groupArray[#event_groupArray] = nil
 		end
+	end
 
-		weekswipeTimer = timer.performWithDelay( 600, onTimer )
-			
-		ProcessingCount =0 
+	
 
-		if event_groupArray then 
-			for j=#event_groupArray, 1, -1 do 
-				display.remove(event_groupArray[#event_groupArray])
-				event_groupArray[#event_groupArray] = nil
-			end
-		end
+	if  DateWise_response == nil then
 
-		
+		NoEvent.isVisible=true
 
-		if  DateWise_response == nil then
+		return false
+	end
 
-			NoEvent.isVisible=true
+	
 
-			return false
-		end
+	if #DateWise_response == 0 then
 
-		
-
-		if #DateWise_response == 0 then
-
-			NoEvent.isVisible=true
+		NoEvent.isVisible=true
 
 
-			return false
-		else
+		return false
+	else
 
-		end
+	end
 
 
 
-			
+	
 
 
 
-			Processingdate = dateSplit(DateWise_response[1].date)
+	Processingdate = dateSplit(DateWise_response[1].date)
 
 
 
-			for j=#HeaderDetails, 1, -1 do 
-				HeaderDetails[#HeaderDetails] = nil
-			end
+	for j=#HeaderDetails, 1, -1 do 
+		HeaderDetails[#HeaderDetails] = nil
+	end
 
 
-		for i = 1, #DateWise_response do
+	for i = 1, #DateWise_response do
 
 
-			date = dateSplit(DateWise_response[i].date)
+		date = dateSplit(DateWise_response[i].date)
 
 
-			local function eventCalen_display_process()
+		local function eventCalen_display_process()
 
 
-				if Processingdate == date then
+			if Processingdate == date then
 
-					processCount=0
+				processCount=0
 
-					display_calenderList(DateWise_response[i])
+				display_calenderList(DateWise_response[i])
+
+			else
+
+				
+				ProcessingCount = ProcessingCount+1
+
+				if ProcessingCount_total >= ProcessingCount then
+
+
+					ParentShow = true
+
+
+					timeValue.day=timeValue.day+1
+
+					Processingdate = dateSplit(DateWise_response[i].date)
+
+					eventCalen_display_process()
 
 				else
-
-			
-					ProcessingCount = ProcessingCount+1
-
-					if ProcessingCount_total >= ProcessingCount then
-
-
-						ParentShow = true
-
-
-						timeValue.day=timeValue.day+1
-
-						Processingdate = dateSplit(DateWise_response[i].date)
-
-						eventCalen_display_process()
-
-					else
-						print("finish")
-						
-					end
-
+					print("finish")
+					
 				end
+
 			end
-
-			eventCalen_display_process()
-
 		end
 
+		eventCalen_display_process()
 
-		scrollView:scrollTo( "top",{ time=200 } )
+	end
+
+
+	scrollView:scrollTo( "top",{ time=200 } )
 
 
 end
@@ -561,109 +561,109 @@ local function searchEventlist(DateWise_response,timeValue,searchText)
 
 
 
-HaveField = false
+	HaveField = false
 
 --DateWise_response=response
 
-				
-		ProcessingCount =0 
 
-		for j=#event_groupArray, 1, -1 do 
-			display.remove(event_groupArray[#event_groupArray])
-			event_groupArray[#event_groupArray] = nil
-		end
+ProcessingCount =0 
 
-		
-
-		if  DateWise_response == nil then
-
-			NoEvent.isVisible=true
-
-			return false
-		end
-
-		if #DateWise_response == 0 then
-
-			NoEvent.isVisible=true
+for j=#event_groupArray, 1, -1 do 
+	display.remove(event_groupArray[#event_groupArray])
+	event_groupArray[#event_groupArray] = nil
+end
 
 
-			return false
-		else
 
-		end
+if  DateWise_response == nil then
 
-		
-		
-	
+	NoEvent.isVisible=true
 
-		for i = 1, #DateWise_response do
+	return false
+end
 
-			local parentHave = false
+if #DateWise_response == 0 then
 
-			date = dateSplit(DateWise_response[i].date)
-
-			local timeGMT = Utils.makeTimeStamp( DateWise_response[i].date )
-
-			if string.find( os.date( "%B %d, %Y" , timeGMT ):upper( ), searchText:upper( )) ~= nil then
-
-				parentHave = true
-
-			end
-
-			local function eventCalen_display_process()
+	NoEvent.isVisible=true
 
 
-				if Processingdate == date then
+	return false
+else
 
-					processCount=0
+end
 
-						
-						if parentHave == true then
 
-							HaveField = true
 
-							display_calenderList(DateWise_response[i])
 
-						else
 
-							if parentHave then
+for i = 1, #DateWise_response do
 
-								HaveField = true
+	local parentHave = false
 
-								display_calenderList(DateWise_response[i])
+	date = dateSplit(DateWise_response[i].date)
 
-							else
+	local timeGMT = Utils.makeTimeStamp( DateWise_response[i].date )
 
-								if string.find( DateWise_response[i].title:upper( ), searchText:upper( )) ~= nil then
+	if string.find( os.date( "%B %d, %Y" , timeGMT ):upper( ), searchText:upper( )) ~= nil then
 
-									HaveField = true
+		parentHave = true
 
-									display_calenderList(DateWise_response[i])
-																		
-								end
+	end
 
-							
+	local function eventCalen_display_process()
 
-							end
-							
 
-						end
+		if Processingdate == date then
 
+			processCount=0
+
+			
+			if parentHave == true then
+
+				HaveField = true
+
+				display_calenderList(DateWise_response[i])
+
+			else
+
+				if parentHave then
+
+					HaveField = true
+
+					display_calenderList(DateWise_response[i])
 
 				else
 
+					if string.find( DateWise_response[i].title:upper( ), searchText:upper( )) ~= nil then
+
+						HaveField = true
+
+						display_calenderList(DateWise_response[i])
+						
+					end
+
 					
-					ProcessingCount = ProcessingCount+1
 
-					if ProcessingCount_total >= ProcessingCount then
+				end
+				
+
+			end
 
 
-						ParentShow = true
+		else
+
+			
+			ProcessingCount = ProcessingCount+1
+
+			if ProcessingCount_total >= ProcessingCount then
 
 
-						timeValue.day=timeValue.day+1
+				ParentShow = true
 
-						Processingdate = dateSplit(DateWise_response[i].date)
+
+				timeValue.day=timeValue.day+1
+
+				Processingdate = dateSplit(DateWise_response[i].date)
 
 						--print(Processingdate,ProcessingCount,timeValue.day)
 
@@ -683,44 +683,44 @@ HaveField = false
 
 		end
 
-			if HaveField == false then
+		if HaveField == false then
 
-				NoEvent.isVisible=true
+			NoEvent.isVisible=true
 
-				NoEvent.text = EventCalender.NoRecord
+			NoEvent.text = EventCalender.NoRecord
 
 
-			else
-				NoEvent.text = EventCalender.NoEvent
+		else
+			NoEvent.text = EventCalender.NoEvent
 
-				NoEvent.isVisible=false
-			end
+			NoEvent.isVisible=false
+		end
 
 		scrollView:scrollTo( "top",{ time=200 } )
 
 
-end
+	end
 
 
-local function eventList( timeValue )
+	local function eventList( timeValue )
 
-	NoEvent.isVisible=false
-
-
-	function get_TicklerEvents(response)
-
-		createEventlist(response,timeValue)
+		NoEvent.isVisible=false
 
 
+		function get_TicklerEvents(response)
+
+			createEventlist(response,timeValue)
+
+
+
+		end
+
+		Webservice.Get_TicklerEvents(CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic,get_TicklerEvents)
 
 	end
 
-	Webservice.Get_TicklerEvents(CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic,get_TicklerEvents)
-
-end
-
-local function dayTouch(event)
-	if event.phase == "ended" then
+	local function dayTouch(event)
+		if event.phase == "ended" then
 		search.text = ""
 		NoEvent.text = EventCalender.NoEvent
 		native.setKeyboardFocus( nil )
@@ -759,9 +759,9 @@ local function dayTouch(event)
 
 		
 
-	
+		
 	end
-return true
+	return true
 
 end
 
@@ -769,28 +769,28 @@ local function creatWeek( weekfirstDay,flagValue )
 	--todaydate =  os.date( "%m/%d/%Y" , os.time( t ) )
 
 	for j=week.numChildren, 1, -1 do 
-    display.remove(week[week.numChildren])
-    week[week.numChildren] = nil
-end 
+		display.remove(week[week.numChildren])
+		week[week.numChildren] = nil
+	end 
 
 
-weekViewGroup:insert( week )
+	weekViewGroup:insert( week )
 
-local month = Utils.GetMonth(os.date( "%b" , os.time( weekfirstDay ) ))
+	local month = Utils.GetMonth(os.date( "%b" , os.time( weekfirstDay ) ))
 
-if CommonWords.language == "Canada English" then
+	if CommonWords.language == "Canada English" then
 
-	weekView_header.text = os.date( " %d " , os.time( weekfirstDay )  )..month..os.date( ", %Y" , os.time( weekfirstDay )  ).." - "
+		weekView_header.text = os.date( " %d " , os.time( weekfirstDay )  )..month..os.date( ", %Y" , os.time( weekfirstDay )  ).." - "
 
-else
+	else
 
-	weekView_header.text = month..os.date( " %d, %Y" , os.time( weekfirstDay ) ).." - "
+		weekView_header.text = month..os.date( " %d, %Y" , os.time( weekfirstDay ) ).." - "
 
-end
+	end
 
 
 
-weekfirstDay.day = weekfirstDay.day - 1
+	weekfirstDay.day = weekfirstDay.day - 1
 	
 	weekStartX = weekView_leftArrow.x
 
@@ -849,7 +849,7 @@ weekfirstDay.day = weekfirstDay.day - 1
 
 		Week_Group:addEventListener( "touch", dayTouch )
 
-	
+		
 		week:insert( Week_Group )
 	end
 	weekfirstDay.day=weekfirstDay.day-7
@@ -861,10 +861,10 @@ weekfirstDay.day = weekfirstDay.day - 1
 end
 local function searchListener( event )
 
-    if ( event.phase == "began" ) then
+	if ( event.phase == "began" ) then
         -- user begins editing defaultField
 
-    elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+        elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
         search.text = ""
         NoEvent.text = EventCalender.NoEvent
@@ -873,17 +873,17 @@ local function searchListener( event )
     elseif ( event.phase == "editing" ) then
 
 
- 				local searchweektime = os.date( '*t' )
+    	local searchweektime = os.date( '*t' )
 
-				searchweektime.day = searchweektime.day - os.date( "%w" ) 
+    	searchweektime.day = searchweektime.day - os.date( "%w" ) 
 
-				searchweektime.day = searchweektime.day+(7*currentweek)
+    	searchweektime.day = searchweektime.day+(7*currentweek)
 
-				Processingdate = os.date( "%Y-%m-%d" , os.time( searchweektime ))
+    	Processingdate = os.date( "%Y-%m-%d" , os.time( searchweektime ))
 
-				ParentShow = true
+    	ParentShow = true
 
-    			searchEventlist(DateWise_response,searchweektime,event.text)
+    	searchEventlist(DateWise_response,searchweektime,event.text)
 
     end
 end
@@ -891,24 +891,24 @@ end
 
 local function calenderTouch( event )
 
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
+if event.phase == "began" then
+	display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
-		search.text = ""
-		NoEvent.text = EventCalender.NoEvent
-		native.setKeyboardFocus( nil )
-		if pickerGroup.isVisible == true then
-	
+	display.getCurrentStage():setFocus( nil )
+	search.text = ""
+	NoEvent.text = EventCalender.NoEvent
+	native.setKeyboardFocus( nil )
+	if pickerGroup.isVisible == true then
+		
 
-		else
-			pickerGroup:toFront()
-			pickerGroup.isVisible=true
-		end
-
+	else
+		pickerGroup:toFront()
+		pickerGroup.isVisible=true
 	end
 
-	return true
+end
+
+return true
 
 end 
 
@@ -916,7 +916,7 @@ local function todayAction( event )
 
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 		search.text = ""
 		NoEvent.text = EventCalender.NoEvent
@@ -932,18 +932,18 @@ local function todayAction( event )
 
 		NoEvent.isVisible=false
 
-	local function get_GetUpComingEvents( response )
+		local function get_GetUpComingEvents( response )
 
 
-		local Upcoming = os.date( '*t' )
-		Processingdate = dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( Upcoming )))
-		ParentShow=true
-		weekViewTouchFlag = true
-		createEventlist(response,Upcoming)
-	end
+			local Upcoming = os.date( '*t' )
+			Processingdate = dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( Upcoming )))
+			ParentShow=true
+			weekViewTouchFlag = true
+			createEventlist(response,Upcoming)
+		end
 
 
-	Webservice.Get_GetUpComingEvents(get_GetUpComingEvents)
+		Webservice.Get_GetUpComingEvents(get_GetUpComingEvents)
 
 	end
 
@@ -959,7 +959,7 @@ local function weekViewSwipe( event )
 
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 		search.text = ""
 		NoEvent.text = EventCalender.NoEvent
@@ -967,28 +967,28 @@ local function weekViewSwipe( event )
 
 		if weekViewTouchFlag == false then
 
-					if event.target.id  == "leftSwipe" then
+			if event.target.id  == "leftSwipe" then
 
 
-						if currentweek <= 1 then
-							weekView_leftArrow.alpha = 0.5
-						else
-							weekView_leftArrow.alpha = 1
-						end
+				if currentweek <= 1 then
+					weekView_leftArrow.alpha = 0.5
+				else
+					weekView_leftArrow.alpha = 1
+				end
 
-						if currentweek >= 1 then
+				if currentweek >= 1 then
 
 
-		
-						weekViewTouchFlag = true
+					
+					weekViewTouchFlag = true
 
-						local weekViewSwipevalue_left = os.date( '*t' )
+					local weekViewSwipevalue_left = os.date( '*t' )
 
-						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day - os.date( "%w" ) 
+					weekViewSwipevalue_left.day = weekViewSwipevalue_left.day - os.date( "%w" ) 
 
-						currentweek = currentweek - 1 
+					currentweek = currentweek - 1 
 
-						weekViewSwipevalue_left.day = weekViewSwipevalue_left.day+(7*currentweek)
+					weekViewSwipevalue_left.day = weekViewSwipevalue_left.day+(7*currentweek)
 
 						--weekViewSwipevalue_left.day = weekViewSwipevalue_left.day-7
 
@@ -1004,43 +1004,43 @@ local function weekViewSwipe( event )
 
 						ParentShow=true
 
-				
-				
+						
+						
 						creatWeek(weekViewSwipevalue_left,true)
 
 						
-							
+						
 
-						end
+					end
 					
 
-					elseif event.target.id == "rightSwipe" then
+				elseif event.target.id == "rightSwipe" then
 
-						weekView_leftArrow.alpha = 1
-						
-						weekViewTouchFlag = true
+					weekView_leftArrow.alpha = 1
+					
+					weekViewTouchFlag = true
 
-						local weekViewSwipevalue = os.date( '*t' )
+					local weekViewSwipevalue = os.date( '*t' )
 
-						weekViewSwipevalue.day = weekViewSwipevalue.day - os.date( "%w" ) 
+					weekViewSwipevalue.day = weekViewSwipevalue.day - os.date( "%w" ) 
 
-						currentweek = currentweek +1 
+					currentweek = currentweek +1 
 
-						weekViewSwipevalue.day = weekViewSwipevalue.day+(7*currentweek)
+					weekViewSwipevalue.day = weekViewSwipevalue.day+(7*currentweek)
 
 
 
-						startdate = os.date( "%m/%d/%Y" , os.time( weekViewSwipevalue )).." 12:00:00 AM"
+					startdate = os.date( "%m/%d/%Y" , os.time( weekViewSwipevalue )).." 12:00:00 AM"
 
-						weekViewSwipevalue.day = weekViewSwipevalue.day+6
+					weekViewSwipevalue.day = weekViewSwipevalue.day+6
 
-						enddate = os.date( "%m/%d/%Y" , os.time( weekViewSwipevalue )).." 11:59:59 PM"
+					enddate = os.date( "%m/%d/%Y" , os.time( weekViewSwipevalue )).." 11:59:59 PM"
 
-						weekViewSwipevalue.day = weekViewSwipevalue.day-6
+					weekViewSwipevalue.day = weekViewSwipevalue.day-6
 
-						Processingdate = dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue )))
+					Processingdate = dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( weekViewSwipevalue )))
 
-						ParentShow=true
+					ParentShow=true
 
 						--eventList(weekViewSwipevalue)
 
@@ -1050,28 +1050,28 @@ local function weekViewSwipe( event )
 
 					end
 
+				end
+
+
 			end
 
+			return true
 
-	end
-
-	return true
-
-end
+		end
 
 
-local function calenderAction( event )
+		local function calenderAction( event )
 
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
-		search.text = ""
-		NoEvent.text = EventCalender.NoEvent
-		native.setKeyboardFocus( nil )
+		if event.phase == "began" then
+			display.getCurrentStage():setFocus( event.target )
+			elseif event.phase == "ended" then
+			display.getCurrentStage():setFocus( nil )
+			search.text = ""
+			NoEvent.text = EventCalender.NoEvent
+			native.setKeyboardFocus( nil )
 			pickerGroup.isVisible=false
 
-		local values = pickerWheel:getValues()
+			local values = pickerWheel:getValues()
 
 		-- Get the value for each column in the wheel (by column index)
 		local selectedMonth = values[1].value
@@ -1091,9 +1091,9 @@ local function calenderAction( event )
 		end
 
 		if startdate ~= selectedMonth.."/"..selectedDay.."/"..selectedYear.." 12:00:00 AM" then
-				startdate =  selectedMonth.."/"..selectedDay.."/"..selectedYear.." 12:00:00 AM"
-				enddate = selectedMonth.."/"..selectedDay.."/"..selectedYear.." 11:59:59 PM"
-				Processingdate = selectedYear.."-"..selectedMonth.."-"..selectedDay
+			startdate =  selectedMonth.."/"..selectedDay.."/"..selectedYear.." 12:00:00 AM"
+			enddate = selectedMonth.."/"..selectedDay.."/"..selectedYear.." 11:59:59 PM"
+			Processingdate = selectedYear.."-"..selectedMonth.."-"..selectedDay
 				--dateSplit(os.date( "%Y-%m-%dT%H:%m:%S" , os.time( t )))
 				ParentShow=true
 
@@ -1103,73 +1103,73 @@ local function calenderAction( event )
 
 				eventList(temp)	
 
+			end
+
 		end
 
+		return true
+
+	end 
+
+	local function unrequire( m )
+		package.loaded[m] = nil
+		_G[m] = nil
+		package.loaded["res.value.string_es_Us"] = nil
+
+		return true
 	end
-
-	return true
-
-end 
-
-local function unrequire( m )
- package.loaded[m] = nil
-    _G[m] = nil
- 	package.loaded["res.value.string_es_Us"] = nil
-
-  return true
-end
 
 
 	local function EventCalender_scrollListener( event )
 
-		    local phase = event.phase
-		    if ( phase == "began" ) then 
-		    elseif ( phase == "moved" ) then
-			
-				headerGroup.alpha=1
+	local phase = event.phase
+	if ( phase == "began" ) then 
+	elseif ( phase == "moved" ) then
+		
+		headerGroup.alpha=1
 		
 
-				for i=1,#HeaderDetails do
+		for i=1,#HeaderDetails do
 
-					if HeaderDetails[i-1] ~= nil then
+			if HeaderDetails[i-1] ~= nil then
 
-					local xView, yView = scrollView:getContentPosition()
+				local xView, yView = scrollView:getContentPosition()
 
-					if -(yView) < tonumber(HeaderDetails[i].Position) then
+				if -(yView) < tonumber(HeaderDetails[i].Position) then
 
-						
+					
 
-							Header_parent_leftText.text = Utils.GetWeek(os.date( "%A" , HeaderDetails[i-1].Time ))
+					Header_parent_leftText.text = Utils.GetWeek(os.date( "%A" , HeaderDetails[i-1].Time ))
 
-							Header_parent_centerText.text = os.date( "%b %d, %Y" , HeaderDetails[i-1].Time )
+					Header_parent_centerText.text = os.date( "%b %d, %Y" , HeaderDetails[i-1].Time )
 
 
-						return true
-
-					end
+					return true
 
 				end
 
-				end
+			end
+
+		end
 
 
-		    elseif ( phase == "ended" ) then 
-		    end
+		elseif ( phase == "ended" ) then 
+	end
 
 		    -- In the event a scroll limit is reached...
 		    if ( event.limitReached ) then
-		        if ( event.direction == "up" ) then 
+		    	if ( event.direction == "up" ) then 
 
-		        	
-		        elseif ( event.direction == "down" ) then
+		    		
+		    	elseif ( event.direction == "down" ) then
 
-		        elseif ( event.direction == "left" ) then
-		        elseif ( event.direction == "right" ) then
-		        end
+		    	elseif ( event.direction == "left" ) then
+		    	elseif ( event.direction == "right" ) then
+		    	end
 		    end
 
 		    return true
-	end
+		end
 
 
 ------------------------------------------------------
@@ -1178,9 +1178,9 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-		MyUnitBuzzString = nil
+	MyUnitBuzzString = nil
 
-		openPage="eventCalenderPage"
+	openPage="eventCalenderPage"
 
 
 	--("res.value.string")
@@ -1274,22 +1274,22 @@ function scene:create( event )
 	calenderView_bg = display.newRect( sceneGroup, calenderView.x, calenderView.y, 35, 35 )
 	calenderView_bg.alpha=0.01
 
-sceneGroup:insert( pickerGroup )
-pickerGroup.isVisible=false
+	sceneGroup:insert( pickerGroup )
+	pickerGroup.isVisible=false
 	-- Create the widget
-pickerWheel = widget.newPickerWheel
-{
-    top = display.contentHeight - 222,
-    columns = columnData
-}
+	pickerWheel = widget.newPickerWheel
+	{
+		top = display.contentHeight - 222,
+		columns = columnData
+	}
 
-pickerGroup:insert(pickerWheel)
+	pickerGroup:insert(pickerWheel)
 
-picker_btnBg = display.newRect( pickerGroup, W/2, pickerWheel.y-pickerWheel.contentHeight/2-15, W, 30 )
+	picker_btnBg = display.newRect( pickerGroup, W/2, pickerWheel.y-pickerWheel.contentHeight/2-15, W, 30 )
 
-picker_Done = display.newText( pickerGroup, CommonWords.done, 0, 0, native.systemFont, 20 )
-picker_Done:setFillColor(Utils.convertHexToRGB(color.today_blue))
-picker_Done.x=picker_btnBg.x+100;picker_Done.y=picker_btnBg.y
+	picker_Done = display.newText( pickerGroup, CommonWords.done, 0, 0, native.systemFont, 20 )
+	picker_Done:setFillColor(Utils.convertHexToRGB(color.today_blue))
+	picker_Done.x=picker_btnBg.x+100;picker_Done.y=picker_btnBg.y
 
 
 
@@ -1300,31 +1300,31 @@ function scene:resumeGame(value)
 
 	if value == "back" then
 
-	Runtime:addEventListener( "key", onKeyEvent )
+		Runtime:addEventListener( "key", onKeyEvent )
 
-    search.isVisible=true
+		search.isVisible=true
 
-	
+		
 
 		local function waitTimer( event )
 			if openPage=="eventCalenderPage" then
 
 
-					local temp = os.date( '*t' )
-					temp.day = temp.day - os.date( "%w" ) 
-					weekViewTouchFlag=true
-					ParentShow=true
-					creatWeek(temp,true)
+			local temp = os.date( '*t' )
+			temp.day = temp.day - os.date( "%w" ) 
+			weekViewTouchFlag=true
+			ParentShow=true
+			creatWeek(temp,true)
 
-			end
 		end
-
-		timer.performWithDelay( 500, waitTimer )
-
-
 	end
 
-		
+	timer.performWithDelay( 500, waitTimer )
+
+
+end
+
+
 end
 
 
@@ -1333,35 +1333,35 @@ end
 function scene:resumeGame(value,EditArray)
 
 
-		
-    if value == "edit" then
+	
+	if value == "edit" then
 
 
-				local options = {
-					isModal = true,
-					effect = "slideLeft",
-					time = 100,
-					params = {
-					
-					Details = EditArray
+		local options = {
+			isModal = true,
+			effect = "slideLeft",
+			time = 100,
+			params = {
+				
+				Details = EditArray
 
-				}
 			}
+		}
 
 
 
-			composer.showOverlay( "Controller.addEventPage", options )
+		composer.showOverlay( "Controller.addEventPage", options )
 
 	elseif value == "details" then
 
-			local options = {
-					isModal = true,
-					effect = "slideLeft",
-					time = 10,
-					params = {
-					details = EditArray
-				}
+		local options = {
+			isModal = true,
+			effect = "slideLeft",
+			time = 10,
+			params = {
+				details = EditArray
 			}
+		}
 
 		composer.showOverlay( "Controller.eventCal_DetailPage", options )
 
@@ -1369,313 +1369,313 @@ function scene:resumeGame(value,EditArray)
 
 		Runtime:addEventListener( "key", onKeyEvent )
 
-    		search.isVisible=true
+		search.isVisible=true
 
 		local function waitTimer( event )
 			if openPage=="eventCalenderPage" then
 			
-					weekViewTouchFlag=true
-					ParentShow=true
-					creatWeek(os.date('*t',makeTimeStamp(startdate)),true)
+			weekViewTouchFlag=true
+			ParentShow=true
+			creatWeek(os.date('*t',makeTimeStamp(startdate)),true)
 
 
-			end
 		end
+	end
 
-		timer.performWithDelay( 500, waitTimer )
+	timer.performWithDelay( 500, waitTimer )
 
-	elseif value == "back" then
+elseif value == "back" then
 
-			Runtime:addEventListener( "key", onKeyEvent )
+	Runtime:addEventListener( "key", onKeyEvent )
 
-    		search.isVisible=true
+	search.isVisible=true
 
-		local function waitTimer( event )
-			if openPage=="eventCalenderPage" then
-			
+	local function waitTimer( event )
+		if openPage=="eventCalenderPage" then
+		
 					-- weekViewTouchFlag=true
 					-- ParentShow=true
 					-- creatWeek(os.date('*t',makeTimeStamp(startdate)),true)
 
 
+				end
 			end
-		end
 
-		timer.performWithDelay( 500, waitTimer )
+			timer.performWithDelay( 500, waitTimer )
 
 
-	elseif value == "added" then
+		elseif value == "added" then
 
-				Runtime:addEventListener( "key", onKeyEvent )
+			Runtime:addEventListener( "key", onKeyEvent )
 
-    		search.isVisible=true
+			search.isVisible=true
 
-		local function waitTimer( event )
-			
-			if openPage=="eventCalenderPage" then
-			
+			local function waitTimer( event )
+				
+				if openPage=="eventCalenderPage" then
+				
 					-- weekViewTouchFlag=true
 					-- ParentShow=true
 					-- creatWeek(os.date('*t',makeTimeStamp(startdate)),true)
 					local t = os.date( '*t' )
 
 
-			t.day = t.day - os.date( "%w" ) 
-			ProcessingCount_total = 7
-			startdate = os.date( "%m/%d/%YT%H:%m:%S %p" , os.time( t ))
-			t.day = t.day + 6
-			Processingdate = os.date( "%Y-%m-%d" , os.time( t ))
-			startdate = dateSplit(startdate).." 12:00:00 AM"
-			enddate = os.date( "%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
-			local temp = os.date( '*t' )
-			temp.day = temp.day - os.date( "%w" ) 
-			weekViewTouchFlag=true
-			ParentShow=true
-			creatWeek(temp,true)
+					t.day = t.day - os.date( "%w" ) 
+					ProcessingCount_total = 7
+					startdate = os.date( "%m/%d/%YT%H:%m:%S %p" , os.time( t ))
+					t.day = t.day + 6
+					Processingdate = os.date( "%Y-%m-%d" , os.time( t ))
+					startdate = dateSplit(startdate).." 12:00:00 AM"
+					enddate = os.date( "%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
+					local temp = os.date( '*t' )
+					temp.day = temp.day - os.date( "%w" ) 
+					weekViewTouchFlag=true
+					ParentShow=true
+					creatWeek(temp,true)
 
 
+				end
 			end
+
+			timer.performWithDelay( 500, waitTimer )
+
+
+			
+
 		end
 
-		timer.performWithDelay( 500, waitTimer )
+	end
 
 
+
+	function scene:show( event )
+
+		local sceneGroup = self.view
+		local phase = event.phase
 		
+		if phase == "will" then
 
-    end
+			
 
-end
-
-
-
-function scene:show( event )
-
-	local sceneGroup = self.view
-	local phase = event.phase
-	
-	if phase == "will" then
-
-		
-
-		ga.enterScene("EventCalender")
+			ga.enterScene("EventCalender")
 
 
 --toast.show('Toast is done!', {duration = 'long', gravity = 'BottomCenter', offset = {0, 128}})  
 
-		elseif phase == "did" then
+elseif phase == "did" then
 
-			composer.removeHidden()
+	composer.removeHidden()
 
-			
-			scrollView = widget.newScrollView
-			{
-			top = 0,
-			left = 0,
-			width = W,
-			height =H-RecentTab_Topvalue-60,
-			hideBackground = true,
-			isBounceEnabled=false,
-			horizontalScrollingDisabled = false,
-			verticalScrollingDisabled = false,
-			hideScrollBar=true,
-			friction = .2,
-			listener = EventCalender_scrollListener
-			}
+	
+	scrollView = widget.newScrollView
+	{
+		top = 0,
+		left = 0,
+		width = W,
+		height =H-RecentTab_Topvalue-60,
+		hideBackground = true,
+		isBounceEnabled=false,
+		horizontalScrollingDisabled = false,
+		verticalScrollingDisabled = false,
+		hideScrollBar=true,
+		friction = .2,
+		listener = EventCalender_scrollListener
+	}
 
-			sceneGroup:insert(scrollView)
-			scrollView.anchorY=0
-			scrollView.y = RecentTab_Topvalue+60
+	sceneGroup:insert(scrollView)
+	scrollView.anchorY=0
+	scrollView.y = RecentTab_Topvalue+60
 
-			sceneGroup:insert( headerGroup )
+	sceneGroup:insert( headerGroup )
 
-			function get_allCalender(response)
-
-
-			if response ~= nil then
+	function get_allCalender(response)
 
 
-				if(response[1].DefaultCalendarViewMain ~= nil and response[1].DefaultCalendarViewMain == "WEEK") then
+	if response ~= nil then
 
-				defalutCalenderView = "agendaWeek"
 
-				elseif(response[1].DefaultCalendarViewMain ~= nil and response[1].DefaultCalendarViewMain == "MONTH") then
+		if(response[1].DefaultCalendarViewMain ~= nil and response[1].DefaultCalendarViewMain == "WEEK") then
 
-				defalutCalenderView = "month"
+		defalutCalenderView = "agendaWeek"
 
-				elseif(response[1].DefaultCalendarViewMain ~= nil and response[1].DefaultCalendarViewMain == "DAY") then
+		elseif(response[1].DefaultCalendarViewMain ~= nil and response[1].DefaultCalendarViewMain == "MONTH") then
 
-				defalutCalenderView = "agendaDay"
+		defalutCalenderView = "month"
 
-			end
+		elseif(response[1].DefaultCalendarViewMain ~= nil and response[1].DefaultCalendarViewMain == "DAY") then
 
-			CalendarId = response[1].CalendarId
-			UserId = response[1].UserId
-			CalendarName = response[1].CalendarName
+		defalutCalenderView = "agendaDay"
+
+	end
+
+	CalendarId = response[1].CalendarId
+	UserId = response[1].UserId
+	CalendarName = response[1].CalendarName
 
 				--defalutCalenderView = "agendaDay"
 
-			if response[1].IsShowAppointment then
+				if response[1].IsShowAppointment then
 
-				IsShowAppointment="true"
+					IsShowAppointment="true"
 
-			else
+				else
 
-				IsShowAppointment="false"
+					IsShowAppointment="false"
 
-			end
+				end
 
-			if response[1].IsShowCall then
+				if response[1].IsShowCall then
 
-				IsShowCall="true"
+					IsShowCall="true"
 
-			else
+				else
 
-				IsShowCall="false"
+					IsShowCall="false"
 
-			end
+				end
 
-			if response[1].IsShowParty then
+				if response[1].IsShowParty then
 
-				IsShowParty="true"
+					IsShowParty="true"
 
-			else
+				else
 
-				IsShowParty="false"
+					IsShowParty="false"
 
-			end
-			if response[1].IsShowTask then
+				end
+				if response[1].IsShowTask then
 
-				IsShowTask="true"
+					IsShowTask="true"
 
-			else
+				else
 
-				IsShowTask="false"
+					IsShowTask="false"
 
-			end
-			if response[1].IsShowFamilyTime then
+				end
+				if response[1].IsShowFamilyTime then
 
-				IsShowFamilyTime="true"
+					IsShowFamilyTime="true"
 
-			else
+				else
 
-				IsShowFamilyTime="false"
+					IsShowFamilyTime="false"
 
-			end
-			if response[1].IsPublic then
+				end
+				if response[1].IsPublic then
 
-				IsPublic="true"
+					IsPublic="true"
 
-			else
+				else
 
-				IsPublic="true"
+					IsPublic="true"
 
-			end
+				end
 
 
-			local t = os.date( '*t' )
+				local t = os.date( '*t' )
 
 
-			t.day = t.day - os.date( "%w" ) 
+				t.day = t.day - os.date( "%w" ) 
 
 
-			ProcessingCount_total = 7
+				ProcessingCount_total = 7
 
 
 
-			startdate = os.date( "%m/%d/%YT%H:%m:%S %p" , os.time( t ))
+				startdate = os.date( "%m/%d/%YT%H:%m:%S %p" , os.time( t ))
 
-			t.day = t.day + 6
+				t.day = t.day + 6
 
-			Processingdate = os.date( "%Y-%m-%d" , os.time( t ))
+				Processingdate = os.date( "%Y-%m-%d" , os.time( t ))
 
 
-			startdate = dateSplit(startdate).." 12:00:00 AM"
+				startdate = dateSplit(startdate).." 12:00:00 AM"
 
-			enddate = os.date( "%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
+				enddate = os.date( "%m/%d/%Y" , os.time( t )).." 11:59:59 PM"
 
 
-			
+				
 
-local temp = os.date( '*t' )
-temp.day = temp.day - os.date( "%w" ) 
-weekViewTouchFlag=true
-creatWeek(temp,true)
+				local temp = os.date( '*t' )
+				temp.day = temp.day - os.date( "%w" ) 
+				weekViewTouchFlag=true
+				creatWeek(temp,true)
 
-	
-end	
+				
+			end	
 
-end
+		end
 
 
 
 
 
-Webservice.Get_All_MyCalendars(get_allCalender)
+		Webservice.Get_All_MyCalendars(get_allCalender)
 
 
-sceneGroup:insert( weekViewGroup )
+		sceneGroup:insert( weekViewGroup )
 
 
-weekView_bg = display.newRect( weekViewGroup,W/2,topBg.y+topBg.contentHeight,W,60)
-weekView_bg.anchorY=0
-weekView_bg:setFillColor( 0.9,0.7,0.8 )
+		weekView_bg = display.newRect( weekViewGroup,W/2,topBg.y+topBg.contentHeight,W,60)
+		weekView_bg.anchorY=0
+		weekView_bg:setFillColor( 0.9,0.7,0.8 )
 
-weekView_header = display.newText( weekViewGroup,"", 0, 0, native.systemFont, 14 )
-weekView_header.x=W/2;weekView_header.y=weekView_bg.y+10
-Utils.CssforTextView(weekView_header,sp_helpText)
+		weekView_header = display.newText( weekViewGroup,"", 0, 0, native.systemFont, 14 )
+		weekView_header.x=W/2;weekView_header.y=weekView_bg.y+10
+		Utils.CssforTextView(weekView_header,sp_helpText)
 
 
-weekView_leftArrow_bg = display.newRect( weekViewGroup, 0,0,30,45 )
-weekView_leftArrow_bg.x= weekView_bg.x-weekView_bg.contentWidth/2+20
-weekView_leftArrow_bg.y = weekView_bg.y+weekView_bg.contentHeight/2
-weekView_leftArrow_bg.alpha=0.01
-weekView_leftArrow_bg.id = "leftSwipe"
-weekView_leftArrow_bg:addEventListener( "touch", weekViewSwipe )
+		weekView_leftArrow_bg = display.newRect( weekViewGroup, 0,0,30,45 )
+		weekView_leftArrow_bg.x= weekView_bg.x-weekView_bg.contentWidth/2+20
+		weekView_leftArrow_bg.y = weekView_bg.y+weekView_bg.contentHeight/2
+		weekView_leftArrow_bg.alpha=0.01
+		weekView_leftArrow_bg.id = "leftSwipe"
+		weekView_leftArrow_bg:addEventListener( "touch", weekViewSwipe )
 
 
-weekView_leftArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
-weekView_leftArrow.xScale=-1
-weekView_leftArrow.alpha=0.5
-weekView_leftArrow.x=weekView_bg.x-weekView_bg.contentWidth/2+20
-weekView_leftArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5	
+		weekView_leftArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
+		weekView_leftArrow.xScale=-1
+		weekView_leftArrow.alpha=0.5
+		weekView_leftArrow.x=weekView_bg.x-weekView_bg.contentWidth/2+20
+		weekView_leftArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5	
 
 
-weekView_rightArrow_bg = display.newRect( weekViewGroup, 0,0,30,45 )
-weekView_rightArrow_bg.x=weekView_bg.x+weekView_bg.contentWidth/2-20
-weekView_rightArrow_bg.y=weekView_bg.y+weekView_bg.contentHeight/2
-weekView_rightArrow_bg.alpha=0.01
-weekView_rightArrow_bg.id = "rightSwipe"
-weekView_rightArrow_bg:addEventListener( "touch", weekViewSwipe )
+		weekView_rightArrow_bg = display.newRect( weekViewGroup, 0,0,30,45 )
+		weekView_rightArrow_bg.x=weekView_bg.x+weekView_bg.contentWidth/2-20
+		weekView_rightArrow_bg.y=weekView_bg.y+weekView_bg.contentHeight/2
+		weekView_rightArrow_bg.alpha=0.01
+		weekView_rightArrow_bg.id = "rightSwipe"
+		weekView_rightArrow_bg:addEventListener( "touch", weekViewSwipe )
 
-weekView_rightArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
-weekView_rightArrow.x=weekView_bg.x+weekView_bg.contentWidth/2-20
-weekView_rightArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5
+		weekView_rightArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
+		weekView_rightArrow.x=weekView_bg.x+weekView_bg.contentWidth/2-20
+		weekView_rightArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5
 
-addEventBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
-addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
+		addEventBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
+		addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 
 
-if IsOwner == false then
-	addEventBtn.alpha=0
-end
+		if IsOwner == false then
+			addEventBtn.alpha=0
+		end
 
-	
-menuBtn:addEventListener("touch",menuTouch)
-BgText:addEventListener("touch",menuTouch)
-menuTouch_s:addEventListener("touch",menuTouch)
-topToday_btnBg:addEventListener("touch",todayAction)
-topToday_btnlabel:addEventListener("touch",todayAction)
-calenderView_bg:addEventListener("touch",calenderTouch)
-picker_Done:addEventListener( "touch", calenderAction )
-search:addEventListener( "userInput", searchListener )
-addEventBtn:addEventListener( "touch", listTouch )
+		
+		menuBtn:addEventListener("touch",menuTouch)
+		BgText:addEventListener("touch",menuTouch)
+		menuTouch_s:addEventListener("touch",menuTouch)
+		topToday_btnBg:addEventListener("touch",todayAction)
+		topToday_btnlabel:addEventListener("touch",todayAction)
+		calenderView_bg:addEventListener("touch",calenderTouch)
+		picker_Done:addEventListener( "touch", calenderAction )
+		search:addEventListener( "userInput", searchListener )
+		addEventBtn:addEventListener( "touch", listTouch )
 
-Runtime:addEventListener( "key", onKeyEvent )
+		Runtime:addEventListener( "key", onKeyEvent )
 
 
-end
+	end
 
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
@@ -1709,27 +1709,27 @@ function scene:hide( event )
 
 
 
-		elseif phase == "did" then
+	elseif phase == "did" then
 
 
 
-		end	
+	end	
 
-	end
-
-
-	function scene:destroy( event )
-		local sceneGroup = self.view
+end
 
 
-
-	end
-
-
-	scene:addEventListener( "create", scene )
-	scene:addEventListener( "show", scene )
-	scene:addEventListener( "hide", scene )
-	scene:addEventListener( "destroy", scene )
+function scene:destroy( event )
+	local sceneGroup = self.view
 
 
-	return scene
+
+end
+
+
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
+
+
+return scene

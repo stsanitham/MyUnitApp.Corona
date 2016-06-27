@@ -3130,8 +3130,6 @@ elseif id_value == "Deny Access" then
 
 	elseif id_value == "Grant Access From Deny" and Details.IsRequestTeamMember == true  then
 
-		print("**&&^*^*^&*^&*^&*^&*^&*")
-
 		Status="GRANT"
 
 		IsRequestTeamMember = "true"
