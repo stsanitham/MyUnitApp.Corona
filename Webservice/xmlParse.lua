@@ -51,16 +51,17 @@ else
 
 	local response 
 
-	-- if string.find(url,"/MyUnitBuzz/GetSpecialRecognitionJsonContent") then
+	 if string.find(url,"/MyUnitBuzz/GetSpecialRecognitionJsonContent") then
 
 
-	-- 	response = (event.response)
-	-- else
+	 	response = json.decode(event.response)
+	 	--response = json.decode(response)
+	 else
 
 
 	response = json.decode(event.response)
 
-	--end
+	end
 
 
 	spinner_hide()

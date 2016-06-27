@@ -377,12 +377,15 @@ local function ListCliked( event )
 			-- 	display.remove(reportArray[#reportArray])
 			-- 	reportArray[#reportArray] = nil
 			-- end
+			-- List = json.decode(List)
+			-- print( #List )
 
-			reportArray = List.data
-			if reportArray == nil then
+			
+			local reportArray =  List.data
+			-- if reportArray == nil then
 
-				reportArray = List
-			end
+			-- 	reportArray = List
+			-- end
 			
 
 			for i=1,#reportArray do
@@ -676,9 +679,11 @@ function scene:create( event )
 
 		 	function getSpecialRecognition_JsonContent(sp_jsonresponse)
 
-		 		sp_jsonresponse = 	json.decode(sp_jsonresponse)
+		 		--sp_jsonresponse = 	json.decode(sp_jsonresponse)
 
-		 		print("JSON content 11111: "..json.encode(sp_jsonresponse))
+		 		--sp_jsonresponse = 	string.gsub(json.encode(sp_jsonresponse),"/")
+
+		 		print("JSON content 11111: "..(sp_jsonresponse))
 		 		parentFlag=true
 		 		CreateHorizontalTable(sceneGroup,sp_jsonresponse)
 

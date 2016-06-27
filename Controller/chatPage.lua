@@ -566,7 +566,7 @@ local function ChatTouch( event )
 	        	display.getCurrentStage():setFocus( nil )
 	        	chatScroll:takeFocus( event )
 	        	holdLevel=0
-	        	Deleteicon.isVisible=false
+	        	--Deleteicon.isVisible=false
 	        	chatHoldflag=false
 	        end
 
@@ -1833,6 +1833,7 @@ local function videoPlay( event )
 
 
 				if deleteMsgCount > 0 then
+					deleteMsgCount=0
 					title.text = UserName
 					Deleteicon.isVisible=false
 					Copyicon.isVisible=false
@@ -1856,6 +1857,7 @@ local function videoPlay( event )
 									group[1].selected = "false"
 									
 								end
+
 
 							else
 

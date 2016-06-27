@@ -718,11 +718,16 @@ function scene:show( event )
 				Career_Username:addEventListener("touch",closeDetails)
 
 
-				if Message_Type == "GROUP" or Message_Type == "BROADCAST" then
+				if IsOwner == true and (Message_Type == "GROUP" or Message_Type == "BROADCAST") then
+
+					local addBg = display.newRect(sceneGroup,50,50,60,50)
+					addBg.x=W-30
+					addBg.y=titleBar_icon_bg.y+10
+					addBg.alpha=0.01
 					local addRecipient = display.newImageRect( sceneGroup, "res/assert/addmember.png", 18, 15 )
 					addRecipient.anchorY=0
 					addRecipient.x=W-30;addRecipient.y = titleBar_icon_bg.y+5
-					addRecipient:addEventListener( "touch", addMemberAction )
+					addBg:addEventListener( "touch", addMemberAction )
 				end
 
 				RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight

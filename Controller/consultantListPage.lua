@@ -162,25 +162,31 @@ local function backactionTouch(event)
 
 		display.getCurrentStage():setFocus( nil )
 
+		if addGroupid_value == "editMember" then
 
-		if pageid_value == "group" then
+			composer.hideOverlay()
 
-			local options = {
-				effect = "slideRight",
-				time = 300,	
-			}
+		else
 
-			composer.gotoScene( "Controller.groupPage", options )
+			if pageid_value == "group" then
 
-		elseif pageid_value == "broadcast" then
+				local options = {
+					effect = "slideRight",
+					time = 300,	
+				}
 
-			local options = {
-				effect = "slideRight",
-				time = 300,	
-			}
+				composer.gotoScene( "Controller.groupPage", options )
 
-			composer.gotoScene( "Controller.broadCastPage", options )
+			elseif pageid_value == "broadcast" then
 
+				local options = {
+					effect = "slideRight",
+					time = 300,	
+				}
+
+				composer.gotoScene( "Controller.broadCastPage", options )
+
+			end
 		end
 
 		native.setKeyboardFocus(nil)
@@ -629,6 +635,7 @@ function getChatGroupCreation(response )
 
 		groupId = editId
 
+		print( "%%%%%%%%%%%%%%" )
 		editedgroupname = groupcreation_response.MyUnitBuzzGroupName
 
 	else
@@ -697,6 +704,8 @@ function textField( event )
 			end
 
 			groupSubjectname = event.target.text
+
+
 
 						--print("group subject name ############################ : ",groupSubjectname)
 					end
@@ -1388,6 +1397,8 @@ function scene:show( event )
 
 	    		GroupSubject.text =  event.params.name
 
+	    		editedgroupname =  event.params.name
+
 	    		editId = event.params.contactId
 
 	    		count_details.text = #editContacts.." Selected"
@@ -1463,6 +1474,9 @@ function scene:show( event )
 		elseif phase == "did" then
 
 			if addGroupid_value == "editMember" then
+
+
+				print( "Name : "..editedgroupname )
 
 				event.parent:resumeEditGame(editedgroupname,editId)
 
