@@ -1202,8 +1202,7 @@ else
 					    MKRankDetail_bottom.y= MKRankDetailValue.y+9
 
 
-						Password_bg.y =  MKRankDetail_bg.y+MKRankDetail_bg.contentHeight+22
-
+						Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.contentHeight+7
                 		--Password_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
 						-- Password_titlestar.y= Password_bg.y + 5
 						-- Password_titletext.y= Password_bg.y+ 5
@@ -1214,7 +1213,7 @@ else
 						-- processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
 						-- processbutton_text.y=processbutton.y
 
-             			Password_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+             			--Password_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
 						Password_titlestar.y= Password_bg.y + 9
 						Password_titletext.y= Password_bg.y+ 9
 						PasswordValue.y =Password_titletext.y+Password_titletext.height+7
@@ -1227,6 +1226,8 @@ else
 
 
 			     else
+
+			     	print("grant provide access")
 
 
 						textnotifybox.isVisible = true
