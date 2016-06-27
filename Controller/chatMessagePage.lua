@@ -49,93 +49,93 @@ end
 
 local function onKeyEvent( event )
 
-        local phase = event.phase
-        local keyName = event.keyName
+	local phase = event.phase
+	local keyName = event.keyName
 
-        if phase == "up" then
+	if phase == "up" then
 
-        if keyName=="back" then
+		if keyName=="back" then
 
-        	if BackFlag == false then
+			if BackFlag == false then
 
-        		Utils.SnackBar(ChatPage.PressAgain)
+				Utils.SnackBar(ChatPage.PressAgain)
 
-        		BackFlag = true
+				BackFlag = true
 
-        		timer.performWithDelay( 3000, onTimer )
+				timer.performWithDelay( 3000, onTimer )
 
-                return true
+				return true
 
-            elseif BackFlag == true then
+			elseif BackFlag == true then
 
-			 os.exit() 
-
-            end
-            
-        end
-
-    end
-
-        return false
- end
-
-
-
-	local function handleTabBarEvent( event )
-
-		if event.phase == "press" then 
-
-				tabbutton_id = event.target._id 
-
-			if tabbutton_id == "chat" then
-
-				    print("tabButtons details : "..json.encode(tabButtons))
-
-					chattabBar:setSelected( 2 ) 
-					composer.removeHidden()
-   				    local options = {
-									effect = "crossFade",
-									time = 500,	
-									params = { tabbuttonValue2 =json.encode(tabButtons)}
-									}
-
-				    composer.gotoScene( "Controller.Chat", options )
-
-			elseif tabbutton_id == "group" then
-
-					chattabBar:setSelected( 3 ) 
-					composer.removeHidden()
-   				    local options = {
-									effect = "crossFade",
-									time = 500,	  
-									params = { tabbuttonValue3 =json.encode(tabButtons)}
-									}
-
-				    composer.gotoScene( "Controller.GroupChat", options )
-
-			elseif tabbutton_id == "consultant_list" then
-
-			    	chattabBar:setSelected( 4 ) 
-			    	composer.removeHidden()
-   				    local options = {
-									effect = "crossFade",
-									time = 500,	 
-									params = { tabbuttonValue4 =json.encode(tabButtons)}
-									}
-
-				    composer.gotoScene( "Controller.ConsultantList", options )
+				os.exit() 
 
 			end
-
-	    end
-
-    return true 
+			
+		end
 
 	end
 
+	return false
+end
 
 
-	function scene:create( event )
+
+local function handleTabBarEvent( event )
+
+	if event.phase == "press" then 
+
+		tabbutton_id = event.target._id 
+
+		if tabbutton_id == "chat" then
+
+			print("tabButtons details : "..json.encode(tabButtons))
+
+			chattabBar:setSelected( 2 ) 
+			composer.removeHidden()
+			local options = {
+				effect = "crossFade",
+				time = 500,	
+				params = { tabbuttonValue2 =json.encode(tabButtons)}
+			}
+
+			composer.gotoScene( "Controller.Chat", options )
+
+		elseif tabbutton_id == "group" then
+
+			chattabBar:setSelected( 3 ) 
+			composer.removeHidden()
+			local options = {
+				effect = "crossFade",
+				time = 500,	  
+				params = { tabbuttonValue3 =json.encode(tabButtons)}
+			}
+
+			composer.gotoScene( "Controller.GroupChat", options )
+
+		elseif tabbutton_id == "consultant_list" then
+
+			chattabBar:setSelected( 4 ) 
+			composer.removeHidden()
+			local options = {
+				effect = "crossFade",
+				time = 500,	 
+				params = { tabbuttonValue4 =json.encode(tabButtons)}
+			}
+
+			composer.gotoScene( "Controller.ConsultantList", options )
+
+		end
+
+	end
+
+	return true 
+
+end
+
+
+
+function scene:create( event )
 
 	local sceneGroup = self.view
 
@@ -164,109 +164,109 @@ local function onKeyEvent( event )
 	title:setFillColor(0)
 
 
-chattabBar = {}
+	chattabBar = {}
 
 
-tabButtons = {
-    {
-        label = "Broadcast List",
-        defaultFile = "res/assert/user.png",
-        overFile = "res/assert/user.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "broadcast_list",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-        selected = true,
-    },
-    {
-        label = "Chat",
-        defaultFile = "res/assert/mail.png",
-        overFile = "res/assert/mail.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "chat",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = {0,0,0}
-        },
-        width = 20,
-        height = 15,
-        onPress = handleTabBarEvent,
-    },
-    {
-        label = "Group",
-        defaultFile = "res/assert/phone.png",
-        overFile = "res/assert/phone.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "group",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = { 0,0,0 }
-        },
-        width = 20,
-        height = 20,
-        onPress = handleTabBarEvent,
-    },
-    {
-        label = "Consultant List",
-        defaultFile = "res/assert/map.png",
-        overFile = "res/assert/map.png",
-        size = 11.5,
-        labelYOffset = 2,
-        id = "consultant_list",
-        labelColor = { 
-            default = { 0,0,0}, 
-            over = { 0,0,0 }
-        },
-        width = 16,
-        height = 20,
-        onPress = handleTabBarEvent,
-    },
-}
+	tabButtons = {
+		{
+			label = "Broadcast List",
+			defaultFile = "res/assert/user.png",
+			overFile = "res/assert/user.png",
+			size = 11.5,
+			labelYOffset = 2,
+			id = "broadcast_list",
+			labelColor = { 
+				default = { 0,0,0}, 
+				over = {0,0,0}
+			},
+			width = 20,
+			height = 20,
+			onPress = handleTabBarEvent,
+			selected = true,
+		},
+		{
+			label = "Chat",
+			defaultFile = "res/assert/mail.png",
+			overFile = "res/assert/mail.png",
+			size = 11.5,
+			labelYOffset = 2,
+			id = "chat",
+			labelColor = { 
+				default = { 0,0,0}, 
+				over = {0,0,0}
+			},
+			width = 20,
+			height = 15,
+			onPress = handleTabBarEvent,
+		},
+		{
+			label = "Group",
+			defaultFile = "res/assert/phone.png",
+			overFile = "res/assert/phone.png",
+			size = 11.5,
+			labelYOffset = 2,
+			id = "group",
+			labelColor = { 
+				default = { 0,0,0}, 
+				over = { 0,0,0 }
+			},
+			width = 20,
+			height = 20,
+			onPress = handleTabBarEvent,
+		},
+		{
+			label = "Consultant List",
+			defaultFile = "res/assert/map.png",
+			overFile = "res/assert/map.png",
+			size = 11.5,
+			labelYOffset = 2,
+			id = "consultant_list",
+			labelColor = { 
+				default = { 0,0,0}, 
+				over = { 0,0,0 }
+			},
+			width = 16,
+			height = 20,
+			onPress = handleTabBarEvent,
+		},
+	}
 
-			    chattabBar = widget.newTabBar{
-			    top =  display.contentHeight - 55,
-			    left = 0,
-			    width = display.contentWidth, 
-			    backgroundFile = tabBarBackground,
-			    tabSelectedLeftFile = tabBarLeft,   
-			    tabSelectedRightFile = tabBarRight,    
-			    tabSelectedMiddleFile = tabBarMiddle,   
-			    tabSelectedFrameWidth = 20,                                         
-			    tabSelectedFrameHeight = 50, 
-			    backgroundFrame = 1,
-			    tabSelectedLeftFrame = 2,
-			    tabSelectedMiddleFrame = 3,
-			    tabSelectedRightFrame = 4,                                       
-			    buttons = tabButtons,
-			    height = 50,
-			}
+	chattabBar = widget.newTabBar{
+		top =  display.contentHeight - 55,
+		left = 0,
+		width = display.contentWidth, 
+		backgroundFile = tabBarBackground,
+		tabSelectedLeftFile = tabBarLeft,   
+		tabSelectedRightFile = tabBarRight,    
+		tabSelectedMiddleFile = tabBarMiddle,   
+		tabSelectedFrameWidth = 20,                                         
+		tabSelectedFrameHeight = 50, 
+		backgroundFrame = 1,
+		tabSelectedLeftFrame = 2,
+		tabSelectedMiddleFrame = 3,
+		tabSelectedRightFrame = 4,                                       
+		buttons = tabButtons,
+		height = 50,
+	}
 
-			sceneGroup:insert(chattabBar)
+	sceneGroup:insert(chattabBar)
 
 
-            local rect = display.newRect(0,0,display.contentWidth,1.3)
-			rect.x = 0;
-			rect.anchorX=0
-			rect.y = display.contentHeight - 50;
-			rect:setFillColor(0)
-			sceneGroup:insert( rect )
+	local rect = display.newRect(0,0,display.contentWidth,1.3)
+	rect.x = 0;
+	rect.anchorX=0
+	rect.y = display.contentHeight - 50;
+	rect:setFillColor(0)
+	sceneGroup:insert( rect )
 
-    MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
 
 
 
-	function scene:show( event )
+function scene:show( event )
 
 	local sceneGroup = self.view
 	local phase = event.phase
@@ -280,56 +280,56 @@ end
 
 	elseif phase == "did" then
 
-	composer.removeHidden()
+		composer.removeHidden()
 
-    menuBtn:addEventListener("touch",menuTouch)
-    BgText:addEventListener("touch",menuTouch)
+		menuBtn:addEventListener("touch",menuTouch)
+		BgText:addEventListener("touch",menuTouch)
 
-    Runtime:addEventListener( "key", onKeyEvent )
+		Runtime:addEventListener( "key", onKeyEvent )
 
 	end	
 
 	MainGroup:insert(sceneGroup)
 
-	end
+end
 
 
 
 
-	function scene:hide( event )
+function scene:hide( event )
 
 	local sceneGroup = self.view
 	local phase = event.phase
 
 	if event.phase == "will" then
 
-	menuBtn:removeEventListener("touch",menuTouch)
-	BgText:removeEventListener("touch",menuTouch)
+		menuBtn:removeEventListener("touch",menuTouch)
+		BgText:removeEventListener("touch",menuTouch)
 
-	Runtime:removeEventListener( "key", onKeyEvent )
+		Runtime:removeEventListener( "key", onKeyEvent )
 
 	elseif phase == "did" then
 
-	composer.removeHidden()
+		composer.removeHidden()
 
 	end	
 
-	end
+end
 
 
 
-	function scene:destroy( event )
+function scene:destroy( event )
 	local sceneGroup = self.view
 
-	end
+end
 
 
-	scene:addEventListener( "create", scene )
-	scene:addEventListener( "show", scene )
-	scene:addEventListener( "hide", scene )
-	scene:addEventListener( "destroy", scene )
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
 
 
-	return scene
+return scene
 
 

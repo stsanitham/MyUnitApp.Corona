@@ -61,7 +61,7 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-	local function AfterVersionCheck()
+		local function AfterVersionCheck()
 
 			local Director_Name,EmailAddress
 
@@ -69,7 +69,7 @@ function scene:show( event )
 
 			local tablefound=false
 			db:exec([[select * from sqlite_master where name='logindetails';]],
-			function(...) tablefound=true return 0 end)
+				function(...) tablefound=true return 0 end)
 
 			if tablefound then 
 				print('table exists!')
@@ -81,12 +81,12 @@ function scene:show( event )
 
 			for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
-					loginFlag=true
+				loginFlag=true
 
-					Director_Name = row.MemberName
+				Director_Name = row.MemberName
 
-					EmailAddress = row.MemberEmail
-					
+				EmailAddress = row.MemberEmail
+				
 			end
 
 			local profileImageUrl,GoogleUsername,GoogleToken,GoogleTokenSecret,GoogleUserId,FacebookUsername,FacebookAccessToken,TwitterUsername,TwitterToken,TwitterTokenSecret
@@ -99,29 +99,29 @@ function scene:show( event )
 
 				if response.MyUnitBuzzContacts.IsOwner ~= nil then
 
-						IsOwner = response.MyUnitBuzzContacts.IsOwner
-      			else
-      					IsOwner = " "
-      			end
+					IsOwner = response.MyUnitBuzzContacts.IsOwner
+				else
+					IsOwner = " "
+				end
 
-      			if response.MyUnitBuzzContacts.TimeZone ~= nil then
+				if response.MyUnitBuzzContacts.TimeZone ~= nil then
 
-						TimeZone = response.MyUnitBuzzContacts.TimeZone
-
-
-      			else
+					TimeZone = response.MyUnitBuzzContacts.TimeZone
 
 
-      					TimeZone = " "
+				else
 
-      			end
+
+					TimeZone = " "
+
+				end
 
 
 				if response.GoogleSettings ~= nil then
 
 					if response.GoogleSettings.GoogleUsername ~= nil then
 
-					GoogleUsername = response.GoogleSettings.GoogleUsername
+						GoogleUsername = response.GoogleSettings.GoogleUsername
 
 					else
 						GoogleUsername=""
@@ -161,7 +161,7 @@ function scene:show( event )
 				if response.FacebookSettings ~= nil then
 
 					if response.FacebookSettings.FacebookUsername ~= nil then
-				FacebookUsername = response.FacebookSettings.FacebookUsername
+						FacebookUsername = response.FacebookSettings.FacebookUsername
 					else
 						FacebookUsername=""
 					end
@@ -181,9 +181,9 @@ function scene:show( event )
 				if response.TwitterSettings ~= nil then
 
 					if response.TwitterSettings.TwitterUsername ~= nil then
-					TwitterUsername = response.TwitterSettings.TwitterUsername
+						TwitterUsername = response.TwitterSettings.TwitterUsername
 					else
-							TwitterUsername=""
+						TwitterUsername=""
 					end
 
 					if response.TwitterSettings.TwitterToken ~= nil then
@@ -208,29 +208,29 @@ function scene:show( event )
 
 				if response.MyUnitBuzzContacts then
 
-			if response.MyUnitBuzzContacts.ImagePath ~= nil then
+					if response.MyUnitBuzzContacts.ImagePath ~= nil then
 						profileImageUrl = response.MyUnitBuzzContacts.ImagePath
 					else
 						profileImageUrl=""
 					end
-			else
-						profileImageUrl=""
-			end
+				else
+					profileImageUrl=""
+				end
 
 
-			
+				
 
 
 				local q = [[UPDATE logindetails SET ProfileImageUrl=']]..profileImageUrl..[[',GoogleUsername=']]..GoogleUsername..[[',GoogleToken=']]..GoogleToken..[[',GoogleTokenSecret=']]..GoogleTokenSecret..[[',GoogleUserId=']]..GoogleUserId..[[',FacebookUsername=']]..FacebookUsername..[[',FacebookAccessToken=']]..FacebookAccessToken..[[',TwitterUsername=']]..TwitterUsername..[[',TwitterToken=']]..TwitterToken..[[',TwitterTokenSecret=']]..TwitterTokenSecret..[[' WHERE id=1;]]
 				db:exec( q )
 
 
-			local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id INTEGER PRIMARY KEY autoincrement,User_Id,MyUnitBuzz_Message,Message_Status,Message_Date,Is_Deleted,Create_Time_Stamp,Update_Time_Stamp,Image_Path,Audio_Path,Video_Path,MyUnitBuzz_Long_Message,Message_From,Message_To,Message_Type,FromName,ToName,GroupName);]]
-			db:exec( tablesetup_chat )
+				local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id INTEGER PRIMARY KEY autoincrement,User_Id,MyUnitBuzz_Message,Message_Status,Message_Date,Is_Deleted,Create_Time_Stamp,Update_Time_Stamp,Image_Path,Audio_Path,Video_Path,MyUnitBuzz_Long_Message,Message_From,Message_To,Message_Type,FromName,ToName,GroupName);]]
+				db:exec( tablesetup_chat )
 
-			
+				
 
-			print( ("_________________________create table________________________________") )
+				print( ("_________________________create table________________________________") )
 				
 				--composer.gotoScene( "Controller.flapMenu" )
 
@@ -239,7 +239,7 @@ function scene:show( event )
 						-- 	    GCMValue = userId
 
 						--         composer.gotoScene( "Controller.flapMenu" )
-						   
+						
 						--     if (pushToken) then -- nil if there was a connection issue or on iOS notification permissions were not accepted.
 						--         print("pushToken:" .. pushToken)
 						--     end
@@ -249,29 +249,29 @@ function scene:show( event )
 						-- OneSignal.IdsAvailableCallback(IdsAvailable)
 
 						-- if isSimulator then
-							if GCMValue ~= "0" or isSimulator then
+						if GCMValue ~= "0" or isSimulator then
 
-						        composer.gotoScene( "Controller.flapMenu" )
-						    end
+							composer.gotoScene( "Controller.flapMenu" )
+						end
 						--end
 
-			end		
+					end		
 
 			--native.showAlert( "MUB", "GCM : "..GCMValue,{ "ok"} )
 
 
 			
-					
-				Webservice.Get_SocialMediaTokens(GCMValue,get_userSocialSetting)
+			
+			Webservice.Get_SocialMediaTokens(GCMValue,get_userSocialSetting)
 
 			
 
 
-			else
+		else
 
-				print('not table exists!')
+			print('not table exists!')
 
-				
+			
 
 						-- function IdsAvailable(userId, pushToken)
 
@@ -279,8 +279,8 @@ function scene:show( event )
 						--     print("userId:" .. userId)
 
 						--    -- native.showAlert("userId", userId, { "OK" } )
-						     
-						   
+						
+						
 						--         GCMValue = userId
 
 						--         local options = {
@@ -291,7 +291,7 @@ function scene:show( event )
 
 
 						-- 		composer.gotoScene( "Controller.singInPage", options )
-						   
+						
 						--     if (pushToken) then -- nil if there was a connection issue or on iOS notification permissions were not accepted.
 						--         print("pushToken:" .. pushToken)
 						--     end
@@ -303,29 +303,29 @@ function scene:show( event )
 						-- if isSimulator then
 
 
-						        local options = {
-								    effect = "slideLeft",
-								    time = Splash_TimeOut,
-								    params = { responseValue=response}
-								}
+						local options = {
+							effect = "slideLeft",
+							time = Splash_TimeOut,
+							params = { responseValue=response}
+						}
 
-								if GCMValue ~= "0" or isSimulator then
-									composer.gotoScene( "Controller.singInPage", options )
-								end
+						if GCMValue ~= "0" or isSimulator then
+							composer.gotoScene( "Controller.singInPage", options )
+						end
 
 						--end
-			end
+					end
 
-	end
+				end
 
 
 
-		function get_versionFromWeb(response)
+				function get_versionFromWeb(response)
 					
 
 					if system.getInfo( "environment" ) == "device" then
 
-						    print(system.getInfo( "appVersionString" ))
+						print(system.getInfo( "appVersionString" ))
 
 							--local alert = native.showAlert( response,system.getInfo( "appVersionString" ), { CommonWords.ok } )
 
@@ -381,25 +381,25 @@ function scene:show( event )
 
 							if (tonumber(responseVersion)<=tonumber(installedVersion)) then
 
-									AfterVersionCheck()
+								AfterVersionCheck()
 
 							else
 
 								local function onComplete( event )
 									if event.action == "clicked" then
 
-									    	if isAndroid then 
+										if isAndroid then 
 
-												system.openURL( "market://details?id=com.spanenterprises.myunitbuzz" )
+											system.openURL( "market://details?id=com.spanenterprises.myunitbuzz" )
 
-												os.exit()
+											os.exit()
 
-											elseif isIos then
+										elseif isIos then
 
-												system.openURL( "https://itunes.apple.com/in/app/myunitbuzz/id1068478993?mt=8" )
+											system.openURL( "https://itunes.apple.com/in/app/myunitbuzz/id1068478993?mt=8" )
 											
-											end
-									     
+										end
+										
 									end
 								end
 
@@ -416,70 +416,70 @@ function scene:show( event )
 
 
 							end
-					else
+						else
 
-						AfterVersionCheck()
-					
+							AfterVersionCheck()
+							
+						end
+
 					end
 
-		end
+
+					
+
+					if isAndroid then
+
+						Webservice.GetLatestVersionCommonApp("android",get_versionFromWeb)
+
+					elseif isIos then
+
+						Webservice.GetLatestVersionCommonApp("ios",get_versionFromWeb)
+					else
+
+						Webservice.GetLatestVersionCommonApp("android",get_versionFromWeb)
+
+					end
+
+					
+
+				elseif phase == "did" then
 
 
-		
+				end	
 
-		if isAndroid then
-
-			Webservice.GetLatestVersionCommonApp("android",get_versionFromWeb)
-
-		elseif isIos then
-
-			Webservice.GetLatestVersionCommonApp("ios",get_versionFromWeb)
-		else
-
-			Webservice.GetLatestVersionCommonApp("android",get_versionFromWeb)
-
-		end
-
-		
-
-	elseif phase == "did" then
-
-
-		end	
-
-	end
+			end
 
 
 
 
-	   function scene:hide( event )
+			function scene:hide( event )
 
-		local sceneGroup = self.view
-		local phase = event.phase
+				local sceneGroup = self.view
+				local phase = event.phase
 
-		    if event.phase == "will" then
-
-
-			elseif phase == "did" then
+				if event.phase == "will" then
 
 
-			end	
-
-		end
+				elseif phase == "did" then
 
 
-		function scene:destroy( event )
-			local sceneGroup = self.view
+				end	
+
+			end
+
+
+			function scene:destroy( event )
+				local sceneGroup = self.view
 
 
 
-		end
+			end
 
 
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
+			scene:addEventListener( "create", scene )
+			scene:addEventListener( "show", scene )
+			scene:addEventListener( "hide", scene )
+			scene:addEventListener( "destroy", scene )
 
 
-		return scene
+			return scene

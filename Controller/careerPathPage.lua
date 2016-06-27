@@ -75,35 +75,35 @@ end
 
 local function onKeyEvent( event )
 
-        local phase = event.phase
-        local keyName = event.keyName
+	local phase = event.phase
+	local keyName = event.keyName
 
-        if phase == "up" then
+	if phase == "up" then
 
-        if keyName=="back" then
+		if keyName=="back" then
 
-        	if BackFlag == false then
+			if BackFlag == false then
 
-        		Utils.SnackBar(ChatPage.PressAgain)
+				Utils.SnackBar(ChatPage.PressAgain)
 
-        		BackFlag = true
+				BackFlag = true
 
-        		timer.performWithDelay( 3000, onTimer )
+				timer.performWithDelay( 3000, onTimer )
 
-                return true
+				return true
 
-            elseif BackFlag == true then
+			elseif BackFlag == true then
 
-			 os.exit() 
+				os.exit() 
 
-            end
-            
-        end
+			end
+			
+		end
 
-    end
+	end
 
-        return false
- end
+	return false
+end
 
 
 
@@ -113,31 +113,31 @@ local function detailPageFun(event)
 
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
-		elseif ( event.phase == "moved" ) then
-			local dy = math.abs( ( event.y - event.yStart ) )
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
 
-			if ( dy > 10 ) then
-				display.getCurrentStage():setFocus( nil )
-				careerList_scrollview:takeFocus( event )
-			end
-			elseif event.phase == "ended" then
+		if ( dy > 10 ) then
 			display.getCurrentStage():setFocus( nil )
+			careerList_scrollview:takeFocus( event )
+		end
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 
-			local options = {
+		local options = {
 			isModal = true,
 			effect = "slideLeft",
 			time = 300,
 			params = {
-			contactId = event.target.id
+				contactId = event.target.id
+			}
 		}
-	}
 
-	Runtime:removeEventListener( "key", onKeyEvent )
+		Runtime:removeEventListener( "key", onKeyEvent )
 
-	composer.showOverlay( "Controller.careerPathDetailPage", options )
-end
+		composer.showOverlay( "Controller.careerPathDetailPage", options )
+	end
 
-return true
+	return true
 
 
 end
@@ -148,28 +148,28 @@ local function BgTouch(event)
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 
-		elseif ( event.phase == "moved" ) then
-			local dy = math.abs( ( event.y - event.yStart ) )
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
 
-			if ( dy > 10 ) then
-				display.getCurrentStage():setFocus( nil )
-				careerList_scrollview:takeFocus( event )
-			end
-			elseif event.phase == "ended" then
+		if ( dy > 10 ) then
 			display.getCurrentStage():setFocus( nil )
-			
-			if event.target.id == "hide" then
+			careerList_scrollview:takeFocus( event )
+		end
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+		
+		if event.target.id == "hide" then
 
-				if changeMenuGroup.isVisible == true then
-					changeMenuGroup.isVisible=false
-				else
-					changeMenuGroup.isVisible=true
-				end
-
+			if changeMenuGroup.isVisible == true then
+				changeMenuGroup.isVisible=false
+			else
+				changeMenuGroup.isVisible=true
 			end
-end
 
-return true
+		end
+	end
+
+	return true
 
 
 end
@@ -179,24 +179,24 @@ local function changeListmenuTouch(event)
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 
-		elseif ( event.phase == "moved" ) then
-			local dy = math.abs( ( event.y - event.yStart ) )
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
 
-			if ( dy > 10 ) then
-				display.getCurrentStage():setFocus( nil )
-				careerList_scrollview:takeFocus( event )
-			end
-			elseif event.phase == "ended" then
+		if ( dy > 10 ) then
 			display.getCurrentStage():setFocus( nil )
-			
-			if changeMenuGroup.isVisible == true then
-				changeMenuGroup.isVisible=false
-			else
-				changeMenuGroup.isVisible=true
-			end
-end
+			careerList_scrollview:takeFocus( event )
+		end
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
+		
+		if changeMenuGroup.isVisible == true then
+			changeMenuGroup.isVisible=false
+		else
+			changeMenuGroup.isVisible=true
+		end
+	end
 
-return true
+	return true
 
 
 end
@@ -214,7 +214,7 @@ local function careePath_list( list )
 	end
 
 	for i=1,#list do
-print("here")
+		print("here")
 
 
 		if i == 1 then 
@@ -313,26 +313,26 @@ print("here")
 					else
 
 						if Image then
-						Image:removeSelf();Image=nil
-						print(img_event.response.filename)
-						Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
-						Image.width=45;Image.height=38
-						Image.x=30;Image.y=background.y+background.contentHeight/2
+							Image:removeSelf();Image=nil
+							print(img_event.response.filename)
+							Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+							Image.width=45;Image.height=38
+							Image.x=30;Image.y=background.y+background.contentHeight/2
     				--event.row:insert(img_event.target)
 
 
     				local mask = graphics.newMask( "res/assert/masknew.png" )
 
-					Image:setMask( mask )
+    				Image:setMask( mask )
 
-    			    else
+    			else
 
-						Image:removeSelf();Image=nil
+    				Image:removeSelf();Image=nil
 
-					 end
     			end
+    		end
 
-    			end, "career"..list[i].Contact_Id..".png", system.TemporaryDirectory)
+    		end, "career"..list[i].Contact_Id..".png", system.TemporaryDirectory)
 		else
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2
@@ -340,7 +340,7 @@ print("here")
 		end
 
 
-			
+		
 
 
 
@@ -362,7 +362,7 @@ print("here")
 		local line = display.newRect(tempGroup,W/2,background.y,W,1)
 		line.y=background.y+background.contentHeight-line.contentHeight
 		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-	
+		
 
 		tempGroup.Contact_Id = list[i].Contact_Id
 
@@ -376,60 +376,60 @@ local function listPosition_change( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 
-		elseif ( event.phase == "moved" ) then
-			local dy = math.abs( ( event.y - event.yStart ) )
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
 
-			if ( dy > 10 ) then
-				display.getCurrentStage():setFocus( nil )
-				careerList_scrollview:takeFocus( event )
-			end
-		elseif event.phase == "ended" then
+		if ( dy > 10 ) then
 			display.getCurrentStage():setFocus( nil )
+			careerList_scrollview:takeFocus( event )
+		end
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 
-				local function action()
+		local function action()
 
-					if viewValue == "position" then
+			if viewValue == "position" then
 
-								local function compare(a,b)
-									return a.DisplayPosition < b.DisplayPosition
-								end
-
-								table.sort(byNameArray, compare)
-
-								careePath_list(byNameArray)
-
-					else
-
-			
-			
-								local function compare(a,b)
-									return a.Name:upper( ) < b.Name:upper( )
-								end
-
-								table.sort(byNameArray, compare)
-
-								careePath_list(byNameArray)
-
-							end
+				local function compare(a,b)
+					return a.DisplayPosition < b.DisplayPosition
 				end
 
-			if event.target.id == "bg" then
+				table.sort(byNameArray, compare)
 
-			elseif event.target.id == "name" then
-				changeMenuGroup.isVisible=false
-				viewValue="name"
-				action()
+				careePath_list(byNameArray)
 
-			elseif event.target.id == "position" then
-				changeMenuGroup.isVisible=false
-				viewValue="position"
-				action()
+			else
+
+				
+				
+				local function compare(a,b)
+					return a.Name:upper( ) < b.Name:upper( )
+				end
+
+				table.sort(byNameArray, compare)
+
+				careePath_list(byNameArray)
 
 			end
 		end
+
+		if event.target.id == "bg" then
+
+		elseif event.target.id == "name" then
+			changeMenuGroup.isVisible=false
+			viewValue="name"
+			action()
+
+		elseif event.target.id == "position" then
+			changeMenuGroup.isVisible=false
+			viewValue="position"
+			action()
+
+		end
+	end
 	
 
-return true
+	return true
 end
 
 
@@ -448,73 +448,73 @@ function get_Activeteammember(response)
 
 
 		
-							
+		
 --NameArray
 
 print("size = "..#List_array)
 
-						for i=1,#List_array do
+for i=1,#List_array do
 
-							local list_Name = List_array[i].Last_Name
+	local list_Name = List_array[i].Last_Name
 
-							
+	
 
-								if List_array[i].First_Name then
+	if List_array[i].First_Name then
 
-									list_Name = List_array[i].First_Name.." "..List_array[i].Last_Name
-
-								end
-
-							
-
-							print(list_Name)
-
-							local temp = {}
-
-							if list_Name:sub(1,1) == " " then
-								list_Name = list_Name:sub( 2,list_Name:len())
-							end
-
-							temp.Name = list_Name
-							temp.CarrierProgress = List_array[i].CarrierProgress
-							temp.Image_Path = List_array[i].Image_Path
-							temp.Contact_Id = List_array[i].Contact_Id
-							temp.DisplayPosition = List_array[i].DisplayPosition
-
-							byNameArray[#byNameArray+1] = temp
-
-
-						end
-
-
-							if viewValue == "position" then
-
-								function compare(a,b)
-									return a.DisplayPosition < b.DisplayPosition
-								end
-
-								table.sort(byNameArray, compare)
-
-								careePath_list(byNameArray)
-
-							else
-
-			
-			
-								function compare(a,b)
-									return a.Name:upper( ) < b.Name:upper( )
-								end
-
-								table.sort(byNameArray, compare)
-
-								careePath_list(byNameArray)
-
-							end
-	else
-
-		NoEvent.isVisible=true
+		list_Name = List_array[i].First_Name.." "..List_array[i].Last_Name
 
 	end
+
+	
+
+	print(list_Name)
+
+	local temp = {}
+
+	if list_Name:sub(1,1) == " " then
+		list_Name = list_Name:sub( 2,list_Name:len())
+	end
+
+	temp.Name = list_Name
+	temp.CarrierProgress = List_array[i].CarrierProgress
+	temp.Image_Path = List_array[i].Image_Path
+	temp.Contact_Id = List_array[i].Contact_Id
+	temp.DisplayPosition = List_array[i].DisplayPosition
+
+	byNameArray[#byNameArray+1] = temp
+
+
+end
+
+
+if viewValue == "position" then
+
+	function compare(a,b)
+		return a.DisplayPosition < b.DisplayPosition
+	end
+
+	table.sort(byNameArray, compare)
+
+	careePath_list(byNameArray)
+
+else
+
+	
+	
+	function compare(a,b)
+		return a.Name:upper( ) < b.Name:upper( )
+	end
+
+	table.sort(byNameArray, compare)
+
+	careePath_list(byNameArray)
+
+end
+else
+
+	NoEvent.isVisible=true
+
+end
 end
 
 
@@ -566,14 +566,14 @@ function scene:create( event )
 
 	careerList_scrollview = widget.newScrollView
 	{
-	top = RecentTab_Topvalue-5,
-	left = 0,
-	width = W,
-	height =H-RecentTab_Topvalue+5,
-	hideBackground = true,
-	isBounceEnabled=false,
-	horizontalScrollingDisabled = false,
-	verticalScrollingDisabled = false,
+		top = RecentTab_Topvalue-5,
+		left = 0,
+		width = W,
+		height =H-RecentTab_Topvalue+5,
+		hideBackground = true,
+		isBounceEnabled=false,
+		horizontalScrollingDisabled = false,
+		verticalScrollingDisabled = false,
 
    -- listener = scrollListener
 }
@@ -628,24 +628,24 @@ function scene:resumeGame(contactId)
 
 	local function OnAction( event )
 
-			if contactId == 0 and openPage == "careerPathPage" then
+		if contactId == 0 and openPage == "careerPathPage" then
 
-			    Runtime:addEventListener( "key", onKeyEvent )
-			    Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
+			Runtime:addEventListener( "key", onKeyEvent )
+			Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 
-			elseif contactId > 0 and openPage == "careerPathPage" then
+		elseif contactId > 0 and openPage == "careerPathPage" then
 
-				local options = {
+			local options = {
 				isModal = true,
 				effect = "slideLeft",
 				time = 300,
 				params = {
-				contactId = contactId,page = "career"
-					}
+					contactId = contactId,page = "career"
 				}
-					composer.showOverlay( "Controller.careerPathDetailPage", options )
+			}
+			composer.showOverlay( "Controller.careerPathDetailPage", options )
 
-			end
+		end
 
 	end
 
@@ -666,68 +666,68 @@ function scene:show( event )
 	if phase == "will" then
 
 
-		elseif phase == "did" then
+	elseif phase == "did" then
 
-			composer.removeHidden()
+		composer.removeHidden()
 
-			Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
-
-
-			menuBtn:addEventListener("touch",menuTouch)
-			BgText:addEventListener("touch",menuTouch)
-
-			Runtime:addEventListener( "key", onKeyEvent )
+		Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 
 
-		end	
-		MainGroup:insert(sceneGroup)
+		menuBtn:addEventListener("touch",menuTouch)
+		BgText:addEventListener("touch",menuTouch)
 
-	end
-
-	function scene:hide( event )
-
-		local sceneGroup = self.view
-		local phase = event.phase
-
-		if event.phase == "will" then
+		Runtime:addEventListener( "key", onKeyEvent )
 
 
-			elseif phase == "did" then
+	end	
+	MainGroup:insert(sceneGroup)
 
-				for i=1,#newtworkArray do
+end
 
-					network.cancel(newtworkArray[i])
-				end
+function scene:hide( event )
 
-				
+	local sceneGroup = self.view
+	local phase = event.phase
+
+	if event.phase == "will" then
 
 
-				for j=1,#careerListArray do 
-					if careerListArray[j] then careerListArray[j]:removeSelf();careerListArray[j] = nil	end
-				end
+	elseif phase == "did" then
 
-				menuBtn:removeEventListener("touch",menuTouch)
-				BgText:removeEventListener("touch",menuTouch)
+		for i=1,#newtworkArray do
 
-				Runtime:removeEventListener( "key", onKeyEvent )
-
-			end	
-
+			network.cancel(newtworkArray[i])
 		end
 
-
-		function scene:destroy( event )
-			local sceneGroup = self.view
+		
 
 
-
+		for j=1,#careerListArray do 
+			if careerListArray[j] then careerListArray[j]:removeSelf();careerListArray[j] = nil	end
 		end
 
+		menuBtn:removeEventListener("touch",menuTouch)
+		BgText:removeEventListener("touch",menuTouch)
 
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
+		Runtime:removeEventListener( "key", onKeyEvent )
+
+	end	
+
+end
 
 
-		return scene
+function scene:destroy( event )
+	local sceneGroup = self.view
+
+
+
+end
+
+
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
+
+
+return scene

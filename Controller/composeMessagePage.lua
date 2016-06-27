@@ -85,7 +85,7 @@ if isIos then
 
 	if (deviceModel == "iPhone") then	
 
-		 fieldOffset = 80
+		fieldOffset = 80
 
 	end
 
@@ -100,8 +100,8 @@ local fieldTrans = 200
 local UserId,MemberName
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-		UserId = row.UserId
-		MemberName = row.MemberName
+	UserId = row.UserId
+	MemberName = row.MemberName
 
 end
 
@@ -115,67 +115,67 @@ local targetaction = "compose"
 
 local function closeDetails( event )
 	if event.phase == "began" then
-			display.getCurrentStage():setFocus( event.target )
-	elseif event.phase == "ended" then
-			display.getCurrentStage():setFocus( nil )
+		display.getCurrentStage():setFocus( event.target )
+		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 
 	end
+
+	return true
+
+end
+
+local function attachClose(event)
+
+	if event.phase == "ended" then
+
+	if event.target.valuestring == "image" then
+
+		filename.text = ""
+
+		filename.isVisible = false
+
+		filename_title.isVisible = false
+
+		filename_close.isVisible = false
+
+		os.remove( event.target.filepath )
+
+		scrollView.y = scrollView.y-45
+
+		if Audio_filename_title.isVisible == true then
+			Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
+			Audio_filename.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
+			Audio_filename_close.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
+		end
+
+
+	elseif event.target.valuestring == "audio" then
+
+		Audio_filename.text = ""
+
+		Audio_filename.isVisible = false
+
+		Audio_filename_title.isVisible = false
+
+		Audio_filename_close.isVisible = false
+
+		os.remove( event.target.filepath )
+
+		scrollView.y = scrollView.y-45
+
+		if filename_title.isVisible == true then
+			filename_title.y = tabBar.y+tabBar.contentHeight+15
+			filename.y=filename_title.y+filename_title.contentHeight+5
+			filename_close.y=filename_title.y+filename_title.contentHeight+5
+		end
+		
+	end
+end
 
 return true
 
 end
-
-	local function attachClose(event)
-
-		if event.phase == "ended" then
-
-				if event.target.valuestring == "image" then
-
-					filename.text = ""
-
-					filename.isVisible = false
-
-					filename_title.isVisible = false
-
-					filename_close.isVisible = false
-
-					os.remove( event.target.filepath )
-
-					scrollView.y = scrollView.y-45
-
-					if Audio_filename_title.isVisible == true then
-						Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
-						Audio_filename.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
-						Audio_filename_close.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
-					end
-
-
-				elseif event.target.valuestring == "audio" then
-
-					Audio_filename.text = ""
-
-					Audio_filename.isVisible = false
-
-					Audio_filename_title.isVisible = false
-
-					Audio_filename_close.isVisible = false
-
-					os.remove( event.target.filepath )
-
-					scrollView.y = scrollView.y-45
-
-					if filename_title.isVisible == true then
-						filename_title.y = tabBar.y+tabBar.contentHeight+15
-						filename.y=filename_title.y+filename_title.contentHeight+5
-						filename_close.y=filename_title.y+filename_title.contentHeight+5
-					end
-							
-				end
-		end
-
-	return true
-
-	end
 
 
 
@@ -187,14 +187,14 @@ end
 
 
 local function selectionComplete ( event )
- 
-        local photo = event.target
+	
+	local photo = event.target
 
-        local baseDir = system.DocumentsDirectory
+	local baseDir = system.DocumentsDirectory
 
-        if photo then
+	if photo then
 
-        photo.x = display.contentCenterX
+		photo.x = display.contentCenterX
 		photo.y = display.contentCenterY
 		local w = photo.width
 		local h = photo.height
@@ -204,20 +204,20 @@ local function selectionComplete ( event )
 		photoheight1 = photo.height
 
 		local function rescale()
-					
-					if photo.width > W or photo.height > H then
+			
+			if photo.width > W or photo.height > H then
 
-						photo.width = photo.width/2
-						photo.height = photo.height/2
+				photo.width = photo.width/2
+				photo.height = photo.height/2
 
-						intiscale()
+				intiscale()
 
-					else
-               
-						return false
+			else
+				
+				return false
 
-					end
-				end
+			end
+		end
 
 		function intiscale()
 			
@@ -241,16 +241,16 @@ local function selectionComplete ( event )
 		photoname = "image"..os.date("%Y%m%d%H%M%S")..".png"
 
 
-        display.save(photo,photoname,system.DocumentsDirectory)
+		display.save(photo,photoname,system.DocumentsDirectory)
 
 		photo:removeSelf()
 
-        photo = nil
+		photo = nil
 
 
-        local path = system.pathForFile( photoname, system.DocumentsDirectory)
+		local path = system.pathForFile( photoname, system.DocumentsDirectory)
 
-        local size1 = lfs.attributes (path, "size")
+		local size1 = lfs.attributes (path, "size")
 
 		local fileHandle = io.open(path, "rb")
 
@@ -259,52 +259,52 @@ local function selectionComplete ( event )
 		io.close( fileHandle )
 
 
-          	formatSizeUnits(size1)
+		formatSizeUnits(size1)
 
 
-			if Audio_filename_title.isVisible == true then
+		if Audio_filename_title.isVisible == true then
 
 
-				print( Audio_filename_title.y , tabBar.y+tabBar.contentHeight+15  )
+			print( Audio_filename_title.y , tabBar.y+tabBar.contentHeight+15  )
 
-				if filename_title.isVisible == false and Audio_filename_title.y ==  tabBar.y+tabBar.contentHeight+15  then
+			if filename_title.isVisible == false and Audio_filename_title.y ==  tabBar.y+tabBar.contentHeight+15  then
 
-						print( "############" )
+				print( "############" )
 
-						filename_title.y=Audio_filename.y+20
-						scrollView.y = scrollView.y+45
-					
-
-			end
-
-			else
-
-
-				if filename_title.isVisible == false then
-
-					scrollView.y = scrollView.y+45
-					filename_title.y = tabBar.y+tabBar.contentHeight+15
-				end
+				filename_title.y=Audio_filename.y+20
+				scrollView.y = scrollView.y+45
+				
 
 			end
 
+		else
 
 
-			filename_title.isVisible = true
+			if filename_title.isVisible == false then
 
-			filename.isVisible = true
+				scrollView.y = scrollView.y+45
+				filename_title.y = tabBar.y+tabBar.contentHeight+15
+			end
 
-			filename_close.isVisible = true
-
-			filename_close.filepath = path
-
-			filename.text = photoname
-
-			filename.y=filename_title.y+filename_title.contentHeight+5
-			filename_close.y=filename_title.y+filename_title.contentHeight+5
+		end
 
 
-     end
+
+		filename_title.isVisible = true
+
+		filename.isVisible = true
+
+		filename_close.isVisible = true
+
+		filename_close.filepath = path
+
+		filename.text = photoname
+
+		filename.y=filename_title.y+filename_title.contentHeight+5
+		filename_close.y=filename_title.y+filename_title.contentHeight+5
+
+
+	end
 
 end
 
@@ -313,8 +313,8 @@ end
 local function sendAction( method,IsScheduled,Date,Time )
 
 --IsScheduled,Date.text,Time.text
-	  if (shortmsg_textbox.text ~= "") and (filename.text == "" and filename.isVisible == false )  and (Audio_filename.text == "" and Audio_filename.isVisible == false) then
-                
+if (shortmsg_textbox.text ~= "") and (filename.text == "" and filename.isVisible == false )  and (Audio_filename.text == "" and Audio_filename.isVisible == false) then
+	
                 -- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","","","","",method,"","","",get_messagemodel)
 
                 
@@ -328,491 +328,491 @@ local function sendAction( method,IsScheduled,Date,Time )
 
                 local options = {
 
-				effect = "slideRight",
-				time = 300,
-				params = { pushlistvalues = method,page = "compose"}
-	    }
+                	effect = "slideRight",
+                	time = 300,
+                	params = { pushlistvalues = method,page = "compose"}
+                }
 
-	    local listener = {}
-			function listener:timer( event )
-			    composer.gotoScene("Controller.pushNotificationListPage",options)
-			end
+                local listener = {}
+                function listener:timer( event )
+                	composer.gotoScene("Controller.pushNotificationListPage",options)
+                end
 
-			timer.performWithDelay( 1000, listener )
+                timer.performWithDelay( 1000, listener )
 
-		
-		 elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) and (filename.text ~= "" and filename.isVisible == true ) then
-
-		 	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
-					
-					ImagePath= filename.text or ""
-					AudioPath=Audio_filename.text or ""
-					VideoPath="NULL"
-					MyUnitBuzz_LongMessage=longMessage
-
-
-					local imgpath = system.pathForFile( filename.text, system.DocumentsDirectory)
-
-						        local Imagesize = lfs.attributes (imgpath, "size")
-
-								local fileHandle = io.open(imgpath, "rb")
-
-								local Img_file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
-
-								formatSizeUnits(Imagesize)
-
-
-						local ConversionFirstName,ConversionLastName,GroupName
-						local DocumentUpload = {}
-
-							ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
-
-						
-									  DocumentUpload[1] = {
-									  		UserId = UserId,
-									        File = Img_file_inbytearray,
-									        FileName = filename.text,
-									        FileType = "Images"
-									    }
-							local audio_path = system.pathForFile( Audio_filename.text, system.DocumentsDirectory)
-
-						    local Audiosize = lfs.attributes (audio_path, "size")
-
-							local audio_fileHandle = io.open(audio_path, "rb")
-
-							local audio_file_inbytearray = mime.b64( audio_fileHandle:read( "*a" ) )
-
-							formatSizeUnits(Audiosize)
-			
-				
-							  DocumentUpload [2]= {
-							  	UserId = UserId,
-							        File = audio_file_inbytearray,
-							        FileName = Audio_filename.text,
-							        FileType = "Audios"
-							    }
-
-			
-						--MessageFileType="Audios"
-							
-						MessageFileType="Images"
-
-					
-
-					 Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
-
-					spinner_show()
-
-					spinner.y=H/2-30
-
-					      	local options = {
-
-							effect = "slideRight",
-							time = 300,
-							params = { pushlistvalues = method,page = "compose"}
-				   			 }
-
-					    	local listener = {}
-							function listener:timer( event )
-							    composer.gotoScene("Controller.pushNotificationListPage",options)
-							end
-
-			timer.performWithDelay( 1000, listener )
-
-		  elseif (shortmsg_textbox.text ~= "") and (filename.text ~= "" and filename.isVisible == true ) then
-
-		        	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
-					
-					ImagePath= filename.text or ""
-					AudioPath="NULL"
-					VideoPath="NULL"
-					MyUnitBuzz_LongMessage=longMessage
-
-
-					local path = system.pathForFile( filename.text, system.DocumentsDirectory)
-
-						        local Imagesize = lfs.attributes (path, "size")
-
-								local fileHandle = io.open(path, "rb")
-
-								local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
-
-								formatSizeUnits(Imagesize)
-
-
-						local ConversionFirstName,ConversionLastName,GroupName
-						local DocumentUpload = {}
-
-							ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
-
-						
-									  DocumentUpload[1] = {
-									  		UserId = UserId,
-									        File = file_inbytearray,
-									        FileName = filename.text,
-									        FileType = "Images"
-									    }
-
-							
-						MessageFileType="Images"
-
-					
-
-					      Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
-
-					      	spinner_show()
-
-					      	spinner.y=H/2-30
-
-					      	local options = {
-
-							effect = "slideRight",
-							time = 300,
-							params = { pushlistvalues = method,page = "compose"}
-				    }
-
-	    local listener = {}
-			function listener:timer( event )
-			    composer.gotoScene("Controller.pushNotificationListPage",options)
-			end
-
-			timer.performWithDelay( 1000, listener )
-        	   --Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
-
-           elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) then
-
+                
+            elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) and (filename.text ~= "" and filename.isVisible == true ) then
 
             	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
-				
-			
-				ImagePath= ""
-				AudioPath=Audio_filename.text or ""
-				VideoPath="NULL"
-				MyUnitBuzz_LongMessage=longMessage
+            	
+            	ImagePath= filename.text or ""
+            	AudioPath=Audio_filename.text or ""
+            	VideoPath="NULL"
+            	MyUnitBuzz_LongMessage=longMessage
 
 
-							local path = system.pathForFile( Audio_filename.text, system.DocumentsDirectory)
+            	local imgpath = system.pathForFile( filename.text, system.DocumentsDirectory)
 
-						    local Audiosize = lfs.attributes (path, "size")
+            	local Imagesize = lfs.attributes (imgpath, "size")
 
-							local fileHandle = io.open(path, "rb")
+            	local fileHandle = io.open(imgpath, "rb")
 
-							local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+            	local Img_file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
 
-							formatSizeUnits(Audiosize)
-			
-				local ConversionFirstName,ConversionLastName,GroupName
-				local DocumentUpload = {}
+            	formatSizeUnits(Imagesize)
 
 
-				
-					ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+            	local ConversionFirstName,ConversionLastName,GroupName
+            	local DocumentUpload = {}
 
-				
-							  DocumentUpload[1] = {
-							  	UserId = UserId,
-							        File = file_inbytearray,
-							        FileName = Audio_filename.text,
-							        FileType = "Audios"
-							    }
+            	ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
 
-			
-				MessageFileType="Audios"
+            	
+            	DocumentUpload[1] = {
+            		UserId = UserId,
+            		File = Img_file_inbytearray,
+            		FileName = filename.text,
+            		FileType = "Images"
+            	}
+            	local audio_path = system.pathForFile( Audio_filename.text, system.DocumentsDirectory)
+
+            	local Audiosize = lfs.attributes (audio_path, "size")
+
+            	local audio_fileHandle = io.open(audio_path, "rb")
+
+            	local audio_file_inbytearray = mime.b64( audio_fileHandle:read( "*a" ) )
+
+            	formatSizeUnits(Audiosize)
+            	
+            	
+            	DocumentUpload [2]= {
+            		UserId = UserId,
+            		File = audio_file_inbytearray,
+            		FileName = Audio_filename.text,
+            		FileType = "Audios"
+            	}
+
+            	
+						--MessageFileType="Audios"
+						
+						MessageFileType="Images"
+
+						
+
+						Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
+
+						spinner_show()
+
+						spinner.y=H/2-30
+
+						local options = {
+
+							effect = "slideRight",
+							time = 300,
+							params = { pushlistvalues = method,page = "compose"}
+						}
+
+						local listener = {}
+						function listener:timer( event )
+							composer.gotoScene("Controller.pushNotificationListPage",options)
+						end
+
+						timer.performWithDelay( 1000, listener )
+
+					elseif (shortmsg_textbox.text ~= "") and (filename.text ~= "" and filename.isVisible == true ) then
+
+						local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+						
+						ImagePath= filename.text or ""
+						AudioPath="NULL"
+						VideoPath="NULL"
+						MyUnitBuzz_LongMessage=longMessage
+
+
+						local path = system.pathForFile( filename.text, system.DocumentsDirectory)
+
+						local Imagesize = lfs.attributes (path, "size")
+
+						local fileHandle = io.open(path, "rb")
+
+						local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+						formatSizeUnits(Imagesize)
+
+
+						local ConversionFirstName,ConversionLastName,GroupName
+						local DocumentUpload = {}
+
+						ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+						
+						DocumentUpload[1] = {
+							UserId = UserId,
+							File = file_inbytearray,
+							FileName = filename.text,
+							FileType = "Images"
+						}
+
+						
+						MessageFileType="Images"
+
+						
+
+						Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
+
+						spinner_show()
+
+						spinner.y=H/2-30
+
+						local options = {
+
+							effect = "slideRight",
+							time = 300,
+							params = { pushlistvalues = method,page = "compose"}
+						}
+
+						local listener = {}
+						function listener:timer( event )
+							composer.gotoScene("Controller.pushNotificationListPage",options)
+						end
+
+						timer.performWithDelay( 1000, listener )
+        	   --Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
+
+        	elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) then
+
+
+        		local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+        		
+        		
+        		ImagePath= ""
+        		AudioPath=Audio_filename.text or ""
+        		VideoPath="NULL"
+        		MyUnitBuzz_LongMessage=longMessage
+
+
+        		local path = system.pathForFile( Audio_filename.text, system.DocumentsDirectory)
+
+        		local Audiosize = lfs.attributes (path, "size")
+
+        		local fileHandle = io.open(path, "rb")
+
+        		local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+        		formatSizeUnits(Audiosize)
+        		
+        		local ConversionFirstName,ConversionLastName,GroupName
+        		local DocumentUpload = {}
+
+
+        		
+        		ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+        		
+        		DocumentUpload[1] = {
+        			UserId = UserId,
+        			File = file_inbytearray,
+        			FileName = Audio_filename.text,
+        			FileType = "Audios"
+        		}
+
+        		
+        		MessageFileType="Audios"
 
 
 
-				Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
+        		Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,shortmsg_textbox.text,longMessage,IsScheduled,Date,Time,"",filename.text,filename.text,Imagesize,"","","",method,"","","",get_messagemodel)
 
-				spinner_show()
+        		spinner_show()
 
-				 spinner.y=H/2-20
+        		spinner.y=H/2-20
 
-				 local options = {
+        		local options = {
 
-				effect = "slideRight",
-				time = 300,
-				params = { pushlistvalues = method,page = "compose"}
-	    }
+        			effect = "slideRight",
+        			time = 300,
+        			params = { pushlistvalues = method,page = "compose"}
+        		}
 
-	    local listener = {}
-			function listener:timer( event )
-			    composer.gotoScene("Controller.pushNotificationListPage",options)
-			end
+        		local listener = {}
+        		function listener:timer( event )
+        			composer.gotoScene("Controller.pushNotificationListPage",options)
+        		end
 
-			timer.performWithDelay( 1000, listener )
+        		timer.performWithDelay( 1000, listener )
             	-- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
             end
 
             if Audio_filename.isVisible == true and filename.isVisible == true then
 
-            	 spinner.y=H/2+12
+            	spinner.y=H/2+12
 
             end
+
+        end
+
+
+
+        local function sendMessage ( method )
+
+        if shortmsg_textbox.text == nil  then shortmsg_textbox.text = "" end
+        if longMessage == nil  then longMessage = "" end
+
+
+        if method == "SCHEDULE" then
+
+
+        	GetScheduleMessageAlertPopup()
+
+        	ScheduledMessageGroup.isVisible = true
+
+        	longmsg_textbox.isVisible = false
+        	shortmsg_textbox.isVisible = false
+
+
+        	function onTimePickerTouch(event)
+
+        		local function getValue(time)
+
+        			Time.text = time
+
+        		end
+
+
+        		local function getDateValue(time)
+
+        			Date.text = time
+
+        		end
+
+
+        		if event.target.id == "time" then
+
+        			timePicker.getTimeValue(getValue)
+
+        		elseif event.target.id == "date" then
+
+        			datePicker.getTimeValue(getDateValue)
+
+        		end  
+
+        	end
+
+
+
+        	function onScheduleButtonTouch( event )
+
+        		if event.phase == "began" then
+
+
+        			elseif event.phase == "ended" then
+
+        			native.setKeyboardFocus(nil)
+
+        			if event.target.id == "set-time" then
+
+        				if Date.text ~= "Date" and Time.text ~= "Time" then
+
+        					IsScheduled = tostring(true)
+--IsScheduled,Date.text,Time.text
+
+
+sendAction(method,IsScheduled,Date.text,Time.text)
+
+
+ScheduledMessageGroup.isVisible = false
+
+local function onTimer(event)
+
+	longmsg_textbox.isVisible = true
+	shortmsg_textbox.isVisible = true
+
+end
+
+timer.performWithDelay(500,onTimer)
+
+end
+
+elseif event.target.id == "closealert" then
+
+
+	if datePicker then datePicker.clear() end
+
+	if timePicker then timePicker.clear() end
+
+	ScheduledMessageGroup.isVisible = false
+
+	local function onTimer(event)
+
+		longmsg_textbox.isVisible = true
+		shortmsg_textbox.isVisible = true
+
+	end
+
+	timer.performWithDelay(500,onTimer)
+end
+
+end
+
+end
+
+Time_bg:addEventListener("touch",onTimePickerTouch)
+TimeSelect_icon:addEventListener("touch",onTimePickerTouch)
+Time:addEventListener("touch",onTimePickerTouch)
+
+Date_bg:addEventListener("touch",onTimePickerTouch)
+Date:addEventListener("touch",onTimePickerTouch)
+DateSelect_icon:addEventListener("touch",onTimePickerTouch)
+
+acceptschedule_button:addEventListener("touch",onScheduleButtonTouch) 	
+Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
+
+else
+
+
+	sendAction(method,"","","")
+
+
+end
 
 end
 
 
 
-    local function sendMessage ( method )
 
-		    if shortmsg_textbox.text == nil  then shortmsg_textbox.text = "" end
-		    if longMessage == nil  then longMessage = "" end
 
+local function SetError( displaystring, object )
 
-	    if method == "SCHEDULE" then
+	object.text=displaystring
+	object.size=11
+	object:setTextColor(1,0,0)
 
+end
 
-	    		GetScheduleMessageAlertPopup()
 
-	        	ScheduledMessageGroup.isVisible = true
 
-	        	longmsg_textbox.isVisible = false
-    	 		shortmsg_textbox.isVisible = false
 
+function onSendButtonTouchAction(event)
 
-					function onTimePickerTouch(event)
+local phase = event.phase
 
-						    	local function getValue(time)
+if phase=="began" then
 
-									Time.text = time
+	display.getCurrentStage():setFocus( event.target )
 
-								end
+	elseif phase=="ended" then
 
+	defalutValue = "corona="
 
-						    	local function getDateValue(time)
+	local validation = false
+	
 
-									Date.text = time
+	native.setKeyboardFocus(nil)
 
-								end
+	display.getCurrentStage():setFocus( nil )
 
+	local function senTimerFun( time_event )
 
-								if event.target.id == "time" then
+		status="normal"
 
-									timePicker.getTimeValue(getValue)
 
-								elseif event.target.id == "date" then
+		if (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) or (longMessage:len() < 62  or longMessage == nil) then
 
-									datePicker.getTimeValue(getDateValue)
+			if event.target.id == "send" or event.target.id == "send icon" or event.target.id == "send_icon_text" then 
 
-								end  
+			local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
 
-				    end
+		elseif event.target.id == "draft" or event.target.id == "draft icon" or event.target.id == "draft_icon_text" then
 
+			local alert = native.showAlert( MessagePage.SavingFailed , MessagePage.ErrorText , { CommonWords.ok } )
 
+		elseif event.target.id == "schedule" or event.target.id == "schedule icon" or event.target.id == "schedule_icon_text" then
 
-    			function onScheduleButtonTouch( event )
+			local alert = native.showAlert( MessagePage.SchedulingFailed , MessagePage.ErrorText , { CommonWords.ok } )
 
-					if event.phase == "began" then
+			ScheduledMessageGroup.isVisible = false
 
+			longmsg_textbox.isVisible = true
 
-					elseif event.phase == "ended" then
+			shortmsg_textbox.isVisible = true
 
-						native.setKeyboardFocus(nil)
+		end
 
-							if event.target.id == "set-time" then
-
-								if Date.text ~= "Date" and Time.text ~= "Time" then
-
-									IsScheduled = tostring(true)
---IsScheduled,Date.text,Time.text
-
-					 				   
-									sendAction(method,IsScheduled,Date.text,Time.text)
-
-
-										ScheduledMessageGroup.isVisible = false
-
-										local function onTimer(event)
-
-										longmsg_textbox.isVisible = true
-				    	                shortmsg_textbox.isVisible = true
-
-				    	                end
-
-    	               					 timer.performWithDelay(500,onTimer)
-
-								end
-
-							elseif event.target.id == "closealert" then
-
-
-			 					if datePicker then datePicker.clear() end
-
-								if timePicker then timePicker.clear() end
-
-								ScheduledMessageGroup.isVisible = false
-
-					     		    local function onTimer(event)
-
-									longmsg_textbox.isVisible = true
-			    	                shortmsg_textbox.isVisible = true
-
-			    	                end
-
-    	                			timer.performWithDelay(500,onTimer)
-				end
-
-		    end
-
-	    end
-
-	        Time_bg:addEventListener("touch",onTimePickerTouch)
-	        TimeSelect_icon:addEventListener("touch",onTimePickerTouch)
-	        Time:addEventListener("touch",onTimePickerTouch)
-
-	        Date_bg:addEventListener("touch",onTimePickerTouch)
-	        Date:addEventListener("touch",onTimePickerTouch)
-	        DateSelect_icon:addEventListener("touch",onTimePickerTouch)
-
-	 		acceptschedule_button:addEventListener("touch",onScheduleButtonTouch) 	
-	        Alertclose_icon:addEventListener("touch",onScheduleButtonTouch)
-
-        else
-
-
-		  	sendAction(method,"","","")
-
-
-        end
-
-    end
-
-
-
- 
-
-	local function SetError( displaystring, object )
-
-		object.text=displaystring
-		object.size=11
-		object:setTextColor(1,0,0)
+		return false
 
 	end
 
 
 
 
- 	 function onSendButtonTouchAction(event)
+	if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (test ~= "" or test ~= nil) then
 
-    	local phase = event.phase
-
-    	if phase=="began" then
-
-    		display.getCurrentStage():setFocus( event.target )
-
-    	elseif phase=="ended" then
-
-    		  defalutValue = "corona="
-
-    	    local validation = false
-   	    
-
-  	    	native.setKeyboardFocus(nil)
-
-    	    display.getCurrentStage():setFocus( nil )
-
-    	    local function senTimerFun( time_event )
-
-	    	    status="normal"
+		if event.target.id == "send" or event.target.id == "send icon" or event.target.id == "send_icon_text" then
 
 
-				if (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) or (longMessage:len() < 62  or longMessage == nil) then
+		sendMessage("SEND")
+		
+	elseif event.target.id == "draft" or event.target.id == "draft icon" or event.target.id == "draft_icon_text" then
 
-					    if event.target.id == "send" or event.target.id == "send icon" or event.target.id == "send_icon_text" then 
+		sendMessage("DRAFT")
 
-							local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
+	elseif event.target.id == "schedule" or event.target.id == "schedule icon" or event.target.id == "schedule_icon_text" then
 
-						elseif event.target.id == "draft" or event.target.id == "draft icon" or event.target.id == "draft_icon_text" then
+		GetScheduleMessageAlertPopup()
 
-							local alert = native.showAlert( MessagePage.SavingFailed , MessagePage.ErrorText , { CommonWords.ok } )
+		ScheduledMessageGroup.isVisible = true
 
-					    elseif event.target.id == "schedule" or event.target.id == "schedule icon" or event.target.id == "schedule_icon_text" then
+		longmsg_textbox.isVisible = false
+		shortmsg_textbox.isVisible = false
 
-							local alert = native.showAlert( MessagePage.SchedulingFailed , MessagePage.ErrorText , { CommonWords.ok } )
+		sendMessage("SCHEDULE")
+		
+	else
 
-					    ScheduledMessageGroup.isVisible = false
+	end
 
-					    longmsg_textbox.isVisible = true
+	return false
 
-					    shortmsg_textbox.isVisible = true
-
-					    end
-
-					return false
-
-		        end
+end
 
 
 
 
-		        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (test ~= "" or test ~= nil) then
+if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (longMessage == "" or longMessage == nil) then
 
-						    if event.target.id == "send" or event.target.id == "send icon" or event.target.id == "send_icon_text" then
+	validation = false
 
+	SetError("*".."Enter the Long Message",longmsg_textbox)
 
-						        sendMessage("SEND")
-		                        
-							elseif event.target.id == "draft" or event.target.id == "draft icon" or event.target.id == "draft_icon_text" then
-
-							    sendMessage("DRAFT")
-
-							elseif event.target.id == "schedule" or event.target.id == "schedule icon" or event.target.id == "schedule_icon_text" then
-
-		    	    	        GetScheduleMessageAlertPopup()
-
-								ScheduledMessageGroup.isVisible = true
-
-								longmsg_textbox.isVisible = false
-								shortmsg_textbox.isVisible = false
-
-								sendMessage("SCHEDULE")
-								
-							else
-
-						    end
-
-					  return false
-
-		        end
+	return false
 
 
+end
 
 
-		        if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (longMessage == "" or longMessage == nil) then
+if (test ~= "" or test ~= nil) and (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) then
 
-		        	        validation = false
+	validation = false
 
-	    	    	    	SetError("*".."Enter the Long Message",longmsg_textbox)
+	SetError("*".."Enter the Short Message",shortmsg_textbox)
 
-	    	    	    	return false
+	return false
 
-
-		        end
-
-
-		        if (test ~= "" or test ~= nil) and (shortmsg_textbox.text == "" or shortmsg_textbox.text == nil) then
-
-		        	        validation = false
-
-	    	    	    	SetError("*".."Enter the Short Message",shortmsg_textbox)
-
-	    	    	    	return false
-
-		        end
+end
 
 
-		    end
+end
 
-		    sendTimer = timer.performWithDelay( 1000, senTimerFun )
+sendTimer = timer.performWithDelay( 1000, senTimerFun )
 
 ---------------------------
 
-    	end
+end
 
-    	return true
+return true
 
-    end
+end
 
 
 
@@ -822,11 +822,11 @@ MainGroupY = MainGroup.y
 
 
 local function moveFieldsDown()
-    transition.to( MainGroup, { time=fieldTrans, y=(MainGroupY)} )
+	transition.to( MainGroup, { time=fieldTrans, y=(MainGroupY)} )
 end
- 
+
 local function moveFieldsUp()
-    transition.to( MainGroup, { time=fieldTrans, y=(MainGroupY - fieldOffset)} )
+	transition.to( MainGroup, { time=fieldTrans, y=(MainGroupY - fieldOffset)} )
 end
 
 
@@ -847,12 +847,12 @@ end
 
 
 function urlDecode( str )
-    assert( type(str)=='string', "urlDecode: input not a string" )
-    str = string.gsub (str, "+", " ")
-    str = string.gsub (str, "%%(%x%x)",
-        function(h) return string.char(tonumber(h,16)) end)
-    str = string.gsub (str, "\r\n", "\n")
-    return str
+	assert( type(str)=='string', "urlDecode: input not a string" )
+	str = string.gsub (str, "+", " ")
+	str = string.gsub (str, "%%(%x%x)",
+		function(h) return string.char(tonumber(h,16)) end)
+	str = string.gsub (str, "\r\n", "\n")
+	return str
 end
 
 
@@ -867,26 +867,26 @@ local function FocusComplete( event )
 		native.setKeyboardFocus(nil)
 		display.getCurrentStage():setFocus( event.target )
 
-		 if (pHeight <= 960) then
+		if (pHeight <= 960) then
 
 			moveFieldsDown()
 
-		 end
+		end
 
 
-	elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 
-	    display.getCurrentStage():setFocus( nil )
+		display.getCurrentStage():setFocus( nil )
 
-         if (pHeight <= 960) then
+		if (pHeight <= 960) then
 
-   		  moveFieldsDown()
+			moveFieldsDown()
 
-   		 end
+		end
 
 	end
 
-	   return true
+	return true
 
 end 
 
@@ -894,210 +894,194 @@ end
 
 local function TextLimitation( event )
 
-       if event.phase == "began" then
+	if event.phase == "began" then
 
-       elseif event.phase == "submitted" then
+	elseif event.phase == "submitted" then
 
 
-                    if event.target.id =="longmessage" then
+		if event.target.id =="longmessage" then
 
-                           native.setKeyboardFocus( nil )
+			native.setKeyboardFocus( nil )
 
-                            if (pHeight <= 960) then
+			if (pHeight <= 960) then
 
-                             moveFieldsDown()
+				moveFieldsDown()
 
-                            end
+			end
 
-                   end
+		end
 
-                   
-                  if (pHeight <= 960) then
+		
+		if (pHeight <= 960) then
 
-                        moveFieldsDown()
+			moveFieldsDown()
 
-                  end
+		end
 
 
 
 
-       elseif event.phase == "editing" then
+	elseif event.phase == "editing" then
 
-                    if event.target.id =="shortmessage" then
+		if event.target.id =="shortmessage" then
 
-                            if (string.len(event.target.text) > 250) then
+			if (string.len(event.target.text) > 250) then
 
-                                event.target.text = event.target.text:sub(1, 250)
+				event.target.text = event.target.text:sub(1, 250)
 
-                            end
+			end
 
 
-                            if (string.len(event.target.text) <= 250) then
+			if (string.len(event.target.text) <= 250) then
 
-                                      counttext = 250 - string.len(event.target.text).. MessagePage.characters
+				counttext = 250 - string.len(event.target.text).. MessagePage.characters
 
-                                      short_msg_charlimit.text = counttext
+				short_msg_charlimit.text = counttext
 
-                            end
+			end
 
 
-                            if (string.len(event.target.text) <= 0 ) then
+			if (string.len(event.target.text) <= 0 ) then
 
-                                     short_msg_charlimit.text = "250"..MessagePage.characters
+				short_msg_charlimit.text = "250"..MessagePage.characters
 
-                            end
+			end
 
 
 
-                            if (event.newCharacters=="\n") then
+			if (event.newCharacters=="\n") then
 
-                                 shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
+				shortmsg_textbox.text = string.gsub( shortmsg_textbox.text,"%\n","" )
 
-                                      if ( (event.startPosition == 1) and string.find( shortmsg_textbox.text , "", 1 )) then
+				if ( (event.startPosition == 1) and string.find( shortmsg_textbox.text , "", 1 )) then
 
-                                        short_msg_charlimit.text = "250".. MessagePage.characters
+					short_msg_charlimit.text = "250".. MessagePage.characters
 
-                                        native.setKeyboardFocus( longmsg_textbox )
+					native.setKeyboardFocus( longmsg_textbox )
 
-                                    else
+				else
 
 
-                                        if isAndroid then
+					if isAndroid then
 
-                                          shortlen = string.len(shortmsg_textbox.text) - 1
+						shortlen = string.len(shortmsg_textbox.text) - 1
 
-                                        short_msg_charlimit.text = 250 - shortlen.. MessagePage.characters
+						short_msg_charlimit.text = 250 - shortlen.. MessagePage.characters
 
-                                        native.setKeyboardFocus( longmsg_textbox )
+						native.setKeyboardFocus( longmsg_textbox )
 
-                                        elseif isIos then
+					elseif isIos then
 
-                                        shortlen = string.len(shortmsg_textbox.text)
+						shortlen = string.len(shortmsg_textbox.text)
 
-                                        short_msg_charlimit.text = 250 - shortlen.. MessagePage.characters
+						short_msg_charlimit.text = 250 - shortlen.. MessagePage.characters
 
-                                        native.setKeyboardFocus( longmsg_textbox )
+						native.setKeyboardFocus( longmsg_textbox )
 
-                                        end
+					end
 
-                                    end
+				end
 
-                            end
+			end
 
 
 
-                            if page == "edit" then
+			if page == "edit" then
 
-                                short_msg_charlimit.text = counttext
+				short_msg_charlimit.text = counttext
 
-                            end
+			end
 
 
-                    end
+		end
 
 
 
 
 
-            elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 
-                  native.setKeyboardFocus( nil )
+		native.setKeyboardFocus( nil )
 
 
-                  if (pHeight <= 960) then
+		if (pHeight <= 960) then
 
-                        moveFieldsDown()
+			moveFieldsDown()
 
-                  end
+		end
 
-          end
+	end
 
-   end
+end
 
 
 
-		local function onKeyEventDetail( event )
+local function onKeyEventDetail( event )
 
-		        local phase = event.phase
-		        local keyName = event.keyName
+	local phase = event.phase
+	local keyName = event.keyName
 
-		        if phase == "up" then
+	if phase == "up" then
 
-		        if keyName=="back" then
+		if keyName=="back" then
 
-		        	ScheduledMessageGroup.isVisible = false
+			ScheduledMessageGroup.isVisible = false
 
-		        	if datePicker then datePicker.clear() end
+			if datePicker then datePicker.clear() end
 
-		        	if timePicker then timePicker.clear() end
+			if timePicker then timePicker.clear() end
 
-		        	composer.hideOverlay( "slideRight", 300 )
+			composer.hideOverlay( "slideRight", 300 )
 
 		        	--scrollTo(0)
 
 		        	return true
-		            
+		        	
 		        end
 
 		    end
 
-		        return false
-		 end
+		    return false
+		end
 
 
 
 
 
 
- function formatSizeUnits(event)
+		function formatSizeUnits(event)
 
-      if (event>=1073741824) then 
+			if (event>=1073741824) then 
 
-      	size =(event/1073741824)..' GB'
-
-
-      elseif (event>=1048576) then   
-
-       	size =(event/1048576)..' MB'
-
-	  
-	  elseif (event > 10485760) then
+				size =(event/1073741824)..' GB'
 
 
-	    local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+			elseif (event>=1048576) then   
 
-	       
-      elseif (event>=1024)  then   
+				size =(event/1048576)..' MB'
 
-      	size = (event/1024)..' KB'
-
-
-      else      
-
-  	  end
+				
+			elseif (event > 10485760) then
 
 
-end
+				local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+
+				
+			elseif (event>=1024)  then   
+
+				size = (event/1024)..' KB'
 
 
+			else      
 
-function scene:CancelRecordedAudio(data)
+			end
 
-	shortmsg_textbox.isVisible = true
 
-	longmsg_textbox.isVisible = true
-
-end
+		end
 
 
 
-
-function scene:updateRecordedAudio( dataFileName,audiopagename )
-
-	print( "!@#" )
-	--composer.removeHidden(  )
-
-		local function onTimerRecord( event )
+		function scene:CancelRecordedAudio(data)
 
 			shortmsg_textbox.isVisible = true
 
@@ -1105,137 +1089,153 @@ function scene:updateRecordedAudio( dataFileName,audiopagename )
 
 		end
 
-		timer.performWithDelay(500,onTimerRecord)
+
+
+
+		function scene:updateRecordedAudio( dataFileName,audiopagename )
+
+			print( "!@#" )
+	--composer.removeHidden(  )
+
+	local function onTimerRecord( event )
+
+		shortmsg_textbox.isVisible = true
+
+		longmsg_textbox.isVisible = true
+
+	end
+
+	timer.performWithDelay(500,onTimerRecord)
 
 
 	--local nn = native.showAlert("MUB","HELLO Message" ,{"ok"})
 
 
-	       dataFileName1 = dataFileName
+	dataFileName1 = dataFileName
 
-	       audiopagename = "audiopage"
+	audiopagename = "audiopage"
 
 	       --audio work
 
 
 
-		   local filePath = system.pathForFile( dataFileName1, system.DocumentsDirectory )
+	       local filePath = system.pathForFile( dataFileName1, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
 		            
-			            if file then
-			                io.close( file )
-			            else
-			            	audiovalue="test.wav"
-				           	filePath = system.pathForFile( dataFileName1, system.DocumentsDirectory )
-			            end
+		            if file then
+		            	io.close( file )
+		            else
+		            	audiovalue="test.wav"
+		            	filePath = system.pathForFile( dataFileName1, system.DocumentsDirectory )
+		            end
 
 
-					        local size2 = lfs.attributes(filePath, "size")
+		            local size2 = lfs.attributes(filePath, "size")
 
-							local fileHandle = io.open(filePath, "rb")
+		            local fileHandle = io.open(filePath, "rb")
 
-							local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+		            local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
 
-							formatSizeUnits(size2)
-
-
-
-			if filename_title.isVisible == true then
-
-				print( filename_title.y , tabBar.y+tabBar.contentHeight+15  )
-				if Audio_filename_title.isVisible == false and filename_title.y == tabBar.y+tabBar.contentHeight+15  then
-
-						Audio_filename_title.y=filename.y+20
-						scrollView.y = scrollView.y+45
-				end
-
-			else
-				if Audio_filename_title.isVisible == false then
-					Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
-					scrollView.y = scrollView.y+45
-				end
-			end
+		            formatSizeUnits(size2)
 
 
 
-			Audio_filename_title.isVisible = true
+		            if filename_title.isVisible == true then
 
-			Audio_filename.isVisible = true
+		            	print( filename_title.y , tabBar.y+tabBar.contentHeight+15  )
+		            	if Audio_filename_title.isVisible == false and filename_title.y == tabBar.y+tabBar.contentHeight+15  then
 
-			Audio_filename_close.isVisible = true
+		            		Audio_filename_title.y=filename.y+20
+		            		scrollView.y = scrollView.y+45
+		            	end
 
-			Audio_filename_close.filepath = filePath
-
-			Audio_filename.text = dataFileName1
-
-
-				Audio_filename.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
-				Audio_filename_close.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
-
-			
-
-	
-end
+		            else
+		            	if Audio_filename_title.isVisible == false then
+		            		Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
+		            		scrollView.y = scrollView.y+45
+		            	end
+		            end
 
 
 
+		            Audio_filename_title.isVisible = true
 
-local function attachAction( event )
+		            Audio_filename.isVisible = true
 
-	if event.phase == "began" then
+		            Audio_filename_close.isVisible = true
 
-	elseif event.phase == "ended" then
+		            Audio_filename_close.filepath = filePath
 
-			shortmsg_textbox.isVisible=true
-				
-				AttachmentGroup.alpha=0
-				AttachmentGroup:toFront( )
+		            Audio_filename.text = dataFileName1
 
-		if event.target.id =="camera" then
 
-				if media.hasSource( media.Camera ) then
+		            Audio_filename.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
+		            Audio_filename_close.y=Audio_filename_title.y+Audio_filename_title.contentHeight+5
 
-					timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
-					end )
+		            
 
-			    else
+		            
+		        end
 
-			    	local image1 = native.showAlert( "Camera Unavailable", "Camera is not supported in this device", { CommonWords.ok } )
 
-				end
 
-		elseif event.target.id == "gallery" then
 
-				if media.hasSource( PHOTO_FUNCTION  ) then
+		        local function attachAction( event )
 
-					timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
-					end )
+		        	if event.phase == "began" then
 
-				end
+		        		elseif event.phase == "ended" then
 
-		elseif event.target.id == "audio" then
+		        		shortmsg_textbox.isVisible=true
+		        		
+		        		AttachmentGroup.alpha=0
+		        		AttachmentGroup:toFront( )
 
-					for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-							UserId = row.UserId
-							ContactId = row.ContactId
-							MemberName = row.MemberName
+		        		if event.target.id =="camera" then
 
-					end
+		        			if media.hasSource( media.Camera ) then
 
-			    local MessageType=""
+		        				timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+		        					end )
 
-			    local options = {
+		        			else
 
-				      		effect = "fromTop",
-							time = 200,	
-								params = {
-								contactId = ContactId,
-								MessageType = MessageType,
-								page = "compose"
-							}
+		        				local image1 = native.showAlert( "Camera Unavailable", "Camera is not supported in this device", { CommonWords.ok } )
 
-							}
+		        			end
+
+		        		elseif event.target.id == "gallery" then
+
+		        			if media.hasSource( PHOTO_FUNCTION  ) then
+
+		        				timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+		        					end )
+
+		        			end
+
+		        		elseif event.target.id == "audio" then
+
+		        			for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		        				UserId = row.UserId
+		        				ContactId = row.ContactId
+		        				MemberName = row.MemberName
+
+		        			end
+
+		        			local MessageType=""
+
+		        			local options = {
+
+		        				effect = "fromTop",
+		        				time = 200,	
+		        				params = {
+		        					contactId = ContactId,
+		        					MessageType = MessageType,
+		        					page = "compose"
+		        				}
+
+		        			}
 
 			--if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
 			--if shortmsg_textbox then shortmsg_textbox:removeSelf( );shortmsg_textbox=nil end
@@ -1243,13 +1243,13 @@ local function attachAction( event )
 			longmsg_textbox.isVisible = false
 			shortmsg_textbox.isVisible = false
 
-		    composer.showOverlay( "Controller.audioRecordPage",options)
+			composer.showOverlay( "Controller.audioRecordPage",options)
 
 		end
 
 	end
 
-return true
+	return true
 
 end
 
@@ -1258,86 +1258,86 @@ end
 
 
 local function webListener( event )
-    local url = event.url
-   
-    if 1 == string.find( url, "corona:close" ) then
-     
-        longmsg_textbox.isVisible=false
-       
-        updatedresponse = urlDecode(url)
+	local url = event.url
+	
+	if 1 == string.find( url, "corona:close" ) then
+		
+		longmsg_textbox.isVisible=false
+		
+		updatedresponse = urlDecode(url)
 
 
-        longMessage = (string.sub( updatedresponse, 13,updatedresponse:len() ))
+		longMessage = (string.sub( updatedresponse, 13,updatedresponse:len() ))
 
-        local method = ""
- 			
- 			if string.find( longMessage, "Send" ) then
+		local method = ""
+		
+		if string.find( longMessage, "Send" ) then
 
- 				method="SEND"
+		method="SEND"
 
- 				longMessage = string.gsub( longMessage, "Send", "" )
+		longMessage = string.gsub( longMessage, "Send", "" )
 
- 			elseif string.find( longMessage, "Draft" ) then
+	elseif string.find( longMessage, "Draft" ) then
 
- 				method="DRAFT"
+		method="DRAFT"
 
- 				longMessage = string.gsub( longMessage, "Draft", "" )
-
-
- 			elseif string.find( longMessage, "Schedule" ) then
-
- 				method="SCHEDULE"
-
- 				longMessage = string.gsub( longMessage, "Schedule", "" )
+		longMessage = string.gsub( longMessage, "Draft", "" )
 
 
+	elseif string.find( longMessage, "Schedule" ) then
 
- 			end
+		method="SCHEDULE"
+
+		longMessage = string.gsub( longMessage, "Schedule", "" )
 
 
-       if  shortmsg_textbox.text:len() < 1 then
 
-		        local test= string.urlEncode(longMessage)
+	end
 
-				local path = system.pathForFile( "messageCKeditor.html",system.DocumentsDirectory )
 
-				local file, errorString = io.open( path, "w+" )
+	if  shortmsg_textbox.text:len() < 1 then
 
-					if not file then
+		local test= string.urlEncode(longMessage)
 
-					    print( "File error: " .. errorString )
+		local path = system.pathForFile( "messageCKeditor.html",system.DocumentsDirectory )
 
-					else
+		local file, errorString = io.open( path, "w+" )
+
+		if not file then
+
+			print( "File error: " .. errorString )
+
+		else
 			
-					    file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml..""..meggageeditor.buttonHtml )
-	 					longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
-	 					longmsg_textbox.isVisible=true
-	 					file:close()
-	 				end
+			file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml..""..meggageeditor.buttonHtml )
+			longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
+			longmsg_textbox.isVisible=true
+			file:close()
+		end
 
- 				file=nil
+		file=nil
 
- 				local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
+		local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
 
- 		else
+	else
 
- 			longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
+		longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
 
- 			if isIos then
- 				longmsg_textbox.isVisible=true
- 			else
+		if isIos then
+			longmsg_textbox.isVisible=true
+		else
 
- 				longmsg_textbox.isVisible=false
+			longmsg_textbox.isVisible=false
 
- 			end
+		end
 
- 			sendMessage(method)
+		sendMessage(method)
 
- 		end
+	end
 
-    end
+end
 
-    if event.errorCode then
+if event.errorCode then
         -- Error loading page
         print( "Error: " .. tostring( event.errorMessage ) )
     end
@@ -1350,19 +1350,19 @@ end
 
 
 
-	local function composemsg_scrollListener(event )
+local function composemsg_scrollListener(event )
 
-		    local phase = event.phase
+	local phase = event.phase
 
-		    if ( phase == "began" ) then 
+	if ( phase == "began" ) then 
 
-		    	shortmsg_textbox.isVisible = true
-		    	longmsg_textbox.isVisible = true
+		shortmsg_textbox.isVisible = true
+		longmsg_textbox.isVisible = true
 
 
-		    elseif ( phase == "moved" ) then 
+	elseif ( phase == "moved" ) then 
 
-			local x, y = scrollView:getContentPosition()
+		local x, y = scrollView:getContentPosition()
 
 				-- if filename.isVisible == true then
 
@@ -1378,99 +1378,99 @@ end
 
 				-- end
 
-            
-						if y > -30 then
+				
+				if y > -30 then
 
-							shortmsg_textbox.isVisible = true
-						else
+					shortmsg_textbox.isVisible = true
+				else
 
-							shortmsg_textbox.isVisible = false
-						end
-
-
-						if y > -120 then
-
-							longmsg_textbox.isVisible = true
-						else
-
-							longmsg_textbox.isVisible = false
-						end
+					shortmsg_textbox.isVisible = false
+				end
 
 
+				if y > -120 then
 
-		    elseif ( phase == "ended" ) then 
+					longmsg_textbox.isVisible = true
+				else
 
-		    end
+					longmsg_textbox.isVisible = false
+				end
+
+
+
+				elseif ( phase == "ended" ) then 
+
+			end
 
 		    -- In the event a scroll limit is reached...
 		    if ( event.limitReached ) then
-		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
-		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
-		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
-		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
-		        end
+		    	if ( event.direction == "up" ) then print( "Reached bottom limit" )
+		    	elseif ( event.direction == "down" ) then print( "Reached top limit" )
+		    	elseif ( event.direction == "left" ) then print( "Reached right limit" )
+		    	elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		    	end
 		    end
 
 		    return true
-	end
+		end
 
 
 
 
 
-	local function closeMessagePage( event )
+		local function closeMessagePage( event )
 
-		if event.phase == "began" then
+			if event.phase == "began" then
 
-			display.getCurrentStage():setFocus( event.target )
+				display.getCurrentStage():setFocus( event.target )
 
 
-		elseif event.phase == "ended" then
+				elseif event.phase == "ended" then
 
-		    display.getCurrentStage():setFocus( nil )
+				display.getCurrentStage():setFocus( nil )
 
-	            native.setKeyboardFocus(nil)
+				native.setKeyboardFocus(nil)
 
-	            if status == "chat" then
+				if status == "chat" then
 
-			       composer.hideOverlay("slideRight",300)		
+					composer.hideOverlay("slideRight",300)		
 
-			    else
+				else
 
-			       composer.gotoScene("Controller.pushNotificationListPage","slideRight",300)		
+					composer.gotoScene("Controller.pushNotificationListPage","slideRight",300)		
 
-			    end
+				end
 
 			   -- scrollTo(0)
 
+			end
+
+			return true
+
 		end
 
-	return true
-
-	end
 
 
+		local function AttachmentTouch( event )
 
-local function AttachmentTouch( event )
+			if event.phase == "began" then
 
-	if event.phase == "began" then
+				elseif event.phase == "ended" then
+				if attachment_icon.isVisible == true then
 
-	elseif event.phase == "ended" then
-		if attachment_icon.isVisible == true then
+					if AttachmentGroup.alpha <= 0.3 then
+						AttachmentGroup.yScale=0.1
+						AttachmentGroup.alpha = 1
+						shortmsg_textbox.isVisible=false
 
-			if AttachmentGroup.alpha <= 0.3 then
-				AttachmentGroup.yScale=0.1
-				AttachmentGroup.alpha = 1
-				shortmsg_textbox.isVisible=false
-
-				transition.from( AttachmentGroup, {time=300,alpha=1} )
-				transition.scaleTo( AttachmentGroup, {yScale=1.0, time=300 } )
-				
-			else
-				shortmsg_textbox.isVisible=true
-				
-				AttachmentGroup.alpha=0	
-				AttachmentGroup.yScale = 0.01
+						transition.from( AttachmentGroup, {time=300,alpha=1} )
+						transition.scaleTo( AttachmentGroup, {yScale=1.0, time=300 } )
+						
+					else
+						shortmsg_textbox.isVisible=true
+						
+						AttachmentGroup.alpha=0	
+						AttachmentGroup.yScale = 0.01
 
 				--transition.to( AttachmentGroup, {time=300,alpha=0,yScale=0.01} )
 
@@ -1480,41 +1480,41 @@ local function AttachmentTouch( event )
 
 	end
 
-return true
+	return true
 end
 
 local function createAttachment( )
 	
 ------------------------------------------- Icons Holder --------------------------------------------
 
-				icons_holder_bg = display.newRect(AttachmentGroup,0,0,W,EditBoxStyle.height+115)
-				icons_holder_bg.x=0
-				icons_holder_bg.anchorX=0
-				icons_holder_bg.anchorY=0
-				icons_holder_bg.strokeWidth = 1
-				icons_holder_bg:setStrokeColor( 0,0,0,0.1)
-				icons_holder_bg.y = tabBar.y+tabBar.height+10
-				icons_holder_bg:setFillColor( 1,1,1)
+icons_holder_bg = display.newRect(AttachmentGroup,0,0,W,EditBoxStyle.height+115)
+icons_holder_bg.x=0
+icons_holder_bg.anchorX=0
+icons_holder_bg.anchorY=0
+icons_holder_bg.strokeWidth = 1
+icons_holder_bg:setStrokeColor( 0,0,0,0.1)
+icons_holder_bg.y = tabBar.y+tabBar.height+10
+icons_holder_bg:setFillColor( 1,1,1)
 
-				icons_holder_bg.height = icons_holder_bg.height/2
+icons_holder_bg.height = icons_holder_bg.height/2
 
 -------------------------------------------- Camera ---------------------------------------------------
 
-				camera_icon = display.newImageRect(AttachmentGroup,"res/assert/camera1.png",40,35)
-				camera_icon.x=W/2 - W/3
-				camera_icon.anchorX=0
-				camera_icon.anchorY=0
-				camera_icon.y = icons_holder_bg.y + 7.5
-				camera_icon.id="camera"
-				camera_icon:addEventListener( "touch", attachAction )
+camera_icon = display.newImageRect(AttachmentGroup,"res/assert/camera1.png",40,35)
+camera_icon.x=W/2 - W/3
+camera_icon.anchorX=0
+camera_icon.anchorY=0
+camera_icon.y = icons_holder_bg.y + 7.5
+camera_icon.id="camera"
+camera_icon:addEventListener( "touch", attachAction )
 
 
-				camera_icon_txt = display.newText(AttachmentGroup,MessagePage.Camera,0,0,native.systemFont,14)
-				camera_icon_txt.anchorX = 0
-				camera_icon_txt.anchorY = 0
-				camera_icon_txt.x = camera_icon.x - 7
-				camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
-				camera_icon_txt:setFillColor(0)
+camera_icon_txt = display.newText(AttachmentGroup,MessagePage.Camera,0,0,native.systemFont,14)
+camera_icon_txt.anchorX = 0
+camera_icon_txt.anchorY = 0
+camera_icon_txt.x = camera_icon.x - 7
+camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
+camera_icon_txt:setFillColor(0)
 
 -- -------------------------------------------- Video ---------------------------------------------------
 
@@ -1537,21 +1537,21 @@ local function createAttachment( )
 
 -------------------------------------------- Gallery ---------------------------------------------------
 
-                gallery_icon = display.newImageRect(AttachmentGroup,"res/assert/gallery1.png",40,35)
-				gallery_icon.x= W/2 - 12
-				gallery_icon.anchorX=0
-				gallery_icon.anchorY=0
-				gallery_icon.y = camera_icon.y 
-				gallery_icon.id="gallery"
-				gallery_icon:addEventListener( "touch", attachAction )
+gallery_icon = display.newImageRect(AttachmentGroup,"res/assert/gallery1.png",40,35)
+gallery_icon.x= W/2 - 12
+gallery_icon.anchorX=0
+gallery_icon.anchorY=0
+gallery_icon.y = camera_icon.y 
+gallery_icon.id="gallery"
+gallery_icon:addEventListener( "touch", attachAction )
 
 
-				gallery_icon_txt = display.newText(AttachmentGroup,MessagePage.Gallery,0,0,native.systemFont,14)
-				gallery_icon_txt.anchorX = 0
-				gallery_icon_txt.anchorY = 0
-				gallery_icon_txt.x = gallery_icon.x - 5
-				gallery_icon_txt.y = gallery_icon.y+gallery_icon.contentHeight+5
-				gallery_icon_txt:setFillColor(0)
+gallery_icon_txt = display.newText(AttachmentGroup,MessagePage.Gallery,0,0,native.systemFont,14)
+gallery_icon_txt.anchorX = 0
+gallery_icon_txt.anchorY = 0
+gallery_icon_txt.x = gallery_icon.x - 5
+gallery_icon_txt.y = gallery_icon.y+gallery_icon.contentHeight+5
+gallery_icon_txt:setFillColor(0)
 
 
 -------------------------------------------- Audio ---------------------------------------------------
@@ -1559,21 +1559,21 @@ local function createAttachment( )
 
 
 
-                audio_icon = display.newImageRect(AttachmentGroup,"res/assert/audio1.png",40,35)
-				audio_icon.x= W/2 + W/3 - 30
-				audio_icon.anchorX=0
-				audio_icon.anchorY=0
-				audio_icon.y = gallery_icon.y
-				audio_icon.id="audio"
-				audio_icon:addEventListener( "touch", attachAction )
+audio_icon = display.newImageRect(AttachmentGroup,"res/assert/audio1.png",40,35)
+audio_icon.x= W/2 + W/3 - 30
+audio_icon.anchorX=0
+audio_icon.anchorY=0
+audio_icon.y = gallery_icon.y
+audio_icon.id="audio"
+audio_icon:addEventListener( "touch", attachAction )
 
 
-				audio_icon_txt = display.newText(AttachmentGroup,MessagePage.Audio,0,0,native.systemFont,14)
-				audio_icon_txt.anchorX = 0
-				audio_icon_txt.anchorY = 0
-				audio_icon_txt.x = audio_icon.x 
-				audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
-				audio_icon_txt:setFillColor(0)
+audio_icon_txt = display.newText(AttachmentGroup,MessagePage.Audio,0,0,native.systemFont,14)
+audio_icon_txt.anchorX = 0
+audio_icon_txt.anchorY = 0
+audio_icon_txt.x = audio_icon.x 
+audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
+audio_icon_txt:setFillColor(0)
 
 
 
@@ -1618,30 +1618,30 @@ local function createAttachment( )
 -- 				Contact_icon_txt:setFillColor(0)
 end 
 
-	local function attachDownload( event )
-	    if ( event.isError ) then
-	        print( "Network error - download failed: ", event.response )
-	    elseif ( event.phase == "began" ) then
-	        print( "Progress Phase: began" )
-	    elseif ( event.phase == "ended" ) then
-	        print( "Displaying response image file" )
-	  		
-	    end
+local function attachDownload( event )
+	if ( event.isError ) then
+		print( "Network error - download failed: ", event.response )
+	elseif ( event.phase == "began" ) then
+		print( "Progress Phase: began" )
+		elseif ( event.phase == "ended" ) then
+		print( "Displaying response image file" )
+		
 	end
+end
 
 
 
 
-	local function attachDownload( event )
-	    if ( event.isError ) then
-	        print( "Network error - download failed: ", event.response )
-	    elseif ( event.phase == "began" ) then
-	        print( "Progress Phase: began" )
-	    elseif ( event.phase == "ended" ) then
-	        print( "Displaying response image file" )
-	  		
-	    end
+local function attachDownload( event )
+	if ( event.isError ) then
+		print( "Network error - download failed: ", event.response )
+	elseif ( event.phase == "began" ) then
+		print( "Progress Phase: began" )
+		elseif ( event.phase == "ended" ) then
+		print( "Displaying response image file" )
+		
 	end
+end
 
 
 
@@ -1652,7 +1652,7 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 
-    Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
@@ -1672,7 +1672,7 @@ function scene:create( event )
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-6.5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-    back_icon_bg = display.newRect(sceneGroup,0,0,20,20)
+	back_icon_bg = display.newRect(sceneGroup,0,0,20,20)
 	back_icon_bg.x= 5
 	back_icon_bg.anchorX=0
 	back_icon_bg.anchorY=0
@@ -1696,7 +1696,7 @@ function scene:create( event )
 	attachment_icon = display.newImageRect(sceneGroup,"res/assert/attached.png",20,20)
 	attachment_icon.x= W-40;attachment_icon.y = tabBar.y+35
 	attachment_icon.isVisible = true
-		
+	
 
 	attachment_icon_bg = display.newRect( sceneGroup, W-40, tabBar.y+35, 60, 40 )
 	attachment_icon_bg.x=attachment_icon.x
@@ -1706,18 +1706,18 @@ function scene:create( event )
 	attachment_icon_bg:addEventListener( "touch", AttachmentTouch )
 
 
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
 
 
-	function scene:show( event )
+function scene:show( event )
 
-		local sceneGroup = self.view
-		local phase = event.phase
-		
-		if phase == "will" then
+	local sceneGroup = self.view
+	local phase = event.phase
+	
+	if phase == "will" then
 
 			--composer.removeHidden()
 
@@ -1727,25 +1727,25 @@ end
 			--composer.removeHidden()
 
 
-				if event.params then
+			if event.params then
 
-					status=event.params.page
-					Details = event.params.Details
+				status=event.params.page
+				Details = event.params.Details
 
-					print("\n\n\n Message Detail Values : \n\n ", json.encode(Details))
+				print("\n\n\n Message Detail Values : \n\n ", json.encode(Details))
 
 
-					if Details ~= nil then
-						MessageId = Details.MyUnitBuzzMessageId
-					end
+				if Details ~= nil then
+					MessageId = Details.MyUnitBuzzMessageId
+				end
 
-			    end
+			end
 
 
 
 
 			
-				sceneevent = event
+			sceneevent = event
 
 			--	composer.removeHidden()
 
@@ -1760,54 +1760,54 @@ end
 
 			scrollView = widget.newScrollView
 			{
-			top = RecentTab_Topvalue,
-			left = 0,
-			width = W,
-			height =H-RecentTab_Topvalue,
-			hideBackground = true,
-			isBounceEnabled=false,
-			horizontalScrollDisabled = true,
-			bottomPadding = 60,
-			friction = .4,
-   			listener = composemsg_scrollListener,
-		    }
+				top = RecentTab_Topvalue,
+				left = 0,
+				width = W,
+				height =H-RecentTab_Topvalue,
+				hideBackground = true,
+				isBounceEnabled=false,
+				horizontalScrollDisabled = true,
+				bottomPadding = 60,
+				friction = .4,
+				listener = composemsg_scrollListener,
+			}
 
-		    sceneGroup:insert( scrollView )
+			sceneGroup:insert( scrollView )
 
 
 ---------------------------------------------- Short Message ----------------------------------------------------------
 
-                shortmsg_star = display.newText("*",0,0,native.systemFont,14)
-				shortmsg_star.anchorX = 0
-				shortmsg_star.anchorY = 0
-				shortmsg_star.x=10
-				shortmsg_star.y = 0
-				shortmsg_star:setFillColor(1,0,0)
-				scrollView:insert(shortmsg_star)
-				
-				shortmsg_title = display.newText(MessagePage.ShortMessage,0,0,native.systemFont,14)
-				shortmsg_title.anchorX = 0
-				shortmsg_title.x=shortmsg_star.x + 7
-				shortmsg_title.anchorY=0
-				shortmsg_title.y = shortmsg_star.y
-				shortmsg_title:setFillColor(0)
-				scrollView:insert(shortmsg_title)
+shortmsg_star = display.newText("*",0,0,native.systemFont,14)
+shortmsg_star.anchorX = 0
+shortmsg_star.anchorY = 0
+shortmsg_star.x=10
+shortmsg_star.y = 0
+shortmsg_star:setFillColor(1,0,0)
+scrollView:insert(shortmsg_star)
+
+shortmsg_title = display.newText(MessagePage.ShortMessage,0,0,native.systemFont,14)
+shortmsg_title.anchorX = 0
+shortmsg_title.x=shortmsg_star.x + 7
+shortmsg_title.anchorY=0
+shortmsg_title.y = shortmsg_star.y
+shortmsg_title:setFillColor(0)
+scrollView:insert(shortmsg_title)
 
 
-				shortmsg_textbox = native.newTextBox( 10,shortmsg_title.y+ shortmsg_title.height+7, W - 20, EditBoxStyle.height+25)
-				shortmsg_textbox.placeholder = MessagePage.ShortMessage_Placeholder
-				shortmsg_textbox.isEditable = true
-				shortmsg_textbox.size=14
-				shortmsg_textbox.anchorX = 0
-				shortmsg_textbox.height = EditBoxStyle.height + 20
-				shortmsg_textbox.anchorY=0
-				shortmsg_textbox.width = W-20
-				shortmsg_textbox.value=""
-				shortmsg_textbox.isVisible = true
-				shortmsg_textbox.id = "shortmessage"
-				shortmsg_textbox.hasBackground = true
-				shortmsg_textbox:setReturnKey( "next" )
-				shortmsg_textbox.inputType = "default"
+shortmsg_textbox = native.newTextBox( 10,shortmsg_title.y+ shortmsg_title.height+7, W - 20, EditBoxStyle.height+25)
+shortmsg_textbox.placeholder = MessagePage.ShortMessage_Placeholder
+shortmsg_textbox.isEditable = true
+shortmsg_textbox.size=14
+shortmsg_textbox.anchorX = 0
+shortmsg_textbox.height = EditBoxStyle.height + 20
+shortmsg_textbox.anchorY=0
+shortmsg_textbox.width = W-20
+shortmsg_textbox.value=""
+shortmsg_textbox.isVisible = true
+shortmsg_textbox.id = "shortmessage"
+shortmsg_textbox.hasBackground = true
+shortmsg_textbox:setReturnKey( "next" )
+shortmsg_textbox.inputType = "default"
 				--sceneGroup:insert(shortmsg_textbox)
 				scrollView:insert(shortmsg_textbox)
 				--shortmsg_textbox.x=10
@@ -1828,81 +1828,81 @@ end
 
 ---------------------------------------------- Long Message ----------------------------------------------------------
 
-                longmsg_star = display.newText("*",0,0,native.systemFont,14)
-				longmsg_star.anchorX = 0
-				longmsg_star.x=10
-				longmsg_star.anchorY=0
-				longmsg_star.y = short_msg_charlimit.y+short_msg_charlimit.contentHeight
-				longmsg_star:setFillColor(1,0,0)
-				scrollView:insert(longmsg_star)
+longmsg_star = display.newText("*",0,0,native.systemFont,14)
+longmsg_star.anchorX = 0
+longmsg_star.x=10
+longmsg_star.anchorY=0
+longmsg_star.y = short_msg_charlimit.y+short_msg_charlimit.contentHeight
+longmsg_star:setFillColor(1,0,0)
+scrollView:insert(longmsg_star)
 
 
-				longmsg_title = display.newText(MessagePage.LongMessage,0,0,native.systemFont,14)
-				longmsg_title.anchorX = 0
-				longmsg_title.x=longmsg_star.x + 7
-				longmsg_title.anchorY = 0
-				longmsg_title.y = longmsg_star.y 
-				longmsg_title:setFillColor(0)
-				scrollView:insert(longmsg_title)
-
-
-				
-
-		        content = ""
-
-		        if Details ~= nil then
-					content = Details.MyUnitBuzzLongMessage
-				end
-
-			    test= string.urlEncode(content)
-
-				local path = system.pathForFile( "messageCKeditor.html",system.DocumentsDirectory )
-
-				local file, errorString = io.open( path, "w+" )
-
-				if not file then
-
-				    print( "File error: " .. errorString )
-
-				else
-
-				     file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml..""..meggageeditor.buttonHtml )
-
-							 longmsg_textbox = native.newWebView(10,longmsg_title.y+longmsg_title.contentHeight, W - 12, 310)
-
-							 longmsg_textbox.hasBackground = false
-
-							 longmsg_textbox.isVisible = true
-
-							 longmsg_textbox.anchorX=0;longmsg_textbox.anchorY=0
-							 params="test"
-							 longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
-
-							 longmsg_textbox:addEventListener( "urlRequest", webListener )
-
-
-							 scrollView:insert( longmsg_textbox)
+longmsg_title = display.newText(MessagePage.LongMessage,0,0,native.systemFont,14)
+longmsg_title.anchorX = 0
+longmsg_title.x=longmsg_star.x + 7
+longmsg_title.anchorY = 0
+longmsg_title.y = longmsg_star.y 
+longmsg_title:setFillColor(0)
+scrollView:insert(longmsg_title)
 
 
 
 
-				    file:close()
+content = ""
 
-				end
+if Details ~= nil then
+	content = Details.MyUnitBuzzLongMessage
+end
 
-				file = nil
+test= string.urlEncode(content)
+
+local path = system.pathForFile( "messageCKeditor.html",system.DocumentsDirectory )
+
+local file, errorString = io.open( path, "w+" )
+
+if not file then
+
+	print( "File error: " .. errorString )
+
+else
+
+	file:write( meggageeditor.htmlContent.."'"..test.."'"..meggageeditor.endHtml..""..meggageeditor.buttonHtml )
+
+	longmsg_textbox = native.newWebView(10,longmsg_title.y+longmsg_title.contentHeight, W - 12, 310)
+
+	longmsg_textbox.hasBackground = false
+
+	longmsg_textbox.isVisible = true
+
+	longmsg_textbox.anchorX=0;longmsg_textbox.anchorY=0
+	params="test"
+	longmsg_textbox:request( "messageCKeditor.html", system.DocumentsDirectory )
+
+	longmsg_textbox:addEventListener( "urlRequest", webListener )
+
+
+	scrollView:insert( longmsg_textbox)
 
 
 
 
-				long_msg_charlimit = display.newText(MessagePage.LongMsgLimit,0,0,native.systemFont,14)
-				long_msg_charlimit.anchorX = 0
-				long_msg_charlimit.anchorY = 0
-				long_msg_charlimit.x=W-125
-				long_msg_charlimit.y = longmsg_textbox.y+longmsg_textbox.contentHeight+5
-				long_msg_charlimit:setFillColor(0)
-				long_msg_charlimit.isVisible=false
-				scrollView:insert(long_msg_charlimit)
+	file:close()
+
+end
+
+file = nil
+
+
+
+
+long_msg_charlimit = display.newText(MessagePage.LongMsgLimit,0,0,native.systemFont,14)
+long_msg_charlimit.anchorX = 0
+long_msg_charlimit.anchorY = 0
+long_msg_charlimit.x=W-125
+long_msg_charlimit.y = longmsg_textbox.y+longmsg_textbox.contentHeight+5
+long_msg_charlimit:setFillColor(0)
+long_msg_charlimit.isVisible=false
+scrollView:insert(long_msg_charlimit)
 
 
 
@@ -1910,7 +1910,7 @@ end
 
 		sceneGroup:insert( scrollView )
 
-			createAttachment( )
+		createAttachment( )
 		AttachmentGroup.anchorX=0;AttachmentGroup.anchorY=0
 		AttachmentGroup.alpha=0
 		AttachmentGroup.y=AttachmentGroup.y+68
@@ -1918,43 +1918,43 @@ end
 
 		sceneGroup:insert( AttachmentGroup )
 
-	
+		
 
 ---------------------------------------- File name and its title ------------------------------------------
 
 
-				filename_title = display.newText("Image Name",0,0,native.systemFont,14)
-				filename_title.anchorX = 0
-				filename_title.anchorY = 0
-				filename_title.x = 10
-				filename_title.isVisible = false
-				filename_title.y = tabBar.y+tabBar.contentHeight+15
-				filename_title:setFillColor(0)
-				sceneGroup:insert(filename_title)
+filename_title = display.newText("Image Name",0,0,native.systemFont,14)
+filename_title.anchorX = 0
+filename_title.anchorY = 0
+filename_title.x = 10
+filename_title.isVisible = false
+filename_title.y = tabBar.y+tabBar.contentHeight+15
+filename_title:setFillColor(0)
+sceneGroup:insert(filename_title)
 
 
-				filename = display.newText("",0,0,native.systemFont,14)
-				filename.anchorX = 0
-				filename.anchorY = 0
-				filename.isVisible = false
-				filename.x = filename_title.x 
-				filename.y = filename_title.y+filename_title.contentHeight+5
-				filename:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-				sceneGroup:insert(filename)
+filename = display.newText("",0,0,native.systemFont,14)
+filename.anchorX = 0
+filename.anchorY = 0
+filename.isVisible = false
+filename.x = filename_title.x 
+filename.y = filename_title.y+filename_title.contentHeight+5
+filename:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+sceneGroup:insert(filename)
 
 
-				filename_close = display.newImageRect("res/assert/icon-close.png",20,20)
-				filename_close.anchorX = 0
-				filename_close.anchorY = 0
-				filename_close.isVisible = false
-				filename_close.x = W - 35
-				filename_close.valuestring = "image"
-				filename_close.y = filename_title.y+filename_title.contentHeight+8
-				sceneGroup:insert(filename_close)
+filename_close = display.newImageRect("res/assert/icon-close.png",20,20)
+filename_close.anchorX = 0
+filename_close.anchorY = 0
+filename_close.isVisible = false
+filename_close.x = W - 35
+filename_close.valuestring = "image"
+filename_close.y = filename_title.y+filename_title.contentHeight+8
+sceneGroup:insert(filename_close)
 
-       			 filename_close:addEventListener("touch",attachClose)
+filename_close:addEventListener("touch",attachClose)
 
-       			 if Details ~= nil and Details.ImageFilePath ~= nil then
+if Details ~= nil and Details.ImageFilePath ~= nil then
 					--detail_value.ImageFilePath:match( "([^/]+)$" ),
 					filename_title.isVisible = true
 					filename.isVisible = true
@@ -1966,60 +1966,60 @@ end
 
 
 					network.download(
-								Details.ImageFilePath,
-								"GET",
-								attachDownload,
-								Details.ImageFilePath:match( "([^/]+)$" ),
-								system.DocumentsDirectory
-								)
+						Details.ImageFilePath,
+						"GET",
+						attachDownload,
+						Details.ImageFilePath:match( "([^/]+)$" ),
+						system.DocumentsDirectory
+						)
 
 				end
 
 ---------------------------------------- Audio name and its title ------------------------------------------
-	
-
-				Audio_filename_title = display.newText("Audio Name",0,0,native.systemFont,14)
-				Audio_filename_title.anchorX = 0
-				Audio_filename_title.anchorY = 0
-				Audio_filename_title.x = 10
-				Audio_filename_title.isVisible = false
-				Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
-				Audio_filename_title:setFillColor(0)
-				sceneGroup:insert(Audio_filename_title)
 
 
-
-				if filename.text ~= "" and Details ~= nil and Details.ImageFilePath ~= nil  then
-
-					Audio_filename_title.y = Audio_filename_title.y + 45
-
-
-				end
-
-
-				Audio_filename = display.newText("",0,0,native.systemFont,14)
-				Audio_filename.anchorX = 0
-				Audio_filename.anchorY = 0
-				Audio_filename.isVisible = false
-				Audio_filename.x = Audio_filename_title.x 
-				Audio_filename.y = Audio_filename_title.y+Audio_filename_title.contentHeight+5
-				Audio_filename:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-				sceneGroup:insert(Audio_filename)
+Audio_filename_title = display.newText("Audio Name",0,0,native.systemFont,14)
+Audio_filename_title.anchorX = 0
+Audio_filename_title.anchorY = 0
+Audio_filename_title.x = 10
+Audio_filename_title.isVisible = false
+Audio_filename_title.y = tabBar.y+tabBar.contentHeight+15
+Audio_filename_title:setFillColor(0)
+sceneGroup:insert(Audio_filename_title)
 
 
-				Audio_filename_close = display.newImageRect("res/assert/icon-close.png",20,20)
-				Audio_filename_close.anchorX = 0
-				Audio_filename_close.anchorY = 0
-				Audio_filename_close.isVisible = false
-				Audio_filename_close.x = W - 35
-				Audio_filename_close.valuestring = "audio"
-				Audio_filename_close.y = Audio_filename_title.y+Audio_filename_title.contentHeight+8
-				sceneGroup:insert(Audio_filename_close)
 
-        		Audio_filename_close:addEventListener("touch",attachClose)
+if filename.text ~= "" and Details ~= nil and Details.ImageFilePath ~= nil  then
+
+	Audio_filename_title.y = Audio_filename_title.y + 45
 
 
-        		if Details ~= nil and Details.AudioFilePath ~= nil then
+end
+
+
+Audio_filename = display.newText("",0,0,native.systemFont,14)
+Audio_filename.anchorX = 0
+Audio_filename.anchorY = 0
+Audio_filename.isVisible = false
+Audio_filename.x = Audio_filename_title.x 
+Audio_filename.y = Audio_filename_title.y+Audio_filename_title.contentHeight+5
+Audio_filename:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+sceneGroup:insert(Audio_filename)
+
+
+Audio_filename_close = display.newImageRect("res/assert/icon-close.png",20,20)
+Audio_filename_close.anchorX = 0
+Audio_filename_close.anchorY = 0
+Audio_filename_close.isVisible = false
+Audio_filename_close.x = W - 35
+Audio_filename_close.valuestring = "audio"
+Audio_filename_close.y = Audio_filename_title.y+Audio_filename_title.contentHeight+8
+sceneGroup:insert(Audio_filename_close)
+
+Audio_filename_close:addEventListener("touch",attachClose)
+
+
+if Details ~= nil and Details.AudioFilePath ~= nil then
 					--detail_value.ImageFilePath:match( "([^/]+)$" ),
 					Audio_filename_title.isVisible = true
 					Audio_filename.isVisible = true
@@ -2030,35 +2030,35 @@ end
 					
 					scrollView.y = scrollView.y+45
 
-							network.download(
-								Details.AudioFilePath,
-								"GET",
-								attachDownload,
-								Details.AudioFilePath:match( "([^/]+)$" ),
-								system.DocumentsDirectory
-								)
+					network.download(
+						Details.AudioFilePath,
+						"GET",
+						attachDownload,
+						Details.AudioFilePath:match( "([^/]+)$" ),
+						system.DocumentsDirectory
+						)
 
 
 
 				end
 
 
-			menuBtn:addEventListener("touch",menuTouch)
+				menuBtn:addEventListener("touch",menuTouch)
 
-			back_icon:addEventListener("touch",closeMessagePage)
-			back_icon_bg:addEventListener("touch",closeMessagePage)
-			title:addEventListener("touch",closeMessagePage)
+				back_icon:addEventListener("touch",closeMessagePage)
+				back_icon_bg:addEventListener("touch",closeMessagePage)
+				title:addEventListener("touch",closeMessagePage)
 
-			shortmsg_textbox:addEventListener( "userInput", TextLimitation )
+				shortmsg_textbox:addEventListener( "userInput", TextLimitation )
 			--longmsg_textbox:addEventListener( "urlRequest", webListener )
 			Background:addEventListener("touch",FocusComplete)
 
-	
+			
 			Runtime:addEventListener( "key", onKeyEventDetail )
 			
 		end	
 		
-	MainGroup:insert(sceneGroup)
+		MainGroup:insert(sceneGroup)
 
 	end
 
@@ -2075,30 +2075,30 @@ end
 			if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
 			-- if shortmsg_textbox then shortmsg_textbox:removeSelf( );shortmsg_textbox=nil end
 
-			 composer.removeHidden()
+			composer.removeHidden()
 
 
-				if datePicker then datePicker.clear() end
+			if datePicker then datePicker.clear() end
 
-				if timePicker then timePicker.clear() end
+			if timePicker then timePicker.clear() end
 
 
 			if DeleteMessageGroup.numChildren ~= nil then
 
-			  	 	for j=DeleteMessageGroup.numChildren, 1, -1 do 
-			  			display.remove(DeleteMessageGroup[DeleteMessageGroup.numChildren])
-			  			DeleteMessageGroup[DeleteMessageGroup.numChildren] = nil
-			  	 	end
-            end
-
-
-			elseif phase == "did" then
-
-				if status == "editpage" then
-
-					event.parent:resumeGame("details",Details,"details")
-
+				for j=DeleteMessageGroup.numChildren, 1, -1 do 
+					display.remove(DeleteMessageGroup[DeleteMessageGroup.numChildren])
+					DeleteMessageGroup[DeleteMessageGroup.numChildren] = nil
 				end
+			end
+
+
+		elseif phase == "did" then
+
+			if status == "editpage" then
+
+				event.parent:resumeGame("details",Details,"details")
+
+			end
 
 
 				-- if page == "compose" then
@@ -2110,15 +2110,15 @@ end
                -- composer.removeHidden()
 
 
-				back_icon:removeEventListener("touch",closeMessagePage)
-			    back_icon_bg:removeEventListener("touch",closeMessagePage)
-			    title:removeEventListener("touch",closeMessagePage)
+               back_icon:removeEventListener("touch",closeMessagePage)
+               back_icon_bg:removeEventListener("touch",closeMessagePage)
+               title:removeEventListener("touch",closeMessagePage)
 
-			    shortmsg_textbox:removeEventListener( "userInput", TextLimitation)
+               shortmsg_textbox:removeEventListener( "userInput", TextLimitation)
 				--longmsg_textbox:removeEventListener( "urlRequest", webListener )
 				Background:removeEventListener("touch",FocusComplete)
 
-			
+				
 				Runtime:removeEventListener( "key", onKeyEventDetail )
 
 			end	

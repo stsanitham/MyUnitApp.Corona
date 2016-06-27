@@ -32,7 +32,7 @@ local function BgTouch( event )
 	if event.phase == "ended" then
 
 
-	end
+end
 
 return true
 end
@@ -44,7 +44,7 @@ end
 
 
 -- 					native.showAlert( imageName.text, ResourceLibrary.Download_alert, { CommonWords.ok} )
-						
+
 -- 					local path = system.pathForFile("/storage/sdcard1/"..filename)                         -- Change this path to the path of an image on your computer
 -- 					------------------------------------------------------------------------
 -- 					--------------------------- Read ----------------------------
@@ -59,9 +59,9 @@ end
 -- 						end
 
 -- 					--------------------------- Write ----------------------------
-	
+
 -- 						local file = io.open( path, "w" )                                    -- Open the destination path in write mode
-		
+
 -- 							if file then
 -- 							    file:write(contents)                                                -- Writes the contents to a file
 -- 							    io.close(file)                                                      -- Close the file (Important!)
@@ -84,187 +84,187 @@ end
 -- 								 end
 -- 							end
 
-								
+
 
 -- end
-			local function showShare(fileNameString)
+local function showShare(fileNameString)
 
-				print( "fileNameString : "..fileNameString )
+	print( "fileNameString : "..fileNameString )
 
-			    local popupName = "activity"
-			    local isAvailable = native.canShowPopup( popupName )
-			    local isSimulator = "simulator" == system.getInfo( "environment" )
+	local popupName = "activity"
+	local isAvailable = native.canShowPopup( popupName )
+	local isSimulator = "simulator" == system.getInfo( "environment" )
 
-			    local items =
-			{
-			    { type = "image", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
+	local items =
+	{
+		{ type = "image", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
 			     --{ type = "UIActivityTypePostToFacebook", value = "UIActivityTypePostToFacebook" },
-			      { type = "string", value = " " },
+			     { type = "string", value = " " },
 
-			}
+			 }
 						    -- If it is possible to show the popup
-			    if isAvailable then
-			        local listener = {}
-			        function listener:popup( event )
-			            print( "name(" .. event.name .. ") type(" .. event.type .. ") activity(" .. tostring(event.activity) .. ") action(" .. tostring(event.action) .. ")" )
-			        end
+						    if isAvailable then
+						    	local listener = {}
+						    	function listener:popup( event )
+						    		print( "name(" .. event.name .. ") type(" .. event.type .. ") activity(" .. tostring(event.activity) .. ") action(" .. tostring(event.action) .. ")" )
+						    	end
 
 			        -- Show the popup
 			        native.showPopup( popupName,
 			        {
-			            items = items,
+			        	items = items,
 			            -- excludedActivities = { "UIActivityTypeCopyToPasteboard", },
 			            listener = listener,
 			            permittedArrowDirections={ "up", "down" }
-			        })
+			            })
 			    else
-			  
+			    	
 			           -- native.showAlert( "Error", "Can't display the view controller. Are you running iOS 7 or later?", { "OK" } )
-			        
-			    end
-			end
+			           
+			       end
+			   end
 
 
 
-	local function share(fileName)
+			   local function share(fileName)
 
-		local isAvailable = native.canShowPopup( "social", "share" )
+			   	local isAvailable = native.canShowPopup( "social", "share" )
 
 		    -- If it is possible to show the popup
 		    if isAvailable then
 		    	local listener = {}
 		    	function listener:popup( event )
 
-		    		 native.setKeyboardFocus(nil)
+		    		native.setKeyboardFocus(nil)
 
-		       	end
+		    	end
 
 		        -- Show the popup
 		        native.showPopup( "social",
 		        {
 		            service = "share", -- The service key is ignored on Android.
 		           -- message = "Images share test",
-		            listener = listener,
-		            image = 
-		            {
-		            { filename = fileName, baseDir = system.TemporaryDirectory },
-		            },
-		            
-		            })
+		           listener = listener,
+		           image = 
+		           {
+		           	{ filename = fileName, baseDir = system.TemporaryDirectory },
+		           },
+		           
+		           })
 		    else
-		 
+		    	
 		            --native.showAlert( "Cannot send share message.", "Please setup your share account or check your network connection (on android this means that the package/app (ie Twitter) is not installed on the device)", { "OK" } )
-		       
+		            
+		        end
+
+
 		    end
 
 
-end
+		    local function BackTouch( event )
+		    	if event.phase == "began" then
+
+		    		elseif event.phase == "ended" then
+
+		    		composer.hideOverlay( "slideRight", 300 )
+
+		    	end
+		    	return true
+
+		    end
+
+		    local function PausePlayAction(event)
+
+		    	if event.phase == "began" then
+
+		    		elseif event.phase == "ended" then
+
+		    		title_playBtn:removeSelf( );title_playBtn  = nil
+
+		    		if event.target.value == "pause" then
+
+		    			title_playBtn = display.newImageRect(MainGroup,"res/assert/play.png", 22/1.5,26/1.5)
+		    			title_playBtn.value = "play"
+		    			event.target.value =  "play"
+		    			if SliderTimer then timer.pause( SliderTimer ) end
 
 
-local function BackTouch( event )
-	if event.phase == "began" then
+		    		else
 
-	elseif event.phase == "ended" then
+		    			print( "start play" )
 
-					composer.hideOverlay( "slideRight", 300 )
+		    			title_playBtn = display.newImageRect(MainGroup,"res/assert/pause.png", 22/1.5,26/1.5)
+		    			title_playBtn.value = "pause"
+		    			event.target.value =  "pause"
+		    			timer.resume( SliderTimer )
 
-	end
-	return true
-
-end
-
-local function PausePlayAction(event)
-
-if event.phase == "began" then
-
-	elseif event.phase == "ended" then
-
-			title_playBtn:removeSelf( );title_playBtn  = nil
-
-			if event.target.value == "pause" then
-
-				title_playBtn = display.newImageRect(MainGroup,"res/assert/play.png", 22/1.5,26/1.5)
-				title_playBtn.value = "play"
-				event.target.value =  "play"
-				if SliderTimer then timer.pause( SliderTimer ) end
+		    		end
 
 
-			else
-
-				print( "start play" )
-
-				title_playBtn = display.newImageRect(MainGroup,"res/assert/pause.png", 22/1.5,26/1.5)
-				title_playBtn.value = "pause"
-				event.target.value =  "pause"
-				timer.resume( SliderTimer )
-
-			end
-
-
-			title_playBtn.x=W-25
-			title_playBtn.y=title_bg.y
+		    		title_playBtn.x=W-25
+		    		title_playBtn.y=title_bg.y
 
 			 --title_playBtn:addEventListener( "touch", PausePlayAction )
 
-	end
-	return true
+			end
+			return true
 
-end
+		end
 
-local function listTouch( event )
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
+		local function listTouch( event )
+			if event.phase == "began" then
+				display.getCurrentStage():setFocus( event.target )
+				elseif event.phase == "ended" then
+				display.getCurrentStage():setFocus( nil )
 
-			event = event.target
+				event = event.target
 
 
-					
+				
 
-						if event.id == "share" then
-							if isAndroid then
+				if event.id == "share" then
+					if isAndroid then
 
-								share(event.filename..".png")
-								
-							else
+						share(event.filename..".png")
+						
+					else
 
-								showShare(event.filename..".png")
+						showShare(event.filename..".png")
 
-							end
-						elseif event.id =="download" then
+					end
+				elseif event.id =="download" then
 
 							--downloadAction(event.filename..".png")
-	local function onComplete( event )
+							local function onComplete( event )
 
-			if event.action == "clicked" then
+								if event.action == "clicked" then
 
-			local i = event.index
+									local i = event.index
 
-			if i == 1 then
+									if i == 1 then
 
-			filename = event.filename..".png"
+										filename = event.filename..".png"
 
-			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
-						
+										local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+										
 					local path = system.pathForFile("/storage/sdcard1/"..filename)    --External (SD Card)
 
 					--------------------------- Read ----------------------------
-						local file, reason = io.open( localpath, "r" )                              
-						local contents
-						if file then
+					local file, reason = io.open( localpath, "r" )                              
+					local contents
+					if file then
 						    contents = file:read( "*a" )                                        -- Read contents
 						    io.close( file )                                                    -- Close the file (Important!)
 						else
-						    print("Invalid path")
-						    return
+							print("Invalid path")
+							return
 						end
 
 					--------------------------- Write ----------------------------
-	
+					
 						local file = io.open( path, "w" )                                    -- Open the destination path in write mode
-		
-							if file then
+						
+						if file then
 							    file:write(contents)                                                -- Writes the contents to a file
 							    io.close(file)                                                      -- Close the file (Important!)
 							else
@@ -274,118 +274,118 @@ local function listTouch( event )
 								    file:write(contents)                                                -- Writes the contents to a file
 								    io.close(file)                                                      -- Close the file (Important!)
 								else
-								   path = system.pathForFile("/storage/sdcard/"..filename)
+									path = system.pathForFile("/storage/sdcard/"..filename)
 									local file = io.open( path, "w" )                                    -- Open the destination path in write mode
 									if file then
 										file:write(contents)                                                -- Writes the contents to a file
 										io.close(file)                                                      -- Close the file (Important!)
 									else
-									    print("Error")
-									    return
-									 end
-								 end
+										print("Error")
+										return
+									end
 								end
+							end
 
 							native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
 							-- native.showAlert( filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
-end
+						end
 
-end
+					end
 
-end
+				end
 
 				native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
+			end
+
+
+
+		end
+
+		return true
 	end
 
 
 
+	local function slideShow(filename)
+
+		spinner_hide()
+
+		if myImage ~= nil then myImage:removeSelf( );myImage=nil end
+
+		shareImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
+		shareImg_bg.filename = ImageList[indexValue].ImageFileName
+		shareImg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
+		shareImg.filename = ImageList[indexValue].ImageFileName
+
+		if downImg_bg then
+
+			downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
+			downImg_bg.filename = ImageList[indexValue].ImageFileName
+			downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
+			downImg.filename = ImageList[indexValue].ImageFileName
+
+		end
+
+
+		myImage = display.newImage( filename, system.TemporaryDirectory )
+		myImage.anchorY=0
+		myImage.y=110
+		myImage.x=W/2;myImage.alpha=0
+
+		imageGroup:insert( myImage )
+		
+
+		if myImage.width > myImage.height then
+			myImage.height = 150
+			myImage.width = W-60
+			myImage.y=H/2-myImage.contentHeight/2
+
+		else
+			if myImage.height > H-110 then
+
+				myImage.height = H-100
+				myImage.width = W-60
+
+			else
+				myImage.y=H/2-myImage.contentHeight/2
+			end
+
+			if myImage.width > W-60 then
+				myImage.width = W-60
+			end
+
+		end
+
+		
+		myImage.alpha = 0
+		imageTrans = transition.to( myImage, { time=1000, alpha=1, tag="transTag" } )
+
+		imageGroup:insert(myImage)
+
 	end
 
-	return true
-end
 
+	local function onKeyEventDetail( event )
 
+		local phase = event.phase
+		local keyName = event.keyName
 
-local function slideShow(filename)
+		if phase == "up" then
 
-						spinner_hide()
+			if keyName=="back" then
 
-						if myImage ~= nil then myImage:removeSelf( );myImage=nil end
+				composer.hideOverlay( "slideRight", 300 )
 
-							shareImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
-   							shareImg_bg.filename = ImageList[indexValue].ImageFileName
-   							shareImg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
-    						shareImg.filename = ImageList[indexValue].ImageFileName
+				return true
+				
+			end
 
-    						if downImg_bg then
+		end
 
-    						downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
-  							downImg_bg.filename = ImageList[indexValue].ImageFileName
- 							downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
-   							downImg.filename = ImageList[indexValue].ImageFileName
-
-   						end
-
-
-						myImage = display.newImage( filename, system.TemporaryDirectory )
-						myImage.anchorY=0
-						myImage.y=110
-						myImage.x=W/2;myImage.alpha=0
-
-						imageGroup:insert( myImage )
-						
-
-						if myImage.width > myImage.height then
-							myImage.height = 150
-							myImage.width = W-60
-							myImage.y=H/2-myImage.contentHeight/2
-
-						else
-							if myImage.height > H-110 then
-
-								myImage.height = H-100
-								myImage.width = W-60
-
-							else
-								myImage.y=H/2-myImage.contentHeight/2
-							end
-
-							if myImage.width > W-60 then
-								myImage.width = W-60
-							end
-
-						end
-
-						
-						myImage.alpha = 0
-						imageTrans = transition.to( myImage, { time=1000, alpha=1, tag="transTag" } )
-
-						imageGroup:insert(myImage)
-
-end
-
-
-local function onKeyEventDetail( event )
-
-        local phase = event.phase
-        local keyName = event.keyName
-
-        if phase == "up" then
-
-        if keyName=="back" then
-
-        	composer.hideOverlay( "slideRight", 300 )
-
-        	 return true
-            
-        end
-
-    end
-
-        return false
- end
+		return false
+	end
 
 
 ------------------------------------------------------
@@ -426,11 +426,11 @@ function scene:create( event )
 
 
 	title_playbg = display.newRect(sceneGroup,0,0,50,30)
-    title_playbg.x=W-25
-    title_playbg.y=title_bg.y
-    title_playbg.id="share"
-    title_playbg.alpha=0.01
-    title_playbg.value="play"
+	title_playbg.x=W-25
+	title_playbg.y=title_bg.y
+	title_playbg.id="share"
+	title_playbg.alpha=0.01
+	title_playbg.value="play"
 
 	title_playBtn = display.newImageRect( sceneGroup, "res/assert/play.png", 22/1.5,26/1.5)
 	title_playBtn.x=W-25
@@ -446,36 +446,36 @@ function scene:create( event )
 	imageName.x=10;imageName.y=imageslider_bg.y
 	imageName.anchorX=0
 
-	 seprate_bg = display.newRect(sceneGroup,0,0,120,imageslider_bg.height)
-    seprate_bg.anchorX=0
-    seprate_bg.x=W/2+80;seprate_bg.y=imageslider_bg.y
-    seprate_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	seprate_bg = display.newRect(sceneGroup,0,0,120,imageslider_bg.height)
+	seprate_bg.anchorX=0
+	seprate_bg.x=W/2+80;seprate_bg.y=imageslider_bg.y
+	seprate_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
- 	shareImg_bg = display.newRect(sceneGroup,0,0,30,30)
-    shareImg_bg.x=seprate_bg.x+25;shareImg_bg.y=seprate_bg.y
-    shareImg_bg.id="share"
-    shareImg_bg.alpha=0.01
- 
+	shareImg_bg = display.newRect(sceneGroup,0,0,30,30)
+	shareImg_bg.x=seprate_bg.x+25;shareImg_bg.y=seprate_bg.y
+	shareImg_bg.id="share"
+	shareImg_bg.alpha=0.01
+	
 
-   shareImg = display.newImageRect(sceneGroup,"res/assert/upload.png",15,15)
-    shareImg.x=seprate_bg.x+25;shareImg.y=seprate_bg.y
-    shareImg.id="share"
-
-
-    if isAndroid then
-
-    downImg_bg = display.newRect(sceneGroup,0,0,25,25)
-    downImg_bg.x=shareImg.x+30;downImg_bg.y=seprate_bg.y
-    downImg_bg.id="download"
-    downImg_bg.alpha=0.01
+	shareImg = display.newImageRect(sceneGroup,"res/assert/upload.png",15,15)
+	shareImg.x=seprate_bg.x+25;shareImg.y=seprate_bg.y
+	shareImg.id="share"
 
 
-    downImg = display.newImageRect(sceneGroup,"res/assert/download.png",15,15)
-    downImg.x=shareImg.x+30;downImg.y=seprate_bg.y
-    downImg.id="download"
+	if isAndroid then
 
-    downImg:addEventListener("touch",listTouch)
-    downImg_bg:addEventListener("touch",listTouch)
+		downImg_bg = display.newRect(sceneGroup,0,0,25,25)
+		downImg_bg.x=shareImg.x+30;downImg_bg.y=seprate_bg.y
+		downImg_bg.id="download"
+		downImg_bg.alpha=0.01
+
+
+		downImg = display.newImageRect(sceneGroup,"res/assert/download.png",15,15)
+		downImg.x=shareImg.x+30;downImg.y=seprate_bg.y
+		downImg.id="download"
+
+		downImg:addEventListener("touch",listTouch)
+		downImg_bg:addEventListener("touch",listTouch)
 
 	else
 
@@ -487,10 +487,10 @@ function scene:create( event )
 	end
 
 	shareImg:addEventListener("touch",listTouch)
-    shareImg_bg:addEventListener("touch",listTouch)
+	shareImg_bg:addEventListener("touch",listTouch)
 
-    title_playbg:addEventListener( "touch", PausePlayAction )
-    Background:addEventListener( "touch", BgTouch )
+	title_playbg:addEventListener( "touch", PausePlayAction )
+	Background:addEventListener( "touch", BgTouch )
 
 	sceneGroup:insert( imageGroup )
 	MainGroup:insert(sceneGroup)
@@ -505,20 +505,20 @@ function scene:show( event )
 	if phase == "will" then
 
 
-		elseif phase == "did" then
+	elseif phase == "did" then
 
-			if event.params then
+		if event.params then
 				--print(event.params.FilePath)
 
 				ImageList = event.params.ImageList
 				indexValue = event.params.count
 
-	
-		local function downloadAction( )
+				
+				local function downloadAction( )
 
 					spinner_show()
 
-				local fileNameString 
+					local fileNameString 
 
 
 					fileNameString = ImageList[indexValue].ImageFileName..".png"
@@ -534,63 +534,63 @@ function scene:show( event )
 						if title_playbg.value == "play" then
 							timer.pause( SliderTimer )
 						end
-					  slideShow(fileNameString)
+						slideShow(fileNameString)
 
-					   fhd:close()
+						fhd:close()
 					else
 
 
-				
-						imageDownload = network.download(
-						ApplicationConfig.IMAGE_BASE_URL..ImageList[indexValue].FilePath,
-						"GET",
-						function ( event )
-						if ( event.isError ) then
-							print( "Network error - download failed" )
-							elseif ( event.phase == "began" ) then
-								elseif ( event.phase == "ended" ) then
-								print( "12323123" )
-								SliderTimer = timer.performWithDelay( 5000, onSlideTimer )
-
-								if title_playbg.value == "play" then
-									timer.pause( SliderTimer )
-								end
-
-							slideShow(event.response.filename)
-
-							
-
-					end
-		end		,
-						fileNameString,
-						system.TemporaryDirectory)
-					end
-
-					
-
-					
-
-		end
-
-
-		function onSlideTimer( event )
-		  	
-		  	indexValue = indexValue + 1 
-
-		  	if #ImageList < indexValue then
-		  		indexValue=1
-		  	end
-
-		  	downloadAction()
-
-		end
-
-		
-
-		
 						
-		downloadAction()
+						imageDownload = network.download(
+							ApplicationConfig.IMAGE_BASE_URL..ImageList[indexValue].FilePath,
+							"GET",
+							function ( event )
+								if ( event.isError ) then
+									print( "Network error - download failed" )
+								elseif ( event.phase == "began" ) then
+									elseif ( event.phase == "ended" ) then
+									print( "12323123" )
+									SliderTimer = timer.performWithDelay( 5000, onSlideTimer )
+
+									if title_playbg.value == "play" then
+										timer.pause( SliderTimer )
+									end
+
+									slideShow(event.response.filename)
+
+									
+
+								end
+								end		,
+								fileNameString,
+								system.TemporaryDirectory)
+					end
+
 					
+
+					
+
+				end
+
+
+				function onSlideTimer( event )
+					
+					indexValue = indexValue + 1 
+
+					if #ImageList < indexValue then
+						indexValue=1
+					end
+
+					downloadAction()
+
+				end
+
+				
+
+				
+				
+				downloadAction()
+				
 
 			end
 
@@ -600,7 +600,7 @@ function scene:show( event )
 			title:addEventListener("touch",BackTouch)
 			BackBtn:addEventListener("touch",BackTouch)
 
-   			Runtime:addEventListener("key",onKeyEventDetail)
+			Runtime:addEventListener("key",onKeyEventDetail)
 
 		end	
 
@@ -617,15 +617,15 @@ function scene:show( event )
 
 			if title_playBtn then title_playBtn:removeSelf( );title_playBtn=nil end
 
-			elseif phase == "did" then
+		elseif phase == "did" then
 
-				spinner_hide()
+			spinner_hide()
 
-				event.parent:resumeGame()
-				
+			event.parent:resumeGame()
+			
 
-				if imageTrans then transition.cancel( imageTrans );imageTrans=nil end
-				if SliderTimer then timer.cancel( SliderTimer );SliderTimer=nil end
+			if imageTrans then transition.cancel( imageTrans );imageTrans=nil end
+			if SliderTimer then timer.cancel( SliderTimer );SliderTimer=nil end
 
 
 					--if myImage then myImage:removeSelf();myImage=nil end

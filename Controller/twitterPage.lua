@@ -53,26 +53,26 @@ end
 -----------------Function-------------------------
 
 function makeTimeStamp( dateString )
-   local pattern = "(%d+)%-(%d+)%-(%d+)%a(%d+)%:(%d+)%:([%d%.]+)([Z%p])(%d%d)%:?(%d%d)"
-   local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
-   local timestamp = os.time(
-      { year=year, month=month, day=day, hour=hour, min=minute, sec=seconds }
-   )
-   local offset = 0
-   if ( tzoffset ) then
+	local pattern = "(%d+)%-(%d+)%-(%d+)%a(%d+)%:(%d+)%:([%d%.]+)([Z%p])(%d%d)%:?(%d%d)"
+	local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
+	local timestamp = os.time(
+		{ year=year, month=month, day=day, hour=hour, min=minute, sec=seconds }
+		)
+	local offset = 0
+	if ( tzoffset ) then
       if ( tzoffset == "+" or tzoffset == "-" ) then  -- We have a timezone
 
       	print( "offsethour : "..offsethour )
-         offset = offsethour * 60 + offsetmin
-         if ( tzoffset == "-" ) then
-            offset = offset * -1
-         end
-         timestamp = timestamp + offset
+      	offset = offsethour * 60 + offsetmin
+      	if ( tzoffset == "-" ) then
+      		offset = offset * -1
+      	end
+      	timestamp = timestamp + offset
       end
-   end
+  end
 
 
-   return timestamp
+  return timestamp
 end
 
 function TwitterCallback(res,scrollView)
@@ -111,15 +111,15 @@ function TwitterCallback(res,scrollView)
 
 					local tempGroup = groupArray[#groupArray]
 
-						local bgheight = 0
+					local bgheight = 0
 
-							if feedArray[FeedCount].picture ~= nil then
-	
-								bgheight = 100
+					if feedArray[FeedCount].picture ~= nil then
+						
+						bgheight = 100
 
-							end
-		
-							bgheight = bgheight+20
+					end
+					
+					bgheight = bgheight+20
 
 
 					
@@ -165,7 +165,7 @@ function TwitterCallback(res,scrollView)
 
 						print(weekday,table.indexOf( MonthNumber, "Jan" ),day,hour, minute, seconds,year)
 
-				
+						
 
 						local timestamp = os.time( {year=year, month=table.indexOf( MonthNumber, month ), day=day, hour=hour, min=minute, sec=seconds, isdst=false} )
 
@@ -184,12 +184,12 @@ function TwitterCallback(res,scrollView)
 					Utils.CssforTextView(userTime,sp_Date_Time)
 					userTime:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-				
+					
 
-						local userArray = feedArray[FeedCount].user or ""
+					local userArray = feedArray[FeedCount].user or ""
 
 
-						rowTitle = display.newText( tempGroup, userArray.name.." @"..userArray.screen_name, 50, 0,100,0, native.systemFont, 12 )
+					rowTitle = display.newText( tempGroup, userArray.name.." @"..userArray.screen_name, 50, 0,100,0, native.systemFont, 12 )
 
 					
 					rowTitle.anchorX = 0
@@ -206,71 +206,71 @@ function TwitterCallback(res,scrollView)
 					local rowStory
 
 
-				
+					
 
-										local optionsread = {
-										text = feedArray[FeedCount].text or "",
-										x = display.contentCenterX,
-										y = rowTitle.y+rowTitle.contentHeight+5,
-										fontSize = 11,
-										width = 210,
-										height = 0,
-										align = "left"
-									}
+					local optionsread = {
+						text = feedArray[FeedCount].text or "",
+						x = display.contentCenterX,
+						y = rowTitle.y+rowTitle.contentHeight+5,
+						fontSize = 11,
+						width = 210,
+						height = 0,
+						align = "left"
+					}
 
 					rowStory = display.newText( optionsread )
 
-			
+					
 
 
-				rowStory:setFillColor( 0 )
-				tempGroup:insert(rowStory)
-				rowStory.anchorX = 0
-				rowStory.anchorY = 0
+					rowStory:setFillColor( 0 )
+					tempGroup:insert(rowStory)
+					rowStory.anchorX = 0
+					rowStory.anchorY = 0
 
 
-				background.height = background.height+rowStory.height+rowTitle.height
+					background.height = background.height+rowStory.height+rowTitle.height
 
-				background.y=tempHeight
+					background.y=tempHeight
 
-								local background_arrow = display.newImageRect( tempGroup, "res/assert/arrow3.png", 11,20 )
-								background_arrow.x=background.x-background.contentWidth/2-background_arrow.contentWidth/2+1
-								background_arrow.y=background.y+background_arrow.contentHeight/2+5
-								background.alpha=0.8
-
-
-								profilePic.x=background.x-background.contentWidth/2-profilePic.contentWidth/2-10
-								profilePic.y=background.y+profilePic.height/2-5
-
-								userTime.x=background.x+background.contentWidth/2-userTime.contentWidth-5
-								userTime.y=background.y+5
-
-								rowTitle.x=background.x-background.contentWidth/2+5
-								rowTitle.y=background.y+5
-
-								line.x=background.x;line.y=rowTitle.y+rowTitle.contentHeight+3
-								rowStory.x = rowTitle.x
-								rowStory.y = rowTitle.y+rowTitle.contentHeight+8
+					local background_arrow = display.newImageRect( tempGroup, "res/assert/arrow3.png", 11,20 )
+					background_arrow.x=background.x-background.contentWidth/2-background_arrow.contentWidth/2+1
+					background_arrow.y=background.y+background_arrow.contentHeight/2+5
+					background.alpha=0.8
 
 
+					profilePic.x=background.x-background.contentWidth/2-profilePic.contentWidth/2-10
+					profilePic.y=background.y+profilePic.height/2-5
 
-				scrollView:insert(tempGroup)
+					userTime.x=background.x+background.contentWidth/2-userTime.contentWidth-5
+					userTime.y=background.y+5
 
+					rowTitle.x=background.x-background.contentWidth/2+5
+					rowTitle.y=background.y+5
+
+					line.x=background.x;line.y=rowTitle.y+rowTitle.contentHeight+3
+					rowStory.x = rowTitle.x
+					rowStory.y = rowTitle.y+rowTitle.contentHeight+8
+
+
+
+					scrollView:insert(tempGroup)
+
+				end
 			end
+
 		end
-
 	end
-end
 
-spinner_show()
+	spinner_show()
 
-network.download(
-	feedArray[1].user.profile_image_url,
-	"GET",
-	networkListener,
-	"userPhoto.png",
-	system.TemporaryDirectory
-	)
+	network.download(
+		feedArray[1].user.profile_image_url,
+		"GET",
+		networkListener,
+		"userPhoto.png",
+		system.TemporaryDirectory
+		)
 
 
 
@@ -331,93 +331,93 @@ local function recent_tweet()
 	end
 end
 
-	local function Twitter_scrollListener( event )
+local function Twitter_scrollListener( event )
 
-		    local phase = event.phase
-		    if ( phase == "began" ) then 
-
-
+	local phase = event.phase
+	if ( phase == "began" ) then 
 
 
-		    elseif ( phase == "moved" ) then 
-		    elseif ( phase == "ended" ) then 
-		    end
+
+
+	elseif ( phase == "moved" ) then 
+		elseif ( phase == "ended" ) then 
+	end
 
 		    -- In the event a scroll limit is reached...
 		    if ( event.limitReached ) then
-		        if ( event.direction == "up" ) then print( "Reached bottom limit" )
+		    	if ( event.direction == "up" ) then print( "Reached bottom limit" )
 
-		        	TwitterFlag = false
+		    		TwitterFlag = false
 
-		        	local params = {"users", "statuses/user_timeline.json", "GET",
-					{"screen_name", UserName}, {"skip_status", "true"},
-					{"include_entities", "false"},{"count",tostring(FeedCount+FeedProcess)} }
-					TwitterManager.tweet(callback, params)
+		    		local params = {"users", "statuses/user_timeline.json", "GET",
+		    		{"screen_name", UserName}, {"skip_status", "true"},
+		    		{"include_entities", "false"},{"count",tostring(FeedCount+FeedProcess)} }
+		    		TwitterManager.tweet(callback, params)
 
-		        elseif ( event.direction == "down" ) then print( "Reached top limit" )
+		    	elseif ( event.direction == "down" ) then print( "Reached top limit" )
 
-		        	TwitterFlag = true
+		    		TwitterFlag = true
 
-			    	FeedCount = 0
+		    		FeedCount = 0
 
-			    	FeedProcess = 10
+		    		FeedProcess = 10
 
-		        	local params = {"users", "statuses/user_timeline.json", "GET",
-					{"screen_name", UserName}, {"skip_status", "true"},
-					{"include_entities", "false"},{"count",tostring(FeedCount+FeedProcess)} }
-					TwitterManager.tweet(callback, params)
+		    		local params = {"users", "statuses/user_timeline.json", "GET",
+		    		{"screen_name", UserName}, {"skip_status", "true"},
+		    		{"include_entities", "false"},{"count",tostring(FeedCount+FeedProcess)} }
+		    		TwitterManager.tweet(callback, params)
 
 
-		        elseif ( event.direction == "left" ) then print( "Reached right limit" )
-		        elseif ( event.direction == "right" ) then print( "Reached left limit" )
-		        end
+		    	elseif ( event.direction == "left" ) then print( "Reached right limit" )
+		    	elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		    	end
 		    end
 
 		    return true
-	end
+		end
 
 
 
-local function onTimer ( event )
+		local function onTimer ( event )
 
-	print( "event time completion" )
+			print( "event time completion" )
 
-	BackFlag = false
+			BackFlag = false
 
-end
+		end
 
 
-local function onKeyEvent( event )
+		local function onKeyEvent( event )
 
-        local phase = event.phase
-        local keyName = event.keyName
+			local phase = event.phase
+			local keyName = event.keyName
 
-        if phase == "up" then
+			if phase == "up" then
 
-        if keyName=="back" then
+				if keyName=="back" then
 
-        	if BackFlag == false then
+					if BackFlag == false then
 
-        		Utils.SnackBar(ChatPage.PressAgain)
+						Utils.SnackBar(ChatPage.PressAgain)
 
-        		BackFlag = true
+						BackFlag = true
 
-        		timer.performWithDelay( 3000, onTimer )
+						timer.performWithDelay( 3000, onTimer )
 
-                return true
+						return true
 
-            elseif BackFlag == true then
+					elseif BackFlag == true then
 
-			 os.exit() 
+						os.exit() 
 
-            end
-            
-        end
+					end
+					
+				end
 
-    end
+			end
 
-        return false
- end
+			return false
+		end
 
 
 
@@ -443,7 +443,7 @@ function scene:create( event )
 	BgText.anchorX=0
 
 
-		title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
 	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
 	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
@@ -456,26 +456,26 @@ function scene:create( event )
 
 	scrollView = widget.newScrollView
 	{
-	top = RecentTab_Topvalue,
-	left = 0,
-	width = W,
-	height =H-RecentTab_Topvalue,
-	hideBackground = true,
-	isBounceEnabled=true,
-	horizontalScrollDisabled = true,
-	scrollWidth = W,
-	bottomPadding=20,
-    listener = Twitter_scrollListener,
+		top = RecentTab_Topvalue,
+		left = 0,
+		width = W,
+		height =H-RecentTab_Topvalue,
+		hideBackground = true,
+		isBounceEnabled=true,
+		horizontalScrollDisabled = true,
+		scrollWidth = W,
+		bottomPadding=20,
+		listener = Twitter_scrollListener,
 
-}
+	}
 
 
 
-sceneGroup:insert(scrollView)
-spinner_show()
-recent_tweet()
+	sceneGroup:insert(scrollView)
+	spinner_show()
+	recent_tweet()
 
-MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 end
 
@@ -491,49 +491,49 @@ function scene:show( event )
 	if phase == "will" then
 
 
-		elseif phase == "did" then
-			composer.removeHidden()
-			menuBtn:addEventListener("touch",menuTouch)
-			BgText:addEventListener("touch",menuTouch)
+	elseif phase == "did" then
+		composer.removeHidden()
+		menuBtn:addEventListener("touch",menuTouch)
+		BgText:addEventListener("touch",menuTouch)
 
-			Runtime:addEventListener( "key", onKeyEvent )
+		Runtime:addEventListener( "key", onKeyEvent )
 
-		end	
-		MainGroup:insert(sceneGroup)
+	end	
+	MainGroup:insert(sceneGroup)
 
-	end
+end
 
-	function scene:hide( event )
+function scene:hide( event )
 
-		local sceneGroup = self.view
-		local phase = event.phase
+	local sceneGroup = self.view
+	local phase = event.phase
 
-		if event.phase == "will" then
-
-
-			elseif phase == "did" then
-				menuBtn:removeEventListener("touch",menuTouch)
-				BgText:removeEventListener("touch",menuTouch)
-
-				Runtime:removeEventListener( "key", onKeyEvent )
-
-			end	
-
-		end
+	if event.phase == "will" then
 
 
-		function scene:destroy( event )
-			local sceneGroup = self.view
+	elseif phase == "did" then
+		menuBtn:removeEventListener("touch",menuTouch)
+		BgText:removeEventListener("touch",menuTouch)
+
+		Runtime:removeEventListener( "key", onKeyEvent )
+
+	end	
+
+end
+
+
+function scene:destroy( event )
+	local sceneGroup = self.view
 
 
 
-		end
+end
 
 
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
 
 
-		return scene
+return scene

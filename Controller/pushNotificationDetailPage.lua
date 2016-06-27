@@ -53,31 +53,31 @@ local request,request1
 -----------------Function-------------------------
 
 
-			local function FocusComplete( event )
+local function FocusComplete( event )
 
-			if event.phase == "began" then
+	if event.phase == "began" then
 
-			native.setKeyboardFocus(nil)
-			display.getCurrentStage():setFocus( event.target )
+		native.setKeyboardFocus(nil)
+		display.getCurrentStage():setFocus( event.target )
 
-			elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 
-			display.getCurrentStage():setFocus( nil )
+		display.getCurrentStage():setFocus( nil )
 
-			end
+	end
 
-			return true
+	return true
 
-			end 
-
-
+end 
 
 
-		local function closeDetails( event )
-			
-			if event.phase == "began" then
 
-				display.getCurrentStage():setFocus( event.target )
+
+local function closeDetails( event )
+	
+	if event.phase == "began" then
+
+		display.getCurrentStage():setFocus( event.target )
 
 					 -- if testimage then testimage:removeSelf();testimage = nil end
 
@@ -87,79 +87,79 @@ local request,request1
 
 				  --    reciveImageFlag=false
 
-			elseif event.phase == "ended" then
+				  elseif event.phase == "ended" then
 
-			    display.getCurrentStage():setFocus( nil )
+				  display.getCurrentStage():setFocus( nil )
 
-			    if webView then webView:removeSelf( );webView=nil end
+				  if webView then webView:removeSelf( );webView=nil end
 
-							    if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+				  if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
 
-							    	composer.gotoScene("Controller.pushNotificationListPage","slideRight",300)
+				  	composer.gotoScene("Controller.pushNotificationListPage","slideRight",300)
 
-							    else
+				  else
 
-								    composer.hideOverlay("slideRight",300)
+				  	composer.hideOverlay("slideRight",300)
 
-								end
+				  end
+
+				end
+
+				return true
 
 			end
 
-		   return true
-
-		end
 
 
 
+			function getDeletionresponse( response)
 
-	   function getDeletionresponse( response)
+				Request_response = response
 
-		  Request_response = response
+				if Request_response == true then
 
-	       if Request_response == true then
-
-	      		 Utils.SnackBar(MessagePage.DeleteSuccess)
+					Utils.SnackBar(MessagePage.DeleteSuccess)
 
 					local function onTimer ( event )
 
-	         	          if webView then webView:removeSelf( );webView=nil end
+						if webView then webView:removeSelf( );webView=nil end
 
 
-							DeleteMessageGroup.isVisible = false
+						DeleteMessageGroup.isVisible = false
 
-							status = "deleted"
+						status = "deleted"
 
-							composer.hideOverlay("slideRight",500)
+						composer.hideOverlay("slideRight",500)
 
 					end
 
-    		     timer.performWithDelay(1000, onTimer )
+					timer.performWithDelay(1000, onTimer )
 
-	       end
+				end
 
-       end
-
-
+			end
 
 
 
-	function onDeleteOptionsTouch( event )
 
-        if event.phase == "began" then
 
-    	elseif event.phase == "ended" then
+			function onDeleteOptionsTouch( event )
 
-       		 native.setKeyboardFocus(nil)
+				if event.phase == "began" then
 
-		    	    DeleteMessageGroup.isVisible = true
+					elseif event.phase == "ended" then
 
-		            message_id = messagelistvalue.MyUnitBuzzMessageId
+					native.setKeyboardFocus(nil)
 
-		            print("Message Id : ",message_id)
+					DeleteMessageGroup.isVisible = true
 
-	        	if event.target.id == "accept" then
+					message_id = messagelistvalue.MyUnitBuzzMessageId
 
-	        		DeleteMessageGroup.isVisible = false
+					print("Message Id : ",message_id)
+
+					if event.target.id == "accept" then
+
+						DeleteMessageGroup.isVisible = false
 
 						if Details.MyUnitBuzzLongMessage ~= nil then
 
@@ -176,47 +176,47 @@ local request,request1
 							</head>]]..test..[[</html>]]
 
 
-				            local path = system.pathForFile( "longmessage.html",system.DocumentsDirectory )
+							local path = system.pathForFile( "longmessage.html",system.DocumentsDirectory )
 
 							local file, errorString = io.open( path, "w+" )
 
-									if not file then
+							if not file then
 
-									print( "File error: " .. errorString )
+								print( "File error: " .. errorString )
 
-									else
+							else
 
-									file:write( saveData )
+								file:write( saveData )
 
-					
-									webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 260 )
+								
+								webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 260 )
 
-									webView.hasBackground = false
-									webView.x = short_msg_txt.x - 7
-									webView.height =  H - 260 
-									webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
+								webView.hasBackground = false
+								webView.x = short_msg_txt.x - 7
+								webView.height =  H - 260 
+								webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
 
-									webView.anchorX=0;webView.anchorY=0
-									webView:request( "longmessage.html", system.DocumentsDirectory )
+								webView.anchorX=0;webView.anchorY=0
+								webView:request( "longmessage.html", system.DocumentsDirectory )
 
-									messagedetail_scrollView:insert( webView)
+								messagedetail_scrollView:insert( webView)
 
-								    file:close()
-
-								    end
-
-						    file = nil
+								file:close()
 
 							end
 
+							file = nil
 
-        		    Webservice.DeleteMyUnitBuzzMessages(message_id,getDeletionresponse)
+						end
 
-	        	elseif event.target.id == "reject" then
 
-					                DeleteMessageGroup.isVisible = false
+						Webservice.DeleteMyUnitBuzzMessages(message_id,getDeletionresponse)
 
-									if Details.MyUnitBuzzLongMessage ~= nil then
+					elseif event.target.id == "reject" then
+
+						DeleteMessageGroup.isVisible = false
+
+						if Details.MyUnitBuzzLongMessage ~= nil then
 
 									 --    long_msg_text= display.newText(sceneGroup,detail_value.MyUnitBuzzLongMessage,0,0,W-30,0,native.systemFont,14)
 										-- long_msg_text.x = 12
@@ -241,86 +241,86 @@ local request,request1
 										</head>]]..test..[[</html>]]
 
 
-							            local path = system.pathForFile( "longmessage.html",system.DocumentsDirectory )
+										local path = system.pathForFile( "longmessage.html",system.DocumentsDirectory )
 
 										local file, errorString = io.open( path, "w+" )
 
-												if not file then
+										if not file then
 
-												print( "File error: " .. errorString )
+											print( "File error: " .. errorString )
 
-												else
+										else
 
-												file:write( saveData )
+											file:write( saveData )
 
-				
-												webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 260 )
+											
+											webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 260 )
 
-												webView.hasBackground = false
-												webView.x = short_msg_txt.x - 7
-												webView.height =  H - 260 
-												webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
+											webView.hasBackground = false
+											webView.x = short_msg_txt.x - 7
+											webView.height =  H - 260 
+											webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
 
-												webView.anchorX=0;webView.anchorY=0
-												webView:request( "longmessage.html", system.DocumentsDirectory )
+											webView.anchorX=0;webView.anchorY=0
+											webView:request( "longmessage.html", system.DocumentsDirectory )
 
-												messagedetail_scrollView:insert( webView)
+											messagedetail_scrollView:insert( webView)
 
-											    file:close()
+											file:close()
 
-
-											    end
-
-									    file = nil
 
 										end
 
+										file = nil
 
-	        	end
-        
-        end
-
-    end
+									end
 
 
+								end
+								
+							end
+
+						end
 
 
 
-		local function onDeleteAction( event )
-
-			if event.phase == "began" then
-
-				display.getCurrentStage():setFocus( event.target )
-
-			elseif event.phase == "ended" then
-
-			    display.getCurrentStage():setFocus( nil )
 
 
-		                if event.target.id == "deleteoption" then
+						local function onDeleteAction( event )
 
-		                	if webView then webView:removeSelf( );webView=nil end
+							if event.phase == "began" then
 
-					    GetDeleteMessageAlertPopup()
+								display.getCurrentStage():setFocus( event.target )
+
+								elseif event.phase == "ended" then
+
+								display.getCurrentStage():setFocus( nil )
 
 
-					    accept_button:addEventListener("touch",onDeleteOptionsTouch)
-			            reject_button:addEventListener("touch",onDeleteOptionsTouch)
+								if event.target.id == "deleteoption" then
 
-				        elseif event.target.id == "editoption" then
+									if webView then webView:removeSelf( );webView=nil end
+
+									GetDeleteMessageAlertPopup()
+
+
+									accept_button:addEventListener("touch",onDeleteOptionsTouch)
+									reject_button:addEventListener("touch",onDeleteOptionsTouch)
+
+								elseif event.target.id == "editoption" then
 
 									if event.params then
 
-									messagelistvalue = event.params.messagelistvalues
+										messagelistvalue = event.params.messagelistvalues
 
 									end
 
 
 									local options = {
-											isModal = true,
-											effect = "slideRight",
-											time = 300,
-											params = {
+										isModal = true,
+										effect = "slideRight",
+										time = 300,
+										params = {
 											editvalues = messagelistvalue , pagevalue = "editpage"
 										}
 									}
@@ -329,20 +329,20 @@ local request,request1
 				                      --composer.gotoScene("Controller.composeMessagePage",options)
 
 
-									status="edit"
+				                      status="edit"
 
-									pagevalue = "editpage"
+				                      pagevalue = "editpage"
 
-									composer.hideOverlay()
+				                      composer.hideOverlay()
 
 
-				        end
+				                  end
 
 			    -- DeleteMessageGroup.isVisible = true
 
 			end
 
-		return true
+			return true
 			
 		end
 
@@ -352,62 +352,62 @@ local request,request1
 
 		local function onKeyEventDetail( event )
 
-		        local phase = event.phase
-		        local keyName = event.keyName
+			local phase = event.phase
+			local keyName = event.keyName
 
-		        if phase == "up" then
+			if phase == "up" then
 
-		        if keyName=="back" then
+				if keyName=="back" then
 
-		        	composer.hideOverlay( "slideRight", 300 )
+					composer.hideOverlay( "slideRight", 300 )
 
-		        	return true
-		            
-		        end
+					return true
+					
+				end
 
-		    end
+			end
 
-		        return false
-		 end
-
-
+			return false
+		end
 
 
 
 
-local function audioPlay( event )
+
+
+		local function audioPlay( event )
 			if event.phase == "began" then
 				display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
+				elseif event.phase == "ended" then
 				display.getCurrentStage():setFocus( nil )
 
-					local audioname = event.target.id:match( "([^/]+)$" )
+				local audioname = event.target.id:match( "([^/]+)$" )
 
 					--native.showAlert( "MUB", "audioname" ,{"ok"} )
 					if not audioname then
 						audioname = event.target.id
 					end
 
-					 local filePath = system.pathForFile( audioname, system.DocumentsDirectory )
+					local filePath = system.pathForFile( audioname, system.DocumentsDirectory )
 		            -- Play back the recording
 		            local file = io.open( filePath)
 		            
 		            if file then
-		                io.close( file )
+		            	io.close( file )
 
-		               
-		                if event.target.value == "play" then
-               	
+		            	
+		            	if event.target.value == "play" then
+		            		
 
-		                	 local isChannel1Playing = audio.isChannelPlaying( 2 )
-								if isChannel1Playing or isSimulator then
+		            		local isChannel1Playing = audio.isChannelPlaying( 2 )
+		            		if isChannel1Playing or isSimulator then
 
 									 -- for i=#MeassageList, 1, -1 do 
 										-- 		local group = MeassageList[#MeassageList]
 
 										-- 		for j=group.numChildren, 1, -1 do 
 
-													
+										
 
 										-- 			if group[j].value == "pause" then
 
@@ -418,49 +418,49 @@ local function audioPlay( event )
 										-- 			end
 
 									 --   		 	end
-												
+									 
 										-- end
 
 
 
 
-									event.target:setSequence( "pause" )
-			      					event.target:play()
-			      					event.target.value="pause"
-			      					if event.target.channel == 2 then
-			      					 	audio.resume( 2 )
+										event.target:setSequence( "pause" )
+										event.target:play()
+										event.target.value="pause"
+										if event.target.channel == 2 then
+											audio.resume( 2 )
 
-			      					end
+										end
 
-								else
+									else
 
-									local laserSound = audio.loadSound( audioname, system.DocumentsDirectory  )
-					                local laserChannel = audio.play( laserSound,{channel=2,onComplete = audioPlayComplete} )
-					                event.target:setSequence( "pause" )
-			      					event.target:play()
-			      					event.target.value="pause"
-			      					event.target.channel=2
-								end
-			           
-
-	      				elseif event.target.value == "pause" then
-	      						print( "pause" )
-	      						 local isChannel1Playing = audio.isChannelPlaying( 2 )
-									if isChannel1Playing or isSimulator then
-									    audio.pause( 2 )
+										local laserSound = audio.loadSound( audioname, system.DocumentsDirectory  )
+										local laserChannel = audio.play( laserSound,{channel=2,onComplete = audioPlayComplete} )
+										event.target:setSequence( "pause" )
+										event.target:play()
+										event.target.value="pause"
+										event.target.channel=2
 									end
-									     event.target:setSequence( "play" )
-				      					event.target:play()
-				      					event.target.value="play"
+									
+
+								elseif event.target.value == "pause" then
+									print( "pause" )
+									local isChannel1Playing = audio.isChannelPlaying( 2 )
+									if isChannel1Playing or isSimulator then
+										audio.pause( 2 )
+									end
+									event.target:setSequence( "play" )
+									event.target:play()
+									event.target.value="play"
 									
 
 									
 
-	      				end
+								end
 
-		            else
+							else
 
-		            end
+							end
 
 		-- network.download(
 		-- event.target.id,
@@ -470,35 +470,35 @@ local function audioPlay( event )
 		-- system.DocumentsDirectory
 		-- )
 
-		end
+end
 
-	return true
+return true
 end
 
 
 
 local function scrollListener(event )
 
-		    local phase = event.phase
-		    if ( phase == "began" ) then 
-		    elseif ( phase == "moved" ) then 
+	local phase = event.phase
+	if ( phase == "began" ) then 
+	elseif ( phase == "moved" ) then 
 
 
-			local x, y = messagedetail_scrollView:getContentPosition()
+		local x, y = messagedetail_scrollView:getContentPosition()
 
 
-			if y > -65 then
+		if y > -65 then
 
 
-				webView.isVisible = true
-			else
+			webView.isVisible = true
+		else
 
-				webView.isVisible = false
-			end
-
+			webView.isVisible = false
 		end
 
 	end
+
+end
 
 
 
@@ -508,7 +508,39 @@ local function scrollListener(event )
 
 function scene:create( event )
 
+
+
 	local sceneGroup = self.view
+
+	page1 = event.params.pagenameval
+
+	for i = 1, #menuArray_display do
+
+
+
+		menuArray_display[i].alpha=0.01
+
+	end
+
+	if page1 == "pn_detailpage" then
+
+		for i = 1, #menuArray_display do
+
+			if menuArray_display[i].name ~= nil and menuArray_display[i].name == "Messages" then
+
+				menuArray_display[i].alpha=1
+
+			end
+
+		end
+
+		
+		
+
+	end
+
+
+	
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
@@ -532,56 +564,56 @@ function scene:create( event )
 
 	Background:addEventListener( "touch", FocusComplete )
 
-    MainGroup:insert(sceneGroup)
+	MainGroup:insert(sceneGroup)
 
 
 end
 
 
 
-	function scene:show( event )
+function scene:show( event )
 
-		local sceneGroup = self.view
-		local phase = event.phase
-		
-		if phase == "will" then
+	local sceneGroup = self.view
+	local phase = event.phase
+	
+	if phase == "will" then
 
-		elseif phase == "did" then
-
-
-			if event.params then
-
-				messagelistvalue = event.params.messagelistvalues
-				page1 = event.params.pagenameval
-
-				print("\n\n\n Message Detail Values : \n\n ", json.encode(messagelistvalue))
-
-			end
+	elseif phase == "did" then
 
 
-			messagedetail_scrollView = widget.newScrollView
-				{
-					top = 70,
-					left = 0,
-					width = W,
-					height =H-70,
-					bottomPadding = 15,
-					hideBackground = true,
-					isBounceEnabled=false,
-					horizontalScrollDisabled = true,
-					hideScrollBar = true,
-					listener = scrollListener,
-				}
+		if event.params then
+
+			messagelistvalue = event.params.messagelistvalues
+			page1 = event.params.pagenameval
+
+			print("\n\n\n Message Detail Values : \n\n ", json.encode(messagelistvalue))
+
+		end
 
 
-            sceneGroup:insert(messagedetail_scrollView)
+		messagedetail_scrollView = widget.newScrollView
+		{
+			top = 70,
+			left = 0,
+			width = W,
+			height =H-70,
+			bottomPadding = 15,
+			hideBackground = true,
+			isBounceEnabled=false,
+			horizontalScrollDisabled = true,
+			hideScrollBar = true,
+			listener = scrollListener,
+		}
+
+
+		sceneGroup:insert(messagedetail_scrollView)
 
 
 
 
- function DisplayDetailValues( detail_value)
+		function DisplayDetailValues( detail_value)
 
-		    Details = detail_value
+			Details = detail_value
 
 
 			back_icon_bg = display.newRect(sceneGroup,0,0,20,20)
@@ -606,7 +638,7 @@ end
 
 
 
-	            if IsOwner == true then
+			if IsOwner == true then
 
 				short_msg_delete= display.newImageRect(sceneGroup,"res/assert/delete.png",19,17)
 				short_msg_delete.x= W-25
@@ -618,17 +650,17 @@ end
 				--messagedetail_scrollView:insert(short_msg_delete)
 
 
-			short_msg_edit= display.newImageRect(sceneGroup,"res/assert/edit-48.png",23,23)
-			short_msg_edit.x= short_msg_delete.x - 35
-			short_msg_edit.anchorX=0
-			short_msg_edit.anchorY=0
-			short_msg_edit.id = "editoption"
-			short_msg_edit.isVisible = true
-			short_msg_edit:setFillColor(0)
-			short_msg_edit.y= title_bg.y - 12
+				short_msg_edit= display.newImageRect(sceneGroup,"res/assert/edit-48.png",23,23)
+				short_msg_edit.x= short_msg_delete.x - 35
+				short_msg_edit.anchorX=0
+				short_msg_edit.anchorY=0
+				short_msg_edit.id = "editoption"
+				short_msg_edit.isVisible = true
+				short_msg_edit:setFillColor(0)
+				short_msg_edit.y= title_bg.y - 12
 
 
-			    else
+			else
 
 			    	--short_msg_txt.width = W-40
 			    	--short_msg_txt.x=back_icon.x + 8
@@ -636,29 +668,29 @@ end
 
 				end
 				
-local function makeTimeStamp( dateString )
-   local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
-   local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
-   local timestamp = os.time(
-      { year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false }
-   )
-   local offset = 0
-   if ( tzoffset ) then
+				local function makeTimeStamp( dateString )
+					local pattern = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
+					local year, month, day, hour, minute, seconds, tzoffset, offsethour, offsetmin = dateString:match(pattern)
+					local timestamp = os.time(
+						{ year=year, month=month, day=day, hour=hour, min=minute, sec=seconds, isdst=false }
+						)
+					local offset = 0
+					if ( tzoffset ) then
       if ( tzoffset == "+" or tzoffset == "-" ) then  -- We have a timezone
-         offset = offsethour * 60 + offsetmin
-         if ( tzoffset == "-" ) then
-            offset = offset * -1
-         end
-         timestamp = timestamp + offset
+      	offset = offsethour * 60 + offsetmin
+      	if ( tzoffset == "-" ) then
+      		offset = offset * -1
+      	end
+      	timestamp = timestamp + offset
       end
-   end
-   return timestamp
+  end
+  return timestamp
 end
 
 
-            
-            local timecreated = detail_value.MessageDate
-			local time = makeTimeStamp(timecreated)
+
+local timecreated = detail_value.MessageDate
+local time = makeTimeStamp(timecreated)
 
 			--short_msg_timedate= display.newText(sceneGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,W-130,0,native.systemFont,12)
 			short_msg_timedate= display.newText(sceneGroup,"",0,0,W-130,0,native.systemFont,12)
@@ -671,127 +703,127 @@ end
 			messagedetail_scrollView:insert(short_msg_timedate)
 
 
-                   print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
+			print(os.date("%B %d, %Y",time) , os.date("%B %d, %Y",os.time(os.date( "*t" ))))
 
-					if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
+			if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
 
-						short_msg_timedate.text =  os.date("%B %d, %Y",time).."  "..os.date("%I:%M %p",time)
+				short_msg_timedate.text =  os.date("%B %d, %Y",time).."  "..os.date("%I:%M %p",time)
 
-						short_msg_timedate.x = W-150
+				short_msg_timedate.x = W-150
 
-				    else 
-
-
-						local t = os.date( "*t" )
-						t.day=t.day-1
-
-						if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
-
-							short_msg_timedate.text = ChatPage.Yesterday.."  "..os.date("%I:%M %p",time)
-							short_msg_timedate.x = W-150
-
-						else
-
-							short_msg_timedate.text = os.date("%B %d, %Y",time).."  "..os.date("%I:%M %p",time)
-							short_msg_timedate.x = W-150
-
-						end
-
-			     	end
-
-		
-
-					short_msg_txt= display.newText(sceneGroup,detail_value.MyUnitBuzzMessage,0,0,W-80,0,native.systemFont,14)
-					short_msg_txt.x=12
-					short_msg_txt.y= short_msg_timedate.y+short_msg_timedate.contentHeight+12
-					short_msg_txt.anchorX=0
-					short_msg_txt.anchorY = 0
-					Utils.CssforTextView(short_msg_txt,sp_labelName)
-					short_msg_txt:setFillColor(0)
-					messagedetail_scrollView:insert(short_msg_txt)
+			else 
 
 
+				local t = os.date( "*t" )
+				t.day=t.day-1
 
-local function CreateImage( filename )
-		myImage = display.newImage(filename , system.DocumentsDirectory  )
-								myImage.anchorY=0
-								myImage.y=webView.y+webView.contentHeight+12
-								myImage.x=W/2
+				if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(t)) then
 
-						spinner.isVisible=false
-						
-						if myImage.width > myImage.height then
-							myImage.height = 150
-							myImage.width = display.contentWidth-40
-							myImage.y=webView.y+webView.contentHeight+12
+					short_msg_timedate.text = ChatPage.Yesterday.."  "..os.date("%I:%M %p",time)
+					short_msg_timedate.x = W-150
 
-						else
-								if myImage.height > H-110 then
+				else
 
-									myImage.height = H-100
-									myImage.width = W-60
+					short_msg_timedate.text = os.date("%B %d, %Y",time).."  "..os.date("%I:%M %p",time)
+					short_msg_timedate.x = W-150
 
-								else
-									myImage.y=webView.y+webView.contentHeight+12
-								end
+				end
 
-								if myImage.width > W-60 then
-									myImage.width = W-60
-								end
+			end
 
-						 end
+			
 
-						    sceneGroup:insert(myImage)
-
-		                    messagedetail_scrollView:insert( myImage)
-end
-
-local function CreateAudio(filename)
+			short_msg_txt= display.newText(sceneGroup,detail_value.MyUnitBuzzMessage,0,0,W-80,0,native.systemFont,14)
+			short_msg_txt.x=12
+			short_msg_txt.y= short_msg_timedate.y+short_msg_timedate.contentHeight+12
+			short_msg_txt.anchorX=0
+			short_msg_txt.anchorY = 0
+			Utils.CssforTextView(short_msg_txt,sp_labelName)
+			short_msg_txt:setFillColor(0)
+			messagedetail_scrollView:insert(short_msg_txt)
 
 
-							local audioname = filename
-							local audio
 
-							filePath = system.pathForFile( audioname,system.DocumentsDirectory )
-							local fhd = io.open( filePath )
+			local function CreateImage( filename )
+				myImage = display.newImage(filename , system.DocumentsDirectory  )
+				myImage.anchorY=0
+				myImage.y=webView.y+webView.contentHeight+12
+				myImage.x=W/2
+
+				spinner.isVisible=false
+				
+				if myImage.width > myImage.height then
+					myImage.height = 150
+					myImage.width = display.contentWidth-40
+					myImage.y=webView.y+webView.contentHeight+12
+
+				else
+					if myImage.height > H-110 then
+
+						myImage.height = H-100
+						myImage.width = W-60
+
+					else
+						myImage.y=webView.y+webView.contentHeight+12
+					end
+
+					if myImage.width > W-60 then
+						myImage.width = W-60
+					end
+
+				end
+
+				sceneGroup:insert(myImage)
+
+				messagedetail_scrollView:insert( myImage)
+			end
+
+			local function CreateAudio(filename)
 
 
-							spinner.isVisible=false
+				local audioname = filename
+				local audio
 
-							local bg = display.newRect( display.contentCenterX,0,W-250,50 )
+				filePath = system.pathForFile( audioname,system.DocumentsDirectory )
+				local fhd = io.open( filePath )
 
-							if myImage ~= nil and myImage.y ~= nil then
-								bg.y = myImage.y+myImage.contentHeight+12
-							else
-								bg.y = webView.y+webView.contentHeight+12
-							end
-							bg.anchorY =0
-							bg.x = display.contentCenterX
-							bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-							sceneGroup:insert(bg)
-							messagedetail_scrollView:insert(bg)
 
-							local sheetData2 = { width=30, height=30, numFrames=2, sheetContentWidth=60, sheetContentHeight=30 }
-							local sheet1 = graphics.newImageSheet( "res/assert/playpause.png", sheetData2 )
+				spinner.isVisible=false
 
-							local sequenceData = {
-							{ name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
-							{ name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
-							}
+				local bg = display.newRect( display.contentCenterX,0,W-250,50 )
 
-							local playIcon = display.newSprite( sheet1, sequenceData )
-							playIcon.x=bg.x+bg.contentWidth/2-35;playIcon.y=bg.y+bg.contentHeight/2 
-							playIcon.id=detail_value.AudioFilePath
-							playIcon.value="play"
-							playIcon:addEventListener( "touch", audioPlay )
-							playIcon:setSequence( "play" )
-							playIcon:play()
-							sceneGroup:insert(playIcon)
-							messagedetail_scrollView:insert(playIcon)
+				if myImage ~= nil and myImage.y ~= nil then
+					bg.y = myImage.y+myImage.contentHeight+12
+				else
+					bg.y = webView.y+webView.contentHeight+12
+				end
+				bg.anchorY =0
+				bg.x = display.contentCenterX
+				bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				sceneGroup:insert(bg)
+				messagedetail_scrollView:insert(bg)
 
-end
+				local sheetData2 = { width=30, height=30, numFrames=2, sheetContentWidth=60, sheetContentHeight=30 }
+				local sheet1 = graphics.newImageSheet( "res/assert/playpause.png", sheetData2 )
 
-	local test = detail_value.MyUnitBuzzLongMessage
+				local sequenceData = {
+					{ name="play", sheet=sheet1, start=1, count=1, time=220, loopCount=1 },
+					{ name="pause", sheet=sheet1, start=2, count=1, time=220, loopCount=1 },
+				}
+
+				local playIcon = display.newSprite( sheet1, sequenceData )
+				playIcon.x=bg.x+bg.contentWidth/2-35;playIcon.y=bg.y+bg.contentHeight/2 
+				playIcon.id=detail_value.AudioFilePath
+				playIcon.value="play"
+				playIcon:addEventListener( "touch", audioPlay )
+				playIcon:setSequence( "play" )
+				playIcon:play()
+				sceneGroup:insert(playIcon)
+				messagedetail_scrollView:insert(playIcon)
+
+			end
+
+			local test = detail_value.MyUnitBuzzLongMessage
 
 			content = test
 
@@ -804,248 +836,116 @@ end
 			</head>]]..test..[[</html>]]
 
 
-            local path = system.pathForFile( "longmessage.html",system.DocumentsDirectory )
+			local path = system.pathForFile( "longmessage.html",system.DocumentsDirectory )
 
 			local file, errorString = io.open( path, "w+" )
 
 			if not file then
 
-			print( "File error: " .. errorString )
+				print( "File error: " .. errorString )
 
 			else
 
-			file:write( saveData )
+				file:write( saveData )
 
-			
-		    webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 260 )
+				
+				webView = native.newWebView(0, 0, display.viewableContentWidth-10, H - 260 )
 
-			webView.hasBackground = false
-			webView.x = short_msg_txt.x - 7
-			webView.height =  H - 260 
-			webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
+				webView.hasBackground = false
+				webView.x = short_msg_txt.x - 7
+				webView.height =  H - 260 
+				webView.y = short_msg_txt.y+short_msg_txt.contentHeight+12
 
-			webView.anchorX=0;webView.anchorY=0
-			webView:request( "longmessage.html", system.DocumentsDirectory )
+				webView.anchorX=0;webView.anchorY=0
+				webView:request( "longmessage.html", system.DocumentsDirectory )
 
-			sceneGroup:insert(webView)
+				sceneGroup:insert(webView)
 
-			messagedetail_scrollView:insert( webView)
+				messagedetail_scrollView:insert( webView)
 
-		    file:close()
+				file:close()
 
 			end
 
-		    file = nil
+			file = nil
 
 
 
-if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and detail_value.AudioFilePath ~= null and detail_value.AudioFilePath ~= "" then
+			if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and detail_value.AudioFilePath ~= null and detail_value.AudioFilePath ~= "" then
 
 
-					local function audiorecivedNetwork( event )
-					    if ( event.isError ) then
-					        print( "Network error - download failed: ", event.response )
-					    elseif ( event.phase == "began" ) then
-					        print( "Progress Phase: began" )
-					    elseif ( event.phase == "ended" ) then
-					        print( "Displaying response image file" )
-					        reciveImageFlag=true
+				local function audiorecivedNetwork( event )
+					if ( event.isError ) then
+						print( "Network error - download failed: ", event.response )
+					elseif ( event.phase == "began" ) then
+						print( "Progress Phase: began" )
+						elseif ( event.phase == "ended" ) then
+						print( "Displaying response image file" )
+						reciveImageFlag=true
 
 
-							CreateAudio(event.response.filename)
+						CreateAudio(event.response.filename)
 
-					    end
-					    
 					end
-
 					
+				end
 
-					local function recivedNetwork( event )
-					    if ( event.isError ) then
-					        print( "Network error - download failed: ", event.response )
-					    elseif ( event.phase == "began" ) then
-					        print( "Progress Phase: began" )
-					    elseif ( event.phase == "ended" ) then
-					        print( "Displaying response image file" )
-					        reciveImageFlag=true
-
-
-							CreateImage(event.response.filename)
-
-								local filePath = system.pathForFile( detail_value.AudioFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
-								local fhd = io.open( filePath )
-
-							if fhd then
-								CreateAudio(detail_value.AudioFilePath:match( "([^/]+)$" ))
-							else
-
-								request = network.download(
-								detail_value.AudioFilePath,
-								"GET",
-								audiorecivedNetwork,
-								detail_value.AudioFilePath:match( "([^/]+)$" ),
-								system.DocumentsDirectory
-								)
-
-							end
-
-						end
-					end
-
-
-		            imagepathvalue = detail_value.ImageFilePath
-
-
-		
-
-					local filePath = system.pathForFile( detail_value.ImageFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
-					local fhd = io.open( filePath )
-
-						if fhd then
-							CreateImage(detail_value.ImageFilePath:match( "([^/]+)$" ))
-
-							local filePath = system.pathForFile( detail_value.AudioFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
-								local fhd = io.open( filePath )
-
-							if fhd then
-								CreateAudio(detail_value.AudioFilePath:match( "([^/]+)$" ))
-							else
-
-								spinner.isVisible=true
-
-								request1 = network.download(
-								detail_value.AudioFilePath,
-								"GET",
-								audiorecivedNetwork,
-								detail_value.AudioFilePath:match( "([^/]+)$" ),
-								system.DocumentsDirectory
-								)
-
-							end
-
-						else
-
-							spinner.isVisible=true
-
-							request = network.download(
-							detail_value.ImageFilePath,
-							"GET",
-							recivedNetwork,
-							detail_value.ImageFilePath:match( "([^/]+)$" ),
-							system.DocumentsDirectory
-							)
-
-
-								if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
-
-									local request = network.download(
-									ApplicationConfig.IMAGE_BASE_URL..detail_value.ImageFilePath,
-									"GET",
-									recivedNetwork,
-									detail_value.ImageFilePath:match( "([^/]+)$" ),
-									system.DocumentsDirectory
-									)
-
-								end
-
-
-						end
 				
-
-			
-
-
-		elseif detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" then
 
 				local function recivedNetwork( event )
-					    if ( event.isError ) then
-					        print( "Network error - download failed: ", event.response )
-					    elseif ( event.phase == "began" ) then
-					        print( "Progress Phase: began" )
-					    elseif ( event.phase == "ended" ) then
-					        print( "Displaying response image file" )
-					        reciveImageFlag=true
+					if ( event.isError ) then
+						print( "Network error - download failed: ", event.response )
+					elseif ( event.phase == "began" ) then
+						print( "Progress Phase: began" )
+						elseif ( event.phase == "ended" ) then
+						print( "Displaying response image file" )
+						reciveImageFlag=true
 
 
-					        print("event.filename "..event.response.filename)
+						CreateImage(event.response.filename)
 
-							CreateImage(event.response.filename)
-
-
-						end
-					end
-					
-					local filePath = system.pathForFile( detail_value.ImageFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
-					local fhd = io.open( filePath )
-
-						if fhd then
-							CreateImage(detail_value.ImageFilePath:match( "([^/]+)$" ))
-						else
-
-							spinner.isVisible=true
-
-							request = network.download(
-							detail_value.ImageFilePath,
-							"GET",
-							recivedNetwork,
-							detail_value.ImageFilePath:match( "([^/]+)$" ),
-							system.DocumentsDirectory
-							)
-
-						end
-
-
-
-						if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
-
-							local request = network.download(
-							ApplicationConfig.IMAGE_BASE_URL..detail_value.ImageFilePath,
-							"GET",
-							recivedNetwork,
-							detail_value.ImageFilePath:match( "([^/]+)$" ),
-							system.DocumentsDirectory
-							)
-
-						end
-
-
-				
-
-		imagepathvalue = detail_value.ImageFilePath
-
-
-	elseif detail_value.AudioFilePath ~= null and detail_value.AudioFilePath ~= "" then
-
-
-					local function audiorecivedNetwork( event )
-					    if ( event.isError ) then
-					        print( "Network error - download failed: ", event.response )
-					    elseif ( event.phase == "began" ) then
-					        print( "Progress Phase: began" )
-					    elseif ( event.phase == "ended" ) then
-					        print( "Displaying response image file" )
-					        reciveImageFlag=true
-
-
-							CreateAudio(event.response.filename)
-
-
-
-					  		
-					    end
-					    
-					end
-
-			local filePath = system.pathForFile( detail_value.AudioFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
-								local fhd = io.open( filePath )
+						local filePath = system.pathForFile( detail_value.AudioFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
+						local fhd = io.open( filePath )
 
 						if fhd then
 							CreateAudio(detail_value.AudioFilePath:match( "([^/]+)$" ))
 						else
 
-							spinner.isVisible=true
-
 							request = network.download(
+								detail_value.AudioFilePath,
+								"GET",
+								audiorecivedNetwork,
+								detail_value.AudioFilePath:match( "([^/]+)$" ),
+								system.DocumentsDirectory
+								)
+
+						end
+
+					end
+				end
+
+
+				imagepathvalue = detail_value.ImageFilePath
+
+
+				
+
+				local filePath = system.pathForFile( detail_value.ImageFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
+				local fhd = io.open( filePath )
+
+				if fhd then
+					CreateImage(detail_value.ImageFilePath:match( "([^/]+)$" ))
+
+					local filePath = system.pathForFile( detail_value.AudioFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
+					local fhd = io.open( filePath )
+
+					if fhd then
+						CreateAudio(detail_value.AudioFilePath:match( "([^/]+)$" ))
+					else
+
+						spinner.isVisible=true
+
+						request1 = network.download(
 							detail_value.AudioFilePath,
 							"GET",
 							audiorecivedNetwork,
@@ -1053,31 +953,163 @@ if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and d
 							system.DocumentsDirectory
 							)
 
-						end
+					end
 
-	end
+				else
 
-            menuBtn:addEventListener("touch",menuTouch)
+					spinner.isVisible=true
+
+					request = network.download(
+						detail_value.ImageFilePath,
+						"GET",
+						recivedNetwork,
+						detail_value.ImageFilePath:match( "([^/]+)$" ),
+						system.DocumentsDirectory
+						)
+
+
+					if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+
+						local request = network.download(
+							ApplicationConfig.IMAGE_BASE_URL..detail_value.ImageFilePath,
+							"GET",
+							recivedNetwork,
+							detail_value.ImageFilePath:match( "([^/]+)$" ),
+							system.DocumentsDirectory
+							)
+
+					end
+
+
+				end
+				
+
+				
+
+
+			elseif detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" then
+
+				local function recivedNetwork( event )
+					if ( event.isError ) then
+						print( "Network error - download failed: ", event.response )
+					elseif ( event.phase == "began" ) then
+						print( "Progress Phase: began" )
+						elseif ( event.phase == "ended" ) then
+						print( "Displaying response image file" )
+						reciveImageFlag=true
+
+
+						print("event.filename "..event.response.filename)
+
+						CreateImage(event.response.filename)
+
+
+					end
+				end
+				
+				local filePath = system.pathForFile( detail_value.ImageFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
+				local fhd = io.open( filePath )
+
+				if fhd then
+					CreateImage(detail_value.ImageFilePath:match( "([^/]+)$" ))
+				else
+
+					spinner.isVisible=true
+
+					request = network.download(
+						detail_value.ImageFilePath,
+						"GET",
+						recivedNetwork,
+						detail_value.ImageFilePath:match( "([^/]+)$" ),
+						system.DocumentsDirectory
+						)
+
+				end
+
+
+
+				if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+
+					local request = network.download(
+						ApplicationConfig.IMAGE_BASE_URL..detail_value.ImageFilePath,
+						"GET",
+						recivedNetwork,
+						detail_value.ImageFilePath:match( "([^/]+)$" ),
+						system.DocumentsDirectory
+						)
+
+				end
+
+
+				
+
+				imagepathvalue = detail_value.ImageFilePath
+
+
+			elseif detail_value.AudioFilePath ~= null and detail_value.AudioFilePath ~= "" then
+
+
+				local function audiorecivedNetwork( event )
+					if ( event.isError ) then
+						print( "Network error - download failed: ", event.response )
+					elseif ( event.phase == "began" ) then
+						print( "Progress Phase: began" )
+						elseif ( event.phase == "ended" ) then
+						print( "Displaying response image file" )
+						reciveImageFlag=true
+
+
+						CreateAudio(event.response.filename)
+
+
+
+						
+					end
+					
+				end
+
+				local filePath = system.pathForFile( detail_value.AudioFilePath:match( "([^/]+)$" ),system.DocumentsDirectory )
+				local fhd = io.open( filePath )
+
+				if fhd then
+					CreateAudio(detail_value.AudioFilePath:match( "([^/]+)$" ))
+				else
+
+					spinner.isVisible=true
+
+					request = network.download(
+						detail_value.AudioFilePath,
+						"GET",
+						audiorecivedNetwork,
+						detail_value.AudioFilePath:match( "([^/]+)$" ),
+						system.DocumentsDirectory
+						)
+
+				end
+
+			end
+
+			menuBtn:addEventListener("touch",menuTouch)
 			back_icon:addEventListener("touch",closeDetails)
 			back_icon_bg:addEventListener("touch",closeDetails)
 			title:addEventListener("touch",closeDetails)
 
-				if IsOwner == true then
+			if IsOwner == true then
 
 				short_msg_delete:addEventListener("touch",onDeleteAction)
 				short_msg_edit:addEventListener("touch",onDeleteAction)
 
-			    end
+			end
 
-            Runtime:addEventListener( "key", onKeyEventDetail )
+			Runtime:addEventListener( "key", onKeyEventDetail )
 
- end
+		end
 
 	      -- sceneGroup:insert(messagedetail_scrollView)
-           
-					            if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+	      
+	      if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
 
-									       	 function getPushMessageResponse( response )
+	      	function getPushMessageResponse( response )
 
 														-- local options =
 														-- {
@@ -1090,121 +1122,121 @@ if detail_value.ImageFilePath ~= null and detail_value.ImageFilePath ~= "" and d
 
 														-- native.showPopup( "mail", options )
 
-												    print("print statement"..json.encode(response))
+														print("print statement"..json.encode(response))
 
-												    DisplayDetailValues(response)
-									       		
-									         end
+														DisplayDetailValues(response)
+														
+													end
 
-						       	  		Webservice.GetMyUnitBuzzMessagesbyUserId(MessageId,getPushMessageResponse)
+													Webservice.GetMyUnitBuzzMessagesbyUserId(MessageId,getPushMessageResponse)
 
-						        else
-					            
-					              		DisplayDetailValues(messagelistvalue)
+												else
+													
+													DisplayDetailValues(messagelistvalue)
 
-					            end
-
-
-			
-		    end	
-		
-		MainGroup:insert(sceneGroup)
-
-	end
+												end
 
 
+												
+											end	
+											
+											MainGroup:insert(sceneGroup)
+
+										end
 
 
 
-	function scene:hide( event )
-
-		local sceneGroup = self.view
-		local phase = event.phase
-
-		if phase == "will" then
-
-			Runtime:removeEventListener("key",onKeyEventDetail)
-
-            if webView then webView:removeSelf( );webView=nil end
-
-				if DeleteMessageGroup.numChildren ~= nil then
-
-				  	 	for j=DeleteMessageGroup.numChildren, 1, -1 do 
-				  						display.remove(DeleteMessageGroup[DeleteMessageGroup.numChildren])
-				  						DeleteMessageGroup[DeleteMessageGroup.numChildren] = nil
-				  	 	end
-	            end
 
 
+										function scene:hide( event )
 
-			  network.cancel(testimage)
-			  network.cancel(request)
-			  network.cancel(request1)
+											local sceneGroup = self.view
+											local phase = event.phase
 
-			  audio.resume( 2 );audio.stop( 2 );audio.dispose( 2 )
-			  
-			  audio.dispose( 2 )
+											if phase == "will" then
 
-		elseif phase == "did" then
-               
+												Runtime:removeEventListener("key",onKeyEventDetail)
+
+												if webView then webView:removeSelf( );webView=nil end
+
+												if DeleteMessageGroup.numChildren ~= nil then
+
+													for j=DeleteMessageGroup.numChildren, 1, -1 do 
+														display.remove(DeleteMessageGroup[DeleteMessageGroup.numChildren])
+														DeleteMessageGroup[DeleteMessageGroup.numChildren] = nil
+													end
+												end
+
+
+
+												network.cancel(testimage)
+												network.cancel(request)
+												network.cancel(request1)
+
+												audio.resume( 2 );audio.stop( 2 );audio.dispose( 2 )
+												
+												audio.dispose( 2 )
+
+											elseif phase == "did" then
+												
 
 			--	event.parent:resumeGame(status,messagelistvalue)
 
 
-				if status == "edit" or status == "deleted" then
+			if status == "edit" or status == "deleted" then
 
-					    print("edit values ************* : ",json.encode(messagelistvalue))
+				print("edit values ************* : ",json.encode(messagelistvalue))
 
-						event.parent:resumeGame(status,messagelistvalue,pagevalue)
-				else
-					    status="back"
+				event.parent:resumeGame(status,messagelistvalue,pagevalue)
+			else
+				status="back"
 
 						--event.parent:resumeGame(status,messagelistvalue)
+					end
+
+					
+
+					menuBtn:removeEventListener("touch",menuTouch)
+
+					back_icon:removeEventListener("touch",closeDetails)
+					back_icon_bg:removeEventListener("touch",closeDetails)
+					title:removeEventListener("touch",closeDetails)
+
+
+					
+
+
+					if IsOwner == true then
+
+						short_msg_delete:removeEventListener("touch",onDeleteAction)
+						short_msg_edit:removeEventListener("touch",onDeleteAction)
+
+					end
+
+					Background:removeEventListener( "touch", FocusComplete )
+
+
 				end
 
-                
-
-				menuBtn:removeEventListener("touch",menuTouch)
-
-				back_icon:removeEventListener("touch",closeDetails)
-			    back_icon_bg:removeEventListener("touch",closeDetails)
-				title:removeEventListener("touch",closeDetails)
-
-
-				
-
-
-			if IsOwner == true then
-
-			short_msg_delete:removeEventListener("touch",onDeleteAction)
-			short_msg_edit:removeEventListener("touch",onDeleteAction)
-
-		    end
-
-		    Background:removeEventListener( "touch", FocusComplete )
-
-
-		    end
-
-	end
+			end
 
 
 
 
 
-	function scene:destroy( event )
+			function scene:destroy( event )
 
-		local sceneGroup = self.view
-
-
-	end
+				local sceneGroup = self.view
 
 
-
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
+			end
 
 
-		return scene
+
+			scene:addEventListener( "create", scene )
+			scene:addEventListener( "show", scene )
+			scene:addEventListener( "hide", scene )
+			scene:addEventListener( "destroy", scene )
+
+
+			return scene
