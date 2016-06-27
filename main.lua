@@ -467,6 +467,7 @@ if launchArgs and launchArgs.notification then
                                     system.cancelNotification()
                                     notifications.cancelNotification()
 
+                        MessageIdValue =  additionalData.pnmid
 
                                 end
 
@@ -475,6 +476,7 @@ if launchArgs and launchArgs.notification then
                                 
                                 
                             else
+
 
 
                     ----Message Receiver------
@@ -496,6 +498,7 @@ if launchArgs and launchArgs.notification then
                                             -- MessageId = "0"
 
                                             if resumeCallback == true and chatReceivedFlag == true then
+
 
                                               chatReceivedFlag = false
                                               resumeCallback = false

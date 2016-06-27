@@ -632,7 +632,8 @@ local function onRowRender( event )
 
     
 
-    if List.arrayName == purposeArray or List.arrayName == priorityArray then
+
+	if List.arrayName == purposeArray or List.arrayName == priorityArray then
 
     	row.name = List.arrayName[row.index].value
     	row.id=List.arrayName[row.index].id
@@ -1233,19 +1234,19 @@ local function TouchAction( event )
 
 							end
 
+								end
 
 
 							if end_time <= start_time and allDay ~= true then
 
 							ErrorIcon.isVisible=true
 
-						else
+										ErrorIcon.isVisible=true
 
 							ErrorIcon.isVisible=false
 							
 							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
 							
-						end
 					end
 				else
 
@@ -3001,34 +3002,35 @@ end
 
 	  	--Priority---
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
-	  	AddeventArray[#AddeventArray].id="priority"
-	  	AddeventArray[#AddeventArray].anchorY=0
-	  	AddeventArray[#AddeventArray].value = 0
-	  	AddeventArray[#AddeventArray].alpha=0.01
-	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-	  	taskGroupExt:insert(AddeventArray[#AddeventArray])
-	  	AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
-	  	Prioritytxt = display.newText(taskGroupExt,AddeventPage.Priority,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
-	  	Prioritytxt.anchorX=0
-	  	Prioritytxt.value=0
-	  	Prioritytxt.count = #AddeventArray
-	  	Prioritytxt:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-	  	Prioritytxt.x=leftPadding+5
-	  	Prioritytxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+		AddeventArray[#AddeventArray].id="priority"
+		AddeventArray[#AddeventArray].anchorY=0
+		AddeventArray[#AddeventArray].value = 0
+		AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		taskGroupExt:insert(AddeventArray[#AddeventArray])
+		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
+
+		Prioritytxt = display.newText(taskGroupExt,AddeventPage.Priority,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Prioritytxt.anchorX=0
+		Prioritytxt.value=0
+		Prioritytxt.count = #AddeventArray
+		Prioritytxt:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+		Prioritytxt.x=leftPadding+5
+		Prioritytxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 
-	  	PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1].value,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
-	  	PriorityLbl.anchorX=0
-	  	PriorityLbl.value=0
-	  	PriorityLbl.id="priority"
-	  	PriorityLbl.count = #AddeventArray
-	  	PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-	  	PriorityLbl.x=W/2
-	  	PriorityLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+		PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1].value,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PriorityLbl.anchorX=0
+		PriorityLbl.value=1
+		PriorityLbl.id="priority"
+		PriorityLbl.count = #AddeventArray
+		PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+		PriorityLbl.x=W/2
+		PriorityLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
-	  	
+		
 	  	Priority_icon = display.newImageRect(taskGroupExt,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	Priority_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Priority_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
