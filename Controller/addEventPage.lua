@@ -632,7 +632,7 @@ local function onRowRender( event )
 
     
 
-		if List.arrayName == purposeArray or List.arrayName == priorityArray then
+	if List.arrayName == purposeArray or List.arrayName == priorityArray then
 
     	 row.name = List.arrayName[row.index].value
     	 row.id=List.arrayName[row.index].id
@@ -1193,60 +1193,58 @@ local function TouchAction( event )
 					if PurposeLbl.text:lower( ) == "other" then
 
 
-					if Other.text == "" then
+						if Other.text == "" then
 
-						SetError(AddeventPage.other_purpose,Other)
-
-					else
-						
-						if TicklerType:lower( ) == "call" then
-
-							
-							
-
-							local time = makeTimeStamp(startdate)
-
-							time = time + ((tonumber(Event_to_date.value)+1)*3600) + (tonumber(Event_to_time.value)*60)
-
-							if string.find( startdate, "PM") then
-								time=time+(12*3600)
-							end
-
-							enddate = os.date( "%m/%d/%Y %I:%M %p",time)
-
-					
-							EventTo_time = os.date( "%I:%M %p",time)
-
-						end
-							
-								local start_time,end_time
-
-						if string.find( startdate, "PM") then
-
-							 start_time = tonumber(makeTimeStamp(startdate)+(12*3600))
-							 end_time = tonumber(makeTimeStamp(enddate)+(12*3600))
+							SetError(AddeventPage.other_purpose,Other)
 
 						else
+							
+								if TicklerType:lower( ) == "call" then
 
-						 	start_time = tonumber(makeTimeStamp(startdate))
-						 	end_time = tonumber(makeTimeStamp(enddate))
+									
+									local time = makeTimeStamp(startdate)
 
-						end
+									time = time + ((tonumber(Event_to_date.value)+1)*3600) + (tonumber(Event_to_time.value)*60)
+
+									if string.find( startdate, "PM") then
+										time=time+(12*3600)
+									end
+
+									enddate = os.date( "%m/%d/%Y %I:%M %p",time)
+
+							
+									EventTo_time = os.date( "%I:%M %p",time)
+
+								end
+									
+										local start_time,end_time
+
+								if string.find( startdate, "PM") then
+
+									 start_time = tonumber(makeTimeStamp(startdate)+(12*3600))
+									 end_time = tonumber(makeTimeStamp(enddate)+(12*3600))
+
+								else
+
+								 	start_time = tonumber(makeTimeStamp(startdate))
+								 	end_time = tonumber(makeTimeStamp(enddate))
+
+								end
 
 
 
-						if end_time <= start_time and allDay ~= true then
+								if end_time <= start_time and allDay ~= true then
 
-								ErrorIcon.isVisible=true
+										ErrorIcon.isVisible=true
 
-						else
+								else
 
-								ErrorIcon.isVisible=false
+										ErrorIcon.isVisible=false
+										
+									Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
 								
-							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
-						
+								end
 						end
-					end
 				else
 
 
@@ -3021,7 +3019,7 @@ function scene:show( event )
 
 		PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1].value,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
-		PriorityLbl.value=0
+		PriorityLbl.value=1
 		PriorityLbl.id="priority"
 		PriorityLbl.count = #AddeventArray
 		PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))

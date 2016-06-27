@@ -525,10 +525,9 @@ local function notificationListener( event )
 
                 if (additionalData) then
 
+                        MessageIdValue =  additionalData.pnmid
 
-                    MessageIdValue =  additionalData.pnmid
-
-                              if isAndroid then
+                                if isAndroid then
 
                                      additionalData = event.androidGcmBundle
                                      message = additionalData.contents
@@ -537,27 +536,27 @@ local function notificationListener( event )
 
                                         if chatReceivedFlag == true then
 
-                                              chatReceivedFlag = false
+                                                chatReceivedFlag = false
 
-                                                    if MessageId ~= "0" and MessageId ~= nil then
+                                                        if MessageId ~= "0" and MessageId ~= nil then
 
-                                                                local options = {
-                                                                        isModal = true,
-                                                                        effect = "slideLeft",
-                                                                        time = 300,
-                                                                        params = {
-                                                                            pagenameval = "pn_detailpage",
-                                                                        }
-                                                                }
+                                                                    local options = {
+                                                                            isModal = true,
+                                                                            effect = "slideLeft",
+                                                                            time = 300,
+                                                                            params = {
+                                                                                pagenameval = "pn_detailpage",
+                                                                            }
+                                                                    }
 
 
-                                                          composer.gotoScene( "Controller.pushNotificationDetailPage", options)
+                                                              composer.gotoScene( "Controller.pushNotificationDetailPage", options)
 
-                                                    else
+                                                        else
 
-                                                          composer.gotoScene( "Controller.MessagingPage" )
+                                                              composer.gotoScene( "Controller.MessagingPage" )
 
-                                                    end
+                                                        end
 
                                         end
     
