@@ -29,6 +29,8 @@ notificationFlag=false
 
 IsOwner = false
 
+pageresponsevalue = ""
+
 leftPadding_value = 20
 
 TimeZone = ""

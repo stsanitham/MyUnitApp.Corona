@@ -226,6 +226,8 @@ local function RequestProcess()
 
 								alertFun(RequestAccess.FIRSTREQUEST,1)
 
+								pageresponsevalue = "FIRSTREQUEST"
+
 							elseif Request_response == "MUBNOTAGREE" then
 
 								alertFun(RequestAccess.MUBNOTAGREE,1)	
