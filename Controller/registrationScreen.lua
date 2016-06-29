@@ -17,6 +17,7 @@ local Utility = require( "Utils.Utility" )
 
 
 
+
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -184,7 +185,6 @@ local rowTitle
 local renderArray
 
 renderArray = List.arrayName
-
 
     ------------------ to set the list of array items in the list ------------------------
 

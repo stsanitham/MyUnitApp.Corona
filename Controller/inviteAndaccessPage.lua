@@ -521,13 +521,13 @@ local function ListmenuTouch( event )
 			
 
 
-			if feedArray[i].ImagePath ~= nil then
+		if feedArray[i].ImagePath ~= nil then
 
 				local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			--Image.anchorY=0
-			Image.x=30;Image.y=background.y+background.contentHeight/2
+				--Image.anchorY=0
+				Image.x=30;Image.y=background.y+background.contentHeight/2
 
-			networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
+				networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
 				"GET",
 				
 				function ( img_event )
@@ -542,9 +542,9 @@ local function ListmenuTouch( event )
 							
 							Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
 							Image.width=35;Image.height=35
-										--Image.anchorY=0
-										Image.x=30;Image.y=background.y+background.contentHeight/2
-				    				--event.row:insert(img_event.target)
+							--Image.anchorY=0
+							Image.x=30;Image.y=background.y+background.contentHeight/2
+				    		--event.row:insert(img_event.target)
 
 				    			else
 
@@ -556,9 +556,9 @@ local function ListmenuTouch( event )
 				    		end, "inviteaccess"..feedArray[i].MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory)
 		else
 
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			--Image.anchorY=0
-			Image.x=30;Image.y=background.y+background.contentHeight/2
+					Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+					--Image.anchorY=0
+					Image.x=30;Image.y=background.y+background.contentHeight/2
 
 		end
 
@@ -574,6 +574,7 @@ local function ListmenuTouch( event )
           Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
+
           if feedArray[i].FirstName ~= nil then
 
           	Display_Group[#Display_Group].text = feedArray[i].FirstName.." "..feedArray[i].LastName
@@ -583,6 +584,7 @@ local function ListmenuTouch( event )
           	Display_Group[#Display_Group].text = feedArray[i].LastName
           	
           end
+
 
 
           if feedArray[i].EmailAddress ~= nil then
