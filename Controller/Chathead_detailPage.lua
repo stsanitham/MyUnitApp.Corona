@@ -1339,7 +1339,7 @@ function scene:hide( event )
 			print( "Json :"..json.encode(params) )
 			event.parent:resumeGame(json.encode(params),status)
 		else
-			event.parent:resumeGameNormal(status)
+			--event.parent:resumeGameNormal(status)
 		end
 
 

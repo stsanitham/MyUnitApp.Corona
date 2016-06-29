@@ -341,7 +341,7 @@ local function ListCliked( event )
  					
  					for j=0,count-1 do
  						if parent_centerText[#parent_centerText-j] ~= nil then
- 							if string.find(parent_centerText[#parent_centerText-j].value:lower( ),"consultant") or string.find(parent_centerText[#parent_centerText-j].value:lower( ),"member")  then
+ 							if string.find(parent_centerText[#parent_centerText-j].value:lower( ),"consultant") or string.find(parent_centerText[#parent_centerText-j].value:lower( ),"member") then
  								parent_centerText[#parent_centerText-j]:setTextColor( 0,0,1 )
  							end
  						end
@@ -386,24 +386,14 @@ end
 			-- List = json.decode(List)
 			--print( json.encode(List[1].data) )
 
-			
 
-				List = json.encode(List)
-				List = json.decode(List)
-			-- if reportArray == nil then
-
-			-- 	reportArray = List
-			-- end
 			
 				local reportArray =  List[1].data
 
+
+			
 			for i=1,#reportArray do
 
-				--local newArray = Reverse(reportArray[i])
-
-
-
-				print( json.encode(newArray))
 
 				reportArrayList[#reportArrayList+1] = display.newGroup()
 
@@ -433,8 +423,9 @@ end
 
 						--background:setFillColor( math.random(),math.random(),math.random() )
 
+
 						local count = 0
-						for k,v in pairs(reportArray[i]) do
+						for k,v in pairs(reportArray) do
 							count = count + 1
 						end
 
@@ -447,7 +438,7 @@ end
 
 						
 
-						for k,v in pairs( reportArray[i] ) do
+						for k,v in pairs(reportArray) do
 						   -- print( "KEY: "..k.." | ".."VALUE: "..v )
 
 
@@ -458,6 +449,7 @@ end
 						    	totalCount = totalCount + 1
 
 						    	background.ContactId = CreateRow( tempHeight,tempGroup,totalCount,count,k,v,"parent" )
+						    	
 						    	
 						    else
 									--coloumArray[1].contactId = 
@@ -475,7 +467,9 @@ end
 						
 						local totalCount = 0 
 
-						for k,v in pairs( reportArray[i] ) do
+						--print("hjkjkkj:"..json.encode(reportArray[i]))
+
+						for k,v in pairs(reportArray) do
 										   -- print( "KEY: "..k.." | ".."VALUE: "..v )
 
 
@@ -705,6 +699,7 @@ function scene:create( event )
 		 		--sp_jsonresponse = 	string.gsub(json.encode(sp_jsonresponse),"/")
 
 		 		print("JSON content 11111: "..json.encode(sp_jsonresponse))
+
 		 		parentFlag=true
 		 		CreateHorizontalTable(sceneGroup,sp_jsonresponse)
 

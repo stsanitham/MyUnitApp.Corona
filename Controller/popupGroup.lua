@@ -133,6 +133,10 @@ isSentText = true
 
 					scrollTo(0)
 
+					display.getCurrentStage():setFocus( event.target )
+
+					native.setKeyboardFocus( nil )
+
 				end
 
 			end
@@ -1202,8 +1206,7 @@ else
 					    MKRankDetail_bottom.y= MKRankDetailValue.y+9
 
 
-						Password_bg.y =  MKRankDetail_bg.y+MKRankDetail_bg.contentHeight+22
-
+						Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.contentHeight+7
                 		--Password_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
 						-- Password_titlestar.y= Password_bg.y + 5
 						-- Password_titletext.y= Password_bg.y+ 5
@@ -1214,7 +1217,7 @@ else
 						-- processbutton.y = GeneratePasstext.y+GeneratePasstext.contentHeight+22
 						-- processbutton_text.y=processbutton.y
 
-             			Password_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
+             			--Password_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
 						Password_titlestar.y= Password_bg.y + 9
 						Password_titletext.y= Password_bg.y+ 9
 						PasswordValue.y =Password_titletext.y+Password_titletext.height+7
@@ -1227,6 +1230,8 @@ else
 
 
 			     else
+
+			     	print("grant provide access")
 
 
 						textnotifybox.isVisible = true
@@ -1382,8 +1387,8 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 		popUpGroup = display.newGroup()
 
 		popup_Backgeound = display.newRect(W/2, H/2, W, H )
-		popup_Backgeound:addEventListener( "touch", touchPopupBg )
-		popup_Backgeound.id= "popuplist"
+		--popup_Backgeound:addEventListener( "touch", touchPopupBg )
+		--popup_Backgeound.id= "popuplist"
 		popup_Backgeound.alpha=0.01
 		popUpGroup:insert(popup_Backgeound)
 
@@ -1432,10 +1437,13 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 	    popupList = display.newRect(leftPadding_value + 140, popupTop_bg.y+popupTop_bg.contentHeight/2, W-22, popupTop_bg.contentHeight+20 )
 	    popupList.anchorY=0
 	    popupList.y=60	
+	    popupList.id= "popuplist"
 	    popupList.strokeWidth=1
 	    popupList.isVisible=true
 	    popupList:setStrokeColor(Utils.convertHexToRGB(color.LtyGray))
 	    popUpGroup:insert(popupList)
+
+	    popupList:addEventListener( "touch", touchPopupBg )
 
 		popup_scroll = widget.newScrollView
 		{

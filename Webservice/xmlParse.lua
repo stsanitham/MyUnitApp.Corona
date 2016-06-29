@@ -56,10 +56,11 @@ else
 
 	 	response = json.decode(event.response)
 	 	--response = (event.response)
+
 	 else
 
 
-	response = json.decode(event.response)
+	    response = json.decode(event.response)
 
 	end
 

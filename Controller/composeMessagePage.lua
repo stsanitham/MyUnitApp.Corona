@@ -36,7 +36,7 @@ long_msg_charlimit
 local attachment_icon,icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,
 Contact_icon,Contact_icon_txt,filename_title,filename,filename_close
 
-local schedule_button,schedule_icon,schedule_icon_textsend_button,send_icon,send_icon_text,draft_button,draft_icon,draft_icon_text
+local schedule_button,schedule_icon,schedule_icon_text,send_button,send_icon,send_icon_text,draft_button,draft_icon,draft_icon_text
 
 local filename ,filename_title, filename_close
 
@@ -530,7 +530,7 @@ if (shortmsg_textbox.text ~= "") and (filename.text == "" and filename.isVisible
         		local options = {
 
         			effect = "slideRight",
-        			time = 300,
+        			time = 200,
         			params = { pushlistvalues = method,page = "compose"}
         		}
 
@@ -539,7 +539,7 @@ if (shortmsg_textbox.text ~= "") and (filename.text == "" and filename.isVisible
         			composer.gotoScene("Controller.pushNotificationListPage",options)
         		end
 
-        		timer.performWithDelay( 1000, listener )
+        		timer.performWithDelay( 200 , listener )
             	-- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
             end
