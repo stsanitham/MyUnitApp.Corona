@@ -301,7 +301,6 @@ local function ListCliked( event )
 
  			end
 
- 			print( "value : "..k,v )
  			parent_centerText[#parent_centerText].x=coloumArray[#coloumArray].x + 5
  			parent_centerText[#parent_centerText].anchorX=0
  			parent_centerText[#parent_centerText].y=coloumArray[#coloumArray].y+coloumArray[#coloumArray].contentHeight/2
@@ -366,7 +365,14 @@ local function ListCliked( event )
 
 
 
-
+function Reverse (t)
+	  local reversedTable = {}
+    local itemCount = #t
+    for k, v in ipairs(t) do
+        reversedTable[itemCount + 1 - k] = v
+    end
+    return reversedTable
+end
 
  	local function CreateHorizontalTable( sceneGroup , List )
 
@@ -378,17 +384,26 @@ local function ListCliked( event )
 			-- 	reportArray[#reportArray] = nil
 			-- end
 			-- List = json.decode(List)
-			-- print( #List )
+			--print( json.encode(List[1].data) )
 
 			
-			local reportArray =  List.data
+
+				List = json.encode(List)
+				List = json.decode(List)
 			-- if reportArray == nil then
 
 			-- 	reportArray = List
 			-- end
 			
+				local reportArray =  List[1].data
 
 			for i=1,#reportArray do
+
+				--local newArray = Reverse(reportArray[i])
+
+
+
+				print( json.encode(newArray))
 
 				reportArrayList[#reportArrayList+1] = display.newGroup()
 
@@ -411,6 +426,11 @@ local function ListCliked( event )
 				
 				background.alpha=0.01
 
+
+				for key, value in next, reportArray[i], nil do
+				    print( "The key " .. key .. " has the value: " .. value )
+				end
+
 						--background:setFillColor( math.random(),math.random(),math.random() )
 
 						local count = 0
@@ -425,6 +445,7 @@ local function ListCliked( event )
 
 						--print( (reportArray[i]) )
 
+						
 
 						for k,v in pairs( reportArray[i] ) do
 						   -- print( "KEY: "..k.." | ".."VALUE: "..v )
@@ -683,17 +704,17 @@ function scene:create( event )
 
 		 		--sp_jsonresponse = 	string.gsub(json.encode(sp_jsonresponse),"/")
 
-		 		print("JSON content 11111: "..(sp_jsonresponse))
+		 		print("JSON content 11111: "..json.encode(sp_jsonresponse))
 		 		parentFlag=true
 		 		CreateHorizontalTable(sceneGroup,sp_jsonresponse)
 
 
-		 		if sp_jsonresponse.data ~= nil then 
+		 		if sp_jsonresponse[1].data ~= nil then 
 
-		 			if sp_jsonresponse.heading ~= nil and #sp_jsonresponse.data > 0  then
+		 			if sp_jsonresponse[1].heading ~= nil and #sp_jsonresponse[1].data > 0  then
 
-		 				Title.text  = sp_jsonresponse.heading[1]
-		 				subTitle.text  = sp_jsonresponse.heading[2]
+		 				Title.text  = sp_jsonresponse[1].heading[1]
+		 				subTitle.text  = sp_jsonresponse[1].heading[2]
 
 		 			end
 
@@ -701,7 +722,7 @@ function scene:create( event )
 
 
 
-		 		if sp_jsonresponse.data == nil or #sp_jsonresponse.data <= 0 then
+		 		if sp_jsonresponse[1].data == nil or #sp_jsonresponse[1].data <= 0 then
 
 													--NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
 													--NoEvent = display.newText( sceneGroup, "No "..response.UserPageName.." Found", 0,0,0,0,native.systemFontBold,16)

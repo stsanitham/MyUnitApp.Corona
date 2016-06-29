@@ -55,7 +55,7 @@ else
 
 
 	 	response = json.decode(event.response)
-	 	--response = json.decode(response)
+	 	--response = (event.response)
 	 else
 
 
