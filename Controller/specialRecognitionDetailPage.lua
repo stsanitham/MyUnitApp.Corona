@@ -35,8 +35,6 @@ local RecentTab_Topvalue = 75
 
 local header_value = ""
 
-local specialRecognitionListScroll
-
 local webView
 
 local reportArray
@@ -50,6 +48,8 @@ openPage="specialRecognition"
 local coloumArray = {}
 
 local widthArray = {}
+
+local Parent={}
 --------------------------------------------------
 
 
@@ -260,11 +260,13 @@ local function ListCliked( event )
  		
  		local contact = 0
 
+ 		
+
  		if v ~= "ContactId" and k ~= "ContactId" then
 
  			local ColoumWidth = W/3
 
- 			if count == 3 then
+ 			if #Parent == 3 then
  				ColoumWidth = W/2
  			end
 
@@ -284,7 +286,21 @@ local function ListCliked( event )
 
  			end
 
- 			parent_centerText[#parent_centerText+1] = display.newText(tempGroup,"Header",0,0,100,0,native.systemFont,12)
+
+ 			local options = 
+				{
+				    parent = tempGroup,
+				    text = "",     
+				    x = 100,
+				    y = 200,
+				    width = 100,
+				    font = native.systemFont,   
+				    fontSize = 12,
+				    align = "center"  -- alignment parameter
+				}
+
+
+ 			parent_centerText[#parent_centerText+1] = display.newText(options)
  			if source == "parent" then
 
  				coloumArray[#coloumArray]:setFillColor(Utils.convertHexToRGB(color.Gray))
@@ -330,6 +346,8 @@ local function ListCliked( event )
 
  		else
 
+ 			print( "hwew "..v,k,count)
+
  			contact = k
 
  			if tonumber(contact) ~= nil then
@@ -339,7 +357,7 @@ local function ListCliked( event )
  					parent_centerText[#parent_centerText].id = contact
 
  					
- 					for j=0,count-1 do
+ 					for j=0,#Parent-1 do
  						if parent_centerText[#parent_centerText-j] ~= nil then
  							if string.find(parent_centerText[#parent_centerText-j].value:lower( ),"consultant") or string.find(parent_centerText[#parent_centerText-j].value:lower( ),"member") then
  								parent_centerText[#parent_centerText-j]:setTextColor( 0,0,1 )
@@ -365,15 +383,6 @@ local function ListCliked( event )
 
 
 
-function Reverse (t)
-	  local reversedTable = {}
-    local itemCount = #t
-    for k, v in ipairs(t) do
-        reversedTable[itemCount + 1 - k] = v
-    end
-    return reversedTable
-end
-
  	local function CreateHorizontalTable( sceneGroup , List )
 
 		--local temp = json.decode(List.data)
@@ -390,7 +399,9 @@ end
 			
 				local reportArray =  List[1].data
 
+				 Parent  = List[1].title
 
+				print( #Parent )
 			
 			for i=1,#reportArray do
 
@@ -417,10 +428,6 @@ end
 				background.alpha=0.01
 
 
-				for key, value in next, reportArray[i], nil do
-				    print( "The key " .. key .. " has the value: " .. value )
-				end
-
 						--background:setFillColor( math.random(),math.random(),math.random() )
 
 
@@ -438,25 +445,38 @@ end
 
 						
 
-						for k,v in pairs(reportArray) do
-						   -- print( "KEY: "..k.." | ".."VALUE: "..v )
+						-- for k,v in pairs(reportArray[i]) do
+						--    -- print( "KEY: "..k.." | ".."VALUE: "..v )
 
 
-						    --	print( count , totalCount  )
+						--     --	print( count , totalCount  )
 
-						    if count ~= totalCount then
+						--     if count ~= totalCount then
 
-						    	totalCount = totalCount + 1
+						--     	totalCount = totalCount + 1
 
-						    	background.ContactId = CreateRow( tempHeight,tempGroup,totalCount,count,k,v,"parent" )
+						--     	background.ContactId = CreateRow( tempHeight,tempGroup,totalCount,count,Parent[totalCount],v,"parent" )
 						    	
 						    	
-						    else
-									--coloumArray[1].contactId = 
+						--     else
+						-- 			--coloumArray[1].contactId = 
 
-								end
+						-- 		end
 
-							end
+						-- 	end
+
+						for  s=1,#Parent do
+
+							totalCount = totalCount + 1
+
+						--	print( reportArray[i]["Consultant Name"] )
+
+							background.ContactId = CreateRow( tempHeight,tempGroup,totalCount,count,Parent[totalCount],reportArray[i][tostring(Parent[totalCount])],"parent" )
+
+
+						end
+
+
 
 
 							background.y= coloumArray[#coloumArray-1].y+background.contentHeight
@@ -468,29 +488,15 @@ end
 						local totalCount = 0 
 
 						--print("hjkjkkj:"..json.encode(reportArray[i]))
-
-						for k,v in pairs(reportArray) do
-										   -- print( "KEY: "..k.." | ".."VALUE: "..v )
-
-
-										    	--print( count , totalCount  )
-
-										    	if count ~= totalCount then
+												for  s=1,#Parent do
 
 										    		totalCount = totalCount + 1
 
-										    		background.ContactId =  CreateRow( background.y,tempGroup,totalCount,count,v,k,"child" )
+										    		background.ContactId =  CreateRow( background.y,tempGroup,totalCount,count,reportArray[i][tostring(Parent[totalCount])],Parent[totalCount],"child" )
 
 										    		
-										    	else
-													--coloumArray[1].contactId = 
-
-												end
-
-
-
-												
-											end
+										    													
+										end
 
 
 											background:addEventListener( "touch", ListCliked )
@@ -606,27 +612,6 @@ function scene:create( event )
 	title:setFillColor(0)
 
 	
-
-	   -- Background:addEventListener("touch",onBackgroundTouch)
-
-
-	   specialRecognitionListScroll = widget.newScrollView
-	   {
-	   	top = RecentTab_Topvalue-5,
-	   	left = 0,
-	   	width = H-75,
-	   	height =H-RecentTab_Topvalue+5,
-	   	hideBackground = true,
-	   	isBounceEnabled=false,
-	   	horizontalScrollingDisabled = true,
-	   	verticalScrollingDisabled = true,
-			    --listener = scrollListener
-			}
-
-			sceneGroup:insert(specialRecognitionListScroll)
-
-
-
 			
 
 			MainGroup:insert(sceneGroup)
@@ -652,9 +637,24 @@ function scene:create( event )
 		Title.x=W/2;Title.y=title_bg.y+title_bg.contentHeight+5
 		Title:setTextColor( 0,0,1 )
 
-		local subTitle = display.newText(sceneGroup,"",0,0,0,0,"Segoe Print",15)
+
+
+		local options = 
+				{
+				    parent = sceneGroup,
+				    text = "",     
+				    x = 100,
+				    y = 200,
+				    width = W-40,
+				    font = "Segoe Print",   
+				    fontSize = 12,
+				    align = "center"  -- alignment parameter
+				}
+
+		local subTitle = display.newText(options)
 		subTitle.x=W/2;subTitle.y=Title.y+Title.contentHeight+10
 		subTitle:setTextColor( 0,0,1 )
+		subTitle.align = "center"
 
 		HorizontalScroll = widget.newScrollView(
 		{

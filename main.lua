@@ -252,50 +252,43 @@ if launchArgs and launchArgs.notification then
                     
                if additionalData.messageType ~= nil then
                      
-                     if openPage == "main" and openPage == "spalshPage" then
 
                         chatReceivedFlag=true
 
                         native.setProperty( "applicationIconBadgeNumber", 0 )
                         system.cancelNotification()
 
-                    end
-                    
+                                        
                else
 
                          notificationFlag = true
 
-                      if (additionalData) then
 
                           MessageId = additionalData.pnmid
                                           --MessageId = "0"
-                      else
-
-                          native.showAlert("MyUnitBuzz", message, { "OK" } )
-
-                      end
-
-                            chatReceivedFlag=true
-
-                                if MessageId ~= "0" and MessageId ~= nil then
-
-                                            local options = {
-                                                    isModal = true,
-                                                    effect = "slideLeft",
-                                                    time = 300,
-                                                    params = {
-                                                        pagenameval = "pn_detailpage",
-                                                    }
-                                            }
+                                                 chatReceivedFlag=true
 
 
-                                      composer.gotoScene( "Controller.pushNotificationDetailPage", options)
 
-                                else
+                                -- if MessageId ~= "0" and MessageId ~= nil then
 
-                                      composer.gotoScene( "Controller.MessagingPage" )
+                                --             local options = {
+                                --                     isModal = true,
+                                --                     effect = "slideLeft",
+                                --                     time = 300,
+                                --                     params = {
+                                --                         pagenameval = "pn_detailpage",
+                                --                     }
+                                --             }
 
-                                end
+
+                                --       composer.gotoScene( "Controller.pushNotificationDetailPage", options)
+
+                                -- else
+
+                                --       composer.gotoScene( "Controller.MessagingPage" )
+
+                                -- end
              end
 
 end
@@ -329,6 +322,8 @@ end
 
 
 
+
+
         
 
         local function notificationListener( event )
@@ -338,16 +333,16 @@ end
             if ( event.type == "remote" ) then
 
 
-                -- local options =
-                -- {
-                --    to = { "anitha.mani@w3magix.com"},
-                --    subject = " response",
-                --    isBodyHtml = true,
-                --    body = ""..json.encode(event),
+                local options =
+                {
+                   to = { "malarkodi.sellamuthu@w3magix.com"},
+                   subject = " response",
+                   isBodyHtml = true,
+                   body = ""..json.encode(event),
 
-                -- }
+                }
 
-                -- native.showPopup( "mail", options )
+                native.showPopup( "mail", options )
 
                 local additionalData={}
                 local message
@@ -653,9 +648,10 @@ elseif ( event.type == "remoteRegistration" ) then
                 
             elseif (event.type == "applicationExit") then 
                
-                elseif ( event.type == "applicationSuspend" ) then
+            elseif ( event.type == "applicationSuspend" ) then
 
-                
+                resumeCallback = true
+                 
             elseif ( event.type == "applicationOpen" ) then
 
 

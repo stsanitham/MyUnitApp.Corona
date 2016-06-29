@@ -34,8 +34,8 @@ color.today_blue = "#5069f7"
 
 color.tabbar = "#B6B6B6"
 
-color.table1 = "#FBF7EF"
-color.table2 = "#FBEDF2"
+color.table1 = 	"#f8f8f8"					--"#FBF7EF"
+color.table2 = 	"#ffffff"			--"#FBEDF2"
 
 
 return color

@@ -522,15 +522,7 @@ function scene:create( event )
 
 	if page1 == "pn_detailpage" then
 
-		for i = 1, #menuArray_display do
-
-			if menuArray_display[i].name ~= nil and menuArray_display[i].name == "Messages" then
-
-				menuArray_display[i].alpha=1
-
-			end
-
-		end
+		
 
 	end
 

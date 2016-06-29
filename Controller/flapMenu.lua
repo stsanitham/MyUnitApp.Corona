@@ -1011,6 +1011,17 @@ end
 
 								if MessageId ~= "0" and MessageId ~= nil then
 
+
+									for i = 1, #menuArray_display do
+
+										if menuArray_display[i].name ~= nil and menuArray_display[i].name == "Messages" then
+
+											menuArray_display[i].alpha=1
+
+										end
+
+									end
+
 									local options = {
 										isModal = true,
 										effect = "slideLeft",
@@ -1024,11 +1035,23 @@ end
 
 								else
 
+
+									for i = 1, #menuArray_display do
+
+										if menuArray_display[i].name ~= nil and menuArray_display[i].name == "Chats" then
+
+											menuArray_display[i].alpha=1
+
+										end
+
+									end
+
 									composer.gotoScene( "Controller.MessagingPage" )
 
 								end
 
 							else
+
 
 								composer.gotoScene( "Controller.eventCalenderPage" )
 
@@ -1039,7 +1062,7 @@ end
 
 										composer.gotoScene( "Controller.eventCalenderPage" )
 
-									end
+						end
 
 								end	
 
