@@ -240,21 +240,18 @@ if launchArgs and launchArgs.notification then
 
  local additionalData,message
 
- if isAndroid then
-    additionalData = launchArgs.notification.androidGcmBundle
-    message = additionalData.contents
+                    if isAndroid then
+                        additionalData = launchArgs.notification.androidGcmBundle
+                        message = additionalData.contents
                         --MessageId = additionalData.pnmid
-
                     elseif isIos then
                         additionalData = launchArgs.notification.custom.data
                         message = launchArgs.notification.alert
                     end
 
                     
-                    if additionalData.messageType ~= nil then
+               if additionalData.messageType ~= nil then
                      
-                     
-
                      if openPage == "main" and openPage == "spalshPage" then
 
                         chatReceivedFlag=true
@@ -264,49 +261,44 @@ if launchArgs and launchArgs.notification then
 
                     end
                     
+               else
 
-                    
-                    
-                else
+                         notificationFlag = true
 
-                 notificationFlag = true
+                      if (additionalData) then
 
-
-                 if (additionalData) then
-
-                  MessageId = additionalData.pnmid
+                          MessageId = additionalData.pnmid
                                           --MessageId = "0"
-                                      else
+                      else
 
-                                          native.showAlert("MyUnitBuzz", message, { "OK" } )
+                          native.showAlert("MyUnitBuzz", message, { "OK" } )
 
-                                      end
+                      end
 
-                                      chatReceivedFlag=true
+                            chatReceivedFlag=true
 
-                                                    -- if MessageId ~= "0" and MessageId ~= nil then
+                                if MessageId ~= "0" and MessageId ~= nil then
 
-                                                    --             local options = {
-                                                    --                     isModal = true,
-                                                    --                     effect = "slideLeft",
-                                                    --                     time = 300,
-                                                    --                     params = {
-                                                    --                         pagenameval = "pn_detailpage",
-                                                    --                     }
-                                                    --             }
+                                            local options = {
+                                                    isModal = true,
+                                                    effect = "slideLeft",
+                                                    time = 300,
+                                                    params = {
+                                                        pagenameval = "pn_detailpage",
+                                                    }
+                                            }
 
 
-                                                    --       composer.gotoScene( "Controller.pushNotificationDetailPage", options)
+                                      composer.gotoScene( "Controller.pushNotificationDetailPage", options)
 
-                                                    -- else
+                                else
 
-                                                    --       composer.gotoScene( "Controller.MessagingPage" )
+                                      composer.gotoScene( "Controller.MessagingPage" )
 
-                                                    -- end
-                                                    
+                                end
+             end
 
-                                                end
-                                            end
+end
 
 
 
@@ -379,9 +371,9 @@ if launchArgs and launchArgs.notification then
                               --native.showAlert( "MUB", "response"  ,{"ok"} )
 
 
-                              local UserId,ContactId,Name,FromName,GroupName
+                            local UserId,ContactId,Name,FromName,GroupName
 
-                              for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+                            for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
                                 UserId = row.UserId
                                 ContactId = row.ContactId
                                 Name = row.MemberName
@@ -406,70 +398,70 @@ if launchArgs and launchArgs.notification then
                                                -- local native = native.showAlert("dsadsadsdas",Message_Type,{"ok"})
 
 
-                                               if additionalData.fFN ~= nil then
-                                                Name=additionalData.fFN.." "..additionalData.fLN
+                                    if additionalData.fFN ~= nil then
+                                        Name=additionalData.fFN.." "..additionalData.fLN
+
+                                    else
+
+                                        Name=additionalData.fLN
+
+                                    end
+
+
+                                     GroupName=""
+
+
+                                    if Message_Type == "GROUP" then
+                                             GroupName=additionalData.gn
+                                             FromName=""
+                                    else
+ 
+                                            if additionalData.tFN ~= nil then
+                                                FromName=additionalData.tFN.." "..additionalData.tLN
 
                                             else
 
-                                                Name=additionalData.fLN
+                                                FromName=additionalData.tLN
 
                                             end
 
-                                            GroupName=""
+                                    end
 
-                                            if Message_Type == "GROUP" then
-                                             GroupName=additionalData.gn
-                                             FromName=""
-                                         else
+                                    
+                                        if openPage == "main" and openPage == "spalshPage" then
 
+                                            chatReceivedFlag=true
 
-                                          
-                                           if additionalData.tFN ~= nil then
-                                            FromName=additionalData.tFN.." "..additionalData.tLN
-
-                                        else
-
-                                            FromName=additionalData.tLN
+                                            native.setProperty( "applicationIconBadgeNumber", 0 )
+                                            system.cancelNotification()
+                                            notifications.cancelNotification()
 
                                         end
-
-                                    end
-
-                                    
-                                    if openPage == "main" and openPage == "spalshPage" then
-
-                                        chatReceivedFlag=true
-
-                                        native.setProperty( "applicationIconBadgeNumber", 0 )
-                                        system.cancelNotification()
-                                        notifications.cancelNotification()
-
-                                    end
                                     
 
 
-                                    if openPage == "MessagingPage" and chatReceivedPage == "MessagingPage" then
+                                         if openPage == "MessagingPage" and chatReceivedPage == "MessagingPage" then
 
-                                        
+                                                
 
-                                     chatReceivedFlag=true
+                                             chatReceivedFlag=true
 
-                                     local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.decrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
-                                     db:exec( insertQuery )
+                                             local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.decrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+                                             db:exec( insertQuery )
 
-                                     native.setProperty( "applicationIconBadgeNumber", 0 )
-                                     system.cancelNotification()
-                                     notifications.cancelNotification()
+                                             native.setProperty( "applicationIconBadgeNumber", 0 )
+                                             system.cancelNotification()
+                                             notifications.cancelNotification()
 
-                                 else
+                                         else
 
-                                    native.setProperty( "applicationIconBadgeNumber", 0 )
-                                    system.cancelNotification()
-                                    notifications.cancelNotification()
+                                            native.setProperty( "applicationIconBadgeNumber", 0 )
+                                            system.cancelNotification()
+                                            notifications.cancelNotification()
 
-                        MessageIdValue =  additionalData.pnmid
+                                            MessageIdValue =  additionalData.pnmid
 
-                                end
+                                        end
 
                                 
                                 
@@ -497,7 +489,7 @@ if launchArgs and launchArgs.notification then
                          MessageId = additionalData.pnmid
                                             -- MessageId = "0"
 
-                                            if resumeCallback == true and chatReceivedFlag == true then
+                                    if resumeCallback == true and chatReceivedFlag == true then
 
 
                                               chatReceivedFlag = false
@@ -517,11 +509,11 @@ if launchArgs and launchArgs.notification then
 
                                                 composer.gotoScene( "Controller.pushNotificationDetailPage", options)
 
-                                            else
+                                              else
 
-                                              composer.gotoScene( "Controller.MessagingPage" )
+                                                 composer.gotoScene( "Controller.MessagingPage" )
 
-                                          end
+                                               end
 
                                       end
                                       
@@ -546,6 +538,9 @@ if launchArgs and launchArgs.notification then
                                 else
 
                                   native.showAlert("MyUnitBuzz", message, { "OK" } )
+
+
+                                  
 
         --here
     end

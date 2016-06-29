@@ -516,8 +516,6 @@ function scene:create( event )
 
 	for i = 1, #menuArray_display do
 
-
-
 		menuArray_display[i].alpha=0.01
 
 	end
@@ -533,9 +531,6 @@ function scene:create( event )
 			end
 
 		end
-
-		
-		
 
 	end
 

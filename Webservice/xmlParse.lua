@@ -54,12 +54,12 @@ else
 	 if string.find(url,"/MyUnitBuzz/GetSpecialRecognitionJsonContent") then
 
 
-	 	response = json.decode(event.response)
-	 	--response = json.decode(response)
+	 	response = event.response
+	 	--response = json.encode(response)
 	 else
 
 
-	response = json.decode(event.response)
+	    response = json.decode(event.response)
 
 	end
 

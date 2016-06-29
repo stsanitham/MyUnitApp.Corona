@@ -745,6 +745,7 @@ local function ChatTouch( event )
 											title.text = UserName
 											Deleteicon.isVisible=false
 											Copyicon.isVisible=false
+
 									    	-- chatReceivedFlag=true
 									    	
 									    	for i=#MeassageList, 1, -1 do 
@@ -1693,6 +1694,8 @@ local function videoPlay( event )
 							end
 
 							title.text = UserName
+
+							deleteMsgCount = 0
 							
 						elseif i == 2 then
 								    	--Details
@@ -2758,9 +2761,11 @@ local function scrollListener( event )
 
 			composer.removeHidden()
 
-			ChatBox.isVisible=true
+			if ChatBox then ChatBox.isVisible=true end
 
 		end
+
+
 
 		function scene:resumeGame(value,status)
 
