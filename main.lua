@@ -333,16 +333,16 @@ end
             if ( event.type == "remote" ) then
 
 
-                local options =
-                {
-                   to = { "malarkodi.sellamuthu@w3magix.com"},
-                   subject = " response",
-                   isBodyHtml = true,
-                   body = ""..json.encode(event),
+                -- local options =
+                -- {
+                --    to = { "malarkodi.sellamuthu@w3magix.com"},
+                --    subject = " response",
+                --    isBodyHtml = true,
+                --    body = ""..json.encode(event),
 
-                }
+                -- }
 
-                native.showPopup( "mail", options )
+                -- native.showPopup( "mail", options )
 
                 local additionalData={}
                 local message
