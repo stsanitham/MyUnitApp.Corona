@@ -128,13 +128,15 @@ settings =
 		}
 	},
 	
-	--
-	-- Android Section
-	--
-	android =
-	{
- largeHeap = true,
-coronaWindowMovesWhenKeyboardAppears = true,
+	
+		--
+		-- Android Section
+		--
+		android =
+		{
+
+		 largeHeap = true,
+		 coronaWindowMovesWhenKeyboardAppears = true,
 
  		permissions =
         {

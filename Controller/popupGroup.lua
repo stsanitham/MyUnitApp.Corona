@@ -3146,6 +3146,10 @@ elseif id_value == "Deny Access" then
 
 		Status="DENY"
 
+	else
+
+		Status=""
+
 	end
 
 

@@ -454,7 +454,7 @@ end
                                             system.cancelNotification()
                                             notifications.cancelNotification()
 
-                                            MessageIdValue =  additionalData.pnmid
+                                            MessageId =  additionalData.pnmid
 
                                         end
 
@@ -475,70 +475,63 @@ end
                     if (additionalData) then
 
 
-                        MessageIdValue =  additionalData.pnmid
+                            MessageId =  additionalData.pnmid
 
-                        if isAndroid then
+                                if isAndroid then
 
-                         additionalData = event.androidGcmBundle
-                         message = additionalData.contents
-                         MessageId = additionalData.pnmid
-                                            -- MessageId = "0"
+                                 additionalData = event.androidGcmBundle
+                                 message = additionalData.contents
+                                 MessageId = additionalData.pnmid
+                                                -- MessageId = "0"
 
-                                    if resumeCallback == true and chatReceivedFlag == true then
+                                         if resumeCallback == true and chatReceivedFlag == true then
+      
+                                                      chatReceivedFlag = false
+                                                      resumeCallback = false
 
+                                                      if MessageId ~= "0" and MessageId ~= nil then
 
-                                              chatReceivedFlag = false
-                                              resumeCallback = false
-
-                                              if MessageId ~= "0" and MessageId ~= nil then
-
-                                                local options = {
-                                                    isModal = true,
-                                                    effect = "slideLeft",
-                                                    time = 300,
-                                                    params = {
-                                                        pagenameval = "pn_detailpage",
-                                                    }
-                                                }
-
-
-                                                composer.gotoScene( "Controller.pushNotificationDetailPage", options)
-
-                                              else
-
-                                                 composer.gotoScene( "Controller.MessagingPage" )
-
-                                               end
-
-                                      end
-                                      
+                                                        local options = {
+                                                            isModal = true,
+                                                            effect = "slideLeft",
+                                                            time = 300,
+                                                            params = {
+                                                                pagenameval = "pn_detailpage",
+                                                            }
+                                                        }
 
 
-                                        -- local options =
-                                        -- {
-                                        --    to = { "anitha.mani@w3magix.com"},
-                                        --    subject = " response",
-                                        --    isBodyHtml = true,
-                                        --    body = ""..json.encode(additionalData).."\n"..message.."\n"..messagidvalue,
+                                                        composer.gotoScene( "Controller.pushNotificationDetailPage", options)
 
-                                        -- }
+                                                      else
 
-                                        -- native.showPopup( "mail", options )
+                                                         composer.gotoScene( "Controller.MessagingPage" )
 
-                                        
-                                        
-                                    end
+                                                       end
+
+                                          end
+                                          
+
+                                            -- local options =
+                                            -- {
+                                            --    to = { "anitha.mani@w3magix.com"},
+                                            --    subject = " response",
+                                            --    isBodyHtml = true,
+                                            --    body = ""..json.encode(additionalData).."\n"..message.."\n"..messagidvalue,
+
+                                            -- }
+
+                                            -- native.showPopup( "mail", options )
+                                    
+                                 end
 
 
-                                else
+                        else
 
                                   native.showAlert("MyUnitBuzz", message, { "OK" } )
-
-
                                   
-
-        --here
-    end
+                            --here
+                        end
 
 
 end
