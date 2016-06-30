@@ -395,8 +395,8 @@ renderArray = List.arrayName
              PositionLabelValue = PositionLbl.text
 
 
-              -- PositionLbl:setFillColor( 0 )
-              -- PositionLbl.size = 14
+               PositionLbl:setFillColor( 0 )
+               PositionLbl.size = 14
 
 
              --  if PositionLbl.text:len() > 22 then
@@ -455,8 +455,8 @@ renderArray = List.arrayName
                -- LanguageLbl.text = languagename
                -- LanguageLbl.languageId = languageId
 
-               -- LanguageLbl:setFillColor( 0 )
-               -- LanguageLbl.size = 14
+                LanguageLbl:setFillColor( 0 )
+                LanguageLbl.size = 14
 
              end
 
@@ -787,19 +787,20 @@ if Marykay.text == "" or Marykay.text == Marykay.id or Marykay.text == "*"..Requ
 
 --------------------- Language validation ------------------------
 
-if LanguageLbl.text == "" or LanguageLbl.text == RegistrationScreen.SelectLanguage then
+if LanguageLbl.text == "" or LanguageLbl.text == RegistrationScreen.SelectLanguage or LanguageLbl.text == RegistrationScreen.SelectLanguage_Errormsg then
 
   validation=false
 
   LanguageLbl:setFillColor( 1,0,0 )
   LanguageLbl.size = 10
   LanguageLbl.text = RegistrationScreen.SelectLanguage_Errormsg
+
 end
 
 
 --------------------- Position validation ------------------------
 
-if PositionLbl.text == "" or PositionLbl.text == RegistrationScreen.SelectPosition then
+if PositionLbl.text == "" or PositionLbl.text == RegistrationScreen.SelectPosition or PositionLbl.text == RegistrationScreen.SelectPosition_Errormsg then
 
   validation=false
 

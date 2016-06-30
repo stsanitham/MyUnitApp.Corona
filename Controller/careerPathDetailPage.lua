@@ -407,7 +407,9 @@ local function phoneCallFunction( event )
 
 				end
 
-			elseif id_value == "Grant Access" then
+
+
+			elseif id_value == "Grant Access From Deny" then
 
 				if Request_response == "SUCCESS" then
 
@@ -415,21 +417,49 @@ local function phoneCallFunction( event )
 
 				elseif Request_response == "GRANT" then
 
-					granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+					granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
 
 				elseif Request_response == "REMOVE" then
 
-					Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+					Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
 					
-				elseif Request_response == "ADDREQUEST" then
+				elseif Request_response == "REQUEST" then
 
-					addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+					addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
 
 				elseif Request_response == "BLOCK" then
 
-					addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+					addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
 
 				end
+
+
+			elseif id_value == "Grant Access From Open" then
+
+				if Request_response == "SUCCESS" then
+
+					grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
+
+				elseif Request_response == "GRANT" then
+
+					granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
+
+				elseif Request_response == "REMOVE" then
+
+					Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
+					
+				elseif Request_response == "REQUEST" then
+
+					addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
+
+				elseif Request_response == "BLOCK" then
+
+					addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
+
+				end
+
+
+
 
 			elseif id_value == "Provide Access" then
 
@@ -569,11 +599,20 @@ local function onButtonTouch(event)
 
 		display.getCurrentStage():setFocus( nil )
 
-		if id_value == "Grant Access" then
+
+		if id_value == "Grant Access From Open" then
 
 			contactid_career = Details.ContactId
 
 			GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details,pagevalue)
+
+
+		elseif id_value == "Grant Access From Deny" then
+
+			contactid_career = Details.ContactId
+
+			GetPopUp(contactid_career,Details.EmailAddress,Details.Mobile,Details.HomePhoneNumber,Details.WorkPhoneNumber,Details.OtherPhoneNumber,id_value,Details,pagevalue)
+
 
 		elseif id_value == "Remove Access" then
 
@@ -1003,6 +1042,8 @@ if(Details.AnniversariesDate ~= nil) then
 
 				if(IsOwner == true and Details.Status == "DENY" or Details.Status == "BLOCK") then
 
+				--if(IsOwner == true and Details.Status == "DENY" ) then
+
 					print("Grant or Remove Access")
 
 					InviteAccess.isVisible = true
@@ -1015,7 +1056,7 @@ if(Details.AnniversariesDate ~= nil) then
 					grantaccess_button.strokeWidth = 1
 					grantaccess_button.cornerRadius = 2
 					grantaccess_button.width = W-190
-					grantaccess_button.id="Grant Access"
+					grantaccess_button.id="Grant Access From Deny"
 					grantaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( grantaccess_button )
 
@@ -1112,7 +1153,7 @@ if(Details.AnniversariesDate ~= nil) then
 					grantaccess_button.strokeWidth = 1
 					grantaccess_button.cornerRadius = 2
 					grantaccess_button.width = W-190
-					grantaccess_button.id="Grant Access"
+					grantaccess_button.id="Grant Access From Open"
 					grantaccess_button:addEventListener("touch",onButtonTouch)
 					careerDetail_scrollview:insert( grantaccess_button )
 

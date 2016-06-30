@@ -488,9 +488,13 @@ local function ListmenuTouch( event )
 
 	local function CreateList(list,scrollView)
 
-		local feedArray = list
 
+		for j=#groupArray, 1, -1 do 
+			display.remove(groupArray[#groupArray])
+			groupArray[#groupArray] = nil
+		end
 
+            local feedArray = list
 
 		for i=1,#feedArray do
 
@@ -499,6 +503,7 @@ local function ListmenuTouch( event )
 			local Display_Group = {}
 
 			local tempGroup = groupArray[#groupArray]
+
 			local bgheight = 65
 
 			local Image 
@@ -662,6 +667,9 @@ end
 
 end
 
+
+
+
 local function TouchAction( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -730,6 +738,7 @@ function scene:create( event )
 	NoEvent.x=W/2;NoEvent.y=H/2
 	NoEvent.isVisible=false
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+
 
 	MainGroup:insert(sceneGroup)
 end
@@ -890,7 +899,8 @@ function scene:show( event )
 	local phase = event.phase
 	
 	if phase == "will" then
-		composer.removeHidden()
+		
+				composer.removeHidden()
 
 	elseif phase == "did" then
 
@@ -907,18 +917,19 @@ function scene:show( event )
 			   		--scrollWidth = W,
 			   		bottomPadding = 60,
 		   	listener = invite_scrollListener,
+
 		   		}
 
 
 
 		   		sceneGroup:insert(scrollView)
 
-		   		
 		   		status = event.params.status
 		   		
 		   		page_count = page_count+1
 
 		   		Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,event.params.status,get_GetMyUnitBuzzRequestAccesses)
+
 
 		   		menuBtn:addEventListener("touch",menuTouch)
 		   		
@@ -926,40 +937,42 @@ function scene:show( event )
 		   	
 		   	MainGroup:insert(sceneGroup)
 
-		   end
+end
+
+
+
 
 		   function scene:hide( event )
 
 		   	local sceneGroup = self.view
 		   	local phase = event.phase
 
-		   	if event.phase == "will" then
+				   	if event.phase == "will" then
 
-		   		composer.removeHidden()
+				   		--composer.removeHidden()
 
-
-		   	elseif phase == "did" then
-
-
-		   		for i=1,#networkArray do
-
-		   			network.cancel(networkArray[i])
-		   		end
+				   	elseif phase == "did" then
 
 
-		   		for j=1,#groupArray do 
-		   			if groupArray[j] then groupArray[j]:removeSelf();groupArray[j] = nil	end
-		   		end
+					   		for i=1,#networkArray do
+					   			network.cancel(networkArray[i])
+					   		end
+
+					   		for j=1,#groupArray do 
+					   			if groupArray[j] then groupArray[j]:removeSelf();groupArray[j] = nil	end
+					   		end
 
 
-		   	end	
+				   	end	
 
 		   end
 
 
+
+
+
 		   function scene:destroy( event )
 		   	local sceneGroup = self.view
-
 
 
 		   end
@@ -970,10 +983,11 @@ function scene:show( event )
 		   scene:addEventListener( "hide", scene )
 		   scene:addEventListener( "destroy", scene )
 
+
+
 		   function scene:resumeGame()
 
 		   	composer.removeHidden(true)
-
 
 		   	reloadInvitAccess(status)
 

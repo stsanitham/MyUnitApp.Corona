@@ -1560,7 +1560,8 @@ local function videoPlay( event )
 
 
 
-		function get_videomodel( response )
+
+	function get_videomodel( response )
 			
 		--	print(json.encode(response))
 
