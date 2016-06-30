@@ -2898,92 +2898,77 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		if event.params then
-			nameval = event.params.tabbuttonValue2
-			pagevalue = event.params.typevalue
+			if event.params then
+				nameval = event.params.tabbuttonValue2
+				pagevalue = event.params.typevalue
+			end
 
-		end
-
-		composer.removeHidden()
+			composer.removeHidden()
 
 
 	elseif phase == "did" then
 
-		if event.params then
+			if event.params then
 
-			if event.params.contactDetails ~= nil then
-
-				ContactDetails = event.params.contactDetails
-
-			else
-
-				ContactDetails = ""
-
-			end
-
-		end
-
-
-		To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To or ContactDetails.MyUnitBuzzGroupId
-
-
-		if tostring(To_ContactId) == tostring(ContactId) then
-			To_ContactId=ContactDetails.Message_From
-		end
-
-
-		if ContactDetails.MyUnitBuzzGroupId ~= nil then
-
-			if ContactDetails.MyUnitBuzzGroupType == "BROADCAST" then
-
-				MessageType = "BROADCAST"
-
-
-			else
-
-				MessageType = "GROUP"
+				if event.params.contactDetails ~= nil then
+					ContactDetails = event.params.contactDetails
+				else
+					ContactDetails = ""
+				end
 
 			end
 
 
-		else
-
-			MessageType = "INDIVIDUAL"
-
-		end
+	    	To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To or ContactDetails.MyUnitBuzzGroupId
 
 
-
-		
-
-		
-		if ContactDetails.Message_Type then
-
-			MessageType=ContactDetails.Message_Type
-
-		end
+			if tostring(To_ContactId) == tostring(ContactId) then
+				To_ContactId=ContactDetails.Message_From
+			end
 
 
-		if MessageType == "GROUP" then
+			if ContactDetails.MyUnitBuzzGroupId ~= nil then
 
-			title.text = ContactDetails.GroupName or ContactDetails.MyUnitBuzzGroupName
-		else
+					if ContactDetails.MyUnitBuzzGroupType == "BROADCAST" then
+						MessageType = "BROADCAST"
+					else
+						MessageType = "GROUP"
+					end
+
+			else
+
+				     MessageType = "INDIVIDUAL"
+
+			end
+
 
 			
+			if ContactDetails.Message_Type then
 
-			if ContactId == ContactDetails.Message_From then
+				MessageType=ContactDetails.Message_Type
 
-				title.text = ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
+			end
+
+
+
+			if MessageType == "GROUP" then
+
+					title.text = ContactDetails.GroupName or ContactDetails.MyUnitBuzzGroupName
 			else
-				title.text = ContactDetails.FromName or ContactDetails.MyUnitBuzzGroupName
-			end
 
-			if ContactDetails.Name ~= nil then
-				title.text = ContactDetails.Name
-			end
-			
-		end
+					if ContactId == ContactDetails.Message_From then
 
+						title.text = ContactDetails.ToName or ContactDetails.MyUnitBuzzGroupName
+					else
+						title.text = ContactDetails.FromName or ContactDetails.MyUnitBuzzGroupName
+					end
+
+
+					if ContactDetails.Name ~= nil then
+						title.text = ContactDetails.Name
+					end
+				
+			end
 
 
 		UserName = title.text

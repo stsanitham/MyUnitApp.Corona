@@ -549,7 +549,7 @@ local function ListmenuTouch( event )
 
 							Image:removeSelf();Image=nil
 							
-							Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+							local Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
 							Image.width=35;Image.height=35
 							--Image.anchorY=0
 							Image.x=30;Image.y=background.y+background.contentHeight/2
@@ -565,7 +565,7 @@ local function ListmenuTouch( event )
 				    		end, "inviteaccess"..feedArray[i].MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory)
 		else
 
-					Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+					local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 					--Image.anchorY=0
 					Image.x=30;Image.y=background.y+background.contentHeight/2
 
@@ -658,9 +658,9 @@ local function ListmenuTouch( event )
   line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
 
-  scrollView:insert(tempGroup)
+	  scrollView:insert(tempGroup)
 
-  print( "@@@@@@@@@" )
+	  print( "@@@@@@@@@" )
 
 
 end
@@ -1047,13 +1047,13 @@ end
      	if id_value == "Remove Access" then
 
      		print("response after removing details ",Request_response)
-     		local remove_successful= native.showAlert(CommonWords.Remove, "Contact removed from the list.", { CommonWords.ok} , onCompletion)
+     		local remove_successful= native.showAlert(CommonWords.Remove, CareerPath.RemovedText, { CommonWords.ok} , onCompletion)
 
 
      	elseif id_value == "Block Access" then
 
      		print("!!!!! response after blocking details ",Request_response)
-     		local block_successful = native.showAlert(CommonWords.Block, "This Contact’s Access blocked successfully.", { CommonWords.ok} , onCompletion)
+     		local block_successful = native.showAlert(CommonWords.Block, CareerPath.BlockedText, { CommonWords.ok} , onCompletion)
 
      	end
 		--else
