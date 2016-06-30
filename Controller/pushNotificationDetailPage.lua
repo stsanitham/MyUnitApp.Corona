@@ -375,6 +375,7 @@ local function closeDetails( event )
 
 
 
+
 		local function audioPlay( event )
 			if event.phase == "began" then
 				display.getCurrentStage():setFocus( event.target )
@@ -399,62 +400,111 @@ local function closeDetails( event )
 		            	if event.target.value == "play" then
 		            		
 
-		            		local isChannel1Playing = audio.isChannelPlaying( 2 )
-		            		if isChannel1Playing or isSimulator then
+			            		local isChannel1Playing = audio.isChannelPlaying( 2 )
 
-									 -- for i=#MeassageList, 1, -1 do 
-										-- 		local group = MeassageList[#MeassageList]
+			            		        if isChannel1Playing or isSimulator then
 
-										-- 		for j=group.numChildren, 1, -1 do 
+										 -- for i=#MeassageList, 1, -1 do 
+											-- 		local group = MeassageList[#MeassageList]
 
-										
+											-- 		for j=group.numChildren, 1, -1 do 
 
-										-- 			if group[j].value == "pause" then
+											
 
-										-- 				group[j]:setSequence( "play" )
-										-- 				group[j].value="play"
-	      			-- 									group[j]:play()
+											-- 			if group[j].value == "pause" then
 
-										-- 			end
+											-- 				group[j]:setSequence( "play" )
+											-- 				group[j].value="play"
+		      			-- 									group[j]:play()
 
-									 --   		 	end
-									 
-										-- end
+											-- 			end
+
+										 --   		 	end
+										 
+											-- end
+
+
+				            					if event.target.value == "pause" then
+
+				            						event.target:setSequence( "play" )
+				            						event.target.value="play"
+				            						event.target:play()
+
+				            					end
 
 
 
 
-										event.target:setSequence( "pause" )
-										event.target:play()
-										event.target.value="pause"
-										if event.target.channel == 2 then
-											audio.resume( 2 )
+											event.target:setSequence( "pause" )
+											event.target:play()
+											event.target.value="pause"
+											
+											-- if event.target.channel == 2 then
+											-- 	audio.resume( 2 )
 
-										end
+											-- end
 
 									else
 
-										local laserSound = audio.loadSound( audioname, system.DocumentsDirectory  )
-										local laserChannel = audio.play( laserSound,{channel=2,onComplete = audioPlayComplete} )
-										event.target:setSequence( "pause" )
+											-- local laserSound = audio.loadSound( audioname, system.DocumentsDirectory  )
+											-- local laserChannel = audio.play( laserSound,{channel=2,onComplete = audioPlayComplete} )
+											-- event.target:setSequence( "pause" )
+											-- event.target:play()
+											-- event.target.value="pause"
+											-- event.target.channel=2
+
+
+						            			if  audio.isChannelPaused( 2 ) then
+						            				audio.resume( 2 )
+
+						            			else
+
+						            				event.target:setSequence( "pause" )
+													event.target:play()
+													event.target.value="pause"
+
+
+																local function audioPlayComplete1( audioevent )
+
+																	if ( audioevent.completed ) then
+
+												                        event.target:setSequence( "play" )
+																		event.target:play()
+																		event.target.value="play"
+
+																	end
+
+																	return true
+
+																end
+
+
+
+													local filePath = system.pathForFile( audioname, system.DocumentsDirectory )
+													local laserSound = audio.loadStream( audioname, system.DocumentsDirectory )
+
+													audio.play( laserSound,{ channel=2,onComplete = audioPlayComplete1 } )
+													audio.setMaxVolume( 1, { channel=2 } )
+
+
+						            			end
+
+									end
+									
+
+					elseif event.target.value == "pause" then
+
+
+										print( "pause" )
+										local isChannel1Playing = audio.isChannelPlaying( 2 )
+										if isChannel1Playing or isSimulator then
+
+											audio.pause( 2 )
+
+										end
+										event.target:setSequence( "play" )
+										event.target.value="play"
 										event.target:play()
-										event.target.value="pause"
-										event.target.channel=2
-									end
-									
-
-								elseif event.target.value == "pause" then
-									print( "pause" )
-									local isChannel1Playing = audio.isChannelPlaying( 2 )
-									if isChannel1Playing or isSimulator then
-										audio.pause( 2 )
-									end
-									event.target:setSequence( "play" )
-									event.target:play()
-									event.target.value="play"
-									
-
-									
 
 								end
 

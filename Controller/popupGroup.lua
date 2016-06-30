@@ -2090,8 +2090,8 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 
 
-	          if Details.UpdateTimeStamp ~= nil then
-	          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
+	          if Details.CreateTimeStamp ~= nil then
+	          local time = Utils.makeTimeStamp(Details.CreateTimeStamp)
 	          print("time stamp ",time)
 	          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%M %p",time))
 	          native.setKeyboardFocus( nil )
@@ -2327,8 +2327,8 @@ elseif id_value == "Grant Access From Deny" and Details.IsRequestTeamMember == t
 	          end
 
 
-	          if Details.UpdateTimeStamp ~= nil then
-	          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
+	          if Details.CreateTimeStamp ~= nil then
+	          local time = Utils.makeTimeStamp(Details.CreateTimeStamp)
 	          print("time stamp ",time)
 	          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%M %p",time))
 	          native.setKeyboardFocus( nil )
@@ -2597,8 +2597,8 @@ elseif id_value == "Grant Access From Deny" and Details.IsRequestTeamMember == f
 	          end
 
 
-	          if Details.UpdateTimeStamp ~= nil then
-	          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
+	          if Details.CreateTimeStamp ~= nil then
+	          local time = Utils.makeTimeStamp(Details.CreateTimeStamp)
 	          print("time stamp ",time)
 	          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%M %p",time))
 	          native.setKeyboardFocus( nil )
@@ -2875,8 +2875,8 @@ elseif id_value == "Provide Access" then
 			  MKRankDetail_bottom.isVisible = false
 	          end
 
-	          if Details.UpdateTimeStamp ~= nil then
-	          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
+	          if Details.CreateTimeStamp ~= nil then
+	          local time = Utils.makeTimeStamp(Details.CreateTimeStamp)
 	          print("time stamp ",time)
 	          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%M %p",time))
 	          native.setKeyboardFocus( nil )
@@ -3070,8 +3070,8 @@ elseif id_value == "Deny Access" then
 		   MKRankDetail_bottom.isVisible = false
           end
 
-          if Details.UpdateTimeStamp ~= nil then
-          local time = Utils.makeTimeStamp(Details.UpdateTimeStamp)
+          if Details.CreateTimeStamp ~= nil then
+          local time = Utils.makeTimeStamp(Details.CreateTimeStamp)
           print("time stamp ",time)
           RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%M %p",time))
           native.setKeyboardFocus( nil )
