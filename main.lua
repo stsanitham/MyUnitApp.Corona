@@ -650,8 +650,7 @@ elseif ( event.type == "remoteRegistration" ) then
                
             elseif ( event.type == "applicationSuspend" ) then
 
-                resumeCallback = true
-                 
+
             elseif ( event.type == "applicationOpen" ) then
 
 
@@ -659,9 +658,7 @@ elseif ( event.type == "remoteRegistration" ) then
 
                 resumeCallback = true
 
-                
-
-
+             
 
                 
             end

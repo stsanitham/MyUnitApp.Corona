@@ -56,7 +56,7 @@ local Imagepath = ""
 
 local Imagesize = ""
 
-local MemberName
+local MemberName,timerId
 
 local UserName = ""
 
@@ -1729,9 +1729,9 @@ local function videoPlay( event )
 
 							toast.show(ChatPage.Message_Copied, {duration = 'long', gravity = 'Center', offset = {0, 128}})  
 							title.text = UserName		
-							
-							Copyicon.isVisible=false
+							deleteMsgCount=0
 							Deleteicon.isVisible=false
+							Copyicon.isVisible=false
 
 							attachment_icon.isVisible = true
 
@@ -2513,7 +2513,7 @@ local function scrollListener( event )
 		            if MessageType == "GROUP" then
 
 		            	ConversionFirstName="";ConversionLastName="";GroupName=MemberName
-		            	DocumentUpload = {
+		            	DocumentUpload[1] = {
 		            		UserId = UserId,
 		            		File = file_inbytearray,
 		            		FileName = dataFileName,
@@ -2646,7 +2646,7 @@ local function scrollListener( event )
 		if MessageType == "GROUP" then
 
 			ConversionFirstName="";ConversionLastName="";GroupName=MemberName
-			DocumentUpload = {
+			DocumentUpload[1] = {
 				UserId = UserId,
 				File = file_inbytearray,
 				FileName = Imagename,
@@ -2787,7 +2787,7 @@ local function scrollListener( event )
 			end
 
 
-			timer.performWithDelay( 500, doAction,1 )
+			timer.performWithDelay( 100, doAction,1 )
 
 		end
 
@@ -2818,12 +2818,14 @@ local function scrollListener( event )
 
 			local function doAction( event )
 
-				composer.showOverlay( "Controller.Chathead_detailPage", options )
+					if openPage == "MessagingPage" then
+						composer.showOverlay( "Controller.Chathead_detailPage", options )
+					end
 				
 			end
 
 
-			timer.performWithDelay( 400, doAction,1 )
+			timerId = timer.performWithDelay( 200, doAction,1 )
 
 		end
 
@@ -3197,7 +3199,7 @@ function scene:hide( event )
 		Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
 		Runtime:removeEventListener( "key", onKeyEvent )
 		image_name_close:removeEventListener( "touch", ImageClose )
-
+		if timerId ~= nil then timer.cancel( timerId );timerId=nil end
 
 	elseif phase == "did" then
 

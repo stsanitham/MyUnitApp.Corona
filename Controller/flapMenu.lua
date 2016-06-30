@@ -422,7 +422,7 @@ end
 				flapScroll.anchorY=0
 				-- flapScroll.anchorX=0
 				-- flapScroll.y = panel.flapTopBg.y+panel.flapTopBg.contentHeight-5
-				flapScroll.x=panel.x;flapScroll.y=-panel.width/2+20
+				flapScroll.x=panel.x;flapScroll.y=-panel.width/2+22.5
 				panel:insert( flapScroll )
 				--EventCalender
 

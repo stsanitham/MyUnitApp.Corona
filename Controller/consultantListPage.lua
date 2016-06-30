@@ -1460,6 +1460,19 @@ function scene:show( event )
 
 			network.cancel( newtworkArray[#newtworkArray] )
 
+			if addGroupid_value == "editMember" then
+
+
+				print( "Name : "..editedgroupname )
+				
+				if openPage == "MessagingPage" then
+
+					event.parent:resumeEditGame(editedgroupname,editId)
+					
+				end
+
+			end
+
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)
 			Runtime:removeEventListener( "key", onKeyEvent )
@@ -1473,14 +1486,7 @@ function scene:show( event )
 			
 		elseif phase == "did" then
 
-			if addGroupid_value == "editMember" then
 
-
-				print( "Name : "..editedgroupname )
-
-				event.parent:resumeEditGame(editedgroupname,editId)
-
-			end
 
 		end	
 

@@ -401,8 +401,7 @@ local function ListCliked( event )
 
 				 Parent  = List[1].title
 
-				print( #Parent )
-			
+							
 			for i=1,#reportArray do
 
 
@@ -700,13 +699,15 @@ function scene:create( event )
 
 		 		print("JSON content 11111: "..json.encode(sp_jsonresponse))
 
-		 		parentFlag=true
-		 		CreateHorizontalTable(sceneGroup,sp_jsonresponse)
+		 		
 
 
-		 		if sp_jsonresponse[1].data ~= nil then 
+		 		if sp_jsonresponse ~= nil and sp_jsonresponse[1].data ~= nil then 
 
 		 			if sp_jsonresponse[1].heading ~= nil and #sp_jsonresponse[1].data > 0  then
+
+		 				parentFlag=true
+		 				CreateHorizontalTable(sceneGroup,sp_jsonresponse)
 
 		 				Title.text  = sp_jsonresponse[1].heading[1]
 		 				subTitle.text  = sp_jsonresponse[1].heading[2]
@@ -717,7 +718,7 @@ function scene:create( event )
 
 
 
-		 		if sp_jsonresponse[1].data == nil or #sp_jsonresponse[1].data <= 0 then
+		 		if sp_jsonresponse ~= nil and (sp_jsonresponse[1].data == nil or #sp_jsonresponse[1].data <= 0) then
 
 													--NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
 													--NoEvent = display.newText( sceneGroup, "No "..response.UserPageName.." Found", 0,0,0,0,native.systemFontBold,16)
