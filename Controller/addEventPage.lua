@@ -1220,7 +1220,8 @@ local function TouchAction( event )
 
 							end
 							
-							local start_time,end_time
+							local start_time=0
+							local end_time=0
 
 							if string.find( startdate, "PM") then
 
@@ -1234,19 +1235,22 @@ local function TouchAction( event )
 
 							end
 
-								end
+								
 
 
-							if end_time <= start_time and allDay ~= true then
+							if end_time > start_time and allDay ~= true then
 
-							ErrorIcon.isVisible=true
 
-										ErrorIcon.isVisible=true
 
 							ErrorIcon.isVisible=false
 							
 							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
 							
+							else
+
+								ErrorIcon.isVisible=true
+
+							end	
 					end
 				else
 
@@ -1273,9 +1277,7 @@ local function TouchAction( event )
 
 					end
 					
-					local start_time,end_time
-
-					print( "startdate : "..startdate.."\n"..enddate )
+					local start_time,end_time=0,0
 
 					if string.find( startdate, "PM") then
 
@@ -1290,7 +1292,7 @@ local function TouchAction( event )
 					end
 
 
-					if end_time <= start_time and allDay ~= true then
+					if end_time < start_time and allDay ~= true then
 
 					ErrorIcon.isVisible=true
 

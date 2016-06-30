@@ -209,9 +209,9 @@ function scene:show( event )
 				local tempHeight = title_bg.y + 30
 
 
-				local shadow = display.newImageRect( tempGroup,"res/assert/shadow.png",(W-40)/4-10,32)
-				shadow.x=W/2+W/3+5;shadow.y=tempHeight+2
-				shadow.anchorY = 0
+				-- local shadow = display.newImageRect( tempGroup,"res/assert/shadow.png",(W-40)/4-10,32)
+				-- shadow.x=W/2+W/3+5;shadow.y=tempHeight+2
+				-- shadow.anchorY = 0
 
 
 				local background = display.newImageRect(tempGroup,"res/assert/listimg.png",W-40,32)
@@ -221,26 +221,26 @@ function scene:show( event )
 				end
 
 				background.anchorY = 0
-				background.x=W/2;background.y=tempHeight
+				background.x=W/2-5;background.y=tempHeight
 				background.id=list[i].SpecialRecognitionId
 					--background.alpha=0.01
 					background.value = list[i]
-					background:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					--background:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 					--print( "Listy : "..json.encode(list[i]) )
 
-					shadow.y=tempHeight
+					--shadow.y=tempHeight
 					
-					if i == #list then
+					-- if i == #list then
 
-						local line = display.newLine( background.x-background.contentWidth/2-1, title_bg.y + 36, background.x-background.contentWidth/2, background.y+background.contentHeight )
-						line:setStrokeColor( 0.7 )
-						tempGroup:insert( line )
-							-- line.strokeWidth = 1
-						end
+					-- 	local line = display.newLine( background.x-background.contentWidth/2-1, title_bg.y + 36, background.x-background.contentWidth/2, background.y+background.contentHeight )
+					-- 	line:setStrokeColor( 0.7 )
+					-- 	tempGroup:insert( line )
+					-- 		-- line.strokeWidth = 1
+					-- 	end
 
 
 						local GroupName_txt = display.newText(tempGroup,list[i].ReportName,0,0,native.systemFont,14)
-						GroupName_txt.x=background.x-background.contentWidth/2+5;GroupName_txt.y=background.y+background.height/2
+						GroupName_txt.x=background.x-background.contentWidth/2+20;GroupName_txt.y=background.y+background.height/2-3
 						GroupName_txt.anchorX=0
 						Utils.CssforTextView(GroupName_txt,sp_labelName)
 						GroupName_txt:setFillColor(1)

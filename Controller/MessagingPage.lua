@@ -663,6 +663,31 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
+	if event.params ~= nil then 
+		page1 = event.params.pagenameval
+
+		for i = 1, #menuArray_display do
+
+			menuArray_display[i].alpha=0.01
+
+		end
+
+		if page1 == "fromMain" then
+
+			for i = 1, #menuArray_display do
+
+				if menuArray_display[i].name ~= nil and menuArray_display[i].name == "Chats" then
+
+						menuArray_display[i].alpha=1
+
+				end
+
+			end
+
+		end
+	end
+
+
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 

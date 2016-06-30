@@ -168,7 +168,7 @@ ApplicationConfig.SaveMyUnitBuzzGoals = ApplicationConfig.BASE_URL.."/MyUnitBuzz
 
 ApplicationConfig.UpdateTicklerRecur = ApplicationConfig.BASE_URL.."/MyUnitBuzzCalendar/UpdateTicklerRecur"
 
-ApplicationConfig.GetMyUnitBuzzRequestAccesses = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMyUnitBuzzRequestAccesses"
+ApplicationConfig.GetMyUnitBuzzRequestAccesses = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetMyUnitBuzzRequestAccessesListScrollbyScroll"
 
 ApplicationConfig.GetGeneratePassword = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GeneratePassword"
 

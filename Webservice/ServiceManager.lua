@@ -1846,7 +1846,7 @@ function Webservice.SaveAttachmentDetails(id,AttachmentName,AttachmentPath,Attac
 
 
 
-				function Webservice.GetMyUnitBuzzRequestAccesses(status,postExecution)
+				function Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,postExecution)
 					local request_value = {}
 					local params = {}
 					local headers = {}
@@ -1880,7 +1880,9 @@ function Webservice.SaveAttachmentDetails(id,AttachmentName,AttachmentPath,Attac
 
  --   } ]]
 
- local resbody = "UserId="..UserId.."&status="..status
+ local resbody = "UserId="..UserId.."&status="..status.."&pageSize="..totalPageContent.."&page="..page_count
+
+
 
  params={headers = headers}
 

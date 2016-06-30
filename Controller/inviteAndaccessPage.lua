@@ -21,6 +21,10 @@ local listValue = {}
 
 local scrollView;
 
+local page_count = 0
+
+local totalPageContent = 10
+
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -736,27 +740,34 @@ end
 function get_GetMyUnitBuzzRequestAccesses(response)
 
 
-	scrollView:scrollToPosition
-	{
-		y = 0,
-		time = 200,
-	}
+	
 
+if page_count == 1 then
 
 	for j=#groupArray, 1, -1 do 
 		display.remove(groupArray[#groupArray])
 		groupArray[#groupArray] = nil
 	end
 
+	scrollView:scrollToPosition
+	{
+		y = 0,
+		time = 200,
+	}
 
+end
+
+response = response.MubRequestAccessList
 	if response ~= nil then
-		if #response > 0 then
+		if #response > 0  then
 			
 
 			NoEvent.isVisible=false
 
 
 			local listValue = {}
+
+			
 
 			for i=1,#response do
 
@@ -769,20 +780,23 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 		else
 
-			NoEvent.isVisible=true
+			if #groupArray <= 0 then
 
-			if status == "DENY" then
+				NoEvent.isVisible=true
 
-				NoEvent.text=InviteAccessDetail.NoDeniedAccess
+				if status == "DENY" then
 
-			elseif status == "OPEN" then
+					NoEvent.text=InviteAccessDetail.NoDeniedAccess
 
-				NoEvent.text=InviteAccessDetail.NoPendingRequest
+				elseif status == "OPEN" then
 
-			elseif status == "ADDREQUEST" then
+					NoEvent.text=InviteAccessDetail.NoPendingRequest
 
-				NoEvent.text=InviteAccessDetail.NoTMAccess
+				elseif status == "ADDREQUEST" then
 
+					NoEvent.text=InviteAccessDetail.NoTMAccess
+
+				end
 			end
 
 
@@ -805,10 +819,68 @@ function reloadInvitAccess(reloadstatus)
 	if reloadstatus == "OPEN" then title.text = FlapMenu.Pending_Requests end
 	if reloadstatus == "ADDREQUEST" then title.text = FlapMenu.TeamMember_without_Access end
 
-	Webservice.GetMyUnitBuzzRequestAccesses(reloadstatus,get_GetMyUnitBuzzRequestAccesses)
+	page_count=0
+	page_count = page_count+1
+
+	Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,reloadstatus,get_GetMyUnitBuzzRequestAccesses)
 
 end
 
+
+ local function invite_scrollListener( event )
+
+         	local phase = event.phase
+
+         	if ( phase == "began" ) then 
+
+         	elseif ( phase == "moved" ) then
+
+         		elseif ( phase == "ended" ) then 
+
+         	end
+
+
+         	if ( event.limitReached ) then
+
+         		if ( event.direction == "up" ) then print( "Reached bottom limit" )
+
+         			
+         			if status == "GRANT" then title.text = FlapMenu.Contacts_with_Access end
+					if status == "DENY" then title.text = FlapMenu.Denied_Access end
+					if status == "OPEN" then title.text = FlapMenu.Pending_Requests end
+					if status == "ADDREQUEST" then title.text = FlapMenu.TeamMember_without_Access end
+
+					page_count = page_count+1
+
+					Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
+
+
+         			
+         		elseif ( event.direction == "down" ) then print( "Reached top limit" )
+
+         				if status == "GRANT" then title.text = FlapMenu.Contacts_with_Access end
+					if status == "DENY" then title.text = FlapMenu.Denied_Access end
+					if status == "OPEN" then title.text = FlapMenu.Pending_Requests end
+					if status == "ADDREQUEST" then title.text = FlapMenu.TeamMember_without_Access end
+
+					page_count=0
+					page_count = page_count+1
+
+					Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
+
+
+
+         		elseif ( event.direction == "left" ) then print( "Reached right limit" )
+
+         		elseif ( event.direction == "right" ) then print( "Reached left limit" )
+
+         		end
+
+         	end
+
+         	
+         	return true
+         end
 
 
 
@@ -834,7 +906,7 @@ function scene:show( event )
 			horizontalScrollDisabled = true,
 			   		--scrollWidth = W,
 			   		bottomPadding = 60,
-		   			--listener = Facebook_scrollListener,
+		   	listener = invite_scrollListener,
 		   		}
 
 
@@ -844,8 +916,9 @@ function scene:show( event )
 		   		
 		   		status = event.params.status
 		   		
+		   		page_count = page_count+1
 
-		   		Webservice.GetMyUnitBuzzRequestAccesses(event.params.status,get_GetMyUnitBuzzRequestAccesses)
+		   		Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,event.params.status,get_GetMyUnitBuzzRequestAccesses)
 
 		   		menuBtn:addEventListener("touch",menuTouch)
 		   		

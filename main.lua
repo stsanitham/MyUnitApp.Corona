@@ -46,6 +46,8 @@
 
         --CommonApp/DirectorApp
 
+        checkStr = "test 1"
+
 
         AppName = "CommonApp"
 
@@ -258,6 +260,8 @@ if launchArgs and launchArgs.notification then
                         native.setProperty( "applicationIconBadgeNumber", 0 )
                         system.cancelNotification()
 
+  
+
                                         
                else
 
@@ -422,10 +426,11 @@ end
 
                                     end
 
-                                    
+                                         chatReceivedFlag=true
+
                                         if openPage == "main" and openPage == "spalshPage" then
 
-                                            chatReceivedFlag=true
+                                           
 
                                             native.setProperty( "applicationIconBadgeNumber", 0 )
                                             system.cancelNotification()
@@ -439,7 +444,7 @@ end
 
                                                 
 
-                                             chatReceivedFlag=true
+                                            
 
                                              local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.decrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                                              db:exec( insertQuery )
@@ -458,8 +463,20 @@ end
 
                                         end
 
-                                
-                                
+                                   if resumeCallback == true and chatReceivedFlag == true then
+                                        
+                                                       local options = {
+                                                            isModal = true,
+                                                            effect = "slideLeft",
+                                                            time = 300,
+                                                            params = {
+                                                                pagenameval = "fromMain",
+                                                            }
+                                                        }
+
+                                                         composer.gotoScene( "Controller.MessagingPage",options )
+
+                                     end
                                 
                                 
                             else
@@ -467,6 +484,8 @@ end
 
 
                     ----Message Receiver------
+
+                    checkStr = checkStr.." notificaton"
 
                     notificationFlag = true
 
@@ -505,7 +524,16 @@ end
 
                                                       else
 
-                                                         composer.gotoScene( "Controller.MessagingPage" )
+                                                          local options = {
+                                                            isModal = true,
+                                                            effect = "slideLeft",
+                                                            time = 300,
+                                                            params = {
+                                                                pagenameval = "fromMain",
+                                                            }
+                                                        }
+
+                                                         composer.gotoScene( "Controller.MessagingPage",options )
 
                                                        end
 
@@ -650,8 +678,46 @@ elseif ( event.type == "remoteRegistration" ) then
             elseif event.type == "applicationResume" then
 
                 resumeCallback = true
+               --native.showAlert("MyUnitBuzz",checkStr, { "OK" } )
+                    if isIos then
+                             if resumeCallback == true and chatReceivedFlag == true then
+      
+                                                      chatReceivedFlag = false
+                                                      resumeCallback = false
 
-             
+                                                      if MessageId ~= "0" and MessageId ~= nil then
+
+                                                        local options = {
+                                                            isModal = true,
+                                                            effect = "slideLeft",
+                                                            time = 300,
+                                                            params = {
+                                                                pagenameval = "pn_detailpage",
+                                                            }
+                                                        }
+
+
+                                                        composer.gotoScene( "Controller.pushNotificationDetailPage", options)
+
+                                                      else
+
+                                                        local options = {
+                                                            isModal = true,
+                                                            effect = "slideLeft",
+                                                            time = 300,
+                                                            params = {
+                                                                pagenameval = "fromMain",
+                                                            }
+                                                        }
+
+                                                         composer.gotoScene( "Controller.MessagingPage",options )
+
+                                                       end
+
+                                          end
+                    end
+
+
 
                 
             end
