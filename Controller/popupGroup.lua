@@ -1098,11 +1098,21 @@ else
 
 			 elseif popupText.text == CommonWords.ProvideAccessText then
 
-
 					  Requesteddate_bg.isVisible = false
 					  RequesteddateValue.isVisible = false
 					  Requesteddate_title.isVisible = false
 					  Requesteddate_bottom.isVisible = false
+
+                      textnotifybox.isVisible = true
+					  textnotifytext.isVisible = true
+
+			          PhoneDetail_titlestar.y= PhoneDetail_bg.y
+					  PhoneDetail_titletext.y= PhoneDetail_bg.y
+					  PhoneDetail_bottom.y= PhoneDetailValue.y+10
+					  PhoneDetailValue.y =PhoneDetail_titletext.y+PhoneDetail_titletext.contentHeight+9
+
+					  textnotifybox.y = PhoneDetail_bottom.y + 15
+					  textnotifytext.y = PhoneDetail_bottom.y + 15
 
 					  MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.contentHeight+5
 					  MKRankDetail_title.y= MKRankDetail_bg.y+5
@@ -2799,7 +2809,6 @@ elseif id_value == "Provide Access" then
 
 	        elseif pagevaluename == "inviteAndaccessPage" then
 
-
 		          if Details.PhoneNumber ~= nil  or Details.PhoneNumber ~= PopUpGroup.PhoneRequired or Details.PhoneNumber ~= "null" then
 		             PhoneDetailValue.text = Details.PhoneNumber
 		          			textnotifybox.isVisible = true
@@ -2812,8 +2821,8 @@ elseif id_value == "Provide Access" then
 
 		          print("step 11 provide access PhoneNumber"..PhoneDetailValue.text)
 
-
 	        end
+
 
 
 
@@ -2827,10 +2836,10 @@ elseif id_value == "Provide Access" then
 			    MKRankDetail_title.y= MKRankDetail_bg.y+8
 			    MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
 			    MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			   -- Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			   --  Requesteddate_title.y= Requesteddate_bg.y + 7
-			   --  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			   -- Requesteddate_bottom.y= RequesteddateValue.y+8.5
+			    -- Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
+			    --  Requesteddate_title.y= Requesteddate_bg.y + 7
+			    --  RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
+			    -- Requesteddate_bottom.y= RequesteddateValue.y+8.5
 			    Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
 				Password_titlestar.y= Password_bg.y+7
 				Password_titletext.y= Password_bg.y+7
@@ -2842,18 +2851,13 @@ elseif id_value == "Provide Access" then
 				processbutton_text.y=processbutton.y
 		  else
 
+			    textnotifybox.isVisible = true
+			    textnotifytext.isVisible = true
 
-		  	    textnotifybox.isVisible = false
-			    textnotifytext.isVisible = false
-
-			    MKRankDetail_bg.y =  PhoneDetail_bottom.y+PhoneDetail_bottom.contentHeight+5
+			    MKRankDetail_bg.y =  textnotifytext.y+textnotifytext.height+5
 			    MKRankDetail_title.y= MKRankDetail_bg.y+8
 			    MKRankDetailValue.y= MKRankDetail_title.y+MKRankDetail_title.height+7
 			    MKRankDetail_bottom.y= MKRankDetailValue.y+8.5
-			   --Requesteddate_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
-			   -- Requesteddate_title.y= Requesteddate_bg.y + 7
-			   -- RequesteddateValue.y= Requesteddate_title.y+Requesteddate_title.height+7
-			   -- Requesteddate_bottom.y= RequesteddateValue.y+8.5
 				Password_bg.y =  MKRankDetail_bottom.y+MKRankDetail_bottom.height+7
 				Password_titlestar.y= Password_bg.y+7
 				Password_titletext.y= Password_bg.y+7
@@ -2867,22 +2871,26 @@ elseif id_value == "Provide Access" then
 
 
 
+
 	          if Details.MkRankLevel ~= nil then
-	          MKRankDetailValue.text = Details.MkRankLevel
-	          native.setKeyboardFocus( nil )
-	          else
-			  MKRankDetailValue.text = "-"
-			  MKRankDetail_bottom.isVisible = false
+		          MKRankDetailValue.text = Details.MkRankLevel
+		          native.setKeyboardFocus( nil )
+		          else
+				  MKRankDetailValue.text = "-"
+				  MKRankDetail_bottom.isVisible = false
 	          end
 
+
+
 	          if Details.CreateTimeStamp ~= nil then
-	          local time = Utils.makeTimeStamp(Details.CreateTimeStamp)
-	          print("time stamp ",time)
-	          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%M %p",time))
-	          native.setKeyboardFocus( nil )
-	          else
-	          RequesteddateValue.text = ""
+		          local time = Utils.makeTimeStamp(Details.CreateTimeStamp)
+		          print("time stamp ",time)
+		          RequesteddateValue.text =  tostring(os.date("%m/%d/%Y %I:%M %p",time))
+		          native.setKeyboardFocus( nil )
+		          else
+		          RequesteddateValue.text = ""
 	          end
+
 
 
 		      EmailDetailValue:addEventListener("userInput",textField)
@@ -3128,29 +3136,44 @@ elseif id_value == "Deny Access" then
 
     end
 
-    
 
-	if id_value == "Grant Access From Open" or id_value == "Grant Access From Deny" or id_value == "Provide Access" and Details.IsRequestTeamMember == false then
 
-		Status="GRANT"
+    if pagevaluename == "careerPathPage" then
 
-        IsRequestTeamMember = "false"
 
-	elseif id_value == "Grant Access From Deny" and Details.IsRequestTeamMember == true  then
+    	  if id_value == "Grant Access From Open" or id_value == "Grant Access From Deny" or id_value == "Provide Access" then
 
-		Status="GRANT"
+    	  		Status="GRANT"
 
-		IsRequestTeamMember = "true"
+    	  elseif id_value == "Deny Access" then
 
-	elseif id_value == "Deny Access" then
+    	  	    Status="DENY"
 
-		Status="DENY"
+    	  end
 
-	else
 
-		Status=""
+    elseif pagevaluename ==  "inviteAndaccessPage" then
 
-	end
+
+			if id_value == "Grant Access From Open" or id_value == "Grant Access From Deny" or id_value == "Provide Access" and Details.IsRequestTeamMember == false then
+
+				Status="GRANT"
+
+		        IsRequestTeamMember = "false"
+
+			elseif id_value == "Grant Access From Deny" and Details.IsRequestTeamMember == true  then
+
+				Status="GRANT"
+
+				IsRequestTeamMember = "true"
+
+			elseif id_value == "Deny Access" then
+
+				Status="DENY"
+
+			end
+
+    end
 
 
 

@@ -53,61 +53,62 @@ local request,request1
 -----------------Function-------------------------
 
 
-local function FocusComplete( event )
+			local function FocusComplete( event )
 
-	if event.phase == "began" then
+				if event.phase == "began" then
 
-		native.setKeyboardFocus(nil)
-		display.getCurrentStage():setFocus( event.target )
+					native.setKeyboardFocus(nil)
+					display.getCurrentStage():setFocus( event.target )
 
-		elseif event.phase == "ended" then
+					elseif event.phase == "ended" then
 
-		display.getCurrentStage():setFocus( nil )
-
-	end
-
-	return true
-
-end 
-
-
-
-
-local function closeDetails( event )
-	
-	if event.phase == "began" then
-
-		display.getCurrentStage():setFocus( event.target )
-
-					 -- if testimage then testimage:removeSelf();testimage = nil end
-
-				  --    network.cancel(testimage)
-
-				  --    os.remove(imagepathvalue)
-
-				  --    reciveImageFlag=false
-
-				  elseif event.phase == "ended" then
-
-				  display.getCurrentStage():setFocus( nil )
-
-				  if webView then webView:removeSelf( );webView=nil end
-
-				  if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
-
-				  	composer.gotoScene("Controller.pushNotificationListPage","slideRight",300)
-
-				  else
-
-				  	composer.hideOverlay("slideRight",300)
-
-				  end
+					display.getCurrentStage():setFocus( nil )
 
 				end
 
 				return true
 
+			end 
+
+
+
+
+			local function closeDetails( event )
+				
+					if event.phase == "began" then
+
+							display.getCurrentStage():setFocus( event.target )
+
+								 -- if testimage then testimage:removeSelf();testimage = nil end
+
+							  --    network.cancel(testimage)
+
+							  --    os.remove(imagepathvalue)
+
+							  --    reciveImageFlag=false
+
+							  elseif event.phase == "ended" then
+
+							  display.getCurrentStage():setFocus( nil )
+
+							  if webView then webView:removeSelf( );webView=nil end
+
+							  if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+
+							  	composer.gotoScene("Controller.pushNotificationListPage","slideRight",300)
+
+							  else
+
+							  	composer.hideOverlay("slideRight",300)
+
+							  end
+
+						end
+
+					return true
+
 			end
+
 
 
 
@@ -123,7 +124,6 @@ local function closeDetails( event )
 					local function onTimer ( event )
 
 						if webView then webView:removeSelf( );webView=nil end
-
 
 						DeleteMessageGroup.isVisible = false
 
@@ -207,16 +207,15 @@ local function closeDetails( event )
 
 							file = nil
 
-						end
-
-
-						Webservice.DeleteMyUnitBuzzMessages(message_id,getDeletionresponse)
+							end
+ 
+								Webservice.DeleteMyUnitBuzzMessages(message_id,getDeletionresponse)
 
 					elseif event.target.id == "reject" then
 
-						DeleteMessageGroup.isVisible = false
+								DeleteMessageGroup.isVisible = false
 
-						if Details.MyUnitBuzzLongMessage ~= nil then
+							if Details.MyUnitBuzzLongMessage ~= nil then
 
 									 --    long_msg_text= display.newText(sceneGroup,detail_value.MyUnitBuzzLongMessage,0,0,W-30,0,native.systemFont,14)
 										-- long_msg_text.x = 12
@@ -286,89 +285,91 @@ local function closeDetails( event )
 
 
 
-						local function onDeleteAction( event )
 
-							if event.phase == "began" then
+			local function onDeleteAction( event )
 
-								display.getCurrentStage():setFocus( event.target )
+					if event.phase == "began" then
 
-								elseif event.phase == "ended" then
+						display.getCurrentStage():setFocus( event.target )
 
-								display.getCurrentStage():setFocus( nil )
+						elseif event.phase == "ended" then
 
-
-								if event.target.id == "deleteoption" then
-
-									if webView then webView:removeSelf( );webView=nil end
-
-									GetDeleteMessageAlertPopup()
+						display.getCurrentStage():setFocus( nil )
 
 
-									accept_button:addEventListener("touch",onDeleteOptionsTouch)
-									reject_button:addEventListener("touch",onDeleteOptionsTouch)
+						if event.target.id == "deleteoption" then
 
-								elseif event.target.id == "editoption" then
+							if webView then webView:removeSelf( );webView=nil end
 
-									if event.params then
-
-										messagelistvalue = event.params.messagelistvalues
-
-									end
+							GetDeleteMessageAlertPopup()
 
 
-									local options = {
-										isModal = true,
-										effect = "slideRight",
-										time = 300,
-										params = {
-											editvalues = messagelistvalue , pagevalue = "editpage"
-										}
-									}
+							accept_button:addEventListener("touch",onDeleteOptionsTouch)
+							reject_button:addEventListener("touch",onDeleteOptionsTouch)
+
+						elseif event.target.id == "editoption" then
+
+							if event.params then
+
+								messagelistvalue = event.params.messagelistvalues
+
+							end
 
 
-				                      --composer.gotoScene("Controller.composeMessagePage",options)
+							local options = {
+								isModal = true,
+								effect = "slideRight",
+								time = 300,
+								params = {
+									editvalues = messagelistvalue , pagevalue = "editpage"
+								}
+							}
 
 
-				                      status="edit"
-
-				                      pagevalue = "editpage"
-
-				                      composer.hideOverlay()
+		                      --composer.gotoScene("Controller.composeMessagePage",options)
 
 
-				                  end
+		                      status="edit"
 
-			    -- DeleteMessageGroup.isVisible = true
+		                      pagevalue = "editpage"
 
-			end
-
-			return true
-			
-		end
+		                      composer.hideOverlay()
 
 
+		                  end
 
+		    -- DeleteMessageGroup.isVisible = true
 
-
-		local function onKeyEventDetail( event )
-
-			local phase = event.phase
-			local keyName = event.keyName
-
-			if phase == "up" then
-
-				if keyName=="back" then
-
-					composer.hideOverlay( "slideRight", 300 )
-
-					return true
-					
 				end
 
+				return true
+				
 			end
 
-			return false
-		end
+
+
+
+
+
+			local function onKeyEventDetail( event )
+
+				local phase = event.phase
+				local keyName = event.keyName
+
+				if phase == "up" then
+
+					if keyName=="back" then
+
+						composer.hideOverlay( "slideRight", 300 )
+
+						return true
+						
+					end
+
+				end
+
+				return false
+			end
 
 
 
@@ -377,12 +378,16 @@ local function closeDetails( event )
 
 
 		local function audioPlay( event )
-			if event.phase == "began" then
-				display.getCurrentStage():setFocus( event.target )
-				elseif event.phase == "ended" then
-				display.getCurrentStage():setFocus( nil )
 
-				local audioname = event.target.id:match( "([^/]+)$" )
+			if event.phase == "began" then
+
+					display.getCurrentStage():setFocus( event.target )
+
+			elseif event.phase == "ended" then
+
+					display.getCurrentStage():setFocus( nil )
+
+					local audioname = event.target.id:match( "([^/]+)$" )
 
 					--native.showAlert( "MUB", "audioname" ,{"ok"} )
 					if not audioname then
@@ -394,64 +399,41 @@ local function closeDetails( event )
 		            local file = io.open( filePath)
 		            
 		            if file then
-		            	io.close( file )
-
 		            	
-		            	if event.target.value == "play" then
-		            		
+			            	io.close( file )
+			            	
+			            	if event.target.value == "play" then
 
-			            		local isChannel1Playing = audio.isChannelPlaying( 2 )
+				            		local isChannel1Playing = audio.isChannelPlaying( 2 )
 
-			            		        if isChannel1Playing or isSimulator then
+				            		        if isChannel1Playing or isSimulator then
 
-										 -- for i=#MeassageList, 1, -1 do 
-											-- 		local group = MeassageList[#MeassageList]
+					            					if event.target.value == "pause" then
 
-											-- 		for j=group.numChildren, 1, -1 do 
+					            						event.target:setSequence( "play" )
+					            						event.target.value="play"
+					            						event.target:play()
 
-											
-
-											-- 			if group[j].value == "pause" then
-
-											-- 				group[j]:setSequence( "play" )
-											-- 				group[j].value="play"
-		      			-- 									group[j]:play()
-
-											-- 			end
-
-										 --   		 	end
-										 
-											-- end
+					            					end
 
 
-				            					if event.target.value == "pause" then
+												event.target:setSequence( "pause" )
+												event.target:play()
+												event.target.value="pause"
+												
+												-- if event.target.channel == 2 then
+												-- 	audio.resume( 2 )
 
-				            						event.target:setSequence( "play" )
-				            						event.target.value="play"
-				            						event.target:play()
-
-				            					end
-
-
-
-
-											event.target:setSequence( "pause" )
-											event.target:play()
-											event.target.value="pause"
-											
-											-- if event.target.channel == 2 then
-											-- 	audio.resume( 2 )
-
-											-- end
+												-- end
 
 									else
 
-											-- local laserSound = audio.loadSound( audioname, system.DocumentsDirectory  )
-											-- local laserChannel = audio.play( laserSound,{channel=2,onComplete = audioPlayComplete} )
-											-- event.target:setSequence( "pause" )
-											-- event.target:play()
-											-- event.target.value="pause"
-											-- event.target.channel=2
+												-- local laserSound = audio.loadSound( audioname, system.DocumentsDirectory  )
+												-- local laserChannel = audio.play( laserSound,{channel=2,onComplete = audioPlayComplete} )
+												-- event.target:setSequence( "pause" )
+												-- event.target:play()
+												-- event.target.value="pause"
+												-- event.target.channel=2
 
 
 						            			if  audio.isChannelPaused( 2 ) then
@@ -463,29 +445,26 @@ local function closeDetails( event )
 													event.target:play()
 													event.target.value="pause"
 
+													    local function audioPlayComplete1( audioevent )
 
-																local function audioPlayComplete1( audioevent )
+															if ( audioevent.completed ) then
 
-																	if ( audioevent.completed ) then
+										                        event.target:setSequence( "play" )
+																event.target:play()
+																event.target.value="play"
 
-												                        event.target:setSequence( "play" )
-																		event.target:play()
-																		event.target.value="play"
+															end
 
-																	end
+															return true
 
-																	return true
-
-																end
-
+														end
 
 
 													local filePath = system.pathForFile( audioname, system.DocumentsDirectory )
 													local laserSound = audio.loadStream( audioname, system.DocumentsDirectory )
 
-													audio.play( laserSound,{ channel=2,onComplete = audioPlayComplete1 } )
+													audio.play( laserSound,{ channel=2, onComplete = audioPlayComplete1 } )
 													audio.setMaxVolume( 1, { channel=2 } )
-
 
 						            			end
 
@@ -493,7 +472,6 @@ local function closeDetails( event )
 									
 
 					elseif event.target.value == "pause" then
-
 
 										print( "pause" )
 										local isChannel1Playing = audio.isChannelPlaying( 2 )
@@ -522,8 +500,11 @@ local function closeDetails( event )
 
 end
 
-return true
+      return true
+
 end
+
+
 
 
 

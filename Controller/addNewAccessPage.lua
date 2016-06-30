@@ -217,7 +217,7 @@ local function RequestProcess()
 			sumbitBtn.width = sumbitBtn_lbl.width+30
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+35
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
+			sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
 			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
 			sumbitBtn_lbl.x = sumbitBtn.x+16
 

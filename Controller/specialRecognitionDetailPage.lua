@@ -359,7 +359,7 @@ local function ListCliked( event )
  					
  					for j=0,#Parent-1 do
  						if parent_centerText[#parent_centerText-j] ~= nil then
- 							if string.find(parent_centerText[#parent_centerText-j].value:lower( ),"consultant") or string.find(parent_centerText[#parent_centerText-j].value:lower( ),"member") then
+ 							if string.find(parent_centerText[#parent_centerText-j].value:lower( ),"consultant") then
  								parent_centerText[#parent_centerText-j]:setTextColor( 0,0,1 )
  							end
  						end
