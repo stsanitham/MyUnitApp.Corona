@@ -19,7 +19,7 @@ local Details={}
 
 local listValue = {}
 
-local scrollView;
+local scrollView
 
 local page_count = 0
 
@@ -486,7 +486,7 @@ local function ListmenuTouch( event )
 
 
 
-	local function CreateList(list,scrollView)
+	local function CreateList(list)
 
 
 		if page_count == 1 then
@@ -504,6 +504,7 @@ local function ListmenuTouch( event )
 
 		end
 
+
             local feedArray = list
 
 		for i=1,#feedArray do
@@ -518,8 +519,10 @@ local function ListmenuTouch( event )
 
 			local Image 
 
+
 			
 			local background = display.newRect(tempGroup,0,0,W,55)
+
 			local Initial_Height = 0
 
 			if(groupArray[#groupArray-1]) ~= nil then
@@ -559,10 +562,11 @@ local function ListmenuTouch( event )
 
 							Image:removeSelf();Image=nil
 							
-							Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+							local Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
 							Image.width=35;Image.height=35
 							--Image.anchorY=0
 							Image.x=30;Image.y=background.y+background.contentHeight/2
+							
 				    		--event.row:insert(img_event.target)
 
 				    			else
@@ -575,9 +579,10 @@ local function ListmenuTouch( event )
 				    		end, "inviteaccess"..feedArray[i].MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory)
 		else
 
-					Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+					local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 					--Image.anchorY=0
 					Image.x=30;Image.y=background.y+background.contentHeight/2
+					
 
 		end
 
@@ -663,14 +668,14 @@ local function ListmenuTouch( event )
   --  				--group.isVisible=false
 
 
-  local line = display.newRect(tempGroup,W/2,background.y,W,1)
-  line.y=background.y+background.contentHeight-line.contentHeight
-  line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+	  local line = display.newRect(tempGroup,W/2,background.y,W,1)
+	  line.y=background.y+background.contentHeight-line.contentHeight
+	  line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
 
-  scrollView:insert(tempGroup)
+	  scrollView:insert(tempGroup)
 
-  print( "@@@@@@@@@" )
+	  print( "@@@@@@@@@" )
 
 
 end
@@ -714,91 +719,84 @@ end
 
 
 
-------------------------------------------------------
-
-function scene:create( event )
-
-	local sceneGroup = self.view
-
-	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
-	Background.x=W/2;Background.y=H/2
-
-	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
-	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-
-	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
-	menuBtn.anchorX=0
-	menuBtn.x=10;menuBtn.y=20;
-
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-	BgText.anchorX=0
-
-	title_bg = display.newRect(sceneGroup,0,0,W,30)
-	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-
-	title = display.newText(sceneGroup,FlapMenu.Contacts_with_Access,0,0,native.systemFont,18)
-	title.anchorX = 0
-	title.x=5;title.y = title_bg.y
-	title:setFillColor(0)
-
-	NoEvent = display.newText( sceneGroup, EventCalender.NoEvent , 0,0,0,0,native.systemFontBold,14)
-	NoEvent.x=W/2;NoEvent.y=H/2
-	NoEvent.isVisible=false
-	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-
-
-	MainGroup:insert(sceneGroup)
-end
-
-
-
 
 function get_GetMyUnitBuzzRequestAccesses(response)
 
 
-	print( 'page_count : '..page_count )
+			if page_count == 1 then
 
-response = response.MubRequestAccessList
-	if response ~= nil then
-		if #response > 0  then
-			
+				for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+				end
 
-			NoEvent.isVisible=false
+				scrollView:scrollToPosition
+				{
+					y = 0,
+					time = 200,
+				}
+
+		    end
+
+		response = response.MubRequestAccessList
 
 
+	local function onTimer(event)
 
-			CreateList(response,scrollView)
 
-		else
+				if response ~= nil then
 
-			if #groupArray <= 0 then
+					if #response > 0  then
 
-				NoEvent.isVisible=true
+						NoEvent.isVisible=false
 
-				if status == "DENY" then
+						local listValue = {}
 
-					NoEvent.text=InviteAccessDetail.NoDeniedAccess
+						for i=1,#response do
 
-				elseif status == "OPEN" then
+							listValue[#listValue+1] = response[i]	
 
-					NoEvent.text=InviteAccessDetail.NoPendingRequest
+						end
 
-				elseif status == "ADDREQUEST" then
+						print( "here !!!!!!!"..#listValue )	
+						CreateList(listValue)
 
-					NoEvent.text=InviteAccessDetail.NoTMAccess
+
+					else
+
+						if #groupArray <= 0 then
+
+							NoEvent.isVisible=true
+
+							if status == "DENY" then
+
+								NoEvent.text=InviteAccessDetail.NoDeniedAccess
+
+							elseif status == "OPEN" then
+
+								NoEvent.text=InviteAccessDetail.NoPendingRequest
+
+							elseif status == "ADDREQUEST" then
+
+								NoEvent.text=InviteAccessDetail.NoTMAccess
+
+							end
+						end
+
+
+					end
 
 				end
-			end
 
-
-		end
 
 	end
 
+	timer.performWithDelay(500,onTimer)
+
 end
+
+
+
 
 
 
@@ -816,7 +814,9 @@ function reloadInvitAccess(reloadstatus)
 	page_count=0
 	page_count = page_count+1
 
-	Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,reloadstatus,get_GetMyUnitBuzzRequestAccesses)
+
+		Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,reloadstatus,get_GetMyUnitBuzzRequestAccesses)
+
 
 end
 
@@ -878,6 +878,72 @@ end
 
 
 
+
+
+
+------------------------------------------------------
+
+function scene:create( event )
+
+	local sceneGroup = self.view
+
+	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background.x=W/2;Background.y=H/2
+
+	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+	tabBar.y=tabBar.contentHeight/2
+	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
+	menuBtn.anchorX=0
+	menuBtn.x=10;menuBtn.y=20;
+
+	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
+	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
+	BgText.anchorX=0
+
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+
+	title = display.newText(sceneGroup,FlapMenu.Contacts_with_Access,0,0,native.systemFont,18)
+	title.anchorX = 0
+	title.x=5;title.y = title_bg.y
+	title:setFillColor(0)
+
+	NoEvent = display.newText( sceneGroup, EventCalender.NoEvent , 0,0,0,0,native.systemFontBold,14)
+	NoEvent.x=W/2;NoEvent.y=H/2
+	NoEvent.isVisible=false
+	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+			scrollView = widget.newScrollView
+			{
+				top = RecentTab_Topvalue,
+				left = 0,
+				width = W,
+				height =H-RecentTab_Topvalue,
+				hideBackground = true,
+				isBounceEnabled=false,
+				horizontalScrollDisabled = true,
+				--scrollWidth = W,
+				bottomPadding = 60,
+				listener = invite_scrollListener,
+
+			}
+
+
+
+			sceneGroup:insert(scrollView)
+
+
+
+	MainGroup:insert(sceneGroup)
+end
+
+
+
+
+
 function scene:show( event )
 
 	local sceneGroup = self.view
@@ -889,29 +955,16 @@ function scene:show( event )
 
 	elseif phase == "did" then
 
-
-		scrollView = widget.newScrollView
-		{
-			top = RecentTab_Topvalue,
-			left = 0,
-			width = W,
-			height =H-RecentTab_Topvalue,
-			hideBackground = true,
-			isBounceEnabled=false,
-			horizontalScrollDisabled = true,
-			   		--scrollWidth = W,
-			   		bottomPadding = 60,
-		   	listener = invite_scrollListener,
-
-		   		}
-
-
-
-		   		sceneGroup:insert(scrollView)
-
 		   		status = event.params.status
 		   		
 		   		page_count = page_count+1
+
+
+					if status == "GRANT" then title.text = FlapMenu.Contacts_with_Access end
+					if status == "DENY" then title.text = FlapMenu.Denied_Access end
+					if status == "OPEN" then title.text = FlapMenu.Pending_Requests end
+					if status == "ADDREQUEST" then title.text = FlapMenu.TeamMember_without_Access end
+
 
 		   		Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,event.params.status,get_GetMyUnitBuzzRequestAccesses)
 
@@ -935,6 +988,8 @@ end
 				   	if event.phase == "will" then
 
 				   		--composer.removeHidden()
+
+				   		if ListscrollView then ListscrollView:removeSelf();ListscrollView = nil end
 
 				   	elseif phase == "did" then
 
@@ -967,6 +1022,7 @@ end
 		   scene:addEventListener( "show", scene )
 		   scene:addEventListener( "hide", scene )
 		   scene:addEventListener( "destroy", scene )
+
 
 
 
@@ -1024,13 +1080,13 @@ end
      	if id_value == "Remove Access" then
 
      		print("response after removing details ",Request_response)
-     		local remove_successful= native.showAlert(CommonWords.Remove, "Contact removed from the list.", { CommonWords.ok} , onCompletion)
+     		local remove_successful= native.showAlert(CommonWords.Remove, CareerPath.RemovedText, { CommonWords.ok} , onCompletion)
 
 
      	elseif id_value == "Block Access" then
 
      		print("!!!!! response after blocking details ",Request_response)
-     		local block_successful = native.showAlert(CommonWords.Block, "This Contact’s Access blocked successfully.", { CommonWords.ok} , onCompletion)
+     		local block_successful = native.showAlert(CommonWords.Block, CareerPath.BlockedText, { CommonWords.ok} , onCompletion)
 
      	end
 		--else
