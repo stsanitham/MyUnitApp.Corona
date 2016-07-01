@@ -223,7 +223,6 @@ function scene:show( event )
 				background.anchorY = 0
 				background.x=W/2-5;background.y=tempHeight
 				background.id=list[i].SpecialRecognitionId
-
 				print(list[i].SpecialRecognitionId)
 				--background.alpha=0.01
 				background.value = list[i]
