@@ -674,6 +674,20 @@ elseif ( event.type == "remoteRegistration" ) then
 
             elseif ( event.type == "applicationOpen" ) then
 
+                    -- if isAndroid then
+
+                    --     if notificationFlag == true then
+
+                    --         notificationFlag = false
+
+                    --         native.setProperty( "applicationIconBadgeNumber", 0 )
+                    --         system.cancelNotification()
+                    --         notifications.cancelNotification()
+
+                    --     end
+
+                    -- end
+
 
             elseif event.type == "applicationResume" then
 

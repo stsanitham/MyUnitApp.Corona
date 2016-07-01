@@ -1161,7 +1161,9 @@ function scene:hide( event )
 
 	elseif phase == "did" then
 
-		event.parent:resumeGame()
+
+		--event.parent:resumeGame() -- no need to call this function, since the pull to refresh function is 
+		                          --already used in the list page (on going from detail page to list page no need to call any resume function for reloading)
 
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)

@@ -223,8 +223,24 @@ function scene:show( event )
 				background.anchorY = 0
 				background.x=W/2-5;background.y=tempHeight
 				background.id=list[i].SpecialRecognitionId
-					--background.alpha=0.01
-					background.value = list[i]
+
+				print(list[i].SpecialRecognitionId)
+				--background.alpha=0.01
+				background.value = list[i]
+
+
+				DisplayOrder = list[i].DisplayOrder
+
+
+				local function compare(a,b)
+
+					return a.DisplayOrder < b.DisplayOrder
+
+				end
+
+				table.sort(specialRecognition_response, compare)
+
+
 					--background:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 					--print( "Listy : "..json.encode(list[i]) )
 
@@ -239,11 +255,14 @@ function scene:show( event )
 					-- 	end
 
 
+					--print(order,list[order].ReportName)
+
 						local GroupName_txt = display.newText(tempGroup,list[i].ReportName,0,0,native.systemFont,14)
 						GroupName_txt.x=background.x-background.contentWidth/2+20;GroupName_txt.y=background.y+background.height/2-3
 						GroupName_txt.anchorX=0
 						Utils.CssforTextView(GroupName_txt,sp_labelName)
 						GroupName_txt:setFillColor(1)
+
 
 						sceneGroup:insert(tempGroup)
 

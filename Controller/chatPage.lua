@@ -2898,6 +2898,7 @@ function scene:show( event )
 	
 	if phase == "will" then
 
+
 			if event.params then
 				nameval = event.params.tabbuttonValue2
 				pagevalue = event.params.typevalue
