@@ -274,9 +274,9 @@ local function ListCliked( event )
  			coloumArray[#coloumArray].anchorY = 0
  			coloumArray[#coloumArray].anchorX = 0
  			coloumArray[#coloumArray].x=0;coloumArray[#coloumArray].y=tempHeight
- 			coloumArray[#coloumArray].strokeWidth = 1
+ 			
  			coloumArray[#coloumArray]:setFillColor(0,0,0,0)
- 			coloumArray[#coloumArray]:setStrokeColor( 0,0,0,0.3 )
+ 			
 
  			if totalCount > 1 then
 
@@ -320,7 +320,13 @@ local function ListCliked( event )
  			parent_centerText[#parent_centerText].x=coloumArray[#coloumArray].x + 5
  			parent_centerText[#parent_centerText].anchorX=0
  			parent_centerText[#parent_centerText].y=coloumArray[#coloumArray].y+coloumArray[#coloumArray].contentHeight/2
- 			parent_centerText[#parent_centerText].text = k
+
+ 			if k ~= "" then
+
+ 				parent_centerText[#parent_centerText].text = k
+ 			else
+ 				parent_centerText[#parent_centerText].text = "-"
+ 			end
  			parent_centerText[#parent_centerText].value = v
  			parent_centerText[#parent_centerText]:setTextColor( 0 )					
 
@@ -331,9 +337,17 @@ local function ListCliked( event )
  				if parent_centerText[#parent_centerText].contentWidth > coloumArray[#coloumArray].width  then
  					coloumArray[#coloumArray].width = parent_centerText[#parent_centerText].contentWidth+15
  				end
- 				widthArray[#widthArray+1] = coloumArray[#coloumArray].contentWidth-2	
+
+ 				widthArray[#widthArray+1] = coloumArray[#coloumArray].contentWidth
+
+ 				if #Parent ~= 3 then
+ 					widthArray[#widthArray+1] = coloumArray[#coloumArray].contentWidth+1
+ 				end
+ 			
  				parent_centerText[#parent_centerText]:setTextColor( 1 )	
  			else
+
+ 				print( "totalCount : "..totalCount )
 
  				coloumArray[#coloumArray].width = widthArray[totalCount]
  				
@@ -341,7 +355,8 @@ local function ListCliked( event )
  			end
 
  			
- 			
+ 				coloumArray[#coloumArray].strokeWidth = 1
+				coloumArray[#coloumArray]:setStrokeColor( 0,0,0,0.3 )
  			
 
  		else

@@ -1415,11 +1415,10 @@ local function videoPlay( event )
 
 					if MessageType == "GROUP" then	
 						
-						image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+						image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 220, 170 )
 						image.id = ChatHistory[i].Image_Path
 
-						bg.width = image.contentWidth+5
-						bg.height = image.contentHeight+23.5
+						
 
 						owner.anchorY=0
 						owner.anchorX = 0
@@ -1432,9 +1431,13 @@ local function videoPlay( event )
 
 						image.y=owner.y+20	
 
+						bg.width = image.contentWidth+5
+						chat.y = image.y+image.contentHeight+3
+						bg.height = image.contentHeight+chat.height+42
+
 					else
 
-						image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 200, 170 )
+						image = display.newImageRect( tempGroup, Imagename,system.DocumentsDirectory, 220, 170 )
 						image.id = ChatHistory[i].Image_Path
 
 						image.anchorY=0
@@ -1443,7 +1446,9 @@ local function videoPlay( event )
 						image.y=bg.y+2.5
 
 						bg.width = image.contentWidth+5
-						bg.height = image.contentHeight+5
+
+						chat.y = image.y+image.contentHeight+5
+						bg.height = image.contentHeight+chat.height+25
 
 					end
 
@@ -1454,7 +1459,7 @@ local function videoPlay( event )
 							--When image notification recive
 							if MessageType == "GROUP" then	
 								
-								image = display.newImageRect( tempGroup, "res/assert/download_default.jpg", 200, 170 )
+								image = display.newImageRect( tempGroup, "res/assert/download_default.jpg", 220, 170 )
 								bg.width = image.contentWidth+5;bg.height = image.contentHeight+23.5
 
 								owner.anchorY=0;owner.anchorX = 0;owner.x=chat.x;owner.y=bg.y+1
@@ -1473,9 +1478,12 @@ local function videoPlay( event )
 
 								downloadimage:addEventListener( "touch", receviednotifyDownload )
 
+								chat.y = image.y+image.contentHeight+3
+								bg.height = image.contentHeight+chat.height+42
+
 							else
 
-								image = display.newImageRect( tempGroup, "res/assert/download_default.jpg", 200, 170 )
+								image = display.newImageRect( tempGroup, "res/assert/download_default.jpg", 220, 170 )
 								image.anchorY=0;image.anchorX = 0;image.x=bg.x+2.5;image.y=bg.y+2.5
 
 								bg.width = image.contentWidth+5;bg.height = image.contentHeight+5	
@@ -1494,7 +1502,13 @@ local function videoPlay( event )
 
 								downloadimage:addEventListener( "touch", receviednotifyDownload )
 
+								chat.y = image.y+image.contentHeight+5
+								bg.height = image.contentHeight+chat.height+25
+
 							end
+
+
+
 						end
 
 						
@@ -2559,7 +2573,7 @@ local function scrollListener( event )
 
 
 
-		function scene:resumeImageCallBack(photoviewname,button_idvalue)
+		function scene:resumeImageCallBack(captionname,photoviewname,button_idvalue)
 
 			composer.removeHidden()
 
@@ -2574,6 +2588,11 @@ local function scrollListener( event )
 
 					Imagename = photoviewname:match( "([^/]+)$" )
 
+						if captionname == "" then
+
+							captionname= "Image"
+
+						end
 
 					local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 
@@ -2586,12 +2605,12 @@ local function scrollListener( event )
 					ImageSize = Imagesize
 					AudioPath="NULL"
 					VideoPath="NULL"
-					MyUnitBuzz_LongMessage=ChatBox.text
+					MyUnitBuzz_LongMessage=captionname
 					From=ContactId
 					To=To_ContactId
 					Message_Type = MessageType
 
-					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Image','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
+					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..captionname..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
 					db:exec( insertQuery )
 
 
@@ -2624,7 +2643,7 @@ local function scrollListener( event )
 		ImagePath= photoviewname or ""
 		AudioPath="NULL"
 		VideoPath="NULL"
-		MyUnitBuzz_LongMessage=ChatBox.text
+		MyUnitBuzz_LongMessage=captionname
 		From=ContactId
 		To=To_ContactId
 		Message_Type = MessageType
@@ -2676,7 +2695,7 @@ local function scrollListener( event )
 		ChatBox.text = ""
 
 		
-		Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+		Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,ChatBox.text,captionname,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 
 		
 

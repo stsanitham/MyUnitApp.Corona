@@ -37,7 +37,7 @@ local BackFlag = false
 local W = display.contentWidth;
 local H= display.contentHeight
 
-
+local captionField
 
 --------------------------------------------------
 
@@ -73,7 +73,7 @@ local function onKeyEvent( event )
 
 	if phase == "up" then
 
-		if keyName == "back" or keyName == "a" then
+		if keyName == "back" then
 
 			composer.hideOverlay( "slideRight", 300 )
 
@@ -267,6 +267,30 @@ function scene:create( event )
 			photo.height = photoheight
 
 
+			
+
+
+			captionField_bg = display.newRect(W/2, 0, W-20, 25)
+			captionField_bg.y = photo.y+photo.contentHeight+35
+			captionField_bg.alpha = 0.01
+			sceneGroup:insert(captionField_bg)
+
+			captionField = native.newTextField(W/2+3, 0, W-10, 25)
+			captionField.id="First Name"
+			captionField.size=14	
+			captionField.anchorX = 0
+			captionField.x = 10
+			captionField.y = captionField_bg.y
+			captionField.hasBackground = false
+			captionField:setReturnKey( "next" )
+			captionField.placeholder="Add a Caption"
+			sceneGroup:insert(captionField)
+
+			captionField_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+			captionField_bottom.x=W/2
+			captionField_bottom.y= captionField.y+11
+
+
 ------------------------------------- image send button -------------------------------------------   
 
 
@@ -376,7 +400,7 @@ function scene:hide( event )
 
 	elseif phase == "did" then
 
-		event.parent:resumeImageCallBack(photoview,button_idvalue)
+		event.parent:resumeImageCallBack(captionField.text,photoview,button_idvalue)
 
 
 	end	

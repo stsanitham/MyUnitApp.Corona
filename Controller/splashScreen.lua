@@ -249,10 +249,10 @@ function scene:show( event )
 						-- OneSignal.IdsAvailableCallback(IdsAvailable)
 
 						-- if isSimulator then
-						if GCMValue ~= "0" or isSimulator then
+						
 
 							composer.gotoScene( "Controller.flapMenu" )
-						end
+					
 						--end
 
 					end		
@@ -309,9 +309,7 @@ function scene:show( event )
 							params = { responseValue=response}
 						}
 
-						if GCMValue ~= "0" or isSimulator then
 							composer.gotoScene( "Controller.singInPage", options )
-						end
 
 						--end
 					end

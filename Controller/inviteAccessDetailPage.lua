@@ -1161,8 +1161,6 @@ function scene:hide( event )
 
 	elseif phase == "did" then
 
-		event.parent:resumeGame()
-
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
 		menuTouch_s:removeEventListener("touch",menuTouch)

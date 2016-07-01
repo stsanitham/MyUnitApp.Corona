@@ -489,9 +489,19 @@ local function ListmenuTouch( event )
 	local function CreateList(list,scrollView)
 
 
-		for j=#groupArray, 1, -1 do 
-			display.remove(groupArray[#groupArray])
-			groupArray[#groupArray] = nil
+		if page_count == 1 then
+
+			for j=#groupArray, 1, -1 do 
+				display.remove(groupArray[#groupArray])
+				groupArray[#groupArray] = nil
+			end
+
+			scrollView:scrollToPosition
+			{
+				y = 0,
+				time = 200,
+			}
+
 		end
 
             local feedArray = list
@@ -749,22 +759,7 @@ end
 function get_GetMyUnitBuzzRequestAccesses(response)
 
 
-	
-
-if page_count == 1 then
-
-	for j=#groupArray, 1, -1 do 
-		display.remove(groupArray[#groupArray])
-		groupArray[#groupArray] = nil
-	end
-
-	scrollView:scrollToPosition
-	{
-		y = 0,
-		time = 200,
-	}
-
-end
+	print( 'page_count : '..page_count )
 
 response = response.MubRequestAccessList
 	if response ~= nil then
@@ -774,18 +769,8 @@ response = response.MubRequestAccessList
 			NoEvent.isVisible=false
 
 
-			local listValue = {}
 
-			
-
-			for i=1,#response do
-
-				listValue[#listValue+1] = response[i]	
-
-			end
-
-			print( "here !!!!!!!"..#listValue )	
-			CreateList(listValue,scrollView)
+			CreateList(response,scrollView)
 
 		else
 
@@ -984,14 +969,6 @@ end
 		   scene:addEventListener( "destroy", scene )
 
 
-
-		   function scene:resumeGame()
-
-		   	composer.removeHidden(true)
-
-		   	reloadInvitAccess(status)
-
-		   end
 
 
 
