@@ -228,16 +228,8 @@ function scene:show( event )
 				background.value = list[i]
 
 
-				DisplayOrder = list[i].DisplayOrder
 
-
-				local function compare(a,b)
-
-					return a.DisplayOrder < b.DisplayOrder
-
-				end
-
-				table.sort(specialRecognition_response, compare)
+			
 
 
 					--background:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
@@ -283,6 +275,16 @@ function scene:show( event )
 					if specialRecognition_response ~= nil and #specialRecognition_response ~= 0 then
 						
 						NoEvent.text = ""
+
+
+							local function compare(a,b)
+
+								return a.DisplayOrder < b.DisplayOrder
+
+							end
+
+							table.sort(specialRecognition_response, compare)
+
 
 						SpecialRecognitionList(specialRecognition_response)
 
