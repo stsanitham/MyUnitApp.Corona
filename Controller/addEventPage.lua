@@ -27,6 +27,8 @@ local TicklerId = 0
 
 local id=0
 
+local Inbound , Out_bound
+
 openPage="eventCalenderPage"
 
 local eventTime = 0
@@ -261,6 +263,8 @@ local function changeTask(  )
 
 	Purposetxt.text = "Priority"
 
+
+
 	taskGroup[1].isVisible = false
 	taskGroup[2].isVisible = false
 
@@ -405,8 +409,33 @@ local function changeCall(  )
 	end
 
 
+
+
 	local function radioSwitchListener( event )
+
+		local switch = event.target
+
+		local switchid = event.target.id 
+
+		print(switchid)
+
+		if tostring(switch.isOn) == "true" and switchid == "inbound" then
+
+			CallDirection = "1"
+
+			print("inbound from switch with 1")
+
+		elseif tostring(switch.isOn) == "true" and switchid == "outbound" then 
+
+			CallDirection = "0"
+
+			print("outbound from switch with 0")
+
+		end
+
 	end
+
+
 
 
 	function formatSizeUnits(event)
@@ -911,6 +940,7 @@ local function get_CreateTickler( response )
 
 			else
 
+
 				What.text=""
 				Where.text=""
 				Phone.text=""
@@ -1155,15 +1185,20 @@ local function TouchAction( event )
 
 				--CalendarId,CalendarName,TicklerType,TicklerStatus,title,startdate,enddate,starttime,endtime,allDay,Location,Description,AppointmentPurpose,AppointmentPurposeOther,Priority,Contact,Invitees,AttachmentName,AttachmentPath,Attachment,PhoneNumber,AccessCode,IsConference,CallDirection
 
-				if Out_bound.isOn == "true" then
 
-					CallDirection = "0"
+				-- if Out_bound.isOn == "true" then
 
-				else
+				-- 	CallDirection = "0"
 
-					CallDirection = "1"
+				-- else
 
-				end
+				-- 	CallDirection = "1"
+
+				-- end
+
+
+
+
 
 				function get_GetUserPreferencebyUserId( response )
 
@@ -1202,8 +1237,6 @@ local function TouchAction( event )
 							
 							if TicklerType:lower( ) == "call" then
 
-								
-								
 
 								local time = makeTimeStamp(startdate)
 
@@ -2037,12 +2070,12 @@ local function usertextField( event )
 
         end
 
-        if event.target.text == "* Phone Number is mandatory" then
+        if event.target.text == "*Phone Number is mandatory" then
         	event.target:setTextColor ( 0,0,0 )
         	event.target.size = 14
         	event.target.text=""
 
-        end
+         end
         
         elseif ( event.phase == "ended" or event.phase == "submitted" ) then
         -- do something with defaultField text
@@ -2562,7 +2595,7 @@ local function addevent_scrollListener(event )
 	  		left = 25,
 	  		top = 180,
 	  		style = "radio",
-	  		id = "outbound",
+	  		id = "inbound",
 	  		initialSwitchState = false,
 	  		onPress = radioSwitchListener,
 	  	}
@@ -2582,7 +2615,7 @@ local function addevent_scrollListener(event )
 	  		left = 25,
 	  		top = 180,
 	  		style = "checkbox",
-	  		id = "outbound",
+	  		id = "conference",
 	  		initialSwitchState = false,
 	  		onPress = radioSwitchListener,
 	  	}
@@ -2596,9 +2629,6 @@ local function addevent_scrollListener(event )
 	  	Conference_txt.x = Conference.x+24;Conference_txt.y = Conference.y
 	  	Conference_txt.anchorX = 0
 	  	Conference_txt:setFillColor( 0 )
-	  	
-	  	
-
 
 	  	--------
 
@@ -2642,9 +2672,14 @@ function scene:create( event )
 		CalendarName=""
 	end
 
+
 	TicklerId = UpdateValue.TicklerId
 
 	print( json.encode(UpdateValue) )
+
+
+
+
 
 end
 
@@ -2772,6 +2807,9 @@ sceneGroup:insert( scrollView )
 
 
 end
+
+
+
 
 
 
@@ -3371,16 +3409,52 @@ end
 
 	  		if UpdateValue.startdate ~= nil then
 
-	  			
 	  			local time = Utils.makeTimeStamp(UpdateValue.startdate)
 	  			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , time ))
 
 	  			Event_from_date.text = os.date( "%m/%d/%Y" ,time )
 	  			Event_from_time.text = os.date( "%I:%M "..TimeZonevalue ,time )
 
-	  			
-
+	  		
 	  		end
+
+
+
+
+		  	if UpdateValue.CallDirection == 1 then
+
+		  		print("inbounddddddddddd")
+
+				Inbound:setState( { isOn=true, isAnimated=true } )
+
+				CallDirection = "1"
+
+			elseif UpdateValue.CallDirection == 0 then
+
+				print("outbound")
+
+				Out_bound:setState( { isOn=true, isAnimated=true } )
+
+				CallDirection = "0"
+
+			end
+
+
+				-- if Out_bound.isOn == "true" then
+
+				-- 	CallDirection = "0"
+
+				-- 	Out_bound:setState( { isOn=true, isAnimated=true } )
+
+				-- else
+
+				-- 	Inbound:setState( { isOn=true, isAnimated=true } )
+
+				-- 	CallDirection = "1"
+
+				-- end
+
+
 
 	  		if UpdateValue.enddate ~= nil then
 
@@ -3394,13 +3468,11 @@ end
 	  		if UpdateValue.TicklerType == 2 then
 
 	  			local value = wrap_time(time)
-
 	  			Event_to_date.text = value.hours.."H"
-
 	  			Event_to_time.text = value.minutes.."M"
 
-	  			
 	  		else
+
 	  			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , endtime ))
 	  			Event_to_date.text = os.date( "%m/%d/%Y" ,endtime )
 	  			Event_to_time.text =  os.date( "%I:%M "..TimeZonevalue ,endtime )
