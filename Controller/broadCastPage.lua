@@ -431,6 +431,7 @@ end
 			Utils.CssforTextView(GroupName_txt,sp_labelName)
 			GroupName_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
+
 			local timecreated = list[i].CreateTimeStamp
 
 			local time = makeTimeStamp(timecreated)

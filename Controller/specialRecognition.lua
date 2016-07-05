@@ -187,7 +187,6 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-
 		composer.removeHidden(  )
 		
 		function SpecialRecognitionList( list )

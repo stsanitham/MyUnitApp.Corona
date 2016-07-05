@@ -15,6 +15,8 @@ CommonWords.DenyAccessText = "Deny Access"
 CommonWords.ProvideAccessText = "Provide Access"
 CommonWords.GrantAccessText = "Grant Access"
 CommonWords.SpecialRecognitionText = "Special Recognition"
+CommonWords.No = "No"
+CommonWords.Found = "Found"
 
 
 Month = {}
@@ -465,7 +467,7 @@ ChatPage.Broadcast = "Broadcast"
 
 SpecialRecognition = {}
 
-SpecialRecognition.NoEvent = "No Special Recognitions Found"
+SpecialRecognition.NoEvent = "No Reports Found"
 
 
 RegistrationScreen = {}

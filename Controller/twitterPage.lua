@@ -75,13 +75,12 @@ function makeTimeStamp( dateString )
   return timestamp
 end
 
+
+
 function TwitterCallback(res,scrollView)
 	--local feedArray = {{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"},{name="dsfd",text="malar"}}
 
-
 	feedArray = res
-
-	
 
 	local function networkListener( event )
 
@@ -100,12 +99,12 @@ function TwitterCallback(res,scrollView)
 
 			end
 
+
 			for i=1,10 do
 
 				FeedCount = FeedCount + 1
 
 				if feedArray[FeedCount] ~= nil then
-
 
 					groupArray[#groupArray+1] = display.newGroup()
 
@@ -128,13 +127,13 @@ function TwitterCallback(res,scrollView)
 					local tempHeight = 20
 
 					if(groupArray[#groupArray-1]) then
-
-						tempHeight = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].contentHeight+3
+						  tempHeight = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].contentHeight+3
 					end
 
 					background.anchorY = 0
 					background.x=W/2+30;background.y=Initial_Height
 					background:setFillColor(Utils.convertHexToRGB("#d2d3d4"))
+
 
 					profilePic = display.newImage("userPhoto.png", system.TemporaryDirectory)
 					if not profilePic then
@@ -142,11 +141,14 @@ function TwitterCallback(res,scrollView)
 					end
 					profilePic.width=55;profilePic.height=50
 
+
 					local mask = graphics.newMask( "res/assert/mask2.png" )
 
 					profilePic:setMask( mask )
 
 					tempGroup:insert(profilePic)
+
+
 
 
 					local makeTimeStamp = function ( dateString )
@@ -165,12 +167,12 @@ function TwitterCallback(res,scrollView)
 
 						print(weekday,table.indexOf( MonthNumber, "Jan" ),day,hour, minute, seconds,year)
 
-						
-
 						local timestamp = os.time( {year=year, month=table.indexOf( MonthNumber, month ), day=day, hour=hour, min=minute, sec=seconds, isdst=false} )
 
 						return timestamp;
+
 					end
+
 
 
 					
@@ -189,9 +191,7 @@ function TwitterCallback(res,scrollView)
 					local userArray = feedArray[FeedCount].user or ""
 
 
-					rowTitle = display.newText( tempGroup, userArray.name.." @"..userArray.screen_name, 50, 0,100,0, native.systemFont, 12 )
-
-					
+					rowTitle = display.newText( tempGroup, userArray.name.." @"..userArray.screen_name,50,0,100,0, native.systemFont, 12 )
 					rowTitle.anchorX = 0
 					rowTitle.anchorY = 0
 					
@@ -220,13 +220,11 @@ function TwitterCallback(res,scrollView)
 
 					rowStory = display.newText( optionsread )
 
-					
-
-
 					rowStory:setFillColor( 0 )
 					tempGroup:insert(rowStory)
 					rowStory.anchorX = 0
 					rowStory.anchorY = 0
+
 
 
 					background.height = background.height+rowStory.height+rowTitle.height
@@ -277,6 +275,8 @@ function TwitterCallback(res,scrollView)
 end
 
 
+
+
 function callback.twitterCancel()
 	print( "Twitter Cancel" )
 
@@ -284,8 +284,9 @@ function callback.twitterCancel()
 
 end
 
-function callback.twitterSuccess( requestType, name, res )
 
+
+function callback.twitterSuccess( requestType, name, res )
 
 	local response = json.decode( res )
 
@@ -298,29 +299,34 @@ function callback.twitterSuccess( requestType, name, res )
 	response.users[1].statuses_count
 end
 
+
+
+
 if "users" == requestType then
 
 	TwitterCallback(response,scrollView)
 
 end
 
+
+
 if "tweet" == requestType then
 	results = "Tweet Posted"
 	native.showAlert( "Result", "Tweet Posted", { "Ok" } )
-
 end
-
-print( results )
+	print( results )
 --test_response.text = results	
-
 end
+
+
 
 function callback.twitterFailed()
 	print( "Failed: Invalid Token" )
-
 	native.showAlert( "Result", "Failed: Invalid Token", { "Ok" } )
 
 end
+
+
 
 local function recent_tweet()
 	if UserName ~= "" then
@@ -331,16 +337,19 @@ local function recent_tweet()
 	end
 end
 
+
+
+
 local function Twitter_scrollListener( event )
 
 	local phase = event.phase
+
 	if ( phase == "began" ) then 
 
-
-
-
 	elseif ( phase == "moved" ) then 
-		elseif ( phase == "ended" ) then 
+	
+	elseif ( phase == "ended" ) then 
+
 	end
 
 		    -- In the event a scroll limit is reached...
@@ -469,8 +478,6 @@ function scene:create( event )
 
 	}
 
-
-
 	sceneGroup:insert(scrollView)
 	spinner_show()
 	recent_tweet()
@@ -478,6 +485,9 @@ function scene:create( event )
 	MainGroup:insert(sceneGroup)
 
 end
+
+
+
 
 function scene:show( event )
 
@@ -503,6 +513,9 @@ function scene:show( event )
 
 end
 
+
+
+
 function scene:hide( event )
 
 	local sceneGroup = self.view
@@ -522,10 +535,10 @@ function scene:hide( event )
 end
 
 
+
+
 function scene:destroy( event )
 	local sceneGroup = self.view
-
-
 
 end
 

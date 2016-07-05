@@ -1305,7 +1305,7 @@ resbody = [[
 	"PhoneNumber":']]..PhoneNumber..[[',
 	"AccessCode":']]..AccessCode..[[',
 	"IsConference":]]..tostring(IsConference)..[[,
-	"CallDirection":]]..tostring(CallDirection)..[[
+	"CallDirection":']]..tostring(CallDirection)..[[',
 	
 }
 ]]

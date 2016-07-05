@@ -122,6 +122,7 @@ local function ListCliked( event )
 
 		display.getCurrentStage():setFocus( event.target )
 
+
 	elseif ( event.phase == "moved" ) then
 		local dy = math.abs( ( event.y - event.yStart ) )
 		local dx = math.abs( ( event.x - event.xStart ) )
@@ -228,7 +229,7 @@ local function ListCliked( event )
 
  							webView.isVisible = false
 
- 							NoEvent = display.newText( sceneGroup,"No "..response.UserPageName.." Found", 0,0,0,0,native.systemFontBold,16)
+ 							NoEvent = display.newText( sceneGroup,CommonWords.No.." "..response.UserPageName.." "..CommonWords.Found, 0,0,0,0,native.systemFontBold,16)
  							NoEvent.x=W/2;NoEvent.y=H/2
  							NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
@@ -260,7 +261,6 @@ local function ListCliked( event )
  		
  		local contact = 0
 
- 		
 
  		if v ~= "ContactId" and k ~= "ContactId" then
 
@@ -281,7 +281,7 @@ local function ListCliked( event )
  			if totalCount > 1 then
 
  				if coloumArray[#coloumArray-1] ~= nil then
- 					coloumArray[#coloumArray].x = coloumArray[#coloumArray-1].x+coloumArray[#coloumArray-1].width
+ 					coloumArray[#coloumArray].x = coloumArray[#coloumArray-1].x+coloumArray[#coloumArray-1].width+0.1
  				end
 
  			end
@@ -301,21 +301,23 @@ local function ListCliked( event )
 
 
  			parent_centerText[#parent_centerText+1] = display.newText(options)
+
+
  			if source == "parent" then
 
- 				coloumArray[#coloumArray]:setFillColor(Utils.convertHexToRGB(color.Gray))
+ 					coloumArray[#coloumArray]:setFillColor(Utils.convertHexToRGB(color.Gray))
+
  			else
- 				if #reportArrayList%2 == 0 then
 
- 					coloumArray[#coloumArray]:setFillColor(Utils.convertHexToRGB(color.table2))
-
- 				else
-
- 					coloumArray[#coloumArray]:setFillColor(Utils.convertHexToRGB(color.table1))
-
- 				end
+	 				if #reportArrayList%2 == 0 then
+	 					
+	 					coloumArray[#coloumArray]:setFillColor(Utils.convertHexToRGB(color.table2))
+	 				else
+	 					coloumArray[#coloumArray]:setFillColor(Utils.convertHexToRGB(color.table1))
+	 				end
 
  			end
+
 
  			parent_centerText[#parent_centerText].x=coloumArray[#coloumArray].x + 5
  			parent_centerText[#parent_centerText].anchorX=0
@@ -345,12 +347,12 @@ local function ListCliked( event )
  				end
  			
  				parent_centerText[#parent_centerText]:setTextColor( 1 )	
+
  			else
 
  				print( "totalCount : "..totalCount )
 
  				coloumArray[#coloumArray].width = widthArray[totalCount]
- 				
 
  			end
 
@@ -376,6 +378,12 @@ local function ListCliked( event )
  						if parent_centerText[#parent_centerText-j] ~= nil then
  							if string.find(parent_centerText[#parent_centerText-j].value:lower( ),"consultant") then
  								parent_centerText[#parent_centerText-j]:setTextColor( 0,0,1 )
+
+ 								parent_centerText[#parent_centerText-j].ContactId = parent_centerText[#parent_centerText].id
+
+ 								parent_centerText[#parent_centerText-j]:addEventListener("touch",ListCliked)
+
+ 					           
  							end
  						end
 
@@ -485,13 +493,9 @@ local function ListCliked( event )
 
 						--	print( reportArray[i]["Consultant Name"] )
 
-							background.ContactId = CreateRow( tempHeight,tempGroup,totalCount,count,Parent[totalCount],reportArray[i][tostring(Parent[totalCount])],"parent" )
-
+							background.ContactId1 = CreateRow( tempHeight,tempGroup,totalCount,count,Parent[totalCount],reportArray[i][tostring(Parent[totalCount])],"parent" )
 
 						end
-
-
-
 
 							background.y= coloumArray[#coloumArray-1].y+background.contentHeight
 
@@ -502,25 +506,20 @@ local function ListCliked( event )
 						local totalCount = 0 
 
 						--print("hjkjkkj:"..json.encode(reportArray[i]))
-												for  s=1,#Parent do
+							for  s=1,#Parent do
 
-										    		totalCount = totalCount + 1
+					    		totalCount = totalCount + 1
 
-										    		background.ContactId =  CreateRow( background.y,tempGroup,totalCount,count,reportArray[i][tostring(Parent[totalCount])],Parent[totalCount],"child" )
-
-										    		
-										    													
-										end
+					    		background.ContactId1 =  CreateRow( background.y,tempGroup,totalCount,count,reportArray[i][tostring(Parent[totalCount])],Parent[totalCount],"child" )
+					    		
+							end
 
 
-											background:addEventListener( "touch", ListCliked )
+							--background:addEventListener( "touch", ListCliked )
 
-											
-											
+							HorizontalScroll:insert(tempGroup)
 
-											HorizontalScroll:insert(tempGroup)
-
-										end
+					end
 
 
 
@@ -737,7 +736,7 @@ function scene:create( event )
 
 													--NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
 													--NoEvent = display.newText( sceneGroup, "No "..response.UserPageName.." Found", 0,0,0,0,native.systemFontBold,16)
-													NoEvent = display.newText( sceneGroup, "No Reports Found", 0,0,0,0,native.systemFontBold,16)
+													NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
 													NoEvent.x=W/2;NoEvent.y=H/2
 													NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
@@ -796,7 +795,7 @@ function scene:create( event )
 
 												--NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
 												--NoEvent = display.newText( sceneGroup, "No "..response.UserPageName.." Found", 0,0,0,0,native.systemFontBold,16)
-												NoEvent = display.newText( sceneGroup, "No Reports Found", 0,0,0,0,native.systemFontBold,16)
+												NoEvent = display.newText( sceneGroup, SpecialRecognition.NoEvent, 0,0,0,0,native.systemFontBold,16)
 												NoEvent.x=W/2;NoEvent.y=H/2
 												NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 

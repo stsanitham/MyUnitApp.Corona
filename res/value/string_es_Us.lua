@@ -17,6 +17,8 @@ CommonWords.DenyAccessText = "Acceso denegado"
 CommonWords.ProvideAccessText = "Proveer acceso"
 CommonWords.GrantAccessText = "Autorizará el acceso"
 CommonWords.SpecialRecognitionText = "Reconocimiento especial"
+CommonWords.No = "No"
+CommonWords.Found = "Encontró"
 
 
 
@@ -473,7 +475,7 @@ ChatPage.Broadcast = "Emisión"
 
 SpecialRecognition = {}
 
-SpecialRecognition.NoEvent = "No se han encontrado Reconocimientos Especiales"
+SpecialRecognition.NoEvent = "No hay informes encontrados"
 
 
 RegistrationScreen = {}

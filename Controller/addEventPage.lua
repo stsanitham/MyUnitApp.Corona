@@ -251,6 +251,7 @@ end
 
 
 local function changeTask(  )
+
 	AppintmentWith.placeholder="Linked To"
 
 	PurposeLbl.text = ""
@@ -732,8 +733,6 @@ local function onRowTouch(event)
 
 		elseif List.textFiled.id:lower( ) == "totime" then
 
-
-
 			if SelectEvent.text:lower( ) == "call" then
 				List.textFiled.value = List.textFiled.text
 				List.textFiled.text = List.textFiled.text.." M"
@@ -752,6 +751,7 @@ local function onRowTouch(event)
 				end
 
 			end
+
 
 		elseif List.textFiled.id:lower( ) == "todate" then
 
@@ -786,8 +786,6 @@ local function onRowTouch(event)
 
 		else
 
-
-
 			for i=1,#AddeventPage.purposeArray do
 				if AddeventPage.purposeArray[i].value == row.name then
 					List.textFiled.value=AddeventPage.purposeArray[i].id
@@ -796,17 +794,20 @@ local function onRowTouch(event)
 
 
 			print( "value : "..List.textFiled.value )
-
 			
-		--AddeventArray[PriorityLbl.count]
-		Other.isVisible = false
-		BottomOther.isVisible = false
-		belowOtherGroup.y = -40
+			--AddeventArray[PriorityLbl.count]
+			Other.isVisible = false
+			BottomOther.isVisible = false
+			belowOtherGroup.y = -40
 
 	end
 
+   end
+
 end
-end
+
+
+
 
 local function QuickTouch(event) 
 
@@ -814,7 +815,6 @@ local function QuickTouch(event)
 
 	if event.phase == 'tap' or event.phase == 'release' then
 
-		
 		QuickContactList:deleteAllRows()
 		QuickContactList:deleteAllRows()
 		QuickContactList.isVisible = false
@@ -822,47 +822,48 @@ local function QuickTouch(event)
 		List.textFiled.text = row.name
 		List.textFiled.value = row.index - 1
 
-
-
 	end
+
 end
 
 
+
+
 local function CreateList(event,list,bg)
-	
 
-					--list.x = event.target.x
-					--list.y = event.target.y+event.target.contentHeight
-					--list.contentWidth =event.target.contentWidth+2
+		--list.x = event.target.x
+		--list.y = event.target.y+event.target.contentHeight
+		--list.contentWidth =event.target.contentWidth+2
 
-					bg.x = list.x
-					--bg.y = event.target.y+event.target.contentHeight
-					bg.width =list.width+2
-					bg.height =list.height+2
+		bg.x = list.x
+		--bg.y = event.target.y+event.target.contentHeight
+		bg.width =list.width+2
+		bg.height =list.height+2
 
-					list:deleteAllRows()
-
-
-					for i = 1, #List.arrayName do
-
-					    -- Insert a row into the tableView
-					    list:insertRow(
-					    {
-					    	isCategory = false,
-					    	rowHeight = 36,
-					    	rowColor = { default={0.9}, over={0.8} },
-					    }
-					    )
-
-					end
-
-				end
+		list:deleteAllRows()
 
 
+		for i = 1, #List.arrayName do
 
-				local function onComplete(event)
+		    -- Insert a row into the tableView
+		    list:insertRow(
+		    {
+		    	isCategory = false,
+		    	rowHeight = 36,
+		    	rowColor = { default={0.9}, over={0.8} },
+		    }
+		    )
 
-					if "clicked"==event.action then
+		end
+
+
+end
+
+
+
+local function onComplete(event)
+
+	if "clicked"==event.action then
 
 		--status = "deleted"
 
@@ -886,7 +887,18 @@ function get_SaveAttachmentDetails(response)
 	Addinvitees.text=""
 	PurposeLbl.text=""
 	Other.text=""
-	PriorityLbl.text=EventCalender.Low
+
+
+	if SelectEvent.text:lower( ) == "task" then
+
+		PriorityLbl.text = "Not Started"
+
+	else
+
+		PriorityLbl.text=EventCalender.Low
+
+	end
+
 
 	AttachmentFlag=false
 	AddAttachmentLbl.isVisible = true
@@ -951,7 +963,18 @@ local function get_CreateTickler( response )
 				Addinvitees.text=""
 				PurposeLbl.text=""
 				Other.text=""
-				PriorityLbl.text="Low"
+
+
+
+				if SelectEvent.text:lower( ) == "task" then
+
+					PriorityLbl.text = "Not Started"
+
+				else
+
+					PriorityLbl.text=EventCalender.Low
+
+				end
 
 				AttachmentFlag=false
 
@@ -1629,6 +1652,8 @@ local function TouchAction( event )
 										List.arrayName = priorityArray
 										List.textFiled = PurposeLbl
 
+										List.y = event.target.y+event.target.contentHeight+1.3-43.5
+
 									elseif SelectEvent.text:lower( ) == "party" then
 
 										List.arrayName = partyArray
@@ -1678,6 +1703,8 @@ local function TouchAction( event )
 
 										List.arrayName = taskStatus
 										List.textFiled = PriorityLbl
+
+										List.y = event.target.y+event.target.contentHeight+1.3-83.5
 
 									elseif SelectEvent.text:lower( ) == "party" then
 
@@ -3004,10 +3031,10 @@ end
 	  	--Other---
 
 	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
-	  	AddeventArray[#AddeventArray].id="Other"
-	  	AddeventArray[#AddeventArray].anchorY=0
+	  	AddeventArray[#AddeventArray].id = "Other"
+	  	AddeventArray[#AddeventArray].anchorY = 0
 	  	AppintmentWith:addEventListener( "userInput", searchfunction )
-	  	AddeventArray[#AddeventArray].alpha=0.01
+	  	AddeventArray[#AddeventArray].alpha = 0.01
 	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 	  	taskGroup:insert(AddeventArray[#AddeventArray])
 
@@ -3511,6 +3538,7 @@ end
 	  			
 	  		end
 
+
 	  		if UpdateValue.Description ~= nil then
 
 	  			Description.text = UpdateValue.Description
@@ -3518,6 +3546,7 @@ end
 	  			Description_lbl:setFillColor( 0 )
 	  			
 	  		end
+
 
 	  		if UpdateValue.Contact ~= nil then
 
@@ -3534,51 +3563,62 @@ end
 	  			AppintmentWith.contactinfo=UpdateValue.Contact 
 	  		end
 
+
+
 	  		if UpdateValue.Invitees ~= nil then
 
-	  			print( "UpdateValue.Invitees "..#UpdateValue.Invitees )
+		  			print( "UpdateValue.Invitees "..#UpdateValue.Invitees )
 
-	  			local value = UpdateValue.Invitees
-	  			if value[1] ~= nil then
+		  			local value = UpdateValue.Invitees
 
-	  				if value[1].FirstName ~= nil then
+		  			if value[1] ~= nil then
 
-	  					Addinvitees.text = value[1].FirstName.." "..value[1].LastName
+		  				if value[1].FirstName ~= nil then
 
-	  				elseif value[1].LastName ~= nil then
+		  					Addinvitees.text = value[1].FirstName.." "..value[1].LastName
 
-	  					Addinvitees.text = value[1].LastName
-	  					
-	  				end
-	  			end
+		  				elseif value[1].LastName ~= nil then
 
-	  			Addinvitees.contactinfo=value[1]
+		  					Addinvitees.text = value[1].LastName
+		  					
+		  				end
+
+		  			end
+
+		  			Addinvitees.contactinfo=value[1]
+
 	  		end
 
 	  		print( "UpdateValue.AppointmentPurpose : "..UpdateValue.AppointmentPurpose )
 
+
+
+
 	  		if UpdateValue.AppointmentPurpose ~= nil then
 
-	  			for i=1,#AddeventPage.purposeArray do
-	  				if AddeventPage.purposeArray[i].id == UpdateValue.AppointmentPurpose then
-	  					PurposeLbl.text = AddeventPage.purposeArray[i].value
-	  					PurposeLbl.value=AddeventPage.purposeArray[i].id
-	  					print("check = "..PurposeLbl.value.." "..PurposeLbl.text)
-	  				end
-	  			end
+		  			for i=1,#AddeventPage.purposeArray do
+		  				if AddeventPage.purposeArray[i].id == UpdateValue.AppointmentPurpose then
+		  					PurposeLbl.text = AddeventPage.purposeArray[i].value
+		  					PurposeLbl.value=AddeventPage.purposeArray[i].id
+		  					print("check = "..PurposeLbl.value.." "..PurposeLbl.text)
+		  				end
+		  			end
 	  			
 	  		end
+
 
 
 	  		if UpdateValue.Priority ~= nil then
 
-	  			for i=1,#AddeventPage.priorityArray do
-	  				if AddeventPage.priorityArray[i].id == UpdateValue.Priority then
-	  					PriorityLbl.text = AddeventPage.priorityArray[i].value
-	  				end
-	  			end
-	  			
+		  			for i=1,#AddeventPage.priorityArray do
+		  				if AddeventPage.priorityArray[i].id == UpdateValue.Priority then
+		  					PriorityLbl.text = AddeventPage.priorityArray[i].value
+		  				end
+		  			end
+
 	  		end
+
+
 
 	  		local function AttachListner( event )
 

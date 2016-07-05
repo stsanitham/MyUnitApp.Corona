@@ -410,6 +410,7 @@ function FacebookCallback(res,scrollView,flag)
 		end
 
 
+
 		local function onTimer ( event )
 
 			print( "event time completion" )
@@ -417,6 +418,7 @@ function FacebookCallback(res,scrollView,flag)
 			BackFlag = false
 
 		end
+
 
 
 		local function onKeyEvent( event )
@@ -528,7 +530,9 @@ function scene:show( event )
 
 
 		local function networkListener( event )
+
 			if ( event.isError ) then
+
 			else
 				print ( "RESPONSE: " .. event.response )
 
@@ -538,26 +542,29 @@ function scene:show( event )
 
 				getFeeds = network.request( "https://graph.facebook.com/"..userid.."/feed?access_token="..asscesToken, "GET", feed_networkListener )
 
-
-
 			end
+
 		end
 
--- Access Google over SSL:
-getAccess = network.request( "https://graph.facebook.com/"..userid.."/?access_token="..asscesToken, "GET", networkListener )
+			-- Access Google over SSL:
+			getAccess = network.request( "https://graph.facebook.com/"..userid.."/?access_token="..asscesToken, "GET", networkListener )
+
+
+			menuBtn:addEventListener("touch",menuTouch)
+			BgText:addEventListener("touch",menuTouch)
+
+			Runtime:addEventListener( "key", onKeyEvent )
+
+
+		end	
+
+			MainGroup:insert(sceneGroup)
+
+		end
 
 
 
-menuBtn:addEventListener("touch",menuTouch)
-BgText:addEventListener("touch",menuTouch)
 
-Runtime:addEventListener( "key", onKeyEvent )
-
-
-end	
-MainGroup:insert(sceneGroup)
-
-end
 
 function scene:hide( event )
 
