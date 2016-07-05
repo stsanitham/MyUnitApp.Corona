@@ -3450,15 +3450,12 @@ end
 
 		  	if UpdateValue.CallDirection == 1 then
 
-		  		print("inbounddddddddddd")
-
 				Inbound:setState( { isOn=true, isAnimated=true } )
 
 				CallDirection = "1"
 
 			elseif UpdateValue.CallDirection == 0 then
 
-				print("outbound")
 
 				Out_bound:setState( { isOn=true, isAnimated=true } )
 
