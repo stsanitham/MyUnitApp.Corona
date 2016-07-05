@@ -288,21 +288,21 @@ function scene:create( event )
 				
 
 		-- if photo.width > photo.height then
-				-- 	photo.height = 200
-				-- 	photo.width = W-60
-				-- 	photo.y=H/2-photo.contentHeight/2
+		-- 			photo.height = 200
+		-- 			photo.width = W-60
+		-- 			photo.y=H/2-photo.contentHeight/2
 
 		-- else
-				-- 	if photo.height > H-100 then
-				-- 		photo.height = H-90
-				-- 		photo.width = W-60
-				-- 	else
-				-- 		photo.y=H/2-photo.contentHeight/2-80
-				-- 	end
+		-- 			if photo.height > H-100 then
+		-- 				photo.height = H-80
+		-- 				photo.width = W-60
+		-- 			else
+		-- 				photo.y=H/2-photo.contentHeight/2-80
+		-- 			end
 
-				-- 	if photo.width > W-60 then
-				-- 		photo.width = W-60
-				-- 	end
+		-- 			if photo.width > W-60 then
+		-- 				photo.width = W-60
+		-- 			end
 		-- end
 
 

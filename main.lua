@@ -2,7 +2,7 @@
         -- MainActivity
         --------------------------------------------------------
 
-        display.setStatusBar( display.HiddenStatusBar )
+        display.setStatusBar(display.HiddenStatusBar)
         local composer = require "composer"
         local newPanel = require "Utils.newPanel"
         local widget = require( "widget" )
@@ -325,9 +325,7 @@ end
 
 
 
-
-
-
+                            
         
 
         local function notificationListener( event )
@@ -430,7 +428,6 @@ end
 
                                         if openPage == "main" and openPage == "spalshPage" then
 
-                                           
 
                                             native.setProperty( "applicationIconBadgeNumber", 0 )
                                             system.cancelNotification()
@@ -440,43 +437,68 @@ end
                                     
 
 
-                                         if openPage == "MessagingPage" and chatReceivedPage == "MessagingPage" then
+                                         if openPage == "MessagingPage" and (chatReceivedPage == "MessagingPage" or chatReceivedPage == "chatPage") then
 
                                                 
+                                                                                       
 
-                                            
-
-                                             local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.decrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..FromName..[[',']]..Name..[[',']]..GroupName..[[');]]
+                                             local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.decrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                                              db:exec( insertQuery )
 
                                              native.setProperty( "applicationIconBadgeNumber", 0 )
                                              system.cancelNotification()
                                              notifications.cancelNotification()
 
-                                         else
+                                        end
 
-                                            native.setProperty( "applicationIconBadgeNumber", 0 )
-                                            system.cancelNotification()
-                                            notifications.cancelNotification()
 
-                                            MessageId =  additionalData.pnmid
+                                        local function onTimeDelay( event )
+                                     
+                                               if resumeCallback == true and chatReceivedFlag == true then
+
+                                                resumeCallback=false
+                                                chatReceivedFlag=false
+
+                                               for j=MainGroup.numChildren, 1, -1 do 
+                                                    display.remove(MainGroup[MainGroup.numChildren])
+                                                    MainGroup[MainGroup.numChildren] = nil
+                                                end
+                                                composer.removeHidden()
+
+                                                                   local options = {
+                                                                        isModal = true,
+                                                                        effect = "slideLeft",
+                                                                        time = 300,
+                                                                        params = {
+                                                                            pagenameval = "fromMain",
+                                                                        }
+                                                                    }
+
+                                                                     composer.gotoScene( "Controller.MessagingPage",options )
+                                                else
+
+                                                       if openPage == "main" or openPage == "spalshPage" or  openPage == "MessagingPage"  then
+
+                                                                   native.setProperty( "applicationIconBadgeNumber", 0 )
+                                                                 system.cancelNotification()
+                                                                 notifications.cancelNotification()
+
+                                                        else
+
+                                                              chatReceivedFlag=false
+                                                        end
+
+                                                 end
+
+
+
+
+
 
                                         end
 
-                                   if resumeCallback == true and chatReceivedFlag == true then
-                                        
-                                                       local options = {
-                                                            isModal = true,
-                                                            effect = "slideLeft",
-                                                            time = 300,
-                                                            params = {
-                                                                pagenameval = "fromMain",
-                                                            }
-                                                        }
 
-                                                         composer.gotoScene( "Controller.MessagingPage",options )
-
-                                     end
+                                    timer.performWithDelay( 500, onTimeDelay)
                                 
                                 
                             else
@@ -484,8 +506,6 @@ end
 
 
                     ----Message Receiver------
-
-                    checkStr = checkStr.." notificaton"
 
                     notificationFlag = true
 
@@ -496,19 +516,25 @@ end
 
                             MessageId =  additionalData.pnmid
 
-                                if isAndroid then
 
                                  additionalData = event.androidGcmBundle
                                  message = additionalData.contents
                                  MessageId = additionalData.pnmid
-                                                -- MessageId = "0"
+                                         --        -- MessageId = "0"
 
+                                    local function onTimeDelay( event )
+                                     
                                          if resumeCallback == true and chatReceivedFlag == true then
-      
-                                                      chatReceivedFlag = false
-                                                      resumeCallback = false
+                                                        
+                                  
+                                                for j=MainGroup.numChildren, 1, -1 do 
+                                                                    display.remove(MainGroup[MainGroup.numChildren])
+                                                                    MainGroup[MainGroup.numChildren] = nil
+                                                                end
+                                                                composer.removeHidden()
 
-                                                      if MessageId ~= "0" and MessageId ~= nil then
+                                                     -- chatReceivedFlag = false
+                                                      resumeCallback = false
 
                                                         local options = {
                                                             isModal = true,
@@ -520,25 +546,29 @@ end
                                                         }
 
 
-                                                        composer.gotoScene( "Controller.pushNotificationDetailPage", options)
 
-                                                      else
+                                                if openPage == "pushNotificationListPage" then
 
-                                                          local options = {
-                                                            isModal = true,
-                                                            effect = "slideLeft",
-                                                            time = 300,
-                                                            params = {
-                                                                pagenameval = "fromMain",
-                                                            }
-                                                        }
+                                                                 native.setProperty( "applicationIconBadgeNumber", 0 )
+                                                                 system.cancelNotification()
+                                                                 notifications.cancelNotification()
 
-                                                         composer.gotoScene( "Controller.MessagingPage",options )
+                                                else
 
-                                                       end
+                                                    chatReceivedFlag=false
 
-                                          end
+                                                    composer.gotoScene( "Controller.pushNotificationDetailPage", options)
+                                                end
+
+                                                     
+
+                                             end
                                           
+
+                                        end
+
+
+                                    timer.performWithDelay( 500, onTimeDelay)
 
                                             -- local options =
                                             -- {
@@ -551,9 +581,7 @@ end
 
                                             -- native.showPopup( "mail", options )
                                     
-                                 end
-
-
+                                
                         else
 
                                   native.showAlert("MyUnitBuzz", message, { "OK" } )
@@ -674,65 +702,12 @@ elseif ( event.type == "remoteRegistration" ) then
 
             elseif ( event.type == "applicationOpen" ) then
 
-                    -- if isAndroid then
-
-                    --     if notificationFlag == true then
-
-                    --         notificationFlag = false
-
-                    --         native.setProperty( "applicationIconBadgeNumber", 0 )
-                    --         system.cancelNotification()
-                    --         notifications.cancelNotification()
-
-                    --     end
-
-                    -- end
-
 
             elseif event.type == "applicationResume" then
 
                 resumeCallback = true
-               --native.showAlert("MyUnitBuzz",checkStr, { "OK" } )
-                    if isIos then
-                             if resumeCallback == true and chatReceivedFlag == true then
-      
-                                                      chatReceivedFlag = false
-                                                      resumeCallback = false
-
-                                                      if MessageId ~= "0" and MessageId ~= nil then
-
-                                                        local options = {
-                                                            isModal = true,
-                                                            effect = "slideLeft",
-                                                            time = 300,
-                                                            params = {
-                                                                pagenameval = "pn_detailpage",
-                                                            }
-                                                        }
-
-
-                                                        composer.gotoScene( "Controller.pushNotificationDetailPage", options)
-
-                                                      else
-
-                                                        local options = {
-                                                            isModal = true,
-                                                            effect = "slideLeft",
-                                                            time = 300,
-                                                            params = {
-                                                                pagenameval = "fromMain",
-                                                            }
-                                                        }
-
-                                                         composer.gotoScene( "Controller.MessagingPage",options )
-
-                                                       end
-
-                                          end
-                    end
-
-
-
+              
+                    
                 
             end
 
@@ -745,7 +720,10 @@ elseif ( event.type == "remoteRegistration" ) then
 
 
 
-
+local function onResize(event)
+   print("@@@ Content Scale = " .. tostring(display.contentScaleY))
+end
+Runtime:addEventListener("resize", onResize)
 
 
 

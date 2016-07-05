@@ -684,14 +684,14 @@ function scene:create( event )
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 
-	signinBanner = display.newImageRect(sceneGroup,"res/assert/mub_banner.jpg",W,175)
+	signinBanner = display.newImageRect(sceneGroup,"res/assert/mub_banner.jpg",W,H/2.5)
 	signinBanner.x=W/2;signinBanner.y=signinBanner.contentHeight/2
 
 	signinBanner_text = display.newImageRect(sceneGroup,"res/assert/signin-page-logo.png",278/2,62/2)
 	signinBanner_text.x=signinBanner.x;signinBanner_text.y=signinBanner.y
 
 	signin_lbl = display.newText(sceneGroup,LoginPage.Signin_Button,0,0,native.systemFont,sp_commonLabel.textSize)
-	signin_lbl.x=signin_lbl.contentWidth/2+30;signin_lbl.y=signinBanner.y+signinBanner.contentHeight/2+30
+	signin_lbl.x=signin_lbl.contentWidth/2+30;signin_lbl.y=signinBanner.y+signinBanner.contentHeight/2+20
 	Utils.CssforTextView(signin_lbl,sp_header)	
 
 	UnitNumber_bg = display.newRect(sceneGroup, W/2, H/2, W-60, EditBoxStyle.height)

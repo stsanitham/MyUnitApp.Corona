@@ -1182,7 +1182,7 @@ function scene:create( event )
 
 	openPage="eventCalenderPage"
 
-
+	composer.removeHidden()
 	--("res.value.string")
 
 	if package.loaded["res.value.string_es_Us"] then unrequire("res.value.string_es_Us") end

@@ -155,7 +155,7 @@
 					display.remove(MainGroup[MainGroup.numChildren])
 					MainGroup[MainGroup.numChildren] = nil
 				end
-				composer.removeHidden(true)
+				composer.removeHidden()
 
 				if event.target.name == "GRANT" or event.target.name == "DENY" or event.target.name == "OPEN" or event.target.name == "ADDREQUEST" then
 
@@ -298,15 +298,35 @@
 					panel.background:setFillColor( Utils.convertHexToRGB(sp_Flatmenu_HeaderBg.Background_Color) )
 					panel:insert( panel.background )
 
-					panel.flapTopBg = display.newImageRect("res/assert/flapTopBg.jpg",panel.width,150)
-					panel.flapTopBg.anchorY=0;panel.flapTopBg.y=-panel.width
+					panel.flapTopBg = display.newImageRect("res/assert/flapTopBg.jpg",panel.width,H/4)
+					panel.flapTopBg.anchorY=0;panel.flapTopBg.y=-panel.height/2
 					panel:insert( panel.flapTopBg )
 					
+
+
+profileEmail = display.newText("",0,0,250,0,native.systemFont,15)
+profileEmail.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5
+profileEmail.anchorX=0
+profileEmail.anchorY=0
+Utils.CssforTextView(profileEmail,sp_Flatmenu_fieldValue)
+profileEmail.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight-profileEmail.contentHeight-5
+panel:insert( profileEmail )
+
+
+profileName = display.newText(Director_Name,0,0,245,0,native.systemFont,15)
+profileName.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5
+profileName.anchorX=0
+profileName.y=profileEmail.y+profileEmail.contentHeight-profileName.contentHeight-5
+Utils.CssforTextView(profileName,sp_Flatmenu_labelName)
+panel:insert( profileName )
+
+
 
 					local profilePic 
 
 					profilePic = display.newImageRect("res/assert/usericon.png",65,60)
-					profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-35
+					profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5
+	profilePic.y=profileName.y-profilePic.contentHeight-5
 					profilePic.anchorY=0
 					profilePic.anchorX=0
 					panel:insert( profilePic )
@@ -325,7 +345,8 @@
 									print("response file "..img_event.response.filename)
 									profilePic = display.newImageRect(img_event.response.filename,system.TemporaryDirectory,80,65)
 							--profilePic.width=65;profilePic.height=65
-							profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-35
+							profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5
+							profilePic.y=profileName.y-profilePic.contentHeight-10
 							profilePic.anchorY=0
 							profilePic.anchorX=0
 
@@ -344,27 +365,15 @@
 	    			end, ContactId..".png", system.TemporaryDirectory)
 else
 	profilePic = display.newImageRect("res/assert/usericon.png",65,60)
-	profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5;profilePic.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight/2-35
+	profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5
+	profilePic.y=profileName.y-profilePic.contentHeight-5
 	profilePic.anchorY=0
 	profilePic.anchorX=0
 	panel:insert( profilePic )
 
 end
 
-profileName = display.newText(Director_Name,0,0,245,0,native.systemFont,15)
-profileName.x=profilePic.x
-profileName.anchorX=0
-profileName.y=profilePic.y+profilePic.contentHeight+15
-Utils.CssforTextView(profileName,sp_Flatmenu_labelName)
-panel:insert( profileName )
 
-profileEmail = display.newText("",0,0,250,0,native.systemFont,15)
-profileEmail.x=profilePic.x
-profileEmail.anchorX=0
-profileEmail.anchorY=0
-Utils.CssforTextView(profileEmail,sp_Flatmenu_fieldValue)
-profileEmail.y=profileName.y+profileName.contentHeight-5
-panel:insert( profileEmail )
 
 
 if EmailAddress ~= nil then
@@ -411,7 +420,7 @@ end
 					top = 0,
 					left = 0,
 					width = panel.width,
-					height = 350,
+					height = H-panel.flapTopBg.contentHeight,
 					hideBackground=true,
 					horizontalScrollDisabled=true
 				        -- scrollWidth = 600,
@@ -422,7 +431,7 @@ end
 				flapScroll.anchorY=0
 				-- flapScroll.anchorX=0
 				-- flapScroll.y = panel.flapTopBg.y+panel.flapTopBg.contentHeight-5
-				flapScroll.x=panel.x;flapScroll.y=-panel.width/2+22.5
+				flapScroll.x=panel.x;flapScroll.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight
 				panel:insert( flapScroll )
 				--EventCalender
 

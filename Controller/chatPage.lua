@@ -32,7 +32,7 @@ local menuBtn,tabButtons,chattabBar,chatScroll,BackBtn,tabBar,title_bg,title,Del
 
 openPage="MessagingPage"
 
-chatReceivedPage = "MessagingPage"
+chatReceivedPage = "chatPage"
 
 local BackFlag = false
 
@@ -1882,7 +1882,10 @@ local function videoPlay( event )
 
 								local options = {
 									effect = "flipFadeOutIn",
-									time = 200,	
+									time = 200,
+									 params = {
+                                          status = "fromChat",
+                                        }
 
 								}
 
@@ -2734,7 +2737,7 @@ local function scrollListener( event )
 
 					elseif button_idvalue == "send" then
 
-
+					print("send pressed")
 
 					local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 
@@ -2762,6 +2765,38 @@ local function scrollListener( event )
 					end 
 
 
+					local ConversionFirstName,ConversionLastName,GroupName
+			    local DocumentUpload = {}
+
+			    if MessageType == "GROUP" then
+
+			    	ConversionFirstName="";ConversionLastName="";GroupName=UserName;DocumentUpload=""
+
+			    elseif MessageType == "INDIVIDUAL" then
+
+			    	ConversionFirstName="";ConversionLastName=UserName;GroupName="";DocumentUpload=""
+
+			    elseif MessageType == "BROADCAST" then
+
+			    	if IsOwner == true then
+
+			    		ConversionFirstName="";ConversionLastName=UserName;GroupName=UserName;DocumentUpload=""
+
+			    	else
+			    		
+			    		ConversionFirstName="";ConversionLastName=UserName;GroupName="";DocumentUpload=""
+
+			    	end
+
+			    end
+		    
+
+		    Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",MyUnitBuzz_LongMessage,MyUnitBuzz_LongMessage,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+		    
+		    
+		    ChatBox.text = ""
+
+
 					sendMeaasage()
 
 
@@ -2781,7 +2816,7 @@ local function scrollListener( event )
 
 			composer.removeHidden()
 
-			if ChatBox then ChatBox.isVisible=true end
+			ChatBox.isVisible=true 
 
 		end
 

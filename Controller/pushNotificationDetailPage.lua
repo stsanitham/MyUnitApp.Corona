@@ -93,7 +93,7 @@ local request,request1
 
 							  if webView then webView:removeSelf( );webView=nil end
 
-							  if page1 ~= "pn_listpage" or page1 == "pn_detailpage" then
+							  if page1 == "pn_detailpage" then
 
 							  	composer.gotoScene("Controller.pushNotificationListPage","slideRight",300)
 

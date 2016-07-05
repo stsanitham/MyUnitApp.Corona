@@ -55,6 +55,8 @@ local pageCount = 0
 local totalListCount = 0
 local notifyFlag = false
 
+local status = ""
+
 --------------------------------------------------
 
 
@@ -1027,6 +1029,8 @@ function updateAudioValues(audiovalues)
 		
 
 	      --  getScheduleMessageList()
+
+	      status = "SCHEDULE"
 	      pageCount = pageCount+1
 
 	      Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
@@ -1050,7 +1054,7 @@ function updateAudioValues(audiovalues)
 
 
            -- getSentMessageList()
-           
+            status = "SENT"
            pageCount = pageCount+1
            Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
            
@@ -1074,7 +1078,7 @@ function updateAudioValues(audiovalues)
 
 
 		--	getDraftMessageList()			
-		
+		 status = "DRAFT"
 		pageCount = pageCount+1
 		Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
 		
@@ -1111,7 +1115,7 @@ local function resumeCallList(listview_values)
 
 
 			--getScheduleMessageList()
-
+			 status = "SCHEDULE"
 			pageCount = pageCount+1
 			Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 			
@@ -1135,7 +1139,7 @@ local function resumeCallList(listview_values)
 
 
     --        -- getSentMessageList()
-    
+     status = "SENT"
     pageCount = pageCount+1
     Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 
@@ -1157,7 +1161,7 @@ elseif  listview_values == "DRAFT" then
 	end
 
             --getDraftMessageList()
-
+             status = "DRAFT"
             pageCount = pageCount+1
 
             Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList1)
@@ -1180,7 +1184,7 @@ elseif  listview_values == "DRAFT" then
     			display.remove(messageList_array[#messageList_array])
     			messageList_array[#messageList_array] = nil
     		end
-
+    		 status = "SCHEDULE"
     		pageCount = pageCount+1
     		Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
@@ -1192,6 +1196,7 @@ elseif  listview_values == "DRAFT" then
     			display.remove(sentmessageList_array[#sentmessageList_array])
     			sentmessageList_array[#sentmessageList_array] = nil
     		end
+    		 status = "SENT"
     		pageCount = pageCount +1 
     		Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 
@@ -1203,6 +1208,7 @@ elseif  listview_values == "DRAFT" then
     			display.remove(draftmessageList_array[#draftmessageList_array])
     			draftmessageList_array[#draftmessageList_array] = nil
     		end
+    		 status = "DRAFT"
     		pageCount = pageCount+1
     		Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList)
     		
@@ -1363,17 +1369,17 @@ elseif  listview_values == "DRAFT" then
          			pageCount = pageCount+1
          			
          			if listType == "DRAFT" then
-
+         				status = "DRAFT"
          				Webservice.GetMessagessListbyMessageStatus(listType,10,pageCount,getDraftMessageList)
 
          			elseif listType == "SENT" then
 
          				print( "Hello" )
-         				
+         				status = "SENT"
          				Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
          				
          			elseif listType == "SCHEDULE" then
-
+         				status = "SCHEDULE"
          				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
          			end
@@ -1388,15 +1394,15 @@ elseif  listview_values == "DRAFT" then
          			pageCount = 1
          			
          			if listType == "DRAFT" then
-
+         				status = "DRAFT"
          				Webservice.GetMessagessListbyMessageStatus(listType,10,pageCount,getDraftMessageList)
 
          			elseif listType == "SENT" then
-         				
+         				status = "SENT"
          				Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
          				
          			elseif listType == "SCHEDULE" then
-
+         				status = "SCHEDULE"
          				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
          			end
@@ -1447,7 +1453,7 @@ elseif  listview_values == "DRAFT" then
          			composer.removeHidden()
 
 				--getScheduleMessageList()
-
+				status = "SCHEDULE"
 				pageCount = pageCount + 1
 				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 
@@ -1469,7 +1475,7 @@ elseif  listview_values == "DRAFT" then
 				composer.removeHidden()
 
 			--	getSentMessageList()
-
+			status = "SENT"
 			pageCount = pageCount+1
 			Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 			
@@ -1490,7 +1496,7 @@ elseif  listview_values == "DRAFT" then
 			NoDraftMessage.isVisible = false
 
 				--getDraftMessageList()
-
+				status = "DRAFT"
 				pageCount = pageCount+1
 				Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList)
 
@@ -1539,6 +1545,7 @@ elseif  listview_values == "DRAFT" then
 
 
 			pageCount=0
+			status = "SCHEDULE"
 			listType = "SCHEDULE"
 			pageCount = pageCount+1 
 			Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
@@ -1769,10 +1776,12 @@ function scene:show( event )
 		if pagingvalue == "listpage" then	
 
 			if IsOwner == true then
+				status = "SCHEDULE"
 				listType = "SCHEDULE"
 				pageCount = pageCount+1 
 				Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
 			else
+				status = "SENT"
 				listType = "SENT"
 				pageCount = pageCount+1
 				Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
@@ -1795,7 +1804,27 @@ function scene:show( event )
 
 end
 
+    local function printTimeSinceStart( event )
 
+	                       	if chatReceivedFlag==true and openPage=="pushNotificationListPage" then
+	                       		
+	                       		chatReceivedFlag=false
+	                       		pageCount=0
+	                       		pageCount = pageCount+1
+
+	                       		if status == "SENT" then
+									Webservice.GetMessagessListbyMessageStatus(status,10,pageCount,getSentMessageList)
+								elseif status == "SCHEDULE" then
+									Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
+								else
+									Webservice.GetMessagessListbyMessageStatus("DRAFT",10,pageCount,getDraftMessageList)
+								end
+
+	                       		
+	                       	end
+
+                       end 
+     Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 
 
 
@@ -1812,7 +1841,7 @@ function scene:hide( event )
 		Background:removeEventListener("touch",FocusComplete)
 
 	elseif phase == "did" then
-
+		composer.removeHidden()
 	end	
 
 end

@@ -41,7 +41,7 @@ local mapGroup = display.newGroup()
 
 local phoneNum = ""
 
-local RecentTab_Topvalue
+local RecentTab_Topvalue,addBg,addRecipient
 
 ContactIdValue = 0
 
@@ -171,6 +171,9 @@ local function addMemberAction( event )
     	 				Career_Username.yScale = Career_Username.yScale - 0.018
     	 				Career_Username.x=Career_Username.x+0.8
 
+    	 				addBg.y = Career_Username.y
+						addRecipient.y=addBg.y
+
     	 			end
 
     	 			
@@ -199,6 +202,9 @@ local function addMemberAction( event )
     	 				Career_Username.x=Career_Username.x-0.8
 
     	 			end
+
+    	 			addBg.y = Career_Username.y
+						addRecipient.y=addBg.y
 
 
     	 			careerDetail_scrollview.y=TrasitionBar.y+TrasitionBar.contentHeight
@@ -720,13 +726,13 @@ function scene:show( event )
 
 				if IsOwner == true and (Message_Type == "GROUP" or Message_Type == "BROADCAST") then
 
-					local addBg = display.newRect(sceneGroup,50,50,60,50)
+					addBg = display.newRect(sceneGroup,50,50,60,50)
 					addBg.x=W-30
-					addBg.y=titleBar_icon_bg.y+10
+					addBg.y=Career_Username.y+5
 					addBg.alpha=0.01
-					local addRecipient = display.newImageRect( sceneGroup, "res/assert/addmember.png", 18, 15 )
+					addRecipient = display.newImageRect( sceneGroup, "res/assert/edit.png", 24, 24 )
 					addRecipient.anchorY=0
-					addRecipient.x=W-30;addRecipient.y = titleBar_icon_bg.y+5
+					addRecipient.x=addBg.x;addRecipient.y = addBg.y
 					addBg:addEventListener( "touch", addMemberAction )
 				end
 
@@ -1339,7 +1345,7 @@ function scene:hide( event )
 			print( "Json :"..json.encode(params) )
 			event.parent:resumeGame(json.encode(params),status)
 		else
-			--event.parent:resumeGameNormal(status)
+			event.parent:resumeGameNormal(status)
 		end
 
 

@@ -472,7 +472,6 @@ local function Broadcast_list( list )
 			local profilrPic=""
 
 
-			print( "Name From : "..list[i].FromName.." To : "..list[i].ToName )
 			if ContactId == list[i].Message_From then
 				print( "here" )
 				Name=list[i].ToName
@@ -635,7 +634,11 @@ end
 
 local function getupdateLastChatSyncDate( response )
 
-	
+	for j=#BroadcastList_array, 1, -1 do 
+		
+		display.remove(BroadcastList_array[#BroadcastList_array])
+		BroadcastList_array[#BroadcastList_array] = nil
+	end
 
 	for i=1,#BroadcastList do
 		
@@ -650,9 +653,17 @@ local function getupdateLastChatSyncDate( response )
 
 	end
 
+	if #BroadcastList_array < 1 then 
+			NoEvent.isVisible = true
+	else
+		NoEvent.isVisible = false
+	end
+
 	if #BroadcastList ~= nil then
 
 		Broadcast_list(BroadcastList)
+
+
 	end
 end
 
@@ -664,6 +675,7 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 	if event.params ~= nil then 
+
 		page1 = event.params.pagenameval
 
 		for i = 1, #menuArray_display do
@@ -715,6 +727,10 @@ function scene:create( event )
 	title.text = ChatPage.Chats
 
 
+		NoEvent = display.newText( sceneGroup, "No Chat Found" , 0,0,0,0,native.systemFontBold,16)
+		NoEvent.x=W/2;NoEvent.y=H/2
+		NoEvent.isVisible=false
+		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 	
 
 
@@ -777,58 +793,58 @@ function scene:show( event )
 
         -- native.showPopup( "mail", options )
 
-        response = json.decode(response)
+        	response = json.decode(response)
         
-        if #response.data > 0 then
+       		 if #response.data > 0 then
 
-        	local RecievedArray = response.data
+        		local RecievedArray = response.data
 
-        	for i=1,#RecievedArray do
+        			for i=1,#RecievedArray do
 
 
 
-        		local additionalData={}
-        		local message
+		        		local additionalData={}
+		        		local message
 
-        		if isAndroid then
-        			additionalData = RecievedArray[i]
-        			message = additionalData.contents
-        		elseif isIos then
+		        		if isAndroid then
+		        			additionalData = RecievedArray[i]
+		        			message = additionalData.contents
+		        		elseif isIos then
 
-        			additionalData = RecievedArray[i]
-        			message = RecievedArray[i].contents
-        		end
+		        			additionalData = RecievedArray[i]
+		        			message = RecievedArray[i].contents
+		        		end
 
-        		chatReceivedFlag=true
+		        		chatReceivedFlag=true
 
-        		if additionalData.messageType ~= nil then
+        					if additionalData.messageType ~= nil then
 
         			
-                    --For Chat recevier-----
+				                    --For Chat recevier-----
 
 
-                    local UserId,ContactId,Name,FromName,GroupName
+				                    local UserId,ContactId,Name,FromName,GroupName
 
-                    for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
-                    	UserId = row.UserId
-                    	ContactId = row.ContactId
-                    	Name = row.MemberName
+				                    for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+				                    	UserId = row.UserId
+				                    	ContactId = row.ContactId
+				                    	Name = row.MemberName
 
-                    end
+				                    end
 
 
-                    Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
+				                    Message_date=os.date("!%Y-%m-%dT%H:%M:%S")
 
-                    isDeleted="false"
-                    Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-                    Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-                    ImagePath=additionalData.image or ""
-                    AudioPath=additionalData.audio or ""
-                    VideoPath=additionalData.audio or ""
-                    MyUnitBuzz_LongMessage=tostring(message)
-                    From=additionalData.messageFrom
-                    To=additionalData.messageTo
-                    Message_Type = additionalData.messageType
+				                    isDeleted="false"
+				                    Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+				                    Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+				                    ImagePath=additionalData.image or ""
+				                    AudioPath=additionalData.audio or ""
+				                    VideoPath=additionalData.audio or ""
+				                    MyUnitBuzz_LongMessage=tostring(message)
+				                    From=additionalData.messageFrom
+				                    To=additionalData.messageTo
+				                    Message_Type = additionalData.messageType
 
 
                                        -- local native = native.showAlert("dsadsadsdas",Message_Type,{"ok"})
@@ -852,24 +868,24 @@ function scene:show( event )
 
 
                                        	
-                                       	if additionalData.tFN ~= nil then
-                                       		FromName=additionalData.tFN.." "..additionalData.tLN
+	                                       	if additionalData.tFN ~= nil then
+	                                       		FromName=additionalData.tFN.." "..additionalData.tLN
 
-                                       	else
+	                                       	else
 
-                                       		FromName=additionalData.tLN
+	                                       		FromName=additionalData.tLN
 
-                                       	end
+	                                       	end
 
                                        end
                                        
                                        
 
-                                       local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..FromName..[[',']]..Name..[[',']]..GroupName..[[');]]
+                                       local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                                        db:exec( insertQuery )
 
 
-                                   end
+                         	end
 
 
                                    Webservice.UpdateLastChatSyncDate(getupdateLastChatSyncDate)
@@ -891,6 +907,12 @@ function scene:show( event )
 
                            end
 
+                           	if #BroadcastList_array < 1 then 
+								NoEvent.isVisible = true
+							else
+								NoEvent.isVisible = false
+							end
+
                            if #BroadcastList ~= nil then
 
                            	Broadcast_list(BroadcastList)
@@ -906,32 +928,49 @@ function scene:show( event )
 
                        end
 
+    
+
                        if #BroadcastList ~= nil then
 
                        	Broadcast_list(BroadcastList)
                        end
 
+
+                       print( json.encode( event ))
+
+				if event.params ~= nil and event.params.status == "fromChat"	 then
+
+					print( "fromChat" )
+
+					                   	if #BroadcastList_array < 1 then 
+							NoEvent.isVisible = true
+						else
+							NoEvent.isVisible = false
+						end
+
+				else
+
+						print( "not fromChat" )
+
                        Webservice.GetChatUnReadMessagesList(getChatUnReadMessagesList)
+                end
 
 
-                       function printTimeSinceStart( event )
-                       	if chatReceivedFlag==true then
-                       		chatReceivedFlag=false
+                       local function printTimeSinceStart( event )
 
-                       		
+	                       	if chatReceivedFlag==true and openPage=="MessagingPage" and chatReceivedPage == "MessagingPage" then
+	                       		
+	                       		chatReceivedFlag=false
 
-                       		
+	                       		Webservice.UpdateLastChatSyncDate(getupdateLastChatSyncDate)
 
+	                       		
+	                       	end
 
-                       		Webservice.UpdateLastChatSyncDate(getupdateLastChatSyncDate)
-
-                       		
-                       	end
                        end 
                        Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 
-
-                       
+                      
 
                        if event.params then
                        	nameval = event.params.tabbuttonValue1
@@ -1055,6 +1094,9 @@ function scene:hide( event )
 
 		Runtime:removeEventListener( "key", onKeyEvent )
 		tab_Group_btn=nil;tab_Message_btn=nil;tab_Contact_btn=nil
+
+
+
 	elseif phase == "did" then
 
 		composer.removeHidden()

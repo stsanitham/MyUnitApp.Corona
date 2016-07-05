@@ -91,7 +91,7 @@ end
 
 local function rescale(pwidth1,pheight1)
 	
-	if pwidth1> W or pheight1 > H then
+	if pwidth1>= W or pheight1 >= H-80 then
 
 		pwidth1 = pwidth1/2
 		pheight1 = pheight1/2
@@ -114,7 +114,7 @@ end
 
 local function intiscale(pwidth,pheight)
 	
-	if pwidth > W or pheight > H then
+	if pwidth >= W or pheight >= H-80 then
 
 		pwidth= pwidth/2
 		pheight = pheight/2
@@ -169,7 +169,7 @@ local function onButtonTouch( event )
 
 	if event.target.id == "background" then
 
-		
+			native.setKeyboardFocus( nil )
 
 	end
 
@@ -180,7 +180,27 @@ return true
 end
 
 
+local function captionListener( event )
 
+	if ( event.phase == "began" ) then
+        -- user begins editing defaultField
+
+    elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+    
+        native.setKeyboardFocus( nil )
+
+    elseif ( event.phase == "editing" ) then
+
+    		if event.text:len() > 150 then
+
+    			event.target.text = event.target.text:sub(1,150)
+
+    		end
+
+    	
+
+    end
+end
 
 ------------------------------------------------------
 
@@ -282,8 +302,9 @@ function scene:create( event )
 			captionField.x = 10
 			captionField.y = captionField_bg.y
 			captionField.hasBackground = false
-			captionField:setReturnKey( "next" )
+			captionField:setReturnKey( "done" )
 			captionField.placeholder="Add a Caption"
+			captionField:addEventListener( "userInput", captionListener )
 			sceneGroup:insert(captionField)
 
 			captionField_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)

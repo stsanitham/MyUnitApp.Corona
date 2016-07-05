@@ -1446,7 +1446,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 	    popupList = display.newRect(leftPadding_value + 140, popupTop_bg.y+popupTop_bg.contentHeight/2, W-22, popupTop_bg.contentHeight+20 )
 	    popupList.anchorY=0
-	    popupList.y=60	
+	    popupList.y=popupTop_bg.y-popupTop_bg.contentHeight/2
 	    popupList.id= "popuplist"
 	    popupList.strokeWidth=1
 	    popupList.isVisible=true
@@ -1477,7 +1477,7 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 	    -- popupList_white.id = "popuplist"
 	    -- popup_scroll:insert(popupList_white)
 
-	    popup_scroll.y=60
+	    popup_scroll.y=popupList.y
 	    popup_scroll.anchorY=0
 
 --------------------------------------name field--------------------------------------

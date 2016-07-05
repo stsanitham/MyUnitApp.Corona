@@ -206,7 +206,7 @@ function scene:show( event )
 
 				local tempGroup = specialRecognitionListArray[#specialRecognitionListArray]
 
-				local tempHeight = title_bg.y + 30
+				local tempHeight = title_bg.y + 15
 
 
 				-- local shadow = display.newImageRect( tempGroup,"res/assert/shadow.png",(W-40)/4-10,32)
@@ -214,16 +214,17 @@ function scene:show( event )
 				-- shadow.anchorY = 0
 
 
-				local background = display.newImageRect(tempGroup,"res/assert/listimg.png",W-40,32)
+				--local background = display.newImageRect(tempGroup,"res/assert/listimg.png",W-40,32)
+				local background = display.newRect(tempGroup,0,0,W,36)
+
 
 				if(specialRecognitionListArray[#specialRecognitionListArray-1]) ~= nil then
-					tempHeight = specialRecognitionListArray[#specialRecognitionListArray-1][1].y + specialRecognitionListArray[#specialRecognitionListArray-1][1].height+5
+					tempHeight = specialRecognitionListArray[#specialRecognitionListArray-1][1].y + specialRecognitionListArray[#specialRecognitionListArray-1][1].height+1
 				end
 
 				background.anchorY = 0
 				background.x=W/2-5;background.y=tempHeight
 				background.id=list[i].SpecialRecognitionId
-				print(list[i].SpecialRecognitionId)
 				--background.alpha=0.01
 				background.value = list[i]
 
@@ -252,7 +253,7 @@ function scene:show( event )
 						GroupName_txt.x=background.x-background.contentWidth/2+20;GroupName_txt.y=background.y+background.height/2-3
 						GroupName_txt.anchorX=0
 						Utils.CssforTextView(GroupName_txt,sp_labelName)
-						GroupName_txt:setFillColor(1)
+						GroupName_txt:setFillColor(0,0,0,0.6)
 
 
 						sceneGroup:insert(tempGroup)

@@ -1389,7 +1389,7 @@ function scene:show( event )
 
 	    		RecentTab_Topvalue = 115
 
-	    		title.text = "Edit Member"
+	    		title.text = "Edit"
 
 	    		GroupSubject.placeholder = ChatPage.broadcastSubject
 
