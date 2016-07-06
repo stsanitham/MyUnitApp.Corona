@@ -1251,6 +1251,7 @@ local function TouchAction( event )
 
 					if PurposeLbl.text:lower( ) == "other" then
 
+						print("Other.text : "..Other.text)
 
 						if Other.text == "" then
 
@@ -1291,20 +1292,36 @@ local function TouchAction( event )
 
 							end
 
-								
+									
+							if allDay then
+								print("true ********")
 
+							else
+								print("false ********")
+							end
 
-							if end_time > start_time and allDay ~= true then
+						local priority_value,status
+						if TicklerType:lower( ) == "task" then
 
+							priority_value = PurposeLbl.value
 
+							status = PriorityLbl.value
+						else
+							priority_value = PriorityLbl.value
+
+							status = PurposeLbl.value
+						end
+						if end_time < start_time and allDay ~= true then
+
+							ErrorIcon.isVisible=true
+
+						else
 
 							ErrorIcon.isVisible=false
 							
-							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
+							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,status,Other.text,priority_value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
 							
-							else
-
-								ErrorIcon.isVisible=true
+							
 
 							end	
 					end
@@ -1356,7 +1373,22 @@ local function TouchAction( event )
 
 					ErrorIcon.isVisible=false
 
-					Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
+					print( "Status : "..PriorityLbl.value )
+
+					if TicklerType:lower( ) == "task" then
+
+							priority_value = PurposeLbl.value
+
+							status = PriorityLbl.value
+
+												Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,status,Other.text,priority_value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
+
+						else
+							
+							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
+						
+						end
+
 
 
 				end
@@ -3589,10 +3621,21 @@ end
 	  		print( "UpdateValue.AppointmentPurpose : "..UpdateValue.AppointmentPurpose )
 
 
-
+----TaskStatus
 
 	  		if UpdateValue.AppointmentPurpose ~= nil then
 
+	  			if SelectEvent.text:lower( ) == "task" then
+
+	  				for i=1,#AddeventPage.priorityArray do
+		  				if AddeventPage.priorityArray[i].id == UpdateValue.Priority then
+		  					PurposeLbl.text = AddeventPage.priorityArray[i].value
+		  					PurposeLbl.value=AddeventPage.priorityArray[i].id
+		  					print("check = "..PurposeLbl.value.." "..PurposeLbl.text)
+		  				end
+		  			end
+
+	  			else
 		  			for i=1,#AddeventPage.purposeArray do
 		  				if AddeventPage.purposeArray[i].id == UpdateValue.AppointmentPurpose then
 		  					PurposeLbl.text = AddeventPage.purposeArray[i].value
@@ -3600,18 +3643,43 @@ end
 		  					print("check = "..PurposeLbl.value.." "..PurposeLbl.text)
 		  				end
 		  			end
+		  		end
 	  			
 	  		end
 
 
+	  		if PurposeLbl.text:lower( ) == "other" then
 
-	  		if UpdateValue.Priority ~= nil then
+	  			Other.isVisible = true
+	  			BottomOther.isVisible = true
+	  			belowOtherGroup.y = 0
 
+	  			Other.text = UpdateValue.AppointmentPurposeOther
+
+	  		end
+
+
+
+	  		if UpdateValue.Priority ~= nil or UpdateValue.TaskStatus ~= nil then
+
+	  			if SelectEvent.text:lower( ) == "task" then
+
+	  				for i=1,#AddeventPage.taskStatus do
+		  				--if AddeventPage.taskStatus[i].id == UpdateValue.TaskStatus then
+		  					PriorityLbl.text = AddeventPage.taskStatus[UpdateValue.TaskStatus]
+		  				--end
+
+		  			end
+
+	  			else
 		  			for i=1,#AddeventPage.priorityArray do
+
 		  				if AddeventPage.priorityArray[i].id == UpdateValue.Priority then
 		  					PriorityLbl.text = AddeventPage.priorityArray[i].value
 		  				end
+
 		  			end
+		  		end
 
 	  		end
 

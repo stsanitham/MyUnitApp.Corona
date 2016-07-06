@@ -2074,10 +2074,6 @@ if Details ~= nil and Details.AudioFilePath ~= nil then
 
 			if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
 			-- if shortmsg_textbox then shortmsg_textbox:removeSelf( );shortmsg_textbox=nil end
-
-			composer.removeHidden()
-
-
 			if datePicker then datePicker.clear() end
 
 			if timePicker then timePicker.clear() end
@@ -2092,7 +2088,22 @@ if Details ~= nil and Details.AudioFilePath ~= nil then
 			end
 
 
+			 menuBtn:removeEventListener("touch",menuTouch)
+               back_icon:removeEventListener("touch",closeMessagePage)
+               back_icon_bg:removeEventListener("touch",closeMessagePage)
+               title:removeEventListener("touch",closeMessagePage)
+
+               shortmsg_textbox:removeEventListener( "userInput", TextLimitation)
+				--longmsg_textbox:removeEventListener( "urlRequest", webListener )
+				Background:removeEventListener("touch",FocusComplete)
+
+				
+				Runtime:removeEventListener( "key", onKeyEventDetail )
+
+
 		elseif phase == "did" then
+
+			composer.removeHidden()
 
 			if status == "editpage" then
 
@@ -2109,17 +2120,7 @@ if Details ~= nil and Details.AudioFilePath ~= nil then
 
                -- composer.removeHidden()
 
-
-               back_icon:removeEventListener("touch",closeMessagePage)
-               back_icon_bg:removeEventListener("touch",closeMessagePage)
-               title:removeEventListener("touch",closeMessagePage)
-
-               shortmsg_textbox:removeEventListener( "userInput", TextLimitation)
-				--longmsg_textbox:removeEventListener( "urlRequest", webListener )
-				Background:removeEventListener("touch",FocusComplete)
-
-				
-				Runtime:removeEventListener( "key", onKeyEventDetail )
+              
 
 			end	
 

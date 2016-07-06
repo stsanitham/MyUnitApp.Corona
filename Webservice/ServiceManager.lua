@@ -1272,6 +1272,18 @@ if title == "" then
 	title = "(No title)"
 end 
 
+
+local status = ""
+
+print( "Priority : "..Priority )
+
+if TicklerType:lower( ) == "task" then
+
+	status = AppointmentPurpose
+
+end
+
+
 print( "AppointmentPurposeOther : "..AppointmentPurposeOther )
 
 resbody = [[
@@ -1306,6 +1318,9 @@ resbody = [[
 	"AccessCode":']]..AccessCode..[[',
 	"IsConference":]]..tostring(IsConference)..[[,
 	"CallDirection":']]..tostring(CallDirection)..[[',
+	"TaskStatus":']]..tostring(status)..[[',
+
+	
 	
 }
 ]]

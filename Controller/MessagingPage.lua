@@ -378,13 +378,11 @@ end
 
 local function Broadcast_list( list )
 
-
-	for j=#BroadcastList_array, 1, -1 do 
+		for j=#BroadcastList_array, 1, -1 do 
 		
 		display.remove(BroadcastList_array[#BroadcastList_array])
 		BroadcastList_array[#BroadcastList_array] = nil
 	end
-
 
 
 	for i=1,#list do
@@ -634,11 +632,6 @@ end
 
 local function getupdateLastChatSyncDate( response )
 
-	for j=#BroadcastList_array, 1, -1 do 
-		
-		display.remove(BroadcastList_array[#BroadcastList_array])
-		BroadcastList_array[#BroadcastList_array] = nil
-	end
 
 	for i=1,#BroadcastList do
 		
@@ -653,7 +646,8 @@ local function getupdateLastChatSyncDate( response )
 
 	end
 
-	if #BroadcastList_array < 1 then 
+
+	if #BroadcastList < 1 then 
 			NoEvent.isVisible = true
 	else
 		NoEvent.isVisible = false
@@ -907,13 +901,15 @@ function scene:show( event )
 
                            end
 
-                           	if #BroadcastList_array < 1 then 
-								NoEvent.isVisible = true
+                           if #BroadcastList < 1 then 
+									NoEvent.isVisible = true
 							else
 								NoEvent.isVisible = false
 							end
 
                            if #BroadcastList ~= nil then
+
+                    		
 
                            	Broadcast_list(BroadcastList)
                            end
@@ -942,8 +938,8 @@ function scene:show( event )
 
 					print( "fromChat" )
 
-					                   	if #BroadcastList_array < 1 then 
-							NoEvent.isVisible = true
+					  	if #BroadcastList < 1 then 
+								NoEvent.isVisible = true
 						else
 							NoEvent.isVisible = false
 						end

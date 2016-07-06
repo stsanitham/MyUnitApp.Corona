@@ -229,9 +229,10 @@ function scene:show( event )
 
 
 
-			
-
-
+				local Arrow = display.newImageRect( tempGroup, "res/assert/right-arrow(gray-).png",12, 14 )
+				Arrow.x=background.x+background.contentWidth/2-Arrow.contentWidth-5
+				Arrow.y=background.y+background.contentHeight/2
+				Arrow.alpha=0.6
 					--background:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 					--print( "Listy : "..json.encode(list[i]) )
 
@@ -248,11 +249,11 @@ function scene:show( event )
 
 					--print(order,list[order].ReportName)
 
-						local GroupName_txt = display.newText(tempGroup,list[i].ReportName,0,0,native.systemFont,14)
+						local GroupName_txt = display.newText(tempGroup,list[i].ReportName,0,0,native.systemFontBold,14)
 						GroupName_txt.x=background.x-background.contentWidth/2+20;GroupName_txt.y=background.y+background.height/2-3
 						GroupName_txt.anchorX=0
 						Utils.CssforTextView(GroupName_txt,sp_labelName)
-						GroupName_txt:setFillColor(0,0,0,0.6)
+						GroupName_txt:setFillColor(0,0,0,0.8)
 
 
 						sceneGroup:insert(tempGroup)
