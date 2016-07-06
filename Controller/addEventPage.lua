@@ -893,6 +893,8 @@ function get_SaveAttachmentDetails(response)
 
 		PriorityLbl.text = "Not Started"
 
+		print("45645656454645654645665564456")
+
 	else
 
 		PriorityLbl.text=EventCalender.Low
@@ -3596,6 +3598,32 @@ end
 
 	  		if UpdateValue.AppointmentPurpose ~= nil then
 
+
+	  			if SelectEvent.text:lower( ) == "task" then
+
+		  			for i=1,#AddeventPage.priorityArray do
+
+		  				if AddeventPage.priorityArray[i].id == UpdateValue.AppointmentPurpose then
+		  					PurposeLbl.text = AddeventPage.priorityArray[i].value
+		  					PurposeLbl.value=AddeventPage.priorityArray[i].id
+		  					print("check for task = "..PurposeLbl.value.." "..PurposeLbl.text)
+		  				end
+		  			end
+
+		  		elseif SelectEvent.text:lower( ) == "party" then
+
+		  			for i=1,#AddeventPage.partyArray do
+
+		  				if AddeventPage.partyArray[i].id == UpdateValue.AppointmentPurpose then
+		  					PurposeLbl.text = AddeventPage.partyArray[i].value
+		  					PurposeLbl.value=AddeventPage.partyArray[i].id
+		  					print("check for party = "..PurposeLbl.value.." "..PurposeLbl.text)
+		  				end
+		  			end
+
+	  			else
+
+
 		  			for i=1,#AddeventPage.purposeArray do
 		  				if AddeventPage.purposeArray[i].id == UpdateValue.AppointmentPurpose then
 		  					PurposeLbl.text = AddeventPage.purposeArray[i].value
@@ -3603,6 +3631,8 @@ end
 		  					print("check = "..PurposeLbl.value.." "..PurposeLbl.text)
 		  				end
 		  			end
+
+	  		    end
 	  			
 	  		end
 
@@ -3610,12 +3640,24 @@ end
 
 	  		if UpdateValue.Priority ~= nil then
 
+	  			if SelectEvent.text:lower( ) == "task" then
+
+		  			for i=1,#AddeventPage.taskStatus do
+		  				if AddeventPage.taskStatus[i].id == UpdateValue.Priority then
+		  					PriorityLbl.text = AddeventPage.taskStatus[i].value
+		  				end
+		  			end
+
+		  		else
+
 		  			for i=1,#AddeventPage.priorityArray do
 		  				if AddeventPage.priorityArray[i].id == UpdateValue.Priority then
 		  					PriorityLbl.text = AddeventPage.priorityArray[i].value
 		  				end
 		  			end
 
+		  		end
+	  			
 	  		end
 
 

@@ -448,10 +448,13 @@ tempGroup:addEventListener("touch",listTouch)
 
 scrollView:insert(tempGroup)
 addEventBtn:toFront( )
+
 end
 
-local function createEventlist(responevalue,timeValue)
 
+
+
+local function createEventlist(responevalue,timeValue)
 
 	DateWise_response=responevalue
 
@@ -485,32 +488,24 @@ local function createEventlist(responevalue,timeValue)
 
 		NoEvent.isVisible=true
 
-
 		return false
 	else
 
 	end
 
 
-
-	
-
-
-
 	Processingdate = dateSplit(DateWise_response[1].date)
 
 
-
-	for j=#HeaderDetails, 1, -1 do 
+	for j = #HeaderDetails, 1, -1 do 
 		HeaderDetails[#HeaderDetails] = nil
 	end
 
 
+
 	for i = 1, #DateWise_response do
 
-
 		date = dateSplit(DateWise_response[i].date)
-
 
 		local function eventCalen_display_process()
 
@@ -702,22 +697,24 @@ for i = 1, #DateWise_response do
 	end
 
 
+
+
 	local function eventList( timeValue )
 
 		NoEvent.isVisible=false
 
-
 		function get_TicklerEvents(response)
 
 			createEventlist(response,timeValue)
-
-
 
 		end
 
 		Webservice.Get_TicklerEvents(CalendarId,UserId,startdate,enddate,IsShowAppointment,IsShowCall,IsShowParty,IsShowTask,IsShowFamilyTime,IsPublic,get_TicklerEvents)
 
 	end
+
+
+
 
 	local function dayTouch(event)
 		if event.phase == "ended" then
@@ -731,7 +728,6 @@ for i = 1, #DateWise_response do
 
 			else
 				Utils.CssforTextView(week[i][1],sp_labelName)
-
 			end
 
 		end
@@ -800,8 +796,8 @@ local function creatWeek( weekfirstDay,flagValue )
 
 		local Week_Group = display.newGroup( )
 
-
 		weekfirstDay.day = weekfirstDay.day + 1
+
 		local day = display.newText(Week_Group,Utils.GetWeek(weekLbl[i]),0,0,native.systemFont,12)
 		weekStartX = weekStartX +35
 		day.x = weekStartX;day.y=weekView_bg.y+weekView_bg.contentHeight/2
@@ -812,10 +808,11 @@ local function creatWeek( weekfirstDay,flagValue )
 		date.x = day.x;date.y=day.y+17
 		Utils.CssforTextView(date,sp_fieldValue)
 
+		print(os.date( "%m/%d/%Y" , os.time( weekfirstDay )).."   "..os.date( "%m/%d/%Y" ,os.time(os.date( '*t' ))))
+
 		if os.date( "%m/%d/%Y" , os.time( weekfirstDay )) == os.date( "%m/%d/%Y" ,os.time(os.date( '*t' ))) then
 			day:setFillColor( 0,0,1 )
 			addEventBtn.value = os.time(weekfirstDay)
-
 		end
 
 		Week_Group.id=i
@@ -842,23 +839,26 @@ local function creatWeek( weekfirstDay,flagValue )
 
 			end
 
-
-			
-
 		end
 
 		Week_Group:addEventListener( "touch", dayTouch )
 
-		
 		week:insert( Week_Group )
 	end
+
+
 	weekfirstDay.day=weekfirstDay.day-7
 
 	if flagValue then
+
 		eventList(weekfirstDay)
+
 	end
 
 end
+
+
+
 local function searchListener( event )
 
 	if ( event.phase == "began" ) then
@@ -1137,8 +1137,6 @@ local function weekViewSwipe( event )
 
 				if -(yView) < tonumber(HeaderDetails[i].Position) then
 
-					
-
 					Header_parent_leftText.text = Utils.GetWeek(os.date( "%A" , HeaderDetails[i-1].Time ))
 
 					Header_parent_centerText.text = os.date( "%b %d, %Y" , HeaderDetails[i-1].Time )
@@ -1296,6 +1294,8 @@ function scene:create( event )
 end
 
 
+
+
 function scene:resumeGame(value)
 
 	if value == "back" then
@@ -1304,11 +1304,10 @@ function scene:resumeGame(value)
 
 		search.isVisible=true
 
-		
 
-		local function waitTimer( event )
+	local function waitTimer( event )
+
 			if openPage=="eventCalenderPage" then
-
 
 			local temp = os.date( '*t' )
 			temp.day = temp.day - os.date( "%w" ) 
@@ -1316,7 +1315,7 @@ function scene:resumeGame(value)
 			ParentShow=true
 			creatWeek(temp,true)
 
-		end
+			end
 	end
 
 	timer.performWithDelay( 500, waitTimer )
