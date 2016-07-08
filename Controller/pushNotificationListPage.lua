@@ -1510,28 +1510,9 @@ elseif  listview_values == "DRAFT" then
 	end
 
 
-	function get_messagemodel(response)
+	local function updateList(response)
 
-		for j=1, #messageList_array do 
 
-			display.remove(messageList_array[#messageList_array])
-			messageList_array[#messageList_array] = nil
-		end
-
-		for j=1, #sentmessageList_array do 
-
-			display.remove(sentmessageList_array[#sentmessageList_array])
-			sentmessageList_array[#sentmessageList_array] = nil
-		end
-
-		for j=1, #draftmessageList_array do 
-
-			display.remove(draftmessageList_array[#draftmessageList_array])
-			draftmessageList_array[#draftmessageList_array] = nil
-		end
-
-		local listener = {}
-		function listener:timer( event )
 			if response.MessageStatus == "SEND" then
 				Utils.SnackBar(MessagePage.SentSuccess)
 			elseif response.MessageStatus == "DRAFT" then
@@ -1544,15 +1525,6 @@ elseif  listview_values == "DRAFT" then
 			-- -- print( "********************** retrun from send action ***************" )
 
 
-			pageCount=0
-			status = "SCHEDULE"
-			listType = "SCHEDULE"
-			pageCount = pageCount+1 
-			Webservice.GetMessagessListbyMessageStatus("SCHEDULE",10,pageCount,getScheduleMessageList)
-			
-		end
-
-		timer.performWithDelay( 1500, listener )
 
 	end
 
@@ -1624,19 +1596,23 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		if event.params then
+	
+
+
+	elseif phase == "did" then
+
+			if event.params then
 
 			list_values = event.params.pushlistvalues
 			pagingvalue = event.params.page
 
-			if event.params.pageee ~= nil then
-				pagevaluenamee = event.params.pageee
-			end
-
+			
 		end
 		
 
-		composer.removeHidden()
+	
+
+	--	composer.removeHidden()
 		
 		totalvalues = list_values
 
@@ -1766,16 +1742,10 @@ function scene:show( event )
 
 		end
 
-
-
-	elseif phase == "did" then
-
-		composer.removeHidden()
 		compose_msg_icon:toFront()
-		
-		if pagingvalue == "listpage" then	
+			
 
-			if IsOwner == true then
+				if IsOwner == true then
 				status = "SCHEDULE"
 				listType = "SCHEDULE"
 				pageCount = pageCount+1 
@@ -1787,8 +1757,9 @@ function scene:show( event )
 				Webservice.GetMessagessListbyMessageStatus("SENT",10,pageCount,getSentMessageList)
 			end
 
-		elseif pagingvalue == "compose" then
+		if pagingvalue == "compose" then
 
+				updateList(list_values)
 			
 
 		end
