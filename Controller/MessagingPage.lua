@@ -376,14 +376,9 @@ local function consultantTounch( event )
 
 end
 
+
+
 local function Broadcast_list( list )
-
-		for j=#BroadcastList_array, 1, -1 do 
-		
-		display.remove(BroadcastList_array[#BroadcastList_array])
-		BroadcastList_array[#BroadcastList_array] = nil
-	end
-
 
 	for i=1,#list do
 
@@ -635,14 +630,6 @@ end
 
 
 local function getupdateLastChatSyncDate( response )
-
-
-		for j=#BroadcastList_array, 1, -1 do 
-
-			display.remove(BroadcastList_array[#BroadcastList_array])
-			BroadcastList_array[#BroadcastList_array] = nil
-	    end
-
 
 	for i=1,#BroadcastList do
 		
