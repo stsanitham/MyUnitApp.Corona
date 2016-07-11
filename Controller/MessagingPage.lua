@@ -787,6 +787,13 @@ function scene:show( event )
 
         	response = json.decode(response)
 
+
+        	for j=#BroadcastList_array, 1, -1 do 
+       			display.remove(BroadcastList_array[#BroadcastList_array])
+				BroadcastList_array[#BroadcastList_array] = nil
+		    end
+								    
+
         
        		 if #response.data > 0 then
 
@@ -953,20 +960,18 @@ function scene:show( event )
 
                        local function printTimeSinceStart( event )
 
-	                       	if chatReceivedFlag==true and openPage=="MessagingPage" and chatReceivedPage == "MessagingPage" then
-	                       		
-	                       		chatReceivedFlag=false
+		                       	if chatReceivedFlag==true and openPage=="MessagingPage" and chatReceivedPage == "MessagingPage" then
+		                       		
+		                       		chatReceivedFlag=false
 
-	                       		for j=#BroadcastList_array, 1, -1 do 
-	                       			display.remove(BroadcastList_array[#BroadcastList_array])
-									BroadcastList_array[#BroadcastList_array] = nil
-							    end
+		                       		for j=#BroadcastList_array, 1, -1 do 
+		                       			display.remove(BroadcastList_array[#BroadcastList_array])
+										BroadcastList_array[#BroadcastList_array] = nil
+								    end
 
+		                       		Webservice.UpdateLastChatSyncDate(getupdateLastChatSyncDate)
 
-	                       		Webservice.UpdateLastChatSyncDate(getupdateLastChatSyncDate)
-
-	                       		
-	                       	end
+		                       	end
 
                        end 
                        Runtime:addEventListener( "enterFrame", printTimeSinceStart )
