@@ -10,32 +10,32 @@ local count ={}
 local requestid
 
 local function splitUrl( URL )
-	return URL:gsub(ApplicationConfig.BASE_URL,"")	
+    return URL:gsub(ApplicationConfig.BASE_URL,"")   
 end
 
 
 function request.new(url, method, params,listner)
 
-	
-	print("enter "..url)
+   
+    print("enter "..url)
 
-	spinner_show()
+    spinner_show()
 
 
-	if string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzzCheckExistsRequestStatus") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") or string.find(url,"/MyUnitBuzzCalendar/CreateQuickcContact") or string.find(url,"/MyUnitBuzz/CheckNotInUnitWiseRegister") or string.find(url,"/MyUnitBuzz/SaveMyUnitBuzzMessages") or string.find(url,"/MyUnitBuzz/IsUserAvailable") or string.find(url,"/MyUnitBuzz/GetChatUnReadMessagesList") or string.find(url,"/MyUnitBuzz/UpdateLastChatSyncDate") then
+    if string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzzCheckExistsRequestStatus") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") or string.find(url,"/MyUnitBuzzCalendar/CreateQuickcContact") or string.find(url,"/MyUnitBuzz/CheckNotInUnitWiseRegister") or string.find(url,"/MyUnitBuzz/SaveMyUnitBuzzMessages") or string.find(url,"/MyUnitBuzz/IsUserAvailable") or string.find(url,"/MyUnitBuzz/GetChatUnReadMessagesList") or string.find(url,"/MyUnitBuzz/UpdateLastChatSyncDate") then
 
-	spinner.isVisible=false
+    spinner.isVisible=false
 
 end
 
 requestId = network.request( url, method, function(event)  if ( event.isError ) then
 
-	print( "Network error!" ,event.response)
+    print( "Network error!" ,event.response)
 
-	spinner_hide()
+    spinner_hide()
 
 
--- 			local options =
+--             local options =
 -- {
 --    to = { "malarkodi.sellamuthu@w3magix.com"},
 --    subject = "bug",
@@ -46,37 +46,37 @@ requestId = network.request( url, method, function(event)  if ( event.isError ) 
 -- native.showPopup( "mail", options )
 
 else
-	
-	print ( "URL : "..url.."\n\n RESPONSE: " .. event.response )
+   
+    print ( "URL : "..url.."\n\n RESPONSE: " .. event.response )
 
-	local response 
+    local response
 
-	 if string.find(url,"/MyUnitBuzz/GetSpecialRecognitionJsonContent") then
-
-
-	 	response = json.decode(event.response)
-	 	--response = (event.response)
-
-	 else
+     if string.find(url,"/MyUnitBuzz/GetSpecialRecognitionJsonContent") then
 
 
-	    response = json.decode(event.response)
+         response = json.decode(event.response)
+         --response = (event.response)
 
-	end
-
-
-	spinner_hide()
-
-	listner(response)
+     else
 
 
-	end end, params )
+        response = json.decode(event.response)
+
+    end
 
 
-	--[[if(url:sub(1,string.find(url,"?")-1) == "http://api.myunitapp.dotnetethic.com/MyUnitBuzz/GetSearchByUnitNumberOrDirectorName") then
-		
+    spinner_hide()
 
-	end]]
+    listner(response)
+
+
+    end end, params )
+
+
+    --[[if(url:sub(1,string.find(url,"?")-1) == "http://api.myunitapp.dotnetethic.com/MyUnitBuzz/GetSearchByUnitNumberOrDirectorName") then
+       
+
+    end]]
 
 
 end

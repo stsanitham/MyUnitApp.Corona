@@ -308,7 +308,22 @@ local function selectionComplete ( event )
 
 end
 
+function get_messagemodel(response)
+	        local options = {
 
+                	effect = "slideRight",
+                	time = 300,
+                	params = { pushlistvalues = response,page = "compose"}
+                }
+
+               local function Afterdelay( event )
+					        	composer.gotoScene("Controller.pushNotificationListPage",options)
+
+               end
+
+        	timer.performWithDelay( 200, Afterdelay )
+
+end
 
 local function sendAction( method,IsScheduled,Date,Time )
 
@@ -333,12 +348,12 @@ if (shortmsg_textbox.text ~= "") and (filename.text == "" and filename.isVisible
                 	params = { pushlistvalues = method,page = "compose"}
                 }
 
-                local listener = {}
-                function listener:timer( event )
-                	composer.gotoScene("Controller.pushNotificationListPage",options)
-                end
+                -- local listener = {}
+                -- function listener:timer( event )
+                -- 	composer.gotoScene("Controller.pushNotificationListPage",options)
+                -- end
 
-                timer.performWithDelay( 1000, listener )
+                -- timer.performWithDelay( 1000, listener )
 
                 
             elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) and (filename.text ~= "" and filename.isVisible == true ) then
@@ -412,12 +427,12 @@ if (shortmsg_textbox.text ~= "") and (filename.text == "" and filename.isVisible
 							params = { pushlistvalues = method,page = "compose"}
 						}
 
-						local listener = {}
-						function listener:timer( event )
-							composer.gotoScene("Controller.pushNotificationListPage",options)
-						end
+						-- local listener = {}
+						-- function listener:timer( event )
+						-- 	composer.gotoScene("Controller.pushNotificationListPage",options)
+						-- end
 
-						timer.performWithDelay( 1000, listener )
+						-- timer.performWithDelay( 1000, listener )
 
 					elseif (shortmsg_textbox.text ~= "") and (filename.text ~= "" and filename.isVisible == true ) then
 
@@ -471,12 +486,12 @@ if (shortmsg_textbox.text ~= "") and (filename.text == "" and filename.isVisible
 							params = { pushlistvalues = method,page = "compose"}
 						}
 
-						local listener = {}
-						function listener:timer( event )
-							composer.gotoScene("Controller.pushNotificationListPage",options)
-						end
+						-- local listener = {}
+						-- function listener:timer( event )
+						-- 	composer.gotoScene("Controller.pushNotificationListPage",options)
+						-- end
 
-						timer.performWithDelay( 1000, listener )
+						-- timer.performWithDelay( 1000, listener )
         	   --Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","",Imagepath,Imagename,Imagesize,"","","",method,"","","",get_messagemodel)
 
         	elseif (shortmsg_textbox.text ~= "") and (Audio_filename.text ~= "" and Audio_filename.isVisible == true ) then
@@ -534,12 +549,12 @@ if (shortmsg_textbox.text ~= "") and (filename.text == "" and filename.isVisible
         			params = { pushlistvalues = method,page = "compose"}
         		}
 
-        		local listener = {}
-        		function listener:timer( event )
-        			composer.gotoScene("Controller.pushNotificationListPage",options)
-        		end
+        		-- local listener = {}
+        		-- function listener:timer( event )
+        		-- 	composer.gotoScene("Controller.pushNotificationListPage",options)
+        		-- end
 
-        		timer.performWithDelay( 200 , listener )
+        		-- timer.performWithDelay( 200 , listener )
             	-- Webservice.SEND_MESSAGE(shortmsg_textbox.text,longMessage,"","","","","","","",Audiopath,Audioname,Audiosize,method,"","","",get_audiomodel)
 
             end
@@ -2074,10 +2089,6 @@ if Details ~= nil and Details.AudioFilePath ~= nil then
 
 			if longmsg_textbox then longmsg_textbox:removeSelf( );longmsg_textbox=nil end
 			-- if shortmsg_textbox then shortmsg_textbox:removeSelf( );shortmsg_textbox=nil end
-
-			composer.removeHidden()
-
-
 			if datePicker then datePicker.clear() end
 
 			if timePicker then timePicker.clear() end
@@ -2092,7 +2103,24 @@ if Details ~= nil and Details.AudioFilePath ~= nil then
 			end
 
 
+			 menuBtn:removeEventListener("touch",menuTouch)
+               back_icon:removeEventListener("touch",closeMessagePage)
+               back_icon_bg:removeEventListener("touch",closeMessagePage)
+               title:removeEventListener("touch",closeMessagePage)
+
+               shortmsg_textbox:removeEventListener( "userInput", TextLimitation)
+				--longmsg_textbox:removeEventListener( "urlRequest", webListener )
+				Background:removeEventListener("touch",FocusComplete)
+
+				
+				Runtime:removeEventListener( "key", onKeyEventDetail )
+
+
 		elseif phase == "did" then
+
+			composer.removeHidden()
+
+				
 
 			if status == "editpage" then
 
@@ -2109,17 +2137,7 @@ if Details ~= nil and Details.AudioFilePath ~= nil then
 
                -- composer.removeHidden()
 
-
-               back_icon:removeEventListener("touch",closeMessagePage)
-               back_icon_bg:removeEventListener("touch",closeMessagePage)
-               title:removeEventListener("touch",closeMessagePage)
-
-               shortmsg_textbox:removeEventListener( "userInput", TextLimitation)
-				--longmsg_textbox:removeEventListener( "urlRequest", webListener )
-				Background:removeEventListener("touch",FocusComplete)
-
-				
-				Runtime:removeEventListener( "key", onKeyEventDetail )
+              
 
 			end	
 

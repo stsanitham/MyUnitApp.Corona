@@ -4,9 +4,9 @@ application =
 {
 	content = {
 	
-		width = aspectRatio > 1.5 and 320 or math.floor( 480 / aspectRatio ),
-        height = aspectRatio < 1.5 and 480 or math.floor( 320 * aspectRatio ),
-        scale = "letterbox",
+		width = 320,
+        height = 480,
+        scale = "normal",
         xAlign = "center",
         yAlign = "center",
         audioPlayFrequency = 44100,

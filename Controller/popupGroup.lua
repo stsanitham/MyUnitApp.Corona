@@ -1371,6 +1371,18 @@ local function popup_scrollListener(event )
 
 
 
+local function touchBg( event )
+
+	if event.phase == "began" then
+
+		elseif event.phase == "ended" then
+
+		native.setKeyboardFocus(nil)
+
+	end
+	return true
+end
+
 
 
 function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value,details,pagevalue)
@@ -1398,15 +1410,22 @@ function GetPopUp(contactid_value,email,mobile,homenum,worknum,othernum,id_value
 
 		popup_Backgeound = display.newRect(W/2, H/2, W, H )
 		--popup_Backgeound:addEventListener( "touch", touchPopupBg )
-		--popup_Backgeound.id= "popuplist"
-		popup_Backgeound.alpha=0.01
+		popup_Backgeound.id= "popupbackgeound"
+		popup_Backgeound.alpha=0.35
 		popUpGroup:insert(popup_Backgeound)
+
+		popup_Backgeound:addEventListener("touch",touchBg)
 
 
 		popupTop_bg = display.newRect(leftPadding_value + 140, H/2+ 10, W-20, 385 )
 		popupTop_bg.x = leftPadding_value + 140
 	    popupTop_bg:setFillColor(0,0,0)
+	    popupTop_bg.isVisible=false
+	    popupTop_bg:addEventListener("touch",touchBg)
+
 	    popUpGroup:insert(popupTop_bg)
+
+
 
 	    popupTop = display.newRect(W/2,H/2-195,298,30)
 	    --  popupTop:setStrokeColor(0,0,0,0.2)

@@ -378,13 +378,11 @@ end
 
 local function Broadcast_list( list )
 
-
-	for j=#BroadcastList_array, 1, -1 do 
+		for j=#BroadcastList_array, 1, -1 do 
 		
 		display.remove(BroadcastList_array[#BroadcastList_array])
 		BroadcastList_array[#BroadcastList_array] = nil
 	end
-
 
 
 	for i=1,#list do
@@ -589,26 +587,28 @@ local function Broadcast_list( list )
 		local line = display.newRect(tempGroup,W/2,background.y,W,1)
 		line.y=background.y+background.contentHeight-line.contentHeight
 		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
---UPDATE
-local new_msgCount = 0
 
-if list[i].Message_Status == "UPDATE" then
+		
+		--UPDATE
+		local new_msgCount = 0
 
-	for k=1,#list do
+		if list[i].Message_Status == "UPDATE" then
 
-		if list[i].Message_To == list[k].Message_To then
+			for k=1,#list do
 
-			if list[i].Message_Status == "UPDATE" and list[k].Message_Status == "UPDATE" then
+				if list[i].Message_To == list[k].Message_To then
 
-				if list[i].Message_From == list[k].Message_From then
-					new_msgCount=new_msgCount+1
+					if list[i].Message_Status == "UPDATE" and list[k].Message_Status == "UPDATE" then
+
+						if list[i].Message_From == list[k].Message_From then
+							new_msgCount=new_msgCount+1
+						end
+
+					end
+
 				end
 
 			end
-
-		end
-
-	end
 
 
 
@@ -632,13 +632,17 @@ end
 end
 
 
+
+
 local function getupdateLastChatSyncDate( response )
 
-	for j=#BroadcastList_array, 1, -1 do 
-		
-		display.remove(BroadcastList_array[#BroadcastList_array])
-		BroadcastList_array[#BroadcastList_array] = nil
-	end
+
+		for j=#BroadcastList_array, 1, -1 do 
+
+			display.remove(BroadcastList_array[#BroadcastList_array])
+			BroadcastList_array[#BroadcastList_array] = nil
+	    end
+
 
 	for i=1,#BroadcastList do
 		
@@ -653,7 +657,8 @@ local function getupdateLastChatSyncDate( response )
 
 	end
 
-	if #BroadcastList_array < 1 then 
+
+	if #BroadcastList < 1 then 
 			NoEvent.isVisible = true
 	else
 		NoEvent.isVisible = false
@@ -794,6 +799,7 @@ function scene:show( event )
         -- native.showPopup( "mail", options )
 
         	response = json.decode(response)
+
         
        		 if #response.data > 0 then
 
@@ -867,7 +873,6 @@ function scene:show( event )
                                        else
 
 
-                                       	
 	                                       	if additionalData.tFN ~= nil then
 	                                       		FromName=additionalData.tFN.." "..additionalData.tLN
 
@@ -881,7 +886,7 @@ function scene:show( event )
                                        
                                        
 
-                                       local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+                                       local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.decrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                                        db:exec( insertQuery )
 
 
@@ -907,13 +912,15 @@ function scene:show( event )
 
                            end
 
-                           	if #BroadcastList_array < 1 then 
-								NoEvent.isVisible = true
+                           if #BroadcastList < 1 then 
+									NoEvent.isVisible = true
 							else
 								NoEvent.isVisible = false
 							end
 
                            if #BroadcastList ~= nil then
+
+                    		
 
                            	Broadcast_list(BroadcastList)
                            end
@@ -938,12 +945,13 @@ function scene:show( event )
 
                        print( json.encode( event ))
 
-				if event.params ~= nil and event.params.status == "fromChat"	 then
+				if event.params ~= nil and event.params.status == "fromChat" then
 
 					print( "fromChat" )
 
-					                   	if #BroadcastList_array < 1 then 
-							NoEvent.isVisible = true
+
+					  	if #BroadcastList < 1 then 
+								NoEvent.isVisible = true
 						else
 							NoEvent.isVisible = false
 						end
@@ -961,6 +969,12 @@ function scene:show( event )
 	                       	if chatReceivedFlag==true and openPage=="MessagingPage" and chatReceivedPage == "MessagingPage" then
 	                       		
 	                       		chatReceivedFlag=false
+
+	                       		for j=#BroadcastList_array, 1, -1 do 
+	                       			display.remove(BroadcastList_array[#BroadcastList_array])
+									BroadcastList_array[#BroadcastList_array] = nil
+							    end
+
 
 	                       		Webservice.UpdateLastChatSyncDate(getupdateLastChatSyncDate)
 

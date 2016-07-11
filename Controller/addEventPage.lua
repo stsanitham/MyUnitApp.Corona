@@ -642,7 +642,7 @@ local function onRowRender( event )
 
     local rowTitle
 
-    if List.arrayName == purposeArray or List.arrayName == priorityArray then
+    if List.arrayName == purposeArray or List.arrayName == priorityArray or List.arrayName == taskStatus or List.arrayName == partyArray then
     	rowTitle = display.newText( row, List.arrayName[row.index].value, 0, 0, nil, 14 )
     else
 
@@ -663,7 +663,7 @@ local function onRowRender( event )
     
 
 
-	if List.arrayName == purposeArray or List.arrayName == priorityArray then
+	if List.arrayName == purposeArray or List.arrayName == priorityArray or List.arrayName == taskStatus or List.arrayName == partyArray then
 
     	row.name = List.arrayName[row.index].value
     	row.id=List.arrayName[row.index].id
@@ -777,6 +777,8 @@ local function onRowTouch(event)
 
 		end
 
+
+
 		if PurposeLbl.text:lower( ) == "other" then
 
 			AddeventArray[List.textFiled.count+1].isVisible = false
@@ -786,11 +788,25 @@ local function onRowTouch(event)
 
 		else
 
-			for i=1,#AddeventPage.purposeArray do
-				if AddeventPage.purposeArray[i].value == row.name then
-					List.textFiled.value=AddeventPage.purposeArray[i].id
-				end
-			end
+
+			if SelectEvent.text:lower( ) == "party" then
+
+					for i=1,#AddeventPage.partyArray do
+						if AddeventPage.purposeArray[i] == row.name then
+							List.textFiled.value=AddeventPage.partyArray[i]
+						end
+					end
+
+			else
+
+
+					for i=1,#AddeventPage.purposeArray do
+						if AddeventPage.purposeArray[i].value == row.name then
+							List.textFiled.value=AddeventPage.purposeArray[i].id
+						end
+					end
+
+		   end
 
 
 			print( "value : "..List.textFiled.value )
@@ -1253,6 +1269,7 @@ local function TouchAction( event )
 
 					if PurposeLbl.text:lower( ) == "other" then
 
+						print("Other.text : "..Other.text)
 
 						if Other.text == "" then
 
@@ -1261,6 +1278,8 @@ local function TouchAction( event )
 						else
 							
 							if TicklerType:lower( ) == "call" then
+
+								print("$%^$%^$%^$%^$%^$%^$%^$%^$%^%^%^")
 
 
 								local time = makeTimeStamp(startdate)
@@ -1293,22 +1312,70 @@ local function TouchAction( event )
 
 							end
 
-								
+									
+							if allDay then
+								print("true ********")
+
+							else
+								print("false ********")
+							end
+
+						local priority_value,status
 
 
-							if end_time > start_time and allDay ~= true then
+						if TicklerType:lower( ) == "task" then
+
+							priority_value = PurposeLbl.value
+
+							status = PriorityLbl.value
+
+						elseif TicklerType:lower( ) == "party" then
+
+							status = PurposeLbl.value
+
+							priority_value = PriorityLbl.value
+						else
+
+							priority_value = PriorityLbl.value
+
+							status = PurposeLbl.value
+						end
 
 
+
+						if end_time < start_time and allDay ~= true then
+
+							ErrorIcon.isVisible=true
+
+						else
 
 							ErrorIcon.isVisible=false
+
+
+							 if TicklerType:lower( ) == "task" then
+
+									priority_value = PurposeLbl.value
+
+									status = PriorityLbl.value
+
+									  Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,status,Other.text,priority_value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
+
+							elseif TicklerType:lower( ) == "party" then
+
+									status = PurposeLbl.value
+
+									priority_value = PriorityLbl.value
 							
-							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
+							        Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,status,Other.text,priority_value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
 							
 							else
 
-								ErrorIcon.isVisible=true
+								     Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,status,Other.text,priority_value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
+							
 
 							end	
+
+						end
 					end
 				else
 
@@ -1319,7 +1386,7 @@ local function TouchAction( event )
 
 						
 						
-
+print("%^&%^&%^&%^&%^&%^&%^&%^&^&%^&%%^&^&^&^%&^&%^%&%^&^%&")
 						local time = makeTimeStamp(startdate)
 
 						time = time + ((tonumber(Event_to_date.value)+1)*3600) + (tonumber(Event_to_time.value)*60)
@@ -1358,7 +1425,29 @@ local function TouchAction( event )
 
 					ErrorIcon.isVisible=false
 
-					Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
+
+					    if TicklerType:lower( ) == "task" then
+
+							priority_value = PurposeLbl.value
+
+							status = PriorityLbl.value
+
+							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,status,Other.text,priority_value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
+
+					    elseif TicklerType:lower( ) == "party" then
+
+							status = PurposeLbl.value
+
+							priority_value = PriorityLbl.value
+
+							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,status,Other.text,priority_value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
+
+						else
+							
+							Webservice.CreateTickler(id,TicklerId,isUpdate,CalendarId,CalendarName,TicklerType,"OPEN",What.text,startdate,enddate,EventFrom_time,EventTo_time,allDay,Where.text,Description.text,PurposeLbl.value,Other.text,PriorityLbl.value,AppintmentWith.contactinfo,Addinvitees.contactinfo,AttachmentName,AttachmentPath,Attachment,Phone.text,AccessCode.text,Conference.isOn,CallDirection,colorCode,get_CreateTickler)
+						
+						end
+
 
 
 				end
@@ -1658,6 +1747,8 @@ local function TouchAction( event )
 
 									elseif SelectEvent.text:lower( ) == "party" then
 
+										print("party123 "..PurposeLbl.text)
+
 										List.arrayName = partyArray
 										List.textFiled = PurposeLbl
 
@@ -1709,6 +1800,8 @@ local function TouchAction( event )
 										List.y = event.target.y+event.target.contentHeight+1.3-83.5
 
 									elseif SelectEvent.text:lower( ) == "party" then
+
+										print("party123123123")
 
 										List.arrayName = priorityArray
 										List.textFiled = PriorityLbl
@@ -3452,15 +3545,12 @@ end
 
 		  	if UpdateValue.CallDirection == 1 then
 
-		  		print("inbounddddddddddd")
-
 				Inbound:setState( { isOn=true, isAnimated=true } )
 
 				CallDirection = "1"
 
 			elseif UpdateValue.CallDirection == 0 then
 
-				print("outbound")
 
 				Out_bound:setState( { isOn=true, isAnimated=true } )
 
@@ -3596,14 +3686,20 @@ end
 
 
 
+
+
+
+----TaskStatus
+
 	  		if UpdateValue.AppointmentPurpose ~= nil then
+
 
 
 	  			if SelectEvent.text:lower( ) == "task" then
 
 		  			for i=1,#AddeventPage.priorityArray do
 
-		  				if AddeventPage.priorityArray[i].id == UpdateValue.AppointmentPurpose then
+		  				if AddeventPage.priorityArray[i].id == UpdateValue.Priority then
 		  					PurposeLbl.text = AddeventPage.priorityArray[i].value
 		  					PurposeLbl.value=AddeventPage.priorityArray[i].id
 		  					print("check for task = "..PurposeLbl.value.." "..PurposeLbl.text)
@@ -3612,17 +3708,33 @@ end
 
 		  		elseif SelectEvent.text:lower( ) == "party" then
 
-		  			for i=1,#AddeventPage.partyArray do
+		  			print("%^&^&&^%^& party 123")
+
+	  				for i=1,#AddeventPage.partyArray do
+	  					
+		  				--if AddeventPage.taskStatus[i].id == UpdateValue.TaskStatus then
+		  					--PurposeLbl.text = AddeventPage.partyArray[UpdateValue.AppointmentPurpose]
+
+		  					-- PurposeLbl.value = AddeventPage.partyArray[UpdateValue.AppointmentPurpose]
+
+		  					-- PurposeLbl.text = AddeventPage.partyArray[UpdateValue.AppointmentPurpose]
+
+
+		  					-- print("retertrt"..PurposeLbl.text)
+		  				--end
 
 		  				if AddeventPage.partyArray[i].id == UpdateValue.AppointmentPurpose then
 		  					PurposeLbl.text = AddeventPage.partyArray[i].value
 		  					PurposeLbl.value=AddeventPage.partyArray[i].id
-		  					print("check for party = "..PurposeLbl.value.." "..PurposeLbl.text)
+		  					print("check for task = "..PurposeLbl.value.." "..PurposeLbl.text)
 		  				end
+
+
 		  			end
 
 	  			else
 
+	  				print("%^&^&&^%^& other values   5435353345")
 
 		  			for i=1,#AddeventPage.purposeArray do
 		  				if AddeventPage.purposeArray[i].id == UpdateValue.AppointmentPurpose then
@@ -3633,29 +3745,108 @@ end
 		  			end
 
 	  		    end
+
 	  			
 	  		end
 
 
 
-	  		if UpdateValue.Priority ~= nil then
+
+	  		if UpdateValue.Contact ~= nil then
+
+	  			if PurposeLbl.text == "Other" then
+
+	  				print("other visible  @#$$@#$@#$@#$")
+
+	  				Other.isVisible = true
+		  			BottomOther.isVisible = true
+		  			belowOtherGroup.y = 0
+
+	  				Other.text = UpdateValue.AppointmentPurposeOther
+
+	  			else
+
+	  				print("4566557")
+
+	  				Other.isVisible = false
+		  			BottomOther.isVisible = false
+
+		  			Other.text = ""
+
+	  			end
+
+	  		end
+
+
+
+
+	  		if SelectEvent.text:lower( ) == "call" then
+
+	  			if PurposeLbl.text == "Other" then
+
+	  				print(" other visible  @#$$@#$@#$@#$ for calllllllllllllllll ")
+
+	  				Other.isVisible = true
+		  			BottomOther.isVisible = true
+		  			belowOtherGroup.y = 0
+
+	  				Other.text = UpdateValue.AppointmentPurposeOther
+
+	  			else
+
+	  				print("4566557")
+
+	  				Other.isVisible = false
+		  			BottomOther.isVisible = false
+
+		  			Other.text = ""
+
+
+
+	  			end
+
+	  		end
+
+
+
+
+
+	  		if UpdateValue.Priority ~= nil or UpdateValue.TaskStatus ~= nil then
 
 	  			if SelectEvent.text:lower( ) == "task" then
 
-		  			for i=1,#AddeventPage.taskStatus do
-		  				if AddeventPage.taskStatus[i].id == UpdateValue.Priority then
-		  					PriorityLbl.text = AddeventPage.taskStatus[i].value
+
+	  				for i=1,#AddeventPage.priorityArray do
+
+		  				if AddeventPage.taskStatus then
+
+		  					PriorityLbl.value = AddeventPage.taskStatus[UpdateValue.TaskStatus].id
+
+		  					PriorityLbl.text = AddeventPage.taskStatus[UpdateValue.TaskStatus].value
+
+		  					print("TASKKKKKKKK "..PriorityLbl.value)
 		  				end
+
+
 		  			end
 
-		  		else
+		  			-- for i=1,#AddeventPage.taskStatus do
+		  			-- 	if AddeventPage.taskStatus[i].id == UpdateValue.AppointmentPurpose then
+		  			-- 		PriorityLbl.text = AddeventPage.taskStatus[i].value
+		  			-- 		print("check task priority = "..PriorityLbl.value.." "..PriorityLbl.text)
+		  			-- 	end
+		  			-- end
+
+
+	  			else
 
 		  			for i=1,#AddeventPage.priorityArray do
+
 		  				if AddeventPage.priorityArray[i].id == UpdateValue.Priority then
 		  					PriorityLbl.text = AddeventPage.priorityArray[i].value
 		  				end
-		  			end
 
+		  			end
 		  		end
 	  			
 	  		end
@@ -3751,6 +3942,8 @@ MainGroup:insert(sceneGroup)
 
 end
 
+
+
 function scene:hide( event )
 
 	local sceneGroup = self.view
@@ -3789,6 +3982,8 @@ function scene:hide( event )
 	end	
 
 end
+
+
 
 
 function scene:destroy( event )

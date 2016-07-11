@@ -592,10 +592,11 @@ local function EditOption( event )
 
 
 		end
+
+
 		------------------
 
-		if Details.TicklerType ~= 4 then
-
+		if Details.TicklerType ~= 4  then
 
 		----Purpose----
 
@@ -630,8 +631,8 @@ local function EditOption( event )
 			display_details[#display_details].id="Purpose"
 			scrollView:insert( display_details[#display_details] )
 
+	   end
 
-		end
 
 	end
 		------------------
