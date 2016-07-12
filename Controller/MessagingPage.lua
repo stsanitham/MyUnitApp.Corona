@@ -15,12 +15,15 @@ local json = require("json")
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
-
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
 
 local Background
+
+
+local iconCache = {}
+
 
 local menuBtn, chattabBar , tabButtons
 
@@ -44,18 +47,20 @@ local RecentTab_Topvalue = 75
 
 local header_value = ""
 
-local BackFlag = false, Image
+local BackFlag = false
+
+local Image
 
 local byNameArray = {}
 
 local Listresponse_array = {}
 
+local broad_scrollview
+
 local tabBarGroup = display.newGroup( )
 
-local tabBarBackground = "res/assert/tabBarBg.png"
-local tabBarLeft = "res/assert/tabSelectedLeft.png"
-local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
-local tabBarRight = "res/assert/tabSelectedRight.png"
+local msgGroup = display.newGroup( )
+
 
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
@@ -65,6 +70,7 @@ for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
 end
 
+	print( "HERE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" )
 
 ---------------------------------------------------
 
@@ -263,11 +269,16 @@ local function TabbarTouch( event )
 
 			local function listener1( obj )
 
-				circle:removeSelf( );circle=nil
+				if circle then circle:removeSelf( );circle=nil end 
 				tab_Group_btn:scale(0.8,0.8)
 
 				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 				overlay.y=tabBg.y+6;overlay.x=tab_Group_btn.x
+
+					for j=MainGroup.numChildren, 1, -1 do 
+	        							display.remove(MainGroup[MainGroup.numChildren])
+	        							MainGroup[MainGroup.numChildren] = nil
+	        						end
 
 				local options = {
 					time = 300,	  
@@ -377,9 +388,9 @@ local function consultantTounch( event )
 end
 
 
-
-local function Broadcast_list( list )
-
+local function CreateList( list )
+	
+	
 	for i=1,#list do
 
 		local flag = true
@@ -458,6 +469,8 @@ local function Broadcast_list( list )
 
 			print( json.encode( list[i]))
 
+			table.insert(iconCache, background)
+
 
 
 			local Name = ""
@@ -480,13 +493,13 @@ local function Broadcast_list( list )
 			end
 
 		--if ContactId == list[i].Message_To then
-		-- 	  if MemberName == list[i].ToName then
-		--         Name=list[i].FromName
-		--         profilrPic=list[i].Message_From
-		--       elseif MemberName == list[i].FromName then
-		--         profilrPic=list[i].Message_To
-		--         Name=list[i].ToName
-		--       end
+		-- 	â€‚â€‚if MemberName == list[i].ToName then
+		-- â€‚â€‚â€‚â€‚â€‚â€‚â€‚â€‚Name=list[i].FromName
+		-- â€‚â€‚â€‚â€‚â€‚â€‚â€‚â€‚profilrPic=list[i].Message_From
+		-- â€‚â€‚â€‚â€‚â€‚â€‚elseif MemberName == list[i].FromName then
+		-- â€‚â€‚â€‚â€‚â€‚â€‚â€‚â€‚profilrPic=list[i].Message_To
+		-- â€‚â€‚â€‚â€‚â€‚â€‚â€‚â€‚Name=list[i].ToName
+		-- â€‚â€‚â€‚â€‚â€‚â€‚end
 
 
 		local filePath = system.pathForFile( profilrPic..".png",system.TemporaryDirectory )
@@ -505,15 +518,22 @@ local function Broadcast_list( list )
 
 		Image.x=30;Image.y=background.y+background.height/2
 
+
+		table.insert(iconCache, Image)
+
 		local mask = graphics.newMask( "res/assert/masknew.png" )
 
 		Image:setMask( mask )
+
+		--table.insert(iconCache, mask)
 
 		local Name_txt = display.newText(tempGroup,Name,0,0,native.systemFont,14)
 		Name_txt.x=Image.x+Image.contentWidth/2+10;Name_txt.y=background.y+background.height/2-10
 		Name_txt.anchorX=0
 		Utils.CssforTextView(Name_txt,sp_labelName)
 		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+		table.insert(iconCache, Name_txt)
 
 		if list[i].Message_Type == "GROUP" then
 
@@ -524,6 +544,8 @@ local function Broadcast_list( list )
 		Position_txt.x=Name_txt.x;Position_txt.y=background.y+background.height/2+10
 		Position_txt.anchorX=0
 		Utils.CssforTextView(Position_txt,sp_fieldValue)
+
+		table.insert(iconCache, Position_txt)
 
 		if Position_txt.text:len() > 30 then
 
@@ -558,6 +580,7 @@ local function Broadcast_list( list )
 		time.anchorX=0
 		time:setTextColor(Utils.convertHexToRGB(color.tabBarColor))
 
+		table.insert(iconCache, time)
 
 		if Utils.getTime(makeTimeStamp(list[i].Update_Time_Stamp),"%B %d, %Y",TimeZone) == Utils.getTime(os.time(os.date( "!*t" )),"%B %d, %Y",TimeZone) then
 
@@ -583,6 +606,7 @@ local function Broadcast_list( list )
 		line.y=background.y+background.contentHeight-line.contentHeight
 		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
+			table.insert(iconCache, line)
 		
 		--UPDATE
 		local new_msgCount = 0
@@ -611,10 +635,11 @@ local function Broadcast_list( list )
 	local circle = display.newCircle( tempGroup, W-20, background.y+background.contentHeight/2+7, 10 )
 	circle.height=23;circle.width=25
 	circle:setFillColor( Utils.convertHexToRGB("#008B45" ))
+	table.insert(iconCache, circle)
 
 	local circle_txt = display.newText( tempGroup,new_msgCount,circle.x,circle.y,native.systemFontBold,14 )
 	circle_txt:setTextColor( 1)
-
+	table.insert(iconCache, circle_txt)
 end
 
 background:addEventListener( "touch", consultantTounch )
@@ -623,6 +648,24 @@ broad_scrollview:insert(tempGroup)
 end
 
 end
+end
+
+local function Broadcast_list( list )
+
+
+
+			for i = 1,#iconCache do
+			print( i )
+			if iconCache[i] ~= nil then iconCache[i]:removeSelf();iconCache[i]=nil end
+			iconCache[i]=nil
+			end
+
+			for j=#BroadcastList_array, 1, -1 do 
+				
+				display.remove(BroadcastList_array[#BroadcastList_array])
+				BroadcastList_array[#BroadcastList_array] = nil
+			end
+	CreateList(list)
 
 end
 
@@ -630,6 +673,14 @@ end
 
 
 local function getupdateLastChatSyncDate( response )
+
+
+		for j=#BroadcastList_array, 1, -1 do 
+
+			display.remove(BroadcastList_array[#BroadcastList_array])
+			BroadcastList_array[#BroadcastList_array] = nil
+	    end
+
 
 	for i=1,#BroadcastList do
 		
@@ -653,8 +704,12 @@ local function getupdateLastChatSyncDate( response )
 
 	if #BroadcastList ~= nil then
 
-		Broadcast_list(BroadcastList)
+		--Broadcast_list(BroadcastList)
 
+		if chatReceivedFlag =="false" then
+			chatReceivedFlag=false
+			composer.gotoScene( "Controller.reload" )
+		end
 
 	end
 end
@@ -665,6 +720,8 @@ end
 function scene:create( event )
 
 	local sceneGroup = self.view
+
+
 
 	if event.params ~= nil then 
 
@@ -725,6 +782,7 @@ function scene:create( event )
 		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 	
 
+		
 
 			-- broadcastList_scrollview = widget.newScrollView
 			-- {
@@ -753,9 +811,7 @@ function scene:show( event )
 
 	if phase == "will" then
 
-		composer.removeHidden()
-
-		broad_scrollview = widget.newScrollView
+				broad_scrollview = widget.newScrollView
 		{
 			top = RecentTab_Topvalue-5,
 			left = 0,
@@ -767,7 +823,10 @@ function scene:show( event )
 			verticalScrollingDisabled = false,
 		}
 
-		sceneGroup:insert(broad_scrollview)
+		sceneGroup:insert(broad_scrollview)	
+
+
+    elseif phase == "did" then
 
 
 
@@ -786,13 +845,6 @@ function scene:show( event )
         -- native.showPopup( "mail", options )
 
         	response = json.decode(response)
-
-
-        	for j=#BroadcastList_array, 1, -1 do 
-       			display.remove(BroadcastList_array[#BroadcastList_array])
-				BroadcastList_array[#BroadcastList_array] = nil
-		    end
-								    
 
         
        		 if #response.data > 0 then
@@ -931,10 +983,7 @@ function scene:show( event )
 
     
 
-                       if #BroadcastList ~= nil then
-
-                       	Broadcast_list(BroadcastList)
-                       end
+                      
 
 
                        print( json.encode( event ))
@@ -950,33 +999,51 @@ function scene:show( event )
 							NoEvent.isVisible = false
 						end
 
+						 if #BroadcastList ~= nil then
+
+                       	Broadcast_list(BroadcastList)
+                       end
+
+
 				else
 
 						print( "not fromChat" )
 
-                       Webservice.GetChatUnReadMessagesList(getChatUnReadMessagesList)
+                      
+
+
+                          local function timedelay(event)
+
+                       		 Webservice.GetChatUnReadMessagesList(getChatUnReadMessagesList)
+
+                     	  end
+                      	timer.performWithDelay( 300,  timedelay )
+
                 end
 
 
                        local function printTimeSinceStart( event )
 
-		                       	if chatReceivedFlag==true and openPage=="MessagingPage" and chatReceivedPage == "MessagingPage" then
-		                       		
-		                       		chatReceivedFlag=false
+	                       	if chatReceivedFlag==true and openPage=="MessagingPage" and chatReceivedPage == "MessagingPage" then
+	                       		
+	                       		chatReceivedFlag="false"
 
-		                       		for j=#BroadcastList_array, 1, -1 do 
-		                       			display.remove(BroadcastList_array[#BroadcastList_array])
-										BroadcastList_array[#BroadcastList_array] = nil
-								    end
 
-		                       		Webservice.UpdateLastChatSyncDate(getupdateLastChatSyncDate)
 
-		                       	end
+	                     			Webservice.UpdateLastChatSyncDate(getupdateLastChatSyncDate)
+
+	                       		
+	                       	end
 
                        end 
                        Runtime:addEventListener( "enterFrame", printTimeSinceStart )
 
-                      
+
+                  --      local function check( event )
+                  --      		chatReceivedFlag = true
+                  --      end
+                 	
+                 	-- timer.performWithDelay( 3000,  check )
 
                        if event.params then
                        	nameval = event.params.tabbuttonValue1
@@ -1061,9 +1128,7 @@ function scene:show( event )
 
                        sceneGroup:insert( tabBarGroup )
 
-
-                   elseif phase == "did" then
-
+                   	sceneGroup:insert( msgGroup )
 		--Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 
 		
@@ -1101,11 +1166,15 @@ function scene:hide( event )
 		Runtime:removeEventListener( "key", onKeyEvent )
 		tab_Group_btn=nil;tab_Message_btn=nil;tab_Contact_btn=nil
 
+	 --if broad_scrollview ~= nil then broad_scrollview:removeSelf( );broad_scrollview=nil end
 
-
+			
 	elseif phase == "did" then
 
+			Runtime:removeEventListener( "enterFrame", printTimeSinceStart )
+
 		composer.removeHidden()
+			
 
 	end	
 

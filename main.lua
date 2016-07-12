@@ -426,21 +426,20 @@ end
 
                                          chatReceivedFlag=true
 
-                                        if openPage == "main" and openPage == "spalshPage" then
+                                     if openPage == "main" and openPage == "spalshPage" then
 
-
+                                             chatReceivedFlag=true
                                             native.setProperty( "applicationIconBadgeNumber", 0 )
                                             system.cancelNotification()
                                             notifications.cancelNotification()
 
                                         end
-                                    
 
 
                                          if openPage == "MessagingPage" and (chatReceivedPage == "MessagingPage" or chatReceivedPage == "chatPage") then
 
                                                 
-                                                                                       
+                                                                                  
 
                                              local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.decrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
                                              db:exec( insertQuery )
@@ -449,7 +448,12 @@ end
                                              system.cancelNotification()
                                              notifications.cancelNotification()
 
+                                  
+
                                         end
+
+
+                                       
 
                                 
                                 

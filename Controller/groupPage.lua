@@ -257,12 +257,17 @@ local function TabbarTouch( event )
 
 			local function listener1( obj )
 
-				circle:removeSelf( );circle=nil
+				if circle then circle:removeSelf( );circle=nil end
 				tab_Message_btn:scale(0.9,0.9)
 				
 				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 				overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
 
+					for j=MainGroup.numChildren, 1, -1 do 
+	        							display.remove(MainGroup[MainGroup.numChildren])
+	        							MainGroup[MainGroup.numChildren] = nil
+	        						end
+	        						
 				local options = {
 					time = 300,	 
 					params = { tabbuttonValue3 =event.target.id}
@@ -561,6 +566,8 @@ function scene:show( event )
 	
 	if phase == "will" then
 
+
+
 		if event.params then
 
 			pagename = event.params.pagevalue
@@ -704,10 +711,7 @@ function scene:show( event )
 
 		composer.removeHidden()
 
-		
-
-
-		menuBtn:addEventListener("touch",menuTouch)
+			menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)
 
 
@@ -730,8 +734,10 @@ function scene:hide( event )
 
 	if event.phase == "will" then
 
-		composer.removeHidden()
+		transition.cancel( )
 
+
+		
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
 		Runtime:removeEventListener( "key", onKeyEvent )

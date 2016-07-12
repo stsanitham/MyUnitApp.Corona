@@ -344,23 +344,23 @@ panel:insert( profileName )
 
 									print("response file "..img_event.response.filename)
 									profilePic = display.newImageRect(img_event.response.filename,system.TemporaryDirectory,80,65)
-							--profilePic.width=65;profilePic.height=65
-							profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5
-							profilePic.y=profileName.y-profilePic.contentHeight-10
-							profilePic.anchorY=0
-							profilePic.anchorX=0
+										--profilePic.width=65;profilePic.height=65
+										profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5
+										profilePic.y=profileName.y-profilePic.contentHeight-10
+										profilePic.anchorY=0
+										profilePic.anchorX=0
 
-							local mask = graphics.newMask( "res/assert/mask1.png" )
+										local mask = graphics.newMask( "res/assert/mask1.png" )
 
-							profilePic:setMask( mask )
+										profilePic:setMask( mask )
 
-							--profilePic.maskX = profilePic.x
-							--profilePic.maskY = profilePic.y
+										--profilePic.maskX = profilePic.x
+										--profilePic.maskY = profilePic.y
 
-							panel:insert( profilePic )
-							
-	    				--event.row:insert(img_event.target)
-	    			end
+										panel:insert( profilePic )
+										
+				    				--event.row:insert(img_event.target)
+				    			end
 
 	    			end, ContactId..".png", system.TemporaryDirectory)
 else
@@ -460,7 +460,6 @@ end
 				flapScroll:insert( Event_text )
 
 				-----
-
 				--CareerPath
 
 				menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
@@ -980,7 +979,7 @@ end
 					flapScroll:insert( rect )
 
 						--rect.isVisible=false
-						
+			
 
 						--Logout
 
@@ -1067,9 +1066,10 @@ end
 							end
 
 						else
-										--composer.gotoScene( "Controller.audioRecordPage", options )
 
-										composer.gotoScene( "Controller.eventCalenderPage" )
+							print( "##$" )
+										--composer.gotoScene( "Controller.audioRecordPage", options )
+							composer.gotoScene( "Controller.eventCalenderPage" )
 
 						end
 
