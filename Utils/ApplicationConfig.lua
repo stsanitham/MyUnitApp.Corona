@@ -23,7 +23,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 -----------Dev-----------------
 
---[[
+----[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
@@ -41,7 +41,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 ---------Stagging--------------
 
-----[[
+--[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -217,6 +217,8 @@ ApplicationConfig.IsUserAvailable = ApplicationConfig.BASE_URL.."/MyUnitBuzz/IsU
 ApplicationConfig.GetChatUnReadMessagesList = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetChatUnReadMessagesList"
 
 ApplicationConfig.UpdateLastChatSyncDate = ApplicationConfig.BASE_URL.."/MyUnitBuzz/UpdateLastChatSyncDate"
+
+ApplicationConfig.ContactAutoCompleteForRequestAccesses = ApplicationConfig.BASE_URL.."/MyUnitBuzz/ContactAutoCompleteForRequestAccesses"
 
 
 

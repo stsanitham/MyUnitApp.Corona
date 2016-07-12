@@ -18,9 +18,11 @@ local W = display.contentWidth;H= display.contentHeight
 local Background,BgText
 
 local menuBtn
-local  List_array = {}
+local List_array = {}
 local position_array = {}
 local imageArray = {}
+local uploadArray = {}
+local ImageUploadGroup = {}
 
 local ImageLibListArray = {}
 
@@ -778,6 +780,130 @@ end
 
 
 
+
+local function touchBg(event)
+
+	if event.phase == "began" then
+
+		elseif event.phase == "ended" then
+
+		native.setKeyboardFocus(nil)
+
+	end
+
+	return true
+
+end
+
+
+
+
+	local function onCloseTouch( event )
+			
+			 if event.phase == "began" then
+
+					display.getCurrentStage():setFocus( event.target )
+
+					native.setKeyboardFocus( nil )
+
+			 elseif ( event.phase == "moved" ) then
+		        
+
+			 elseif event.phase == "ended" then
+				    
+				    display.getCurrentStage():setFocus( nil )
+
+			        for j=ImageUploadGroup.numChildren, 1, -1 do 
+						display.remove(ImageUploadGroup[ImageUploadGroup.numChildren])
+						ImageUploadGroup[ImageUploadGroup.numChildren] = nil
+				 	end
+
+			  end
+
+		   
+		  return true
+
+	end
+
+
+
+
+
+
+local function uploadLayout(sceneGroup)
+
+	    uploadArray[#uploadArray+1] = display.newGroup()
+
+		ImageUploadGroup = uploadArray[#uploadArray]
+
+
+		local Background = display.newRect(ImageUploadGroup,W/2, H/2, W, H )
+		Background.id= "background"
+		Background.alpha=0.15
+		ImageUploadGroup:insert(Background)
+		Background:addEventListener("touch",touchBg)
+
+
+		local uploadbackgroundbg = display.newRect(160, H/2+ 10, W-12, 420 )
+		uploadbackgroundbg.x = 160
+	    uploadbackgroundbg:setFillColor(0,0,0)
+	    uploadbackgroundbg.isVisible=true
+	    ImageUploadGroup:insert(uploadbackgroundbg)
+
+
+	    local uploadTop_bg = display.newRect(W/2,H/2-185,308,30)
+	    uploadTop_bg.width = 308
+	    uploadTop_bg:setFillColor(Utils.convertHexToRGB(color.LtyGray))
+	    ImageUploadGroup:insert(uploadTop_bg)
+
+
+	    local uploadTitle = display.newText("Upload Image",0,0,native.systemFont,18)
+	    uploadTitle.anchorX = 0
+	    uploadTitle.x=20
+	    uploadTitle.y=uploadTop_bg.y
+	    uploadTitle:setTextColor(Utils.convertHexToRGB(color.tabBarColor))
+	    ImageUploadGroup:insert(uploadTitle)
+
+
+	    local Close_bg = display.newRect(0,0,30,30)
+	    Close_bg.x=uploadTop_bg.x+uploadTop_bg.contentWidth/2-15
+	    Close_bg.y=uploadTop_bg.y
+	    Close_bg.id="close"
+	    Close_bg.alpha=0.01
+	    ImageUploadGroup:insert(Close_bg)
+	    Close_bg:addEventListener("touch",onCloseTouch)
+
+
+		local Close = display.newImageRect("res/assert/cancel.png",19,19)
+	    Close.x=Close_bg.x
+	    Close.y=Close_bg.y
+	    Close:setFillColor(0,0,0)
+	    Close.id="close"
+	    ImageUploadGroup:insert(Close)
+	    Close_bg:addEventListener("touch",onCloseTouch)
+
+
+	    local objCreationList = display.newRect(160, uploadTop_bg.y+uploadTop_bg.contentHeight/2, uploadTop_bg.width , uploadbackgroundbg.contentHeight-uploadTop_bg.contentHeight/2-15 )
+	    objCreationList.anchorY=0
+	    objCreationList.y=uploadTop_bg.y+uploadTop_bg.contentHeight/2
+	    objCreationList.id= "uploadobjectlist"
+	    objCreationList.strokeWidth=1
+	    objCreationList.isVisible=true
+	    objCreationList:setStrokeColor(Utils.convertHexToRGB(color.LtyGray))
+	    ImageUploadGroup:insert(objCreationList)
+
+	   -- objCreationList:addEventListener( "touch", touchPopupBg )
+
+
+		sceneGroup:insert(ImageUploadGroup)
+
+
+end
+
+
+
+
+
 local function listPosition_change( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -872,6 +998,24 @@ local function listPosition_change( event )
 				title.anchorX = 0
 				title.x=5;title.y = title_bg.y
 				title:setFillColor(0)
+
+
+-------------------------upload icon-------------------------------
+
+				uploadimage_icon = display.newImageRect(sceneGroup,"res/assert/upload.png",18,18)
+				uploadimage_icon.x=W-50;uploadimage_icon.y=title_bg.y-10
+				uploadimage_icon.anchorY=0
+				uploadimage_icon:setFillColor(0)
+
+
+				local function uploadImageLayout(event)
+
+					uploadLayout(sceneGroup)
+
+				end
+
+				uploadimage_icon:addEventListener("touch",uploadImageLayout)
+
 
 				changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
 				changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10

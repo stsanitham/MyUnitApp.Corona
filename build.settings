@@ -37,13 +37,6 @@ settings =
 	        publisherId = "com.coronalabs",
 	        supportedPlatforms = { iphone = true },
 	    },
-
-	    ["CoronaProvider.native.popup.activity"] =
-        {
-            publisherId = "com.coronalabs",
-            supportedPlatforms = { iphone=true, },
-        },
-        
        
 	    ["plugin.google.play.services"] =
 	    {

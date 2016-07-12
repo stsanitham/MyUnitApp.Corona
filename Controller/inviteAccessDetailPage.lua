@@ -190,6 +190,9 @@ local function observableScroll( event )
   			print("close button pressed")
 
   			display.getCurrentStage():setFocus( nil )
+
+  			invite_search.isVisible = true
+  			
   			composer.hideOverlay( "slideRight", 300 )
 
   		end
@@ -215,6 +218,8 @@ local function observableScroll( event )
   				print("on complete action done [[[[[[[[[[[[[[[[[[[[980890890890]]]]]]]]]]]]]]]]]]]]]]]]]")
 
   				AlertGroup.isVisible = false
+
+  				invite_search.isVisible = true
 
 
 				 -- ContactIdValue = contactId
@@ -583,6 +588,8 @@ local function observableScroll( event )
 
 			if keyName=="back" then
 
+				invite_search.isVisible = true
+
 				composer.hideOverlay( "slideRight", 300 )
 				
 				return true
@@ -670,6 +677,8 @@ local function observableScroll( event )
 				invitedetail_value = event.params.inviteDetails
 
 				invite_status = event.params.checkstatus
+
+				invite_search = event.params.searchbg
 
 				print("############################ Invite / Access Details...................." , json.encode(invitedetail_value) )
 
