@@ -434,7 +434,7 @@ MessagePage.characters=" characters"
 MessagePage.ErrorText = "Enter the short/long message in the respective field and proceed further"
 MessagePage.SavingFailed = "Saving Failed"
 MessagePage.SchedulingFailed = "Scheduling Failed"
-
+MessagePage.ToDeleteGROUP = "Are you sure you want to delete?"
 
 ChatPage = {}
 
