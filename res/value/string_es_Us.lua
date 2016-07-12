@@ -295,6 +295,7 @@ Message.DraftButton = "Guardar como borrador"
 Message.DraftContent = "Su mensaje se ha guardado como borrador con éxito"
 Message.MaximumUpload = "MyUnitBuzz permite hasta 10 MB para los archivos de cada carga . ¡Disfrutar!"
 Message.Clear = "Claro"
+MessagePage.ToDeleteGROUP = "Are you sure you want to delete?"
 
 
 AddeventPage = {}

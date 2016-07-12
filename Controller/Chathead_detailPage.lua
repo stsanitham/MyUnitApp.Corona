@@ -41,7 +41,7 @@ local mapGroup = display.newGroup()
 
 local phoneNum = ""
 
-local RecentTab_Topvalue,addBg,addRecipient
+local RecentTab_Topvalue,addBg,addRecipient,deleteBg,deleteRecipient
 
 ContactIdValue = 0
 
@@ -89,6 +89,35 @@ local function bgTouch( event )
 
 end
 
+
+local function getDeleteParticularGroup( response )
+	
+
+	--if response == "" then
+
+			status="delete"
+	    	 composer.hideOverlay( "slideRight", 100 )
+
+	--end
+end
+
+		local function onComplete( event )  
+					if event.action == "clicked" then
+
+						local i = event.index
+						if i == 1 then
+
+							Webservice.DeleteParticularGroup(contactId,getDeleteParticularGroup)
+
+						elseif i == 2 then
+								    	
+								--Cancel
+
+								    	
+						end
+					end
+		end
+
 local function addMemberAction( event )
 
 	if event.phase == "began" then
@@ -102,8 +131,17 @@ local function addMemberAction( event )
 						-- }
 
 	     --    composer.showOverlay( "Controller.consultantListPage", options )
-	     status="editArray"
-	     composer.hideOverlay( "slideRight", 100 )
+
+	     if event.target.id == "edit" then
+	     	status="editArray"
+	    	 composer.hideOverlay( "slideRight", 100 )
+	    elseif event.target.id == "delete" then
+
+	    	local alert = native.showAlert("Delete",MessagePage.ToDeleteGROUP, { CommonWords.ok , CommonWords.cancel }, onComplete )
+
+
+	    	
+	    end
 	     
 	 end
 
@@ -174,6 +212,9 @@ local function addMemberAction( event )
     	 				addBg.y = Career_Username.y
 						addRecipient.y=addBg.y
 
+						deleteBg.y = Career_Username.y
+						deleteRecipient.y=addBg.y
+
     	 			end
 
     	 			
@@ -205,6 +246,9 @@ local function addMemberAction( event )
 
     	 			addBg.y = Career_Username.y
 						addRecipient.y=addBg.y
+
+						deleteBg.y = Career_Username.y
+						deleteRecipient.y=addBg.y
 
 
     	 			careerDetail_scrollview.y=TrasitionBar.y+TrasitionBar.contentHeight
@@ -730,10 +774,25 @@ function scene:show( event )
 					addBg.x=W-30
 					addBg.y=Career_Username.y+5
 					addBg.alpha=0.01
+					addBg.id="edit"
 					addRecipient = display.newImageRect( sceneGroup, "res/assert/edit.png", 24, 24 )
 					addRecipient.anchorY=0
 					addRecipient.x=addBg.x;addRecipient.y = addBg.y
 					addBg:addEventListener( "touch", addMemberAction )
+
+
+					deleteBg = display.newRect(sceneGroup,50,50,60,50)
+					deleteBg.x=W-70
+					deleteBg.y=Career_Username.y+6
+					deleteBg.alpha=0.01
+					deleteBg.id="delete"
+					deleteRecipient = display.newImageRect( sceneGroup, "res/assert/delete.png", 24, 21 )
+					deleteRecipient.anchorY=0
+					deleteRecipient.x=deleteBg.x;deleteRecipient.y = deleteBg.y
+					deleteBg:addEventListener( "touch", addMemberAction )
+
+
+					
 				end
 
 				RecentTab_Topvalue = ProfileImage.y+ProfileImage.contentHeight

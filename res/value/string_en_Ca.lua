@@ -285,6 +285,7 @@ Message.DraftButton = "Save as Draft"
 Message.DraftContent = "Your Message has been Saved as Draft Successfully"
 Message.MaximumUpload =  "MyUnitBuzz allows upto 10MB files for each upload. Enjoy!"
 Message.Clear = "Clear"
+MessagePage.ToDeleteGROUP = "Are you sure you want to delete?"
 
 
 AddeventPage = {}

@@ -2816,7 +2816,22 @@ local function scrollListener( event )
 
 			composer.removeHidden()
 
-			ChatBox.isVisible=true 
+			ChatBox.isVisible=true
+
+
+			if status == "delete" then
+
+				if MessageType:lower( ) == "group" then
+
+					composer.gotoScene( "Controller.groupPage" )
+
+				else
+
+					composer.gotoScene( "Controller.broadCastPage" )
+
+				end
+
+			end
 
 		end
 

@@ -220,5 +220,8 @@ ApplicationConfig.UpdateLastChatSyncDate = ApplicationConfig.BASE_URL.."/MyUnitB
 
 ApplicationConfig.ContactAutoCompleteForRequestAccesses = ApplicationConfig.BASE_URL.."/MyUnitBuzz/ContactAutoCompleteForRequestAccesses"
 
+ApplicationConfig.DeleteParticularGroup = ApplicationConfig.BASE_URL.."/MyUnitBuzz/DeleteParticularGroup"
+
+
 
 

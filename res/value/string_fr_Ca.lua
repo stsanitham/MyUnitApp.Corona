@@ -292,7 +292,7 @@ Message.DraftButton = "Enregistrer comme brouillon"
 Message.DraftContent = "Votre message a été enregistré en tant que brouillon succès"
 Message.MaximumUpload = "MyUnitBuzz permet jusqu'à fichiers 10MB pour chaque téléchargement . Prendre plaisir!"
 Message.Clear = "Clair"
-
+MessagePage.ToDeleteGROUP = "Are you sure you want to delete?"
 
 AddeventPage = {}
 AddeventPage.EventnameArray = {"rendez-vous","appel","partie","tâche"}
