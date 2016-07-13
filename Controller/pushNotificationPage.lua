@@ -62,7 +62,7 @@ local function AudioPush(value)
 
 			print( "playing	" )
 
-			laserSound = audio.loadSound( audio_event.response.filename,system.TemporaryDirectory )
+			laserSound = audio.loadSound( audio_event.response.filename,system.DocumentsDirectory )
 			backgroundMusicChannel = audio.play( laserSound, { channel=1, loops=1 } )							
 
 		end
@@ -78,7 +78,7 @@ local function AudioPush(value)
 		"GET",
 		networkListener,
 		value:match( "([^/]+)$" ),
-		system.TemporaryDirectory
+		system.DocumentsDirectory
 		)
 	
 	
@@ -88,7 +88,7 @@ end
 
 local function downloadAction(filename)
 
-	local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+	local localpath = system.pathForFile( filename, system.DocumentsDirectory )
 	
 	local path = system.pathForFile("/storage/sdcard1/"..filename)    
 
@@ -151,7 +151,7 @@ local function downloadAction(filename)
 							
 							print( additionalDate.audio:match( "([^/]+)$" ) )
 
-							local path = system.pathForFile( additionalDate.audio:match( "([^/]+)$" ), system.TemporaryDirectory )
+							local path = system.pathForFile( additionalDate.audio:match( "([^/]+)$" ), system.DocumentsDirectory )
 							local fhd = io.open( path )
 
 				-- Determine if file exists
@@ -164,7 +164,7 @@ local function downloadAction(filename)
 						"GET",
 						DownloadPush_networkListener,
 						additionalDate.audio:match( "([^/]+)$" ),
-						system.TemporaryDirectory
+						system.DocumentsDirectory
 						)
 				end
 				
@@ -522,7 +522,7 @@ function scene:show( event )
 
 				local videoId = string.sub(additionalDate.video,string.find(additionalDate.video,"v=")+2,additionalDate.video:len())
 
-				local path = system.pathForFile( "story.html", system.TemporaryDirectory )
+				local path = system.pathForFile( "story.html", system.DocumentsDirectory )
 				local fh, errStr = io.open( path, "w" )
 
 				if fh then
@@ -555,7 +555,7 @@ function scene:show( event )
 
 				local videoId = string.sub(additionalDate.video,string.find(additionalDate.video,"videos")+7,additionalDate.video:len()-1)
 
-				local path = system.pathForFile( "story.html", system.TemporaryDirectory )
+				local path = system.pathForFile( "story.html", system.DocumentsDirectory )
 				local fh, errStr = io.open( path, "w" )
 
 				if fh then
@@ -588,7 +588,7 @@ function scene:show( event )
 
 				local videoId = string.sub(additionalDate.video,string.find(additionalDate.video,"vimeo.com")+10,additionalDate.video:len())
 
-				local path = system.pathForFile( "story.html", system.TemporaryDirectory )
+				local path = system.pathForFile( "story.html", system.DocumentsDirectory )
 				local fh, errStr = io.open( path, "w" )
 
 				if fh then
@@ -636,7 +636,7 @@ function scene:show( event )
 		webView.id="video"
 		PushGroup:insert( webView)
 
-		        --webView:request("story.html", system.TemporaryDirectory)
+		        --webView:request("story.html", system.DocumentsDirectory)
 		        webView:request( Url )
 
 		        
@@ -656,7 +656,7 @@ function scene:show( event )
 				elseif ( img_event.phase == "ended" ) then
 
 				print( img_event.response.filename )
-				PushImage = display.newImage( additionalDate.image:match( "([^/]+)$" ), system.TemporaryDirectory  )  
+				PushImage = display.newImage( additionalDate.image:match( "([^/]+)$" ), system.DocumentsDirectory  )  
 				PushImage.width = PushNotification_bg.contentWidth-20
 				PushImage.height = 130
 				PushImage.x=W/2
@@ -672,12 +672,12 @@ function scene:show( event )
 			print( additionalDate.image:match( "([^/]+)$" ) )
 
 
-			local path = system.pathForFile( additionalDate.image:match( "([^/]+)$" ), system.TemporaryDirectory )
+			local path = system.pathForFile( additionalDate.image:match( "([^/]+)$" ), system.DocumentsDirectory )
 			local fhd = io.open( path )
 
 					-- Determine if file exists
 					if fhd then
-						PushImage = display.newImage( additionalDate.image:match( "([^/]+)$" ), system.TemporaryDirectory  )  
+						PushImage = display.newImage( additionalDate.image:match( "([^/]+)$" ), system.DocumentsDirectory  )  
 						PushImage.width = PushNotification_bg.contentWidth-20
 						PushImage.height = 130
 						PushImage.x=W/2
@@ -691,7 +691,7 @@ function scene:show( event )
 							"GET",
 							ImagePush_networkListener,
 							additionalDate.image:match( "([^/]+)$" ),
-							system.TemporaryDirectory
+							system.DocumentsDirectory
 							)
 					end
 

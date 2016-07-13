@@ -562,7 +562,7 @@ local function ListmenuTouch( event )
 
 							Image:removeSelf();Image=nil
 							
-							local Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+							local Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
 							Image.width=35;Image.height=35
 							--Image.anchorY=0
 							Image.x=30;Image.y=background.y+background.contentHeight/2
@@ -576,7 +576,7 @@ local function ListmenuTouch( event )
 				    			end
 				    		end
 
-				    		end, "inviteaccess"..feedArray[i].MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory)
+				    		end, "inviteaccess"..feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory)
 		else
 
 					local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)

@@ -694,7 +694,7 @@ local function observableScroll( event )
 
 			if invitedetail_value.ImagePath ~= nil then
 
-				ProfileImage = display.newImageRect(sceneGroup, "inviteaccess"..invitedetail_value.MyUnitBuzzRequestAccessId..".png", system.TemporaryDirectory,80,80)
+				ProfileImage = display.newImageRect(sceneGroup, "inviteaccess"..invitedetail_value.MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory,80,80)
 				
 			else
 				ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)

@@ -421,7 +421,8 @@ print("Send Message Request :"..(v))
     		"UserId": "]]..UserId..[[",
     		"File": "]]..file_inbytearray..[[",
     		"FileName": "]]..filename..[[",
-    		"FileType": "]]..filetype..[[",
+    		"FileType": "MUB",
+    		"IsOverwrite": true,
     	}
     	]]
 
@@ -2011,7 +2012,7 @@ function Webservice.CheckExistsRequestStatus(contactid_val,emailvalue,postExecut
 
 
 
-	 function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,grouptypevalue,groupteammemberids,postExecution)
+	 function Webservice.CreateMessageChatGroup(groupname,description,stateinfo,grouptypevalue,groupteammemberids,AttachmentPath,postExecution)
 	 	local request_value = {}
 	 	local params = {}
 	 	local headers = {}
@@ -2068,6 +2069,7 @@ function Webservice.CheckExistsRequestStatus(contactid_val,emailvalue,postExecut
 	    		"MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
 	    		"ContactId":"]]..ContactId..[[",
 	    		"MyUnitBuzzGroupId":]]..tonumber(groupteammemberids)..[[,
+
 	    		} ]]
 
 	    	else
@@ -2079,6 +2081,7 @@ function Webservice.CheckExistsRequestStatus(contactid_val,emailvalue,postExecut
 	    			"IsActive": "]]..tostring(stateinfo)..[[",
 	    			"MyUnitBuzzGroupType": "]]..grouptypevalue..[[",
 	    			"MyUnitBuzzGroupId":]]..tonumber(groupteammemberids)..[[,
+	    			"MyUnitBuzzGroupProfilePicture":"]]..AttachmentPath..[[",
 	    			} ]]
 
 	    		end

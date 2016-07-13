@@ -494,13 +494,13 @@ local function Broadcast_list( list )
 		--       end
 
 
-		local filePath = system.pathForFile( profilrPic..".png",system.TemporaryDirectory )
+		local filePath = system.pathForFile( profilrPic..".png",system.DocumentsDirectory )
 		local fhd = io.open( filePath )
 
 		local Image
 
 		if fhd then
-			Image = display.newImageRect(tempGroup,profilrPic..".png",system.TemporaryDirectory,45,38)
+			Image = display.newImageRect(tempGroup,profilrPic..".png",system.DocumentsDirectory,45,38)
 
 		else
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)

@@ -51,7 +51,7 @@ local function showShare(fileNameString)
 
 	local items =
 	{
-		{ type = "url", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
+		{ type = "url", value = { filename = fileNameString, baseDir = system.DocumentsDirectory } },
 			     --{ type = "UIActivityTypePostToFacebook", value = "UIActivityTypePostToFacebook" },
 			     { type = "string", value = " " },
 
@@ -64,7 +64,7 @@ local function showShare(fileNameString)
 						    	{
 						        files =  -- Files you wish to load into the quick look preview
 						        { 
-						        	{ filename=fileNameString, baseDir=system.TemporaryDirectory },
+						        	{ filename=fileNameString, baseDir=system.DocumentsDirectory },
 						        	
 						        },
 						        startIndex = 1,  -- The file you wish to start the preview at; default is 1
@@ -101,7 +101,7 @@ local function showShare(fileNameString)
 		            listener = listener,
 		            image = 
 		            {
-		            	{ filename = fileName, baseDir = system.TemporaryDirectory },
+		            	{ filename = fileName, baseDir = system.DocumentsDirectory },
 		            },
 		            
 		            })
@@ -138,7 +138,7 @@ local function showShare(fileNameString)
 
 		    							filename = downloan_event.response.filename
 
-		    							local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+		    							local localpath = system.pathForFile( filename, system.DocumentsDirectory )
 		    							
 					local path = system.pathForFile("/storage/sdcard1/"..filename)    --External (SD Card)
 
@@ -212,7 +212,7 @@ local function showShare(fileNameString)
 
 	spinner_show()
 
-	local destDir = system.TemporaryDirectory 
+	local destDir = system.DocumentsDirectory 
 	local result, reason = os.remove( system.pathForFile( "imageLib.png", destDir ) )
 
 
@@ -221,7 +221,7 @@ local function showShare(fileNameString)
 		"GET",
 		networkListener,
 		event.filename,
-		system.TemporaryDirectory
+		system.DocumentsDirectory
 		)
 
 

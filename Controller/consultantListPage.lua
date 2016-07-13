@@ -48,9 +48,11 @@ local header_value = ""
 
 local Image
 
+local AttachmentName,AttachmentPath = "",""
+
 local editContacts = {}
 
-local editId
+local editId,GroupIcon
 
 local selected_Contact={}
 
@@ -133,7 +135,132 @@ local function consultantTounch( event )
 		end
 
 
+function formatSizeUnits(event)
 
+	if (event>=1073741824) then 
+
+		size=(event/1073741824)..' GB'
+
+		print("size of the image11 ",size)
+
+
+	elseif (event>=1048576) then   
+
+		size=(event/1048576)..' MB'
+
+		print("size of the image 22",size)
+
+		
+	elseif (event > 10485760) then
+
+		print("highest size of the image ",size)
+
+		local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+
+		
+	elseif (event>=1024)  then   
+
+		size = (event/1024)..' KB'
+
+		print("size of the image 33",size)
+
+	else      
+
+	end
+
+	
+
+end
+
+local function selectionComplete ( event )
+
+		
+		local photo = event.target
+
+		local baseDir = system.DocumentsDirectory
+
+		if photo then
+
+			photo.x = display.contentCenterX
+			photo.y = display.contentCenterY
+			local w = photo.width
+			local h = photo.height
+				--photo:scale(0.5,0.5)
+
+				local function rescale()
+					
+					if photo.width > W or photo.height > H then
+
+						photo.width = photo.width/2
+						photo.height = photo.height/2
+
+						intiscale()
+
+					else
+
+						return false
+
+					end
+				end
+
+				function intiscale()
+					
+					if photo.width > W or photo.height > H then
+
+						photo.width = photo.width/2
+						photo.height = photo.height/2
+
+						rescale()
+
+					else
+
+						return false
+
+					end
+
+				end
+
+				intiscale()
+
+				if editId ~= nil then
+
+					photoname = editId..".png"
+
+				else
+
+					photoname = "temp.png"
+
+				end
+
+
+
+				display.save(photo,photoname,system.DocumentsDirectory)
+
+				photo:removeSelf()
+
+				photo = nil
+
+
+				path = system.pathForFile( photoname, baseDir)
+
+				local size = lfs.attributes (path, "size")
+
+				local fileHandle = io.open(path, "rb")
+
+				file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+				Attachment = file_inbytearray
+
+				io.close( fileHandle )
+
+				formatSizeUnits(size)
+
+
+				Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+			end
+
+		end
 
 		local function bgTouch( event )
 
@@ -142,7 +269,45 @@ local function consultantTounch( event )
 		elseif event.phase == "ended" then
 		--display.getCurrentStage():setFocus( nil )
 
-		print('bg touch')
+
+			if event.target.id == "imgEdit" then
+
+						print('edit touch')
+
+							local function onComplete(event)
+
+						if "clicked"==event.action then
+
+							local i = event.index 
+
+							if 1 == i then
+
+								if media.hasSource( PHOTO_FUNCTION  ) then
+									timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+										end )
+								end
+
+							elseif 2 == i then
+
+								if media.hasSource( media.Camera ) then
+									timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+										end )
+								end
+
+							end
+
+						end
+
+					end
+
+
+					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
+
+
+
+			end
+
+	
 	end
 
 	return true
@@ -150,6 +315,45 @@ local function consultantTounch( event )
 end
 
 
+	function get_imagemodel(response)
+
+		--MessageSending(response)
+
+		--AddAttachmentLbl.text = AddeventPage.ImageUploaded
+
+		--AttachmentFlag = true
+
+		AttachmentName = response.FileName
+		AttachmentPath = response.Abspath
+
+
+	if GroupIcon then GroupIcon:removeSelf( );GroupIcon=nil end
+
+	local function changePic( imgevent )
+			local sceneView = scene.view
+		GroupIcon = display.newImageRect( response.FileName,system.DocumentsDirectory, 38, 33 )
+		GroupIcon.width = 45;GroupIcon.height = 38
+		GroupIcon.x = backbutton.x + backbutton.contentWidth +10
+		GroupIcon.y = subjectBar.y +20
+		GroupIcon.anchorX=0
+		GroupIcon.id = "imgEdit"
+		sceneView:insert(GroupIcon)
+
+			local mask = graphics.newMask( "res/assert/masknew.png" )
+    							GroupIcon:setMask( mask )
+
+
+		GroupIcon:addEventListener( "touch"	, bgTouch )
+	end
+	timer.performWithDelay( 500, changePic)
+
+		-- if AddAttachmentPhotoName.text:len() > 35 then
+		-- 	AddAttachmentPhotoName.text = AddAttachmentPhotoName.text:sub(1,35  ).."..."
+		-- end
+
+		
+
+	end
 
 
 local function backactionTouch(event)
@@ -629,6 +833,12 @@ function getChatGroupCreation(response )
 	grouptypevalue = groupcreation_response.MyUnitBuzzGroupType
 
 
+	local result, reason = os.rename(
+    system.pathForFile( "temp.png", system.DocumentsDirectory ),
+    system.pathForFile( groupcreation_response.MyUnitBuzzGroupId..".png", system.DocumentsDirectory )
+)
+
+
 	local groupId = 0
 
 	if addGroupid_value == "editMember" then
@@ -744,7 +954,7 @@ function textField( event )
 
 						elseif GroupSubject.text ~= "" or GroupSubject.text  ~= GroupSubject.placeholder or GroupSubject.text  ~= ChatDetails.GroupSubjectError or GroupSubject.text  ~= GroupSubject.id then
 
-							GroupSubject.text = groupSubjectname
+							--GroupSubject.text = groupSubjectname
 
 						end
 
@@ -760,7 +970,7 @@ function textField( event )
 
 						elseif GroupSubject.text ~= "" or GroupSubject.text  ~= GroupSubject.placeholder or GroupSubject.text  ~= ChatDetails.GroupSubjectError or GroupSubject.text  ~= GroupSubject.id then
 
-							GroupSubject.text = groupSubjectname
+							--GroupSubject.text = groupSubjectname
 
 						end
 
@@ -771,7 +981,7 @@ function textField( event )
 
 if(validation == true) then
 
-	GroupSubject.text = groupSubjectname
+	--GroupSubject.text = groupSubjectname
 
 	for i=1,#selected_Contact do
 
@@ -825,13 +1035,13 @@ if(validation == true) then
 
 							      		if addGroupid_value ~= "editMember" then
 
-							      			Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",0,getChatGroupCreation)
+							      			Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",0,AttachmentPath,getChatGroupCreation)
 
 							      		else
 
 							      			grouptypevalue = pageid_value:upper()
 
-							      			Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,getChatGroupCreation)
+							      			Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,AttachmentPath,getChatGroupCreation)
 							      			
 				 						--Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
 
@@ -870,13 +1080,13 @@ if(validation == true) then
 						                  		 --GroupSubject.text = #selected_Contact.." recipients"
 						                  		 if addGroupid_value ~= "editMember" then
 
-						                  		 	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",0,getChatGroupCreation)
+						                  		 	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",0,AttachmentPath,getChatGroupCreation)
 
 						                  		 else
 
 						                  		 	grouptypevalue = pageid_value:upper()
 
-						                  		 	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true",grouptypevalue,editId,getChatGroupCreation)
+						                  		 	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true",grouptypevalue,editId,AttachmentPath,getChatGroupCreation)
 
 
 							 					--	Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
@@ -889,13 +1099,13 @@ if(validation == true) then
 
 							 				if addGroupid_value ~= "editMember" then
 
-							 					Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",0,getChatGroupCreation)
+							 					Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",0,AttachmentPath,getChatGroupCreation)
 
 							 				else
 
 							 					grouptypevalue = pageid_value:upper()
 
-							 					Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,getChatGroupCreation)
+							 					Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,AttachmentPath,getChatGroupCreation)
 
 
 							 					--	Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
@@ -1009,7 +1219,7 @@ local function careePath_list( list )
 
 							--print(img_event.response.filename)
 
-							Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+							Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
 							Image.width=45;Image.height=38
 							Image.x=30;Image.y=background.y+background.contentHeight/2
 	    				    --event.row:insert(img_event.target)
@@ -1025,7 +1235,7 @@ local function careePath_list( list )
 	    			
 	    		end
 
-	    		end, list[i].Contact_Id..".png", system.TemporaryDirectory)
+	    		end, list[i].Contact_Id..".png", system.DocumentsDirectory)
 		else
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2
@@ -1087,6 +1297,7 @@ local function careePath_list( list )
 			GroupSubject.isVisible = true
 			create_groupicon.isVisible = true
 			backbutton.isVisible = true
+			GroupIcon.isVisible = true
 			if addGroupid_value == "editMember" then
 				for j=1,#editContacts do
 
@@ -1234,14 +1445,50 @@ function scene:create( event )
 	backbutton.y=subjectBar.y +12
 	backbutton.anchorY=0
 
+			--GroupIcon = display.newImageRect( response.FileName,system.DocumentsDirectory, 38, 33 )
 
-	GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-80, 25)
+	if event.params.contactId then
+		editId = event.params.contactId
+
+				local filePath = system.pathForFile( editId..".png", system.DocumentsDirectory )
+			            -- Play back the recording
+			            local file = io.open( filePath)
+			            
+			            if file then
+			            	io.close( file )
+			            	GroupIcon = display.newImageRect( sceneGroup, editId..".png", system.DocumentsDirectory, 50, 38 )
+			            	GroupIcon.width = 45;GroupIcon.height = 38
+			            		local mask = graphics.newMask( "res/assert/masknew.png" )
+    							GroupIcon:setMask( mask )
+			            end
+	end
+	if not GroupIcon then 
+
+		GroupIcon = display.newImageRect( sceneGroup, "res/assert/career-user.png", 38, 33 )
+		
+	end
+
+		GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+		GroupIcon.y = subjectBar.y +20
+		GroupIcon.anchorX=0
+		GroupIcon.id = "imgEdit"
+		GroupIcon.isVisible = false
+		GroupIcon:addEventListener( "touch"	, bgTouch )
+
+	
+
+
+
+		
+
+
+	GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-130, 25)
 	GroupSubject.id="groupSubject"
-	GroupSubject.y = subjectBar.y +20
+	GroupSubject.y = GroupIcon.y+GroupIcon.contentHeight/2-GroupSubject.contentHeight/2
 	GroupSubject.size=14
 	GroupSubject.anchorX = 0
 	GroupSubject.isVisible = false
-	GroupSubject.x = backbutton.x + backbutton.contentWidth +10
+	GroupSubject.x = GroupIcon.x+GroupIcon.contentWidth+5
 	GroupSubject:setReturnKey( "done" )
 	GroupSubject.hasBackground = false	
 	GroupSubject.placeholder = ChatPage.groupSubject
@@ -1472,6 +1719,15 @@ function scene:show( event )
 				end
 
 			end
+
+				local filePath = system.pathForFile( "temp.png", system.DocumentsDirectory )
+			            -- Play back the recording
+			            local file = io.open( filePath)
+			            
+			            if file then
+			            	io.close( file )
+			            	os.remove( filePath )
+			            end
 
 			menuBtn:removeEventListener("touch",menuTouch)
 			BgText:removeEventListener("touch",menuTouch)

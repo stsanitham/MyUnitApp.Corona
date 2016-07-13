@@ -158,7 +158,7 @@ function FacebookCallback(res,scrollView,flag)
 									background:setFillColor(Utils.convertHexToRGB("#d2d3d4"))
 									--background.alpha=0.5
 
-									local profilePic = display.newImageRect("userfb.png", system.TemporaryDirectory,55,45)
+									local profilePic = display.newImageRect("userfb.png", system.DocumentsDirectory,55,45)
 
 									if not profilePic then
 										profilePic = display.newImageRect("res/assert/twitter_placeholder.png",55,45)
@@ -304,7 +304,7 @@ function FacebookCallback(res,scrollView,flag)
 
 												end
 
-												end, "facebook"..i..".png", system.TemporaryDirectory,userName.x+105,rowTitle.y+rowTitle.contentHeight+10)
+												end, "facebook"..i..".png", system.DocumentsDirectory,userName.x+105,rowTitle.y+rowTitle.contentHeight+10)
 
 											
 
@@ -334,7 +334,7 @@ function FacebookCallback(res,scrollView,flag)
 								"GET",
 								networkListener,
 								"userfb.png",
-								system.TemporaryDirectory
+								system.DocumentsDirectory
 								)
 
 

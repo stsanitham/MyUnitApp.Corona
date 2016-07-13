@@ -209,11 +209,13 @@ local function addMemberAction( event )
     	 				Career_Username.yScale = Career_Username.yScale - 0.018
     	 				Career_Username.x=Career_Username.x+0.8
 
-    	 				addBg.y = Career_Username.y
-						addRecipient.y=addBg.y
+    	 					if addBg ~= nil then 
+	    	 				addBg.y = Career_Username.y
+							addRecipient.y=addBg.y
 
-						deleteBg.y = Career_Username.y
-						deleteRecipient.y=addBg.y
+							deleteBg.y = Career_Username.y
+							deleteRecipient.y=addBg.y
+						end
 
     	 			end
 
@@ -244,11 +246,13 @@ local function addMemberAction( event )
 
     	 			end
 
-    	 			addBg.y = Career_Username.y
-						addRecipient.y=addBg.y
+    	 				if addBg ~= nil then 
+	    	 				addBg.y = Career_Username.y
+							addRecipient.y=addBg.y
 
-						deleteBg.y = Career_Username.y
-						deleteRecipient.y=addBg.y
+							deleteBg.y = Career_Username.y
+							deleteRecipient.y=addBg.y
+						end
 
 
     	 			careerDetail_scrollview.y=TrasitionBar.y+TrasitionBar.contentHeight
@@ -589,14 +593,14 @@ local function phoneCallFunction( event )
 
 			contactCount[#contactCount+1] = ContactList[i].Contact_Id
 
-			local filePath = system.pathForFile( ContactList[i].Contact_Id..".png",system.TemporaryDirectory )
+			local filePath = system.pathForFile( ContactList[i].Contact_Id..".png",system.DocumentsDirectory )
 			local fhd = io.open( filePath )
 
 			local Image
 
 			if fhd then
 
-				Image = display.newImageRect(tempGroup,ContactList[i].Contact_Id..".png",system.TemporaryDirectory,45,38)
+				Image = display.newImageRect(tempGroup,ContactList[i].Contact_Id..".png",system.DocumentsDirectory,45,38)
 
 				io.close( fhd )
 
@@ -721,16 +725,18 @@ function scene:show( event )
 			json.encode( Details )
 
 			
-			local path = system.pathForFile( "career"..contactId..".png",system.TemporaryDirectory)
+			local path = system.pathForFile( contactId..".png",system.DocumentsDirectory)
 			local fhd = io.open( path )
 
-
+				local ProfileImage
 				-- Determine if file exists
 				if fhd then
-					ProfileImage = display.newImage("career"..contactId..".png",system.TemporaryDirectory)
+					ProfileImage = display.newImage(contactId..".png",system.DocumentsDirectory)
 					fhd:close()
 				else
+
 					ProfileImage = display.newImage("res/assert/detail_defalut.jpg")
+					
 				end
 
 
@@ -837,7 +843,7 @@ function scene:show( event )
 				
 
 				if Details.ImagePath ~= nil then
-					ProfileImage = display.newImage(sceneGroup,contactId..".png",system.TemporaryDirectory)
+					ProfileImage = display.newImage(sceneGroup,contactId..".png",system.DocumentsDirectory)
 
 				end
 

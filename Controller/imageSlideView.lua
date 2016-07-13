@@ -40,7 +40,7 @@ end
 
 -- local function downloadAction(filename)
 
--- 			local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+-- 			local localpath = system.pathForFile( filename, system.DocumentsDirectory )
 
 
 -- 					native.showAlert( imageName.text, ResourceLibrary.Download_alert, { CommonWords.ok} )
@@ -97,7 +97,7 @@ local function showShare(fileNameString)
 
 	local items =
 	{
-		{ type = "image", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
+		{ type = "image", value = { filename = fileNameString, baseDir = system.DocumentsDirectory } },
 			     --{ type = "UIActivityTypePostToFacebook", value = "UIActivityTypePostToFacebook" },
 			     { type = "string", value = " " },
 
@@ -147,7 +147,7 @@ local function showShare(fileNameString)
 		           listener = listener,
 		           image = 
 		           {
-		           	{ filename = fileName, baseDir = system.TemporaryDirectory },
+		           	{ filename = fileName, baseDir = system.DocumentsDirectory },
 		           },
 		           
 		           })
@@ -245,7 +245,7 @@ local function showShare(fileNameString)
 
 										filename = event.filename..".png"
 
-										local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+										local localpath = system.pathForFile( filename, system.DocumentsDirectory )
 										
 					local path = system.pathForFile("/storage/sdcard1/"..filename)    --External (SD Card)
 
@@ -329,7 +329,7 @@ local function showShare(fileNameString)
 		end
 
 
-		myImage = display.newImage( filename, system.TemporaryDirectory )
+		myImage = display.newImage( filename, system.DocumentsDirectory )
 		myImage.anchorY=0
 		myImage.y=110
 		myImage.x=W/2;myImage.alpha=0
@@ -525,7 +525,7 @@ function scene:show( event )
 
 					imageName.text = fileNameString
 
-					local path = system.pathForFile( fileNameString, system.TemporaryDirectory )
+					local path = system.pathForFile( fileNameString, system.DocumentsDirectory )
 					local fhd = io.open( path )
 
 					if fhd then
@@ -563,7 +563,7 @@ function scene:show( event )
 								end
 								end		,
 								fileNameString,
-								system.TemporaryDirectory)
+								system.DocumentsDirectory)
 					end
 
 					

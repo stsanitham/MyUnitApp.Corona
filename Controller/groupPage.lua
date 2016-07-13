@@ -48,7 +48,7 @@ local groupListresponse_array = {}
 
 local tabBarGroup = display.newGroup( )
 
-
+local newtworkArray = {}
 
 local tabBarBackground = "res/assert/tabBarBg.png"
 local tabBarLeft = "res/assert/tabSelectedLeft.png"
@@ -422,9 +422,46 @@ local function TabbarTouch( event )
 			background.typevalue = list[i].MyUnitBuzzGroupType
 		--print( "Listy : "..json.encode(list[i]) )
 
-		local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-		Image.x=30;Image.y=background.y+background.height/2
+		if list[i].MyUnitBuzzGroupProfilePicture ~= nil then
+			local Image
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
 
+			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].MyUnitBuzzGroupProfilePicture,
+				"GET",
+				function ( img_event )
+					if ( img_event.isError ) then
+						print ( "Network error - download failed" )
+					else
+
+						if Image ~= nil then
+
+							if Image.y ~= nil then Image:removeSelf() 
+
+							--print(img_event.response.filename)
+
+							Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
+							Image.width=45;Image.height=38
+							Image.x=30;Image.y=background.y+background.contentHeight/2
+	    				    --event.row:insert(img_event.target)
+
+	    				    local mask = graphics.newMask( "res/assert/masknew.png" )
+
+	    				    Image:setMask( mask )
+
+	    				end
+
+	    			end
+
+	    			
+	    		end
+
+	    		end, list[i].MyUnitBuzzGroupId..".png", system.DocumentsDirectory)
+		else
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
+
+		end
 		local GroupName_txt = display.newText(tempGroup,list[i].MyUnitBuzzGroupName,0,0,native.systemFont,14)
 		GroupName_txt.x=60;GroupName_txt.y=background.y+background.height/2-2
 		GroupName_txt.anchorX=0

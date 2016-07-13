@@ -1151,14 +1151,14 @@ local function videoPlay( event )
 						bg.From =  ChatHistory[i].Message_From
 
 
-						local filePath = system.pathForFile( ChatHistory[i].Message_From..".png",system.TemporaryDirectory )
+						local filePath = system.pathForFile( ChatHistory[i].Message_From..".png",system.DocumentsDirectory )
 						local fhd = io.open( filePath )
 
 						local Image
 
 						if fhd then
 
-							Image = display.newImageRect(tempGroup,ChatHistory[i].Message_From..".png",system.TemporaryDirectory,45,38)
+							Image = display.newImageRect(tempGroup,ChatHistory[i].Message_From..".png",system.DocumentsDirectory,45,38)
 							io.close( fhd )
 
 						else
@@ -1176,7 +1176,7 @@ local function videoPlay( event )
 
 						bg.x=65
 
-						local Image = display.newImageRect(tempGroup,To_ContactId..".png",system.TemporaryDirectory,45,38)
+						local Image = display.newImageRect(tempGroup,To_ContactId..".png",system.DocumentsDirectory,45,38)
 
 						if not Image then
 							Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)

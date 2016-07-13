@@ -343,7 +343,7 @@ panel:insert( profileName )
 									if profilePic then profilePic:removeSelf( );profilePic=nil end
 
 									print("response file "..img_event.response.filename)
-									profilePic = display.newImageRect(img_event.response.filename,system.TemporaryDirectory,80,65)
+									profilePic = display.newImageRect(img_event.response.filename,system.DocumentsDirectory,80,65)
 							--profilePic.width=65;profilePic.height=65
 							profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5
 							profilePic.y=profileName.y-profilePic.contentHeight-10
@@ -362,7 +362,7 @@ panel:insert( profileName )
 	    				--event.row:insert(img_event.target)
 	    			end
 
-	    			end, ContactId..".png", system.TemporaryDirectory)
+	    			end, ContactId..".png", system.DocumentsDirectory)
 else
 	profilePic = display.newImageRect("res/assert/usericon.png",65,60)
 	profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+5

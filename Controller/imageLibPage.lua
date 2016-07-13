@@ -95,7 +95,7 @@ local function downloadAction(filename,file)
 
 	native.showAlert( file, ResourceLibrary.Download_alert, { CommonWords.ok} )
 
-	local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+	local localpath = system.pathForFile( filename, system.DocumentsDirectory )
 	
 					local path = system.pathForFile("/storage/sdcard1/"..filename)                         -- Change this path to the path of an image on your computer
 					------------------------------------------------------------------------
@@ -147,7 +147,7 @@ local function downloadAction(filename,file)
 
 							local items =
 							{
-								{ type = "image", value = { filename = fileNameString, baseDir = system.TemporaryDirectory } },
+								{ type = "image", value = { filename = fileNameString, baseDir = system.DocumentsDirectory } },
 			     --{ type = "UIActivityTypePostToFacebook", value = "UIActivityTypePostToFacebook" },
 			     { type = "string", value = " " },
 
@@ -198,7 +198,7 @@ local function downloadAction(filename,file)
 		           listener = listener,
 		           image = 
 		           {
-		           	{ filename = fileName, baseDir = system.TemporaryDirectory },
+		           	{ filename = fileName, baseDir = system.DocumentsDirectory },
 		           },
 		           
 		           })
@@ -239,7 +239,7 @@ local function downloadAction(filename,file)
 
 										filename = downloan_event.response.filename
 
-										local localpath = system.pathForFile( filename, system.TemporaryDirectory )
+										local localpath = system.pathForFile( filename, system.DocumentsDirectory )
 										
 					local path = system.pathForFile("/storage/sdcard1/"..filename)    --External (SD Card)
 
@@ -311,7 +311,7 @@ local function downloadAction(filename,file)
 	end
 
 
-	local destDir = system.TemporaryDirectory 
+	local destDir = system.DocumentsDirectory 
 	local result, reason = os.remove( system.pathForFile( "imageLib.png", destDir ) )
 
 
@@ -322,7 +322,7 @@ local function downloadAction(filename,file)
 		"GET",
 		networkListener,
 		event.value:match( "([^/]+)$" ),
-		system.TemporaryDirectory
+		system.DocumentsDirectory
 		)
 
 
@@ -375,7 +375,7 @@ local function onRowRender_ImageLib( event )
     				if Lefticon then Lefticon:removeSelf();Lefticon=nil end
 
     				print("response file "..img_event.response.filename)
-    				Lefticon = display.newImage(row,img_event.response.filename,system.TemporaryDirectory)
+    				Lefticon = display.newImage(row,img_event.response.filename,system.DocumentsDirectory)
     				Lefticon.width=45;Lefticon.height=38
     				Lefticon.x=30;Lefticon.y=rowHeight/2
     				--event.row:insert(img_event.target)
@@ -385,7 +385,7 @@ local function onRowRender_ImageLib( event )
     				Lefticon:setMask( mask )
     			end
 
-    			end, List_array[row.index].FilePath:match( "([^/]+)$" ), system.TemporaryDirectory)
+    			end, List_array[row.index].FilePath:match( "([^/]+)$" ), system.DocumentsDirectory)
     else
     	Lefticon = display.newImageRect(row,"res/assert/twitter_placeholder.png",35,35)
     	Lefticon.x=30;Lefticon.y=rowHeight/2
@@ -667,7 +667,7 @@ local function Grid_list( gridlist)
 				tempGroup:insert(rect)
 
 				print("response file "..img_event.response.filename)
-				Lefticonimage = display.newImageRect(img_event.response.filename,system.TemporaryDirectory,150,115)
+				Lefticonimage = display.newImageRect(img_event.response.filename,system.DocumentsDirectory,150,115)
 				tempGroup:insert(Lefticonimage)
 				Lefticonimage.width=150;Lefticonimage.height=115
 				Lefticonimage.x=Background.x;Lefticonimage.y=Background.y + Background.contentHeight/2 	
@@ -760,7 +760,7 @@ local function Grid_list( gridlist)
 
 			end
 
-			end, List_array[i].FilePath:match( "([^/]+)$" ), system.TemporaryDirectory)
+			end, List_array[i].FilePath:match( "([^/]+)$" ), system.DocumentsDirectory)
 
 else
 

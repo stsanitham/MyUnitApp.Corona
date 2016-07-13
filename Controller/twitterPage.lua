@@ -135,7 +135,7 @@ function TwitterCallback(res,scrollView)
 					background:setFillColor(Utils.convertHexToRGB("#d2d3d4"))
 
 
-					profilePic = display.newImage("userPhoto.png", system.TemporaryDirectory)
+					profilePic = display.newImage("userPhoto.png", system.DocumentsDirectory)
 					if not profilePic then
 						profilePic = display.newImageRect("assert/twitter_placeholder.png",100,100)
 					end
@@ -267,7 +267,7 @@ function TwitterCallback(res,scrollView)
 		"GET",
 		networkListener,
 		"userPhoto.png",
-		system.TemporaryDirectory
+		system.DocumentsDirectory
 		)
 
 

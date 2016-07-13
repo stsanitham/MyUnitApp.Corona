@@ -315,7 +315,7 @@ local function careePath_list( list )
 						if Image then
 							Image:removeSelf();Image=nil
 							print(img_event.response.filename)
-							Image = display.newImage(tempGroup,img_event.response.filename,system.TemporaryDirectory)
+							Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
 							Image.width=45;Image.height=38
 							Image.x=30;Image.y=background.y+background.contentHeight/2
     				--event.row:insert(img_event.target)
@@ -332,7 +332,7 @@ local function careePath_list( list )
     			end
     		end
 
-    		end, "career"..list[i].Contact_Id..".png", system.TemporaryDirectory)
+    		end, "career"..list[i].Contact_Id..".png", system.DocumentsDirectory)
 		else
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2

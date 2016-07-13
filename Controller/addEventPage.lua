@@ -3899,7 +3899,7 @@ end
 	  				"GET",
 	  				AttachListner,
 	  				UpdateValue.AttachmentName,
-	  				system.TemporaryDirectory
+	  				system.DocumentsDirectory
 	  				)
 
 	  		end

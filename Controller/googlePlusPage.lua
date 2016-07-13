@@ -143,7 +143,7 @@ function googleplusCallback( res,scrollView,flag )
 			background:setFillColor(Utils.convertHexToRGB("#d2d3d4"))
 
 
-			profilePic = display.newImage("usergoogleplus.png", system.TemporaryDirectory)
+			profilePic = display.newImage("usergoogleplus.png", system.DocumentsDirectory)
 			if not profilePic then
 				profilePic = display.newImageRect("assert/twitter_placeholder.png",100,100)
 			end
@@ -256,7 +256,7 @@ function googleplusCallback( res,scrollView,flag )
 
 				local img = feedArray[feedCount].object.attachments
 				if(img[1].image ~= nil ) then
-					local shared_img = display.loadRemoteImage(img[1].image.url, "GET", postedimg_position, feedCount..".png", system.TemporaryDirectory,100+rowTitle.x,rowTitle.y+rowTitle.contentHeight+55 )
+					local shared_img = display.loadRemoteImage(img[1].image.url, "GET", postedimg_position, feedCount..".png", system.DocumentsDirectory,100+rowTitle.x,rowTitle.y+rowTitle.contentHeight+55 )
 					
 					
 
@@ -352,7 +352,7 @@ local function getgoogleplus_stream( event )
 				"GET",
 				profilepic_download,
 				"usergoogleplus.png",
-				system.TemporaryDirectory
+				system.DocumentsDirectory
 				)
 
 		end
