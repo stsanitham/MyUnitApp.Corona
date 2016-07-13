@@ -7,6 +7,9 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 
+local mime = require("mime")
+local json = require("json")
+
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 
@@ -24,7 +27,11 @@ local imageArray = {}
 local uploadArray = {}
 local ImageUploadGroup = {}
 
+local addEventBtn
+
 local ImageLibListArray = {}
+
+local PHOTO_FUNCTION = media.PhotoLibrary 
 
 openPage="imageLibPage"
 
@@ -87,6 +94,146 @@ local function onKeyEvent( event )
 
 	return false
 end
+
+
+
+
+
+
+-- function scene:resumeImageCallBack(captionname,photoviewname,button_idvalue)
+
+-- 			composer.removeHidden()
+
+
+-- 			if photoviewname  ~= nil and photoviewname ~= "" then
+
+-- 				if button_idvalue == "cancel" then
+
+
+-- 					elseif button_idvalue == "send" then
+
+-- 					Imagename = photoviewname:match( "([^/]+)$" )
+
+-- 						if captionname == "" then
+
+-- 							captionname= "Image"
+
+-- 						end
+
+-- 					local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+
+-- 					Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+-- 					isDeleted="false"
+-- 					Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+-- 					Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+-- 					ImagePath=photoviewname
+-- 					ImageName = Imagename
+-- 					ImageSize = Imagesize
+-- 					AudioPath="NULL"
+-- 					VideoPath="NULL"
+-- 					MyUnitBuzz_LongMessage=captionname
+-- 					From=ContactId
+-- 					To=To_ContactId
+-- 					Message_Type = MessageType
+
+-- 					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..captionname..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
+-- 					db:exec( insertQuery )
+
+
+-- 					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Image_Path= '"..Imagename.."'") do
+-- 						image_update_row = row.id 
+
+-- 					end 
+
+
+
+
+-- 					Imagesize = size
+
+-- 					sendBtn_bg.isVisible = true
+
+-- 					sendBtn.isVisible = true
+
+-- 		--sendMeaasage()
+
+-- 		local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+		
+-- 		Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+-- 		isDeleted="false"
+-- 		Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+-- 		Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+-- 		ImagePath= photoviewname or ""
+-- 		AudioPath="NULL"
+-- 		VideoPath="NULL"
+-- 		MyUnitBuzz_LongMessage=captionname
+-- 		From=ContactId
+-- 		To=To_ContactId
+-- 		Message_Type = MessageType
+
+
+-- 		local path = system.pathForFile( Imagename, system.DocumentsDirectory)
+
+-- 		local size = lfs.attributes (path, "size")
+
+-- 		local fileHandle = io.open(path, "rb")
+
+-- 		local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+-- 		formatSizeUnits(size)
+
+
+-- 		local ConversionFirstName,ConversionLastName,GroupName
+-- 		local DocumentUpload = {}
+
+-- 		if MessageType == "GROUP" then
+
+-- 			ConversionFirstName="";ConversionLastName="";GroupName=MemberName
+-- 			DocumentUpload[1] = {
+-- 				UserId = UserId,
+-- 				File = file_inbytearray,
+-- 				FileName = Imagename,
+-- 				FileType = "Images"
+-- 			}
+
+-- 		else
+-- 			ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
+
+			
+-- 			DocumentUpload[1] = {
+-- 				UserId = UserId,
+-- 				File = file_inbytearray,
+-- 				FileName = Imagename,
+-- 				FileType = "Images"
+-- 			}
+
+			
+
+
+
+-- 		end
+
+-- 		MessageFileType="Images"
+
+-- 		ChatBox.text = ""
+
+		
+-- 		Webservice.SEND_MESSAGE(MessageId,"","","",DocumentUpload,MessageFileType,"",captionname,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+
+		
+
+-- 				   --Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+-- 				   sendMeaasage()
+
+
+-- 				end
+
+-- 			end
+
+-- 		end
+
+
+
 
 
 
@@ -458,11 +605,15 @@ shareImg:addEventListener("touch",listTouch)
 
 shareImg_bg:addEventListener("touch",listTouch)
 
+addEventBtn:toFront( )
+
 
 row.ImageId = List_array[row.index].ImageId
 row.FilePath = List_array[row.index].FilePath
 
 end
+
+
 
 local function onRowTouch_ImageLib( event )
 	local phase = event.phase
@@ -830,75 +981,271 @@ end
 
 
 
-local function uploadLayout(sceneGroup)
 
-	    uploadArray[#uploadArray+1] = display.newGroup()
+function formatSizeUnits(event)
 
-		ImageUploadGroup = uploadArray[#uploadArray]
+		if (event>=1073741824) then 
 
+			size=(event/1073741824)..' GB'
 
-		local Background = display.newRect(ImageUploadGroup,W/2, H/2, W, H )
-		Background.id= "background"
-		Background.alpha=0.15
-		ImageUploadGroup:insert(Background)
-		Background:addEventListener("touch",touchBg)
+			print("size of the image11 ",size)
 
 
-		local uploadbackgroundbg = display.newRect(160, H/2+ 10, W-12, 420 )
-		uploadbackgroundbg.x = 160
-	    uploadbackgroundbg:setFillColor(0,0,0)
-	    uploadbackgroundbg.isVisible=true
-	    ImageUploadGroup:insert(uploadbackgroundbg)
+		elseif (event>=1048576) then   
 
+			size=(event/1048576)..' MB'
 
-	    local uploadTop_bg = display.newRect(W/2,H/2-185,308,30)
-	    uploadTop_bg.width = 308
-	    uploadTop_bg:setFillColor(Utils.convertHexToRGB(color.LtyGray))
-	    ImageUploadGroup:insert(uploadTop_bg)
+			print("size of the image 22",size)
 
+			
+		elseif (event > 10485760) then
 
-	    local uploadTitle = display.newText("Upload Image",0,0,native.systemFont,18)
-	    uploadTitle.anchorX = 0
-	    uploadTitle.x=20
-	    uploadTitle.y=uploadTop_bg.y
-	    uploadTitle:setTextColor(Utils.convertHexToRGB(color.tabBarColor))
-	    ImageUploadGroup:insert(uploadTitle)
+			print("highest size of the image ",size)
 
+			local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
 
-	    local Close_bg = display.newRect(0,0,30,30)
-	    Close_bg.x=uploadTop_bg.x+uploadTop_bg.contentWidth/2-15
-	    Close_bg.y=uploadTop_bg.y
-	    Close_bg.id="close"
-	    Close_bg.alpha=0.01
-	    ImageUploadGroup:insert(Close_bg)
-	    Close_bg:addEventListener("touch",onCloseTouch)
+			
+		elseif (event>=1024)  then   
 
+			size = (event/1024)..' KB'
 
-		local Close = display.newImageRect("res/assert/cancel.png",19,19)
-	    Close.x=Close_bg.x
-	    Close.y=Close_bg.y
-	    Close:setFillColor(0,0,0)
-	    Close.id="close"
-	    ImageUploadGroup:insert(Close)
-	    Close_bg:addEventListener("touch",onCloseTouch)
+			print("size of the image 33",size)
 
+		else      
 
-	    local objCreationList = display.newRect(160, uploadTop_bg.y+uploadTop_bg.contentHeight/2, uploadTop_bg.width , uploadbackgroundbg.contentHeight-uploadTop_bg.contentHeight/2-15 )
-	    objCreationList.anchorY=0
-	    objCreationList.y=uploadTop_bg.y+uploadTop_bg.contentHeight/2
-	    objCreationList.id= "uploadobjectlist"
-	    objCreationList.strokeWidth=1
-	    objCreationList.isVisible=true
-	    objCreationList:setStrokeColor(Utils.convertHexToRGB(color.LtyGray))
-	    ImageUploadGroup:insert(objCreationList)
-
-	   -- objCreationList:addEventListener( "touch", touchPopupBg )
-
-
-		sceneGroup:insert(ImageUploadGroup)
-
+		end
 
 end
+
+
+
+
+
+local function selectionComplete ( event )
+	
+	local photo = event.target
+
+	   local baseDir = system.DocumentsDirectory
+
+	   if photo then
+
+	   	photo.x = display.contentCenterX
+	   	photo.y = display.contentCenterY
+	   	local w = photo.width
+	   	local h = photo.height
+	   	print( "w,h = ".. w .."," .. h )
+
+
+		   local function rescale()
+		   	
+			   	if photo.width > W or photo.height > H then
+
+			   		photo.width = photo.width/2
+			   		photo.height = photo.height/2
+
+			   		intiscale()
+
+			   	else
+			   		
+			   		return false
+
+			   	end
+		   end
+
+
+
+		   function intiscale()
+		   	
+			   	if photo.width > W or photo.height > H then
+
+			   		photo.width = photo.width/2
+			   		photo.height = photo.height/2
+
+			   		rescale()
+
+			   	else
+
+			   		return false
+
+			   	end
+
+		   end
+
+
+		   intiscale()
+
+		   photoname = "image"..os.date("%Y%m%d%H%M%S")..".png"
+
+		   display.save(photo,photoname,system.DocumentsDirectory)
+
+
+		   local options =  {
+		   	effect = "fromTop",
+		   	time = 400,	
+		   	params = {
+		   		imageselected = photoname,
+		   		image = photo,
+		   		MessageType = MessageType,
+		   		value = "ImageLibrary",
+		   	}
+
+		   }
+
+		   composer.showOverlay("Controller.imagePreviewPage",options)
+
+		   photo:removeSelf()
+
+		   photo = nil
+
+
+		   path = system.pathForFile( photoname, baseDir)
+
+		   local size1 = lfs.attributes (path, "size")
+
+		   local fileHandle = io.open(path, "rb")
+
+		   file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+		   io.close( fileHandle )
+
+		   print("mime conversion ",file_inbytearray)
+
+		   print("bbb ",size1)
+
+		   formatSizeUnits(size1)
+
+        	--sendImage()
+
+        else
+
+        end
+
+    end
+
+
+
+
+
+
+	local function uploadImageAction( event )
+
+		print("^^^^^^^^$%$%#$%")
+
+			 
+		 		 if event.target.id == "addEvent" then
+
+		 		 	print("^^^^^^^")
+
+
+						local function onComplete(event)
+
+								if "clicked"==event.action then
+										
+										local i = event.index 
+
+										if 1 == i then
+
+											if media.hasSource( PHOTO_FUNCTION  ) then
+												timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+													end )
+											end
+
+										elseif 2 == i then
+
+											if media.hasSource( media.Camera ) then
+												timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+													end )
+											end
+
+										end
+
+								end
+
+						end
+
+
+		         local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
+
+
+			end
+		
+	end
+
+
+
+
+
+-- local function uploadLayout(sceneGroup)
+
+-- 	    uploadArray[#uploadArray+1] = display.newGroup()
+
+-- 		ImageUploadGroup = uploadArray[#uploadArray]
+
+
+-- 		local Background = display.newRect(ImageUploadGroup,W/2, H/2, W, H )
+-- 		Background.id= "background"
+-- 		Background.alpha=0.15
+-- 		ImageUploadGroup:insert(Background)
+-- 		Background:addEventListener("touch",touchBg)
+
+
+-- 		local uploadbackgroundbg = display.newRect(160, H/2+ 10, W-12, 420 )
+-- 		uploadbackgroundbg.x = 160
+-- 	    uploadbackgroundbg:setFillColor(0,0,0)
+-- 	    uploadbackgroundbg.isVisible=true
+-- 	    ImageUploadGroup:insert(uploadbackgroundbg)
+
+
+-- 	    local uploadTop_bg = display.newRect(W/2,H/2-185,308,30)
+-- 	    uploadTop_bg.width = 308
+-- 	    uploadTop_bg:setFillColor(Utils.convertHexToRGB(color.Gray))
+-- 	    uploadTop_bg.alpha = 1
+-- 	    ImageUploadGroup:insert(uploadTop_bg)
+
+
+-- 	    local uploadTitle = display.newText("Upload Image",0,0,native.systemFont,18)
+-- 	    uploadTitle.anchorX = 0
+-- 	    uploadTitle.x=20
+-- 	    uploadTitle.y=uploadTop_bg.y
+-- 	    uploadTitle:setTextColor(Utils.convertHexToRGB(color.tabBarColor))
+-- 	    ImageUploadGroup:insert(uploadTitle)
+
+
+-- 	    local Close_bg = display.newRect(0,0,30,30)
+-- 	    Close_bg.x=uploadTop_bg.x+uploadTop_bg.contentWidth/2-15
+-- 	    Close_bg.y=uploadTop_bg.y
+-- 	    Close_bg.id="close"
+-- 	    Close_bg.alpha=0.01
+-- 	    ImageUploadGroup:insert(Close_bg)
+-- 	    Close_bg:addEventListener("touch",onCloseTouch)
+
+
+-- 		local Close = display.newImageRect("res/assert/cancel.png",19,19)
+-- 	    Close.x=Close_bg.x
+-- 	    Close.y=Close_bg.y
+-- 	    Close:setFillColor(0,0,0)
+-- 	    Close.id="close"
+-- 	    ImageUploadGroup:insert(Close)
+-- 	    Close_bg:addEventListener("touch",onCloseTouch)
+
+
+-- 	    local objCreationList = display.newRect(160, uploadTop_bg.y+uploadTop_bg.contentHeight/2, uploadTop_bg.width , uploadbackgroundbg.contentHeight-uploadTop_bg.contentHeight/2-15 )
+-- 	    objCreationList.anchorY=0
+-- 	    objCreationList.y=uploadTop_bg.y+uploadTop_bg.contentHeight/2
+-- 	    objCreationList.id= "uploadobjectlist"
+-- 	    objCreationList.strokeWidth=1
+-- 	    objCreationList.isVisible=true
+-- 	    objCreationList.alpha = 0.95
+-- 	    objCreationList:setStrokeColor(Utils.convertHexToRGB(color.LtyGray))
+-- 	    ImageUploadGroup:insert(objCreationList)
+
+-- 	   -- objCreationList:addEventListener( "touch", touchPopupBg )
+
+
+-- 		sceneGroup:insert(ImageUploadGroup)
+
+
+-- end
 
 
 
@@ -1002,20 +1349,23 @@ local function listPosition_change( event )
 
 -------------------------upload icon-------------------------------
 
-				uploadimage_icon = display.newImageRect(sceneGroup,"res/assert/upload.png",18,18)
-				uploadimage_icon.x=W-50;uploadimage_icon.y=title_bg.y-10
-				uploadimage_icon.anchorY=0
-				uploadimage_icon:setFillColor(0)
+				-- uploadimage_icon = display.newImageRect(sceneGroup,"res/assert/upload.png",18,18)
+				-- uploadimage_icon.x=W-50;uploadimage_icon.y=title_bg.y-10
+				-- uploadimage_icon.anchorY=0
+				-- uploadimage_icon:setFillColor(0)
 
 
-				local function uploadImageLayout(event)
+				-- local function uploadImageLayout(event)
 
-					uploadLayout(sceneGroup)
+				-- 	uploadLayout(sceneGroup)
 
-				end
+				-- end
 
-				uploadimage_icon:addEventListener("touch",uploadImageLayout)
+				-- uploadimage_icon:addEventListener("touch",uploadImageLayout)
 
+				addEventBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
+				addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
+				addEventBtn:addEventListener("touch",uploadImageAction)
 
 				changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
 				changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10

@@ -266,6 +266,7 @@ function scene:create( event )
 				contactId = event.params.contactId
 				messageType = event.params.MessageType
 				sendto = event.params.sendto
+				valuename = event.params.value
 
 				print("Imageview photo : ",imageview)
 
@@ -274,7 +275,15 @@ function scene:create( event )
 			end
 
 
-			title.text = "Send to "..sendto
+			if valuename == "Chat" then
+
+				title.text = "Send to "..sendto
+
+			else
+               
+                title.text = photoview
+
+			end
 
 			intiscale(imageview.width,imageview.height)
 
@@ -422,7 +431,6 @@ function scene:hide( event )
 	elseif phase == "did" then
 
 		event.parent:resumeImageCallBack(captionField.text,photoview,button_idvalue)
-
 
 	end	
 
