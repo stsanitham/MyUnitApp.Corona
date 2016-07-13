@@ -240,7 +240,8 @@ local function selectionComplete ( event )
    		image = photo,
    		sendto = UserName,
    		contactId = To_ContactId,
-   		MessageType = MessageType
+   		MessageType = MessageType,
+   		value = "Chat",
    	}
 
    }

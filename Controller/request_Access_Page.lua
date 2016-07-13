@@ -267,10 +267,10 @@ local function RequestProcess()
 
 			print("Open page name : "..openPage)
 
-			Webservice.REQUEST_ACCESS(openPage,RequestFromStatus,"","","","",FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,"",mkRank_id,Comment.text,get_requestAccess)
+			Webservice.REQUEST_ACCESS(openPage,RequestFromStatus,"","","","",FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,"",mkRank_id,Comment.text,"",get_requestAccess)
 
 		else
-			Webservice.REQUEST_ACCESS(openPage,RequestFromStatus,"","",DirectorName.text,DirectorEmail.text,FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,"",mkRank_id,Comment.text,get_requestAccess)
+			Webservice.REQUEST_ACCESS(openPage,RequestFromStatus,"","",DirectorName.text,DirectorEmail.text,FirstName.text,Name.text,Email.text,Phone.text,UnitNumber.text,"",mkRank_id,Comment.text,"",get_requestAccess)
 			
 		end
 

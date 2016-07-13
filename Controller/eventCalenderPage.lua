@@ -545,21 +545,20 @@ local function createEventlist(responevalue,timeValue)
 
 	end
 
-
 	scrollView:scrollTo( "top",{ time=200 } )
-
 
 end
 
 
+
+
+
+
 local function searchEventlist(DateWise_response,timeValue,searchText)
-
-
 
 	HaveField = false
 
 --DateWise_response=response
-
 
 ProcessingCount =0 
 
@@ -577,17 +576,15 @@ if  DateWise_response == nil then
 	return false
 end
 
+
 if #DateWise_response == 0 then
 
 	NoEvent.isVisible=true
-
 
 	return false
 else
 
 end
-
-
 
 
 
@@ -750,16 +747,15 @@ for i = 1, #DateWise_response do
 		local timeGMT = makeTimeStamp( startdate )
 
 		addEventBtn.value = timeGMT
-
-		
-
-		
-
 		
 	end
+	
 	return true
 
 end
+
+
+
 
 local function creatWeek( weekfirstDay,flagValue )
 	--todaydate =  os.date( "%m/%d/%Y" , os.time( t ) )

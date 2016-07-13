@@ -36,12 +36,16 @@ local Background,BgText,tabBar,backBtn,page_title,MKRank,rankText_icon,sumbitBtn
 local FirstName_bg,Name_bg,Email_bg,Phone_bg,MKRank_bg,Comment_bg,DirectorName_bg,DirectorEmail_bg
 
 --EditText
-local FirstName,Name,Email,Phone,UnitNumber,Comment,DirectorName,DirectorEmail
+local FirstName,Name,Email,Phone,UnitNumber,Comment,DirectorName,DirectorEmail, radiobutton_id
 
 --Spinner
 local submit_spinner
 
 openPage="addNewAccessPage"
+
+switchtype = "Contacts"
+
+local leftPadding = 15
 
 --Button
 local sumbitBtn,scrollView
@@ -85,79 +89,213 @@ end
 
 
 
+local function radioSwitchListener( event )
+
+		local switch = event.target
+
+		local switchid = event.target.id 
+
+		radiobutton_id = switchid
+
+		if tostring(switch.isOn) == "true" and switchid == "contact" then
+
+			print("contact from switch with 1")
+
+			contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
+	 		contact_txt.y = contact_switch.y
+
+	 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
+	 		teammember_txt.y = teammember_switch.y
+
+
+			MKRank_bg.isVisible = false
+			MKRank.isVisible = false
+		    rankText_icon.isVisible = false
+
+		    Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2 +5
+			Comment.y = Comment_bg.y
+
+			sumbitBtn.y = Comment.y+Comment.height/2+20
+	 		sumbitBtn_lbl.y=sumbitBtn.y
+
+	 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+	 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+	 		sumbitBtn_lbl.x = sumbitBtn.x+16
+
+	 		switchtype = "Contacts"
+
+		elseif tostring(switch.isOn) == "true" and switchid == "teammember" then 
+
+			print("teammember from switch with 0")
+
+			contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
+	 		contact_txt.y = contact_switch.y
+
+	 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
+	 		teammember_txt.y = teammember_switch.y
+
+			MKRank_bg.isVisible = true
+			MKRank.isVisible = true
+			rankText_icon.isVisible = true
+
+			--MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+			MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
+			MKRank.y=MKRank_bg.y+5
+			rankText_icon.y=MKRank_bg.y
+			Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+			Comment.y = Comment_bg.y
+
+			sumbitBtn.y = Comment.y+Comment.height/2+20
+	 		sumbitBtn_lbl.y=sumbitBtn.y
+
+	 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+	 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+	 		sumbitBtn_lbl.x = sumbitBtn.x+16
+
+	 		switchtype = "Team Member"
+
+		end
+
+	end
+
+
+
+
+
+
 local function touchBg( event )
 	if event.phase == "began" then
 
 		elseif event.phase == "ended" then
 
-		if Phone.text ~= nil and Phone.text~= "" and Utils.PhoneMasking(tostring(text)) then
+					if Phone.text ~= nil and Phone.text ~= "" and Utils.PhoneMasking(tostring(text)) then
 
-			textnotifybox.isVisible = true
-			textnotifytext.isVisible = true
+									textnotifybox.isVisible = true
+									textnotifytext.isVisible = true
 
-			textnotifybox.y = Phone_bottom.y + 15
-			textnotifytext.y= Phone_bottom.y + 15
+									textnotifybox.y = Phone_bottom.y + 15
+									textnotifytext.y= Phone_bottom.y + 15
 
-			Password_bg.y = textnotifytext.y+textnotifytext.contentHeight+12
-			Password.y = textnotifytext.y+textnotifytext.contentHeight+15
-			Password_bottom.y = Password.y+10
+									Password_bg.y = textnotifytext.y+textnotifytext.contentHeight+12
+									Password.y = textnotifytext.y+textnotifytext.contentHeight+15
+									Password_bottom.y = Password.y+10
 
-			PasswordHelptext.y= Password_bottom.y + 18
-			GeneratePasstext.y= PasswordHelptext.y + 20
+									PasswordHelptext.y= Password_bottom.y + 18
+									GeneratePasstext.y= PasswordHelptext.y + 20
 
-			MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
-			MKRank.y=MKRank_bg.y+5
-			rankText_icon.y=MKRank_bg.y
+									contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+18
+							 		contact_txt.y = contact_switch.y
 
-			Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-			Comment.y = Comment_bg.y
-
-			sumbitBtn.y = Comment.y+Comment.height/2+20
-			sumbitBtn_lbl.y=sumbitBtn.y
-
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
-			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-			sumbitBtn_lbl.x = sumbitBtn.x+16
+							 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
+							 		teammember_txt.y = teammember_switch.y
 
 
-			native.setKeyboardFocus(Password)
+									   if radiobutton_id == "teammember" then
 
-		elseif Phone.text == nil or Phone.text == ""  or Phone.text == Phone_placeholder then
+									    	print("67567656756∂2323 phone email not null")
 
-			textnotifybox.isVisible = false
-			textnotifytext.isVisible = false
+																
+												MKRank_bg.isVisible = true
+												MKRank.isVisible = true
+												rankText_icon.isVisible = true
 
-			Password_bg.y = Phone_bg.y+Phone_bg.height+7
-			Password.y = Phone_bg.y+Phone_bg.height+15
-			Password_bottom.y = Password.y+10
+												--MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+												MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
+												MKRank.y=MKRank_bg.y+5
+												rankText_icon.y=MKRank_bg.y
+												Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+												Comment.y = Comment_bg.y
+											
+									    else
 
-			PasswordHelptext.y= Password_bottom.y + 18
-			GeneratePasstext.y= PasswordHelptext.y + 20
-
-			MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
-			MKRank.y=MKRank_bg.y+5
-			rankText_icon.y=MKRank_bg.y
-
-			Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-			Comment.y = Comment_bg.y
-
-			sumbitBtn.y = Comment.y+Comment.height/2+20
-			sumbitBtn_lbl.y=sumbitBtn.y
-
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
-			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-			sumbitBtn_lbl.x = sumbitBtn.x+16
+										 	MKRank_bg.isVisible = false
+									 		MKRank.isVisible = false
+									 		rankText_icon.isVisible = false
 
 
-			native.setKeyboardFocus(Password)
+									 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
+											Comment.y = Comment_bg.y
 
-		end
+								 	    end
 
-		native.setKeyboardFocus(nil)
+
+
+							 		sumbitBtn.y = Comment.y+Comment.height/2+20
+							 		sumbitBtn_lbl.y=sumbitBtn.y
+
+							 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+							 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+							 		sumbitBtn_lbl.x = sumbitBtn.x+16
+
+									native.setKeyboardFocus(Password)
+
+				elseif Phone.text == nil or Phone.text == ""  or Phone.text == Phone_placeholder then
+
+								textnotifybox.isVisible = false
+								textnotifytext.isVisible = false
+
+								 Password_bg.y = Phone_bg.y+Phone_bg.height+7
+								 Password.y = Phone_bg.y+Phone_bg.height+13
+								 Password_bottom.y = Password.y+10
+
+								 PasswordHelptext.y= Password_bottom.y + 18
+								 GeneratePasstext.y= PasswordHelptext.y + 20
+
+						 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
+						 		contact_txt.y = contact_switch.y
+
+						 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
+						 		teammember_txt.y = teammember_switch.y
+
+
+								    if radiobutton_id == "teammember" then
+
+								    	print("67567656756∂2323")
+
+										MKRank_bg.isVisible = true
+										MKRank.isVisible = true
+										rankText_icon.isVisible = true
+
+										MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
+										MKRank.y=MKRank_bg.y+5
+										rankText_icon.y=MKRank_bg.y
+										Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+										Comment.y = Comment_bg.y
+
+									
+								    else
+
+									 	MKRank_bg.isVisible = false
+								 		MKRank.isVisible = false
+								 		rankText_icon.isVisible = false
+
+								 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
+										Comment.y = Comment_bg.y
+
+							 	    end
+
+							 	
+							 		sumbitBtn.y = Comment.y+Comment.height/2+20
+							 		sumbitBtn_lbl.y=sumbitBtn.y
+
+							 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+							 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+							 		sumbitBtn_lbl.x = sumbitBtn.x+16
+
+
+
+								 native.setKeyboardFocus(Password)
+
+				end
+
+			native.setKeyboardFocus(nil)
 
 	end
+
 	return true
 end
+
+
 
 
 
@@ -180,9 +318,24 @@ function onComplete(event)
 
 		print("on complete action done [[[[[[980890890890]]]]]]")
 
+		radiobutton_id = "contact"
+
+		-- if (Phone.text == "" or Phone.text == Phone_placeholder) then
+
+		-- 	print("hhhh")
+
+		-- 	Background:removeEventListener("touch",touchBg)
+
+		-- end
+
+
+		--Background:removeEventListener("touch",touchBg)
+
 	end
 
 end
+
+
 
 
 
@@ -231,8 +384,72 @@ local function RequestProcess()
 			MKRank.text = "-Select MK Rank-"
 			MKRank.value = "-Select MK Rank-"
 			Comment.text = ""
-			emailnotifybox.isOn = true
-			textnotifybox.isOn = true
+			emailnotifybox.isVisible = false
+			textnotifybox.isVisible = false
+			emailnotifytext.isVisible = false
+			textnotifytext.isVisible = false
+
+			Phone_bg.y = Email_bg.y+Email_bg.height+9
+			Phone.y = Email_bg.y+Email_bg.height+9
+			Phone_bottom.y= Phone.y+12
+			Password_bg.y = Phone_bg.y+Phone_bg.height+9
+			Password.y = Phone_bg.y+Phone_bg.height+9
+			Password_bottom.y=Password.y+12
+			PasswordHelptext.y= Password_bottom.y + 19
+			GeneratePasstext.y= PasswordHelptext.y + 22
+			contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 + 18
+			contact_txt.y = contact_switch.y
+			teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
+			teammember_txt.y = teammember_switch.y
+
+
+	 		if switchtype == "Team Member" then
+
+	 			contact_switch.isOn = true
+	 			teammember_switch.isOn = false
+
+	 			contact_switch:setState( { isOn=true})
+
+	 			MKRank_bg.isVisible = false
+		 		MKRank.isVisible = false
+		 		rankText_icon.isVisible = false
+
+				Comment_bg.y=teammember_txt.y + teammember_txt.contentHeight+Comment_bg.height/2 +5
+				Comment.y = Comment_bg.y
+
+				Comment.placeholder=RequestAccess.Comment_placeholder
+
+				sumbitBtn.y = Comment.y+Comment.height/2+20
+				sumbitBtn_lbl.y=sumbitBtn.y
+		 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+		 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+		 		sumbitBtn_lbl.x = sumbitBtn.x+16
+
+	 		else
+	 			contact_switch.isOn = true
+	 			teammember_switch.isOn = false
+
+	 			contact_switch:setState( { isOn=true})
+
+	 			MKRank_bg.isVisible = false
+		 		MKRank.isVisible = false
+		 		rankText_icon.isVisible = false
+
+		 		Comment_bg.y = teammember_txt.y + teammember_txt.contentHeight+Comment_bg.height/2 +5
+				Comment.y = Comment_bg.y
+
+				Comment.placeholder=RequestAccess.Comment_placeholder
+
+				sumbitBtn.y = Comment.y+Comment.height/2+20
+				sumbitBtn_lbl.y=sumbitBtn.y
+		 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+		 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+		 		sumbitBtn_lbl.x = sumbitBtn.x+16
+	 		end
+
+
+			-- emailnotifybox.isOn = true
+			-- textnotifybox.isOn = true
 
 			if Request_response == "SUCCESS" then
 
@@ -258,7 +475,9 @@ local function RequestProcess()
 
 		end
 
-		Webservice.REQUEST_ACCESS(openPage,"WEB",isSentMailvalue,isSentTextvalue,"","",FirstName.text,Name.text,Email.text,Phone.text,"",Password.text,mkRank_id,Comment.text,get_requestAccess)
+		print(switchtype)
+
+		Webservice.REQUEST_ACCESS(openPage,"WEB",isSentMailvalue,isSentTextvalue,"","",FirstName.text,Name.text,Email.text,Phone.text,"",Password.text,mkRank_id,Comment.text,switchtype,get_requestAccess)
 		
 	end
 
@@ -347,24 +566,24 @@ local function textfield( event )
 			elseif(event.target.id == "Email") then
 
 
-				if Email.text ~= nil and Email.text~= "" and Utils.emailValidation(Email.text) then
+				if Email.text ~= nil and Email.text ~= "" and Utils.emailValidation(Email.text) then
 
-					for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+						for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
-						ContactId = row.ContactId
+							ContactId = row.ContactId
 
-					end
+						end
 
-					emailnotifybox.isVisible = true
-					emailnotifytext.isVisible = true
+						emailnotifybox.isVisible = true
+						emailnotifytext.isVisible = true
 
 					if textnotifytext.isVisible == true and textnotifybox.isVisible == true then
 
 						print("i am here")
 
-						if emailnotifytext.isVisible == true and emailnotifybox.isVisible == true then
+												if emailnotifytext.isVisible == true and emailnotifybox.isVisible == true then
 
-							print("77777777")
+													print("77777777")
 
 										 		  --  if Phone.text == "" or Phone.text == Phone_placeholder then
 
@@ -400,6 +619,10 @@ local function textfield( event )
 										 		end
 
 
+
+										 		print("phone number 346743567456467")
+
+
 										 		Phone_bg.y = textnotifytext.y+3
 										 		Phone.y = textnotifytext.y+3
 										 		Phone_bottom.y= Phone.y+10
@@ -408,18 +631,51 @@ local function textfield( event )
 										 		textnotifytext.y= Phone_bottom.y + 15
 
 										 		Password_bg.y = textnotifytext.y+textnotifytext.height+12
-										 		Password.y = textnotifytext.y+textnotifytext.height+15
+										 		Password.y = textnotifytext.y+textnotifytext.height+20
 										 		Password_bottom.y = Password.y+10
 
 										 		PasswordHelptext.y= Password_bottom.y + 18
 										 		GeneratePasstext.y= PasswordHelptext.y + 20
 
-										 		MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
-										 		MKRank.y=MKRank_bg.y+5
-										 		rankText_icon.y=MKRank_bg.y
+										 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
+										 		contact_txt.y = contact_switch.y
 
-										 		Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-										 		Comment.y = Comment_bg.y
+										 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
+										 		teammember_txt.y = teammember_switch.y
+
+
+										 		   if radiobutton_id == "teammember" then
+
+													    	print("67567656756∂2323 email email")
+
+																				
+																MKRank_bg.isVisible = true
+																MKRank.isVisible = true
+																rankText_icon.isVisible = true
+
+																--MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+																MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
+																MKRank.y=MKRank_bg.y+5
+																rankText_icon.y=MKRank_bg.y
+																Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+																Comment.y = Comment_bg.y
+															
+													else
+
+														 	MKRank_bg.isVisible = false
+													 		MKRank.isVisible = false
+													 		rankText_icon.isVisible = false
+
+
+													 		Password_bg.y = Phone_bg.y+Phone_bg.height+12
+															Password.y = Phone_bg.y+Phone_bg.height+20
+															Password_bottom.y = Password.y+10
+
+													 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
+															Comment.y = Comment_bg.y
+
+												 	    end
+
 
 										 		sumbitBtn.y = Comment.y+Comment.height/2+20
 										 		sumbitBtn_lbl.y=sumbitBtn.y
@@ -428,28 +684,69 @@ local function textfield( event )
 										 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
 										 		sumbitBtn_lbl.x = sumbitBtn.x+16
 
-										 	else
+
+				    else
 
 
 										 		print("email not null %%%%%%%%")
 
 										 		Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
-										 		Phone.y = emailnotifytext.y+emailnotifytext.height+14
+										 		Phone.y = emailnotifytext.y+emailnotifytext.height+16
 										 		Phone_bottom.y= Phone.y+10
 
-										 		Password_bg.y = Phone_bg.y+Phone_bg.height+7
-										 		Password.y = Phone_bg.y+Phone_bg.height+14
-										 		Password_bottom.y = Password.y+10
+										 		   if radiobutton_id == "teammember" then
 
-										 		PasswordHelptext.y= Password_bottom.y + 18
-										 		GeneratePasstext.y= PasswordHelptext.y + 20
+													    	print("67567656756∂2323 email email")
 
-										 		MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
-										 		MKRank.y=MKRank_bg.y+5
-										 		rankText_icon.y=MKRank_bg.y
+																				
+																MKRank_bg.isVisible = true
+																MKRank.isVisible = true
+																rankText_icon.isVisible = true
 
-										 		Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-										 		Comment.y = Comment_bg.y
+																Password_bg.y = Phone_bg.y+Phone_bg.height+7
+																Password.y = Phone_bg.y+Phone_bg.height+14
+																Password_bottom.y = Password.y+10
+
+																PasswordHelptext.y= Password_bottom.y + 18
+										 						GeneratePasstext.y= PasswordHelptext.y + 20
+
+										 						contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +14
+														 		contact_txt.y = contact_switch.y
+
+														 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +14
+														 		teammember_txt.y = teammember_switch.y
+
+																--MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+																MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
+																MKRank.y=MKRank_bg.y+5
+																rankText_icon.y=MKRank_bg.y
+																Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+																Comment.y = Comment_bg.y
+															
+													else
+
+														 	MKRank_bg.isVisible = false
+													 		MKRank.isVisible = false
+													 		rankText_icon.isVisible = false
+
+													 		Password_bg.y = Phone_bg.y+Phone_bg.height+7
+															Password.y = Phone_bg.y+Phone_bg.height+14
+															Password_bottom.y = Password.y+10
+
+															PasswordHelptext.y= Password_bottom.y + 18
+									 						GeneratePasstext.y= PasswordHelptext.y + 20
+
+									 						contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +14
+													 		contact_txt.y = contact_switch.y
+
+													 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +14
+													 		teammember_txt.y = teammember_switch.y
+
+													 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
+															Comment.y = Comment_bg.y
+
+												 	 end
+
 
 										 		sumbitBtn.y = Comment.y+Comment.height/2+20
 										 		sumbitBtn_lbl.y=sumbitBtn.y
@@ -458,7 +755,7 @@ local function textfield( event )
 										 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
 										 		sumbitBtn_lbl.x = sumbitBtn.x+16
 
-										 	end
+				    end
 
 
 										 	Webservice.CheckExistsRequestStatus(0,Email.text,getemailexistresponse)
@@ -484,19 +781,56 @@ local function textfield( event )
 										 		textnotifybox.y = Phone_bottom.y + 15
 										 		textnotifytext.y= Phone_bottom.y + 15
 
-										 		Password_bg.y = textnotifybox.y+textnotifybox.height-2
-										 		Password.y = textnotifybox.y+textnotifybox.height-2
-										 		Password_bottom.y = Password.y+10
+										 		Password_bg.y = Phone_bg.y+Phone_bg.height+12
+												Password.y = Phone_bg.y+Phone_bg.height+20
+												Password_bottom.y = Password.y+10
+
+												PasswordHelptext.y= Password_bottom.y + 18
+							 					GeneratePasstext.y= PasswordHelptext.y + 20
+
+										 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+										 		contact_txt.y = contact_switch.y
+
+										 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+										 		teammember_txt.y = teammember_switch.y
+
+
+
+										 		  if radiobutton_id == "teammember" then
+
+													    	print("67567656756∂2323 email email")
+
+																			
+																MKRank_bg.isVisible = true
+																MKRank.isVisible = true
+																rankText_icon.isVisible = true
+
+																--MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+																MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
+																MKRank.y=MKRank_bg.y+5
+																rankText_icon.y=MKRank_bg.y
+																Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+																Comment.y = Comment_bg.y
+															
+													    else
+
+														 	MKRank_bg.isVisible = false
+													 		MKRank.isVisible = false
+													 		rankText_icon.isVisible = false
+
+													 		Password_bg.y = textnotifybox.y+textnotifybox.height-2
+													 		Password.y = textnotifybox.y+textnotifybox.height-2
+													 		Password_bottom.y = Password.y+10
+
+													 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
+															Comment.y = Comment_bg.y
+
+												 	    end
+
 
 										 		PasswordHelptext.y= Password_bottom.y + 18
 										 		GeneratePasstext.y= PasswordHelptext.y + 20
 
-										 		MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
-										 		MKRank.y=MKRank_bg.y+5
-										 		rankText_icon.y=MKRank_bg.y
-
-										 		Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-										 		Comment.y = Comment_bg.y
 
 										 		sumbitBtn.y = Comment.y+Comment.height/2+20
 										 		sumbitBtn_lbl.y=sumbitBtn.y
@@ -517,7 +851,26 @@ local function textfield( event )
 														-- Password.y = Phone_bg.y+Phone_bg.height+4
 														-- Password_bottom.y = Password.y+10
 
-														print("fdshdfshdfshudfshdfhjsdfhjsdfhjshdfsudsf")
+															print("211231232323123232312323121323112312312")
+
+
+														 		Phone_bg.y = Email_bg.y+Email_bg.height+7
+														 		Phone.y = Email_bg.y+Email_bg.height+7
+														 		Phone_bottom.y= Phone.y+10
+
+														 		Password_bg.y = Phone_bg.y+Phone_bg.height+12
+																Password.y = Phone_bg.y+Phone_bg.height+20
+																Password_bottom.y = Password.y+10
+
+																PasswordHelptext.y= Password_bottom.y + 18
+											 					GeneratePasstext.y= PasswordHelptext.y + 20
+
+														 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+														 		contact_txt.y = contact_switch.y
+
+														 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+														 		teammember_txt.y = teammember_switch.y
+
 
 														if emailnotifytext.isVisible == true and emailnotifybox.isVisible == true then
 
@@ -525,27 +878,130 @@ local function textfield( event )
 															Password.y = Phone_bg.y+Phone_bg.height+20
 															Password_bottom.y = Password.y+10
 
+															PasswordHelptext.y= Password_bottom.y + 18
+										 					GeneratePasstext.y= PasswordHelptext.y + 20
 
-															if Phone.text == "" or Phone.text == Phone_placeholder then
 
-																Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
-																Phone.y = emailnotifytext.y+emailnotifytext.height+7
-																Phone_bottom.y= Phone.y+10
+													 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+													 		contact_txt.y = contact_switch.y
 
-																Password_bg.y = Phone_bg.y+Phone_bg.height+7
-																Password.y = Phone_bg.y+Phone_bg.height+7
-																Password_bottom.y = Password.y+10
+													 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+													 		teammember_txt.y = teammember_switch.y
 
-															end
+
+																if Phone.text == "" or Phone.text == Phone_placeholder then
+
+																	print("phone number #######")
+
+																	Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
+																	Phone.y = emailnotifytext.y+emailnotifytext.height+7
+																	Phone_bottom.y= Phone.y+10
+
+																	Password_bg.y = Phone_bg.y+Phone_bg.height+7
+																	Password.y = Phone_bg.y+Phone_bg.height+7
+																	Password_bottom.y = Password.y+10
+
+																	PasswordHelptext.y= Password_bottom.y + 18
+												 					GeneratePasstext.y= PasswordHelptext.y + 20
+
+
+															 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+															 		contact_txt.y = contact_switch.y
+
+															 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+															 		teammember_txt.y = teammember_switch.y
+
+																end
 
 														else
+
+															print("^&*^&*^&*^&**&^*&^&*")
+
+
+													 		Password_bg.y = Phone_bg.y+Phone_bg.height+12
+															Password.y = Phone_bg.y+Phone_bg.height+20
+															Password_bottom.y = Password.y+10
+
+															PasswordHelptext.y= Password_bottom.y + 18
+									 						GeneratePasstext.y= PasswordHelptext.y + 20
+
+													 		-- MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+													 		-- MKRank.y=MKRank_bg.y+5
+													 		-- rankText_icon.y=MKRank_bg.y
+
+													 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+													 		contact_txt.y = contact_switch.y
+
+													 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+													 		teammember_txt.y = teammember_switch.y
+
+													 	
+
+
+													    if radiobutton_id == "teammember" then
+
+													    	print("67567656756∂2323 email email")
+
+																				
+																MKRank_bg.isVisible = true
+																MKRank.isVisible = true
+																rankText_icon.isVisible = true
+
+																contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+																contact_txt.y = contact_switch.y
+
+																teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+																teammember_txt.y = teammember_switch.y
+
+
+																--MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+																MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
+																MKRank.y=MKRank_bg.y+5
+																rankText_icon.y=MKRank_bg.y
+																Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+																Comment.y = Comment_bg.y
 															
-											--      Password_bg.y = Phone_bg.y+Phone_bg.height+12
-											-- 	 Password.y = Phone_bg.y+Phone_bg.height+15
-											-- 	 Password_bottom.y = Password.y+10
+													    else
 
-											-- print("mmmmmm")
+														 	MKRank_bg.isVisible = false
+													 		MKRank.isVisible = false
+													 		rankText_icon.isVisible = false
 
+													 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+													 		contact_txt.y = contact_switch.y
+
+													 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+													 		teammember_txt.y = teammember_switch.y
+
+
+													 		Password_bg.y = Phone_bg.y+Phone_bg.height+12
+															Password.y = Phone_bg.y+Phone_bg.height+20
+															Password_bottom.y = Password.y+10
+
+
+													 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
+															Comment.y = Comment_bg.y
+
+												 	    end
+
+
+											 		-- Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+											 		-- Comment.y = Comment_bg.y
+
+											 		sumbitBtn.y = Comment.y+Comment.height/2+20
+											 		sumbitBtn_lbl.y=sumbitBtn.y
+
+
+											 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+											 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+											 		sumbitBtn_lbl.x = sumbitBtn.x+16
+
+																	
+													--   Password_bg.y = Phone_bg.y+Phone_bg.height+12
+													-- 	 Password.y = Phone_bg.y+Phone_bg.height+15
+													-- 	 Password_bottom.y = Password.y+10
+
+													 -- print("mmmmmm")
 
 										end
 
@@ -575,19 +1031,7 @@ local function textfield( event )
 											PasswordHelptext.y= Password_bottom.y + 18
 											GeneratePasstext.y= PasswordHelptext.y + 20
 
-											MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
-											MKRank.y=MKRank_bg.y+5
-											rankText_icon.y=MKRank_bg.y
-
-											Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-											Comment.y = Comment_bg.y
-
-											sumbitBtn.y = Comment.y+Comment.height/2+20
-											sumbitBtn_lbl.y=sumbitBtn.y
-
-											sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
-											sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-											sumbitBtn_lbl.x = sumbitBtn.x+16
+										
 
 										end
 
@@ -657,24 +1101,56 @@ local function textfield( event )
 									PasswordHelptext.y= Password_bottom.y + 18
 									GeneratePasstext.y= PasswordHelptext.y + 20
 
-									MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
-									MKRank.y=MKRank_bg.y+5
-									rankText_icon.y=MKRank_bg.y
+									contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+18
+							 		contact_txt.y = contact_switch.y
 
-									Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-									Comment.y = Comment_bg.y
+							 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
+							 		teammember_txt.y = teammember_switch.y
 
-									sumbitBtn.y = Comment.y+Comment.height/2+20
-									sumbitBtn_lbl.y=sumbitBtn.y
 
-									sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
-									sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-									sumbitBtn_lbl.x = sumbitBtn.x+16
+									   if radiobutton_id == "teammember" then
 
+									    	print("67567656756∂2323 phone email not null")
+
+																
+												MKRank_bg.isVisible = true
+												MKRank.isVisible = true
+												rankText_icon.isVisible = true
+
+
+												--MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+												MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
+												MKRank.y=MKRank_bg.y+5
+												rankText_icon.y=MKRank_bg.y
+												Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+												Comment.y = Comment_bg.y
+											
+									    else
+
+										 	MKRank_bg.isVisible = false
+									 		MKRank.isVisible = false
+									 		rankText_icon.isVisible = false
+
+
+									 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
+											Comment.y = Comment_bg.y
+
+								 	    end
+
+
+
+							 		sumbitBtn.y = Comment.y+Comment.height/2+20
+							 		sumbitBtn_lbl.y=sumbitBtn.y
+
+							 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+							 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+							 		sumbitBtn_lbl.x = sumbitBtn.x+16
 
 									native.setKeyboardFocus(Password)
 
 								elseif Phone.text == nil or Phone.text == ""  or Phone.text == Phone_placeholder then
+
+									print("334345545345 phone null")
 
 									textnotifybox.isVisible = false
 									textnotifytext.isVisible = false
@@ -690,25 +1166,78 @@ local function textfield( event )
 								 -- end
 
 								 Password_bg.y = Phone_bg.y+Phone_bg.height+7
-								 Password.y = Phone_bg.y+Phone_bg.height+15
+								 Password.y = Phone_bg.y+Phone_bg.height+13
 								 Password_bottom.y = Password.y+10
 
 								 PasswordHelptext.y= Password_bottom.y + 18
 								 GeneratePasstext.y= PasswordHelptext.y + 20
 
-								 MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
-								 MKRank.y=MKRank_bg.y+5
-								 rankText_icon.y=MKRank_bg.y
+								 -- MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+								 -- MKRank.y=MKRank_bg.y+5
+								 -- rankText_icon.y=MKRank_bg.y
 
-								 Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-								 Comment.y = Comment_bg.y
+								 -- Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+								 -- Comment.y = Comment_bg.y
 
-								 sumbitBtn.y = Comment.y+Comment.height/2+20
-								 sumbitBtn_lbl.y=sumbitBtn.y
+								 -- sumbitBtn.y = Comment.y+Comment.height/2+20
+								 -- sumbitBtn_lbl.y=sumbitBtn.y
 
-								 sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
-								 sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-								 sumbitBtn_lbl.x = sumbitBtn.x+16
+								 -- sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+								 -- sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+								 -- sumbitBtn_lbl.x = sumbitBtn.x+16
+
+							 	-- MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+						 		-- MKRank.y=MKRank_bg.y+5
+						 		-- rankText_icon.y=MKRank_bg.y
+
+						 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
+						 		contact_txt.y = contact_switch.y
+
+						 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
+						 		teammember_txt.y = teammember_switch.y
+
+
+
+								    if radiobutton_id == "teammember" then
+
+								    	print("67567656756∂2323")
+
+
+										MKRank_bg.isVisible = true
+										MKRank.isVisible = true
+										rankText_icon.isVisible = true
+
+										--MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+										MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
+										MKRank.y=MKRank_bg.y+5
+										rankText_icon.y=MKRank_bg.y
+										Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+										Comment.y = Comment_bg.y
+
+										
+								    else
+
+									 	MKRank_bg.isVisible = false
+								 		MKRank.isVisible = false
+								 		rankText_icon.isVisible = false
+
+								 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
+										Comment.y = Comment_bg.y
+
+							 	    end
+
+							 	
+
+							 		-- Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+							 		-- Comment.y = Comment_bg.y
+
+							 		sumbitBtn.y = Comment.y+Comment.height/2+20
+							 		sumbitBtn_lbl.y=sumbitBtn.y
+
+							 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+							 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+							 		sumbitBtn_lbl.x = sumbitBtn.x+16
+
 
 
 								 native.setKeyboardFocus(Password)
@@ -737,7 +1266,7 @@ local function textfield( event )
 
 							if (event.target.id == "Phone") then
 
-								background:addEventListener("touch",touchBg)
+								Background:addEventListener("touch",touchBg)
 
 							end
 
@@ -1173,7 +1702,7 @@ sceneGroup:insert(FirstName)
 
 FirstName_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
 FirstName_bottom.x=W/2
-FirstName_bottom.y= FirstName.y+11
+FirstName_bottom.y= FirstName.y+13
 
 -------------------------------------Last name ----------------------------------------------
 
@@ -1184,7 +1713,7 @@ sceneGroup:insert(Name_bg)
 
 Name_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
 Name_bottom.x=W/2
-Name_bottom.y= FirstName_bg.y+FirstName_bg.height+16
+Name_bottom.y= FirstName_bg.y+FirstName_bg.height+18
 
 Name = native.newTextField( W/2+3, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 Name.id="Last Name"
@@ -1205,7 +1734,7 @@ sceneGroup:insert(Email_bg)
 
 Email_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
 Email_bottom.x=W/2
-Email_bottom.y= Name_bg.y+Name_bg.height+16
+Email_bottom.y= Name_bg.y+Name_bg.height+18
 
 Email = native.newTextField(W/2+3, Name_bg.y+Name_bg.height+7, W-20, 25 )
 Email.id="Email"
@@ -1248,13 +1777,13 @@ sceneGroup:insert(emailnotifytext)
 -----------------------------------phone------------------------------------------
 Phone_bg = display.newRect(W/2, emailnotifytext.y+emailnotifytext.height+7, W-20, 25)
 Phone_bg.alpha = 0.01
-Phone_bg.y = Email_bg.y+Email_bg.height+7
+Phone_bg.y = Email_bg.y+Email_bg.height+9
 sceneGroup:insert(Phone_bg)
 
 Phone = native.newTextField(W/2+3, emailnotifytext.y+emailnotifytext.height+15, W-20, 25)
 Phone.id="Phone"
 Phone.size=14	
-Phone.y = Email_bg.y+Email_bg.height+7
+Phone.y = Email_bg.y+Email_bg.height+9
 Phone.anchorX = 0
 Phone.x = 15
 		--Phone.text = "(111) 111 -1111"
@@ -1266,7 +1795,7 @@ Phone.x = 15
 
 		Phone_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
 		Phone_bottom.x=W/2
-		Phone_bottom.y= Phone.y+10
+		Phone_bottom.y= Phone.y+12
 
 
 		textnotifybox = widget.newSwitch(
@@ -1299,7 +1828,7 @@ Phone.x = 15
 
 Password_bg = display.newRect(W/2, textnotifytext.y+textnotifytext.contentHeight+12, W-20, 25)
 Password_bg.alpha = 0.01
-Password_bg.y = Phone_bg.y+Phone_bg.height+7
+Password_bg.y = Phone_bg.y+Phone_bg.height+9
 sceneGroup:insert(Password_bg)
 
 Password = native.newTextField(W/2+3, textnotifytext.y+textnotifytext.height+15, W-20, 25)
@@ -1307,7 +1836,7 @@ Password.id="Password"
 Password.size=14	
 Password.anchorX = 0
 Password.x = 15
-Password.y = Phone_bg.y+Phone_bg.height+7
+Password.y = Phone_bg.y+Phone_bg.height+9
 		--Password.y = textnotifytext.y+textnotifytext.contentHeight+15
 		Password:setReturnKey( "next" )
 		Password.hasBackground = false
@@ -1316,30 +1845,79 @@ Password.y = Phone_bg.y+Phone_bg.height+7
 
 		Password_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
 		Password_bottom.x=W/2
-		Password_bottom.y=Password.y+10
+		Password_bottom.y=Password.y+12
 
 		PasswordHelptext = display.newText(PopupGroup.PasswordHelptext,0,0,W-30,0,native.systemFont,11)
 		PasswordHelptext.x= 12
 		PasswordHelptext.anchorX=0
 		PasswordHelptext:setFillColor(0,0,0)
-		PasswordHelptext.y= Password_bottom.y + 18
+		PasswordHelptext.y= Password_bottom.y + 19
 		sceneGroup:insert(PasswordHelptext)
 
 		GeneratePasstext = display.newText(PopupGroup.GeneratePasstext,0,0,W-30,0,native.systemFontBold,14.5)
 		GeneratePasstext.x= W-145
 		GeneratePasstext.anchorX = 0
 		GeneratePasstext:setFillColor(0,0,0.5)
-		GeneratePasstext.y= PasswordHelptext.y + 20
+		GeneratePasstext.y= PasswordHelptext.y + 22
 		sceneGroup:insert(GeneratePasstext)
 		GeneratePasstext:addEventListener("touch",OnPasswordGeneration)
 
 
------------------------------------MK rank----------------------------------------
+------------------------- contact and teammember checkbox ------------------------------
+
+
+	    contact_switch = widget.newSwitch {
+	  		left = 25,
+	  		top = 180,
+	  		style = "radio",
+	  		id = "contact",
+	  		initialSwitchState = true,
+	  		onPress = radioSwitchListener,
+	  	}
+	  	sceneGroup:insert( contact_switch )
+
+	  	contact_switch.width=20;contact_switch.height=20
+	  	contact_switch.x = leftPadding
+	  	contact_switch.anchorX = 0
+	  	contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 + 18
+
+	  	contact_txt = display.newText( sceneGroup,"Contacts",0,0,native.systemFont,14 )
+	  	contact_txt.x = contact_switch.x+24;contact_txt.y = contact_switch.y
+	  	contact_txt.anchorX = 0
+	  	contact_txt:setFillColor( 0 )
+	  	
+
+	  	
+	  	teammember_switch = widget.newSwitch {
+	  		left = 25,
+	  		top = 180,
+	  		style = "radio",
+	  		id = "teammember",
+	  		initialSwitchState = false,
+	  		onPress = radioSwitchListener,
+	  	}
+	  	sceneGroup:insert( teammember_switch )
+	  	teammember_switch.width=20;teammember_switch.height=20
+	  	teammember_switch.x = contact_txt.x+contact_txt.contentWidth+20
+	  	teammember_switch.anchorX = 0
+	  	teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
+
+	  	teammember_txt = display.newText( sceneGroup,"Team Member",0,0,native.systemFont,14 )
+	  	teammember_txt.x = teammember_switch.x+24;teammember_txt.y = teammember_switch.y
+	  	teammember_txt.anchorX = 0
+	  	teammember_txt:setFillColor( 0 )
+
+
+
+
+
+----------------------------------------MK rank------------------------------------------
 
 MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
 MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
+MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
 MKRank_bg.strokeWidth = 1
+MKRank_bg.isVisible = false
 MKRank_bg:setFillColor( 0,0,0,0 )
 MKRank_bg.id="MKrank"
 sceneGroup:insert(MKRank_bg)
@@ -1350,6 +1928,7 @@ MKRank.text = RequestAccess.MKRank_placeholder
 MKRank.value = "-Select MK Rank-"
 MKRank.id="MKrank"
 MKRank.alpha=0.9
+MKRank.isVisible = false
 MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 MKRank.y=MKRank_bg.y+5
 MKRank.x = 18
@@ -1358,19 +1937,21 @@ sceneGroup:insert(MKRank)
 
 rankText_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
 rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth/2-15
+rankText_icon.isVisible = false
 rankText_icon.y=MKRank_bg.y
 
 
 
 ----------------------comments --------------------------------------
-Comment_bg = display.newRect( W/2, 0, W-20, 60)
-Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+Comment_bg = display.newRect( W/2, 0, W-20, 55)
+--Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+Comment_bg.y = teammember_txt.y + teammember_txt.contentHeight+Comment_bg.height/2 +5
 Comment_bg:setFillColor( 0,0,0,0 )
 Comment_bg:setStrokeColor( 0, 0, 0 , 0.3 )
 Comment_bg.strokeWidth = 1
 sceneGroup:insert(Comment_bg)
 
-Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 60 )
+Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 55 )
 Comment.placeholder=RequestAccess.Comment_placeholder
 Comment.isEditable = true
 Comment.size=14	

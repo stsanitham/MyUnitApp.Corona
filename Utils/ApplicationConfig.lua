@@ -218,7 +218,10 @@ ApplicationConfig.GetChatUnReadMessagesList = ApplicationConfig.BASE_URL.."/MyUn
 
 ApplicationConfig.UpdateLastChatSyncDate = ApplicationConfig.BASE_URL.."/MyUnitBuzz/UpdateLastChatSyncDate"
 
+ApplicationConfig.ContactAutoCompleteForRequestAccesses = ApplicationConfig.BASE_URL.."/MyUnitBuzz/ContactAutoCompleteForRequestAccesses"
+
 ApplicationConfig.DeleteParticularGroup = ApplicationConfig.BASE_URL.."/MyUnitBuzz/DeleteParticularGroup"
+
 
 
 

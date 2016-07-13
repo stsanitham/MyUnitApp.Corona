@@ -19,11 +19,25 @@ local Details={}
 
 local listValue = {}
 
+local searchArray = {}
+
+local searchArraytotal= {}
+
+local ContactListResponse = {}
+
+local testresponse ={}
+
+local totArray = {}
+
 local scrollView
 
 local page_count = 0
 
 local totalPageContent = 10
+
+local searchGroup = display.newGroup( )
+
+local TotalCount = 0
 
 --------------- Initialization -------------------
 
@@ -35,7 +49,11 @@ local menuBtn
 
 openPage="inviteAndaccessPage"
 
-local RecentTab_Topvalue = 72
+--local RecentTab_Topvalue = 102
+
+--local RecentTab_Topvalue = 72
+
+local RecentTab_Topvalue = 130
 
 local groupArray={}
 
@@ -290,9 +308,13 @@ local function RemoveProcess(value)
         			effect = "slideLeft",
         			time = 300,
         			params = {
-        				inviteDetails =  Details,checkstatus = Status_Name
+        				inviteDetails =  Details,checkstatus = Status_Name,searchbg = search
         			}
         		}
+
+        		--if search then search:removeSelf(); search = nil end
+
+        		search.isVisible=false
 
         		composer.showOverlay( "Controller.inviteAccessDetailPage", options )
 
@@ -441,6 +463,8 @@ local function Createmenu( object )
 
 end
 
+
+
 local function ListmenuTouch( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -486,7 +510,11 @@ local function ListmenuTouch( event )
 
 
 
+
+
+
 	local function CreateList(list)
+
 
 
 		if page_count == 1 then
@@ -685,42 +713,7 @@ end
 
 
 
-local function TouchAction( event )
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-
-	elseif ( event.phase == "moved" ) then
-		local dy = math.abs( ( event.y - event.yStart ) )
-        -- If the touch on the button has moved more than 10 pixels,
-        -- pass focus back to the scroll view so it can continue scrolling
-        if ( dy > 10 ) then
-        	display.getCurrentStage():setFocus( nil )
-        	scrollView:takeFocus( event )
-        end
-
-        elseif event.phase == "ended" then
-        display.getCurrentStage():setFocus( nil )
-        if inviteList.isVisible == false then
-
-        	List_bg:toFront( )
-        	inviteList:toFront( )
-        	inviteList.isVisible = true
-        	List_bg.isVisible = true
-        else
-        	inviteList.isVisible = false
-        	List_bg.isVisible = false
-        end
-        
-    end
-
-    return true
-
-end
-
-
-
-
-function get_GetMyUnitBuzzRequestAccesses(response)
+function get_GetMyUnitBuzzRequestAccessesNew(response1)
 
 
 			if page_count == 1 then
@@ -738,23 +731,172 @@ function get_GetMyUnitBuzzRequestAccesses(response)
 
 		    end
 
-		response = response.MubRequestAccessList
 
+		  totArray = response1
+
+
+		reqaccess_response = response1.MubRequestAccessList
+
+		ContactListResponse = reqaccess_response
+
+
+		search.isVisible = true
+	    searchcontact_bg.isVisible = true
+	    searchcontact.isVisible = true
+	    count_bg.isVisible = true
+	    count.isVisible = true
+
+
+	    TotalCount = response1.TotalContactCount
+
+	    if TotalCount == 1 then
+
+	    	count.text = "You can find "..TotalCount.." Contact"
+
+	    else
+
+			count.text = "You can find "..TotalCount.." Contacts"
+
+	    end
+
+	 
 
 	local function onTimer(event)
 
+				if reqaccess_response ~= nil then
 
-				if response ~= nil then
+					if #reqaccess_response > 0  then
 
-					if #response > 0  then
+						NoEvent.isVisible=false
+
+
+						local listValue = {}
+
+						for i=1,#reqaccess_response do
+
+							listValue[#listValue+1] = reqaccess_response[i]	
+
+						end
+
+
+						local function onTimerr(event)
+
+								if search.text:len() == 3 and search.text:len() > 3 then
+
+
+								elseif search.text:len() < 3 then
+
+									print( "here !!!!!!! new values"..#listValue )	
+									CreateList(listValue)
+
+							    end
+
+						end
+
+						timer.performWithDelay(200,onTimerr)
+
+
+					else
+
+						if #groupArray <= 0 then
+
+							NoEvent.isVisible=true
+
+							if status == "DENY" then
+
+								NoEvent.text=InviteAccessDetail.NoDeniedAccess
+
+							elseif status == "OPEN" then
+
+								NoEvent.text=InviteAccessDetail.NoPendingRequest
+
+							elseif status == "ADDREQUEST" then
+
+								NoEvent.text=InviteAccessDetail.NoTMAccess
+
+							end
+						end
+
+
+					end
+
+				end
+
+
+	end
+
+	timer.performWithDelay(500,onTimer)
+
+end
+
+
+
+
+
+
+function get_GetMyUnitBuzzRequestAccesses(response1)
+
+
+			if page_count == 1 then
+
+				search.text = ""
+
+				for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+				end
+
+				scrollView:scrollToPosition
+				{
+					y = 0,
+					time = 200,
+				}
+
+		    end
+
+
+		  totArray = response1
+
+
+		reqaccess_response = response1.MubRequestAccessList
+
+		ContactListResponse = reqaccess_response
+
+
+		search.isVisible = true
+	    searchcontact_bg.isVisible = true
+	    searchcontact.isVisible = true
+	    count_bg.isVisible = true
+	    count.isVisible = true
+
+
+	    TotalCount = response1.TotalContactCount
+
+	    if TotalCount == 1 then
+
+	    	count.text = "You can find "..TotalCount.." Contact"
+
+	    else
+
+			count.text = "You can find "..TotalCount.." Contacts"
+
+	    end
+
+	 
+
+	local function onTimer(event)
+
+				if reqaccess_response ~= nil then
+
+					if #reqaccess_response > 0  then
 
 						NoEvent.isVisible=false
 
 						local listValue = {}
 
-						for i=1,#response do
+						for i=1,#reqaccess_response do
 
-							listValue[#listValue+1] = response[i]	
+							listValue[#listValue+1] = reqaccess_response[i]	
 
 						end
 
@@ -800,6 +942,246 @@ end
 
 
 
+
+	function getOriginalContactList( response )
+
+
+		   if page_count == 1 then
+
+				for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+				end
+
+				scrollView:scrollToPosition
+				{
+					y = 0,
+					time = 200,
+				}
+
+		    end
+
+
+		    testresponse = response
+
+
+			if response ~= nil then
+
+					 if #response>0 then
+
+							NoEvent.isVisible = false
+
+							for i=1,#searchArraytotal do
+								searchArraytotal[i]=nil
+							end
+
+			                searchArraytotal = response
+
+
+			                print("___________________________________________________________________________ ".. #searchArraytotal)
+
+							--page_count = 1
+
+								if #searchArraytotal ~=0 then
+
+									CreateList(searchArraytotal)
+
+								else
+
+									NoEvent.isVisible = true
+
+									NoEvent.text = "No Contacts Found"
+
+						    	end
+
+						    --searchArray = searchArraytotal
+
+				     end
+
+			end
+
+
+
+			if #searchArraytotal == 0 then
+
+				for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+				end
+
+				NoEvent.isVisible = true
+
+				NoEvent.text = "No Contacts Found"
+
+			else
+
+				print("******************{{{{{{{{{{{{")
+
+				NoEvent.isVisible = false
+
+			end
+			
+	end
+
+
+
+
+
+
+
+
+local function searchListener( event )
+
+	if ( event.phase == "began" ) then
+       
+
+    elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+       
+       -- search.text = ""
+       -- NoEvent.text = "No Contacts Found"
+        native.setKeyboardFocus( nil )
+
+    elseif ( event.phase == "editing" ) then
+
+			    	if event.text:len() == 2 or event.text:len() < 3 then
+
+							for i=1,#searchArraytotal do
+									searchArraytotal[i]=nil
+							end
+
+							print("length == 2 and < 3")
+
+							--if #searchArraytotal == 0 then
+
+							 --  	print("less than 3")
+
+								-- page_count = 0
+
+								-- page_count = page_count + 1
+
+								-- spinner.isVisible=false
+
+								-- spinner_hide()
+
+		 					--     Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
+
+                                get_GetMyUnitBuzzRequestAccessesNew(totArray)
+
+		 					--end
+
+		 			elseif event.text:len() == 3 and event.text:len() > 2 and event.startPosition == (3) then
+
+			    		        print("length = 3")
+
+					    		Webservice.ContactAutoCompleteForRequestAccesses(event.text,status,getOriginalContactList)
+
+
+					elseif event.text:len() > 3 or event.text:len() ~= 2 or event.text:len() ~=3 and event.startPosition ~= (3) then
+
+			    		        print("length > 3")
+
+				    			for i=1,#searchArray do
+									searchArray[i]=nil
+								end
+
+								print("Length : "..#searchArraytotal)
+
+								for i=1,#searchArraytotal do
+
+										--stringfind = string.find(searchArraytotal[i].FirstName:lower(),event.text:lower()) 
+
+										if string.find(searchArraytotal[i].FirstName:lower(),event.text:lower())  ~= nil then
+
+											print("Here >>>>>>>>>>")
+
+											NoEvent.isVisible = false
+
+											searchArray[#searchArray+1] = searchArraytotal[i]
+
+										end
+
+								end
+
+
+
+								if #searchArray == 0 then
+
+									print("not true")
+
+										NoEvent.isVisible = true
+
+										NoEvent.text = "No Contacts Found"
+
+								end
+
+
+								
+
+								if testresponse then
+
+									page_count = 1
+
+								    CreateList(searchArray)
+
+								else
+
+									NoEvent.isVisible = true
+
+								    NoEvent.text = "No Contacts Found"
+
+								end
+
+
+					       -- elseif event.startPosition == 2 or event.text:len() < 3 or not event.text:len() > 3 then
+	 					   -- end
+
+			        end
+
+    end
+end
+
+
+
+
+local function TouchAction( event )
+	if event.phase == "began" then
+		display.getCurrentStage():setFocus( event.target )
+
+	elseif ( event.phase == "moved" ) then
+		local dy = math.abs( ( event.y - event.yStart ) )
+        -- If the touch on the button has moved more than 10 pixels,
+        -- pass focus back to the scroll view so it can continue scrolling
+        if ( dy > 10 ) then
+        	display.getCurrentStage():setFocus( nil )
+        	scrollView:takeFocus( event )
+        end
+
+        elseif event.phase == "ended" then
+        display.getCurrentStage():setFocus( nil )
+        if inviteList.isVisible == false then
+
+        	List_bg:toFront( )
+        	inviteList:toFront( )
+        	inviteList.isVisible = true
+        	List_bg.isVisible = true
+        else
+        	inviteList.isVisible = false
+        	List_bg.isVisible = false
+        end
+        
+    end
+
+    return true
+
+end
+
+
+
+
+
+
+
+
 function reloadInvitAccess(reloadstatus)
 
 	composer.hideOverlay( )
@@ -819,6 +1201,9 @@ function reloadInvitAccess(reloadstatus)
 
 
 end
+
+
+
 
 
  local function invite_scrollListener( event )
@@ -911,6 +1296,67 @@ function scene:create( event )
 	title.x=5;title.y = title_bg.y
 	title:setFillColor(0)
 
+--------------------- added code to show count ------------------------
+
+	count_bg = display.newRect(sceneGroup,0,0,W,30)
+	count_bg.x=W/2;count_bg.y = title_bg.y+title_bg.contentHeight
+	count_bg.isVisible=false
+	count_bg:setFillColor(0,0,0,0.1)
+
+
+	count = display.newText(sceneGroup,"",0,0,native.systemFont,14)
+	--count.anchorX = 0
+	count.text = ""
+	count.isVisible=false
+	count.x=W/2;count.y = count_bg.y
+	count:setFillColor(0)
+
+----------------- added code for searching contacts -------------------
+
+	-- searchcontact_bg = display.newRect(sceneGroup,0,0,W-40,30)
+	-- searchcontact_bg.anchorX = 0
+	-- searchcontact_bg:addEventListener( "userInput", searchfunction )
+	-- searchcontact_bg.x=W-40;searchcontact_bg.y = title_bg.y+title_bg.contentHeight
+	-- searchcontact_bg:setFillColor(0,0,0,0.01)
+
+
+	-- searchcontact = display.newImageRect(sceneGroup,"res/assert/search(gray).png",18,18)
+	-- searchcontact.x=searchcontact_bg.contentWidth+12;searchcontact.y=searchcontact_bg.y
+	-- searchcontact:addEventListener( "userInput", searchfunction )
+	-- searchcontact:setFillColor(0)
+	-- searchcontact.anchorX=0
+
+
+
+	searchcontact_bg = display.newRect(sceneGroup,0,0,W,30)
+	searchcontact_bg.y = count_bg.y+count_bg.contentHeight
+	searchcontact_bg.x = W/2
+	searchcontact_bg.isVisible=false
+	searchcontact_bg:setFillColor(0,0,0,0.2)
+
+	searchcontact = display.newImageRect(sceneGroup,"res/assert/search(gray).png",18,18)
+	searchcontact.x=searchcontact_bg.x+searchcontact_bg.contentWidth/2-searchcontact.contentWidth
+	searchcontact:setFillColor(0)
+	searchcontact.isVisible=false
+	searchcontact.y=searchcontact_bg.y
+
+	search =  native.newTextField( searchcontact_bg.x-searchcontact_bg.contentWidth/2+7, searchcontact_bg.y, searchcontact_bg.contentWidth-45, 24 )
+	search.anchorX=0
+	search.size=14
+	search.isFontSizeScaled = true
+	search.text = ""
+	--search:resizeHeightToFitFont()
+	search:setReturnKey( "search" )
+	search.placeholder = CommonWords.search
+	search.hasBackground = true
+	search.isVisible = false
+	sceneGroup:insert(search)
+
+	search:addEventListener( "userInput", searchListener )
+
+
+-----------------------------------------------------------------------
+
 	NoEvent = display.newText( sceneGroup, EventCalender.NoEvent , 0,0,0,0,native.systemFontBold,14)
 	NoEvent.x=W/2;NoEvent.y=H/2
 	NoEvent.isVisible=false
@@ -951,9 +1397,45 @@ function scene:show( event )
 	
 	if phase == "will" then
 		
-				composer.removeHidden()
+		composer.removeHidden()
+
+		search.text = ""
+
 
 	elseif phase == "did" then
+
+---------------------------------------search list---------------------------------------
+
+				-- searchList_bg = display.newRect( searchGroup, 200, 200, 104, 304 )
+				-- searchList_bg:setFillColor( 0 )
+				-- searchList_bg.anchorY = 0
+
+
+				-- searchList = widget.newTableView(
+				-- {
+				-- 	left = 200,
+				-- 	top = 200,
+				-- 	height = 100,
+				-- 	width = 300,
+				-- 	onRowRender = searchRender,
+				-- 	onRowTouch = searchTouch,
+				-- 	hideBackground = true,
+				-- 	isBounceEnabled = false,
+				-- 	noLines = true,
+				-- 	   }
+				-- 	   )
+				-- searchList.anchorX=0
+				-- searchList.anchorY=0
+				-- searchList.isVisible = false
+				-- searchList.anchorY = 1
+				-- searchList_bg.anchorX = 0
+				-- searchList_bg.isVisible = false
+
+			 --  	searchGroup:insert( searchList )
+
+-------------------------------------------------------------------------------------------
+
+				search.text = ""
 
 		   		status = event.params.status
 		   		
@@ -990,6 +1472,9 @@ end
 				   		--composer.removeHidden()
 
 				   		if ListscrollView then ListscrollView:removeSelf();ListscrollView = nil end
+
+				   		if search then search:removeSelf();search = nil end
+
 
 				   	elseif phase == "did" then
 
@@ -1175,4 +1660,7 @@ end
 
 	return scene
 
+
+
+--Webservice.ContactAutoCompleteForRequestAccesses(searchText,status,postExecution)
 	

@@ -2004,29 +2004,29 @@ print("%^&%^&%^&%^&%^&%^&%^&%^&^&%^&%%^&^&^&^%&^&%^%&%^&^%&")
 
     elseif ( event.phase == "editing" ) then
 
-    	if event.target.id == "addinvitees" then
+	    	if event.target.id == "addinvitees" then
 
-			AppintmentWith.isVisible = false  ---changed now (it was false)
+				AppintmentWith.isVisible = false  ---changed now (it was false)
 
-		end
+			end
 
 		if event.text:len() == 1 then
 
-			for i=1,#searchArraytotal do
-				searchArraytotal[i]=nil
-			end
+					for i=1,#searchArraytotal do
+						searchArraytotal[i]=nil
+					end
 
 
-			if event.target.id == "addinvitees" then
+					if event.target.id == "addinvitees" then
 
-				if #searchArray == 0 then
+						if #searchArray == 0 then
 
-					AppintmentWith.isVisible = true 
+							AppintmentWith.isVisible = true 
 
-				end
-			end
+						end
+					end
 
-			Webservice.GetContact(event.text,get_Contact)
+					Webservice.GetContact(event.text,get_Contact)
 
 		elseif event.text:len() == 0 then
 
@@ -2126,10 +2126,8 @@ print("%^&%^&%^&%^&%^&%^&%^&%^&^&%^&%%^&^&^&^%&^&%^%&%^&^%&")
 			
 			searchList.height = 36 * #searchArray
 
-			
 			searchList:scrollToY( { y=searchList:getContentPosition()-event.target.contentHeight/3, time=200 } )
 			--searchList:scrollToIndex( 1, 200 )
-
 
 		end
 
