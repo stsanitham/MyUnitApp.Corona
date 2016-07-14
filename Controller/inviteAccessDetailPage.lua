@@ -191,7 +191,22 @@ local function observableScroll( event )
 
   			display.getCurrentStage():setFocus( nil )
 
-  			invite_search.isVisible = true
+  			--invite_search.isVisible = true
+
+  				if invite_search == "true" then
+
+				   invite_searchbgval.isVisible = true
+
+				   invite_searchview.isVisible = true
+
+				else
+
+				   invite_searchbgval.isVisible = false
+
+				   invite_searchview.isVisible = false
+
+				end
+
   			
   			composer.hideOverlay( "slideRight", 300 )
 
@@ -219,7 +234,22 @@ local function observableScroll( event )
 
 	  				 AlertGroup.isVisible = false
 
-	  				 invite_search.isVisible = true
+
+	  			if invite_search == "true" then
+
+				   invite_searchbgval.isVisible = true
+
+				   invite_searchview.isVisible = true
+
+
+				else
+
+				   invite_searchbgval.isVisible = false
+
+				   invite_searchview.isVisible = false
+
+				end
+
 
 	  				 reloadInvitAccess(invite_status)
 
@@ -588,7 +618,19 @@ local function observableScroll( event )
 
 			if keyName=="back" then
 
-				invite_search.isVisible = true
+				if invite_search == "true" then
+
+				   invite_searchbgval.isVisible = true
+
+				   invite_searchview.isVisible = true
+
+				else
+
+				   invite_searchbgval.isVisible = false
+
+				   invite_searchview.isVisible = false
+
+				end
 
 				composer.hideOverlay( "slideRight", 300 )
 				
@@ -681,6 +723,12 @@ local function observableScroll( event )
 				invite_search = event.params.searchbg
 
 				invite_searchtext = event.params.searchtext
+
+				print("invite_searchtext invite_searchtext invite_searchtext ^^^^^^^^^ ",invite_searchtext)
+
+				invite_searchbgval = event.params.searchbgval
+
+				invite_searchview = event.params.searchview
 
 				print("############################ Invite / Access Details...................." , json.encode(invitedetail_value) )
 

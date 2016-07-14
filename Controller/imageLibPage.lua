@@ -119,142 +119,6 @@ end
 
 
 
-
--- function scene:resumeImageCallBack(captionname,photoviewname,button_idvalue)
-
--- 			composer.removeHidden()
-
-
--- 			if photoviewname  ~= nil and photoviewname ~= "" then
-
--- 				if button_idvalue == "cancel" then
-
-
--- 					elseif button_idvalue == "send" then
-
--- 					Imagename = photoviewname:match( "([^/]+)$" )
-
--- 						if captionname == "" then
-
--- 							captionname= "Image"
-
--- 						end
-
--- 					local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
-
--- 					Message_date=os.date("%Y-%m-%dT%H:%M:%S")
--- 					isDeleted="false"
--- 					Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
--- 					Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
--- 					ImagePath=photoviewname
--- 					ImageName = Imagename
--- 					ImageSize = Imagesize
--- 					AudioPath="NULL"
--- 					VideoPath="NULL"
--- 					MyUnitBuzz_LongMessage=captionname
--- 					From=ContactId
--- 					To=To_ContactId
--- 					Message_Type = MessageType
-
--- 					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..captionname..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
--- 					db:exec( insertQuery )
-
-
--- 					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Image_Path= '"..Imagename.."'") do
--- 						image_update_row = row.id 
-
--- 					end 
-
-
-
-
--- 					Imagesize = size
-
--- 					sendBtn_bg.isVisible = true
-
--- 					sendBtn.isVisible = true
-
--- 		--sendMeaasage()
-
--- 		local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
-		
--- 		Message_date=os.date("%Y-%m-%dT%H:%M:%S")
--- 		isDeleted="false"
--- 		Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
--- 		Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
--- 		ImagePath= photoviewname or ""
--- 		AudioPath="NULL"
--- 		VideoPath="NULL"
--- 		MyUnitBuzz_LongMessage=captionname
--- 		From=ContactId
--- 		To=To_ContactId
--- 		Message_Type = MessageType
-
-
--- 		local path = system.pathForFile( Imagename, system.DocumentsDirectory)
-
--- 		local size = lfs.attributes (path, "size")
-
--- 		local fileHandle = io.open(path, "rb")
-
--- 		local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
-
--- 		formatSizeUnits(size)
-
-
--- 		local ConversionFirstName,ConversionLastName,GroupName
--- 		local DocumentUpload = {}
-
--- 		if MessageType == "GROUP" then
-
--- 			ConversionFirstName="";ConversionLastName="";GroupName=MemberName
--- 			DocumentUpload[1] = {
--- 				UserId = UserId,
--- 				File = file_inbytearray,
--- 				FileName = Imagename,
--- 				FileType = "Images"
--- 			}
-
--- 		else
--- 			ConversionFirstName="";ConversionLastName=MemberName;GroupName=""
-
-			
--- 			DocumentUpload[1] = {
--- 				UserId = UserId,
--- 				File = file_inbytearray,
--- 				FileName = Imagename,
--- 				FileType = "Images"
--- 			}
-
-			
-
-
-
--- 		end
-
--- 		MessageFileType="Images"
-
--- 		ChatBox.text = ""
-
-		
--- 		Webservice.SEND_MESSAGE(MessageId,"","","",DocumentUpload,MessageFileType,"",captionname,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
-
-		
-
--- 				   --Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
-
--- 				   sendMeaasage()
-
-
--- 				end
-
--- 			end
-
--- 		end
-
-
-
-
 	function get_sendMssage(response)
 
 			if image_name_png.isVisible == true and image_name_close.isVisible == true then
@@ -272,10 +136,6 @@ end
 			end	
 
 		end
-
-
-
-
 
 
 
@@ -1063,126 +923,21 @@ end
 
 
 
-	function get_sendMssage(response)
+	function get_imageupload(response)
 
-	local a = native.showAlert("1111","image uploaded",{"ok"})
+	   --local a = native.showAlert("1111","image uploaded",{"ok"})
+
+	   print(json.encode(response))
+
+	   if response == "Success" then
+
+	       --Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
+
+	       get_Allimage(response)
+
+	    end
 
 	end
-
-
-
-
-
-function scene:resumeImageCallBack(imagenamevalue,photoviewname,button_idvalue)
-
-
-	    print("^&&&&&&&&&&& "..imagenamevalue)
-
-			composer.removeHidden()
-
-			if photoviewname  ~= nil and photoviewname ~= "" then
-
-				if button_idvalue == "cancel" then
-
-					elseif button_idvalue == "send" then
-
-					Imagename = photoviewname:match( "([^/]+)$" )
-
-					--Imagename = imagenamevalue
-
-						if imagenamevalue == "" then
-
-							imagenamevalue= Imagename
-
-						end
-
-					local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
-
-					Message_date=os.date("%Y-%m-%dT%H:%M:%S")
-					isDeleted="false"
-					Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-					Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-					ImagePath=photoviewname
-					ImageName = imagenamevalue
-					ImageSize = Imagesize
-					AudioPath="NULL"
-					VideoPath="NULL"
-					MyUnitBuzz_LongMessage=""
-					From=""
-					To=""
-					Message_Type = "INDIVIDUAL"
-
-					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..imagenamevalue..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
-					db:exec( insertQuery )
-
-
-					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Image_Path= '"..Imagename.."'") do
-						image_update_row = row.id 
-
-					end 
-
-					Imagesize = size
-
-		--sendMeaasage()
-
-		-- local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
-		
-		-- Message_date=os.date("%Y-%m-%dT%H:%M:%S")
-		-- isDeleted="false"
-		-- Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-		-- Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-		-- ImagePath= photoviewname 
-		-- ImageName = imagenamevalue
-		-- ImageSize = Imagesize
-		-- AudioPath="NULL"
-		-- VideoPath="NULL"
-		-- MyUnitBuzz_LongMessage=""
-		-- From=""
-		-- To=""
-		-- Message_Type = MessageType
-
-
-		local path = system.pathForFile( Imagename, system.DocumentsDirectory)
-
-		local size = lfs.attributes (path, "size")
-
-		local fileHandle = io.open(path, "rb")
-
-		local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
-
-		formatSizeUnits(size)
-
-
-		local ConversionFirstName = "";ConversionLastName = "";GroupName = ""
-
-		local DocumentUpload = {}
-
-			DocumentUpload[1] = {
-				UserId = UserId,
-				File = file_inbytearray,
-				FileName = imagenamevalue,
-				FileType = "Images"
-			}
-
-		 MessageFileType="Images"
-
-		
-		Webservice.SEND_MESSAGE("",ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,"","","","","","",ImagePath,ImageName,Imagesize,"","","","SEND",From,To,"",get_sendMssage)
-
-		
-
-				   --Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
-
-				  -- sendMeaasage()
-
-
-				end
-
-			end
-
-		end
-
-
 
 
 
@@ -1288,6 +1043,34 @@ local function selectionComplete ( event )
 
     end
 
+
+
+
+
+
+
+function scene:resumeImageCallBack(imagenamevalue,photoviewname,button_idvalue)
+
+	    print("^&&&&&&&&&&& "..imagenamevalue)
+
+			composer.removeHidden()
+
+			local Image_Name
+
+		     if imagenamevalue == "" or imagenamevalue == nil then
+
+		     	Image_Name = photoviewname:match( "([^/]+)$" )
+
+		     else
+
+		     	Image_Name = imagenamevalue..".png"
+
+		     end
+
+	    Webservice.AddImageFromNativeAppImageLibrary(file_inbytearray,Image_Name,"Images",get_imageupload)
+
+
+end
 
 
 

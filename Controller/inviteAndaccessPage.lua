@@ -49,11 +49,11 @@ local menuBtn
 
 openPage="inviteAndaccessPage"
 
---local RecentTab_Topvalue = 102
+--local RecentTab_Topvalue = 100
 
 --local RecentTab_Topvalue = 72
 
-local RecentTab_Topvalue = 130
+local RecentTab_Topvalue = 100
 
 local groupArray={}
 
@@ -300,6 +300,7 @@ local function RemoveProcess(value)
         	local Status_Name = event.target.name
 
 
+
         	if Status_Name == "GRANT" or Status_Name == "DENY" or Status_Name == "OPEN" or Status_Name == "ADDREQUEST" then
 
         		local options = 
@@ -308,15 +309,31 @@ local function RemoveProcess(value)
         			effect = "slideLeft",
         			time = 300,
         			params = {
-        				inviteDetails =  Details,checkstatus = Status_Name,searchbg = search,searchtext = search.text
+        				inviteDetails =  Details,checkstatus = Status_Name,searchbg = searchflag,searchtext = search.text,searchbgval = searchtext_bg,searchview = search,
         			}
         		}
 
         		--if search then search:removeSelf(); search = nil end
 
-        		search.isVisible=false
 
         		composer.showOverlay( "Controller.inviteAccessDetailPage", options )
+
+
+
+        			if searchflag == "false" then
+
+	        			print("false")
+
+	        			searchtext_bg.isVisible = true
+	        			search.isVisible = true
+
+	        		else
+
+	        		   searchtext_bg.isVisible = false
+	        		   search.isVisible=false
+
+	        	    end
+
 
 
         	end
@@ -331,6 +348,89 @@ local function RemoveProcess(value)
 
     return true
 end
+
+
+
+
+
+
+local function searchTouch( event )
+
+	if event.phase == "began" then
+
+		display.getCurrentStage():setFocus( event.target )
+
+    elseif event.phase == "ended" then
+
+
+      		display.getCurrentStage():setFocus( nil )
+
+
+			        if event.target.id == "searchbg" then
+
+			        	print("RTERTERTERt")
+
+				        	if searchtext_bg.isVisible == false and search.isVisible == false then
+
+				        		print("&&&&&&&& true")
+
+				        		searchtext_bg.isVisible = true
+
+				        		search.isVisible = true
+
+				        		scrollView.y = 130
+
+				        		searchflag = "true"
+
+
+				        			if page_count ~= 1 then
+
+										scrollView:scrollToPosition
+										{
+											y = 0,
+											time = 200,
+										}
+
+									end
+
+
+					        else
+
+					        	print("&&&&&&&& false")
+
+					        	searchtext_bg.isVisible = false
+
+				        		search.isVisible = false
+
+				        		scrollView.y = 100
+
+				        		searchflag = "false"
+
+				        	
+				        			if page_count ~= 1 then
+
+										scrollView:scrollToPosition
+										{
+											y = 0,
+											time = 200,
+										}
+
+									end
+
+
+					        end
+
+			        end
+     
+    end
+
+
+end
+
+
+
+
+
 
 
 local function Createmenu( object )
@@ -516,7 +616,6 @@ local function ListmenuTouch( event )
 	local function CreateList(list)
 
 
-
 		if page_count == 1 then
 
 			for j=#groupArray, 1, -1 do 
@@ -533,10 +632,13 @@ local function ListmenuTouch( event )
 		end
 
 
-            local feedArray = list
+
+        local feedArray = list
+
 
 		for i=1,#feedArray do
 
+				
 			groupArray[#groupArray+1] = display.newGroup()
 
 			local Display_Group = {}
@@ -716,7 +818,9 @@ end
 function get_GetMyUnitBuzzRequestAccessesNew(response1)
 
 
-			if page_count == 1 then
+			if page_count == 1 and scrollView.y ~=0 and search.text:len() == 1 then
+
+				print("&&&&&&&&&&page ====== 1")
 
 				for j=#groupArray, 1, -1 do 
 					display.remove(groupArray[#groupArray])
@@ -729,12 +833,24 @@ function get_GetMyUnitBuzzRequestAccessesNew(response1)
 					time = 200,
 				}
 
+			elseif page_count == 1 then
+
+				for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+				end
+
+
+				scrollView:scrollToPosition
+				{
+					y = 0,
+					time = 200,
+				}
+
 		    end
 
 
 		  totArray = response1
-
-		  scrollView:setIsLocked(false)
 
 
 		reqaccess_response = response1.MubRequestAccessList
@@ -742,7 +858,6 @@ function get_GetMyUnitBuzzRequestAccessesNew(response1)
 		ContactListResponse = reqaccess_response
 
 
-		search.isVisible = true
 	    searchcontact_bg.isVisible = true
 	    searchcontact.isVisible = true
 	    count_bg.isVisible = true
@@ -753,11 +868,11 @@ function get_GetMyUnitBuzzRequestAccessesNew(response1)
 
 	    if TotalCount == 1 then
 
-	    	count.text = "You can find "..TotalCount.." Contact"
+	    	count.text = TotalCount.." Contact"
 
 	    else
 
-			count.text = "You can find "..TotalCount.." Contacts"
+			count.text = TotalCount.." Contacts"
 
 	    end
 
@@ -783,10 +898,10 @@ function get_GetMyUnitBuzzRequestAccessesNew(response1)
 
 						local function onTimerr(event)
 
-								if search.text:len() == 3 and search.text:len() > 3 then
+								if search.text:len() == 2 and search.text:len() > 2 then
 
 
-								elseif search.text:len() < 3 then
+								elseif search.text:len() < 2 then
 
 									print( "here !!!!!!! new values"..#listValue )	
 									CreateList(listValue)
@@ -795,7 +910,7 @@ function get_GetMyUnitBuzzRequestAccessesNew(response1)
 
 						end
 
-						timer.performWithDelay(200,onTimerr)
+						timer.performWithDelay(100,onTimerr)
 
 
 					else
@@ -824,7 +939,6 @@ function get_GetMyUnitBuzzRequestAccessesNew(response1)
 
 				end
 
-
 	end
 
 	timer.performWithDelay(500,onTimer)
@@ -838,10 +952,9 @@ end
 
 function get_GetMyUnitBuzzRequestAccesses(response1)
 
-
 			if page_count == 1 then
 
-				search.text = ""
+				--search.text = ""
 
 				for j=#groupArray, 1, -1 do 
 					display.remove(groupArray[#groupArray])
@@ -865,7 +978,6 @@ function get_GetMyUnitBuzzRequestAccesses(response1)
 		ContactListResponse = reqaccess_response
 
 
-		search.isVisible = true
 	    searchcontact_bg.isVisible = true
 	    searchcontact.isVisible = true
 	    count_bg.isVisible = true
@@ -876,11 +988,11 @@ function get_GetMyUnitBuzzRequestAccesses(response1)
 
 	    if TotalCount == 1 then
 
-	    	count.text = "You can find "..TotalCount.." Contact"
+	    	count.text = TotalCount.." Contact"
 
 	    else
 
-			count.text = "You can find "..TotalCount.." Contacts"
+			count.text = TotalCount.." Contacts"
 
 	    end
 
@@ -904,7 +1016,6 @@ function get_GetMyUnitBuzzRequestAccesses(response1)
 
 						print( "here !!!!!!!"..#listValue )	
 
-						scrollView:setIsLocked( false )
 
 						CreateList(listValue)
 
@@ -951,9 +1062,22 @@ end
 	function getOriginalContactList( response )
 
 
-		   if page_count == 1 then
+		    if page_count == 1 and scrollView.y ~=0 and search.text:len() == 1 then
 
 				for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+				end
+
+				scrollView:scrollToPosition
+				{
+					y = 0,
+					time = 200,
+				}
+
+			elseif page_count ~= 1 and scrollView.y ~=0 then
+
+					for j=#groupArray, 1, -1 do 
 					display.remove(groupArray[#groupArray])
 					groupArray[#groupArray] = nil
 				end
@@ -981,14 +1105,9 @@ end
 
 			                searchArraytotal = response
 
-
-			                print("___________________________________________________________________________ ".. #searchArraytotal)
-
 							--page_count = 1
 
 								if #searchArraytotal ~=0 then
-
-									scrollView:setIsLocked( true )
 
 									CreateList(searchArraytotal)
 
@@ -1043,13 +1162,11 @@ local function searchListener( event )
 
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
        
-       -- search.text = ""
-       -- NoEvent.text = "No Contacts Found"
         native.setKeyboardFocus( nil )
 
     elseif ( event.phase == "editing" ) then
 
-			    	if event.text:len() == 2 or event.text:len() < 3 then
+			    	if event.text:len() == 1 or event.text:len() < 2 then
 
 							for i=1,#searchArraytotal do
 									searchArraytotal[i]=nil
@@ -1057,32 +1174,25 @@ local function searchListener( event )
 
 							print("length == 2 and < 3")
 
-							--if #searchArraytotal == 0 then
+							page_count=0
+							page_count = page_count+1
 
-							 --  	print("less than 3")
 
-								-- page_count = 0
+							Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
 
-								-- page_count = page_count + 1
+                               -- get_GetMyUnitBuzzRequestAccessesNew(totArray)
 
-								-- spinner.isVisible=false
 
-								-- spinner_hide()
 
-		 					--     Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
 
-                                get_GetMyUnitBuzzRequestAccessesNew(totArray)
-
-		 					--end
-
-		 			elseif event.text:len() == 3 and event.text:len() > 2 and event.startPosition == (3) then
+		 			elseif event.text:len() == 2 and event.text:len() > 1 and event.startPosition == (2) then
 
 			    		        print("length = 3")
 
 					    		Webservice.ContactAutoCompleteForRequestAccesses(event.text,status,getOriginalContactList)
 
 
-					elseif event.text:len() > 3 or event.text:len() ~= 2 or event.text:len() ~=3 and event.startPosition ~= (3) then
+					elseif event.text:len() > 2 or event.text:len() ~= 1 or event.text:len() ~=2 and event.startPosition ~= (2) then
 
 			    		        print("length > 3")
 
@@ -1090,11 +1200,9 @@ local function searchListener( event )
 									searchArray[i]=nil
 								end
 
-								print("Length : "..#searchArraytotal)
 
 								for i=1,#searchArraytotal do
 
-										--stringfind = string.find(searchArraytotal[i].FirstName:lower(),event.text:lower()) 
 
 										if string.find(searchArraytotal[i].FirstName:lower(),event.text:lower()) ~= nil then
 
@@ -1137,7 +1245,6 @@ local function searchListener( event )
 								end
 
 
-								
 
 								if testresponse then
 
@@ -1154,9 +1261,7 @@ local function searchListener( event )
 								end
 
 
-					       -- elseif event.startPosition == 2 or event.text:len() < 3 or not event.text:len() > 3 then
-	 					   -- end
-
+					    
 			        end
 
     end
@@ -1206,18 +1311,25 @@ end
 
 function reloadInvitAccess(reloadstatus)
 
-	composer.hideOverlay( )
+		composer.hideOverlay( )
 
-	status = reloadstatus
+		status = reloadstatus
 
-	if reloadstatus == "GRANT" then title.text = FlapMenu.Contacts_with_Access end
-	if reloadstatus == "DENY" then title.text = FlapMenu.Denied_Access end
-	if reloadstatus == "OPEN" then title.text = FlapMenu.Pending_Requests end
-	if reloadstatus == "ADDREQUEST" then title.text = FlapMenu.TeamMember_without_Access end
+		if reloadstatus == "GRANT" then title.text = FlapMenu.Contacts_with_Access end
+		if reloadstatus == "DENY" then title.text = FlapMenu.Denied_Access end
+		if reloadstatus == "OPEN" then title.text = FlapMenu.Pending_Requests end
+		if reloadstatus == "ADDREQUEST" then title.text = FlapMenu.TeamMember_without_Access end
 
-	page_count=0
-	page_count = page_count+1
+		page_count=0
+		page_count = page_count+1
 
+		if search.text ~= "" then
+
+              search.text = ""
+
+              searchflag = "true"
+
+		end
 
 		Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,reloadstatus,get_GetMyUnitBuzzRequestAccesses)
 
@@ -1251,9 +1363,16 @@ end
 					if status == "OPEN" then title.text = FlapMenu.Pending_Requests end
 					if status == "ADDREQUEST" then title.text = FlapMenu.TeamMember_without_Access end
 
+
+				if search.text == "" or search.text:len() == 1 then
+
 					page_count = page_count+1
 
 					Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
+
+				else
+
+				end
 
 
          			
@@ -1264,10 +1383,18 @@ end
 					if status == "OPEN" then title.text = FlapMenu.Pending_Requests end
 					if status == "ADDREQUEST" then title.text = FlapMenu.TeamMember_without_Access end
 
+
+					if search.text == "" or search.text:len() == 1 then
+
 					page_count=0
 					page_count = page_count+1
 
 					Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
+
+					else
+
+
+					end
 
 
 
@@ -1330,39 +1457,55 @@ function scene:create( event )
 	--count.anchorX = 0
 	count.text = ""
 	count.isVisible=false
-	count.x=W/2;count.y = count_bg.y
+	--count.x=W/2;
+    count.x = 7
+    count.anchorX = 0
+	count.y = count_bg.y
 	count:setFillColor(0)
 
 ----------------- added code for searching contacts -------------------
 
-	-- searchcontact_bg = display.newRect(sceneGroup,0,0,W-40,30)
-	-- searchcontact_bg.anchorX = 0
-	-- searchcontact_bg:addEventListener( "userInput", searchfunction )
-	-- searchcontact_bg.x=W-40;searchcontact_bg.y = title_bg.y+title_bg.contentHeight
-	-- searchcontact_bg:setFillColor(0,0,0,0.01)
-
+	-- searchcontact_bg = display.newRect(sceneGroup,0,0,W,30)
+	-- searchcontact_bg.y = count_bg.y+count_bg.contentHeight
+	-- searchcontact_bg.x = W/2
+	-- searchcontact_bg.isVisible=false
+	-- searchcontact_bg:setFillColor(0,0,0,0.2)
 
 	-- searchcontact = display.newImageRect(sceneGroup,"res/assert/search(gray).png",18,18)
-	-- searchcontact.x=searchcontact_bg.contentWidth+12;searchcontact.y=searchcontact_bg.y
-	-- searchcontact:addEventListener( "userInput", searchfunction )
+	-- searchcontact.x=searchcontact_bg.x+searchcontact_bg.contentWidth/2-searchcontact.contentWidth
 	-- searchcontact:setFillColor(0)
-	-- searchcontact.anchorX=0
-
+	-- searchcontact.isVisible=false
+	-- searchcontact.y=searchcontact_bg.y
 
 
 	searchcontact_bg = display.newRect(sceneGroup,0,0,W,30)
-	searchcontact_bg.y = count_bg.y+count_bg.contentHeight
-	searchcontact_bg.x = W/2
+	searchcontact_bg.y = title_bg.y
+	searchcontact_bg.x = W - 30
+	searchcontact_bg.anchorX = 0
+	searchcontact_bg.id = "searchbg"
 	searchcontact_bg.isVisible=false
-	searchcontact_bg:setFillColor(0,0,0,0.2)
+	searchcontact_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
 
 	searchcontact = display.newImageRect(sceneGroup,"res/assert/search(gray).png",18,18)
-	searchcontact.x=searchcontact_bg.x+searchcontact_bg.contentWidth/2-searchcontact.contentWidth
+	searchcontact.x = W - 30
 	searchcontact:setFillColor(0)
+	searchcontact.alpha = 1
+	searchcontact.id = "searchbg"
+	searchcontact.anchorX = 0
 	searchcontact.isVisible=false
 	searchcontact.y=searchcontact_bg.y
 
-	search =  native.newTextField( searchcontact_bg.x-searchcontact_bg.contentWidth/2+7, searchcontact_bg.y, searchcontact_bg.contentWidth-45, 24 )
+	searchcontact:addEventListener( "touch", searchTouch )
+
+
+	searchtext_bg = display.newRect(sceneGroup,0,0,W,30)
+	searchtext_bg.y = count_bg.y+count_bg.contentHeight
+	searchtext_bg.x = W/2
+	searchtext_bg.isVisible=false
+	searchtext_bg:setFillColor(0,0,0,0.2)
+
+
+	search =  native.newTextField( searchtext_bg.x-searchtext_bg.contentWidth/2+7, searchtext_bg.y, searchtext_bg.contentWidth-15, 24 )
 	search.anchorX=0
 	search.size=14
 	search.isFontSizeScaled = true
@@ -1384,7 +1527,30 @@ function scene:create( event )
 	NoEvent.isVisible=false
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-			scrollView = widget.newScrollView
+	-- if search.isVisible == true and searchtext_bg.isVisible == true then
+
+	-- 		scrollView = widget.newScrollView
+	-- 		{
+	-- 			top = RecentTab_Topvalue+30,
+	-- 			left = 0,
+	-- 			width = W,
+	-- 			height =H-RecentTab_Topvalue-30,
+	-- 			hideBackground = true,
+	-- 			isBounceEnabled=false,
+	-- 			horizontalScrollDisabled = true,
+	-- 			--scrollWidth = W,
+	-- 			bottomPadding = 60,
+	-- 			listener = invite_scrollListener,
+
+	-- 		}
+
+	-- 		sceneGroup:insert(scrollView)
+
+	-- else    
+
+		print("******")
+
+		    scrollView = widget.newScrollView
 			{
 				top = RecentTab_Topvalue,
 				left = 0,
@@ -1399,11 +1565,13 @@ function scene:create( event )
 
 			}
 
-
+			scrollView.y = 100
+			scrollView.anchorY = 0
 
 			sceneGroup:insert(scrollView)
 
 
+	--end
 
 	MainGroup:insert(sceneGroup)
 end
@@ -1420,8 +1588,6 @@ function scene:show( event )
 	if phase == "will" then
 		
 		composer.removeHidden()
-
-		search.text = ""
 
 
 	elseif phase == "did" then

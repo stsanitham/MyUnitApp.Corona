@@ -224,6 +224,8 @@ ApplicationConfig.DeleteParticularGroup = ApplicationConfig.BASE_URL.."/MyUnitBu
 
 ApplicationConfig.GetImageLibraryCategory = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetImageLibraryCategory"
 
+ApplicationConfig.AddImageFromNativeAppImageLibrary = ApplicationConfig.BASE_URL.."/MyUnitBuzz/AddImageFromNativeAppImageLibrary"
+
 
 
 

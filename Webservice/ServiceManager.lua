@@ -3177,5 +3177,73 @@ end
 
 
 
+function Webservice.AddImageFromNativeAppImageLibrary(file_inbytearray,filename,filetype,postExecution)
+
+	local request_value = {}
+	local params = {}
+	local headers = {}
+	headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+	headers["IpAddress"] = Utility.getIpAddress()
+	headers["UniqueId"] = system.getInfo("deviceID")
+	headers["Accept"] = "application/json"
+	headers["Content-Type"] = "application/json"
+	
+	method="POST"
+
+	local url = splitUrl(ApplicationConfig.AddImageFromNativeAppImageLibrary)
+	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+	headers["Authentication"] = authenticationkey
+
+	--headers["Authentication"] = "Or2tf5TjnfLObg5qZ1VfLOd:7jzSWXG+0oRq9skt1lNESuiZcTSQLVurPn3eZaqMk84="
+	local LastName
+
+	for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+		print("UserId :"..row.UserId)
+		UserId = row.UserId
+		AccessToken = row.AccessToken
+		ContactId = row.ContactId
+		EmailAddess = row.EmailAddess
+		LastName = row.MemberName
+
+	end
+
+	headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+
+	    local v = [[
+
+    	{
+    		"UserId": "]]..UserId..[[",
+    		"File": "]]..file_inbytearray..[[",
+    		"FileName": "]]..filename..[[",
+    		"FileType": "Images",
+    		"IsOverwrite": true,
+    	}
+    	]]
+
+
+
+		params={headers = headers,body = v}
+
+		print("Send Message Request :"..(v))
+
+
+        request.new( ApplicationConfig.AddImageFromNativeAppImageLibrary,method,params,postExecution)
+        
+        return response
+
+    end
+
+
+
+
+
+
+
+
+
+
+
 
 
