@@ -9,7 +9,8 @@ local scene = composer.newScene()
 
 local mime = require("mime")
 local json = require("json")
-
+local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
+local db = sqlite3.open( path )
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 
@@ -27,7 +28,7 @@ local imageArray = {}
 local uploadArray = {}
 local ImageUploadGroup = {}
 
-local addEventBtn
+local addEventBtn,UserId
 
 local ImageLibListArray = {}
 
@@ -45,6 +46,25 @@ local viewValue = "list" , tabBar ,title_bg
 
 local gridArray = {}
 
+for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+	UserId = row.UserId
+	ContactId = row.ContactId
+	MemberName = row.MemberName
+
+end
+
+
+local UserName = ""
+
+local Imagename = ""
+
+local Imagepath = ""
+
+local Imagesize = ""
+
+local MemberName = ""
+
+local MessageType = ""
 
 
 --------------------------------------------------
@@ -231,6 +251,28 @@ end
 -- 			end
 
 -- 		end
+
+
+
+
+	function get_sendMssage(response)
+
+			if image_name_png.isVisible == true and image_name_close.isVisible == true then
+
+				image_name_png.isVisible = false 
+
+				image_name_close.isVisible = false 
+
+				sendBtn.isVisible = false
+
+				sendBtn_bg.isVisible = false
+
+				recordBtn.isVisible = true
+
+			end	
+
+		end
+
 
 
 
@@ -1021,6 +1063,131 @@ end
 
 
 
+	function get_sendMssage(response)
+
+	local a = native.showAlert("1111","image uploaded",{"ok"})
+
+	end
+
+
+
+
+
+function scene:resumeImageCallBack(imagenamevalue,photoviewname,button_idvalue)
+
+
+	    print("^&&&&&&&&&&& "..imagenamevalue)
+
+			composer.removeHidden()
+
+			if photoviewname  ~= nil and photoviewname ~= "" then
+
+				if button_idvalue == "cancel" then
+
+					elseif button_idvalue == "send" then
+
+					Imagename = photoviewname:match( "([^/]+)$" )
+
+					--Imagename = imagenamevalue
+
+						if imagenamevalue == "" then
+
+							imagenamevalue= Imagename
+
+						end
+
+					local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+
+					Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+					isDeleted="false"
+					Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+					Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+					ImagePath=photoviewname
+					ImageName = imagenamevalue
+					ImageSize = Imagesize
+					AudioPath="NULL"
+					VideoPath="NULL"
+					MyUnitBuzz_LongMessage=""
+					From=""
+					To=""
+					Message_Type = "INDIVIDUAL"
+
+					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..imagenamevalue..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
+					db:exec( insertQuery )
+
+
+					for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE Image_Path= '"..Imagename.."'") do
+						image_update_row = row.id 
+
+					end 
+
+					Imagesize = size
+
+		--sendMeaasage()
+
+		-- local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+		
+		-- Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+		-- isDeleted="false"
+		-- Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+		-- Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+		-- ImagePath= photoviewname 
+		-- ImageName = imagenamevalue
+		-- ImageSize = Imagesize
+		-- AudioPath="NULL"
+		-- VideoPath="NULL"
+		-- MyUnitBuzz_LongMessage=""
+		-- From=""
+		-- To=""
+		-- Message_Type = MessageType
+
+
+		local path = system.pathForFile( Imagename, system.DocumentsDirectory)
+
+		local size = lfs.attributes (path, "size")
+
+		local fileHandle = io.open(path, "rb")
+
+		local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+		formatSizeUnits(size)
+
+
+		local ConversionFirstName = "";ConversionLastName = "";GroupName = ""
+
+		local DocumentUpload = {}
+
+			DocumentUpload[1] = {
+				UserId = UserId,
+				File = file_inbytearray,
+				FileName = imagenamevalue,
+				FileType = "Images"
+			}
+
+		 MessageFileType="Images"
+
+		
+		Webservice.SEND_MESSAGE("",ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,"","","","","","",ImagePath,ImageName,Imagesize,"","","","SEND",From,To,"",get_sendMssage)
+
+		
+
+				   --Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+				  -- sendMeaasage()
+
+
+				end
+
+			end
+
+		end
+
+
+
+
+
+
+
 local function selectionComplete ( event )
 	
 	local photo = event.target
@@ -1085,7 +1252,6 @@ local function selectionComplete ( event )
 		   	params = {
 		   		imageselected = photoname,
 		   		image = photo,
-		   		MessageType = MessageType,
 		   		value = "ImageLibrary",
 		   	}
 
@@ -1108,7 +1274,7 @@ local function selectionComplete ( event )
 
 		   io.close( fileHandle )
 
-		   print("mime conversion ",file_inbytearray)
+		  -- print("mime conversion ",file_inbytearray)
 
 		   print("bbb ",size1)
 

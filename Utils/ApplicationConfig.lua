@@ -222,6 +222,8 @@ ApplicationConfig.ContactAutoCompleteForRequestAccesses = ApplicationConfig.BASE
 
 ApplicationConfig.DeleteParticularGroup = ApplicationConfig.BASE_URL.."/MyUnitBuzz/DeleteParticularGroup"
 
+ApplicationConfig.GetImageLibraryCategory = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetImageLibraryCategory"
+
 
 
 

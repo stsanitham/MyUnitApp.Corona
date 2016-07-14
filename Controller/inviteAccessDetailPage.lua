@@ -215,19 +215,19 @@ local function observableScroll( event )
 
   			  if "clicked"==event.action then
 
-  				print("on complete action done [[[[[[[[[[[[[[[[[[[[980890890890]]]]]]]]]]]]]]]]]]]]]]]]]")
+	  				 print("on complete action done [[[[[[[[[[[[[[[[[[[[980890890890]]]]]]]]]]]]]]]]]]]]]]]]]")
 
-  				AlertGroup.isVisible = false
+	  				 AlertGroup.isVisible = false
 
-  				invite_search.isVisible = true
+	  				 invite_search.isVisible = true
 
+	  				 reloadInvitAccess(invite_status)
 
-				 -- ContactIdValue = contactId
+					 -- ContactIdValue = contactId
 
-				 -- print("ContactIdVlaue after assigning"..ContactIdValue)
+					 -- print("ContactIdVlaue after assigning"..ContactIdValue)
 
-
-				 composer.hideOverlay()
+					 composer.hideOverlay()
 
 			   end
 
@@ -679,6 +679,8 @@ local function observableScroll( event )
 				invite_status = event.params.checkstatus
 
 				invite_search = event.params.searchbg
+
+				invite_searchtext = event.params.searchtext
 
 				print("############################ Invite / Access Details...................." , json.encode(invitedetail_value) )
 
