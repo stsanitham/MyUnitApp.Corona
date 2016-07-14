@@ -151,7 +151,7 @@ local function addMemberAction( event )
 	    	 composer.hideOverlay( "slideRight", 100 )
 	    elseif event.target.id == "delete" then
 
-	    	local alert = native.showAlert("Delete",MessagePage.ToDeleteGROUP, { CommonWords.Yes , CommonWords. }, onComplete )
+	    	local alert = native.showAlert("Delete",MessagePage.ToDeleteGROUP, { CommonWords.Yes , CommonWords.No }, onComplete )
 
 	    elseif event.target.id == "editText" then
 

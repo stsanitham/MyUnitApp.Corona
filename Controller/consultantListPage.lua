@@ -1298,6 +1298,7 @@ local function careePath_list( list )
 			create_groupicon.isVisible = true
 			backbutton.isVisible = true
 			GroupIcon.isVisible = true
+			GroupIconEdit.isVisible = true
 			if addGroupid_value == "editMember" then
 				for j=1,#editContacts do
 
@@ -1475,7 +1476,12 @@ function scene:create( event )
 		GroupIcon.isVisible = false
 		GroupIcon:addEventListener( "touch"	, bgTouch )
 
-	
+		GroupIconEdit = display.newText( sceneGroup, "Edit", 18, 13,native.systemFontBold,14 )
+		GroupIconEdit.x = GroupIcon.x+5
+		GroupIconEdit.y = GroupIcon.y+7
+		GroupIconEdit.anchorX=0
+		GroupIconEdit.id = "imgEdit"
+		GroupIconEdit.isVisible = false
 
 	GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-130, 25)
 	GroupSubject.id="groupSubject"
