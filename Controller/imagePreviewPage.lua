@@ -30,7 +30,7 @@ local menuBtn
 
 local cancel_button, cancel_icon, cancel_icon_text , image_send_button, send_icon ,send_icon_text
 
-openPage="imagePreviewPage"
+openPage="imageLibPage"
 
 local BackFlag = false
 
@@ -159,9 +159,9 @@ local function onButtonTouch( event )
 
 		if event.target.id == "send icon" or event.target.id == "send" or event.target.id == "send_icon_text" then
 
-		composer.hideOverlay("slideRight",300)
+		   composer.hideOverlay("slideRight",300)
 
-		button_idvalue = "send"
+		   button_idvalue = "send"
 
 
 		
@@ -275,16 +275,6 @@ function scene:create( event )
 			end
 
 
-			if valuename == "Chat" then
-
-				title.text = "Send to "..sendto
-
-			else
-               
-                title.text = photoview
-
-			end
-
 			intiscale(imageview.width,imageview.height)
 
 
@@ -319,6 +309,8 @@ function scene:create( event )
 			captionField_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
 			captionField_bottom.x=W/2
 			captionField_bottom.y= captionField.y+11
+
+
 
 
 ------------------------------------- image send button -------------------------------------------   
@@ -356,6 +348,26 @@ send_icon_text.anchorX=0
  cancel_icon_text.x=cancel_icon.x+25;cancel_icon_text.y=cancel_icon.y
  cancel_icon_text.id = "cancel_icon_text"
  cancel_icon_text.anchorX=0
+
+
+
+			if valuename == "Chat" then
+
+				title.text = "Send to "..sendto
+
+			else
+               
+                title.text = ImageLibrary.PageTitle
+
+                captionField.placeholder="Add a name for your Image"
+
+                photo.y = title_bg.y+30
+
+                captionField_bg.y = photo.y+photo.contentHeight+40
+
+                send_icon_text.text = "Add"
+
+			end
 
 
 

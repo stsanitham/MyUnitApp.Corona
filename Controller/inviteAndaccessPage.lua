@@ -308,7 +308,7 @@ local function RemoveProcess(value)
         			effect = "slideLeft",
         			time = 300,
         			params = {
-        				inviteDetails =  Details,checkstatus = Status_Name,searchbg = search
+        				inviteDetails =  Details,checkstatus = Status_Name,searchbg = search,searchtext = search.text
         			}
         		}
 
@@ -734,6 +734,8 @@ function get_GetMyUnitBuzzRequestAccessesNew(response1)
 
 		  totArray = response1
 
+		  scrollView:setIsLocked(false)
+
 
 		reqaccess_response = response1.MubRequestAccessList
 
@@ -901,6 +903,9 @@ function get_GetMyUnitBuzzRequestAccesses(response1)
 						end
 
 						print( "here !!!!!!!"..#listValue )	
+
+						scrollView:setIsLocked( false )
+
 						CreateList(listValue)
 
 
@@ -961,7 +966,6 @@ end
 
 		    end
 
-
 		    testresponse = response
 
 
@@ -983,6 +987,8 @@ end
 							--page_count = 1
 
 								if #searchArraytotal ~=0 then
+
+									scrollView:setIsLocked( true )
 
 									CreateList(searchArraytotal)
 
@@ -1090,9 +1096,25 @@ local function searchListener( event )
 
 										--stringfind = string.find(searchArraytotal[i].FirstName:lower(),event.text:lower()) 
 
-										if string.find(searchArraytotal[i].FirstName:lower(),event.text:lower())  ~= nil then
+										if string.find(searchArraytotal[i].FirstName:lower(),event.text:lower()) ~= nil then
 
 											print("Here >>>>>>>>>>")
+
+											NoEvent.isVisible = false
+
+											searchArray[#searchArray+1] = searchArraytotal[i]
+
+										elseif string.find(searchArraytotal[i].LastName:lower(),event.text:lower()) ~= nil then
+
+											print("Here last >>>>>>>>>>")
+
+											NoEvent.isVisible = false
+
+											searchArray[#searchArray+1] = searchArraytotal[i]
+
+										elseif string.find(searchArraytotal[i].EmailAddress:lower(),event.text:lower()) ~= nil then
+
+											print("Here last email>>>>>>>>>>")
 
 											NoEvent.isVisible = false
 
@@ -1471,7 +1493,6 @@ end
 
 				   		--composer.removeHidden()
 
-				   		if ListscrollView then ListscrollView:removeSelf();ListscrollView = nil end
 
 				   		if search then search:removeSelf();search = nil end
 
@@ -1534,7 +1555,11 @@ end
 		   				end
 		   			end
 
-		   			Webservice.GetMyUnitBuzzRequestAccesses(status,get_GetMyUnitBuzzRequestAccesses)
+		   			page_count = 0
+
+		   			page_count = page_count+1
+
+		   			Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
 
 		   		end
 
