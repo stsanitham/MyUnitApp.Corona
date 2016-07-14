@@ -931,9 +931,11 @@ end
 
 	   if response == "Success" then
 
+	   	local a = native.showAlert("Image","Image Uploaded",{"ok"})
+
 	       --Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
 
-	       get_Allimage(response)
+	      -- get_Allimage(response)
 
 	    end
 
