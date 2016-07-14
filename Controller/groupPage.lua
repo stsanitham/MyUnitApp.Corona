@@ -422,7 +422,7 @@ local function TabbarTouch( event )
 			background.typevalue = list[i].MyUnitBuzzGroupType
 		--print( "Listy : "..json.encode(list[i]) )
 
-		if list[i].MyUnitBuzzGroupProfilePicture ~= nil then
+		if list[i].MyUnitBuzzGroupProfilePicture ~= nil and list[i].MyUnitBuzzGroupProfilePicture ~= "" then
 			local Image
 			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2

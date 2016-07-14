@@ -18,6 +18,7 @@ color.tabBarColor = "#c1185b"
 color.google_plus = "#DD4239"
 color.darkGreen = "#006600"
 color.Lytred = "#ff6666"
+color.darkRed = "#990000"
 
 
 --Flap Menuz

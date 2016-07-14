@@ -54,6 +54,11 @@ pagevalue = "careerPathPage"
 local groupMemberListArray = {}
 
 local status ="normal"
+
+
+local TextChangeGroup = display.newGroup( )
+
+local textGroupBg,textGroupfiled,textGroupOkbtn,textGroupCancelbtn
 --------------------------------------------------
 
 
@@ -118,6 +123,15 @@ end
 					end
 		end
 
+
+
+		local function UpdateGroup( updateText,updateImage )
+
+
+
+			-- body
+		end
+
 local function addMemberAction( event )
 
 	if event.phase == "began" then
@@ -137,9 +151,43 @@ local function addMemberAction( event )
 	    	 composer.hideOverlay( "slideRight", 100 )
 	    elseif event.target.id == "delete" then
 
-	    	local alert = native.showAlert("Delete",MessagePage.ToDeleteGROUP, { CommonWords.ok , CommonWords.cancel }, onComplete )
+	    	local alert = native.showAlert("Delete",MessagePage.ToDeleteGROUP, { CommonWords.Yes , CommonWords. }, onComplete )
+
+	    elseif event.target.id == "editText" then
+
+	    	if TextChangeGroup.isVisible == false then
+	    		textGroupfiledError.isVisible=false
+	    		TextChangeGroup.isVisible = true
+	    		textGroupfiled.isVisible=true
+	    		textGroupfiled.text = Career_Username.text
+	    	end
+
+	    elseif event.target.id == "cancel" then
+	    	textGroupfiled.text = ""
+	    	TextChangeGroup.isVisible = false
+	    	textGroupfiled.isVisible=false
+
+	    elseif event.target.id == "ok" then
+	    	
+		
+
+	    	if Career_Username.text == textGroupfiled.text then
+	    			print( "same text only" )
+	    			TextChangeGroup.isVisible = false
+	    			textGroupfiled.isVisible=false
+	    	elseif textGroupfiled.text == "" then
+	    			textGroupfiledError.isVisible=true
+	    	else
+	    			TextChangeGroup.isVisible = false
+	    			textGroupfiled.isVisible=false
 
 
+	    			UpdateGroup(textGroupfiled.text,false)
+
+
+	    	end
+
+	    	textGroupfiled.text = ""
 	    	
 	    end
 	     
@@ -213,8 +261,7 @@ local function addMemberAction( event )
 	    	 				addBg.y = Career_Username.y
 							addRecipient.y=addBg.y
 
-							deleteBg.y = Career_Username.y
-							deleteRecipient.y=addBg.y
+							
 						end
 
     	 			end
@@ -249,9 +296,6 @@ local function addMemberAction( event )
     	 				if addBg ~= nil then 
 	    	 				addBg.y = Career_Username.y
 							addRecipient.y=addBg.y
-
-							deleteBg.y = Career_Username.y
-							deleteRecipient.y=addBg.y
 						end
 
 
@@ -535,10 +579,8 @@ local function phoneCallFunction( event )
 
 
 
-
 	local function onProfileImageTouch(event)
 
-		print("7*^*678678")
 
 		if event.phase == "began" then
 
@@ -566,11 +608,55 @@ local function phoneCallFunction( event )
 			groupMemberListArray[#groupMemberListArray] = nil
 		end
 
+
+
+
+			groupMemberListArray[#groupMemberListArray+1] = display.newGroup()
+
+			local tempGroup = groupMemberListArray[#groupMemberListArray]
+
+			local Image 
+
+			local tempHeight = 0
+
+			local background = display.newRect(tempGroup,0,0,W,55)
+
+			if(groupMemberListArray[#groupMemberListArray-1]) ~= nil then
+				tempHeight = groupMemberListArray[#groupMemberListArray-1][1].y + groupMemberListArray[#groupMemberListArray-1][1].height
+			end
+
+			background.anchorY = 0
+			background.x=W/2;background.y=tempHeight
+			background.id = "edit"
+		
+			local Image = display.newImageRect(tempGroup,"res/assert/create-account.png",18,13)
+			Image.x=40;Image.y=background.y+background.height/2+10
+
+
+
+			local Name_txt = display.newText(tempGroup,"Consultants",0,0,native.systemFontBold,14)
+			Name_txt.x=20;Name_txt.y=background.y+15
+			Name_txt.anchorX=0
+			Utils.CssforTextView(Name_txt,sp_labelName)
+			Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+			local Position_txt = display.newText(tempGroup,"Add Consultant...",0,0,native.systemFont,14)
+			Position_txt.x=80;Position_txt.y=background.y+background.height/2+10
+			Position_txt.anchorX=0
+			Utils.CssforTextView(Position_txt,sp_fieldValue)
+
+
+
+			local line = display.newRect(tempGroup,W/2,background.y,W,1)
+			line.y=background.y+background.contentHeight-line.contentHeight
+			line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			careerDetail_scrollview:insert(tempGroup)
+
+			background:addEventListener( "touch", addMemberAction )
+
 		local ContactList = list.Contact
 
 		for i=1,#ContactList do
-			
-
 
 			groupMemberListArray[#groupMemberListArray+1] = display.newGroup()
 
@@ -583,12 +669,12 @@ local function phoneCallFunction( event )
 			local background = display.newRect(tempGroup,0,0,W,50)
 
 			if(groupMemberListArray[#groupMemberListArray-1]) ~= nil then
-				tempHeight = groupMemberListArray[#groupMemberListArray-1][1].y + groupMemberListArray[#groupMemberListArray-1][1].height+3
+				tempHeight = groupMemberListArray[#groupMemberListArray-1][1].y + groupMemberListArray[#groupMemberListArray-1][1].height
 			end
 
 			background.anchorY = 0
 			background.x=W/2;background.y=tempHeight
-			background.alpha=0.01
+			--background.alpha=0.01
 			background.value = ContactList[i]
 
 			contactCount[#contactCount+1] = ContactList[i].Contact_Id
@@ -607,11 +693,11 @@ local function phoneCallFunction( event )
 			else
 
 				Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-				Image.x=30;Image.y=background.y+background.height/2
+				Image.x=40;Image.y=background.y+background.height/2
 
 			end
 
-			Image.x=30;Image.y=background.y+background.height/2
+			Image.x=40;Image.y=background.y+background.height/2
 
 			local mask = graphics.newMask( "res/assert/masknew.png" )
 
@@ -629,13 +715,13 @@ local function phoneCallFunction( event )
 			end
 
 			local Name_txt = display.newText(tempGroup,name,0,0,native.systemFont,14)
-			Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
+			Name_txt.x=80;Name_txt.y=background.y+background.height/2-10
 			Name_txt.anchorX=0
 			Utils.CssforTextView(Name_txt,sp_labelName)
 			Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 			local Position_txt = display.newText(tempGroup,ContactList[i].Email_Address,0,0,native.systemFont,14)
-			Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
+			Position_txt.x=80;Position_txt.y=background.y+background.height/2+10
 			Position_txt.anchorX=0
 			Utils.CssforTextView(Position_txt,sp_fieldValue)
 
@@ -644,9 +730,9 @@ local function phoneCallFunction( event )
 			end
 
 
-			local line = display.newRect(tempGroup,W/2,background.y,W,1)
-			line.y=background.y+background.contentHeight-line.contentHeight
-			line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			-- local line = display.newRect(tempGroup,W/2,background.y,W,1)
+			-- line.y=background.y+background.contentHeight-line.contentHeight
+			-- line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
 
 		--tempGroup.Contact_Id = list[i].Contact_Id
@@ -657,6 +743,39 @@ local function phoneCallFunction( event )
 
 
 	end
+
+
+	groupMemberListArray[#groupMemberListArray+1] = display.newGroup()
+
+			local tempGroup = groupMemberListArray[#groupMemberListArray]
+
+			local Image 
+
+			local tempHeight = 0
+
+			local background = display.newRect(tempGroup,0,0,W,35)
+
+			if(groupMemberListArray[#groupMemberListArray-1]) ~= nil then
+				tempHeight = groupMemberListArray[#groupMemberListArray-1][1].y + groupMemberListArray[#groupMemberListArray-1][1].height+10
+			end
+
+			background.anchorY = 0
+			background.x=W/2;background.y=tempHeight
+			background.id="delete"
+		
+			local Image = display.newImageRect(tempGroup,"res/assert/delete.png",18,13)
+			Image.x=40;Image.y=background.y+background.height/2
+			Image:setFillColor( Utils.convertHexToRGB(color.darkRed) )
+
+
+			local Position_txt = display.newText(tempGroup,"Delete",0,0,native.systemFont,14)
+			Position_txt.x=80;Position_txt.y=background.y+background.height/2
+			Position_txt.anchorX=0
+			Utils.CssforTextView(Position_txt,sp_fieldValue)
+			Position_txt:setTextColor( Utils.convertHexToRGB(color.darkRed) )
+
+			background:addEventListener( 'touch', addMemberAction )
+			careerDetail_scrollview:insert(tempGroup)
 
 end
 
@@ -698,13 +817,12 @@ function scene:show( event )
 
 	elseif phase == "did" then
 
+		sceneGroup:insert( TextChangeGroup )
 
 		contactId = event.params.contactId
 		Message_Type = event.params.MessageType
 		GroupType_Value = event.params.GroupTypeValue
 
-
-		print("TypeValue : "..Message_Type)
 
 		for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
@@ -718,6 +836,81 @@ function scene:show( event )
 
 		titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
+
+		textGroupBg = display.newRect(TextChangeGroup,W/2,H/2+18,W,H-45)
+		--textGroupBg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+		--textGroupBg.strokeWidth=1
+		textGroupBg:addEventListener( "touch", addMemberAction )
+
+		textGrouptabbar = display.newRect( TextChangeGroup,W/2,H/2+18,W,25 )
+		textGrouptabbar.anchorY =0 
+		textGrouptabbar.y = textGroupBg.y - textGroupBg.contentHeight/2
+		textGrouptabbar:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
+
+		textGrouptabbarText = display.newText( TextChangeGroup, "Enter new subject", 0, 0,native.systemFont,14 )
+		textGrouptabbarText.x = textGrouptabbar.x-textGrouptabbar.contentWidth/2+10;textGrouptabbarText.y=textGrouptabbar.y+textGrouptabbar.contentHeight/2
+		textGrouptabbarText.anchorX=0
+
+
+		textGroupfiled_bg = display.newRect(TextChangeGroup,0,H-100, W-20, 35 )
+		textGroupfiled_bg.anchorY=0;textGroupfiled_bg.anchorX=0
+		textGroupfiled_bg.x=10;textGroupfiled_bg.y = textGrouptabbar.y + textGrouptabbar.contentHeight+15
+		textGroupfiled_bg.strokeWidth = 1
+		textGroupfiled_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray))
+
+
+		textGroupfiled = native.newTextBox( 0, textGroupfiled_bg.y, textGroupfiled_bg.contentWidth, textGroupfiled_bg.contentHeight )
+		textGroupfiled.isEditable = true
+		textGroupfiled.anchorY=0;textGroupfiled.anchorX=0
+		textGroupfiled.x=textGroupfiled_bg.x
+		textGroupfiled.size=16
+		textGroupfiled.hasBackground = false
+		textGroupfiled.placeholder = "subject..."
+		native.setKeyboardFocus( textGroupfiled )
+		TextChangeGroup:insert( textGroupfiled )
+		textGroupfiled.isVisible=false
+
+
+		textGroupfiledError = display.newText( TextChangeGroup, "*Enter the subject",  0,0, native.systemFont ,12 )
+		textGroupfiledError.anchorX=0;textGroupfiledError.x=textGroupfiled_bg.x
+		textGroupfiledError.anchorX=0;textGroupfiledError.y=textGroupfiled_bg.y+textGroupfiled_bg.contentHeight+10
+		textGroupfiledError:setTextColor( Utils.convertHexToRGB(color.darkRed) )
+		textGroupfiledError.isVisible=false
+
+		okBtn = display.newRect( TextChangeGroup, 0,0, W/2, 45 )
+		okBtn.x=0;okBtn.y=H-45
+		okBtn.id="ok"
+		okBtn.anchorX=0;okBtn.anchorY=0
+		okBtn:setFillColor( Utils.convertHexToRGB(color.darkGreen) )
+
+		local okIcon = display.newImageRect( TextChangeGroup, "res/assert/audiosend.png",25,20 )
+		okIcon.x=okBtn.x+20;okIcon.y=okBtn.y+okBtn.contentHeight/2
+
+		okBtn_txt = display.newText( TextChangeGroup, CommonWords.ok, 0,0,native.systemFont,16 )
+		okBtn_txt.x=okIcon.x+25;okBtn_txt.y=okIcon.y
+		okBtn_txt.anchorX=0
+
+		cancelBtn = display.newRect( TextChangeGroup, 0,0, W/2, 45 )
+		cancelBtn.x=W/2;cancelBtn.y=H-45
+		cancelBtn.id="cancel"
+		cancelBtn.anchorX=0;cancelBtn.anchorY=0
+		cancelBtn:setFillColor( Utils.convertHexToRGB(color.Lytred) )
+
+		local cancelIcon = display.newImageRect( TextChangeGroup, "res/assert/audiocancel.png",25,20 )
+		cancelIcon.x=cancelBtn.x+20;cancelIcon.y=cancelBtn.y+cancelBtn.contentHeight/2
+
+		cancelBtn_txt = display.newText( TextChangeGroup, CommonWords.cancel, 0,0,native.systemFont,16 )
+		cancelBtn_txt.x=cancelIcon.x+25;cancelBtn_txt.y=cancelIcon.y
+		cancelBtn_txt.anchorX=0
+
+		TextChangeGroup.isVisible=false
+
+		okBtn:addEventListener( "touch", addMemberAction )
+		cancelBtn:addEventListener( "touch", addMemberAction )
+
+		-- textGroupOkbtn
+		-- textGroupCancelbtn
+
 		local function get_MessageGroupTeamMemberList( response )
 
 			Details = response
@@ -728,7 +921,7 @@ function scene:show( event )
 			local path = system.pathForFile( contactId..".png",system.DocumentsDirectory)
 			local fhd = io.open( path )
 
-				local ProfileImage
+				
 				-- Determine if file exists
 				if fhd then
 					ProfileImage = display.newImage(contactId..".png",system.DocumentsDirectory)
@@ -780,23 +973,14 @@ function scene:show( event )
 					addBg.x=W-30
 					addBg.y=Career_Username.y+5
 					addBg.alpha=0.01
-					addBg.id="edit"
+					addBg.id="editText"
 					addRecipient = display.newImageRect( sceneGroup, "res/assert/edit.png", 24, 24 )
 					addRecipient.anchorY=0
 					addRecipient.x=addBg.x;addRecipient.y = addBg.y
 					addBg:addEventListener( "touch", addMemberAction )
 
 
-					deleteBg = display.newRect(sceneGroup,50,50,60,50)
-					deleteBg.x=W-70
-					deleteBg.y=Career_Username.y+6
-					deleteBg.alpha=0.01
-					deleteBg.id="delete"
-					deleteRecipient = display.newImageRect( sceneGroup, "res/assert/delete.png", 24, 21 )
-					deleteRecipient.anchorY=0
-					deleteRecipient.x=deleteBg.x;deleteRecipient.y = deleteBg.y
-					deleteBg:addEventListener( "touch", addMemberAction )
-
+					
 
 					
 				end
@@ -809,7 +993,7 @@ function scene:show( event )
 					left = 0,
 					width = W,
 					height =H-RecentTab_Topvalue+ProfileImage.contentHeight-35,
-					--hideBackground = true,
+					hideBackground = true,
 					isBounceEnabled=false,
 					horizontalScrollingDisabled = true,
 					verticalScrollingDisabled = false,
@@ -824,7 +1008,7 @@ function scene:show( event )
 
 				CreateGroupMemberList(response)
 
-
+				TextChangeGroup:toFront()
 			end
 
 			

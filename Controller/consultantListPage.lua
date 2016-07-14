@@ -1477,18 +1477,13 @@ function scene:create( event )
 
 	
 
-
-
-		
-
-
 	GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-130, 25)
 	GroupSubject.id="groupSubject"
 	GroupSubject.y = GroupIcon.y+GroupIcon.contentHeight/2-GroupSubject.contentHeight/2
 	GroupSubject.size=14
 	GroupSubject.anchorX = 0
 	GroupSubject.isVisible = false
-	GroupSubject.x = GroupIcon.x+GroupIcon.contentWidth+5
+	GroupSubject.x = GroupIcon.x+GroupIcon.contentWidth+10
 	GroupSubject:setReturnKey( "done" )
 	GroupSubject.hasBackground = false	
 	GroupSubject.placeholder = ChatPage.groupSubject

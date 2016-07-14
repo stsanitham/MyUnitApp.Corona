@@ -17,6 +17,7 @@ CommonWords.DenyAccessText = "Refuser l'accès"
 CommonWords.ProvideAccessText = "Fournir l'accès"
 CommonWords.GrantAccessText = "Accès Grant"
 CommonWords.SpecialRecognitionText = "reconnaissance spéciale"
+CommonWords.Yes = "Yes"
 CommonWords.No = "Non"
 CommonWords.Found = "Trouvé"
 
