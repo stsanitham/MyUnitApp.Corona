@@ -1430,7 +1430,7 @@ function scene:show( event )
 		    Image_Lib_list:insertRow{ rowHeight = 40,rowColor = 
 		    {
 		    	default = { 1, 1, 1, 0 },
-		    	over={ 1, 0.5, 0, 0 },
+		    	over={ 1, 0.5, 0, 0 },`
 
 		    	}}
 		    end
