@@ -675,13 +675,6 @@ end
 local function getupdateLastChatSyncDate( response )
 
 
-		for j=#BroadcastList_array, 1, -1 do 
-
-			display.remove(BroadcastList_array[#BroadcastList_array])
-			BroadcastList_array[#BroadcastList_array] = nil
-	    end
-
-
 	for i=1,#BroadcastList do
 		
 		BroadcastList[i]=nil
