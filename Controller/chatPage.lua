@@ -2813,11 +2813,12 @@ local function scrollListener( event )
 
 
 
-		function scene:resumeGameNormal(status)
+		function scene:resumeGameNormal(status,name)
 
 			print("resume game")
 
 			composer.removeHidden()
+			title.text = name
 
 			ChatBox.isVisible=true
 
@@ -3169,27 +3170,6 @@ function scene:show( event )
 					    end
 
 		 			isdeleted = true
-		 			ChatBox_bg.isVisible = false
-					ChatBox.isVisible = false
-
-					attachment_icon.isVisible = false
-					attachment_icon_bg.isVisible = false
-					sendBtn.isVisible = false
-					sendBtn_bg.isVisible = false
-
-		 		end
-		 end
-
-
-
-		 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
-
-		    	isdeleted = row.Is_Deleted
-		    	
-		 end
-		 print( isdeleted )
-		    if tostring(isdeleted) == "true" then
-		    		isdeleted = true
 		 			helpText.isVisible=true
 		 			ChatBox_bg.width = W-10
 					ChatBox.isVisible = false
@@ -3199,12 +3179,28 @@ function scene:show( event )
 					sendBtn.isVisible = false
 					sendBtn_bg.isVisible = false
 
-			elseif MessageType == "GROUP" then
+				else
+
+					 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
+
+					    	local q = "UPDATE pu_MyUnitBuzz_Message SET Is_Deleted='false';"
+					    	db:exec( q )
+					    	
+					    end
+
+
+		 		end
+		 end
+
+
+
+		
+		if MessageType == "GROUP" then
 
 
 		    	Webservice.CheckChatGroupStatus(To_ContactId,getCheckChatGroupStatus)
 
-		    end
+		end
 
 		sceneGroup:insert( ChatScrollContent )
 

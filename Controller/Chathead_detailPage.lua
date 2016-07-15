@@ -55,6 +55,7 @@ local groupMemberListArray = {}
 
 local status ="normal"
 
+local AttachmentPath
 
 local TextChangeGroup = display.newGroup( )
 
@@ -132,10 +133,32 @@ end
 					end
 		end
 
+function getChatGroupCreation(response )
 
+	groupcreation_response = response
+
+	Career_Username.text =  groupcreation_response.MyUnitBuzzGroupName
+	print("Group creation name edited : "..json.encode(groupcreation_response))
+
+
+	 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(contactId):lower().."') OR (Message_From='"..tostring(contactId):lower().."') ") do
+
+		local q = "UPDATE pu_MyUnitBuzz_Message SET GroupName='"..groupcreation_response.MyUnitBuzzGroupName.."';"
+		db:exec( q )
+					    	
+	end
+
+end
 
 		local function UpdateGroup( updateText,updateImage )
 
+
+
+				if updateImage == false then
+
+					Webservice.CreateMessageChatGroup(textGroupfiled.text,"","true","GROUP",contactId,"",getChatGroupCreation)
+
+				end
 
 
 			-- body
@@ -586,7 +609,125 @@ local function phoneCallFunction( event )
 	end
 
 
+	function get_imagemodel(response)
 
+		AttachmentName = response.FileName
+		AttachmentPath = response.Abspath
+
+
+	if ProfileImage then ProfileImage:removeSelf( );ProfileImage=nil end
+
+	local function changePic( imgevent )
+		-- 	local sceneView = scene.view
+		-- GroupIcon = display.newImageRect( response.FileName,system.DocumentsDirectory, 38, 33 )
+		-- GroupIcon.width = 45;GroupIcon.height = 38
+		-- GroupIcon.x = backbutton.x + backbutton.contentWidth +10
+		-- GroupIcon.y = subjectBar.y +20
+		-- GroupIcon.anchorX=0
+		-- GroupIcon.id = "imgEdit"
+		-- sceneView:insert(GroupIcon)
+
+		-- 	local mask = graphics.newMask( "res/assert/masknew.png" )
+  --   							GroupIcon:setMask( mask )
+
+
+		-- GroupIcon:addEventListener( "touch"	, bgTouch )
+	end
+	timer.performWithDelay( 500, changePic)
+
+		-- if AddAttachmentPhotoName.text:len() > 35 then
+		-- 	AddAttachmentPhotoName.text = AddAttachmentPhotoName.text:sub(1,35  ).."..."
+		-- end
+
+		
+
+	end
+
+
+local function selectionComplete ( event )
+
+		
+		local photo = event.target
+
+		local baseDir = system.DocumentsDirectory
+
+		if photo then
+
+			photo.x = display.contentCenterX
+			photo.y = display.contentCenterY
+			local w = photo.width
+			local h = photo.height
+				--photo:scale(0.5,0.5)
+
+				local function rescale()
+					
+					if photo.width > W or photo.height > H then
+
+						photo.width = photo.width/2
+						photo.height = photo.height/2
+
+						intiscale()
+
+					else
+
+						return false
+
+					end
+				end
+
+				function intiscale()
+					
+					if photo.width > W or photo.height > H then
+
+						photo.width = photo.width/2
+						photo.height = photo.height/2
+
+						rescale()
+
+					else
+
+						return false
+
+					end
+
+				end
+
+				intiscale()
+
+
+					photoname = contactId..".png"
+
+				
+
+
+
+				display.save(photo,photoname,system.DocumentsDirectory)
+
+				photo:removeSelf()
+
+				photo = nil
+
+
+				path = system.pathForFile( photoname, baseDir)
+
+				local size = lfs.attributes (path, "size")
+
+				local fileHandle = io.open(path, "rb")
+
+				file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+				Attachment = file_inbytearray
+
+				io.close( fileHandle )
+
+				formatSizeUnits(size)
+
+
+				Webservice.DOCUMENT_UPLOAD(file_inbytearray,photoname,"Images",get_imagemodel)
+
+			end
+
+		end
 
 	local function onProfileImageTouch(event)
 
@@ -595,9 +736,39 @@ local function phoneCallFunction( event )
 
 			display.getCurrentStage():setFocus( nil )
 
-			elseif event.phase == "ended" then
+		elseif event.phase == "ended" then
 
 			display.getCurrentStage():setFocus( nil )
+
+				local function onComplete(event)
+
+						if "clicked"==event.action then
+
+							local i = event.index 
+
+							if 1 == i then
+
+								if media.hasSource( PHOTO_FUNCTION  ) then
+									timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+										end )
+								end
+
+							elseif 2 == i then
+
+								if media.hasSource( media.Camera ) then
+									timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+										end )
+								end
+
+							end
+
+						end
+
+					end
+
+
+					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
+
 
 		end
 
@@ -618,6 +789,7 @@ local function phoneCallFunction( event )
 		end
 
 
+	if IsOwner == true and (Message_Type == "GROUP" or Message_Type == "BROADCAST") then
 
 
 			groupMemberListArray[#groupMemberListArray+1] = display.newGroup()
@@ -662,6 +834,8 @@ local function phoneCallFunction( event )
 			careerDetail_scrollview:insert(tempGroup)
 
 			background:addEventListener( "touch", addMemberAction )
+
+	end
 
 		local ContactList = list.Contact
 
@@ -753,8 +927,10 @@ local function phoneCallFunction( event )
 
 	end
 
+	if IsOwner == true and (Message_Type == "GROUP" or Message_Type == "BROADCAST") then
 
-	groupMemberListArray[#groupMemberListArray+1] = display.newGroup()
+
+			groupMemberListArray[#groupMemberListArray+1] = display.newGroup()
 
 			local tempGroup = groupMemberListArray[#groupMemberListArray]
 
@@ -785,6 +961,7 @@ local function phoneCallFunction( event )
 
 			background:addEventListener( 'touch', addMemberAction )
 			careerDetail_scrollview:insert(tempGroup)
+	end
 
 end
 
@@ -1597,13 +1774,12 @@ function scene:hide( event )
 		local params = { addGroupid = "editMember" , page_id = Message_Type:lower(),contacts = contactCount,name = Career_Username.text,contactId = contactId}
 
 
-		print( "Status  :"..status )
 		if status == "editArray" then
 
 			print( "Json :"..json.encode(params) )
 			event.parent:resumeGame(json.encode(params),status)
 		else
-			event.parent:resumeGameNormal(status)
+			event.parent:resumeGameNormal(status,Career_Username.text)
 		end
 
 
