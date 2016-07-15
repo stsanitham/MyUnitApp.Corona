@@ -615,6 +615,8 @@ local function ChatTouch( event )
 
 				end
 
+				Forwardicon.isVisible=true
+
 				for i=1,#selectedForDelete do
 					if selectedForDelete[i] ~= nil and selectedForDelete[i].y ~= nil then
 						selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
@@ -746,7 +748,7 @@ local function ChatTouch( event )
 											title.text = UserName
 											Deleteicon.isVisible=false
 											Copyicon.isVisible=false
-
+											Forwardicon.isVisible=false
 									    	-- chatReceivedFlag=true
 									    	
 									    	for i=#MeassageList, 1, -1 do 
@@ -1614,7 +1616,7 @@ local function videoPlay( event )
 			if holdLevel > 25 then
 
 				Deleteicon.isVisible=true
-
+				Forwardicon.isVisible=true
 
 				if Copyicon.type ~= "text" then
 
@@ -1697,6 +1699,7 @@ local function videoPlay( event )
 
 							Copyicon.isVisible=false
 							Deleteicon.isVisible=false
+							Forwardicon.isVisible=false
 
 							attachment_icon.isVisible = true
 
@@ -1748,6 +1751,7 @@ local function videoPlay( event )
 							deleteMsgCount=0
 							Deleteicon.isVisible=false
 							Copyicon.isVisible=false
+							Forwardicon.isVisible=false
 
 							attachment_icon.isVisible = true
 
@@ -1858,6 +1862,7 @@ local function videoPlay( event )
 					title.text = UserName
 					Deleteicon.isVisible=false
 					Copyicon.isVisible=false
+					Forwardicon.isVisible=false
 					    	-- chatReceivedFlag=true
 					    	
 
@@ -2944,19 +2949,19 @@ function scene:create( event )
 	title.text = ChatPage.Chats
 
 	Deleteicon = display.newImageRect( sceneGroup, "res/assert/delete1.png", 15, 15 )
-	Deleteicon.x=W-20;Deleteicon.y=title_bg.y
+	Deleteicon.x=W-50;Deleteicon.y=title_bg.y
 	Deleteicon.isVisible=false
 	Deleteicon.id="delete"
 	Deleteicon:addEventListener( "touch", deleteAction )
 
 	Copyicon = display.newImageRect( sceneGroup, "res/assert/copy-icon.png", 15, 15 )
-	Copyicon.x=W-50;Copyicon.y=title_bg.y
+	Copyicon.x=W-80;Copyicon.y=title_bg.y
 	Copyicon.isVisible=false
 	Copyicon.id="copy"
 	Copyicon:addEventListener( "touch", deleteAction )
 
 	Forwardicon = display.newImageRect( sceneGroup, "res/assert/play.png", 15, 15 )
-	Forwardicon.x=W-50;Forwardicon.y=title_bg.y
+	Forwardicon.x=W-20;Forwardicon.y=title_bg.y
 	Forwardicon.isVisible=false
 	Forwardicon.id="forward"
 	Forwardicon:addEventListener( "touch", deleteAction )
@@ -2975,7 +2980,6 @@ function scene:show( event )
 	local phase = event.phase
 	
 	if phase == "will" then
-
 
 			if event.params then
 				nameval = event.params.tabbuttonValue2
