@@ -1606,7 +1606,7 @@ local function videoPlay( event )
 	local function printTimeSinceStart( event )
 
 		tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront();helpText:toFront( )
-		
+		Forwardicon:toFront( )
 		if chatHoldflag == true then
 
 			holdLevel=holdLevel+1
@@ -2904,7 +2904,6 @@ local function scrollListener( event )
 		end
 
 
-
 ------------------------------------------------------
 
 function scene:create( event )
@@ -2955,6 +2954,12 @@ function scene:create( event )
 	Copyicon.isVisible=false
 	Copyicon.id="copy"
 	Copyicon:addEventListener( "touch", deleteAction )
+
+	Forwardicon = display.newImageRect( sceneGroup, "res/assert/play.png", 15, 15 )
+	Forwardicon.x=W-50;Forwardicon.y=title_bg.y
+	Forwardicon.isVisible=false
+	Forwardicon.id="forward"
+	Forwardicon:addEventListener( "touch", deleteAction )
 
 
 	MainGroup:insert(sceneGroup)
@@ -3014,7 +3019,6 @@ function scene:show( event )
 				     MessageType = "INDIVIDUAL"
 
 			end
-
 
 			
 			if ContactDetails.Message_Type then
