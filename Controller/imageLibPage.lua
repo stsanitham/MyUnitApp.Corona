@@ -1122,14 +1122,10 @@ end
 
 
 	local function uploadImageAction( event )
-
-		print("^^^^^^^^$%$%#$%")
-
+            
+            if event.phase == "ended" then
 			 
 		 		 if event.target.id == "addEvent" then
-
-		 		 	print("^^^^^^^")
-
 
 						local function onComplete(event)
 
@@ -1162,6 +1158,10 @@ end
 
 
 			end
+
+		end
+
+		return true
 		
 	end
 
