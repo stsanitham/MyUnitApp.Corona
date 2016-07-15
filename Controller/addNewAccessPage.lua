@@ -1391,6 +1391,8 @@ local function textfield( event )
 				row.rowValue = List_array[row.index][2]
 
 				row.text=List_array[row.index][1]
+
+				print(row.text.." "..row.rowValue)
 			end
 
 
