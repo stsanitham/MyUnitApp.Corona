@@ -1119,17 +1119,26 @@ end
 
 					 if #response>0 then
 
-							NoEvent.isVisible = true
-							NoEvent.text = "No Contacts Found"
+							NoEvent.isVisible = false
+							
 
 								for i=1,#response do
+
+
+									local added=false
 
 									    if response[i].FirstName ~= nil and response[i].FirstName ~= "" then
 
 												if string.find(response[i].FirstName:lower(),search.text:lower()) ~= nil then
 
 
-													searchArray[#searchArray+1] = response[i]
+													if added == false then
+
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 
 												end
 										end
@@ -1138,7 +1147,13 @@ end
 											   if string.find(response[i].LastName:lower(),search.text:lower()) ~= nil then
 
 
-												searchArray[#searchArray+1] = response[i]
+													if added == false then
+
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 
 											    end
 										end
@@ -1146,8 +1161,13 @@ end
 
 												if string.find(response[i].EmailAddress:lower(),search.text:lower()) ~= nil then
 
-												searchArray[#searchArray+1] = response[i]
+													if added == false then
 
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 											    end
 
 										end
@@ -1157,7 +1177,13 @@ end
 												if string.find(response[i].PhoneNumber:lower(),search.text:lower()) ~= nil then
 
 
-												searchArray[#searchArray+1] = response[i]
+													if added == false then
+
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 
 											    end
 
@@ -1165,11 +1191,13 @@ end
 									end
 
 
-									-- CreateList(searchArray)
+									 CreateList(searchArray)
 
 									if #searchArray > 0 then
 										NoEvent.isVisible = false
-
+									else
+										NoEvent.isVisible = true
+										NoEvent.text = "No Contacts Found"
 									end
 
 				     end
@@ -1237,6 +1265,8 @@ local function searchListener( event )
 
 								for i=1,#searchArraytotal do
 
+									local added = false
+
 									    if searchArraytotal[i].FirstName ~= nil and searchArraytotal[i].FirstName ~= "" then
 
 												if string.find(searchArraytotal[i].FirstName:lower(),event.text:lower()) ~= nil then
@@ -1245,7 +1275,13 @@ local function searchListener( event )
 
 													NoEvent.isVisible = false
 
+													if added == false then
+
 													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 
 												end
 
@@ -1258,8 +1294,13 @@ local function searchListener( event )
 
 												NoEvent.isVisible = false
 
-												searchArray[#searchArray+1] = searchArraytotal[i]
+													if added == false then
 
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 											    end
 
 										end
@@ -1271,7 +1312,13 @@ local function searchListener( event )
 
 												NoEvent.isVisible = false
 
-												searchArray[#searchArray+1] = searchArraytotal[i]
+												if added == false then
+
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 
 											    end
 
@@ -1284,7 +1331,13 @@ local function searchListener( event )
 
 												NoEvent.isVisible = false
 
-												searchArray[#searchArray+1] = searchArraytotal[i]
+												if added == false then
+
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 
 											    end
 
