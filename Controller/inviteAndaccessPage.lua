@@ -974,9 +974,30 @@ end
 
 function get_GetMyUnitBuzzRequestAccesses(response1)
 
-			if page_count == 1 then
+			-- if page_count == 1 then
 
-				--search.text = ""
+			-- 	--search.text = ""
+
+			-- 	for j=#groupArray, 1, -1 do 
+			-- 		display.remove(groupArray[#groupArray])
+			-- 		groupArray[#groupArray] = nil
+			-- 	end
+
+			-- 	scrollView:scrollToPosition
+			-- 	{
+			-- 		y = 0,
+			-- 		time = 200,
+			-- 	}
+
+		 --    end
+
+		       for j=#searchArray, 1, -1 do 
+					display.remove(searchArray[#searchArray])
+					searchArray[#searchArray] = nil
+				end
+
+
+		   if page_count == 1 and scrollView.y ~=0 and search.text:len() == 1 then
 
 				for j=#groupArray, 1, -1 do 
 					display.remove(groupArray[#groupArray])
@@ -989,7 +1010,22 @@ function get_GetMyUnitBuzzRequestAccesses(response1)
 					time = 200,
 				}
 
+			elseif page_count ~= 1 and scrollView.y ~=0 then
+
+					for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+					end
+
+				scrollView:scrollToPosition
+				{
+					y = 0,
+					time = 200,
+				}
+
 		    end
+
+
 
 
 		  totArray = response1
@@ -1119,15 +1155,13 @@ end
 
 					 if #response>0 then
 
-							NoEvent.isVisible = true
-							NoEvent.text = "No Contacts Found"
+							   NoEvent.isVisible = false
 
 								for i=1,#response do
 
 									    if response[i].FirstName ~= nil and response[i].FirstName ~= "" then
 
 												if string.find(response[i].FirstName:lower(),search.text:lower()) ~= nil then
-
 
 													searchArray[#searchArray+1] = response[i]
 
@@ -1136,7 +1170,6 @@ end
 										if response[i].LastName ~= nil and response[i].LastName ~= "" then
 
 											   if string.find(response[i].LastName:lower(),search.text:lower()) ~= nil then
-
 
 												searchArray[#searchArray+1] = response[i]
 
@@ -1156,7 +1189,6 @@ end
 
 												if string.find(response[i].PhoneNumber:lower(),search.text:lower()) ~= nil then
 
-
 												searchArray[#searchArray+1] = response[i]
 
 											    end
@@ -1165,12 +1197,18 @@ end
 									end
 
 
-									-- CreateList(searchArray)
+									CreateList(searchArray)
 
-									if #searchArray > 0 then
-										NoEvent.isVisible = false
 
+									if #searchArray == 0 then
+
+										print("***************!!!!!!")
+									
+                                        NoEvent.isVisible = true
+							            NoEvent.text = "No Contacts Found"
 									end
+
+							
 
 				     end
 
@@ -1213,10 +1251,7 @@ local function searchListener( event )
 
                             get_GetMyUnitBuzzRequestAccessesNew(totArray)
 
-
                            -- CreateList(totArray)
-
-
 
 
 		 			elseif event.text:len() == 2 or event.startPosition == (2) then
@@ -1235,15 +1270,16 @@ local function searchListener( event )
 								end
 
 
-								for i=1,#searchArraytotal do
+
+								if #searchArraytotal>0 then
+
+							  		 NoEvent.isVisible = false
+
+									for i=1,#searchArraytotal do
 
 									    if searchArraytotal[i].FirstName ~= nil and searchArraytotal[i].FirstName ~= "" then
 
 												if string.find(searchArraytotal[i].FirstName:lower(),event.text:lower()) ~= nil then
-
-													print("Here >>>>>>>>>>")
-
-													NoEvent.isVisible = false
 
 													searchArray[#searchArray+1] = searchArraytotal[i]
 
@@ -1254,10 +1290,6 @@ local function searchListener( event )
 
 											   if string.find(searchArraytotal[i].LastName:lower(),event.text:lower()) ~= nil then
 
-												print("Here last >>>>>>>>>>")
-
-												NoEvent.isVisible = false
-
 												searchArray[#searchArray+1] = searchArraytotal[i]
 
 											    end
@@ -1266,10 +1298,6 @@ local function searchListener( event )
 										if searchArraytotal[i].EmailAddress ~= nil or searchArraytotal[i].EmailAddress ~= "" then 
 
 												if string.find(searchArraytotal[i].EmailAddress:lower(),event.text:lower()) ~= nil then
-
-												print("Here last email>>>>>>>>>>")
-
-												NoEvent.isVisible = false
 
 												searchArray[#searchArray+1] = searchArraytotal[i]
 
@@ -1280,15 +1308,13 @@ local function searchListener( event )
 
 												if string.find(searchArraytotal[i].PhoneNumber:lower(),event.text:lower()) ~= nil then
 
-												print("Here last phone>>>>>>>>>>")
-
-												NoEvent.isVisible = false
-
 												searchArray[#searchArray+1] = searchArraytotal[i]
 
 											    end
 
 										end
+
+									end
 
 								end
 
