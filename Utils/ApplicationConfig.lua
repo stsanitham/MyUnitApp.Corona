@@ -41,7 +41,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 ---------Stagging--------------
 
-----[[
+--[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -57,11 +57,11 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 
 
---[[---------Android Live----------------
+----[[---------Android Live----------------
 
 IsLive = true
 
-ApplicationConfig.Version = "/Android/1.2.6"	    --1.2.2
+ApplicationConfig.Version = "/Android/1.2.7"	    --1.2.2
 
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.com/"..ApplicationConfig.Version
 
