@@ -823,10 +823,12 @@ function scene:create( event )
 							end
 
 
-							function scene:resumeGame( ContactIdValue )
+							function scene:resumeGameNormal( ContactIdValue )
 
 
 							end
+
+							
 
 
 							function scene:hide( event )

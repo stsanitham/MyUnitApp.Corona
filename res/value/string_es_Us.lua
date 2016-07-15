@@ -401,6 +401,7 @@ InviteAccessDetail.NoTMAccess = "No hay una lista de integrantes del equipo sin 
 ChatDetails = {}
 
 ChatDetails.GroupSubjectError = "*Entrar en el grupo de sujetos"
+ChatDetails.Warning = "You can't send messages to this group because you're no longer a participant"
 
 
 MessagePage = {}

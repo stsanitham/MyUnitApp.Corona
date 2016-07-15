@@ -23,7 +23,7 @@ local imageFullviewGroup = require( "Controller.imageFullviewGroup" )
 
 local W = display.contentWidth;
 local H= display.contentHeight
-
+local isdeleted = false
 local Background,BgText
 
 local AttachmentGroup = display.newGroup( )
@@ -80,7 +80,7 @@ local PHOTO_FUNCTION = media.PhotoLibrary
 
 local deleteMsgCount = 0
 
-
+local helpText 
 
 local icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt
 
@@ -1605,7 +1605,7 @@ local function videoPlay( event )
 
 	local function printTimeSinceStart( event )
 
-		tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
+		tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront();helpText:toFront( )
 		
 		if chatHoldflag == true then
 
@@ -1810,21 +1810,23 @@ local function videoPlay( event )
 
 				elseif event.phase == "ended" then
 				display.getCurrentStage():setFocus( nil )
+				print( isdeleted )
+				if tostring(isdeleted) == "false" then
+					local options = {
+						effect = "fromTop",
+						time = 200,	
+						params = {
+							contactId = To_ContactId,
+							MessageType = MessageType,
+							GroupTypeValue = GroupTypeValue,
+						}
 
-				local options = {
-					effect = "fromTop",
-					time = 200,	
-					params = {
-						contactId = To_ContactId,
-						MessageType = MessageType,
-						GroupTypeValue = GroupTypeValue,
 					}
 
-				}
 
-
-				ChatBox.isVisible=false
-				composer.showOverlay( "Controller.Chathead_detailPage", options )
+					ChatBox.isVisible=false
+					composer.showOverlay( "Controller.Chathead_detailPage", options )
+				end
 
 			end
 
@@ -3117,7 +3119,9 @@ function scene:show( event )
 
 		sendMeaasage()
 
-		sceneGroup:insert( ChatScrollContent )
+
+
+
 		
 
 		------------------------------------------- attachment icon -----------------------------------------
@@ -3145,6 +3149,64 @@ function scene:show( event )
 
 		sceneGroup:insert( AttachmentGroup )
 
+
+		 helpText = display.newText(sceneGroup,ChatDetails.Warning,0,0,W-20,0,native.systemFont,14)
+		helpText.x=W/2
+		helpText.isVisible=false
+		helpText.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2
+		helpText:setTextColor( 0,0,0,0.5 )
+
+
+		 local function getCheckChatGroupStatus( response )
+		 		if response == "DELETED" then
+
+
+		 				 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
+
+					    	local q = "UPDATE pu_MyUnitBuzz_Message SET Is_Deleted='true';"
+					    	db:exec( q )
+					    	
+					    end
+
+		 			isdeleted = true
+		 			ChatBox_bg.isVisible = false
+					ChatBox.isVisible = false
+
+					attachment_icon.isVisible = false
+					attachment_icon_bg.isVisible = false
+					sendBtn.isVisible = false
+					sendBtn_bg.isVisible = false
+
+		 		end
+		 end
+
+
+
+		 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
+
+		    	isdeleted = row.Is_Deleted
+		    	
+		 end
+		 print( isdeleted )
+		    if tostring(isdeleted) == "true" then
+		    		isdeleted = true
+		 			helpText.isVisible=true
+		 			ChatBox_bg.width = W-10
+					ChatBox.isVisible = false
+
+					attachment_icon.isVisible = false
+					attachment_icon_bg.isVisible = false
+					sendBtn.isVisible = false
+					sendBtn_bg.isVisible = false
+
+			elseif MessageType == "GROUP" then
+
+
+		    	Webservice.CheckChatGroupStatus(To_ContactId,getCheckChatGroupStatus)
+
+		    end
+
+		sceneGroup:insert( ChatScrollContent )
 
 		--Tabbar---
 

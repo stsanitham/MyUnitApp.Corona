@@ -98,12 +98,21 @@ end
 local function getDeleteParticularGroup( response )
 	
 
-	--if response == "" then
+	if response == "Success" then
+
+
+			 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(contactId):lower().."') OR (Message_From='"..tostring(contactId):lower().."') ") do
+
+		    	local q = "UPDATE pu_MyUnitBuzz_Message SET Is_Deleted='true';"
+		    	db:exec( q )
+		    	
+		    end
+
 
 			status="delete"
 	    	 composer.hideOverlay( "slideRight", 100 )
 
-	--end
+	end
 end
 
 		local function onComplete( event )  
