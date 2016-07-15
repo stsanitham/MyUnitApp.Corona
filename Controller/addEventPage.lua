@@ -3590,6 +3590,10 @@ end
 	  			Event_to_date.text = value.hours.."H"
 	  			Event_to_time.text = value.minutes.."M"
 
+
+	  			Event_to_date.value = value.hours
+				Event_to_time.value = value.minutes
+
 	  		else
 
 	  			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , endtime ))
