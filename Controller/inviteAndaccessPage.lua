@@ -856,12 +856,23 @@ function get_GetMyUnitBuzzRequestAccessesNew(response1)
 
 			if page_count == 1 and scrollView.y ~=0 and search.text:len() == 1 then
 
-				print("&&&&&&&&&&page ====== 1")
-
 				for j=#groupArray, 1, -1 do 
 					display.remove(groupArray[#groupArray])
 					groupArray[#groupArray] = nil
 				end
+
+				scrollView:scrollToPosition
+				{
+					y = 0,
+					time = 200,
+				}
+
+			elseif page_count ~= 1 and scrollView.y ~=0 then
+
+					for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+					end
 
 				scrollView:scrollToPosition
 				{
@@ -990,12 +1001,6 @@ function get_GetMyUnitBuzzRequestAccesses(response1)
 			-- 	}
 
 		 --    end
-
-		       for j=#searchArray, 1, -1 do 
-					display.remove(searchArray[#searchArray])
-					searchArray[#searchArray] = nil
-				end
-
 
 		   if page_count == 1 and scrollView.y ~=0 and search.text:len() == 1 then
 
@@ -1159,11 +1164,22 @@ end
 
 								for i=1,#response do
 
+
+									local added=false
+
 									    if response[i].FirstName ~= nil and response[i].FirstName ~= "" then
 
 												if string.find(response[i].FirstName:lower(),search.text:lower()) ~= nil then
 
-													searchArray[#searchArray+1] = response[i]
+
+													if added == false then
+
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
+
 
 												end
 										end
@@ -1171,7 +1187,15 @@ end
 
 											   if string.find(response[i].LastName:lower(),search.text:lower()) ~= nil then
 
-												searchArray[#searchArray+1] = response[i]
+
+													if added == false then
+
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
+
 
 											    end
 										end
@@ -1179,8 +1203,13 @@ end
 
 												if string.find(response[i].EmailAddress:lower(),search.text:lower()) ~= nil then
 
-												searchArray[#searchArray+1] = response[i]
+													if added == false then
 
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 											    end
 
 										end
@@ -1189,28 +1218,41 @@ end
 
 												if string.find(response[i].PhoneNumber:lower(),search.text:lower()) ~= nil then
 
-												searchArray[#searchArray+1] = response[i]
+
+													if added == false then
+
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 
 											    end
 
 										end
+
 									end
 
 
-									CreateList(searchArray)
+												CreateList(searchArray)
 
 
-									if #searchArray == 0 then
 
-										print("***************!!!!!!")
-									
-                                        NoEvent.isVisible = true
-							            NoEvent.text = "No Contacts Found"
-									end
+												if #searchArray > 0 then
+													NoEvent.isVisible = false
+												else
+													NoEvent.isVisible = true
+													NoEvent.text = "No Contacts Found"
+												end
 
-							
 
-				     end
+								     end
+
+
+			else
+
+					NoEvent.isVisible = true
+					NoEvent.text = "No Contacts Found"
 
 			end
 
@@ -1273,63 +1315,104 @@ local function searchListener( event )
 
 								if #searchArraytotal>0 then
 
-							  		 NoEvent.isVisible = false
+									local added = false
 
-									for i=1,#searchArraytotal do
+									 NoEvent.isVisible = false
+
+									 for i=1,#searchArraytotal do
 
 									    if searchArraytotal[i].FirstName ~= nil and searchArraytotal[i].FirstName ~= "" then
 
-												if string.find(searchArraytotal[i].FirstName:lower(),event.text:lower()) ~= nil then
+
+												if string.find(searchArraytotal[i].FirstName:lower(),event.text:lower()) ~= nil and searchArraytotal[i].FirstName:find('%[') == nil then
+
+													if added == false then
 
 													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 
 												end
 
 										end
-										if searchArraytotal[i].LastName ~= nil or searchArraytotal[i].LastName ~= "" then
+
+										if searchArraytotal[i].LastName ~= nil or searchArraytotal[i].LastName ~= "" and searchArraytotal[i].LastName:find('%[') == nil then
 
 											   if string.find(searchArraytotal[i].LastName:lower(),event.text:lower()) ~= nil then
 
-												searchArray[#searchArray+1] = searchArraytotal[i]
+													if added == false then
 
+													searchArray[#searchArray+1] = searchArraytotal[i]
+
+													end
+
+													added=true
 											    end
 
 										end
-										if searchArraytotal[i].EmailAddress ~= nil or searchArraytotal[i].EmailAddress ~= "" then 
 
-												if string.find(searchArraytotal[i].EmailAddress:lower(),event.text:lower()) ~= nil then
+										if searchArraytotal[i].EmailAddress ~= nil or searchArraytotal[i].EmailAddress ~= "" and searchArraytotal[i].EmailAddress:find('%[') == nil then 
 
-												searchArray[#searchArray+1] = searchArraytotal[i]
+													if string.find(searchArraytotal[i].EmailAddress:lower(),event.text:lower()) ~= nil then
 
-											    end
+													    if added == false then
+
+														searchArray[#searchArray+1] = searchArraytotal[i]
+
+														end
+
+														added=true
+
+												    end
 
 										end
-										if searchArraytotal[i].PhoneNumber ~= nil or searchArraytotal[i].PhoneNumber ~= "" then 
 
-												if string.find(searchArraytotal[i].PhoneNumber:lower(),event.text:lower()) ~= nil then
+										if searchArraytotal[i].PhoneNumber ~= nil or searchArraytotal[i].PhoneNumber ~= "" and searchArraytotal[i].PhoneNumber:find('%[') == nil then 
 
-												searchArray[#searchArray+1] = searchArraytotal[i]
+													if string.find(searchArraytotal[i].PhoneNumber:lower(),event.text:lower()) ~= nil then
 
-											    end
+													    if added == false then
+
+														searchArray[#searchArray+1] = searchArraytotal[i]
+
+														end
+
+														added=true
+
+												    end
 
 										end
 
 									end
 
-								end
 
-								 CreateList(searchArray)
+										 CreateList(searchArray)
 
 
-								if #searchArray == 0 then
+										if #searchArray == 0 then
 
-									print("not true")
+											print("not true")
+
+												NoEvent.isVisible = true
+
+												NoEvent.text = "No Contacts Found"
+
+										end
+
+
+
+								else
 
 										NoEvent.isVisible = true
 
 										NoEvent.text = "No Contacts Found"
 
 								end
+
+
+							
 
 
 
