@@ -416,27 +416,48 @@ local function onRowRender_ImageLib( event )
     	print( List_array[row.index].ImageFileName )
 
 
+			local path = system.pathForFile( List_array[row.index].FilePath:match( "([^/]+)$" ),system.DocumentsDirectory)
+			local fhd = io.open( path )
 
-    	imageArray[#imageArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath,
-    		"GET",
-    		function ( img_event )
-    			if ( img_event.isError ) then
-    				print ( "Network error - download failed" )
-    			else
-    				if Lefticon then Lefticon:removeSelf();Lefticon=nil end
+				
+				-- Determine if file exists
+				if fhd then
 
-    				print("response file "..img_event.response.filename)
-    				Lefticon = display.newImage(row,img_event.response.filename,system.DocumentsDirectory)
-    				Lefticon.width=45;Lefticon.height=38
-    				Lefticon.x=30;Lefticon.y=rowHeight/2
-    				--event.row:insert(img_event.target)
+								if Lefticon then Lefticon:removeSelf();Lefticon=nil end
 
-    				local mask = graphics.newMask( "res/assert/masknew.png" )
+		    				Lefticon = display.newImage(row,List_array[row.index].FilePath:match( "([^/]+)$" ),system.DocumentsDirectory)
+		    				Lefticon.width=45;Lefticon.height=38
+		    				Lefticon.x=30;Lefticon.y=rowHeight/2
+		    				--event.row:insert(img_event.target)
 
-    				Lefticon:setMask( mask )
-    			end
+		    				local mask = graphics.newMask( "res/assert/masknew.png" )
 
-    			end, List_array[row.index].FilePath:match( "([^/]+)$" ), system.DocumentsDirectory)
+		    				Lefticon:setMask( mask )
+
+				else
+
+			    		imageArray[#imageArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath,
+			    		"GET",
+			    		function ( img_event )
+			    			if ( img_event.isError ) then
+			    				print ( "Network error - download failed" )
+			    			else
+			    				if Lefticon then Lefticon:removeSelf();Lefticon=nil end
+
+			    				print("response file "..img_event.response.filename)
+			    				Lefticon = display.newImage(row,img_event.response.filename,system.DocumentsDirectory)
+			    				Lefticon.width=45;Lefticon.height=38
+			    				Lefticon.x=30;Lefticon.y=rowHeight/2
+			    				--event.row:insert(img_event.target)
+
+			    				local mask = graphics.newMask( "res/assert/masknew.png" )
+
+			    				Lefticon:setMask( mask )
+			    			end
+
+			    			end, List_array[row.index].FilePath:match( "([^/]+)$" ), system.DocumentsDirectory)
+
+    		end
     else
     	Lefticon = display.newImageRect(row,"res/assert/twitter_placeholder.png",35,35)
     	Lefticon.x=30;Lefticon.y=rowHeight/2
@@ -920,6 +941,36 @@ function formatSizeUnits(event)
 end
 
 
+		function get_Allimage(response)
+
+			
+				for j=#List_array, 1, -1 do 
+					display.remove(List_array[#List_array])
+					List_array[#List_array] = nil
+				end
+
+
+			List_array = response
+
+			Image_Lib_list:deleteAllRows()
+
+			if #List_array == 0  then
+				NoEvent = display.newText( scene.view, ImageLibrary.NoImage, 0,0,0,0,native.systemFontBold,16)
+				NoEvent.x=W/2;NoEvent.y=H/2
+				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+			end
+
+
+			for i = 1, #List_array do
+		    -- Insert a row into the tableView
+		    Image_Lib_list:insertRow{ rowHeight = 40,rowColor = 
+		    {
+		    	default = { 1, 1, 1, 0 },
+		    	over={ 1, 0.5, 0, 0 },
+
+		    	}}
+		    end
+		end
 
 
 
@@ -931,9 +982,9 @@ end
 
 	   if response == "Success" then
 
-	   	local a = native.showAlert("Image","Image Uploaded",{"ok"})
+	   	  local a = native.showAlert("Image","Image Uploaded",{"ok"})
 
-	       --Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
+	       Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
 
 	      -- get_Allimage(response)
 
@@ -1079,14 +1130,10 @@ end
 
 
 	local function uploadImageAction( event )
-
-		print("^^^^^^^^$%$%#$%")
-
+            
+            if event.phase == "ended" then
 			 
 		 		 if event.target.id == "addEvent" then
-
-		 		 	print("^^^^^^^")
-
 
 						local function onComplete(event)
 
@@ -1119,6 +1166,10 @@ end
 
 
 			end
+
+		end
+
+		return true
 		
 	end
 
@@ -1402,10 +1453,7 @@ function scene:show( event )
 		ga.enterScene("Image Library")
 
 
-		function get_Allimage(response)
-			List_array = response
-
-			Image_Lib_list = widget.newTableView
+					Image_Lib_list = widget.newTableView
 			{
 				left = 0,
 				top = 75,
@@ -1420,23 +1468,6 @@ function scene:show( event )
 
 			sceneGroup:insert(Image_Lib_list)
 
-			if #List_array == 0  then
-				NoEvent = display.newText( sceneGroup, ImageLibrary.NoImage, 0,0,0,0,native.systemFontBold,16)
-				NoEvent.x=W/2;NoEvent.y=H/2
-				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-			end
-
-
-			for i = 1, #List_array do
-		    -- Insert a row into the tableView
-		    Image_Lib_list:insertRow{ rowHeight = 40,rowColor = 
-		    {
-		    	default = { 1, 1, 1, 0 },
-		    	over={ 1, 0.5, 0, 0 },
-
-		    	}}
-		    end
-		end
 
 		Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
 
