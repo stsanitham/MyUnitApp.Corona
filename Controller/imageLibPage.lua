@@ -920,6 +920,49 @@ function formatSizeUnits(event)
 end
 
 
+		function get_Allimage(response)
+
+			
+				for j=#List_array, 1, -1 do 
+					display.remove(List_array[#List_array])
+					List_array[#List_array] = nil
+				end
+
+
+			List_array = response
+
+			Image_Lib_list = widget.newTableView
+			{
+				left = 0,
+				top = 75,
+				height = H-75,
+				width = W,
+				onRowRender = onRowRender_ImageLib,
+				onRowTouch = onRowTouch_ImageLib,
+				hideBackground = true,
+				isBounceEnabled = false,
+				noLines = true,
+			}
+
+			scene.view:insert(Image_Lib_list)
+
+			if #List_array == 0  then
+				NoEvent = display.newText( scene.view, ImageLibrary.NoImage, 0,0,0,0,native.systemFontBold,16)
+				NoEvent.x=W/2;NoEvent.y=H/2
+				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+			end
+
+
+			for i = 1, #List_array do
+		    -- Insert a row into the tableView
+		    Image_Lib_list:insertRow{ rowHeight = 40,rowColor = 
+		    {
+		    	default = { 1, 1, 1, 0 },
+		    	over={ 1, 0.5, 0, 0 },
+
+		    	}}
+		    end
+		end
 
 
 
@@ -931,9 +974,9 @@ end
 
 	   if response == "Success" then
 
-	   	local a = native.showAlert("Image","Image Uploaded",{"ok"})
+	   	  local a = native.showAlert("Image","Image Uploaded",{"ok"})
 
-	       --Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
+	       Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
 
 	      -- get_Allimage(response)
 
@@ -1401,42 +1444,6 @@ function scene:show( event )
 
 		ga.enterScene("Image Library")
 
-
-		function get_Allimage(response)
-			List_array = response
-
-			Image_Lib_list = widget.newTableView
-			{
-				left = 0,
-				top = 75,
-				height = H-75,
-				width = W,
-				onRowRender = onRowRender_ImageLib,
-				onRowTouch = onRowTouch_ImageLib,
-				hideBackground = true,
-				isBounceEnabled = false,
-				noLines = true,
-			}
-
-			sceneGroup:insert(Image_Lib_list)
-
-			if #List_array == 0  then
-				NoEvent = display.newText( sceneGroup, ImageLibrary.NoImage, 0,0,0,0,native.systemFontBold,16)
-				NoEvent.x=W/2;NoEvent.y=H/2
-				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-			end
-
-
-			for i = 1, #List_array do
-		    -- Insert a row into the tableView
-		    Image_Lib_list:insertRow{ rowHeight = 40,rowColor = 
-		    {
-		    	default = { 1, 1, 1, 0 },
-		    	over={ 1, 0.5, 0, 0 },`
-
-		    	}}
-		    end
-		end
 
 		Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
 
