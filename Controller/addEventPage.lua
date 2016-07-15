@@ -792,7 +792,7 @@ local function onRowTouch(event)
 			if SelectEvent.text:lower( ) == "party" then
 
 					for i=1,#AddeventPage.partyArray do
-						if AddeventPage.purposeArray[i] == row.name then
+						if AddeventPage.partyArray[i] == row.name then
 							List.textFiled.value=AddeventPage.partyArray[i]
 						end
 					end
@@ -3103,7 +3103,7 @@ end
 
 	  	PurposeLbl = display.newText(taskGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 	  	PurposeLbl.anchorX=0
-	  	PurposeLbl.value=0
+	  	--PurposeLbl.value=0
 	  	PurposeLbl.id="purpose"
 	  	PurposeLbl.count = #AddeventArray
 	  	PurposeLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -3185,7 +3185,7 @@ end
 
 		PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1].value,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
-		PriorityLbl.value=1
+		--PriorityLbl.value=1
 		PriorityLbl.id="priority"
 		PriorityLbl.count = #AddeventArray
 		PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -3848,6 +3848,8 @@ end
 
 		  				if AddeventPage.priorityArray[i].id == UpdateValue.Priority then
 		  					PriorityLbl.text = AddeventPage.priorityArray[i].value
+
+		  					PriorityLbl.value = AddeventPage.priorityArray[i].id
 		  				end
 
 		  			end
