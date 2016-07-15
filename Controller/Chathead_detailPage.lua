@@ -9,6 +9,7 @@ local scene = composer.newScene()
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 local json = require("json")
+local mime = require("mime")
 local popupGroup = require( "Controller.popupGroup" )
 local alertGroup = require( "Controller.alertGroup" )
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
@@ -150,16 +151,16 @@ function getChatGroupCreation(response )
 
 end
 
-		local function UpdateGroup( updateText,updateImage )
+		local function UpdateGroup( updateText,updateImage,absPath )
 
+					if updateImage == true then
 
+						Webservice.CreateMessageChatGroup(Career_Username.text,"","true","GROUP",contactId,absPath,getChatGroupCreation)
+					else
 
-				if updateImage == false then
+						Webservice.CreateMessageChatGroup(textGroupfiled.text,"","true","GROUP",contactId,absPath,getChatGroupCreation)
 
-					Webservice.CreateMessageChatGroup(textGroupfiled.text,"","true","GROUP",contactId,"",getChatGroupCreation)
-
-				end
-
+					end
 
 			-- body
 		end
@@ -214,7 +215,7 @@ local function addMemberAction( event )
 	    			textGroupfiled.isVisible=false
 
 
-	    			UpdateGroup(textGroupfiled.text,false)
+	    			UpdateGroup(textGroupfiled.text,false,"")
 
 
 	    	end
@@ -609,40 +610,6 @@ local function phoneCallFunction( event )
 	end
 
 
-	function get_imagemodel(response)
-
-		AttachmentName = response.FileName
-		AttachmentPath = response.Abspath
-
-
-	if ProfileImage then ProfileImage:removeSelf( );ProfileImage=nil end
-
-	local function changePic( imgevent )
-		-- 	local sceneView = scene.view
-		-- GroupIcon = display.newImageRect( response.FileName,system.DocumentsDirectory, 38, 33 )
-		-- GroupIcon.width = 45;GroupIcon.height = 38
-		-- GroupIcon.x = backbutton.x + backbutton.contentWidth +10
-		-- GroupIcon.y = subjectBar.y +20
-		-- GroupIcon.anchorX=0
-		-- GroupIcon.id = "imgEdit"
-		-- sceneView:insert(GroupIcon)
-
-		-- 	local mask = graphics.newMask( "res/assert/masknew.png" )
-  --   							GroupIcon:setMask( mask )
-
-
-		-- GroupIcon:addEventListener( "touch"	, bgTouch )
-	end
-	timer.performWithDelay( 500, changePic)
-
-		-- if AddAttachmentPhotoName.text:len() > 35 then
-		-- 	AddAttachmentPhotoName.text = AddAttachmentPhotoName.text:sub(1,35  ).."..."
-		-- end
-
-		
-
-	end
-
 
 local function selectionComplete ( event )
 
@@ -964,6 +931,41 @@ local function selectionComplete ( event )
 	end
 
 end
+
+
+
+	function get_imagemodel(response)
+
+		AttachmentName = response.FileName
+		AttachmentPath = response.Abspath
+
+
+	if ProfileImage then ProfileImage:removeSelf( );ProfileImage=nil end
+
+	local function changePic( imgevent )
+		 	local sceneView = scene.view
+					ProfileImage = display.newImage(sceneView,contactId..".png",system.DocumentsDirectory)
+		
+				ProfileImage.width = W;ProfileImage.height = 180
+				ProfileImage.x=W/2;ProfileImage.y=titleBar.y
+				ProfileImage.anchorY=0
+
+				Career_Username:toFront( );addBg:toFront( );addRecipient:toFront( )
+				titleBar_icon:toFront( );careerDetail_scrollview:toFront( )
+
+				UpdateGroup(textGroupfiled.text,true,AttachmentPath)
+
+				ProfileImage:addEventListener("touch",onProfileImageTouch)
+	end
+	timer.performWithDelay( 500, changePic)
+
+		-- if AddAttachmentPhotoName.text:len() > 35 then
+		-- 	AddAttachmentPhotoName.text = AddAttachmentPhotoName.text:sub(1,35  ).."..."
+		-- end
+
+		
+
+	end
 
 ------------------------------------------------------
 
