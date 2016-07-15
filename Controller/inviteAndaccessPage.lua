@@ -670,46 +670,82 @@ local function ListmenuTouch( event )
 
 
 
-			
-
+		
 
 		if feedArray[i].ImagePath ~= nil then
 
-				local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-				--Image.anchorY=0
-				Image.x=30;Image.y=background.y+background.contentHeight/2
+				--  Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+				-- --Image.anchorY=0
+				-- Image.x=30;Image.y=background.y+background.contentHeight/2
 
-				networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
-				"GET",
-				
-				function ( img_event )
 
-					if ( img_event.isError ) then
-						print ( "Network error - download failed" )
-					else
+				local filePath = system.pathForFile( feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory )
+								            -- Play back the recording
+				local file = io.open( filePath)
+								            
+						if file then
 
-						if Image then
+								 io.close( file )
 
-							Image:removeSelf();Image=nil
+											  Image = display.newImageRect(tempGroup,feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory,35,35)
+								--Image.anchorY=0
+								Image.x=30;Image.y=background.y+background.contentHeight/2
 							
-							local Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
-							Image.width=35;Image.height=35
-							--Image.anchorY=0
-							Image.x=30;Image.y=background.y+background.contentHeight/2
-							
-				    		--event.row:insert(img_event.target)
+							print( "here" )
 
-				    			else
+						else
 
-				    				Image:removeSelf();Image=nil
+							print( "not here" )
 
-				    			end
-				    		end
+								networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
+								"GET",
+								
+								function ( img_event)
 
-				    		end, "inviteaccess"..feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory)
+									if ( img_event.isError ) then
+										print ( "Network error - download failed" )
+									else
+
+									
+
+										--	if Image ~= nil then Image:removeSelf();Image=nil end
+
+											--img_event.response.filename
+
+											local filePath = system.pathForFile( img_event.response.filename, system.DocumentsDirectory )
+												            -- Play back the recording
+												local file = io.open( filePath)
+												            
+												if file and img_event.response.filename ~= nil then
+
+												 io.close( file )
+
+
+
+												 Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
+
+
+												else
+
+													Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+
+												end
+											
+											Image.width=35;Image.height=35
+											--Image.anchorY=0
+											Image.x=30;Image.y=background.y+background.contentHeight/2
+											
+								    		--event.row:insert(img_event.target)
+
+								    			
+								    		end
+
+								    		end, feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory)
+
+						end
 		else
 
-					local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+					 Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
 					--Image.anchorY=0
 					Image.x=30;Image.y=background.y+background.contentHeight/2
 					
@@ -1066,7 +1102,7 @@ end
 					for j=#groupArray, 1, -1 do 
 					display.remove(groupArray[#groupArray])
 					groupArray[#groupArray] = nil
-				end
+					end
 
 				scrollView:scrollToPosition
 				{
@@ -1076,43 +1112,65 @@ end
 
 		    end
 
-		    testresponse = response
 
-		    print(json.encode(testresponse))
-
+		    searchArraytotal=response
 
 			if response ~= nil then
 
 					 if #response>0 then
 
-							NoEvent.isVisible = false
+							NoEvent.isVisible = true
+							NoEvent.text = "No Contacts Found"
 
-							for i=1,#searchArraytotal do
-								searchArraytotal[i]=nil
-							end
+								for i=1,#response do
 
-			                searchArraytotal = response
+									    if response[i].FirstName ~= nil and response[i].FirstName ~= "" then
 
-							--page_count = 1
+												if string.find(response[i].FirstName:lower(),search.text:lower()) ~= nil then
 
-								if #searchArraytotal ~=0 then
 
-									CreateList(searchArraytotal)
+													searchArray[#searchArray+1] = response[i]
 
-								else
+												end
+										end
+										if response[i].LastName ~= nil and response[i].LastName ~= "" then
 
-									for j=#groupArray, 1, -1 do 
-										display.remove(groupArray[#groupArray])
-										groupArray[#groupArray] = nil
+											   if string.find(response[i].LastName:lower(),search.text:lower()) ~= nil then
+
+
+												searchArray[#searchArray+1] = response[i]
+
+											    end
+										end
+										if response[i].EmailAddress ~= nil and response[i].EmailAddress ~= "" then 
+
+												if string.find(response[i].EmailAddress:lower(),search.text:lower()) ~= nil then
+
+												searchArray[#searchArray+1] = response[i]
+
+											    end
+
+										end
+
+										if response[i].PhoneNumber ~= nil and response[i].PhoneNumber ~= "" then 
+
+												if string.find(response[i].PhoneNumber:lower(),search.text:lower()) ~= nil then
+
+
+												searchArray[#searchArray+1] = response[i]
+
+											    end
+
+										end
 									end
 
-									NoEvent.isVisible = true
 
-									NoEvent.text = "No Contacts Found"
+									-- CreateList(searchArray)
 
-						    	end
+									if #searchArray > 0 then
+										NoEvent.isVisible = false
 
-						    --searchArray = searchArraytotal
+									end
 
 				     end
 
@@ -1179,7 +1237,7 @@ local function searchListener( event )
 
 								for i=1,#searchArraytotal do
 
-									    if searchArraytotal[i].FirstName ~= nil or searchArraytotal[i].FirstName ~= "" then
+									    if searchArraytotal[i].FirstName ~= nil and searchArraytotal[i].FirstName ~= "" then
 
 												if string.find(searchArraytotal[i].FirstName:lower(),event.text:lower()) ~= nil then
 
@@ -1191,7 +1249,8 @@ local function searchListener( event )
 
 												end
 
-										elseif searchArraytotal[i].LastName ~= nil or searchArraytotal[i].LastName ~= "" then
+										end
+										if searchArraytotal[i].LastName ~= nil or searchArraytotal[i].LastName ~= "" then
 
 											   if string.find(searchArraytotal[i].LastName:lower(),event.text:lower()) ~= nil then
 
@@ -1203,7 +1262,8 @@ local function searchListener( event )
 
 											    end
 
-										elseif searchArraytotal[i].EmailAddress ~= nil or searchArraytotal[i].EmailAddress ~= "" then 
+										end
+										if searchArraytotal[i].EmailAddress ~= nil or searchArraytotal[i].EmailAddress ~= "" then 
 
 												if string.find(searchArraytotal[i].EmailAddress:lower(),event.text:lower()) ~= nil then
 
@@ -1215,7 +1275,8 @@ local function searchListener( event )
 
 											    end
 
-										elseif searchArraytotal[i].PhoneNumber ~= nil or searchArraytotal[i].PhoneNumber ~= "" then 
+										end
+										if searchArraytotal[i].PhoneNumber ~= nil or searchArraytotal[i].PhoneNumber ~= "" then 
 
 												if string.find(searchArraytotal[i].PhoneNumber:lower(),event.text:lower()) ~= nil then
 
@@ -1231,6 +1292,7 @@ local function searchListener( event )
 
 								end
 
+								 CreateList(searchArray)
 
 
 								if #searchArray == 0 then
@@ -1249,7 +1311,7 @@ local function searchListener( event )
 
 								-- 	page_count = 1
 
-								     CreateList(searchArray)
+								    
 
 								-- else
 
@@ -1363,6 +1425,7 @@ end
 
 				if search.text == "" or search.text:len() == 1 then
 
+					print( "^^^^^^^^^^^^^^^^^^^^" )
 					page_count = page_count+1
 
 					Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
