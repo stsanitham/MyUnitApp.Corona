@@ -226,6 +226,7 @@ ApplicationConfig.GetImageLibraryCategory = ApplicationConfig.BASE_URL.."/MyUnit
 
 ApplicationConfig.CheckChatGroupStatus = ApplicationConfig.BASE_URL.."/MyUnitBuzz/CheckChatGroupStatus"
 
+ApplicationConfig.AddImageFromNativeAppImageLibrary = ApplicationConfig.BASE_URL.."/MyUnitBuzz/AddImageFromNativeAppImageLibrary"
 
 
 

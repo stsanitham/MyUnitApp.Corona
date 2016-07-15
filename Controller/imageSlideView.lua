@@ -521,7 +521,19 @@ function scene:show( event )
 					local fileNameString 
 
 
-					fileNameString = ImageList[indexValue].ImageFileName..".png"
+					local updatedString
+
+					   updatedString = string.find(ImageList[indexValue].ImageFileName,".png")
+
+					   if updatedString then
+
+							fileNameString = ImageList[indexValue].ImageFileName
+
+					   else
+
+					        fileNameString = ImageList[indexValue].ImageFileName..".png"
+
+					   end
 
 					imageName.text = fileNameString
 

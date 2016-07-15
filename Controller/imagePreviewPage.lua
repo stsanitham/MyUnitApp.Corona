@@ -366,7 +366,7 @@ send_icon_text.anchorX=0
                 captionField_bg.y = photo.y+photo.contentHeight+40
 
                 send_icon_text.text = "Add"
-
+                
 			end
 
 
