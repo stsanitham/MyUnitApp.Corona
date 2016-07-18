@@ -984,7 +984,7 @@ end
 
 	   if response == "Success" then
 
-	   	  local a = native.showAlert("Image","Image Uploaded",{"ok"})
+	   	 -- local a = native.showAlert("Image","Image Uploaded",{"ok"})
 
 	       Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
 
@@ -1122,7 +1122,13 @@ function scene:resumeImageCallBack(imagenamevalue,photoviewname,button_idvalue)
 
 		     end
 
-	    Webservice.AddImageFromNativeAppImageLibrary(file_inbytearray,Image_Name,"Images",get_imageupload)
+
+
+		if button_idvalue == "send" then
+
+	  		  Webservice.AddImageFromNativeAppImageLibrary(file_inbytearray,Image_Name,"Images",get_imageupload)
+
+	    end
 
 
 end

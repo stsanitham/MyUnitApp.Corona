@@ -2587,18 +2587,18 @@ local function scrollListener( event )
 
 			if photoviewname  ~= nil and photoviewname ~= "" then
 
-				if button_idvalue == "cancel" then
+				    if button_idvalue == "cancel" then
 
 
 					elseif button_idvalue == "send" then
 
 					Imagename = photoviewname:match( "([^/]+)$" )
 
-						if captionname == "" then
+								if captionname == "" then
 
-							captionname= "Image"
+									captionname= "Image"
 
-						end
+								end
 
 					local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,ImageName,ImageSize,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
 
