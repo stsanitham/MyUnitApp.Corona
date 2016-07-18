@@ -362,9 +362,7 @@ local function searchTouch( event )
 
     elseif event.phase == "ended" then
 
-
       		display.getCurrentStage():setFocus( nil )
-
 
 			        if event.target.id == "searchbg" then
 
@@ -373,6 +371,8 @@ local function searchTouch( event )
 				        	if searchtext_bg.isVisible == false and search.isVisible == false then
 
 				        		print("&&&&&&&& true")
+
+				        		native.setKeyboardFocus(search)
 
 				        		searchtext_bg.isVisible = true
 
@@ -399,6 +399,8 @@ local function searchTouch( event )
 					        	print("&&&&&&&& false")
 
 					        	searchtext_bg.isVisible = false
+
+					        	native.setKeyboardFocus(nil)
 
 				        		search.isVisible = false
 
@@ -633,6 +635,28 @@ local function ListmenuTouch( event )
 
 
 
+        if page_count ~= 1 and scrollView.y ~=0 and search.text:len() > 1 then
+
+				print("_________create not 111")
+
+					for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+					end
+
+				scrollView:scrollToPosition
+				{
+					y = 0,
+					time = 200,
+				}
+
+	    end
+
+
+
+
+
+
         local feedArray = list
 
 
@@ -851,121 +875,399 @@ end
 
 
 
-function get_GetMyUnitBuzzRequestAccessesNew(response1)
+
+local function CreateListUpdate( val,list)
+       
+       if val == "update" then
+
+	       	  	 if page_count ~= 1 or page_count == 1 then
+
+		         	for j=#groupArray, 1, -1 do 
+						display.remove(groupArray[#groupArray])
+						groupArray[#groupArray] = nil
+					end
+
+			  	 end
 
 
-			if page_count == 1 and scrollView.y ~=0 and search.text:len() == 1 then
+		        if scrollView.y ~=0 and page_count == 1 or page_count ~= 1 then
 
-				print("&&&&&&&&&&page ====== 1")
+		        	print("scrollllll")
 
-				for j=#groupArray, 1, -1 do 
-					display.remove(groupArray[#groupArray])
-					groupArray[#groupArray] = nil
-				end
+						scrollView:scrollToPosition
+						{
+							y = 0,
+							time = 200,
+						}
 
-				scrollView:scrollToPosition
-				{
-					y = 0,
-					time = 200,
-				}
-
-		    end
+			    end
+       
+        end
 
 
-		  totArray = response1
+        local feedArray = list
 
 
-		reqaccess_response = response1.MubRequestAccessList
+		for i=1,#feedArray do
 
-		ContactListResponse = reqaccess_response
+				
+			groupArray[#groupArray+1] = display.newGroup()
+
+			local Display_Group = {}
+
+			local tempGroup = groupArray[#groupArray]
+
+			local bgheight = 65
+
+			local Image 
 
 
-	    searchcontact_bg.isVisible = true
-	    searchcontact.isVisible = true
-	    count_bg.isVisible = true
-	    count.isVisible = true
+			
+			local background = display.newRect(tempGroup,0,0,W,55)
+
+			local Initial_Height = 0
+
+			if(groupArray[#groupArray-1]) ~= nil then
+				Initial_Height = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height-2
+			end
+
+			background.anchorY = 0
+			background.anchorX = 0
+			background.x=5;background.y=Initial_Height
+			background.alpha=0.01
+			background.value = feedArray[i]
+			background.id="listBg"
+			background.name = status
+			background:addEventListener( "touch", ActionTouch )
 
 
-	    TotalCount = response1.TotalContactCount
 
-	    if TotalCount == 1 then
+		
 
-	    	count.text = TotalCount.." Contact"
+		if feedArray[i].ImagePath ~= nil then
 
-	    else
+				--  Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+				-- --Image.anchorY=0
+				-- Image.x=30;Image.y=background.y+background.contentHeight/2
 
-			count.text = TotalCount.." Contacts"
 
-	    end
+				local filePath = system.pathForFile( feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory )
+								            -- Play back the recording
+				local file = io.open( filePath)
+								            
+						if file then
+
+								 io.close( file )
+
+											  Image = display.newImageRect(tempGroup,feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory,35,35)
+								--Image.anchorY=0
+								Image.x=30;Image.y=background.y+background.contentHeight/2
+							
+							print( "here 1111" )
+
+						else
+
+							print( "not here 12" )
+
+								networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
+								"GET",
+								
+								function ( img_event)
+
+									if ( img_event.isError ) then
+										print ( "Network error - download failed" )
+									else
+
+									
+
+										--	if Image ~= nil then Image:removeSelf();Image=nil end
+
+											--img_event.response.filename
+
+											local filePath = system.pathForFile( img_event.response.filename, system.DocumentsDirectory )
+												            -- Play back the recording
+												local file = io.open( filePath)
+												            
+												if file and img_event.response.filename ~= nil then
+
+												 io.close( file )
+
+
+
+												 Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
+
+
+												else
+
+													Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+
+												end
+											
+											Image.width=35;Image.height=35
+											--Image.anchorY=0
+											Image.x=30;Image.y=background.y+background.contentHeight/2
+											
+								    		--event.row:insert(img_event.target)
+
+								    			
+								    		end
+
+								    		end, feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory)
+
+						end
+		else
+
+					 Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+					--Image.anchorY=0
+					Image.x=30;Image.y=background.y+background.contentHeight/2
+					
+
+		end
+
+
+
+
+
+          --  local nameLabel = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+
+          Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+          Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+          Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=background.y+10
+          Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+
+
+          if feedArray[i].FirstName ~= nil then
+
+          	Display_Group[#Display_Group].text = feedArray[i].FirstName.." "..feedArray[i].LastName
+
+          else
+
+          	Display_Group[#Display_Group].text = feedArray[i].LastName
+          	
+          end
+
+
+
+          if feedArray[i].EmailAddress ~= nil then
+
+          	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+          	Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+          	Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+          	Display_Group[#Display_Group]:setFillColor( 0.3 )
+          	Display_Group[#Display_Group].text = feedArray[i].EmailAddress
+
+
+          	if feedArray[i].EmailAddress:len() > 33 then
+
+          		Display_Group[#Display_Group].text = Display_Group[#Display_Group].text:sub(1,33)..".."
+
+          	end
+          	
+
+          end
+
+
+
+
+          if feedArray[i].PhoneNumber ~= nil and feedArray[i].PhoneNumber ~= "" then
+
+          	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+          	Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+          	Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+          	Display_Group[#Display_Group]:setFillColor( 0.3 )
+          	Display_Group[#Display_Group].text = feedArray[i].PhoneNumber
+
+          	background.height = background.height+15
+
+          end
+
+
+
+		-- 	--background.height = 0
+
+		-- 	for i=1,#Display_Group do
+
+		-- 		background.height = background.height + Display_Group[i].contentHeight+10
+
+		-- 	end
+
+		-- --	background.height = background.height + 20
+
+		-- 	--background.height = background.height-((background.height/5)*(5-#Display_Group))+5
+
+
+		
+
+		-- 	 --  group =  Createmenu(background)
+
+  --  				--tempGroup:insert( group )
+
+  --  				--group.isVisible=false
+
+
+	  local line = display.newRect(tempGroup,W/2,background.y,W,1)
+	  line.y=background.y+background.contentHeight-line.contentHeight
+	  line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+
+
+	  scrollView:insert(tempGroup)
+
+	  print( "@@@@@@@@@" )
+
+
+end
+
+	
+end
+
+
+
+
+
+-- function get_GetMyUnitBuzzRequestAccessesNew(response1)
+
+
+-- 			-- if page_count == 1 and scrollView.y ~=0 and search.text:len() == 1 then
+
+-- 			-- 	for j=#groupArray, 1, -1 do 
+-- 			-- 		display.remove(groupArray[#groupArray])
+-- 			-- 		groupArray[#groupArray] = nil
+-- 			-- 	end
+
+-- 			-- 	scrollView:scrollToPosition
+-- 			-- 	{
+-- 			-- 		y = 0,
+-- 			-- 		time = 200,
+-- 			-- 	}
+
+-- 			-- elseif page_count ~= 1 and scrollView.y ~=0 then
+
+-- 			-- -- if page_count == 1 then
+
+-- 			-- 		for j=#groupArray, 1, -1 do 
+-- 			-- 		display.remove(groupArray[#groupArray])
+-- 			-- 		groupArray[#groupArray] = nil
+-- 			-- 		end
+
+-- 			-- 	scrollView:scrollToPosition
+-- 			-- 	{
+-- 			-- 		y = 0,
+-- 			-- 		time = 200,
+-- 			-- 	}
+
+-- 		 --    end
+
+-- 		 	if page_count == 1 then
+
+-- 				for j=#groupArray, 1, -1 do 
+-- 					display.remove(groupArray[#groupArray])
+-- 					groupArray[#groupArray] = nil
+-- 				end
+
+-- 				scrollView:scrollToPosition
+-- 				{
+-- 					y = 0,
+-- 					time = 200,
+-- 				}
+
+-- 		    end
+
+
+-- 		  totArray = response1
+
+
+-- 		reqaccess_response = response1.MubRequestAccessList
+
+-- 		ContactListResponse = reqaccess_response
+
+
+-- 	    searchcontact_bg.isVisible = true
+-- 	    searchcontact.isVisible = true
+-- 	    count_bg.isVisible = true
+-- 	    count.isVisible = true
+
+
+-- 	    TotalCount = response1.TotalContactCount
+
+-- 	    if TotalCount == 1 then
+
+-- 	    	count.text = TotalCount.." Contact"
+
+-- 	    else
+
+-- 			count.text = TotalCount.." Contacts"
+
+-- 	    end
 
 	 
 
-	local function onTimer(event)
+-- 	local function onTimer(event)
 
-				if reqaccess_response ~= nil then
+-- 				if reqaccess_response ~= nil then
 
-					if #reqaccess_response > 0  then
+-- 					if #reqaccess_response > 0  then
 
-						NoEvent.isVisible=false
-
-
-						local listValue = {}
-
-						for i=1,#reqaccess_response do
-
-							listValue[#listValue+1] = reqaccess_response[i]	
-
-						end
+-- 						NoEvent.isVisible=false
 
 
-						local function onTimerr(event)
+-- 						local listValue = {}
 
-								if search.text:len() == 2 and search.text:len() > 2 then
+-- 						for i=1,#reqaccess_response do
 
+-- 							listValue[#listValue+1] = reqaccess_response[i]	
 
-								elseif search.text:len() < 2 then
-
-									print( "here !!!!!!! new values"..#listValue )	
-									CreateList(listValue)
-
-							    end
-
-						end
-
-						timer.performWithDelay(100,onTimerr)
+-- 						end
 
 
-					else
+-- 						local function onTimerr(event)
 
-						if #groupArray <= 0 then
-
-							NoEvent.isVisible=true
-
-							if status == "DENY" then
-
-								NoEvent.text=InviteAccessDetail.NoDeniedAccess
-
-							elseif status == "OPEN" then
-
-								NoEvent.text=InviteAccessDetail.NoPendingRequest
-
-							elseif status == "ADDREQUEST" then
-
-								NoEvent.text=InviteAccessDetail.NoTMAccess
-
-							end
-						end
+-- 								if search.text:len() == 2 and search.text:len() > 2 then
 
 
-					end
+-- 								elseif search.text:len() < 2 then
 
-				end
+-- 									print( "here !!!!!!! new values"..#listValue )	
+-- 									CreateList(listValue)
 
-	end
+-- 							    end
 
-	timer.performWithDelay(500,onTimer)
+-- 						end
 
-end
+-- 						timer.performWithDelay(100,onTimerr)
+
+
+-- 					else
+
+-- 						if #groupArray <= 0 then
+
+-- 							NoEvent.isVisible=true
+
+-- 							if status == "DENY" then
+
+-- 								NoEvent.text=InviteAccessDetail.NoDeniedAccess
+
+-- 							elseif status == "OPEN" then
+
+-- 								NoEvent.text=InviteAccessDetail.NoPendingRequest
+
+-- 							elseif status == "ADDREQUEST" then
+
+-- 								NoEvent.text=InviteAccessDetail.NoTMAccess
+
+-- 							end
+-- 						end
+
+
+-- 					end
+
+-- 				end
+
+-- 	end
+
+-- 	timer.performWithDelay(500,onTimer)
+
+-- end
 
 
 
@@ -974,7 +1276,7 @@ end
 
 function get_GetMyUnitBuzzRequestAccesses(response1)
 
-			if page_count == 1 then
+			if page_count == 1 and search.isVisible == false then
 
 				--search.text = ""
 
@@ -992,10 +1294,10 @@ function get_GetMyUnitBuzzRequestAccesses(response1)
 		    end
 
 
-		  totArray = response1
-
 
 		reqaccess_response = response1.MubRequestAccessList
+
+		print("llllllll "..json.encode(reqaccess_response))
 
 		ContactListResponse = reqaccess_response
 
@@ -1012,39 +1314,18 @@ function get_GetMyUnitBuzzRequestAccesses(response1)
 
 	    	count.text = TotalCount.." Contact"
 
-	    else
+	    elseif TotalCount ~= 0 then
+
+	    	print("count 0")
 
 			count.text = TotalCount.." Contacts"
 
-	    end
+		elseif TotalCount == 0 then
 
-	 
-
-	local function onTimer(event)
-
-				if reqaccess_response ~= nil then
-
-					if #reqaccess_response > 0  then
-
-						NoEvent.isVisible=false
-
-						local listValue = {}
-
-						for i=1,#reqaccess_response do
-
-							listValue[#listValue+1] = reqaccess_response[i]	
-
-						end
-
-						print( "here !!!!!!!"..#listValue )	
-
-
-						CreateList(listValue)
-
-
-					else
-
-						if #groupArray <= 0 then
+			    for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+				end
 
 							NoEvent.isVisible=true
 
@@ -1061,12 +1342,125 @@ function get_GetMyUnitBuzzRequestAccesses(response1)
 								NoEvent.text=InviteAccessDetail.NoTMAccess
 
 							end
-						end
+
+				count.text = TotalCount.." Contacts"
 
 
-					end
+	    end
+
+
+	  
+
+
+
+		totArray = response1
+
+
+
+
+	 
+
+	local function onTimer(event)
+
+				if reqaccess_response ~= nil and reqaccess_response ~= "" then
+
+							if #reqaccess_response > 0  then
+
+									NoEvent.isVisible=false
+
+									local listValue = {}
+
+									for i=1,#reqaccess_response do
+
+										listValue[#listValue+1] = reqaccess_response[i]	
+
+									end
+
+									print( "here !!!!!!!"..#listValue )	
+
+
+									CreateList(listValue)
+
+
+							else
+
+									if #groupArray <= 0 then
+
+										NoEvent.isVisible=true
+
+										if status == "DENY" then
+
+											NoEvent.text=InviteAccessDetail.NoDeniedAccess
+
+										elseif status == "OPEN" then
+
+											NoEvent.text=InviteAccessDetail.NoPendingRequest
+
+										elseif status == "ADDREQUEST" then
+
+											NoEvent.text=InviteAccessDetail.NoTMAccess
+
+										end
+
+									end
+
+							end
+
+				else
+
+					print("&&&&&&&&%%%%%")
+
+							NoEvent.isVisible=true
+
+							if status == "DENY" then
+
+								NoEvent.text=InviteAccessDetail.NoDeniedAccess
+
+							elseif status == "OPEN" then
+
+								NoEvent.text=InviteAccessDetail.NoPendingRequest
+
+							elseif status == "ADDREQUEST" then
+
+								NoEvent.text=InviteAccessDetail.NoTMAccess
+
+							end
+
 
 				end
+
+
+
+
+
+
+		-- if #reqaccess_response == 0 then
+
+		-- 	print("********")
+     
+		-- 	 --    for j=#groupArray, 1, -1 do 
+		-- 		-- 	display.remove(groupArray[#groupArray])
+		-- 		-- 	groupArray[#groupArray] = nil
+		-- 		-- end
+
+		-- 		NoEvent.isVisible=true
+
+		-- 		if status == "DENY" then
+
+		-- 			NoEvent.text=InviteAccessDetail.NoDeniedAccess
+
+		-- 		elseif status == "OPEN" then
+
+		-- 			NoEvent.text=InviteAccessDetail.NoPendingRequest
+
+		-- 		elseif status == "ADDREQUEST" then
+
+		-- 			NoEvent.text=InviteAccessDetail.NoTMAccess
+
+		-- 		end
+		-- end
+
+
 
 
 	end
@@ -1080,11 +1474,13 @@ end
 
 
 
+function get_GetMyUnitBuzzRequestAccesses1(response1)
 
-	function getOriginalContactList( response )
+			if page_count == 1 and search.isVisible == false then
 
+				print("scroll ==  1")
 
-		    if page_count == 1 and scrollView.y ~=0 and search.text:len() == 1 then
+				--search.text = ""
 
 				for j=#groupArray, 1, -1 do 
 					display.remove(groupArray[#groupArray])
@@ -1097,7 +1493,190 @@ end
 					time = 200,
 				}
 
-			elseif page_count ~= 1 and scrollView.y ~=0 then
+			-- else
+
+
+			-- 	print("scroll not 1")
+
+			-- 	--page_count = 0
+
+			-- 	--get_GetMyUnitBuzzRequestAccesses(response1)
+
+			-- --	CreateList(response1)
+
+
+			-- 	scrollView:scrollToPosition
+			-- 	{
+			-- 		y = 0,
+			-- 		time = 200,
+			-- 	}
+
+		    end
+
+
+
+		reqaccess_response = response1.MubRequestAccessList
+
+		print("llllllll 1111 "..json.encode(reqaccess_response))
+
+		ContactListResponse = reqaccess_response
+
+
+		totArray = response1
+
+
+	    searchcontact_bg.isVisible = true
+	    searchcontact.isVisible = true
+	    count_bg.isVisible = true
+	    count.isVisible = true
+
+
+	    TotalCount = response1.TotalContactCount
+
+	    if TotalCount == 1 then
+
+	    	count.text = TotalCount.." Contact"
+
+	    elseif TotalCount ~= 0 then
+
+	    	print("count 0 33333")
+
+			count.text = TotalCount.." Contacts"
+
+		elseif TotalCount == 0 then
+
+			    for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+				end
+
+							NoEvent.isVisible=true
+
+							if status == "DENY" then
+
+								NoEvent.text=InviteAccessDetail.NoDeniedAccess
+
+							elseif status == "OPEN" then
+
+								NoEvent.text=InviteAccessDetail.NoPendingRequest
+
+							elseif status == "ADDREQUEST" then
+
+								NoEvent.text=InviteAccessDetail.NoTMAccess
+
+							end
+
+				count.text = TotalCount.." Contacts"
+
+
+	    end
+
+
+
+
+	 
+
+	local function onTimer(event)
+
+				if reqaccess_response ~= nil and reqaccess_response ~= "" then
+
+							if #reqaccess_response > 0  then
+
+									NoEvent.isVisible=false
+
+									local listValue = {}
+
+									for i=1,#reqaccess_response do
+
+										listValue[#listValue+1] = reqaccess_response[i]	
+
+									end
+
+									print( "here !!!!!!! 1111"..#listValue )	
+
+
+									CreateListUpdate("update",listValue)
+
+
+							else
+
+									if #groupArray <= 0 then
+
+										NoEvent.isVisible=true
+
+										if status == "DENY" then
+
+											NoEvent.text=InviteAccessDetail.NoDeniedAccess
+
+										elseif status == "OPEN" then
+
+											NoEvent.text=InviteAccessDetail.NoPendingRequest
+
+										elseif status == "ADDREQUEST" then
+
+											NoEvent.text=InviteAccessDetail.NoTMAccess
+
+										end
+
+									end
+
+							end
+
+				else
+
+					print("&&&&&&&&%%%%%")
+
+							NoEvent.isVisible=true
+
+							if status == "DENY" then
+
+								NoEvent.text=InviteAccessDetail.NoDeniedAccess
+
+							elseif status == "OPEN" then
+
+								NoEvent.text=InviteAccessDetail.NoPendingRequest
+
+							elseif status == "ADDREQUEST" then
+
+								NoEvent.text=InviteAccessDetail.NoTMAccess
+
+							end
+
+
+				end
+
+
+	end
+
+	timer.performWithDelay(500,onTimer)
+
+end
+
+
+
+
+	function getOriginalContactList( response )
+
+
+		    if page_count == 1 and scrollView.y ~=0 and search.text:len() == 1 then
+
+		    	print("_________111")
+
+				for j=#groupArray, 1, -1 do 
+					display.remove(groupArray[#groupArray])
+					groupArray[#groupArray] = nil
+				end
+
+				scrollView:scrollToPosition
+				{
+					y = 0,
+					time = 200,
+				}
+
+			elseif page_count ~= 1 and scrollView.y ~=0 and search.text:len() == 2 then
+
+
+				print("_________not 111")
 
 					for j=#groupArray, 1, -1 do 
 					display.remove(groupArray[#groupArray])
@@ -1115,12 +1694,14 @@ end
 
 		    searchArraytotal=response
 
+
+
+
 			if response ~= nil then
 
 					 if #response>0 then
 
-							NoEvent.isVisible = false
-							
+							   NoEvent.isVisible = false
 
 								for i=1,#response do
 
@@ -1140,6 +1721,7 @@ end
 
 													added=true
 
+
 												end
 										end
 										if response[i].LastName ~= nil and response[i].LastName ~= "" then
@@ -1154,6 +1736,7 @@ end
 													end
 
 													added=true
+
 
 											    end
 										end
@@ -1188,21 +1771,62 @@ end
 											    end
 
 										end
+
 									end
 
 
-									 CreateList(searchArray)
+												CreateList(searchArray)
 
-									if #searchArray > 0 then
-										NoEvent.isVisible = false
-									else
-										NoEvent.isVisible = true
-										NoEvent.text = "No Contacts Found"
-									end
 
-				     end
+
+												if #searchArray > 0 then
+													NoEvent.isVisible = false
+												else
+													NoEvent.isVisible = true
+													NoEvent.text = "No Contacts Found"
+												end
+
+									 else
+
+
+							                    if #response == 0 then
+
+													print("not true 111 63457672457246")
+
+													for j=#groupArray, 1, -1 do 
+													display.remove(groupArray[#groupArray])
+													groupArray[#groupArray] = nil
+													end
+
+														NoEvent.isVisible = true
+
+														NoEvent.text = "No Contacts Found"
+
+												end
+
+
+
+								     end
+
+
+			else
+
+				print("no contacts")
+
+					NoEvent.isVisible = true
+					NoEvent.text = "No Contacts Found"
 
 			end
+
+			     --                if #response == 0 then
+
+								-- 	print("not true 111")
+
+								-- 		NoEvent.isVisible = true
+
+								-- 		NoEvent.text = "No Contacts Found"
+
+								-- end
 
 			
 	end
@@ -1210,6 +1834,178 @@ end
 
 
 
+
+
+
+
+-- local function searchListener( event )
+
+-- 	if ( event.phase == "began" ) then
+       
+
+--     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+       
+--         native.setKeyboardFocus( nil )
+
+--     elseif ( event.phase == "editing" ) then
+
+-- 			    	if event.text:len() == 1 or event.text:len() < 2 then
+
+-- 							for i=1,#searchArraytotal do
+-- 									searchArraytotal[i]=nil
+-- 							end
+
+-- 							print("length == 2 and < 3")
+
+-- 							page_count=0
+-- 							page_count = page_count+1
+
+
+-- 							--Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
+
+--                             get_GetMyUnitBuzzRequestAccessesNew(totArray)
+
+--                            -- CreateList(totArray)
+
+
+-- 		 			elseif event.text:len() == 2 or event.startPosition == (2) then
+
+-- 			    		        print("length = 3")
+
+-- 					    		Webservice.ContactAutoCompleteForRequestAccesses(event.text,status,getOriginalContactList)
+
+
+-- 					elseif event.text:len() > 2 or event.text:len() ~= 1 or event.text:len() ~=2 and event.startPosition ~= (2) then
+
+-- 			    		        print("length > 3")
+
+-- 				    			for i=1,#searchArray do
+-- 									searchArray[i]=nil
+-- 								end
+
+
+
+-- 								if #searchArraytotal>0 then
+
+-- 									local added = false
+
+-- 									 NoEvent.isVisible = false
+
+-- 									 for i=1,#searchArraytotal do
+
+-- 									    if searchArraytotal[i].FirstName ~= nil and searchArraytotal[i].FirstName ~= "" then
+
+
+-- 												if string.find(searchArraytotal[i].FirstName:lower(),event.text:lower()) ~= nil and searchArraytotal[i].FirstName:find('%[') == nil then
+
+-- 													if added == false then
+
+-- 													searchArray[#searchArray+1] = searchArraytotal[i]
+
+-- 													end
+
+-- 													added=true
+
+-- 												end
+
+-- 										end
+
+-- 										if searchArraytotal[i].LastName ~= nil or searchArraytotal[i].LastName ~= "" and searchArraytotal[i].LastName:find('%[') == nil then
+
+-- 											   if string.find(searchArraytotal[i].LastName:lower(),event.text:lower()) ~= nil then
+
+-- 													if added == false then
+
+-- 													searchArray[#searchArray+1] = searchArraytotal[i]
+
+-- 													end
+
+-- 													added=true
+-- 											    end
+
+-- 										end
+
+-- 										if searchArraytotal[i].EmailAddress ~= nil or searchArraytotal[i].EmailAddress ~= "" and searchArraytotal[i].EmailAddress:find('%[') == nil then 
+
+-- 													if string.find(searchArraytotal[i].EmailAddress:lower(),event.text:lower()) ~= nil then
+
+-- 													    if added == false then
+
+-- 														searchArray[#searchArray+1] = searchArraytotal[i]
+
+-- 														end
+
+-- 														added=true
+
+-- 												    end
+
+-- 										end
+
+-- 										if searchArraytotal[i].PhoneNumber ~= nil or searchArraytotal[i].PhoneNumber ~= "" and searchArraytotal[i].PhoneNumber:find('%[') == nil then 
+
+-- 													if string.find(searchArraytotal[i].PhoneNumber:lower(),event.text:lower()) ~= nil then
+
+-- 													    if added == false then
+
+-- 														searchArray[#searchArray+1] = searchArraytotal[i]
+
+-- 														end
+
+-- 														added=true
+
+-- 												    end
+
+-- 										end
+
+-- 									end
+
+
+-- 										 CreateList(searchArray)
+
+
+-- 										if #searchArray == 0 then
+
+-- 											print("not true")
+
+-- 												NoEvent.isVisible = true
+
+-- 												NoEvent.text = "No Contacts Found"
+
+-- 										end
+
+
+
+-- 								else
+
+-- 										NoEvent.isVisible = true
+
+-- 										NoEvent.text = "No Contacts Found"
+
+-- 								end
+
+
+							
+
+
+
+-- 								-- if testresponse then
+
+-- 								-- 	page_count = 1
+
+								    
+
+-- 								-- else
+
+-- 								-- 	NoEvent.isVisible = true
+
+-- 								--     NoEvent.text = "No Contacts Found"
+
+-- 								-- end
+					    
+-- 			        end
+
+--     end
+-- end
 
 
 
@@ -1227,29 +2023,31 @@ local function searchListener( event )
 
 			    	if event.text:len() == 1 or event.text:len() < 2 then
 
-							for i=1,#searchArraytotal do
-									searchArraytotal[i]=nil
-							end
 
-							print("length == 2 and < 3")
+				   			 	print("length == 2 and < 3")
 
-							page_count=0
-							page_count = page_count+1
+								page_count=0
+								page_count = page_count+1
+
+								for i=1,#searchArraytotal do
+										searchArraytotal[i]=nil
+								end
 
 
-							--Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
+							--Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses1)
 
-                            get_GetMyUnitBuzzRequestAccessesNew(totArray)
-
+                            get_GetMyUnitBuzzRequestAccesses1(totArray)
 
                            -- CreateList(totArray)
 
 
-
-
-		 			elseif event.text:len() == 2 or event.startPosition == (2) then
+		 			elseif event.text:len() == 2 or  event.startPosition == (2) then
 
 			    		        print("length = 3")
+
+			    		        for i=1,#searchArray do
+									searchArray[i]=nil
+								end
 
 					    		Webservice.ContactAutoCompleteForRequestAccesses(event.text,status,getOriginalContactList)
 
@@ -1286,7 +2084,7 @@ local function searchListener( event )
 												end
 
 										end
-										if searchArraytotal[i].LastName ~= nil or searchArraytotal[i].LastName ~= "" then
+										if searchArraytotal[i].LastName ~= nil and searchArraytotal[i].LastName ~= "" then
 
 											   if string.find(searchArraytotal[i].LastName:lower(),event.text:lower()) ~= nil then
 
@@ -1304,7 +2102,7 @@ local function searchListener( event )
 											    end
 
 										end
-										if searchArraytotal[i].EmailAddress ~= nil or searchArraytotal[i].EmailAddress ~= "" then 
+										if searchArraytotal[i].EmailAddress ~= nil and searchArraytotal[i].EmailAddress ~= "" then 
 
 												if string.find(searchArraytotal[i].EmailAddress:lower(),event.text:lower()) ~= nil then
 
@@ -1323,7 +2121,8 @@ local function searchListener( event )
 											    end
 
 										end
-										if searchArraytotal[i].PhoneNumber ~= nil or searchArraytotal[i].PhoneNumber ~= "" then 
+
+										if searchArraytotal[i].PhoneNumber ~= nil and searchArraytotal[i].PhoneNumber ~= "" then 
 
 												if string.find(searchArraytotal[i].PhoneNumber:lower(),event.text:lower()) ~= nil then
 
@@ -1344,6 +2143,11 @@ local function searchListener( event )
 										end
 
 								end
+
+
+
+								
+
 
 								 CreateList(searchArray)
 
@@ -1378,6 +2182,9 @@ local function searchListener( event )
 
     end
 end
+
+
+
 
 
 
@@ -1476,9 +2283,10 @@ end
 					if status == "ADDREQUEST" then title.text = FlapMenu.TeamMember_without_Access end
 
 
-				if search.text == "" or search.text:len() == 1 then
+				if search.text == "" or search.text:len() == 1 and searchcontact.isVisible == true then
 
 					print( "^^^^^^^^^^^^^^^^^^^^" )
+
 					page_count = page_count+1
 
 					Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
@@ -1505,7 +2313,6 @@ end
 					Webservice.GetMyUnitBuzzRequestAccesses(page_count,totalPageContent,status,get_GetMyUnitBuzzRequestAccesses)
 
 					else
-
 
 					end
 
