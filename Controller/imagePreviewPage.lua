@@ -91,7 +91,7 @@ end
 
 local function rescale(pwidth1,pheight1)
 	
-	if pwidth1>= W or pheight1 >= H-80 then
+	if pwidth1>= W or pheight1 >= H-40 then
 
 		pwidth1 = pwidth1/2
 		pheight1 = pheight1/2
@@ -114,7 +114,7 @@ end
 
 local function intiscale(pwidth,pheight)
 	
-	if pwidth >= W or pheight >= H-80 then
+	if pwidth >= W or pheight >= H-40 then
 
 		pwidth= pwidth/2
 		pheight = pheight/2
@@ -283,10 +283,7 @@ function scene:create( event )
 			photo.anchorY= 0
 			photo.y = title_bg.y+15
 			photo.width = photowidth
-			photo.height = photoheight
-
-
-			
+			photo.height = photoheight/1.3
 
 
 			captionField_bg = display.newRect(W/2, 0, W-20, 25)

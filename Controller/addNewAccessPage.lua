@@ -164,9 +164,12 @@ local function radioSwitchListener( event )
 
 
 local function touchBg( event )
+
 	if event.phase == "began" then
 
 		elseif event.phase == "ended" then
+					
+					scrollTo(0)
 
 					if Phone.text ~= nil and Phone.text ~= "" and Utils.PhoneMasking(tostring(text)) then
 
@@ -193,7 +196,6 @@ local function touchBg( event )
 									   if radiobutton_id == "teammember" then
 
 									    	print("67567656756∂2323 phone email not null")
-
 																
 												MKRank_bg.isVisible = true
 												MKRank.isVisible = true
@@ -212,12 +214,10 @@ local function touchBg( event )
 									 		MKRank.isVisible = false
 									 		rankText_icon.isVisible = false
 
-
 									 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
 											Comment.y = Comment_bg.y
 
 								 	    end
-
 
 
 							 		sumbitBtn.y = Comment.y+Comment.height/2+20
@@ -231,8 +231,8 @@ local function touchBg( event )
 
 				elseif Phone.text == nil or Phone.text == ""  or Phone.text == Phone_placeholder then
 
-								textnotifybox.isVisible = false
-								textnotifytext.isVisible = false
+								 textnotifybox.isVisible = false
+								 textnotifytext.isVisible = false
 
 								 Password_bg.y = Phone_bg.y+Phone_bg.height+7
 								 Password.y = Phone_bg.y+Phone_bg.height+13
@@ -241,12 +241,11 @@ local function touchBg( event )
 								 PasswordHelptext.y= Password_bottom.y + 18
 								 GeneratePasstext.y= PasswordHelptext.y + 20
 
-						 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
-						 		contact_txt.y = contact_switch.y
+						 		 contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
+						 		 contact_txt.y = contact_switch.y
 
-						 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
-						 		teammember_txt.y = teammember_switch.y
-
+						 		 teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
+						 		 teammember_txt.y = teammember_switch.y
 
 								    if radiobutton_id == "teammember" then
 
@@ -262,7 +261,6 @@ local function touchBg( event )
 										Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
 										Comment.y = Comment_bg.y
 
-									
 								    else
 
 									 	MKRank_bg.isVisible = false
@@ -273,7 +271,6 @@ local function touchBg( event )
 										Comment.y = Comment_bg.y
 
 							 	    end
-
 							 	
 							 		sumbitBtn.y = Comment.y+Comment.height/2+20
 							 		sumbitBtn_lbl.y=sumbitBtn.y
@@ -281,8 +278,6 @@ local function touchBg( event )
 							 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
 							 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
 							 		sumbitBtn_lbl.x = sumbitBtn.x+16
-
-
 
 								 native.setKeyboardFocus(Password)
 
@@ -383,7 +378,8 @@ local function RequestProcess()
 			Password.text = ""
 			MKRank.text = "-Select MK Rank-"
 			MKRank.value = "-Select MK Rank-"
-			Comment.text = ""
+		    Comment.text = ""
+			Comment.isVisible = true
 			emailnotifybox.isVisible = false
 			textnotifybox.isVisible = false
 			emailnotifytext.isVisible = false
@@ -417,7 +413,7 @@ local function RequestProcess()
 				Comment_bg.y=teammember_txt.y + teammember_txt.contentHeight+Comment_bg.height/2 +5
 				Comment.y = Comment_bg.y
 
-				Comment.placeholder=RequestAccess.Comment_placeholder
+				--Comment.placeholder=RequestAccess.Comment_placeholder
 
 				sumbitBtn.y = Comment.y+Comment.height/2+20
 				sumbitBtn_lbl.y=sumbitBtn.y
@@ -438,7 +434,7 @@ local function RequestProcess()
 		 		Comment_bg.y = teammember_txt.y + teammember_txt.contentHeight+Comment_bg.height/2 +5
 				Comment.y = Comment_bg.y
 
-				Comment.placeholder=RequestAccess.Comment_placeholder
+				--Comment.placeholder=RequestAccess.Comment_placeholder
 
 				sumbitBtn.y = Comment.y+Comment.height/2+20
 				sumbitBtn_lbl.y=sumbitBtn.y
@@ -538,11 +534,15 @@ local function textfield( event )
 		if(event.target.id == "Comments") then
 			scrollTo( -150 )
 			event.target.text = ""
+		end
 
+
+		if(event.target.id == "Password") then
+			scrollTo( -100 )
 		end
 		
 
-	elseif ( event.phase == "submitted" ) then
+	elseif ( event.phase == "submitted" ) or ( event.phase == "ended" ) then
 
 		if current_textField then
 
@@ -552,6 +552,11 @@ local function textfield( event )
 
 				native.setKeyboardFocus( nil )
 
+			elseif(event.target.id == "Password") then
+
+				scrollTo( 0 )
+
+				native.setKeyboardFocus( Comment)
 
 			elseif(event.target.id == "First Name") then
 
@@ -564,6 +569,8 @@ local function textfield( event )
 
 
 			elseif(event.target.id == "Email") then
+
+				native.setKeyboardFocus(Phone)
 
 
 				if Email.text ~= nil and Email.text ~= "" and Utils.emailValidation(Email.text) then
@@ -604,8 +611,8 @@ local function textfield( event )
 										 		  Phone.y = textnotifytext.y+3
 										 		  Phone_bottom.y= Phone.y+10
 
-										 		  Password_bg.y = Phone_bg.y+Phone_bg.height+7
-										 		  Password.y = Phone_bg.y+Phone_bg.height+10
+										 		  Password_bg.y = Phone_bg.y+Phone_bg.height+12
+										 		  Password.y = Phone_bg.y+Phone_bg.height+15
 										 		  Password_bottom.y = Password.y+10
 
 										 		else
@@ -781,17 +788,21 @@ local function textfield( event )
 										 		textnotifybox.y = Phone_bottom.y + 15
 										 		textnotifytext.y= Phone_bottom.y + 15
 
-										 		Password_bg.y = Phone_bg.y+Phone_bg.height+12
-												Password.y = Phone_bg.y+Phone_bg.height+20
-												Password_bottom.y = Password.y+10
+										 	-- 	Password_bg.y = Phone_bg.y+Phone_bg.height+12
+												-- Password.y = Phone_bg.y+Phone_bg.height+20
+												-- Password_bottom.y = Password.y+10
+
+												Password_bg.y = textnotifybox.y+textnotifybox.height+12
+										 		Password.y = textnotifybox.y+textnotifybox.height+12
+										 		Password_bottom.y = Password.y+10
 
 												PasswordHelptext.y= Password_bottom.y + 18
 							 					GeneratePasstext.y= PasswordHelptext.y + 20
 
-										 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+										 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight+12
 										 		contact_txt.y = contact_switch.y
 
-										 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 -2
+										 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight+12
 										 		teammember_txt.y = teammember_switch.y
 
 
@@ -1084,7 +1095,9 @@ local function textfield( event )
 
 								end
 
-							elseif(event.target.id == "Phone") then
+				elseif(event.target.id == "Phone") then
+
+					              native.setKeyboardFocus(Password)
 
 								if Phone.text ~= nil and Phone.text~= "" and Utils.PhoneMasking(tostring(text)) then
 
@@ -1146,9 +1159,9 @@ local function textfield( event )
 							 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
 							 		sumbitBtn_lbl.x = sumbitBtn.x+16
 
-									native.setKeyboardFocus(Password)
+									--native.setKeyboardFocus(Password)
 
-								elseif Phone.text == nil or Phone.text == ""  or Phone.text == Phone_placeholder then
+								elseif Phone.text == nil or Phone.text == ""  or Phone.text == Phone_placeholder or Phone.text==PopupGroup.PhoneNumRequired or Phone.text:len() < 14 then
 
 									print("334345545345 phone null")
 
@@ -1240,25 +1253,22 @@ local function textfield( event )
 
 
 
-								 native.setKeyboardFocus(Password)
+								-- native.setKeyboardFocus(Password)
 
 
 								end
 
-							elseif(event.target.id == "Password") then
-
-								native.setKeyboardFocus(Comment)
-
+							
 							end
 
 						end
 
-						scrollTo( 0 )
+						--scrollTo( 0 )
 
 
-						elseif event.phase == "ended" then
+			elseif event.phase == "ended" then
 
-						scrollTo( 0 )
+						--scrollTo( 0 )
 						
 						event.target:setSelection(event.target.text:len(),event.target.text:len())
 
@@ -1272,17 +1282,25 @@ local function textfield( event )
 
 						end
 
+
 						if(event.target.id == "Comments") then
 
 							scrollTo( 0 )
+
+					    	native.setKeyboardFocus( nil )
 							
-							native.setKeyboardFocus( nil )
+
+					    elseif (event.target.id == "Password") then
+
+					    	scrollTo( 0 )
+
+					    	native.setKeyboardFocus( Comment )
 							
 						end
 
 
 						
-					elseif ( event.phase == "editing" ) then
+			elseif ( event.phase == "editing" ) then
 
 						if event.target.id == "Comments" then
 
@@ -1319,6 +1337,8 @@ local function textfield( event )
 
 
 						if event.target.id == "Password" then
+
+							scrollTo( -100 )
 
 							if (event.newCharacters==" ") then
 
@@ -1659,6 +1679,7 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background.id = "background"
 	Background.x=W/2;Background.y=H/2
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
@@ -1962,6 +1983,8 @@ Comment.anchorX=0
 Comment.y = Comment_bg.y
 Comment.id = "Comments"
 Comment.hasBackground = false
+Comment.isVisible = true
+Comment.inputType = "default"
 Comment:setReturnKey( "next" )
 
 sceneGroup:insert(Comment)
@@ -2033,12 +2056,18 @@ function scene:show( event )
 
 		function GetListArray(response)
 
+				List_array[1] = {}
+
+				List_array[1][1] = "- Select MK Rank -"
+				List_array[1][2] = "0"
+
 
 			for i=1,#response do
 
-				List_array[i] = {}
-				List_array[i][1] = response[i].MkRankLevel
-				List_array[i][2] = response[i].MkRankId
+				List_array[i+1] = {}
+
+				List_array[i+1][1] = response[i].MkRankLevel
+				List_array[i+1][2] = response[i].MkRankId
 
 			end
 
@@ -2048,7 +2077,7 @@ function scene:show( event )
   		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+1, 311 )
   		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-  		rankTop = display.newRect(rankGroup,W/2,H/2-160,300,30)
+  		rankTop = display.newRect(rankGroup,W/2,H/2-160,302,30)
   		rankTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
   		rankText = display.newText(rankGroup,RequestAccess.MKRank_placeholder,0,0,native.systemFont,16)
@@ -2074,7 +2103,7 @@ function scene:show( event )
   		rankList = widget.newTableView
   		{
   			left = 0,
-  			top = -50,
+  			top = -60,
   			height = 290,
   			width = 300,
   			onRowRender = onRowRender,

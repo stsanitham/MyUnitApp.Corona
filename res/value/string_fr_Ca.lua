@@ -289,6 +289,7 @@ Message.SuccessContentForImage = "Votre image a été téléchargé avec succès
 Message.UrlHelpText = "Copiez / collez le URL de vidéo dans le domaine donné d'aller plus loin"
 Message.UploadImageText = "Téléchargez votre photo ici"
 Message.UploadButtonText = "Ajouter une image"
+Message.AddImage = "Photo ajoutée avec succès"
 Message.DraftButton = "Enregistrer comme brouillon"
 Message.DraftContent = "Votre message a été enregistré en tant que brouillon succès"
 Message.MaximumUpload = "MyUnitBuzz permet jusqu'à fichiers 10MB pour chaque téléchargement . Prendre plaisir!"

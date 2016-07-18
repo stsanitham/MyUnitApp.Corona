@@ -362,9 +362,7 @@ local function searchTouch( event )
 
     elseif event.phase == "ended" then
 
-
       		display.getCurrentStage():setFocus( nil )
-
 
 			        if event.target.id == "searchbg" then
 
@@ -373,6 +371,8 @@ local function searchTouch( event )
 				        	if searchtext_bg.isVisible == false and search.isVisible == false then
 
 				        		print("&&&&&&&& true")
+
+				        		native.setKeyboardFocus(search)
 
 				        		searchtext_bg.isVisible = true
 
@@ -399,6 +399,8 @@ local function searchTouch( event )
 					        	print("&&&&&&&& false")
 
 					        	searchtext_bg.isVisible = false
+
+					        	native.setKeyboardFocus(nil)
 
 				        		search.isVisible = false
 
@@ -874,6 +876,251 @@ end
 
 
 
+local function CreateListUpdate( val,list)
+       
+       if val == "update" then
+
+	       	  	 if page_count ~= 1 or page_count == 1 then
+
+		         	for j=#groupArray, 1, -1 do 
+						display.remove(groupArray[#groupArray])
+						groupArray[#groupArray] = nil
+					end
+
+			  	 end
+
+
+		        if scrollView.y ~=0 and page_count == 1 or page_count ~= 1 then
+
+		        	print("scrollllll")
+
+						scrollView:scrollToPosition
+						{
+							y = 0,
+							time = 200,
+						}
+
+			    end
+       
+        end
+
+
+        local feedArray = list
+
+
+		for i=1,#feedArray do
+
+				
+			groupArray[#groupArray+1] = display.newGroup()
+
+			local Display_Group = {}
+
+			local tempGroup = groupArray[#groupArray]
+
+			local bgheight = 65
+
+			local Image 
+
+
+			
+			local background = display.newRect(tempGroup,0,0,W,55)
+
+			local Initial_Height = 0
+
+			if(groupArray[#groupArray-1]) ~= nil then
+				Initial_Height = groupArray[#groupArray-1][1].y + groupArray[#groupArray-1][1].height-2
+			end
+
+			background.anchorY = 0
+			background.anchorX = 0
+			background.x=5;background.y=Initial_Height
+			background.alpha=0.01
+			background.value = feedArray[i]
+			background.id="listBg"
+			background.name = status
+			background:addEventListener( "touch", ActionTouch )
+
+
+
+		
+
+		if feedArray[i].ImagePath ~= nil then
+
+				--  Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+				-- --Image.anchorY=0
+				-- Image.x=30;Image.y=background.y+background.contentHeight/2
+
+
+				local filePath = system.pathForFile( feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory )
+								            -- Play back the recording
+				local file = io.open( filePath)
+								            
+						if file then
+
+								 io.close( file )
+
+											  Image = display.newImageRect(tempGroup,feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory,35,35)
+								--Image.anchorY=0
+								Image.x=30;Image.y=background.y+background.contentHeight/2
+							
+							print( "here 1111" )
+
+						else
+
+							print( "not here 12" )
+
+								networkArray[#networkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..feedArray[i].ImagePath,
+								"GET",
+								
+								function ( img_event)
+
+									if ( img_event.isError ) then
+										print ( "Network error - download failed" )
+									else
+
+									
+
+										--	if Image ~= nil then Image:removeSelf();Image=nil end
+
+											--img_event.response.filename
+
+											local filePath = system.pathForFile( img_event.response.filename, system.DocumentsDirectory )
+												            -- Play back the recording
+												local file = io.open( filePath)
+												            
+												if file and img_event.response.filename ~= nil then
+
+												 io.close( file )
+
+
+
+												 Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
+
+
+												else
+
+													Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+
+												end
+											
+											Image.width=35;Image.height=35
+											--Image.anchorY=0
+											Image.x=30;Image.y=background.y+background.contentHeight/2
+											
+								    		--event.row:insert(img_event.target)
+
+								    			
+								    		end
+
+								    		end, feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory)
+
+						end
+		else
+
+					 Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+					--Image.anchorY=0
+					Image.x=30;Image.y=background.y+background.contentHeight/2
+					
+
+		end
+
+
+
+
+
+          --  local nameLabel = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+
+          Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+          Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+          Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=background.y+10
+          Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+
+
+          if feedArray[i].FirstName ~= nil then
+
+          	Display_Group[#Display_Group].text = feedArray[i].FirstName.." "..feedArray[i].LastName
+
+          else
+
+          	Display_Group[#Display_Group].text = feedArray[i].LastName
+          	
+          end
+
+
+
+          if feedArray[i].EmailAddress ~= nil then
+
+          	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+          	Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+          	Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+          	Display_Group[#Display_Group]:setFillColor( 0.3 )
+          	Display_Group[#Display_Group].text = feedArray[i].EmailAddress
+
+
+          	if feedArray[i].EmailAddress:len() > 33 then
+
+          		Display_Group[#Display_Group].text = Display_Group[#Display_Group].text:sub(1,33)..".."
+
+          	end
+          	
+
+          end
+
+
+
+
+          if feedArray[i].PhoneNumber ~= nil and feedArray[i].PhoneNumber ~= "" then
+
+          	Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
+          	Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
+          	Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=Display_Group[#Display_Group-1].y+Display_Group[#Display_Group-1].contentHeight+5
+          	Display_Group[#Display_Group]:setFillColor( 0.3 )
+          	Display_Group[#Display_Group].text = feedArray[i].PhoneNumber
+
+          	background.height = background.height+15
+
+          end
+
+
+
+		-- 	--background.height = 0
+
+		-- 	for i=1,#Display_Group do
+
+		-- 		background.height = background.height + Display_Group[i].contentHeight+10
+
+		-- 	end
+
+		-- --	background.height = background.height + 20
+
+		-- 	--background.height = background.height-((background.height/5)*(5-#Display_Group))+5
+
+
+		
+
+		-- 	 --  group =  Createmenu(background)
+
+  --  				--tempGroup:insert( group )
+
+  --  				--group.isVisible=false
+
+
+	  local line = display.newRect(tempGroup,W/2,background.y,W,1)
+	  line.y=background.y+background.contentHeight-line.contentHeight
+	  line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+
+
+	  scrollView:insert(tempGroup)
+
+	  print( "@@@@@@@@@" )
+
+
+end
+
+	
+end
+
 
 
 
@@ -1275,6 +1522,9 @@ function get_GetMyUnitBuzzRequestAccesses1(response1)
 		ContactListResponse = reqaccess_response
 
 
+		totArray = response1
+
+
 	    searchcontact_bg.isVisible = true
 	    searchcontact.isVisible = true
 	    count_bg.isVisible = true
@@ -1322,7 +1572,6 @@ function get_GetMyUnitBuzzRequestAccesses1(response1)
 	    end
 
 
-		totArray = response1
 
 
 	 
@@ -1346,7 +1595,7 @@ function get_GetMyUnitBuzzRequestAccesses1(response1)
 									print( "here !!!!!!! 1111"..#listValue )	
 
 
-									CreateList(listValue)
+									CreateListUpdate("update",listValue)
 
 
 							else

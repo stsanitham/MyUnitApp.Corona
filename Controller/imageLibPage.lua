@@ -376,10 +376,9 @@ local function downloadAction(filename,file)
 		system.DocumentsDirectory
 		)
 
-
-
-
 end
+
+
 
 local function listTouch( event )
 	if event.phase == "began" then
@@ -528,7 +527,7 @@ shareImg:addEventListener("touch",listTouch)
 
 shareImg_bg:addEventListener("touch",listTouch)
 
-addEventBtn:toFront( )
+addEventBtn:toFront()
 
 
 row.ImageId = List_array[row.index].ImageId
@@ -978,17 +977,15 @@ end
 
 	function get_imageupload(response)
 
-	   --local a = native.showAlert("1111","image uploaded",{"ok"})
-
 	   print(json.encode(response))
 
 	   if response == "Success" then
 
-	   	 -- local a = native.showAlert("Image","Image Uploaded",{"ok"})
+		   	   local a = native.showAlert(Message.UploadButtonText,Message.AddImage,{CommonWords.ok})
 
-	       Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
+		       Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
 
-	      -- get_Allimage(response)
+	           -- get_Allimage(response)
 
 	    end
 
@@ -1170,7 +1167,7 @@ end
 						end
 
 
-		         local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
+		         local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,CommonWords.cancel} , onComplete)
 
 
 			end
@@ -1301,6 +1298,8 @@ local function listPosition_change( event )
 
 							careerList_scrollview:toFront()
 
+							addEventBtn:toFront()
+
 							Image_Lib_list:deleteAllRows()
 
 							Grid_list(List_array)		
@@ -1373,7 +1372,7 @@ local function listPosition_change( event )
 
 				-- uploadimage_icon:addEventListener("touch",uploadImageLayout)
 
-				addEventBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
+				addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 66/1.5,66/1.7 )
 				addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 				addEventBtn:addEventListener("touch",uploadImageAction)
 
