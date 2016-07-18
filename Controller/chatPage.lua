@@ -82,7 +82,7 @@ local deleteMsgCount = 0
 
 local helpText 
 
-local tab_Group_btn,tab_Message_btn,tab_Contact_btn,tab_broadcast_btn,tabBg,tab_Group,tab_Contact
+---local tab_Group_btn,tab_Message_btn,tab_Contact_btn,tab_broadcast_btn,tabBg,tab_Group,tab_Contact
 
 local icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt
 
@@ -157,12 +157,6 @@ function formatSizeUnits(event)
 	
 
 end
-
-
-
-
-
-
 
 
 
@@ -298,6 +292,16 @@ local function attachAction( event )
 	if event.phase == "began" then
 		print( "here cliked ###########" )
 		display.getCurrentStage():setFocus( event.target )
+
+
+	elseif ( event.phase == "moved" ) then
+				local dy = math.abs( ( event.y - event.yStart ) )
+				
+				if ( dy > 10 ) then
+					display.getCurrentStage():setFocus( nil )
+					chatScroll:takeFocus( event )
+				end
+
 	elseif event.phase == "ended" then
 
 		display.getCurrentStage():setFocus( nil )
@@ -395,6 +399,7 @@ local function AttachmentTouch( event )
 			if AttachmentGroup.alpha <= 0.3 then
 				AttachmentGroup.yScale=0.1
 				AttachmentGroup.alpha = 1
+				AttachmentGroup:toFront( )
 
 				transition.from( AttachmentGroup, {time=300,alpha=1} )
 				transition.scaleTo( AttachmentGroup, {yScale=1.0, time=300 } )
@@ -411,145 +416,6 @@ local function AttachmentTouch( event )
 
 	return true
 end
-
-
-
-
-local function createAttachment( )
-
-------------------------------------------- Icons Holder --------------------------------------------
-
-icons_holder_bg = display.newRect(AttachmentGroup,0,0,W,EditBoxStyle.height+115)
-icons_holder_bg.x=0
-icons_holder_bg.anchorX=0
-icons_holder_bg.anchorY=0
-icons_holder_bg.strokeWidth = 1
-icons_holder_bg:setStrokeColor( 0,0,0,0.1)
-icons_holder_bg.y = tabBar.y+tabBar.height+10
-icons_holder_bg:setFillColor( 1,1,1)
-
-				--icons_holder_bg.height = icons_holder_bg.height/2
-
--------------------------------------------- Camera ---------------------------------------------------
-
-camera_icon = display.newImageRect(AttachmentGroup,"res/assert/camera1.png",40,35)
-camera_icon.x=W/2 - W/3
-camera_icon.anchorX=0
-camera_icon.anchorY=0
-camera_icon.y = icons_holder_bg.y + 7.5
-camera_icon.id="camera"
-camera_icon:addEventListener( "touch", attachAction )
-
-
-camera_icon_txt = display.newText(AttachmentGroup,MessagePage.Camera,0,0,native.systemFont,14)
-camera_icon_txt.anchorX = 0
-camera_icon_txt.anchorY = 0
-camera_icon_txt.x = camera_icon.x - 7
-camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
-camera_icon_txt:setFillColor(0)
-
-
-
-
--------------------------------------------- Gallery ---------------------------------------------------
-
-gallery_icon = display.newImageRect(AttachmentGroup,"res/assert/gallery1.png",40,35)
-gallery_icon.x= W/2 - 12
-gallery_icon.anchorX=0
-gallery_icon.anchorY=0
-gallery_icon.y = camera_icon.y 
-gallery_icon.id="gallery"
-gallery_icon:addEventListener( "touch", attachAction )
-
-
-gallery_icon_txt = display.newText(AttachmentGroup,MessagePage.Gallery,0,0,native.systemFont,14)
-gallery_icon_txt.anchorX = 0
-gallery_icon_txt.anchorY = 0
-gallery_icon_txt.x = gallery_icon.x - 5
-gallery_icon_txt.y = gallery_icon.y+gallery_icon.contentHeight+5
-gallery_icon_txt:setFillColor(0)
-
-
--------------------------------------------- Audio ---------------------------------------------------
-
-
-
-
-audio_icon = display.newImageRect(AttachmentGroup,"res/assert/audio1.png",40,35)
-audio_icon.x= W/2 + W/3 - 30
-audio_icon.anchorX=0
-audio_icon.anchorY=0
-audio_icon.y = gallery_icon.y
-audio_icon.id="audio"
-audio_icon:addEventListener( "touch", attachAction )
-
-
-audio_icon_txt = display.newText(AttachmentGroup,MessagePage.Audio,0,0,native.systemFont,14)
-audio_icon_txt.anchorX = 0
-audio_icon_txt.anchorY = 0
-audio_icon_txt.x = audio_icon.x 
-audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
-audio_icon_txt:setFillColor(0)
-
-
--------------------------------------------- Video ---------------------------------------------------
-
-video_icon = display.newImageRect(AttachmentGroup,"res/assert/video1.png",40,35)
-video_icon.x= W/2 - W/3
-video_icon.anchorX=0
-video_icon.anchorY=0
-video_icon.y = audio_icon.y+audio_icon.contentHeight+30
-video_icon.id="video"
-video_icon:addEventListener( "touch", attachAction )
-
-
-video_icon_txt = display.newText(AttachmentGroup,MessagePage.Video,0,0,native.systemFont,14)
-video_icon_txt.anchorX = 0
-video_icon_txt.anchorY = 0
-video_icon_txt.x = video_icon.x 
-video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
-video_icon_txt:setFillColor(0)
-
--- -------------------------------------------- Location ---------------------------------------------------
-
---                 Location_icon = display.newImageRect(AttachmentGroup,"res/assert/location1.png",40,35)
--- 				Location_icon.x= W/2 - 12
--- 				Location_icon.anchorX=0
--- 				Location_icon.anchorY=0
--- 				Location_icon.y = camera_icon.y
--- 				Location_icon.id="location"
--- 				Location_icon:addEventListener( "touch", attachAction )
-
-
-
--- 				Location_icon_txt = display.newText(AttachmentGroup,MessagePage.Location,0,0,native.systemFont,14)
--- 				Location_icon_txt.anchorX = 0
--- 				Location_icon_txt.anchorY = 0
--- 				Location_icon_txt.x = Location_icon.x - 10
--- 				Location_icon_txt.y = Location_icon.y+Location_icon.contentHeight+5
--- 				Location_icon_txt:setFillColor(0)
-
-
--- -------------------------------------------- Contact ---------------------------------------------------
-
---                 Contact_icon = display.newImageRect(AttachmentGroup,"res/assert/user1.png",40,35)
--- 				Contact_icon.x= W/2 + W/3 - 30
--- 				Contact_icon.anchorX=0
--- 				Contact_icon.anchorY=0
--- 				Contact_icon.y = Location_icon.y
--- 				Contact_icon.id="contact"
--- 				Contact_icon:addEventListener( "touch", attachAction )
-
-
-
--- 				Contact_icon_txt = display.newText(AttachmentGroup,MessagePage.Contact,0,0,native.systemFont,14)
--- 				Contact_icon_txt.anchorX = 0
--- 				Contact_icon_txt.anchorY = 0
--- 				Contact_icon_txt.x = Contact_icon.x - 7
--- 				Contact_icon_txt.y = Contact_icon.y+Contact_icon.contentHeight+5
--- 				Contact_icon_txt:setFillColor(0)
-end 
-
 
 
 local function ChatTouch( event )
@@ -2930,6 +2796,104 @@ local function scrollListener( event )
 		end
 
 
+local function createAttachment( )
+
+------------------------------------------- Icons Holder --------------------------------------------
+
+icons_holder_bg = display.newRect(AttachmentGroup,0,0,W,EditBoxStyle.height+115)
+icons_holder_bg.x=0
+icons_holder_bg.anchorX=0
+icons_holder_bg.anchorY=0
+icons_holder_bg.strokeWidth = 1
+icons_holder_bg:setStrokeColor( 0,0,0,0.1)
+icons_holder_bg.y = tabBar.y+tabBar.height+10
+icons_holder_bg:setFillColor( 1,1,1)
+icons_holder_bg:addEventListener( "touch", attachAction )
+				--icons_holder_bg.height = icons_holder_bg.height/2
+
+-------------------------------------------- Camera ---------------------------------------------------
+
+camera_icon = display.newImageRect(AttachmentGroup,"res/assert/camera1.png",40,35)
+camera_icon.x=W/2 - W/3
+camera_icon.anchorX=0
+camera_icon.anchorY=0
+camera_icon.y = icons_holder_bg.y + 7.5
+camera_icon.id="camera"
+camera_icon:addEventListener( "touch", attachAction )
+
+
+camera_icon_txt = display.newText(AttachmentGroup,MessagePage.Camera,0,0,native.systemFont,14)
+camera_icon_txt.anchorX = 0
+camera_icon_txt.anchorY = 0
+camera_icon_txt.x = camera_icon.x - 7
+camera_icon_txt.y = camera_icon.y+camera_icon.contentHeight+5
+camera_icon_txt:setFillColor(0)
+
+
+
+
+-------------------------------------------- Gallery ---------------------------------------------------
+
+gallery_icon = display.newImageRect(AttachmentGroup,"res/assert/gallery1.png",40,35)
+gallery_icon.x= W/2 - 12
+gallery_icon.anchorX=0
+gallery_icon.anchorY=0
+gallery_icon.y = camera_icon.y 
+gallery_icon.id="gallery"
+gallery_icon:addEventListener( "touch", attachAction )
+
+
+gallery_icon_txt = display.newText(AttachmentGroup,MessagePage.Gallery,0,0,native.systemFont,14)
+gallery_icon_txt.anchorX = 0
+gallery_icon_txt.anchorY = 0
+gallery_icon_txt.x = gallery_icon.x - 5
+gallery_icon_txt.y = gallery_icon.y+gallery_icon.contentHeight+5
+gallery_icon_txt:setFillColor(0)
+
+
+-------------------------------------------- Audio ---------------------------------------------------
+
+
+
+
+audio_icon = display.newImageRect(AttachmentGroup,"res/assert/audio1.png",40,35)
+audio_icon.x= W/2 + W/3 - 30
+audio_icon.anchorX=0
+audio_icon.anchorY=0
+audio_icon.y = gallery_icon.y
+audio_icon.id="audio"
+audio_icon:addEventListener( "touch", attachAction )
+
+
+audio_icon_txt = display.newText(AttachmentGroup,MessagePage.Audio,0,0,native.systemFont,14)
+audio_icon_txt.anchorX = 0
+audio_icon_txt.anchorY = 0
+audio_icon_txt.x = audio_icon.x 
+audio_icon_txt.y = audio_icon.y+audio_icon.contentHeight+5
+audio_icon_txt:setFillColor(0)
+
+
+-------------------------------------------- Video ---------------------------------------------------
+
+video_icon = display.newImageRect(AttachmentGroup,"res/assert/video1.png",40,35)
+video_icon.x= W/2 - W/3
+video_icon.anchorX=0
+video_icon.anchorY=0
+video_icon.y = audio_icon.y+audio_icon.contentHeight+30
+video_icon.id="video"
+video_icon:addEventListener( "touch", attachAction )
+
+
+video_icon_txt = display.newText(AttachmentGroup,MessagePage.Video,0,0,native.systemFont,14)
+video_icon_txt.anchorX = 0
+video_icon_txt.anchorY = 0
+video_icon_txt.x = video_icon.x 
+video_icon_txt.y = video_icon.y+video_icon.contentHeight+5
+video_icon_txt:setFillColor(0)
+
+end 
+
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -2997,10 +2961,6 @@ local function SendFowardMessage( list )
 
 	for i= 1,#list do
 
-		--Work
-
-		print( list[i].id )
-
 		local tempgroup
 		 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE rowid='"..list[1].id.."'") do
 
@@ -3022,13 +2982,14 @@ local function SendFowardMessage( list )
         	isDeleted="false"
         	Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
         	Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
-        	ImagePath= ""
-        	AudioPath="NULL"
-        	VideoPath="NULL"
+        	ImagePath= tempgroup.Image_Path:match( "([^/]+)$" )  or ""
+        	AudioPath=tempgroup.Audio_Path:match( "([^/]+)$" ) or ""
+        	VideoPath=tempgroup.Video_Path or ""
         	MyUnitBuzz_LongMessage=tempgroup.MyUnitBuzz_Message
         	From=ContactId
         	To=To_ContactId
         	Message_Type =tempgroup.Message_Type
+        	MessageFileType=""
 
 
         	if string.find(tempgroup.MyUnitBuzz_Message,"https://") or string.find(tempgroup.MyUnitBuzz_Message,"http://") then
@@ -3058,11 +3019,11 @@ local function SendFowardMessage( list )
 
 		    if Message_Type == "GROUP" then
 
-		    	ConversionFirstName="";ConversionLastName="";GroupName=UserName;DocumentUpload=""
+		    	ConversionFirstName="";ConversionLastName="";GroupName=UserName
 
 		    elseif Message_Type == "INDIVIDUAL" then
 
-		    	ConversionFirstName="";ConversionLastName=UserName;GroupName="";DocumentUpload=""
+		    	ConversionFirstName="";ConversionLastName=UserName;GroupName=""
 
 		    elseif Message_Type == "BROADCAST" then
 
@@ -3072,12 +3033,96 @@ local function SendFowardMessage( list )
 
 		    	else
 		    		
-		    		ConversionFirstName="";ConversionLastName=UserName;GroupName="";DocumentUpload=""
+		    		ConversionFirstName="";ConversionLastName=UserName;GroupName=""
 
 		    	end
 
 		    end
-		   		Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",MyUnitBuzz_LongMessage,MyUnitBuzz_LongMessage,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+
+
+
+		    if ImagePath ~= nil then
+	
+		    	local path = system.pathForFile( ImagePath, system.DocumentsDirectory)
+
+				local size = lfs.attributes (path, "size")
+
+				local fileHandle = io.open(path, "rb")
+
+				local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+				formatSizeUnits(size)
+
+				
+					if Message_Type == "GROUP" then
+
+						DocumentUpload[1] = {
+							UserId = UserId,
+							File = file_inbytearray,
+							FileName = ImagePath,
+							FileType = "Images"
+						}
+
+					else
+						
+						DocumentUpload[1] = {
+							UserId = UserId,
+							File = file_inbytearray,
+							FileName = ImagePath,
+							FileType = "Images"
+						}
+
+					end
+
+					MessageFileType="Images"
+
+		    elseif AudioPath ~= nil then
+
+		    	local path = system.pathForFile( AudioPath, system.DocumentsDirectory)
+
+				local size = lfs.attributes (path, "size")
+
+				local fileHandle = io.open(path, "rb")
+
+				local file_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+				formatSizeUnits(size)
+
+				
+					if Message_Type == "GROUP" then
+
+						DocumentUpload[1] = {
+							UserId = UserId,
+							File = file_inbytearray,
+							FileName = AudioPath,
+							FileType = "Audios"
+						}
+
+					else
+						
+						DocumentUpload[1] = {
+							UserId = UserId,
+							File = file_inbytearray,
+							FileName = AudioPath,
+							FileType = "Audios"
+						}
+
+					end
+
+		    	FileType = "Audios"
+
+		    elseif VideoPath ~= nil then
+
+		    	DocumentUpload=""
+
+		    else
+
+		    	DocumentUpload=""
+
+		    end
+
+
+		   		Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,MyUnitBuzz_LongMessage,MyUnitBuzz_LongMessage,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 	 	   end
 
 
@@ -3105,16 +3150,11 @@ function scene:show( event )
 
 	elseif phase == "did" then
 
-			if event.params then
-
 				if event.params.contactDetails ~= nil then
 					ContactDetails = event.params.contactDetails
 				else
 					ContactDetails = ""
 				end
-
-			end
-
 
 	    	To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To or ContactDetails.MyUnitBuzzGroupId
 
@@ -3271,6 +3311,7 @@ function scene:show( event )
 
 
 		createAttachment()
+
 		AttachmentGroup.anchorX=0;AttachmentGroup.anchorY=0
 		AttachmentGroup.alpha=0
 		AttachmentGroup.y=AttachmentGroup.y+68
