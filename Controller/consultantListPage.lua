@@ -67,6 +67,7 @@ local ContactId
 local editedgroupname=""
 
 consultantList_array[#consultantList_array+1] = display.newGroup()
+local status,forwardDetail
 
 
 local tabBarBackground = "res/assert/tabBarBg.png"
@@ -118,14 +119,28 @@ local function consultantTounch( event )
 
 				else
 
-					local options = {
-						effect = "flipFadeOutIn",
-						time = 200,	
-						params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
-					}
+					if status == "forward" then
+
+							local options = {
+							effect = "flipFadeOutIn",
+							time = 200,	
+							params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,status="forward",forwardDetails=forwardDetail}
+						}
 
 
-					composer.gotoScene( "Controller.chatPage", options )
+						composer.gotoScene( "Controller.chatPage", options )
+
+					else
+
+						local options = {
+							effect = "flipFadeOutIn",
+							time = 200,	
+							params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
+						}
+
+
+						composer.gotoScene( "Controller.chatPage", options )
+					end
 
 				end
 			end
@@ -530,12 +545,24 @@ local function TabbarTouch( event )
 				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 				overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
 
-				local options = {
-					time = 300,	 
-					params = { tabbuttonValue3 =event.target.id}
-				}
+				if status == "forward" then
 
-				composer.gotoScene( "Controller.MessagingPage", options )
+						local options = {
+						time = 300,	 
+						params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+					}
+
+					composer.gotoScene( "Controller.MessagingPage", options )
+
+				else
+
+					local options = {
+						time = 300,	 
+						params = { tabbuttonValue3 =event.target.id}
+					}
+
+					composer.gotoScene( "Controller.MessagingPage", options )
+				end
 			end
 
 			if overlay then overlay:removeSelf( );overlay=nil end
@@ -577,12 +604,22 @@ local function TabbarTouch( event )
 				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 				overlay.y=tabBg.y+6;overlay.x=tab_broadcast_btn.x
 
-				local options = {
-					time = 300,	  
-					params = { tabbuttonValue3 =event.target.id}
-				}
+					if status == "forward" then
+							local options = {
+								time = 300,	  
+								params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+							}
 
-				composer.gotoScene( "Controller.broadCastPage", options )
+							composer.gotoScene( "Controller.broadCastPage", options )
+					else
+
+						local options = {
+							time = 300,	  
+							params = { tabbuttonValue3 =event.target.id}
+						}
+
+						composer.gotoScene( "Controller.broadCastPage", options )
+					end
 			end
 
 			if overlay then overlay:removeSelf( );overlay=nil end
@@ -625,12 +662,25 @@ local function TabbarTouch( event )
 				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 				overlay.y=tabBg.y+6;overlay.x=tab_Group_btn.x
 
-				local options = {
+				if status == "forward" then
+
+					local options = {
+					time = 300,	  
+					params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+				}
+
+				composer.gotoScene( "Controller.groupPage", options )
+
+				else
+
+					local options = {
 					time = 300,	  
 					params = { tabbuttonValue3 =event.target.id}
 				}
 
 				composer.gotoScene( "Controller.groupPage", options )
+
+				end
 			end
 
 			if overlay then overlay:removeSelf( );overlay=nil end
@@ -1524,6 +1574,17 @@ function scene:show( event )
 			pageid_value = event.params.page_id
 
 			editContacts = event.params.contacts
+
+			if event.params.status ~= nil and event.params.status == "forward" then
+
+				status= "forward"
+				forwardDetail = event.params.forwardDetails
+
+
+			end
+
+
+
 		end
 
 

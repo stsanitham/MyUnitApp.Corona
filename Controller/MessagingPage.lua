@@ -52,11 +52,9 @@ local Listresponse_array = {}
 
 local tabBarGroup = display.newGroup( )
 
-local tabBarBackground = "res/assert/tabBarBg.png"
-local tabBarLeft = "res/assert/tabSelectedLeft.png"
-local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
-local tabBarRight = "res/assert/tabSelectedRight.png"
+local status,forwardDetail
 
+local tab_Group_btn,tab_Message_btn,tab_Contact_btn,tab_broadcast_btn,tabBg,tab_Group,tab_Contact
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 	UserId = row.UserId
@@ -218,12 +216,26 @@ local function TabbarTouch( event )
 				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 				overlay.y=tabBg.y+6;overlay.x=tab_broadcast_btn.x
 
+				if status == "forward" then
+
+					local options = {
+					time = 300,	  
+					params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+				}
+				composer.gotoScene( "Controller.broadCastPage", options )
+				
+
+				else
+
 				local options = {
 					time = 300,	  
 					params = { tabbuttonValue3 =event.target.id}
 				}
-
 				composer.gotoScene( "Controller.broadCastPage", options )
+
+				end
+
+				
 			end
 
 			if overlay then overlay:removeSelf( );overlay=nil end
@@ -269,12 +281,28 @@ local function TabbarTouch( event )
 				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 				overlay.y=tabBg.y+6;overlay.x=tab_Group_btn.x
 
-				local options = {
+				if status == "forward" then
+
+					local options = {
+					time = 300,	  
+					params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+				}
+
+				composer.gotoScene( "Controller.groupPage", options )
+
+				else
+
+					local options = {
 					time = 300,	  
 					params = { tabbuttonValue3 =event.target.id}
 				}
 
 				composer.gotoScene( "Controller.groupPage", options )
+
+				end
+
+
+				
 			end
 
 			if overlay then overlay:removeSelf( );overlay=nil end
@@ -323,12 +351,28 @@ local function TabbarTouch( event )
 				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 				overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
 
+				
+
+				if status == "forward" then
+
+						local options = {
+						time = 300,	 
+						params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+					}
+
+					composer.gotoScene( "Controller.consultantListPage", options )
+
+				else
+
 				local options = {
 					time = 300,	 
 					params = { tabbuttonValue3 =event.target.id}
 				}
 
 				composer.gotoScene( "Controller.consultantListPage", options )
+
+				end
+
 			end
 
 			if overlay then overlay:removeSelf( );overlay=nil end
@@ -361,13 +405,29 @@ local function consultantTounch( event )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
-		local options = {
+		if status == "forward" then
+				local options = {
+			effect = "flipFadeOutIn",
+			time = 200,	
+			params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,status="forward",forwardDetails=forwardDetail}
+						}
+
+			composer.gotoScene( "Controller.chatPage", options )
+		else
+				local options = {
 			effect = "flipFadeOutIn",
 			time = 200,	
 			params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
-		}
+	
+					}
 
-		composer.gotoScene( "Controller.chatPage", options )
+				composer.gotoScene( "Controller.chatPage", options )
+
+		end
+
+	
+
+		
 
 
 	end
@@ -702,6 +762,15 @@ function scene:create( event )
 			end
 
 		end
+
+		if event.params.status ~= nil and event.params.status == "forward" then
+
+			status= "forward"
+			forwardDetail = event.params.forwardDetails
+
+
+		end
+
 	end
 
 
@@ -766,7 +835,7 @@ function scene:show( event )
 
 	if phase == "will" then
 
-		composer.removeHidden()
+		composer.removeHidden(  )
 
 		broad_scrollview = widget.newScrollView
 		{

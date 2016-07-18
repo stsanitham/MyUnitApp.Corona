@@ -50,6 +50,8 @@ local tabBarGroup = display.newGroup( )
 
 local newtworkArray = {}
 
+local status,forwardDetail
+
 local tabBarBackground = "res/assert/tabBarBg.png"
 local tabBarLeft = "res/assert/tabSelectedLeft.png"
 local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
@@ -129,14 +131,27 @@ local function groupBackground_Touch( event )
 
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
+		
+		if status == "forward" then
 
-		local options = {
-			effect = "flipFadeOutIn",
-			time = 200,	
-			params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,typevalue = event.target.typevalue}
-		}
+				local options = {
+				effect = "flipFadeOutIn",
+				time = 200,	
+				params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,typevalue = event.target.typevalue,status="forward",forwardDetails=forwardDetail}
+			}
 
-		composer.gotoScene( "Controller.chatPage", options )
+			composer.gotoScene( "Controller.chatPage", options )
+
+		else
+
+			local options = {
+				effect = "flipFadeOutIn",
+				time = 200,	
+				params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,typevalue = event.target.typevalue}
+			}
+
+			composer.gotoScene( "Controller.chatPage", options )
+		end
 
 		
 	end
@@ -263,12 +278,24 @@ local function TabbarTouch( event )
 				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 				overlay.y=tabBg.y+6;overlay.x=tab_Message_btn.x
 
-				local options = {
-					time = 300,	 
-					params = { tabbuttonValue3 =event.target.id}
-				}
+				if status == "forward" then
 
-				composer.gotoScene( "Controller.MessagingPage", options )
+						local options = {
+						time = 300,	 
+						params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+					}
+
+					composer.gotoScene( "Controller.MessagingPage", options )
+
+				else
+
+					local options = {
+						time = 300,	 
+						params = { tabbuttonValue3 =event.target.id}
+					}
+
+					composer.gotoScene( "Controller.MessagingPage", options )
+				end
 			end
 
 			
@@ -314,13 +341,22 @@ local function TabbarTouch( event )
 
 					overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 					overlay.y=tabBg.y+6;overlay.x=tab_broadcast_btn.x
+					if status == "forward" then
+							local options = {
+								time = 300,	  
+								params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+							}
 
-					local options = {
-						time = 300,	  
-						params = { tabbuttonValue3 =event.target.id}
-					}
+							composer.gotoScene( "Controller.broadCastPage", options )
+					else
 
-					composer.gotoScene( "Controller.broadCastPage", options )
+						local options = {
+							time = 300,	  
+							params = { tabbuttonValue3 =event.target.id}
+						}
+
+						composer.gotoScene( "Controller.broadCastPage", options )
+					end
 				end
 
 				if overlay then overlay:removeSelf( );overlay=nil end
@@ -363,13 +399,21 @@ local function TabbarTouch( event )
 					
 					overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 					overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
+					if status == "forward" then
+							local options = {
+							time = 300,	 
+							params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+						}
 
-					local options = {
-						time = 300,	 
-						params = { tabbuttonValue3 =event.target.id}
-					}
+						composer.gotoScene( "Controller.consultantListPage", options )
+					else
+						local options = {
+							time = 300,	 
+							params = { tabbuttonValue3 =event.target.id}
+						}
 
-					composer.gotoScene( "Controller.consultantListPage", options )
+						composer.gotoScene( "Controller.consultantListPage", options )
+					end
 				end
 
 				if overlay then overlay:removeSelf( );overlay=nil end
@@ -601,6 +645,17 @@ function scene:show( event )
 		if event.params then
 
 			pagename = event.params.pagevalue
+
+
+			if event.params.status ~= nil and event.params.status == "forward" then
+
+				status= "forward"
+				forwardDetail = event.params.forwardDetails
+
+
+			end
+
+
 		end
 
 		groupList_scrollview = widget.newScrollView

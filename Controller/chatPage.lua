@@ -82,6 +82,8 @@ local deleteMsgCount = 0
 
 local helpText 
 
+local tab_Group_btn,tab_Message_btn,tab_Contact_btn,tab_broadcast_btn,tabBg,tab_Group,tab_Contact
+
 local icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt
 
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
@@ -294,8 +296,11 @@ local function selectionComplete ( event )
 local function attachAction( event )
 
 	if event.phase == "began" then
+		print( "here cliked ###########" )
+		display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
 
-		elseif event.phase == "ended" then
+		display.getCurrentStage():setFocus( nil )
 
 		if event.target.id =="camera" then
 
@@ -411,7 +416,7 @@ end
 
 
 local function createAttachment( )
-	
+
 ------------------------------------------- Icons Holder --------------------------------------------
 
 icons_holder_bg = display.newRect(AttachmentGroup,0,0,W,EditBoxStyle.height+115)
@@ -1607,7 +1612,8 @@ local function videoPlay( event )
 
 	local function printTimeSinceStart( event )
 
-		tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront();helpText:toFront( )
+		tabBar:toFront( );menuBtn:toFront( );BgText:toFront( );title_bg:toFront( );title:toFront( );BackBtn:toFront( );Deleteicon:toFront( );Copyicon:toFront( );attachment_icon:toFront()
+		helpText:toFront( )
 		Forwardicon:toFront( )
 		if chatHoldflag == true then
 
@@ -1760,9 +1766,24 @@ local function videoPlay( event )
 									selectedForDelete[i]:removeSelf();selectedForDelete[i]=nil 
 
 								-- attachment_icon.isVisible =true
-							end
+								end
 							selectedForDeleteID[i]=nil
-						end
+							end
+						elseif event.target.id == "forward" then
+
+							
+
+
+							local function forwardFunction( event )
+
+									local options = {
+										time = 200,	
+										params = { status = "forward",forwardDetails = selectedForDeleteID }
+									}
+								composer.gotoScene( "Controller.MessagingPage",options)
+							end
+							forwardTimer = timer.performWithDelay( 1000, forwardFunction )
+
 
 					end		
 					
@@ -2972,6 +2993,96 @@ function scene:create( event )
 end
 
 
+local function SendFowardMessage( list )
+
+	for i= 1,#list do
+
+		--Work
+
+		print( list[i].id )
+
+		local tempgroup
+		 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE rowid='"..list[1].id.."'") do
+
+		 	tempgroup=row
+						    	
+		end
+
+
+		print( "************************" )
+
+		print( json.encode( tempgroup ))
+
+
+	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
+        		
+        
+
+        	Message_date=os.date("%Y-%m-%dT%H:%M:%S")
+        	isDeleted="false"
+        	Created_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+        	Updated_TimeStamp=os.date("!%Y-%m-%dT%H:%M:%S")
+        	ImagePath= ""
+        	AudioPath="NULL"
+        	VideoPath="NULL"
+        	MyUnitBuzz_LongMessage=tempgroup.MyUnitBuzz_Message
+        	From=ContactId
+        	To=To_ContactId
+        	Message_Type =tempgroup.Message_Type
+
+
+        	if string.find(tempgroup.MyUnitBuzz_Message,"https://") or string.find(tempgroup.MyUnitBuzz_Message,"http://") then
+
+
+        		
+
+        		local pattern = "https?://[%w-_%.%?%.:/%+=&]+"
+
+        		print( "URL value : "..string.match(tempgroup.MyUnitBuzz_Message, pattern)  )
+
+
+        		VideoPath=string.match(tempgroup.MyUnitBuzz_Message, pattern)
+
+        	end
+
+
+        	
+		    --	native.showAlert("Type",Message_Type,{CommonWords.ok})
+
+		    print(UserId.."\n"..tempgroup.MyUnitBuzz_Message.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To.."\n"..MemberName.."\n end" )
+		    local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(MyUnitBuzz_LongMessage)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
+		    db:exec( insertQuery )
+
+		    local ConversionFirstName,ConversionLastName,GroupName
+		    local DocumentUpload = {}
+
+		    if Message_Type == "GROUP" then
+
+		    	ConversionFirstName="";ConversionLastName="";GroupName=UserName;DocumentUpload=""
+
+		    elseif Message_Type == "INDIVIDUAL" then
+
+		    	ConversionFirstName="";ConversionLastName=UserName;GroupName="";DocumentUpload=""
+
+		    elseif Message_Type == "BROADCAST" then
+
+		    	if IsOwner == true then
+
+		    		ConversionFirstName="";ConversionLastName=UserName;GroupName=UserName;DocumentUpload=""
+
+		    	else
+		    		
+		    		ConversionFirstName="";ConversionLastName=UserName;GroupName="";DocumentUpload=""
+
+		    	end
+
+		    end
+		   		Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",MyUnitBuzz_LongMessage,MyUnitBuzz_LongMessage,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+	 	   end
+
+
+		 	   sendMeaasage()
+end
 
 
 function scene:show( event )
@@ -2984,6 +3095,9 @@ function scene:show( event )
 			if event.params then
 				nameval = event.params.tabbuttonValue2
 				pagevalue = event.params.typevalue
+
+				
+
 			end
 
 			composer.removeHidden()
@@ -3130,7 +3244,13 @@ function scene:show( event )
 
 
 
+		if event.params ~= nil and event.params.status == "forward" then
+					print( "_________________________________________________________" )
+					print( json.encode( event.params.forwardDetails ))
 
+						SendFowardMessage( event.params.forwardDetails)
+
+		end
 		
 
 		------------------------------------------- attachment icon -----------------------------------------
