@@ -191,13 +191,25 @@ local function captionListener( event )
 
     elseif ( event.phase == "editing" ) then
 
-    		if event.text:len() > 150 then
+		    	if valuename == "Chat" then
 
-    			event.target.text = event.target.text:sub(1,150)
+			    		if event.text:len() > 150 then
 
-    		end
+			    			event.target.text = event.target.text:sub(1,150)
 
-    	
+			    		end
+			    end
+
+
+		    	if valuename == "ImageLibrary" then
+
+			    		if event.text:len() > 25 then
+
+			    			event.target.text = event.target.text:sub(1,25)
+
+			    		end
+
+		    	end
 
     end
 end
