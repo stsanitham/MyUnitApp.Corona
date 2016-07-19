@@ -942,6 +942,8 @@ local function videoPlay( event )
 		    	local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
 		    	db:exec( q )
 
+		    	print( "____________" )
+
 		    	ChatHistory[#ChatHistory+1] = row
 
 		    end
@@ -2962,7 +2964,7 @@ local function SendFowardMessage( list )
 	for i= 1,#list do
 
 		local tempgroup
-		 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE rowid='"..list[1].id.."'") do
+		 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE rowid='"..list[i].id.."'") do
 
 		 	tempgroup=row
 						    	
@@ -2970,8 +2972,6 @@ local function SendFowardMessage( list )
 
 
 		print( "************************" )
-
-		print( json.encode( tempgroup ))
 
 
 	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
@@ -2988,21 +2988,15 @@ local function SendFowardMessage( list )
         	MyUnitBuzz_LongMessage=tempgroup.MyUnitBuzz_Message
         	From=ContactId
         	To=To_ContactId
-        	Message_Type =tempgroup.Message_Type
+        	Message_Type = MessageType
         	MessageFileType=""
 
 
         	if string.find(tempgroup.MyUnitBuzz_Message,"https://") or string.find(tempgroup.MyUnitBuzz_Message,"http://") then
 
-
-        		
-
         		local pattern = "https?://[%w-_%.%?%.:/%+=&]+"
 
-        		print( "URL value : "..string.match(tempgroup.MyUnitBuzz_Message, pattern)  )
-
-
-        		VideoPath=string.match(tempgroup.MyUnitBuzz_Message, pattern)
+	       		VideoPath=string.match(tempgroup.MyUnitBuzz_Message, pattern)
 
         	end
 
@@ -3125,8 +3119,13 @@ local function SendFowardMessage( list )
 		   		Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,MyUnitBuzz_LongMessage,MyUnitBuzz_LongMessage,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 	 	   end
 
-
-		 	   sendMeaasage()
+	 	   		
+		 	  	
+		 	  	local function delayTimer( event )
+		 	  		print( "$$$$$$$$$$$$$$$$$$$$$$" )
+		 	  		sendMeaasage()
+		 	  	end
+		 	  	timer.performWithDelay( 1500, delayTimer )
 end
 
 
@@ -3141,7 +3140,6 @@ function scene:show( event )
 				nameval = event.params.tabbuttonValue2
 				pagevalue = event.params.typevalue
 
-				
 
 			end
 
@@ -3284,7 +3282,7 @@ function scene:show( event )
 
 
 
-		if event.params ~= nil and event.params.status == "forward" then
+		if  MessageType == "INDIVIDUAL" and event.params ~= nil and event.params.status == "forward" then
 					print( "_________________________________________________________" )
 					print( json.encode( event.params.forwardDetails ))
 
@@ -3355,7 +3353,13 @@ function scene:show( event )
 					    	local q = "UPDATE pu_MyUnitBuzz_Message SET Is_Deleted='false';"
 					    	db:exec( q )
 					    	
-					    end
+					 end
+
+					 if event.params ~= nil and event.params.status == "forward" then
+
+					 	SendFowardMessage( event.params.forwardDetails)
+					 end
+
 
 
 		 		end
@@ -3364,7 +3368,7 @@ function scene:show( event )
 
 
 		
-		if MessageType == "GROUP" then
+		if MessageType == "GROUP" or MessageType == "BROADCAST" then
 
 
 		    	Webservice.CheckChatGroupStatus(To_ContactId,getCheckChatGroupStatus)

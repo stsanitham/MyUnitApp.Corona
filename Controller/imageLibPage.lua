@@ -1499,6 +1499,8 @@ function scene:hide( event )
 
 	if event.phase == "will" then
 
+		composer.removeHidden()
+		
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
 
