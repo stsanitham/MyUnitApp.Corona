@@ -62,7 +62,11 @@ local byNameArray = {}
 
 local Listresponse_array = {}
 
+local ChatDetail={}
+
 local ContactId
+
+local GroupName=""
 
 local editedgroupname=""
 
@@ -119,17 +123,48 @@ local function consultantTounch( event )
 
 				else
 
-					if status == "forward" then
+					if status == "forward" and event.target.id ~= "back" then
+		
+					local function onComplete( action_event )
 
-							local options = {
-							effect = "flipFadeOutIn",
-							time = 200,	
-							params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,status="forward",forwardDetails=forwardDetail}
-						}
+								if action_event.action == "clicked" then
+
+									local i = action_event.index
+
+									if i == 1 then
+
+										print( "here-----" )
+
+											local options = {
+											effect = "flipFadeOutIn",
+											time = 200,	
+											params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
+														}
+
+											composer.gotoScene( "Controller.chatPage", options )
+
+									else
 
 
-						composer.gotoScene( "Controller.chatPage", options )
+									end
 
+								end
+					end
+
+					
+
+			native.showAlert( "MyUnitBuzz", "Forward to "..event.target.name, { CommonWords.ok , CommonWords.cancel }, onComplete ) 
+
+		elseif event.target.id == "back" then
+
+					local options = {
+						effect = "flipFadeOutIn",
+						time = 200,	
+						params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = ChatDetail}
+				
+								}
+
+				composer.gotoScene( "Controller.chatPage", options )
 					else
 
 						local options = {
@@ -549,7 +584,7 @@ local function TabbarTouch( event )
 
 						local options = {
 						time = 300,	 
-						params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+						params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
 					}
 
 					composer.gotoScene( "Controller.MessagingPage", options )
@@ -607,7 +642,7 @@ local function TabbarTouch( event )
 					if status == "forward" then
 							local options = {
 								time = 300,	  
-								params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+								params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
 							}
 
 							composer.gotoScene( "Controller.broadCastPage", options )
@@ -666,7 +701,7 @@ local function TabbarTouch( event )
 
 					local options = {
 					time = 300,	  
-					params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+					params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
 				}
 
 				composer.gotoScene( "Controller.groupPage", options )
@@ -833,11 +868,11 @@ function getAddedMembersInGroup(response)
 
 			if grouptypevalue == "GROUP" then
 
-				local alert = native.showAlert( ChatPage.GroupCreated ,ChatPage.GroupCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+				local alert = native.showAlert( GroupName ,ChatPage.GroupCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
 			else
 
-				local alert = native.showAlert( ChatPage.BroadcastListCreated ,ChatPage.BroadcastListCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+				local alert = native.showAlert( GroupName,ChatPage.BroadcastListCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
 			end
 
@@ -847,11 +882,11 @@ function getAddedMembersInGroup(response)
 
 			if grouptypevalue == "GROUP" then
 
-				local alert = native.showAlert( "Group Updated" ,"Group updated successfully", { CommonWords.ok }, onGroupCreationComplete )
+				local alert = native.showAlert( GroupName ,"Group updated successfully", { CommonWords.ok }, onGroupCreationComplete )
 
 			else
 
-				local alert = native.showAlert( "Broadcast List Updated" ,"Broadcast List updated successfully", { CommonWords.ok }, onGroupCreationComplete )
+				local alert = native.showAlert( GroupName ,"Broadcast List updated successfully", { CommonWords.ok }, onGroupCreationComplete )
 
 			end
 
@@ -992,6 +1027,8 @@ function textField( event )
 					local validation = true
 
 					native.setKeyboardFocus(nil)
+
+					GroupName = GroupSubject.text
 
 
 					if pageid_value == "group" then
@@ -1301,6 +1338,8 @@ local function careePath_list( list )
 		Utils.CssforTextView(Name_txt,sp_labelName)
 		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
+		background.name = list[i].Name
+
 		local Position_txt = display.newText(tempGroup,list[i].CarrierProgress,0,0,native.systemFont,14)
 		Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
 		Position_txt.anchorX=0
@@ -1526,7 +1565,8 @@ function scene:create( event )
 		GroupIcon.isVisible = false
 		GroupIcon:addEventListener( "touch"	, bgTouch )
 
-		GroupIconEdit = display.newText( sceneGroup, "Edit", 18, 13,native.systemFontBold,14 )
+		
+		GroupIconEdit = display.newText( sceneGroup, "Edit", 18, 13,native.systemFont,14 )
 		GroupIconEdit.x = GroupIcon.x+5
 		GroupIconEdit.y = GroupIcon.y+7
 		GroupIconEdit.anchorX=0
@@ -1579,11 +1619,24 @@ function scene:show( event )
 
 				status= "forward"
 				forwardDetail = event.params.forwardDetails
+				ChatDetail= event.params.ChatDetails
 
 
 			end
 
+					if status == "forward" then
 
+			BackBtn = display.newImageRect( sceneGroup, "res/assert/right-arrow(gray-).png",15,15 )
+			BackBtn.anchorX = 0
+			BackBtn.x=25;BackBtn.y = title_bg.y
+			BackBtn.xScale=-1
+			BackBtn.id="back"
+			title.x = BackBtn.x+BackBtn.contentWidth-5
+
+			title.text = "Select Consultant"
+
+			BackBtn:addEventListener( "touch", consultantTounch )
+		end
 
 		end
 

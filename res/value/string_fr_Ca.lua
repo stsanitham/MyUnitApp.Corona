@@ -397,7 +397,8 @@ InviteAccessDetail.NoTMAccess = "Aucune liste des membres de l'équipe sans acc�
 ChatDetails = {}
 
 ChatDetails.GroupSubjectError = "*Entrez le Groupe Sujet"
-ChatDetails.Warning = "You can't send messages to this group because you're no longer a participant"
+ChatDetails.GroupWarning = "Oops!!! You can’t send any messages in this group as this group is deleted"
+ChatDetails.BroadcastWarning = "Oops!!! You can’t send any messages in this broadcast as this broadcast is deleted"
 
 
 

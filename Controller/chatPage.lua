@@ -74,7 +74,7 @@ local tabBarGroup = display.newGroup( )
 
 local ChatScrollContent = display.newGroup( )
 
-local UserId,ContactId,To_ContactId
+local UserId,ContactId,To_ContactId,EmailAddess
 
 local PHOTO_FUNCTION = media.PhotoLibrary 
 
@@ -90,6 +90,7 @@ for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 	UserId = row.UserId
 	ContactId = row.ContactId
 	MemberName = row.MemberName
+	EmailAddess = row.EmailAddess
 
 end
 
@@ -1646,7 +1647,7 @@ local function videoPlay( event )
 
 									local options = {
 										time = 200,	
-										params = { status = "forward",forwardDetails = selectedForDeleteID }
+										params = { status = "forward",forwardDetails = selectedForDeleteID,ChatDetails = ContactDetails }
 									}
 								composer.gotoScene( "Controller.MessagingPage",options)
 							end
@@ -2958,8 +2959,16 @@ function scene:create( event )
 
 end
 
+local function get_ForwarChatMessageDetails( response )
+	-- body
+end
+
 
 local function SendFowardMessage( list )
+
+
+	local ChatListArray = {}
+
 
 	for i= 1,#list do
 
@@ -2971,7 +2980,7 @@ local function SendFowardMessage( list )
 		end
 
 
-		print( "************************" )
+	
 
 
 	local Message_date,isDeleted,Created_TimeStamp,Updated_TimeStamp,ImagePath,AudioPath,VideoPath,MyUnitBuzz_LongMessage,From,To,Message_Type
@@ -3033,9 +3042,9 @@ local function SendFowardMessage( list )
 
 		    end
 
+		    print( "AudioPath : "..AudioPath )
 
-
-		    if ImagePath ~= nil then
+		    if ImagePath ~= nil and ImagePath ~= "" and ImagePath ~= "NULL" then
 	
 		    	local path = system.pathForFile( ImagePath, system.DocumentsDirectory)
 
@@ -3070,7 +3079,7 @@ local function SendFowardMessage( list )
 
 					MessageFileType="Images"
 
-		    elseif AudioPath ~= nil then
+		    elseif AudioPath ~= nil and AudioPath ~= "" and AudioPath ~= "NULL" then
 
 		    	local path = system.pathForFile( AudioPath, system.DocumentsDirectory)
 
@@ -3105,7 +3114,7 @@ local function SendFowardMessage( list )
 
 		    	FileType = "Audios"
 
-		    elseif VideoPath ~= nil then
+		    elseif VideoPath ~= nil and VideoPath ~= "" and VideoPath ~= "NULL" then
 
 		    	DocumentUpload=""
 
@@ -3116,16 +3125,25 @@ local function SendFowardMessage( list )
 		    end
 
 
-		   		Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,MyUnitBuzz_LongMessage,MyUnitBuzz_LongMessage,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
+		    	-- ChatListArray[#ChatListArray+1] = {}
+		    	-- local tempArray = ChatListArray[#ChatListArray+1]
+
+		    	ChatListArray[#ChatListArray+1] = {MyUnitBuzzLongMessage=MyUnitBuzz_LongMessage,MyUnitBuzzMessage=MyUnitBuzz_LongMessage,IsScheduled="",ScheduledDate="",ScheduledTime="",VideoFilePath=VideoPath,MessageStatus="SEND",MessageDate=Message_date,UserId=UserId,EmailAddress=EmailAddess,MyUnitBuzzMessageId="0",AudioFilePath=AudioPath,AudioFileName=AudioPath,AudioFileSize=0,From=From,To=To,MessageType=Message_Type,TimeZone=TimeZone,ConversionFirstName=ConversionFirstName,ConversionLastName=ConversionLastName,FirstName="",LastName=MemberName,GroupName=GroupName,IsSendNow=tostring(isSendNow),MessageFileType=MessageFileType,DocumentUpload=DocumentUpload}
+		  
+
+		   		--Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,MyUnitBuzz_LongMessage,MyUnitBuzz_LongMessage,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 	 	   end
+
+
+
+	 	   	Webservice.ForwarChatMessageDetails(ChatListArray,get_ForwarChatMessageDetails)
 
 	 	   		
 		 	  	
 		 	  	local function delayTimer( event )
-		 	  		print( "$$$$$$$$$$$$$$$$$$$$$$" )
 		 	  		sendMeaasage()
 		 	  	end
-		 	  	timer.performWithDelay( 1500, delayTimer )
+		 	  	timer.performWithDelay( 500, delayTimer )
 end
 
 
@@ -3137,6 +3155,7 @@ function scene:show( event )
 	if phase == "will" then
 
 			if event.params then
+
 				nameval = event.params.tabbuttonValue2
 				pagevalue = event.params.typevalue
 
@@ -3153,6 +3172,8 @@ function scene:show( event )
 				else
 					ContactDetails = ""
 				end
+
+				print("ContactDetails : "..json.encode( ContactDetails ))
 
 	    	To_ContactId = ContactDetails.Contact_Id or ContactDetails.Message_To or ContactDetails.MyUnitBuzzGroupId
 
@@ -3283,8 +3304,7 @@ function scene:show( event )
 
 
 		if  MessageType == "INDIVIDUAL" and event.params ~= nil and event.params.status == "forward" then
-					print( "_________________________________________________________" )
-					print( json.encode( event.params.forwardDetails ))
+				
 
 						SendFowardMessage( event.params.forwardDetails)
 
@@ -3318,12 +3338,17 @@ function scene:show( event )
 		sceneGroup:insert( AttachmentGroup )
 
 
-		 helpText = display.newText(sceneGroup,ChatDetails.Warning,0,0,W-20,0,native.systemFont,14)
+		 helpText = display.newText(sceneGroup,ChatDetails.GroupWarning,0,0,W-20,0,native.systemFont,14)
 		helpText.x=W/2
 		helpText.isVisible=false
 		helpText.y=ChatBox_bg.y+ChatBox_bg.contentHeight/2
 		helpText:setTextColor( 0,0,0,0.5 )
 
+		if MessageType:lower( ) == "group" then
+			helpText.text = ChatDetails.GroupWarning
+		elseif MessageType:lower( ) == "broadcast" then
+			helpText.text = ChatDetails.BroadcastWarning
+		end
 
 		 local function getCheckChatGroupStatus( response )
 		 		if response == "DELETED" then
