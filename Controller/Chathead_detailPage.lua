@@ -439,6 +439,7 @@ local function phoneCallFunction( event )
 			elseif event.phase == "ended" then
 
 			print( "closeDetails" )
+
 			display.getCurrentStage():setFocus( nil )
 
 			composer.hideOverlay( "slideRight", 300 )
@@ -954,7 +955,7 @@ local function selectionComplete ( event )
 			Image:setFillColor( Utils.convertHexToRGB(color.darkRed) )
 
 
-			local Position_txt = display.newText(tempGroup,"Delete Broadcast",0,0,native.systemFont,14)
+			local Position_txt = display.newText(tempGroup,"Delete "..(Message_Type:lower()):gsub("^%l", string.upper),0,0,native.systemFont,14)
 			Position_txt.x=80;Position_txt.y=background.y+background.height/2
 			Position_txt.anchorX=0
 			Utils.CssforTextView(Position_txt,sp_fieldValue)
@@ -1088,7 +1089,7 @@ function scene:show( event )
 		textGroupfiled.size=16
 		textGroupfiled.hasBackground = false
 		textGroupfiled.placeholder = "subject..."
-		native.setKeyboardFocus( textGroupfiled )
+		--native.setKeyboardFocus( textGroupfiled )
 		TextChangeGroup:insert( textGroupfiled )
 		textGroupfiled.isVisible=false
 

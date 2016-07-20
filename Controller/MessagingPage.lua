@@ -18,7 +18,7 @@ local db = sqlite3.open( path )
 
 --------------- Initialization -------------------
 
-local W = display.contentWidth;H= display.contentHeight
+local W = display.contentWidth;local H= display.contentHeight
 
 local Background
 
@@ -49,6 +49,8 @@ local BackFlag = false, Image
 local byNameArray = {}
 
 local Listresponse_array = {}
+
+local ChatDetail ={}
 
 local tabBarGroup = display.newGroup( )
 
@@ -220,7 +222,7 @@ local function TabbarTouch( event )
 
 					local options = {
 					time = 300,	  
-					params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+					params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
 				}
 				composer.gotoScene( "Controller.broadCastPage", options )
 				
@@ -285,7 +287,7 @@ local function TabbarTouch( event )
 
 					local options = {
 					time = 300,	  
-					params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+					params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
 				}
 
 				composer.gotoScene( "Controller.groupPage", options )
@@ -357,7 +359,7 @@ local function TabbarTouch( event )
 
 						local options = {
 						time = 300,	 
-						params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+						params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
 					}
 
 					composer.gotoScene( "Controller.consultantListPage", options )
@@ -405,29 +407,61 @@ local function consultantTounch( event )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
-		if status == "forward" then
-				local options = {
-			effect = "flipFadeOutIn",
-			time = 200,	
-			params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,status="forward",forwardDetails=forwardDetail}
-						}
+		if status == "forward" and event.target.id ~= "back" then
+		
+					local function onComplete( action_event )
 
-			composer.gotoScene( "Controller.chatPage", options )
+								if action_event.action == "clicked" then
+
+									local i = action_event.index
+
+									if i == 1 then
+
+										print( "here-----" )
+
+											local options = {
+											effect = "flipFadeOutIn",
+											time = 200,	
+											params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
+														}
+
+											composer.gotoScene( "Controller.chatPage", options )
+
+									else
+
+
+									end
+
+								end
+					end
+
+					
+
+			native.showAlert( "MyUnitBuzz", "Forward to "..event.target.name, { CommonWords.ok , CommonWords.cancel }, onComplete ) 
+
+		elseif event.target.id == "back" then
+
+					local options = {
+						effect = "flipFadeOutIn",
+						time = 200,	
+						params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = ChatDetail}
+				
+								}
+
+				composer.gotoScene( "Controller.chatPage", options )
+
 		else
 				local options = {
-			effect = "flipFadeOutIn",
-			time = 200,	
-			params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
-	
-					}
+						effect = "flipFadeOutIn",
+						time = 200,	
+						params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value}
+				
+								}
 
 				composer.gotoScene( "Controller.chatPage", options )
 
 		end
-
 	
-
-		
 
 
 	end
@@ -543,6 +577,7 @@ local function Broadcast_list( list )
 				
 				
 			end
+			background.name=Name
 
 		--if ContactId == list[i].Message_To then
 		-- 	  if MemberName == list[i].ToName then
@@ -767,6 +802,7 @@ function scene:create( event )
 
 			status= "forward"
 			forwardDetail = event.params.forwardDetails
+			ChatDetail = event.params.ChatDetails
 
 
 		end
@@ -799,6 +835,20 @@ function scene:create( event )
 	title:setFillColor(0)
 
 	title.text = ChatPage.Chats
+
+	if status == "forward" then
+
+		BackBtn = display.newImageRect( sceneGroup, "res/assert/right-arrow(gray-).png",15,15 )
+		BackBtn.anchorX = 0
+		BackBtn.x=25;BackBtn.y = title_bg.y
+		BackBtn.xScale=-1
+		BackBtn.id="back"
+		title.x = BackBtn.x+BackBtn.contentWidth-5
+
+		title.text = "Select Contact"
+
+		BackBtn:addEventListener( "touch", consultantTounch )
+	end
 
 
 		NoEvent = display.newText( sceneGroup, "No Chat Found" , 0,0,0,0,native.systemFontBold,16)

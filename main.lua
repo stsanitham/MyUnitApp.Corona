@@ -702,6 +702,16 @@ elseif ( event.type == "remoteRegistration" ) then
         Runtime:addEventListener( "system", onSystemEvent )
 
 
+local lfs = require( "lfs" )
+
+-- Get raw path to the app documents directory
+local doc_path = system.pathForFile( "", system.DocumentsDirectory )
+
+for file in lfs.dir( doc_path ) do
+    -- "file" is the current file or directory name
+    print( "Found file: " .. file )
+end
+
 
 local function onResize(event)
    print("@@@ Content Scale = " .. tostring(display.contentScaleY))

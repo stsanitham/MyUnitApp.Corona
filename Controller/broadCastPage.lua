@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 --
--- instagram Screen
+-- broadCastPage Screen
 --
 ----------------------------------------------------------------------------------
 
@@ -45,6 +45,8 @@ local Image
 local byNameArray = {}
 
 local groupListresponse_array = {}
+
+local ChatDetail = {}
 
 local tabBarGroup = display.newGroup( )
 
@@ -131,15 +133,48 @@ local function groupBackground_Touch( event )
 
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
-			if status == "forward" then
+			if status == "forward" and event.target.id ~= "back" then
+		
+					local function onComplete( action_event )
+
+								if action_event.action == "clicked" then
+
+									local i = action_event.index
+
+									if i == 1 then
+
+										print( "here-----" )
+
+											local options = {
+											effect = "flipFadeOutIn",
+											time = 200,	
+											params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
+														}
+
+											composer.gotoScene( "Controller.chatPage", options )
+
+									else
+
+
+									end
+
+								end
+					end
+
+					
+
+			native.showAlert( "MyUnitBuzz", "Forward to "..event.target.name, { CommonWords.ok , CommonWords.cancel }, onComplete ) 
+
+		elseif event.target.id == "back" then
+
 					local options = {
-					effect = "flipFadeOutIn",
-					time = 200,	
-					params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = event.target.value,typevalue = event.target.typevalue,status="forward",forwardDetails=forwardDetail}
-				}
+						effect = "flipFadeOutIn",
+						time = 200,	
+						params = { tabbuttonValue2 =json.encode(tabButtons),contactDetails = ChatDetail}
+				
+								}
 
 				composer.gotoScene( "Controller.chatPage", options )
-
 			else
 
 				local options = {
@@ -281,7 +316,7 @@ local function TabbarTouch( event )
 
 						local options = {
 						time = 300,	 
-						params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+						params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
 					}
 
 					composer.gotoScene( "Controller.MessagingPage", options )
@@ -342,7 +377,7 @@ local function TabbarTouch( event )
 
 					local options = {
 					time = 300,	  
-					params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+					params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
 				}
 
 				composer.gotoScene( "Controller.groupPage", options )
@@ -404,7 +439,7 @@ local function TabbarTouch( event )
 				if status == "forward" then
 							local options = {
 							time = 300,	 
-							params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail}
+							params = { tabbuttonValue3 =event.target.id,status="forward",forwardDetails=forwardDetail,ChatDetails=ChatDetail}
 						}
 
 						composer.gotoScene( "Controller.consultantListPage", options )
@@ -477,6 +512,7 @@ end
 			Utils.CssforTextView(GroupName_txt,sp_labelName)
 			GroupName_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
+			background.name = list[i].MyUnitBuzzGroupName
 
 			local timecreated = list[i].CreateTimeStamp
 
@@ -608,13 +644,28 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-		if event.params.status ~= nil and event.params.status == "forward" then
+		if event.params ~= nil and event.params.status ~= nil and event.params.status == "forward" then
 
 				status= "forward"
 				forwardDetail = event.params.forwardDetails
+				ChatDetail = event.params.ChatDetails
 
 
 			end
+
+			if status == "forward" then
+
+			BackBtn = display.newImageRect( sceneGroup, "res/assert/right-arrow(gray-).png",15,15 )
+			BackBtn.anchorX = 0
+			BackBtn.x=25;BackBtn.y = title_bg.y
+			BackBtn.xScale=-1
+			BackBtn.id="back"
+			title.x = BackBtn.x+BackBtn.contentWidth-5
+
+			title.text = "Select Broadcast"
+
+			BackBtn:addEventListener( "touch", groupBackground_Touch )
+		end
 
 
 		groupList_scrollview = widget.newScrollView

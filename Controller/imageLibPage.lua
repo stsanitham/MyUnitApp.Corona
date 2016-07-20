@@ -53,6 +53,8 @@ for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
 end
 
+local floatingButtonGroup = display.newGroup( )
+
 
 local UserName = ""
 
@@ -544,6 +546,7 @@ shareImg:addEventListener("touch",listTouch)
 shareImg_bg:addEventListener("touch",listTouch)
 
 addEventBtn:toFront()
+floatingButtonGroup:toFront( )
 
 
 row.ImageId = List_array[row.index].ImageId
@@ -1020,6 +1023,18 @@ end
 
 
 local function selectionComplete ( event )
+
+
+	      -- local options =
+       --                                      {
+       --                                         to = { "malarkodi.sellamuthu@w3magix.com"},
+       --                                         subject = "file type",
+       --                                         isBodyHtml = true,
+       --                                         body = ""..json.encode(event),
+
+       --                                      }
+
+       --                                      native.showPopup( "mail", options )
 	
 	local photo = event.target
 
@@ -1161,39 +1176,54 @@ end
 	local function uploadImageAction( event )
             
             if event.phase == "ended" then
-			 
-		 		 if event.target.id == "addEvent" then
+			 	
+			 		if event.target.id == "gallery" then
 
-						local function onComplete(event)
+			 			if media.hasSource( PHOTO_FUNCTION  ) then
+							timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+							end )
+						end
 
-								if "clicked"==event.action then
-										
-										local i = event.index 
+			 		elseif event.target.id == "camera" then
 
-										if 1 == i then
+			 			if media.hasSource( media.Camera ) then
+							timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+							end )
+							end
 
-												if media.hasSource( PHOTO_FUNCTION  ) then
-													timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
-														end )
-												end
+		 		 	elseif event.target.id == "addEvent" then
 
-										elseif 2 == i then
+						--event.target.rotation = 45
 
-												if media.hasSource( media.Camera ) then
-													timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
-														end )
-												else
-	  												local image1 = native.showAlert( "Camera Unavailable", "Camera is not supported in this device", { CommonWords.ok } )
-												end
+						if event.target.rotation >= 45 then
 
-										end
 
-								end
+							local function hide( event )
+								floatingButtonGroup.isVisible=false
+							end
+
+							transition.to( event.target, {time=200,rotation=0} )
+
+							transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
+
+							
+
+						else
+
+							floatingButtonGroup.y=30
+
+							transition.to( event.target, {time=200,rotation=45} )
+
+							transition.to( floatingButtonGroup, {time=300,y=0,transition=easing.outBack} )
+
+							floatingButtonGroup.isVisible=true
 
 						end
+					
 
 
 		         local alert = native.showAlert(ImageLibrary.FileChoose, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,CommonWords.cancel} , onComplete)
+
 
 
 			end
@@ -1325,6 +1355,7 @@ local function listPosition_change( event )
 							careerList_scrollview:toFront()
 
 							addEventBtn:toFront()
+							floatingButtonGroup:toFront( )
 
 							Image_Lib_list:deleteAllRows()
 
@@ -1397,6 +1428,7 @@ local function listPosition_change( event )
 				-- end
 
 				-- uploadimage_icon:addEventListener("touch",uploadImageLayout)
+				sceneGroup:insert( floatingButtonGroup )
 
 				if IsOwner == true then
 
@@ -1405,6 +1437,38 @@ local function listPosition_change( event )
 				addEventBtn:addEventListener("touch",uploadImageAction)
 
 			    end
+
+				fromGalleryIcon = display.newImageRect( floatingButtonGroup, "res/assert/gallery1.png", 66/2,66/2.2 )
+				fromGalleryIcon.x=addEventBtn.x;fromGalleryIcon.y=addEventBtn.y-45;fromGalleryIcon.id="gallery"
+				fromGalleryIcon:addEventListener("touch",uploadImageAction)
+
+				local fromGalleryIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,65,20,2 )
+				fromGalleryIconTipsRect.anchorX=1
+				fromGalleryIconTipsRect.x=fromGalleryIcon.x-25
+				fromGalleryIconTipsRect.y=fromGalleryIcon.y
+				fromGalleryIconTipsRect:setFillColor( Utils.convertHexToRGB(color.Gray) )
+
+				local fromGalleryIconTips = display.newText( floatingButtonGroup, "Gallery",0,0,native.systemFont,12 )
+				fromGalleryIconTips.x=fromGalleryIconTipsRect.x-fromGalleryIconTipsRect.contentWidth/2
+				fromGalleryIconTips.y=fromGalleryIconTipsRect.y
+				
+
+				fromCameraIcon = display.newImageRect( floatingButtonGroup, "res/assert/camera1.png", 66/2,66/2.2 )
+				fromCameraIcon.x=fromGalleryIcon.x;fromCameraIcon.y=fromGalleryIcon.y-45;fromCameraIcon.id="camera"
+				fromCameraIcon:addEventListener("touch",uploadImageAction)
+
+				local fromCameraIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,65,20,2 )
+				fromCameraIconTipsRect.anchorX=1
+				fromCameraIconTipsRect.x=fromCameraIcon.x-25
+				fromCameraIconTipsRect.y=fromCameraIcon.y
+				fromCameraIconTipsRect:setFillColor( Utils.convertHexToRGB(color.Gray) )
+
+				local fromCameraIconTips = display.newText( floatingButtonGroup, "Camera",0,0,native.systemFont,12 )
+				fromCameraIconTips.x=fromCameraIconTipsRect.x-fromCameraIconTipsRect.contentWidth/2
+				fromCameraIconTips.y=fromCameraIconTipsRect.y
+
+				floatingButtonGroup.isVisible=false
+>>>>>>> origin/MUB_V1.2.3
 
 				changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
 				changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10
@@ -1529,6 +1593,8 @@ function scene:hide( event )
 
 	if event.phase == "will" then
 
+		composer.removeHidden()
+		
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
 
@@ -1536,6 +1602,7 @@ function scene:hide( event )
 
 
 	elseif phase == "did" then
+		
 
 	end	
 
