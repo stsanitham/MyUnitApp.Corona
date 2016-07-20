@@ -229,6 +229,37 @@ local function showShare(fileNameString)
 end
 
 
+
+
+
+local function uploadDocumentAction( event )
+            
+        if event.phase == "ended" then
+				 
+			 		 if event.target.id == "addResourceEvent" then
+
+									    -- Options table for the overlay scene "pause.lua"
+									local options = 
+									{
+									    effect = "slideRight",
+									    time = 400,
+									}
+
+									-- By some method (a pause button, for example), show the overlay
+								composer.gotoScene( "Controller.resourceFileList", options )
+
+				     end
+
+		end
+
+		return true
+		
+end
+
+
+
+
+
 local function listTouch( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -241,6 +272,8 @@ local function listTouch( event )
 
 	return true
 end
+
+
 
 
 local function onRowRender_DocLib( event )
@@ -337,7 +370,6 @@ local function onRowRender_DocLib( event )
     	line.y=rowHeight-1.1
     	line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
-
     	downImg:addEventListener("touch",listTouch)
     	downImg_bg:addEventListener("touch",listTouch)
     	
@@ -352,11 +384,17 @@ local function onRowRender_DocLib( event )
     shareImg_bg:addEventListener("touch",listTouch)
     shareImg:addEventListener("touch",listTouch)
 
+    addEventBtn:toFront()
+
+
+
     row.ImageId = List_array[row.index].DocumentCategoryId
     row.FilePath = List_array[row.index].FilePath
     row.fileName = List_array[row.index].DocumentFileName
 
 end
+
+
 
 local function onRowTouch_DocLib( event )
 	local phase = event.phase
@@ -720,6 +758,9 @@ local function listPosition_change( event )
 
 							ResourceList_scrollview:toFront()
 
+							addEventBtn:toFront()
+
+
 							Document_Lib_list:deleteAllRows()
 
 							ResourceGrid_list(List_array)		
@@ -816,6 +857,16 @@ local function listPosition_change( event )
 				title.anchorX = 0
 				title.x=5;title.y = title_bg.y
 				title:setFillColor(0)
+
+
+				if IsOwner == true then
+
+					addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 66/1.5,66/1.7 )
+					addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addResourceEvent"
+					addEventBtn:addEventListener("touch",uploadDocumentAction)
+
+				end
+
 
 				changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
 				changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10

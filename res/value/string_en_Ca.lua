@@ -144,7 +144,9 @@ FlapMenu.Denied_Access = "Denied Access"
 FlapMenu.Pending_Requests = "Pending Requests"
 FlapMenu.TeamMember_without_Access = "Team Member without Access"
 FlapMenu.Add_New_Access = "Add New Access"
+FlapMenu.AddAccess = "Add New Contact/Team Member"
 FlapMenu.chatMessageTitle = "Chat"
+FlapMenu.AddNewAccess = "Add New Contacts"
 
 
 
@@ -257,6 +259,10 @@ ImageLibrary.PageTitle = "Image Library"
 ImageLibrary.NoImage = "No Images are found to view"
 ImageLibrary.List="List"
 ImageLibrary.Grid="Grid"
+ImageLibrary.UploadImage = "Upload Image"
+ImageLibrary.ImageUploaded = "Image uploaded successfully!"
+ImageLibrary.FileChoose = "Choose File"
+
 
 Message = {}
 

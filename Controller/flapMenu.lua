@@ -827,7 +827,7 @@ end
 			    invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			    flapScroll:insert( invite_icon )
 
-			    invite_text = display.newText(FlapMenu.Add_New_Access ,0,0,"Open Sans Regular",16)
+			    invite_text = display.newText(FlapMenu.AddNewAccess ,0,0,"Open Sans Regular",16)
 			    invite_text.anchorX = 0
 			    invite_text.x=invite_icon.x+invite_icon.contentWidth+5
 			    invite_text.y = invite_icon.y

@@ -894,7 +894,41 @@ local function selectionComplete ( event )
 
 	end
 
-	if IsOwner == true and (Message_Type == "GROUP" or Message_Type == "BROADCAST") then
+	if IsOwner == true and (Message_Type == "GROUP") then
+
+			groupMemberListArray[#groupMemberListArray+1] = display.newGroup()
+
+			local tempGroup = groupMemberListArray[#groupMemberListArray]
+
+			local Image 
+
+			local tempHeight = 0
+
+			local background = display.newRect(tempGroup,0,0,W,35)
+
+			if(groupMemberListArray[#groupMemberListArray-1]) ~= nil then
+				tempHeight = groupMemberListArray[#groupMemberListArray-1][1].y + groupMemberListArray[#groupMemberListArray-1][1].height+10
+			end
+
+			background.anchorY = 0
+			background.x=W/2;background.y=tempHeight
+			background.id="delete"
+		
+			local Image = display.newImageRect(tempGroup,"res/assert/delete.png",18,13)
+			Image.x=40;Image.y=background.y+background.height/2
+			Image:setFillColor( Utils.convertHexToRGB(color.darkRed) )
+
+
+			local Position_txt = display.newText(tempGroup,"Delete Group",0,0,native.systemFont,14)
+			Position_txt.x=80;Position_txt.y=background.y+background.height/2
+			Position_txt.anchorX=0
+			Utils.CssforTextView(Position_txt,sp_fieldValue)
+			Position_txt:setTextColor( Utils.convertHexToRGB(color.darkRed) )
+
+			background:addEventListener( 'touch', addMemberAction )
+			careerDetail_scrollview:insert(tempGroup)
+
+	elseif IsOwner == true and (Message_Type == "BROADCAST") then
 
 
 			groupMemberListArray[#groupMemberListArray+1] = display.newGroup()
@@ -920,7 +954,7 @@ local function selectionComplete ( event )
 			Image:setFillColor( Utils.convertHexToRGB(color.darkRed) )
 
 
-			local Position_txt = display.newText(tempGroup,"Delete",0,0,native.systemFont,14)
+			local Position_txt = display.newText(tempGroup,"Delete Broadcast",0,0,native.systemFont,14)
 			Position_txt.x=80;Position_txt.y=background.y+background.height/2
 			Position_txt.anchorX=0
 			Utils.CssforTextView(Position_txt,sp_fieldValue)

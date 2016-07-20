@@ -152,6 +152,8 @@ FlapMenu.Pending_Requests = "solicitudes pendientes"
 FlapMenu.TeamMember_without_Access = "Miembro del Equipo sin acceso"
 FlapMenu.chatMessageTitle = "Charla"
 FlapMenu.Add_New_Access = "Agregar nuevo acceso"
+FlapMenu.AddAccess = "Nuevo Contacto/Miembro del Equipo"
+FlapMenu.AddNewAccess = "Añadir nuevos contactos"
 
 
 EventCalender = {}
@@ -260,12 +262,16 @@ ResourceLibrary.Download_alert="Guardado en Memoria del dispositivo"
 ResourceLibrary.NoDocument="No hay documentos se encuentran para ver"
 ResourceLibrary.SaveOptions_alert ="¿Seguro que deseas descargar?"
 
+
 ImageLibrary = {}
 
 ImageLibrary.PageTitle = "Biblioteca de imágenes"
 ImageLibrary.NoImage = "No Images se encuentran para ver"
 ImageLibrary.List="Lista"
 ImageLibrary.Grid="Cuadrícula"
+ImageLibrary.UploadImage = "Cargar imagen"
+ImageLibrary.ImageUploaded = "Imagen cargada correctamente!"
+ImageLibrary.FileChoose = "Elija el archivo"
 
 
 Message = {}

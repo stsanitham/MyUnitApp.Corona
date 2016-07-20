@@ -751,19 +751,19 @@ local function observableScroll( event )
 			titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 
-			if invitedetail_value.ImagePath ~= nil then
 
-				ProfileImage = display.newImageRect(sceneGroup, "inviteaccess"..invitedetail_value.MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory,80,80)
-				
-			else
-				ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
-				
-			end
+			    if invitedetail_value.ImagePath ~= nil then
+					ProfileImage = display.newImage(sceneGroup,invitedetail_value.MyUnitBuzzRequestAccessId..".png",system.DocumentsDirectory)
 
+				end
 
-			ProfileImage.width = W;ProfileImage.height = 180
-			ProfileImage.x=W/2;ProfileImage.y=titleBar.y
-			ProfileImage.anchorY=0
+				if not ProfileImage then
+					ProfileImage = display.newImageRect(sceneGroup,"res/assert/detail_defalut.jpg",80,80)
+				end
+
+				ProfileImage.width = W;ProfileImage.height = 180
+				ProfileImage.x=W/2;ProfileImage.y=titleBar.y
+				ProfileImage.anchorY=0
 
 			
 

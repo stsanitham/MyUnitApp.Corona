@@ -203,9 +203,9 @@ local function captionListener( event )
 
 		    	if valuename == "ImageLibrary" then
 
-			    		if event.text:len() > 25 then
+			    		if event.text:len() > 20 then
 
-			    			event.target.text = event.target.text:sub(1,25)
+			    			event.target.text = event.target.text:sub(1,20)
 
 			    		end
 
