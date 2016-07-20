@@ -1468,7 +1468,7 @@ local function listPosition_change( event )
 				fromCameraIconTips.y=fromCameraIconTipsRect.y
 
 				floatingButtonGroup.isVisible=false
->>>>>>> origin/MUB_V1.2.3
+
 
 				changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
 				changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10
