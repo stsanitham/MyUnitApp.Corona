@@ -968,6 +968,36 @@ end
 
 	end
 
+		local function textGroupfiledHandler( event )
+
+		       		if ( event.phase == "began" ) then
+        -- user begins editing numericField
+
+             
+
+    elseif event.phase == "submitted" then
+    	
+
+    	elseif event.phase == "ended" then
+
+    
+
+    elseif event.phase == "editing" then
+
+    	if (event.newCharacters=="\n") then
+    		event.target.text = event.text:sub(1,event.target.text:len()-1)
+    		native.setKeyboardFocus( nil )
+    	end
+
+    	if event.text:len() > 25 then
+
+    		event.target.text = event.text:sub(1,25)
+
+    	end
+
+    end   
+end
+
 ------------------------------------------------------
 
 function scene:create( event )
@@ -1055,9 +1085,10 @@ function scene:show( event )
 		textGroupfiled.size=16
 		textGroupfiled.hasBackground = false
 		textGroupfiled.placeholder = "subject..."
-		--native.setKeyboardFocus( textGroupfiled )
+		native.setKeyboardFocus( nil )
 		TextChangeGroup:insert( textGroupfiled )
 		textGroupfiled.isVisible=false
+		textGroupfiled:addEventListener( "userInput", textGroupfiledHandler )
 
 
 		textGroupfiledError = display.newText( TextChangeGroup, "*Enter the subject",  0,0, native.systemFont ,12 )
