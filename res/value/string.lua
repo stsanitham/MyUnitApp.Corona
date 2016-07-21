@@ -144,7 +144,9 @@ FlapMenu.Denied_Access = "Denied Access"
 FlapMenu.Pending_Requests = "Pending Requests"
 FlapMenu.TeamMember_without_Access = "Team Member without Access"
 FlapMenu.Add_New_Access = "Add New Access"
+FlapMenu.AddAccess = "Add New Contact/Team Member"
 FlapMenu.chatMessageTitle = "Chat"
+FlapMenu.AddNewAccess = "Add New Contacts"
 
 
 
@@ -244,6 +246,7 @@ Goals.PageTitle = "Unit Goals"
 Goals.NoGolas = "There are no goals to view as of now"
 Goals.SuccessMsg="Unit Goals Updated Successfully"
 
+
 ResourceLibrary = {}
 
 ResourceLibrary.PageTitle = "Resource"
@@ -251,12 +254,17 @@ ResourceLibrary.Download_alert="Saved to Device Memory"
 ResourceLibrary.SaveOptions_alert = "Are you sure you want to download?"
 ResourceLibrary.NoDocument="No documents are found to view"
 
+
 ImageLibrary = {}
 
 ImageLibrary.PageTitle = "Image Library"
 ImageLibrary.NoImage = "No Images are found to view"
 ImageLibrary.List="List"
 ImageLibrary.Grid="Grid"
+ImageLibrary.UploadImage = "Upload Image"
+ImageLibrary.ImageUploaded = "Image uploaded successfully!"
+ImageLibrary.FileChoose = "Choose File"
+
 
 Message = {}
 

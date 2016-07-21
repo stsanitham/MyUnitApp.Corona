@@ -466,11 +466,27 @@ local function onRowRender_ImageLib( event )
     end
 
 
+    local textname = display.newText(row,List_array[row.index].ImageFileName,0,0,native.systemFont,16)
+    textname.x=Lefticon.x+Lefticon.contentWidth-5;textname.y=rowHeight/2
+    textname.anchorX=0
+    textname:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-    local text = display.newText(row,List_array[row.index].ImageFileName,0,0,native.systemFont,16)
-    text.x=Lefticon.x+Lefticon.contentWidth-5;text.y=rowHeight/2
-    text.anchorX=0
-    text:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+	    if isIos then
+
+	    	    if textname.text:len() > 20 then
+						textname.text = textname.text:sub(1,20).."..."
+			   	end
+
+	    elseif isAndroid then
+
+			    if textname.text:len() > 15 then
+						textname.text = textname.text:sub(1,15).."..."
+			   	end
+
+	    end
+
+
 
     local seprate_bg = display.newRect(row,0,0,120,rowHeight)
     seprate_bg.anchorX=0
@@ -498,31 +514,31 @@ local function onRowRender_ImageLib( event )
 
     if isAndroid then
 
-    	local downImg_bg = display.newRect(row,0,0,25,25)
-    	downImg_bg.x=shareImg.x+30;downImg_bg.y=seprate_bg.y
-    	downImg_bg.id="download"
-    	downImg_bg.alpha=0.01
-    	downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
-    	downImg_bg.filename = List_array[row.index].ImageFileName
+	    	local downImg_bg = display.newRect(row,0,0,25,25)
+	    	downImg_bg.x=shareImg.x+30;downImg_bg.y=seprate_bg.y
+	    	downImg_bg.id="download"
+	    	downImg_bg.alpha=0.01
+	    	downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
+	    	downImg_bg.filename = List_array[row.index].ImageFileName
 
-    	local downImg = display.newImageRect(row,"res/assert/download.png",15,15)
-    	downImg.x=shareImg.x+30;downImg.y=seprate_bg.y
-    	downImg.id="download"
-    	downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
+	    	local downImg = display.newImageRect(row,"res/assert/download.png",15,15)
+	    	downImg.x=shareImg.x+30;downImg.y=seprate_bg.y
+	    	downImg.id="download"
+	    	downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
 
-    --work
-    downImg.filename = List_array[row.index].ImageFileName
-    downImg:addEventListener("touch",listTouch)
-    downImg_bg:addEventListener("touch",listTouch)
+		    --work
+		    downImg.filename = List_array[row.index].ImageFileName
+		    downImg:addEventListener("touch",listTouch)
+		    downImg_bg:addEventListener("touch",listTouch)
 
-else
+	else
 
-	seprate_bg.width = seprate_bg.contentWidth/2
-	seprate_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
-	shareImg_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
-	shareImg.x=seprate_bg.x+seprate_bg.contentWidth/2
+			seprate_bg.width = seprate_bg.contentWidth/2
+			seprate_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
+			shareImg_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
+			shareImg.x=seprate_bg.x+seprate_bg.contentWidth/2
 
-end
+	end
 
 
 shareImg:addEventListener("touch",listTouch)
@@ -537,6 +553,7 @@ row.ImageId = List_array[row.index].ImageId
 row.FilePath = List_array[row.index].FilePath
 
 end
+
 
 
 
@@ -563,11 +580,16 @@ local function onRowTouch_ImageLib( event )
 
 end
 
+
+
+
 function scene:resumeGame()
 
 	Runtime:addEventListener( "key", onKeyEvent )
 
 end
+
+
 
 ------------------------------------------------------
 
@@ -600,8 +622,9 @@ local function BgTouch(event)
 
 	return true
 
-
 end
+
+
 
 
 local function changeListmenuTouch(event)
@@ -632,6 +655,7 @@ local function changeListmenuTouch(event)
 	return true
 
 end
+
 
 
 
@@ -984,7 +1008,7 @@ end
 
 	   if response == "Success" then
 
-		   	   local a = native.showAlert(Message.UploadButtonText,Message.AddImage,{CommonWords.ok})
+		   	   local a = native.showAlert(ImageLibrary.UploadImage,ImageLibrary.ImageUploaded,{CommonWords.ok})
 
 		       Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
 
@@ -1173,6 +1197,7 @@ end
 
 						if event.target.rotation >= 45 then
 
+
 							local function hide( event )
 								floatingButtonGroup.isVisible=false
 							end
@@ -1197,7 +1222,8 @@ end
 					
 
 
-		       --  local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,CommonWords.cancel} , onComplete)
+		         local alert = native.showAlert(ImageLibrary.FileChoose, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,CommonWords.cancel} , onComplete)
+
 
 
 			end
@@ -1404,10 +1430,13 @@ local function listPosition_change( event )
 				-- uploadimage_icon:addEventListener("touch",uploadImageLayout)
 				sceneGroup:insert( floatingButtonGroup )
 
-				addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 66/1.7,66/1.7 )
+				if IsOwner == true then
+
+				addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 66/1.5,66/1.7 )
 				addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 				addEventBtn:addEventListener("touch",uploadImageAction)
 
+			    end
 
 				fromGalleryIcon = display.newImageRect( floatingButtonGroup, "res/assert/gallery1.png", 66/2,66/2.2 )
 				fromGalleryIcon.x=addEventBtn.x;fromGalleryIcon.y=addEventBtn.y-45;fromGalleryIcon.id="gallery"
@@ -1439,6 +1468,7 @@ local function listPosition_change( event )
 				fromCameraIconTips.y=fromCameraIconTipsRect.y
 
 				floatingButtonGroup.isVisible=false
+
 
 				changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
 				changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10

@@ -149,6 +149,8 @@ FlapMenu.Pending_Requests = "solicitudes pendientes"
 FlapMenu.TeamMember_without_Access = "Membre de l'équipe sans accès"
 FlapMenu.chatMessageTitle = "bavarder"
 FlapMenu.Add_New_Access = "Ajouter un nouvel accès"
+FlapMenu.AddAccess = "Ajouter un nouveau contact/membre de l'équipe"
+FlapMenu.AddNewAccess = "Ajouter de nouveaux contacts"
 
 
 
@@ -263,6 +265,9 @@ ImageLibrary.PageTitle = "Bibliothèque d'images"
 ImageLibrary.NoImage = "No Images se retrouvent pour voir"
 ImageLibrary.List="liste"
 ImageLibrary.Grid="la grille"
+ImageLibrary.UploadImage = "Télécharger image"
+ImageLibrary.ImageUploaded = "Image téléchargée avec succès!"
+ImageLibrary.FileChoose = "Choisissez fichier"
 
 
 Message = {}
