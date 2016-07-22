@@ -7,7 +7,7 @@
         local newPanel = require "Utils.newPanel"
         local widget = require( "widget" )
         local Utility = require( "Utils.Utility" )
-        EventCalender = require( "res.value.color" )
+        Colors = require( "res.value.color" )
         local sqlite3 = require( "sqlite3" )
         local json = require( "json" )
         MyUnitBuzzString = require( "res.value.string" )
@@ -20,6 +20,7 @@
         local resumeCallback = false
 
         GCMValue = "0"
+
         ga = require("Utils.GoogleAnalytics.ga")
 
         local launchArgs = ...
@@ -38,9 +39,8 @@
 
         MessageId = "0"
 
-        MessageIdValue = "0"
-
         chatReceivedPage = "main"
+
 
         --com.spanenterprises.MUBDev
 
@@ -51,7 +51,6 @@
 
         AppName = "CommonApp"
 
-        environment = system.getInfo( "environment" )
 
         Director_Name = ""
 
@@ -69,15 +68,13 @@
 
         AlertGroup = display.newGroup();
 
-        chatGroup = display.newGroup();
-
-        NewGroupAlert = display.newGroup();
-
         DeleteMessageGroup = display.newGroup();
 
         ScheduledMessageGroup = display.newGroup();
 
         ImageFullViewGroup = display.newGroup();
+
+        genericAlertGroup = display.newGroup()
 
 
 
@@ -275,56 +272,9 @@ if launchArgs and launchArgs.notification then
                                           --MessageId = "0"
                                                  chatReceivedFlag=true
 
-
-
-                                -- if MessageId ~= "0" and MessageId ~= nil then
-
-                                --             local options = {
-                                --                     isModal = true,
-                                --                     effect = "slideLeft",
-                                --                     time = 300,
-                                --                     params = {
-                                --                         pagenameval = "pn_detailpage",
-                                --                     }
-                                --             }
-
-
-                                --       composer.gotoScene( "Controller.pushNotificationDetailPage", options)
-
-                                -- else
-
-                                --       composer.gotoScene( "Controller.MessagingPage" )
-
-                                -- end
              end
 
 end
-
-
-
-
-
-
-
-        -- -- Decrement the badge number by 1
-        -- local function notificationListener( event )
-
-        --     if ( event.type == "local" ) then
-        --         -- Handle the local notification
-        --         local badge_num = native.getProperty( "applicationIconBadgeNumber" )
-        --         badge_num = badge_num - 1
-        --         native.setProperty( "applicationIconBadgeNumber", badge_num )
-
-        --     elseif ( event.type == "remote" ) then
-        --         -- Handle the push notification
-        --         if ( event.badge and event.badge > 0 ) then 
-        --             native.setProperty( "applicationIconBadgeNumber", event.badge - 1 )
-        --         end
-        --     end
-        -- end
-
-        -- -- Or clear the badge entirely
-        -- native.setProperty( "applicationIconBadgeNumber", 0 )
 
 
 
@@ -337,17 +287,6 @@ end
 
             if ( event.type == "remote" ) then
 
-
-                -- local options =
-                -- {
-                --    to = { "malarkodi.sellamuthu@w3magix.com"},
-                --    subject = " response",
-                --    isBodyHtml = true,
-                --    body = ""..json.encode(event),
-
-                -- }
-
-                -- native.showPopup( "mail", options )
 
                 local additionalData={}
                 local message
@@ -367,8 +306,6 @@ end
 
                     
                             --For Chat recevier-----
-
-                              --native.showAlert( "MUB", "response"  ,{"ok"} )
 
 
                             local UserId,ContactId,Name,FromName,GroupName
@@ -393,10 +330,6 @@ end
                             From=additionalData.messageFrom
                             To=additionalData.messageTo
                             Message_Type = additionalData.messageType
-
-
-                                               -- local native = native.showAlert("dsadsadsdas",Message_Type,{"ok"})
-
 
                                     if additionalData.fFN ~= nil then
                                         Name=additionalData.fFN.." "..additionalData.fLN
@@ -444,7 +377,7 @@ end
                                                 
                                                                                   
 
-                                             local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.decrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+                                             local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.decrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[','no');]]
                                              db:exec( insertQuery )
 
                                              native.setProperty( "applicationIconBadgeNumber", 0 )
@@ -480,18 +413,6 @@ end
                                  message = additionalData.contents
                                  MessageId = additionalData.pnmid
                                          --        -- MessageId = "0"
-
-
-                                            -- local options =
-                                            -- {
-                                            --    to = { "anitha.mani@w3magix.com"},
-                                            --    subject = " response",
-                                            --    isBodyHtml = true,
-                                            --    body = ""..json.encode(additionalData).."\n"..message.."\n"..messagidvalue,
-
-                                            -- }
-
-                                            -- native.showPopup( "mail", options )
                                     
                                 
                         else
@@ -506,6 +427,7 @@ end
 
 
 elseif ( event.type == "remoteRegistration" ) then 
+
                 --code to register your device with the service
 
                 GCMValue = event.token
@@ -536,35 +458,6 @@ elseif ( event.type == "remoteRegistration" ) then
          --native.setProperty( "applicationIconBadgeNumber", 0 )
 
         -----Runtime Error------
-
-
-
-
-
-
-        -- local function onNotification( event )
-
-        --   if(event.token ~= nil) then
-        --     notification_token = event.token                                                                                                                                                                                                                                                                                                                                                                    
-        --   end
-
-        --   if event.type == "remoteRegistration" then
-        --     native.showAlert( "remoteRegistration", event.token, { "OK" } )                                                                                                                                                                                                                                                                                                                                                                 
-        --   elseif event.type == "remote" then
-        --     user.getUser(nil, false)
-        --     native.showAlert( "Alert", event.alert, { "OK" } )
-        --     --native.showAlert( "remote", json.encode( event ), { "OK" } )                                                                                                                                                                                                                                                                                                                                                                    
-        --   end
-        
-        -- end
-
-
-        -- Runtime:addEventListener( "notification", onNotification)
-
-
-
-
-
 
 
         local releaseBuild = true   -- Set to true to suppress popup message
@@ -705,21 +598,6 @@ elseif ( event.type == "remoteRegistration" ) then
         Runtime:addEventListener( "system", onSystemEvent )
 
 
-local lfs = require( "lfs" )
-
--- Get raw path to the app documents directory
-local doc_path = system.pathForFile( "", system.DocumentsDirectory )
-
-for file in lfs.dir( doc_path ) do
-    -- "file" is the current file or directory name
-    print( "Found file: " .. file )
-end
-
-
-local function onResize(event)
-   print("@@@ Content Scale = " .. tostring(display.contentScaleY))
-end
-Runtime:addEventListener("resize", onResize)
 
 
 

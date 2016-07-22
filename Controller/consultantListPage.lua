@@ -73,13 +73,6 @@ local editedgroupname=""
 consultantList_array[#consultantList_array+1] = display.newGroup()
 local status,forwardDetail
 
-
-local tabBarBackground = "res/assert/tabBarBg.png"
-local tabBarLeft = "res/assert/tabSelectedLeft.png"
-local tabBarMiddle = "res/assert/tabSelectedMiddle.png"
-local tabBarRight = "res/assert/tabSelectedRight.png"
-
-
 --------------------------------------------------
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 	ContactId = row.ContactId
@@ -132,8 +125,6 @@ local function consultantTounch( event )
 									local i = action_event.index
 
 									if i == 1 then
-
-										print( "here-----" )
 
 											local options = {
 											effect = "flipFadeOutIn",
@@ -1488,6 +1479,10 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
+	if event.params then
+		pageid_value = event.params.page_id
+	end
+
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 
@@ -1552,9 +1547,21 @@ function scene:create( event )
     							GroupIcon:setMask( mask )
 			            end
 	end
-	if not GroupIcon then 
+	if not GroupIcon  ~= nil then 
 
-		GroupIcon = display.newImageRect( sceneGroup, "res/assert/career-user.png", 38, 33 )
+	
+
+				local imagename=""
+
+			if pageid_value ~= nil and pageid_value:lower( ) == "group" then
+				imagename = "res/assert/defalutgroup.png"
+			elseif pageid_value ~= nil and pageid_value:lower( ) == "broadcast" then
+				imagename = "res/assert/defalutbroadcast.png"
+			else
+				imagename = "res/assert/career-user.png"
+			end
+
+		GroupIcon = display.newImageRect( sceneGroup,imagename, 38, 33 )
 		
 	end
 
@@ -1566,9 +1573,9 @@ function scene:create( event )
 		GroupIcon:addEventListener( "touch"	, bgTouch )
 
 		
-		GroupIconEdit = display.newText( sceneGroup, "Edit", 18, 13,native.systemFont,14 )
-		GroupIconEdit.x = GroupIcon.x+5
-		GroupIconEdit.y = GroupIcon.y+7
+		GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
+		GroupIconEdit.x = GroupIcon.x
+		GroupIconEdit.y = GroupIcon.y
 		GroupIconEdit.anchorX=0
 		GroupIconEdit.id = "imgEdit"
 		GroupIconEdit.isVisible = false

@@ -11,7 +11,6 @@ local lfs = require ("lfs")
 local mime = require("mime")
 local style = require("res.value.style")
 local Utility = require( "Utils.Utility" )
-local newGroup = require( "Controller.newGroupAlert" )
 local json = require("json")
 
 
@@ -501,7 +500,7 @@ local function TabbarTouch( event )
 
 		if list[i].MyUnitBuzzGroupProfilePicture ~= nil and list[i].MyUnitBuzzGroupProfilePicture ~= "" then
 			local Image
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image = display.newImageRect(tempGroup,"res/assert/defalutgroup.png",35,33)
 			Image.x=30;Image.y=background.y+background.height/2
 
 			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].MyUnitBuzzGroupProfilePicture,
@@ -535,7 +534,7 @@ local function TabbarTouch( event )
 
 	    		end, list[i].MyUnitBuzzGroupId..".png", system.DocumentsDirectory)
 		else
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image = display.newImageRect(tempGroup,"res/assert/defalutgroup.png",38,33)
 			Image.x=30;Image.y=background.y+background.height/2
 
 		end

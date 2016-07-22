@@ -230,5 +230,7 @@ ApplicationConfig.AddImageFromNativeAppImageLibrary = ApplicationConfig.BASE_URL
 
 ApplicationConfig.ForwarChatMessageDetails = ApplicationConfig.BASE_URL.."/MyUnitBuzz/ForwarChatMessageDetails"
 
+ApplicationConfig.GetBroastcastDetailsbyContactId = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetBroastcastDetailsbyContactId"
+
 
 
