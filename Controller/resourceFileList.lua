@@ -99,7 +99,7 @@ local filenamevalue = ""
 			end
 
 
-
+local pathValue="/"
 
 
 			local function onRowRender_DocLibList( event )
@@ -124,6 +124,7 @@ local filenamevalue = ""
 
 				rowvalues = file_array[row.index].name
 
+
 				print("NAME   :    "..file_array[row.index].name)
 
 
@@ -139,7 +140,8 @@ local filenamevalue = ""
 
 				if( "press" == phase ) then
 
-											local path = "/"
+										rowvalues = file_array[row.index].name
+											local path = pathValue
 										    local pathType1 = ""
 
 										   -- title.text = file_array[row.index].name
@@ -167,16 +169,12 @@ local filenamevalue = ""
 
 													end
 
-										    	    title.text = string.gsub( file_array[row.index].name, "//", "" ) 
-												    title.type = "innertype"
-												    back_icon_bg.type = "innertype"
-												    back_icon.type = "innertype"
-
+										    	 
 										    end
 
 										
 
-										  
+										  pathValue = pathValue..rowvalues
 
 											-- Check to see if path exists
 											if path and lfs.attributes(path..rowvalues ) then
@@ -184,8 +182,7 @@ local filenamevalue = ""
 											    print("pathtype     "..pathType1)
 											end
 
-
-
+									
 											-- Check if path is a directory
 											if pathType1 == "directory" then
 
@@ -196,7 +193,9 @@ local filenamevalue = ""
 
 												Documents_list:deleteAllRows()
 
-														  for file in lfs.dir(rowvalues ) do
+												native.showAlert( "MUB", "Path : "..pathValue,{"ok"} )
+
+														  for file in lfs.dir(pathValue ) do
 
 														  	print("true")
 
@@ -204,7 +203,7 @@ local filenamevalue = ""
 
 																         print("FILE 123: " .. file)
 
-																         fileAtr = lfs.attributes( path.."/"..rowvalues)
+																         fileAtr = lfs.attributes( pathValue )
 
 
 																         --filenamevalue[#filenamevalue+1] = { name = path..file_array[row.index].name }
@@ -440,7 +439,7 @@ local filenamevalue = ""
 						file_array[#file_array] = nil
 					end
 
-				local path = "/"
+				local path = pathValue
 				local pathType = ""
 
 				-- Check to see if path exists
@@ -458,9 +457,9 @@ local filenamevalue = ""
 
 								         print("FILE: " .. file)
 
-								         fileAtr = lfs.attributes( path .. "/" .. file )
+								         fileAtr = lfs.attributes( path.. file )
 
-								         file_array[#file_array+1] = { name = path.."/"..file}
+								         file_array[#file_array+1] = { name = path..""..file}
 
 
 									   		 if fileAtr ~= nil then 
@@ -473,7 +472,7 @@ local filenamevalue = ""
 
 								    end
 							end
-
+\
 				else
 
 													title.text = ResourceLibrary.PageTitle
