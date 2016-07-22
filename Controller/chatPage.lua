@@ -142,7 +142,7 @@ function formatSizeUnits(event)
 
 		print("highest size of the image ",size)
 
-		local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+		local image = native.showAlert( ChatPage.ImageUploadError,ChatPage.ImageSize, { CommonWords.ok } )
 
 		
 	elseif (event>=1024)  then   
@@ -315,7 +315,7 @@ local function attachAction( event )
 
 			else
 
-				local image1 = native.showAlert( "Camera Unavailable", "Camera is not supported in this device", { CommonWords.ok } )
+				local image1 = native.showAlert( ChatPage.CameraUnavailable, ChatPage.CameraNotSupported, { CommonWords.ok } )
 
 			end
 
@@ -1604,14 +1604,14 @@ local function videoPlay( event )
 
 								print( json.encode(selectedForDeleteID[1]) , ContactId )
 								if selectedForDeleteID[1].contactid == ContactId then
-									local alert = native.showAlert("Delete", "Delete message?", { CommonWords.ok , CommonWords.cancel }, onComplete )
+									local alert = native.showAlert(MessagePage.DeleteText, ChatPage.DeleteMessage, { CommonWords.ok , CommonWords.cancel }, onComplete )
 								else
-									local alert = native.showAlert("Delete", "Delete message from "..UserName.."?", { CommonWords.ok , CommonWords.cancel }, onComplete )
+									local alert = native.showAlert(MessagePage.DeleteText, ChatPage.DeleteMessageFrom..UserName.."?", { CommonWords.ok , CommonWords.cancel }, onComplete )
 								end
 
 							else
 
-								local alert = native.showAlert("Delete", "Delete "..tostring(deleteMsgCount).." messages?", { CommonWords.ok , CommonWords.cancel }, onComplete )
+								local alert = native.showAlert(MessagePage.DeleteText, MessagePage.DeleteText.." "..tostring(deleteMsgCount)..ChatPage.MessageText, { CommonWords.ok , CommonWords.cancel }, onComplete )
 
 							end
 
@@ -2204,20 +2204,16 @@ function ImageClose(event)
 
 	local function scrollAction(value)
 
-		       		-- if value == 0 then
-		       		-- else
+		ChatScrollContent.y=value
 
-		       		-- end
-		       		ChatScrollContent.y=value
-
-		       	end
+	end
 
 
 
 
-		       	local function ChatBoxHandler( event )
+	local function ChatBoxHandler( event )
 
-		       		if ( event.phase == "began" ) then
+	if ( event.phase == "began" ) then
         -- user begins editing numericField
 
         if isIos then

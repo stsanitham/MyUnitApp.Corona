@@ -252,17 +252,17 @@ end
 
 local function changeTask(  )
 
-	AppintmentWith.placeholder="Linked To"
+	AppintmentWith.placeholder=EventCalender.Linked_to
 
 	PurposeLbl.text = ""
 
 	PriorityLbl.text = AddeventPage.NotStarted
 
-	Prioritytxt.text = "Status"
+	Prioritytxt.text = AddeventPage.Status
 
 	TicklerType = "TASK"
 
-	Purposetxt.text = "Priority"
+	Purposetxt.text = AddeventPage.Priority
 
 
 
@@ -310,7 +310,7 @@ local function changeTask(  )
 end
 
 local function changeCall(  )
-	AppintmentWith.placeholder="Call With"
+	AppintmentWith.placeholder=EventCalender.Call_With
 
 	PurposeLbl.text = ""
 
@@ -318,7 +318,7 @@ local function changeCall(  )
 
 	callGroup.isVisible = true
 
-	Event_toLbl.text = "Duration"
+	Event_toLbl.text = AddeventPage.Duration
 
 	Event_to_date.x= Event_to_datebg.x+35
 
@@ -424,13 +424,9 @@ local function changeCall(  )
 
 			CallDirection = "1"
 
-			print("inbound from switch with 1")
-
 		elseif tostring(switch.isOn) == "true" and switchid == "outbound" then 
 
 			CallDirection = "0"
-
-			print("outbound from switch with 0")
 
 		end
 
@@ -909,8 +905,6 @@ function get_SaveAttachmentDetails(response)
 
 		PriorityLbl.text = AddeventPage.NotStarted
 
-		print("45645656454645654645665564456")
-
 	else
 
 		PriorityLbl.text=EventCalender.Low
@@ -1179,7 +1173,7 @@ local function TouchAction( event )
         	if PurposeLbl.text == "" or PurposeLbl.text == AddeventPage.SelectPurpose then
         		PurposeLbl:setFillColor( 1,0,0 )
         		PurposeLbl.size = 10
-        		PurposeLbl.text = "* Select Purpose"
+        		PurposeLbl.text = AddeventPage.SelectPurpose
         		scrollView:scrollToPosition
         		{
         			y = -150,
@@ -1269,8 +1263,6 @@ local function TouchAction( event )
 
 					if PurposeLbl.text:lower( ) == "other" then
 
-						print("Other.text : "..Other.text)
-
 						if Other.text == "" then
 
 							SetError(AddeventPage.other_purpose,Other)
@@ -1278,9 +1270,6 @@ local function TouchAction( event )
 						else
 							
 							if TicklerType:lower( ) == "call" then
-
-								print("$%^$%^$%^$%^$%^$%^$%^$%^$%^%^%^")
-
 
 								local time = makeTimeStamp(startdate)
 
@@ -1384,9 +1373,7 @@ local function TouchAction( event )
 
 					if TicklerType:lower( ) == "call" then
 
-						
-						
-print("%^&%^&%^&%^&%^&%^&%^&%^&^&%^&%%^&^&^&^%&^&%^%&%^&^%&")
+				
 						local time = makeTimeStamp(startdate)
 
 						time = time + ((tonumber(Event_to_date.value)+1)*3600) + (tonumber(Event_to_time.value)*60)
@@ -1998,11 +1985,8 @@ print("%^&%^&%^&%^&%^&%^&%^&%^&^&%^&%%^&^&^&^%&^&%^%&%^&^%&")
 
 
 				elseif ( event.phase == "ended" or event.phase == "submitted" ) then
-        -- do something with defaultField text
 
-        
-
-    elseif ( event.phase == "editing" ) then
+          elseif ( event.phase == "editing" ) then
 
 	    	if event.target.id == "addinvitees" then
 
@@ -2010,7 +1994,7 @@ print("%^&%^&%^&%^&%^&%^&%^&%^&^&%^&%%^&^&^&^%&^&%^%&%^&^%&")
 
 			end
 
-		if event.text:len() == 1 then
+		       if event.text:len() == 1 then
 
 					for i=1,#searchArraytotal do
 						searchArraytotal[i]=nil
@@ -2190,7 +2174,7 @@ local function usertextField( event )
 
         end
 
-        if event.target.text == "*Phone Number is mandatory" then
+        if event.target.text == AddeventPage.PhoneNumberMandatory then
         	event.target:setTextColor ( 0,0,0 )
         	event.target.size = 14
         	event.target.text=""
@@ -2843,10 +2827,10 @@ saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40,
 saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 saveBtn_BG.id = "save"
 
-saveBtn = display.newText( sceneGroup, "Save",saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
+saveBtn = display.newText( sceneGroup, AddeventPage.Save ,saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
 
 if isUpdate == true then
-	saveBtn.text = "Update"
+	saveBtn.text = AddeventPage.Update
 	status="details"
 end
 

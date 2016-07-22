@@ -51,7 +51,7 @@ local function closeDetails( event )
 				r:stopRecording()
 				timer.cancel(countdown)
 
-				keyTips.text = "Recording Stopped"
+				keyTips.text = AudioRecordPage.StopRecording
 
 			end
 
@@ -104,7 +104,7 @@ local function closeDetails( event )
 										r:stopRecording()
 										timer.cancel(countdown)
 
-										keyTips.text = "Recording Stopped"
+										keyTips.text = AudioRecordPage.StopRecording
 
 									end
 
@@ -201,7 +201,7 @@ local function closeDetails( event )
 			        		r:stopRecording()
 			        		timer.cancel(countdown)
 
-			        		keyTips.text = "Recording Stopped"
+			        		keyTips.text = AudioRecordPage.StopRecording
 
 			        	end
 

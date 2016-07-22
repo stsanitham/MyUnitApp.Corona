@@ -201,6 +201,9 @@ EventCalender.EventParty = "Event (Party) "
 EventCalender.Successfully="Successfully"
 EventCalender.AddedSuccessfully="added Successfully"
 
+EventCalender.RecurringDeleteAlert = "You can delete this Recurring Event only on the web"
+EventCalender.RecurringEditAlert = "You can edit this Recurring Event only on the web"
+
 
 CareerPath = {}
 
@@ -264,6 +267,7 @@ ImageLibrary.Grid="Grid"
 ImageLibrary.UploadImage = "Upload Image"
 ImageLibrary.ImageUploaded = "Image uploaded successfully!"
 ImageLibrary.FileChoose = "Choose File"
+ImageLibrary.Image = "Image"
 
 
 Message = {}
@@ -340,6 +344,9 @@ AddeventPage.SelectPurpose = "*Select Purpose"
 AddeventPage.PhoneNumberMandatory = "*Phone Number is mandatory"
 AddeventPage.AppointmentWithPlace = "Appointment With"
 AddeventPage.NotStarted = "Not Started"
+AddeventPage.Status = "Status"
+AddeventPage.Duration = "Duration"
+AddeventPage.Update = "Update"
 
 
 
@@ -447,15 +454,29 @@ MessagePage.ErrorText = "Enter the short/long message in the respective field an
 MessagePage.SavingFailed = "Saving Failed"
 MessagePage.SchedulingFailed = "Scheduling Failed"
 MessagePage.ToDeleteGROUP = "Are you sure you want to delete?"
+MessagePage.LongMessageText = "Enter the Long Message"
+MessagePage.ShortMessageText = "Enter the Short Message"
+MessagePage.ImageNameText = "Image Name"
+MessagePage.AudioNameText = "Audio Name"
+MessagePage.SelectedNumber = " selected"
+
 
 ChatPage = {}
 
 ChatPage.Group = "Group"
 ChatPage.Chats = "Chats"
 ChatPage.Consultant_List = "Consultants"
+ChatPage.AddConsultant = "Add Consultant..."
+ChatPage.DeleteGroupText = "Delete Group"
+ChatPage.DeleteMessage = "Delete message?"
+ChatPage.DeleteMessageFrom = "Delete message from "
+ChatPage.MessageText = " messages?"
 ChatPage.Message_Copied = "Message Copied"
+ChatPage.EnterSubjectText = "Enter new subject"
 ChatPage.ImageUploadError = "Error in Image Upload"
 ChatPage.ImageSize = "Size of the image cannot be more than 10 MB"
+ChatPage.CameraUnavailable = "Camera Unavailable"
+ChatPage.CameraNotSupported = "Camera is not supported in this device"
 ChatPage.RecordStartText = "Start Recoding...."
 ChatPage.Today = "TODAY"
 ChatPage.Yesterday = "YESTERDAY"
@@ -476,6 +497,11 @@ ChatPage.BroadcastListCreated = "Broadcast List Created"
 ChatPage.BroadcastListCreationSuccess = "Broadcast List created successfully"
 ChatPage.BroadcastRecipients = "recipients"
 ChatPage.Broadcast = "Broadcast"
+ChatPage.ForwardTo = "Forward to "
+ChatPage.SelectBroadcast = "Select Broadcast"
+ChatPage.SelectGroup = "Select Group"
+ChatPage.GroupUpdationSuccess = "Group updated successfully"
+ChatPage.BroadcastListUpdationSuccess = "Broadcast List updated successfully"
 
 
 
@@ -512,3 +538,36 @@ RegistrationScreen.SuccessMessage = "Your registration is successfully completed
 RegistrationScreen.EmailRegistered = "Email Already Registered"
 RegistrationScreen.EmailRegisteredText = "This email address is already registered with us!"
 RegistrationScreen.Introduction = "Introduction"
+
+
+
+AddNewContact = {}
+
+AddNewContact.AddTM = "Add New Team Member"
+AddNewContact.AddTMSuccess = "Team Member added successfully!"
+AddNewContact.AddContactSuccess = "Contact added successfully!"
+AddNewContact.IncorrectPhone = "Phone number you have entered is invalid"
+AddNewContact.MKRank_placeholder = "- Select MK Rank -"
+
+
+
+AudioRecordPage = {}
+
+AudioRecordPage.StopRecording = "Recording Stopped"
+AudioRecordPage.Playing = "Playing"
+AudioRecordPage.PauseRecording = "Recording Paused"
+AudioRecordPage.RecordHelpText = "Please record the audio to proceed"
+AudioRecordPage.Recording = "Recording"
+AudioRecordPage.PressStart = "Press ‘Start’ to record"
+AudioRecordPage.Start = "Start"
+AudioRecordPage.Stop = "Stop"
+
+
+
+
+
+
+
+
+
+

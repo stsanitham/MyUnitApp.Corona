@@ -83,7 +83,7 @@ local function touchBg( event )
 	 	AlertTop:setFillColor(Utils.convertHexToRGB(color.Gray))
 	 	ImageFullViewGroup:insert(AlertTop)
 
-	 	AlertText = display.newText("Image" ,0,0,native.systemFontBold,15)
+	 	AlertText = display.newText(ImageLibrary.Image ,0,0,native.systemFontBold,15)
 	 	AlertText.anchorX=0
 	 	AlertText.x=20;AlertText.y=AlertTop.y
 	 	AlertText:setFillColor(1,1,1)

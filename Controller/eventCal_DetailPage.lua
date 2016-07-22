@@ -146,11 +146,11 @@ local function EditOption( event )
 
 				if event.target.id == "delete" then
 
-					local alert = native.showAlert(EventCalender.PageTitle, "You can delete this Recurring Event only on the web" , { CommonWords.ok } )
+					local alert = native.showAlert(EventCalender.PageTitle, EventCalender.RecurringDeleteAlert , { CommonWords.ok } )
 
 				elseif event.target.id == "edit" then
 					
-					local alert = native.showAlert(EventCalender.PageTitle, "You can edit this Recurring Event only on the web" , { CommonWords.ok } )
+					local alert = native.showAlert(EventCalender.PageTitle, EventCalender.RecurringEditAlert , { CommonWords.ok } )
 				end
 
 			else

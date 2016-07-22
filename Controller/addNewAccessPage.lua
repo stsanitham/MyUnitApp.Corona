@@ -266,8 +266,8 @@ local function RequestProcess()
 			Email.text = ""
 			Phone.text = ""
 			Password.text = ""
-			MKRank.text = "-Select MK Rank-"
-			MKRank.value = "-Select MK Rank-"
+			MKRank.text = RequestAccess.MKRank_placeholder
+			MKRank.value = RequestAccess.MKRank_placeholder
 			Comment.text = ""
 			emailnotifybox.isVisible = false
 			textnotifybox.isVisible = false
@@ -340,11 +340,11 @@ local function RequestProcess()
 
 					if switchtype == "Contacts" then
 
-							alert = native.showAlert( "Add New Contact" , "Contact added successfully!", { CommonWords.ok }, onComplete )
+							alert = native.showAlert( FlapMenu.AddNewAccess , AddNewContact.AddContactSuccess, { CommonWords.ok }, onComplete )
 
 					elseif switchtype == "Team Member" then
 
-							alert = native.showAlert( "Add New Team Member" , "Team Member added successfully!" , { CommonWords.ok }, onComplete )
+							alert = native.showAlert( AddNewContact.AddTM , AddNewContact.AddTMSuccess , { CommonWords.ok }, onComplete )
 
 					end
 
@@ -567,25 +567,15 @@ local function textfield( event )
 
 				print(event.target.text:len())
 
-				--Comment.text = ""
-
-					-- if event.target.text ~= " " then
-
-					-- 	 event.target.text = event.target.text
-
-					-- else
-
-					--      event.target.placeholder = RequestAccess.Comment_placeholder
-
-					-- end
-
 				if  event.target.text:len() > 1 then
 
 					Comment.text = event.target.text
 
 				elseif event.target.text:len() == 1 then
+
 					Comment.text = RequestAccess.Comment_placeholder
 					Comment.alpha = 0.35
+
 			    end
 						
 				native.setKeyboardFocus( nil )
@@ -606,12 +596,8 @@ local function textfield( event )
 
 							             if Email.text ~= nil and Email.text ~= "" and Utils.emailValidation(Email.text) then
 
-							             
-								             	print("haiiiiiiiiii")
-
+							            
 								             	if (Phone.text ~= nil and Phone.text ~= "" and Phone.text:len() == 14 and Utils.PhoneMasking(tostring(text))) then
-
-								             		print("helllloooooooo")
 
 										             		   textnotifytext.isVisible = true
 										             		   textnotifybox.isVisible = true
@@ -622,10 +608,6 @@ local function textfield( event )
 									             	            Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
 														 		Phone.y = emailnotifytext.y+emailnotifytext.height+16
 														 		Phone_bottom.y= Phone.y+10
-
-								 	    					 --    Phone_bg.y = textnotifytext.y+2
-													 		    -- Phone.y = textnotifytext.y+2
-													 		    -- Phone_bottom.y= Phone.y+10
 
 													 		    textnotifybox.y = Phone_bottom.y + 15
 																textnotifytext.y= Phone_bottom.y + 15
@@ -675,21 +657,15 @@ local function textfield( event )
 														else
 
 
- print("not helllloooooooo")
+											             		    textnotifytext.isVisible = false
+											             		    textnotifybox.isVisible = false
 
-											             		 textnotifytext.isVisible = false
-											             		 textnotifybox.isVisible = false
-
-											             	     emailnotifytext.isVisible = true
-											             	     emailnotifybox.isVisible = true
+											             	        emailnotifytext.isVisible = true
+											             	        emailnotifybox.isVisible = true
 
 										             	            Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
 															 		Phone.y = emailnotifytext.y+emailnotifytext.height+16
 															 		Phone_bottom.y= Phone.y+10
-
-									 	    					 --    Phone_bg.y = textnotifytext.y+2
-														 		    -- Phone.y = textnotifytext.y+2
-														 		    -- Phone_bottom.y= Phone.y+10
 
 														 		    Password_bg.y = Phone_bg.y+Phone_bg.height+12
 														 		    Password.y = Phone_bg.y+Phone_bg.height+12
@@ -757,35 +733,24 @@ local function textfield( event )
 
 							             	if (Phone.text ~= nil and Phone.text ~= "" and Phone.text:len() == 14 and Utils.PhoneMasking(tostring(text))) then
 
-							             		print("email not null and phone not null")
+								             		   SetError("*"..RequestAccess.EmailValidation_error,Email)
 
-							             		  SetError("*".."Enter the valid Email",Email)
-
-							             		  textnotifytext.isVisible = true
-							             		  textnotifybox.isVisible = true
+								             		   textnotifytext.isVisible = true
+								             		   textnotifybox.isVisible = true
 
 							             	else
 
-							             		print("email not null and phone null")
+									             	    SetError("*"..RequestAccess.EmailValidation_error,Email)
 
-								            	--print("email not valid")
+									             	    emailnotifytext.isVisible = false
+										             	emailnotifybox.isVisible = false
 
-							             	    SetError("*".."Enter the valid Email",Email)
-
-							             	    emailnotifytext.isVisible = false
-								             	emailnotifybox.isVisible = false
-
-								             	textnotifytext.isVisible = false
-							             		textnotifybox.isVisible = false
-
+										             	textnotifytext.isVisible = false
+									             		textnotifybox.isVisible = false
 
 								             	        Phone_bg.y = Email_bg.y+Email_bg.height+7
 														Phone.y = Email_bg.y+Email_bg.height+7
 														Phone_bottom.y= Phone.y+10
-
-											 		    -- Password_bg.y = Phone_bg.y+Phone_bg.height+7
-											 		    -- Password.y = Phone_bg.y+Phone_bg.contentHeight+7
-											 		    -- Password_bottom.y = Password.y+10
 
 											 		    Password_bg.y = Phone_bg.y+Phone_bg.height+9
 														Password.y = Phone_bg.y+Phone_bg.height+9
@@ -842,14 +807,7 @@ local function textfield( event )
 												end
 
 
-								             	      --native.setKeyboardFocus(Phone)
-
 							    elseif (Email.text == "" or Email.text == Email.id or Email.text == PopupGroup.EmailIdRequired)  then
-
-								         	   -- SetError("*"..RequestAccess.Email_error,Email)
-
-								         	   print("email is null")
-
 
 										         	    emailnotifytext.isVisible = false
 										             	emailnotifybox.isVisible = false
@@ -859,9 +817,6 @@ local function textfield( event )
 														Phone.y = Email_bg.y+Email_bg.height+7
 														Phone_bottom.y= Phone.y+10
 
-											 		    -- Password_bg.y = Phone_bg.y+Phone_bg.height+7
-											 		    -- Password.y = Phone_bg.y+Phone_bg.contentHeight+7
-											 		    -- Password_bottom.y = Password.y+10
 
 											 		    Password_bg.y = Phone_bg.y+Phone_bg.height+9
 														Password.y = Phone_bg.y+Phone_bg.height+9
@@ -919,9 +874,6 @@ local function textfield( event )
 													 		if (Phone.text ~= nil and Phone.text ~= "" and Phone.text:len() == 14 and Utils.PhoneMasking(tostring(text))) then
 
 
-													 			     print("phone not null email null")
-
-
 																			textnotifybox.isVisible = true
 																			textnotifytext.isVisible = true
 
@@ -943,9 +895,6 @@ local function textfield( event )
 
 
 																			   if radiobutton_id == "teammember" then
-
-																			    	print("67567656756∂2323 phone email not null")
-
 																										
 																						MKRank_bg.isVisible = true
 																						MKRank.isVisible = true
@@ -960,17 +909,17 @@ local function textfield( event )
 																					
 																			    else
 
-																				 	MKRank_bg.isVisible = false
-																			 		MKRank.isVisible = false
-																			 		rankText_icon.isVisible = false
+																					 	MKRank_bg.isVisible = false
+																				 		MKRank.isVisible = false
+																				 		rankText_icon.isVisible = false
 
-																			 		Password_bg.y = textnotifytext.y+textnotifytext.height+12
-																					Password.y = textnotifytext.y+textnotifytext.height+15
-																					Password_bottom.y = Password.y+10
+																				 		Password_bg.y = textnotifytext.y+textnotifytext.height+12
+																						Password.y = textnotifytext.y+textnotifytext.height+15
+																						Password_bottom.y = Password.y+10
 
 
-																			 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
-																					Comment.y = Comment_bg.y
+																				 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
+																						Comment.y = Comment_bg.y
 
 																		 	    end
 
@@ -985,8 +934,6 @@ local function textfield( event )
 
 														    else             
 
-														    	        print("phone null email present")
-
 
 																			textnotifybox.isVisible = false
 																			textnotifytext.isVisible = false
@@ -998,16 +945,14 @@ local function textfield( event )
 																			 PasswordHelptext.y= Password_bottom.y + 18
 																			 GeneratePasstext.y= PasswordHelptext.y + 20
 
-																	 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
-																	 		contact_txt.y = contact_switch.y
+																	 		 contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
+																	 		 contact_txt.y = contact_switch.y
 
-																	 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
-																	 		teammember_txt.y = teammember_switch.y
+																	 		 teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
+																	 		 teammember_txt.y = teammember_switch.y
 
 
 																			    if radiobutton_id == "teammember" then
-
-																			    	print("67567656756∂2323")
 
 																					MKRank_bg.isVisible = true
 																					MKRank.isVisible = true
@@ -1019,7 +964,6 @@ local function textfield( event )
 																					Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
 																					Comment.y = Comment_bg.y
 
-																				
 																			    else
 
 																				 	MKRank_bg.isVisible = false
@@ -1062,7 +1006,6 @@ local function textfield( event )
 
                       		if Phone.text ~= nil and Phone.text ~= "" and Phone.text:len() == 14 and Utils.PhoneMasking(tostring(text)) then
 
-                      			print("phone not null")
 
 											textnotifybox.isVisible = true
 											textnotifytext.isVisible = true
@@ -1085,9 +1028,6 @@ local function textfield( event )
 
 
 											   if radiobutton_id == "teammember" then
-
-											    	print("67567656756∂2323 phone email not null")
-
 																		
 														MKRank_bg.isVisible = true
 														MKRank.isVisible = true
@@ -1110,13 +1050,10 @@ local function textfield( event )
 													Password.y = textnotifytext.y+textnotifytext.height+15
 													Password_bottom.y = Password.y+10
 
-
 											 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
 													Comment.y = Comment_bg.y
 
 										 	    end
-
-
 
 									 		sumbitBtn.y = Comment.y+Comment.height/2+20
 									 		sumbitBtn_lbl.y=sumbitBtn.y
@@ -1125,34 +1062,30 @@ local function textfield( event )
 									 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
 									 		sumbitBtn_lbl.x = sumbitBtn.x+16
 
-									--native.setKeyboardFocus(Password)
 
 				elseif Phone.text ~= nil and Phone.text ~= "" and Phone.text:len() < 14 or not Utils.PhoneMasking(tostring(text)) then
 
-					print("not valid phone")
 
-					            SetError("*".."Phone number you have entered is invalid",Phone)
+						            SetError("*"..AddNewContact.IncorrectPhone,Phone)
 
-								textnotifybox.isVisible = false
-								textnotifytext.isVisible = false
+									textnotifybox.isVisible = false
+									textnotifytext.isVisible = false
 
-								 Password_bg.y = Phone_bg.y+Phone_bg.height+12
-								 Password.y = Phone_bg.y+Phone_bg.height+9
-								 Password_bottom.y = Password.y+10
+									 Password_bg.y = Phone_bg.y+Phone_bg.height+12
+									 Password.y = Phone_bg.y+Phone_bg.height+9
+									 Password_bottom.y = Password.y+10
 
-								 PasswordHelptext.y= Password_bottom.y + 18
-								 GeneratePasstext.y= PasswordHelptext.y + 20
+									 PasswordHelptext.y= Password_bottom.y + 18
+									 GeneratePasstext.y= PasswordHelptext.y + 20
 
-						 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
-						 		contact_txt.y = contact_switch.y
+							 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
+							 		contact_txt.y = contact_switch.y
 
-						 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
-						 		teammember_txt.y = teammember_switch.y
+							 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
+							 		teammember_txt.y = teammember_switch.y
 
 
 								    if radiobutton_id == "teammember" then
-
-								    	print("67567656756∂2323")
 
 										MKRank_bg.isVisible = true
 										MKRank.isVisible = true
@@ -1188,12 +1121,7 @@ local function textfield( event )
 							 		sumbitBtn_lbl.x = sumbitBtn.x+16
 
 
-
-								-- native.setKeyboardFocus(Password)
-
 				elseif Phone.text == nil or Phone.text == "" or Phone.text:len() == 0 then
-
-	                         print("length 0")
 
 	                         textnotifybox.isVisible = false
 	                         textnotifytext.isVisible = false
@@ -1504,7 +1432,7 @@ local sumbitBtnRelease = function( event )
 		if Phone.text == "" or Phone.text == Phone.id or Phone.text:len() < 14 or Phone.text==PopupGroup.PhoneNumRequired then
 			validation=false
 			SetError("*"..RequestAccess.Phone_error,Phone)
-		elseif Phone.text == "*Phone number you have entered is invalid" then
+		elseif Phone.text == "*"..AddNewContact.IncorrectPhone then
 			validation=false
 			SetError("*"..RequestAccess.Phone_error,Phone)
 		end
@@ -1518,7 +1446,7 @@ local sumbitBtnRelease = function( event )
 			validation=false
 			SetError("*"..PopupGroup.PasswordHelptext,Password)
 
-		elseif Password.text == "*Password must be between 6 and 12 characters in length" then
+		elseif Password.text == "*"..PopupGroup.PasswordHelptext then
 			validation=false
 			SetError("*"..RequestAccess.Password_error,Password)
 			
@@ -1650,15 +1578,15 @@ function getGeneratedPassword( response )
 	end
 
 	if (Password.newCharacters==" ") then
-				--Password.text = Password.text:sub(1,Password.text:len()-1)
-				if string.find( Password.text," " ) ~= nil then
+		--Password.text = Password.text:sub(1,Password.text:len()-1)
+		if string.find( Password.text," " ) ~= nil then
 
-					Password.text=string.gsub(Password.text," ","")
-				end
-
-			end
-
+			Password.text=string.gsub(Password.text," ","")
 		end
+
+	end
+
+end
 
 
 
@@ -1749,117 +1677,115 @@ function scene:create( event )
 		sceneGroup:insert(addNewAccess_scrollview)
 	
 
-
 -------------------------------------- first name -------------------------------------------
 
-FirstName_bg = display.newRect(10, 0, W-20, 25)
-FirstName_bg.y = title.y-title.contentHeight-15
-FirstName_bg.anchorX = 0
-FirstName_bg.alpha = 0.01
-addNewAccess_scrollview:insert(FirstName_bg)
+		FirstName_bg = display.newRect(10, 0, W-20, 25)
+		FirstName_bg.y = title.y-title.contentHeight-15
+		FirstName_bg.anchorX = 0
+		FirstName_bg.alpha = 0.01
+		addNewAccess_scrollview:insert(FirstName_bg)
 
-FirstName = native.newTextField(W/2+3, 0, W-20, 25)
-FirstName.id="First Name"
-FirstName.size=14	
-FirstName.anchorX = 0
-FirstName.y = title.y-title.contentHeight-15
-FirstName.x = 15
-FirstName.hasBackground = false
-FirstName:setReturnKey( "next" )
-FirstName.placeholder=RequestAccess.FirstName_placeholder
-addNewAccess_scrollview:insert(FirstName)
+		FirstName = native.newTextField(W/2+3, 0, W-20, 25)
+		FirstName.id="First Name"
+		FirstName.size=14	
+		FirstName.anchorX = 0
+		FirstName.y = title.y-title.contentHeight-15
+		FirstName.x = 15
+		FirstName.hasBackground = false
+		FirstName:setReturnKey( "next" )
+		FirstName.placeholder=RequestAccess.FirstName_placeholder
+		addNewAccess_scrollview:insert(FirstName)
 
-FirstName_bottom = display.newImageRect(addNewAccess_scrollview,"res/assert/line-large.png",W-20,5)
-FirstName_bottom.x=10
-FirstName_bottom.anchorX = 0
-FirstName_bottom.y= FirstName.y+13
-addNewAccess_scrollview:insert(FirstName_bottom)
+		FirstName_bottom = display.newImageRect(addNewAccess_scrollview,"res/assert/line-large.png",W-20,5)
+		FirstName_bottom.x=10
+		FirstName_bottom.anchorX = 0
+		FirstName_bottom.y= FirstName.y+13
+		addNewAccess_scrollview:insert(FirstName_bottom)
 
 -------------------------------------Last name ----------------------------------------------
 
-Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
-Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
-Name_bg.alpha = 0.01
-addNewAccess_scrollview:insert(Name_bg)
+		Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
+		Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
+		Name_bg.alpha = 0.01
+		addNewAccess_scrollview:insert(Name_bg)
 
-Name_bottom = display.newImageRect(addNewAccess_scrollview,"res/assert/line-large.png",W-20,5)
-Name_bottom.x=W/2
-Name_bottom.y= FirstName_bg.y+FirstName_bg.height+18
-addNewAccess_scrollview:insert(Name_bottom)
+		Name_bottom = display.newImageRect(addNewAccess_scrollview,"res/assert/line-large.png",W-20,5)
+		Name_bottom.x=W/2
+		Name_bottom.y= FirstName_bg.y+FirstName_bg.height+18
+		addNewAccess_scrollview:insert(Name_bottom)
 
-Name = native.newTextField( W/2+3, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
-Name.id="Last Name"
-Name.y = FirstName_bg.y+FirstName_bg.height+7
-Name.size=14
-Name.anchorX = 0
-Name.x = 15
-Name:setReturnKey( "next" )
-Name.hasBackground = false	
-Name.placeholder = RequestAccess.LastName_placeholder
-addNewAccess_scrollview:insert(Name)
+		Name = native.newTextField( W/2+3, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
+		Name.id="Last Name"
+		Name.y = FirstName_bg.y+FirstName_bg.height+7
+		Name.size=14
+		Name.anchorX = 0
+		Name.x = 15
+		Name:setReturnKey( "next" )
+		Name.hasBackground = false	
+		Name.placeholder = RequestAccess.LastName_placeholder
+		addNewAccess_scrollview:insert(Name)
 
 
 ----------------------------------Email address---------------------------------
-Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+7, W-20, 25 )
-Email_bg.alpha = 0.01
-addNewAccess_scrollview:insert(Email_bg)
+		Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+7, W-20, 25 )
+		Email_bg.alpha = 0.01
+		addNewAccess_scrollview:insert(Email_bg)
 
-Email_bottom = display.newImageRect(addNewAccess_scrollview,"res/assert/line-large.png",W-20,5)
-Email_bottom.x=W/2
-Email_bottom.y= Name_bg.y+Name_bg.height+18
-addNewAccess_scrollview:insert(Email_bottom)
+		Email_bottom = display.newImageRect(addNewAccess_scrollview,"res/assert/line-large.png",W-20,5)
+		Email_bottom.x=W/2
+		Email_bottom.y= Name_bg.y+Name_bg.height+18
+		addNewAccess_scrollview:insert(Email_bottom)
 
-Email = native.newTextField(W/2+3, Name_bg.y+Name_bg.height+7, W-20, 25 )
-Email.id="Email"
-Email.size=14
-Email.anchorX = 0
-Email.x = 15	
-Email:setTextColor(0,0,0)
-Email:setReturnKey( "next" )
-Email.hasBackground = false
-Email.placeholder=RequestAccess.EmailAddress_placeholder
-addNewAccess_scrollview:insert(Email)
-
-
-emailnotifybox = widget.newSwitch(
-{
-	left = 0,
-	top = Email_bottom.y,
-	style = "checkbox",
-	id = "email_checkbox",
-	initialSwitchState = true,
-	onPress = onSwitchPress
-	})
-emailnotifybox.width= 20
-emailnotifybox.height = 20
-emailnotifybox.isVisible = false
-emailnotifybox.anchorX= 0
-
-addNewAccess_scrollview:insert(emailnotifybox)
+		Email = native.newTextField(W/2+3, Name_bg.y+Name_bg.height+7, W-20, 25 )
+		Email.id="Email"
+		Email.size=14
+		Email.anchorX = 0
+		Email.x = 15	
+		Email:setTextColor(0,0,0)
+		Email:setReturnKey( "next" )
+		Email.hasBackground = false
+		Email.placeholder=RequestAccess.EmailAddress_placeholder
+		addNewAccess_scrollview:insert(Email)
 
 
-emailnotifytext = display.newText(PopupGroup.emailnotifytext,0,0,native.systemFont,14)
-emailnotifytext.x= 40
-emailnotifytext.anchorX=0
-emailnotifytext:setFillColor(0,0,0)
-emailnotifytext.y= Email_bottom.y + 15
-emailnotifytext.isVisible = false
-addNewAccess_scrollview:insert(emailnotifytext)
+		emailnotifybox = widget.newSwitch(
+		{
+			left = 0,
+			top = Email_bottom.y,
+			style = "checkbox",
+			id = "email_checkbox",
+			initialSwitchState = true,
+			onPress = onSwitchPress
+			})
+		emailnotifybox.width= 20
+		emailnotifybox.height = 20
+		emailnotifybox.isVisible = false
+		emailnotifybox.anchorX= 0
+
+		addNewAccess_scrollview:insert(emailnotifybox)
+
+
+		emailnotifytext = display.newText(PopupGroup.emailnotifytext,0,0,native.systemFont,14)
+		emailnotifytext.x= 40
+		emailnotifytext.anchorX=0
+		emailnotifytext:setFillColor(0,0,0)
+		emailnotifytext.y= Email_bottom.y + 15
+		emailnotifytext.isVisible = false
+		addNewAccess_scrollview:insert(emailnotifytext)
 
 
 -----------------------------------phone------------------------------------------
-Phone_bg = display.newRect(W/2, emailnotifytext.y+emailnotifytext.height+7, W-20, 25)
-Phone_bg.alpha = 0.01
-Phone_bg.y = Email_bg.y+Email_bg.height+9
-addNewAccess_scrollview:insert(Phone_bg)
+		Phone_bg = display.newRect(W/2, emailnotifytext.y+emailnotifytext.height+7, W-20, 25)
+		Phone_bg.alpha = 0.01
+		Phone_bg.y = Email_bg.y+Email_bg.height+9
+		addNewAccess_scrollview:insert(Phone_bg)
 
-Phone = native.newTextField(W/2+3, emailnotifytext.y+emailnotifytext.height+15, W-20, 25)
-Phone.id="Phone"
-Phone.size=14	
-Phone.y = Email_bg.y+Email_bg.height+9
-Phone.anchorX = 0
-Phone.x = 15
-		--Phone.text = "(111) 111 -1111"
+		Phone = native.newTextField(W/2+3, emailnotifytext.y+emailnotifytext.height+15, W-20, 25)
+		Phone.id="Phone"
+		Phone.size=14	
+		Phone.y = Email_bg.y+Email_bg.height+9
+		Phone.anchorX = 0
+		Phone.x = 15
 		Phone:setReturnKey( "next" )
 		Phone.hasBackground = false
 		Phone.placeholder=RequestAccess.Phone_placeholder
@@ -1900,18 +1826,17 @@ Phone.x = 15
 
 -----------------------------------Password---------------------------------------
 
-Password_bg = display.newRect(W/2, textnotifytext.y+textnotifytext.contentHeight+12, W-20, 25)
-Password_bg.alpha = 0.01
-Password_bg.y = Phone_bg.y+Phone_bg.height+9
-addNewAccess_scrollview:insert(Password_bg)
+		Password_bg = display.newRect(W/2, textnotifytext.y+textnotifytext.contentHeight+12, W-20, 25)
+		Password_bg.alpha = 0.01
+		Password_bg.y = Phone_bg.y+Phone_bg.height+9
+		addNewAccess_scrollview:insert(Password_bg)
 
-Password = native.newTextField(W/2+3, textnotifytext.y+textnotifytext.height+15, W-20, 25)
-Password.id="Password"
-Password.size=14	
-Password.anchorX = 0
-Password.x = 15
-Password.y = Phone_bg.y+Phone_bg.height+9
-		--Password.y = textnotifytext.y+textnotifytext.contentHeight+15
+		Password = native.newTextField(W/2+3, textnotifytext.y+textnotifytext.height+15, W-20, 25)
+		Password.id="Password"
+		Password.size=14	
+		Password.anchorX = 0
+		Password.x = 15
+		Password.y = Phone_bg.y+Phone_bg.height+9
 		Password:setReturnKey( "next" )
 		Password.hasBackground = false
 		Password.placeholder="Password"
@@ -1990,111 +1915,111 @@ Password.y = Phone_bg.y+Phone_bg.height+9
 
 ----------------------------------------MK rank------------------------------------------
 
-MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
-MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
-MKRank_bg.strokeWidth = 1
-MKRank_bg.isVisible = false
-MKRank_bg:setFillColor( 0,0,0,0 )
-MKRank_bg.id="MKrank"
-addNewAccess_scrollview:insert(MKRank_bg)
+		MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
+		MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
+		MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
+		MKRank_bg.strokeWidth = 1
+		MKRank_bg.isVisible = false
+		MKRank_bg:setFillColor( 0,0,0,0 )
+		MKRank_bg.id="MKrank"
+		addNewAccess_scrollview:insert(MKRank_bg)
 
 
-MKRank = display.newText("",MKRank_bg.x+5,MKRank_bg.y,MKRank_bg.contentWidth,MKRank_bg.height,native.systemFont,14 )
-MKRank.text = RequestAccess.MKRank_placeholder
-MKRank.value = "-Select MK Rank-"
-MKRank.id="MKrank"
-MKRank.alpha=0.9
-MKRank.isVisible = false
-MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-MKRank.y=MKRank_bg.y+5
-MKRank.x = 18
-MKRank.anchorX=0
-addNewAccess_scrollview:insert(MKRank)
+		MKRank = display.newText("",MKRank_bg.x+5,MKRank_bg.y,MKRank_bg.contentWidth,MKRank_bg.height,native.systemFont,14 )
+		MKRank.text = RequestAccess.MKRank_placeholder
+		MKRank.value = RequestAccess.MKRank_placeholder
+		MKRank.id="MKrank"
+		MKRank.alpha=0.9
+		MKRank.isVisible = false
+		MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+		MKRank.y=MKRank_bg.y+5
+		MKRank.x = 18
+		MKRank.anchorX=0
+		addNewAccess_scrollview:insert(MKRank)
 
-rankText_icon = display.newImageRect(addNewAccess_scrollview,"res/assert/arrow2.png",14,9 )
-rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth/2-15
-rankText_icon.isVisible = false
-rankText_icon.y=MKRank_bg.y
-addNewAccess_scrollview:insert(rankText_icon)
+		rankText_icon = display.newImageRect(addNewAccess_scrollview,"res/assert/arrow2.png",14,9 )
+		rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth/2-15
+		rankText_icon.isVisible = false
+		rankText_icon.y=MKRank_bg.y
+		addNewAccess_scrollview:insert(rankText_icon)
 
 
 
 ----------------------comments --------------------------------------
-Comment_bg = display.newRect( W/2, 0, W-20, 55)
---Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-Comment_bg.y = teammember_txt.y + teammember_txt.contentHeight+Comment_bg.height/2 +5
-Comment_bg:setFillColor( 0,0,0,0 )
-Comment_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-Comment_bg.strokeWidth = 1
-addNewAccess_scrollview:insert(Comment_bg)
+		Comment_bg = display.newRect( W/2, 0, W-20, 55)
+		--Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
+		Comment_bg.y = teammember_txt.y + teammember_txt.contentHeight+Comment_bg.height/2 +5
+		Comment_bg:setFillColor( 0,0,0,0 )
+		Comment_bg:setStrokeColor( 0, 0, 0 , 0.3 )
+		Comment_bg.strokeWidth = 1
+		addNewAccess_scrollview:insert(Comment_bg)
 
-Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 55 )
-Comment.placeholder=RequestAccess.Comment_placeholder
-Comment.isEditable = true
-Comment.size=14	
-Comment.x = 16
-Comment.anchorX=0
-Comment.y = Comment_bg.y
-Comment.id = "Comments"
-Comment.hasBackground = false
-Comment:setReturnKey( "next" )
+		Comment = native.newTextBox(W/2, Comment_bg.y, W-20, 55 )
+		Comment.placeholder=RequestAccess.Comment_placeholder
+		Comment.isEditable = true
+		Comment.size=14	
+		Comment.x = 16
+		Comment.anchorX=0
+		Comment.y = Comment_bg.y
+		Comment.id = "Comments"
+		Comment.hasBackground = false
+		Comment:setReturnKey( "next" )
 
-addNewAccess_scrollview:insert(Comment)
+		addNewAccess_scrollview:insert(Comment)
 
 
 ---------------------submit button------------------------------------
-sumbitBtn = display.newRect( 0,0,0,0 )
-sumbitBtn.x=W/2;sumbitBtn.y = Comment.y+Comment.height/2+20
-sumbitBtn.width=100
-sumbitBtn.height=25
-sumbitBtn.anchorX=0
-sumbitBtn:setStrokeColor(0,0,0,0.7)
-sumbitBtn:setFillColor(0,0,0,0.3)
-sumbitBtn.cornerRadius = 2
-addNewAccess_scrollview:insert(sumbitBtn)
-sumbitBtn.id="Submit"
+		sumbitBtn = display.newRect( 0,0,0,0 )
+		sumbitBtn.x=W/2;sumbitBtn.y = Comment.y+Comment.height/2+20
+		sumbitBtn.width=100
+		sumbitBtn.height=25
+		sumbitBtn.anchorX=0
+		sumbitBtn:setStrokeColor(0,0,0,0.7)
+		sumbitBtn:setFillColor(0,0,0,0.3)
+		sumbitBtn.cornerRadius = 2
+		addNewAccess_scrollview:insert(sumbitBtn)
+		sumbitBtn.id="Submit"
 
-sumbitBtn_lbl = display.newText( addNewAccess_scrollview,PopupGroup.Add,0,0,native.systemFont,16 )
-sumbitBtn_lbl.y=sumbitBtn.y
-sumbitBtn_lbl.anchorX=0
-sumbitBtn_lbl:setFillColor(0,0,0)
-addNewAccess_scrollview:insert(sumbitBtn_lbl)
+		sumbitBtn_lbl = display.newText( addNewAccess_scrollview,PopupGroup.Add,0,0,native.systemFont,16 )
+		sumbitBtn_lbl.y=sumbitBtn.y
+		sumbitBtn_lbl.anchorX=0
+		sumbitBtn_lbl:setFillColor(0,0,0)
+		addNewAccess_scrollview:insert(sumbitBtn_lbl)
 
-sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
-sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-sumbitBtn_lbl.x = sumbitBtn.x+16
-
-
-
-local options = {
-	width = 25,
-	height = 25,
-	numFrames = 4,
-	sheetContentWidth = 50,
-	sheetContentHeight = 50
-}
-
-local submit_spinnerSingleSheet = graphics.newImageSheet( "res/assert/requestProcess.png", options )
-
-submit_spinner = widget.newSpinner
-{
-	width = 25,
-	height = 25,
-	deltaAngle = 10,
-	sheet = submit_spinnerSingleSheet,
-	startFrame = 1,
-	incrementEvery = 20
-}
+		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
+		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+		sumbitBtn_lbl.x = sumbitBtn.x+16
 
 
-submit_spinner.isVisible=false
-submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
-submit_spinner.y=sumbitBtn.y
 
-sumbitBtn:addEventListener( "touch", sumbitBtnRelease )
+		local options = {
+			width = 25,
+			height = 25,
+			numFrames = 4,
+			sheetContentWidth = 50,
+			sheetContentHeight = 50
+		}
 
-MainGroup:insert(sceneGroup)
+		local submit_spinnerSingleSheet = graphics.newImageSheet( "res/assert/requestProcess.png", options )
+
+		submit_spinner = widget.newSpinner
+		{
+			width = 25,
+			height = 25,
+			deltaAngle = 10,
+			sheet = submit_spinnerSingleSheet,
+			startFrame = 1,
+			incrementEvery = 20
+		}
+
+
+		submit_spinner.isVisible=false
+		submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
+		submit_spinner.y=sumbitBtn.y
+
+		sumbitBtn:addEventListener( "touch", sumbitBtnRelease )
+
+		MainGroup:insert(sceneGroup)
 
 end
 
@@ -2114,7 +2039,7 @@ function scene:show( event )
 			for i=1,#response do
 
 				List_array[1] = {}
-				List_array[1][1] = "- Select MK Rank -"
+				List_array[1][1] = AddNewContact.MKRank_placeholder
 				List_array[1][2] = "0"
 
 				List_array[i+1] = {}
@@ -2165,24 +2090,24 @@ function scene:show( event )
   		hideScrollBar=true,
   		isBounceEnabled=false,
 
-  	}
+	  	}
 
-  	rankList.x=MKRank_bg.x
-  	rankList.y=rankTop.y+rankTop.height/2
-  	rankList.height = 290
-  	rankList.width = MKRank_bg.contentWidth
-  	rankList.anchorY=0
-  	rankGroup.isVisible=false
+	  	rankList.x=MKRank_bg.x
+	  	rankList.y=rankTop.y+rankTop.height/2
+	  	rankList.height = 290
+	  	rankList.width = MKRank_bg.contentWidth
+	  	rankList.anchorY=0
+	  	rankGroup.isVisible=false
 
-  	rankGroup:insert(rankList)
+	  	rankGroup:insert(rankList)
 
-  	for i = 1, #List_array do
+	  	for i = 1, #List_array do
 
-  		rankList:insertRow{ rowHeight = 35,
-  		rowColor = { default={ 1,1,1}, over={ 0, 0, 0, 0.1 } }
+	  		rankList:insertRow{ rowHeight = 35,
+	  		rowColor = { default={ 1,1,1}, over={ 0, 0, 0, 0.1 } }
 
-  	}
-  end
+	  	}
+        end
 
 end
 

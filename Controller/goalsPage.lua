@@ -151,7 +151,7 @@ function scene:resumeGame(isEdited)
 
 	if isEdited == true then
 
-		local alert = native.showAlert(  Goals.PageTitle,Goals.SuccessMsg, { "OK" } )
+		local alert = native.showAlert(  Goals.PageTitle,Goals.SuccessMsg, { CommonWords.ok } )
 
 	end
 

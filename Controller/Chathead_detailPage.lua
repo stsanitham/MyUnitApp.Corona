@@ -184,7 +184,7 @@ local function addMemberAction( event )
 	    	 composer.hideOverlay( "slideRight", 100 )
 	    elseif event.target.id == "delete" then
 
-	    	local alert = native.showAlert("Delete",MessagePage.ToDeleteGROUP, { CommonWords.Yes , CommonWords.No }, onComplete )
+	    	local alert = native.showAlert(MessagePage.DeleteText,MessagePage.ToDeleteGROUP, { CommonWords.Yes , CommonWords.No }, onComplete )
 
 	    elseif event.target.id == "editText" then
 
@@ -735,7 +735,7 @@ local function selectionComplete ( event )
 					end
 
 
-					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
+					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,AddeventPage.Cancel} , onComplete)
 
 
 		end
@@ -783,13 +783,13 @@ local function selectionComplete ( event )
 
 
 
-			local Name_txt = display.newText(tempGroup,"Consultants",0,0,native.systemFontBold,14)
+			local Name_txt = display.newText(tempGroup,ChatPage.Consultant_List,0,0,native.systemFontBold,14)
 			Name_txt.x=20;Name_txt.y=background.y+15
 			Name_txt.anchorX=0
 			Utils.CssforTextView(Name_txt,sp_labelName)
 			Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-			local Position_txt = display.newText(tempGroup,"Add Consultant...",0,0,native.systemFont,14)
+			local Position_txt = display.newText(tempGroup,ChatPage.AddConsultant,0,0,native.systemFont,14)
 			Position_txt.x=80;Position_txt.y=background.y+background.height/2+10
 			Position_txt.anchorX=0
 			Utils.CssforTextView(Position_txt,sp_fieldValue)
@@ -920,7 +920,7 @@ local function selectionComplete ( event )
 			Image:setFillColor( Utils.convertHexToRGB(color.darkRed) )
 
 
-			local Position_txt = display.newText(tempGroup,"Delete Group",0,0,native.systemFont,14)
+			local Position_txt = display.newText(tempGroup,ChatPage.DeleteGroupText,0,0,native.systemFont,14)
 			Position_txt.x=80;Position_txt.y=background.y+background.height/2
 			Position_txt.anchorX=0
 			Utils.CssforTextView(Position_txt,sp_fieldValue)
@@ -955,7 +955,7 @@ local function selectionComplete ( event )
 			Image:setFillColor( Utils.convertHexToRGB(color.darkRed) )
 
 
-			local Position_txt = display.newText(tempGroup,"Delete "..(Message_Type:lower()):gsub("^%l", string.upper),0,0,native.systemFont,14)
+			local Position_txt = display.newText(tempGroup,MessagePage.DeleteText.." "..(Message_Type:lower()):gsub("^%l", string.upper),0,0,native.systemFont,14)
 			Position_txt.x=80;Position_txt.y=background.y+background.height/2
 			Position_txt.anchorX=0
 			Utils.CssforTextView(Position_txt,sp_fieldValue)
@@ -1100,7 +1100,7 @@ function scene:show( event )
 		textGrouptabbar.y = textGroupBg.y - textGroupBg.contentHeight/2
 		textGrouptabbar:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 
-		textGrouptabbarText = display.newText( TextChangeGroup, "Enter new subject", 0, 0,native.systemFont,14 )
+		textGrouptabbarText = display.newText( TextChangeGroup, ChatPage.EnterSubjectText, 0, 0,native.systemFont,14 )
 		textGrouptabbarText.x = textGrouptabbar.x-textGrouptabbar.contentWidth/2+10;textGrouptabbarText.y=textGrouptabbar.y+textGrouptabbar.contentHeight/2
 		textGrouptabbarText.anchorX=0
 
@@ -1125,7 +1125,7 @@ function scene:show( event )
 		textGroupfiled:addEventListener( "userInput", textGroupfiledHandler )
 
 
-		textGroupfiledError = display.newText( TextChangeGroup, "*Enter the subject",  0,0, native.systemFont ,12 )
+		textGroupfiledError = display.newText( TextChangeGroup, "*"..ChatPage.EnterSubjectText,  0,0, native.systemFont ,12 )
 		textGroupfiledError.anchorX=0;textGroupfiledError.x=textGroupfiled_bg.x
 		textGroupfiledError.anchorX=0;textGroupfiledError.y=textGroupfiled_bg.y+textGroupfiled_bg.contentHeight+10
 		textGroupfiledError:setTextColor( Utils.convertHexToRGB(color.darkRed) )

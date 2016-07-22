@@ -206,6 +206,10 @@ EventCalender.Successfully="Avec succès"
 EventCalender.AddedSuccessfully="ajouté avec succès"
 
 
+EventCalender.RecurringDeleteAlert = "Vous pouvez supprimer cet événement récurrent uniquement sur le web"
+EventCalender.RecurringEditAlert = "Vous pouvez modifier cet événement récurrent uniquement sur le web"
+
+
 CareerPath = {}
 
 CareerPath.PageTitle="Chemin Unité Carrière"
@@ -268,6 +272,7 @@ ImageLibrary.Grid="la grille"
 ImageLibrary.UploadImage = "Télécharger image"
 ImageLibrary.ImageUploaded = "Image téléchargée avec succès!"
 ImageLibrary.FileChoose = "Choisissez fichier"
+ImageLibrary.Image = "image"
 
 
 Message = {}
@@ -299,7 +304,9 @@ Message.DraftButton = "Enregistrer comme brouillon"
 Message.DraftContent = "Votre message a été enregistré en tant que brouillon succès"
 Message.MaximumUpload = "MyUnitBuzz permet jusqu'à fichiers 10MB pour chaque téléchargement . Prendre plaisir!"
 Message.Clear = "Clair"
-MessagePage.ToDeleteGROUP = "Are you sure you want to delete?"
+MessagePage.ToDeleteGROUP = "Etes-vous sûr que vous voulez supprimer?"
+
+
 
 AddeventPage = {}
 AddeventPage.EventnameArray = {"rendez-vous","appel","partie","tâche"}
@@ -340,7 +347,9 @@ AddeventPage.SelectPurpose = "*Sélectionner But"
 AddeventPage.PhoneNumberMandatory = "*Numéro de téléphone est obligatoire"
 AddeventPage.AppointmentWithPlace = "Rendez-vous avec"
 AddeventPage.NotStarted = "Pas commencé"
-
+AddeventPage.Status = "statut"
+AddeventPage.Duration = "Durée"
+AddeventPage.Update = "Mettre à jour"
 
 
 
@@ -355,7 +364,6 @@ Twitter.PageTitle = "Twitter"
 Google_Plus = {}
 
 Google_Plus.PageTitle = "Google+"
-
 
 
 
@@ -449,6 +457,11 @@ MessagePage.characters=" personnages"
 MessagePage.ErrorText = "Entrez le court message long / dans le domaine respectif et aller plus loin"
 MessagePage.SavingFailed = "Sauvegarde Échec"
 MessagePage.SchedulingFailed = "Scheduling Échec"
+MessagePage.LongMessageText = "Entrez le Message long"
+MessagePage.ShortMessageText = "Entrez le message court"
+MessagePage.ImageNameText = "Nom de l'image"
+MessagePage.AudioNameText = "Nom Audio" 
+MessagePage.SelectedNumber =" choisi"
 
 
 
@@ -458,6 +471,14 @@ ChatPage = {}
 ChatPage.Group = "Groupe"
 ChatPage.Chats = "causeries"
 ChatPage.Consultant_List = "Liste de Consultant"
+ChatPage.AddConsultant = "Ajouter Consultant..."
+ChatPage.EnterSubjectText = "Entrez un nouveau sujet"
+ChatPage.CameraUnavailable = "Caméra Non disponible"
+ChatPage.CameraNotSupported = "L'appareil photo est pas pris en charge dans ce dispositif"
+ChatPage.DeleteGroupText = "Supprimer le groupe"
+ChatPage.DeleteMessage = "Supprimer le message?"
+ChatPage.DeleteMessageFrom = "Supprimer message "
+ChatPage.MessageText = " messages?"
 ChatPage.Message_Copied = "Copié message"
 ChatPage.ImageUploadError = "Erreur dans l'image Upload"
 ChatPage.ImageSize = "Taille de l'image ne ​​peut pas être plus de 10 MB"
@@ -480,6 +501,12 @@ ChatPage.BroadcastListCreated = "Liste de diffusion Créé"
 ChatPage.BroadcastListCreationSuccess = "Liste de diffusion créé avec succès"
 ChatPage.BroadcastRecipients = "destinataires"
 ChatPage.Broadcast = "Diffuser"
+ChatPage.ForwardTo = "Résultats "
+ChatPage.SelectBroadcast = "Sélectionnez diffusion"
+ChatPage.SelectGroup = "Sélectionner le groupe"
+ChatPage.GroupUpdationSuccess = "Groupe mis à jour avec succès"
+ChatPage.BroadcastListUpdationSuccess = "Liste de diffusion mis à jour avec succès"
+
 
 
 
@@ -518,3 +545,34 @@ RegistrationScreen.SuccessMessage = "Votre inscription est terminée avec succè
 RegistrationScreen.EmailRegistered = "Email Déjà inscrit"
 RegistrationScreen.EmailRegisteredText = "Cette adresse email est déjà enregistré avec nous!"
 RegistrationScreen.Introduction = "introduction"
+
+
+
+
+AddNewContact = {}
+
+AddNewContact.AddTM = "Ajouter un nouveau membre de l'équipe"
+AddNewContact.AddTMSuccess = "Membre de l'équipe a ajouté avec succès!"
+AddNewContact.AddContactSuccess = "Contactez ajouté avec succès!"
+AddNewContact.IncorrectPhone = "numéro de téléphone que vous avez entré est invalide"
+AddNewContact.MKRank_placeholder = "- Sélectionnez MK Rank -"
+
+
+
+
+AudioRecordPage = {}
+
+AudioRecordPage.StopRecording = "enregistrement arrêté"
+AudioRecordPage.Playing = "En jouant"
+AudioRecordPage.PauseRecording = "enregistrement Paused"
+AudioRecordPage.RecordHelpText = "S'il vous plaît enregistrer l'audio de procéder"
+AudioRecordPage.Recording = "Enregistrement"
+AudioRecordPage.PressStart = "Appuyez sur 'Démarrer' pour enregistrer"
+AudioRecordPage.Start = "Démarrer"
+AudioRecordPage.Stop = "Arrêtez"
+
+
+
+
+
+

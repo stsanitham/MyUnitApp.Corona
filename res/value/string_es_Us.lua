@@ -205,8 +205,8 @@ EventCalender.EventTask = "Evento (tareas) "
 EventCalender.EventParty = "Evento (Partido) "
 EventCalender.Successfully="Exitosamente"
 EventCalender.AddedSuccessfully="agregado con éxito"
-
-
+EventCalender.RecurringDeleteAlert = "Puede eliminar este evento periódico sólo en la web"
+EventCalender.RecurringEditAlert = "Puede editar este evento periódico sólo en la web"
 
 
 
@@ -272,6 +272,7 @@ ImageLibrary.Grid="Cuadrícula"
 ImageLibrary.UploadImage = "Cargar imagen"
 ImageLibrary.ImageUploaded = "Imagen cargada correctamente!"
 ImageLibrary.FileChoose = "Elija el archivo"
+ImageLibrary.Image = "Imagen"
 
 
 Message = {}
@@ -303,7 +304,7 @@ Message.DraftButton = "Guardar como borrador"
 Message.DraftContent = "Su mensaje se ha guardado como borrador con éxito"
 Message.MaximumUpload = "MyUnitBuzz permite hasta 10 MB para los archivos de cada carga . ¡Disfrutar!"
 Message.Clear = "Claro"
-MessagePage.ToDeleteGROUP = "Are you sure you want to delete?"
+MessagePage.ToDeleteGROUP = "¿Estas seguro que quieres borrarlo?"
 
 
 AddeventPage = {}
@@ -345,6 +346,9 @@ AddeventPage.SelectPurpose = "*Elija un Propósito"
 AddeventPage.PhoneNumberMandatory = "*Número de teléfono es obligatorio"
 AddeventPage.AppointmentWithPlace = "Cita con"
 AddeventPage.NotStarted = "No empezado"
+AddeventPage.Status = "Estado"
+AddeventPage.Duration = "Duración"
+AddeventPage.Update = "Actualizar"
 
 
 Facebook = {}
@@ -451,6 +455,11 @@ MessagePage.characters=" caracteres"
 MessagePage.ErrorText = "Introduzca el mensaje corto / largo en el campo respectivo y seguir adelante"
 MessagePage.SavingFailed = "No ha podido guardarse"
 MessagePage.SchedulingFailed = "Error de programación"
+MessagePage.LongMessageText = "Introduzca el mensaje largo"
+MessagePage.ShortMessageText = "Introduzca el Mensaje Corto"
+MessagePage.ImageNameText = "Nombre de la imagen"
+MessagePage.AudioNameText = "Nombre de audio"
+MessagePage.SelectedNumber =" seleccionado"
 
 
 
@@ -460,6 +469,14 @@ ChatPage = {}
 ChatPage.Group = "Grupo"
 ChatPage.Chats = "chats"
 ChatPage.Consultant_List = "Lista consultor"
+ChatPage.AddConsultant = "Añadir Consultor..."
+ChatPage.DeleteGroupText = "eliminar grupo"
+ChatPage.DeleteMessage = "¿Borrar mensaje?"
+ChatPage.DeleteMessageFrom = "Eliminar el mensaje de "
+ChatPage.MessageText = " mensajes?"
+ChatPage.EnterSubjectText = "Introducir nuevo tema"
+ChatPage.CameraUnavailable = "cámara No Disponible"
+ChatPage.CameraNotSupported = "La cámara no es compatible con este dispositivo"
 ChatPage.Message_Copied = "mensaje Copiado"
 ChatPage.ImageUploadError = "Error en la imagen Subir "
 ChatPage.ImageSize ="Tamaño de la imagen no puede contener más de 10 MB"
@@ -482,6 +499,12 @@ ChatPage.BroadcastListCreated = "Lista de difusión de creación"
 ChatPage.BroadcastListCreationSuccess = "Lista de difusión creado correctamente"
 ChatPage.BroadcastRecipients = "destinatarios"
 ChatPage.Broadcast = "Emisión"
+ChatPage.ForwardTo = "con interés "
+ChatPage.SelectBroadcast = "Seleccione Broadcast"
+ChatPage.SelectGroup = "Seleccione un grupo de"
+ChatPage.GroupUpdationSuccess = "Grupo actualizado correctamente"
+ChatPage.BroadcastListUpdationSuccess = "Lista de difusión actualizado correctamente"
+
 
 
 
@@ -518,3 +541,33 @@ RegistrationScreen.SuccessMessage = "Su registro se ha completado con éxito y u
 RegistrationScreen.EmailRegistered = "Correo electrónico ya registrado"
 RegistrationScreen.EmailRegisteredText = "Esta dirección de correo electrónico ya se ha registrado con nosotros!"
 RegistrationScreen.Introduction = "Introducción"
+
+
+
+AddNewContact = {}
+
+AddNewContact.AddTM = "Agregar nuevo miembro del equipo"
+AddNewContact.AddTMSuccess = "Miembro del Equipo ha añadido correctamente!"
+AddNewContact.AddContactSuccess = "Contacto añadido correctamente!"
+AddNewContact.IncorrectPhone = "número de teléfono que ha introducido no es válido"
+AddNewContact.MKRank_placeholder = "- Seleccionar MK Rango -"
+
+
+
+AudioRecordPage = {}
+
+AudioRecordPage.StopRecording = "La grabación se detuvo"
+AudioRecordPage.Playing = "Jugando"
+AudioRecordPage.PauseRecording = "En pausa de grabación"
+AudioRecordPage.RecordHelpText = "Por favor, grabar el audio de proceder"
+AudioRecordPage.Recording = "Grabación"
+AudioRecordPage.PressStart = "Pulse 'comienzo' para grabar"
+AudioRecordPage.Start = "comienzo"
+AudioRecordPage.Stop = "Detener"
+
+
+
+
+
+
+

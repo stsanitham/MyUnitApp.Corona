@@ -798,7 +798,7 @@ if (shortmsg_textbox.text ~= "" or shortmsg_textbox.text ~= nil) and (longMessag
 
 	validation = false
 
-	SetError("*".."Enter the Long Message",longmsg_textbox)
+	SetError("*"..MessagePage.LongMessageText,longmsg_textbox)
 
 	return false
 
@@ -810,7 +810,7 @@ if (test ~= "" or test ~= nil) and (shortmsg_textbox.text == "" or shortmsg_text
 
 	validation = false
 
-	SetError("*".."Enter the Short Message",shortmsg_textbox)
+	SetError("*"..MessagePage.ShortMessageText,shortmsg_textbox)
 
 	return false
 
@@ -1079,7 +1079,7 @@ local function onKeyEventDetail( event )
 			elseif (event > 10485760) then
 
 
-				local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+				local image = native.showAlert( ChatPage.ImageUploadError, ChatPage.ImageSize, { CommonWords.ok } )
 
 				
 			elseif (event>=1024)  then   
@@ -1216,7 +1216,7 @@ local function onKeyEventDetail( event )
 
 		        			else
 
-		        				local image1 = native.showAlert( "Camera Unavailable", "Camera is not supported in this device", { CommonWords.ok } )
+		        				local image1 = native.showAlert(ChatPage.CameraUnavailable, ChatPage.CameraNotSupported, { CommonWords.ok } )
 
 		        			end
 
@@ -1938,7 +1938,7 @@ scrollView:insert(long_msg_charlimit)
 ---------------------------------------- File name and its title ------------------------------------------
 
 
-filename_title = display.newText("Image Name",0,0,native.systemFont,14)
+filename_title = display.newText(MessagePage.ImageNameText,0,0,native.systemFont,14)
 filename_title.anchorX = 0
 filename_title.anchorY = 0
 filename_title.x = 10
@@ -1993,7 +1993,7 @@ if Details ~= nil and Details.ImageFilePath ~= nil then
 ---------------------------------------- Audio name and its title ------------------------------------------
 
 
-Audio_filename_title = display.newText("Audio Name",0,0,native.systemFont,14)
+Audio_filename_title = display.newText(MessagePage.AudioNameText,0,0,native.systemFont,14)
 Audio_filename_title.anchorX = 0
 Audio_filename_title.anchorY = 0
 Audio_filename_title.x = 10
