@@ -714,14 +714,14 @@ local function selectionComplete ( event )
 
 							local i = event.index 
 
-							if 2 == i then
+							if 1 == i then
 
 								if media.hasSource( PHOTO_FUNCTION  ) then
 									timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
 										end )
 								end
 
-							elseif 3 == i then
+							elseif 2 == i then
 
 								if media.hasSource( media.Camera ) then
 									timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
