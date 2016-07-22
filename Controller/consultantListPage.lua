@@ -196,7 +196,7 @@ function formatSizeUnits(event)
 
 		print("highest size of the image ",size)
 
-		local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+		local image = native.showAlert(ChatPage.ImageUploadError, ChatPage.ImageSize , { CommonWords.ok } )
 
 		
 	elseif (event>=1024)  then   
@@ -342,7 +342,7 @@ local function selectionComplete ( event )
 					end
 
 
-					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
+					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,AddeventPage.Cancel} , onComplete)
 
 
 
@@ -756,7 +756,7 @@ local function onSwitchPress( event )
 
 				  	count_details.isVisible = true
 
-				  	count_details.text = checkedstate.." selected"
+				  	count_details.text = checkedstate..MessagePage.SelectedNumber
 
 
 				      		-- totalcareerlist = switch.totalvalue - 1
@@ -873,11 +873,11 @@ function getAddedMembersInGroup(response)
 
 			if grouptypevalue == "GROUP" then
 
-				local alert = native.showAlert( GroupName ,"Group updated successfully", { CommonWords.ok }, onGroupCreationComplete )
+				local alert = native.showAlert( GroupName ,ChatPage.GroupUpdationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
 			else
 
-				local alert = native.showAlert( GroupName ,"Broadcast List updated successfully", { CommonWords.ok }, onGroupCreationComplete )
+				local alert = native.showAlert( GroupName ,ChatPage.BroadcastListUpdationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
 			end
 
@@ -1512,7 +1512,7 @@ function scene:create( event )
 	count_details = display.newText(sceneGroup,"",0,0,native.systemFont,18)
 	count_details.anchorX = 0
 	count_details.isVisible = false
-	count_details.x= W-105;count_details.y = title_bg.y
+	count_details.x= W-122;count_details.y = title_bg.y
 	count_details:setFillColor(0)
 
 
@@ -1770,7 +1770,7 @@ function scene:show( event )
 
 	    		editId = event.params.contactId
 
-	    		count_details.text = #editContacts.." Selected"
+	    		count_details.text = #editContacts..MessagePage.SelectedNumber
 
 
 

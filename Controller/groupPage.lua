@@ -163,7 +163,7 @@ local function groupBackground_Touch( event )
 
 					
 
-			native.showAlert( "MyUnitBuzz", "Forward to "..event.target.name, { CommonWords.ok , CommonWords.cancel }, onComplete ) 
+			native.showAlert( "MyUnitBuzz", ChatPage.ForwardTo..event.target.name, { CommonWords.ok , CommonWords.cancel }, onComplete ) 
 		elseif event.target.id == "back" then
 
 							local options = {
@@ -700,7 +700,7 @@ function scene:show( event )
 			BackBtn.id="back"
 			title.x = BackBtn.x+BackBtn.contentWidth-5
 
-			title.text = "Select Group"
+			title.text = ChatPage.SelectGroup
 
 			BackBtn:addEventListener( "touch", groupBackground_Touch )
 		end
