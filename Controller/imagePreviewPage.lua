@@ -297,7 +297,6 @@ function scene:create( event )
 			photo.width = photowidth
 			photo.height = photoheight/1.3
 
-
 			captionField_bg = display.newRect(W/2, 0, W-20, 25)
 			captionField_bg.y = photo.y+photo.contentHeight+35
 			captionField_bg.alpha = 0.01

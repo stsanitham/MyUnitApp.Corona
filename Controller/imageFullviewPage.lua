@@ -285,6 +285,7 @@ function scene:create( event )
 				photo.id = "fullimage"
 				photo.x=W/2
 				sceneGroup:insert( photo )
+
 				
 
 		-- if photo.width > photo.height then

@@ -1250,6 +1250,10 @@ end
 					
 
 
+
+		        -- local alert = native.showAlert(ImageLibrary.FileChoose, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,CommonWords.cancel} , onComplete)
+
+
 			end
 
 		end

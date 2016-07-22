@@ -9,6 +9,7 @@ local scene = composer.newScene()
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 local lfs = require("lfs")
+local json = require("json")
 
 
 
@@ -26,13 +27,24 @@ local BackFlag = false
 
 local ResourceListArray = {}
 
+local fileAtr,rowTitle
+
+
+local currentfilename = ""
+
 local file_array = {}
+
+local filenamevalue = {}
 
 local changeMenuGroup = display.newGroup();
 
 local RecentTab_Topvalue = 70
 
+local file_attributemode = ""
+
 local optionValue = "list" , tabBar , title_bg
+
+local filenamevalue = ""
 
 
 --------------------------------------------------
@@ -89,6 +101,7 @@ local optionValue = "list" , tabBar , title_bg
 
 
 
+
 			local function onRowRender_DocLibList( event )
 
 			 -- Get reference to the row group
@@ -98,15 +111,20 @@ local optionValue = "list" , tabBar , title_bg
 			    local rowHeight = row.contentHeight
 			    local rowWidth = row.contentWidth
 
-			    local rowTitle = display.newText(row, file_array[row.index].name, 0, 0,280,38, nil, 14 )
+			    rowTitle = display.newText(row, file_array[row.index].name, 0, 0,280,38, nil, 14 )
 				rowTitle:setFillColor( 0 )
 				rowTitle.anchorX = 0
 				rowTitle.x = 20
 				rowTitle.y = rowHeight * 0.5+10
 
+
 				-- row.rowValue = namevalue[row.index][2]
 
 				-- row.text=namevalue[row.index][1]
+
+				rowvalues = file_array[row.index].name
+
+				print("NAME   :    "..file_array[row.index].name)
 
 
 			end
@@ -121,7 +139,139 @@ local optionValue = "list" , tabBar , title_bg
 
 				if( "press" == phase ) then
 
+											local path = "/"
+										    local pathType1 = ""
+
+										   -- title.text = file_array[row.index].name
+
+										    if string.find(file_array[row.index].name, "//") then 
+
+											    	print("((((((((")
+
+											    	if string.find(file_array[row.index].name, "//.") then 
+
+											    	print("ppppppppp")
+
+											    	    title.text = string.gsub( file_array[row.index].name, "//.","")
+													    title.type = "innertype"
+													    back_icon_bg.type = "innertype"
+													    back_icon.type = "innertype"
+
+													else
+
+														title.text = string.gsub( file_array[row.index].name, "//", "" ) 
+													    title.type = "innertype"
+													    back_icon_bg.type = "innertype"
+													    back_icon.type = "innertype"
+
+
+													end
+
+										    	    title.text = string.gsub( file_array[row.index].name, "//", "" ) 
+												    title.type = "innertype"
+												    back_icon_bg.type = "innertype"
+												    back_icon.type = "innertype"
+
+										    end
+
+										
+
+										  
+
+											-- Check to see if path exists
+											if path and lfs.attributes(path..rowvalues ) then
+											    pathType1= lfs.attributes( path..rowvalues ).mode
+											    print("pathtype     "..pathType1)
+											end
+
+
+
+											-- Check if path is a directory
+											if pathType1 == "directory" then
+
+												for j=#file_array, 1, -1 do 
+													file_array[#file_array] = nil
+												end
+
+
+												Documents_list:deleteAllRows()
+
+														  for file in lfs.dir(rowvalues ) do
+
+														  	print("true")
+
+																	if "." ~= file and ".." ~= file then
+
+																         print("FILE 123: " .. file)
+
+																         fileAtr = lfs.attributes( path.."/"..rowvalues)
+
+
+																         --filenamevalue[#filenamevalue+1] = { name = path..file_array[row.index].name }
+
+																         print(json.encode(fileAtr))
+
+																         print(file)
+
+																         file_array[#file_array+1] = { name = file }
+
+																         --title.text = rowvalues
+
+
+																        -- Documents_list:deleteAllRows()
+
+
+																         print(#file_array)
+
+																	   		 if fileAtr ~= nil then 
+
+																		   		 	file_attributemode = fileAtr.mode
+
+																		   		 	print(path,file,file_attributemode) 
+
+																	   		 end
+
+																     end
+
+															end
+
+												else
+
+													title.text = ResourceLibrary.PageTitle
+												    title.type = "outerfile"
+												    back_icon_bg.type = "outerfile"
+												    back_icon.type = "outerfile"
+
+
+												end
+
+
+
+								 --title.text = rowTitle.text
+
+
+								if #file_array == 0  then
+									NoEvent = display.newText( scene.view, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
+									NoEvent.x=W/2;NoEvent.y=H/2
+									NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+							    end
+
+
+
+							    for i = 1, #file_array do
+							       -- Insert a row into the tableView
+							       Documents_list:insertRow{ rowHeight = 45,rowColor = 
+							       {
+							    	default = { 1, 1, 1, 0 },
+							    	over={ 1, 0.5, 0, 0 },
+							    	}}
+							    end
+
+											
+
 			    elseif ( "release" == phase ) then
+
+			    	--print(file_array)
 
 			 end
 
@@ -137,15 +287,52 @@ local optionValue = "list" , tabBar , title_bg
 
 			elseif event.phase == "ended" then
 
-				display.getCurrentStage():setFocus( nil )
 
-				if event.target.id =="backpress" then
+						display.getCurrentStage():setFocus( nil )
 
-					print("123123")
+						if event.target.id =="backpress" and event.target.type == "outerfile" then
 
-					composer.gotoScene("Controller.resourcePage","slideRight",200)
+							print("123123")
 
-				end
+							composer.gotoScene("Controller.resourcePage","slideRight",200)
+
+						end
+
+						if event.target.type ~= "outerfile" then
+
+							print("sdfsdfsdf")
+
+
+										getFileList()
+
+
+										title.text = ResourceLibrary.PageTitle
+									    title.type = "outerfile"
+									    back_icon_bg.type = "outerfile"
+									    back_icon.type = "outerfile"
+
+
+										if NoEvent.isVisible == true then
+
+											NoEvent.isVisible = false
+
+										end
+
+										Documents_list:deleteAllRows()
+
+
+										for i = 1, #file_array do
+										-- Insert a row into the tableView
+										Documents_list:insertRow{ rowHeight = 45,rowColor = 
+										{
+										default = { 1, 1, 1, 0 },
+										over={ 1, 0.5, 0, 0 },
+										}}
+										end
+
+
+						end
+
 
 			end
 
@@ -182,6 +369,7 @@ local optionValue = "list" , tabBar , title_bg
 				back_icon_bg.x= 5
 				back_icon_bg.anchorX=0
 				back_icon_bg.id="backpress"
+				back_icon_bg.type = "outerfile"
 				back_icon_bg.anchorY=0
 				back_icon_bg.alpha=0.01
 				back_icon_bg:setFillColor(0)
@@ -191,6 +379,7 @@ local optionValue = "list" , tabBar , title_bg
 				back_icon.x= back_icon_bg.x + 5
 				back_icon.anchorX=0
 				back_icon.id="backpress"
+				back_icon.type = "outerfile"
 				back_icon.anchorY=0
 				back_icon:setFillColor(0)
 				back_icon.y= title_bg.y - 8
@@ -198,6 +387,7 @@ local optionValue = "list" , tabBar , title_bg
 				title = display.newText(sceneGroup,ResourceLibrary.PageTitle,0,0,native.systemFont,18)
 				title.anchorX = 0
 				title.id = "backpress"
+				title.type = "outerfile"
 				title.x = back_icon.x+back_icon.contentWidth+5;title.y = title_bg.y
 				title:setFillColor(0)
 
@@ -243,58 +433,12 @@ local optionValue = "list" , tabBar , title_bg
 			ga.enterScene("Resource Library")
 
 
-			-- local doc_path = system.pathForFile("/storage/sdcard1/" )
-			-- local doc_path1 = system.pathForFile("/storage/sdcard0/" )
-			-- local doc_path2 = system.pathForFile("/storage/sdcard/" )
-
-			-- if doc_path then
-
-			-- 	local a1 = native.showAlert("MUB","11111",{"ok"})
-
-			-- 		for file in lfs.dir( doc_path ) do
-			-- 		    -- "file" is the current file or directory name
-			-- 		    print( "Found file: " .. file )
-
-			-- 		    local nat = native.showAlert("MUB files",file,{"ok"})
-
-			-- 		    file_array[#file_array+1] = {name = file}
-
-			-- 		end
-
-			-- end
+			function getFileList()
 
 
-
-			-- if doc_path1 then
-
-			-- 		local a1 = native.showAlert("MUB","22222",{"ok"})
-
-			-- 		for file in lfs.dir( doc_path1 ) do
-			-- 			    -- "file" is the current file or directory name
-			-- 			    print( "Found file1: " .. file )
-
-			-- 			    file_array[#file_array+1] = {name = file}
-
-			-- 		end
-
-			-- end
-
-
-
-			-- if doc_path2 then
-
-			-- 		local a1 = native.showAlert("MUB","33333",{"ok"})
-
-			-- 		for file in lfs.dir( doc_path2 ) do
-			-- 			    -- "file" is the current file or directory name
-			-- 			    print( "Found file2: " .. file )
-
-			-- 			    file_array[#file_array+1] = {name = file}
-
-			-- 		end
-
-		 --    end
-
+					for j=#file_array, 1, -1 do 
+						file_array[#file_array] = nil
+					end
 
 				local path = "/"
 				local pathType = ""
@@ -310,31 +454,40 @@ local optionValue = "list" , tabBar , title_bg
 
 						  for file in lfs.dir( path ) do
 
-									-- if "." ~= file and ".." ~= file then
-									-- -- Get the file attributes.
-									-- local fileAtr = lfs.attributes( path .. "/" .. file )
-									-- -- Print path, name and type of file (Directory or file)
-									--  print("details    :     "..path,file,fileAtr.mode)
-
-									--  local re = native.showAlert("MUB files",file,{"ok"})
-
-									-- end
-
 									if "." ~= file and ".." ~= file then
 
 								         print("FILE: " .. file)
 
-								         local fileAtr = lfs.attributes( path .. "/" .. file )
+								         fileAtr = lfs.attributes( path .. "/" .. file )
 
-								         file_array[#file_array+1] = { name = path.."/"..file }
+								         file_array[#file_array+1] = { name = path.."/"..file}
 
-								   		 if fileAtr ~= nil then print(path,file,fileAtr.mode) end
+
+									   		 if fileAtr ~= nil then 
+
+										   		 	file_attributemode = fileAtr.mode
+
+										   		 	print(path,file,file_attributemode) 
+
+									   		 end
 
 								    end
-
 							end
+
+				else
+
+													title.text = ResourceLibrary.PageTitle
+												    title.type = "outerfile"
+												    back_icon_bg.type = "outerfile"
+												    back_icon.type = "outerfile"
 				end
 
+
+			end
+
+
+
+		    getFileList()
 
 
 

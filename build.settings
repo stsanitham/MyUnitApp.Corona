@@ -38,12 +38,11 @@ settings =
 	        supportedPlatforms = { iphone = true },
 	    },
 
-	      ["CoronaProvider.native.popup.activity"] =
+	       ["CoronaProvider.native.popup.activity"] =
         {
             publisherId = "com.coronalabs",
             supportedPlatforms = { iphone=true, },
         },
-
 
 	    ["plugin.google.play.services"] =
 	    {
@@ -81,7 +80,7 @@ settings =
                 "Segoe Print.ttf"
             },
             
-			--UIFileSharingEnabled=true,
+			UIFileSharingEnabled=true,
 			--UIApplicationExitsOnSuspend = true,
 			CoronaWindowMovesWhenKeyboardAppears = true,
 			UIBackgroundModes = {"remote-notification"},

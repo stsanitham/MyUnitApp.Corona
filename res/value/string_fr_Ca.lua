@@ -150,7 +150,7 @@ FlapMenu.TeamMember_without_Access = "Membre de l'équipe sans accès"
 FlapMenu.chatMessageTitle = "bavarder"
 FlapMenu.Add_New_Access = "Ajouter un nouvel accès"
 FlapMenu.AddAccess = "Ajouter un nouveau contact/membre de l'équipe"
-FlapMenu.AddNewAccess = "Ajouter de nouveaux contacts"
+FlapMenu.AddNewAccess = "Ajouter de nouveaux contact"
 
 
 
@@ -339,6 +339,10 @@ AddeventPage.Cancel="annuler"
 AddeventPage.SelectPurpose = "*Sélectionner But"
 AddeventPage.PhoneNumberMandatory = "*Numéro de téléphone est obligatoire"
 AddeventPage.AppointmentWithPlace = "Rendez-vous avec"
+AddeventPage.NotStarted = "Pas commencé"
+
+
+
 
 Facebook = {}
 

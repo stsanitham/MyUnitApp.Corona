@@ -146,7 +146,7 @@ FlapMenu.TeamMember_without_Access = "Team Member without Access"
 FlapMenu.Add_New_Access = "Add New Access"
 FlapMenu.AddAccess = "Add New Contact/Team Member"
 FlapMenu.chatMessageTitle = "Chat"
-FlapMenu.AddNewAccess = "Add New Contacts"
+FlapMenu.AddNewAccess = "Add New Contact"
 
 
 
@@ -336,6 +336,7 @@ AddeventPage.Cancel="Cancel"
 AddeventPage.SelectPurpose = "*Select Purpose"
 AddeventPage.PhoneNumberMandatory = "*Phone Number is mandatory"
 AddeventPage.AppointmentWithPlace = "Appointment With"
+AddeventPage.NotStarted = "Not Started"
 
 
 

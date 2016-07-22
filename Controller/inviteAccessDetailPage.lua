@@ -739,6 +739,13 @@ local function observableScroll( event )
 			end
 
 
+			if isIos then
+
+        		native.setKeyboardFocus(nil)
+
+        	end
+
+
 			-- if invite_status == "GRANT" then title.text = "Contacts with Access" end
 			-- if invite_status == "DENY" then title.text = "Denied Access" end
 			-- if invite_status == "OPEN" then title.text = "Pending Requests" end

@@ -76,6 +76,8 @@ local function rankToptouch( event )
 			rankGroup.isVisible=false
 
 			FirstName.isVisible=true
+			FirstName_bottom.isVisible = true
+			Name_bottom.isVisible = true	
 			Name.isVisible=true
 			Email.isVisible=true
 			Phone.isVisible=true
@@ -165,132 +167,13 @@ local function radioSwitchListener( event )
 
 
 
-local function touchBg( event )
+local function touchBg1( event )
+
 	if event.phase == "began" then
 
 		elseif event.phase == "ended" then
 
-				-- 	if Phone.text ~= nil and Phone.text ~= "" and Utils.PhoneMasking(tostring(text)) then
-
-				-- 					textnotifybox.isVisible = true
-				-- 					textnotifytext.isVisible = true
-
-				-- 					textnotifybox.y = Phone_bottom.y + 15
-				-- 					textnotifytext.y= Phone_bottom.y + 15
-
-				-- 					Password_bg.y = textnotifytext.y+textnotifytext.contentHeight+12
-				-- 					Password.y = textnotifytext.y+textnotifytext.contentHeight+15
-				-- 					Password_bottom.y = Password.y+10
-
-				-- 					PasswordHelptext.y= Password_bottom.y + 18
-				-- 					GeneratePasstext.y= PasswordHelptext.y + 20
-
-				-- 					contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+18
-				-- 			 		contact_txt.y = contact_switch.y
-
-				-- 			 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
-				-- 			 		teammember_txt.y = teammember_switch.y
-
-
-				-- 					   if radiobutton_id == "teammember" then
-
-				-- 					    	print("67567656756∂2323 phone email not null")
-
-																
-				-- 								MKRank_bg.isVisible = true
-				-- 								MKRank.isVisible = true
-				-- 								rankText_icon.isVisible = true
-
-				-- 								--MKRank_bg.y = GeneratePasstext.y+GeneratePasstext.contentHeight+15
-				-- 								MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
-				-- 								MKRank.y=MKRank_bg.y+5
-				-- 								rankText_icon.y=MKRank_bg.y
-				-- 								Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-				-- 								Comment.y = Comment_bg.y
-											
-				-- 					    else
-
-				-- 						 	MKRank_bg.isVisible = false
-				-- 					 		MKRank.isVisible = false
-				-- 					 		rankText_icon.isVisible = false
-
-
-				-- 					 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
-				-- 							Comment.y = Comment_bg.y
-
-				-- 				 	    end
-
-
-
-				-- 			 		sumbitBtn.y = Comment.y+Comment.height/2+20
-				-- 			 		sumbitBtn_lbl.y=sumbitBtn.y
-
-				-- 			 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
-				-- 			 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-				-- 			 		sumbitBtn_lbl.x = sumbitBtn.x+16
-
-				-- 					native.setKeyboardFocus(Password)
-
-				-- elseif Phone.text == nil or Phone.text == ""  or Phone.text == Phone_placeholder then
-
-				-- 				textnotifybox.isVisible = false
-				-- 				textnotifytext.isVisible = false
-
-				-- 				 Password_bg.y = Phone_bg.y+Phone_bg.height+7
-				-- 				 Password.y = Phone_bg.y+Phone_bg.height+13
-				-- 				 Password_bottom.y = Password.y+10
-
-				-- 				 PasswordHelptext.y= Password_bottom.y + 18
-				-- 				 GeneratePasstext.y= PasswordHelptext.y + 20
-
-				-- 		 		contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
-				-- 		 		contact_txt.y = contact_switch.y
-
-				-- 		 		teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2+15
-				-- 		 		teammember_txt.y = teammember_switch.y
-
-
-				-- 				    if radiobutton_id == "teammember" then
-
-				-- 				    	print("67567656756∂2323")
-
-				-- 						MKRank_bg.isVisible = true
-				-- 						MKRank.isVisible = true
-				-- 						rankText_icon.isVisible = true
-
-				-- 						MKRank_bg.y = teammember_txt.y+teammember_txt.contentHeight+15
-				-- 						MKRank.y=MKRank_bg.y+5
-				-- 						rankText_icon.y=MKRank_bg.y
-				-- 						Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-				-- 						Comment.y = Comment_bg.y
-
-									
-				-- 				    else
-
-				-- 					 	MKRank_bg.isVisible = false
-				-- 				 		MKRank.isVisible = false
-				-- 				 		rankText_icon.isVisible = false
-
-				-- 				 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
-				-- 						Comment.y = Comment_bg.y
-
-				-- 			 	    end
-
-							 	
-				-- 			 		sumbitBtn.y = Comment.y+Comment.height/2+20
-				-- 			 		sumbitBtn_lbl.y=sumbitBtn.y
-
-				-- 			 		sumbitBtn.width = sumbitBtn_lbl.contentWidth+35
-				-- 			 		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-				-- 			 		sumbitBtn_lbl.x = sumbitBtn.x+16
-
-
-
-				-- 				 native.setKeyboardFocus(Password)
-
-				-- end
-
-			native.setKeyboardFocus(nil)
+			 native.setKeyboardFocus(nil)
 
 	end
 
@@ -520,8 +403,10 @@ local function addevent_scrollListener(event )
 
 			    local x, y = addNewAccess_scrollview:getContentPosition()
 
+			    print(y)
 
-				if y > -30 then
+
+				if y > -15 then
 
 					FirstName.isVisible = true
 					FirstName_bottom.isVisible = true
@@ -532,6 +417,39 @@ local function addevent_scrollListener(event )
 				end
 
 
+				if y > -35 then
+
+					Name.isVisible = true
+					Name_bottom.isVisible = true
+				else
+
+					Name.isVisible = false
+					Name_bottom.isVisible = false
+				end
+
+
+				if not rankGroup then
+
+					print("yyy "..y)
+
+					if y > -15 then
+
+					FirstName.isVisible = true
+					FirstName_bottom.isVisible = true
+
+					end
+
+					if y > -35 then
+
+					Name.isVisible = true
+					Name_bottom.isVisible = true
+
+					end
+
+				end
+
+
+
 			elseif ( phase == "ended" ) then 
 			
 			end
@@ -539,7 +457,8 @@ local function addevent_scrollListener(event )
 		    -- In the event a scroll limit is reached...
 		    if ( event.limitReached ) then
 		    	if ( event.direction == "up" ) then print( "Reached bottom limit" )
-		    	elseif ( event.direction == "down" ) then print( "Reached top limit" )
+		    	elseif ( event.direction == "down" ) then 
+				print( "Reached top limit" )
 		    	elseif ( event.direction == "left" ) then print( "Reached right limit" )
 		    	elseif ( event.direction == "right" ) then print( "Reached left limit" )
 		    	end
@@ -590,8 +509,19 @@ local function textfield( event )
 		end
 
 		if(event.target.id == "Comments") then
-			scrollTo( -80 )
+
+			if isIos then
+
+				scrollTo(-150)
+
+			else
+
+			    scrollTo(-80)
+
+		    end
+		    
 			event.target.text = ""
+			Comment.alpha = 1
 
 		end
 		
@@ -600,13 +530,8 @@ local function textfield( event )
 
 		if current_textField then
 
-			if(event.target.id == "Comments") then
 
-				scrollTo( 0 )
-
-				native.setKeyboardFocus( nil )
-
-			elseif(event.target.id == "First Name") then
+			if(event.target.id == "First Name") then
 
 				native.setKeyboardFocus(Name)
 
@@ -623,10 +548,47 @@ local function textfield( event )
 				native.setKeyboardFocus(Password)
 
 			elseif(event.target.id == "Password") then
+				
+				if isIos then
 
-				scrollTo(-80)
+					scrollTo(-170)
+
+				else
+
+				    scrollTo(-80)
+
+			    end
 
 				native.setKeyboardFocus(Comment)
+
+			elseif(event.target.id == "Comments") then
+
+				scrollTo( 0 )
+
+				print(event.target.text:len())
+
+				--Comment.text = ""
+
+					-- if event.target.text ~= " " then
+
+					-- 	 event.target.text = event.target.text
+
+					-- else
+
+					--      event.target.placeholder = RequestAccess.Comment_placeholder
+
+					-- end
+
+				if  event.target.text:len() > 1 then
+
+					Comment.text = event.target.text
+
+				elseif event.target.text:len() == 1 then
+					Comment.text = RequestAccess.Comment_placeholder
+					Comment.alpha = 0.35
+			    end
+						
+				native.setKeyboardFocus( nil )
 
 			end
 
@@ -1201,7 +1163,6 @@ local function textfield( event )
 										rankText_icon.y=MKRank_bg.y
 										Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
 										Comment.y = Comment_bg.y
-
 									
 								    else
 
@@ -1301,30 +1262,43 @@ local function textfield( event )
 						
 						event.target:setSelection(event.target.text:len(),event.target.text:len())
 
-						if isIos then
+						-- if isIos then
 
 
-							if (event.target.id == "Phone") then
+						-- 	if (event.target.id == "Phone") then
 
-								 Background:addEventListener("touch",touchBg)
+						-- 		 Background:addEventListener("touch",touchBg)
 
-							elseif (event.target.id ~= "Phone") then
+						-- 	elseif (event.target.id ~= "Phone") then
 
-								 scrollTo(0)
+						-- 		 scrollTo(0)
 
-								 Background:removeEventListener("touch",touchBg)
+						-- 		 Background:removeEventListener("touch",touchBg)
 
-								 native.setKeyboardFocus(nil)
-							end
+						-- 		 native.setKeyboardFocus(nil)
+						-- 	end
 
 						
-						end
+						-- end
 
 
 						if(event.target.id == "Comments") then
 
 							scrollTo( 0 )
-							
+
+							-- if (event.newCharacters=="\n" or event.target.text == "") then
+							-- 	event.target.placeholder = RequestAccess.Comment_placeholder
+							-- 	native.setKeyboardFocus( nil )
+							-- end
+
+							if  event.target.text:len() > 1 then
+								Comment.text = event.target.text
+							elseif event.target.text:len() == 1 then
+								Comment.text = RequestAccess.Comment_placeholder
+								Comment.alpha = 0.35
+						    end
+
+
 							native.setKeyboardFocus( nil )
 							
 						end
@@ -1335,11 +1309,28 @@ local function textfield( event )
 
 						if event.target.id == "Comments" then
 
+							Comment.alpha = 1
+
 							if event.text:len() > 160 then
 
 								event.target.text = event.target.text:sub(1,160)
 
 							end
+
+							if isIos then
+
+								scrollTo(-170)
+
+							else
+
+							    scrollTo(-80)
+
+						    end
+
+							if (event.newCharacters=="\n") then
+								native.setKeyboardFocus( nil )
+							end
+
 
 						end
 
@@ -1377,6 +1368,12 @@ local function textfield( event )
 
 							end
 
+								if isIos then
+
+									scrollTo(-170)
+
+							    end
+
 							if event.text:len() > 12 then
 
 								event.target.text = event.target.text:sub(1,12)
@@ -1387,15 +1384,9 @@ local function textfield( event )
 
 
 
-						if(event.target.id == "Comments") then
 
-							scrollTo( -80 )
 
-							if (event.newCharacters=="\n") then
-								native.setKeyboardFocus( nil )
-							end
-
-						elseif(event.target.id =="Phone") then
+						if(event.target.id =="Phone") then
 
 							local text = event.target.text
 
@@ -1565,9 +1556,11 @@ local function rankTouch( event )
         if event.target.id == "MKrank" then
         	native.setKeyboardFocus( nil )
 
+
         	if listFlag == false then
         		listFlag=true
         		if rankGroup then
+
         			rankGroup.isVisible=true
         			FirstName.isVisible=false
         			Name.isVisible=false
@@ -1713,6 +1706,8 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
+	display.setDefault( "background", 1, 1, 1 )
+
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 
@@ -1746,7 +1741,8 @@ function scene:create( event )
 					height =H-RecentTab_Topvalue,
 					hideBackground = true,
 					isBounceEnabled=false,
-					bottomPadding = 10,
+					bottomPadding = 60,
+					horizontalScrollDisabled = true,
 					listener = addevent_scrollListener,
 		         }
 
@@ -2211,7 +2207,7 @@ elseif phase == "did" then
 	Comment:addEventListener( "userInput", textfield )
 	Password:addEventListener( "userInput", textfield )
 	
-	Background:addEventListener("touch",touchBg)
+	Background:addEventListener("touch",touchBg1)
 	Runtime:addEventListener( "key", onKeyEvent )
 
 end	
@@ -2245,6 +2241,7 @@ function scene:hide( event )
 	elseif phase == "did" then
 
 		menuBtn:removeEventListener("touch",menuTouch)
+		Background:removeEventListener("touch",touchBg1)
 		BgText:removeEventListener("touch",menuTouch)
 
 	end	

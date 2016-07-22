@@ -315,6 +315,7 @@ local function RemoveProcess(value)
 
         		--if search then search:removeSelf(); search = nil end
 
+        		native.setKeyboardFocus(nil)
 
         		composer.showOverlay( "Controller.inviteAccessDetailPage", options )
 
@@ -324,8 +325,8 @@ local function RemoveProcess(value)
 
 	        			print("false")
 
-	        			searchtext_bg.isVisible = true
-	        			search.isVisible = true
+	        			searchtext_bg.isVisible = false
+	        			search.isVisible = false
 
 	        		else
 
@@ -2104,7 +2105,11 @@ local function searchListener( event )
 										end
 										if searchArraytotal[i].EmailAddress ~= nil and searchArraytotal[i].EmailAddress ~= "" then 
 
-												if string.find(searchArraytotal[i].EmailAddress:lower(),event.text:lower()) ~= nil then
+											local searchValue = event.text:lower()
+
+												searchValue = string.gsub(searchValue,"%+" , "%+")
+
+												if string.find(searchArraytotal[i].EmailAddress:lower(),searchValue) ~= nil then
 
 												print("Here last email>>>>>>>>>>")
 
