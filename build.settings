@@ -70,6 +70,7 @@ settings =
 		plist =
 		{
 			CFBundleVersion = "1.2.7",
+			CFBundleShortVersionString = "1.2.7",
 			--CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
 			CFBundleIdentifier="com.spanenterprises.MUBDev",
 	

@@ -714,14 +714,14 @@ local function selectionComplete ( event )
 
 							local i = event.index 
 
-							if 1 == i then
+							if 2 == i then
 
 								if media.hasSource( PHOTO_FUNCTION  ) then
 									timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
 										end )
 								end
 
-							elseif 2 == i then
+							elseif 3 == i then
 
 								if media.hasSource( media.Camera ) then
 									timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
@@ -735,7 +735,7 @@ local function selectionComplete ( event )
 					end
 
 
-					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
+					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {"Cancel",Message.FromGallery,Message.FromCamera} , onComplete)
 
 
 		end
@@ -1010,11 +1010,12 @@ end
              
 
     elseif event.phase == "submitted" then
-    	
+    		
+    		native.setKeyboardFocus( nil )
 
     	elseif event.phase == "ended" then
 
-    
+   			 native.setKeyboardFocus( nil )
 
     elseif event.phase == "editing" then
 
@@ -1117,6 +1118,7 @@ function scene:show( event )
 		textGroupfiled.anchorY=0;textGroupfiled.anchorX=0
 		textGroupfiled.x=textGroupfiled_bg.x
 		textGroupfiled.size=16
+		textGroupfiled:setReturnKey( "done" )
 		textGroupfiled.hasBackground = false
 		textGroupfiled.placeholder = "subject..."
 		native.setKeyboardFocus( nil )
@@ -1179,15 +1181,38 @@ function scene:show( event )
 				-- Determine if file exists
 				if fhd then
 					ProfileImage = display.newImage(contactId..".png",system.DocumentsDirectory)
+					sceneGroup:insert( ProfileImage )
 					fhd:close()
 				else
 
-					ProfileImage = display.newImage("res/assert/detail_defalut.jpg")
-					
+					 ProfileImage = display.newRect( 0, 1, W, 180 )
+					ProfileImage.x=W/2;ProfileImage.y=titleBar.y;
+					ProfileImage.anchorY=0
+					ProfileImage:setFillColor( Utils.convertHexToRGB(color.Gray) )
+					sceneGroup:insert( ProfileImage )
+
+
+					local imagename
+
+					if Message_Type:lower( ) == "group" then
+						imagename = "res/assert/group_thumb.png"
+					elseif Message_Type:lower( ) == "broadcast" then
+						imagename = "res/assert/broad_thumb.png"
+					else
+						imagename = "res/assert/user_thumb.png"
+					end
+
+					local ProfileImage_defalit = display.newImage(sceneGroup,imagename)
+					ProfileImage_defalit.x = ProfileImage.x;ProfileImage_defalit.y = ProfileImage.y+ProfileImage.contentHeight/2
+					ProfileImage_defalit.width = 90;ProfileImage_defalit.height = 90
+
+					if Message_Type:lower( ) == "group" then
+						ProfileImage_defalit.width = 130
+					end
 				end
 
 
-				sceneGroup:insert( ProfileImage )
+				
 				ProfileImage.width = W;ProfileImage.height = 180
 				ProfileImage.x=W/2;ProfileImage.y=titleBar.y
 				ProfileImage.anchorY=0

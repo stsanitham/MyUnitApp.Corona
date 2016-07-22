@@ -82,6 +82,10 @@ local deleteMsgCount = 0
 
 local helpText 
 
+local broadcastflag = false
+local broadcastlist = {}
+
+
 ---local tab_Group_btn,tab_Message_btn,tab_Contact_btn,tab_broadcast_btn,tabBg,tab_Group,tab_Contact
 
 local icons_holder_bg,camera_icon,camera_icon_txt,video_icon,video_icon_txt,audio_icon,audio_icon_txt,gallery_icon,gallery_icon_txt,Location_icon,Location_icon_txt,Contact_icon,Contact_icon_txt
@@ -890,42 +894,7 @@ end
 
 
 
-
-local function videoPlay( event )
-	
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
-
-		local videoname = event.target.id:match( "([^/]+)$" )
-
-		local filePath = system.pathForFile( videoname, system.DocumentsDirectory )
-		            -- Play back the recording
-		            local file = io.open( filePath)
-		            
-		            if file then
-		            	io.close( file )
-
-		            	
-		            	if event.target.value == "play" then
-		            		print("play")
-
-
-		            		
-		            	end
-
-		            end
-		        end
-
-		        return true
-		    end
-
-
-
-
-
-		    local function sendMeaasage()
+   local function sendMeaasage()
 
 
 
@@ -938,31 +907,68 @@ local function videoPlay( event )
 		    	ChatHistory[#ChatHistory] = nil
 		    end
 
-		    for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
+				 --   for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') OR (Message_Type='BROADCAST') ") do
 
-		    	local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
-		    	db:exec( q )
 
-		    	print( "____________" )
+			  --   	if row.Message_Type == "BROADCAST" and broadcastflag == true then
 
-		    	ChatHistory[#ChatHistory+1] = row
+			    			   		
 
-		    end
+					-- 		    	for i=1,#broadcastlist do
+
+					-- 		    		if tonumber(broadcastlist[i]) == tonumber(row.Message_To) then
+					-- 		    			row.Message_Type="individual"
+					-- 		    			ChatHistory[#ChatHistory+1] = row
+
+					-- 		    		end
+
+					-- 		    	end
+
+							    
+					-- elseif (row.Message_Type == "BROADCAST" and broadcastflag == false and MessageType:lower( ) == "broadcast") and (row.Message_To==tostring(To_ContactId)) then
+					-- 	local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
+				 --    	db:exec( q )
+
+
+				 --    	ChatHistory[#ChatHistory+1] = row
+
+			  --   	elseif MessageType:upper( ) == "INDIVIDUAL" then
+
+				 --    	local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
+				 --    	db:exec( q )
+
+
+				 --    	ChatHistory[#ChatHistory+1] = row
+				 --    end
+
+		   -- 	 	end
+
+		   -- 	 	if MessageType:upper( ) == "GROUP" then
+
+
+		   	 		for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."')") do
+
+		   	 		    	local q = "UPDATE pu_MyUnitBuzz_Message SET Message_Status='SEND' WHERE id='"..row.id.."';"
+				    		db:exec( q )
+
+
+				    		ChatHistory[#ChatHistory+1] = row
+
+				    end
+
+		   	 	--end
+
 		    
 
 		    local dateVlaue=""
 
 		    for i=1,#ChatHistory do
-
-				-- if ChatHistory[i].Message_Type == "BROADCAST" and ChatHistory[i].Message_From ~= tostring(ContactId) then
-
-				-- 	local BROADCAST = native.showAlert("aaaa",ChatHistory[i].MyUnitBuzz_Message,{"ok"})
-
-				-- 	MessageType = "INDIVIDUAL"
-
-				-- end
+		    	
+		    	print( "here : "..ChatHistory[i].Message_Type:lower(), MessageType:lower() )
 
 				if ChatHistory[i].Message_Type:lower() == MessageType:lower() then
+					print( "hai" )
+
 
 					local dateLable = nil
 					local datevalue = nil
@@ -1193,42 +1199,6 @@ local function videoPlay( event )
 				           end
 
 				       else
-
-				       	if ChatHistory[i].Audio_Path == "DEFAULT" then
-				       		
-				       		spinner.isVisible=false
-
-				       		local options = {
-				       			width = 32,
-				       			height = 32,
-				       			numFrames = 4,
-				       			sheetContentWidth = 64,
-				       			sheetContentHeight = 64
-				       		}
-
-				       		local spinnerSingleSheet = graphics.newImageSheet( "res/assert/imagespinner.png", options )
-				       		
-				       		local image_spinner = widget.newSpinner
-				       		{
-				       			width = 106/4 ,
-				       			height = 111/4,
-				       			deltaAngle = 10,
-				       			sheet = spinnerSingleSheet,
-				       			startFrame = 1,
-				       			incrementEvery = 20
-				       		}
-
-				       		image_spinner.x=bg.x-bg.contentWidth/2;image_spinner.y=bg.y+bg.contentHeight/2
-				       		image_spinner:toFront();image_spinner:start()
-
-
-				       		image_spinner:start()
-
-				       		tempGroup:insert(image_spinner)
-
-				       		bg.height = bg.height+20;bg.width = bg.width+20
-
-				       	else
 				       		
 							--When audio notification receives
 
@@ -1254,7 +1224,7 @@ local function videoPlay( event )
 
 							downloadimage:addEventListener( "touch", receviednotifyDownload )
 
-						end
+						
 
 					end
 
@@ -1447,35 +1417,6 @@ local function videoPlay( event )
 			chatScroll:scrollTo( "bottom", { time=200 } )
 
 		end
-
-
-
-
-
-	function get_videomodel( response )
-			
-		--	print(json.encode(response))
-
-		-- local options =
-		-- {
-		--    to = { "anitha.mani@w3magix.com"},
-		--    subject = "video response",
-		--    isBodyHtml = true,
-		--    body = ""..event.response,
-
-		-- }
-		-- native.showPopup( "mail", options )
-
-	end
-
-
-
-
-	function get_imagemodel(response)
-
-
-	end
-
 
 
 
@@ -1856,8 +1797,19 @@ local function videoPlay( event )
         	
 		    --	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
+		     if 	Message_Type:lower( ) == "broadcast" then
+
+			    for i=1,#broadcastlist do
+
+				    local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..broadcastlist[i].to..[[','INDIVIDUAL',']]..MemberName..[[',']]..broadcastlist[i].UserName..[[',']]..broadcastlist[i].UserName..[[','yes');]]
+				    db:exec( insertQuery )
+
+				end
+			end
+
+
 		    print(UserId.."\n"..ChatBox.text.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To_ContactId.."\n"..MemberName.."\n end" )
-		    local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
+		    local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(ChatBox.text)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[','no');]]
 		    db:exec( insertQuery )
 
 		    local ConversionFirstName,ConversionLastName,GroupName
@@ -1888,6 +1840,7 @@ local function videoPlay( event )
 
 		    Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",ChatBox.text,ChatBox.text,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 		    
+		   
 		    
 		    ChatBox.text = ""
 
@@ -2377,7 +2330,18 @@ local function scrollListener( event )
 		            To=To_ContactId
 		            Message_Type = MessageType
 
-		            local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Audio','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
+
+		           if 	Message_Type:lower( ) == "broadcast" then
+
+					    for i=1,#broadcastlist do
+
+		          			  local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Audio','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..broadcastlist[i].to..[[','INDIVIDUAL',']]..MemberName..[[',']]..broadcastlist[i].UserName..[[',']]..broadcastlist[i].UserName..[[','yes');]]
+						    db:exec( insertQuery )
+
+						end
+					end
+
+		            local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[','Audio','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[','no');]]
 		            db:exec( insertQuery )
 
 
@@ -2460,7 +2424,9 @@ local function scrollListener( event )
 		            Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,MessageFileType,"Audio","Audio","","","","","","","",AudioPath,audioname,audiosize,"SEND",From,To,Message_Type,get_sendMssage)
 
 		            
-						-- Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
+
+			
+								-- Webservice.DOCUMENT_UPLOAD(file_inbytearray,dataFileName,"Audios",get_audiomodel)
 
 
 						sendMeaasage()
@@ -2511,7 +2477,17 @@ local function scrollListener( event )
 					To=To_ContactId
 					Message_Type = MessageType
 
-					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..captionname..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
+					 if 	Message_Type:lower( ) == "broadcast" then
+
+					    for i=1,#broadcastlist do
+
+							local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..captionname..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..broadcastlist[i].to..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..broadcastlist[i].UserName..[[',']]..broadcastlist[i].UserName..[[','yes');]]
+						    db:exec( insertQuery )
+
+						end
+					end
+
+					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..captionname..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[','no');]]
 					db:exec( insertQuery )
 
 
@@ -2653,7 +2629,17 @@ local function scrollListener( event )
 					To=To_ContactId
 					Message_Type = MessageType
 
-					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(url)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
+					if 	Message_Type:lower( ) == "broadcast" then
+
+					    for i=1,#broadcastlist do
+
+							local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(url)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..broadcastlist[i].to..[[','INDIVIDUAL',']]..MemberName..[[',']]..broadcastlist[i].UserName..[[',']]..broadcastlist[i].UserName..[[','yes');]]
+						    db:exec( insertQuery )
+
+						end
+					end	  
+
+					local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(url)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[','no');]]
 					db:exec( insertQuery )
 
 
@@ -2691,6 +2677,7 @@ local function scrollListener( event )
 
 		    Webservice.SEND_MESSAGE(MessageId,ConversionFirstName,ConversionLastName,GroupName,DocumentUpload,"",MyUnitBuzz_LongMessage,MyUnitBuzz_LongMessage,"","","","",ImagePath,Imagename,Imagesize,"","","","SEND",From,To,Message_Type,get_sendMssage)
 		    
+	  
 		    
 		    ChatBox.text = ""
 
@@ -2948,10 +2935,11 @@ function scene:create( event )
 	Copyicon.id="copy"
 	Copyicon:addEventListener( "touch", deleteAction )
 
-	Forwardicon = display.newImageRect( sceneGroup, "res/assert/play.png", 15, 15 )
+	Forwardicon = display.newImageRect( sceneGroup, "res/assert/forward_thumb.png", 18, 16 )
 	Forwardicon.x=W-20;Forwardicon.y=title_bg.y
 	Forwardicon.isVisible=false
 	Forwardicon.id="forward"
+	Forwardicon:setFillColor( 0 )
 	Forwardicon:addEventListener( "touch", deleteAction )
 
 
@@ -3013,8 +3001,18 @@ local function SendFowardMessage( list )
         	
 		    --	native.showAlert("Type",Message_Type,{CommonWords.ok})
 
+		    if 	Message_Type:lower( ) == "broadcast" then
+
+					    for i=1,#broadcastlist do
+
+		    				local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(MyUnitBuzz_LongMessage)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..broadcastlist[i].to..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..broadcastlist[i].UserName..[[',']]..broadcastlist[i].UserName..[[','yes');]]
+						    db:exec( insertQuery )
+
+						end
+			end	
+
 		    print(UserId.."\n"..tempgroup.MyUnitBuzz_Message.."\n"..Message_date.."\n"..isDeleted.."\n"..Created_TimeStamp.."\n"..Updated_TimeStamp.."\n"..MyUnitBuzz_LongMessage.."\n"..From.."\n"..To.."\n"..MemberName.."\n end" )
-		    local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(MyUnitBuzz_LongMessage)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[');]]
+		    local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.encrypt(MyUnitBuzz_LongMessage)..[[','SEND',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..MemberName..[[',']]..UserName..[[',']]..UserName..[[','no');]]
 		    db:exec( insertQuery )
 
 		    local ConversionFirstName,ConversionLastName,GroupName
@@ -3138,12 +3136,8 @@ local function SendFowardMessage( list )
 
 	 	   	Webservice.ForwarChatMessageDetails(ChatListArray,get_ForwarChatMessageDetails)
 
-	 	   		
-		 	  	
-		 	  	local function delayTimer( event )
-		 	  		sendMeaasage()
-		 	  	end
-		 	  	timer.performWithDelay( 500, delayTimer )
+	  		sendMeaasage()
+		 	  
 end
 
 
@@ -3299,17 +3293,6 @@ function scene:show( event )
 		chatScroll.x=0;chatScroll.y=title_bg.y+title_bg.contentHeight/2
 		ChatScrollContent:insert( chatScroll )
 
-		sendMeaasage()
-
-
-
-		if  MessageType == "INDIVIDUAL" and event.params ~= nil and event.params.status == "forward" then
-				
-
-						SendFowardMessage( event.params.forwardDetails)
-
-		end
-		
 
 		------------------------------------------- attachment icon -----------------------------------------
 
@@ -3350,8 +3333,36 @@ function scene:show( event )
 			helpText.text = ChatDetails.BroadcastWarning
 		end
 
+		-- local function getBroastcastDetailsbyContactId( response )
+
+			
+
+		-- 	if #response > 0 then
+
+		-- 		broadcastflag=true
+
+		-- 		for i=1,#response do
+		-- 			--print( response[i].MyUnitBuzzGroupId )
+		-- 			broadcastlist[#broadcastlist+1] = response[i].MyUnitBuzzGroupId
+		-- 		end
+
+		-- 	end
+
+
+
+		-- 	sendMeaasage()
+
+		-- 	if  MessageType == "INDIVIDUAL" and event.params ~= nil and event.params.status == "forward" then
+					
+
+		-- 					SendFowardMessage( event.params.forwardDetails)
+
+		-- 	end
+
+		-- end
+
 		 local function getCheckChatGroupStatus( response )
-		 		if response == "DELETED" then
+		 		if #response <= 0  then
 
 
 		 				 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
@@ -3373,6 +3384,21 @@ function scene:show( event )
 
 				else
 
+
+					for i=1,#response do
+						local userName
+
+						if response[i].FirstName ~= nil then
+							userName = response[i].FirstName.." "..response[i].LastName
+						else
+							userName = response[i].LastName
+						end
+						--print( response[i].MyUnitBuzzGroupId )
+						broadcastlist[#broadcastlist+1] = {to = response[i].ContactId,UserName = userName}
+
+					end
+
+
 					 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(To_ContactId):lower().."') OR (Message_From='"..tostring(To_ContactId):lower().."') ") do
 
 					    	local q = "UPDATE pu_MyUnitBuzz_Message SET Is_Deleted='false';"
@@ -3383,7 +3409,13 @@ function scene:show( event )
 					 if event.params ~= nil and event.params.status == "forward" then
 
 					 	SendFowardMessage( event.params.forwardDetails)
+
+					 else
+					 	print( "not forward _______" )
+					 	sendMeaasage()
+
 					 end
+
 
 
 
@@ -3397,7 +3429,14 @@ function scene:show( event )
 
 
 		    	Webservice.CheckChatGroupStatus(To_ContactId,getCheckChatGroupStatus)
+		 else
 
+
+		 	sendMeaasage()
+
+		 	--	Webservice.GetBroastcastDetailsbyContactId(To_ContactId,getBroastcastDetailsbyContactId)
+
+		
 		end
 
 		sceneGroup:insert( ChatScrollContent )

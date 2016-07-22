@@ -11,7 +11,6 @@ local lfs = require ("lfs")
 local mime = require("mime")
 local style = require("res.value.style")
 local Utility = require( "Utils.Utility" )
-local newGroup = require( "Controller.newGroupAlert" )
 local json = require("json")
 
 
@@ -503,7 +502,7 @@ end
 			background.typevalue = list[i].MyUnitBuzzGroupType
 			print( "Listy : "..json.encode(list[i]) )
 
-			local Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			local Image = display.newImageRect(tempGroup,"res/assert/defalutbroadcast.png",38,33)
 			Image.x=30;Image.y=background.y+background.height/2
 
 			local GroupName_txt = display.newText(tempGroup,list[i].MyUnitBuzzGroupName,0,0,native.systemFont,14)

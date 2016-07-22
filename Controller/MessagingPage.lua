@@ -14,6 +14,7 @@ local Utility = require( "Utils.Utility" )
 local json = require("json")
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
+require( "Controller.genericAlert" )
 
 
 --------------- Initialization -------------------
@@ -483,6 +484,21 @@ local function Broadcast_list( list )
 
 		local flag = true
 
+		if list[i].isBroadcastmsg == "yes" then
+
+			for k = 1,#list do
+
+				if list[k].isBroadcastmsg == nil or list[k].isBroadcastmsg == "no" and (list[k].Message_From == list[i].Message_To or list[k].Message_To == list[i].Message_To)  then
+
+				else
+
+					flag=false
+				end
+
+			end
+
+		end
+
 		for j=1,i-1 do
 
 			if list[i].Message_Type ~= "GROUP" then
@@ -598,7 +614,18 @@ local function Broadcast_list( list )
 			Image = display.newImageRect(tempGroup,profilrPic..".png",system.DocumentsDirectory,45,38)
 
 		else
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+
+			local imagename=""
+
+			if list[i].Message_Type:lower( ) == "group" then
+				imagename = "res/assert/defalutgroup.png"
+			elseif list[i].Message_Type:lower( ) == "broadcast" then
+				imagename = "res/assert/defalutbroadcast.png"
+			else
+				imagename = "res/assert/career-user.png"
+			end
+
+			Image = display.newImageRect(tempGroup,imagename,38,33)
 			Image.x=30;Image.y=background.y+background.height/2
 
 		end
@@ -902,6 +929,7 @@ function scene:show( event )
 		sceneGroup:insert(broad_scrollview)
 
 
+	
 
 		local function getChatUnReadMessagesList( response )
 
@@ -1005,7 +1033,7 @@ function scene:show( event )
                                        
                                        
 
-                                       local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.decrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[');]]
+                                       local insertQuery = [[INSERT INTO pu_MyUnitBuzz_Message VALUES (NULL, ']]..UserId..[[',']]..Utils.decrypt(tostring(message))..[[','UPDATE',']]..Message_date..[[',']]..isDeleted..[[',']]..Created_TimeStamp..[[',']]..Updated_TimeStamp..[[',']]..ImagePath..[[',']]..AudioPath..[[',']]..VideoPath..[[',']]..MyUnitBuzz_LongMessage..[[',']]..From..[[',']]..To..[[',']]..Message_Type..[[',']]..Name..[[',']]..FromName..[[',']]..GroupName..[[','no');]]
                                        db:exec( insertQuery )
 
 

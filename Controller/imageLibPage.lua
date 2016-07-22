@@ -616,6 +616,15 @@ local function BgTouch(event)
 			else
 				changeMenuGroup.isVisible=true
 			end
+		elseif event.target.id == "addimage" then
+
+					local function hide( event )
+						floatingButtonGroup.isVisible=false
+					end
+
+					transition.to(addEventBtn, {time=200,rotation=0} )
+
+					transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
 
 		end
 	end
@@ -1179,15 +1188,34 @@ end
 			 	
 			 		if event.target.id == "gallery" then
 
+			 			local function hide( event )
+								floatingButtonGroup.isVisible=false
+							end
+
+							transition.to(addEventBtn, {time=200,rotation=0} )
+
+							transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
+
+
+
 			 			if media.hasSource( PHOTO_FUNCTION  ) then
-							timer.performWithDelay( 100, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
+							timer.performWithDelay( 500, function() media.selectPhoto( { listener = selectionComplete, mediaSource = PHOTO_FUNCTION } ) 
 							end )
 						end
 
 			 		elseif event.target.id == "camera" then
 
+			 			local function hide( event )
+								floatingButtonGroup.isVisible=false
+						end
+
+							transition.to(addEventBtn, {time=200,rotation=0} )
+
+							transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
+
+
 			 			if media.hasSource( media.Camera ) then
-							timer.performWithDelay( 100, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
+							timer.performWithDelay( 500, function() media.capturePhoto( { listener = selectionComplete, mediaSource = media.Camera } ) 
 							end )
 							end
 
@@ -1220,10 +1248,6 @@ end
 
 						end
 					
-
-
-		         local alert = native.showAlert(ImageLibrary.FileChoose, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,CommonWords.cancel} , onComplete)
-
 
 
 			end
@@ -1432,17 +1456,24 @@ local function listPosition_change( event )
 
 				if IsOwner == true then
 
+
+
 				addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 66/1.5,66/1.7 )
 				addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 				addEventBtn:addEventListener("touch",uploadImageAction)
 
 			    end
 
-				fromGalleryIcon = display.newImageRect( floatingButtonGroup, "res/assert/gallery1.png", 66/2,66/2.2 )
+			    addImageBg = display.newRect( floatingButtonGroup, W/2, H/2, W, H )
+			    addImageBg.id="addimage"
+			    addImageBg.alpha=0.01
+			    addImageBg:addEventListener( "touch", BgTouch )
+
+				fromGalleryIcon = display.newImageRect( floatingButtonGroup, "res/assert/gallery1.png", 66/1.8,66/2 )
 				fromGalleryIcon.x=addEventBtn.x;fromGalleryIcon.y=addEventBtn.y-45;fromGalleryIcon.id="gallery"
 				fromGalleryIcon:addEventListener("touch",uploadImageAction)
 
-				local fromGalleryIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,65,20,2 )
+				local fromGalleryIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,75,23,2 )
 				fromGalleryIconTipsRect.anchorX=1
 				fromGalleryIconTipsRect.x=fromGalleryIcon.x-25
 				fromGalleryIconTipsRect.y=fromGalleryIcon.y
@@ -1453,11 +1484,11 @@ local function listPosition_change( event )
 				fromGalleryIconTips.y=fromGalleryIconTipsRect.y
 				
 
-				fromCameraIcon = display.newImageRect( floatingButtonGroup, "res/assert/camera1.png", 66/2,66/2.2 )
+				fromCameraIcon = display.newImageRect( floatingButtonGroup, "res/assert/camera1.png", 66/1.8,66/2 )
 				fromCameraIcon.x=fromGalleryIcon.x;fromCameraIcon.y=fromGalleryIcon.y-45;fromCameraIcon.id="camera"
 				fromCameraIcon:addEventListener("touch",uploadImageAction)
 
-				local fromCameraIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,65,20,2 )
+				local fromCameraIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,75,23,2 )
 				fromCameraIconTipsRect.anchorX=1
 				fromCameraIconTipsRect.x=fromCameraIcon.x-25
 				fromCameraIconTipsRect.y=fromCameraIcon.y

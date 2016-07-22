@@ -78,6 +78,11 @@ function scene:show( event )
 				--local tablesetup = [[DROP TABLE logindetails;]]
 			--	db:exec( tablesetup )
 
+			local insertQuery = [[ALTER TABLE pu_MyUnitBuzz_Message ADD COLUMN isBroadcastmsg;]]
+			db:exec( insertQuery )
+
+				
+
 
 			for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
@@ -225,7 +230,7 @@ function scene:show( event )
 				db:exec( q )
 
 
-				local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id INTEGER PRIMARY KEY autoincrement,User_Id,MyUnitBuzz_Message,Message_Status,Message_Date,Is_Deleted,Create_Time_Stamp,Update_Time_Stamp,Image_Path,Audio_Path,Video_Path,MyUnitBuzz_Long_Message,Message_From,Message_To,Message_Type,FromName,ToName,GroupName);]]
+				local tablesetup_chat = [[CREATE TABLE IF NOT EXISTS pu_MyUnitBuzz_Message (id INTEGER PRIMARY KEY autoincrement,User_Id,MyUnitBuzz_Message,Message_Status,Message_Date,Is_Deleted,Create_Time_Stamp,Update_Time_Stamp,Image_Path,Audio_Path,Video_Path,MyUnitBuzz_Long_Message,Message_From,Message_To,Message_Type,FromName,ToName,GroupName,isBroadcastmsg);]]
 				db:exec( tablesetup_chat )
 
 				
