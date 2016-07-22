@@ -185,6 +185,7 @@ end
 
 
 function slideAction()
+
  if(menuShowFlag) then
 
   transition.to( MainGroup, { time=menuTransTime,x=0,transition=easing.outCubic} )
@@ -212,6 +213,8 @@ function menuTouch( event )
   elseif(event.phase == "ended") then
 
   display.getCurrentStage():setFocus( nil )
+
+  native.setKeyboardFocus( nil )
 
   slideAction()
 

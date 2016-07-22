@@ -345,7 +345,7 @@ local function showShare(fileNameString)
 		else
 			if myImage.height > H-110 then
 
-				myImage.height = H-100
+				myImage.height = H-120
 				myImage.width = W-60
 
 			else

@@ -151,7 +151,7 @@ local function closeDetails( event )
 end
 
 local function ChangeParty()
-	AppintmentWith.placeholder="Hostess"
+	AppintmentWith.placeholder = EventCalender.Hostess
 
 	PurposeLbl.text = ""
 
@@ -256,7 +256,7 @@ local function changeTask(  )
 
 	PurposeLbl.text = ""
 
-	PriorityLbl.text = "Not Started"
+	PriorityLbl.text = AddeventPage.NotStarted
 
 	Prioritytxt.text = "Status"
 
@@ -907,7 +907,7 @@ function get_SaveAttachmentDetails(response)
 
 	if SelectEvent.text:lower( ) == "task" then
 
-		PriorityLbl.text = "Not Started"
+		PriorityLbl.text = AddeventPage.NotStarted
 
 		print("45645656454645654645665564456")
 
@@ -986,7 +986,7 @@ local function get_CreateTickler( response )
 
 				if SelectEvent.text:lower( ) == "task" then
 
-					PriorityLbl.text = "Not Started"
+					PriorityLbl.text = AddeventPage.NotStarted
 
 				else
 
