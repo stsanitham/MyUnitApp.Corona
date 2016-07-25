@@ -16,7 +16,7 @@ application =
     {
         google =
         {
-            projectNumber = "800876064299"
+            projectNumber = "464801321790"
         },
 
         iphone =
@@ -31,6 +31,8 @@ application =
 }
 
 --464801321790  -live
+
+--dev/s - 800876064299
 -- -- application =
 -- -- {
 -- --         content =

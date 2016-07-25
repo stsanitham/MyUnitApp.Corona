@@ -350,17 +350,18 @@ panel:insert( profileName )
 							profilePic.anchorY=0
 							profilePic.anchorX=0
 
-							local mask = graphics.newMask( "res/assert/mask1.png" )
 
-							profilePic:setMask( mask )
+										local mask = graphics.newMask( "res/assert/mask1.png" )
 
-							--profilePic.maskX = profilePic.x
-							--profilePic.maskY = profilePic.y
+										profilePic:setMask( mask )
 
-							panel:insert( profilePic )
-							
-	    				--event.row:insert(img_event.target)
-	    			end
+										--profilePic.maskX = profilePic.x
+										--profilePic.maskY = profilePic.y
+
+										panel:insert( profilePic )
+										
+				    				--event.row:insert(img_event.target)
+				    			end
 
 	    			end, ContactId..".png", system.DocumentsDirectory)
 else
@@ -460,7 +461,6 @@ end
 				flapScroll:insert( Event_text )
 
 				-----
-
 				--CareerPath
 
 				menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
@@ -980,7 +980,7 @@ end
 					flapScroll:insert( rect )
 
 						--rect.isVisible=false
-						
+			
 
 						--Logout
 
@@ -1067,9 +1067,10 @@ end
 							end
 
 						else
-										--composer.gotoScene( "Controller.audioRecordPage", options )
 
-										composer.gotoScene( "Controller.eventCalenderPage" )
+							print( "##$" )
+										--composer.gotoScene( "Controller.audioRecordPage", options )
+							composer.gotoScene( "Controller.eventCalenderPage" )
 
 						end
 
