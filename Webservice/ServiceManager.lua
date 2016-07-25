@@ -3174,6 +3174,10 @@ function Webservice.DeleteParticularGroup(contactId,postExecution)
 
 	    		end
 
+
+
+
+
 function Webservice.ContactAutoCompleteForRequestAccesses(searchText,status,postExecution)
 					local request_value = {}
 					local params = {}
@@ -3203,7 +3207,7 @@ function Webservice.ContactAutoCompleteForRequestAccesses(searchText,status,post
 					headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
 
 
- 					local resbody = "userId="..UserId.."&status="..status.."&searchText="..searchText
+ 					local resbody = "userId="..UserId.."&status="..status.."&searchText="..string.urlEncode(searchText)
 
 
 					 params={headers = headers}
@@ -3215,6 +3219,9 @@ function Webservice.ContactAutoCompleteForRequestAccesses(searchText,status,post
     return response
 
 end
+
+
+
 
 
 

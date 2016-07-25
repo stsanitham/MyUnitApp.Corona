@@ -1343,22 +1343,23 @@ local function textfield( event )
 
 
 				
-				local function onRowRender( event )
+			local function onRowRender( event )
 
 				local row = event.row
 
 				local rowHeight = row.contentHeight
 				local rowWidth = row.contentWidth
 
-				local rowTitle = display.newText(row, List_array[row.index][1], 0, 0,280,38, nil, 14 )
+				local rowTitle = display.newText(row, List_array[row.index][1], 0, 0,280,32, nil, 14 )
 				rowTitle:setFillColor( 0 )
 				rowTitle.anchorX = 0
 				rowTitle.x = 5
-				rowTitle.y = rowHeight * 0.5+5
+				rowTitle.y = rowHeight * 0.5 + 15.5
 
 				row.rowValue = List_array[row.index][2]
 
 				row.text=List_array[row.index][1]
+				
 			end
 
 
@@ -2051,7 +2052,7 @@ function scene:show( event )
 
   		---Listview---
 
-  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+1, 311 )
+  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+1, 331 )
   		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
   		rankTop = display.newRect(rankGroup,W/2,H/2-160,300,30)
@@ -2080,8 +2081,8 @@ function scene:show( event )
   		rankList = widget.newTableView
   		{
   			left = 0,
-  			top = -50,
-  			height = 290,
+  			top = -40,
+  			height = 300,
   			width = 300,
   			onRowRender = onRowRender,
   			onRowTouch = onRowTouch,
@@ -2094,7 +2095,7 @@ function scene:show( event )
 
 	  	rankList.x=MKRank_bg.x
 	  	rankList.y=rankTop.y+rankTop.height/2
-	  	rankList.height = 290
+	  	rankList.height = 300
 	  	rankList.width = MKRank_bg.contentWidth
 	  	rankList.anchorY=0
 	  	rankGroup.isVisible=false
@@ -2103,7 +2104,7 @@ function scene:show( event )
 
 	  	for i = 1, #List_array do
 
-	  		rankList:insertRow{ rowHeight = 35,
+	  		rankList:insertRow{ rowHeight = 32,
 	  		rowColor = { default={ 1,1,1}, over={ 0, 0, 0, 0.1 } }
 
 	  	}

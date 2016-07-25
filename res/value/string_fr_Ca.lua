@@ -23,6 +23,13 @@ CommonWords.Found = "Trouvé"
 
 
 
+SplashScreen = {}
+
+UpdateVersionTextAndroid = "Mettre à jour la dernière version du Play Store"
+UpdateVersionTextIOS = "Mettre à jour la dernière version de l'App Store"
+
+
+
 Month = {}
 
 Month["jan"] = "jan"
@@ -357,9 +364,12 @@ Facebook = {}
 
 Facebook.PageTitle = "Facebook"
 
+
 Twitter = {}
 
 Twitter.PageTitle = "Twitter"
+Twitter.Cancel = "Twitter Annuler"
+
 
 Google_Plus = {}
 

@@ -23,6 +23,13 @@ CommonWords.Found = "Encontró"
 
 
 
+SplashScreen = {}
+
+UpdateVersionTextAndroid = "Actualización de la última versión de Play Store"
+UpdateVersionTextIOS = "Actualización de la última versión de la App Store"
+
+
+
 
 
 Month = {}
@@ -355,9 +362,12 @@ Facebook = {}
 
 Facebook.PageTitle = "Facebook"
 
+
 Twitter = {}
 
 Twitter.PageTitle = "Gorjeo"
+Twitter.Cancel = "Twitter Cancelar"
+
 
 Google_Plus = {}
 

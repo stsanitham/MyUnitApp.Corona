@@ -213,8 +213,8 @@ local function RequestProcess()
 			Name.text = ""
 			Email.text = ""
 			Phone.text = ""
-			MKRank.text = "-Select MK Rank-"
-			MKRank.value = "-Select MK Rank-"
+			MKRank.text = RequestAccess.MKRank_placeholder
+			MKRank.value = RequestAccess.MKRank_placeholder
 			Comment.text = ""
 
 			
@@ -548,28 +548,26 @@ function HAS_UNITNUMBER_FUNCTION(responseUnitValue,directorname,directoremail)
 
 			elseif ( event.phase == "editing" ) then
 
-				
-				
-				
+					if event.target.id == "Comments" then
+								if event.text:len() > 160 then
 
-				if event.target.id == "Comments" then
-					if event.text:len() > 160 then
+									event.target.text = event.target.text:sub(1,160)
 
-						event.target.text = event.target.text:sub(1,160)
+								end
 
-					end
+					else
 
-				else
+								if event.text:len() > 50 then
 
-					if event.text:len() > 50 then
+									event.target.text = event.target.text:sub(1,50)
 
-						event.target.text = event.target.text:sub(1,50)
+								end
 
 					end
 
-				end
 
-				if(event.target.id == "Comments") then
+
+				    if(event.target.id == "Comments") then
        --  					if event.text:len() > 160 then
 
 							-- 	event.target.text = event.target.text:sub(1,160)
@@ -582,7 +580,8 @@ function HAS_UNITNUMBER_FUNCTION(responseUnitValue,directorname,directoremail)
 								native.setKeyboardFocus( nil )
 							end
 
-						elseif(event.target.id =="Phone") then
+
+					elseif(event.target.id =="Phone") then
 
 							local text = event.target.text
 
@@ -601,13 +600,11 @@ function HAS_UNITNUMBER_FUNCTION(responseUnitValue,directorname,directoremail)
 							event.target:setSelection(maskingValue:len()+1,maskingValue:len()+1)
 
 							
-						end
-						
 					end
+						
+				end	
 
-					
-
-				end
+			end
 
 
 
@@ -741,7 +738,7 @@ local sumbitBtnRelease = function( event )
 
 		end
 
-		if Phone.text == "" or Phone.text == "*Enter the Phone Number" or Phone.text == Phone.id or Phone.text:len() < 14  then
+		if Phone.text == "" or Phone.text == PopupGroup.PhoneNumRequired or Phone.text == Phone.id or Phone.text:len() < 14  then
 			validation=false
 			SetError("*"..RequestAccess.Phone_error,Phone)
 		end
@@ -1033,7 +1030,7 @@ sceneGroup:insert(MKRank_bg)
 
 MKRank = display.newText("",MKRank_bg.x+10,MKRank_bg.y,MKRank_bg.contentWidth,MKRank_bg.height,native.systemFont,14 )
 MKRank.text = RequestAccess.MKRank_placeholder
-MKRank.value = "-Select MK Rank-"
+MKRank.value = RequestAccess.MKRank_placeholder
 MKRank.id="MKrank"
 MKRank.alpha=0.9
 MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))

@@ -150,6 +150,14 @@ FlapMenu.AddNewAccess = "Add New Contact"
 
 
 
+
+SplashScreen = {}
+
+UpdateVersionTextAndroid = "Update the latest version from the Play Store"
+UpdateVersionTextIOS = "Update the latest version from the App Store"
+
+
+
 EventCalender = {}
 
 EventCalender.PageTitle = "Event Calendar"
@@ -361,9 +369,12 @@ Facebook = {}
 
 Facebook.PageTitle = "Facebook"
 
+
 Twitter = {}
 
 Twitter.PageTitle = "Twitter"
+Twitter.Cancel = "Twitter Cancel"
+
 
 Google_Plus = {}
 

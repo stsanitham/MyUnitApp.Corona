@@ -351,13 +351,24 @@ AddeventPage.Update = "Update"
 
 
 
+SplashScreen = {}
+
+UpdateVersionTextAndroid = "Update the latest version from the Play Store"
+UpdateVersionTextIOS = "Update the latest version from the App Store"
+
+
+
+
 Facebook = {}
 
 Facebook.PageTitle = "Facebook"
 
+
 Twitter = {}
 
 Twitter.PageTitle = "Twitter"
+Twitter.Cancel = "Twitter Cancel"
+
 
 Google_Plus = {}
 

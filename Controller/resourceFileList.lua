@@ -99,7 +99,12 @@ local filenamevalue = ""
 			end
 
 
-local pathValue="/"
+
+
+			local pathValue="/storage/sdcard1/"
+			local pathValue1 = "/storage/sdcard0/"
+			local pathValue2 = "/storage/sdcard/"
+
 
 
 			local function onRowRender_DocLibList( event )
@@ -141,8 +146,11 @@ local pathValue="/"
 				if( "press" == phase ) then
 
 										rowvalues = file_array[row.index].name
-											local path = pathValue
+											local path = workingdir
 										    local pathType1 = ""
+
+
+										    print(path)
 
 										   -- title.text = file_array[row.index].name
 
@@ -174,11 +182,13 @@ local pathValue="/"
 
 										
 
-										  pathValue = pathValue..rowvalues
+										  workingdir = workingdir.."/"..rowvalues
+
+										  local pathval = native.showAlert("Path Value",workingdir,{"ok"})
 
 											-- Check to see if path exists
-											if path and lfs.attributes(path..rowvalues ) then
-											    pathType1= lfs.attributes( path..rowvalues ).mode
+											if path and lfs.attributes(workingdir ) then
+											    pathType1= lfs.attributes( workingdir ).mode
 											    print("pathtype     "..pathType1)
 											end
 
@@ -191,11 +201,11 @@ local pathValue="/"
 												end
 
 
-												Documents_list:deleteAllRows()
+												--Documents_list:deleteAllRows()
 
-												native.showAlert( "MUB", "Path : "..pathValue,{"ok"} )
+												native.showAlert( "MUB", "Path : "..workingdir,{"ok"} )
 
-														  for file in lfs.dir(pathValue ) do
+														  for file in lfs.dir(workingdir ) do
 
 														  	print("true")
 
@@ -203,7 +213,7 @@ local pathValue="/"
 
 																         print("FILE 123: " .. file)
 
-																         fileAtr = lfs.attributes( pathValue )
+																         fileAtr = lfs.attributes( workingdir )
 
 
 																         --filenamevalue[#filenamevalue+1] = { name = path..file_array[row.index].name }
@@ -254,6 +264,8 @@ local pathValue="/"
 									NoEvent.x=W/2;NoEvent.y=H/2
 									NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 							    end
+
+							    Documents_list:deleteAllRows()
 
 
 
@@ -432,6 +444,9 @@ local pathValue="/"
 			ga.enterScene("Resource Library")
 
 
+			    
+					
+
 			function getFileList()
 
 
@@ -439,8 +454,13 @@ local pathValue="/"
 						file_array[#file_array] = nil
 					end
 
-				local path = pathValue
+
+				local path = workingdir
 				local pathType = ""
+
+				print("&&&&& ")
+
+				pathValue = path
 
 				-- Check to see if path exists
 				if path and lfs.attributes( path ) then
@@ -457,9 +477,9 @@ local pathValue="/"
 
 								         print("FILE: " .. file)
 
-								         fileAtr = lfs.attributes( path.. file )
+								         fileAtr = lfs.attributes( file )
 
-								         file_array[#file_array+1] = { name = path..""..file}
+								         file_array[#file_array+1] = { name = file}
 
 
 									   		 if fileAtr ~= nil then 
@@ -475,18 +495,154 @@ local pathValue="/"
 
 				else
 
-													title.text = ResourceLibrary.PageTitle
-												    title.type = "outerfile"
-												    back_icon_bg.type = "outerfile"
-												    back_icon.type = "outerfile"
+									title.text = ResourceLibrary.PageTitle
+								    title.type = "outerfile"
+								    back_icon_bg.type = "outerfile"
+								    back_icon.type = "outerfile"
 				end
+
+
 
 
 			end
 
 
 
-		    getFileList()
+
+
+workingdir="/"
+
+
+for file in lfs.dir(workingdir) do
+
+	--getFileList()
+
+    if lfs.attributes(workingdir..file,"mode") == "file" then 
+
+    	local native = native.showAlert("alert 1",file,"ok")
+
+    	print("file: "..file)
+
+    	    if "." == file and ".." == file then
+         
+             local n2 = native.showAlert("File","This cannot be opened",{"ok"})
+
+            end
+
+
+    elseif lfs.attributes(workingdir..file,"mode")== "directory" then 
+
+    	print("dir: "..file)
+
+    	local native = native.showAlert("alert 2",file,"ok")
+
+
+					if "." ~= file and ".." ~= file then
+
+				         print("FILE 123: " .. file)
+
+				         fileAtr = lfs.attributes( file )
+
+
+				         -- workingdir = workingdir..file
+
+				         -- print("working directory = "..workingdir)
+
+
+				         --filenamevalue[#filenamevalue+1] = { name = path..file_array[row.index].name }
+
+				         print(json.encode(fileAtr))
+
+				         print(file)
+
+				         file_array[#file_array+1] = { name = file }
+
+				         --title.text = rowvalues
+
+
+				        -- Documents_list:deleteAllRows()
+
+
+				         print(#file_array)
+
+					   		 if fileAtr ~= nil then 
+
+						   		 	file_attributemode = fileAtr.mode
+
+						   		 	print(path,file,file_attributemode) 
+
+					   		 end
+
+				     end
+
+    end
+
+end
+
+
+
+            
+
+            ------------------------------------------------------------------------
+					--------------------------- Read ----------------------------
+
+				-- local localpath = system.pathForFile(pathValue)  -- Change this path to the path of an image on your computer
+			 --    local localpath1 = system.pathForFile(pathValue1)
+				-- --local localpath2 = system.pathForFile(pathValue2)
+
+
+				-- if localpath then
+
+				-- 		local file = io.open( localpath, "r" )                               -- Open the image in read mode
+				-- 		local contents
+
+				-- 			getFileList()
+
+				-- 		    contents = file:read( "*a" )  
+
+				-- 		    print(contents)      
+				-- 		                                    -- Read contents
+				-- 		    io.close( file ) 
+				-- 		                                                       -- Close the file (Important!)
+				-- elseif localpath1 then
+
+				-- 	    localpath1 = system.pathForFile("/storage/sdcard0/")
+				-- 		local file = io.open( localpath1, "r" )                               -- Open the image in read mode
+				-- 		local contents
+
+
+				-- 			getFileList()
+
+				-- 		    contents = file:read( "*a" )  
+
+				-- 		    print(contents)      
+				-- 		                                    -- Read contents
+				-- 		    io.close( file ) 
+				-- 				                                                       -- Close the file (Important!)
+				-- else
+
+
+
+			 --            localpath2 = system.pathForFile("/storage/sdcard/")
+				-- 		local file = io.open( localpath2, "r" )                               -- Open the image in read mode
+				-- 		local contents
+
+
+				-- 			getFileList()
+
+				-- 		    contents = file:read( "*a" )  
+
+				-- 		    print(contents)      
+				-- 		                                    -- Read contents
+				-- 		    io.close( file ) 
+
+
+				-- end
+
+
+
+
+		    -- getFileList()
 
 
 

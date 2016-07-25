@@ -408,12 +408,12 @@ function scene:show( event )
 
 								if isAndroid then 
 
-									alert = native.showAlert("MyUnitBuzz","Update the latest version from the Play Store" , { "Update"}, onComplete )
+									alert = native.showAlert("MyUnitBuzz", UpdateVersionTextAndroid , { AddeventPage.Update }, onComplete )
 
 								elseif isIos then
 
 
-									alert = native.showAlert("MyUnitBuzz","Update the latest version from the App Store" , { "Update"}, onComplete )
+									alert = native.showAlert("MyUnitBuzz", UpdateVersionTextIOS , { AddeventPage.Update }, onComplete )
 
 								end
 
