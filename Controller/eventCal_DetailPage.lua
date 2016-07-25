@@ -8,6 +8,7 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 local json = require("json")
 local Utility = require( "Utils.Utility" )
+require( "Controller.genericAlert" )
 local Applicationconfig = require("Utils.ApplicationConfig")
 local widget = require( "widget" )
 
@@ -127,9 +128,11 @@ local function EditOption( event )
 
 	if event.phase == "ended" then
 	local function onComplete( event )  
-		if event.action == "clicked" then
 
-			local i = event.index
+			local i = event
+
+			print( "touch : "..i )
+
 			if i == 1 then
 
 				Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,get_DeleteTicklerEvent)
@@ -138,26 +141,42 @@ local function EditOption( event )
 				    	--Details
 
 				    	
-				    end
-				end
-			end
+			 end
+				
+	end
 
 			if detail_value.IsRecurrence == true then 
 
 				if event.target.id == "delete" then
 
-					local alert = native.showAlert(EventCalender.PageTitle, EventCalender.RecurringDeleteAlert , { CommonWords.ok } )
+
+					local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+							genericAlert.createNew(EventCalender.PageTitle,EventCalender.RecurringDeleteAlert,option)
+
 
 				elseif event.target.id == "edit" then
+
+					local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+							genericAlert.createNew(EventCalender.PageTitle,EventCalender.RecurringEditAlert,option)
 					
-					local alert = native.showAlert(EventCalender.PageTitle, EventCalender.RecurringEditAlert , { CommonWords.ok } )
 				end
 
 			else
 
 				if event.target.id == "delete" then
 
-					local alert = native.showAlert(EventCalender.DeleteTitle, EventCalender.DeleteAlert , { CommonWords.ok , CommonWords.cancel }, onComplete )
+
+					local option ={
+								 {content=CommonWords.ok,positive=true},
+								{content=CommonWords.cancel,positive=false}
+								}
+					genericAlert.createNew(EventCalender.PageTitle, EventCalender.DeleteAlert,option,onComplete)
+
+					--local alert = native.showAlert(EventCalender.DeleteTitle, EventCalender.DeleteAlert , { CommonWords.ok , CommonWords.cancel }, onComplete )
 
 				elseif event.target.id == "edit" then
 

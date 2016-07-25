@@ -545,12 +545,10 @@ shareImg:addEventListener("touch",listTouch)
 
 shareImg_bg:addEventListener("touch",listTouch)
 
-addEventBtn:toFront()
-floatingButtonGroup:toFront( )
-
 
 row.ImageId = List_array[row.index].ImageId
 row.FilePath = List_array[row.index].FilePath
+addImageBg:toFront( );addEventBtn:toFront( );floatingButtonGroup:toFront( )
 
 end
 
@@ -622,7 +620,9 @@ local function BgTouch(event)
 						floatingButtonGroup.isVisible=false
 					end
 
-					transition.to(addEventBtn, {time=200,rotation=0} )
+					addImageBg.alpha=0
+
+					transition.to(addEventBtn, {time=200,rotation=0,width = addEventBtn.width + 5} )
 
 					transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
 
@@ -883,7 +883,7 @@ end
 careerList_scrollview:insert(tempGroup)
 
 end
-
+addImageBg:toFront( );addEventBtn:toFront( );floatingButtonGroup:toFront( )
 end
 
 
@@ -1192,7 +1192,9 @@ end
 								floatingButtonGroup.isVisible=false
 							end
 
-							transition.to(addEventBtn, {time=200,rotation=0} )
+							addImageBg.alpha=0
+
+							transition.to(addEventBtn, {time=200,rotation=0,width = event.target.width + 5} )
 
 							transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
 
@@ -1209,7 +1211,9 @@ end
 								floatingButtonGroup.isVisible=false
 						end
 
-							transition.to(addEventBtn, {time=200,rotation=0} )
+							addImageBg.alpha=0
+
+							transition.to(addEventBtn, {time=200,rotation=0,width = event.target.width + 5} )
 
 							transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
 
@@ -1225,12 +1229,13 @@ end
 
 						if event.target.rotation >= 45 then
 
+							addImageBg.alpha=0
 
 							local function hide( event )
 								floatingButtonGroup.isVisible=false
 							end
 
-							transition.to( event.target, {time=200,rotation=0} )
+							transition.to( event.target, {time=200,rotation=0,width = event.target.width + 5} )
 
 							transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
 
@@ -1238,9 +1243,11 @@ end
 
 						else
 
+							addImageBg.alpha=0.5
+
 							floatingButtonGroup.y=30
 
-							transition.to( event.target, {time=200,rotation=45} )
+							transition.to( event.target, {time=200,rotation=45,width = event.target.width - 5 } )
 
 							transition.to( floatingButtonGroup, {time=300,y=0,transition=easing.outBack} )
 
@@ -1458,6 +1465,13 @@ local function listPosition_change( event )
 				-- uploadimage_icon:addEventListener("touch",uploadImageLayout)
 				sceneGroup:insert( floatingButtonGroup )
 
+				  addImageBg = display.newRect( W/2, H/2, W, H )
+			    addImageBg.id="addimage"
+			    addImageBg.alpha=0.01
+			   sceneGroup:insert( addImageBg)
+			    addImageBg.x=W/2;addImageBg.y=H/2
+			    addImageBg:addEventListener( "touch", BgTouch )
+
 				if IsOwner == true then
 
 
@@ -1468,10 +1482,7 @@ local function listPosition_change( event )
 
 			    end
 
-			    addImageBg = display.newRect( floatingButtonGroup, W/2, H/2, W, H )
-			    addImageBg.id="addimage"
-			    addImageBg.alpha=0.01
-			    addImageBg:addEventListener( "touch", BgTouch )
+			  
 
 				fromGalleryIcon = display.newImageRect( floatingButtonGroup, "res/assert/gallery1.png", 66/1.8,66/2 )
 				fromGalleryIcon.x=addEventBtn.x;fromGalleryIcon.y=addEventBtn.y-45;fromGalleryIcon.id="gallery"
@@ -1481,7 +1492,7 @@ local function listPosition_change( event )
 				fromGalleryIconTipsRect.anchorX=1
 				fromGalleryIconTipsRect.x=fromGalleryIcon.x-25
 				fromGalleryIconTipsRect.y=fromGalleryIcon.y
-				fromGalleryIconTipsRect:setFillColor( Utils.convertHexToRGB(color.Gray) )
+				fromGalleryIconTipsRect:setFillColor( 0,0,0,0.7 )
 
 				local fromGalleryIconTips = display.newText( floatingButtonGroup, "Gallery",0,0,native.systemFont,12 )
 				fromGalleryIconTips.x=fromGalleryIconTipsRect.x-fromGalleryIconTipsRect.contentWidth/2
@@ -1496,7 +1507,7 @@ local function listPosition_change( event )
 				fromCameraIconTipsRect.anchorX=1
 				fromCameraIconTipsRect.x=fromCameraIcon.x-25
 				fromCameraIconTipsRect.y=fromCameraIcon.y
-				fromCameraIconTipsRect:setFillColor( Utils.convertHexToRGB(color.Gray) )
+				fromCameraIconTipsRect:setFillColor( 0,0,0,0.7 )
 
 				local fromCameraIconTips = display.newText( floatingButtonGroup, "Camera",0,0,native.systemFont,12 )
 				fromCameraIconTips.x=fromCameraIconTipsRect.x-fromCameraIconTipsRect.contentWidth/2

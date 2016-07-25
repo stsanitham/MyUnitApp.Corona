@@ -11,7 +11,7 @@ local Utility = require("Utils.Utility")
 local lfs = require("lfs")
 local mime = require("mime")
 local json = require("json")
-
+require("Controller.genericAlert")
 local timePicker = require("Controller.timePicker")
 local datePicker = require("Controller.datePicker")
 
@@ -875,7 +875,7 @@ end
 
 local function onComplete(event)
 
-	if "clicked"==event.action then
+	if 1 == event then
 
 		--status = "deleted"
 
@@ -925,21 +925,47 @@ function get_SaveAttachmentDetails(response)
 
 	os.remove(path)
 
+			What.isVisible=false;Where.isVisible=false;Phone.isVisible=false;AccessCode.isVisible=false;Description.isVisible=false
+			Description_lbl.isVisible=false;AppintmentWith.isVisible=false;Addinvitees.isVisible=false;PurposeLbl.isVisible=false;Other.isVisible=false
+
+		local EventType = "added"
+				if isUpdate == true then 
+					EventType = "updated"
+				end
+				
+
 	if SelectEvent.text:lower( ) == "appointment" then
 
-		local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventAppointment.." "..EventCalender.AddedSuccessfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventAppointment..EventType.." "..EventCalender.Successfully,option,onComplete)
+
+
 
 	elseif SelectEvent.text:lower( ) == "call" then
 
-		local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventCall.." ".. EventCalender.AddedSuccessfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventCall..EventType.." "..EventCalender.Successfully,option,onComplete)
+
 
 	elseif SelectEvent.text:lower( ) == "task" then
 
-		local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventTask.." ".. EventCalender.AddedSuccessfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventTask..EventType.." "..EventCalender.Successfully,option,onComplete)
+
 
 	elseif SelectEvent.text:lower( ) == "party" then
 
-		local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventParty.." ".. EventCalender.AddedSuccessfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventParty..EventType.." "..EventCalender.Successfully,option,onComplete)
+
 		
 	else
 
@@ -997,31 +1023,51 @@ local function get_CreateTickler( response )
 
 				os.remove(path)
 
+				What.isVisible=false;Where.isVisible=false;Phone.isVisible=false;AccessCode.isVisible=false;Description.isVisible=false
+			Description_lbl.isVisible=false;AppintmentWith.isVisible=false;Addinvitees.isVisible=false;PurposeLbl.isVisible=false;Other.isVisible=false
+
+
 				local EventType = "added"
 				if isUpdate == true then 
 					EventType = "updated"
 				end
 				
 
-				if SelectEvent.text:lower( ) == "appointment" then
+			if SelectEvent.text:lower( ) == "appointment" then
 
-					local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventAppointment..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventAppointment..EventType.." "..EventCalender.Successfully,option,onComplete)
 
-				elseif SelectEvent.text:lower( ) == "call" then
 
-					local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventCall..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
 
-				elseif SelectEvent.text:lower( ) == "task" then
+	elseif SelectEvent.text:lower( ) == "call" then
 
-					local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventTask..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventCall..EventType.." "..EventCalender.Successfully,option,onComplete)
 
-				elseif SelectEvent.text:lower( ) == "party" then
 
-					local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventParty..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
-					
-				else
+	elseif SelectEvent.text:lower( ) == "task" then
 
-		--endlocal alert = native.showAlert(  EventCalender.PageTitle,AddeventPage.Event_Added, { CommonWords.ok },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventTask..EventType.." "..EventCalender.Successfully,option,onComplete)
+
+
+	elseif SelectEvent.text:lower( ) == "party" then
+
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventParty..EventType.." "..EventCalender.Successfully,option,onComplete)
+
+		
+	else
+
 	end
 	
 end
@@ -1822,9 +1868,10 @@ local function TouchAction( event )
 
 					local function onComplete(event)
 
-						if "clicked"==event.action then
+						AppintmentWith.isVisible=true
+						Addinvitees.isVisible=true
 
-							local i = event.index 
+							local i = event 
 
 							if 1 == i then
 
@@ -1842,12 +1889,19 @@ local function TouchAction( event )
 
 							end
 
-						end
+						
 
 					end
 
 
-					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
+					AppintmentWith.isVisible=false
+					Addinvitees.isVisible=false
+					local option ={
+							{content=Message.FromGallery,positive=true},
+							{content=Message.FromCamera,positive=true},
+							{content="Cancel",positive=true},
+						  }
+					genericAlert.createNew(EventCalender.PageTitle,Message.FileSelectContent,option,onComplete)
 
 
 
