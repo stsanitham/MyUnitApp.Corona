@@ -296,7 +296,6 @@ local function TabbarTouch( event )
 				overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 				overlay.y=tabBg.y+6;overlay.x=tab_Group_btn.x
 
-<<<<<<< HEAD
 				if status == "forward" then
 
 					local options = {
@@ -309,14 +308,7 @@ local function TabbarTouch( event )
 				else
 
 					local options = {
-=======
-					for j=MainGroup.numChildren, 1, -1 do 
-	        							display.remove(MainGroup[MainGroup.numChildren])
-	        							MainGroup[MainGroup.numChildren] = nil
-	        						end
 
-				local options = {
->>>>>>> MUB_V1.2.2
 					time = 300,	  
 					params = { tabbuttonValue3 =event.target.id}
 				}
@@ -960,13 +952,10 @@ function scene:show( event )
 
 	if phase == "will" then
 
-<<<<<<< HEAD
 		composer.removeHidden(  )
 
 		broad_scrollview = widget.newScrollView
-=======
-				broad_scrollview = widget.newScrollView
->>>>>>> MUB_V1.2.2
+
 		{
 			top = RecentTab_Topvalue-5,
 			left = 0,

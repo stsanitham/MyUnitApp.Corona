@@ -16,7 +16,7 @@ application =
     {
         google =
         {
-            projectNumber = "464801321790"
+            projectNumber = "800876064299"
         },
 
         iphone =
