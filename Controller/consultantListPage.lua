@@ -373,16 +373,21 @@ end
 	local function changePic( imgevent )
 			local sceneView = scene.view
 		GroupIcon = display.newImageRect( response.FileName,system.DocumentsDirectory, 38, 33 )
-		GroupIcon.width = 45;GroupIcon.height = 38
-		GroupIcon.x = backbutton.x + backbutton.contentWidth +10
+		GroupIcon.width = 38;GroupIcon.height = 33
+		GroupIcon.x = backbutton.x + backbutton.contentWidth +5
 		GroupIcon.y = subjectBar.y +20
 		GroupIcon.anchorX=0
 		GroupIcon.id = "imgEdit"
 		sceneView:insert(GroupIcon)
 
-			local mask = graphics.newMask( "res/assert/masknew.png" )
-    							GroupIcon:setMask( mask )
 
+
+			local mask = graphics.newMask( "res/assert/masknew.png" )
+    		GroupIcon:setMask( mask )
+    		GroupIcon.maskScaleX, GroupIcon.maskScaleY = 0.95,0.88
+
+
+    	GroupIconEdit:toFront( )
 
 		GroupIcon:addEventListener( "touch"	, bgTouch )
 	end
@@ -1541,15 +1546,15 @@ function scene:create( event )
 			            
 			            if file then
 			            	io.close( file )
-			            	GroupIcon = display.newImageRect( sceneGroup, editId..".png", system.DocumentsDirectory, 50, 38 )
-			            	GroupIcon.width = 45;GroupIcon.height = 38
+			            	GroupIcon = display.newImageRect( sceneGroup, editId..".png", system.DocumentsDirectory, 38, 33 )
+			            	GroupIcon.width = 38;GroupIcon.height = 33
 			            		local mask = graphics.newMask( "res/assert/masknew.png" )
     							GroupIcon:setMask( mask )
+    							GroupIcon.maskScaleX, GroupIcon.maskScaleY = 0.95,0.88
 			            end
 	end
-	if not GroupIcon  ~= nil then 
+	if not GroupIcon then 
 
-	
 
 				local imagename=""
 

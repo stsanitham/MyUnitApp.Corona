@@ -11,7 +11,7 @@ local Utility = require("Utils.Utility")
 local lfs = require("lfs")
 local mime = require("mime")
 local json = require("json")
-
+require("Controller.genericAlert")
 local timePicker = require("Controller.timePicker")
 local datePicker = require("Controller.datePicker")
 
@@ -788,7 +788,7 @@ local function onRowTouch(event)
 			if SelectEvent.text:lower( ) == "party" then
 
 					for i=1,#AddeventPage.partyArray do
-						if AddeventPage.purposeArray[i] == row.name then
+						if AddeventPage.partyArray[i] == row.name then
 							List.textFiled.value=AddeventPage.partyArray[i]
 						end
 					end
@@ -875,7 +875,7 @@ end
 
 local function onComplete(event)
 
-	if "clicked"==event.action then
+	if 1 == event then
 
 		--status = "deleted"
 
@@ -925,21 +925,47 @@ function get_SaveAttachmentDetails(response)
 
 	os.remove(path)
 
+			What.isVisible=false;Where.isVisible=false;Phone.isVisible=false;AccessCode.isVisible=false;Description.isVisible=false
+			Description_lbl.isVisible=false;AppintmentWith.isVisible=false;Addinvitees.isVisible=false;PurposeLbl.isVisible=false;Other.isVisible=false
+
+		local EventType = "added"
+				if isUpdate == true then 
+					EventType = "updated"
+				end
+				
+
 	if SelectEvent.text:lower( ) == "appointment" then
 
-		local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventAppointment.." "..EventCalender.AddedSuccessfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventAppointment..EventType.." "..EventCalender.Successfully,option,onComplete)
+
+
 
 	elseif SelectEvent.text:lower( ) == "call" then
 
-		local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventCall.." ".. EventCalender.AddedSuccessfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventCall..EventType.." "..EventCalender.Successfully,option,onComplete)
+
 
 	elseif SelectEvent.text:lower( ) == "task" then
 
-		local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventTask.." ".. EventCalender.AddedSuccessfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventTask..EventType.." "..EventCalender.Successfully,option,onComplete)
+
 
 	elseif SelectEvent.text:lower( ) == "party" then
 
-		local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventParty.." ".. EventCalender.AddedSuccessfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventParty..EventType.." "..EventCalender.Successfully,option,onComplete)
+
 		
 	else
 
@@ -997,31 +1023,51 @@ local function get_CreateTickler( response )
 
 				os.remove(path)
 
+				What.isVisible=false;Where.isVisible=false;Phone.isVisible=false;AccessCode.isVisible=false;Description.isVisible=false
+			Description_lbl.isVisible=false;AppintmentWith.isVisible=false;Addinvitees.isVisible=false;PurposeLbl.isVisible=false;Other.isVisible=false
+
+
 				local EventType = "added"
 				if isUpdate == true then 
 					EventType = "updated"
 				end
 				
 
-				if SelectEvent.text:lower( ) == "appointment" then
+			if SelectEvent.text:lower( ) == "appointment" then
 
-					local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventAppointment..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventAppointment..EventType.." "..EventCalender.Successfully,option,onComplete)
 
-				elseif SelectEvent.text:lower( ) == "call" then
 
-					local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventCall..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
 
-				elseif SelectEvent.text:lower( ) == "task" then
+	elseif SelectEvent.text:lower( ) == "call" then
 
-					local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventTask..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventCall..EventType.." "..EventCalender.Successfully,option,onComplete)
 
-				elseif SelectEvent.text:lower( ) == "party" then
 
-					local alert = native.showAlert(  EventCalender.PageTitle,EventCalender.EventParty..EventType.." "..EventCalender.Successfully, { "OK" },onComplete )
-					
-				else
+	elseif SelectEvent.text:lower( ) == "task" then
 
-		--endlocal alert = native.showAlert(  EventCalender.PageTitle,AddeventPage.Event_Added, { CommonWords.ok },onComplete )
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventTask..EventType.." "..EventCalender.Successfully,option,onComplete)
+
+
+	elseif SelectEvent.text:lower( ) == "party" then
+
+			local option ={
+							{content=CommonWords.ok,positive=true},
+						  }
+			genericAlert.createNew(EventCalender.PageTitle,EventCalender.EventParty..EventType.." "..EventCalender.Successfully,option,onComplete)
+
+		
+	else
+
 	end
 	
 end
@@ -1827,9 +1873,10 @@ local function TouchAction( event )
 
 					local function onComplete(event)
 
-						if "clicked"==event.action then
+						AppintmentWith.isVisible=true
+						Addinvitees.isVisible=true
 
-							local i = event.index 
+							local i = event 
 
 							if 1 == i then
 
@@ -1847,12 +1894,19 @@ local function TouchAction( event )
 
 							end
 
-						end
+						
 
 					end
 
 
-					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,"Cancel"} , onComplete)
+					AppintmentWith.isVisible=false
+					Addinvitees.isVisible=false
+					local option ={
+							{content=Message.FromGallery,positive=true},
+							{content=Message.FromCamera,positive=true},
+							{content="Cancel",positive=true},
+						  }
+					genericAlert.createNew(EventCalender.PageTitle,Message.FileSelectContent,option,onComplete)
 
 
 
@@ -3090,7 +3144,7 @@ end
 
 	  	PurposeLbl = display.newText(taskGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 	  	PurposeLbl.anchorX=0
-	  	PurposeLbl.value=0
+	  	--PurposeLbl.value=0
 	  	PurposeLbl.id="purpose"
 	  	PurposeLbl.count = #AddeventArray
 	  	PurposeLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -3172,7 +3226,7 @@ end
 
 		PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1].value,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 		PriorityLbl.anchorX=0
-		PriorityLbl.value=1
+		--PriorityLbl.value=1
 		PriorityLbl.id="priority"
 		PriorityLbl.count = #AddeventArray
 		PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -3577,6 +3631,10 @@ end
 	  			Event_to_date.text = value.hours.."H"
 	  			Event_to_time.text = value.minutes.."M"
 
+
+	  			Event_to_date.value = value.hours
+				Event_to_time.value = value.minutes
+
 	  		else
 
 	  			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , endtime ))
@@ -3831,6 +3889,8 @@ end
 
 		  				if AddeventPage.priorityArray[i].id == UpdateValue.Priority then
 		  					PriorityLbl.text = AddeventPage.priorityArray[i].value
+
+		  					PriorityLbl.value = AddeventPage.priorityArray[i].id
 		  				end
 
 		  			end

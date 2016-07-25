@@ -13,7 +13,7 @@ local popupGroup = require( "Controller.popupGroup" )
 local alertGroup = require( "Controller.alertGroup" )
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
-
+require( "Controller.genericAlert" )
 
 --------------- Initialization -------------------
 
@@ -293,7 +293,13 @@ local function phoneCallFunction( event )
 
 						if isIos then 
 
-							native.showAlert( CareerPath.Call, CareerPath.NoSim, { CommonWords.ok } )
+
+							local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+							genericAlert.createNew(CareerPath.Call,CareerPath.NoSim,option)
+
+							--native.showAlert( CareerPath.Call, CareerPath.NoSim, { CommonWords.ok } )
 
 						end
 
@@ -356,7 +362,7 @@ local function phoneCallFunction( event )
 
 			function onCompletion(event)
 
-				if "clicked"==event.action then
+				if 1 == event then
 
 
 					AlertGroup.isVisible = false
@@ -373,12 +379,24 @@ local function phoneCallFunction( event )
 
 			if id_value == "Remove Access" then
 
-				local remove_successful= native.showAlert(CommonWords.Remove , CareerPath.RemovedText, { CommonWords.ok} , onCompletion)
+
+							local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+							genericAlert.createNew(CommonWords.Remove, CareerPath.RemovedText,option,onCompletion)
+
+				--local remove_successful= native.showAlert(CommonWords.Remove , CareerPath.RemovedText, { CommonWords.ok} , onCompletion)
 
 
 			elseif id_value == "Block Access" then
 
-				local block_successful = native.showAlert(CommonWords.Block , CareerPath.BlockedText, { CommonWords.ok} , onCompletion)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CommonWords.Block, CareerPath.BlockedText,option,onCompletion)
+
+
+				--local block_successful = native.showAlert(CommonWords.Block , CareerPath.BlockedText, { CommonWords.ok} , onCompletion)
 
 			end
 
@@ -387,23 +405,51 @@ local function phoneCallFunction( event )
 
 				if Request_response == "SUCCESS" then
 
-					denyaccess = native.showAlert(CommonWords.Deny, CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CommonWords.Deny, CareerPath.DeniedText,option,onCompletion)
+
+
+					--denyaccess = native.showAlert(CommonWords.Deny, CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
 
 				elseif Request_response == "GRANT" then
 
-					granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText,option,onCompletion)
+
+
+					--granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
 				elseif Request_response == "REMOVE" then
 
-					Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText,option,onCompletion)
+
+
+					--Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 					
 				elseif Request_response == "ADDREQUEST" then
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AddRequest, CareerPath.AddRequestText,option,onCompletion)
 
-					addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+
+					--addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
 
 				elseif Request_response == "BLOCK" then
+							local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText,option,onCompletion)
 
-					addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+
+					--addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
 				end
 
@@ -413,23 +459,49 @@ local function phoneCallFunction( event )
 
 				if Request_response == "SUCCESS" then
 
-					grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
+							local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CommonWords.GrantAccessText, CareerPath.GrantSuccessText,option,onCompletion)
+
+
+					--grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
 
 				elseif Request_response == "GRANT" then
 
-					granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText,option,onCompletion)
+
+
+					--granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
 
 				elseif Request_response == "REMOVE" then
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText,option,onCompletion)
 
-					Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
+
+					--Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
 					
 				elseif Request_response == "REQUEST" then
 
-					addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AddRequest, CareerPath.AddRequestText,option,onCompletion)
+
+					--addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
 
 				elseif Request_response == "BLOCK" then
 
-					addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
+					local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText,option,onCompletion)
+					--addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
 
 				end
 
@@ -438,23 +510,49 @@ local function phoneCallFunction( event )
 
 				if Request_response == "SUCCESS" then
 
-					grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
+					local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CommonWords.GrantAccessText, CareerPath.GrantSuccessText,option,onCompletion)
+
+					--grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
 
 				elseif Request_response == "GRANT" then
 
-					granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText,option,onCompletion)
+
+					--granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
 
 				elseif Request_response == "REMOVE" then
 
-					Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText,option,onCompletion)
+
+
+					--Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
 					
 				elseif Request_response == "REQUEST" then
 
-					addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AddRequest, CareerPath.AddRequestText,option,onCompletion)
+
+
+					--addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
 
 				elseif Request_response == "BLOCK" then
 
-					addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
+					--addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText,option,onCompletion)
 
 				end
 
@@ -465,23 +563,54 @@ local function phoneCallFunction( event )
 
 				if Request_response == "SUCCESS" then
 
-					accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
+					local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText,option,onCompletion)
+
+
+					--accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
 
 				elseif Request_response == "GRANT" then
 
-					granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText,option,onCompletion)
+
+
+					--granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
 
 				elseif Request_response == "REMOVE" then
 
-					Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText,option,onCompletion)
+
+
+					--Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 					
 				elseif Request_response == "ADDREQUEST" then
 
-					addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AddRequest, CareerPath.AddRequestText,option,onCompletion)
+
+
+					--addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
 
 				elseif Request_response == "BLOCK" then
 
-					addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+
+						local option ={
+								 {content=CommonWords.ok,positive=true},
+								}
+						genericAlert.createNew(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText,option,onCompletion)
+
+
+				--	addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
 
 				end
 
