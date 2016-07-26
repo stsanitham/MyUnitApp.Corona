@@ -22,7 +22,7 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 require( "Controller.genericAlert" )
 
-
+ 
 --------------- Initialization -------------------
 
 local W = display.contentWidth;

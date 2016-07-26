@@ -363,6 +363,10 @@ send_icon_text.anchorX=0
 
 				title.text = "Send to "..sendto
 
+					if title.text:len() > 25 then
+			  				title.text = title.text:sub(1,25  ).."..."
+			    	end
+
 			else
                
                 title.text = ImageLibrary.PageTitle

@@ -816,8 +816,8 @@ local function onSwitchPress( event )
 
 
 				local function onGroupCreationComplete( event )
-					if event.action == "clicked" then
-						local i = event.index
+					--if event.action == "clicked" then
+						local i = event
 						if i == 1 then  
 		      --[[
 
@@ -855,7 +855,7 @@ local function onSwitchPress( event )
 
 	end
 
-end
+--end
 
 end
 end

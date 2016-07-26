@@ -138,7 +138,11 @@ function getChatGroupCreation(response )
 	groupcreation_response = response
 
 	Career_Username.text =  groupcreation_response.MyUnitBuzzGroupName
-	print("Group creation name edited : "..json.encode(groupcreation_response))
+	Career_Username.value =  groupcreation_response.MyUnitBuzzGroupName
+
+		if Career_Username.text:len() > 20 then
+  				Career_Username.text = Career_Username.text:sub(1,20  ).."..."
+    	end
 
 
 	 for row in db:nrows("SELECT * FROM pu_MyUnitBuzz_Message WHERE (Message_To='"..tostring(contactId):lower().."') OR (Message_From='"..tostring(contactId):lower().."') ") do
@@ -154,7 +158,7 @@ end
 
 					if updateImage == true then
 
-						Webservice.CreateMessageChatGroup(Career_Username.text,"","true","GROUP",contactId,absPath,getChatGroupCreation)
+						Webservice.CreateMessageChatGroup(Career_Username.value,"","true","GROUP",contactId,absPath,getChatGroupCreation)
 					else
 
 						Webservice.CreateMessageChatGroup(textGroupfiled.text,"","true","GROUP",contactId,absPath,getChatGroupCreation)
@@ -197,7 +201,7 @@ local function addMemberAction( event )
 	    		textGroupfiledError.isVisible=false
 	    		TextChangeGroup.isVisible = true
 	    		textGroupfiled.isVisible=true
-	    		textGroupfiled.text = Career_Username.text
+	    		textGroupfiled.text = Career_Username.value
 	    	end
 
 	    elseif event.target.id == "cancel" then
@@ -209,7 +213,7 @@ local function addMemberAction( event )
 	    	
 		
 
-	    	if Career_Username.text == textGroupfiled.text then
+	    	if Career_Username.value == textGroupfiled.text then
 	    			print( "same text only" )
 	    			TextChangeGroup.isVisible = false
 	    			textGroupfiled.isVisible=false
@@ -1144,9 +1148,12 @@ function scene:show( event )
 				Career_Username.anchorX=0;Career_Username.anchorY=0
 				Career_Username.name = "userName"
 				Career_Username.fontSize=24
+				Career_Username.value = Career_Username.text
 				Career_Username:addEventListener("touch",closeDetails)
 
-
+				if Career_Username.text:len() > 20 then
+	  				Career_Username.text = Career_Username.text:sub(1,20  ).."..."
+	    		end
 				if IsOwner == true and (Message_Type == "GROUP" or Message_Type == "BROADCAST") then
 
 					addBg = display.newRect(sceneGroup,50,50,60,50)
@@ -1765,7 +1772,7 @@ function scene:hide( event )
 
 	elseif phase == "did" then
 
-		local params = { addGroupid = "editMember" , page_id = Message_Type:lower(),contacts = contactCount,name = Career_Username.text,contactId = contactId}
+		local params = { addGroupid = "editMember" , page_id = Message_Type:lower(),contacts = contactCount,name = Career_Username.value,contactId = contactId}
 
 
 		if status == "editArray" then

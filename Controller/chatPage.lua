@@ -636,6 +636,9 @@ local function ChatTouch( event )
 										if tonumber(deleteMsgCount) == 0 then
 
 											title.text = UserName
+											if title.text:len() > 20 then
+								  				title.text = title.text:sub(1,20  ).."..."
+								    		end
 											Deleteicon.isVisible=false
 											Copyicon.isVisible=false
 											Forwardicon.isVisible=false
@@ -1544,6 +1547,10 @@ end
 
 							title.text = UserName
 
+							if title.text:len() > 20 then
+				  				title.text = title.text:sub(1,20  ).."..."
+				    		end
+
 							deleteMsgCount = 0
 							
 						elseif i == 2 then
@@ -1598,7 +1605,12 @@ end
 							pasteboard.copy( "string", event.target.detail)
 
 							toast.show(ChatPage.Message_Copied, {duration = 'long', gravity = 'Center', offset = {0, 128}})  
-							title.text = UserName		
+							title.text = UserName	
+
+								if title.text:len() > 20 then
+					  				title.text = title.text:sub(1,20  ).."..."
+					    		end
+
 							deleteMsgCount=0
 							Deleteicon.isVisible=false
 							Copyicon.isVisible=false
@@ -1726,6 +1738,10 @@ end
 				if deleteMsgCount > 0 then
 					deleteMsgCount=0
 					title.text = UserName
+					if title.text:len() > 20 then
+		  				title.text = title.text:sub(1,20  ).."..."
+		    		end
+
 					Deleteicon.isVisible=false
 					Copyicon.isVisible=false
 					Forwardicon.isVisible=false
@@ -2733,6 +2749,10 @@ local function scrollListener( event )
 			composer.removeHidden()
 			title.text = name
 
+			if title.text:len() > 20 then
+  				title.text = title.text:sub(1,20  ).."..."
+    		end
+
 			ChatBox.isVisible=true
 
 
@@ -2802,6 +2822,10 @@ local function scrollListener( event )
 			
 			UserName = editedGroupName
 			title.text = UserName
+
+			if title.text:len() > 20 then
+  				title.text = title.text:sub(1,20  ).."..."
+    		end
 
 			local function doAction( event )
 
@@ -3251,7 +3275,14 @@ function scene:show( event )
 			end
 
 
+
 		UserName = title.text
+
+		
+
+			if title.text:len() > 20 then
+  				title.text = title.text:sub(1,20  ).."..."
+    		end
 
 
 		ChatBox_bg = display.newRect(ChatScrollContent,0,H-100, W-50, 40 )
@@ -3393,6 +3424,7 @@ function scene:show( event )
 		-- end
 
 		 local function getCheckChatGroupStatus( response )
+		 	print( "here" )
 		 		if #response <= 0  then
 
 
@@ -3438,7 +3470,7 @@ function scene:show( event )
 					 end
 
 					 if event.params ~= nil and event.params.status == "forward" then
-
+					 	print( "hai" )
 					 	SendFowardMessage( event.params.forwardDetails)
 
 					 else
@@ -3463,7 +3495,15 @@ function scene:show( event )
 		 else
 
 
-		 	sendMeaasage()
+		 	if event.params ~= nil and event.params.status == "forward" then
+					 	print( "hai" )
+					 	SendFowardMessage( event.params.forwardDetails)
+
+			else
+					 	print( "not forward _______" )
+					 	sendMeaasage()
+
+			end
 
 		 	--	Webservice.GetBroastcastDetailsbyContactId(To_ContactId,getBroastcastDetailsbyContactId)
 
