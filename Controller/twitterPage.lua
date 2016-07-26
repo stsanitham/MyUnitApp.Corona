@@ -280,7 +280,7 @@ end
 function callback.twitterCancel()
 	print( "Twitter Cancel" )
 
-	test_response.text = "Twitter Cancel" 
+	test_response.text = Twitter.Cancel
 
 end
 

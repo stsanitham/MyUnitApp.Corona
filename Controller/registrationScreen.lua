@@ -388,11 +388,10 @@ renderArray = List.arrayName
                             end
 
 
-             -- PositionLbl.text = response[1].PositionName
-             PositionLbl.text = "- Select Position -"
-             PositionLbl.countrycode = response[1].PositionId
-
-             PositionLabelValue = PositionLbl.text
+               -- PositionLbl.text = response[1].PositionName
+               PositionLbl.text = RegistrationScreen.SelectPosition
+               PositionLbl.countrycode = response[1].PositionId
+               PositionLabelValue = PositionLbl.text
 
 
                PositionLbl:setFillColor( 0 )
@@ -442,11 +441,11 @@ renderArray = List.arrayName
 
 
               --  LanguageLbl.text = response[1].LanguageName
-              LanguageLbl.text = "- Select Language -"
-              LanguageLbl.countrycode = response[1].LanguageId
+                LanguageLbl.text = RegistrationScreen.SelectLanguage
+                LanguageLbl.countrycode = response[1].LanguageId
 
 
-              Webservice.GetPositionbyCountryIdandLanguageId( CountryLbl.countrycode ,response[1].LanguageId,getPositionDetails)
+                Webservice.GetPositionbyCountryIdandLanguageId( CountryLbl.countrycode ,response[1].LanguageId,getPositionDetails)
 
                -- languageArray = languageArray
 
@@ -659,9 +658,9 @@ renderArray = List.arrayName
           Marykay.text = ""
           CountryLbl.text = countryArray[1].name
                         --LanguageLbl.text = languageArray[1].name
-                        LanguageLbl.text = "- Select Language -"
+                       LanguageLbl.text = RegistrationScreen.SelectLanguage
                        -- PositionLbl.text = positionArray[1].name
-                       PositionLbl.text = "- Select Position -"
+                       PositionLbl.text = RegistrationScreen.SelectPosition
                        
                        
                        if Register_response.StatusType == "Success"  then
