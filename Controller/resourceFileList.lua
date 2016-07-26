@@ -19,7 +19,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
 
-local menuBtn
+local menuBtn,SubFileMode,SubFile
 
 local filetype = ""
 
@@ -103,7 +103,73 @@ local filenamevalue = ""
 
 
 
---local pathValue="/"
+		function split_path(str)
+		   return split(str,'[\\/]+')
+		end
+
+
+
+		local function getPreviousFileList()
+
+					for j=#file_array, 1, -1 do 
+						file_array[#file_array] = nil
+					end
+
+					local path = SubFile
+					local pathType = ""
+
+
+					if path and lfs.attributes( SubFile) then
+					    pathType = lfs.attributes( SubFile ).mode
+					    print("pathtype previous    "..pathType)
+					end
+
+
+				 if pathType == "directory" then
+
+				 	  parts = split_path(FullPath, '/')
+				
+					  print("SubFile &&&&&&&&&&&&&&&&&&&& @@@@@@@@@@@@@@@@@ "..parts)
+					  
+				 end
+
+				-- 		  for file in lfs.dir( SubFile) do
+
+				-- 					if "." ~= file and ".." ~= file then
+
+				-- 				         print("FILE: " .. file)
+
+				-- 				         fileAtr = lfs.attributes( file )
+
+				-- 			         	 if fileAtr ~= nil then 
+
+				-- 					   		 	file_attributemode = fileAtr.mode
+
+				-- 					   		 	print("@@@@@ "..path,file,file_attributemode) 
+
+
+				-- 				   		 end
+
+				-- 				         file_array[#file_array+1] = { name = file , filemode = file_attributemode }
+
+				-- 				    end
+				-- 			end
+
+				--  else
+
+				-- 	       local a1 = native.showAlert("File found", "This file cannot be opened" ,{"ok"})
+
+				-- 									title.text = ResourceLibrary.PageTitle
+				-- 								    title.type = "outerfile"
+				-- 								    back_icon_bg.type = "outerfile"
+				-- 								    back_icon.type = "outerfile"
+				-- end
+
+
+			end
+
+
+
 
 
 
@@ -120,16 +186,12 @@ local filenamevalue = ""
 
 			    if file_array[row.index].filemode == "directory" and file_array[row.index].filemode ~= "file"  then
 
-			    	print("   ******* directory ******")
-
 				    local rowIcon = display.newImageRect(row,"res/assert/folder_with_file.png",25,25 )
 				    rowIcon.x = 20
 				    rowIcon.anchorX = 0 
 				    rowIcon.y = rowHeight * 0.5 - 5
 
 				elseif file_array[row.index].filemode == "file" and file_array[row.index].filemode ~= "directory" then
-
-					print("   ******* file ******")
 
 					local rowIcon = display.newImageRect(row,"res/assert/FileIcon.png",25,22 )
 				    rowIcon.x = 20
@@ -153,7 +215,7 @@ local filenamevalue = ""
 				rowvalues = file_array[row.index].name
 
 
-				print("NAME   :    "..file_array[row.index].name.." "..file_array[row.index].filemode)
+				--print("NAME   :    "..file_array[row.index].name)
 
 
 			end
@@ -168,22 +230,27 @@ local filenamevalue = ""
 
 				if( "press" == phase ) then
 
-										rowvalues = file_array[row.index].name
-											local path = workingdir
+			    elseif ( "release" == phase ) then
+
+			    	local rowHeight = row.contentHeight
+			        local rowWidth = row.contentWidth
+
+
+			    		                    rowvalues = file_array[row.index].name
+			    		                    rowfilemode = file_array[row.index].filemode
+											local path = workingdir.."/"..rowvalues
 										    local pathType1 = ""
 
 
 										    print(path)
 
+										    FullPath = path
+
 										   -- title.text = file_array[row.index].name
 
 										    if string.find(file_array[row.index].name, "//") and lfs.attributes( workingdir ).mode == "directory" then 
 
-											    	print("((((((((")
-
 											    	if string.find(file_array[row.index].name, "//.") and lfs.attributes( workingdir ).mode == "directory" then 
-
-											    	print("ppppppppp")
 
 											    	    title.text = string.gsub( file_array[row.index].name, "//.","")
 													    title.type = "innertype"
@@ -215,8 +282,6 @@ local filenamevalue = ""
 
 										   if firstrootpath == workingdir and lfs.attributes( workingdir ).mode == "directory" then
 
-										   	print("***************************************************")
-
 										    	workingdir = workingdir..rowvalues
 
 										    	-- if string.find(workingdir,".") or string.find(workingdir,"..") then
@@ -234,7 +299,7 @@ local filenamevalue = ""
 
 
 
-										   local pathval = native.showAlert("Path Value",workingdir,{"ok"})
+										   --local pathval = native.showAlert("Path Value",workingdir,{"ok"})
 
 											-- Check to see if path exists
 											if path and lfs.attributes(workingdir ) then
@@ -251,54 +316,20 @@ local filenamevalue = ""
 												end
 
 
-												--Documents_list:deleteAllRows()
-
-												--native.showAlert( "MUB", "Path : "..workingdir,{"ok"} )
-
 														  for file in lfs.dir(workingdir ) do
-
-														  	print("true")
 
 																	if "." ~= file and ".." ~= file then
 
-																         print("FILE 123: " .. file)
+																      --  print("FILE 123: " .. file)
 
-																         fileAtr = lfs.attributes( workingdir )
+																          SubFile = workingdir.."/"..file
 
-																	         if fileAtr ~= nil then 
+																          SubFileMode = lfs.attributes(SubFile).mode
 
-																		   		 	file_attributemode = fileAtr.mode
-
-																		   		 	print("@@@@@ inner loop mode"..path,file,file_attributemode) 
+																         -- print("mode +++++++ : "..lfs.attributes(SubFile).mode)
 
 
-																	   		 end
-
-
-																         file_array[#file_array+1] = { name = file , filemode = fileAtr.mode}
-
-
-
-														                 if filemode == "directory" and filemode ~= "file" then
-
-																        	rowIcon = display.newImageRect(row,"res/assert/folder_with_file.png",25,25 )
-																		    rowIcon.x = 20
-																		    rowIcon.anchorX = 0 
-																		    rowIcon.y = rowHeight * 0.5 - 5
-
-																		elseif filemode == "file" and filemode ~= "directory" then
-
-																			rowIcon = display.newImageRect(row,"res/assert/FileIcon.png",25,22 )
-																		    rowIcon.x = 20
-																		    rowIcon.anchorX = 0
-																		    rowIcon.y = rowHeight * 0.5 - 5
-
-																		end
-
-
-																        -- Documents_list:deleteAllRows()
-
-																         print(#file_array)
+																         file_array[#file_array+1] = { name = file , filemode = SubFileMode}
 
 																	   	
 																     end
@@ -307,23 +338,23 @@ local filenamevalue = ""
 
 											else
 
-												print("comin hereeee !!!!!!!!!!!!!!!!!!")
-
-													workingdir = string.gsub (workingdir, "/"..rowvalues , "")
+												    print("comin hereeee !!!!!!!!!!!!!!!!!!")
 
 													local a2 = native.showAlert("File found","This file cannot be opened!",{"ok"})
 
-													title.text = ResourceLibrary.PageTitle
-												    title.type = "outerfile"
-												    back_icon_bg.type = "outerfile"
-												    back_icon.type = "outerfile"
+													title.text = string.gsub( file_array[row.index].name, "//", "" ) 
+												    title.type = "innertype"
+												    back_icon_bg.type = "innertype"
+												    back_icon.type = "innertype"
+
+
+												    rowIcon = display.newImageRect(row,"res/assert/FileIcon.png",25,22 )
+												    rowIcon.x = 20
+												    rowIcon.anchorX = 0
+												    rowIcon.y = rowHeight * 0.5 - 5
 
 
 											end
-
-
-
-								 --title.text = rowTitle.text
 
 
 								if #file_array == 0  then
@@ -337,7 +368,7 @@ local filenamevalue = ""
 
 
 							    for i = 1, #file_array do
-							       -- Insert a row into the tableView
+
 							       Documents_list:insertRow{ rowHeight = 45,rowColor = 
 							       {
 							    	default = { 1, 1, 1, 0 },
@@ -345,15 +376,14 @@ local filenamevalue = ""
 							    	}}
 							    end
 
-											
-
-			    elseif ( "release" == phase ) then
-
-			    	--print(file_array)
 
 			 end
 
 			end
+
+
+
+
 
 
 
@@ -380,9 +410,9 @@ local filenamevalue = ""
 
 							print("sdfsdfsdf")
 
-
 										getFileList()
 
+										--getPreviousFileList()
 
 										title.text = ResourceLibrary.PageTitle
 									    title.type = "outerfile"
@@ -524,15 +554,13 @@ local filenamevalue = ""
 				local path = workingdir
 				local pathType = ""
 
-				print("&&&&& ")
-
 
 				firstrootpath = workingdir
 
 				-- Check to see if path exists
 				if path and lfs.attributes( "/" ) then
 				    pathType = lfs.attributes( "/" ).mode
-				    print("pathtype     "..pathType)
+				    --print("pathtype     "..pathType)
 				end
 
 				-- Check if path is a directory
@@ -542,7 +570,7 @@ local filenamevalue = ""
 
 									if "." ~= file and ".." ~= file then
 
-								         print("FILE: " .. file)
+								        -- print("FILE: " .. file)
 
 								         fileAtr = lfs.attributes( file )
 
@@ -550,8 +578,7 @@ local filenamevalue = ""
 
 									   		 	file_attributemode = fileAtr.mode
 
-									   		 	print("@@@@@ "..path,file,file_attributemode) 
-
+									   		     --print("@@@@@ "..path,file,file_attributemode) 
 
 								   		 end
 
