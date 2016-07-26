@@ -265,31 +265,42 @@ local filenamevalue = ""
 
 																         fileAtr = lfs.attributes( workingdir )
 
+																	         if fileAtr ~= nil then 
 
-																         --filenamevalue[#filenamevalue+1] = { name = path..file_array[row.index].name }
+																		   		 	file_attributemode = fileAtr.mode
 
-																         print(json.encode(fileAtr))
+																		   		 	print("@@@@@ inner loop mode"..path,file,file_attributemode) 
 
-																         print(file)
 
-																         file_array[#file_array+1] = { name = file }
+																	   		 end
 
-																         --title.text = rowvalues
+
+																         file_array[#file_array+1] = { name = file , filemode = fileAtr.mode}
+
+
+
+														                 if filemode == "directory" and filemode ~= "file" then
+
+																        	rowIcon = display.newImageRect(row,"res/assert/folder_with_file.png",25,25 )
+																		    rowIcon.x = 20
+																		    rowIcon.anchorX = 0 
+																		    rowIcon.y = rowHeight * 0.5 - 5
+
+																		elseif filemode == "file" and filemode ~= "directory" then
+
+																			rowIcon = display.newImageRect(row,"res/assert/FileIcon.png",25,22 )
+																		    rowIcon.x = 20
+																		    rowIcon.anchorX = 0
+																		    rowIcon.y = rowHeight * 0.5 - 5
+
+																		end
 
 
 																        -- Documents_list:deleteAllRows()
 
-
 																         print(#file_array)
 
-																	   		 if fileAtr ~= nil then 
-
-																		   		 	file_attributemode = fileAtr.mode
-
-																		   		 	print("### ",path,file,file_attributemode) 
-
-																	   		 end
-
+																	   	
 																     end
 
 															end
