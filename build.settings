@@ -31,11 +31,6 @@ settings =
         {
             publisherId = "com.coronalabs"
         },
-        ["CoronaProvider.native.popup.activity"] =
-        {
-            publisherId = "com.coronalabs",
-           -- supportedPlatforms = { iphone=true, ["iphone-sim"]=true },
-        },
       
 		["CoronaProvider.native.popup.quickLook"] =
 	    {
