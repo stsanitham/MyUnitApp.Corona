@@ -13,7 +13,7 @@ local style = require("res.value.style")
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 require( "Webservice.ServiceManager" )
-
+require( "Controller.genericAlert" )
 
 --------------- Initialization -------------------
 
@@ -359,7 +359,22 @@ local function loginProcess( Request_response )
 				else
 
 
-					local alert = native.showAlert( LoginPage.ErrorTitle,LoginPage.ErrorMessage, { CommonWords.ok } )
+					function onComplete(event)
+						Unitnumber_field.isVisible=true
+						UserName.isVisible=true
+						Password.isVisible=true
+
+					end
+
+							if Unitnumber_field then Unitnumber_field.isVisible=false end
+							UserName.isVisible=false
+							Password.isVisible=false
+
+					local option ={
+							 {content=CommonWords.ok,positive=true},
+						}
+						genericAlert.createNew(LoginPage.ErrorTitle, LoginPage.ErrorMessage,option,onComplete)
+				--	local alert = native.showAlert( LoginPage.ErrorTitle,LoginPage.ErrorMessage, { CommonWords.ok } )
 
 				end
 
@@ -616,20 +631,7 @@ local function loginProcess( Request_response )
 		return true
 	end 
 
-	local pushTest = function( event )
-		if notificationFlag == false then
-			if Unitnumber_field then Unitnumber_field.isVisible=true end
-			UserName.isVisible=true
-			Password.isVisible=true
-		else
-			if Unitnumber_field then Unitnumber_field.isVisible=false end
-			UserName.isVisible=false
-			Password.isVisible=false
-
-		end
-	end
-
-
+	
 
 	local function onTimer ( event )
 
@@ -976,7 +978,6 @@ function scene:show( event )
 			signinBtn:addEventListener("touch",signinBtnRelease)
 			signinBtn_text:addEventListener("touch",signinBtnRelease)
 
-			Runtime:addEventListener( "enterFrame", pushTest )
 			Runtime:addEventListener( "key", onKeyEvent )
 
 		end	
@@ -993,7 +994,6 @@ function scene:show( event )
 
 		elseif phase == "did" then
 
-			Runtime:removeEventListener( "enterFrame", pushTest )
 			Runtime:removeEventListener( "key", onKeyEvent )
 
 			Background:removeEventListener("touch",touchBg)

@@ -20,9 +20,8 @@ local unitnumberflag = false
 local BackFlag = false
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
+require( "Controller.genericAlert" )
 
-
---https://play.google.com/store/apps/details?id=com.orgware.PregnancyWorkoutAdvisor
 
 --------------- Initialization -------------------
 
@@ -384,7 +383,7 @@ function onCompletionEvent(event)
 
 	if "clicked"==event.action then
 
-		native.setKeyboardFocus(Email)
+		--native.setKeyboardFocus(Email)
 
 	end
 
@@ -475,13 +474,14 @@ function getemailexistresponse(response)
 	
 	email_response = response
 
-	print("************************Request_response email initial*************************** ",json.encode(email_response))
 
 	if email_response == true then
 
 	elseif email_response == false then
 
-		native.setKeyboardFocus(Email)
+		--native.setKeyboardFocus(Email)
+
+
 
 		existalert = native.showAlert(PopupGroup.EmailExist, PopupGroup.EmailExistText, { CommonWords.ok} , onCompletionEvent)
 

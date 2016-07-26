@@ -13,7 +13,7 @@ local popupGroup = require( "Controller.popupGroup" )
 local alertGroup = require( "Controller.alertGroup" )
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
-
+require( "Controller.genericAlert" )
 
 --------------- Initialization -------------------
 
@@ -117,9 +117,9 @@ local function getDeleteParticularGroup( response )
 end
 
 		local function onComplete( event )  
-					if event.action == "clicked" then
+					--if event.action == "clicked" then
 
-						local i = event.index
+						local i = event
 						if i == 1 then
 
 							Webservice.DeleteParticularGroup(contactId,getDeleteParticularGroup)
@@ -130,7 +130,7 @@ end
 
 								    	
 						end
-					end
+					--end
 		end
 
 function getChatGroupCreation(response )
@@ -183,7 +183,13 @@ local function addMemberAction( event )
 	    	 composer.hideOverlay( "slideRight", 100 )
 	    elseif event.target.id == "delete" then
 
-	    	local alert = native.showAlert(MessagePage.DeleteText,MessagePage.ToDeleteGROUP, { CommonWords.Yes , CommonWords.No }, onComplete )
+	    	local option ={
+							 {content=CommonWords.Yes,positive=true},
+							 {content=CommonWords.No,positive=true},
+						}
+			genericAlert.createNew(MessagePage.DeleteText,MessagePage.ToDeleteGROUP,option,onComplete)
+
+	    	--local alert = native.showAlert(MessagePage.DeleteText,MessagePage.ToDeleteGROUP, { CommonWords.Yes , CommonWords.No }, onComplete )
 
 	    elseif event.target.id == "editText" then
 
@@ -420,7 +426,12 @@ local function phoneCallFunction( event )
 
 				if isIos then 
 
-					native.showAlert( CareerPath.Call, CareerPath.NoSim, { CommonWords.ok } )
+					local option ={
+							 {content=CommonWords.ok,positive=true},
+						}
+					genericAlert.createNew(CareerPath.Call,CareerPath.NoSim,option)
+
+					--native.showAlert( CareerPath.Call, CareerPath.NoSim, { CommonWords.ok } )
 
 				end
 
@@ -471,121 +482,6 @@ local function phoneCallFunction( event )
 
 	end
 
-
-
-
-
-
-
-	function get_removeorblockDetails( response)
-
-		Request_response = response
-
-
-		function onCompletion(event)
-
-			if "clicked"==event.action then
-
-
-				AlertGroup.isVisible = false
-
-				ContactIdValue = contactId
-
-				composer.hideOverlay()
-
-			end
-
-		end
-
-
-
-		if id_value == "Remove Access" then
-
-			local remove_successful= native.showAlert(CommonWords.Remove , CareerPath.RemovedText, { CommonWords.ok} , onCompletion)
-
-
-		elseif id_value == "Block Access" then
-
-			local block_successful = native.showAlert(CommonWords.Block , CareerPath.BlockedText, { CommonWords.ok} , onCompletion)
-
-		end
-
-
-		if id_value == "Deny Access" then
-
-			if Request_response == "SUCCESS" then
-
-				denyaccess = native.showAlert(CommonWords.Deny, CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
-
-			elseif Request_response == "GRANT" then
-
-				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
-
-			elseif Request_response == "REMOVE" then
-
-				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
-				
-			elseif Request_response == "ADDREQUEST" then
-
-				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
-
-			elseif Request_response == "BLOCK" then
-
-				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
-
-			end
-
-		elseif id_value == "Grant Access" then
-
-			if Request_response == "SUCCESS" then
-
-				grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
-
-			elseif Request_response == "GRANT" then
-
-				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
-
-			elseif Request_response == "REMOVE" then
-
-				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
-				
-			elseif Request_response == "ADDREQUEST" then
-
-				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
-
-			elseif Request_response == "BLOCK" then
-
-				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
-
-			end
-
-		elseif id_value == "Provide Access" then
-
-			if Request_response == "SUCCESS" then
-
-				accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
-
-			elseif Request_response == "GRANT" then
-
-				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
-
-			elseif Request_response == "REMOVE" then
-
-				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
-				
-			elseif Request_response == "ADDREQUEST" then
-
-				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
-
-			elseif Request_response == "BLOCK" then
-
-				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
-
-			end
-
-		end
-
-	end
 
 
 
@@ -709,9 +605,9 @@ local function selectionComplete ( event )
 
 				local function onComplete(event)
 
-						if "clicked"==event.action then
+						--if "clicked"==event.action then
 
-							local i = event.index 
+							local i = event
 
 							if 1 == i then
 
@@ -729,12 +625,18 @@ local function selectionComplete ( event )
 
 							end
 
-						end
+						--end
 
 					end
 
+					local option ={
+							 {content=Message.FromGallery,positive=true},
+							 {content=Message.FromCamera,positive=true},
+							 {content=AddeventPage.Cancel,positive=true},
+						}
+						genericAlert.createNew(Message.FileSelect,Message.FileSelectContent,option,onComplete)
 
-					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,AddeventPage.Cancel} , onComplete)
+					--local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,AddeventPage.Cancel} , onComplete)
 
 
 		end

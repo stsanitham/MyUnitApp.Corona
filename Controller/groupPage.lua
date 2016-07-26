@@ -137,9 +137,9 @@ local function groupBackground_Touch( event )
 	
 					local function onComplete( action_event )
 
-								if action_event.action == "clicked" then
+							--	if action_event.action == "clicked" then
 
-									local i = action_event.index
+									local i = action_event
 
 									if i == 1 then
 
@@ -158,12 +158,16 @@ local function groupBackground_Touch( event )
 
 									end
 
-								end
+								--end
 					end
 
-					
+			local option ={
+							 {content=CommonWords.ok,positive=true},
+							 {content=CommonWords.cancel,positive=true},
+						}
+						genericAlert.createNew("MyUnitBuzz",ChatPage.ForwardTo..event.target.name,option,onComplete)
 
-			native.showAlert( "MyUnitBuzz", ChatPage.ForwardTo..event.target.name, { CommonWords.ok , CommonWords.cancel }, onComplete ) 
+			--native.showAlert( "MyUnitBuzz", ChatPage.ForwardTo..event.target.name, { CommonWords.ok , CommonWords.cancel }, onComplete ) 
 		elseif event.target.id == "back" then
 
 							local options = {

@@ -8,7 +8,7 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 local Utility = require( "Utils.Utility" )
 local Applicationconfig = require("Utils.ApplicationConfig")
-
+require( "Controller.genericAlert" )
 
 local imageGroup = display.newGroup( )
 
@@ -237,9 +237,9 @@ local function showShare(fileNameString)
 							--downloadAction(event.filename..".png")
 							local function onComplete( event )
 
-								if event.action == "clicked" then
+								--if event.action == "clicked" then
 
-									local i = event.index
+									local i = event
 
 									if i == 1 then
 
@@ -283,10 +283,17 @@ local function showShare(fileNameString)
 										print("Error")
 										return
 									end
-								end
+								--end
 							end
 
-							native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
+								local option ={
+										 {content=CommonWords.ok,positive=true},
+									}
+									genericAlert.createNew(filename, ResourceLibrary.Download_alert,option)
+
+
+
+							--native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
 							-- native.showAlert( filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
 						end
@@ -295,7 +302,16 @@ local function showShare(fileNameString)
 
 				end
 
-				native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
+
+
+				local option ={
+								 {content=CommonWords.ok,positive=true},
+								 {content=CommonWords.cancel,positive=true},
+							}
+				genericAlert.createNew(downloan_event.response.filename,ResourceLibrary.SaveOptions_alert,option,onComplete)
+
+
+				--native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
 			end
 

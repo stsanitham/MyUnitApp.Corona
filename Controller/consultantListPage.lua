@@ -15,7 +15,7 @@ local json = require("json")
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 local tabBarGroup = display.newGroup( )
-
+require( "Controller.genericAlert" )
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -120,9 +120,9 @@ local function consultantTounch( event )
 		
 					local function onComplete( action_event )
 
-								if action_event.action == "clicked" then
+								--if action_event.action == "clicked" then
 
-									local i = action_event.index
+									local i = action_event
 
 									if i == 1 then
 
@@ -139,12 +139,17 @@ local function consultantTounch( event )
 
 									end
 
-								end
+								--end
 					end
 
 					
+				local option ={
+							 {content=CommonWords.ok,positive=true},
+							 {content=CommonWords.cancel,positive=true},
+						}
+						genericAlert.createNew("MyUnitBuzz","Forward to "..event.target.name,option,onComplete)
 
-			native.showAlert( "MyUnitBuzz", "Forward to "..event.target.name, { CommonWords.ok , CommonWords.cancel }, onComplete ) 
+			--native.showAlert( "MyUnitBuzz", "Forward to "..event.target.name, { CommonWords.ok , CommonWords.cancel }, onComplete ) 
 
 		elseif event.target.id == "back" then
 
@@ -196,7 +201,12 @@ function formatSizeUnits(event)
 
 		print("highest size of the image ",size)
 
-		local image = native.showAlert(ChatPage.ImageUploadError, ChatPage.ImageSize , { CommonWords.ok } )
+			local option ={
+							 {content=CommonWords.ok,positive=true},
+						}
+						genericAlert.createNew(ChatPage.ImageUploadError,ChatPage.ImageSize,option)
+
+		--local image = native.showAlert(ChatPage.ImageUploadError, ChatPage.ImageSize , { CommonWords.ok } )
 
 		
 	elseif (event>=1024)  then   
@@ -317,9 +327,9 @@ local function selectionComplete ( event )
 
 							local function onComplete(event)
 
-						if "clicked"==event.action then
+						--if "clicked"==event.action then
 
-							local i = event.index 
+							local i = event
 
 							if 1 == i then
 
@@ -337,12 +347,19 @@ local function selectionComplete ( event )
 
 							end
 
-						end
+						--end
 
 					end
 
+					local option ={
+							 {content=Message.FromGallery,positive=true},
+							 {content=Message.FromCamera,positive=true},
+							 {content=AddeventPage.Cancel,positive=true},
+						}
+						genericAlert.createNew(Message.FileSelect,Message.FileSelectContent,option,onComplete)
 
-					local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,AddeventPage.Cancel} , onComplete)
+
+					--local alert = native.showAlert(Message.FileSelect, Message.FileSelectContent, {Message.FromGallery,Message.FromCamera,AddeventPage.Cancel} , onComplete)
 
 
 
@@ -846,13 +863,13 @@ end
 
 
 local function onComplete( event )
-	if event.action == "clicked" then
-		local i = event.index
+	--if event.action == "clicked" then
+		local i = event
 		if i == 1 then  
 
 		end
 
-	end
+	--end
 end
 
 
@@ -864,11 +881,22 @@ function getAddedMembersInGroup(response)
 
 			if grouptypevalue == "GROUP" then
 
-				local alert = native.showAlert( GroupName ,ChatPage.GroupCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+				local option ={
+								 {content=CommonWords.ok,positive=true},
+							  }
+				genericAlert.createNew(GroupName, ChatPage.GroupCreationSuccess,option,onGroupCreationComplete)
+
+				--local alert = native.showAlert( GroupName ,ChatPage.GroupCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
 			else
 
-				local alert = native.showAlert( GroupName,ChatPage.BroadcastListCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+					local option ={
+								 {content=CommonWords.ok,positive=true},
+							  }
+				genericAlert.createNew(GroupName, ChatPage.BroadcastListCreationSuccess,option,onGroupCreationComplete)
+
+
+				--local alert = native.showAlert( GroupName,ChatPage.BroadcastListCreationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
 			end
 
@@ -878,11 +906,23 @@ function getAddedMembersInGroup(response)
 
 			if grouptypevalue == "GROUP" then
 
-				local alert = native.showAlert( GroupName ,ChatPage.GroupUpdationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+					local option ={
+								 {content=CommonWords.ok,positive=true},
+							  }
+				genericAlert.createNew(GroupName, ChatPage.GroupUpdationSuccess,option,onGroupCreationComplete)
+
+
+				--local alert = native.showAlert( GroupName ,ChatPage.GroupUpdationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
 			else
 
-				local alert = native.showAlert( GroupName ,ChatPage.BroadcastListUpdationSuccess, { CommonWords.ok }, onGroupCreationComplete )
+					local option ={
+								 {content=CommonWords.ok,positive=true},
+							  }
+				genericAlert.createNew(GroupName, ChatPage.BroadcastListUpdationSuccess,option,onGroupCreationComplete)
+
+
+				--local alert = native.showAlert( GroupName ,ChatPage.BroadcastListUpdationSuccess, { CommonWords.ok }, onGroupCreationComplete )
 
 			end
 
@@ -1133,7 +1173,12 @@ if(validation == true) then
 				 					
 				 				else
 
-				 					local alert = native.showAlert( ChatPage.addTeamMember, ChatPage.addLimit, { CommonWords.ok }, onComplete )
+				 					local option ={
+												 {content=CommonWords.ok,positive=true},
+											}
+											genericAlert.createNew(ChatPage.addTeamMember, ChatPage.addLimit,option)
+
+				 					--local alert = native.showAlert( ChatPage.addTeamMember, ChatPage.addLimit, { CommonWords.ok }, onComplete )
 
 				 				end
 
@@ -1200,7 +1245,12 @@ if(validation == true) then
 							 			
 							 		else
 
-							 			local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addBroadcastLimit , { CommonWords.ok }, onComplete )
+							 			local option ={
+											 {content=CommonWords.ok,positive=true},
+										}
+										genericAlert.createNew(ChatPage.addTeamMember , ChatPage.addBroadcastLimit,option)
+
+							 			--local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addBroadcastLimit , { CommonWords.ok }, onComplete )
 
 							 		end
 

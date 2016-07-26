@@ -52,7 +52,7 @@ function genericAlert.createNew(title,content,values,action)
 
 
 	genericAlert_content = display.newText(content,0,0,W-40,0,native.systemFont,14)
-	genericAlert_content.x = 20
+	genericAlert_content.x = 25
 	genericAlert_content.anchorX= 0	
 	genericAlert_content.anchorY= 0	
 	genericAlert_content.y=genericAlert_bg.y-genericAlert_bg.contentHeight/2+10
@@ -88,7 +88,7 @@ function genericAlert.createNew(title,content,values,action)
 
 	else
 		genericAlert_bg.height = genericAlert_bg.height + genericAlert_content.contentHeight+(15 * #values)
-		genericAlert_content.y=genericAlert_bg.y-genericAlert_bg.contentHeight/2+10
+		genericAlert_content.y=genericAlert_bg.y-genericAlert_bg.contentHeight/2+15
 
 		for i=1,#values do
 				genericButton[#genericButton+1] = display.newText( values[i].content, 0,0,native.systemFont,14 )
@@ -116,11 +116,14 @@ function genericAlert.createNew(title,content,values,action)
 	end
 
 		transition.to( AnimateGroup, {time=400,y=0,transition=easing.outBack} )
-
+genericAlertGroup:toFront( )
 
 end
 
 		--[[ -----How to add in application
+	
+
+	require( "Controller.genericAlert" )
 
 		function onComplete(event)
 

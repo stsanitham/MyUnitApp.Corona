@@ -1332,6 +1332,8 @@ local function webListener( event )
 
 		file=nil
 
+		
+
 		local alert = native.showAlert( Message.ErrorTitle , MessagePage.ErrorText , { CommonWords.ok } )
 
 	else

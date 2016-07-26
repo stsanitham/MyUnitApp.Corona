@@ -13,7 +13,7 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
-
+require( "Controller.genericAlert" )
 
 --------------- Initialization -------------------
 
@@ -145,8 +145,14 @@ end
 
 local function downloadAction(filename,file)
 
+		local option ={
+						{content=CommonWords.ok,positive=true},
+					}
+		genericAlert.createNew(file,  ResourceLibrary.Download_alert,option)
 
-	native.showAlert( file, ResourceLibrary.Download_alert, { CommonWords.ok} )
+
+
+	--native.showAlert( file, ResourceLibrary.Download_alert, { CommonWords.ok} )
 
 	local localpath = system.pathForFile( filename, system.DocumentsDirectory )
 	
@@ -282,9 +288,9 @@ local function downloadAction(filename,file)
 
 							local function onComplete( event )
 
-								if event.action == "clicked" then
+								--if event.action == "clicked" then
 
-									local i = event.index
+									local i = event
 
 									if i == 1 then
 
@@ -330,10 +336,16 @@ local function downloadAction(filename,file)
 										print("Error")
 										return
 									end
-								end
+								--end
 							end
 
-							native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
+								local option ={
+												 {content=CommonWords.ok,positive=true},
+											}
+							genericAlert.createNew(filename, ResourceLibrary.Download_alert,option)
+
+
+							--native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
 							-- native.showAlert( filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
 						end
@@ -342,7 +354,15 @@ local function downloadAction(filename,file)
 
 				end
 
-				native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
+
+					local option ={
+							 {content=CommonWords.ok,positive=true},
+							 {content=CommonWords.cancel,positive=true},
+						}
+						genericAlert.createNew(downloan_event.response.filename, ResourceLibrary.SaveOptions_alert,option,onComplete)
+
+
+				--native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
 
 			elseif event.id =="share" then
@@ -960,7 +980,14 @@ function formatSizeUnits(event)
 
 			print("highest size of the image ",size)
 
-			local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
+				local option ={
+							 {content=CommonWords.ok,positive=true},
+						}
+				genericAlert.createNew("Error in Image Upload", "Size of the image cannot be more than 10 MB",option)
+
+
+
+			--local image = native.showAlert( "Error in Image Upload", "Size of the image cannot be more than 10 MB", { CommonWords.ok } )
 
 			
 		elseif (event>=1024)  then   
@@ -1017,7 +1044,14 @@ end
 
 	   if response == "Success" then
 
-		   	   local a = native.showAlert(ImageLibrary.UploadImage,ImageLibrary.ImageUploaded,{CommonWords.ok})
+	   			local option ={
+							 {content=CommonWords.ok,positive=true},
+						}
+						genericAlert.createNew(ImageLibrary.UploadImage, ImageLibrary.ImageUploaded,option)
+
+
+
+		   	   --local a = native.showAlert(ImageLibrary.UploadImage,ImageLibrary.ImageUploaded,{CommonWords.ok})
 
 		       Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
 
@@ -1235,7 +1269,8 @@ end
 								floatingButtonGroup.isVisible=false
 							end
 
-							transition.to( event.target, {time=200,rotation=0,width = event.target.width + 5} )
+							transition.to( event.target, {time=200,rotation=0,width = event.target.width+4,height = event.target.height-4} )
+
 
 							transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
 
@@ -1247,7 +1282,7 @@ end
 
 							floatingButtonGroup.y=30
 
-							transition.to( event.target, {time=200,rotation=45,width = event.target.width - 5 } )
+							transition.to( event.target, {time=200,rotation=45,width = event.target.width-4 ,height = event.target.height+4} )
 
 							transition.to( floatingButtonGroup, {time=300,y=0,transition=easing.outBack} )
 
@@ -1268,84 +1303,6 @@ end
 		return true
 		
 	end
-
-
-
-
-
--- local function uploadLayout(sceneGroup)
-
--- 	    uploadArray[#uploadArray+1] = display.newGroup()
-
--- 		ImageUploadGroup = uploadArray[#uploadArray]
-
-
--- 		local Background = display.newRect(ImageUploadGroup,W/2, H/2, W, H )
--- 		Background.id= "background"
--- 		Background.alpha=0.15
--- 		ImageUploadGroup:insert(Background)
--- 		Background:addEventListener("touch",touchBg)
-
-
--- 		local uploadbackgroundbg = display.newRect(160, H/2+ 10, W-12, 420 )
--- 		uploadbackgroundbg.x = 160
--- 	    uploadbackgroundbg:setFillColor(0,0,0)
--- 	    uploadbackgroundbg.isVisible=true
--- 	    ImageUploadGroup:insert(uploadbackgroundbg)
-
-
--- 	    local uploadTop_bg = display.newRect(W/2,H/2-185,308,30)
--- 	    uploadTop_bg.width = 308
--- 	    uploadTop_bg:setFillColor(Utils.convertHexToRGB(color.Gray))
--- 	    uploadTop_bg.alpha = 1
--- 	    ImageUploadGroup:insert(uploadTop_bg)
-
-
--- 	    local uploadTitle = display.newText("Upload Image",0,0,native.systemFont,18)
--- 	    uploadTitle.anchorX = 0
--- 	    uploadTitle.x=20
--- 	    uploadTitle.y=uploadTop_bg.y
--- 	    uploadTitle:setTextColor(Utils.convertHexToRGB(color.tabBarColor))
--- 	    ImageUploadGroup:insert(uploadTitle)
-
-
--- 	    local Close_bg = display.newRect(0,0,30,30)
--- 	    Close_bg.x=uploadTop_bg.x+uploadTop_bg.contentWidth/2-15
--- 	    Close_bg.y=uploadTop_bg.y
--- 	    Close_bg.id="close"
--- 	    Close_bg.alpha=0.01
--- 	    ImageUploadGroup:insert(Close_bg)
--- 	    Close_bg:addEventListener("touch",onCloseTouch)
-
-
--- 		local Close = display.newImageRect("res/assert/cancel.png",19,19)
--- 	    Close.x=Close_bg.x
--- 	    Close.y=Close_bg.y
--- 	    Close:setFillColor(0,0,0)
--- 	    Close.id="close"
--- 	    ImageUploadGroup:insert(Close)
--- 	    Close_bg:addEventListener("touch",onCloseTouch)
-
-
--- 	    local objCreationList = display.newRect(160, uploadTop_bg.y+uploadTop_bg.contentHeight/2, uploadTop_bg.width , uploadbackgroundbg.contentHeight-uploadTop_bg.contentHeight/2-15 )
--- 	    objCreationList.anchorY=0
--- 	    objCreationList.y=uploadTop_bg.y+uploadTop_bg.contentHeight/2
--- 	    objCreationList.id= "uploadobjectlist"
--- 	    objCreationList.strokeWidth=1
--- 	    objCreationList.isVisible=true
--- 	    objCreationList.alpha = 0.95
--- 	    objCreationList:setStrokeColor(Utils.convertHexToRGB(color.LtyGray))
--- 	    ImageUploadGroup:insert(objCreationList)
-
--- 	   -- objCreationList:addEventListener( "touch", touchPopupBg )
-
-
--- 		sceneGroup:insert(ImageUploadGroup)
-
-
--- end
-
-
 
 
 
@@ -1448,21 +1405,7 @@ local function listPosition_change( event )
 				title:setFillColor(0)
 
 
--------------------------upload icon-------------------------------
 
-				-- uploadimage_icon = display.newImageRect(sceneGroup,"res/assert/upload.png",18,18)
-				-- uploadimage_icon.x=W-50;uploadimage_icon.y=title_bg.y-10
-				-- uploadimage_icon.anchorY=0
-				-- uploadimage_icon:setFillColor(0)
-
-
-				-- local function uploadImageLayout(event)
-
-				-- 	uploadLayout(sceneGroup)
-
-				-- end
-
-				-- uploadimage_icon:addEventListener("touch",uploadImageLayout)
 				sceneGroup:insert( floatingButtonGroup )
 
 				  addImageBg = display.newRect( W/2, H/2, W, H )
@@ -1476,7 +1419,7 @@ local function listPosition_change( event )
 
 
 
-				addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 66/1.5,66/1.7 )
+				addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 76/1.6,76/1.9 )
 				addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 				addEventBtn:addEventListener("touch",uploadImageAction)
 
@@ -1484,32 +1427,32 @@ local function listPosition_change( event )
 
 			  
 
-				fromGalleryIcon = display.newImageRect( floatingButtonGroup, "res/assert/gallery1.png", 66/1.8,66/2 )
+				fromGalleryIcon = display.newImageRect( floatingButtonGroup, "res/assert/gallery1.png", 76/1.6,76/2 )
 				fromGalleryIcon.x=addEventBtn.x;fromGalleryIcon.y=addEventBtn.y-45;fromGalleryIcon.id="gallery"
 				fromGalleryIcon:addEventListener("touch",uploadImageAction)
 
-				local fromGalleryIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,75,23,2 )
+				local fromGalleryIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,80,25,2 )
 				fromGalleryIconTipsRect.anchorX=1
-				fromGalleryIconTipsRect.x=fromGalleryIcon.x-25
+				fromGalleryIconTipsRect.x=fromGalleryIcon.x-35
 				fromGalleryIconTipsRect.y=fromGalleryIcon.y
 				fromGalleryIconTipsRect:setFillColor( 0,0,0,0.7 )
 
-				local fromGalleryIconTips = display.newText( floatingButtonGroup, "Gallery",0,0,native.systemFont,12 )
+				local fromGalleryIconTips = display.newText( floatingButtonGroup, "Gallery",0,0,native.systemFont,14 )
 				fromGalleryIconTips.x=fromGalleryIconTipsRect.x-fromGalleryIconTipsRect.contentWidth/2
 				fromGalleryIconTips.y=fromGalleryIconTipsRect.y
 				
 
-				fromCameraIcon = display.newImageRect( floatingButtonGroup, "res/assert/camera1.png", 66/1.8,66/2 )
+				fromCameraIcon = display.newImageRect( floatingButtonGroup, "res/assert/camera1.png", 76/1.6,76/2 )
 				fromCameraIcon.x=fromGalleryIcon.x;fromCameraIcon.y=fromGalleryIcon.y-45;fromCameraIcon.id="camera"
 				fromCameraIcon:addEventListener("touch",uploadImageAction)
 
-				local fromCameraIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,75,23,2 )
+				local fromCameraIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,80,25,2 )
 				fromCameraIconTipsRect.anchorX=1
-				fromCameraIconTipsRect.x=fromCameraIcon.x-25
+				fromCameraIconTipsRect.x=fromCameraIcon.x-35
 				fromCameraIconTipsRect.y=fromCameraIcon.y
 				fromCameraIconTipsRect:setFillColor( 0,0,0,0.7 )
 
-				local fromCameraIconTips = display.newText( floatingButtonGroup, "Camera",0,0,native.systemFont,12 )
+				local fromCameraIconTips = display.newText( floatingButtonGroup, "Camera",0,0,native.systemFont,14 )
 				fromCameraIconTips.x=fromCameraIconTipsRect.x-fromCameraIconTipsRect.contentWidth/2
 				fromCameraIconTips.y=fromCameraIconTipsRect.y
 

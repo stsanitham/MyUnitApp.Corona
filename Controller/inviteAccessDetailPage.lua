@@ -15,7 +15,7 @@ local popupGroup = require( "Controller.popupGroup" )
 local alertGroup = require( "Controller.alertGroup" )
 local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
-
+require( "Controller.genericAlert" )
 
 
 --------------- Initialization -------------------
@@ -225,10 +225,18 @@ local function observableScroll( event )
 
   		Request_response = response
 
+  		if popUpGroup.numChildren ~= nil then
+				for j=popUpGroup.numChildren, 1, -1 do 
+					display.remove(popUpGroup[popUpGroup.numChildren])
+					popUpGroup[popUpGroup.numChildren] = nil
+				end
+			end
+
+
 
   		function onCompletion(event)
 
-  			  if "clicked"==event.action then
+  			 -- if "clicked"==event.action then
 
 	  				 print("on complete action done [[[[[[[[[[[[[[[[[[[[980890890890]]]]]]]]]]]]]]]]]]]]]]]]]")
 
@@ -259,7 +267,7 @@ local function observableScroll( event )
 
 					 composer.hideOverlay()
 
-			   end
+			--   end
 
 		end
 
@@ -267,7 +275,7 @@ local function observableScroll( event )
 
 		function onCompletion1(event)
 
-				if "clicked"==event.action then
+			--	if "clicked"==event.action then
 
 					print("on complete action done [[[[[[[[[[[[[[[[[[[[980890890890]]]]]]]]]]]]]]]]]]]]]]]]] 666666666")
 
@@ -280,126 +288,73 @@ local function observableScroll( event )
 
 		        -- composer.hideOverlay()
 
-		        end
+		      --  end
 
 		end
 
 
 
 
-		if id_value == "Remove Access" then
+		  local option ={
+							 {content=CommonWords.ok,positive=true},
+						}
+     if Request_response == "SUCCESS" then
 
-			print("response after removing details ",Request_response)
-			local remove_successful= native.showAlert(CommonWords.Remove , CareerPath.RemovedText, { CommonWords.ok} , onCompletion)
+		     	if id_value == "Remove Access" then
 
+		     		--local remove_successful= native.showAlert(CommonWords.Remove, CareerPath.RemovedText, { CommonWords.ok} , onCompletion)
 
-		elseif id_value == "Block Access" then
+						genericAlert.createNew(CommonWords.Remove,CareerPath.RemovedText,option,onCompletion)
 
-			print("response after blocking details ",Request_response)
-			local block_successful = native.showAlert(CommonWords.Block , CareerPath.BlockedText, { CommonWords.ok} , onCompletion)
+		     	elseif id_value == "Block Access" then
 
-		end
+		     		genericAlert.createNew(CommonWords.Block,CareerPath.BlockedText,option,onCompletion)
 
+		     		--local block_successful = native.showAlert(CommonWords.Block, CareerPath.BlockedText, { CommonWords.ok} , onCompletion)
 
-		if id_value == "Deny Access" then
+		     	elseif id_value == "Deny Access" then
 
-			if Request_response == "SUCCESS" then
+		     		genericAlert.createNew(CommonWords.Deny,CareerPath.DeniedText,option,onCompletion)
 
-				denyaccess = native.showAlert(CommonWords.Deny, CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
+		     		--denyaccess = native.showAlert(CommonWords.Deny,  CareerPath.DeniedText, { CommonWords.ok } , onCompletion)
 
-			elseif Request_response == "GRANT" then
+		     	elseif id_value == "Grant Access" then
 
-				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
+		     		genericAlert.createNew(CommonWords.GrantAccessText,CareerPath.GrantSuccessText,option,onCompletion)
 
-			elseif Request_response == "REMOVE" then
+		     		--grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
 
-				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
+		     	elseif id_value == "Provide Access" then
+
+		     		genericAlert.createNew(CommonWords.ProvideAccessText,CareerPath.ProvideAccessSuccessText,option,onCompletion)
+
+		     		--accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
+
+		     	end
+	elseif Request_response == "GRANT" then
+
+				genericAlert.createNew(CareerPath.AlreadyGranted,CareerPath.AlreadyGrantedText,option,onCompletion1)
+
+				--granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion)
+
+	elseif Request_response == "REMOVE" then
+
+				genericAlert.createNew(CareerPath.AlreadyRemoved,CareerPath.AlreadyRemovedText,option,onCompletion1)
+
+				--Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion)
 				
-			elseif Request_response == "REQUEST" then
+	elseif Request_response == "ADDREQUEST" then
 
-				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
+				genericAlert.createNew(CareerPath.AddRequest,CareerPath.AddRequestText,option,onCompletion1)
 
-			elseif Request_response == "BLOCK" then
+				--addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion)
 
-				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
+	elseif Request_response == "BLOCK" then
 
-			end
-
-		elseif id_value == "Grant Access From Deny" then
-
-			if Request_response == "SUCCESS" then
-
-				grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
-
-			elseif Request_response == "GRANT" then
-
-				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
-
-			elseif Request_response == "REMOVE" then
-
-				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
+				genericAlert.createNew(CareerPath.AlreadyBlocked,CareerPath.AlreadyBlockedText,option,onCompletion1)
 				
-			elseif Request_response == "REQUEST" then
-
-				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
-
-			elseif Request_response == "BLOCK" then
-
-				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
-
-			end
-
-
-		elseif id_value == "Grant Access From Open" then
-
-			if Request_response == "SUCCESS" then
-
-				grantaccess = native.showAlert(CommonWords.GrantAccessText, CareerPath.GrantSuccessText, { CommonWords.ok} , onCompletion)
-
-			elseif Request_response == "GRANT" then
-
-				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
-
-			elseif Request_response == "REMOVE" then
-
-				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
-				
-			elseif Request_response == "REQUEST" then
-
-				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
-
-			elseif Request_response == "BLOCK" then
-
-				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
-
-			end
-
-
-		elseif id_value == "Provide Access" then
-
-			if Request_response == "SUCCESS" then
-
-				accessprovided = native.showAlert(CommonWords.ProvideAccessText, CareerPath.ProvideAccessSuccessText , { CommonWords.ok } , onCompletion)
-
-			elseif Request_response == "GRANT" then
-
-				granted = native.showAlert(CareerPath.AlreadyGranted, CareerPath.AlreadyGrantedText, { CommonWords.ok} , onCompletion1)
-
-			elseif Request_response == "REMOVE" then
-
-				Removed = native.showAlert(CareerPath.AlreadyRemoved, CareerPath.AlreadyRemovedText, { CommonWords.ok} , onCompletion1)
-				
-			elseif Request_response == "REQUEST" then
-
-				addrequest = native.showAlert(CareerPath.AddRequest, CareerPath.AddRequestText, { CommonWords.ok} , onCompletion1)
-
-			elseif Request_response == "BLOCK" then
-
-				addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion1)
-
-			end
-
-		end
+				--addrequest = native.showAlert(CareerPath.AlreadyBlocked, CareerPath.AlreadyBlockedText, { CommonWords.ok} , onCompletion)
+	end
 
 	end
 

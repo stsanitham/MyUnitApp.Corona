@@ -9,7 +9,7 @@ local scene = composer.newScene()
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 local lfs = require("lfs")
-
+require( "Controller.genericAlert" )
 
 
 --------------- Initialization -------------------
@@ -130,9 +130,9 @@ local function showShare(fileNameString)
 
 		    				local function onComplete( event )
 
-		    					if event.action == "clicked" then
+		    					--if event.action == "clicked" then
 
-		    						local i = event.index
+		    						local i = event
 
 		    						if i == 1 then
 
@@ -179,18 +179,28 @@ local function showShare(fileNameString)
 								end
 							end
 
-							native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
+							local option ={
+											 {content=CommonWords.ok,positive=true},
+											}
+							genericAlert.createNew(filename, ResourceLibrary.Download_alert,option)
+
+							--native.showAlert( filename, ResourceLibrary.Download_alert, { CommonWords.ok} )
 							-- native.showAlert( filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 
-						end
+					--	end
 
 					end
 
 				end
 
 
+							local option ={
+											 {content=CommonWords.ok,positive=true},
+											 {content=CommonWords.cancel,positive=true}
+										}
+							genericAlert.createNew(downloan_event.response.filename, ResourceLibrary.SaveOptions_alert,option,onComplete)
 
-				native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
+				--native.showAlert( downloan_event.response.filename, ResourceLibrary.SaveOptions_alert, {CommonWords.ok,CommonWords.cancel} , onComplete )
 				
 			elseif event.id =="share" then
 

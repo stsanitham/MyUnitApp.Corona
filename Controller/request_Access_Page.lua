@@ -17,7 +17,7 @@ local current_textField,defalut
 local rankGroup = display.newGroup()
 local RequestFromStatus = ""
 local unitnumberflag = false
-
+require( "Controller.genericAlert" )
 
 --------------- Initialization -------------------
 
@@ -135,8 +135,10 @@ local function alertFun(value,flag)
 
 
 	local function onComplete( event )
-		if event.action == "clicked" then
-			local i = event.index
+
+		
+		--if event.action == "clicked" then
+			local i = event
 			if i == 1 then  
 
 				if flag == 1 then
@@ -151,10 +153,18 @@ local function alertFun(value,flag)
 				end
 				
 			end
-		end
+		--end
 	end
 
-	local alert = native.showAlert( RequestAccess.PageTitle , value, { CommonWords.ok }, onComplete )
+	UnitNumber.isVisible=false;FirstName.isVisible=false;Name.isVisible=false;Email.isVisible=false
+	Phone.isVisible=false;Comment.isVisible=false;DirectorName.isVisible=false;DirectorEmail.isVisible=false
+
+	local option ={
+					{content=CommonWords.ok,positive=true},
+				}
+	genericAlert.createNew( RequestAccess.PageTitle, value,option,onComplete)
+
+	--local alert = native.showAlert( RequestAccess.PageTitle , value, { CommonWords.ok }, onComplete )
 
 end	
 

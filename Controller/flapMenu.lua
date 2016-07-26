@@ -13,7 +13,7 @@
 	require( "Webservice.ServiceManager" )
 	local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 	local db = sqlite3.open( path )
-
+	require( "Controller.genericAlert" )
 	--------------- Initialization -------------------
 
 	local W = display.contentWidth;H= display.contentHeight
@@ -79,8 +79,8 @@
 
 	        if event.target.id == "logout" then
 	        	local function onComplete( event )
-	        		if event.action == "clicked" then
-	        			local i = event.index
+	        		--if event.action == "clicked" then
+	        			local i = event
 	        			if i == 1 then
 
 	        				function get_logout(response)
@@ -127,11 +127,16 @@
 									elseif i == 2 then
 					            --cancel
 					        end
-					    end
+					  --  end
 					end
 
+					local option ={
+							 {content=FlapMenu.LOG_OUT ,positive=true},
+							 {content= FlapMenu.CANCEL,positive=true},
+						}
+						genericAlert.createNew("Log out", FlapMenu.Alert,option,onComplete)
 				-- Show alert with two buttons
-				local alert = native.showAlert( "Log out", FlapMenu.Alert, { FlapMenu.LOG_OUT , FlapMenu.CANCEL }, onComplete )	
+				--local alert = native.showAlert( "Log out", FlapMenu.Alert, { FlapMenu.LOG_OUT , FlapMenu.CANCEL }, onComplete )	
 				
 				return true
 				

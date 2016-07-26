@@ -17,7 +17,7 @@ local db = sqlite3.open( path )
 local pasteboard = require( "plugin.pasteboard" )
 local toast = require('plugin.toast')
 local imageFullviewGroup = require( "Controller.imageFullviewGroup" )
-
+require( "Controller.genericAlert" )
 
 
 --------------- Initialization -------------------
@@ -147,7 +147,12 @@ function formatSizeUnits(event)
 
 		print("highest size of the image ",size)
 
-		local image = native.showAlert( ChatPage.ImageUploadError,ChatPage.ImageSize, { CommonWords.ok } )
+		local option ={
+							 {content=CommonWords.ok,positive=true},
+						}
+						genericAlert.createNew(ChatPage.ImageUploadError,ChatPage.ImageSize,option)
+
+		--local image = native.showAlert( ChatPage.ImageUploadError,ChatPage.ImageSize, { CommonWords.ok } )
 
 		
 	elseif (event>=1024)  then   
@@ -320,7 +325,15 @@ local function attachAction( event )
 
 			else
 
-				local image1 = native.showAlert( ChatPage.CameraUnavailable, ChatPage.CameraNotSupported, { CommonWords.ok } )
+
+										local option ={
+											 {content=CommonWords.ok,positive=true},
+											-- {content=CommonWords.cancel,positive=true},
+										}
+									genericAlert.createNew(ChatPage.CameraUnavailable,ChatPage.CameraNotSupported,option)
+
+
+				--local image1 = native.showAlert( ChatPage.CameraUnavailable, ChatPage.CameraNotSupported, { CommonWords.ok } )
 
 			end
 
@@ -1492,9 +1505,9 @@ end
 				
 
 				local function onComplete( event )  
-					if event.action == "clicked" then
+					--if event.action == "clicked" then
 
-						local i = event.index
+						local i = event
 						if i == 1 then
 
 							for i=1,#selectedForDeleteID do
@@ -1538,7 +1551,7 @@ end
 
 								    	
 								    end
-								end
+							--	end
 							end
 
 
@@ -1546,14 +1559,35 @@ end
 
 								print( json.encode(selectedForDeleteID[1]) , ContactId )
 								if selectedForDeleteID[1].contactid == ContactId then
-									local alert = native.showAlert(MessagePage.DeleteText, ChatPage.DeleteMessage, { CommonWords.ok , CommonWords.cancel }, onComplete )
+
+									local option ={
+											 {content=CommonWords.ok,positive=true},
+											 {content=CommonWords.cancel,positive=true},
+										}
+									genericAlert.createNew(MessagePage.DeleteText,ChatPage.DeleteMessage,option,onComplete)
+
+									--local alert = native.showAlert(MessagePage.DeleteText, ChatPage.DeleteMessage, { CommonWords.ok , CommonWords.cancel }, onComplete )
 								else
-									local alert = native.showAlert(MessagePage.DeleteText, ChatPage.DeleteMessageFrom..UserName.."?", { CommonWords.ok , CommonWords.cancel }, onComplete )
+
+										local option ={
+											 {content=CommonWords.ok,positive=true},
+											 {content=CommonWords.cancel,positive=true},
+										}
+									genericAlert.createNew(MessagePage.DeleteText,ChatPage.DeleteMessageFrom..UserName.."?",option,onComplete)
+
+									--local alert = native.showAlert(MessagePage.DeleteText, ChatPage.DeleteMessageFrom..UserName.."?", { CommonWords.ok , CommonWords.cancel }, onComplete )
 								end
 
 							else
 
-								local alert = native.showAlert(MessagePage.DeleteText, MessagePage.DeleteText.." "..tostring(deleteMsgCount)..ChatPage.MessageText, { CommonWords.ok , CommonWords.cancel }, onComplete )
+										local option ={
+											 {content=CommonWords.ok,positive=true},
+											 {content=CommonWords.cancel,positive=true},
+										}
+									genericAlert.createNew(MessagePage.DeleteText,MessagePage.DeleteText.." "..tostring(deleteMsgCount)..ChatPage.MessageText,option,onComplete)
+
+
+								--local alert = native.showAlert(MessagePage.DeleteText, MessagePage.DeleteText.." "..tostring(deleteMsgCount)..ChatPage.MessageText, { CommonWords.ok , CommonWords.cancel }, onComplete )
 
 							end
 

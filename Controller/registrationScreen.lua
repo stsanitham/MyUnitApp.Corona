@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 --
--- instagram Screen
+-- Registration Screen
 --
 ----------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
 local Utility = require( "Utils.Utility" )
-
+require( "Controller.genericAlert" )
 
 
 
@@ -580,16 +580,25 @@ renderArray = List.arrayName
 
 
 
+    local function onComplete(event)
 
+              if 1 == event then
+
+               Phone.isVisible=true
+               Marykay.isVisible=true
+
+              end
+
+          end
 
 
       local function alertFun(value,flag)
 
         local function onComplete( event )
 
-         if event.action == "clicked" then
+        -- if event.action == "clicked" then
 
-          local i = event.index
+          local i = event
 
           if i == 1 then  
 
@@ -603,17 +612,23 @@ renderArray = List.arrayName
 
             end
             
-          end
+         -- end
         end
       end
 
-      local alert = native.showAlert( RegistrationScreen.RegistrationCompleted , value, { CommonWords.ok }, onComplete )
+       Phone.isVisible=false
+       Marykay.isVisible=false
+
+       local option ={
+               {content=CommonWords.ok,positive=true},
+            }
+      
+      genericAlert.createNew(RegistrationScreen.RegistrationCompleted ,value,option,onComplete)
+
+
+      --local alert = native.showAlert( RegistrationScreen.RegistrationCompleted , value, { CommonWords.ok }, onComplete )
 
     end 
-
-
-
-
 
 
 
@@ -730,7 +745,14 @@ if Email.text ~= "" and Email.text ~= Email.id and Email.text ~= Email.EmailAddr
 
         native.setKeyboardFocus(Email)
 
-        local alert = native.showAlert( RegistrationScreen.EmailRegistered , RegistrationScreen.EmailRegisteredText , { CommonWords.ok } )
+            Phone.isVisible=false
+             Marykay.isVisible=false
+             local option ={
+               {content=CommonWords.ok,positive=true},
+            }
+            genericAlert.createNew(RegistrationScreen.EmailRegistered, RegistrationScreen.EmailRegisteredText,option,onComplete)
+
+       -- local alert = native.showAlert( RegistrationScreen.EmailRegistered , RegistrationScreen.EmailRegisteredText , { CommonWords.ok } )
 
       else
 
@@ -882,13 +904,20 @@ local function textfield( event )
 
           local function getEmailValidationStatus(response)
 
-            print("email response :"..json.encode(response))
 
+        
             if response == false then
 
              native.setKeyboardFocus(Email)
 
-             local alert = native.showAlert( RegistrationScreen.EmailRegistered , RegistrationScreen.EmailRegisteredText , { CommonWords.ok } )
+             Phone.isVisible=false
+             Marykay.isVisible=false
+             local option ={
+               {content=CommonWords.ok,positive=true},
+            }
+            genericAlert.createNew(RegistrationScreen.EmailRegistered, RegistrationScreen.EmailRegisteredText,option,onComplete)
+
+            -- local alert = native.showAlert( RegistrationScreen.EmailRegistered , RegistrationScreen.EmailRegisteredText , { CommonWords.ok } )
 
            else
 

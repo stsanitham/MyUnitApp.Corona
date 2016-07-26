@@ -25,14 +25,12 @@ local webView
 
 local editGoals_icon,title_bg,title
 
-
-
 local BackFlag = false
 
 local RecentTab_Topvalue = 40
 
-
 local content=""
+
 local goalsid
 
 
@@ -52,8 +50,6 @@ local function onTimer ( event )
 	BackFlag = false
 
 end
-
-
 
 
 local function editEvent( event)
