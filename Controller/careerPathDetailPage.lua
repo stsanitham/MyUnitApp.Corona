@@ -359,6 +359,13 @@ local function phoneCallFunction( event )
 
 			Request_response = response
 
+				if popUpGroup.numChildren ~= nil then
+				for j=popUpGroup.numChildren, 1, -1 do 
+					display.remove(popUpGroup[popUpGroup.numChildren])
+					popUpGroup[popUpGroup.numChildren] = nil
+				end
+			end
+
 
 			function onCompletion(event)
 

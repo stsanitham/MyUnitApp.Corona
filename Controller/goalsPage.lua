@@ -10,7 +10,7 @@ local scene = composer.newScene()
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 local json = require('json')
-
+require( "Controller.genericAlert" )
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -147,18 +147,36 @@ function scene:create( event )
 end
 
 
+function onComplete(event)
+
+		if 1 == event then
+
+
+			Webservice.GET_MYUNITAPP_GOALS(get_Goals)
+
+			Runtime:addEventListener( "key", onKeyEvent )
+
+
+		end
+
+end
+
 function scene:resumeGame(isEdited)
 
 	if isEdited == true then
 
-		local alert = native.showAlert(  Goals.PageTitle,Goals.SuccessMsg, { CommonWords.ok } )
+
+			local option ={
+							 {content=CommonWords.ok,positive=true},
+						}
+						genericAlert.createNew(Goals.PageTitle, Goals.SuccessMsg,option,onComplete)
+
+
+		--local alert = native.showAlert(  Goals.PageTitle,Goals.SuccessMsg, { CommonWords.ok } )
 
 	end
 
 
-	Webservice.GET_MYUNITAPP_GOALS(get_Goals)
-
-	Runtime:addEventListener( "key", onKeyEvent )
 
 end
 

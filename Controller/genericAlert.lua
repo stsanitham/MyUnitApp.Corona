@@ -120,8 +120,19 @@ function genericAlert.createNew(title,content,values,action)
 
 end
 
---[[	local option ={
-			 {content="yes",positive=true},
-			{content="no",positive=false}
-			}
-		genericAlert.createNew("MUB","Are you sure to delete?",option)]]
+		--[[ -----How to add in application
+
+		function onComplete(event)
+
+		if 1 == event then
+
+
+		end
+
+end
+		local option ={
+							 {content=CommonWords.ok,positive=true},
+						}
+						genericAlert.createNew(Goals.PageTitle, Goals.SuccessMsg,option,onComplete)
+
+]]
