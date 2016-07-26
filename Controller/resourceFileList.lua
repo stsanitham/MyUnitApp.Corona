@@ -21,13 +21,15 @@ local Background,BgText
 
 local menuBtn
 
+local filetype = ""
+
 openPage="resourcePage"
 
 local BackFlag = false
 
 local ResourceListArray = {}
 
-local fileAtr,rowTitle
+local fileAtr,rowTitle,rowIcon
 
 
 local currentfilename = ""
@@ -101,9 +103,7 @@ local filenamevalue = ""
 
 
 
-			local pathValue="/storage/sdcard1/"
-			local pathValue1 = "/storage/sdcard0/"
-			local pathValue2 = "/storage/sdcard/"
+--local pathValue="/"
 
 
 
@@ -116,10 +116,33 @@ local filenamevalue = ""
 			    local rowHeight = row.contentHeight
 			    local rowWidth = row.contentWidth
 
+
+
+			    if file_array[row.index].filemode == "directory" and file_array[row.index].filemode ~= "file"  then
+
+			    	print("   ******* directory ******")
+
+				    local rowIcon = display.newImageRect(row,"res/assert/folder_with_file.png",25,25 )
+				    rowIcon.x = 20
+				    rowIcon.anchorX = 0 
+				    rowIcon.y = rowHeight * 0.5 - 5
+
+				elseif file_array[row.index].filemode == "file" and file_array[row.index].filemode ~= "directory" then
+
+					print("   ******* file ******")
+
+					local rowIcon = display.newImageRect(row,"res/assert/FileIcon.png",25,22 )
+				    rowIcon.x = 20
+				    rowIcon.anchorX = 0
+				    rowIcon.y = rowHeight * 0.5 - 5
+
+				end
+
+
 			    rowTitle = display.newText(row, file_array[row.index].name, 0, 0,280,38, nil, 14 )
 				rowTitle:setFillColor( 0 )
 				rowTitle.anchorX = 0
-				rowTitle.x = 20
+				rowTitle.x = 60
 				rowTitle.y = rowHeight * 0.5+10
 
 
@@ -130,7 +153,7 @@ local filenamevalue = ""
 				rowvalues = file_array[row.index].name
 
 
-				print("NAME   :    "..file_array[row.index].name)
+				print("NAME   :    "..file_array[row.index].name.." "..file_array[row.index].filemode)
 
 
 			end
@@ -154,11 +177,11 @@ local filenamevalue = ""
 
 										   -- title.text = file_array[row.index].name
 
-										    if string.find(file_array[row.index].name, "//") then 
+										    if string.find(file_array[row.index].name, "//") and lfs.attributes( workingdir ).mode == "directory" then 
 
 											    	print("((((((((")
 
-											    	if string.find(file_array[row.index].name, "//.") then 
+											    	if string.find(file_array[row.index].name, "//.") and lfs.attributes( workingdir ).mode == "directory" then 
 
 											    	print("ppppppppp")
 
@@ -177,14 +200,41 @@ local filenamevalue = ""
 
 													end
 
+										    else
+
+										    	        title.text = string.gsub( file_array[row.index].name, "//", "" ) 
+													    title.type = "innertype"
+													    back_icon_bg.type = "innertype"
+													    back_icon.type = "innertype"
 										    	 
 										    end
 
-										
 
-										  workingdir = workingdir.."/"..rowvalues
 
-										  local pathval = native.showAlert("Path Value",workingdir,{"ok"})
+
+
+										   if firstrootpath == workingdir and lfs.attributes( workingdir ).mode == "directory" then
+
+										   	print("***************************************************")
+
+										    	workingdir = workingdir..rowvalues
+
+										    	-- if string.find(workingdir,".") or string.find(workingdir,"..") then
+
+										    	-- 	workingdir = string.gsub(workingdir,".","")
+
+										    	-- end
+
+										   else
+
+										        workingdir = workingdir.."/"..rowvalues
+
+										   end
+
+
+
+
+										   local pathval = native.showAlert("Path Value",workingdir,{"ok"})
 
 											-- Check to see if path exists
 											if path and lfs.attributes(workingdir ) then
@@ -203,7 +253,7 @@ local filenamevalue = ""
 
 												--Documents_list:deleteAllRows()
 
-												native.showAlert( "MUB", "Path : "..workingdir,{"ok"} )
+												--native.showAlert( "MUB", "Path : "..workingdir,{"ok"} )
 
 														  for file in lfs.dir(workingdir ) do
 
@@ -236,7 +286,7 @@ local filenamevalue = ""
 
 																		   		 	file_attributemode = fileAtr.mode
 
-																		   		 	print(path,file,file_attributemode) 
+																		   		 	print("### ",path,file,file_attributemode) 
 
 																	   		 end
 
@@ -244,7 +294,13 @@ local filenamevalue = ""
 
 															end
 
-												else
+											else
+
+												print("comin hereeee !!!!!!!!!!!!!!!!!!")
+
+													workingdir = string.gsub (workingdir, "/"..rowvalues , "")
+
+													local a2 = native.showAlert("File found","This file cannot be opened!",{"ok"})
 
 													title.text = ResourceLibrary.PageTitle
 												    title.type = "outerfile"
@@ -252,7 +308,7 @@ local filenamevalue = ""
 												    back_icon.type = "outerfile"
 
 
-												end
+											end
 
 
 
@@ -265,8 +321,8 @@ local filenamevalue = ""
 									NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 							    end
 
-							    Documents_list:deleteAllRows()
 
+							    Documents_list:deleteAllRows()
 
 
 							    for i = 1, #file_array do
@@ -341,15 +397,15 @@ local filenamevalue = ""
 										}}
 										end
 
-
 						end
 
-
-			end
+			    end
 
 			return true
 
 		end
+
+
 
 
 
@@ -444,9 +500,6 @@ local filenamevalue = ""
 			ga.enterScene("Resource Library")
 
 
-			    
-					
-
 			function getFileList()
 
 
@@ -455,23 +508,26 @@ local filenamevalue = ""
 					end
 
 
+				workingdir = "/"
+
 				local path = workingdir
 				local pathType = ""
 
 				print("&&&&& ")
 
-				pathValue = path
+
+				firstrootpath = workingdir
 
 				-- Check to see if path exists
-				if path and lfs.attributes( path ) then
-				    pathType = lfs.attributes( path ).mode
+				if path and lfs.attributes( "/" ) then
+				    pathType = lfs.attributes( "/" ).mode
 				    print("pathtype     "..pathType)
 				end
 
 				-- Check if path is a directory
 				if pathType == "directory" then
 
-						  for file in lfs.dir( path ) do
+						  for file in lfs.dir( "/" ) do
 
 									if "." ~= file and ".." ~= file then
 
@@ -479,170 +535,39 @@ local filenamevalue = ""
 
 								         fileAtr = lfs.attributes( file )
 
-								         file_array[#file_array+1] = { name = file}
+							         	 if fileAtr ~= nil then 
+
+									   		 	file_attributemode = fileAtr.mode
+
+									   		 	print("@@@@@ "..path,file,file_attributemode) 
 
 
-									   		 if fileAtr ~= nil then 
+								   		 end
 
-										   		 	file_attributemode = fileAtr.mode
-
-										   		 	print(path,file,file_attributemode) 
-
-									   		 end
+								         file_array[#file_array+1] = { name = file , filemode = file_attributemode }
 
 								    end
 							end
 
 				else
 
-									title.text = ResourceLibrary.PageTitle
-								    title.type = "outerfile"
-								    back_icon_bg.type = "outerfile"
-								    back_icon.type = "outerfile"
+
+					local a1 = native.showAlert("File found", "This file cannot be opened" ,{"ok"})
+
+													title.text = ResourceLibrary.PageTitle
+												    title.type = "outerfile"
+												    back_icon_bg.type = "outerfile"
+												    back_icon.type = "outerfile"
 				end
-
-
 
 
 			end
 
 
 
+		    getFileList()
 
-
-workingdir="/"
-
-
-for file in lfs.dir(workingdir) do
-
-	--getFileList()
-
-    if lfs.attributes(workingdir..file,"mode") == "file" then 
-
-    	local native = native.showAlert("alert 1",file,"ok")
-
-    	print("file: "..file)
-
-    	    if "." == file and ".." == file then
-         
-             local n2 = native.showAlert("File","This cannot be opened",{"ok"})
-
-            end
-
-
-    elseif lfs.attributes(workingdir..file,"mode")== "directory" then 
-
-    	print("dir: "..file)
-
-    	local native = native.showAlert("alert 2",file,"ok")
-
-
-					if "." ~= file and ".." ~= file then
-
-				         print("FILE 123: " .. file)
-
-				         fileAtr = lfs.attributes( file )
-
-
-				         -- workingdir = workingdir..file
-
-				         -- print("working directory = "..workingdir)
-
-
-				         --filenamevalue[#filenamevalue+1] = { name = path..file_array[row.index].name }
-
-				         print(json.encode(fileAtr))
-
-				         print(file)
-
-				         file_array[#file_array+1] = { name = file }
-
-				         --title.text = rowvalues
-
-
-				        -- Documents_list:deleteAllRows()
-
-
-				         print(#file_array)
-
-					   		 if fileAtr ~= nil then 
-
-						   		 	file_attributemode = fileAtr.mode
-
-						   		 	print(path,file,file_attributemode) 
-
-					   		 end
-
-				     end
-
-    end
-
-end
-
-
-
-            
-
-            ------------------------------------------------------------------------
-					--------------------------- Read ----------------------------
-
-				-- local localpath = system.pathForFile(pathValue)  -- Change this path to the path of an image on your computer
-			 --    local localpath1 = system.pathForFile(pathValue1)
-				-- --local localpath2 = system.pathForFile(pathValue2)
-
-
-				-- if localpath then
-
-				-- 		local file = io.open( localpath, "r" )                               -- Open the image in read mode
-				-- 		local contents
-
-				-- 			getFileList()
-
-				-- 		    contents = file:read( "*a" )  
-
-				-- 		    print(contents)      
-				-- 		                                    -- Read contents
-				-- 		    io.close( file ) 
-				-- 		                                                       -- Close the file (Important!)
-				-- elseif localpath1 then
-
-				-- 	    localpath1 = system.pathForFile("/storage/sdcard0/")
-				-- 		local file = io.open( localpath1, "r" )                               -- Open the image in read mode
-				-- 		local contents
-
-
-				-- 			getFileList()
-
-				-- 		    contents = file:read( "*a" )  
-
-				-- 		    print(contents)      
-				-- 		                                    -- Read contents
-				-- 		    io.close( file ) 
-				-- 				                                                       -- Close the file (Important!)
-				-- else
-
-
-
-			 --            localpath2 = system.pathForFile("/storage/sdcard/")
-				-- 		local file = io.open( localpath2, "r" )                               -- Open the image in read mode
-				-- 		local contents
-
-
-				-- 			getFileList()
-
-				-- 		    contents = file:read( "*a" )  
-
-				-- 		    print(contents)      
-				-- 		                                    -- Read contents
-				-- 		    io.close( file ) 
-
-
-				-- end
-
-
-
-
-		    -- getFileList()
+		    
 
 
 
