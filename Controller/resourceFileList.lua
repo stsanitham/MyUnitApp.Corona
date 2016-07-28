@@ -677,7 +677,6 @@ local filenamevalue = ""
 
 
 
-
 	function scene:destroy( event )
 
 		local sceneGroup = self.view

@@ -19,6 +19,7 @@ settings =
     plugins =
     {
 
+    
 
      ['plugin.toast'] = {publisherId = 'com.spiralcodestudio'},
 
@@ -73,7 +74,7 @@ settings =
 			--CFBundleIdentifier="com.spanenterprises.MyUnitBuzz",
 			CFBundleIdentifier="com.spanenterprises.MUBDev",
 
-	
+			UIFileSharingEnabled=true,
 			UIStatusBarHidden = false,
 			UIPrerenderedIcon = true, 
 			UIAppFonts = 
