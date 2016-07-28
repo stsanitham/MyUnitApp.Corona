@@ -256,6 +256,14 @@ ResourceLibrary.PageTitle = "Resource"
 ResourceLibrary.Download_alert="Saved to Device Memory"
 ResourceLibrary.SaveOptions_alert = "Are you sure you want to download?"
 ResourceLibrary.NoDocument="No documents are found to view"
+ResourceLibrary.DocumentUpload = "Document Upload"
+ResourceLibrary.DocumentUploadAlert = "Are you sure you want to upload this document?"
+ResourceLibrary.InvalidFile = "Invalid File"
+ResourceLibrary.InvalidFileError = "You cannot open this file"
+ResourceLibrary.DocumentUploadError = "Error in Document Upload"
+ResourceLibrary.DocumentUploadSize = "Size of the document cannot be more than 10 MB"
+ResourceLibrary.DocumentUploaded =  "Document uploaded successfully!"
+
 
 
 ImageLibrary = {}

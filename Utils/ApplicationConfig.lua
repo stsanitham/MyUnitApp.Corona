@@ -23,7 +23,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 -----------Dev-----------------
 
---[[
+----[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitapp.dotnetethic.com"
@@ -41,7 +41,7 @@ ApplicationConfig.Analysic_TrackId = "UA-51545075-5"
 
 ---------Stagging--------------
 
-----[[
+--[[
 
 IsLive = false
 ApplicationConfig.BASE_URL = "http://api.myunitbuzz.spanunit.com"
@@ -227,6 +227,8 @@ ApplicationConfig.GetImageLibraryCategory = ApplicationConfig.BASE_URL.."/MyUnit
 ApplicationConfig.CheckChatGroupStatus = ApplicationConfig.BASE_URL.."/MyUnitBuzz/CheckChatGroupStatus"
 
 ApplicationConfig.AddImageFromNativeAppImageLibrary = ApplicationConfig.BASE_URL.."/MyUnitBuzz/AddImageFromNativeAppImageLibrary"
+
+ApplicationConfig.AddDocumentFromNativeAppImageLibrary = ApplicationConfig.BASE_URL.."/MyUnitBuzz/AddDocumentFromNativeAppImageLibrary"
 
 ApplicationConfig.ForwarChatMessageDetails = ApplicationConfig.BASE_URL.."/MyUnitBuzz/ForwarChatMessageDetails"
 
