@@ -20,7 +20,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
 
-local menuBtn,SubFileMode,SubFile,tmpPath,workingdir
+local menuBtn,SubFileMode,SubFile,tmpPath
 
 local filetype = ""
 
@@ -31,7 +31,7 @@ local words ={}
 openPage="resourcePage"
 
 local fileextensions = {".png",".jpg",".jpeg",".gif",".bmp",".tif",".tiff",".doc",".docx",".txt",".xls",".xlsx",".ppt",".pptx",".xps",".pps",".wma",".pub",".js",".swf",
-".xml",".html",".htm",".rtf" ,".pdf",".mpg",".au",".aac",".aif",".gsm",".mid",".mp3",".rm",".wav",".mpeg",".avi",".mp4",".wmv",".m4a"}
+".xml",".html",".htm",".rtf" ,".pdf",".mpg",".au",".aac",".aif",".gsm",".mid",".mp3",".rm",".wav",".mpeg",".avi",".mp4",".wmv",".m4a",'JPG','JPEG','BMP','GIF','PNG','TIF','TIFF'}
 
 local BackFlag = false
 
@@ -49,8 +49,7 @@ local changeMenuGroup = display.newGroup();
 
 local RecentTab_Topvalue = 70
 
-local file_attributemode = ""Jul
-
+local file_attributemode = ""
 
 local optionValue = "list" , tabBar , title_bg
 
@@ -152,7 +151,7 @@ local workingdir=""
 
 			    if file_array[row.index].filemode == "directory" and file_array[row.index].filemode ~= "file"  then
 
-					    local rowIcon = display.newImageRect(row,"res/assert/folder_with_file.png",25,25 )
+					    local rowIcon = display.newImageRect(row,"res/assert/folderimage.png",25,25 )
 					    rowIcon.x = 20
 					    rowIcon.anchorX = 0 
 					    rowIcon.y = rowHeight * 0.5 - 5
@@ -191,7 +190,7 @@ local workingdir=""
 
 						else
 
-								tempValue="res/assert/FileIcon.png"
+								tempValue="res/assert/invalid_file.png"
 						end
 
 
@@ -353,7 +352,22 @@ local workingdir=""
 
 																									   io.close( fileHandle )
 
+
+																									 --  print("file_inbytearray "..document_inbytearray)
+
+																									 --  print("bbb ",size1)
+
 																									   formatSizeUnits(size1)
+
+
+
+																										-- 	local options = {
+																										-- 		effect = "slideRight",
+																										-- 		time =300,
+																										-- 		params = { Document_Name = Document_name, Document_bytearray = document_inbytearray, temp_docfile = written_file , selectedoption = option_selected }
+																										-- 	}
+
+																										print("123")
 
 																									   composer.hideOverlay()
 
@@ -370,12 +384,13 @@ local workingdir=""
 
 																	end
 
-																				local option = {
-																								 {content="Add",positive=true},
-																								 {content=CommonWords.cancel,positive=true},
-																							}
+																			
+																	local option = {
+																					 {content="Add",positive=true},
+																					 {content=CommonWords.cancel,positive=true},
+																				}
 
-																				genericAlert.createNew(ResourceLibrary.DocumentUpload, ResourceLibrary.DocumentUploadAlert ,option,onComplete)
+																	genericAlert.createNew(ResourceLibrary.DocumentUpload, ResourceLibrary.DocumentUploadAlert ,option,onComplete)
 
 
 																		return 					
@@ -389,24 +404,20 @@ local workingdir=""
 													if fileValidation == false then
 
 															local option ={
-																		 {content=CommonWords.ok,positive=true},
-																	}
-															genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
+																	        {content=CommonWords.ok,positive=true},
+																          }
+																genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
+
 
 													end
-
-															
-													 --    title.text = string.gsub( file_array[row.index].name, "//", "" ) 
-													 --    title.type = "innertype"
-													 --    back_icon_bg.type = "innertype"
-													 --    back_icon.type = "innertype"
+	
 
 											end
 
 
 
 								if #file_array == 0  then
-									NoEvent = display.newText( scene.view, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
+									NoEvent = display.newText( scene.view, "This folder is empty", 0,0,0,0,native.systemFontBold,16)
 									NoEvent.x=W/2;NoEvent.y=H/2
 									NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 							    end
@@ -456,241 +467,69 @@ local workingdir=""
 
 
 
-
-		local function getPreviousFileList()
-
-					for j=#file_array, 1, -1 do 
-						file_array[#file_array] = nil
-					end
-
-					local path = SubFile
-					local pathType = ""
-
-
-					if path and lfs.attributes( SubFile) then
-					    pathType = lfs.attributes( SubFile ).mode
-					    print("pathtype previous    "..pathType)
-					end
-
-
-						         if pathType == "directory" then
-
-						 	         --  parts = split_path(FullPath)
-						
-							         -- print("SubFile &&&&&&&&&&&&&&&&&&&& @@@@@@@@@@@@@@@@@ "..parts)
-								    local test = FullPath:split("/")
-								    print("r> "..tostring(test[#test]))
-
-
-								    local filesplitstring 
-
-
-
-								    function paths.split(FullPath)
-									   local res = {}
-									   FullPath = FullPath:match('/$') and FullPath or (FullPath .. '/')
-									   FullPath = FullPath:gsub('/+', '/')
-									   local res = {}
-									   for sub in FullPath:gmatch('([^/]*/)') do
-									      table.insert(res, sub)
-									   end
-									   local lst = #res
-									   if res[lst] ~= './' and res[lst] ~= '../' and res[lst] ~= '/' then
-									      res[lst] = res[lst]:match('[^/]+')
-									   end
-									   return res
-									end
-
-                                     
-
-                                    rsult1 = paths.split(FullPath)
-
-									res123 = json.encode(rsult1)
-
-
-											    if test ~= nil then
-
-																    filesplitstring = string.gsub(FullPath,"/"..tostring(test[#test]),"")
-
-																    print(filesplitstring)
-
-
-																    for file in lfs.dir( filesplitstring ) do
-
-																			if "." ~= file and ".." ~= file then
-
-																		         print("FILE: " .. file)
-
-																		         fileAtr = lfs.attributes( file )
-
-																	         	 if fileAtr ~= nil then 
-
-																			   		 	file_attributemode = fileAtr.mode
-
-
-																		   		 end
-
-																		         file_array[#file_array+1] = { name = file , filemode = file_attributemode }
-
-																		    end
-																	end
-
-
-
-												else
-
-																	--getFileList()
-
-																	for j=#file_array, 1, -1 do 
-																		file_array[#file_array] = nil
-																	end
-
-
-																	workingdir = "/"
-
-																	local path = workingdir
-																	local pathType = ""
-
-
-
-																	-- Check to see if path exists
-																	if path and lfs.attributes( "/" ) then
-																	    pathType = lfs.attributes( "/" ).mode
-																	    --print("pathtype     "..pathType)
-																	end
-
-
-															 		for file in lfs.dir( "/" ) do
-
-																			if "." ~= file and ".." ~= file then
-
-																		        -- print("FILE: " .. file)
-
-																		         fileAtr = lfs.attributes( file )
-
-																	         	 if fileAtr ~= nil then 
-
-																			   		 	file_attributemode = fileAtr.mode
-
-																			   		     --print("@@@@@ "..path,file,file_attributemode) 
-
-																		   		 end
-
-																		         file_array[#file_array+1] = { name = file , filemode = file_attributemode }
-
-																		    end
-																	end
-
-
-												end
-
-
-
-																	title.text = string.gsub( filesplitstring , "/", "" ) 
-
-																	print("title.text : "..title.text)
-																    title.type = "innertype"
-																    back_icon_bg.type = "innertype"
-																    back_icon.type = "innertype"
-
-
-
-				  end         
-
-
-
-								if #file_array == 0  then
-									NoEvent = display.newText( scene.view, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
-									NoEvent.x=W/2;NoEvent.y=H/2
-									NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-							    end
-
-
-							    Documents_list:deleteAllRows()
-
-
-							    for i = 1, #file_array do
-
-							       Documents_list:insertRow{ rowHeight = 45,rowColor = 
-							       {
-							    	default = { 1, 1, 1, 0 },
-							    	over={ 1, 0.5, 0, 0 },
-							    	}}
-							    end
-							    
-
-
-			end
-
-
-
-
-
 		local function closeDetails( event )
 
-			if event.phase == "began" then
+				if event.phase == "began" then
 
-				display.getCurrentStage():setFocus( event.target )
+					    display.getCurrentStage():setFocus( event.target )
 
-			elseif event.phase == "ended" then
-
+				elseif event.phase == "ended" then
 
 						display.getCurrentStage():setFocus( nil )
 
 
 						if event.target.id =="backpress" and workingdir == "/" then
 
-							--composer.gotoScene("Controller.resourcePage","slideRight",200)
-
 								composer.hideOverlay("slideRight",300)
 
 						else
 
-							--print( workingdir )
+								if NoEvent.isVisible == true then
 
-							local tempPath = string.reverse( workingdir )
-							local FullPath,rowvalues
+									NoEvent.isVisible = false
 
-							if string.find( tempPath,"/" ) ~= nil then
-
-									local placeholder = string.find( tempPath,"/" )
-
-									print( placeholder )
-
-									tempPath = workingdir:sub( 1, workingdir:len()-placeholder )
-									 FullPath = tempPath
-									 tempPath = string.reverse( tempPath )
-
-									if string.find( tempPath,"/" ) ~= nil then
-
-										local placeholder = string.find( tempPath,"/" )
-												tempPath = string.reverse( tempPath )
-											 rowvalues = tempPath:sub( tempPath:len()-placeholder+2, tempPath:len() )
-
-									end
-    		                    
-
-
-    		                    rowfilemode = ""
-								
-								if rowvalues == "" then
-									rowvalues = ResourceLibrary.PageTitle
 								end
 
-								workingdir = FullPath
-							   
-							    createPathlist(FullPath,rowvalues,rowfilemode)
 
-							end
+								local tempPath = string.reverse( workingdir )
+								local FullPath,rowvalues
 
+								       if string.find( tempPath,"/" ) ~= nil then
 
-						
+											   local placeholder = string.find( tempPath,"/" )
 
-						end
+												print( placeholder )
 
-			    end
+												tempPath = workingdir:sub( 1, workingdir:len()-placeholder )
+												 FullPath = tempPath
+												 tempPath = string.reverse( tempPath )
 
-			return true
+												if string.find( tempPath,"/" ) ~= nil then
+
+													local placeholder = string.find( tempPath,"/" )
+															tempPath = string.reverse( tempPath )
+														 rowvalues = tempPath:sub( tempPath:len()-placeholder+2, tempPath:len() )
+
+												end
+			    		                    
+
+			    		                    rowfilemode = ""
+											
+											if rowvalues == "" then
+												rowvalues = ResourceLibrary.PageTitle
+											end
+
+											workingdir = FullPath
+										   
+										    createPathlist(FullPath,rowvalues,rowfilemode)
+
+							    	end
+
+						       end
+
+			           end
+
+			   return true
 
 		end
 
@@ -807,6 +646,7 @@ local workingdir=""
 						-- Check to see if path exists
 						if path and lfs.attributes( "/" ) then
 						    pathType = lfs.attributes( "/" ).mode
+						    --print("pathtype     "..pathType)
 						end
 
 						-- Check if path is a directory
@@ -836,11 +676,10 @@ local workingdir=""
 						else
 
 
-							local option = {
-										     {content=CommonWords.ok,positive=true},
-									      }
-							genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
-
+															local option ={
+																        {content=CommonWords.ok,positive=true},
+															          }
+															genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
 
 															title.text = ResourceLibrary.PageTitle
 														    title.type = "outerfile"
