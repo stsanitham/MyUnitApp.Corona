@@ -495,8 +495,6 @@ local workingdir=""
 
                                     rsult1 = paths.split(FullPath)
 
-									print("res )))))))))))))) ************** %%%%%%%%%%%%%% "..json.encode(rsult1))
-
 									res123 = json.encode(rsult1)
 
 
@@ -518,8 +516,6 @@ local workingdir=""
 																	         	 if fileAtr ~= nil then 
 
 																			   		 	file_attributemode = fileAtr.mode
-
-																			   		 	print("@@@@@ "..path,file,file_attributemode) 
 
 
 																		   		 end
@@ -631,16 +627,10 @@ local workingdir=""
 
 						display.getCurrentStage():setFocus( nil )
 
-						print("workingdir : "..workingdir)
-
 
 						if event.target.id =="backpress" and workingdir == "/" then
 
-							print("123123")
-
 							--composer.gotoScene("Controller.resourcePage","slideRight",200)
-
-
 
 								composer.hideOverlay("slideRight",300)
 
@@ -676,8 +666,6 @@ local workingdir=""
 								if rowvalues == "" then
 									rowvalues = ResourceLibrary.PageTitle
 								end
-
-								print("Working dir : ".. FullPath )
 
 								workingdir = FullPath
 							   
