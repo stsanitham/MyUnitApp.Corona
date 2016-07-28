@@ -68,8 +68,6 @@ local filenamevalue = ""
 
 			local function onTimer ( event )
 
-				print( "event time completion" )
-
 				BackFlag = false
 
 			end
@@ -137,17 +135,11 @@ local filenamevalue = ""
 
 			size=(event/1073741824)..' GB'
 
-			print(" Doc Size 1 ",size)
-
 		elseif (event>=1048576) then   
 
 			size=(event/1048576)..' MB'
-
-			print(" Doc Size 2 ",size)
 			
 		elseif (event > 10485760) then
-
-			print(" Highest Doc Size ",size)
 
 				local option ={
 							 {content=CommonWords.ok,positive=true},
@@ -157,8 +149,6 @@ local filenamevalue = ""
 		elseif (event>=1024)  then   
 
 			size = (event/1024)..' KB'
-
-			print(" Doc Size 3 ",size)
 
 		else      
 
@@ -197,8 +187,6 @@ local filenamevalue = ""
 					    if tempreverse ~= nil then
 
 						    fileExt = file_array[row.index].name:sub( file_array[row.index].name:len()-tempreverse+2,file_array[row.index].name:len())
-
-						   -- print("row render ______________ "..tempreverse.."    "..fileExt)
 
 					    end
 
@@ -276,55 +264,17 @@ local filenamevalue = ""
 							    print("Selected Path"..FullPath)
 
 
-							   --  if string.find(file_array[row.index].name, "//") and lfs.attributes( workingdir ).mode == "directory" then 
-
-								  --   	if string.find(file_array[row.index].name, "//.") and lfs.attributes( workingdir ).mode == "directory" then 
-
-								  --   	    title.text = string.gsub( file_array[row.index].name, "//.","")
-										--     title.type = "innertype"
-										--     back_icon_bg.type = "innertype"
-										--     back_icon.type = "innertype"
-
-										-- else
-
-										-- 	title.text = string.gsub( file_array[row.index].name, "//", "" ) 
-										--     title.type = "innertype"
-										--     back_icon_bg.type = "innertype"
-										--     back_icon.type = "innertype"
-
-
-										-- end
-
-							   --  else
-
-							   --  	        title.text = string.gsub( file_array[row.index].name, "//", "" ) 
-										--     title.type = "innertype"
-										--     back_icon_bg.type = "innertype"
-										--     back_icon.type = "innertype"
-							    	 
-							   --  end
-
-
-
-
-			  
-
-
-							   --local pathval = native.showAlert("Path Value",workingdir,{"ok"})
+				
 
 								if FullPath and lfs.attributes(FullPath ) then
 
 								    pathType1= lfs.attributes( FullPath ).mode
 
 								end
-
 									
 											if pathType1 == "directory" then
 
 												workingdir = FullPath
-
-
-												print("file array "..file_array[row.index].name)
 
 
 										    	    title.text = string.gsub( file_array[row.index].name, "//.","")
