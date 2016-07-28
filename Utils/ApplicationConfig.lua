@@ -228,7 +228,7 @@ ApplicationConfig.CheckChatGroupStatus = ApplicationConfig.BASE_URL.."/MyUnitBuz
 
 ApplicationConfig.AddImageFromNativeAppImageLibrary = ApplicationConfig.BASE_URL.."/MyUnitBuzz/AddImageFromNativeAppImageLibrary"
 
-ApplicationConfig.AddDocumentFromNativeAppImageLibrary = ApplicationConfig.BASE_URL.."/MyUnitBuzz/AddDocumentFromNativeAppImageLibrary"
+ApplicationConfig.AddDocumentFromNativeAppDocumentLibrary = ApplicationConfig.BASE_URL.."/MyUnitBuzz/AddDocumentFromNativeAppDocumentLibrary"
 
 ApplicationConfig.ForwarChatMessageDetails = ApplicationConfig.BASE_URL.."/MyUnitBuzz/ForwarChatMessageDetails"
 

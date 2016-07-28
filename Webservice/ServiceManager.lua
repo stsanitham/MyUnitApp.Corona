@@ -3380,7 +3380,7 @@ function Webservice.AddImageFromNativeAppImageLibrary(file_inbytearray,filename,
 
 
 
-function Webservice.AddDocumentFromNativeAppImageLibrary(Doc_Byte,Doc_Name,filetype,postExecution)
+function Webservice.AddDocumentFromNativeAppDocumentLibrary(Doc_Byte,Doc_Name,filetype,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -3393,7 +3393,7 @@ function Webservice.AddDocumentFromNativeAppImageLibrary(Doc_Byte,Doc_Name,filet
 	
 	method="POST"
 
-	local url = splitUrl(ApplicationConfig.AddDocumentFromNativeAppImageLibrary)
+	local url = splitUrl(ApplicationConfig.AddDocumentFromNativeAppDocumentLibrary)
 	local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 	authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
 	headers["Authentication"] = authenticationkey
@@ -3430,7 +3430,7 @@ function Webservice.AddDocumentFromNativeAppImageLibrary(Doc_Byte,Doc_Name,filet
 		print("Send Message Request :"..(v))
 
 
-        request.new( ApplicationConfig.AddDocumentFromNativeAppImageLibrary,method,params,postExecution)
+        request.new( ApplicationConfig.AddDocumentFromNativeAppDocumentLibrary,method,params,postExecution)
         
         return response
 

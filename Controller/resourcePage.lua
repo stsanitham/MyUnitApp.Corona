@@ -40,6 +40,8 @@ local optionValue = "list" , tabBar , title_bg
 
 local resourceGridArray = {}
 
+local ResourceList_scrollview
+
 
 --------------------------------------------------
 
@@ -602,7 +604,7 @@ function scene:resumeDocumentCallBack(doc_Name,Doc_bytearray,button_idvalue)
 
 			if button_idvalue == "Add" then
 
-		  		  Webservice.AddDocumentFromNativeAppImageLibrary(Doc_bytearray,doc_Name,"Docs",get_documentupload)
+		  		  Webservice.AddDocumentFromNativeAppDocumentLibrary(Doc_bytearray,doc_Name,"Docs",get_documentupload)
 
 		    end
 
@@ -889,7 +891,7 @@ local function listPosition_change( event )
 
 						else    
 
-							ResourceList_scrollview:toFront()
+							if ResourceList_scrollview ~= nil then ResourceList_scrollview:toFront() end
 
 							addEventBtn:toFront()
 

@@ -55,7 +55,10 @@ local optionValue = "list" , tabBar , title_bg
 
 local filenamevalue = ""
 
+local Document_name,document_inbytearray,option_selected="","",""
 
+
+local workingdir=""
 --------------------------------------------------
 
 
@@ -106,30 +109,7 @@ local filenamevalue = ""
 			end
 
 
-
-
-		function string:split( inSplitPattern, outResults )
-		  if not outResults then
-		    outResults = { }
-		  end
-		  local theStart = 1
-		  local theSplitStart, theSplitEnd = string.find( self, inSplitPattern, 
-		theStart )
-		  while theSplitStart do
-		    table.insert( outResults, string.sub( self, theStart, theSplitStart-1 ) )
-		    theStart = theSplitEnd + 1
-		    theSplitStart, theSplitEnd = string.find( self, inSplitPattern, theStart )
-		  end
-		  table.insert( outResults, string.sub( self, theStart ) )
-		  return outResults
-		end
- 
-
-
-
-
-
-	function formatSizeUnits(event)
+	local function formatSizeUnits(event)
 
 		if (event>=1073741824) then 
 
@@ -157,12 +137,7 @@ local filenamevalue = ""
     end
 
 
-
-
-
-
-
-			local function onRowRender_DocLibList( event )
+	local function onRowRender_DocLibList( event )
 
 			 -- Get reference to the row group
 			 local row = event.row
@@ -237,34 +212,12 @@ local filenamevalue = ""
 
 				--print("NAME   :    "..file_array[row.index].name)
 
-			end
+	end
 
 
+	local function createPathlist(FullPath,rowvalues,rowfilemode)
 
-
-
-			local function onRowTouch_DocLibList( event )
-				local phase = event.phase
-				local row = event.target
-
-				if( "press" == phase ) then
-
-			    elseif ( "release" == phase ) then
-
-			    	local rowHeight = row.contentHeight
-			        local rowWidth = row.contentWidth
-
-
-    		                    local rowvalues = file_array[row.index].name
-    		                    rowfilemode = file_array[row.index].filemode
-								local FullPath = workingdir.."/"..rowvalues
-							    local pathType1 = ""
-
-
-							    print("Selected Path"..FullPath)
-
-
-				
+		local pathType1 = ""
 
 								if FullPath and lfs.attributes(FullPath ) then
 
@@ -277,7 +230,7 @@ local filenamevalue = ""
 												workingdir = FullPath
 
 
-										    	    title.text = string.gsub( file_array[row.index].name, "//.","")
+										    	    title.text = string.gsub( rowvalues, "//.","")
 												    title.type = "innertype"
 												    back_icon_bg.type = "innertype"
 												    back_icon.type = "innertype"
@@ -460,6 +413,29 @@ local filenamevalue = ""
 							    	over={ 1, 0.5, 0, 0 },
 							    	}}
 							    end
+
+	end
+
+
+			local function onRowTouch_DocLibList( event )
+				local phase = event.phase
+				local row = event.target
+
+				if( "press" == phase ) then
+
+			    elseif ( "release" == phase ) then
+
+			    	local rowHeight = row.contentHeight
+			        local rowWidth = row.contentWidth
+
+
+    		                    local rowvalues = file_array[row.index].name
+    		                    rowfilemode = file_array[row.index].filemode
+								local FullPath = workingdir.."/"..rowvalues
+							    local pathType1 = ""
+
+
+							    createPathlist(FullPath,rowvalues,rowfilemode)
 
 
 			 end
@@ -655,47 +631,62 @@ local filenamevalue = ""
 
 						display.getCurrentStage():setFocus( nil )
 
-						if event.target.id =="backpress" and event.target.type == "outerfile" then
+						print("workingdir : "..workingdir)
+
+
+						if event.target.id =="backpress" and workingdir == "/" then
 
 							print("123123")
 
 							--composer.gotoScene("Controller.resourcePage","slideRight",200)
 
-							composer.hideOverlay("slideRight",300)
-
-						end
-
-						if event.target.type ~= "outerfile" then
-
-							print("sdfsdfsdf")
-
-										getFileList()
-
-										--getPreviousFileList()
-
-										title.text = ResourceLibrary.PageTitle
-									    title.type = "outerfile"
-									    back_icon_bg.type = "outerfile"
-									    back_icon.type = "outerfile"
 
 
-										if NoEvent.isVisible == true then
+								composer.hideOverlay("slideRight",300)
 
-											NoEvent.isVisible = false
+						else
 
-										end
+							--print( workingdir )
 
-										Documents_list:deleteAllRows()
+							local tempPath = string.reverse( workingdir )
+							local FullPath,rowvalues
+
+							if string.find( tempPath,"/" ) ~= nil then
+
+									local placeholder = string.find( tempPath,"/" )
+
+									print( placeholder )
+
+									tempPath = workingdir:sub( 1, workingdir:len()-placeholder )
+									 FullPath = tempPath
+									 tempPath = string.reverse( tempPath )
+
+									if string.find( tempPath,"/" ) ~= nil then
+
+										local placeholder = string.find( tempPath,"/" )
+												tempPath = string.reverse( tempPath )
+											 rowvalues = tempPath:sub( tempPath:len()-placeholder+2, tempPath:len() )
+
+									end
+    		                    
 
 
-										for i = 1, #file_array do
-										-- Insert a row into the tableView
-										Documents_list:insertRow{ rowHeight = 45,rowColor = 
-										{
-										default = { 1, 1, 1, 0 },
-										over={ 1, 0.5, 0, 0 },
-										}}
-										end
+    		                    rowfilemode = ""
+								
+								if rowvalues == "" then
+									rowvalues = ResourceLibrary.PageTitle
+								end
+
+								print("Working dir : ".. FullPath )
+
+								workingdir = FullPath
+							   
+							    createPathlist(FullPath,rowvalues,rowfilemode)
+
+							end
+
+
+						
 
 						end
 
