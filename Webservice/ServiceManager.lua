@@ -3425,7 +3425,7 @@ function Webservice.AddDocumentFromNativeAppDocumentLibrary(Doc_Byte,Doc_Name,fi
     	]]
 
 
-		params={headers = headers,body = v}
+		params={headers = headers,body = v,timeout = 3000}
 
 		print("Send Message Request :"..(v))
 

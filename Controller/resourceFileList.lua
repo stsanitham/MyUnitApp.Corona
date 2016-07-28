@@ -134,7 +134,7 @@ local workingdir=""
 
 		end
 
-		--return size
+		return true
 
     end
 
@@ -168,7 +168,7 @@ local workingdir=""
 					    end
 
 
-				        if fileExt == "png" or fileExt == "jpg" or fileExt == "jpeg" or fileExt == "gif" or fileExt == "bmp" or fileExt == "tif" then
+				        if fileExt == "png" or fileExt == "jpg" or fileExt == "jpeg" or fileExt == "gif" or fileExt == "bmp" or fileExt == "tif" or fileExt == "JPG" or fileExt == "JPEG" or fileExt == "BMP" or fileExt == "GIF" or fileExt == "PNG" or fileExt == "TIF" or fileExt == "TIFF" then
 
 								tempValue="res/assert/image-active.png"
 
@@ -357,7 +357,7 @@ local workingdir=""
 
 																									 --  print("bbb ",size1)
 
-																									   formatSizeUnits(size1)
+																									  -- local flag = formatSizeUnits(size1)
 
 
 
@@ -367,9 +367,11 @@ local workingdir=""
 																										-- 		params = { Document_Name = Document_name, Document_bytearray = document_inbytearray, temp_docfile = written_file , selectedoption = option_selected }
 																										-- 	}
 
-																										print("123")
+																									--	if flag == true then
 
-																									   composer.hideOverlay()
+																									   		composer.hideOverlay()
+
+																									--   	end
 
 
 																					 else
