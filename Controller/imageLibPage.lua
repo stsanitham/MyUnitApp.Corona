@@ -1215,7 +1215,6 @@ end
 
 
 
-
 	local function uploadImageAction( event )
             
             if event.phase == "ended" then
