@@ -125,6 +125,8 @@ local workingdir=""
 							 {content=CommonWords.ok,positive=true},
 						}
 				genericAlert.createNew(ResourceLibrary.DocumentUploadError, ResourceLibrary.DocumentUploadSize ,option)
+
+				return false
 			
 		elseif (event>=1024)  then   
 
@@ -133,6 +135,8 @@ local workingdir=""
 		else      
 
 		end
+
+		--return size
 
     end
 
@@ -227,13 +231,9 @@ local workingdir=""
 									
 											if pathType1 == "directory" then
 
-												workingdir = FullPath
+												
 
-
-										    	    title.text = string.gsub( rowvalues, "//.","")
-												    title.type = "innertype"
-												    back_icon_bg.type = "innertype"
-												    back_icon.type = "innertype"
+						    	    
 											  
 
 
@@ -242,24 +242,48 @@ local workingdir=""
 												end
 
 
-														  for file in lfs.dir(workingdir ) do
+														  for file in lfs.dir(FullPath ) do
+
 
 																	if "." ~= file and ".." ~= file then
 
 																         --  print("FILE 123: " .. file)
 
-																          SubFile = workingdir.."/"..file
+																         local fhd = io.open( FullPath.."/"..file ) 
 
-																          SubFileMode = lfs.attributes(SubFile).mode
+																	         if fhd then
+																			 		  SubFile = FullPath.."/"..file
 
-																         -- print("mode +++++++ : "..lfs.attributes(SubFile).mode)
+																			          SubFileMode = lfs.attributes(SubFile).mode
 
-																          file_array[#file_array+1] = { name = file , filemode = SubFileMode}
+																			         -- print("mode +++++++ : "..lfs.attributes(SubFile).mode)
 
+																			          file_array[#file_array+1] = { name = file , filemode = SubFileMode}
+
+																			else
+
+																			 			--native.showAlert( "File", "Permission Denied" ,{"OK"} )
+
+																			end
+
+
+																        
 																	   	
 																     end
 
 															end
+
+															if #file_array >= 1 then
+
+																
+
+																workingdir = FullPath
+														  		title.text = string.gsub( rowvalues, "//.","")
+															    title.type = "innertype"
+															    back_icon_bg.type = "innertype"
+															    back_icon.type = "innertype"
+
+															 end
 
 											else
 

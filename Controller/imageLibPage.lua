@@ -432,7 +432,7 @@ local function onRowRender_ImageLib( event )
 
     if List_array[row.index].FilePath ~= nil then
 
-    	Lefticon = display.newImageRect(row,"res/assert/twitter_placeholder.png",35,35)
+    	Lefticon = display.newImageRect(row,"res/assert/image_tump.png",35,35)
     	Lefticon.x=30;Lefticon.y=rowHeight/2
     	print( List_array[row.index].ImageFileName )
 
@@ -463,7 +463,7 @@ local function onRowRender_ImageLib( event )
 			    			if ( img_event.isError ) then
 			    				print ( "Network error - download failed" )
 			    			else
-			    				if Lefticon then Lefticon:removeSelf();Lefticon=nil end
+			    				--if Lefticon then Lefticon:removeSelf();Lefticon=nil end
 
 			    				print("response file "..img_event.response.filename)
 			    				Lefticon = display.newImage(row,img_event.response.filename,system.DocumentsDirectory)
@@ -480,7 +480,7 @@ local function onRowRender_ImageLib( event )
 
     		end
     else
-    	Lefticon = display.newImageRect(row,"res/assert/twitter_placeholder.png",35,35)
+    	Lefticon = display.newImageRect(row,"res/assert/image_tump.png",35,35)
     	Lefticon.x=30;Lefticon.y=rowHeight/2
 
     end
@@ -1485,7 +1485,7 @@ local function listPosition_change( event )
 sceneGroup:insert(careerList_scrollview)
 
 listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
-listTouch_bg.alpha=0.01
+listTouch_bg.alpha=0
 listTouch_bg.id = "hide"
 
 listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+65,100,80)
@@ -1562,7 +1562,15 @@ function scene:show( event )
 
 		Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
 
+		local function hide( event )
+						floatingButtonGroup.isVisible=false
+					end
 
+					addImageBg.alpha=0
+
+					transition.to(addEventBtn, {time=200,rotation=0,width = addEventBtn.width + 5} )
+
+					transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
 
 		menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)
