@@ -20,7 +20,7 @@ local W = display.contentWidth;H= display.contentHeight
 
 local Background,BgText
 
-local menuBtn,SubFileMode,SubFile,tmpPath
+local menuBtn,SubFileMode,SubFile,tmpPath,workingdir
 
 local filetype = ""
 
@@ -49,7 +49,8 @@ local changeMenuGroup = display.newGroup();
 
 local RecentTab_Topvalue = 70
 
-local file_attributemode = ""
+local file_attributemode = ""Jul
+
 
 local optionValue = "list" , tabBar , title_bg
 
@@ -354,22 +355,7 @@ local workingdir=""
 
 																									   io.close( fileHandle )
 
-
-																									 --  print("file_inbytearray "..document_inbytearray)
-
-																									 --  print("bbb ",size1)
-
 																									   formatSizeUnits(size1)
-
-
-
-																										-- 	local options = {
-																										-- 		effect = "slideRight",
-																										-- 		time =300,
-																										-- 		params = { Document_Name = Document_name, Document_bytearray = document_inbytearray, temp_docfile = written_file , selectedoption = option_selected }
-																										-- 	}
-
-																										print("123")
 
 																									   composer.hideOverlay()
 
@@ -386,13 +372,12 @@ local workingdir=""
 
 																	end
 
-																			
-																	local option = {
-																					 {content="Add",positive=true},
-																					 {content=CommonWords.cancel,positive=true},
-																				}
+																				local option = {
+																								 {content="Add",positive=true},
+																								 {content=CommonWords.cancel,positive=true},
+																							}
 
-																	genericAlert.createNew(ResourceLibrary.DocumentUpload, ResourceLibrary.DocumentUploadAlert ,option,onComplete)
+																				genericAlert.createNew(ResourceLibrary.DocumentUpload, ResourceLibrary.DocumentUploadAlert ,option,onComplete)
 
 
 																		return 					
@@ -405,7 +390,10 @@ local workingdir=""
 
 													if fileValidation == false then
 
-															local failure = native.showAlert(ResourceLibrary.InvalidFile,ResourceLibrary.InvalidFileError,{CommonWords.ok})
+															local option ={
+																		 {content=CommonWords.ok,positive=true},
+																	}
+															genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
 
 													end
 
@@ -821,7 +809,6 @@ local workingdir=""
 						-- Check to see if path exists
 						if path and lfs.attributes( "/" ) then
 						    pathType = lfs.attributes( "/" ).mode
-						    --print("pathtype     "..pathType)
 						end
 
 						-- Check if path is a directory
@@ -851,7 +838,11 @@ local workingdir=""
 						else
 
 
-							local a1 = native.showAlert("File found", "This file cannot be opened" ,{"ok"})
+							local option = {
+										     {content=CommonWords.ok,positive=true},
+									      }
+							genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
+
 
 															title.text = ResourceLibrary.PageTitle
 														    title.type = "outerfile"

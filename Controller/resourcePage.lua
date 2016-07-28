@@ -26,6 +26,8 @@ openPage = "resourcePage"
 
 local List_array = {}
 
+local ResourceList_scrollview
+
 local BackFlag = false
 
 local doc_Name = ""; Doc_Byte = ""; Doc_TempFile = ""; Doc_SelectedOption = ""
