@@ -31,7 +31,8 @@ local words ={}
 openPage="resourcePage"
 
 local fileextensions = {".png",".jpg",".jpeg",".gif",".bmp",".tif",".tiff",".doc",".docx",".txt",".xls",".xlsx",".ppt",".pptx",".xps",".pps",".wma",".pub",".js",".swf",
-".xml",".html",".htm",".rtf" ,".pdf",".mpg",".au",".aac",".aif",".gsm",".mid",".mp3",".rm",".wav",".mpeg",".avi",".mp4",".wmv",".m4a"}
+".xml",".html",".htm",".rtf" ,".pdf",".mpg",".au",".aac",".aif",".gsm",".mid",".mp3",".rm",".wav",".mpeg",".avi",".mp4",".wmv",".m4a",
+'JPG','JPEG','BMP','GIF','PNG','TIF','TIFF'}
 
 local BackFlag = false
 
@@ -49,10 +50,11 @@ local changeMenuGroup = display.newGroup();
 
 local RecentTab_Topvalue = 70
 
-local file_attributemode = ""Jul
+local file_attributemode = ""
 
+local optionValue = "list" 
 
-local optionValue = "list" , tabBar , title_bg
+local tabBar , title_bg
 
 local filenamevalue = ""
 
@@ -70,44 +72,36 @@ local workingdir=""
 
 
 
-			local function onTimer ( event )
+	local function onTimer ( event )
 
-				BackFlag = false
+		BackFlag = false
+
+	end
+
+
+
+	local function onKeyEvent( event )
+
+		local phase = event.phase
+		local keyName = event.keyName
+
+			if phase == "up" then
+
+			if keyName=="back"  then
+
+				composer.hideOverlay( "slideRight", 300 )
+				
+				return true
+				
+			end
 
 			end
 
+		return false
 
-			local function onKeyEvent( event )
+	end
 
-				local phase = event.phase
-				local keyName = event.keyName
 
-				if phase == "up" then
-
-					if keyName=="back" then
-
-						if BackFlag == false then
-
-							Utils.SnackBar(ChatPage.PressAgain)
-
-							BackFlag = true
-
-							timer.performWithDelay( 3000, onTimer )
-
-							return true
-
-						elseif BackFlag == true then
-
-							os.exit() 
-
-						end
-						
-					end
-
-				end
-
-				return false
-			end
 
 
 	local function formatSizeUnits(event)
@@ -138,6 +132,8 @@ local workingdir=""
     end
 
 
+
+
 	local function onRowRender_DocLibList( event )
 
 			 -- Get reference to the row group
@@ -150,7 +146,7 @@ local workingdir=""
 
 			    if file_array[row.index].filemode == "directory" and file_array[row.index].filemode ~= "file"  then
 
-					    local rowIcon = display.newImageRect(row,"res/assert/folder_with_file.png",25,25 )
+					    local rowIcon = display.newImageRect(row,"res/assert/folderimage.png",25,25 )
 					    rowIcon.x = 20
 					    rowIcon.anchorX = 0 
 					    rowIcon.y = rowHeight * 0.5 - 5
@@ -186,10 +182,8 @@ local workingdir=""
 						elseif fileExt == "mpeg" or fileExt == "avi" then
 
 								tempValue="res/assert/video.png"
-
 						else
-
-								tempValue="res/assert/FileIcon.png"
+								tempValue="res/assert/invalid_file.png"
 						end
 
 
@@ -197,9 +191,7 @@ local workingdir=""
 					    rowIcon.x = 20
 					    rowIcon.anchorX = 0
 					    rowIcon.y = rowHeight * 0.5 - 5
-
-
-				end
+			    end
 
 
 			    rowTitle = display.newText(row, file_array[row.index].name, 0, 0,280,38, nil, 14 )
@@ -208,12 +200,12 @@ local workingdir=""
 				rowTitle.x = 60
 				rowTitle.y = rowHeight * 0.5+10
 
-
 				rowvalues = file_array[row.index].name
 
-				--print("NAME   :    "..file_array[row.index].name)
-
 	end
+
+
+
 
 
 	local function createPathlist(FullPath,rowvalues,rowfilemode)
@@ -225,166 +217,155 @@ local workingdir=""
 								    pathType1= lfs.attributes( FullPath ).mode
 
 								end
-									
-											if pathType1 == "directory" then
-
-												workingdir = FullPath
 
 
-										    	    title.text = string.gsub( rowvalues, "//.","")
-												    title.type = "innertype"
-												    back_icon_bg.type = "innertype"
-												    back_icon.type = "innertype"
-											  
+						
+								if pathType1 == "directory" then
+
+									    workingdir = FullPath
+
+							    	    title.text = string.gsub( rowvalues, "//.","")
+									    title.type = "innertype"
+									    back_icon_bg.type = "innertype"
+									    back_icon.type = "innertype"
+								  
+
+										for j=#file_array, 1, -1 do 
+											file_array[#file_array] = nil
+										end
 
 
-												for j=#file_array, 1, -1 do 
-													file_array[#file_array] = nil
-												end
+									   for file in lfs.dir(workingdir ) do
+
+											if "." ~= file and ".." ~= file then
+
+									          SubFile = workingdir.."/"..file
+
+									          SubFileMode = lfs.attributes(SubFile).mode
+
+									          file_array[#file_array+1] = { name = file , filemode = SubFileMode}
+											   	
+										     end
+
+										end
+
+								else
 
 
-														  for file in lfs.dir(workingdir ) do
+									    local fileValidation = false
 
-																	if "." ~= file and ".." ~= file then
+									        for i=1, #fileextensions do
 
-																         --  print("FILE 123: " .. file)
+									    		 print(tostring(rowvalues).." and "..tostring(fileextensions[i]))
 
-																          SubFile = workingdir.."/"..file
+										            if string.find(tostring(rowvalues), tostring(fileextensions[i])) ~= nil then
 
-																          SubFileMode = lfs.attributes(SubFile).mode
+									            			fileExtForName = tostring(fileextensions[i])
 
-																         -- print("mode +++++++ : "..lfs.attributes(SubFile).mode)
+									            			fileValidation = true
 
-																          file_array[#file_array+1] = { name = file , filemode = SubFileMode}
-
-																	   	
-																     end
-
-															end
-
-											else
+									            			Document_name = "Resource"..os.date("%Y%m%d%H%M%S")..fileExtForName
 
 
-												    local fileValidation = false
-
-												        for i=1, #fileextensions do
-
-												    		 print(tostring(rowvalues).." and "..tostring(fileextensions[i]))
-
-													            if string.find(tostring(rowvalues), tostring(fileextensions[i])) ~= nil then
-
-													            			fileExtForName = tostring(fileextensions[i])
-
-													            			fileValidation = true
-
-													            			Document_name = "Resource"..os.date("%Y%m%d%H%M%S")..fileExtForName
+														    tmpPath = system.pathForFile(Document_name,system.DocumentsDirectory) -- Destination path to the temporary image
 
 
-																		    tmpPath = system.pathForFile(Document_name,system.DocumentsDirectory) -- Destination path to the temporary image
+																	  
 
 
-																				  
+								            	        local function onComplete( action_event )
+
+															   local i = action_event
+
+															  	  if i == 1 then
+
+														 	        option_selected = "Add"
+
+																	workingdir = FullPath
 
 
-													            	           local function onComplete( action_event )
-
-																				   local i = action_event
-
-																					    if i == 1 then
-
-																					 	        option_selected = "Add"
-
-																								print("cccccc")
-
-																								 workingdir = FullPath
-
-
-																								--------------------------- Read ----------------------------
-																								local file, reason = io.open( workingdir, "r" )                               -- Open the image in read mode
-																								local contents
-																								if file then
-																								    contents = file:read( "*a" )                                        -- Read contents
-																								    io.close( file )                                                    -- Close the file (Important!)
-																								else
-																								    print("Invalid path")
-																								    return
-																								end
-
-																								--------------------------- Write ----------------------------
-
-																								local file = io.open( tmpPath, "w" )                                    -- Open the destination path in write mode
-																								if file then
-																								    file:write(contents)   
-																								    written_file = file:write(contents)                                            -- Writes the contents to a file
-																								    io.close(file)                                                      -- Close the file (Important!)
-																								else
-																								    print("Error")
-																								    return
-																								end
-
-
-																								       local size1 = lfs.attributes (tmpPath, "size")
-
-																									   local fileHandle = io.open(tmpPath, "rb")
-
-																									   document_inbytearray = mime.b64( fileHandle:read( "*a" ) )
-
-																									   io.close( fileHandle )
-
-																									   formatSizeUnits(size1)
-
-																									   composer.hideOverlay()
-
-
-																					 else
-
-																					 	    option_selected = "Cancel"
-
-																					 	    local tmpPath = system.pathForFile(Document_name,system.DocumentsDirectory)
-
-																							os.remove( tmpPath )
-
-																					 end
-
+																	--------------------------- Read ----------------------------
+																	local file, reason = io.open( workingdir, "r" )                               -- Open the image in read mode
+																	local contents
+																	if file then
+																	    contents = file:read( "*a" )                                        -- Read contents
+																	    io.close( file )                                                    -- Close the file (Important!)
+																	else
+																	    print("Invalid path")
+																	    return
 																	end
 
-																				local option = {
-																								 {content="Add",positive=true},
-																								 {content=CommonWords.cancel,positive=true},
-																							}
+																	--------------------------- Write ----------------------------
 
-																				genericAlert.createNew(ResourceLibrary.DocumentUpload, ResourceLibrary.DocumentUploadAlert ,option,onComplete)
-
-
-																		return 					
-
-																end
-														
-													    end
+																	local file = io.open( tmpPath, "w" )                                    -- Open the destination path in write mode
+																	if file then
+																	    file:write(contents)   
+																	    written_file = file:write(contents)                                            -- Writes the contents to a file
+																	    io.close(file)                                                      -- Close the file (Important!)
+																	else
+																	    print("Error")
+																	    return
+																	end
 
 
+															       local size1 = lfs.attributes (tmpPath, "size")
 
-													if fileValidation == false then
+																   local fileHandle = io.open(tmpPath, "rb")
 
-															local option ={
-																		 {content=CommonWords.ok,positive=true},
+																   document_inbytearray = mime.b64( fileHandle:read( "*a" ) )
+
+																   io.close( fileHandle )
+
+																   formatSizeUnits(size1)
+
+																   composer.hideOverlay()
+
+
+														     else
+
+														 	    option_selected = "Cancel"
+
+														 	    local tmpPath = system.pathForFile(Document_name,system.DocumentsDirectory)
+
+																os.remove( tmpPath )
+
+														     end
+
+														end
+
+
+														            local option = 
+														            {
+																		 {content="Add",positive=true},
+																		 {content=CommonWords.cancel,positive=true},
 																	}
-															genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
+
+														genericAlert.createNew(ResourceLibrary.DocumentUpload, ResourceLibrary.DocumentUploadAlert ,option,onComplete)
+
+
+															return 					
 
 													end
+											
+										    end
 
-															
-													 --    title.text = string.gsub( file_array[row.index].name, "//", "" ) 
-													 --    title.type = "innertype"
-													 --    back_icon_bg.type = "innertype"
-													 --    back_icon.type = "innertype"
 
-											end
+
+										if fileValidation == false then
+
+												local option ={
+															 {content=CommonWords.ok,positive=true},
+														}
+												genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
+
+										end
+
+						    end
 
 
 
 								if #file_array == 0  then
-									NoEvent = display.newText( scene.view, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
+									NoEvent = display.newText( scene.view, "This folder is empty", 0,0,0,0,native.systemFontBold,16)
 									NoEvent.x=W/2;NoEvent.y=H/2
 									NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 							    end
@@ -403,6 +384,8 @@ local workingdir=""
 							    end
 
 	end
+
+
 
 
 			local function onRowTouch_DocLibList( event )
@@ -434,176 +417,6 @@ local workingdir=""
 
 
 
-
-		local function getPreviousFileList()
-
-					for j=#file_array, 1, -1 do 
-						file_array[#file_array] = nil
-					end
-
-					local path = SubFile
-					local pathType = ""
-
-
-					if path and lfs.attributes( SubFile) then
-					    pathType = lfs.attributes( SubFile ).mode
-					    print("pathtype previous    "..pathType)
-					end
-
-
-						         if pathType == "directory" then
-
-						 	         --  parts = split_path(FullPath)
-						
-							         -- print("SubFile &&&&&&&&&&&&&&&&&&&& @@@@@@@@@@@@@@@@@ "..parts)
-								    local test = FullPath:split("/")
-								    print("r> "..tostring(test[#test]))
-
-
-								    local filesplitstring 
-
-
-
-								    function paths.split(FullPath)
-									   local res = {}
-									   FullPath = FullPath:match('/$') and FullPath or (FullPath .. '/')
-									   FullPath = FullPath:gsub('/+', '/')
-									   local res = {}
-									   for sub in FullPath:gmatch('([^/]*/)') do
-									      table.insert(res, sub)
-									   end
-									   local lst = #res
-									   if res[lst] ~= './' and res[lst] ~= '../' and res[lst] ~= '/' then
-									      res[lst] = res[lst]:match('[^/]+')
-									   end
-									   return res
-									end
-
-                                     
-
-                                    rsult1 = paths.split(FullPath)
-
-									res123 = json.encode(rsult1)
-
-
-											    if test ~= nil then
-
-																    filesplitstring = string.gsub(FullPath,"/"..tostring(test[#test]),"")
-
-																    print(filesplitstring)
-
-
-																    for file in lfs.dir( filesplitstring ) do
-
-																			if "." ~= file and ".." ~= file then
-
-																		         print("FILE: " .. file)
-
-																		         fileAtr = lfs.attributes( file )
-
-																	         	 if fileAtr ~= nil then 
-
-																			   		 	file_attributemode = fileAtr.mode
-
-
-																		   		 end
-
-																		         file_array[#file_array+1] = { name = file , filemode = file_attributemode }
-
-																		    end
-																	end
-
-
-
-												else
-
-																	--getFileList()
-
-																	for j=#file_array, 1, -1 do 
-																		file_array[#file_array] = nil
-																	end
-
-
-																	workingdir = "/"
-
-																	local path = workingdir
-																	local pathType = ""
-
-
-
-																	-- Check to see if path exists
-																	if path and lfs.attributes( "/" ) then
-																	    pathType = lfs.attributes( "/" ).mode
-																	    --print("pathtype     "..pathType)
-																	end
-
-
-															 		for file in lfs.dir( "/" ) do
-
-																			if "." ~= file and ".." ~= file then
-
-																		        -- print("FILE: " .. file)
-
-																		         fileAtr = lfs.attributes( file )
-
-																	         	 if fileAtr ~= nil then 
-
-																			   		 	file_attributemode = fileAtr.mode
-
-																			   		     --print("@@@@@ "..path,file,file_attributemode) 
-
-																		   		 end
-
-																		         file_array[#file_array+1] = { name = file , filemode = file_attributemode }
-
-																		    end
-																	end
-
-
-												end
-
-
-
-																	title.text = string.gsub( filesplitstring , "/", "" ) 
-
-																	print("title.text : "..title.text)
-																    title.type = "innertype"
-																    back_icon_bg.type = "innertype"
-																    back_icon.type = "innertype"
-
-
-
-				  end         
-
-
-
-								if #file_array == 0  then
-									NoEvent = display.newText( scene.view, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
-									NoEvent.x=W/2;NoEvent.y=H/2
-									NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-							    end
-
-
-							    Documents_list:deleteAllRows()
-
-
-							    for i = 1, #file_array do
-
-							       Documents_list:insertRow{ rowHeight = 45,rowColor = 
-							       {
-							    	default = { 1, 1, 1, 0 },
-							    	over={ 1, 0.5, 0, 0 },
-							    	}}
-							    end
-							    
-
-
-			end
-
-
-
-
-
 		local function closeDetails( event )
 
 			if event.phase == "began" then
@@ -612,58 +425,62 @@ local workingdir=""
 
 			elseif event.phase == "ended" then
 
-
 						display.getCurrentStage():setFocus( nil )
-
 
 						if event.target.id =="backpress" and workingdir == "/" then
 
-							--composer.gotoScene("Controller.resourcePage","slideRight",200)
+							    if NoEvent.isVisible == true then
+
+							    	NoEvent.isVisible = false
+
+							    end
 
 								composer.hideOverlay("slideRight",300)
 
-						else
+						else   
 
-							--print( workingdir )
 
-							local tempPath = string.reverse( workingdir )
-							local FullPath,rowvalues
+							    if NoEvent.isVisible == true then
 
-							if string.find( tempPath,"/" ) ~= nil then
+							    	NoEvent.isVisible = false
 
-									local placeholder = string.find( tempPath,"/" )
+							    end
 
-									print( placeholder )
 
-									tempPath = workingdir:sub( 1, workingdir:len()-placeholder )
-									 FullPath = tempPath
-									 tempPath = string.reverse( tempPath )
+								local tempPath = string.reverse( workingdir )
+								local FullPath,rowvalues
 
-									if string.find( tempPath,"/" ) ~= nil then
+								if string.find( tempPath,"/" ) ~= nil then
 
 										local placeholder = string.find( tempPath,"/" )
-												tempPath = string.reverse( tempPath )
-											 rowvalues = tempPath:sub( tempPath:len()-placeholder+2, tempPath:len() )
 
+										print( "111 : "..placeholder )
+
+										 tempPath = workingdir:sub( 1, workingdir:len()-placeholder )
+										 FullPath = tempPath
+										 tempPath = string.reverse( tempPath )
+
+										if string.find( tempPath,"/" ) ~= nil then
+
+											local placeholder = string.find( tempPath,"/" )
+													tempPath = string.reverse( tempPath )
+												 rowvalues = tempPath:sub( tempPath:len()-placeholder+2, tempPath:len() )
+
+										end
+	    		                    
+
+
+	    		                    rowfilemode = ""
+									
+									if rowvalues == "" then
+										rowvalues = ResourceLibrary.PageTitle
 									end
-    		                    
 
+									workingdir = FullPath
+								   
+								    createPathlist(FullPath,rowvalues,rowfilemode)
 
-    		                    rowfilemode = ""
-								
-								if rowvalues == "" then
-									rowvalues = ResourceLibrary.PageTitle
 								end
-
-								workingdir = FullPath
-							   
-							    createPathlist(FullPath,rowvalues,rowfilemode)
-
-							end
-
-
-						
-
 						end
 
 			    end
@@ -678,75 +495,75 @@ local workingdir=""
 
     function scene:create( event )
 
-				local sceneGroup = self.view
+			local sceneGroup = self.view
 
-				Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
-				Background.x=W/2;Background.y=H/2
+			Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+			Background.x=W/2;Background.y=H/2
 
-				tabBar = display.newRect(sceneGroup,W/2,0,W,40)
-				tabBar.y=tabBar.contentHeight/2
-				tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+			tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+			tabBar.y=tabBar.contentHeight/2
+			tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-				menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
-				menuBtn.anchorX=0
-				menuBtn.x=10;menuBtn.y=20;
+			menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
+			menuBtn.anchorX=0
+			menuBtn.x=10;menuBtn.y=20;
 
-				BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-				BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-				BgText.anchorX=0
+			BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
+			BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
+			BgText.anchorX=0
 
-				title_bg = display.newRect(sceneGroup,0,0,W,30)
-				title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-				title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+			title_bg = display.newRect(sceneGroup,0,0,W,30)
+			title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+			title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-				back_icon_bg = display.newRect(sceneGroup,0,0,20,20)
-				back_icon_bg.x= 5
-				back_icon_bg.anchorX=0
-				back_icon_bg.id="backpress"
-				back_icon_bg.type = "outerfile"
-				back_icon_bg.anchorY=0
-				back_icon_bg.alpha=0.01
-				back_icon_bg:setFillColor(0)
-				back_icon_bg.y= title_bg.y-8
+			back_icon_bg = display.newRect(sceneGroup,0,0,20,20)
+			back_icon_bg.x= 5
+			back_icon_bg.anchorX=0
+			back_icon_bg.id="backpress"
+			back_icon_bg.type = "outerfile"
+			back_icon_bg.anchorY=0
+			back_icon_bg.alpha=0.01
+			back_icon_bg:setFillColor(0)
+			back_icon_bg.y= title_bg.y-8
 
-				back_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",20/2,30/2)
-				back_icon.x= back_icon_bg.x + 5
-				back_icon.anchorX=0
-				back_icon.id="backpress"
-				back_icon.type = "outerfile"
-				back_icon.anchorY=0
-				back_icon:setFillColor(0)
-				back_icon.y= title_bg.y - 8
+			back_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",20/2,30/2)
+			back_icon.x= back_icon_bg.x + 5
+			back_icon.anchorX=0
+			back_icon.id="backpress"
+			back_icon.type = "outerfile"
+			back_icon.anchorY=0
+			back_icon:setFillColor(0)
+			back_icon.y= title_bg.y - 8
 
-				title = display.newText(sceneGroup,ResourceLibrary.PageTitle,0,0,native.systemFont,18)
-				title.anchorX = 0
-				title.id = "backpress"
-				title.type = "outerfile"
-				title.x = back_icon.x+back_icon.contentWidth+5;title.y = title_bg.y
-				title:setFillColor(0)
+			title = display.newText(sceneGroup,ResourceLibrary.PageTitle,0,0,native.systemFont,18)
+			title.anchorX = 0
+			title.id = "backpress"
+			title.type = "outerfile"
+			title.x = back_icon.x+back_icon.contentWidth+5;title.y = title_bg.y
+			title:setFillColor(0)
 
-				title:addEventListener( "touch", closeDetails )
-				back_icon_bg:addEventListener( "touch", closeDetails )
-			 	back_icon:addEventListener( "touch", closeDetails )
+			title:addEventListener( "touch", closeDetails )
+			back_icon_bg:addEventListener( "touch", closeDetails )
+		 	back_icon:addEventListener( "touch", closeDetails )
+
+			ResourceList_scrollview = widget.newScrollView
+			{
+				top = RecentTab_Topvalue,
+				left = 0,
+				width = W,
+				height =H-RecentTab_Topvalue,
+				hideBackground = true,
+				isBounceEnabled=false,
+				bottomPadding = 10,
+			}
 
 
-				ResourceList_scrollview = widget.newScrollView
-				{
-					top = RecentTab_Topvalue,
-					left = 0,
-					width = W,
-					height =H-RecentTab_Topvalue,
-					hideBackground = true,
-					isBounceEnabled=false,
-					bottomPadding = 10,
-				}
+	    sceneGroup:insert(ResourceList_scrollview)
 
-
-		sceneGroup:insert(ResourceList_scrollview)
-
-		MainGroup:insert(sceneGroup)
-
+	    MainGroup:insert(sceneGroup)
 	end
+
+
 
 
 
@@ -757,85 +574,66 @@ local workingdir=""
 		
 		if phase == "will" then
 
-		
-
 
 		elseif phase == "did" then
 
+			        ga.enterScene("Resource Library")
 
-			ga.enterScene("Resource Library")
+		   function getFileList()
 
-
-		        function getFileList()
-
-
-							for j=#file_array, 1, -1 do 
-								file_array[#file_array] = nil
-							end
-
-
-						workingdir = "/"
-
-						local path = workingdir
-						local pathType = ""
-
-
-						firstrootpath = workingdir
-
-						-- Check to see if path exists
-						if path and lfs.attributes( "/" ) then
-						    pathType = lfs.attributes( "/" ).mode
-						end
-
-						-- Check if path is a directory
-						if pathType == "directory" then
-
-								  for file in lfs.dir( "/" ) do
-
-											if "." ~= file and ".." ~= file then
-
-										        -- print("FILE: " .. file)
-
-										         fileAtr = lfs.attributes( file )
-
-									         	 if fileAtr ~= nil then 
-
-											   		 	file_attributemode = fileAtr.mode
-
-											   		     --print("@@@@@ "..path,file,file_attributemode) 
-
-										   		 end
-
-										         file_array[#file_array+1] = { name = file , filemode = file_attributemode }
-
-										    end
-									end
-
-						else
-
-
-							local option = {
-										     {content=CommonWords.ok,positive=true},
-									      }
-							genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
-
-
-															title.text = ResourceLibrary.PageTitle
-														    title.type = "outerfile"
-														    back_icon_bg.type = "outerfile"
-														    back_icon.type = "outerfile"
-						end
-
-
+					for j=#file_array, 1, -1 do 
+						file_array[#file_array] = nil
 					end
 
+					workingdir = "/"
 
+					local path = workingdir
+					local pathType = ""
+
+					firstrootpath = workingdir
+
+					-- Check to see if path exists
+					if path and lfs.attributes( "/" ) then
+					    pathType = lfs.attributes( "/" ).mode
+					end
+
+					-- Check if path is a directory
+					if pathType == "directory" then
+
+							    for file in lfs.dir( "/" ) do
+
+									if "." ~= file and ".." ~= file then
+
+								         fileAtr = lfs.attributes( file )
+
+							         	 if fileAtr ~= nil then 
+
+									   		 	file_attributemode = fileAtr.mode
+								   		 end
+
+								         file_array[#file_array+1] = { name = file , filemode = file_attributemode }
+
+								     end
+								end
+
+					else
+
+
+						local option = {
+									     {content=CommonWords.ok,positive=true},
+								      }
+						genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
+
+								title.text = ResourceLibrary.PageTitle
+							    title.type = "outerfile"
+							    back_icon_bg.type = "outerfile"
+							    back_icon.type = "outerfile"
+					end
+
+			end
 
 
 		    getFileList()
-
-		    
-
 
 
 			Documents_list = widget.newTableView
@@ -862,19 +660,15 @@ local workingdir=""
 
 
 		    for i = 1, #file_array do
-		       -- Insert a row into the tableView
-		       Documents_list:insertRow{ rowHeight = 45,rowColor = 
-		       {
+		        Documents_list:insertRow{ rowHeight = 45,rowColor = 
+		        {
 		    	default = { 1, 1, 1, 0 },
 		    	over={ 1, 0.5, 0, 0 },
 		    	}}
 		    end
 
-
-
 			menuBtn:addEventListener("touch",menuTouch)
 			BgText:addEventListener("touch",menuTouch)
-
 			Runtime:addEventListener( "key", onKeyEvent )
 
 		end	
@@ -885,6 +679,8 @@ local workingdir=""
 
 
 
+
+
 	function scene:hide( event )
 
 		local sceneGroup = self.view
@@ -892,26 +688,26 @@ local workingdir=""
 
 		if event.phase == "will" then
 
-				menuBtn:removeEventListener("touch",menuTouch)
-				BgText:removeEventListener("touch",menuTouch)
-				Runtime:removeEventListener( "key", onKeyEvent )
+					menuBtn:removeEventListener("touch",menuTouch)
+					BgText:removeEventListener("touch",menuTouch)
+					Runtime:removeEventListener( "key", onKeyEvent )
 
 		elseif phase == "did" then
 
-				print("@@@@@@@@@@")
+					if option_selected == "Add" then
 
-				if option_selected == "Add" then
+					    event.parent:resumeDocumentCallBack(Document_name,document_inbytearray,option_selected)
 
-				    event.parent:resumeDocumentCallBack(Document_name,document_inbytearray,option_selected)
+				    else
 
-			    else
-
-		     	end
+			     	end
 
 
 		end	
 
 	end
+
+
 
 
 

@@ -28,6 +28,8 @@ local imageArray = {}
 local uploadArray = {}
 local ImageUploadGroup = {}
 
+local careerList_scrollview
+
 local addEventBtn,UserId
 
 local ImageLibListArray = {}
@@ -1345,7 +1347,7 @@ local function listPosition_change( event )
 
 						else    
 
-							careerList_scrollview:toFront()
+							if careerList_scrollview ~= nil then careerList_scrollview:toFront() end
 
 							addEventBtn:toFront()
 							floatingButtonGroup:toFront( )
