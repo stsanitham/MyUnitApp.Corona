@@ -9,6 +9,8 @@ local scene = composer.newScene()
 local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 local lfs = require("lfs")
+local mime = require("mime")
+local json = require("json")
 require( "Controller.genericAlert" )
 
 
@@ -20,9 +22,13 @@ local Background,BgText
 
 local menuBtn
 
-openPage="resourcePage"
+openPage = "resourcePage"
+
+local List_array = {}
 
 local BackFlag = false
+
+local doc_Name = ""; Doc_Byte = ""; Doc_TempFile = ""; Doc_SelectedOption = ""
 
 local ResourceListArray = {}
 
@@ -112,6 +118,12 @@ local function showShare(fileNameString)
 		        end
 
 		    end
+
+
+
+
+
+
 
 
 		    local function listTouchAction( event)
@@ -256,7 +268,7 @@ local function uploadDocumentAction( event )
 									}
 
 									-- By some method (a pause button, for example), show the overlay
-								composer.gotoScene( "Controller.resourceFileList", options )
+								composer.showOverlay( "Controller.resourceFileList", options )
 
 				     end
 
@@ -265,6 +277,10 @@ local function uploadDocumentAction( event )
 		return true
 		
 end
+
+
+
+
 
 
 
@@ -334,10 +350,26 @@ local function onRowRender_DocLib( event )
     Lefticon.x=30;Lefticon.y=rowHeight/2
 
 
-    local text = display.newText(row,List_array[row.index].DocumentFileName,0,0,native.systemFont,16)
-    text.x=Lefticon.x+Lefticon.contentWidth/2+10;text.y=rowHeight/2
-    text.anchorX=0
-    text:setFillColor(Utils.convertHexToRGB(color.Black))
+    local textname = display.newText(row,List_array[row.index].DocumentFileName,0,0,native.systemFont,16)
+    textname.x=Lefticon.x+Lefticon.contentWidth/2+10;textname.y=rowHeight/2
+    textname.anchorX=0
+    textname:setFillColor(Utils.convertHexToRGB(color.Black))
+
+
+	    if isIos then
+
+	    	    if textname.text:len() > 20 then
+						textname.text = textname.text:sub(1,20).."..."
+			   	end
+
+	    elseif isAndroid then
+
+			    if textname.text:len() > 15 then
+						textname.text = textname.text:sub(1,15).."..."
+			   	end
+
+	    end
+
 
 
     local seprate_bg = display.newRect(row,0,0,120,rowHeight)
@@ -489,6 +521,95 @@ local function changeListmenuTouch(event)
 	return true
 
 end
+
+
+
+
+
+		function get_allDocument(response)
+
+			--local nati24 = native.showAlert("MUB",json.encode(response),{"ok"})
+			
+				for j=#List_array, 1, -1 do 
+					display.remove(List_array[#List_array])
+					List_array[#List_array] = nil
+				end
+
+
+			List_array = response
+
+			Document_Lib_list:deleteAllRows()
+
+			if #List_array == 0  then
+				NoEvent = display.newText( scene.view, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
+				NoEvent.x=W/2;NoEvent.y=H/2
+				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+			end
+
+
+			for i = 1, #List_array do
+		    -- Insert a row into the tableView
+		    Document_Lib_list:insertRow{ rowHeight = 40,rowColor = 
+		    {
+		    	default = { 1, 1, 1, 0 },
+		    	over={ 1, 0.5, 0, 0 },
+
+		    	}}
+		    end
+		end
+
+
+
+
+function get_documentupload(response)
+
+   if response == "Success" then
+
+
+   	       local function onResponseComplete( event )
+   	       	
+					local i = event
+
+					if i == 1 then
+
+						 Webservice.GET_ALL_MYUNITAPP_DOCUMENT(get_allDocument)
+
+					end
+		    end
+
+
+
+   			local option ={
+						  {content=CommonWords.ok,positive=true},
+					      }
+
+				genericAlert.createNew(ResourceLibrary.DocumentUpload,ResourceLibrary.DocumentUploaded,option,onResponseComplete)
+
+	   			--local a = native.showAlert(ImageLibrary.UploadImage,ImageLibrary.ImageUploaded,{CommonWords.ok})
+
+                -- get_Allimage(response)
+
+    end
+
+end
+
+
+
+
+function scene:resumeDocumentCallBack(doc_Name,Doc_bytearray,button_idvalue)
+
+			composer.removeHidden()
+
+			if button_idvalue == "Add" then
+
+		  		  Webservice.AddDocumentFromNativeAppImageLibrary(Doc_bytearray,doc_Name,"Docs",get_documentupload)
+
+		    end
+
+
+end
+
+
 
 
 
@@ -722,6 +843,8 @@ local function ResourceGrid_list( gridlist)
 
 	end
 
+	addEventBtn:toFront( )
+
 
 end
 
@@ -840,6 +963,9 @@ local function listPosition_change( event )
 			end
 
 
+
+
+
 			function scene:create( event )
 
 				local sceneGroup = self.view
@@ -947,6 +1073,10 @@ list_Bylist_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/
 
 end
 
+
+
+
+
 function scene:show( event )
 
 	local sceneGroup = self.view
@@ -961,44 +1091,28 @@ function scene:show( event )
 
 		ga.enterScene("Resource Library")
 
-		function get_allDocument(response)
 
-			List_array=response
 
-			Document_Lib_list = widget.newTableView
-			{
-				left = -10,
-				top = 75,
-				height = H-75,
-				width = W+10,
-				onRowRender = onRowRender_DocLib,
-				onRowTouch = onRowTouch_DocLib,
-				hideBackground = true,
-				isBounceEnabled = false,
-			--noLines = true,
-		}
+				Document_Lib_list = widget.newTableView
+		
+				{
+						left = -10,
+						top = 75,
+						height = H-75,
+						width = W+10,
+						onRowRender = onRowRender_DocLib,
+						onRowTouch = onRowTouch_DocLib,
+						hideBackground = true,
+						isBounceEnabled = false,
+					--noLines = true,
+				}
 
-		sceneGroup:insert(Document_Lib_list)
+				sceneGroup:insert(Document_Lib_list)
 
-		if #List_array == 0  then
-			NoEvent = display.newText( sceneGroup, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
-			NoEvent.x=W/2;NoEvent.y=H/2
-			NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-		end
+			
+				Webservice.GET_ALL_MYUNITAPP_DOCUMENT(get_allDocument)
 
-		for i = 1, #List_array do
-		    -- Insert a row into the tableView
-		    Document_Lib_list:insertRow{ rowHeight = 45,rowColor = 
-		    {
-		    	default = { 1, 1, 1, 0 },
-		    	over={ 1, 0.5, 0, 0 },
 
-		    	}}
-		    end
-
-		end
-
-		List_array = Webservice.GET_ALL_MYUNITAPP_DOCUMENT(get_allDocument)
 
 		menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)

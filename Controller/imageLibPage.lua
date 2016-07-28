@@ -729,6 +729,8 @@ end
 
 
 
+
+
 local function Grid_list( gridlist)
 
 	local rect_bg

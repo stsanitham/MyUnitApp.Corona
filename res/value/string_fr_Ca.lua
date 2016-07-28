@@ -269,6 +269,14 @@ ResourceLibrary.PageTitle = "Ressource"
 ResourceLibrary.Download_alert="Enregistré dans la mémoire du terminal"
 ResourceLibrary.NoDocument="Aucun document se trouvent à voir"
 ResourceLibrary.SaveOptions_alert = "Etes-vous sûr que vous voulez télécharger gratuitement ?"
+ResourceLibrary.DocumentUpload = "document de chargement"
+ResourceLibrary.DocumentUploadAlert = "Etes-vous sûr que vous voulez télécharger ce document?"
+ResourceLibrary.InvalidFile = "Fichier non valide"
+ResourceLibrary.InvalidFileError = "Vous ne pouvez pas ouvrir ce fichier"
+ResourceLibrary.DocumentUploadError = "Erreur dans le document Télécharger"
+ResourceLibrary.DocumentUploadSize = "Taille du document ne peut pas être plus de 10 MB"
+ResourceLibrary.DocumentUploaded =  "Document téléchargé avec succès!"
+
 
 ImageLibrary = {}
 

@@ -268,6 +268,13 @@ ResourceLibrary.PageTitle = "Biblioteca de recursos"
 ResourceLibrary.Download_alert="Guardado en Memoria del dispositivo"
 ResourceLibrary.NoDocument="No hay documentos se encuentran para ver"
 ResourceLibrary.SaveOptions_alert ="¿Seguro que deseas descargar?"
+ResourceLibrary.DocumentUpload = "Cargar documento"
+ResourceLibrary.DocumentUploadAlert = "¿Está seguro de que desea cargar este documento?"
+ResourceLibrary.InvalidFile = "Archivo inválido"
+ResourceLibrary.InvalidFileError = "No se puede abrir este archivo"
+ResourceLibrary.DocumentUploadError = "Error en el Documento Subir"
+ResourceLibrary.DocumentUploadSize = "Tamaño del documento no puede contener más de 10 MB"
+ResourceLibrary.DocumentUploaded =  "Documento cargado correctamente!"
 
 
 ImageLibrary = {}
