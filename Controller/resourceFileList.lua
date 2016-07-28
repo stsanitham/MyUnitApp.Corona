@@ -60,13 +60,11 @@ local Document_name,document_inbytearray,option_selected="","",""
 
 
 local workingdir=""
+
 --------------------------------------------------
 
 
 -----------------Function-------------------------
-
-
-
 
 
 
