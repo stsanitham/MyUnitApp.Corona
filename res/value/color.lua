@@ -1,4 +1,8 @@
+
 color = {}
+
+local Applicationconfig = require("Utils."..AppMode..".color")
+
 
 color.Background = "#40666666"
 color.orange = "#FF9912"
@@ -14,7 +18,6 @@ color.subHeader="#000000"
 color.nAptHeader="#465736"
 color.White="#ffffff"
 color.checkBoxColor = "#181818"
-color.tabBarColor = "#c1185b"
 color.google_plus = "#DD4239"
 color.darkGreen = "#006600"
 color.Lytred = "#ff6666"

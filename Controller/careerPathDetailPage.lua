@@ -253,7 +253,7 @@ local function phoneCallFunction( event )
 					ContactId = row.ContactId
 
 				end
-				print( "@@@@@@@@@@@ ; "..event.target.value )
+
 				DetailValues.Contact_Id=event.target.value
 				DetailValues.Message_To=event.target.value
 				DetailValues.Message_From=ContactId

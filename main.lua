@@ -3,6 +3,11 @@
         --------------------------------------------------------
 
         display.setStatusBar(display.HiddenStatusBar)
+
+
+      
+
+
         local composer = require "composer"
         local newPanel = require "Utils.newPanel"
         local widget = require( "widget" )
@@ -16,8 +21,9 @@
         local isSendNow
         widget.setTheme( "widget_theme_ios" )
 
+
         --local OneSignal = require("plugin.OneSignal")
-        local resumeCallback = false
+       
 
         GCMValue = "0"
 
@@ -48,11 +54,15 @@
 
         checkStr = "test 1"
 
+         local resumeCallback = false
+
 
         AppName = "CommonApp"
 
 
         Director_Name = ""
+
+
 
         if AppName == "DirectorApp" then
         	Unitnumber_value = "123"

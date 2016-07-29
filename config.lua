@@ -1,3 +1,23 @@
+
+AppMode = "Dev"
+AppPlatform="Android"
+AndroidVersion="1.2.7"
+IosVersion="1.2.7"
+
+
+
+local ProjectNumber
+
+if AppMode == "Dev" or AppMode == "Staging"  then
+
+	ProjectNumber="800876064299"
+
+elseif AppMode == "Live" then
+
+	ProjectNumber="464801321790"
+
+end
+
 local aspectRatio = display.pixelHeight / display.pixelWidth
 
 application =
@@ -16,7 +36,7 @@ application =
     {
         google =
         {
-            projectNumber = "800876064299"
+            projectNumber = ProjectNumber
         },
 
         iphone =

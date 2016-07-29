@@ -1182,7 +1182,7 @@ function Webservice.Get_SocialMediaTokens(GCM,postExecution)
 			method="GET"
 			headers["UserAuthorization"]= ""
 
-			local url = splitUrl(VerionUrl)
+ 			local url = splitUrl(VerionUrl)
 
 			local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
 

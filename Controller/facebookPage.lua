@@ -526,7 +526,7 @@ function scene:show( event )
 
 
 
-
+print( "userid,asscesToken"..userid,asscesToken )
 
 
 		local function networkListener( event )
@@ -561,9 +561,6 @@ function scene:show( event )
 			MainGroup:insert(sceneGroup)
 
 		end
-
-
-
 
 
 function scene:hide( event )

@@ -498,18 +498,38 @@ local function CreateList( list )
 
 		if list[i].isBroadcastmsg == "yes" then
 
+			local count=0
 			for k = 1,#list do
 
-				if list[k].isBroadcastmsg == nil or list[k].isBroadcastmsg == "no" and (list[k].Message_From == list[i].Message_To or list[k].Message_To == list[i].Message_To)  then
+				--if list[k].isBroadcastmsg == nil or list[k].isBroadcastmsg == "no" and (list[k].Message_From == list[i].Message_To or list[k].Message_To == list[i].Message_To)  then
+				
+
+
+				if (list[k].isBroadcastmsg == "no" or list[k].isBroadcastmsg:lower( ) == "null" or list[k].isBroadcastmsg:lower( ) == nil) and (list[k].Message_From == list[i].Message_To or list[k].Message_To == list[i].Message_To) then
+
+					count = count + 1
 
 				else
+						
+					--	flag=false
+					
 
-					flag=false
 				end
 
 			end
 
+			if count == 0 then
+
+				flag=false
+
+			else
+
+				--flag = true
+
+			end
+
 		end
+
 
 		for j=1,i-1 do
 
@@ -556,7 +576,7 @@ local function CreateList( list )
 
 				end
 
-				
+			
 
 			end
 		--print( json.encode( list[i] ))
@@ -793,6 +813,7 @@ local function Broadcast_list( list )
 				display.remove(BroadcastList_array[#BroadcastList_array])
 				BroadcastList_array[#BroadcastList_array] = nil
 			end
+
 	CreateList(list)
 
 end

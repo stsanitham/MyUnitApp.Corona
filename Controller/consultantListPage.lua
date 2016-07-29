@@ -1601,6 +1601,21 @@ function scene:create( event )
 			            		local mask = graphics.newMask( "res/assert/masknew.png" )
     							GroupIcon:setMask( mask )
     							GroupIcon.maskScaleX, GroupIcon.maskScaleY = 0.95,0.88
+
+
+    									GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+								GroupIcon.y = subjectBar.y +20
+								GroupIcon.anchorX=0
+								GroupIcon.id = "imgEdit"
+								GroupIcon.isVisible = false
+								GroupIcon:addEventListener( "touch"	, bgTouch )
+
+									GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
+								GroupIconEdit.x = GroupIcon.x
+								GroupIconEdit.y = GroupIcon.y
+								GroupIconEdit.anchorX=0
+								GroupIconEdit.id = "imgEdit"
+		GroupIconEdit.isVisible = false
 			            end
 	end
 	if not GroupIcon then 
@@ -1617,23 +1632,27 @@ function scene:create( event )
 			end
 
 		GroupIcon = display.newImageRect( sceneGroup,imagename, 38, 33 )
-		
-	end
-
-		GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+			GroupIcon.x = backbutton.x + backbutton.contentWidth +5
 		GroupIcon.y = subjectBar.y +20
 		GroupIcon.anchorX=0
 		GroupIcon.id = "imgEdit"
 		GroupIcon.isVisible = false
 		GroupIcon:addEventListener( "touch"	, bgTouch )
 
-		
-		GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
+			GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/add_thumb.png",38,33 )
 		GroupIconEdit.x = GroupIcon.x
 		GroupIconEdit.y = GroupIcon.y
 		GroupIconEdit.anchorX=0
 		GroupIconEdit.id = "imgEdit"
 		GroupIconEdit.isVisible = false
+
+		
+	end
+
+	
+
+		
+	
 
 	GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-130, 25)
 	GroupSubject.id="groupSubject"
