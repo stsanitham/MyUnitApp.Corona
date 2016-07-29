@@ -271,6 +271,7 @@ ResourceLibrary.InvalidFileError = "You cannot open this file"
 ResourceLibrary.DocumentUploadError = "Error in Document Upload"
 ResourceLibrary.DocumentUploadSize = "Size of the document cannot be more than 10 MB"
 ResourceLibrary.DocumentUploaded =  "Document uploaded successfully!"
+ResourceLibrary.EmptyFolder = "This folder is empty"
 
 
 ImageLibrary = {}

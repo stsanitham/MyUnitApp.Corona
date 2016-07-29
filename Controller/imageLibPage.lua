@@ -1309,6 +1309,41 @@ end
 
 
 
+
+
+local function addevent_scrollListener(event )
+
+	local phase = event.phase
+
+			if ( phase == "began" ) then 
+
+			elseif ( phase == "moved" ) then 
+
+			    local x, y = careerList_scrollview:getContentPosition()
+
+			    print(y)
+
+
+			elseif ( phase == "ended" ) then 
+			
+			end
+
+		    -- In the event a scroll limit is reached...
+		    if ( event.limitReached ) then
+		    	if ( event.direction == "up" ) then print( "Reached bottom limit" )
+		    	elseif ( event.direction == "down" ) then 
+				print( "Reached top limit" )
+		    	elseif ( event.direction == "left" ) then print( "Reached right limit" )
+		    	elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		    	end
+		    end
+
+		    return true
+end
+
+
+
+
 local function listPosition_change( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -1407,20 +1442,18 @@ local function listPosition_change( event )
 				title.x=5;title.y = title_bg.y
 				title:setFillColor(0)
 
-
-
 				sceneGroup:insert( floatingButtonGroup )
+				
 
-				  addImageBg = display.newRect( W/2, H/2, W, H )
-			    addImageBg.id="addimage"
-			    addImageBg.alpha=0.01
-			   sceneGroup:insert( addImageBg)
-			    addImageBg.x=W/2;addImageBg.y=H/2
-			    addImageBg:addEventListener( "touch", BgTouch )
+				addImageBg = display.newRect( W/2, H/2, W, H )
+				addImageBg.id="addimage"
+				addImageBg.alpha=0.01
+				sceneGroup:insert( addImageBg)
+				addImageBg.x=W/2;addImageBg.y=H/2
+				addImageBg:addEventListener( "touch", BgTouch )
+
 
 				if IsOwner == true then
-
-
 
 				addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 76/1.6,76/1.9 )
 				addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
@@ -1479,57 +1512,61 @@ local function listPosition_change( event )
 					hideBackground = true,
 					isBounceEnabled=false,
 					bottomPadding = 10,
-	--horizontalScrollingDisabled = false,
-	--verticalScrollingDisabled = false,
-}
+					listener = addevent_scrollListener,
+					--horizontalScrollingDisabled = false,
+					--verticalScrollingDisabled = false,
+				}
 
 
-sceneGroup:insert(careerList_scrollview)
+				sceneGroup:insert(careerList_scrollview)
 
-listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
-listTouch_bg.alpha=0
-listTouch_bg.id = "hide"
+				listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
+				listTouch_bg.alpha=0
+				listTouch_bg.id = "hide"
 
-listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+65,100,80)
-listBg.strokeWidth = 1
-listBg.id = "show"
-listBg:setStrokeColor( 0, 0, 0 , 0.3)
-listBg.id="bg"
+				listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+65,100,80)
+				listBg.strokeWidth = 1
+				listBg.id = "show"
+				listBg:setStrokeColor( 0, 0, 0 , 0.3)
+				listBg.id="bg"
 
-list_Bylist_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y-20, 100, 25 )
-list_Bylist_bg:setFillColor( 0.4 )
-list_Bylist_bg.alpha=0.01
-list_Bylist_bg.id="list"
+				list_Bylist_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y-20, 100, 25 )
+				list_Bylist_bg:setFillColor( 0.4 )
+				list_Bylist_bg.alpha=0.01
+				list_Bylist_bg.id="list"
 
-list_Bylist = display.newText(changeMenuGroup,ImageLibrary.List,0,0,native.systemFont,16)
-list_Bylist.x=listBg.x-listBg.contentWidth/2+5;list_Bylist.y=listBg.y-20
-list_Bylist.anchorX=0
-list_Bylist:setFillColor(Utils.convertHexToRGB(color.Black))
-list_Bylist.id="list"
+				list_Bylist = display.newText(changeMenuGroup,ImageLibrary.List,0,0,native.systemFont,16)
+				list_Bylist.x=listBg.x-listBg.contentWidth/2+5;list_Bylist.y=listBg.y-20
+				list_Bylist.anchorX=0
+				list_Bylist:setFillColor(Utils.convertHexToRGB(color.Black))
+				list_Bylist.id="list"
 
-list_ByGrid_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y+20, 100, 25 )
-list_ByGrid_bg.alpha=0.01
-list_ByGrid_bg.id="grid"
+				list_ByGrid_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y+20, 100, 25 )
+				list_ByGrid_bg.alpha=0.01
+				list_ByGrid_bg.id="grid"
 
-list_ByGrid = display.newText(changeMenuGroup,ImageLibrary.Grid,0,0,native.systemFont,16)
-list_ByGrid.x=listBg.x-listBg.contentWidth/2+5;list_ByGrid.y=listBg.y+20
-list_ByGrid.anchorX=0
-list_ByGrid:setFillColor(Utils.convertHexToRGB(color.Black))
-list_ByGrid.id="grid"
+				list_ByGrid = display.newText(changeMenuGroup,ImageLibrary.Grid,0,0,native.systemFont,16)
+				list_ByGrid.x=listBg.x-listBg.contentWidth/2+5;list_ByGrid.y=listBg.y+20
+				list_ByGrid.anchorX=0
+				list_ByGrid:setFillColor(Utils.convertHexToRGB(color.Black))
+				list_ByGrid.id="grid"
 
-changeMenuGroup.isVisible=false
+				changeMenuGroup.isVisible=false
 
-listBg:addEventListener("touch",listPosition_change)
-list_Bylist_bg:addEventListener("touch",listPosition_change)
-list_ByGrid_bg:addEventListener("touch",listPosition_change)
+				listBg:addEventListener("touch",listPosition_change)
+				list_Bylist_bg:addEventListener("touch",listPosition_change)
+				list_ByGrid_bg:addEventListener("touch",listPosition_change)
 
-listTouch_bg:addEventListener("touch",BgTouch)
+				listTouch_bg:addEventListener("touch",BgTouch)
 
-sceneGroup:insert(changeMenuGroup)
+				sceneGroup:insert(changeMenuGroup)
 
-MainGroup:insert(sceneGroup)
+				MainGroup:insert(sceneGroup)
 
 end
+
+
+
 
 function scene:show( event )
 
@@ -1546,7 +1583,8 @@ function scene:show( event )
 		ga.enterScene("Image Library")
 
 
-					Image_Lib_list = widget.newTableView
+			
+			Image_Lib_list = widget.newTableView
 			{
 				left = 0,
 				top = 75,
@@ -1564,27 +1602,33 @@ function scene:show( event )
 
 		Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
 
-		local function hide( event )
+				local function hide( event )
+
 						floatingButtonGroup.isVisible=false
-					end
+						-- if careerList_scrollview ~= nil then careerList_scrollview:toFront() end
+						-- Image_Lib_list:toFront()
 
-					addImageBg.alpha=0
+				end
 
-					transition.to(addEventBtn, {time=200,rotation=0,width = addEventBtn.width + 5} )
+				addImageBg.alpha=0
 
-					transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
+				transition.to(addEventBtn, {time=200,rotation=0,width = addEventBtn.width + 5} )
+
+				transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
 
 		menuBtn:addEventListener("touch",menuTouch)
 		BgText:addEventListener("touch",menuTouch)
 
 		Runtime:addEventListener( "key", onKeyEvent )
 
-
 	end	
 
 	MainGroup:insert(sceneGroup)
 
 end
+
+
+
 
 function scene:hide( event )
 
@@ -1607,6 +1651,8 @@ function scene:hide( event )
 	end	
 
 end
+
+
 
 
 function scene:destroy( event )

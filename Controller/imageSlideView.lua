@@ -12,6 +12,8 @@ require( "Controller.genericAlert" )
 
 local imageGroup = display.newGroup( )
 
+
+
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
@@ -26,16 +28,18 @@ local imageTrans,SliderTimer,myImage
 --------------------------------------------------
 
 
+
+
 -----------------Function-------------------------
 
 local function BgTouch( event )
 	if event.phase == "ended" then
 
-
-end
+   end
 
 return true
 end
+
 
 
 -- local function downloadAction(filename)
