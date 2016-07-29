@@ -107,6 +107,8 @@ local workingdir=""
 			end
 
 
+
+
 	local function formatSizeUnits(event)
 
 		if (event>=1073741824) then 
@@ -187,7 +189,6 @@ local workingdir=""
 						elseif fileExt == "mpeg" or fileExt == "avi" then
 
 								tempValue="res/assert/video.png"
-
 						else
 
 								tempValue="res/assert/invalid_file.png"
@@ -230,11 +231,6 @@ local workingdir=""
 											if pathType1 == "directory" then
 
 												
-
-						    	    
-											  
-
-
 												for j=#file_array, 1, -1 do 
 													file_array[#file_array] = nil
 												end
@@ -300,11 +296,8 @@ local workingdir=""
 
 													            			Document_name = "Resource"..os.date("%Y%m%d%H%M%S")..fileExtForName
 
-
 																		    tmpPath = system.pathForFile(Document_name,system.DocumentsDirectory) -- Destination path to the temporary image
 
-
-																				  
 
 
 													            	           local function onComplete( action_event )
