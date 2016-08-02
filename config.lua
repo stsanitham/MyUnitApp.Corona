@@ -24,9 +24,9 @@ application =
 {
 	content = {
 	
-		width = 320,
-        height = 480,
-        scale = "normal",
+		 width = 320,
+         height = 480,
+         scale = "zoomStretch",
         xAlign = "center",
         yAlign = "center",
         audioPlayFrequency = 44100,

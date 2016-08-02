@@ -1616,6 +1616,8 @@ function scene:create( event )
 								GroupIconEdit.anchorX=0
 								GroupIconEdit.id = "imgEdit"
 		GroupIconEdit.isVisible = false
+
+		
 			            end
 	end
 	if not GroupIcon then 

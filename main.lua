@@ -2,7 +2,7 @@
         -- MainActivity
         --------------------------------------------------------
 
-        display.setStatusBar(display.HiddenStatusBar)
+        --display.setStatusBar(display.HiddenStatusBar)
 
 
       
@@ -587,17 +587,12 @@ elseif ( event.type == "remoteRegistration" ) then
                                                  end
 
 
-
-
-
-
                                         end
 
 
                                     timer.performWithDelay( 1000, onTimeDelay)
               
-                    
-                
+                                    
             end
 
         end

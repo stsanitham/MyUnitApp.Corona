@@ -194,7 +194,7 @@ local workingdir=""
 								tempValue="res/assert/invalid_file.png"
 						end
 
-
+						print( "tempValue : "..tempValue )
 						local rowIcon = display.newImageRect(row,tempValue,25,22 )
 					    rowIcon.x = 20
 					    rowIcon.anchorX = 0
@@ -473,7 +473,7 @@ local workingdir=""
 						display.getCurrentStage():setFocus( nil )
 
 
-						if event.target.id =="backpress" and workingdir == "/" then
+						if (event.target.id =="backpress" and workingdir == "/") or (not isAndroid and workingdir == system.pathForFile( "" ,system.DocumentsDirectory )) then
 
 								composer.hideOverlay("slideRight",300)
 
@@ -502,7 +502,7 @@ local workingdir=""
 												if string.find( tempPath,"/" ) ~= nil then
 
 													local placeholder = string.find( tempPath,"/" )
-															tempPath = string.reverse( tempPath )
+														tempPath = string.reverse( tempPath )
 														 rowvalues = tempPath:sub( tempPath:len()-placeholder+2, tempPath:len() )
 
 												end
@@ -630,7 +630,16 @@ local workingdir=""
 							end
 
 
-						workingdir = "/"
+
+						if isAndroid then
+
+							workingdir = "/"
+
+						else
+
+							workingdir = system.pathForFile( "" ,system.DocumentsDirectory )
+
+						end
 
 						local path = workingdir
 						local pathType = ""
@@ -639,27 +648,36 @@ local workingdir=""
 						firstrootpath = workingdir
 
 						-- Check to see if path exists
-						if path and lfs.attributes( "/" ) then
-						    pathType = lfs.attributes( "/" ).mode
-						    --print("pathtype     "..pathType)
+						if path and lfs.attributes( workingdir ) then
+						    pathType = lfs.attributes( workingdir ).mode
+						    print("pathtype     "..pathType)
 						end
 
 						-- Check if path is a directory
 						if pathType == "directory" then
 
-								  for file in lfs.dir( "/" ) do
+								  for file in lfs.dir( workingdir ) do
 
-											if "." ~= file and ".." ~= file then
+											if "." ~= file and ".." ~= file and " .png" ~= file then
 
-										        -- print("FILE: " .. file)
+										         print("FILE: " .. file)
 
-										         fileAtr = lfs.attributes( file )
+										         local filevalue
+										         if not isAndroid then
+
+										         	filevalue = system.pathForFile( file, system.DocumentsDirectory )
+										         else
+										         	filevalue=file
+										         end
+
+
+										         fileAtr = lfs.attributes( filevalue )
 
 									         	 if fileAtr ~= nil then 
 
 											   		 	file_attributemode = fileAtr.mode
 
-											   		     --print("@@@@@ "..path,file,file_attributemode) 
+											   		     print("@@@@@ "..path,file,file_attributemode) 
 
 										   		 end
 
