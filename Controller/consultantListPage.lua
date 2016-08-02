@@ -26,6 +26,11 @@ local menuBtn,tabButtons,chattabBar,pagervalue
 
 openPage="MessagingPage"
 
+
+local searchArraytotal= {}
+
+local TotalArrayValue = {}
+
 local BackFlag = false
 
 local totalcareerlist
@@ -35,6 +40,10 @@ local newtworkArray = {}
 local checkedstate = 0
 
 local NameArray = {}
+
+local searchArray_Total = {}
+
+local searchArray = {}
 
 local consultantList_scrollview
 
@@ -181,6 +190,15 @@ local function consultantTounch( event )
 		end
 
 
+
+
+
+
+
+
+
+
+
 function formatSizeUnits(event)
 
 	if (event>=1073741824) then 
@@ -222,6 +240,17 @@ function formatSizeUnits(event)
 	
 
 end
+
+
+
+
+
+
+
+
+
+
+
 
 local function selectionComplete ( event )
 
@@ -313,6 +342,11 @@ local function selectionComplete ( event )
 
 		end
 
+
+
+
+
+
 		local function bgTouch( event )
 
 			if event.phase == "began" then
@@ -371,6 +405,577 @@ local function selectionComplete ( event )
 	return true
 
 end
+
+
+
+
+
+
+
+
+
+local function careePath_list( list )
+
+
+
+	for j=#careerListArray, 1, -1 do 
+		
+		display.remove(careerListArray[#careerListArray])
+		careerListArray[#careerListArray] = nil
+	end
+
+
+	-- for j=#searchArray_Total, 1, -1 do 
+		
+	-- 	display.remove(searchArray_Total[#searchArray_Total])
+	-- 	searchArray_Total[#searchArray_Total] = nil
+	-- end
+
+
+
+	for i=1,#list do
+		
+
+		if tostring(list[i].Contact_Id) ~= tostring(ContactId) then
+
+			careerListArray[#careerListArray+1] = display.newGroup()
+
+			local tempGroup = careerListArray[#careerListArray]
+
+			local Image 
+
+			local tempHeight = 0
+
+			local background = display.newRect(tempGroup,0,0,W,50)
+
+			if(careerListArray[#careerListArray-1]) ~= nil then
+				tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height+3
+			end
+
+			background.anchorY = 0
+			background.x=W/2;background.y=tempHeight
+			background.id=list[i].Contact_Id
+			background.alpha=0.01
+			background.value = list[i]
+
+			if parentFlag == true then
+				parentFlag=false
+
+
+				parentTitle = display.newRect(tempGroup,0,0,W,25)
+				if(careerListArray[#careerListArray-1]) ~= nil then
+				--here
+				tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height/2+10
+			end
+
+
+			parentTitle.anchorY = 0
+			parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
+			parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
+
+			if viewValue == "position" then
+				parent_centerText = display.newText(tempGroup,header_value,0,0,native.systemFontBold,14)
+			else
+				parent_centerText = display.newText(tempGroup,header_value:upper(),0,0,native.systemFontBold,14)
+
+			end
+
+			parent_centerText.x=5
+			parent_centerText.anchorX=0
+			parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
+
+			background.y=parentTitle.y+background.contentHeight/2
+
+		end
+
+		
+
+		if list[i].Image_Path ~= nil then
+			local Image
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
+
+			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
+				"GET",
+				function ( img_event )
+					if ( img_event.isError ) then
+						print ( "Network error - download failed" )
+					else
+
+						if Image ~= nil then
+
+							if Image.y ~= nil then Image:removeSelf() 
+
+							--print(img_event.response.filename)
+
+							Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
+							Image.width=45;Image.height=38
+							Image.x=30;Image.y=background.y+background.contentHeight/2
+	    				    --event.row:insert(img_event.target)
+
+	    				    local mask = graphics.newMask( "res/assert/masknew.png" )
+
+	    				    Image:setMask( mask )
+
+	    				end
+
+	    			end
+
+	    			
+	    		end
+
+	    		end, list[i].Contact_Id..".png", system.DocumentsDirectory)
+		else
+			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2
+
+		end
+
+		
+
+
+		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,native.systemFont,14)
+		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
+		Name_txt.anchorX=0
+		Utils.CssforTextView(Name_txt,sp_labelName)
+		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+
+		background.name = list[i].Name
+
+
+
+		local Position_txt = display.newText(tempGroup,list[i].CarrierProgress,0,0,native.systemFont,14)
+		Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
+		Position_txt.anchorX=0
+		Utils.CssforTextView(Position_txt,sp_fieldValue)
+
+		if Position_txt.text:len() > 26 then		
+			Position_txt.text = string.sub(Position_txt.text,1,26).."..."
+		end
+
+
+		local line = display.newRect(tempGroup,W/2,background.y,W,1)
+		line.y=background.y+background.contentHeight-line.contentHeight
+		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+
+		if addGroupid_value =="addGroup" or addGroupid_value == "editMember" then
+
+			contactidvalue =  list[i].Contact_Id
+
+
+
+
+			local selectcontact_checkbox = widget.newSwitch(
+			{
+				left = 15,
+				top = Position_txt.y-5,
+				style = "checkbox",
+				id = "email_Checkbox",
+				initialSwitchState = false,
+				onPress = onSwitchPress
+				})
+			selectcontact_checkbox.width= 20
+			selectcontact_checkbox.height = 20
+			selectcontact_checkbox.anchorX=0
+			selectcontact_checkbox.totalvalue = #list
+			selectcontact_checkbox.key="checkbox"
+			selectcontact_checkbox.value = contactidvalue
+			selectcontact_checkbox.x = background.x+background.contentWidth/2-33
+			selectcontact_checkbox.y=background.y+background.height/2
+
+			tempGroup:insert(selectcontact_checkbox)
+
+
+			subjectBar.isVisible = true
+			GroupSubject.isVisible = true
+			create_groupicon.isVisible = true
+			backbutton.isVisible = true
+			GroupIcon.isVisible = true
+			GroupIconEdit.isVisible = true
+			if addGroupid_value == "editMember" then
+				for j=1,#editContacts do
+
+					if tonumber(contactidvalue) == tonumber(editContacts[j]) then
+						selectcontact_checkbox:setState( { isOn=true, isAnimated=true, onComplete=onSwitchPress } )
+
+					end
+
+				end
+			end
+
+
+		else
+
+		end
+
+
+
+		--tempGroup.Contact_Id = list[i].Contact_Id
+
+		consultantList_scrollview:insert(tempGroup)
+
+		background:addEventListener( "touch", consultantTounch )
+
+
+	end
+
+end
+
+end
+
+
+
+
+
+function get_Activeteammember(response)
+
+
+	for i=1,#Listresponse_array do
+		Listresponse_array[i]=nil
+		byNameArray[i]=nil
+	end
+
+	Listresponse_array=response
+
+	Tot = response
+
+	print("********************* Listresponse_array *************************".."\n\n\n\n\n"..json.encode(Listresponse_array))
+
+
+	if response ~= nil and #response ~= 0 then
+		
+--NameArray
+
+
+for i=1,#Listresponse_array do
+
+	local list_Name = Listresponse_array[i].Last_Name
+
+	
+
+	if Listresponse_array[i].First_Name then
+
+		list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
+
+	end
+
+	
+
+	local temp = {}
+
+	if list_Name:sub(1,1) == " " then
+		list_Name = list_Name:sub( 2,list_Name:len())
+	end
+
+	temp.Name = list_Name
+	temp.CarrierProgress = Listresponse_array[i].Email_Address
+	temp.Contact_Id = Listresponse_array[i].Contact_Id
+	temp.Image_Path = Listresponse_array[i].Image_Path
+	temp.Image_Name = Listresponse_array[i].Image_Name
+
+	byNameArray[#byNameArray+1] = temp
+
+
+end
+
+careePath_list(byNameArray)
+
+else
+
+	NoEvent.isVisible=true
+
+end
+end
+
+
+
+
+
+
+
+
+local function searchListener( event )
+
+	if ( event.phase == "began" ) then
+       
+
+    elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+
+			search.text = ""
+       
+            native.setKeyboardFocus( nil )
+
+    elseif ( event.phase == "editing" ) then
+
+
+		    	if event.text:len() == 0 then
+
+
+		    		if NoEvent.isVisible == true then
+		    			NoEvent.isVisible = false
+		    		end
+
+
+					for i=1,#byNameArray do
+						byNameArray[i] = nil
+					end
+
+					for i=1,#Listresponse_array do
+
+						local list_Name = Listresponse_array[i].Last_Name
+
+						
+
+						if Listresponse_array[i].First_Name then
+
+							list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
+
+						end
+
+						
+
+						local temp = {}
+
+						if list_Name:sub(1,1) == " " then
+							list_Name = list_Name:sub( 2,list_Name:len())
+						end
+
+						temp.Name = list_Name
+						temp.CarrierProgress = Listresponse_array[i].Email_Address
+						temp.Contact_Id = Listresponse_array[i].Contact_Id
+						temp.Image_Path = Listresponse_array[i].Image_Path
+						temp.Image_Name = Listresponse_array[i].Image_Name
+
+						byNameArray[#byNameArray+1] = temp
+
+
+					end
+
+					careePath_list(byNameArray)
+
+
+		    	else
+
+
+		    		for i=1,#searchArray do
+						searchArray[i] = nil
+					end
+
+					 if Listresponse_array ~= nil then
+
+					        if #Listresponse_array>0 then
+
+							    NoEvent.isVisible = false
+ 
+
+					            for i=1,#Listresponse_array do
+
+									local added=false
+
+									    if Listresponse_array[i].First_Name ~= nil and Listresponse_array[i].First_Name ~= "" then
+
+												if string.find(Listresponse_array[i].First_Name:lower(),search.text:lower()) ~= nil then
+
+													if added == false then
+
+														searchArray[#searchArray+1] = Listresponse_array[i]
+
+													end
+
+													added=true
+
+												end
+										end
+										if Listresponse_array[i].Last_Name ~= nil and Listresponse_array[i].Last_Name ~= "" then
+
+											   if string.find(Listresponse_array[i].Last_Name:lower(),search.text:lower()) ~= nil then
+
+
+													if added == false then
+
+														searchArray[#searchArray+1] = Listresponse_array[i]
+
+													end
+
+													added=true
+
+
+											    end
+										end
+									
+
+										if Listresponse_array[i].Email_Address ~= nil and Listresponse_array[i].Email_Address ~= "" then 
+
+												if string.find(Listresponse_array[i].Email_Address:lower(),search.text:lower()) ~= nil then
+
+
+													if added == false then
+
+													searchArray[#searchArray+1] = Listresponse_array[i]
+
+													end
+
+													added=true
+
+											    end
+
+										end
+
+									end      
+
+
+								print("Search Array : "..json.encode(searchArray))
+
+
+		    	               -- careePath_list(searchArray)
+
+
+								if #searchArray > 0 then
+									NoEvent.isVisible = false
+								else
+									NoEvent.isVisible = true
+									NoEvent.text = "No Contacts Found"
+								end
+
+		    		
+					for i=1,#byNameArray do
+						byNameArray[i] = nil
+					end
+
+
+		    		for i=1,#searchArray do
+
+						local list_Name = searchArray[i].Last_Name
+
+						
+
+						if searchArray[i].First_Name then
+
+							list_Name = searchArray[i].First_Name.." "..searchArray[i].Last_Name
+
+						end
+
+						
+
+						local temp = {}
+
+						if list_Name:sub(1,1) == " " then
+							list_Name = list_Name:sub( 2,list_Name:len())
+						end
+
+						temp.Name = list_Name
+						temp.CarrierProgress = searchArray[i].Email_Address
+						temp.Contact_Id = searchArray[i].Contact_Id
+						temp.Image_Path = searchArray[i].Image_Path
+						temp.Image_Name = searchArray[i].Image_Name
+
+						byNameArray[#byNameArray+1] = temp
+
+
+					end
+
+					careePath_list(byNameArray)
+
+					else
+
+
+
+										NoEvent.isVisible = true
+
+										NoEvent.text = "No Contacts Found"
+
+								
+
+
+			        end
+
+
+end
+
+end
+
+end
+
+end
+
+
+
+
+
+
+
+
+
+	local function searchTouch( event )
+
+		if event.phase == "began" then
+
+			display.getCurrentStage():setFocus( event.target )
+
+	    elseif event.phase == "ended" then
+
+	      		display.getCurrentStage():setFocus( nil )
+
+				        if event.target.id == "searchbg" then
+
+					        	if searchtext_bg.isVisible == false and search.isVisible == false then
+
+					        		print("&&&&&&&& true")
+
+					        		native.setKeyboardFocus(search)
+
+					        		searchtext_bg.isVisible = true
+
+					        		search.isVisible = true
+
+					        		consultantList_scrollview.y = 141
+
+					        		searchflag = "true"
+
+					        		consultantList_scrollview:scrollToPosition
+										{
+											y = 0,
+											time = 200,
+										}
+
+
+						        else
+
+						        	print("&&&&&&&& false")
+
+						        	searchtext_bg.isVisible = false
+
+						        	native.setKeyboardFocus(nil)
+
+					        		search.isVisible = false
+
+					        		consultantList_scrollview.y = 112
+
+					        		searchflag = "false"
+
+					        		consultantList_scrollview:scrollToPosition
+										{
+											y = 0,
+											time = 200,
+										}
+
+
+						        end
+
+				        end
+	     
+	      end
+
+
+	end
+
+
+
+
+
+
+
+
 
 
 	function get_imagemodel(response)
@@ -1268,262 +1873,6 @@ end
 
 
 
-local function careePath_list( list )
-
-
-	for j=#careerListArray, 1, -1 do 
-		
-		display.remove(careerListArray[#careerListArray])
-		careerListArray[#careerListArray] = nil
-	end
-
-	for i=1,#list do
-		
-
-		if tostring(list[i].Contact_Id) ~= tostring(ContactId) then
-
-			careerListArray[#careerListArray+1] = display.newGroup()
-
-			local tempGroup = careerListArray[#careerListArray]
-
-			local Image 
-
-			local tempHeight = 0
-
-			local background = display.newRect(tempGroup,0,0,W,50)
-
-			if(careerListArray[#careerListArray-1]) ~= nil then
-				tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height+3
-			end
-
-			background.anchorY = 0
-			background.x=W/2;background.y=tempHeight
-			background.id=list[i].Contact_Id
-			background.alpha=0.01
-			background.value = list[i]
-
-			if parentFlag == true then
-				parentFlag=false
-
-
-				parentTitle = display.newRect(tempGroup,0,0,W,25)
-				if(careerListArray[#careerListArray-1]) ~= nil then
-				--here
-				tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height/2+10
-			end
-
-
-			parentTitle.anchorY = 0
-			parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
-			parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
-
-			if viewValue == "position" then
-				parent_centerText = display.newText(tempGroup,header_value,0,0,native.systemFontBold,14)
-			else
-				parent_centerText = display.newText(tempGroup,header_value:upper(),0,0,native.systemFontBold,14)
-
-			end
-
-			parent_centerText.x=5
-			parent_centerText.anchorX=0
-			parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
-
-			background.y=parentTitle.y+background.contentHeight/2
-
-		end
-
-		
-
-		if list[i].Image_Path ~= nil then
-			local Image
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2
-
-			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
-				"GET",
-				function ( img_event )
-					if ( img_event.isError ) then
-						print ( "Network error - download failed" )
-					else
-
-						if Image ~= nil then
-
-							if Image.y ~= nil then Image:removeSelf() 
-
-							--print(img_event.response.filename)
-
-							Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
-							Image.width=45;Image.height=38
-							Image.x=30;Image.y=background.y+background.contentHeight/2
-	    				    --event.row:insert(img_event.target)
-
-	    				    local mask = graphics.newMask( "res/assert/masknew.png" )
-
-	    				    Image:setMask( mask )
-
-	    				end
-
-	    			end
-
-	    			
-	    		end
-
-	    		end, list[i].Contact_Id..".png", system.DocumentsDirectory)
-		else
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2
-
-		end
-
-		
-
-
-		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,native.systemFont,14)
-		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
-		Name_txt.anchorX=0
-		Utils.CssforTextView(Name_txt,sp_labelName)
-		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-
-		background.name = list[i].Name
-
-		local Position_txt = display.newText(tempGroup,list[i].CarrierProgress,0,0,native.systemFont,14)
-		Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
-		Position_txt.anchorX=0
-		Utils.CssforTextView(Position_txt,sp_fieldValue)
-
-		if Position_txt.text:len() > 26 then		
-			Position_txt.text = string.sub(Position_txt.text,1,26).."..."
-		end
-
-
-		local line = display.newRect(tempGroup,W/2,background.y,W,1)
-		line.y=background.y+background.contentHeight-line.contentHeight
-		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-
-		if addGroupid_value =="addGroup" or addGroupid_value == "editMember" then
-
-			contactidvalue =  list[i].Contact_Id
-
-
-
-
-			local selectcontact_checkbox = widget.newSwitch(
-			{
-				left = 15,
-				top = Position_txt.y-5,
-				style = "checkbox",
-				id = "email_Checkbox",
-				initialSwitchState = false,
-				onPress = onSwitchPress
-				})
-			selectcontact_checkbox.width= 20
-			selectcontact_checkbox.height = 20
-			selectcontact_checkbox.anchorX=0
-			selectcontact_checkbox.totalvalue = #list
-			selectcontact_checkbox.key="checkbox"
-			selectcontact_checkbox.value = contactidvalue
-			selectcontact_checkbox.x = background.x+background.contentWidth/2-33
-			selectcontact_checkbox.y=background.y+background.height/2
-
-			tempGroup:insert(selectcontact_checkbox)
-
-
-			subjectBar.isVisible = true
-			GroupSubject.isVisible = true
-			create_groupicon.isVisible = true
-			backbutton.isVisible = true
-			GroupIcon.isVisible = true
-			GroupIconEdit.isVisible = true
-			if addGroupid_value == "editMember" then
-				for j=1,#editContacts do
-
-					if tonumber(contactidvalue) == tonumber(editContacts[j]) then
-						selectcontact_checkbox:setState( { isOn=true, isAnimated=true, onComplete=onSwitchPress } )
-
-					end
-
-				end
-			end
-
-
-		else
-
-		end
-
-
-
-		--tempGroup.Contact_Id = list[i].Contact_Id
-
-		consultantList_scrollview:insert(tempGroup)
-
-		background:addEventListener( "touch", consultantTounch )
-
-
-	end
-
-end
-
-end
-
-
-
-
-
-
-function get_Activeteammember(response)
-
-
-	for i=1,#Listresponse_array do
-		Listresponse_array[i]=nil
-		byNameArray[i]=nil
-	end
-
-	Listresponse_array=response
-
-	if response ~= nil and #response ~= 0 then
-		
---NameArray
-
-
-for i=1,#Listresponse_array do
-
-	local list_Name = Listresponse_array[i].Last_Name
-
-	
-
-	if Listresponse_array[i].First_Name then
-
-		list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
-
-	end
-
-	
-
-	local temp = {}
-
-	if list_Name:sub(1,1) == " " then
-		list_Name = list_Name:sub( 2,list_Name:len())
-	end
-
-	temp.Name = list_Name
-	temp.CarrierProgress = Listresponse_array[i].Email_Address
-	temp.Contact_Id = Listresponse_array[i].Contact_Id
-	temp.Image_Path = Listresponse_array[i].Image_Path
-	temp.Image_Name = Listresponse_array[i].Image_Name
-
-	byNameArray[#byNameArray+1] = temp
-
-
-end
-
-careePath_list(byNameArray)
-
-else
-
-	NoEvent.isVisible=true
-
-end
-end
 
 
 
@@ -1567,7 +1916,7 @@ function scene:create( event )
 	count_details = display.newText(sceneGroup,"",0,0,native.systemFont,18)
 	count_details.anchorX = 0
 	count_details.isVisible = false
-	count_details.x= W-122;count_details.y = title_bg.y
+	count_details.x= W-130;count_details.y = title_bg.y
 	count_details:setFillColor(0)
 
 
@@ -1671,6 +2020,57 @@ function scene:create( event )
 	create_groupicon.isVisible = false
 	create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
 	create_groupicon.y=subjectBar.y +20
+
+
+	searchcontact_bg = display.newRect(sceneGroup,0,0,W,30)
+	searchcontact_bg.y = GroupSubject.y + GroupSubject.contentHeight + 5
+	searchcontact_bg.x = W - 30
+	searchcontact_bg.anchorX = 0
+	searchcontact_bg.id = "searchbg"
+	searchcontact_bg.isVisible=false
+	searchcontact_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
+
+
+	searchcontact = display.newImageRect(sceneGroup,"res/assert/search(gray).png",18,18)
+	searchcontact.x = W-35
+	searchcontact:setFillColor(0)
+	searchcontact.alpha = 1
+	searchcontact.id = "searchbg"
+	searchcontact.anchorX = 0
+	searchcontact.isVisible=true
+	searchcontact.y=count_details.y
+
+	searchcontact:addEventListener( "touch", searchTouch )
+
+
+	searchtext_bg = display.newRect(sceneGroup,0,0,W,30)
+	searchtext_bg.y = searchcontact_bg.y
+	searchtext_bg.x = W/2
+	searchtext_bg.isVisible=false
+	searchtext_bg:setFillColor(0,0,0,0.2)
+
+
+	search =  native.newTextField( searchtext_bg.x-searchtext_bg.contentWidth/2+7, searchtext_bg.y, searchtext_bg.contentWidth-15, 24 )
+	search.anchorX=0
+	search.size=14
+	search.isFontSizeScaled = false
+	search.text = ""
+	search:setReturnKey( "search" )
+	search.placeholder = CommonWords.search
+	search.hasBackground = true
+	search.isVisible = false
+	sceneGroup:insert(search)
+
+	search:addEventListener( "userInput", searchListener )
+
+
+
+	NoEvent = display.newText( sceneGroup, EventCalender.NoEvent , 0,0,0,0,native.systemFontBold,14)
+	NoEvent.x=W/2;NoEvent.y=H/2
+	NoEvent.isVisible=false
+	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+
 
 	Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
@@ -1846,8 +2246,6 @@ function scene:show( event )
 
 	    		count_details.text = #editContacts..MessagePage.SelectedNumber
 
-
-
 	    	else
 
 	    		RecentTab_Topvalue = 75
@@ -1861,13 +2259,17 @@ function scene:show( event )
 	    		top = RecentTab_Topvalue-5,
 	    		left = 0,
 	    		width = W,
-	    		height =H-RecentTab_Topvalue-45,
+	    		height = H-RecentTab_Topvalue+5,
 	    		hideBackground = true,
 	    		backgroundColor = {0,0,0,0.6},
 	    		isBounceEnabled=false,
+	    		bottomPadding = 40,
 	    		horizontalScrollingDisabled = true,
 	    		verticalScrollingDisabled = false
 	    	}
+
+	    	consultantList_scrollview.y = 112
+	    	consultantList_scrollview.anchorY = 0
 
 	    	sceneGroup:insert(consultantList_scrollview)
 	    	
@@ -1892,6 +2294,9 @@ function scene:show( event )
 	    MainGroup:insert(sceneGroup)
 
 	end
+
+
+
 
 
 	function scene:hide( event )

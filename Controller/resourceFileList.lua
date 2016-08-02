@@ -684,6 +684,7 @@ local workingdir=""
 				isBounceEnabled = false,
 			    --noLines = true,
 			}
+			
 
 			sceneGroup:insert(Documents_list)
 			
@@ -708,7 +709,7 @@ local workingdir=""
 			-- 	NoEvent = display.newText( sceneGroup, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
 			-- 	NoEvent.x=W/2;NoEvent.y=H/2
 			-- 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-		 --    end
+		    -- end
 
 
 		 --    for i = 1, #file_array do
