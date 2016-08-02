@@ -324,7 +324,7 @@ local function onRowRender_DocLib( event )
 
     print( "file ext : "..fileExt )
 
-    if fileExt == "png" or fileExt == "jpg" or fileExt == "jpeg" or fileExt == "gif" or fileExt == "bmp" or fileExt == "tif" then
+    if fileExt == "png" or fileExt == "jpg" or fileExt == "jpeg" or fileExt == "gif" or fileExt == "bmp" or fileExt == "tif" or fileExt == "JPG" or fileExt == "JPEG" or fileExt == "BMP" or fileExt == "GIF" or fileExt == "PNG" or fileExt == "TIF" or fileExt == "TIFF" then
 
     	tempValue="res/assert/image-active.png"
 
@@ -336,7 +336,7 @@ local function onRowRender_DocLib( event )
 
     	tempValue="res/assert/pdf-active.png"
 
-    elseif fileExt == "mpg" or fileExt == "au" or fileExt == "aac" or fileExt == "aif" or fileExt == "gsm" or fileExt == "mid" or fileExt == "mp3" or fileExt == "rm"  or fileExt == "wav" then
+    elseif fileExt == "mpg" or fileExt == "au" or fileExt == "aac" or fileExt == "aif" or fileExt == "gsm" or fileExt == "mid" or fileExt == "mp3" or fileExt == "rm"  or fileExt == "wav" or fileExt == "ogg" then
 
     	tempValue="res/assert/audio.png"
     	
@@ -433,12 +433,12 @@ local function onRowRender_DocLib( event )
     addEventBtn:toFront()
 
 
-
     row.ImageId = List_array[row.index].DocumentCategoryId
     row.FilePath = List_array[row.index].FilePath
     row.fileName = List_array[row.index].DocumentFileName
 
 end
+
 
 
 
@@ -448,14 +448,11 @@ local function onRowTouch_DocLib( event )
 
 	if( "press" == phase ) then
 
-
 		system.openURL( ApplicationConfig.IMAGE_BASE_URL..row.FilePath )
 
-	--composer.gotoScene( "Controller.imageSlideView", options )
+	elseif ( "release" == phase ) then
 
-elseif ( "release" == phase ) then
-
-end
+	end
 
 end
 
@@ -496,6 +493,7 @@ end
 
 
 
+
 local function changeListmenuTouch(event)
 	
 	if event.phase == "began" then
@@ -530,37 +528,36 @@ end
 
 
 
-		function get_allDocument(response)
-
-			--local nati24 = native.showAlert("MUB",json.encode(response),{"ok"})
-			
-				for j=#List_array, 1, -1 do 
-					display.remove(List_array[#List_array])
-					List_array[#List_array] = nil
-				end
-
-
-			List_array = response
-
-			Document_Lib_list:deleteAllRows()
-
-			if #List_array == 0  then
-				NoEvent = display.newText( scene.view, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
-				NoEvent.x=W/2;NoEvent.y=H/2
-				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-			end
-
-
-			for i = 1, #List_array do
-		    -- Insert a row into the tableView
-		    Document_Lib_list:insertRow{ rowHeight = 40,rowColor = 
-		    {
-		    	default = { 1, 1, 1, 0 },
-		    	over={ 1, 0.5, 0, 0 },
-
-		    	}}
-		    end
+function get_allDocument(response)
+		
+		for j=#List_array, 1, -1 do 
+			display.remove(List_array[#List_array])
+			List_array[#List_array] = nil
 		end
+
+
+		List_array = response
+
+		Document_Lib_list:deleteAllRows()
+
+		if #List_array == 0  then
+			NoEvent = display.newText( scene.view, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
+			NoEvent.x=W/2;NoEvent.y=H/2
+			NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+		end
+
+
+		for i = 1, #List_array do
+	    -- Insert a row into the tableView
+	    Document_Lib_list:insertRow{ rowHeight = 40,rowColor = 
+	    {
+	    	default = { 1, 1, 1, 0 },
+	    	over={ 1, 0.5, 0, 0 },
+
+	    	}}
+	    end
+
+end
 
 
 
@@ -571,27 +568,27 @@ function get_documentupload(response)
 
 
    	       local function onResponseComplete( event )
-   	       	
-					local i = event
+	       	
+				local i = event
 
-					if i == 1 then
+				if i == 1 then
 
-						 Webservice.GET_ALL_MYUNITAPP_DOCUMENT(get_allDocument)
+					 Webservice.GET_ALL_MYUNITAPP_DOCUMENT(get_allDocument)
 
-					end
+				end
+
 		    end
 
 
 
-   			local option ={
-						  {content=CommonWords.ok,positive=true},
-					      }
+   			local option 
 
-				genericAlert.createNew(ResourceLibrary.DocumentUpload,ResourceLibrary.DocumentUploaded,option,onResponseComplete)
+   			option = {
+					 {content=CommonWords.ok,positive=true},
+					 }
 
-	   			--local a = native.showAlert(ImageLibrary.UploadImage,ImageLibrary.ImageUploaded,{CommonWords.ok})
+			genericAlert.createNew(ResourceLibrary.DocumentUpload,ResourceLibrary.DocumentUploaded,option,onResponseComplete)
 
-                -- get_Allimage(response)
 
     end
 
@@ -602,13 +599,13 @@ end
 
 function scene:resumeDocumentCallBack(doc_Name,Doc_bytearray,button_idvalue)
 
-			composer.removeHidden()
+		composer.removeHidden()
 
-			if button_idvalue == "Add" then
+		if button_idvalue == "Add" then
 
-		  		  Webservice.AddDocumentFromNativeAppDocumentLibrary(Doc_bytearray,doc_Name,"Docs",get_documentupload)
+	  		  Webservice.AddDocumentFromNativeAppDocumentLibrary(Doc_bytearray,doc_Name,"Docs",get_documentupload)
 
-		    end
+	    end
 
 
 end
@@ -648,6 +645,7 @@ local function imageDetail(event)
 	return true
 
 end
+
 
 
 
@@ -704,7 +702,7 @@ local function ResourceGrid_list( gridlist)
 
 		print( "file ext : "..fileExt )
 
-		if fileExt == "png" or fileExt == "jpg" or fileExt == "jpeg" or fileExt == "gif" or fileExt == "bmp" or fileExt == "tif" then
+		if fileExt == "png" or fileExt == "jpg" or fileExt == "jpeg" or fileExt == "gif" or fileExt == "bmp" or fileExt == "tif" or fileExt == "JPG" or fileExt == "JPEG" or fileExt == "BMP" or fileExt == "GIF" or fileExt == "PNG" or fileExt == "TIF" or fileExt == "TIFF" then
 
 			tempValue="res/assert/image-active.png"
 
@@ -718,7 +716,7 @@ local function ResourceGrid_list( gridlist)
 
 		elseif fileExt == "mpg" or fileExt == "au" or fileExt == "aac" or fileExt == "aif" or fileExt == "gsm" or fileExt == "mid" or fileExt == "mp3" or fileExt == "rm"  or fileExt == "wav" then
 
-			tempValue="res/assert/audio.png"
+			tempValue="res/assert/audio(white).png"
 			
 		elseif fileExt == "mpeg" or fileExt == "avi" then
 
@@ -730,6 +728,7 @@ local function ResourceGrid_list( gridlist)
 
 		end
 
+
 		if i%2 == 0 then
 
 			Background.x= W/2+W/4
@@ -739,6 +738,7 @@ local function ResourceGrid_list( gridlist)
 			Background.x=W/4
 
 		end
+
 
 		rect = display.newRect(Background.x, Background.y + Background.contentHeight/2, 149,115)
 		rect:setFillColor(1,1,1,0) 
@@ -752,7 +752,16 @@ local function ResourceGrid_list( gridlist)
 
 		print("response file "..tempValue)
 		Lefticonimage = display.newImage(tempValue,40,40)
-		Lefticonimage.width=40;Lefticonimage.height=40
+
+		if tempValue == "res/assert/audio(white).png" then
+
+			Lefticonimage.width=25;Lefticonimage.height=25
+			Lefticonimage:setFillColor(1,1,1,0.9)
+
+		else
+		    Lefticonimage.width=40;Lefticonimage.height=40
+	    end
+
 		Lefticonimage.x=Background.x
 		Lefticonimage.y=Background.y + Background.contentHeight/2 - 13	
 		Lefticonimage.value = i	
@@ -849,7 +858,6 @@ local function ResourceGrid_list( gridlist)
 
 	addEventBtn:toFront( )
 
-
 end
 
 
@@ -920,129 +928,136 @@ local function listPosition_change( event )
 					end
 				end
 				
+		return true
+end
+
+
+
+
+
+local function onTimer ( event )
+
+	print( "event time completion" )
+
+	BackFlag = false
+
+end
+
+
+
+
+
+local function onKeyEvent( event )
+
+	local phase = event.phase
+	local keyName = event.keyName
+
+	if phase == "up" then
+
+		if keyName=="back" then
+
+			if BackFlag == false then
+
+				Utils.SnackBar(ChatPage.PressAgain)
+
+				BackFlag = true
+
+				timer.performWithDelay( 3000, onTimer )
 
 				return true
-			end
 
+			elseif BackFlag == true then
 
-			local function onTimer ( event )
-
-				print( "event time completion" )
-
-				BackFlag = false
+				os.exit() 
 
 			end
+			
+		end
 
+	end
 
-			local function onKeyEvent( event )
-
-				local phase = event.phase
-				local keyName = event.keyName
-
-				if phase == "up" then
-
-					if keyName=="back" then
-
-						if BackFlag == false then
-
-							Utils.SnackBar(ChatPage.PressAgain)
-
-							BackFlag = true
-
-							timer.performWithDelay( 3000, onTimer )
-
-							return true
-
-						elseif BackFlag == true then
-
-							os.exit() 
-
-						end
-						
-					end
-
-				end
-
-				return false
-			end
+	return false
+end
 
 
 
 
 
-			function scene:create( event )
+function scene:create( event )
 
-				local sceneGroup = self.view
+	local sceneGroup = self.view
 
-				Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
-				Background.x=W/2;Background.y=H/2
+	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background.x=W/2;Background.y=H/2
 
-				tabBar = display.newRect(sceneGroup,W/2,0,W,40)
-				tabBar.y=tabBar.contentHeight/2
-				tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+	tabBar.y=tabBar.contentHeight/2
+	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
-				menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
-				menuBtn.anchorX=0
-				menuBtn.x=10;menuBtn.y=20;
+	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
+	menuBtn.anchorX=0
+	menuBtn.x=10;menuBtn.y=20;
 
-				BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-				BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-				BgText.anchorX=0
+	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
+	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
+	BgText.anchorX=0
 
-				title_bg = display.newRect(sceneGroup,0,0,W,30)
-				title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-				title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+	title_bg = display.newRect(sceneGroup,0,0,W,30)
+	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-				title = display.newText(sceneGroup,ResourceLibrary.PageTitle,0,0,native.systemFont,18)
-				title.anchorX = 0
-				title.x=5;title.y = title_bg.y
-				title:setFillColor(0)
-
-
-				if IsOwner == true then
-
-					addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 66/1.5,66/1.7 )
-					addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addResourceEvent"
-					addEventBtn:addEventListener("touch",uploadDocumentAction)
-
-				end
+	title = display.newText(sceneGroup,ResourceLibrary.PageTitle,0,0,native.systemFont,18)
+	title.anchorX = 0
+	title.x=5;title.y = title_bg.y
+	title:setFillColor(0)
 
 
-				changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
-				changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10
-				changeList_order_icon.anchorY=0
+	if IsOwner == true then
 
-				changeList_order_touch = display.newRect(sceneGroup,changeList_order_icon.x,changeList_order_icon.y+15,35,35)
-				changeList_order_touch.alpha=0.01
-				changeList_order_touch:addEventListener("touch",changeListmenuTouch)
+		addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 66/1.5,66/1.7 )
+		addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addResourceEvent"
+		addEventBtn:addEventListener("touch",uploadDocumentAction)
 
-				ResourceList_scrollview = widget.newScrollView
-				{
-					top = RecentTab_Topvalue,
-					left = 0,
-					width = W,
-					height =H-RecentTab_Topvalue,
-					hideBackground = true,
-					isBounceEnabled=false,
-					bottomPadding = 10,
-	--horizontalScrollingDisabled = false,
-	--verticalScrollingDisabled = false,
-}
+	end
 
 
-sceneGroup:insert(ResourceList_scrollview)
+	changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
+	changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10
+	changeList_order_icon.anchorY=0
 
-listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
-listTouch_bg.alpha=0.01
-listTouch_bg.id = "hide"
 
-listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+65,100,80)
-listBg.strokeWidth = 1
-listBg.id = "show"
-listBg:setStrokeColor( 0, 0, 0 , 0.3)
-listBg.id="bg"
+	changeList_order_touch = display.newRect(sceneGroup,changeList_order_icon.x,changeList_order_icon.y+15,35,35)
+	changeList_order_touch.alpha=0.01
+	changeList_order_touch:addEventListener("touch",changeListmenuTouch)
 
-list_Bylist_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y-20, 100, 25 )
+
+	ResourceList_scrollview = widget.newScrollView
+	{
+		top = RecentTab_Topvalue,
+		left = 0,
+		width = W,
+		height =H-RecentTab_Topvalue,
+		hideBackground = true,
+		isBounceEnabled=false,
+		bottomPadding = 10,
+		--horizontalScrollingDisabled = false,
+		--verticalScrollingDisabled = false,
+	}
+
+	sceneGroup:insert(ResourceList_scrollview)
+
+
+	listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
+	listTouch_bg.alpha=0.01
+	listTouch_bg.id = "hide"
+
+	listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+65,100,80)
+	listBg.strokeWidth = 1
+	listBg.id = "show"
+	listBg:setStrokeColor( 0, 0, 0 , 0.3)
+	listBg.id="bg"
+
+	list_Bylist_bg = display.newRect( changeMenuGroup, listBg.x-listBg.contentWidth/2+50, listBg.y-20, 100, 25 )
 	--list_Bylist_bg:setFillColor( 0,0,0,0.4 )
 	list_Bylist_bg.alpha=0.01
 	list_Bylist_bg.id="list"
@@ -1096,18 +1111,17 @@ function scene:show( event )
 		ga.enterScene("Resource Library")
 
 
-
 				Document_Lib_list = widget.newTableView
 		
 				{
-						left = -10,
-						top = 75,
-						height = H-75,
-						width = W+10,
-						onRowRender = onRowRender_DocLib,
-						onRowTouch = onRowTouch_DocLib,
-						hideBackground = true,
-						isBounceEnabled = false,
+					left = -10,
+					top = 75,
+					height = H-75,
+					width = W+10,
+					onRowRender = onRowRender_DocLib,
+					onRowTouch = onRowTouch_DocLib,
+					hideBackground = true,
+					isBounceEnabled = false,
 					--noLines = true,
 				}
 
@@ -1129,6 +1143,8 @@ function scene:show( event )
 
 end
 
+
+
 function scene:hide( event )
 
 	local sceneGroup = self.view
@@ -1138,9 +1154,9 @@ function scene:hide( event )
 
 
 	elseif phase == "did" then
+
 		menuBtn:removeEventListener("touch",menuTouch)
 		BgText:removeEventListener("touch",menuTouch)
-
 		Runtime:removeEventListener( "key", onKeyEvent )
 
 	end	
@@ -1148,10 +1164,9 @@ function scene:hide( event )
 end
 
 
+
 function scene:destroy( event )
 	local sceneGroup = self.view
-
-
 
 end
 

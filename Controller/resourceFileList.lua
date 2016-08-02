@@ -31,7 +31,7 @@ local words ={}
 openPage="resourcePage"
 
 local fileextensions = {".png",".jpg",".jpeg",".gif",".bmp",".tif",".tiff",".doc",".docx",".txt",".xls",".xlsx",".ppt",".pptx",".xps",".pps",".wma",".pub",".js",".swf",
-".xml",".html",".htm",".rtf" ,".pdf",".mpg",".au",".aac",".aif",".gsm",".mid",".mp3",".rm",".wav",".mpeg",".avi",".mp4",".wmv",".m4a",'JPG','JPEG','BMP','GIF','PNG','TIF','TIFF'}
+".xml",".html",".htm",".rtf" ,".pdf",".mpg",".au",".ogg",".aac",".aif",".gsm",".mid",".mp3",".rm",".wav",".mpeg",".avi",".mp4",".wmv",".m4a",'JPG','JPEG','BMP','GIF','PNG','TIF','TIFF'}
 
 local BackFlag = false
 
@@ -57,7 +57,6 @@ local filenamevalue = ""
 
 local Document_name,document_inbytearray,option_selected="","",""
 
-
 local workingdir=""
 
 --------------------------------------------------
@@ -67,44 +66,27 @@ local workingdir=""
 
 
 
-			local function onTimer ( event )
 
-				BackFlag = false
+	local function onKeyEvent( event )
 
+		local phase = event.phase
+		local keyName = event.keyName
+
+		if phase == "up" then
+
+			if keyName=="back" then
+
+				composer.hideOverlay( "slideRight", 300 )
+
+				return true
+				
 			end
 
+		end
 
-			local function onKeyEvent( event )
+		return false
+	end
 
-				local phase = event.phase
-				local keyName = event.keyName
-
-				if phase == "up" then
-
-					if keyName=="back" then
-
-						if BackFlag == false then
-
-							Utils.SnackBar(ChatPage.PressAgain)
-
-							BackFlag = true
-
-							timer.performWithDelay( 3000, onTimer )
-
-							return true
-
-						elseif BackFlag == true then
-
-							os.exit() 
-
-						end
-						
-					end
-
-				end
-
-				return false
-			end
 
 
 
@@ -153,7 +135,7 @@ local workingdir=""
 
 			    if file_array[row.index].filemode == "directory" and file_array[row.index].filemode ~= "file"  then
 
-					    local rowIcon = display.newImageRect(row,"res/assert/folderimage.png",25,25 )
+					    local rowIcon = display.newImageRect(row,"res/assert/folder-icon.png",25,25 )
 					    rowIcon.x = 20
 					    rowIcon.anchorX = 0 
 					    rowIcon.y = rowHeight * 0.5 - 5
@@ -182,11 +164,11 @@ local workingdir=""
 
 								tempValue="res/assert/pdf-active.png"
 
-						elseif fileExt == "mpg" or fileExt == "au" or fileExt == "aac" or fileExt == "aif" or fileExt == "gsm" or fileExt == "mid" or fileExt == "mp3" or fileExt == "rm"  or fileExt == "wav" then
+						elseif fileExt == "mpg" or fileExt == "au" or fileExt == "aac" or fileExt == "aif" or fileExt == "gsm" or fileExt == "mid" or fileExt == "mp3" or fileExt == "rm"  or fileExt == "wav" or fileExt == "ogg"then
 
 								tempValue="res/assert/audio.png"
 									    	
-						elseif fileExt == "mpeg" or fileExt == "avi" then
+						elseif fileExt == "mpeg" or fileExt == "avi" or fileExt == "mp4" then
 
 								tempValue="res/assert/video.png"
 						else
@@ -218,6 +200,8 @@ local workingdir=""
 	end
 
 
+
+
 	local function createPathlist(FullPath,rowvalues,rowfilemode)
 
 		local pathType1 = ""
@@ -236,41 +220,42 @@ local workingdir=""
 												end
 
 
-														  for file in lfs.dir(FullPath ) do
+												print(FullPath)
 
 
-																	if "." ~= file and ".." ~= file then
 
-																         --  print("FILE 123: " .. file)
+																    for file in lfs.dir(FullPath ) do
 
-																         local fhd = io.open( FullPath.."/"..file ) 
+																			if "." ~= file and ".." ~= file then
 
-																	         if fhd then
-																			 		  SubFile = FullPath.."/"..file
+																		         --  print("FILE 123: " .. file)
 
-																			          SubFileMode = lfs.attributes(SubFile).mode
+																		         local fhd = io.open( FullPath.."/"..file ) 
 
-																			         -- print("mode +++++++ : "..lfs.attributes(SubFile).mode)
+																			         if fhd then
 
-																			          file_array[#file_array+1] = { name = file , filemode = SubFileMode}
+																					 		  SubFile = FullPath.."/"..file
 
-																			else
+																					          SubFileMode = lfs.attributes(SubFile).mode
 
-																			 			--native.showAlert( "File", "Permission Denied" ,{"OK"} )
+																					         -- print("mode +++++++ : "..lfs.attributes(SubFile).mode)
 
-																			end
+																					          file_array[#file_array+1] = { name = file , filemode = SubFileMode}
 
+																					else
 
-																        
-																	   	
-																     end
+																					 			--native.showAlert( "File", "Permission Denied" ,{"OK"} )
 
-															end
+																					end
+
+																			   	
+																		     end
+
+																	  end
+
 
 															if #file_array >= 1 then
-
-																
-
+														
 																workingdir = FullPath
 														  		title.text = string.gsub( rowvalues, "//.","")
 															    title.type = "innertype"
@@ -345,50 +330,31 @@ local workingdir=""
 
 																									   io.close( fileHandle )
 
-
-																									 --  print("file_inbytearray "..document_inbytearray)
-
-																									 --  print("bbb ",size1)
-
-																									  -- local flag = formatSizeUnits(size1)
-
-
-
-																										-- 	local options = {
-																										-- 		effect = "slideRight",
-																										-- 		time =300,
-																										-- 		params = { Document_Name = Document_name, Document_bytearray = document_inbytearray, temp_docfile = written_file , selectedoption = option_selected }
-																										-- 	}
-
-																									--	if flag == true then
-
 																									   		composer.hideOverlay()
 
-																									--   	end
 
+																						 else
 
-																					 else
+																						 	    option_selected = "Cancel"
 
-																					 	    option_selected = "Cancel"
+																						 	    local tmpPath = system.pathForFile(Document_name,system.DocumentsDirectory)
 
-																					 	    local tmpPath = system.pathForFile(Document_name,system.DocumentsDirectory)
+																								os.remove( tmpPath )
 
-																							os.remove( tmpPath )
+																						 end
 
-																					 end
-
-																	end
+																	                end
 
 																			
-																	local option = {
-																					 {content="Add",positive=true},
-																					 {content=CommonWords.cancel,positive=true},
-																				}
+																				local option = {
+																								 {content="Add",positive=true},
+																								 {content=CommonWords.cancel,positive=true},
+																							}
 
-																	genericAlert.createNew(ResourceLibrary.DocumentUpload, ResourceLibrary.DocumentUploadAlert ,option,onComplete)
+																				genericAlert.createNew(ResourceLibrary.DocumentUpload, ResourceLibrary.DocumentUploadAlert ,option,onComplete)
 
 
-																		return 					
+																					return 					
 
 																end
 														
@@ -396,41 +362,50 @@ local workingdir=""
 
 
 
-													if fileValidation == false then
+													        if fileValidation == false then
 
-															local option ={
+															    local option ={
 																	        {content=CommonWords.ok,positive=true},
 																          }
 																genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
 
-
-													end
+													        end
 	
-
-											end
+										end
 
 
 
 								if #file_array == 0  then
-									NoEvent = display.newText( scene.view, "This folder is empty", 0,0,0,0,native.systemFontBold,16)
+
+									workingdir = FullPath
+
+									title.text = string.gsub( rowvalues, "//.","")
+								    title.type = "innertype"
+								    back_icon_bg.type = "innertype"
+								    back_icon.type = "innertype"
+
+									NoEvent = display.newText( scene.view, ResourceLibrary.EmptyFolder , 0,0,0,0,native.systemFontBold,16)
 									NoEvent.x=W/2;NoEvent.y=H/2
 									NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 							    end
 
 
-							    Documents_list:deleteAllRows()
+							    if Documents_list ~= nil then Documents_list:deleteAllRows() end
 
 
 							    for i = 1, #file_array do
 
-							       Documents_list:insertRow{ rowHeight = 45,rowColor = 
-							       {
+							        Documents_list:insertRow{ rowHeight = 45,rowColor = 
+							        {
 							    	default = { 1, 1, 1, 0 },
 							    	over={ 1, 0.5, 0, 0 },
 							    	}}
+
 							    end
 
 	end
+
+
 
 
 			local function onRowTouch_DocLibList( event )
@@ -445,13 +420,13 @@ local workingdir=""
 			        local rowWidth = row.contentWidth
 
 
-    		                    local rowvalues = file_array[row.index].name
-    		                    rowfilemode = file_array[row.index].filemode
-								local FullPath = workingdir.."/"..rowvalues
-							    local pathType1 = ""
+                    local rowvalues = file_array[row.index].name
+                    rowfilemode = file_array[row.index].filemode
+					local FullPath = workingdir.."/"..rowvalues
+				    local pathType1 = ""
 
 
-							    createPathlist(FullPath,rowvalues,rowfilemode)
+				    createPathlist(FullPath,rowvalues,rowfilemode)
 
 
 			 end
@@ -706,7 +681,10 @@ local workingdir=""
 
 
 
-		    getFileList()
+		  --  getFileList()
+
+
+		         
 
 		    
 
@@ -724,25 +702,42 @@ local workingdir=""
 				isBounceEnabled = false,
 			    --noLines = true,
 			}
+			
 
 			sceneGroup:insert(Documents_list)
+			
+			        local rowvalues = ""
+                    rowfilemode = ""
+					local FullPath = "/"
+				    local pathType1 = ""
 
 
-			if #file_array == 0  then
-				NoEvent = display.newText( sceneGroup, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
-				NoEvent.x=W/2;NoEvent.y=H/2
-				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-		    end
+			createPathlist(FullPath,rowvalues,rowfilemode)
 
 
-		    for i = 1, #file_array do
-		       -- Insert a row into the tableView
-		       Documents_list:insertRow{ rowHeight = 45,rowColor = 
-		       {
-		    	default = { 1, 1, 1, 0 },
-		    	over={ 1, 0.5, 0, 0 },
-		    	}}
-		    end
+
+		    title.text = ResourceLibrary.PageTitle
+		    title.type = "outerfile"
+		    back_icon_bg.type = "outerfile"
+		    back_icon.type = "outerfile"
+
+
+
+			-- if #file_array == 0  then
+			-- 	NoEvent = display.newText( sceneGroup, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
+			-- 	NoEvent.x=W/2;NoEvent.y=H/2
+			-- 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+		    -- end
+
+
+		 --    for i = 1, #file_array do
+		 --       -- Insert a row into the tableView
+		 --       Documents_list:insertRow{ rowHeight = 45,rowColor = 
+		 --       {
+		 --    	default = { 1, 1, 1, 0 },
+		 --    	over={ 1, 0.5, 0, 0 },
+		 --    	}}
+		 --    end
 
 
 
