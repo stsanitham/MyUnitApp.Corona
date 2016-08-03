@@ -23,10 +23,13 @@ local Background,BgText
 
 local menuBtn
 local List_array = {}
+local Category_array = {}
 local position_array = {}
 local imageArray = {}
 local uploadArray = {}
 local ImageUploadGroup = {}
+
+local Category_bg,Category_listBg,Category_List
 
 local careerList_scrollview
 
@@ -41,6 +44,8 @@ openPage="imageLibPage"
 local BackFlag = false
 
 local changeMenuGroup = display.newGroup();
+
+local changeCategoryGroup = display.newGroup();
 
 local RecentTab_Topvalue = 70
 
@@ -570,7 +575,7 @@ shareImg_bg:addEventListener("touch",listTouch)
 
 row.ImageId = List_array[row.index].ImageId
 row.FilePath = List_array[row.index].FilePath
-addImageBg:toFront( );addEventBtn:toFront( );floatingButtonGroup:toFront( )
+addImageBg:toFront( );addEventBtn:toFront( );floatingButtonGroup:toFront( );changecategory_icon:toFront()
 
 end
 
@@ -599,6 +604,82 @@ local function onRowTouch_ImageLib( event )
 	end
 
 end
+
+
+
+
+
+
+local function onRowRenderCategoryList( event )
+
+ local row = event.row
+
+    local rowHeight = row.contentHeight
+    local rowWidth = row.contentWidth
+
+    print("345345345345345345 "..Category_array[row.index].MyImageCategoryName)
+
+
+    local textname = display.newText(row,Category_array[row.index].MyImageCategoryName,0,0,native.systemFont,15)
+   -- textname.x= Category_listBg.x + Category_listBg.contentWidth/2 + 10;textname.y=Category_listBg.y + 5
+    textname.anchorX = 0
+    textname.x = 15
+    textname.y = rowHeight * 0.5
+    textname:setFillColor(0)
+
+
+	    if isIos then
+
+	    	    if textname.text:len() > 20 then
+						textname.text = textname.text:sub(1,20).."..."
+			   	end
+
+	    elseif isAndroid then
+
+			    if textname.text:len() > 15 then
+						textname.text = textname.text:sub(1,15).."..."
+			   	end
+
+	    end
+
+
+    local line = display.newRect(row,W/2,rowHeight/2,W,1.1)
+    line.y=rowHeight-1.1
+    line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+
+
+end
+
+
+
+
+local function onRowTouchCategoryList( event )
+	local phase = event.phase
+	local row = event.target
+
+	if( "press" == phase ) then
+
+	elseif ( "release" == phase ) then
+
+		-- local options = {
+		-- 	effect = "flip",
+		-- 	time =100,
+		-- 	params = { ImageList = List_array,count = row.index }
+		-- }
+
+		-- Runtime:removeEventListener( "key", onKeyEvent )
+
+		-- composer.showOverlay( "Controller.imageSlideView", options )
+
+		print("&&&&&&&&&&&&&&&&&&&&&& haiiiii ")
+
+
+	end
+
+end
+
+
+
 
 
 
@@ -636,6 +717,9 @@ local function BgTouch(event)
 			else
 				changeMenuGroup.isVisible=true
 			end
+
+
+
 		elseif event.target.id == "addimage" then
 
 					local function hide( event )
@@ -654,6 +738,7 @@ local function BgTouch(event)
 	return true
 
 end
+
 
 
 
@@ -677,15 +762,184 @@ local function changeListmenuTouch(event)
 		changeMenuGroup:toFront()
 		
 		if changeMenuGroup.isVisible == true then
+
 			changeMenuGroup.isVisible=false
+			
 		else
+
 			changeMenuGroup.isVisible=true
+
 		end
 	end
 
 	return true
 
 end
+
+
+
+
+local LEFT = 0
+local CENTER = display.contentCenterX
+local RIGHT = display.contentWidth - 150
+
+
+
+local function handleSwipe( event )
+    if ( event.phase == "moved" ) then
+        local dX = event.x - event.xStart
+        print( event.x, event.xStart, dX )
+        if ( dX > 10 ) then
+            --swipe right
+            local spot = RIGHT
+            if ( event.target.x == LEFT ) then
+                spot = CENTER
+            end
+
+            changeCategoryGroup:toFront()
+            addImageBg.alpha=0.3
+            changeCategoryGroup.isVisible = true
+            transition.to( changeCategoryGroup, { time=500, x=spot } )
+            transition.to( event.target, { time=500, x=spot } )
+
+
+			      	   	local function getCategoryList( response )
+
+					        print(" ************* Category List ************* " ,json.encode(response))
+
+
+									for j=#Category_array, 1, -1 do 
+										display.remove(Category_array[#Category_array])
+										Category_array[#Category_array] = nil
+									end
+
+
+								    Category_array = response
+
+									Category_List:deleteAllRows()
+
+									-- if #Category_array == 0  then
+									-- 	NoEvent = display.newText( scene.view, ImageLibrary.NoImage, 0,0,0,0,native.systemFontBold,16)
+									-- 	NoEvent.x=W/2;NoEvent.y=H/2
+									-- 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+									-- end
+
+
+									for i = 1, #Category_array do
+								    -- Insert a row into the tableView
+								    Category_List:insertRow{ rowHeight = 36,rowColor = 
+							        {
+							    	default = { 1, 1, 1, 0 },
+							    	over={ 1, 0.5, 0, 0 },
+
+							    	}}
+
+								    end
+
+
+
+					    end
+
+				        Webservice.GetImageLibraryCategory(getCategoryList)
+
+
+        elseif ( dX < -10 ) then
+            --swipe left
+            local spot = LEFT - 15
+            if ( event.target.x == RIGHT ) then
+                spot = LEFT - 15
+            end
+
+            addImageBg.alpha=0
+
+            transition.to( changeCategoryGroup, { time=500, x=spot } )
+            transition.to( event.target, { time=500, x=spot } )
+        end
+    end
+    return true
+end
+ 
+
+
+
+
+
+local function CategoryList(  event )
+
+		if event.phase == "began" then
+
+			display.getCurrentStage():setFocus( event.target )
+
+			      changeCategoryGroup:toFront()
+
+			      if changeCategoryGroup.isVisible == false then
+
+			      	    changeCategoryGroup.isVisible = true
+
+			      	    changeList_order_touch:removeEventListener("touch",changeListmenuTouch)
+
+			      	   	local function getCategoryList( response )
+
+					        print(" ************* Category List ************* " ,json.encode(response))
+
+
+									for j=#Category_array, 1, -1 do 
+										display.remove(Category_array[#Category_array])
+										Category_array[#Category_array] = nil
+									end
+
+
+								    Category_array = response
+
+									Category_List:deleteAllRows()
+
+									Category_List:toFront()
+
+									-- if #Category_array == 0  then
+									-- 	NoEvent = display.newText( scene.view, ImageLibrary.NoImage, 0,0,0,0,native.systemFontBold,16)
+									-- 	NoEvent.x=W/2;NoEvent.y=H/2
+									-- 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+									-- end
+
+
+									for i = 1, #Category_array do
+								    -- Insert a row into the tableView
+								    Category_List:insertRow{ rowHeight = 36,rowColor = 
+							        {
+							    	default = { 1, 1, 1, 0 },
+							    	over={ 1, 0.5, 0, 0 },
+
+							    	}}
+								    end
+
+
+
+					    end
+
+				        Webservice.GetImageLibraryCategory(getCategoryList)
+
+
+			      else
+
+			      	   changeCategoryGroup.isVisible = false
+
+			      	   changeList_order_touch:addEventListener("touch",changeListmenuTouch)
+
+			      end
+
+		elseif event.phase == "ended" then
+
+		    display.getCurrentStage():setFocus( nil )
+
+		end
+
+		return true
+	
+end
+
+
+
+
 
 
 
@@ -907,7 +1161,7 @@ end
 careerList_scrollview:insert(tempGroup)
 
 end
-addImageBg:toFront( );addEventBtn:toFront( );floatingButtonGroup:toFront( )
+addImageBg:toFront( );addEventBtn:toFront( );floatingButtonGroup:toFront( );changecategory_icon:toFront()
 end
 
 
@@ -1346,25 +1600,6 @@ end
 
 
 
-local function CategoryList(  event )
-
-		if event.phase == "began" then
-
-		elseif event.phase == "ended" then
-
-			local function getCategoryList( response )
-
-		      print(" ************* Category List ************* " ,json.encode(response))
-
-		    end
-
-	        Webservice.GetImageLibraryCategory(getCategoryList)
-
-		end
-	
-end
-
-
 
 
 
@@ -1521,15 +1756,79 @@ local function listPosition_change( event )
 
 ----------------------------------------------     icon for category selection     ----------------------------------------------------
 
-				changecategory_icon = display.newImageRect(sceneGroup,"res/assert/category.png",20,16)
-				changecategory_icon.x=W-60;changecategory_icon.y=title_bg.y-10
+
+				changecategory_icon = display.newImageRect(sceneGroup,"res/assert/semicircle.png",45,55)
+				changecategory_icon.x= -15;changecategory_icon.y=H/2 + 10
+				changecategory_icon.anchorX = 0
 				changecategory_icon.anchorY=0
+				changecategory_icon.isVisible = false
+				changecategory_icon:addEventListener("touch",handleSwipe)
 
-				changecategory_touch = display.newRect(sceneGroup,changecategory_icon.x,changecategory_icon.y+15,26,35)
-				changecategory_touch.alpha=0.01
-				changecategory_touch:addEventListener("touch",CategoryList)
+				changecategory_icon:toFront()
 
---------------------------------------------------------------------------------------------------------------------------------------
+				changecategory_touch = display.newRect(sceneGroup,changecategory_icon.x,changecategory_icon.y+23,50,55)
+				changecategory_touch.alpha=1
+				changecategory_touch.anchorX = 0
+				changecategory_touch.isVisible = false
+				changecategory_touch.anchorY = 0
+				changecategory_touch:addEventListener("touch",handleSwipe)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+				---Category List---
+
+
+			   	Category_bg = display.newRect( changeCategoryGroup, W/2+7,title_bg.y-10+90,185,184 )
+			   	Category_bg.x = -170
+			   	Category_bg.anchorX = 0
+			   	Category_bg.y = H/2+30
+			  	Category_bg.id = "hide"
+			  	Category_bg:setFillColor( 0 )
+
+
+			    Category_listBg = display.newRect(changeCategoryGroup,W/2+7,title_bg.y-10+90,185,184)
+				Category_listBg.strokeWidth = 1
+				Category_listBg.x = -170
+			   	Category_listBg.anchorX = 0
+			   	Category_listBg.y = H/2+30
+				Category_listBg.id = "hide"
+				Category_listBg:setStrokeColor( 0, 0, 0 , 0.3)
+
+			  	Category_List = widget.newTableView(
+			  	{
+			  		left = -170,
+					top = 75,
+					height = H-75,
+					width = W,
+			  		onRowRender = onRowRenderCategoryList,
+			  		onRowTouch = onRowTouchCategoryList,
+			  		hideBackground = true,
+			  		isBounceEnabled = false,
+			  		noLines = true,
+				    -- listener = scrollListener
+				})
+
+
+
+			  	changeCategoryGroup:insert(Category_List)
+
+			  	 Category_List.anchorX = 0
+			  	 Category_List.anchorY = 0
+			  	 Category_List.x = Category_listBg.x
+			  	 Category_List.y = Category_listBg.y
+			  	Category_List.id = "hide"
+			  	Category_List.isVisible = false
+
+			  	Category_bg.anchorY = 0
+			  	Category_bg.isVisible = false
+
+			  	changeCategoryGroup.isVisible=false
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
 
 
 				changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
@@ -1597,6 +1896,8 @@ local function listPosition_change( event )
 				listTouch_bg:addEventListener("touch",BgTouch)
 
 				sceneGroup:insert(changeMenuGroup)
+
+				sceneGroup:insert(changeCategoryGroup)
 
 				MainGroup:insert(sceneGroup)
 

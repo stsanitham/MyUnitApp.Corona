@@ -809,7 +809,7 @@ local function searchListener( event )
 
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
 
-			search.text = ""
+			--search.text = ""
        
             native.setKeyboardFocus( nil )
 
@@ -818,48 +818,43 @@ local function searchListener( event )
 
 		    	if event.text:len() == 0 then
 
+				    		if NoEvent.isVisible == true then
+				    			NoEvent.isVisible = false
+				    		end
 
-		    		if NoEvent.isVisible == true then
-		    			NoEvent.isVisible = false
-		    		end
+							for i=1,#byNameArray do
+								byNameArray[i] = nil
+							end
 
 
-					for i=1,#byNameArray do
-						byNameArray[i] = nil
-					end
+						for i=1,#Listresponse_array do
 
-					for i=1,#Listresponse_array do
+								local list_Name = Listresponse_array[i].Last_Name
 
-						local list_Name = Listresponse_array[i].Last_Name
+								if Listresponse_array[i].First_Name then
 
-						
+									list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
 
-						if Listresponse_array[i].First_Name then
+								end
+								
 
-							list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
+								local temp = {}
+
+								if list_Name:sub(1,1) == " " then
+									list_Name = list_Name:sub( 2,list_Name:len())
+								end
+
+								temp.Name = list_Name
+								temp.CarrierProgress = Listresponse_array[i].Email_Address
+								temp.Contact_Id = Listresponse_array[i].Contact_Id
+								temp.Image_Path = Listresponse_array[i].Image_Path
+								temp.Image_Name = Listresponse_array[i].Image_Name
+
+								byNameArray[#byNameArray+1] = temp
 
 						end
 
-						
-
-						local temp = {}
-
-						if list_Name:sub(1,1) == " " then
-							list_Name = list_Name:sub( 2,list_Name:len())
-						end
-
-						temp.Name = list_Name
-						temp.CarrierProgress = Listresponse_array[i].Email_Address
-						temp.Contact_Id = Listresponse_array[i].Contact_Id
-						temp.Image_Path = Listresponse_array[i].Image_Path
-						temp.Image_Name = Listresponse_array[i].Image_Name
-
-						byNameArray[#byNameArray+1] = temp
-
-
-					end
-
-					careePath_list(byNameArray)
+						careePath_list(byNameArray)
 
 
 		    	else
@@ -1982,7 +1977,7 @@ function scene:create( event )
 	count_details = display.newText(sceneGroup,"",0,0,native.systemFont,18)
 	count_details.anchorX = 0
 	count_details.isVisible = false
-	count_details.x= W-130;count_details.y = title_bg.y
+	count_details.x= W-135;count_details.y = title_bg.y
 	count_details:setFillColor(0)
 
 
@@ -2010,27 +2005,28 @@ function scene:create( event )
 			            local file = io.open( filePath)
 			            
 			            if file then
-			            	io.close( file )
-			            	GroupIcon = display.newImageRect( sceneGroup, editId..".png", system.DocumentsDirectory, 38, 33 )
-			            	GroupIcon.width = 38;GroupIcon.height = 33
+
+			            		io.close( file )
+			            		GroupIcon = display.newImageRect( sceneGroup, editId..".png", system.DocumentsDirectory, 38, 33 )
+			            		GroupIcon.width = 38;GroupIcon.height = 33
 			            		local mask = graphics.newMask( "res/assert/masknew.png" )
     							GroupIcon:setMask( mask )
     							GroupIcon.maskScaleX, GroupIcon.maskScaleY = 0.95,0.88
 
 
-    									GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+    							GroupIcon.x = backbutton.x + backbutton.contentWidth +5
 								GroupIcon.y = subjectBar.y +20
 								GroupIcon.anchorX=0
 								GroupIcon.id = "imgEdit"
 								GroupIcon.isVisible = false
 								GroupIcon:addEventListener( "touch"	, bgTouch )
 
-									GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
+							    GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
 								GroupIconEdit.x = GroupIcon.x
 								GroupIconEdit.y = GroupIcon.y
 								GroupIconEdit.anchorX=0
 								GroupIconEdit.id = "imgEdit"
-		GroupIconEdit.isVisible = false
+								GroupIconEdit.isVisible = false
 
 		
 			            end
@@ -2049,14 +2045,14 @@ function scene:create( event )
 			end
 
 		GroupIcon = display.newImageRect( sceneGroup,imagename, 38, 33 )
-			GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+		GroupIcon.x = backbutton.x + backbutton.contentWidth +5
 		GroupIcon.y = subjectBar.y +20
 		GroupIcon.anchorX=0
 		GroupIcon.id = "imgEdit"
 		GroupIcon.isVisible = false
 		GroupIcon:addEventListener( "touch"	, bgTouch )
 
-			GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/add_thumb.png",38,33 )
+		GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/add_thumb.png",38,33 )
 		GroupIconEdit.x = GroupIcon.x
 		GroupIconEdit.y = GroupIcon.y
 		GroupIconEdit.anchorX=0
