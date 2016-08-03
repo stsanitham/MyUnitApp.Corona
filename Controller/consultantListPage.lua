@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 --
--- instagram Screen
+-- Consultant list Screen
 --
 ----------------------------------------------------------------------------------
 
@@ -409,6 +409,63 @@ end
 
 
 
+local function onSwitchPress( event )
+
+	local switch = event.target
+
+	if tostring(switch.isOn) == "true" then
+
+		local contactid = switch.value
+
+		checkedstate = checkedstate + 1
+
+		print( #selected_Contact )
+
+		selected_Contact[#selected_Contact+1] = contactid
+
+
+	elseif tostring(switch.isOn) == "false" then
+		local contactid = switch.value
+		checkedstate = checkedstate - 1
+
+		for i=1,#selected_Contact do
+			if selected_Contact[i] == contactid then
+
+				selected_Contact[i] = nil
+
+			end
+
+		end
+
+	end
+
+
+				  --  if addGroupid_value == "addGroup" and pageid_value == "broadcast"  then
+
+				  if checkedstate > 0 then
+
+				  	count_details.isVisible = true
+
+				  	count_details.text = checkedstate..MessagePage.SelectedNumber
+
+
+				      		-- totalcareerlist = switch.totalvalue - 1
+
+				        --     print("test @@@@@@@@@@@@@@@@@@@@@@@ : "..checkedstate.."/"..totalcareerlist)
+
+				        --     count_details.x = W-55
+
+				        --     count_details.text = checkedstate.."/"..totalcareerlist
+
+				    else
+
+				    	count_details.isVisible = false
+
+				    end
+
+					--end
+
+end
 
 
 
@@ -1359,52 +1416,6 @@ end
 
 
 
-local function onSwitchPress( event )
-
-	local switch = event.target
-
-	if tostring(switch.isOn) == "true" then
-
-		local contactid = switch.value
-
-		checkedstate = checkedstate + 1
-
-
-	elseif tostring(switch.isOn) == "false" then
-
-		checkedstate = checkedstate - 1
-
-	end
-
-
-				  --  if addGroupid_value == "addGroup" and pageid_value == "broadcast"  then
-
-				  if checkedstate > 0 then
-
-				  	count_details.isVisible = true
-
-				  	count_details.text = checkedstate..MessagePage.SelectedNumber
-
-
-				      		-- totalcareerlist = switch.totalvalue - 1
-
-				        --     print("test @@@@@@@@@@@@@@@@@@@@@@@ : "..checkedstate.."/"..totalcareerlist)
-
-				        --     count_details.x = W-55
-
-				        --     count_details.text = checkedstate.."/"..totalcareerlist
-
-				    else
-
-				    	count_details.isVisible = false
-
-				    end
-
-					--end
-
-				end
-
-
 
 
 
@@ -1571,7 +1582,6 @@ function getChatGroupCreation(response )
 
 		groupId = editId
 
-		print( "%%%%%%%%%%%%%%" )
 		editedgroupname = groupcreation_response.MyUnitBuzzGroupName
 
 	else
@@ -1711,35 +1721,35 @@ if(validation == true) then
 
 	--GroupSubject.text = groupSubjectname
 
-	for i=1,#selected_Contact do
+	-- for i=1,#selected_Contact do
 
-		selected_Contact[i]=nil
+	-- 	selected_Contact[i]=nil
 
-	end
+	-- end
 
 	
-	for i=1,#careerListArray do
+	-- for i=1,#careerListArray do
 
 
-		local tempGroup = careerListArray[i]
+	-- 	local tempGroup = careerListArray[i]
 
-		for j=1,tempGroup.numChildren do
+	-- 	for j=1,tempGroup.numChildren do
 
-			if tempGroup[j].id == "email_Checkbox" then
+	-- 		if tempGroup[j].id == "email_Checkbox" then
 
-				if tostring(tempGroup[j].isOn) == "true" then
+	-- 			if tostring(tempGroup[j].isOn) == "true" then
 
-					selected_Contact[#selected_Contact+1] = tempGroup[j].value
+	-- 				selected_Contact[#selected_Contact+1] = tempGroup[j].value
 
-							      				--print(selected_Contact[#selected_Contact+1])
+	-- 						      				--print(selected_Contact[#selected_Contact+1])
 
-							      			end
+	-- 			end
 
-							      		end
+	-- 		end
 
-							      	end
+	-- 	end
 
-							      end
+	-- end
 
 
 
