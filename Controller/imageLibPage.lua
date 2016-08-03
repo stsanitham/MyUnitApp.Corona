@@ -1344,6 +1344,31 @@ end
 
 
 
+
+
+local function CategoryList(  event )
+
+		if event.phase == "began" then
+
+		elseif event.phase == "ended" then
+
+			local function getCategoryList( response )
+
+		      print(" ************* Category List ************* " ,json.encode(response))
+
+		    end
+
+	        Webservice.GetImageLibraryCategory(getCategoryList)
+
+		end
+	
+end
+
+
+
+
+
+
 local function listPosition_change( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -1493,6 +1518,18 @@ local function listPosition_change( event )
 				fromCameraIconTips.y=fromCameraIconTipsRect.y
 
 				floatingButtonGroup.isVisible=false
+
+----------------------------------------------     icon for category selection     ----------------------------------------------------
+
+				changecategory_icon = display.newImageRect(sceneGroup,"res/assert/category.png",20,16)
+				changecategory_icon.x=W-60;changecategory_icon.y=title_bg.y-10
+				changecategory_icon.anchorY=0
+
+				changecategory_touch = display.newRect(sceneGroup,changecategory_icon.x,changecategory_icon.y+15,26,35)
+				changecategory_touch.alpha=0.01
+				changecategory_touch:addEventListener("touch",CategoryList)
+
+--------------------------------------------------------------------------------------------------------------------------------------
 
 
 				changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)

@@ -471,6 +471,57 @@ end
 
 
 
+local function onSwitchPress( event )
+
+	local switch = event.target
+
+	if tostring(switch.isOn) == "true" then
+
+		local contactid = switch.value
+
+		checkedstate = checkedstate + 1
+
+
+	elseif tostring(switch.isOn) == "false" then
+
+		checkedstate = checkedstate - 1
+
+	end
+
+
+				  --  if addGroupid_value == "addGroup" and pageid_value == "broadcast"  then
+
+				  if checkedstate > 0 then
+
+				  	count_details.isVisible = true
+
+				  	count_details.text = checkedstate..MessagePage.SelectedNumber
+
+
+				      		-- totalcareerlist = switch.totalvalue - 1
+
+				        --     print("test @@@@@@@@@@@@@@@@@@@@@@@ : "..checkedstate.."/"..totalcareerlist)
+
+				        --     count_details.x = W-55
+
+				        --     count_details.text = checkedstate.."/"..totalcareerlist
+
+				    else
+
+				    	count_details.isVisible = false
+
+				    end
+
+					--end
+
+				end
+
+
+
+
+
+
+
 local function careePath_list( list )
 
 
@@ -619,9 +670,6 @@ local function careePath_list( list )
 
 			contactidvalue =  list[i].Contact_Id
 
-
-
-
 			local selectcontact_checkbox = widget.newSwitch(
 			{
 				left = 15,
@@ -649,7 +697,9 @@ local function careePath_list( list )
 			backbutton.isVisible = true
 			GroupIcon.isVisible = true
 			GroupIconEdit.isVisible = true
+
 			if addGroupid_value == "editMember" then
+
 				for j=1,#editContacts do
 
 					if tonumber(contactidvalue) == tonumber(editContacts[j]) then
@@ -658,6 +708,7 @@ local function careePath_list( list )
 					end
 
 				end
+
 			end
 
 
@@ -1171,6 +1222,13 @@ end
 
 
 
+
+
+
+
+
+
+
 local function CreateTabBarIcons( )
 
 	if tab_Group_btn ~= nil then if tab_Group_btn.y then tab_Group_btn:removeSelf( );tab_Group_btn=nil end end
@@ -1412,8 +1470,6 @@ local function TabbarTouch( event )
 	return true 
 
 end
-
-
 
 
 

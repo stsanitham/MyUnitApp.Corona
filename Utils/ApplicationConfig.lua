@@ -235,5 +235,9 @@ ApplicationConfig.ForwarChatMessageDetails = ApplicationConfig.BASE_URL.."/MyUni
 
 ApplicationConfig.GetBroastcastDetailsbyContactId = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetBroastcastDetailsbyContactId"
 
+ApplicationConfig.GetImageLibraryCategory = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetImageLibraryCategory"
+
+
+
 
 
