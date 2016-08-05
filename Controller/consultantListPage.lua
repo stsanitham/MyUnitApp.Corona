@@ -59,7 +59,7 @@ local Image
 
 local AttachmentName,AttachmentPath = "",""
 
-local editContacts = {}
+local selected_Contact = {}
 
 local editId,GroupIcon
 
@@ -429,6 +429,7 @@ local function onSwitchPress( event )
 		checkedstate = checkedstate - 1
 
 		for i=1,#selected_Contact do
+
 			if selected_Contact[i] == contactid then
 
 				selected_Contact[i] = nil
@@ -439,9 +440,19 @@ local function onSwitchPress( event )
 
 	end
 
+	print(json.encode(selected_Contact))
+
 
 				  --  if addGroupid_value == "addGroup" and pageid_value == "broadcast"  then
 
+
+				  	checkedstate=0
+
+				  	for i=1,#selected_Contact do
+				  		if selected_Contact[i] ~= nil then
+				  			checkedstate = checkedstate+1
+				  		end
+				  	end
 				  if checkedstate > 0 then
 
 				  	count_details.isVisible = true
@@ -466,58 +477,6 @@ local function onSwitchPress( event )
 					--end
 
 end
-
-
-
-
-
-local function onSwitchPress( event )
-
-	local switch = event.target
-
-	if tostring(switch.isOn) == "true" then
-
-		local contactid = switch.value
-
-		checkedstate = checkedstate + 1
-
-
-	elseif tostring(switch.isOn) == "false" then
-
-		checkedstate = checkedstate - 1
-
-	end
-
-
-				  --  if addGroupid_value == "addGroup" and pageid_value == "broadcast"  then
-
-				  if checkedstate > 0 then
-
-				  	count_details.isVisible = true
-
-				  	count_details.text = checkedstate..MessagePage.SelectedNumber
-
-
-				      		-- totalcareerlist = switch.totalvalue - 1
-
-				        --     print("test @@@@@@@@@@@@@@@@@@@@@@@ : "..checkedstate.."/"..totalcareerlist)
-
-				        --     count_details.x = W-55
-
-				        --     count_details.text = checkedstate.."/"..totalcareerlist
-
-				    else
-
-				    	count_details.isVisible = false
-
-				    end
-
-					--end
-
-				end
-
-
-
 
 
 
@@ -700,10 +659,10 @@ local function careePath_list( list )
 
 			if addGroupid_value == "editMember" then
 
-				for j=1,#editContacts do
+				for j=1,#selected_Contact do
 
-					if tonumber(contactidvalue) == tonumber(editContacts[j]) then
-						selectcontact_checkbox:setState( { isOn=true, isAnimated=true, onComplete=onSwitchPress } )
+					if tonumber(contactidvalue) == tonumber(selected_Contact[j]) then
+						selectcontact_checkbox:setState( { isOn=true, isAnimated=true } )
 
 					end
 
@@ -808,9 +767,7 @@ local function searchListener( event )
        
 
     elseif ( event.phase == "ended" or event.phase == "submitted" ) then
-
-			search.text = ""
-       
+      
             native.setKeyboardFocus( nil )
 
     elseif ( event.phase == "editing" ) then
@@ -2162,7 +2119,7 @@ function scene:show( event )
 
 			pageid_value = event.params.page_id
 
-			editContacts = event.params.contacts
+			selected_Contact = event.params.contacts
 
 			if event.params.status ~= nil and event.params.status == "forward" then
 
@@ -2312,7 +2269,7 @@ function scene:show( event )
 
 	    		editId = event.params.contactId
 
-	    		count_details.text = #editContacts..MessagePage.SelectedNumber
+	    		count_details.text = #selected_Contact..MessagePage.SelectedNumber
 
 	    	else
 

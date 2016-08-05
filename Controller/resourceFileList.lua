@@ -681,7 +681,7 @@ local workingdir=""
 
 
 
-		  --  getFileList()
+		 
 
 
 		         
@@ -711,8 +711,12 @@ local workingdir=""
 					local FullPath = "/"
 				    local pathType1 = ""
 
+			if not isAndroid then   
+				  getFileList()
+			else
 
-			createPathlist(FullPath,rowvalues,rowfilemode)
+				createPathlist(FullPath,rowvalues,rowfilemode)
+			end
 
 
 
