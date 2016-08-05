@@ -477,42 +477,41 @@ local function onSwitchPress( event )
 
 	if tostring(switch.isOn) == "true" then
 
-		local contactid = switch.value
+			local contactid = switch.value
 
-		checkedstate = checkedstate + 1
-
+			checkedstate = checkedstate + 1
 
 	elseif tostring(switch.isOn) == "false" then
 
-		checkedstate = checkedstate - 1
+			checkedstate = checkedstate - 1
 
 	end
 
-				  --  if addGroupid_value == "addGroup" and pageid_value == "broadcast"  then
+		    --  if addGroupid_value == "addGroup" and pageid_value == "broadcast"  then
 
-				  if checkedstate > 0 then
+		    if checkedstate > 0 then
 
-				  	count_details.isVisible = true
+		  	   count_details.isVisible = true
 
-				  	count_details.text = checkedstate..MessagePage.SelectedNumber
+		  	   count_details.text = checkedstate..MessagePage.SelectedNumber
 
-				      	-- totalcareerlist = switch.totalvalue - 1
+		      	-- totalcareerlist = switch.totalvalue - 1
 
-				        --     print("test @@@@@@@@@@@@@@@@@@@@@@@ : "..checkedstate.."/"..totalcareerlist)
+		        --     print("test @@@@@@@@@@@@@@@@@@@@@@@ : "..checkedstate.."/"..totalcareerlist)
 
-				        --     count_details.x = W-55
+		        --     count_details.x = W-55
 
-				        --     count_details.text = checkedstate.."/"..totalcareerlist
+		        --     count_details.text = checkedstate.."/"..totalcareerlist
 
-				    else
+		    else
 
-				    	count_details.isVisible = false
+		    	count_details.isVisible = false
 
-				    end
+		    end
 
-					--end
+			--end
 
-				end
+end
 
 
 
@@ -522,19 +521,15 @@ local function onSwitchPress( event )
 
 local function careePath_list( list )
 
-
-
 	for j=#careerListArray, 1, -1 do 
-		
 		display.remove(careerListArray[#careerListArray])
 		careerListArray[#careerListArray] = nil
 	end
 
 
 	-- for j=#searchArray_Total, 1, -1 do 
-		
-	-- 	display.remove(searchArray_Total[#searchArray_Total])
-	-- 	searchArray_Total[#searchArray_Total] = nil
+		-- 	display.remove(searchArray_Total[#searchArray_Total])
+		-- 	searchArray_Total[#searchArray_Total] = nil
 	-- end
 
 
@@ -543,7 +538,6 @@ local function careePath_list( list )
 		y = 0,
 		time = 200,
 	}
-
 
 
 	for i=1,#list do
@@ -573,7 +567,6 @@ local function careePath_list( list )
 
 			if parentFlag == true then
 				parentFlag=false
-
 
 				parentTitle = display.newRect(tempGroup,0,0,W,25)
 				if(careerListArray[#careerListArray-1]) ~= nil then
@@ -721,8 +714,6 @@ local function careePath_list( list )
 
 		end
 
-
-
 		--tempGroup.Contact_Id = list[i].Contact_Id
 
 		consultantList_scrollview:insert(tempGroup)
@@ -764,15 +755,11 @@ for i=1,#Listresponse_array do
 
 	local list_Name = Listresponse_array[i].Last_Name
 
-	
-
 	if Listresponse_array[i].First_Name then
 
 		list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
 
 	end
-
-	
 
 	local temp = {}
 

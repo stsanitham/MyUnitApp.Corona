@@ -29,11 +29,13 @@ local imageArray = {}
 local uploadArray = {}
 local ImageUploadGroup = {}
 
-local Category_Id,Category_Name
+local Category_Id,Category_Name1
 
-local CategoryId_value = "2675"
+--local CategoryId_value = "2675"
 
-local Category_Name = "Uncategorized"
+--local CategoryId_value = "2718"
+
+--local Category_Name = "Uncategorized"
 
 local Category_bg,Category_listBg,Category_List
 
@@ -607,11 +609,18 @@ local function onRowRender_ImageLib( event )
 
     	Lefticon = display.newImageRect(row,"res/assert/image_tump.png",35,35)
     	Lefticon.x=30;Lefticon.y=rowHeight/2
-    	print( List_array[row.index].ImageFileName )
+    	print( List_array[row.index].FP:match( "([^/]+)$" ))
 
 
 			local path = system.pathForFile( List_array[row.index].FP:match( "([^/]+)$" ),system.DocumentsDirectory)
-			local fhd = io.open( path )
+
+			local fhd
+
+			if path ~= nil then
+
+			fhd = io.open( path )
+
+		    end
 
 				
 				-- Determine if file exists
@@ -639,6 +648,7 @@ local function onRowRender_ImageLib( event )
 			    				--if Lefticon then Lefticon:removeSelf();Lefticon=nil end
 
 			    				--print("response file "..img_event.response.filename)
+
 			    				Lefticon = display.newImage(row,img_event.response.filename,system.DocumentsDirectory)
 			    				Lefticon.width=45;Lefticon.height=38
 			    				Lefticon.x=30;Lefticon.y=rowHeight/2
@@ -1016,6 +1026,9 @@ local function onRowRenderCategoryList( event )
 
     print("**************** "..Category_array[row.index].MyImageCategoryName.."   "..Category_array[row.index].MyImageCategoryId)
 
+    --title.text = ImageLibrary.PageTitle.." - "..Category_array[row.index].MyImageCategoryName
+
+
     local textname = display.newText(row,Category_array[row.index].MyImageCategoryName,0,0,native.systemFont,15)
     --textname.x= Category_listBg.x + Category_listBg.contentWidth/2 + 10;textname.y=Category_listBg.y + 5
     textname.anchorX = 0
@@ -1048,9 +1061,12 @@ local function onRowRenderCategoryList( event )
     row.categoryname = Category_array[row.index].MyImageCategoryName
 
     Category_Id = row.categoryid
-    Category_Name_Value = row.categoryname
+    Category_Name1 = row.categoryname
 
 end
+
+
+
 
 
 
@@ -1060,10 +1076,12 @@ local function GetCategoryList( CategoryId_value,Category_Name_Value )
 
 			print("Category_Name_Value : "..Category_Name_Value)
 
-			title.text = ImageLibrary.PageTitle.." - "..Category_Name_Value
+			print("title.text ***************** "..title.text)
 
 
 		    categoryImageBg.alpha = 0
+
+		    changecategory_icon:toFront()
 
             transition.to( changeCategoryGroup, { time=100, x= -15 } )
             transition.to( changecategory_icon, { time=100, x= -15 } )
@@ -1071,15 +1089,12 @@ local function GetCategoryList( CategoryId_value,Category_Name_Value )
 
        local function getImageLibByCategoryId(response)
 
-
 			-- for j=#List_array, 1, -1 do 
 			-- 	display.remove(List_array[#List_array])
 			-- 	List_array[#List_array] = nil
 			-- end
 
-
 			List_array = response
-
 
 			       	if viewValue == "list" then
 
@@ -1091,6 +1106,8 @@ local function GetCategoryList( CategoryId_value,Category_Name_Value )
 							Image_Lib_list:deleteAllRows()
 
 							Image_Lib_list:toFront()
+
+							changecategory_icon:toFront()
 
 							for i = 1, #List_array do
 									    -- Insert a row into the tableView
@@ -1135,11 +1152,20 @@ local function onRowTouchCategoryList( event )
 
 	elseif ( "release" == phase ) then
 
-		print(" &&&&&&&&&&&&&&&&&&&&&& categoryid &&&&&&&&&&&&&&&&&&&&& "..row.categoryid)
+		print(" &&&&&&&&&&&&&&&&&&&&&& categoryid &&&&&&&&&&&&&&&&&&&&& "..Category_array[row.index].MyImageCategoryId)
 
-		CategoryId_value = row.categoryid
+		if changeMenuGroup.isVisible == true then
 
-		Category_Name_Value = row.categoryname
+			changeMenuGroup.isVisible = false
+
+		end
+
+
+		CategoryId_value = Category_array[row.index].MyImageCategoryId
+
+		Category_Name_Value = Category_array[row.index].MyImageCategoryName
+
+		title.text = 
 
 		GetCategoryList(CategoryId_value,Category_Name_Value)
 
@@ -1147,6 +1173,8 @@ local function onRowTouchCategoryList( event )
 	end
 
 end
+
+
 
 
 
@@ -1288,7 +1316,6 @@ local function handleSwipe( event )
 
 
 			      	   	local function getCategoryList( response )
-
 
 									-- for j=#Category_array, 1, -1 do 
 									-- 	display.remove(Category_array[#Category_array])
@@ -1498,15 +1525,6 @@ end
 						genericAlert.createNew(ImageLibrary.UploadImage, ImageLibrary.ImageUploaded,option)
 
 
-		   	  --local a = native.showAlert(ImageLibrary.UploadImage,ImageLibrary.ImageUploaded,{CommonWords.ok})
-
-		     --  Webservice.GET_ALL_MYUNITAPP_IMAGE(get_Allimage)
-
-		    -- GetCategoryList(Category_Id,Category_Name)
-
-	           -- get_Allimage(response)
-
-
 				       local function getImageLibByCategoryId(response)
 
 							-- for j=#List_array, 1, -1 do 
@@ -1557,7 +1575,7 @@ end
 						end
 
 
-						Webservice.GetImageLibByCategoryId(Category_Id,getImageLibByCategoryId)
+						Webservice.GetImageLibByCategoryId(CategoryId_value,getImageLibByCategoryId)
 
 
 	    end
@@ -1708,7 +1726,7 @@ function scene:resumeImageCallBack(imagenamevalue,photoviewname,button_idvalue)
 
 		if button_idvalue == "send" then
 
-	  		  Webservice.AddImageFromNativeAppImageLibrary(Category_Id,file_inbytearray,Image_Name,"Images",get_imageupload)
+	  		  Webservice.AddImageFromNativeAppImageLibrary(CategoryId_value,file_inbytearray,Image_Name,"Images",get_imageupload)
 
 	    end
 
@@ -1903,6 +1921,8 @@ local function listPosition_change( event )
 
 							addEventBtn:toFront()
 							floatingButtonGroup:toFront( )
+
+							changecategory_icon:toFront();categoryImageBg:toFront( )
 
 							Image_Lib_list:deleteAllRows()
 
@@ -2228,19 +2248,59 @@ function scene:show( event )
 
 		--Webservice.GetImageLibByCategoryId(CategoryId_value,getImageLibByCategoryId)
 
+		    local Category_Name
 
-		    local Category_Name = "Uncategorized"
+	      	   	local function getCategoryList( response )
 
-		    title.text = ImageLibrary.PageTitle.." - "..Category_Name
+						    Category_array = response
 
-		    GetCategoryList(CategoryId_value,Category_Name)
+						    print(json.encode(Category_array))
+
+							Category_List:deleteAllRows()
+
+							Category_List:toFront()
+
+
+							if #Category_array == 0  then
+								NoEvent = display.newText( scene.view, "No Categories Found", 0,0,0,0,native.systemFontBold,16)
+								NoEvent.x=W/2;NoEvent.y=H/2
+								NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+							end
+
+
+			        print(" ************* Category List in show ************* " ,#Category_array)
+
+
+							for i = 1, #Category_array do
+						    -- Insert a row into the tableView
+						    Category_List:insertRow{ rowHeight = 36,rowColor = 
+					        {
+					    	default = { 1, 1, 1, 0 },
+					    	over={ 1, 0.5, 0, 0 },
+
+					    	}}
+
+						    end
+
+						    Category_Name = Category_array[1].MyImageCategoryName
+
+						    title.text = ImageLibrary.PageTitle.." - "..Category_array[1].MyImageCategoryName
+
+					        GetCategoryList(Category_array[1].MyImageCategoryId, Category_array[1].MyImageCategoryName)
+
+
+			    end
+
+		        Webservice.GetImageLibraryCategory(getCategoryList)
+
+
+
 
 				local function hide( event )
 
 						floatingButtonGroup.isVisible=false
 						-- if careerList_scrollview ~= nil then careerList_scrollview:toFront() end
 						-- Image_Lib_list:toFront()
-
 				end
 
 				addImageBg.alpha=0

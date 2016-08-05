@@ -24,13 +24,13 @@ local menuBtn
 
 openPage = "resourcePage"
 
-local Category_Id,Category_Name
+local Category_Id,Category_Name1
 
 local changeCategoryGroup = display.newGroup();
 
-local CategoryId_value = "2640"
+-- local CategoryId_value = "2640"
 
-local Category_Name = "Uncategorized"
+-- local Category_Name = "Uncategorized"
 
 local Category_bg,Category_listBg,Category_List
 
@@ -629,6 +629,7 @@ local function listPosition_change( event )
 
 							addEventBtn:toFront()
 
+							changecategory_icon:toFront()
 
 							Document_Lib_list:deleteAllRows()
 
@@ -705,7 +706,7 @@ local function onRowRenderCategoryList( event )
 
 
     Category_Id = row.categoryid
-    Category_Name_Value = row.categoryname
+    Category_Name1 = row.categoryname
 
 end
 
@@ -721,6 +722,8 @@ local function GetCategoryList( CategoryId_value,Category_Name_Value )
 
 
 		    addImageBg.alpha=0
+
+		    changecategory_icon:toFront()
 
             transition.to( changeCategoryGroup, { time=100, x= -15 } )
             transition.to( changecategory_icon, { time=100, x= -15 } )
@@ -741,33 +744,41 @@ local function GetCategoryList( CategoryId_value,Category_Name_Value )
 								if resourceGridArray[j] then resourceGridArray[j]:removeSelf();resourceGridArray[j] = nil	end
 							end
 
-
 							Document_Lib_list:deleteAllRows()
 
 							Document_Lib_list:toFront()
 
-							for i = 1, #List_array do
-									    -- Insert a row into the tableView
-									    Document_Lib_list:insertRow{ rowHeight = 40,rowColor = 
-									    {
-									    	default = { 1, 1, 1, 0 },
-									    	over={ 1, 0.5, 0, 0 },
+							changecategory_icon:toFront()
 
-									    	}}
-									    end
+							for i = 1, #List_array do
+						    -- Insert a row into the tableView
+						    Document_Lib_list:insertRow{ rowHeight = 40,rowColor = 
+						    {
+						    	default = { 1, 1, 1, 0 },
+						    	over={ 1, 0.5, 0, 0 },
+						    	}}
+						    end		
 
 					else    
 
-										if careerList_scrollview ~= nil then careerList_scrollview:toFront() end
+							if careerList_scrollview ~= nil then careerList_scrollview:toFront() end
 
-										addEventBtn:toFront()
+							addEventBtn:toFront()
 
-										Document_Lib_list:deleteAllRows()
+							Document_Lib_list:deleteAllRows()
 
-										ResourceGrid_list(List_array)		
+							ResourceGrid_list(List_array)		
 
 					end
 
+
+					-- if #List_array == 0 then
+
+					-- 		NoEvent = display.newText( scene.view, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
+					-- 		NoEvent.x=W/2;NoEvent.y=H/2
+					-- 		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+					-- end
 
 		end
 
@@ -790,9 +801,18 @@ local function onRowTouchCategoryList( event )
 
 		print(" &&&&&&&&&&&&&&&&&&&&&& categoryid &&&&&&&&&&&&&&&&&&&&& "..row.categoryid)
 
-		CategoryId_value = row.categoryid
+		if changeMenuGroup.isVisible == true then
 
-		Category_Name_Value = row.categoryname
+			changeMenuGroup.isVisible = false
+
+		end
+
+
+		CategoryId_value = Category_array[row.index].MyDocumentCategoryId
+
+		Category_Name_Value = Category_array[row.index].MyDocumentCategoryName
+
+		title.text = ResourceLibrary.PageTitle.." - "..Category_Name_Value
 
 		GetCategoryList(CategoryId_value,Category_Name_Value)
 
@@ -1105,6 +1125,9 @@ function get_documentupload(response)
 
 							List_array = response
 
+							title.text = ResourceLibrary.PageTitle.." - "..Category_Name_Value
+
+
 							       	if optionValue == "list" then
 
 											for j=1,#resourceGridArray do 
@@ -1143,7 +1166,7 @@ function get_documentupload(response)
 
 
 
-						Webservice.GetDocumentibByCategoryId(Category_Id,getDocumentLibByCategoryId)
+						Webservice.GetDocumentibByCategoryId(CategoryId_value,getDocumentLibByCategoryId)
 
 
 				end
@@ -1174,7 +1197,7 @@ function scene:resumeDocumentCallBack(doc_Name,Doc_bytearray,button_idvalue)
 
 		if button_idvalue == "Add" then
 
-	  		  Webservice.AddDocumentFromNativeAppDocumentLibrary(Category_Id,Doc_bytearray,doc_Name,"Docs",get_documentupload)
+	  		  Webservice.AddDocumentFromNativeAppDocumentLibrary(CategoryId_value,Doc_bytearray,doc_Name,"Docs",get_documentupload)
 
 	    end
 
@@ -1404,6 +1427,8 @@ function scene:create( event )
 
 			    Category_listBg = display.newRect(changeCategoryGroup,W/2+7,title_bg.y-10+90,185,H-RecentTab_Topvalue)
 				Category_listBg.strokeWidth = 1
+				Category_listBg.width = 185
+				Category_listBg.height = H-RecentTab_Topvalue
 				Category_listBg.x = -170
 			   	Category_listBg.anchorX = 0
 			   	Category_listBg.anchorY = 0
@@ -1430,6 +1455,14 @@ function scene:create( event )
 				Category_title.x=Category_titlebg.x+5;Category_title.y = Category_titlebg.y+Category_titlebg.height/2 - 10
 				Category_title.anchorY = 0
 				Category_title:setFillColor(0)
+
+
+				-- Category_nocontent = display.newText(changeCategoryGroup,"No Categories",0,0,native.systemFont,16)
+				-- Category_nocontent.anchorX = 0
+				-- Category_nocontent.x=Category_listBg.width/2;Category_nocontent.y = Category_listBg.height/2
+				-- Category_nocontent.anchorY = 0
+				-- Category_nocontent.isVisible = true
+				-- Category_nocontent:setFillColor(0)
 
 
 
@@ -1573,14 +1606,57 @@ function scene:show( event )
 				--Webservice.GET_ALL_MYUNITAPP_DOCUMENT(get_allDocument)
 
 
-			local Category_Name = "Uncategorized"
+			-- local Category_Name = "Uncategorized"
 
-		    title.text = ResourceLibrary.PageTitle.." - "..Category_Name
+		 --    title.text = ResourceLibrary.PageTitle.." - "..Category_Name
 
-		    GetCategoryList(CategoryId_value,Category_Name)
+		 --    GetCategoryList(CategoryId_value,Category_Name)
 
 
-		-- Webservice.GetDocumentLibraryCategory(getCategoryList)
+		 local Category_Name
+
+	      	   	local function getCategoryList( response )
+
+						    Category_array = response
+
+						    print(json.encode(Category_array))
+
+							Category_List:deleteAllRows()
+
+							Category_List:toFront()
+
+
+							if #Category_array == 0  then
+								NoEvent = display.newText( scene.view,ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
+								NoEvent.x=W/2;NoEvent.y=H/2
+								NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+							end
+
+
+			        print(" ************* Category List in show ************* " ,#Category_array)
+
+
+							for i = 1, #Category_array do
+						    -- Insert a row into the tableView
+						    Category_List:insertRow{ rowHeight = 36,rowColor = 
+					        {
+					    	default = { 1, 1, 1, 0 },
+					    	over={ 1, 0.5, 0, 0 },
+
+					    	}}
+
+						    end
+
+						    Category_Name = Category_array[1].MyDocumentCategoryName
+
+						    title.text = ResourceLibrary.PageTitle.." - "..Category_Name
+
+					        GetCategoryList(Category_array[1].MyDocumentCategoryId, Category_array[1].MyDocumentCategoryName)
+
+
+			    end
+
+		        Webservice.GetDocumentLibraryCategory(getCategoryList)
 
 
 
