@@ -24,7 +24,7 @@ function request.new(url, method, params,listner)
 
 if string.find(url,"/MyUnitBuzz/GetListOfMkRanks") or string.find(url,"/MyUnitBuzzCheckExistsRequestStatus") or string.find(url,"/MyUnitBuzz/MyUnitBuzzRequestAccess") or string.find(url,"/MyUnitBuzzCalendar/CreateQuickcContact") or string.find(url,"/MyUnitBuzz/CheckNotInUnitWiseRegister") or string.find(url,"/MyUnitBuzz/SaveMyUnitBuzzMessages") or string.find(url,"/MyUnitBuzz/IsUserAvailable") or string.find(url,"/MyUnitBuzz/GetChatUnReadMessagesList") or string.find(url,"/MyUnitBuzz/UpdateLastChatSyncDate") 
 
-or string.find(url,"/MyUnitBuzz/GetImageLibraryCategory") then
+or string.find(url,"/MyUnitBuzz/GetImageLibraryCategory") or string.find(url,"/MyUnitBuzz/GetDocumentLibraryCategory") then
 
     spinner.isVisible=false
 

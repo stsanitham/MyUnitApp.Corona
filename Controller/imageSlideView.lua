@@ -334,17 +334,17 @@ local function showShare(fileNameString)
 
 		if myImage ~= nil then myImage:removeSelf( );myImage=nil end
 
-		shareImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
-		shareImg_bg.filename = ImageList[indexValue].ImageFileName
-		shareImg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
-		shareImg.filename = ImageList[indexValue].ImageFileName
+		shareImg_bg.value=ImageList[indexValue].FP
+		shareImg_bg.filename = ImageList[indexValue].FN
+		shareImg.value=ImageList[indexValue].FP
+		shareImg.filename = ImageList[indexValue].FN
 
 		if downImg_bg then
 
-			downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
-			downImg_bg.filename = ImageList[indexValue].ImageFileName
-			downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..ImageList[indexValue].FilePath
-			downImg.filename = ImageList[indexValue].ImageFileName
+			downImg_bg.value=ImageList[indexValue].FP
+			downImg_bg.filename = ImageList[indexValue].FN
+			downImg.value=ImageList[indexValue].FP
+			downImg.filename = ImageList[indexValue].FN
 
 		end
 
@@ -540,18 +540,25 @@ function scene:show( event )
 
 					local fileNameString 
 
-
 					local updatedString
 
-					   updatedString = string.find(ImageList[indexValue].ImageFileName,".png")
+					   --updatedString = string.find(ImageList[indexValue].FN,".png")
 
-					   if updatedString then
+					   if string.find(ImageList[indexValue].FN,".png") or string.find(ImageList[indexValue].FN,".jpg") then
 
-							fileNameString = ImageList[indexValue].ImageFileName
+							fileNameString = ImageList[indexValue].FN
 
 					   else
 
-					        fileNameString = ImageList[indexValue].ImageFileName..".png"
+					   	   if string.find(ImageList[indexValue].FN,".png") then
+
+					        	fileNameString = ImageList[indexValue].FN..".png"
+
+						    else
+
+						    	fileNameString = ImageList[indexValue].FN..".jpg"
+
+						    end
 
 					   end
 
@@ -574,7 +581,7 @@ function scene:show( event )
 
 						
 						imageDownload = network.download(
-							ApplicationConfig.IMAGE_BASE_URL..ImageList[indexValue].FilePath,
+							ImageList[indexValue].FP,
 							"GET",
 							function ( event )
 								if ( event.isError ) then

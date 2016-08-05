@@ -3318,7 +3318,7 @@ function Webservice.GetBroastcastDetailsbyContactId(Id,postExecution)
 end
 
 
-function Webservice.AddImageFromNativeAppImageLibrary(file_inbytearray,filename,filetype,postExecution)
+function Webservice.AddImageFromNativeAppImageLibrary(categoryid,file_inbytearray,filename,filetype,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -3353,16 +3353,15 @@ function Webservice.AddImageFromNativeAppImageLibrary(file_inbytearray,filename,
 
 
 	    local v = [[
-
     	{
     		"UserId": "]]..UserId..[[",
     		"File": "]]..file_inbytearray..[[",
     		"FileName": "]]..filename..[[",
+    		"CategoryId": "]]..categoryid..[[",
     		"FileType": "Images",
     		"IsOverwrite": true,
     	}
     	]]
-
 
 
 		params={headers = headers,body = v}
@@ -3380,7 +3379,7 @@ function Webservice.AddImageFromNativeAppImageLibrary(file_inbytearray,filename,
 
 
 
-function Webservice.AddDocumentFromNativeAppDocumentLibrary(Doc_Byte,Doc_Name,filetype,postExecution)
+function Webservice.AddDocumentFromNativeAppDocumentLibrary(categoryid,Doc_Byte,Doc_Name,filetype,postExecution)
 
 	local request_value = {}
 	local params = {}
@@ -3420,6 +3419,7 @@ function Webservice.AddDocumentFromNativeAppDocumentLibrary(Doc_Byte,Doc_Name,fi
     		"UserId": "]]..UserId..[[",
     		"File": "]]..Doc_Byte..[[",
     		"FileName": "]]..Doc_Name..[[",
+    		"CategoryId": "]]..categoryid..[[",
     		"FileType": "Docs",
     	}
     	]]
@@ -3492,8 +3492,142 @@ end
 
 
 
+function Webservice.GetImageLibByCategoryId(categoryid,postExecution)
+
+					local request_value = {}
+					local params = {}
+					local headers = {}
+					headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+					headers["IpAddress"] = Utility.getIpAddress()
+					headers["UniqueId"] = system.getInfo("deviceID")
+					headers["Accept"] = "application/json"
+					headers["Content-Type"] = "application/json"
+					method="GET"
 
 
+					local url = splitUrl(ApplicationConfig.GetImageLibByCategoryId)
+					local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+					authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+					headers["Authentication"] = authenticationkey
+
+
+					for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+						print("UserId :"..row.UserId)
+						UserId = row.UserId
+						AccessToken = row.AccessToken
+						ContactId = row.ContactId
+
+					end
+
+					headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+
+ 					local resbody = "userId="..UserId.."&cid="..categoryid
+
+
+					 params={headers = headers}
+
+					 print("request : "..json.encode(params))
+
+					 request.new(ApplicationConfig.GetImageLibByCategoryId.."?"..resbody,method,params,postExecution)
+ 
+    return response
+
+end
+
+
+
+
+function Webservice.GetDocumentLibraryCategory(postExecution)
+
+					local request_value = {}
+					local params = {}
+					local headers = {}
+					headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+					headers["IpAddress"] = Utility.getIpAddress()
+					headers["UniqueId"] = system.getInfo("deviceID")
+					headers["Accept"] = "application/json"
+					headers["Content-Type"] = "application/json"
+					method="GET"
+
+
+					local url = splitUrl(ApplicationConfig.GetDocumentLibraryCategory)
+					local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+					authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+					headers["Authentication"] = authenticationkey
+
+
+					for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+						print("UserId :"..row.UserId)
+						UserId = row.UserId
+						AccessToken = row.AccessToken
+						ContactId = row.ContactId
+
+					end
+
+					headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+
+ 					local resbody = "userId="..UserId
+
+
+					 params={headers = headers}
+
+					 print("request : "..json.encode(params))
+
+					 request.new(ApplicationConfig.GetDocumentLibraryCategory.."?"..resbody,method,params,postExecution)
+ 
+    return response
+
+end
+
+
+
+
+
+
+function Webservice.GetDocumentibByCategoryId(categoryid,postExecution)
+
+					local request_value = {}
+					local params = {}
+					local headers = {}
+					headers["Timestamp"] = os.date("!%A, %B %d, %Y %I:%M:%S %p")
+					headers["IpAddress"] = Utility.getIpAddress()
+					headers["UniqueId"] = system.getInfo("deviceID")
+					headers["Accept"] = "application/json"
+					headers["Content-Type"] = "application/json"
+					method="GET"
+
+
+					local url = splitUrl(ApplicationConfig.GetDocumentibByCategoryId)
+					local canonicalizedHeaderString = tostring(method .. "\n".. headers["Timestamp"] .. "\n"..url:lower())
+					authenticationkey = ApplicationConfig.API_PUBLIC_KEY..":"..mime.b64(crypto.hmac( crypto.sha256,canonicalizedHeaderString,ApplicationConfig.API_PRIVATE_KEY,true))
+					headers["Authentication"] = authenticationkey
+
+
+					for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
+						print("UserId :"..row.UserId)
+						UserId = row.UserId
+						AccessToken = row.AccessToken
+						ContactId = row.ContactId
+
+					end
+
+					headers["UserAuthorization"]= UserId..":"..AccessToken..":"..ContactId
+
+
+ 					local resbody = "userId="..UserId.."&cid="..categoryid
+
+
+					 params={headers = headers}
+
+					 print("request : "..json.encode(params))
+
+					 request.new(ApplicationConfig.GetDocumentibByCategoryId.."?"..resbody,method,params,postExecution)
+ 
+    return response
+
+end
 
 
 

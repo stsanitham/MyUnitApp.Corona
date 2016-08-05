@@ -223,8 +223,6 @@ ApplicationConfig.ContactAutoCompleteForRequestAccesses = ApplicationConfig.BASE
 
 ApplicationConfig.DeleteParticularGroup = ApplicationConfig.BASE_URL.."/MyUnitBuzz/DeleteParticularGroup"
 
-ApplicationConfig.GetImageLibraryCategory = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetImageLibraryCategory"
-
 ApplicationConfig.CheckChatGroupStatus = ApplicationConfig.BASE_URL.."/MyUnitBuzz/CheckChatGroupStatus"
 
 ApplicationConfig.AddImageFromNativeAppImageLibrary = ApplicationConfig.BASE_URL.."/MyUnitBuzz/AddImageFromNativeAppImageLibrary"
@@ -236,6 +234,12 @@ ApplicationConfig.ForwarChatMessageDetails = ApplicationConfig.BASE_URL.."/MyUni
 ApplicationConfig.GetBroastcastDetailsbyContactId = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetBroastcastDetailsbyContactId"
 
 ApplicationConfig.GetImageLibraryCategory = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetImageLibraryCategory"
+
+ApplicationConfig.GetImageLibByCategoryId = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetImageLibByCategoryId"
+
+ApplicationConfig.GetDocumentLibraryCategory = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetDocumentLibraryCategory"
+
+ApplicationConfig.GetDocumentibByCategoryId = ApplicationConfig.BASE_URL.."/MyUnitBuzz/GetDocumentibByCategoryId"
 
 
 
