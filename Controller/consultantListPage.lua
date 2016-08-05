@@ -443,8 +443,10 @@ local function onSwitchPress( event )
 	print(json.encode(selected_Contact))
 
 
+
 				  --  if addGroupid_value == "addGroup" and pageid_value == "broadcast"  then
 
+		    --  if addGroupid_value == "addGroup" and pageid_value == "broadcast"  then
 
 				  	checkedstate=0
 
@@ -455,49 +457,57 @@ local function onSwitchPress( event )
 				  	end
 				  if checkedstate > 0 then
 
-				  	count_details.isVisible = true
 
-				  	count_details.text = checkedstate..MessagePage.SelectedNumber
+		  	   count_details.isVisible = true
 
+		  	   count_details.text = checkedstate..MessagePage.SelectedNumber
 
-				      		-- totalcareerlist = switch.totalvalue - 1
+		      	-- totalcareerlist = switch.totalvalue - 1
 
-				        --     print("test @@@@@@@@@@@@@@@@@@@@@@@ : "..checkedstate.."/"..totalcareerlist)
+		        --     print("test @@@@@@@@@@@@@@@@@@@@@@@ : "..checkedstate.."/"..totalcareerlist)
 
-				        --     count_details.x = W-55
+		        --     count_details.x = W-55
 
-				        --     count_details.text = checkedstate.."/"..totalcareerlist
+		        --     count_details.text = checkedstate.."/"..totalcareerlist
 
-				    else
+		    else
 
-				    	count_details.isVisible = false
+		    	count_details.isVisible = false
 
-				    end
+		    end
 
-					--end
+			--end
 
 end
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 248bef1d1ddd5806dc27cda49a39f4ee58839b0e
 
 
 
 
 local function careePath_list( list )
 
-
-
 	for j=#careerListArray, 1, -1 do 
-		
 		display.remove(careerListArray[#careerListArray])
 		careerListArray[#careerListArray] = nil
 	end
 
 
 	-- for j=#searchArray_Total, 1, -1 do 
-		
-	-- 	display.remove(searchArray_Total[#searchArray_Total])
-	-- 	searchArray_Total[#searchArray_Total] = nil
+		-- 	display.remove(searchArray_Total[#searchArray_Total])
+		-- 	searchArray_Total[#searchArray_Total] = nil
 	-- end
 
+
+	consultantList_scrollview:scrollToPosition
+	{
+		y = 0,
+		time = 200,
+	}
 
 
 	for i=1,#list do
@@ -527,7 +537,6 @@ local function careePath_list( list )
 
 			if parentFlag == true then
 				parentFlag=false
-
 
 				parentTitle = display.newRect(tempGroup,0,0,W,25)
 				if(careerListArray[#careerListArray-1]) ~= nil then
@@ -675,8 +684,6 @@ local function careePath_list( list )
 
 		end
 
-
-
 		--tempGroup.Contact_Id = list[i].Contact_Id
 
 		consultantList_scrollview:insert(tempGroup)
@@ -718,15 +725,11 @@ for i=1,#Listresponse_array do
 
 	local list_Name = Listresponse_array[i].Last_Name
 
-	
-
 	if Listresponse_array[i].First_Name then
 
 		list_Name = Listresponse_array[i].First_Name.." "..Listresponse_array[i].Last_Name
 
 	end
-
-	
 
 	local temp = {}
 
@@ -871,10 +874,18 @@ local function searchListener( event )
 
 										if Listresponse_array[i].Email_Address ~= nil and Listresponse_array[i].Email_Address ~= "" then 
 
-												if string.find(Listresponse_array[i].Email_Address:lower(),search.text:lower()) ~= nil then
+												
+											    local searchValue = search.text:lower()
 
+												searchValue = string.gsub(searchValue,"%+" , "%+")
 
-													if added == false then
+												if string.find(Listresponse_array[i].Email_Address:lower(),searchValue) ~= nil then
+
+												print("Here last email>>>>>>>>>>")
+
+												NoEvent.isVisible = false
+
+												if added == false then
 
 													searchArray[#searchArray+1] = Listresponse_array[i]
 
@@ -2355,15 +2366,14 @@ function scene:show( event )
 			            	os.remove( filePath )
 			            end
 
-			menuBtn:removeEventListener("touch",menuTouch)
-			BgText:removeEventListener("touch",menuTouch)
-			Runtime:removeEventListener( "key", onKeyEvent )
-			backbutton:removeEventListener("touch",backactionTouch)
+				menuBtn:removeEventListener("touch",menuTouch)
+				BgText:removeEventListener("touch",menuTouch)
+				Runtime:removeEventListener( "key", onKeyEvent )
+				backbutton:removeEventListener("touch",backactionTouch)
 
-			GroupSubject:removeEventListener("userInput",textField)
-			
-			create_groupicon:removeEventListener("touch",createGroup)
-
+				GroupSubject:removeEventListener("userInput",textField)
+				
+				create_groupicon:removeEventListener("touch",createGroup)
 
 			
 		elseif phase == "did" then
