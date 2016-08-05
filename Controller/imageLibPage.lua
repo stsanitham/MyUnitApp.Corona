@@ -622,7 +622,7 @@ local function onRowRender_ImageLib( event )
 
 		    end
 
-				
+				--Added
 				-- Determine if file exists
 				if fhd then
 
@@ -1136,7 +1136,7 @@ local function GetCategoryList( CategoryId_value,Category_Name_Value )
 		end
 
 
-		Webservice.GetImageLibByCategoryId(CategoryId_value,getImageLibByCategoryId)
+	Webservice.GetImageLibByCategoryId(CategoryId_value,getImageLibByCategoryId)
 
 end
 
