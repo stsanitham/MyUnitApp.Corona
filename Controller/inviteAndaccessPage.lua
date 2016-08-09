@@ -789,7 +789,7 @@ local function ListmenuTouch( event )
           Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
           Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
           Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=background.y+10
-          Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+          Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 
 
@@ -1037,7 +1037,7 @@ local function CreateListUpdate( val,list)
           Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
           Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
           Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=background.y+10
-          Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+          Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 
 
@@ -2354,7 +2354,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0

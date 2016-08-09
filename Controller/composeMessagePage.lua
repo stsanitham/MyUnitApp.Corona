@@ -1674,7 +1674,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -1956,7 +1956,7 @@ filename.anchorY = 0
 filename.isVisible = false
 filename.x = filename_title.x 
 filename.y = filename_title.y+filename_title.contentHeight+5
-filename:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+filename:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 sceneGroup:insert(filename)
 
 
@@ -2020,7 +2020,7 @@ Audio_filename.anchorY = 0
 Audio_filename.isVisible = false
 Audio_filename.x = Audio_filename_title.x 
 Audio_filename.y = Audio_filename_title.y+Audio_filename_title.contentHeight+5
-Audio_filename:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+Audio_filename:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 sceneGroup:insert(Audio_filename)
 
 

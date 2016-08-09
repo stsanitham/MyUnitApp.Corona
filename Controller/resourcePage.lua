@@ -452,7 +452,7 @@ local function ResourceGrid_list( gridlist)
 
 		circle_bg = display.newCircle(tempGroup,Background.x,Background.y+ 45, 35 )
 		circle_bg.height = 60
-		circle_bg:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
+		circle_bg:setFillColor( Utils.convertHexToRGB(color.primaryColor))
 
 		print("response file "..tempValue)
 		Lefticonimage = display.newImage(tempValue,40,40)
@@ -499,7 +499,7 @@ local function ResourceGrid_list( gridlist)
 		seperate_imagebg.anchorX=0
 		seperate_imagebg.x=image_bg.x
 		seperate_imagebg.y=image_bg.y
-		seperate_imagebg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+		seperate_imagebg:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 		tempGroup:insert(seperate_imagebg)
 
 		shareImage_bg = display.newRect(image_bg.x,image_bg.y,27,25)
@@ -679,7 +679,7 @@ local function onRowRenderCategoryList( event )
     textname.anchorY=0
     textname.x = 5
     textname.y = rowHeight * 0.2
-    textname:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+    textname:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 
 	    if isIos then
@@ -898,7 +898,7 @@ local function onRowRender_DocLib( event )
     local seprate_bg = display.newRect(row,0,0,120,rowHeight)
     seprate_bg.anchorX=0
     seprate_bg.x=W/2+80;seprate_bg.y=rowHeight/2-1
-    seprate_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+    seprate_bg:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 
     local shareImg_bg = display.newRect(row,0,0,50,35)
@@ -1353,7 +1353,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0

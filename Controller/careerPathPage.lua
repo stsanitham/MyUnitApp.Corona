@@ -278,7 +278,7 @@ local function careePath_list( list )
 
 			parentTitle.anchorY = 0
 			parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
-			parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
+			parentTitle:setFillColor(Utility.convertHexToRGB(color.primaryColor))		
 
 			if viewValue == "position" then
 				parent_centerText = display.newText(tempGroup,header_value,0,0,native.systemFontBold,14)
@@ -348,7 +348,7 @@ local function careePath_list( list )
 		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
 		Name_txt.anchorX=0
 		Utils.CssforTextView(Name_txt,sp_labelName)
-		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+		Name_txt:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 		local Position_txt = display.newText(tempGroup,list[i].CarrierProgress,0,0,native.systemFont,14)
 		Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
@@ -529,7 +529,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0

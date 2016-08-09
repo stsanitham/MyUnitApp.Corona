@@ -54,7 +54,7 @@ function GetScheduleMessageAlertPopup()
 	AlertTop = display.newRect(W/2,H/2-85,299,30)
 	AlertTop:setStrokeColor(0,0,0,0.5)
 	AlertTop.strokeWidth = 0.51
-	AlertTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	AlertTop:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 	ScheduledMessageGroup:insert(AlertTop)
 
 	AlertText = display.newText(MessagePage.ScheduleText,0,0,native.systemFontBold,15)

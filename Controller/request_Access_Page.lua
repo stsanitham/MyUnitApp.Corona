@@ -890,7 +890,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.height/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 	
 	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
 	BgText.x=5;BgText.y=20
@@ -1123,7 +1123,7 @@ sumbitBtn.x=W/2;sumbitBtn.y = DirectorEmail_bg.y+DirectorEmail_bg.height/2+30
 sumbitBtn.width=80
 sumbitBtn.height=30
 sumbitBtn.anchorX=0
-sumbitBtn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+sumbitBtn:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 sceneGroup:insert(sumbitBtn)
 sumbitBtn.id="Submit"
 
@@ -1193,10 +1193,10 @@ function scene:show( event )
   		---Listview---
 
   		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+1, 311 )
-  		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+  		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
   		rankTop = display.newRect(rankGroup,W/2,H/2-160,300,30)
-  		rankTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+  		rankTop:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
   		rankText = display.newText(rankGroup,RequestAccess.MKRank_placeholder,0,0,native.systemFont,16)
   		rankText.x=rankTop.x;rankText.y=rankTop.y

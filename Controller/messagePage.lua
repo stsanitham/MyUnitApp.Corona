@@ -552,7 +552,7 @@ else
 
 
     video_outer_bg = display.newRect( sceneGroup, 0,0 , W-19, EditBoxStyle.height+195)
-    video_outer_bg:setStrokeColor(Utils.convertHexToRGB(color.tabBarColor))
+    video_outer_bg:setStrokeColor(Utils.convertHexToRGB(color.primaryColor))
   	--video_outer_bg:setFillColor(0,0,0,0.2)
   	video_outer_bg.x = W/2
   	video_outer_bg.y = H/2
@@ -572,7 +572,7 @@ else
 
     local titleBg = display.newRect(sceneGroup,0,0,video_outer_bg.contentWidth,35)
     titleBg.x = video_outer_bg.x;titleBg.y = video_outer_bg.y-video_outer_bg.contentHeight/2+titleBg.contentHeight/2
-    titleBg:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+    titleBg:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 
     local titleBg_text = display.newText(sceneGroup,"Video",0,0,native.systemFont,14)
     titleBg_text.x = titleBg.x-titleBg.contentWidth/2+5;titleBg_text.y = titleBg.y
@@ -870,7 +870,7 @@ return scene
 
 
   		-- EventnameTop = display.newRect(VideoUrlGroup,W/2,H/2-160,200,30)
-  		-- EventnameTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+  		-- EventnameTop:setFillColor(Utils.convertHexToRGB(color.primaryColor))
   		-- EventnameTop.y=EventnameTop_bg.y-EventnameTop_bg.contentHeight/2+EventnameTop.contentHeight/2
 
   		-- EventnameText = display.newText(VideoUrlGroup,"Select Video Type",0,0,native.systemFont,16)

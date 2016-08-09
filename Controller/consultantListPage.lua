@@ -542,7 +542,7 @@ local function careePath_list( list )
 
 			parentTitle.anchorY = 0
 			parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
-			parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
+			parentTitle:setFillColor(Utility.convertHexToRGB(color.primaryColor))		
 
 			if viewValue == "position" then
 				parent_centerText = display.newText(tempGroup,header_value,0,0,native.systemFontBold,14)
@@ -609,7 +609,7 @@ local function careePath_list( list )
 		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
 		Name_txt.anchorX=0
 		Utils.CssforTextView(Name_txt,sp_labelName)
-		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+		Name_txt:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 		background.name = list[i].Name
 
@@ -1259,17 +1259,17 @@ local function TabbarTouch( event )
 			tab_Message_btn.anchorY=0
 			tab_Message_btn:scale(0.1,0.1)
 
-			tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 
 			local circle = display.newCircle( tabBarGroup, tab_Message_btn.x, tab_Message_btn.y+tab_Message_btn.contentHeight/2, 25 )
 			circle.strokeWidth=4
 			circle:scale(0.1,0.1)
 			circle.alpha=0.3
-			circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-			circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+			circle:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
+			circle:setStrokeColor( Utils.convertHexToRGB(color.primaryColor) )
 
 			tab_Group_txt:setFillColor( 0.3 )
-			tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 			tab_Contact_txt:setFillColor(  0.3  )
 
 
@@ -1318,9 +1318,9 @@ local function TabbarTouch( event )
 			tab_broadcast_btn.y=tab_Boradcast.y+tab_broadcast_btn.contentHeight/2-8
 			tab_broadcast_btn.anchorY=0
 			tab_broadcast_btn:scale(0.1,0.1)
-			tab_broadcast_btn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_broadcast_btn:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 
-			tab_Broadcast_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Broadcast_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 			tab_Message_txt:setFillColor( 0.3 )
 			tab_Contact_txt:setFillColor(  0.3  )
 			tab_Group_txt:setFillColor(  0.3  )
@@ -1329,8 +1329,8 @@ local function TabbarTouch( event )
 			circle.strokeWidth=4
 			circle:scale(0.1,0.1)
 			circle.alpha=0.3
-			circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-			circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+			circle:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
+			circle:setStrokeColor( Utils.convertHexToRGB(color.primaryColor) )
 
 			local function listener1( obj )
 
@@ -1379,7 +1379,7 @@ local function TabbarTouch( event )
 			tab_Group_btn.anchorY=0
 			tab_Group_btn:scale(0.1,0.1)
 
-			tab_Group_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Group_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 			tab_Message_txt:setFillColor( 0.3 )
 			tab_Contact_txt:setFillColor(  0.3  )
 
@@ -1387,8 +1387,8 @@ local function TabbarTouch( event )
 			circle.strokeWidth=4
 			circle:scale(0.1,0.1)
 			circle.alpha=0.3
-			circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-			circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+			circle:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
+			circle:setStrokeColor( Utils.convertHexToRGB(color.primaryColor) )
 
 			local function listener1( obj )
 
@@ -1926,7 +1926,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -2162,7 +2162,7 @@ function scene:show( event )
 			tabBg = display.newRect( tabBarGroup, W/2, H-40, W, 40 )
 			tabBg.anchorY=0
 			tabBg.strokeWidth = 1
-			tabBg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor),0.7 )
+			tabBg:setStrokeColor( Utils.convertHexToRGB(color.primaryColor),0.7 )
 
 			tab_Group = display.newRect(tabBarGroup,0,0,70,40)
 			tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
@@ -2233,7 +2233,7 @@ function scene:show( event )
 
 			tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List  ,0,0,native.systemFont,11 )
 			tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
-			tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 			if overlay then overlay:removeSelf( );overlay=nil end
 			overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 			overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x

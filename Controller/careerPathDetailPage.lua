@@ -843,7 +843,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -894,7 +894,7 @@ function scene:show( event )
 				titleBar.anchorY=0
 				titleBar.isVisible=false
 
-				titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				titleBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 				
 
 				if Details.ImagePath ~= nil then

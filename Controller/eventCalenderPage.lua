@@ -328,7 +328,7 @@ HeaderDetails[#HeaderDetails].Time = timeGMT
 parentPosition[#parentPosition+1] = tempHeight
 parentTitle.anchorY = 0
 parentTitle.x=W/2;parentTitle.y=tempHeight
-parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
+parentTitle:setFillColor(Utility.convertHexToRGB(color.primaryColor))		
 
 local parent_leftDraw = display.newImageRect(tempGroup,"res/assert/calendar.png",32/2,32/2)
 parent_leftDraw.x=parentTitle.x-parentTitle.contentWidth/2+15;parent_leftDraw.y=parentTitle.y+parentTitle.contentHeight/2
@@ -370,7 +370,7 @@ if tempHeight == 0 then
 	Header_parentTitle = display.newRect(headerGroup,0,0,W,bgheight/2)
 	Header_parentTitle.anchorY = 0
 	Header_parentTitle.x=W/2;Header_parentTitle.y=weekView_bg.y+weekView_bg.contentHeight
-	Header_parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))
+	Header_parentTitle:setFillColor(Utility.convertHexToRGB(color.primaryColor))
 
 	Header_parent_leftDraw = display.newImageRect(headerGroup,"res/assert/calendar.png",32/2,32/2)
 	Header_parent_leftDraw.x=Header_parentTitle.x-Header_parentTitle.contentWidth/2+15;Header_parent_leftDraw.y=Header_parentTitle.y+Header_parentTitle.contentHeight/2
@@ -730,7 +730,7 @@ for i = 1, #DateWise_response do
 		end
 
 
-		event.target[1]:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+		event.target[1]:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 
 		if event.target.Processingdate == os.date( "%Y-%m-%d" ,os.time(os.date( '*t' ))) then
 			event.target[1]:setFillColor( 0,0,1 )
@@ -1211,7 +1211,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0

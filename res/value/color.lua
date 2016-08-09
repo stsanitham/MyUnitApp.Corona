@@ -4,6 +4,21 @@ color = {}
 local Applicationconfig = require("Utils."..AppMode..".color")
 
 
+----Primary colors------
+
+color.primaryColor = "#ea1067"
+color.secondaryColor = "#7c4dff"
+color.Gray = "#bdbdbd"
+color.LtyGray = "#757575"
+color.Black = "#212121"
+
+
+
+--------------------
+
+
+
+
 color.Background = "#40666666"
 color.orange = "#FF9912"
 color.green = "#00ff00"
@@ -13,7 +28,6 @@ color.darkgreen = "#4C924C"
 color.sb__button_text_color = "#FB6541"
 color.HorizantalLinecolor = "#50353535"
 color.popup_color = "#5f6160"
-color.Black="#000000"
 color.subHeader="#000000"
 color.nAptHeader="#465736"
 color.White="#ffffff"
@@ -28,8 +42,6 @@ color.darkRed = "#990000"
 color.flapmenu = "#252931"
 color.flap_selected = "#727272"
 
-color.LtyGray = "#D2D2D4"
-color.Gray = "#767676"
 color.Transprent={1,1,1,0}
 
 --Event Calender

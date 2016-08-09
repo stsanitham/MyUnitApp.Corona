@@ -478,7 +478,7 @@ local function changeCall(  )
 			AddAttachmentPhotoName.text = AddAttachmentPhotoName.text:sub(1,35  ).."..."
 		end
 
-		AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
+		AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(color.primaryColor))
 
 		AddAttachment_icon.isVisible = false
 		AddAttachment_close.isVisible = true
@@ -2852,7 +2852,7 @@ Background.id="bg"
 
 tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 tabBar.y=tabBar.contentHeight/2
-tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 menuBtn.anchorX=0
@@ -2883,7 +2883,7 @@ MainGroup:insert(sceneGroup)
 
 
 saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 60, 20 )
-saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 saveBtn_BG.id = "save"
 
 saveBtn = display.newText( sceneGroup, AddeventPage.Save ,saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
@@ -3374,12 +3374,12 @@ end
 	  	appoitmentAdd_Background:addEventListener("touch",Ap_scrollAction)
 
 	  	appoitmentAdd_bg = display.newRect(appointmentGroup,W/2,H/2,W-60,H-140)
-	  	appoitmentAdd_bg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+	  	appoitmentAdd_bg:setStrokeColor( Utils.convertHexToRGB(color.primaryColor) )
 	  	appoitmentAdd_bg.strokeWidth = 1
 
 	  	appoitmentAdd_header = display.newRect(appointmentGroup,W/2,H/2,W-60,40)
 	  	appoitmentAdd_header.y=appoitmentAdd_bg.y-appoitmentAdd_bg.contentHeight/2+appoitmentAdd_header.contentHeight/2
-	  	appoitmentAdd_header:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	  	appoitmentAdd_header:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	  	appoitmentAdd_headertitle = display.newText(appointmentGroup,"",0,0,native.systemFont,16)
 	  	appoitmentAdd_headertitle.x=appoitmentAdd_header.x;appoitmentAdd_headertitle.y=appoitmentAdd_header.y
@@ -3429,7 +3429,7 @@ end
 	  	selectcontactGroup_bg = display.newRect( W/2, titleBar.y+titleBar.height+10, W-100,30)
 	  	selectcontactGroup_bg.anchorY=0
 	  	selectcontactGroup_bg.strokeWidth=1
-	  	selectcontactGroup_bg:setStrokeColor(Utils.convertHexToRGB(color.tabBarColor))
+	  	selectcontactGroup_bg:setStrokeColor(Utils.convertHexToRGB(color.primaryColor))
 		--selectcontactGroup_bg.alpha=0.01
 		selectcontactGroup_bg.y = Ap_phone.y+Ap_phone.contentHeight+10
 		selectcontactGroup_bg.id="selectcontact"
@@ -3454,7 +3454,7 @@ end
 		contactGroup_bg = display.newRect( W/2, titleBar.y+titleBar.height+10, W-100,30)
 		contactGroup_bg.anchorY=0
 		contactGroup_bg.strokeWidth=1
-		contactGroup_bg:setStrokeColor(Utils.convertHexToRGB(color.tabBarColor))
+		contactGroup_bg:setStrokeColor(Utils.convertHexToRGB(color.primaryColor))
 		--selectcontactGroup_bg.alpha=0.01
 		contactGroup_bg.y = selectcontactGroup_bg.y+selectcontactGroup_bg.contentHeight+10
 		contactGroup_bg.id="contact"
@@ -3926,7 +3926,7 @@ end
 	  				if AddAttachmentPhotoName.text:len() > 35 then
 	  					AddAttachmentPhotoName.text = AddAttachmentPhotoName.text:sub(1,35  ).."..."
 	  				end
-	  				AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
+	  				AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(color.primaryColor))
 
 	  				AddAttachment_icon.isVisible = false
 	  				AddAttachment_close.isVisible = true

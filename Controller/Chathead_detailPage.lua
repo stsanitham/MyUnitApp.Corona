@@ -692,7 +692,7 @@ local function selectionComplete ( event )
 			Name_txt.x=20;Name_txt.y=background.y+15
 			Name_txt.anchorX=0
 			Utils.CssforTextView(Name_txt,sp_labelName)
-			Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+			Name_txt:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 			local Position_txt = display.newText(tempGroup,ChatPage.AddConsultant,0,0,native.systemFont,14)
 			Position_txt.x=80;Position_txt.y=background.y+background.height/2+10
@@ -774,7 +774,7 @@ local function selectionComplete ( event )
 			Name_txt.x=80;Name_txt.y=background.y+background.height/2-10
 			Name_txt.anchorX=0
 			Utils.CssforTextView(Name_txt,sp_labelName)
-			Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+			Name_txt:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 			local Position_txt = display.newText(tempGroup,ContactList[i].Email_Address,0,0,native.systemFont,14)
 			Position_txt.x=80;Position_txt.y=background.y+background.height/2+10
@@ -950,7 +950,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -993,11 +993,11 @@ function scene:show( event )
 		titleBar.anchorY=0
 		titleBar.isVisible=false
 
-		titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+		titleBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 
 		textGroupBg = display.newRect(TextChangeGroup,W/2,H/2+18,W,H-45)
-		--textGroupBg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+		--textGroupBg:setStrokeColor( Utils.convertHexToRGB(color.primaryColor) )
 		--textGroupBg.strokeWidth=1
 		textGroupBg:addEventListener( "touch", addMemberAction )
 

@@ -419,7 +419,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -469,7 +469,7 @@ function scene:create( event )
 	seprate_bg = display.newRect(sceneGroup,0,0,120,imageslider_bg.height)
 	seprate_bg.anchorX=0
 	seprate_bg.x=W/2+80;seprate_bg.y=imageslider_bg.y
-	seprate_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	seprate_bg:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	shareImg_bg = display.newRect(sceneGroup,0,0,30,30)
 	shareImg_bg.x=seprate_bg.x+25;shareImg_bg.y=seprate_bg.y

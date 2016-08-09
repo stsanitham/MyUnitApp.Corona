@@ -146,7 +146,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -233,7 +233,7 @@ function scene:show( event )
 				Arrow.x=background.x+background.contentWidth/2-Arrow.contentWidth-5
 				Arrow.y=background.y+background.contentHeight/2
 				Arrow.alpha=0.6
-					--background:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					--background:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 					--print( "Listy : "..json.encode(list[i]) )
 
 					--shadow.y=tempHeight

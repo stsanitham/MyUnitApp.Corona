@@ -573,7 +573,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -724,7 +724,7 @@ local time = makeTimeStamp(timecreated)
 			short_msg_timedate.y = title_bg.y +title_bg.contentHeight/2-58
 			short_msg_timedate.anchorX=0
 			short_msg_timedate.anchorY = 0
-			short_msg_timedate:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+			short_msg_timedate:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 			--short_msg_timedate:setFillColor(0)
 			messagedetail_scrollView:insert(short_msg_timedate)
 
@@ -825,7 +825,7 @@ local time = makeTimeStamp(timecreated)
 				end
 				bg.anchorY =0
 				bg.x = display.contentCenterX
-				bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+				bg:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 				sceneGroup:insert(bg)
 				messagedetail_scrollView:insert(bg)
 

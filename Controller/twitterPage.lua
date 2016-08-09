@@ -184,7 +184,7 @@ function TwitterCallback(res,scrollView)
 					userTime.anchorX = 0
 					userTime.anchorY = 0
 					Utils.CssforTextView(userTime,sp_Date_Time)
-					userTime:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+					userTime:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 
 					
 
@@ -441,7 +441,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0

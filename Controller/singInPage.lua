@@ -689,22 +689,22 @@ function scene:create( event )
 
 	signinBanner = display.newRect(sceneGroup,0,0,W,H/4)
 	signinBanner.x=W/2;signinBanner.y=signinBanner.contentHeight/2
-	signinBanner:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+	signinBanner:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 
 	signinBanner_text = display.newImageRect(sceneGroup,"res/assert/signin-page-logo.png",278/1.5,62/1.5)
 	signinBanner_text.x=signinBanner.x;signinBanner_text.y=signinBanner.y
 
 
-	local signinUser = display.newImageRect(sceneGroup,"res/assert/prof_img.png",95,80)
+	local signinUser = display.newImageRect(sceneGroup,"res/assert/prof_img.png",80,80)
 	signinUser.x = signinBanner.x+80;signinUser.y=signinBanner.y+signinBanner.contentHeight/2
 
 
 	signin_lbl = display.newText(sceneGroup,LoginPage.Signin_Button:upper(),0,0,"Roboto-Bold",sp_commonLabel.textSize)
-	signin_lbl.x=signin_lbl.contentWidth/2+30;signin_lbl.y=signinBanner.y+signinBanner.contentHeight/2+50
-	Utils.CssforTextView(signin_lbl,sp_header)	
+	signin_lbl.x=signin_lbl.contentWidth/2+30;signin_lbl.y=signinBanner.y+signinBanner.contentHeight/2+30
+	signin_lbl:setTextColor( Utils.convertHexToRGB(color.Black) )
 
 	UnitNumber_bg = display.newLine(sceneGroup, W/2-120, H/2-30, W/2+120, H/2-30)
-	UnitNumber_bg:setStrokeColor( 0, 0, 0, 0.4 )
+	UnitNumber_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 	UnitNumber_bg.strokeWidth = 1
 
 	-- UnitNumber_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,UnitNumber_bg.contentHeight)
@@ -714,7 +714,7 @@ function scene:create( event )
 
 
 	UserName_bg = display.newLine(sceneGroup, W/2-120, H/2+20, W/2+120, H/2+20)
-	UserName_bg:setStrokeColor( 0, 0, 0, 0.4 )
+	UserName_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 	UserName_bg.strokeWidth = 1
 
 	if AppName == "DirectorApp" then
@@ -755,7 +755,7 @@ function scene:create( event )
 	UserName.x=UserName_bg.x+60;UserName.y=UserName_bg.y-UserName.contentHeight/2
 
 	Password_bg = display.newLine(sceneGroup, W/2-120, H/2+70, W/2+120, H/2+70)
-	Password_bg:setStrokeColor( 0, 0, 0, 0.4 )
+	Password_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 	Password_bg.strokeWidth = 1
 	-- Password_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,Password_bg.contentHeight)
 	-- Password_seprator.x=Password_bg.x-Password_bg.contentWidth/2+35;Password_seprator.y=Password_bg.y
@@ -785,13 +785,11 @@ function scene:create( event )
 	forgettBtn_drawLeft.x=forgettBtn.x-forgettBtn.contentWidth/2-forgettBtn_drawLeft.contentWidth/2-6;forgettBtn_drawLeft.y=forgettBtn.y
 
 
-	signinBtn = display.newRoundedRect(sceneGroup,0,0,W-10,35,20)
-	signinBtn.x=W/2;signinBtn.y = forgettBtn.y+38
-	signinBtn.width = W-80
-	signinBtn:setFillColor( Utils.convertHexToRGB(sp_primarybutton.Background_Color) )
+	signinBtn = display.newImageRect(sceneGroup,"res/assert/white_btnbg.png",550/2,50)
+	signinBtn.x=W/2;signinBtn.y = forgettBtn.y+45
+	signinBtn:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 	signinBtn.id="signin"
-	signinBtn:setStrokeColor( Utils.convertHexToRGB(sp_primarybutton.Background_Color) )
-	signinBtn.strokeWidth = 2
+
 
 	signinBtn_text = display.newText(sceneGroup,LoginPage.Signin_Button,0,0,"Roboto-Regular",16)
 	signinBtn_text.x=signinBtn.x;signinBtn_text.y=signinBtn.y
@@ -800,7 +798,7 @@ function scene:create( event )
 
 	RequestBg = display.newRect( sceneGroup, W/2, H-70, W, 70 )
 	RequestBg.anchorY=0
-	RequestBg:setFillColor( Utils.convertHexToRGB(color.Bggray) )
+	RequestBg:setFillColor( Utils.convertHexToRGB(color.Gray) )
 
 
 	local seprateLine = display.newImageRect( sceneGroup, "res/assert/triangle_shape.png", 80/2, RequestBg.contentHeight)
@@ -810,7 +808,7 @@ function scene:create( event )
 	TM_Requesttext.x = 30
 	TM_Requesttext.width = TM_Requesttext.contentWidth
 	TM_Requesttext.y = RequestBg.y+10
-	TM_Requesttext:setFillColor(0,0,1,0.7)
+	TM_Requesttext:setFillColor(Utils.convertHexToRGB(color.secondaryColor))
 	TM_Requesttext.anchorY=0
 	TM_Requesttext.anchorX=0
 
@@ -823,10 +821,10 @@ function scene:create( event )
 
 
 	TM_RequestAccesstext = display.newText(sceneGroup,RegistrationScreen.RequestAccessText,0,0,display.contentWidth - 10,0,"Roboto-Regular",11)
-	TM_RequestAccesstext.x=TM_Requesticon.x + 15
-	TM_RequestAccesstext.y=TM_Requesttext.y+TM_Requesttext.contentHeight+8
+	TM_RequestAccesstext.x=TM_Requesticon.x + 25
+	TM_RequestAccesstext.y=TM_Requesttext.y+TM_Requesttext.contentHeight+15
 	TM_RequestAccesstext.width = display.contentWidth - 10
-	TM_RequestAccesstext:setFillColor(Utils.convertHexToRGB(sp_primarybutton.Background_Color) )
+	TM_RequestAccesstext:setFillColor(Utils.convertHexToRGB(color.Black) )
 	TM_RequestAccesstext.id="teammember_request"
 	TM_RequestAccesstext.anchorY=0
 	TM_RequestAccesstext.anchorX=0
@@ -838,24 +836,24 @@ function scene:create( event )
 	Director_Requesttext.width=Director_Requesttext.contentWidth
 	Director_Requesttext.y = RequestBg.y+10
 	Director_Requesttext.anchorY=0
-	Director_Requesttext:setFillColor(0,0,1,0.7)
+	Director_Requesttext:setFillColor(Utils.convertHexToRGB(color.secondaryColor))
 	Director_Requesttext.anchorX=0
 
 
-	Director_Requesticon = display.newImageRect(sceneGroup,"res/assert/createaccount_signin.jpg",15,11.5)
+	Director_Requesticon = display.newImageRect(sceneGroup,"res/assert/file_icon.png",45/2,60/2)
 	Director_Requesticon.x=W/2+25
 	Director_Requesticon.id="director_request"
 	Director_Requesticon:setFillColor(0)
-	Director_Requesticon.y=Director_Requesttext.y+Director_Requesttext.contentHeight+15
+	Director_Requesticon.y=Director_Requesttext.y+Director_Requesttext.contentHeight+20
 
 
 
 	Director_Accounttext = display.newText(sceneGroup,RegistrationScreen.CreateAccount,0,0,display.contentWidth - 10,0,"Roboto-Regular",11)
-	Director_Accounttext.x=Director_Requesticon.x +15
-	Director_Accounttext.y=Director_Requesttext.y+Director_Requesttext.contentHeight+8
+	Director_Accounttext.x=Director_Requesticon.x +25
+	Director_Accounttext.y=Director_Requesttext.y+Director_Requesttext.contentHeight+15
 	Director_Accounttext.width = display.contentWidth - 10
 	Director_Accounttext.id="director_request"
-	Director_Accounttext:setFillColor(Utils.convertHexToRGB(sp_primarybutton.Background_Color))
+	Director_Accounttext:setFillColor(Utils.convertHexToRGB(color.Black))
 	Director_Accounttext.anchorY=0
 	Director_Accounttext.anchorX=0
 	--Utils.CssforTextView(Director_Requesttext,sp_primarybutton)

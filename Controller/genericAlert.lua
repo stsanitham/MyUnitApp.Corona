@@ -69,7 +69,7 @@ function genericAlert.createNew(title,content,values,action)
 			genericButton[#genericButton].anchorX=1;genericButton[#genericButton].anchorY=0
 			genericButton[#genericButton].y=genericAlert_content.y+genericAlert_content.contentHeight+10
 			genericButton[#genericButton].x=genericAlert_bg.x+genericAlert_bg.contentWidth/2-20
-			genericButton[#genericButton]:setTextColor( Utils.convertHexToRGB(color.tabBarColor) )
+			genericButton[#genericButton]:setTextColor( Utils.convertHexToRGB(color.primaryColor) )
 			genericButton[#genericButton].id=1
 			AnimateGroup:insert(genericButton[#genericButton])
 			genericButton[#genericButton]:addEventListener( "touch", TouchAction )
@@ -80,7 +80,7 @@ function genericAlert.createNew(title,content,values,action)
 				genericButton[#genericButton].anchorX=1;genericButton[#genericButton].anchorY=0
 				genericButton[#genericButton].y=genericAlert_content.y+genericAlert_content.contentHeight+10
 				genericButton[#genericButton].x=genericButton[#genericButton-1].x-genericButton[#genericButton-1].contentWidth-15
-				genericButton[#genericButton]:setTextColor( Utils.convertHexToRGB(color.tabBarColor) )
+				genericButton[#genericButton]:setTextColor( Utils.convertHexToRGB(color.primaryColor) )
 				genericButton[#genericButton].id=2
 				AnimateGroup:insert(genericButton[#genericButton])
 				genericButton[#genericButton]:addEventListener( "touch", TouchAction )
@@ -99,7 +99,7 @@ function genericAlert.createNew(title,content,values,action)
 					genericButton[#genericButton].y=genericAlert_content.y+genericAlert_content.contentHeight+10
 				end
 				genericButton[#genericButton].x=genericAlert_bg.x+genericAlert_bg.contentWidth/2-20
-				genericButton[#genericButton]:setTextColor( Utils.convertHexToRGB(color.tabBarColor) )
+				genericButton[#genericButton]:setTextColor( Utils.convertHexToRGB(color.primaryColor) )
 				genericButton[#genericButton].id=i
 				AnimateGroup:insert(genericButton[#genericButton])
 				genericButton[#genericButton]:addEventListener( "touch", TouchAction )

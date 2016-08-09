@@ -404,7 +404,7 @@ function scene:show( event )
 
 			
 
-	--PushNotification_bg:setFillColor(Utility.convertHexToRGB(color.tabBarColor))	
+	--PushNotification_bg:setFillColor(Utility.convertHexToRGB(color.primaryColor))	
 
 	PushNotification_title_bg = display.newRect( PushGroup, W/2,0, PushNotification_bg.contentWidth, 40 )
 	PushNotification_title_bg.y=PushNotification_bg.y+PushNotification_title_bg.contentHeight/2

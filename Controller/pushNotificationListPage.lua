@@ -295,7 +295,7 @@ local function DraftMessageCreation_list( draftmessagelist )
 		Message_time.anchorX=0
 		Message_time.anchorY = 0
 		Utils.CssforTextView(Message_time,sp_labelName)
-		Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+		Message_time:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 		
 
 
@@ -489,7 +489,7 @@ local function SentMessageCreation_list( sentmessagelist )
 		Message_time.anchorX=0
 		Message_time.anchorY = 0
 		Utils.CssforTextView(Message_time,sp_labelName)
-		Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+		Message_time:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 		
 
 		if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
@@ -683,7 +683,7 @@ local function MessageCreation_list( messagelist )
 		Message_time.anchorX=0
 		Message_time.anchorY = 0
 		Utils.CssforTextView(Message_time,sp_labelName)
-		Message_time:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+		Message_time:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 
 		if os.date("%B %d, %Y",time) == os.date("%B %d, %Y",os.time(os.date( "*t" ))) then
@@ -1014,7 +1014,7 @@ function updateAudioValues(audiovalues)
 	if  audiovalues.MessageStatus == "SCHEDULE" and tab_Group.id =="schedule" then
 
 		print("schedule coming")
-		tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
+		tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor)  )
 		tab_Sent_txt:setFillColor(0)
 		tab_Draft_txt:setFillColor(0)
 		tab_Group_bottombar.isVisible = true
@@ -1040,7 +1040,7 @@ function updateAudioValues(audiovalues)
 
 	  	print("sent coming")
 	  	tab_Schedule_txt:setFillColor( 0 )
-	  	tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+	  	tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 	  	tab_Draft_txt:setFillColor(0)
 	  	tab_Group_bottombar.isVisible = true
 	  	tab_Group_bottombar.y = tabBg.y+29.5
@@ -1065,7 +1065,7 @@ function updateAudioValues(audiovalues)
 
        	tab_Schedule_txt:setFillColor( 0 )
        	tab_Sent_txt:setFillColor(0)
-       	tab_Draft_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor) )
+       	tab_Draft_txt:setFillColor(Utils.convertHexToRGB(color.primaryColor) )
        	tab_Group_bottombar.isVisible = true
        	tab_Group_bottombar.y = tabBg.y+29.5
        	tab_Group_bottombar.x = W/2 + W/3
@@ -1100,7 +1100,7 @@ local function resumeCallList(listview_values)
 
 		
 
-		tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor)  )
+		tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor)  )
 		tab_Sent_txt:setFillColor(0)
 		tab_Draft_txt:setFillColor(0)
 		tab_Group_bottombar.isVisible = true
@@ -1125,7 +1125,7 @@ local function resumeCallList(listview_values)
 			
 
 				-- tab_Schedule_txt:setFillColor( 0 )
-				-- tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+				-- tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 				-- tab_Draft_txt:setFillColor(0)
 				-- tab_Group_bottombar.isVisible = true
 				-- tab_Group_bottombar.y = tabBg.y+29.5
@@ -1149,7 +1149,7 @@ elseif  listview_values == "DRAFT" then
 
 	tab_Schedule_txt:setFillColor( 0 )
 	tab_Sent_txt:setFillColor(0)
-	tab_Draft_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor) )
+	tab_Draft_txt:setFillColor(Utils.convertHexToRGB(color.primaryColor) )
 	tab_Group_bottombar.isVisible = true
 	tab_Group_bottombar.y = tabBg.y+29.5
 	tab_Group_bottombar.x = W/2 + W/3
@@ -1438,7 +1438,7 @@ elseif  listview_values == "DRAFT" then
          		
          		if event.target.id == "schedule" then
 
-         			tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+         			tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
          			tab_Sent_txt:setFillColor(0)
          			tab_Draft_txt:setFillColor(0)
 
@@ -1460,7 +1460,7 @@ elseif  listview_values == "DRAFT" then
 
 			elseif event.target.id == "sent" then
 
-				tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+				tab_Sent_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 				tab_Draft_txt:setFillColor(0)
 				tab_Schedule_txt:setFillColor(0)
 
@@ -1481,7 +1481,7 @@ elseif  listview_values == "DRAFT" then
 			
 		elseif event.target.id == "draft" then
 
-			tab_Draft_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Draft_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 			tab_Sent_txt:setFillColor(0)
 			tab_Schedule_txt:setFillColor(0)
 
@@ -1541,7 +1541,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -1672,7 +1672,7 @@ function scene:show( event )
 			tab_Schedule_txt = display.newText( tabBarGroup, MessagePage.ScheduleText,0,0,native.systemFont,14 )
 			tab_Schedule_txt.x=tab_Group.x;
 			tab_Schedule_txt.y=tab_Group.y+tab_Group.contentHeight/2-2
-			tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Schedule_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 
 
 			tab_Sent_txt = display.newText( tabBarGroup, MessagePage.SentText,0,0,native.systemFont,14 )
@@ -1692,7 +1692,7 @@ function scene:show( event )
 			tab_Group_bottombar.y=tabBg.y+29.5
 			tab_Group_bottombar.anchorY = 0
 			tab_Group_bottombar.alpha=1
-			tab_Group_bottombar:setFillColor(Utility.convertHexToRGB(color.tabBarColor))
+			tab_Group_bottombar:setFillColor(Utility.convertHexToRGB(color.primaryColor))
 			tab_Group_bottombar.isVisible = true
 
 

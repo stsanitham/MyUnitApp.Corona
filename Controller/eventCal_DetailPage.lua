@@ -250,7 +250,7 @@ local function EditOption( event )
 
 			tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 			tabBar.y=tabBar.contentHeight/2
-			tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+			tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 			menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 			menuBtn.anchorX=0
@@ -278,7 +278,7 @@ local function EditOption( event )
 
 			titleBar = display.newRect(sceneGroup,W/2,title_bg.y+title_bg.contentHeight/2,W,30)
 			titleBar.anchorY=0
-			titleBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+			titleBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 			titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
 			titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+10

@@ -1642,7 +1642,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -2053,10 +2053,10 @@ function scene:show( event )
   		---Listview---
 
   		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+1, 331 )
-  		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+  		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
   		rankTop = display.newRect(rankGroup,W/2,H/2-160,300,30)
-  		rankTop:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+  		rankTop:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
   		rankText = display.newText(rankGroup,RequestAccess.MKRank_placeholder,0,0,native.systemFont,16)
   		rankText.x=rankTop.x;rankText.y=rankTop.y
