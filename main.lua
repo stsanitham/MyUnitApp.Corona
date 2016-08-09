@@ -2,10 +2,7 @@
         -- MainActivity
         --------------------------------------------------------
 
-        --display.setStatusBar(display.HiddenStatusBar)
-
-
-      
+        display.setStatusBar(display.HiddenStatusBar)
 
 
         local composer = require "composer"

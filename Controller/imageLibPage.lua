@@ -1158,9 +1158,6 @@ end
 
 
 
-
-
-
 local function onRowTouchCategoryList( event )
 
 	local phase = event.phase
@@ -1191,11 +1188,6 @@ local function onRowTouchCategoryList( event )
 	end
 
 end
-
-
-
-
-
 
 
 

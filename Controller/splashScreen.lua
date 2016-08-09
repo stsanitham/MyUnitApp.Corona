@@ -44,8 +44,9 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	Background = display.newImageRect(sceneGroup,"res/assert/bg-image.jpg",W,H)
+	Background = display.newRect(sceneGroup,0,0,W,H)
 	Background.x=W/2;Background.y=H/2
+	Background:setFillColor( Utils.convertHexToRGB(color.tabBarColor))
 
 	BgText = display.newImageRect(sceneGroup,"res/assert/splashlogo.png",398/2,81/2)
 	BgText.x=W/2;BgText.y=H/2

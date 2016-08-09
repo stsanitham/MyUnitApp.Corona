@@ -33,6 +33,7 @@ local forgettBtn,signinBtn,requestBtn
 
 local BackFlag = false
 
+local RequestBg,TM_Requesttext,TM_Requesticon,TM_RequestAccesstext,line
 --------------------------------------------------
 
 openPage="signInPage"
@@ -683,192 +684,145 @@ function scene:create( event )
 	local sceneGroup = self.view
 
 	
-	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background = display.newRect(sceneGroup,0,0,W,H)
 	Background.x=W/2;Background.y=H/2
 
-	signinBanner = display.newImageRect(sceneGroup,"res/assert/mub_banner.jpg",W,H/2.5)
+	signinBanner = display.newRect(sceneGroup,0,0,W,H/4)
 	signinBanner.x=W/2;signinBanner.y=signinBanner.contentHeight/2
+	signinBanner:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
 
-	signinBanner_text = display.newImageRect(sceneGroup,"res/assert/signin-page-logo.png",278/2,62/2)
+	signinBanner_text = display.newImageRect(sceneGroup,"res/assert/signin-page-logo.png",278/1.5,62/1.5)
 	signinBanner_text.x=signinBanner.x;signinBanner_text.y=signinBanner.y
 
-	signin_lbl = display.newText(sceneGroup,LoginPage.Signin_Button,0,0,native.systemFont,sp_commonLabel.textSize)
-	signin_lbl.x=signin_lbl.contentWidth/2+30;signin_lbl.y=signinBanner.y+signinBanner.contentHeight/2+20
+
+	local signinUser = display.newImageRect(sceneGroup,"res/assert/prof_img.png",95,80)
+	signinUser.x = signinBanner.x+80;signinUser.y=signinBanner.y+signinBanner.contentHeight/2
+
+
+	signin_lbl = display.newText(sceneGroup,LoginPage.Signin_Button:upper(),0,0,"Roboto-Bold",sp_commonLabel.textSize)
+	signin_lbl.x=signin_lbl.contentWidth/2+30;signin_lbl.y=signinBanner.y+signinBanner.contentHeight/2+50
 	Utils.CssforTextView(signin_lbl,sp_header)	
 
-	UnitNumber_bg = display.newRect(sceneGroup, W/2, H/2, W-60, EditBoxStyle.height)
-	UnitNumber_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,UnitNumber_bg.contentHeight)
-	UnitNumber_seprator.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+35;UnitNumber_seprator.y=UnitNumber_bg.y
-	UnitNumber_drawLeft = display.newImageRect(sceneGroup,"res/assert/unite-number.png",24/1.5,24/1.5)
-	UnitNumber_drawLeft.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+UnitNumber_drawLeft.contentWidth;UnitNumber_drawLeft.y=UnitNumber_bg.y
+	UnitNumber_bg = display.newLine(sceneGroup, W/2-120, H/2-30, W/2+120, H/2-30)
+	UnitNumber_bg:setStrokeColor( 0, 0, 0, 0.4 )
+	UnitNumber_bg.strokeWidth = 1
+
+	-- UnitNumber_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,UnitNumber_bg.contentHeight)
+	-- UnitNumber_seprator.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+35;UnitNumber_seprator.y=UnitNumber_bg.y
+	UnitNumber_drawLeft = display.newImageRect(sceneGroup,"res/assert/signin_img.png",74/2,63/2)
+	UnitNumber_drawLeft.x=UnitNumber_bg.x+UnitNumber_drawLeft.contentWidth/2+15;UnitNumber_drawLeft.y=UnitNumber_bg.y-UnitNumber_drawLeft.contentHeight/2-5
 
 
-	UserName_bg = display.newRect(sceneGroup, W/2, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth, UnitNumber_bg.contentHeight )
+	UserName_bg = display.newLine(sceneGroup, W/2-120, H/2+20, W/2+120, H/2+20)
+	UserName_bg:setStrokeColor( 0, 0, 0, 0.4 )
+	UserName_bg.strokeWidth = 1
 
 	if AppName == "DirectorApp" then
 		UnitNumber_bg.isVisible=false
-		UnitNumber_seprator.isVisible=false
+		--UnitNumber_seprator.isVisible=false
 		UnitNumber_drawLeft.isVisible=false
 
-		UserName_bg.x=UnitNumber_bg.x;UserName_bg.y=UnitNumber_bg.y
 	else
-		Unitnumber_field = native.newTextField(0, 0, W-100, EditBoxStyle.height)
+		Unitnumber_field = native.newTextField(0, 0, W-140, EditBoxStyle.height)
 		Unitnumber_field.id = "Unit Number / Director name"
 		Unitnumber_field.placeholder = LoginPage.Unitnumber_placeholder
 		Unitnumber_field.anchorX=0
-		Unitnumber_field.size=14	
 		Unitnumber_field.value=""
+		Unitnumber_field.font=native.newFont("Roboto-Light",14)
 		Unitnumber_field:setReturnKey( "next" )
 		--Utils.CssforTextField(Unitnumber_field,sp_fieldValue)	
 
 
 		Unitnumber_field.hasBackground = false
-		Unitnumber_field.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+40;Unitnumber_field.y=UnitNumber_bg.y
+		Unitnumber_field.x=UnitNumber_bg.x+60;Unitnumber_field.y=UnitNumber_bg.y-Unitnumber_field.contentHeight/2
 		sceneGroup:insert(Unitnumber_field)
 	end
 
-	UserName_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,UserName_bg.contentHeight)
-	UserName_seprator.x=UserName_bg.x-UserName_bg.contentWidth/2+35;UserName_seprator.y=UserName_bg.y
-	UserName_drawLeft = display.newImageRect(sceneGroup,"res/assert/user.png",24/1.5,24/1.5)
-	UserName_drawLeft.x=UserName_bg.x-UserName_bg.contentWidth/2+UserName_drawLeft.contentWidth;UserName_drawLeft.y=UserName_bg.y
+	
+	UserName_drawLeft = display.newImageRect(sceneGroup,"res/assert/gender_img.png",70/2,63/2)
+	UserName_drawLeft.x=UserName_bg.x+UserName_drawLeft.contentWidth/2+15;UserName_drawLeft.y=UserName_bg.y-UserName_drawLeft.contentHeight/2-5
 
-	UserName =  native.newTextField(0, 0, W-100, EditBoxStyle.height)
+	UserName =  native.newTextField(0, 0, W-140, EditBoxStyle.height)
 	UserName.id = "User name or Email address"
 	UserName.placeholder = LoginPage.UserName_placeholder
 	UserName.anchorX=0
-	UserName.size=14
 	UserName.value=""
+	UserName.font=native.newFont("Roboto-Light",14)
 	UserName:setReturnKey( "next" )
 	UserName.hasBackground = false
 	UserName.inputType = "email"
 	sceneGroup:insert(UserName)
-	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+40;UserName.y=UserName_bg.y
+	UserName.x=UserName_bg.x+60;UserName.y=UserName_bg.y-UserName.contentHeight/2
 
-	Password_bg = display.newRect(sceneGroup, W/2, UserName_bg.y+UserName_bg.contentHeight/2+24, UnitNumber_bg.contentWidth, UnitNumber_bg.contentHeight)
-	Password_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,Password_bg.contentHeight)
-	Password_seprator.x=Password_bg.x-Password_bg.contentWidth/2+35;Password_seprator.y=Password_bg.y
-	Password_drawLeft = display.newImageRect(sceneGroup,"res/assert/psw.png",24/1.5,24/1.5)
+	Password_bg = display.newLine(sceneGroup, W/2-120, H/2+70, W/2+120, H/2+70)
+	Password_bg:setStrokeColor( 0, 0, 0, 0.4 )
+	Password_bg.strokeWidth = 1
+	-- Password_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,Password_bg.contentHeight)
+	-- Password_seprator.x=Password_bg.x-Password_bg.contentWidth/2+35;Password_seprator.y=Password_bg.y
+	
+	Password_drawLeft = display.newImageRect(sceneGroup,"res/assert/pass_img.png",62/2,63/2)
+	Password_drawLeft.x=Password_bg.x+Password_drawLeft.contentWidth/2+15;Password_drawLeft.y=Password_bg.y-Password_drawLeft.contentHeight/2-5
 
-	Password_drawLeft.x=Password_bg.x-Password_bg.contentWidth/2+Password_drawLeft.contentWidth;Password_drawLeft.y=Password_bg.y
-
-	Password = native.newTextField(0, 0, W-100, EditBoxStyle.height)
+	Password = native.newTextField(0, 0, W-140, EditBoxStyle.height)
 	Password.id = "Password"
 	Password.anchorX=0
-	Password.size=14
+	Password.font=native.newFont("Roboto-Light",14)
 	Password.value=""
 	Password:setReturnKey( "done" )
 	Password.placeholder = LoginPage.Password_placeholder
 	--Password.isSecure = true;	
 	Password.hasBackground = false
 	sceneGroup:insert(Password)
-	Password.x=Password_bg.x-Password_bg.contentWidth/2+40;Password.y=Password_bg.y
+	Password.x=Password_bg.x+60;Password.y=Password_bg.y-Password.contentHeight/2
 
-	forgettBtn = display.newText(sceneGroup,LoginPage.Forget_Button,0,0,native.systemFont,12)
-	forgettBtn.x=Password_bg.x+Password_bg.contentWidth/2-forgettBtn.contentWidth/2-5
-	forgettBtn.y=Password_bg.y+Password_bg.contentHeight/2+10
+	forgettBtn = display.newText(sceneGroup,LoginPage.Forget_Button,0,0,"Roboto-Regular",12)
+	forgettBtn.x=Password_bg.x+Password_bg.contentWidth/2+forgettBtn.contentWidth/2+25
+	forgettBtn.y=Password_bg.y+Password_bg.contentHeight+20
 	Utils.CssforTextView(forgettBtn,sp_labelName_small)	
 
 	forgettBtn.id="forget"
-	forgettBtn_drawLeft	= display.newImageRect(sceneGroup,"res/assert/forgot-psw.png",14,14)
-	forgettBtn_drawLeft.x=forgettBtn.x-forgettBtn.contentWidth/2-forgettBtn_drawLeft.contentWidth/2-3;forgettBtn_drawLeft.y=forgettBtn.y
+	forgettBtn_drawLeft	= display.newImageRect(sceneGroup,"res/assert/forgot-psw.png",20,18)
+	forgettBtn_drawLeft.x=forgettBtn.x-forgettBtn.contentWidth/2-forgettBtn_drawLeft.contentWidth/2-6;forgettBtn_drawLeft.y=forgettBtn.y
 
 
-	signinBtn = display.newRect(sceneGroup,0,0,W-60,35)
+	signinBtn = display.newRoundedRect(sceneGroup,0,0,W-10,35,20)
 	signinBtn.x=W/2;signinBtn.y = forgettBtn.y+38
-	signinBtn.width = W-60
+	signinBtn.width = W-80
 	signinBtn:setFillColor( Utils.convertHexToRGB(sp_primarybutton.Background_Color) )
 	signinBtn.id="signin"
+	signinBtn:setStrokeColor( Utils.convertHexToRGB(sp_primarybutton.Background_Color) )
+	signinBtn.strokeWidth = 2
 
-	signinBtn_text = display.newText(sceneGroup,LoginPage.Signin_Button,0,0,native.systemFont,16)
+	signinBtn_text = display.newText(sceneGroup,LoginPage.Signin_Button,0,0,"Roboto-Regular",16)
 	signinBtn_text.x=signinBtn.x;signinBtn_text.y=signinBtn.y
 	Utils.CssforTextView(signinBtn_text,sp_primarybutton)	
 
 
-	--[[ requestBtn = display.newText(sceneGroup,LoginPage.Request_Button,0,0,native.systemFont,14)
-	-- requestBtn.x=W/2
-	-- requestBtn.y=signinBtn.y+signinBtn.contentHeight/2+40
-	-- requestBtn:setFillColor(Utils.convertHexToRGB(color.blue))
-	-- requestBtn.id="request"
-
-	-- requestBtn.isVisible=false]]
+	RequestBg = display.newRect( sceneGroup, W/2, H-70, W, 70 )
+	RequestBg.anchorY=0
+	RequestBg:setFillColor( Utils.convertHexToRGB(color.Bggray) )
 
 
+	local seprateLine = display.newImageRect( sceneGroup, "res/assert/triangle_shape.png", 80/2, RequestBg.contentHeight)
+	seprateLine.x = RequestBg.x;seprateLine.y=RequestBg.y+RequestBg.contentHeight/2
 
-
-
-	-- TM_RequestBtn = display.newRect(sceneGroup,0,0,W-60,45)
-	-- TM_RequestBtn.x=W/2-W/3+30;TM_RequestBtn.y = signinBtn.y+30
-	-- TM_RequestBtn.width = 150
-	-- TM_RequestBtn:setFillColor(0,0,0,0.4) 
-	-- TM_RequestBtn.anchorY=0
-	-- TM_RequestBtn.id="teammember_request"
-
-
-	-- TM_Requesttext = display.newText(sceneGroup,RegistrationScreen.UnitMember,0,0,display.contentWidth - 30,0,native.systemFontBold,14)
-	-- TM_Requesttext.x=TM_RequestBtn.x - TM_RequestBtn.contentWidth/2+10
-	-- TM_Requesttext.width = display.contentWidth - 30
-	-- TM_Requesttext.y=TM_RequestBtn.y+10
-	-- TM_Requesttext:setFillColor(0)
-	-- TM_Requesttext.anchorY=0
-	-- TM_Requesttext.anchorX=0
-
-
-	-- TM_RequestAccesstext = display.newText(sceneGroup,RegistrationScreen.RequestAccessText,0,0,display.contentWidth - 10,0,native.systemFont,13)
-	-- TM_RequestAccesstext.x=TM_RequestBtn.x - TM_RequestBtn.contentWidth/2 +10
-	-- TM_RequestAccesstext.y=TM_Requesttext.y+TM_Requesttext.contentHeight+7
-	-- TM_RequestAccesstext.width = display.contentWidth - 10
-	-- TM_RequestAccesstext:setFillColor(0)
-	-- TM_RequestAccesstext.anchorY=0
-	-- TM_RequestAccesstext.anchorX=0
-	-- --Utils.CssforTextView(TM_Requesttext,sp_primarybutton)	
-
-	-- TM_RequestBtn.height= TM_Requesttext.contentHeight+TM_RequestAccesstext.contentHeight+30
-
-
-	-- Director_RequestBtn = display.newRect(sceneGroup,0,0,W-60,45)
-	-- Director_RequestBtn.x=W/2+W/3-30;Director_RequestBtn.y = signinBtn.y+30
-	-- Director_RequestBtn.width = 140
-	-- Director_RequestBtn.anchorY = 0
-	-- Director_RequestBtn:setFillColor(0,0,0,0.4) 
-	-- Director_RequestBtn.id="director_request"
-
-	-- Director_Requesttext = display.newText(sceneGroup,RegistrationScreen.Director,0,0,Director_RequestBtn.contentWidth-12,0,native.systemFontBold,14)
-	-- Director_Requesttext.x=Director_RequestBtn.x - Director_RequestBtn.contentWidth/2+10
-	-- Director_Requesttext.y=Director_RequestBtn.y+10
-	-- Director_Requesttext.anchorY=0
-	-- Director_Requesttext:setFillColor(0)
-	-- Director_Requesttext.anchorX=0
-
-	-- Director_Accounttext = display.newText(sceneGroup,RegistrationScreen.CreateAccount,0,0,display.contentWidth - 10,0,native.systemFont,13)
-	-- Director_Accounttext.x=Director_RequestBtn.x - Director_RequestBtn.contentWidth/2 +10
-	-- Director_Accounttext.y=Director_Requesttext.y+Director_Requesttext.contentHeight+7
-	-- Director_Accounttext.width = display.contentWidth - 10
-	-- Director_Accounttext:setFillColor(0)
-	-- Director_Accounttext.anchorY=0
-	-- Director_Accounttext.anchorX=0
-	-- --Utils.CssforTextView(Director_Requesttext,sp_primarybutton)	
-
-	-- Director_RequestBtn.height= Director_Requesttext.contentHeight+Director_Accounttext.contentHeight+30
-
-
-
-	TM_Requesttext = display.newText(sceneGroup,RegistrationScreen.UnitMember,0,0,200,0,native.systemFontBold,12)
-	TM_Requesttext.x = W/2-130
+	TM_Requesttext = display.newText(sceneGroup,RegistrationScreen.UnitMember:upper( ),0,0,200,0,"Roboto-Bold",14)
+	TM_Requesttext.x = 30
 	TM_Requesttext.width = TM_Requesttext.contentWidth
-	TM_Requesttext.y = signinBtn.y+35
+	TM_Requesttext.y = RequestBg.y+10
 	TM_Requesttext:setFillColor(0,0,1,0.7)
 	TM_Requesttext.anchorY=0
 	TM_Requesttext.anchorX=0
 
 
-	TM_Requesticon	= display.newImageRect(sceneGroup,"res/assert/request_signin.jpg",15,12)
+	TM_Requesticon	= display.newImageRect(sceneGroup,"res/assert/setting_icon.png",30,30)
 	TM_Requesticon.x=W/2-125
 	TM_Requesticon.id="teammember_request"
 	TM_Requesticon:setFillColor(0)
-	TM_Requesticon.y=TM_Requesttext.y+TM_Requesttext.contentHeight+15.5
+	TM_Requesticon.y=TM_Requesttext.y+TM_Requesttext.contentHeight+20
 
 
-	TM_RequestAccesstext = display.newText(sceneGroup,RegistrationScreen.RequestAccessText,0,0,display.contentWidth - 10,0,native.systemFont,11)
+	TM_RequestAccesstext = display.newText(sceneGroup,RegistrationScreen.RequestAccessText,0,0,display.contentWidth - 10,0,"Roboto-Regular",11)
 	TM_RequestAccesstext.x=TM_Requesticon.x + 15
 	TM_RequestAccesstext.y=TM_Requesttext.y+TM_Requesttext.contentHeight+8
 	TM_RequestAccesstext.width = display.contentWidth - 10
@@ -878,16 +832,11 @@ function scene:create( event )
 	TM_RequestAccesstext.anchorX=0
 	--Utils.CssforTextView(TM_Requesttext,sp_primarybutton)	
 
-	local line = display.newRect(sceneGroup,TM_Requesticon.x+TM_RequestAccesstext.x+5,TM_RequestAccesstext.y,TM_RequestAccesstext.width,0.4)
-	line.width = TM_Requesttext.contentWidth - 110
-	line.y=TM_RequestAccesstext.y+TM_RequestAccesstext.contentHeight-line.contentHeight+1.5
-	line:setFillColor(Utils.convertHexToRGB(sp_primarybutton.Background_Color))
 
-
-	Director_Requesttext = display.newText(sceneGroup,RegistrationScreen.Director,0,0,200,0,native.systemFontBold,12)
-	Director_Requesttext.x=W/2+20
+	Director_Requesttext = display.newText(sceneGroup,RegistrationScreen.Director:upper( ),0,0,200,0,"Roboto-Bold",14)
+	Director_Requesttext.x=W/2+30
 	Director_Requesttext.width=Director_Requesttext.contentWidth
-	Director_Requesttext.y = signinBtn.y+35
+	Director_Requesttext.y = RequestBg.y+10
 	Director_Requesttext.anchorY=0
 	Director_Requesttext:setFillColor(0,0,1,0.7)
 	Director_Requesttext.anchorX=0
@@ -901,7 +850,7 @@ function scene:create( event )
 
 
 
-	Director_Accounttext = display.newText(sceneGroup,RegistrationScreen.CreateAccount,0,0,display.contentWidth - 10,0,native.systemFont,11)
+	Director_Accounttext = display.newText(sceneGroup,RegistrationScreen.CreateAccount,0,0,display.contentWidth - 10,0,"Roboto-Regular",11)
 	Director_Accounttext.x=Director_Requesticon.x +15
 	Director_Accounttext.y=Director_Requesttext.y+Director_Requesttext.contentHeight+8
 	Director_Accounttext.width = display.contentWidth - 10
@@ -910,14 +859,6 @@ function scene:create( event )
 	Director_Accounttext.anchorY=0
 	Director_Accounttext.anchorX=0
 	--Utils.CssforTextView(Director_Requesttext,sp_primarybutton)
-
-
-	local line1 = display.newRect(sceneGroup,Director_Requesticon.x+Director_Accounttext.x-140,Director_Accounttext.y,Director_Accounttext.width,0.4)
-	line1.width = Director_Accounttext.contentWidth-215
-	line1.y=Director_Accounttext.y+Director_Accounttext.contentHeight-line.contentHeight+1.5
-	line1:setFillColor(Utils.convertHexToRGB(sp_primarybutton.Background_Color))	
-
-
 
 
 

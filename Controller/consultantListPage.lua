@@ -479,12 +479,7 @@ local function onSwitchPress( event )
 			--end
 
 end
-<<<<<<< HEAD
-=======
 
-
-
->>>>>>> 248bef1d1ddd5806dc27cda49a39f4ee58839b0e
 
 
 
@@ -1004,7 +999,9 @@ end
 
 					        		search.isVisible = true
 
-					        		consultantList_scrollview.y = 141
+
+					        		consultantList_scrollview.y = consultantList_scrollview.y  + 40
+					        		consultantList_scrollview.height = consultantList_scrollview.contentHeight-40
 
 					        		searchflag = "true"
 
@@ -1017,6 +1014,9 @@ end
 
 						        else
 
+						        	consultantList_scrollview.y = consultantList_scrollview.y  - 40
+						        	consultantList_scrollview.height = consultantList_scrollview.contentHeight + 40
+
 						        	print("&&&&&&&& false")
 
 						        	searchtext_bg.isVisible = false
@@ -1025,7 +1025,7 @@ end
 
 					        		search.isVisible = false
 
-					        		consultantList_scrollview.y = 112
+					        		--consultantList_scrollview.y = 112
 
 					        		searchflag = "false"
 
@@ -2107,11 +2107,10 @@ function scene:create( event )
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
 
-
 	Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
-
 	MainGroup:insert(sceneGroup)
+	
 
 end
 
@@ -2246,11 +2245,15 @@ function scene:show( event )
 
 		if addGroupid_value == "addGroup" and pageid_value == "group" then
 
+			print( "first" )
+
 			RecentTab_Topvalue = 115
 
 				--GroupSubject.isVisible = false
 
 			elseif addGroupid_value == "addGroup" and pageid_value == "broadcast" then
+
+				print( "second" )
 
 				RecentTab_Topvalue = 115
 
@@ -2265,6 +2268,8 @@ function scene:show( event )
 	    	    --Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
 	    	elseif addGroupid_value == "editMember" and (pageid_value:lower() == "group" or pageid_value:lower() == "broadcast") then
+
+	    		print( "third" )
 
 	    		RecentTab_Topvalue = 115
 
@@ -2284,6 +2289,8 @@ function scene:show( event )
 
 	    	else
 
+	    		print( "else" )
+
 	    		RecentTab_Topvalue = 75
 
 	    	end
@@ -2295,7 +2302,7 @@ function scene:show( event )
 	    		top = RecentTab_Topvalue-5,
 	    		left = 0,
 	    		width = W,
-	    		height = H-RecentTab_Topvalue+5,
+	    		height = H-RecentTab_Topvalue-40,
 	    		hideBackground = true,
 	    		backgroundColor = {0,0,0,0.6},
 	    		isBounceEnabled=false,
@@ -2304,8 +2311,8 @@ function scene:show( event )
 	    		verticalScrollingDisabled = false
 	    	}
 
-	    	consultantList_scrollview.y = 112
-	    	consultantList_scrollview.anchorY = 0
+	    	--consultantList_scrollview.y = 112
+	    	--consultantList_scrollview.anchorY = 0
 
 	    	sceneGroup:insert(consultantList_scrollview)
 	    	

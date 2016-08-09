@@ -23,10 +23,10 @@ local aspectRatio = display.pixelHeight / display.pixelWidth
 application =
 {
 	content = {
-	
-		 width = 320,
-         height = 480,
-         scale = "zoomStretch",
+		
+	      width = 320,
+         height = 320 * display.pixelHeight / display.pixelWidth,
+         scale = "letterBox",
         xAlign = "center",
         yAlign = "center",
         audioPlayFrequency = 44100,

@@ -77,7 +77,15 @@ settings =
 			UIPrerenderedIcon = true, 
 			UIAppFonts = 
             {
-                "Segoe Print.ttf"
+                "Segoe Print.ttf",
+                "Roboto-Bold.ttf",
+                "Roboto-BoldItalic.ttf",
+                "Roboto-Italic.ttf",
+                "Roboto-Light.ttf",
+                "Roboto-LightItalic.ttf",
+                "Roboto-Regular.ttf",
+                "Roboto-Thin.ttf",
+                "Roboto-ThinItalic.ttf"
             },
             
 			UIFileSharingEnabled=true,
