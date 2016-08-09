@@ -232,7 +232,7 @@ end
 panel = widget.newPanel{
     location = "left",
     onComplete = panelTransDone,
-    width = display.contentWidth * 0.8,
+    width = display.contentWidth * 0.85,
     height = H,
     speed = menuTransTime,
     inEasing = easing.outCubic,
