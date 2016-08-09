@@ -85,11 +85,15 @@
 
 	        					if response == 5 then
 
-	        						slideAction()
+	        						if flapScroll ~= nil then flapScroll:removeSelf( );flapScroll=nil end
+
 	        						for j=MainGroup.numChildren, 1, -1 do 
 	        							display.remove(MainGroup[MainGroup.numChildren])
 	        							MainGroup[MainGroup.numChildren] = nil
 	        						end
+
+
+	        						slideAction()
 
 	        						
 	        						local tablesetup = [[DROP TABLE logindetails;]]
@@ -142,7 +146,7 @@
 
 			for i = 1, #menuArray_display do
 
-				menuArray_display[i].alpha=0.01
+				menuArray_display[i].alpha=1
 
 			end
 
@@ -153,6 +157,8 @@
 
 
 			if openPage ~= event.target.id then
+
+				--menuArray_display[#menuArray_display].alpha=1
 
 				for j=MainGroup.numChildren, 1, -1 do 
 					display.remove(MainGroup[MainGroup.numChildren])
@@ -308,10 +314,10 @@ function scene:show( event )
 
 			panel.flapTopBg = display.newRect(0,0,panel.width,H/4+10)
 			panel.flapTopBg.anchorY=0;panel.flapTopBg.y=-panel.height/2
-			panel.flapTopBg:setFillColor( Utils.convertHexToRGB(sp_primarybutton.Background_Color) )
+			panel.flapTopBg:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 			panel:insert( panel.flapTopBg )
 			
-			profileEmail = display.newText("",0,0,250,0,native.systemFont,13.5)
+			profileEmail = display.newText("",0,0,250,0,"Roboto-Regular",13.5)
 			profileEmail.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+18
 			profileEmail.anchorX=0
 			profileEmail:setFillColor(1)
@@ -320,7 +326,7 @@ function scene:show( event )
 			profileEmail.y=panel.flapTopBg.y+panel.flapTopBg.contentHeight-profileEmail.contentHeight-12
 			panel:insert( profileEmail )
 
-			profileName = display.newText(Director_Name,0,0,245,0,native.systemFont,16.5)
+			profileName = display.newText(Director_Name,0,0,245,0,"Roboto-Regular",17.5)
 			profileName.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+18
 			profileName.anchorX=0
 			profileName.y=profileEmail.y+profileEmail.contentHeight-profileName.contentHeight-15
@@ -445,6 +451,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].anchorX=0
 				--menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 				menuArray_display[#menuArray_display].y=0
+				menuArray_display[#menuArray_display].alpha=0.01
 				flapScroll:insert( menuArray_display[#menuArray_display] )
 				menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 				menuArray_display[#menuArray_display].name = "EventCalender"
@@ -453,11 +460,11 @@ function scene:show( event )
 				Event_icon = display.newImageRect("res/assert/calen.png",20,20)
 				Event_icon.anchorX = 0
 				Event_icon.x=17.5
-				Event_icon:setFillColor(0,0,0,0.8)
+				Event_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				Event_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2 + 3
 				flapScroll:insert( Event_icon )
 
-				Event_text = display.newText(EventCalender.PageTitle,0,0,"Open Sans Regular",15.5)
+				Event_text = display.newText(EventCalender.PageTitle,0,0,"Roboto-Regular",15.5)
 				Event_text.anchorX = 0
 				Event_text.x=Event_icon.x+Event_icon.contentWidth+17
 				Event_text.y = Event_icon.y
@@ -483,11 +490,11 @@ function scene:show( event )
 				Career_icon = display.newImageRect("res/assert/carrer.png",20,20)
 				Career_icon.anchorX = 0
 				Career_icon.x=17.5
-				Career_icon:setFillColor(0,0,0,0.8)
+				Career_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				Career_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 				flapScroll:insert( Career_icon )
 
-				Career_text = display.newText(CareerPath.PageTitle,0,0,"Open Sans Regular",15.5)
+				Career_text = display.newText(CareerPath.PageTitle,0,0,"Roboto-Regular",15.5)
 				Career_text.anchorX = 0
 				Career_text:setFillColor(0,0,0,0.8)
 				Career_text.x=Career_icon.x+Career_icon.contentWidth+17
@@ -514,11 +521,11 @@ function scene:show( event )
 				Goals_icon = display.newImageRect("res/assert/goals.png",20,20)
 				Goals_icon.anchorX = 0
 				Goals_icon.x=17.5
-				Goals_icon:setFillColor(0,0,0,0.8)
+				Goals_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				Goals_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 				flapScroll:insert( Goals_icon )
 
-				Goals_text = display.newText(Goals.PageTitle,0,0,"Open Sans Regular",15.5)
+				Goals_text = display.newText(Goals.PageTitle,0,0,"Roboto-Regular",15.5)
 				Goals_text.anchorX = 0
 				Goals_text:setFillColor(0,0,0,0.8)
 				--Utils.CssforTextView(Goals_text,sp_Flatmenu_subHeader)
@@ -547,11 +554,11 @@ function scene:show( event )
 				Resource_icon = display.newImageRect("res/assert/resource.png",20,20)
 				Resource_icon.anchorX = 0
 				Resource_icon.x=17.5
-				Resource_icon:setFillColor(0,0,0,0.8)
+				Resource_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				Resource_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 				flapScroll:insert( Resource_icon )
 
-				Resource_text = display.newText(ResourceLibrary.PageTitle ,0,0,"Open Sans Regular",15.5)
+				Resource_text = display.newText(ResourceLibrary.PageTitle ,0,0,"Roboto-Regular",15.5)
 				Resource_text.anchorX = 0
 				Resource_text.x=Resource_icon.x+Resource_icon.contentWidth+17
 				Resource_text.y = Resource_icon.y
@@ -578,11 +585,11 @@ function scene:show( event )
 				img_lib_icon = display.newImageRect("res/assert/library.png",20,20)
 				img_lib_icon.anchorX = 0
 				img_lib_icon.x=17.5
-				img_lib_icon:setFillColor(0,0,0,0.8)
+				img_lib_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				img_lib_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 				flapScroll:insert( img_lib_icon )
 
-				img_lib_text = display.newText(ImageLibrary.PageTitle ,0,0,"Open Sans Regular",15.5)
+				img_lib_text = display.newText(ImageLibrary.PageTitle ,0,0,"Roboto-Regular",15.5)
 				img_lib_text.anchorX = 0
 				img_lib_text:setFillColor(0,0,0,0.8)
 				img_lib_text.x=img_lib_icon.x+img_lib_icon.contentWidth+17
@@ -610,13 +617,12 @@ function scene:show( event )
 
 				message_icon = display.newImageRect("res/assert/message.png",20,20)
 				message_icon.anchorX = 0
-				message_icon:setFillColor(1,1,1)
 				message_icon.x=17.5
-				message_icon:setFillColor(0,0,0,0.8)
+				message_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				message_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 				flapScroll:insert( message_icon )
 
-				message_text = display.newText(Message.PageTitle ,0,0,"Open Sans Regular",15.5)
+				message_text = display.newText(Message.PageTitle ,0,0,"Roboto-Regular",15.5)
 				message_text.anchorX = 0
 				message_text:setFillColor(0,0,0,0.8)
 				message_text.x=message_icon.x+message_icon.contentWidth+17
@@ -644,11 +650,11 @@ function scene:show( event )
 				chat_message_icon.anchorX = 0
 				--chat_message_icon:setFillColor(1,1,1)
 				chat_message_icon.x=17.5
-				chat_message_icon:setFillColor(0,0,0,0.8)
+				chat_message_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				chat_message_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 				flapScroll:insert( chat_message_icon )
 
-				chat_message_text = display.newText(FlapMenu.chatMessageTitle ,0,0,"Open Sans Regular",15.5)
+				chat_message_text = display.newText(FlapMenu.chatMessageTitle ,0,0,"Roboto-Regular",15.5)
 				chat_message_text.anchorX = 0
 				chat_message_text:setFillColor(0,0,0,0.8)
 				chat_message_text.x=chat_message_icon.x+chat_message_icon.contentWidth+17
@@ -672,7 +678,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].anchorY=0
 				menuArray_display[#menuArray_display].anchorX=0
 				menuArray_display[#menuArray_display].alpha=1
-				--menuArray_display[#menuArray_display]:setFillColor( 0,0,0,0.1)
+				menuArray_display[#menuArray_display]:setFillColor( 0,0,0,0.1)
 				menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight
 				flapScroll:insert( menuArray_display[#menuArray_display] )
 				menuArray_display[#menuArray_display].name = "SpecialRecognition"
@@ -682,7 +688,7 @@ function scene:show( event )
 				specialRecognitionLbl = display.newText(string.upper(CommonWords.SpecialRecognitionText),0,0,panel.contentWidth,0,native.systemFontBold,15.5)
 				specialRecognitionLbl.anchorX = 0
 				specialRecognitionLbl.x=17.5
-				specialRecognitionLbl:setFillColor(0,0,0.8,0.6)
+				specialRecognitionLbl:setFillColor(Utils.convertHexToRGB(color.secondaryColor))
 				specialRecognitionLbl.y= rect.y+24
 				flapScroll:insert( specialRecognitionLbl )
 
@@ -711,7 +717,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].id="social"
 
 
-				socilaLbl = display.newText(CommonWords.InviteAccessText,0,0,panel.contentWidth,0,native.systemFontBold,16)
+				socilaLbl = display.newText(CommonWords.InviteAccessText,0,0,panel.contentWidth,0,"Roboto-Bold",sp_commonLabel.textSize)
 				socilaLbl.anchorX = 0
 				socilaLbl.x=40
 				socilaLbl:setFillColor(0)
@@ -735,11 +741,11 @@ function scene:show( event )
 				invite_icon.anchorX = 0
 				--invite_icon:setFillColor(1,1,1)
 				invite_icon.x=17.5
-				invite_icon:setFillColor(0,0,0,0.8)
+				invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2 
 				flapScroll:insert( invite_icon )
 
-				invite_text = display.newText(FlapMenu.Contacts_with_Access ,0,0,"Open Sans Regular",15.5)
+				invite_text = display.newText(FlapMenu.Contacts_with_Access ,0,0,"Roboto-Regular",15.5)
 				invite_text.anchorX = 0
 				invite_text:setFillColor(0,0,0,0.8)
 				invite_text.x=invite_icon.x+invite_icon.contentWidth+17
@@ -762,12 +768,12 @@ function scene:show( event )
 
 				invite_icon = display.newImageRect("res/assert/DENIDE-ACC.png",20,20)
 				invite_icon.anchorX = 0
-				invite_icon:setFillColor(0,0,0,0.8)
+				invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				invite_icon.x=17.5
 				invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2 
 				flapScroll:insert( invite_icon )
 
-				invite_text = display.newText(FlapMenu.Denied_Access ,0,0,"Open Sans Regular",15.5)
+				invite_text = display.newText(FlapMenu.Denied_Access ,0,0,"Roboto-Regular",15.5)
 				invite_text.anchorX = 0
 				invite_text:setFillColor(0,0,0,0.8)
 				invite_text.x=invite_icon.x+invite_icon.contentWidth+17
@@ -790,12 +796,12 @@ function scene:show( event )
 
 				invite_icon = display.newImageRect("res/assert/PENDING.png",20,20)
 				invite_icon.anchorX = 0
-				invite_icon:setFillColor(0,0,0,0.8)
+				invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				invite_icon.x=17.5
 				invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2 
 				flapScroll:insert( invite_icon )
 
-				invite_text = display.newText(FlapMenu.Pending_Requests,0,0,"Open Sans Regular",15.5)
+				invite_text = display.newText(FlapMenu.Pending_Requests,0,0,"Roboto-Regular",15.5)
 				invite_text.anchorX = 0
 				invite_text:setFillColor(0,0,0,0.8)
 				invite_text.x=invite_icon.x+invite_icon.contentWidth+17
@@ -818,12 +824,12 @@ function scene:show( event )
 
 				invite_icon = display.newImageRect("res/assert/team-men-Access.png",20,20)
 				invite_icon.anchorX = 0
-				invite_icon:setFillColor(0,0,0,0.8)
+				invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				invite_icon.x=17.5
 				invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2 
 				flapScroll:insert( invite_icon )
 
-				invite_text = display.newText(FlapMenu.TeamMember_without_Access,0,0,"Open Sans Regular",15.5)
+				invite_text = display.newText(FlapMenu.TeamMember_without_Access,0,0,"Roboto-Regular",15.5)
 				invite_text.anchorX = 0
 				invite_text:setFillColor(0,0,0,0.8)
 				invite_text.x=invite_icon.x+invite_icon.contentWidth+17
@@ -846,12 +852,12 @@ function scene:show( event )
 
 			    invite_icon = display.newImageRect("res/assert/Add-new-access.png",20,20)
 			    invite_icon.anchorX = 0
-			    invite_icon:setFillColor(0,0,0,0.8)
+			    invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 			    invite_icon.x=17.5
 			    invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2 
 			    flapScroll:insert( invite_icon )
 
-			    invite_text = display.newText(FlapMenu.AddNewAccess ,0,0,"Open Sans Regular",15.5)
+			    invite_text = display.newText(FlapMenu.AddNewAccess ,0,0,"Roboto-Regular",15.5)
 			    invite_text.anchorX = 0
 			    invite_text:setFillColor(0,0,0,0.8)
 			    invite_text.x=invite_icon.x+invite_icon.contentWidth+17
@@ -887,7 +893,7 @@ function scene:show( event )
 
 
 
-					socilaLbl = display.newText(FlapMenu.Social_Media,0,0,panel.contentWidth,0,native.systemFontBold,16)
+					socilaLbl = display.newText(FlapMenu.Social_Media,0,0,panel.contentWidth,0,"Roboto-Bold",sp_commonLabel.textSize)
 					socilaLbl.anchorX = 0
 					socilaLbl.x=40
 					socilaLbl:setFillColor(0)
@@ -925,7 +931,7 @@ function scene:show( event )
 			Facebook_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 			flapScroll:insert( Facebook_icon )
 
-			Facebook_text = display.newText(Facebook.PageTitle,0,0,"Open Sans Regular",15.5)
+			Facebook_text = display.newText(Facebook.PageTitle,0,0,"Roboto-Regular",15.5)
 			Facebook_text.anchorX = 0
 			Facebook_text:setFillColor(0,0,0,0.8)
 			Facebook_text.x=Facebook_icon.x+Facebook_icon.contentWidth+17
@@ -960,7 +966,7 @@ function scene:show( event )
 				Twitter_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 				flapScroll:insert( Twitter_icon )
 
-				Twitter_text = display.newText(Twitter.PageTitle,0,0,"Open Sans Regular",15.5)
+				Twitter_text = display.newText(Twitter.PageTitle,0,0,"Roboto-Regular",15.5)
 				Twitter_text.anchorX = 0
 				Twitter_text.x=40
 				Twitter_text:setFillColor(0,0,0,0.8)
@@ -980,7 +986,7 @@ function scene:show( event )
 						menuArray_display[#menuArray_display].anchorY=0
 						menuArray_display[#menuArray_display].anchorX=0
 						menuArray_display[#menuArray_display].alpha=0.01
-						menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+						--menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
 						menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight
 						flapScroll:insert( menuArray_display[#menuArray_display] )
 						menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
@@ -994,7 +1000,7 @@ function scene:show( event )
 						Google_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 						flapScroll:insert( Google_icon )
 
-						Googl_text = display.newText(Google_Plus.PageTitle,0,0,"Open Sans Regular",15.5)
+						Googl_text = display.newText(Google_Plus.PageTitle,0,0,"Roboto-Regular",15.5)
 						Googl_text.anchorX = 0
 						Googl_text.x=40
 						Googl_text:setFillColor(0,0,0,0.8)
@@ -1033,11 +1039,11 @@ function scene:show( event )
 						Logout_icon = display.newImageRect("res/assert/logout.png",20,20)
 						Logout_icon.anchorX = 0
 						Logout_icon.x=17.5
-						Logout_icon:setFillColor(0,0,0,0.8)
+						Logout_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 						Logout_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 						flapScroll:insert( Logout_icon )
 
-						Logout_text = display.newText(FlapMenu.PageTitle,0,0,"Open Sans Regular",15.5)
+						Logout_text = display.newText(FlapMenu.PageTitle,0,0,"Roboto-Regular",15.5)
 						Logout_text.anchorX = 0
 						Logout_text:setFillColor(0,0,0,0.8)
 						--Utils.CssforTextView(Logout_text,sp_Flatmenu_subHeader)
