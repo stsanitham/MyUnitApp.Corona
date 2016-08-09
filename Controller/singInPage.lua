@@ -798,7 +798,7 @@ function scene:create( event )
 
 	RequestBg = display.newRect( sceneGroup, W/2, H-70, W, 70 )
 	RequestBg.anchorY=0
-	RequestBg:setFillColor( Utils.convertHexToRGB(color.Gray) )
+	RequestBg:setFillColor( Utils.convertHexToRGB(color.lightGray) )
 
 
 	local seprateLine = display.newImageRect( sceneGroup, "res/assert/triangle_shape.png", 80/2, RequestBg.contentHeight)

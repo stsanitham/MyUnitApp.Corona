@@ -11,8 +11,7 @@ color.secondaryColor = "#7c4dff"
 color.Gray = "#bdbdbd"
 color.LtyGray = "#757575"
 color.Black = "#212121"
-
-
+color.lightGray = "#e4e4e4"
 
 --------------------
 

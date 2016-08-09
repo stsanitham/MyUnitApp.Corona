@@ -893,20 +893,21 @@ function scene:create( event )
 	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 	
 	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-	BgText.x=5;BgText.y=20
-	BgText.anchorX=0
+	BgText.x=W/2;BgText.y=20
+
+	--local tabImage
+	--BgText.anchorX=0
 
 	backBtn_bg = display.newRect(sceneGroup,0,0,40,30)
 	backBtn_bg.x=25;backBtn_bg.y=BgText.y+BgText.contentHeight/2+26
 	backBtn_bg.alpha=0.01
 
-	backBtn = display.newImageRect(sceneGroup,"res/assert/right-arrow(gray-).png",15/2,30/2)
-	backBtn.x=20;backBtn.y=BgText.y+BgText.contentHeight/2+20
-	backBtn.xScale=-1
-	backBtn.anchorY=0
+	backBtn = display.newImageRect(sceneGroup,"res/assert/back_icon.png",36/2,30/2)
+	backBtn.x=20;backBtn.y=BgText.y
+	--backBtn.xScale=-1
 
 	page_title = display.newText(sceneGroup,RequestAccess.PageTitle,0,0,native.systemFont,18)
-	page_title.x=backBtn.x+18;page_title.y=backBtn.y+8
+	page_title.x=backBtn.x;page_title.y=backBtn.y+45
 	page_title.anchorX=0
 	page_title:setFillColor(Utils.convertHexToRGB(color.Black))
 	
