@@ -343,6 +343,7 @@ local function careePath_list( list )
 			Image.anchorY=0
 
 		end
+		
 
 
 		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,"Roboto-Regular",16)
