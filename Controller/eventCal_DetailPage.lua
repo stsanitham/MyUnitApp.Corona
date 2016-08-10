@@ -257,7 +257,7 @@ local function EditOption( event )
 
 			Background = display.newRect(sceneGroup,0,0,W,H)
 			Background.x=W/2;Background.y=H/2
-			Background:setFillColor(1,1,1)10
+			Background:setFillColor(1,1,1)
 			Background:addEventListener("touch",bgTouch)
 
 			tabBar = display.newImageRect(sceneGroup,"res/assert/mub_banner.jpg",W,110)
@@ -273,7 +273,7 @@ local function EditOption( event )
 			menuTouch_s.alpha=0.01
 
 
-			BackIcon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",18,18)
+			BackIcon = display.newImageRect(sceneGroup,"res/assert/back_icon.png",36/2,30/2)
 			BackIcon.x=16;BackIcon.y=tabBar.y+tabBar.contentHeight/2-25
 			BackIcon.anchorX=0
 
@@ -325,25 +325,7 @@ local function EditOption( event )
 
 			if phase == "will" then
 
-				scrollView = widget.newScrollView
-				{
-					top = RecentTab_Topvalue,
-					left = 0,
-					width = W,
-					height =H-105,
-					hideBackground = true,
-					isBounceEnabled=false,
-					horizontalScrollingDisabled = false,
-					verticalScrollingDisabled = false,
-					hideScrollBar=true,
-
-					-- listener = scrollListener
-				}
-				scrollView.anchorY=0
-				scrollView.y=RecentTab_Topvalue
-				--scrollView.anchorX=0
-
-				sceneGroup:insert(scrollView)
+		
 
 
 	elseif phase == "did" then
@@ -427,9 +409,9 @@ local function EditOption( event )
 
 		display_details[#display_details+1] = display.newText(EventCalender.When,0,0,"Roboto-Regular",14.5)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight-tabBar.contentHeight/2-55
+		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+45
 		display_details[#display_details].anchorX=0
-		scrollView:insert( display_details[#display_details] )
+		sceneGroup:insert( display_details[#display_details] )
 
 		local monthstart = Utils.GetMonth(os.date( "%b" ,start_timeGMT  ))
 		local monthend = Utils.GetMonth(os.date( "%b" ,end_timeGMT ))
@@ -448,15 +430,14 @@ local function EditOption( event )
 		display_details[#display_details+1] = display_details[#display_details+1]
 		display_details[#display_details] = display.newText(value,0,0,220,0,"Roboto-Regular",14.5)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight-tabBar.contentHeight/2-55
+		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+45
 		display_details[#display_details].anchorX=0
-		scrollView:insert( display_details[#display_details] )
+		sceneGroup:insert( display_details[#display_details] )
 		display_details[#display_details].id="when"
 
 		------------------
 
 		-----Timings-----
-
 
 
 
@@ -479,7 +460,7 @@ local function EditOption( event )
 		display_details[#display_details].anchorX=0
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="time"
-		scrollView:insert( display_details[#display_details] )
+		sceneGroup:insert( display_details[#display_details] )
 
 
 
@@ -498,7 +479,7 @@ local function EditOption( event )
 				display_details[#display_details].x=leftAllign+6
 				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+26
 				display_details[#display_details].anchorX=0
-				scrollView:insert( display_details[#display_details] )
+				sceneGroup:insert( display_details[#display_details] )
 
 
 				display_details[#display_details+1] = display.newText("",0,0,180,0,"Roboto-Regular",14.5)
@@ -507,7 +488,7 @@ local function EditOption( event )
 				display_details[#display_details].anchorX=0
 				display_details[#display_details].anchorY=0
 				display_details[#display_details].id="where"
-				scrollView:insert( display_details[#display_details] )
+				sceneGroup:insert( display_details[#display_details] )
 
 			end
 
@@ -535,7 +516,7 @@ local function EditOption( event )
 			display_details[#display_details].x=leftAllign+6
 			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+26
 			display_details[#display_details].anchorX=0
-			scrollView:insert( display_details[#display_details] )
+			sceneGroup:insert( display_details[#display_details] )
 
 
 			display_details[#display_details+1] = display.newText(Details.Description,0,0,W-30,0,"Roboto-Regular",14.5)
@@ -544,7 +525,7 @@ local function EditOption( event )
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="Description"
-			scrollView:insert( display_details[#display_details] )
+			sceneGroup:insert( display_details[#display_details] )
 		end
 
 		------------------
@@ -592,7 +573,7 @@ local function EditOption( event )
 
 			end
 
-			scrollView:insert( display_details[#display_details] )
+			sceneGroup:insert( display_details[#display_details] )
 
 			local name
 
@@ -609,7 +590,7 @@ local function EditOption( event )
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="app_with"
-			scrollView:insert( display_details[#display_details] )
+			sceneGroup:insert( display_details[#display_details] )
 
 
 		end
@@ -629,7 +610,7 @@ local function EditOption( event )
 			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
-			scrollView:insert( display_details[#display_details] )
+			sceneGroup:insert( display_details[#display_details] )
 
 
 			if display_details[#display_details-1].id == "Description" then
@@ -648,7 +629,7 @@ local function EditOption( event )
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="Purpose"
-			scrollView:insert( display_details[#display_details] )
+			sceneGroup:insert( display_details[#display_details] )
 
 	   end
 
@@ -666,7 +647,7 @@ local function EditOption( event )
 			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
-			scrollView:insert( display_details[#display_details] )
+			sceneGroup:insert( display_details[#display_details] )
 
 
 			if display_details[#display_details-1].id == "Description" then
@@ -685,7 +666,7 @@ local function EditOption( event )
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="Priority"
-			scrollView:insert( display_details[#display_details] )
+			sceneGroup:insert( display_details[#display_details] )
 			
 		end
 		------------------
@@ -700,7 +681,7 @@ local function EditOption( event )
 			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
-			scrollView:insert( display_details[#display_details] )
+			sceneGroup:insert( display_details[#display_details] )
 
 
 			if display_details[#display_details-1].id == "Description" then
@@ -732,7 +713,7 @@ local function EditOption( event )
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].value = Details.MuUnitBuzzAttachmentPath
 			display_details[#display_details].id="Attachment"
-			scrollView:insert( display_details[#display_details] )
+			sceneGroup:insert( display_details[#display_details] )
 			display_details[#display_details]:addEventListener("touch",AttachmentDownload)
 			
 
@@ -742,7 +723,7 @@ local function EditOption( event )
 			local line = display.newLine(  display_details[#display_details].x, display_details[#display_details].y+15, display_details[#display_details].x+sample.contentWidth, display_details[#display_details].y+15  )
 			line:setStrokeColor( Utils.convertHexToRGB(color.blue) )
 			line.strokeWidth = 1
-			scrollView:insert( line )
+			sceneGroup:insert( line )
 		end
 		------------------
 
@@ -766,7 +747,7 @@ local function EditOption( event )
 
 		end
 		
-		scrollView:insert( display_details[#display_details] )
+		sceneGroup:insert( display_details[#display_details] )
 		display_details[#display_details].isVisible=false
 	end
 
