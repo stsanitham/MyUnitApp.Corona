@@ -17,7 +17,7 @@ local status = "normal"
 
 local W = display.contentWidth;H= display.contentHeight
 
-local Background,BgText,PageTitle,titleBar,titleBar_icon,titleBar_text
+local Background1,BgText,PageTitle,titleBar,titleBar_icon,titleBar_text
 
 local menuBtn
 
@@ -35,7 +35,7 @@ local prority_enum = {EventCalender.High,EventCalender.Normal,EventCalender.Low}
 
 local purpose_enum = {"FACIAL","ON_THE_GO","DOUBLE_FACIAL","CLASS","TEAM_BUILDING","TRAINING","SHOW","MEETING","FOLLOW_UP","CUSTOMER_SERVICE","TWO_DAY_FOLLOWUP","TWO_WEEK_FOLLOWUP","TWO_MONTH_FOLLOWUP","OTHER","COLOR_APPT","FAMILY","BOOKING","INIT_APPT","RESCHEDULE","FULLCIRCLE"}
 
-local deleteEvent_icon
+local deleteEvent_icon,editEvent_icon
 
 local eventResponse = {}
 
@@ -74,16 +74,24 @@ local function makeTimeStamp(dateString)
 	return timestamp
 end
 
-local function bgTouch( event )
-	if event.phase == "began" then
-		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
-		display.getCurrentStage():setFocus( nil )
 
+
+local function bgTouch( event )
+
+	if event.phase == "began" then
+
+		print("%^&%^&%^&#@#@@@@@@@@")
+		display.getCurrentStage():setFocus( event.target )
+	elseif event.phase == "ended" then
+
+	    print("%^&%^&%^&^&%")
+		display.getCurrentStage():setFocus( nil )
 	end
 
 	return true
 end
+
+
 
 
 
@@ -127,17 +135,19 @@ end
 local function EditOption( event )
 
 	if event.phase == "ended" then
+
+	print(event.target.id )
 	local function onComplete( event )  
 
 			local i = event
 
-			print( "touch : "..i )
+			print( "touch : "..event.target.id )
 
-			if i == 1 then
+			if event.target.id == "delete" then
 
 				Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,get_DeleteTicklerEvent)
 				
-			elseif i == 2 then
+			elseif event.target.id == "edit" then
 				    	--Details
 
 				    	
@@ -145,10 +155,9 @@ local function EditOption( event )
 				
 	end
 
-			if detail_value.IsRecurrence == true then 
+			if detail_value.IsRecurrence == true then
 
 				if event.target.id == "delete" then
-
 
 					local option ={
 								 {content=CommonWords.ok,positive=true},
@@ -168,7 +177,6 @@ local function EditOption( event )
 			else
 
 				if event.target.id == "delete" then
-
 
 					local option ={
 								 {content=CommonWords.ok,positive=true},
@@ -244,65 +252,56 @@ local function EditOption( event )
 
 			local sceneGroup = self.view
 
-			Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+			-- Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+			-- Background.x=W/2;Background.y=H/2
+
+			Background = display.newRect(sceneGroup,0,0,W,H)
 			Background.x=W/2;Background.y=H/2
+			Background:setFillColor(1,1,1)10
+			Background:addEventListener("touch",bgTouch)
 
-
-			tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+			tabBar = display.newImageRect(sceneGroup,"res/assert/mub_banner.jpg",W,110)
 			tabBar.y=tabBar.contentHeight/2
-			tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
+			tabBar.x=W/2
 
 			menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 			menuBtn.anchorX=0
-			menuBtn.x=10;menuBtn.y=20;
+			menuBtn.x=16;menuBtn.y=20;
 
-			BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-			BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-			BgText.anchorX=0
-
-			menuTouch_s = display.newRect( sceneGroup, 0, BgText.y, 135, 40 )
+			menuTouch_s = display.newRect( sceneGroup, 0, menuBtn.y, 135, 50 )
 			menuTouch_s.anchorX=0
 			menuTouch_s.alpha=0.01
 
-			title_bg = display.newRect(sceneGroup,0,0,W,30)
-			title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-			title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+
+			BackIcon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",18,18)
+			BackIcon.x=16;BackIcon.y=tabBar.y+tabBar.contentHeight/2-25
+			BackIcon.anchorX=0
 
 
-			title = display.newText(sceneGroup,EventCalender.PageTitle,0,0,native.systemFont,18)
+			title = display.newText(sceneGroup,"",0,0,"Roboto-Regular",18.5)
 			title.anchorX = 0
-			title.x=5;title.y = title_bg.y
-			title:setFillColor(0)
+			title.x=50;title.y = tabBar.y+tabBar.contentHeight/2-25
+			title:setFillColor(1,1,1)
 
 
-
-			titleBar = display.newRect(sceneGroup,W/2,title_bg.y+title_bg.contentHeight/2,W,30)
-			titleBar.anchorY=0
-			titleBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
-
-			titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
-			titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+10
-			titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
-			titleBar_icon.anchorY=0
-
-			titleBar_text = display.newText(sceneGroup," ",0,0,native.systemFont,0)
-			titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
-			titleBar_text.y=titleBar.y+titleBar.contentHeight/2-titleBar_text.contentHeight/2
-			titleBar_text.anchorX=0;titleBar_text.anchorY=0
-			Utils.CssforTextView(titleBar_text,sp_subHeader)
-			MainGroup:insert(sceneGroup)
-
-			deleteEvent_icon = display.newImageRect( sceneGroup, "res/assert/delete.png", 20,16 )
-			deleteEvent_icon.x=titleBar.x+titleBar.contentWidth/2-20
-			deleteEvent_icon.y=titleBar.y+titleBar.contentHeight/2
+			editEvent_icon = display.newImageRect(sceneGroup,"res/assert/prof_img.png",55,55)
+			editEvent_icon.x = W - 43;editEvent_icon.y=tabBar.y+tabBar.contentHeight/2
+			editEvent_icon.id="edit"
+			editEvent_icon.isVisible = true
+			
+			deleteEvent_icon = display.newImageRect( sceneGroup, "res/assert/delete.png", 30,30 )
+			deleteEvent_icon.x= W/2 - 15
+			deleteEvent_icon.y= Background.y+Background.contentHeight/2 - 50
+			deleteEvent_icon.anchorX = 0
+			deleteEvent_icon.isVisible = true
+			deleteEvent_icon:setFillColor(0,0,0,0.5)
+			deleteEvent_icon.anchorY = 0
 			deleteEvent_icon.id="delete"
+
+			editEvent_icon:addEventListener( "touch", EditOption )
 			deleteEvent_icon:addEventListener( "touch", EditOption )
 
-			editEvent_icon = display.newImageRect( sceneGroup, "res/assert/edit.png", 20,20 )
-			editEvent_icon.x=titleBar.x+titleBar.contentWidth/2-45
-			editEvent_icon.y=titleBar.y+titleBar.contentHeight/2
-			editEvent_icon.id="edit"
-			editEvent_icon:addEventListener( "touch", EditOption )
+
 
 			if not IsOwner then
 
@@ -311,7 +310,9 @@ local function EditOption( event )
 
 			end
 
-		end
+			MainGroup:insert(sceneGroup)
+
+	end
 
 
 
@@ -336,24 +337,24 @@ local function EditOption( event )
 					verticalScrollingDisabled = false,
 					hideScrollBar=true,
 
-		-- listener = scrollListener
-	}
-	scrollView.anchorY=0
-	scrollView.y=RecentTab_Topvalue
-		--scrollView.anchorX=0
+					-- listener = scrollListener
+				}
+				scrollView.anchorY=0
+				scrollView.y=RecentTab_Topvalue
+				--scrollView.anchorX=0
 
-		sceneGroup:insert(scrollView)
+				sceneGroup:insert(scrollView)
 
 
 	elseif phase == "did" then
 
-		titleBar_icon:addEventListener("touch",closeDetails)
-		titleBar_text:addEventListener("touch",closeDetails)
-		Background:addEventListener("touch",bgTouch)
+		BackIcon:addEventListener("touch",closeDetails)
+		title:addEventListener("touch",closeDetails)
+		
 		menuBtn:addEventListener("touch",menuTouch)
 		menuTouch_s:addEventListener("touch",menuTouch)
-
-		BgText:addEventListener("touch",menuTouch)
+		
+		--BgText:addEventListener("touch",menuTouch)
 
 		Runtime:addEventListener("key",onKeyEventDetail)
 
@@ -415,18 +416,18 @@ local function EditOption( event )
 
 		----When----
 
-		titleBar_text.text = Details.title
+		title.text = Details.title
 
-		if titleBar_text.text:len() > 25 then
+		if title.text:len() > 25 then
 
-			titleBar_text.text = titleBar_text.text:sub(1,25).."..."
+			title.text = title.text:sub(1,25).."..."
 
 		end
 
 
-		display_details[#display_details+1] = display.newText(EventCalender.When,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
-		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-		display_details[#display_details].x=leftAllign;display_details[#display_details].y=titleBar.y-45
+		display_details[#display_details+1] = display.newText(EventCalender.When,0,0,"Roboto-Regular",14.5)
+		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight-tabBar.contentHeight/2-55
 		display_details[#display_details].anchorX=0
 		scrollView:insert( display_details[#display_details] )
 
@@ -445,9 +446,9 @@ local function EditOption( event )
 		end
 
 		display_details[#display_details+1] = display_details[#display_details+1]
-		display_details[#display_details] = display.newText(value,0,0,220,0,sp_fieldValue.Font_Weight,sp_fieldValue.Font_Size_ios)
-		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_fieldValue.Text_Color))
-		display_details[#display_details].x=W/2-28;display_details[#display_details].y=titleBar.y-45
+		display_details[#display_details] = display.newText(value,0,0,220,0,"Roboto-Regular",14.5)
+		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.Black))
+		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight-tabBar.contentHeight/2-55
 		display_details[#display_details].anchorX=0
 		scrollView:insert( display_details[#display_details] )
 		display_details[#display_details].id="when"
@@ -472,9 +473,9 @@ local function EditOption( event )
 
 		end
 
-		display_details[#display_details+1] = display.newText(time,0,0,210,0,native.systemFont,14)
+		display_details[#display_details+1] = display.newText(time,0,0,210,0,"Roboto-Light",13)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y+16
+		display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y+16
 		display_details[#display_details].anchorX=0
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="time"
@@ -492,17 +493,17 @@ local function EditOption( event )
 
 			if Details.Location ~= nil or Details.PhoneNumber ~= nil or Details.Location ~= "" then
 
-				display_details[#display_details+1] = display.newText(EventCalender.Where,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
-				display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-				display_details[#display_details].x=leftAllign
-				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
+				display_details[#display_details+1] = display.newText(EventCalender.Where,0,0,"Roboto-Regular",14.5)
+				display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+				display_details[#display_details].x=leftAllign+6
+				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+26
 				display_details[#display_details].anchorX=0
 				scrollView:insert( display_details[#display_details] )
 
 
-				display_details[#display_details+1] = display.newText("",0,0,180,0,native.systemFont,14)
+				display_details[#display_details+1] = display.newText("",0,0,180,0,"Roboto-Regular",14.5)
 				display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-				display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y-5
+				display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y-5
 				display_details[#display_details].anchorX=0
 				display_details[#display_details].anchorY=0
 				display_details[#display_details].id="where"
@@ -529,35 +530,36 @@ local function EditOption( event )
 
 		if Details.Description ~= nil and Details.Description ~= "" then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Description,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
-			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-			display_details[#display_details].x=leftAllign
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+20
+			display_details[#display_details+1] = display.newText(EventCalender.Description,0,0,"Roboto-Regular",14.5)
+			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			display_details[#display_details].x=leftAllign+6
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+26
 			display_details[#display_details].anchorX=0
 			scrollView:insert( display_details[#display_details] )
 
 
-			display_details[#display_details+1] = display.newText(Details.Description,0,0,W-30,0,native.systemFont,14)
+			display_details[#display_details+1] = display.newText(Details.Description,0,0,W-30,0,"Roboto-Regular",14.5)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-			display_details[#display_details].x=leftAllign;display_details[#display_details].y=display_details[#display_details-1].y+15
+			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y+15
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="Description"
 			scrollView:insert( display_details[#display_details] )
 		end
+
 		------------------
 
 
-		----With----
+		----With----------
 
 		if Details.Contact ~= nil then
 
 			local temp = Details.Contact
 
-			display_details[#display_details+1] = display.newText(EventCalender.Appointment_With,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
-			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-			display_details[#display_details].x=leftAllign
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+20
+			display_details[#display_details+1] = display.newText(EventCalender.Appointment_With,0,0,"Roboto-Regular",14.5)
+			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			display_details[#display_details].x=leftAllign+6
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 
@@ -600,9 +602,9 @@ local function EditOption( event )
 				name = temp.LastName
 			end
 
-			display_details[#display_details+1] = display.newText(name,0,0,180,0,native.systemFont,14)
+			display_details[#display_details+1] = display.newText(name,0,0,180,0,"Roboto-Regular",14.5)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-			display_details[#display_details].x=W/2-28
+			display_details[#display_details].x=W/2-46
 			display_details[#display_details].y=display_details[#display_details-1].y
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
@@ -617,14 +619,14 @@ local function EditOption( event )
 
 		if Details.TicklerType ~= 4  then
 
-		----Purpose----
+		----Purpose-------
 
 		if Details.AppointmentPurpose ~= nil then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Purpose,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
-			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-			display_details[#display_details].x=leftAllign
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+20
+			display_details[#display_details+1] = display.newText(EventCalender.Purpose,0,0,"Roboto-Regular",14.5)
+			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			display_details[#display_details].x=leftAllign+6
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			scrollView:insert( display_details[#display_details] )
@@ -640,11 +642,9 @@ local function EditOption( event )
 			end
 
 
-
-
-			display_details[#display_details+1] = display.newText(getPurpose(purpose_enum[Details.AppointmentPurpose+1]),0,0,150,0,native.systemFont,14)
+			display_details[#display_details+1] = display.newText(getPurpose(purpose_enum[Details.AppointmentPurpose+1]),0,0,150,0,"Roboto-Regular",14.5)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-			display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y
+			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="Purpose"
@@ -656,14 +656,14 @@ local function EditOption( event )
 	end
 		------------------
 
-		----Priority----
+		----Priority------
 
 		if Details.Priority ~= nil then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Priority,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
-			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-			display_details[#display_details].x=leftAllign
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+20
+			display_details[#display_details+1] = display.newText(EventCalender.Priority,0,0,"Roboto-Regular",14.5)
+			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			display_details[#display_details].x=leftAllign+6
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			scrollView:insert( display_details[#display_details] )
@@ -679,9 +679,9 @@ local function EditOption( event )
 			end
 
 
-			display_details[#display_details+1] = display.newText(prority_enum[Details.Priority+1],0,0,180,0,native.systemFont,14)
+			display_details[#display_details+1] = display.newText(prority_enum[Details.Priority+1],0,0,180,0,"Roboto-Regular",14.5)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-			display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y
+			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="Priority"
@@ -694,10 +694,10 @@ local function EditOption( event )
 
 		if Details.AttachmentName ~= nil then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
-			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-			display_details[#display_details].x=leftAllign
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+20
+			display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,"Roboto-Regular",14.5)
+			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			display_details[#display_details].x=leftAllign+6
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			scrollView:insert( display_details[#display_details] )
@@ -713,7 +713,7 @@ local function EditOption( event )
 			end
 
 
-			display_details[#display_details+1] = display.newText(Details.AttachmentName,0,0,180,0,native.systemFont,14)
+			display_details[#display_details+1] = display.newText(Details.AttachmentName,0,0,180,0,"Roboto-Regular",14.5)
 			local AttachName
 			if display_details[#display_details].width > 35 then
 
@@ -727,7 +727,7 @@ local function EditOption( event )
 
 			display_details[#display_details].text = AttachName
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.blue))
-			display_details[#display_details].x=W/2-28;display_details[#display_details].y=display_details[#display_details-1].y
+			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].value = Details.MuUnitBuzzAttachmentPath
@@ -736,7 +736,7 @@ local function EditOption( event )
 			display_details[#display_details]:addEventListener("touch",AttachmentDownload)
 			
 
-			sample = display.newText(AttachName,0,0,native.systemFont,14)
+			sample = display.newText(AttachName,0,0,"Roboto-Regular",14.5)
 			sample.isVisible=false
 
 			local line = display.newLine(  display_details[#display_details].x, display_details[#display_details].y+15, display_details[#display_details].x+sample.contentWidth, display_details[#display_details].y+15  )
@@ -746,12 +746,14 @@ local function EditOption( event )
 		end
 		------------------
 
+		-- display_details[#display_details]:addEventListener("touch",AttachmentDownload)
 
 
-		display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
-		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
-		display_details[#display_details].x=leftAllign
-		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+20
+
+		display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,"Roboto-Regular",14.5)
+		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+		display_details[#display_details].x=leftAllign+6
+		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
 		display_details[#display_details].anchorX=0
 
 
@@ -767,18 +769,18 @@ local function EditOption( event )
 		scrollView:insert( display_details[#display_details] )
 		display_details[#display_details].isVisible=false
 	end
+
 	Webservice.Get_TicklerEventsById(detail_value.id,get_ticklereventByid)
 
 end
 
 end	
 
-
-
-
 MainGroup:insert(sceneGroup)
 
 end
+
+
 
 
 
@@ -800,10 +802,9 @@ function scene:hide( event )
 		end
 
 	elseif phase == "did" then
-
 		
 		menuBtn:removeEventListener("touch",menuTouch)
-		BgText:removeEventListener("touch",menuTouch)
+		--BgText:removeEventListener("touch",menuTouch)
 		menuTouch_s:removeEventListener("touch",menuTouch)
 
 		Runtime:removeEventListener( "key", onKeyEventDetail )

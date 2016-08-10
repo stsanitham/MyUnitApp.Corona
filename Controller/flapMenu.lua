@@ -146,13 +146,12 @@
 
 			for i = 1, #menuArray_display do
 
-				menuArray_display[i].alpha=1
+				menuArray_display[i].alpha=0.01
 
 			end
 
 			event.target.alpha=1
 			
-
 			slideAction()
 
 
@@ -164,6 +163,7 @@
 					display.remove(MainGroup[MainGroup.numChildren])
 					MainGroup[MainGroup.numChildren] = nil
 				end
+				
 				composer.removeHidden()
 
 				if event.target.name == "GRANT" or event.target.name == "DENY" or event.target.name == "OPEN" or event.target.name == "ADDREQUEST" then
@@ -309,7 +309,7 @@ function scene:show( event )
 		elseif phase == "did" then
 
 			panel.background = display.newRect( 0, 0, panel.width, panel.height )
-			panel.background:setFillColor(1,1,1,0.1)
+			panel.background:setFillColor(1,1,1)
 			panel:insert( panel.background )
 
 			panel.flapTopBg = display.newRect(0,0,panel.width,H/4+10)
@@ -671,7 +671,7 @@ function scene:show( event )
 				rect.anchorX=0
 				--rect:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 				rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
-				rect:setFillColor(0,0,0,0.7)
+				rect:setFillColor(color.Gray)
 				flapScroll:insert( rect )
 
 				menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value+5)
@@ -703,7 +703,7 @@ function scene:show( event )
 				rect.x = menuArray_display[#menuArray_display].x;
 				rect.anchorX=0
 				rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight;
-				rect:setFillColor(0,0,0,0.7)
+				rect:setFillColor(color.Gray)
 				flapScroll:insert( rect )
 
 				menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
@@ -874,7 +874,7 @@ function scene:show( event )
 				rect.x = menuArray_display[#menuArray_display].x;
 				rect.anchorX=0
 				rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
-				rect:setFillColor(0)
+				rect:setFillColor(color.Gray)
 				flapScroll:insert( rect )
 
 
@@ -1016,7 +1016,7 @@ function scene:show( event )
 					rect.x = menuArray_display[#menuArray_display].x;
 					rect.anchorX=0
 					rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
-					rect:setFillColor(0)
+					rect:setFillColor(color.Gray)
 					flapScroll:insert( rect )
 
 						--rect.isVisible=false
