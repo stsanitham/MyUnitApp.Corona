@@ -278,7 +278,7 @@ local function EditOption( event )
 			title:setFillColor(1,1,1)
 
 
-			editEvent_icon = display.newImageRect(sceneGroup,"res/assert/prof_img.png",45,45)
+			editEvent_icon = display.newImageRect(sceneGroup,"res/assert/editicon.png",55,55)
 			editEvent_icon.x = W - 43;editEvent_icon.y=tabBar.y+tabBar.contentHeight/2
 			editEvent_icon.id="edit"
 			editEvent_icon.isVisible = true
@@ -401,7 +401,7 @@ local function EditOption( event )
 
 		display_details[#display_details+1] = display.newText(EventCalender.When,0,0,"Roboto-Regular",14)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+40
+		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+45
 		display_details[#display_details].anchorX=0
 		sceneGroup:insert( display_details[#display_details] )
 
@@ -422,7 +422,7 @@ local function EditOption( event )
 		display_details[#display_details+1] = display_details[#display_details+1]
 		display_details[#display_details] = display.newText(value,0,0,220,0,"Roboto-Regular",14)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+40
+		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+45
 		display_details[#display_details].anchorX=0
 		sceneGroup:insert( display_details[#display_details] )
 		display_details[#display_details].id="when"

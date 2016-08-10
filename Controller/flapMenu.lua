@@ -401,6 +401,18 @@ function scene:show( event )
 				end
 
 
+				local LogoPic
+
+				LogoPic = display.newImageRect("res/assert/logoCircle.png",125,120)
+				LogoPic.x=profilePic.x + profilePic.contentWidth + 45
+				LogoPic.y=profileName.y-LogoPic.contentHeight + 60
+				LogoPic:rotate(-45)
+				LogoPic.anchorY=0
+				LogoPic.anchorX=0
+				panel:insert( LogoPic )
+
+
+
 			--[[	--HomePage
 
 				menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
@@ -457,7 +469,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].name = "EventCalender"
 				menuArray_display[#menuArray_display].id="eventCalenderPage"
 
-				Event_icon = display.newImageRect("res/assert/calen.png",20,20)
+				Event_icon = display.newImageRect("res/assert/calender.png",20,20)
 				Event_icon.anchorX = 0
 				Event_icon.x=17.5
 				Event_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
@@ -487,7 +499,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].id="careerPathPage"
 
 
-				Career_icon = display.newImageRect("res/assert/carrer.png",20,20)
+				Career_icon = display.newImageRect("res/assert/unitCarrer.png",20,20)
 				Career_icon.anchorX = 0
 				Career_icon.x=17.5
 				Career_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
@@ -518,7 +530,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].id="goalsPage"
 
 
-				Goals_icon = display.newImageRect("res/assert/goals.png",20,20)
+				Goals_icon = display.newImageRect("res/assert/unitGoals.png",20,20)
 				Goals_icon.anchorX = 0
 				Goals_icon.x=17.5
 				Goals_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
@@ -582,7 +594,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].id="imageLibPage"
 
 
-				img_lib_icon = display.newImageRect("res/assert/library.png",20,20)
+				img_lib_icon = display.newImageRect("res/assert/imglib.png",20,20)
 				img_lib_icon.anchorX = 0
 				img_lib_icon.x=17.5
 				img_lib_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
@@ -646,7 +658,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].name = "Chats"
 				menuArray_display[#menuArray_display].id="MessagingPage"
 
-				chat_message_icon = display.newImageRect("res/assert/chaticon.png",20,20)
+				chat_message_icon = display.newImageRect("res/assert/chat.png",20,20)
 				chat_message_icon.anchorX = 0
 				--chat_message_icon:setFillColor(1,1,1)
 				chat_message_icon.x=17.5
@@ -737,7 +749,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].name = "GRANT"
 				menuArray_display[#menuArray_display].id="inviteAndaccessPage"
 
-				invite_icon = display.newImageRect("res/assert/contacts-access.png",20,20)
+				invite_icon = display.newImageRect("res/assert/contacts.png",20,20)
 				invite_icon.anchorX = 0
 				--invite_icon:setFillColor(1,1,1)
 				invite_icon.x=17.5
@@ -766,7 +778,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].name = "DENY"
 				menuArray_display[#menuArray_display].id="inviteAndaccessPage"
 
-				invite_icon = display.newImageRect("res/assert/DENIDE-ACC.png",20,20)
+				invite_icon = display.newImageRect("res/assert/deniedAcc.png",20,20)
 				invite_icon.anchorX = 0
 				invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				invite_icon.x=17.5
@@ -794,7 +806,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].name = "OPEN"
 				menuArray_display[#menuArray_display].id="inviteAndaccessPage"
 
-				invite_icon = display.newImageRect("res/assert/PENDING.png",20,20)
+				invite_icon = display.newImageRect("res/assert/pending.png",20,20)
 				invite_icon.anchorX = 0
 				invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				invite_icon.x=17.5
@@ -822,7 +834,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].name = "ADDREQUEST"
 				menuArray_display[#menuArray_display].id="inviteAndaccessPage"
 
-				invite_icon = display.newImageRect("res/assert/team-men-Access.png",20,20)
+				invite_icon = display.newImageRect("res/assert/teammenber.png",20,20)
 				invite_icon.anchorX = 0
 				invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				invite_icon.x=17.5
@@ -850,7 +862,7 @@ function scene:show( event )
 			    menuArray_display[#menuArray_display].name = "Add New Access"
 			    menuArray_display[#menuArray_display].id="addNewAccessPage"
 
-			    invite_icon = display.newImageRect("res/assert/Add-new-access.png",20,20)
+			    invite_icon = display.newImageRect("res/assert/addNew.png",20,20)
 			    invite_icon.anchorX = 0
 			    invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 			    invite_icon.x=17.5
