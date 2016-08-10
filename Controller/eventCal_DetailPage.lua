@@ -80,18 +80,16 @@ local function bgTouch( event )
 
 	if event.phase == "began" then
 
-		print("%^&%^&%^&#@#@@@@@@@@")
 		display.getCurrentStage():setFocus( event.target )
+
 	elseif event.phase == "ended" then
 
-	    print("%^&%^&%^&^&%")
 		display.getCurrentStage():setFocus( nil )
+
 	end
 
 	return true
 end
-
-
 
 
 
@@ -136,24 +134,19 @@ local function EditOption( event )
 
 	if event.phase == "ended" then
 
-	print(event.target.id )
-	local function onComplete( event )  
+			local function onComplete( event1 ) 
 
-			local i = event
+				    if event1 == 1 then
 
-			print( "touch : "..event.target.id )
-
-			if event.target.id == "delete" then
-
-				Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,get_DeleteTicklerEvent)
-				
-			elseif event.target.id == "edit" then
+				    	Webservice.DeleteTicklerEvent(TicklerId,CalendarId,CalendarName,id,get_DeleteTicklerEvent)
+				       
+				    elseif event1 == 2 then
 				    	--Details
-
 				    	
-			 end
-				
-	end
+				    end
+						
+			end
+
 
 			if detail_value.IsRecurrence == true then
 
@@ -285,14 +278,14 @@ local function EditOption( event )
 			title:setFillColor(1,1,1)
 
 
-			editEvent_icon = display.newImageRect(sceneGroup,"res/assert/prof_img.png",55,55)
+			editEvent_icon = display.newImageRect(sceneGroup,"res/assert/prof_img.png",45,45)
 			editEvent_icon.x = W - 43;editEvent_icon.y=tabBar.y+tabBar.contentHeight/2
 			editEvent_icon.id="edit"
 			editEvent_icon.isVisible = true
 			
-			deleteEvent_icon = display.newImageRect( sceneGroup, "res/assert/delete.png", 30,30 )
+			deleteEvent_icon = display.newImageRect( sceneGroup, "res/assert/delete.png", 27,27 )
 			deleteEvent_icon.x= W/2 - 15
-			deleteEvent_icon.y= Background.y+Background.contentHeight/2 - 50
+			deleteEvent_icon.y= Background.y+Background.contentHeight/2 - 45
 			deleteEvent_icon.anchorX = 0
 			deleteEvent_icon.isVisible = true
 			deleteEvent_icon:setFillColor(0,0,0,0.5)
@@ -301,7 +294,6 @@ local function EditOption( event )
 
 			editEvent_icon:addEventListener( "touch", EditOption )
 			deleteEvent_icon:addEventListener( "touch", EditOption )
-
 
 
 			if not IsOwner then
@@ -348,7 +340,6 @@ local function EditOption( event )
 			print(json.encode(detail_value))
 
 			local timeGMT = Utils.makeTimeStamp( detail_value.date )
-
 
 
 			function get_ticklereventByid(response)
@@ -401,16 +392,16 @@ local function EditOption( event )
 
 		title.text = Details.title
 
-		if title.text:len() > 25 then
+		if title.text:len() > 15 then
 
-			title.text = title.text:sub(1,25).."..."
+			title.text = title.text:sub(1,15).."..."
 
 		end
 
 
-		display_details[#display_details+1] = display.newText(EventCalender.When,0,0,"Roboto-Regular",14.5)
+		display_details[#display_details+1] = display.newText(EventCalender.When,0,0,"Roboto-Regular",14)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+45
+		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+40
 		display_details[#display_details].anchorX=0
 		sceneGroup:insert( display_details[#display_details] )
 
@@ -429,9 +420,9 @@ local function EditOption( event )
 		end
 
 		display_details[#display_details+1] = display_details[#display_details+1]
-		display_details[#display_details] = display.newText(value,0,0,220,0,"Roboto-Regular",14.5)
+		display_details[#display_details] = display.newText(value,0,0,220,0,"Roboto-Regular",14)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+45
+		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+40
 		display_details[#display_details].anchorX=0
 		sceneGroup:insert( display_details[#display_details] )
 		display_details[#display_details].id="when"
@@ -455,7 +446,7 @@ local function EditOption( event )
 
 		end
 
-		display_details[#display_details+1] = display.newText(time,0,0,210,0,"Roboto-Light",13)
+		display_details[#display_details+1] = display.newText(time,0,0,210,0,"Roboto-Light",12.5)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 		display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y+16
 		display_details[#display_details].anchorX=0
@@ -475,17 +466,17 @@ local function EditOption( event )
 
 			if Details.Location ~= nil or Details.PhoneNumber ~= nil or Details.Location ~= "" then
 
-				display_details[#display_details+1] = display.newText(EventCalender.Where,0,0,"Roboto-Regular",14.5)
+				display_details[#display_details+1] = display.newText(EventCalender.Where,0,0,"Roboto-Regular",14)
 				display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 				display_details[#display_details].x=leftAllign+6
-				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+26
+				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+21
 				display_details[#display_details].anchorX=0
 				sceneGroup:insert( display_details[#display_details] )
 
 
-				display_details[#display_details+1] = display.newText("",0,0,180,0,"Roboto-Regular",14.5)
+				display_details[#display_details+1] = display.newText("",0,0,180,0,"Roboto-Regular",14)
 				display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-				display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y-5
+				display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y-8
 				display_details[#display_details].anchorX=0
 				display_details[#display_details].anchorY=0
 				display_details[#display_details].id="where"
@@ -512,17 +503,17 @@ local function EditOption( event )
 
 		if Details.Description ~= nil and Details.Description ~= "" then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Description,0,0,"Roboto-Regular",14.5)
+			display_details[#display_details+1] = display.newText(EventCalender.Description,0,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 			display_details[#display_details].x=leftAllign+6
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+26
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+21
 			display_details[#display_details].anchorX=0
 			sceneGroup:insert( display_details[#display_details] )
 
 
-			display_details[#display_details+1] = display.newText(Details.Description,0,0,W-30,0,"Roboto-Regular",14.5)
+			display_details[#display_details+1] = display.newText(Details.Description,0,0,193,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y+15
+			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y-8
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="Description"
@@ -538,10 +529,10 @@ local function EditOption( event )
 
 			local temp = Details.Contact
 
-			display_details[#display_details+1] = display.newText(EventCalender.Appointment_With,0,0,"Roboto-Regular",14.5)
+			display_details[#display_details+1] = display.newText(EventCalender.Appointment_With,0,0,90,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 			display_details[#display_details].x=leftAllign+6
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 
@@ -549,7 +540,7 @@ local function EditOption( event )
 
 				if display_details[#display_details-1].height > 60 then
 
-					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height - 15
+					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height +15
 				end
 
 			end
@@ -558,6 +549,13 @@ local function EditOption( event )
 			if Details.TicklerType == 1 then
 
 				display_details[#display_details].text = EventCalender.Appointment_With
+
+
+					if display_details[#display_details].text == EventCalender.Appointment_With then
+
+					    display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+5
+
+				    end
 
 			elseif Details.TicklerType == 2 then
 
@@ -574,6 +572,7 @@ local function EditOption( event )
 
 			end
 
+
 			sceneGroup:insert( display_details[#display_details] )
 
 			local name
@@ -584,7 +583,7 @@ local function EditOption( event )
 				name = temp.LastName
 			end
 
-			display_details[#display_details+1] = display.newText(name,0,0,180,0,"Roboto-Regular",14.5)
+			display_details[#display_details+1] = display.newText(name,0,0,180,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 			display_details[#display_details].x=W/2-46
 			display_details[#display_details].y=display_details[#display_details-1].y
@@ -605,10 +604,10 @@ local function EditOption( event )
 
 		if Details.AppointmentPurpose ~= nil then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Purpose,0,0,"Roboto-Regular",14.5)
+			display_details[#display_details+1] = display.newText(EventCalender.Purpose,0,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 			display_details[#display_details].x=leftAllign+6
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			sceneGroup:insert( display_details[#display_details] )
@@ -624,7 +623,7 @@ local function EditOption( event )
 			end
 
 
-			display_details[#display_details+1] = display.newText(getPurpose(purpose_enum[Details.AppointmentPurpose+1]),0,0,150,0,"Roboto-Regular",14.5)
+			display_details[#display_details+1] = display.newText(getPurpose(purpose_enum[Details.AppointmentPurpose+1]),0,0,150,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y
 			display_details[#display_details].anchorX=0
@@ -642,10 +641,10 @@ local function EditOption( event )
 
 		if Details.Priority ~= nil then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Priority,0,0,"Roboto-Regular",14.5)
+			display_details[#display_details+1] = display.newText(EventCalender.Priority,0,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 			display_details[#display_details].x=leftAllign+6
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			sceneGroup:insert( display_details[#display_details] )
@@ -661,7 +660,7 @@ local function EditOption( event )
 			end
 
 
-			display_details[#display_details+1] = display.newText(prority_enum[Details.Priority+1],0,0,180,0,"Roboto-Regular",14.5)
+			display_details[#display_details+1] = display.newText(prority_enum[Details.Priority+1],0,0,180,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
 			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y
 			display_details[#display_details].anchorX=0
@@ -676,10 +675,10 @@ local function EditOption( event )
 
 		if Details.AttachmentName ~= nil then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,"Roboto-Regular",14.5)
+			display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 			display_details[#display_details].x=leftAllign+6
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			sceneGroup:insert( display_details[#display_details] )
@@ -695,7 +694,7 @@ local function EditOption( event )
 			end
 
 
-			display_details[#display_details+1] = display.newText(Details.AttachmentName,0,0,180,0,"Roboto-Regular",14.5)
+			display_details[#display_details+1] = display.newText(Details.AttachmentName,0,0,180,0,"Roboto-Regular",14)
 			local AttachName
 			if display_details[#display_details].width > 35 then
 
@@ -718,7 +717,7 @@ local function EditOption( event )
 			display_details[#display_details]:addEventListener("touch",AttachmentDownload)
 			
 
-			sample = display.newText(AttachName,0,0,"Roboto-Regular",14.5)
+			sample = display.newText(AttachName,0,0,"Roboto-Regular",14)
 			sample.isVisible=false
 
 			local line = display.newLine(  display_details[#display_details].x, display_details[#display_details].y+15, display_details[#display_details].x+sample.contentWidth, display_details[#display_details].y+15  )
@@ -732,10 +731,10 @@ local function EditOption( event )
 
 
 
-		display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,"Roboto-Regular",14.5)
+		display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,"Roboto-Regular",14)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 		display_details[#display_details].x=leftAllign+6
-		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+26
+		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
 		display_details[#display_details].anchorX=0
 
 
