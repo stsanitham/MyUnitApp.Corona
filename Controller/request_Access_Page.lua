@@ -88,9 +88,9 @@ end
 local function touchBg( event )
 	if event.phase == "began" then
 
-		elseif event.phase == "ended" then
+	elseif event.phase == "ended" then
 
-		native.setKeyboardFocus(nil)
+			native.setKeyboardFocus(nil)
 
 	end
 	return true
@@ -183,18 +183,16 @@ end
 
 local function RequestProcess()
 
-	print( "here !!!!!" )
-
 	if  submit_spinner.isVisible == false then
 
 		submit_spinner.isVisible=true
-		sumbitBtn.width = sumbitBtn.contentWidth+20
+		--sumbitBtn.width = sumbitBtn.contentWidth+20
 		sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 		submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
 
-		sumbitBtn.width = sumbitBtn_lbl.contentWidth+40
-		sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-		sumbitBtn_lbl.x = sumbitBtn.x+5
+		--sumbitBtn.width = sumbitBtn_lbl.contentWidth+40
+		--sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+		sumbitBtn_lbl.x = sumbitBtn.x
 		submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
 
 		submit_spinner:start( )
@@ -207,12 +205,12 @@ local function RequestProcess()
 			print("response after unit number validation ",Request_response)
 
 			submit_spinner.isVisible=false
-			sumbitBtn.width = sumbitBtn_lbl.width+20
+			--sumbitBtn.width = sumbitBtn_lbl.width+20
 			sumbitBtn_lbl.x=sumbitBtn.x-sumbitBtn.contentWidth/2+15
 			submit_spinner.x=sumbitBtn_lbl.x+sumbitBtn_lbl.contentWidth+15
-			sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
-			sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-			sumbitBtn_lbl.x = sumbitBtn.x+5
+			--sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
+			--sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
+			sumbitBtn_lbl.x = sumbitBtn.x
 
 			submit_spinner:stop( )
 
@@ -652,7 +650,7 @@ local function onRowTouch( event )
 	if( "press" == phase ) then
 
 		--work
-
+		MKRank.alpha=1
 		MKRank.text =row.text
 
 		if MKRank.text:len() > 36 then
@@ -885,8 +883,7 @@ function scene:create( event )
 
 	display.setDefault( "background", 1, 1, 1 )
 
-	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
-	Background.x=W/2;Background.y=H/2
+	Background = display.newRect(sceneGroup,W/2,H/2,W,H)
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.height/2
@@ -895,18 +892,20 @@ function scene:create( event )
 	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
 	BgText.x=W/2;BgText.y=20
 
-	--local tabImage
+	local tabImage = display.newImageRect( sceneGroup, "res/assert/setting_icon1.png", 111/2,111/2 )
+	tabImage.x=W/2+W/3;tabImage.y=tabBar.y+tabBar.contentHeight/2
+
 	--BgText.anchorX=0
 
 	backBtn_bg = display.newRect(sceneGroup,0,0,40,30)
-	backBtn_bg.x=25;backBtn_bg.y=BgText.y+BgText.contentHeight/2+26
+	backBtn_bg.x=25;backBtn_bg.y=BgText.y
 	backBtn_bg.alpha=0.01
 
 	backBtn = display.newImageRect(sceneGroup,"res/assert/back_icon.png",36/2,30/2)
 	backBtn.x=20;backBtn.y=BgText.y
 	--backBtn.xScale=-1
 
-	page_title = display.newText(sceneGroup,RequestAccess.PageTitle,0,0,native.systemFont,18)
+	page_title = display.newText(sceneGroup,RequestAccess.PageTitle:upper( ),0,0,"Roboto-Bold",18)
 	page_title.x=backBtn.x;page_title.y=backBtn.y+45
 	page_title.anchorX=0
 	page_title:setFillColor(Utils.convertHexToRGB(color.Black))
@@ -914,22 +913,23 @@ function scene:create( event )
 
 
 	if AppName ~= "DirectorApp" then
-		UnitNumber_bg = display.newRect( W/2, page_title.y+35, W-20, 25)
-		sceneGroup:insert(UnitNumber_bg)
-		UnitNumber_bg.alpha=0.01
+
+		UnitNumber_bg = display.newLine(sceneGroup, W/2-150, page_title.y+48, W/2+150, page_title.y+48)
+		UnitNumber_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+		UnitNumber_bg.strokeWidth = 1
 
 		UnitNumber = native.newTextField(W/2+3, page_title.y+35, W-20, 25 )
 		UnitNumber.id = "Unit Number / Director name"
 		UnitNumber.value=""
-		UnitNumber.size=14	
+		UnitNumber.font=native.newFont("Roboto-Light",14)
 		UnitNumber:setReturnKey( "next" )
 		UnitNumber.hasBackground = false
 		UnitNumber.placeholder=LoginPage.Unitnumber_placeholder
 		sceneGroup:insert(UnitNumber)
 
-		UnitNumber_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
-		UnitNumber_bottom.x=W/2
-		UnitNumber_bottom.y= page_title.y+45
+		-- UnitNumber_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+		-- UnitNumber_bottom.x=W/2
+		-- UnitNumber_bottom.y= page_title.y+45
 
 	end
 
@@ -939,19 +939,18 @@ function scene:create( event )
 
 -------------------------------------- first name -------------------------------------------
 
-FirstName_bg = display.newRect(W/2, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
-FirstName_bg.y = UnitNumber_bg.y+UnitNumber_bg.height+7
-FirstName_bg.alpha = 0.01
-sceneGroup:insert(FirstName_bg)
+FirstName_bg = display.newLine(sceneGroup, W/2-150, UnitNumber_bg.y+35, W/2+150, UnitNumber_bg.y+35)
+FirstName_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+FirstName_bg.strokeWidth = 1
 
-FirstName_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
-FirstName_bottom.x=W/2
-FirstName_bottom.y= UnitNumber_bg.y+UnitNumber_bg.height+16
+-- FirstName_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+-- FirstName_bottom.x=W/2
+-- FirstName_bottom.y= UnitNumber_bg.y+UnitNumber_bg.height+16
 
 FirstName = native.newTextField(W/2+3, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
 FirstName.id="First Name"
-FirstName.size=14	
-FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+7
+FirstName.font=native.newFont("Roboto-Light",14)
+FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+20
 FirstName.hasBackground = false
 FirstName:setReturnKey( "next" )
 FirstName.placeholder=RequestAccess.FirstName_placeholder
@@ -959,19 +958,18 @@ sceneGroup:insert(FirstName)
 
 -------------------------------------Last name ----------------------------------------------
 
-Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
-Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
-Name_bg.alpha = 0.01
-sceneGroup:insert(Name_bg)
+Name_bg = display.newLine(sceneGroup, W/2-150, FirstName_bg.y+35, W/2+150, FirstName_bg.y+35)
+Name_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+Name_bg.strokeWidth = 1
 
-Name_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
-Name_bottom.x=W/2
-Name_bottom.y= FirstName_bg.y+FirstName_bg.height+16
+-- Name_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+-- Name_bottom.x=W/2
+-- Name_bottom.y= FirstName_bg.y+FirstName_bg.height+16
 
 Name = native.newTextField( W/2+3, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 Name.id="Last Name"
-Name.y = FirstName_bg.y+FirstName_bg.height+7
-Name.size=14
+Name.y = FirstName_bg.y+FirstName_bg.height+20
+Name.font=native.newFont("Roboto-Light",14)
 Name:setReturnKey( "next" )
 Name.hasBackground = false	
 Name.placeholder = RequestAccess.LastName_placeholder
@@ -979,37 +977,38 @@ sceneGroup:insert(Name)
 
 
 ----------------------------------Email address---------------------------------
-Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+7, W-20, 25 )
-Email_bg.alpha = 0.01
-sceneGroup:insert(Email_bg)
+Email_bg = display.newLine(sceneGroup, W/2-150, Name_bg.y+35, W/2+150, Name_bg.y+35)
+Email_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+Email_bg.strokeWidth = 1
 
-Email_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
-Email_bottom.x=W/2
-Email_bottom.y= Name_bg.y+Name_bg.height+16
+-- Email_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+-- Email_bottom.x=W/2
+-- Email_bottom.y= Name_bg.y+Name_bg.height+16
 
 Email = native.newTextField(W/2+3, Name_bg.y+Name_bg.height+7, W-20, 25 )
 Email.id="Email"
-Email.size=14	
+Email.font=native.newFont("Roboto-Light",14)
 Email:setReturnKey( "next" )
+Email.y = Name_bg.y+Name_bg.height+20
 Email.hasBackground = false
 Email.placeholder=RequestAccess.EmailAddress_placeholder
 sceneGroup:insert(Email)
 
 
 -----------------------------------phone------------------------------------------
-Phone_bg = display.newRect(W/2, Email_bg.y+Email_bg.height+7, W-20, 25)
-Phone_bg.alpha = 0.01
-sceneGroup:insert(Phone_bg)
+Phone_bg = display.newLine(sceneGroup, W/2-150, Email_bg.y+35, W/2+150, Email_bg.y+35)
+Phone_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+Phone_bg.strokeWidth = 1
 
-Phone_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
-Phone_bottom.x=W/2
-Phone_bottom.y= Email_bg.y+Email_bg.height+16
+-- Phone_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+-- Phone_bottom.x=W/2
+-- Phone_bottom.y= Email_bg.y+Email_bg.height+16
 
 
-Phone = native.newTextField(W/2+3, Email_bg.y+Email_bg.height+7, W-20, 25)
-Phone.id="Phone"
-Phone.size=14	
-	    --Phone.text = "(123) 234 -5678"
+		Phone = native.newTextField(W/2+3, Email_bg.y+Email_bg.height+7, W-20, 25)
+		Phone.id="Phone"
+		Phone.font=native.newFont("Roboto-Light",14)
+		Phone.y = Email_bg.y+Email_bg.height+20
 	    Phone:setReturnKey( "next" )
 	    Phone.hasBackground = false
 	    Phone.placeholder=RequestAccess.Phone_placeholder
@@ -1019,54 +1018,41 @@ Phone.size=14
 
 -----------------------------------MK rank----------------------------------------
 
-if AppName ~= "DirectorApp" then
 
-	MKRank_bg = display.newRect(W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
-	MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
+	MKRank_bg = display.newLine(sceneGroup, W/2-150, Phone_bg.y+35, W/2+150, Phone_bg.y+35)
+	MKRank_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 	MKRank_bg.strokeWidth = 1
-
-else
-	MKRank_bg = display.newRect( W/2, Phone_bg.y+Phone_bg.height+7, W-20, 25)
-	MKRank_bg:setStrokeColor( 0, 0, 0 , 0.3 )
-	MKRank_bg.strokeWidth = 1
-
-end
-
-MKRank_bg:setFillColor( 0,0,0,0 )
-
-MKRank_bg.id="MKrank"
-sceneGroup:insert(MKRank_bg)
+	MKRank_bg.id="MKrank"
 
 
 
-MKRank = display.newText("",MKRank_bg.x+10,MKRank_bg.y,MKRank_bg.contentWidth,MKRank_bg.height,native.systemFont,14 )
+MKRank = display.newText("",MKRank_bg.x+10,MKRank_bg.y,MKRank_bg.contentWidth,Phone.height,native.systemFont,14 )
 MKRank.text = RequestAccess.MKRank_placeholder
 MKRank.value = RequestAccess.MKRank_placeholder
 MKRank.id="MKrank"
-MKRank.alpha=0.9
-MKRank:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-MKRank.y=MKRank_bg.y+5
+MKRank.alpha=0.3
+MKRank:setFillColor( Utils.convertHexToRGB(color.Black))
+MKRank.y=MKRank_bg.y-10
+MKRank.x=MKRank_bg.x+MKRank_bg.contentWidth/2+5
 	    --MKRank.size=20
 	    sceneGroup:insert(MKRank)
 
 	    rankText_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
-	    rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth/2-15
-	    rankText_icon.y=MKRank_bg.y
+	    rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth-25
+	    rankText_icon.y=MKRank_bg.y-18
 
 
 
 ----------------------comments --------------------------------------
-Comment_bg = display.newRect( W/2, 0, W-20, 70)
-Comment_bg.y=MKRank_bg.y+MKRank_bg.height+Comment_bg.height/2 - 5
-Comment_bg:setFillColor( 0,0,0,0 )
-Comment_bg:setStrokeColor( 0, 0, 0 , 0.3 )
+Comment_bg = display.newLine(sceneGroup, W/2-150, MKRank_bg.y+75, W/2+150, MKRank_bg.y+75)
+Comment_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 Comment_bg.strokeWidth = 1
-sceneGroup:insert(Comment_bg)
+Comment_bg.id="MKrank"
 
-Comment = native.newTextBox(W/2+3, Comment_bg.y, W-20, 70 )
+Comment = native.newTextBox(W/2+3, Comment_bg.y-25, W-20, 70 )
 Comment.placeholder=RequestAccess.Comment_placeholder
 Comment.isEditable = true
-Comment.size=14	
+Comment.font=native.newFont("Roboto-Light",14)
 Comment.id = "Comments"
 Comment.hasBackground = false
 Comment:setReturnKey( "next" )
@@ -1075,20 +1061,18 @@ sceneGroup:insert(Comment)
 
 
 -------------------------Director name----------------------------------
-DirectorName_bg = display.newRect(W/2, Comment_bg.y+Comment_bg.height+7, W-20, 25)
-DirectorName_bg.isVisible = true
-DirectorName_bg.alpha = 0.01
-DirectorName_bg.y = Comment_bg.y+Comment_bg.height-14
-sceneGroup:insert(DirectorName_bg)
+DirectorName_bg = display.newLine(sceneGroup, W/2-150, Comment_bg.y+35, W/2+150, Comment_bg.y+35)
+DirectorName_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+DirectorName_bg.strokeWidth = 1
 
-DirectorName_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
-DirectorName_bottom.x=W/2
-DirectorName_bottom.y= Comment_bg.y+Comment_bg.height - 5
+-- DirectorName_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+-- DirectorName_bottom.x=W/2
+-- DirectorName_bottom.y= Comment_bg.y+Comment_bg.height - 5
 
 DirectorName = native.newTextField(W/2+3, Comment_bg.y+Comment_bg.height+7, W-20, 25)
 DirectorName.id="Director Name"
-DirectorName.size=14	
-DirectorName.y = Comment_bg.y+Comment_bg.height-14
+DirectorName.font=native.newFont("Roboto-Light",14)
+DirectorName.y = DirectorName_bg.y-10
 DirectorName.hasBackground = false
 DirectorName:setReturnKey( "next" )
 DirectorName.isVisible = true
@@ -1097,21 +1081,18 @@ sceneGroup:insert(DirectorName)
 
 
 --------------------------Director email-------------------------------
-DirectorEmail_bg = display.newRect(W/2, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
-DirectorEmail_bg.isVisible = true
-DirectorEmail_bg.alpha = 0.01
-DirectorEmail_bg.y = DirectorName_bg.y+DirectorName_bg.height+7
-sceneGroup:insert(DirectorEmail_bg)
+DirectorEmail_bg = display.newLine(sceneGroup, W/2-150, DirectorName_bg.y+35, W/2+150, DirectorName_bg	.y+35)
+DirectorEmail_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+DirectorEmail_bg.strokeWidth = 1
 
-DirectorEmail_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
-DirectorEmail_bottom.x=W/2
-DirectorEmail_bottom.y= DirectorName_bg.y+DirectorName_bg.height+16
+-- DirectorEmail_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
+-- DirectorEmail_bottom.x=W/2
+-- DirectorEmail_bottom.y= DirectorName_bg.y+DirectorName_bg.height+16
 
 DirectorEmail = native.newTextField(W/2+3, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
 DirectorEmail.id="Director Email"
-DirectorEmail.size=14	
-DirectorEmail.y = DirectorName_bg.y+DirectorName_bg.height+7
-DirectorEmail.hasBackground = false
+DirectorEmail.font=native.newFont("Roboto-Light",14)
+DirectorEmail.y = DirectorEmail_bg.y-13
 DirectorEmail.isVisible = true
 DirectorEmail:setReturnKey( "next" )
 DirectorEmail.placeholder=RequestAccess.DirectorEmail_placeholder
@@ -1119,11 +1100,10 @@ sceneGroup:insert(DirectorEmail)
 
 
 ---------------------submit button------------------------------------
-sumbitBtn = display.newRect( 0,0,0,0 )
-sumbitBtn.x=W/2;sumbitBtn.y = DirectorEmail_bg.y+DirectorEmail_bg.height/2+30
-sumbitBtn.width=80
-sumbitBtn.height=30
-sumbitBtn.anchorX=0
+sumbitBtn = display.newImageRect("res/assert/white_btnbg.png",550/1.8,100/2)
+
+sumbitBtn.x=W/2;sumbitBtn.y = DirectorEmail_bg.y+DirectorEmail_bg.height/2+40
+--sumbitBtn.anchorX=0
 sumbitBtn:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 sceneGroup:insert(sumbitBtn)
 sumbitBtn.id="Submit"
@@ -1131,11 +1111,7 @@ sumbitBtn.id="Submit"
 
 sumbitBtn_lbl = display.newText( sceneGroup,CommonWords.submit,0,0,native.systemFont,16 )
 sumbitBtn_lbl.y=sumbitBtn.y
-sumbitBtn_lbl.anchorX=0
-
-sumbitBtn.width = sumbitBtn_lbl.contentWidth+15
-sumbitBtn.x=W/2-sumbitBtn.contentWidth/2
-sumbitBtn_lbl.x = sumbitBtn.x+5
+sumbitBtn_lbl.x = sumbitBtn.x
 
 
 
@@ -1193,10 +1169,10 @@ function scene:show( event )
 
   		---Listview---
 
-  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x, H/2-10, MKRank_bg.contentWidth+1, 311 )
+  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x+MKRank_bg.contentWidth/2, H/2-10, MKRank_bg.contentWidth, 311 )
   		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
-  		rankTop = display.newRect(rankGroup,W/2,H/2-160,300,30)
+  		rankTop = display.newRect(rankGroup,W/2+2,H/2-160,304,30)
   		rankTop:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
   		rankText = display.newText(rankGroup,RequestAccess.MKRank_placeholder,0,0,native.systemFont,16)
@@ -1234,7 +1210,7 @@ function scene:show( event )
 
   	}
 
-  	rankList.x=MKRank_bg.x
+  	rankList.x=MKRank_bg.x+MKRank_bg.contentWidth/2
   	rankList.y=rankTop.y+rankTop.height/2
   	rankList.height = 290
   	rankList.width = MKRank_bg.contentWidth
@@ -1287,7 +1263,7 @@ elseif phase == "did" then
 
 
 	backBtn_bg:addEventListener("touch",backAction)
-	page_title:addEventListener("touch",backAction)
+	backBtn:addEventListener("touch",backAction)
 
 	Runtime:addEventListener( "key", onKeyEvent )
 

@@ -146,7 +146,7 @@
 
 			for i = 1, #menuArray_display do
 
-				menuArray_display[i].alpha=1
+				menuArray_display[i].alpha=0.01
 
 			end
 
@@ -309,7 +309,7 @@ function scene:show( event )
 		elseif phase == "did" then
 
 			panel.background = display.newRect( 0, 0, panel.width, panel.height )
-			panel.background:setFillColor(1,1,1,0.1)
+			panel.background:setFillColor(1,1,1)
 			panel:insert( panel.background )
 
 			panel.flapTopBg = display.newRect(0,0,panel.width,H/4+10)
@@ -678,7 +678,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].anchorY=0
 				menuArray_display[#menuArray_display].anchorX=0
 				menuArray_display[#menuArray_display].alpha=1
-				menuArray_display[#menuArray_display]:setFillColor( 0,0,0,0.1)
+				menuArray_display[#menuArray_display]:setFillColor( 0,0,0,0.2)
 				menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight
 				flapScroll:insert( menuArray_display[#menuArray_display] )
 				menuArray_display[#menuArray_display].name = "SpecialRecognition"

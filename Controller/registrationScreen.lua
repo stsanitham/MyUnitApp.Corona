@@ -558,8 +558,8 @@ renderArray = List.arrayName
             Name.isVisible = true
             FirstName_bg.isVisible = true
             Name_bg.isVisible = true
-            FirstName_bottom.isVisible = true
-            Name_bottom.isVisible = true
+            FirstName_bg.isVisible = true
+            Name_bg.isVisible = true
 
           else
 
@@ -567,7 +567,7 @@ renderArray = List.arrayName
             Name.isVisible = false
             FirstName_bg.isVisible = false
             Name_bg.isVisible = false
-            FirstName_bottom.isVisible = false
+            FirstName_bg.isVisible = false
             Name_bottom.isVisible = false
 
           end
@@ -1094,28 +1094,21 @@ local function textfield( event )
                       page_title.isVisible = false
                       FirstName_bg.isVisible = false
                       FirstName.isVisible = false
-                      FirstName_bottom.isVisible = false
                       Name_bg.isVisible = false
-                      Name_bottom.isVisible = false
                       Name.isVisible = false
                       Email_bg.isVisible = false
-                      Email_bottom.isVisible = false
                       Email.isVisible = false
                       Phone_bg.isVisible = false
-                      Phone_bottom.isVisible = false
                       Phone.isVisible = false
 
                       Marykay_id.isVisible = false
                       Marykay_id_helptext.isVisible = false
                       Marykay_bg.isVisible = false
                       Marykay.isVisible = false
-                      Marykay_bottom.isVisible = false
                       Country_bg.isVisible = false
                       Countrytxt.isVisible = false
-                      Country_bottom.isVisible = false
                       Language_bg.isVisible = false
                       Languagetxt.isVisible = false
-                      Language_bottom.isVisible = false
                       Position_bg.isVisible = false
                       Positiontxt.isVisible = false
                       CountryLbl.isVisible = false
@@ -1124,7 +1117,6 @@ local function textfield( event )
                       Language_icon.isVisible = false
                       PositionLbl.isVisible = false
                       Position_icon.isVisible = false
-                      Position_bottom.isVisible = false
                       registerBtn.isVisible = false
                       registerBtn_lbl.isVisible = false
                       registerBtn.isVisible = false
@@ -1320,23 +1312,23 @@ local function textfield( event )
 
                                 elseif ( phase == "moved" ) then 
 
-                                  if y > -20 then
-                                    FirstName.isVisible = true
-                                    FirstName_bottom.isVisible = true
-                                  else
-                                    FirstName.isVisible = false
-                                    FirstName_bottom.isVisible = false
-                                  end
+                                  -- if y > -20 then
+                                  --   FirstName.isVisible = true
+                                  --   FirstName_bg.isVisible = true
+                                  -- else
+                                  --   FirstName.isVisible = false
+                                  --   FirstName_bg.isVisible = false
+                                  -- end
 
 
 
-                                  if y > -30 then
-                                    Name.isVisible = true
-                                    Name_bottom.isVisible = true
-                                  else
-                                    Name.isVisible = false
-                                    Name_bottom.isVisible = false
-                                  end
+                                  -- if y > -30 then
+                                  --   Name.isVisible = true
+                                  --   Name_bg.isVisible = true
+                                  -- else
+                                  --   Name.isVisible = false
+                                  --   Name_bg.isVisible = false
+                                  -- end
 
 
                                   elseif ( phase == "ended" ) then 
@@ -1375,31 +1367,25 @@ function scene:create( event )
   tabBar.y=tabBar.height/2
   tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
   
-  BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-  BgText.x=5;BgText.y=20
-  BgText.anchorX=0
+  BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/3,81/3)
+  BgText.x=W/2;BgText.y=20
 
-  title_bg = display.newRect(sceneGroup,0,0,W,30)
-  title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-  title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-
+  local tabImage = display.newImageRect( sceneGroup, "res/assert/file_icon1.png", 111/2,111/2 )
+  tabImage.x=W/2+W/3;tabImage.y=tabBar.y+tabBar.contentHeight/2
 
   backBtn_bg_intro = display.newRect(sceneGroup,0,0,40,30)
-  backBtn_bg_intro.x=20;backBtn_bg_intro.y=BgText.y+BgText.contentHeight/2+24
+  backBtn_bg_intro.x=20;backBtn_bg_intro.y=BgText.y
   backBtn_bg_intro.id = "cancel"
   backBtn_bg_intro.alpha=0.01
 
-  backBtn_intro = display.newImageRect(sceneGroup,"res/assert/right-arrow(gray-).png",15/2,30/2)
-  backBtn_intro.x=15;backBtn_intro.y=BgText.y+BgText.contentHeight/2+17
-  backBtn_intro:setFillColor(0)
-  backBtn_intro.xScale=-1
+  backBtn_intro = display.newImageRect(sceneGroup,"res/assert/back_icon.png",36/2,30/2)
+  backBtn_intro.x=25;backBtn_intro.y=BgText.y
   backBtn_intro.id = "cancel"
-  backBtn_intro.anchorY=0
 
-  title = display.newText(sceneGroup,RegistrationScreen.Introduction,0,0,native.systemFont,18)
+  title = display.newText(sceneGroup,RegistrationScreen.Introduction:upper( ),0,0,"Roboto-Bold",18)
   title.anchorX = 0
   title.id = "cancel"
-  title.x=backBtn_intro.x+15;title.y = title_bg.y
+  title.x=25/2;title.y = tabBar.y+tabBar.contentHeight+5
   title:setFillColor(0)
 
 
@@ -1437,7 +1423,7 @@ function scene:create( event )
 
     file = nil
 
-    webView = native.newWebView( display.contentCenterX, display.contentCenterY+15, display.viewableContentWidth, display.viewableContentHeight-110)
+    webView = native.newWebView( display.contentCenterX, display.contentCenterY+20, display.viewableContentWidth, display.viewableContentHeight-110)
     webView.hasBackground=false
     webView:request( "introduction.html", system.DocumentsDirectory )
     sceneGroup:insert( webView )
@@ -1507,15 +1493,14 @@ function scene:create( event )
 
             scrollView = widget.newScrollView
             {
-              top = 35,
+              top = 105,
               left = 0,
               width = W,
-              height = H-35,
+              height = H-105,
               hideBackground = true,
               isBounceEnabled=false,
               horizontalScrollDisabled = true,
-              friction = .4,
-              bottomPadding = 50,
+             -- friction = .4,
               listener = addevent_scrollListener,
             }
 
@@ -1526,19 +1511,16 @@ function scene:create( event )
 
             
             backBtn_bg = display.newRect(sceneGroup,0,0,40,30)
-            backBtn_bg.x=22;backBtn_bg.y=BgText.y+BgText.contentHeight/2+23
+            backBtn_bg.x=22;backBtn_bg.y=BgText.y
             backBtn_bg.id = "cancel"
             backBtn_bg.alpha=0.01
 
-            backBtn = display.newImageRect(sceneGroup,"res/assert/right-arrow(gray-).png",15/2,30/2)
-            backBtn.x=15;backBtn.y=BgText.y+BgText.contentHeight/2+16
-            backBtn.xScale=-1
+            backBtn = display.newImageRect(sceneGroup,"res/assert/back_icon.png",36/2,30/2)
+            backBtn.x=25;backBtn.y=BgText.y
             backBtn.id = "cancel"
-            backBtn.anchorY=0
-            backBtn:setFillColor(0)
 
-            page_title = display.newText(sceneGroup,RegistrationScreen.Registrationtext,0,0,native.systemFont,18)
-            page_title.x=backBtn.x+14;page_title.y=backBtn.y+7.5
+            page_title = display.newText(sceneGroup,RegistrationScreen.Registrationtext:upper( ),0,0,"Roboto-Bold",18)
+            page_title.x=25/2;page_title.y= tabBar.y+tabBar.contentHeight+5
             page_title.anchorX=0
             page_title.id = "cancel"
             page_title:setFillColor(Utils.convertHexToRGB(color.Black))
@@ -1550,83 +1532,87 @@ function scene:create( event )
 
                                 -------------------------------------- first name -------------------------------------------
 
-                                FirstName_bg = display.newRect(W/2, page_title.y+5, W-20, 25)
-                                FirstName_bg.y =  page_title.y+5
-                                FirstName_bg.alpha = 0.01
+                                FirstName_bg = display.newLine(W/2-150, 5, W/2+150, 5)
+                                FirstName_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+                                FirstName_bg.strokeWidth = 1
                                 scrollView:insert(FirstName_bg)
 
 
                                 FirstName = native.newTextField(W/2+3, page_title.y+5, W-20, 25)
                                 FirstName.id="First Name"
-                                FirstName.size=14   
-                                FirstName.y =  page_title.y+5
+                                FirstName.font=native.newFont("Roboto-Light",14)
+                                FirstName.y = FirstName_bg.y-12
                                 FirstName.hasBackground = false
                                 FirstName:setReturnKey( "next" )
                                 FirstName.placeholder=RequestAccess.FirstName_placeholder
                                 scrollView:insert(FirstName)
 
-                                FirstName_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
-                                FirstName_bottom.x=W/2
-                                FirstName_bottom.y= FirstName.y+13
-                                scrollView:insert(FirstName_bottom)
+                                -- FirstName_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
+                                -- FirstName_bottom.x=W/2
+                                -- FirstName_bottom.y= FirstName.y+13
+                                -- scrollView:insert(FirstName_bottom)
 
                                 -------------------------------------Last name ----------------------------------------------
 
-                                Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
-                                Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
-                                Name_bg.alpha = 0.01
+                                Name_bg = display.newLine(W/2-150, FirstName_bg.y+35, W/2+150, FirstName_bg.y+35)
+                                Name_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+                                Name_bg.strokeWidth = 1
                                 scrollView:insert(Name_bg)
 
                                 
                                 Name = native.newTextField( W/2+3, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
                                 Name.id="Last Name"
-                                Name.y = FirstName_bg.y+FirstName_bg.height+7
-                                Name.size=14
+                                Name.y = Name_bg.y-12
+                                Name.font=native.newFont("Roboto-Light",14)
                                 Name:setReturnKey( "next" )
                                 Name.hasBackground = false  
                                 Name.placeholder = RequestAccess.LastName_placeholder
                                 scrollView:insert(Name)
 
-                                Name_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
-                                Name_bottom.x=W/2
-                                Name_bottom.y= Name.y+13
-                                scrollView:insert(Name_bottom)
+                                -- Name_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
+                                -- Name_bottom.x=W/2
+                                -- Name_bottom.y= Name.y+13
+                                -- scrollView:insert(Name_bottom)
 
 
                                 ----------------------------------Email address---------------------------------
                                 
 
-                                Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+7, W-20, 25 )
-                                Email_bg.alpha = 0.01
+                                Email_bg = display.newLine(W/2-150, Name_bg.y+35, W/2+150, Name_bg.y+35)
+                                Email_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+                                Email_bg.strokeWidth = 1
                                 scrollView:insert(Email_bg)
 
 
                                 Email = native.newTextField(W/2+3, Name_bg.y+Name_bg.height+7, W-20, 25 )
                                 Email.id="Email"
-                                Email.size=14   
+                                Email.y = Email_bg.y-12
+                                Email.font=native.newFont("Roboto-Light",14)
                                 Email:setReturnKey( "next" )
                                 Email.hasBackground = false
                                 Email.placeholder=RequestAccess.EmailAddress_placeholder
                                 scrollView:insert(Email)
 
 
-                                Email_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
-                                Email_bottom.x=W/2
-                                Email_bottom.y= Email.y+13
-                                scrollView:insert(Email_bottom)
+                                -- Email_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
+                                -- Email_bottom.x=W/2
+                                -- Email_bottom.y= Email.y+13
+                                -- scrollView:insert(Email_bottom)
 
 
                                 -----------------------------------phone------------------------------------------
                                 
 
-                                Phone_bg = display.newRect(W/2, Email_bg.y+Email_bg.height+7, W-20, 25)
-                                Phone_bg.alpha = 0.01
+                                Phone_bg = display.newLine(W/2-150, Email_bg.y+35, W/2+150, Email_bg.y+35)
+                                Phone_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+                                Phone_bg.strokeWidth = 1
                                 scrollView:insert(Phone_bg)
 
                                 
                                 Phone = native.newTextField(W/2+3, Email_bg.y+Email_bg.height+7, W-20, 25)
                                 Phone.id="Phone"
-                                Phone.size=14   
+                                Phone.y = Phone_bg.y-12
+                                Phone.font=native.newFont("Roboto-Light",14)
                                 Phone:setReturnKey( "next" )
                                 Phone.hasBackground = false
                                 Phone.placeholder=RequestAccess.Phone_placeholder
@@ -1634,89 +1620,95 @@ function scene:create( event )
                                 scrollView:insert(Phone)
 
 
-                                Phone_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
-                                Phone_bottom.x=W/2
-                                Phone_bottom.y= Phone.y+13
-                                scrollView:insert(Phone_bottom)
+                                -- Phone_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
+                                -- Phone_bottom.x=W/2
+                                -- Phone_bottom.y= Phone.y+13
+                                -- scrollView:insert(Phone_bottom)
 
 
                                 -----------------------------------Marykay_id------------------------------------------
 
-                                Marykay_id = display.newText(scrollView,RegistrationScreen.MaryKayIdtext,0,0,native.systemFont,14)
-                                Marykay_id.x=16;Marykay_id.y=Phone_bottom.y+18
+                                Marykay_id = display.newText(scrollView,RegistrationScreen.MaryKayIdtext:upper( ),0,0,"Roboto-Bold",14)
+                                Marykay_id.x=16;Marykay_id.y=Phone_bg.y+18
                                 Marykay_id.anchorX=0
                                 Marykay_id:setFillColor(Utils.convertHexToRGB(color.Black))
                                 scrollView:insert(Marykay_id)
 
 
-                                Marykay_id_helptext = display.newText(scrollView,"http://www.marykay.com/",0,0,native.systemFont,12)
+                                Marykay_id_helptext = display.newText(scrollView,"http://www.marykay.com/",0,0,"Roboto-Italic",12)
                                 Marykay_id_helptext.x=16;Marykay_id_helptext.y=Marykay_id.y+20
                                 Marykay_id_helptext.anchorX=0
-                                Marykay_id_helptext:setFillColor(Utils.convertHexToRGB(color.Black))
+                                Marykay_id_helptext:setFillColor(Utils.convertHexToRGB(color.secondaryColor))
                                 scrollView:insert(Marykay_id_helptext)
 
 
-                                Marykay_bg = display.newRect(W/2, Marykay_id_helptext.y+Marykay_id_helptext.height+12, W-20, 25)
-                                Marykay_bg.alpha = 0.01
+                                Marykay_bg =  display.newLine(W/2-150, Marykay_id_helptext.y+40, W/2+150, Marykay_id_helptext.y+40)
+                                Marykay_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+                                Marykay_bg.strokeWidth = 1
                                 scrollView:insert(Marykay_bg)
 
                                 Marykay = native.newTextField(W/2+3, Marykay_id_helptext.y+Marykay_id_helptext.height+12, W-20, 25)
                                 Marykay.id="Marykay_Id"
-                                Marykay.size=14 
+                                Marykay.y = Marykay_bg.y-12
+                                Marykay.font=native.newFont("Roboto-Light",14)
                                 Marykay.placeholder = RequestAccess.Marykayid_placeholder
                                 Marykay:setReturnKey( "next" )
                                 Marykay.hasBackground = false
                                 scrollView:insert(Marykay)
 
-                                Marykay_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
-                                Marykay_bottom.x=W/2
-                                Marykay_bottom.y= Marykay.y+13
-                                scrollView:insert(Marykay_bottom)
+                                -- Marykay_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
+                                -- Marykay_bottom.x=W/2
+                                -- Marykay_bottom.y= Marykay.y+13
+                                -- scrollView:insert(Marykay_bottom)
 
 
                                 ------------------------------   Country and its dropdown   --------------------------------
 
 
 
-                                Country_bg = display.newRect(W/2, Marykay_bg.y+Marykay_bg.height+12, W-20, 28)
-                                Country_bg.alpha = 0.01
-                                Country_bg.id = "country_bg"
-                                Country_bg:addEventListener( "touch", TouchSelection )
+                                Country_bg = display.newLine(W/2-150, Marykay_bg.y+38, W/2+150, Marykay_bg.y+38)
+                                Country_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+                                Country_bg.strokeWidth = 1
+                                Country_bg.id="country_bg"
                                 scrollView:insert(Country_bg)
 
-
-                                Countrytxt = display.newText(scrollView,RegistrationScreen.Countrytext,13,Marykay_bg.y+Marykay_bg.height+12,native.systemFont,14 )
+                                Countrytxt = display.newText(scrollView,RegistrationScreen.Countrytext,13,Country_bg.y+Country_bg.height+12,"Roboto-Light",14 )
                                 Countrytxt.anchorX=0
                                 Countrytxt.value=0
-                                Countrytxt:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+                                Countrytxt:setFillColor( Utils.convertHexToRGB(color.Black))
+                                Countrytxt.y = Country_bg.y-12
+
                                 Countrytxt.x=leftPadding
-                                Countrytxt.y=Marykay_bg.y+Marykay_bg.height+12
                                 scrollView:insert(Countrytxt)
 
 
-                                Country_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
-                                Country_bottom.x=W/2
-                                Country_bottom.y= Countrytxt.y+13
-                                scrollView:insert(Country_bottom)
+                                -- Country_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
+                                -- Country_bottom.x=W/2
+                                -- Country_bottom.y= Countrytxt.y+13
+                                -- scrollView:insert(Country_bottom)
 
 
-                                CountryLbl = display.newText(scrollView,RegistrationScreen.CountryUsaText,W/2,Marykay_bg.y+Marykay_bg.height+12,native.systemFont,14 )
+                                CountryLbl = display.newText(scrollView,RegistrationScreen.CountryUsaText,W/2,Country_bg.y+Country_bg.height+12,"Roboto-Light",14 )
                                 CountryLbl.anchorX=0
                                 CountryLbl.value=0
-                                CountryLbl.id="country_name"
-                                CountryLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+                                CountryLbl.id="country_bg"
+                                CountryLbl:setFillColor( Utils.convertHexToRGB(color.Black))
                                 CountryLbl.x=W/2 - 20
-                                CountryLbl.y=Marykay_bg.y+Marykay_bg.height+12
+                                CountryLbl.y = Country_bg.y-12
                                 scrollView:insert(CountryLbl)
 
 
 
                                 Country_icon = display.newImageRect(scrollView,"res/assert/right-arrow(gray-).png",15/2,30/2 )
                                 Country_icon.x=W-20
+                                Country_icon.rotation=90
                                 Country_icon.id = "country_bg"
-                                Country_icon:setFillColor(0)
-                                Country_icon.y=Marykay_bg.y+Marykay_bg.height+12
+                                Country_icon.y=Country_bg.y-12
                                 scrollView:insert(Country_icon)
+
+                                Country_bg:addEventListener( "touch", TouchSelection )
+                                CountryLbl:addEventListener( "touch", TouchSelection )
+                                Country_icon:addEventListener( "touch", TouchSelection )
 
 
 
@@ -1724,83 +1716,94 @@ function scene:create( event )
                                  ------------------------------   Language and its dropdown   --------------------------------
 
 
-                                 Language_bg = display.newRect(W/2, Country_bg.y+Country_bg.height+12, W-20, 28)
-                                 Language_bg.alpha =0.01
+                                 Language_bg = display.newLine(W/2-150, Country_bg.y+38, W/2+150, Country_bg.y+38)
+                                Language_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+                                Language_bg.strokeWidth = 1
                                  Language_bg.id = "language_bg"
-                                 Language_bg:addEventListener( "touch", TouchSelection )
+                               
                                  scrollView:insert(Language_bg)
 
-                                 Languagetxt = display.newText(scrollView,RegistrationScreen.Languagetext,13,Country_bg.y+Country_bg.height+12,native.systemFont,14 )
+                                 Languagetxt = display.newText(RegistrationScreen.Languagetext,13,Country_bg.y+Country_bg.height+12,"Roboto-Light",14 )
                                  Languagetxt.anchorX=0
                                  Languagetxt.value=0
                                  Languagetxt:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
                                  Languagetxt.x=leftPadding
-                                 Languagetxt.y=Country_bg.y+Country_bg.height+12
+                                 Languagetxt.y=Language_bg.y-12
                                  scrollView:insert(Languagetxt)
 
-                                 Language_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
-                                 Language_bottom.x=W/2
-                                 Language_bottom.y= Languagetxt.y+13
-                                 scrollView:insert(Language_bottom)
+                                 -- Language_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
+                                 -- Language_bottom.x=W/2
+                                 -- Language_bottom.y= Languagetxt.y+13
+                                 -- scrollView:insert(Language_bottom)
 
 
-                                 LanguageLbl = display.newText(scrollView,RegistrationScreen.SelectLanguage,W/2,Country_bg.y+Country_bg.height+12,native.systemFont,14 )
+                                 LanguageLbl = display.newText(RegistrationScreen.SelectLanguage,W/2,Country_bg.y+Country_bg.height+12,"Roboto-Light",14 )
                                  LanguageLbl.anchorX=0
                                  LanguageLbl.value=0
-                                 LanguageLbl.id="language"
+                                 LanguageLbl.id="language_bg"
                                  LanguageLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
                                  LanguageLbl.x=W/2 - 20
                                  scrollView:insert(LanguageLbl)
-                                 LanguageLbl.y=Country_bg.y+Country_bg.height+12
+                                 LanguageLbl.y=Language_bg.y-12
 
 
-                                 Language_icon = display.newImageRect(scrollView,"res/assert/right-arrow(gray-).png",15/2,30/2 )
+                                 Language_icon = display.newImageRect("res/assert/right-arrow(gray-).png",15/2,30/2 )
                                  Language_icon.x=W-20
-                                 Language_icon:setFillColor(0)
-                                 scrollView:insert(Language_icon)
-                                 Language_icon.y=Country_bg.y+Country_bg.height+12
+                                 Language_icon.rotation=90
 
+                                 Language_icon.id="language_bg"
+                                 scrollView:insert(Language_icon)
+                                Language_icon.y=Language_bg.y-12
+
+                                   Language_bg:addEventListener( "touch", TouchSelection )
+                                   LanguageLbl:addEventListener( "touch", TouchSelection )
+                                   Language_icon:addEventListener( "touch", TouchSelection )
 
                                  ------------------------------   Country and its dropdown   --------------------------------
 
 
-                                 Position_bg = display.newRect(W/2, Language_bg.y+Language_bg.height+12, W-20, 28)
-                                 Position_bg.alpha = 0.01
+                                 Position_bg = display.newLine(W/2-150, Language_bg.y+38, W/2+150, Language_bg.y+38)
+                                 Position_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+                                 Position_bg.strokeWidth = 1
                                  Position_bg.id = "position_bg"
                                  Position_bg:addEventListener( "touch", TouchSelection )
                                  scrollView:insert(Position_bg)
 
 
-                                 Positiontxt = display.newText(scrollView,RegistrationScreen.Positiontext,13,Language_bg.y+Language_bg.height+12,native.systemFont,14 )
+                                 Positiontxt = display.newText(scrollView,RegistrationScreen.Positiontext,13,Language_bg.y+Language_bg.height+12,"Roboto-Light",14 )
                                  Positiontxt.anchorX=0
                                  Positiontxt.value=0
-                                 Positiontxt:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+                                 Positiontxt:setFillColor( Utils.convertHexToRGB(color.Black))
                                  Positiontxt.x=leftPadding
-                                 Positiontxt.y=Language_bg.y+Language_bg.height+12
+                                 Positiontxt.y=Position_bg.y-12
                                  scrollView:insert(Positiontxt)
 
-                                 Position_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
-                                 Position_bottom.x=W/2
-                                 Position_bottom.y= Positiontxt.y+13
-                                 scrollView:insert(Position_bottom)
+                                 -- Position_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
+                                 -- Position_bottom.x=W/2
+                                 -- Position_bottom.y= Positiontxt.y+13
+                                 -- scrollView:insert(Position_bottom)
 
 
-                                 PositionLbl = display.newText(scrollView,RegistrationScreen.SelectPosition,W/2,Language_bg.y+Language_bg.height+12,native.systemFont,14 )
+                                 PositionLbl = display.newText(scrollView,RegistrationScreen.SelectPosition,W/2,Language_bg.y+Language_bg.height+12,"Roboto-Light",14 )
                                  PositionLbl.anchorX=0
                                  PositionLbl.value=0
-                                 PositionLbl.id="position"
-                                 PositionLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+                                 PositionLbl.id = "position_bg"
+                                 PositionLbl:setFillColor( Utils.convertHexToRGB(color.Black))
                                  PositionLbl.x=W/2 - 20
-                                 PositionLbl.y=Language_bg.y+Language_bg.height+12
+                                 PositionLbl.y=Position_bg.y-12
                                  scrollView:insert(PositionLbl)
 
 
                                  Position_icon = display.newImageRect(scrollView,"res/assert/right-arrow(gray-).png",15/2,30/2 )
                                  Position_icon.x=W-20
+                                 Position_icon.id = "position_bg"
                                  scrollView:insert(Position_icon)
-                                 Position_icon:setFillColor(0)
-                                 Position_icon.y=Language_bg.y+Language_bg.height+12
+                                  Position_icon.rotation=90
+                                  Position_icon.y=Position_bg.y-12
 
+                                   Position_bg:addEventListener( "touch", TouchSelection )
+                                   Position_icon:addEventListener( "touch", TouchSelection )
+                                  PositionLbl:addEventListener( "touch", TouchSelection )
 
 
                                   ---------------------    submit button   ---------------------------------------------------
