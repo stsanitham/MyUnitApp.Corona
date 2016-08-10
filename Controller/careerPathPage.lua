@@ -30,7 +30,7 @@ local Background,BgText,listBg,list_Name,list_Position
 
 --Button
 
-local menuBtn
+local menuBtn, line
 
 local careerList_scrollview
 
@@ -45,7 +45,7 @@ local careerListArray = {}
 
 local List_array = {}
 
-local RecentTab_Topvalue = 75
+local RecentTab_Topvalue = 90
 
 local header_value = ""
 
@@ -251,12 +251,12 @@ local function careePath_list( list )
 
 		local Image 
 
-		local tempHeight = -14
+		local tempHeight = 10
 
-		local background = display.newRect(tempGroup,0,0,W,50)
+		local background = display.newRect(tempGroup,0,0,W,58)
 
 		if(careerListArray[#careerListArray-1]) ~= nil then
-			tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height+3
+			tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height+15
 		end
 
 		background.anchorY = 0
@@ -265,45 +265,50 @@ local function careePath_list( list )
 		background.alpha=0.01
 		background:addEventListener("touch",detailPageFun)
 
+
 		if parentFlag == true then
+
 			parentFlag=false
 
-
-			parentTitle = display.newRect(tempGroup,0,0,W,25)
+			parentTitle = display.newRect(tempGroup,0,0,W,45)
 			if(careerListArray[#careerListArray-1]) ~= nil then
-				--here
-				tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height/2+10
-			end
 
+				if line.isVisible == true then
+
+					line.isVisible = false
+
+				end
+				--here
+				tempHeight = careerListArray[#careerListArray-1][1].y + careerListArray[#careerListArray-1][1].height+20
+			end
 
 			parentTitle.anchorY = 0
-			parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
-			parentTitle:setFillColor(Utility.convertHexToRGB(color.primaryColor))		
+			parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2 - 35
+			parentTitle:setFillColor(0,0,0,0.1)		
 
 			if viewValue == "position" then
-				parent_centerText = display.newText(tempGroup,header_value,0,0,native.systemFontBold,14)
+				parent_centerText = display.newText(tempGroup,header_value,0,0,"Roboto-Bold",15.5)
 			else
-				parent_centerText = display.newText(tempGroup,header_value:upper(),0,0,native.systemFontBold,14)
-
+				parent_centerText = display.newText(tempGroup,header_value:upper(),0,0,"Roboto-Bold",15.5)
 			end
 
-			parent_centerText.x=5
+			parent_centerText.x=16
 			parent_centerText.anchorX=0
+			parent_centerText:setFillColor(0)
 			parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
 
-			background.y=parentTitle.y+background.contentHeight/2
-
-			
-
+			background.y=parentTitle.y+background.contentHeight/2+20
 
 		end
+
 
 		
 
 		if list[i].Image_Path ~= nil then
 
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2
+			Image = display.newImageRect(tempGroup,"res/assert/gender_img.png",35,35)
+			Image.x=40;Image.y=background.y+background.height/2 - 20
+			Image.anchorY=0
 
 			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
 				"GET",
@@ -316,8 +321,9 @@ local function careePath_list( list )
 							Image:removeSelf();Image=nil
 							print(img_event.response.filename)
 							Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
-							Image.width=45;Image.height=38
-							Image.x=30;Image.y=background.y+background.contentHeight/2
+							Image.width=45;Image.height=45
+							Image.anchorY=0
+							Image.x=40;Image.y=background.y+background.contentHeight/2- 20
     				--event.row:insert(img_event.target)
 
 
@@ -334,34 +340,33 @@ local function careePath_list( list )
 
     		end, "career"..list[i].Contact_Id..".png", system.DocumentsDirectory)
 		else
-			Image = display.newImageRect(tempGroup,"res/assert/twitter_placeholder.png",35,35)
-			Image.x=30;Image.y=background.y+background.height/2
+			Image = display.newImageRect(tempGroup,"res/assert/gender_img.png",35,35)
+			Image.x=40;Image.y=background.y+background.height/2- 20
+			Image.anchorY=0
 
 		end
 
 
-		
-
-
-
-		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,native.systemFont,14)
-		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
+		local Name_txt = display.newText(tempGroup,list[i].Name,0,0,"Roboto-Regular",16)
+		Name_txt.x=80;Name_txt.y=background.y+background.height/2-20
 		Name_txt.anchorX=0
+		Name_txt.anchorY=0
 		Utils.CssforTextView(Name_txt,sp_labelName)
-		Name_txt:setFillColor(Utils.convertHexToRGB(color.primaryColor))
+		Name_txt:setFillColor(Utils.convertHexToRGB(color.Black))
 
-		local Position_txt = display.newText(tempGroup,list[i].CarrierProgress,0,0,native.systemFont,14)
-		Position_txt.x=60;Position_txt.y=background.y+background.height/2+10
+		local Position_txt = display.newText(tempGroup,list[i].CarrierProgress,0,0,"Roboto-Light",13)
+		Position_txt.x=80;Position_txt.y=background.y+background.height/2+12
 		Position_txt.anchorX=0
 		Utils.CssforTextView(Position_txt,sp_fieldValue)
 
-		local right_img = display.newImageRect(tempGroup,"res/assert/arrow_1.png",15/2,30/2)
+		local right_img = display.newImageRect(tempGroup,"res/assert/right-arrow(gray-).png",15/2,30/2)
 		right_img.anchorX=0
-		right_img.x=background.x+background.contentWidth/2-30;right_img.y=background.y+background.height/2
+		right_img:setFillColor(0,0,0,0.4)
+		right_img.x=background.x+background.contentWidth/2-22;right_img.y=background.y+background.height/2
 
-		local line = display.newRect(tempGroup,W/2,background.y,W,1)
-		line.y=background.y+background.contentHeight-line.contentHeight
-		line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+	    line = display.newRect(tempGroup,W/2,background.y,W,1)
+		line.y=background.y+background.contentHeight-line.contentHeight + 10
+		line:setFillColor(Utility.convertHexToRGB(color.Gray))
 		
 
 		tempGroup.Contact_Id = list[i].Contact_Id
@@ -370,6 +375,8 @@ local function careePath_list( list )
 
 	end
 end
+
+
 
 
 local function listPosition_change( event )
@@ -524,33 +531,40 @@ end
 function scene:create( event )
 
 	local sceneGroup = self.view
-	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	
+	Background = display.newRect(sceneGroup,0,0,W,H)
 	Background.x=W/2;Background.y=H/2
+	Background:setFillColor(1,1,1)
 
-	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+	tabBar = display.newImageRect(sceneGroup,"res/assert/mub_banner.jpg",W,110)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
+	tabBar.x=W/2
+	--tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
-	menuBtn.x=10;menuBtn.y=20;
+	menuBtn.x=16;menuBtn.y=20;
 
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-	BgText.anchorX=0
+	menuTouch_s = display.newRect( sceneGroup, 0, menuBtn.y, 135, 50 )
+	menuTouch_s.anchorX=0
+	menuTouch_s.alpha=0.01
 
-	title_bg = display.newRect(sceneGroup,0,0,W,30)
-	title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-	title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+	-- BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
+	-- BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
+	-- BgText.anchorX=0
 
+	-- title_bg = display.newRect(sceneGroup,0,0,W,30)
+	-- title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
+	-- title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
-	title = display.newText(sceneGroup,CareerPath.PageTitle,0,0,native.systemFont,18)
+	title = display.newText(sceneGroup,CareerPath.PageTitle,0,0,"Roboto-Regular",18.5)
 	title.anchorX = 0
-	title.x=5;title.y = title_bg.y
-	title:setFillColor(0)
+	title.x=42;title.y = tabBar.y+tabBar.contentHeight/2-25
+	title:setFillColor(1,1,1)
 
-	changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
-	changeList_order_icon.x=W-20;changeList_order_icon.y=title_bg.y-10
+	changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,44/2)
+	changeList_order_icon.x=W-20;changeList_order_icon.y=tabBar.y+tabBar.contentHeight/2-35
+	changeList_order_icon:setFillColor(1,1,1)
 	changeList_order_icon.anchorY=0
 
 	changeList_order_touch = display.newRect(sceneGroup,changeList_order_icon.x,changeList_order_icon.y+15,35,35)
@@ -566,84 +580,85 @@ function scene:create( event )
 
 	careerList_scrollview = widget.newScrollView
 	{
-		top = RecentTab_Topvalue-5,
+		top = RecentTab_Topvalue+20,
 		left = 0,
 		width = W,
-		height =H-RecentTab_Topvalue+5,
+		height =H-RecentTab_Topvalue+5-20,
 		hideBackground = true,
 		isBounceEnabled=false,
 		horizontalScrollingDisabled = false,
 		verticalScrollingDisabled = false,
 
-   -- listener = scrollListener
-}
+	   -- listener = scrollListener
+	}
 
---spinner_show()
+	--spinner_show()
 
-sceneGroup:insert(careerList_scrollview)
+	sceneGroup:insert(careerList_scrollview)
 
---changeMenuGroup
-listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
-listTouch_bg.alpha=0.01
-listTouch_bg.id = "hide"
+	--changeMenuGroup
+	listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
+	listTouch_bg.alpha=0.01
+	listTouch_bg.id = "hide"
 
-listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+60,100,80)
-listBg.strokeWidth = 1
-listBg.id = "show"
-listBg:setStrokeColor( 0, 0, 0,0.3 )
-listBg.id="bg"
-
-
-list_Name = display.newText(changeMenuGroup,CareerPath.By_Name,0,0,native.systemFont,16)
-list_Name.x=listBg.x-listBg.contentWidth/2+5;list_Name.y=listBg.y-20
-list_Name.anchorX=0
-list_Name:setFillColor(Utils.convertHexToRGB(color.Black))
-list_Name.id="name"
-
-list_Position = display.newText(changeMenuGroup,CareerPath.By_Position,0,0,native.systemFont,16)
-list_Position.x=listBg.x-listBg.contentWidth/2+5;list_Position.y=listBg.y+20
-list_Position.anchorX=0
-list_Position:setFillColor(Utils.convertHexToRGB(color.Black))
-list_Position.id="position"
-changeMenuGroup.isVisible=false
+	listBg = display.newRect(changeMenuGroup,W/2+110,changeList_order_icon.y+60,100,80)
+	listBg.strokeWidth = 1
+	listBg.id = "show"
+	listBg:setStrokeColor( 0, 0, 0,0.3 )
+	listBg.id="bg"
 
 
-listBg:addEventListener("touch",listPosition_change)
-list_Name:addEventListener("touch",listPosition_change)
-list_Position:addEventListener("touch",listPosition_change)
+	list_Name = display.newText(changeMenuGroup,CareerPath.By_Name,0,0,native.systemFont,16)
+	list_Name.x=listBg.x-listBg.contentWidth/2+5;list_Name.y=listBg.y-20
+	list_Name.anchorX=0
+	list_Name:setFillColor(Utils.convertHexToRGB(color.Black))
+	list_Name.id="name"
 
-listTouch_bg:addEventListener("touch",BgTouch)
-listBg:addEventListener("touch",BgTouch)
+	list_Position = display.newText(changeMenuGroup,CareerPath.By_Position,0,0,native.systemFont,16)
+	list_Position.x=listBg.x-listBg.contentWidth/2+5;list_Position.y=listBg.y+20
+	list_Position.anchorX=0
+	list_Position:setFillColor(Utils.convertHexToRGB(color.Black))
+	list_Position.id="position"
+	changeMenuGroup.isVisible=false
 
-sceneGroup:insert(changeMenuGroup)
-MainGroup:insert(sceneGroup)
+
+	listBg:addEventListener("touch",listPosition_change)
+	list_Name:addEventListener("touch",listPosition_change)
+	list_Position:addEventListener("touch",listPosition_change)
+
+	listTouch_bg:addEventListener("touch",BgTouch)
+	listBg:addEventListener("touch",BgTouch)
+
+	sceneGroup:insert(changeMenuGroup)
+	MainGroup:insert(sceneGroup)
 
 end
+
+
 
 
 function scene:resumeGame(contactId)
 
 	composer.removeHidden(true)
 
-
 	local function OnAction( event )
 
 		if contactId == 0 and openPage == "careerPathPage" then
 
-			Runtime:addEventListener( "key", onKeyEvent )
-			Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
+				Runtime:addEventListener( "key", onKeyEvent )
+				Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 
 		elseif contactId > 0 and openPage == "careerPathPage" then
 
-			local options = {
-				isModal = true,
-				effect = "slideLeft",
-				time = 300,
-				params = {
-					contactId = contactId,page = "career"
+				local options = {
+					isModal = true,
+					effect = "slideLeft",
+					time = 300,
+					params = {
+						contactId = contactId,page = "career"
+					}
 				}
-			}
-			composer.showOverlay( "Controller.careerPathDetailPage", options )
+				composer.showOverlay( "Controller.careerPathDetailPage", options )
 
 		end
 
@@ -652,8 +667,6 @@ function scene:resumeGame(contactId)
 	timer.performWithDelay(10,OnAction)
 
 end
-
-
 
 
 
@@ -674,7 +687,8 @@ function scene:show( event )
 
 
 		menuBtn:addEventListener("touch",menuTouch)
-		BgText:addEventListener("touch",menuTouch)
+		menuTouch_s:addEventListener("touch",menuTouch)
+		--BgText:addEventListener("touch",menuTouch)
 
 		Runtime:addEventListener( "key", onKeyEvent )
 
@@ -707,7 +721,7 @@ function scene:hide( event )
 		end
 
 		menuBtn:removeEventListener("touch",menuTouch)
-		BgText:removeEventListener("touch",menuTouch)
+		--BgText:removeEventListener("touch",menuTouch)
 
 		Runtime:removeEventListener( "key", onKeyEvent )
 
