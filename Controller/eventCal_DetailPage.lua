@@ -255,6 +255,7 @@ local function EditOption( event )
 			-- Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 			-- Background.x=W/2;Background.y=H/2
 
+
 			Background = display.newRect(sceneGroup,0,0,W,H)
 			Background.x=W/2;Background.y=H/2
 			Background:setFillColor(1,1,1)
