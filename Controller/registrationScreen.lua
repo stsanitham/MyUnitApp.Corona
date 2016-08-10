@@ -634,19 +634,7 @@ renderArray = List.arrayName
 
     local function RegistrationProcess( )
 
-      if  submit_spinner.isVisible == false then
-
-        submit_spinner.isVisible=true
-        registerBtn.width = registerBtn.contentWidth+20
-        registerBtn_lbl.x=registerBtn.x-registerBtn.contentWidth/2+15
-        submit_spinner.x=registerBtn_lbl.x+registerBtn_lbl.contentWidth+17
-
-        registerBtn.width = registerBtn_lbl.contentWidth+40
-        registerBtn.x=W/2-registerBtn.contentWidth/2
-        registerBtn_lbl.x = registerBtn.x+7.5
-        submit_spinner.x=registerBtn_lbl.x+registerBtn_lbl.contentWidth+17
-
-        submit_spinner:start( )
+     
 
 
         function getregistrationDetail( response )
@@ -654,16 +642,6 @@ renderArray = List.arrayName
           Register_response = response
 
 
-          submit_spinner.isVisible = false
-
-          registerBtn.width = registerBtn_lbl.width+20
-          registerBtn_lbl.x=registerBtn.x-registerBtn.contentWidth/2+15
-          submit_spinner.x=registerBtn_lbl.x+registerBtn_lbl.contentWidth+17
-          registerBtn.width = registerBtn_lbl.contentWidth+15
-          registerBtn.x=W/2-registerBtn.contentWidth/2
-          registerBtn_lbl.x = registerBtn.x+7.5
-
-          submit_spinner:stop( )
 
 
           FirstName.text = ""
@@ -692,7 +670,7 @@ renderArray = List.arrayName
 
                     Webservice.MubDirectorRegister(FirstName.text,Name.text,Email.text,Phone.text,Marykay.text,CountryLbl.countryId,LanguageLbl.countrycode,PositionLbl.countrycode,getregistrationDetail)
 
-                  end
+             
 
                 end
 
@@ -1263,7 +1241,6 @@ local function textfield( event )
                                       List.isVisible = true
                                       List_bg.isVisible = true
 
-                                      cancelBtn_lbl.isVisible = false
 
                                       List.arrayName = positionArray
                                       List.label = PositionLbl
@@ -1276,7 +1253,6 @@ local function textfield( event )
                                       List:deleteAllRows()
                                       List.isVisible = false
 
-                                      cancelBtn_lbl.isVisible = true
 
                                     end
 
@@ -1284,7 +1260,6 @@ local function textfield( event )
                                   else
 
                                     List.isVisible = false
-                                    List_bg.isVisible = false
                                     List:deleteAllRows()
 
                                   end
@@ -1360,7 +1335,7 @@ function scene:create( event )
 
   local sceneGroup = self.view
 
-  Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+  Background = display.newRect(sceneGroup,0,0,W,H)
   Background.x=W/2;Background.y=H/2
 
   tabBar = display.newRect(sceneGroup,W/2,0,W,40)
@@ -1423,26 +1398,26 @@ function scene:create( event )
 
     file = nil
 
-    webView = native.newWebView( display.contentCenterX, display.contentCenterY+20, display.viewableContentWidth, display.viewableContentHeight-110)
+    webView = native.newWebView( display.contentCenterX, display.contentCenterY+10, display.viewableContentWidth, display.viewableContentHeight-180)
     webView.hasBackground=false
     webView:request( "introduction.html", system.DocumentsDirectory )
     sceneGroup:insert( webView )
 
     
 
-    CreateAccountBtn = display.newRect(sceneGroup,0,0,W,35)
-    CreateAccountBtn.x=W/2;CreateAccountBtn.y = H - 35
-    CreateAccountBtn.width = W
-    CreateAccountBtn.anchorY = 0
-    CreateAccountBtn:setFillColor( 0,0,0,0.4 )
-    CreateAccountBtn.id="create_account"
+    CreateAccountBtn_bg = display.newRect(sceneGroup,0,0,W,105)
+    CreateAccountBtn_bg.x=W/2;CreateAccountBtn_bg.y = H - 105
+    CreateAccountBtn_bg.width = W
+    CreateAccountBtn_bg.anchorY = 0
+    CreateAccountBtn_bg.id="create_account"
 
-    CreateAccountBtn_text = display.newText(sceneGroup,RegistrationScreen.CreateAccount,0,0,native.systemFont,16)
-    CreateAccountBtn_text.anchorX = 0
-    CreateAccountBtn_text.anchorY = 0
-    CreateAccountBtn_text.x=CreateAccountBtn.x-65
-    CreateAccountBtn_text.y=CreateAccountBtn.y+8
-    CreateAccountBtn_text:setFillColor(0)
+     CreateAccountBtn = display.newImageRect(sceneGroup,"res/assert/white_btnbg.png",550/2,50)
+    CreateAccountBtn.x=W/2;CreateAccountBtn.y = CreateAccountBtn_bg.y+CreateAccountBtn_bg.contentHeight/2+12
+    CreateAccountBtn:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
+
+    CreateAccountBtn_text = display.newText(sceneGroup,RegistrationScreen.CreateAccount,0,0,"Roboto-Regular",16)
+    CreateAccountBtn_text.x=W/2
+    CreateAccountBtn_text.y=CreateAccountBtn.y
 
 
     MainGroup:insert(sceneGroup)
@@ -1532,7 +1507,7 @@ function scene:create( event )
 
                                 -------------------------------------- first name -------------------------------------------
 
-                                FirstName_bg = display.newLine(W/2-150, 5, W/2+150, 5)
+                                FirstName_bg = display.newLine(W/2-150, 15, W/2+150, 15)
                                 FirstName_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
                                 FirstName_bg.strokeWidth = 1
                                 scrollView:insert(FirstName_bg)
@@ -1554,7 +1529,7 @@ function scene:create( event )
 
                                 -------------------------------------Last name ----------------------------------------------
 
-                                Name_bg = display.newLine(W/2-150, FirstName_bg.y+35, W/2+150, FirstName_bg.y+35)
+                                Name_bg = display.newLine(W/2-150, FirstName_bg.y+40, W/2+150, FirstName_bg.y+40)
                                 Name_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
                                 Name_bg.strokeWidth = 1
                                 scrollView:insert(Name_bg)
@@ -1578,7 +1553,7 @@ function scene:create( event )
                                 ----------------------------------Email address---------------------------------
                                 
 
-                                Email_bg = display.newLine(W/2-150, Name_bg.y+35, W/2+150, Name_bg.y+35)
+                                Email_bg = display.newLine(W/2-150, Name_bg.y+40, W/2+150, Name_bg.y+40)
                                 Email_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
                                 Email_bg.strokeWidth = 1
                                 scrollView:insert(Email_bg)
@@ -1603,7 +1578,7 @@ function scene:create( event )
                                 -----------------------------------phone------------------------------------------
                                 
 
-                                Phone_bg = display.newLine(W/2-150, Email_bg.y+35, W/2+150, Email_bg.y+35)
+                                Phone_bg = display.newLine(W/2-150, Email_bg.y+40, W/2+150, Email_bg.y+40)
                                 Phone_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
                                 Phone_bg.strokeWidth = 1
                                 scrollView:insert(Phone_bg)
@@ -1629,7 +1604,7 @@ function scene:create( event )
                                 -----------------------------------Marykay_id------------------------------------------
 
                                 Marykay_id = display.newText(scrollView,RegistrationScreen.MaryKayIdtext:upper( ),0,0,"Roboto-Bold",14)
-                                Marykay_id.x=16;Marykay_id.y=Phone_bg.y+18
+                                Marykay_id.x=16;Marykay_id.y=Phone_bg.y+22
                                 Marykay_id.anchorX=0
                                 Marykay_id:setFillColor(Utils.convertHexToRGB(color.Black))
                                 scrollView:insert(Marykay_id)
@@ -1642,7 +1617,7 @@ function scene:create( event )
                                 scrollView:insert(Marykay_id_helptext)
 
 
-                                Marykay_bg =  display.newLine(W/2-150, Marykay_id_helptext.y+40, W/2+150, Marykay_id_helptext.y+40)
+                                Marykay_bg =  display.newLine(W/2-150, Marykay_id_helptext.y+42, W/2+150, Marykay_id_helptext.y+42)
                                 Marykay_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
                                 Marykay_bg.strokeWidth = 1
                                 scrollView:insert(Marykay_bg)
@@ -1666,7 +1641,7 @@ function scene:create( event )
 
 
 
-                                Country_bg = display.newLine(W/2-150, Marykay_bg.y+38, W/2+150, Marykay_bg.y+38)
+                                Country_bg = display.newLine(W/2-150, Marykay_bg.y+42, W/2+150, Marykay_bg.y+42)
                                 Country_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
                                 Country_bg.strokeWidth = 1
                                 Country_bg.id="country_bg"
@@ -1716,7 +1691,7 @@ function scene:create( event )
                                  ------------------------------   Language and its dropdown   --------------------------------
 
 
-                                 Language_bg = display.newLine(W/2-150, Country_bg.y+38, W/2+150, Country_bg.y+38)
+                                 Language_bg = display.newLine(W/2-150, Country_bg.y+42, W/2+150, Country_bg.y+42)
                                 Language_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
                                 Language_bg.strokeWidth = 1
                                  Language_bg.id = "language_bg"
@@ -1762,7 +1737,7 @@ function scene:create( event )
                                  ------------------------------   Country and its dropdown   --------------------------------
 
 
-                                 Position_bg = display.newLine(W/2-150, Language_bg.y+38, W/2+150, Language_bg.y+38)
+                                 Position_bg = display.newLine(W/2-150, Language_bg.y+42, W/2+150, Language_bg.y+42)
                                  Position_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
                                  Position_bg.strokeWidth = 1
                                  Position_bg.id = "position_bg"
@@ -1809,11 +1784,8 @@ function scene:create( event )
                                   ---------------------    submit button   ---------------------------------------------------
 
 
-                                  registerBtn = display.newRect( 0,0,0,0 )
-                                  registerBtn.x=W/2-15;registerBtn.y = Position_bg.y+Position_bg.height/2+40
-                                  registerBtn.width=100
-                                  registerBtn.height=30
-                                  registerBtn.anchorX=0
+                                  registerBtn = display.newImageRect("res/assert/white_btnbg.png",550/2,50)
+                                 registerBtn.x=W/2;registerBtn.y = Position_bg.y+45
                                   registerBtn:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
                                   scrollView:insert(registerBtn)
                                   registerBtn.id="Register"
@@ -1821,40 +1793,15 @@ function scene:create( event )
 
                                   registerBtn_lbl = display.newText( scrollView,RegistrationScreen.RegisterBtnText,0,0,native.systemFont,16 )
                                   registerBtn_lbl.y=registerBtn.y
-                                  registerBtn_lbl.anchorX=0
                                   scrollView:insert(registerBtn_lbl)
 
-                                  registerBtn.width = registerBtn_lbl.contentWidth+15
-                                  registerBtn.x=W/2-registerBtn.contentWidth/2
+                                  registerBtn.x=W/2
                                   registerBtn_lbl.x = registerBtn.x+7.5
 
 
 
-                                  local options = {
-                                    width = 25,
-                                    height = 25,
-                                    numFrames = 4,
-                                    sheetContentWidth = 50,
-                                    sheetContentHeight = 50
-                                  }
-
-                                  local submit_spinnerSingleSheet = graphics.newImageSheet( "res/assert/requestProcess.png", options )
-
-                                  submit_spinner = widget.newSpinner
-                                  {
-                                    width = 25,
-                                    height = 25,
-                                    deltaAngle = 10,
-                                    sheet = submit_spinnerSingleSheet,
-                                    startFrame = 1,
-                                    incrementEvery = 20
-                                  }
-
-
-                                  submit_spinner.isVisible=false
-                                  submit_spinner.x=registerBtn_lbl.x+registerBtn_lbl.contentWidth+15
-                                  submit_spinner.y=registerBtn.y+registerBtn.contentHeight+5
-
+                               
+                                
                                         --registerBtn:addEventListener( "touch", sumbitBtnRelease )
 
 
@@ -1866,13 +1813,18 @@ function scene:create( event )
                                         -- sceneGroup:insert(cancelBtn)
                                         -- cancelBtn.id="Register"
 
+                                        cancelBtn = display.newImageRect("res/assert/white_btnbg.png",550/5,50/2)
+                                        cancelBtn.x=W/2;cancelBtn.y = registerBtn.y+45
+                                        cancelBtn:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
+                                        cancelBtn.alpha=0.2
+                                        scrollView:insert(cancelBtn)
+                                        cancelBtn.id="cancel"
 
                                         cancelBtn_lbl = display.newText( scrollView,CommonWords.cancel,0,0,native.systemFont,13 )
-                                        cancelBtn_lbl.y= Position_bg.y+Position_bg.height/2+40
-                                        cancelBtn_lbl.x = W - 60
+                                        cancelBtn_lbl.y= cancelBtn.y
+                                        cancelBtn_lbl.x = cancelBtn.x
                                         cancelBtn_lbl.id = "cancel"
-                                        cancelBtn_lbl:setFillColor( 0,0,0.5 )
-                                        cancelBtn_lbl.anchorX=0
+                                        cancelBtn_lbl:setFillColor( Utils.convertHexToRGB(color.Black)  )
                                         scrollView:insert(cancelBtn_lbl)
 
 
@@ -1957,7 +1909,7 @@ function scene:create( event )
                                   end
 
 
-                                  CreateAccountBtn:addEventListener("touch",createAccount)
+                                  CreateAccountBtn_bg:addEventListener("touch",createAccount)
 
 
 
