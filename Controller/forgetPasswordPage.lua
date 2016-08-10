@@ -316,42 +316,49 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background = display.newRect(sceneGroup,0,0,W,H)
 	Background.x=W/2;Background.y=H/2
 
-	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
-	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
+	local signinBanner = display.newRect(sceneGroup,0,0,W,H/4)
+	signinBanner.x=W/2;signinBanner.y=signinBanner.contentHeight/2
+	signinBanner:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-	BgText.x=5;BgText.y=20
-	BgText.anchorX=0
+	local signinBanner_text = display.newImageRect(sceneGroup,"res/assert/signin-page-logo.png",278/1.5,62/1.5)
+	signinBanner_text.x=signinBanner.x;signinBanner_text.y=signinBanner.y
+
+
+	local signinUser = display.newImageRect(sceneGroup,"res/assert/prof_img.png",80,80)
+	signinUser.x = signinBanner.x+80;signinUser.y=signinBanner.y+signinBanner.contentHeight/2
 
 	backBtn_bg = display.newRect(sceneGroup,0,0,40,30)
-	backBtn_bg.x=25;backBtn_bg.y=tabBar.y+tabBar.contentHeight+5
+	backBtn_bg.x=25;backBtn_bg.y=signinBanner.y+signinBanner.contentHeight/2-25
 	backBtn_bg.alpha=0.01
 
-	backBtn = display.newImageRect(sceneGroup,"res/assert/right-arrow(gray-).png",15/2,30/2)
-	backBtn.x=20;backBtn.y=tabBar.y+tabBar.contentHeight+5
-	backBtn.xScale=-1
+	backBtn = display.newImageRect(sceneGroup,"res/assert/back_icon.png",36/2,30/2)
+	backBtn.x=20;backBtn.y=backBtn_bg.y
 
 
 
-	page_title = display.newText(sceneGroup,ForgotPassword.PageTitle,0,0,native.systemFont,18)
-	page_title.x=backBtn.x+18;page_title.y=backBtn.y
+	page_title = display.newText(sceneGroup,ForgotPassword.PageTitle:upper( ),0,0,"Roboto-Bold",18)
+	page_title.x=20;page_title.y=signinBanner.y+signinBanner.contentHeight/2+30
 	page_title.anchorX=0
 	page_title:setFillColor(Utils.convertHexToRGB(color.Black))
 
 
-	UnitNumber_bg = display.newRect(sceneGroup, W/2, H/2-120, W-60, EditBoxStyle.height)
-	UnitNumber_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,UnitNumber_bg.contentHeight)
-	UnitNumber_seprator.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+35;UnitNumber_seprator.y=UnitNumber_bg.y
-	UnitNumber_drawLeft = display.newImageRect(sceneGroup,"res/assert/unite-number.png",24/1.5,24/1.5)
-	UnitNumber_drawLeft.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+UnitNumber_drawLeft.contentWidth;UnitNumber_drawLeft.y=UnitNumber_bg.y
+	UnitNumber_bg = display.newLine(sceneGroup, W/2-120, H/2-40, W/2+120, H/2-40)
+	UnitNumber_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+	UnitNumber_bg.strokeWidth = 1
+	--UnitNumber_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,UnitNumber_bg.contentHeight)
+	--UnitNumber_seprator.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+35;UnitNumber_seprator.y=UnitNumber_bg.y
+
+	UnitNumber_drawLeft = display.newImageRect(sceneGroup,"res/assert/signin_img.png",74/2,63/2)
+	UnitNumber_drawLeft.x=UnitNumber_bg.x+22;UnitNumber_drawLeft.y=UnitNumber_bg.y-22
 
 
 
-	UserName_bg = display.newRect(sceneGroup, W/2, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth, UnitNumber_bg.contentHeight )
+	UserName_bg = display.newLine(sceneGroup, W/2-120, UnitNumber_bg.y+50, W/2+120, UnitNumber_bg.y+50)
+	UserName_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+	UserName_bg.strokeWidth = 1
 
 	if AppName == "DirectorApp" then
 		UnitNumber_bg.isVisible=false
@@ -363,56 +370,73 @@ function scene:create( event )
 		UserName_bg.x=UnitNumber_bg.x;UserName_bg.y=UnitNumber_bg.y
 	else
 
-		UnitnumberField = native.newTextField(W/2, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth-50, UnitNumber_bg.contentHeight )
+		UnitnumberField = native.newTextField(W/2+25, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth-50,  EditBoxStyle.height )
 		UnitnumberField.id = "Unit Number / Director name"
-		UnitnumberField.anchorX=0
 		UnitnumberField.placeholder=LoginPage.Unitnumber_placeholder
 		UnitnumberField.value=""
-		UnitnumberField.size=14
+		UnitnumberField.font=native.newFont("Roboto-Light",14)
+		UnitnumberField.y=UnitNumber_bg.y-12
 		UnitnumberField:setReturnKey( "next" )
 		UnitnumberField.hasBackground=false
 		sceneGroup:insert(UnitnumberField)
-		UnitnumberField.x=UnitNumber_bg.x-UnitNumber_bg.contentWidth/2+40;UnitnumberField.y=UnitNumber_bg.y
 
 	end
 	
 
-	UserName_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,UserName_bg.contentHeight)
-	UserName_seprator.x=UserName_bg.x-UserName_bg.contentWidth/2+38;UserName_seprator.y=UserName_bg.y
-	UserName_drawLeft = display.newImageRect(sceneGroup,"res/assert/user.png",24/1.5,24/1.5)
-	UserName_drawLeft.x=UserName_bg.x-UserName_bg.contentWidth/2+UserName_drawLeft.contentWidth;UserName_drawLeft.y=UserName_bg.y
+	--UserName_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,UserName_bg.contentHeight)
+	--UserName_seprator.x=UserName_bg.x-UserName_bg.contentWidth/2+38;UserName_seprator.y=UserName_bg.y
+	UserName_drawLeft = display.newImageRect(sceneGroup,"res/assert/gender_img.png",70/2,63/2)
+	UserName_drawLeft.x=UserName_bg.x+22;UserName_drawLeft.y=UserName_bg.y-22
 
-	UserName = native.newTextField( W/2, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth-50, UnitNumber_bg.contentHeight )
+	UserName = native.newTextField( W/2+25,0, UnitNumber_bg.contentWidth-50, EditBoxStyle.height )
 	UserName.id = "Username / Email"
-	UserName.anchorX=0
 	UserName.hasBackground=false
 	UserName.value=""
-	UserName.size=14
+	UserName.font=native.newFont("Roboto-Light",14)
 	UserName:setReturnKey( "done" )
+	UserName.y=UserName_bg.y-12
 	UserName.placeholder=LoginPage.UserName_placeholder
 	sceneGroup:insert(UserName)
-	UserName.x=UserName_bg.x-UserName_bg.contentWidth/2+40;UserName.y=UserName_bg.y
 
 	
-	signinBtn = display.newRect(sceneGroup,0,0,W-60,35)
-	signinBtn.x=W/2;signinBtn.y = UserName_bg.y+48
-	signinBtn.width = W-180
-	sceneGroup:insert(signinBtn)
+
+	signinBtn = display.newImageRect(sceneGroup,"res/assert/white_btnbg.png",550/2,50)
+	signinBtn.x=W/2;signinBtn.y = UserName.y+UserName.contentHeight+40
+	signinBtn:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 	signinBtn.id="signin"
-	signinBtn:setFillColor( Utils.convertHexToRGB(sp_primarybutton.Background_Color) )
-	signinBtn_text = display.newText(sceneGroup,CommonWords.submit,0,0,native.systemFont,16)
+
+
+	signinBtn_text = display.newText(sceneGroup,CommonWords.submit,0,0,"Roboto-Regular",16)
 	signinBtn_text.x=signinBtn.x;signinBtn_text.y=signinBtn.y
+	Utils.CssforTextView(signinBtn_text,sp_primarybutton)	
+
+
 
 	signinBtn.action=true
 	signinBtn_text.action=true
 
 
-	requestBtn = display.newText(sceneGroup,LoginPage.Request_Button,0,0,native.systemFont,16)
+	requestBtn = display.newText(sceneGroup,LoginPage.Request_Button:upper( ),0,0,"Roboto-Bold",16)
 	requestBtn.x=W/2
-	requestBtn.y=signinBtn.y+signinBtn.contentHeight/2+20
-	requestBtn:setFillColor(Utils.convertHexToRGB(color.blue))
+	requestBtn.y=signinBtn.y+signinBtn.contentHeight/2+50
+	requestBtn:setFillColor(Utils.convertHexToRGB(color.secondaryColor))
 	requestBtn.id="request"
 	--requestBtn.isVisible=false
+
+
+	cancelBtn = display.newImageRect("res/assert/white_btnbg.png",550/5,50/2)
+    cancelBtn.x=W/2;cancelBtn.y = requestBtn.y+25
+    cancelBtn:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
+    cancelBtn.alpha=0.2
+    sceneGroup:insert(cancelBtn)
+    cancelBtn.id="cancel"
+
+    cancelBtn_lbl = display.newText( "Click Here",0,0,"Roboto-Regular",13 )
+    cancelBtn_lbl.y= cancelBtn.y
+    cancelBtn_lbl.x = cancelBtn.x
+    cancelBtn_lbl.id = "cancel"
+    cancelBtn_lbl:setFillColor( Utils.convertHexToRGB(color.Black)  )
+    sceneGroup:insert(cancelBtn_lbl)
 
 	MainGroup:insert(sceneGroup)
 

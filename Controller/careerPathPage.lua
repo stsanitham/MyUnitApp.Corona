@@ -306,8 +306,8 @@ local function careePath_list( list )
 
 		if list[i].Image_Path ~= nil then
 
-			Image = display.newImageRect(tempGroup,"res/assert/gender_img.png",35,35)
-			Image.x=40;Image.y=background.y+background.height/2 - 20
+			Image = display.newImageRect(tempGroup,"res/assert/img_with_circle.png",45,45)
+			Image.x=40;Image.y=background.y+background.height/2 - 21
 			Image.anchorY=0
 
 			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].Image_Path,
@@ -323,12 +323,10 @@ local function careePath_list( list )
 							Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
 							Image.width=45;Image.height=45
 							Image.anchorY=0
-							Image.x=40;Image.y=background.y+background.contentHeight/2- 20
-    				--event.row:insert(img_event.target)
+							Image.x=40;Image.y=background.y+background.contentHeight/2- 21
+    						--event.row:insert(img_event.target)
 
-
-    				local mask = graphics.newMask( "res/assert/masknew.png" )
-
+    				local mask = graphics.newMask( "res/assert/circleimg.png" )
     				Image:setMask( mask )
 
     			else
@@ -340,8 +338,8 @@ local function careePath_list( list )
 
     		end, "career"..list[i].Contact_Id..".png", system.DocumentsDirectory)
 		else
-			Image = display.newImageRect(tempGroup,"res/assert/gender_img.png",35,35)
-			Image.x=40;Image.y=background.y+background.height/2- 20
+			Image = display.newImageRect(tempGroup,"res/assert/img_with_circle.png",45,45)
+			Image.x=40;Image.y=background.y+background.height/2- 21
 			Image.anchorY=0
 
 		end
@@ -562,8 +560,8 @@ function scene:create( event )
 	title.x=42;title.y = tabBar.y+tabBar.contentHeight/2-25
 	title:setFillColor(1,1,1)
 
-	changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,44/2)
-	changeList_order_icon.x=W-20;changeList_order_icon.y=tabBar.y+tabBar.contentHeight/2-35
+	changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/menuCircle.png",19,7)
+	changeList_order_icon.x=W-25;changeList_order_icon.y=tabBar.y+tabBar.contentHeight/2-27.5
 	changeList_order_icon:setFillColor(1,1,1)
 	changeList_order_icon.anchorY=0
 

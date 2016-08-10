@@ -1820,7 +1820,7 @@ function scene:create( event )
                                         scrollView:insert(cancelBtn)
                                         cancelBtn.id="cancel"
 
-                                        cancelBtn_lbl = display.newText( scrollView,CommonWords.cancel,0,0,native.systemFont,13 )
+                                        cancelBtn_lbl = display.newText( scrollView,CommonWords.cancel,0,0,"Roboto-Regular",13 )
                                         cancelBtn_lbl.y= cancelBtn.y
                                         cancelBtn_lbl.x = cancelBtn.x
                                         cancelBtn_lbl.id = "cancel"
