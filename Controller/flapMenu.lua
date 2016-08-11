@@ -403,10 +403,11 @@ function scene:show( event )
 
 				local LogoPic
 
-				LogoPic = display.newImageRect("res/assert/logoCircle.png",125,120)
+				LogoPic = display.newImageRect("res/assert/logoSymbol.png",105,105)
 				LogoPic.x=profilePic.x + profilePic.contentWidth + 45
-				LogoPic.y=profileName.y-LogoPic.contentHeight + 60
+				LogoPic.y=profileName.y-LogoPic.contentHeight + 48
 				LogoPic:rotate(-45)
+				LogoPic.alpha=0.5
 				LogoPic.anchorY=0
 				LogoPic.anchorX=0
 				panel:insert( LogoPic )
@@ -472,6 +473,7 @@ function scene:show( event )
 				Event_icon = display.newImageRect("res/assert/calender.png",20,20)
 				Event_icon.anchorX = 0
 				Event_icon.x=17.5
+				Event_icon.alpha=0.8
 				Event_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				Event_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2 + 3
 				flapScroll:insert( Event_icon )
@@ -501,6 +503,7 @@ function scene:show( event )
 
 				Career_icon = display.newImageRect("res/assert/unitCarrer.png",20,20)
 				Career_icon.anchorX = 0
+				Career_icon.alpha=0.8
 				Career_icon.x=17.5
 				Career_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				Career_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
@@ -533,6 +536,7 @@ function scene:show( event )
 				Goals_icon = display.newImageRect("res/assert/unitGoals.png",20,20)
 				Goals_icon.anchorX = 0
 				Goals_icon.x=17.5
+				Goals_icon.alpha=0.8
 				Goals_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				Goals_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 				flapScroll:insert( Goals_icon )
@@ -597,6 +601,7 @@ function scene:show( event )
 				img_lib_icon = display.newImageRect("res/assert/imglib.png",20,20)
 				img_lib_icon.anchorX = 0
 				img_lib_icon.x=17.5
+				img_lib_icon.alpha=0.8
 				img_lib_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				img_lib_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 				flapScroll:insert( img_lib_icon )
@@ -630,6 +635,7 @@ function scene:show( event )
 				message_icon = display.newImageRect("res/assert/message.png",20,20)
 				message_icon.anchorX = 0
 				message_icon.x=17.5
+				message_icon.alpha=0.8
 				message_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				message_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 				flapScroll:insert( message_icon )
@@ -662,6 +668,7 @@ function scene:show( event )
 				chat_message_icon.anchorX = 0
 				--chat_message_icon:setFillColor(1,1,1)
 				chat_message_icon.x=17.5
+				chat_message_icon.alpha=0.8
 				chat_message_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				chat_message_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
 				flapScroll:insert( chat_message_icon )
@@ -753,6 +760,7 @@ function scene:show( event )
 				invite_icon.anchorX = 0
 				--invite_icon:setFillColor(1,1,1)
 				invite_icon.x=17.5
+				invite_icon.alpha=0.8
 				invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2 
 				flapScroll:insert( invite_icon )
@@ -782,6 +790,7 @@ function scene:show( event )
 				invite_icon.anchorX = 0
 				invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				invite_icon.x=17.5
+				invite_icon.alpha=0.8
 				invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2 
 				flapScroll:insert( invite_icon )
 
@@ -838,6 +847,7 @@ function scene:show( event )
 				invite_icon.anchorX = 0
 				invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 				invite_icon.x=17.5
+				invite_icon.alpha=0.8
 				invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2 
 				flapScroll:insert( invite_icon )
 
@@ -866,6 +876,7 @@ function scene:show( event )
 			    invite_icon.anchorX = 0
 			    invite_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
 			    invite_icon.x=17.5
+			    invite_icon.alpha=0.8
 			    invite_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2 
 			    flapScroll:insert( invite_icon )
 
@@ -971,7 +982,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].id="twitterPage"
 
 
-				Twitter_icon = display.newImageRect("res/assert/twitter.png",20,20)
+				Twitter_icon = display.newImageRect("res/assert/twiter.png",20,20)
 				Twitter_icon.anchorX = 0
 				Twitter_icon.x=17.5
 				--Twitter_icon:setFillColor(0,0,0,0.8)
@@ -1005,7 +1016,7 @@ function scene:show( event )
 						menuArray_display[#menuArray_display].name = "Google +"
 						menuArray_display[#menuArray_display].id="googlePlusPage"
 
-						Google_icon = display.newImageRect("res/assert/google+.png",20,20)
+						Google_icon = display.newImageRect("res/assert/googlePlus.png",20,20)
 						Google_icon.anchorX = 0
 						Google_icon.x=17.5
 						--Google_icon:setFillColor(0,0,0,0.8)
