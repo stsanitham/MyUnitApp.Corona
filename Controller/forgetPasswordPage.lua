@@ -331,7 +331,7 @@ function scene:create( event )
 	signinUser.x = signinBanner.x+80;signinUser.y=signinBanner.y+signinBanner.contentHeight/2
 
 	backBtn_bg = display.newRect(sceneGroup,0,0,40,30)
-	backBtn_bg.x=25;backBtn_bg.y=signinBanner.y+signinBanner.contentHeight/2-25
+	backBtn_bg.x=25;backBtn_bg.y=25
 	backBtn_bg.alpha=0.01
 
 	backBtn = display.newImageRect(sceneGroup,"res/assert/back_icon.png",36/2,30/2)
