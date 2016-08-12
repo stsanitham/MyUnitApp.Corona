@@ -248,7 +248,6 @@ local function EditOption( event )
 			-- Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 			-- Background.x=W/2;Background.y=H/2
 
-
 			Background = display.newRect(sceneGroup,0,0,W,H)
 			Background.x=W/2;Background.y=H/2
 			Background:setFillColor(1,1,1)
@@ -320,93 +319,89 @@ local function EditOption( event )
 
 				scrollView = widget.newScrollView
 				{
-					top = RecentTab_Topvalue,
+					top = RecentTab_Topvalue+110,
 					left = 0,
 					width = W,
-					height =H-105,
+					height =H-105-105,
 					hideBackground = true,
 					isBounceEnabled=false,
-					horizontalScrollingDisabled = false,
+					horizontalScrollingDisabled = true,
 					verticalScrollingDisabled = false,
 					hideScrollBar=true,
-
 					-- listener = scrollListener
 				}
 				scrollView.anchorY=0
-				scrollView.y=RecentTab_Topvalue
-				--scrollView.anchorX=0
+				scrollView.y=RecentTab_Topvalue+45
 
 				sceneGroup:insert(scrollView)
 
 
-	elseif phase == "did" then
+			elseif phase == "did" then
 
-		BackIcon:addEventListener("touch",closeDetails)
-		title:addEventListener("touch",closeDetails)
-		
-		menuBtn:addEventListener("touch",menuTouch)
-		menuTouch_s:addEventListener("touch",menuTouch)
-		
-		--BgText:addEventListener("touch",menuTouch)
+				BackIcon:addEventListener("touch",closeDetails)
+				title:addEventListener("touch",closeDetails)
+				
+				menuBtn:addEventListener("touch",menuTouch)
+				menuTouch_s:addEventListener("touch",menuTouch)
+				
+				--BgText:addEventListener("touch",menuTouch)
+				Runtime:addEventListener("key",onKeyEventDetail)
 
-		Runtime:addEventListener("key",onKeyEventDetail)
+						if event.params then
 
-		if event.params then
+								detail_value = event.params.details
 
-			detail_value = event.params.details
+								print(json.encode(detail_value))
 
-			print(json.encode(detail_value))
+								local timeGMT = Utils.makeTimeStamp( detail_value.date )
 
-			local timeGMT = Utils.makeTimeStamp( detail_value.date )
+							function get_ticklereventByid(response)
 
+								Details=response
 
-			function get_ticklereventByid(response)
-
-				Details=response
-
-				local leftAllign = 10
+								local leftAllign = 10
 
 
-				local tzoffset
+								local tzoffset
 
-				if Details.TimeZone == "Eastern Standard Time" then
-					tzoffset = "-04:00:00"
+								if Details.TimeZone == "Eastern Standard Time" then
+									tzoffset = "-04:00:00"
 
-				elseif Details.TimeZone == "Hawaiian Standard Time" then
-					tzoffset = "-10:00:00"
+								elseif Details.TimeZone == "Hawaiian Standard Time" then
+									tzoffset = "-10:00:00"
 
-				elseif Details.TimeZone == "Alaskan Standard Time" then
-					tzoffset = "-09:00:00"
+								elseif Details.TimeZone == "Alaskan Standard Time" then
+									tzoffset = "-09:00:00"
 
-				elseif Details.TimeZone == "Mountain Standard Time" then
-					tzoffset = "-06:00:00"
+								elseif Details.TimeZone == "Mountain Standard Time" then
+									tzoffset = "-06:00:00"
 
-				elseif Details.TimeZone == "Pacific Standard Time" then
-					tzoffset = "-07:00:00"
+								elseif Details.TimeZone == "Pacific Standard Time" then
+									tzoffset = "-07:00:00"
 
-				elseif Details.TimeZone == "Central Standard Time" then
-					tzoffset = "-05:00:00"
+								elseif Details.TimeZone == "Central Standard Time" then
+									tzoffset = "-05:00:00"
 
-				elseif Details.TimeZone == "US Mountain Standard Time" then
-					tzoffset = "-06:00:00"
-				else
-					tzoffset = "local"
-				end
+								elseif Details.TimeZone == "US Mountain Standard Time" then
+									tzoffset = "-06:00:00"
+								else
+									tzoffset = "local"
+								end
 
-				local start_timeGMT = Utils.makeTimeStamp( detail_value.startdate.." "..tzoffset )
-				local end_timeGMT = Utils.makeTimeStamp( detail_value.enddate.." "..tzoffset )
+								local start_timeGMT = Utils.makeTimeStamp( detail_value.startdate.." "..tzoffset )
+								local end_timeGMT = Utils.makeTimeStamp( detail_value.enddate.." "..tzoffset )
 
 
-				Details.startdate = detail_value.startdate
+								Details.startdate = detail_value.startdate
 
-				Details.enddate = detail_value.enddate
+								Details.enddate = detail_value.enddate
 
-				TicklerId = Details.TicklerId
-				CalendarId = Details.CalendarId
-				CalendarName = Details.CalendarName
-				id = Details.id
+								TicklerId = Details.TicklerId
+								CalendarId = Details.CalendarId
+								CalendarName = Details.CalendarName
+								id = Details.id
 
-		----When----
+				----When----
 
 		title.text = Details.title
 
@@ -420,7 +415,7 @@ local function EditOption( event )
 		display_details[#display_details+1] = display.newText(EventCalender.When,0,0,"Roboto-Regular",14)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
-		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+45
+		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2-70
 		display_details[#display_details].anchorX=0
 		scrollView:insert( display_details[#display_details] )
 
@@ -442,7 +437,7 @@ local function EditOption( event )
 		display_details[#display_details] = display.newText(value,0,0,220,0,"Roboto-Regular",14)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.Black))
 
-		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2+45
+		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2-70
 		display_details[#display_details].anchorX=0
 		scrollView:insert( display_details[#display_details] )
 		display_details[#display_details].id="when"

@@ -120,6 +120,9 @@ end
 
 local modf = math.modf
 
+
+
+
 function wrap_time(time_amount)
    local start_seconds = time_amount --start_seconds = 20000
    
@@ -138,6 +141,7 @@ function wrap_time(time_amount)
 end
 
 
+
 local function closeDetails( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
@@ -150,7 +154,11 @@ local function closeDetails( event )
 
 end
 
+
+
+
 local function ChangeParty()
+
 	AppintmentWith.placeholder = EventCalender.Hostess
 
 	PurposeLbl.text = ""
@@ -199,6 +207,10 @@ local function ChangeParty()
 	Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
 	Event_toLbl.text = "To"
 end
+
+
+
+
 
 local function changeAppointment(  )
 	AppintmentWith.placeholder=AddeventPage.Appointment_With
@@ -250,6 +262,9 @@ local function changeAppointment(  )
 end
 
 
+
+
+
 local function changeTask(  )
 
 	AppintmentWith.placeholder=EventCalender.Linked_to
@@ -264,8 +279,6 @@ local function changeTask(  )
 
 	Purposetxt.text = AddeventPage.Priority
 
-
-
 	taskGroup[1].isVisible = false
 	taskGroup[2].isVisible = false
 
@@ -274,7 +287,6 @@ local function changeTask(  )
 
 	if allDay == true then
 		
-
 		for i=1,#AddeventArray do
 			if AddeventArray[i].id == "to" then
 				AddeventArray[i].isVisible=false
@@ -288,9 +300,7 @@ local function changeTask(  )
 	end
 
 	
-	
 	local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
-
 
 	Event_to_time.text = os.date( "%I:%M "..TimeZonevalue , eventTime )
 	Event_to_date.text = os.date( "%m/%d/%Y" ,eventTime )
@@ -309,6 +319,10 @@ local function changeTask(  )
 	AccessCode.isVisible = false
 end
 
+
+
+
+
 local function changeCall(  )
 	AppintmentWith.placeholder=EventCalender.Call_With
 
@@ -320,9 +334,9 @@ local function changeCall(  )
 
 	Event_toLbl.text = AddeventPage.Duration
 
-	Event_to_date.x= Event_to_datebg.x+35
+	Event_to_date.x= Event_to_datebg.x+Event_to_datebg.contentWidth/2-20
 
-	Event_from_date.x = Event_from_datebg.x+ 35
+	Event_from_date.x =Event_from_datebg.x+Event_from_datebg.contentWidth/2-20
 
 	whereGroup.isVisible = false
 
@@ -330,7 +344,7 @@ local function changeCall(  )
 
 			--callGroup.y = W/2+20
 			
-			belowGroup.y=-W/2+160
+		belowGroup.y=-W/2+160
 
 		--	Where.isVisible = false
 
@@ -346,11 +360,7 @@ local function changeCall(  )
 		taskGroup.y=0
 		taskGroupExt.y=0
 
-
-
-
 		local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
-
 
 		Event_to_time.text = "15 M"
 		Event_to_time.value=15
@@ -360,15 +370,14 @@ local function changeCall(  )
 
 
 
+
 	local function photonametouch( event )
 
 		if event.phase == "began" then
 
 			elseif event.phase == "ended" then
-
 			----recently added----
 			if event.target.id == "close image" then
-
 
 				AddAttachmentPhotoName.isVisible = false
 				AddAttachmentLbl.isVisible = true
@@ -386,6 +395,7 @@ local function changeCall(  )
 
 		return true
 	end
+
 
 
 
@@ -458,6 +468,8 @@ local function changeCall(  )
 	end
 
 
+
+
 	function get_imagemodel(response)
 
 		--MessageSending(response)
@@ -486,8 +498,10 @@ local function changeCall(  )
 	end
 
 
-	local function selectionComplete ( event )
 
+
+
+	local function selectionComplete ( event )
 		
 		local photo = event.target
 
@@ -539,7 +553,6 @@ local function changeCall(  )
 				photoname = "eventAttach.jpg"
 
 
-
 				display.save(photo,photoname,system.DocumentsDirectory)
 
 				photo:removeSelf()
@@ -570,7 +583,7 @@ local function changeCall(  )
 
 
 
-		local function searchRender( event )
+ local function searchRender( event )
 
     -- Get reference to the row group
     local row = event.row
@@ -627,6 +640,8 @@ local function searchTouch(event)
 end
 
 
+
+
 local function onRowRender( event )
 
     -- Get reference to the row group
@@ -641,12 +656,10 @@ local function onRowRender( event )
     if List.arrayName == purposeArray or List.arrayName == priorityArray or List.arrayName == taskStatus or List.arrayName == partyArray then
     	rowTitle = display.newText( row, List.arrayName[row.index].value, 0, 0, nil, 14 )
     else
-
     	rowTitle = display.newText( row, List.arrayName[row.index], 0, 0, nil, 14 )
-
     end
-    rowTitle:setFillColor( 0 )
 
+    rowTitle:setFillColor( 0 )
     -- Align the label left and vertically centered
     rowTitle.anchorX = 0
     rowTitle.x = 15
@@ -656,32 +669,30 @@ local function onRowRender( event )
     tick.x = rowWidth - 20
     tick.y = rowHeight * 0.5
 
-    
 
+		if List.arrayName == purposeArray or List.arrayName == priorityArray or List.arrayName == taskStatus or List.arrayName == partyArray then
 
-	if List.arrayName == purposeArray or List.arrayName == priorityArray or List.arrayName == taskStatus or List.arrayName == partyArray then
+		    	row.name = List.arrayName[row.index].value
+		    	row.id=List.arrayName[row.index].id
+		    	if List.textFiled.text == List.arrayName[row.index].value then
 
-    	row.name = List.arrayName[row.index].value
-    	row.id=List.arrayName[row.index].id
-    	if List.textFiled.text == List.arrayName[row.index].value then
+		    	else
+		    		tick.isVisible = false
+		    	end
 
-    	else
-    		tick.isVisible = false
-    	end
+	    else
+		    	row.id=row.index
+		    	row.name = List.arrayName[row.index]
+		    	if List.textFiled.text == List.arrayName[row.index] then
 
-    else
-    	row.id=row.index
-    	row.name = List.arrayName[row.index]
-    	if List.textFiled.text == List.arrayName[row.index] then
+		    	else
+		    		tick.isVisible = false
+		    	end
 
-    	else
-    		tick.isVisible = false
-    	end
-
-    end
-
+	    end
 
 end
+
 
 
 
@@ -706,26 +717,31 @@ local function onRowTouch(event)
 
 		if List.textFiled.text:lower( ) == "party" then
 
-			ChangeParty()
+				ChangeParty()
 
-
+				AppintmentWith.isVisible = false
+				Addinvitees.isVisible = false
 
 		elseif List.textFiled.text:lower( ) == "appointment" then
 
-			changeAppointment()
+				changeAppointment()
 
+				AppintmentWith.isVisible = false
+				Addinvitees.isVisible = false
 
 		elseif List.textFiled.text:lower( ) == "task" then
 
-			changeTask()
+				changeTask()
 
-			
+				AppintmentWith.isVisible = false
+				Addinvitees.isVisible = false
 
 		elseif List.textFiled.text:lower( ) == "call" then
 
-			changeCall()
+				changeCall()
 
-			
+				AppintmentWith.isVisible = false
+				Addinvitees.isVisible = false
 
 		elseif List.textFiled.id:lower( ) == "totime" then
 
@@ -751,7 +767,6 @@ local function onRowTouch(event)
 
 		elseif List.textFiled.id:lower( ) == "todate" then
 
-
 			if SelectEvent.text:lower( ) == "call" then
 
 				List.textFiled.value = List.textFiled.text
@@ -770,7 +785,6 @@ local function onRowTouch(event)
 
 			end
 
-
 		end
 
 
@@ -780,12 +794,12 @@ local function onRowTouch(event)
 			AddeventArray[List.textFiled.count+1].isVisible = false
 			Other.isVisible = true
 			BottomOther.isVisible = true
-			belowOtherGroup.y = 0
+			belowOtherGroup.y = 7
 
 		else
 
 
-			if SelectEvent.text:lower( ) == "party" then
+				if SelectEvent.text:lower( ) == "party" then
 
 					for i=1,#AddeventPage.partyArray do
 						if AddeventPage.partyArray[i] == row.name then
@@ -793,8 +807,7 @@ local function onRowTouch(event)
 						end
 					end
 
-			else
-
+				else
 
 					for i=1,#AddeventPage.purposeArray do
 						if AddeventPage.purposeArray[i].value == row.name then
@@ -802,8 +815,7 @@ local function onRowTouch(event)
 						end
 					end
 
-		   end
-
+			   end
 
 			print( "value : "..List.textFiled.value )
 			
@@ -812,7 +824,8 @@ local function onRowTouch(event)
 			BottomOther.isVisible = false
 			belowOtherGroup.y = -40
 
-	end
+	    end
+
 
    end
 
@@ -854,7 +867,6 @@ local function CreateList(event,list,bg)
 
 		list:deleteAllRows()
 
-
 		for i = 1, #List.arrayName do
 
 		    -- Insert a row into the tableView
@@ -868,8 +880,9 @@ local function CreateList(event,list,bg)
 
 		end
 
-
 end
+
+
 
 
 
@@ -878,12 +891,12 @@ local function onComplete(event)
 	if 1 == event then
 
 		--status = "deleted"
-
 		composer.hideOverlay()
 
 	end
 
 end
+
 
 
 
@@ -1231,6 +1244,9 @@ local function TouchAction( event )
         			time = 400,
         		}
         		checkMad = true
+
+        		Addinvitees.isVisible = true
+        	    AppintmentWith.isVisible = true
 
         	end
 
@@ -1772,7 +1788,7 @@ local function TouchAction( event )
 								if List.isVisible == false then
 									List.isVisible = true
 									List.x = event.target.x
-									List.y = event.target.y+event.target.contentHeight+1.3
+									List.y = event.target.y+event.target.contentHeight+1.3 + 10
 									List.width =event.target.contentWidth
 
 
@@ -1781,7 +1797,7 @@ local function TouchAction( event )
 										List.arrayName = priorityArray
 										List.textFiled = PurposeLbl
 
-										List.y = event.target.y+event.target.contentHeight+1.3-43.5
+										List.y = event.target.y+event.target.contentHeight+1.3-30.5
 
 									elseif SelectEvent.text:lower( ) == "party" then
 
@@ -1819,13 +1835,40 @@ local function TouchAction( event )
 									List.isVisible = true
 									List.x = event.target.x
 
-									if PurposeLbl.text:lower( ) == "other" then
+									List.y = event.target.y+event.target.contentHeight+1.3 + 25
 
-										List.y = event.target.y+event.target.contentHeight+1.3
 
-									else
+									if SelectEvent.text:lower( ) == "appointment" or SelectEvent.text:lower( ) == "call" then
 
-										List.y = event.target.y+event.target.contentHeight+1.3-40
+											if PurposeLbl.text:lower( ) == "other" then
+
+												List.y = event.target.y+event.target.contentHeight+1.3 + 18
+
+											    else
+
+												List.y = event.target.y+event.target.contentHeight+1.3-30
+
+											end
+
+									elseif SelectEvent.text:lower( ) == "party" then
+
+											print("in party")
+
+											if PurposeLbl.text:lower( ) == "other" then
+
+												List.y = event.target.y+event.target.contentHeight+1.3 + 17
+
+											    else
+
+												List.y = event.target.y+event.target.contentHeight+1.3-30
+
+											end
+
+									elseif SelectEvent.text:lower( ) == "task" then
+
+											print("in task")
+
+												List.y = event.target.y+event.target.contentHeight+1.3-70
 
 									end
 
@@ -1835,7 +1878,6 @@ local function TouchAction( event )
 										List.arrayName = taskStatus
 										List.textFiled = PriorityLbl
 
-										List.y = event.target.y+event.target.contentHeight+1.3-83.5
 
 									elseif SelectEvent.text:lower( ) == "party" then
 
@@ -1918,10 +1960,16 @@ local function TouchAction( event )
 						List.isVisible = true
 						List.x = event.target.x
 
+						print("TicklerType : "..TicklerType)
+
 						if TicklerType == "CALL" then
 							List.y = event.target.y+event.target.contentHeight+1.3
+						elseif TicklerType == "APPT" then
+							List.y = event.target.y+event.target.contentHeight+1.3+82
+						elseif TicklerType == "PARTY" then
+							List.y = event.target.y+event.target.contentHeight+1.3+77
 						else
-							List.y = event.target.y+event.target.contentHeight+1.3+73
+							List.y = event.target.y+event.target.contentHeight+1.3+122
 						end
 
 						List_bg.y = List.y
@@ -1956,47 +2004,62 @@ local function TouchAction( event )
 				
 				if switch.isOn == true then
 
-					allDay=true
-					Event_from_timebg.isVisible = false
-					Event_from_time.isVisible = false
-					Event_to_timebg.isVisible = false
-					Event_to_time.isVisible = false
-
-					if SelectEvent.text:lower( ) == "call" then
-						
-
-						for i=1,#AddeventArray do
-							if AddeventArray[i].id == "to" then
-								AddeventArray[i].isVisible=false
-							end
-						end
-						Event_toLbl.isVisible = false
-						Event_to_datebg.isVisible = false
-						Event_to_date.isVisible = false
+						allDay=true
+						Event_from_timebg.isVisible = false
+						Event_from_time.isVisible = false
 						Event_to_timebg.isVisible = false
-						BottomImageTo.isVisible = false
-					end
-				else
-					allDay=false
-					Event_from_timebg.isVisible = true
-					Event_from_time.isVisible = true
-					Event_to_timebg.isVisible = true
-					Event_to_time.isVisible = true
+						Event_to_time.isVisible = false
 
-					if SelectEvent.text:lower( ) == "call" then
-						
+						if SelectEvent.text:lower( ) == "call" then
 
-						for i=1,#AddeventArray do
-							if AddeventArray[i].id == "to" then
-								AddeventArray[i].isVisible=true
+							-- timeZone.y=BottomImageWhen.y + 12
+							-- Phone.y = timeZone.y + timeZone.contentHeight+7
+		     --                BottomImagePhone.y = Phone.y + Phone.contentHeight+7
+							-- AccessCode.y = BottomImagePhone.y+BottomImagePhone.contentHeight+7
+							-- BottomImageAccessCode.y = AccessCode.y + AccessCode.contentHeight+7
+							-- Out_bound.y = BottomImageAccessCode.y+ BottomImageAccessCode.contentHeight+12
+							-- Out_bound_txt.y = Out_bound.y
+							-- Inbound.y = BottomImageAccessCode.y+ BottomImageAccessCode.contentHeight+12
+							-- In_bound_txt.y = Inbound.y
+							-- Conference.y = BottomImageAccessCode.y+ BottomImageAccessCode.contentHeight+12
+							-- Conference_txt.y = Conference.y
+							
+
+							for i=1,#AddeventArray do
+								if AddeventArray[i].id == "to" then
+									AddeventArray[i].isVisible=false
+								end
 							end
+							Event_toLbl.isVisible = false
+							Event_to_datebg.isVisible = false
+							Event_to_date.isVisible = false
+							Event_to_timebg.isVisible = false
+							BottomImageTo.isVisible = false
 						end
-						Event_toLbl.isVisible = true
-						Event_to_datebg.isVisible = true
-						Event_to_date.isVisible = true
+				else
+						allDay=false
+						Event_from_timebg.isVisible = true
+						Event_from_time.isVisible = true
 						Event_to_timebg.isVisible = true
-						BottomImageTo.isVisible = true
-					end
+						Event_to_time.isVisible = true
+
+						if SelectEvent.text:lower( ) == "call" then
+
+							-- timeZone.y=BottomImageTo.y + 12
+
+							
+
+							for i=1,#AddeventArray do
+								if AddeventArray[i].id == "to" then
+									AddeventArray[i].isVisible=true
+								end
+							end
+							Event_toLbl.isVisible = true
+							Event_to_datebg.isVisible = true
+							Event_to_date.isVisible = true
+							Event_to_timebg.isVisible = true
+							BottomImageTo.isVisible = true
+						end
 
 				end
 				
@@ -2229,6 +2292,9 @@ local function usertextField( event )
 
         		scrollTo(-115)
 
+        		Addinvitees.isVisible = true
+        		AppintmentWith.isVisible = true
+
         	end
 
         end
@@ -2249,11 +2315,15 @@ local function usertextField( event )
 
         	scrollTo(0)
 
+        	Addinvitees.isVisible = false
+        	AppintmentWith.isVisible = false
+
         	native.setKeyboardFocus( nil )
 
         	event.target.isVisible = false
 
         	Description_lbl.isVisible = true
+
 
         	if Description.text == "" then
 
@@ -2262,6 +2332,7 @@ local function usertextField( event )
         		Description_lbl.text = AddeventPage.Description
 
         	else
+
 
         		Description_lbl.alpha = 1
         		Description_lbl:setFillColor( 0 )
@@ -2388,6 +2459,8 @@ local function addevent_scrollListener(event )
 
 		local x, y = scrollView:getContentPosition()
 
+		print(y)
+
 
 		if y > -60 then
 
@@ -2398,11 +2471,15 @@ local function addevent_scrollListener(event )
 			What.isVisible = false
 		end
 
+
+
 		if y > -225 and (SelectEvent.text:lower( ) == "task") then
 
 			Where.isVisible = false
 			whereGroup.isVisible = false
 		end
+
+
 
 		if y > -225 and (SelectEvent.text:lower( ) == "call") then
 
@@ -2445,6 +2522,63 @@ local function addevent_scrollListener(event )
 		end
 
 
+
+		if y > -90 and (SelectEvent.text:lower( ) == "appointment") then
+
+			Addinvitees.isVisible = false
+			AppintmentWith.isVisible = false
+
+		elseif y < -90 and (SelectEvent.text:lower( ) == "appointment") then
+
+			Addinvitees.isVisible = true
+			AppintmentWith.isVisible = true
+
+		end
+
+
+
+		if y > -140 and (SelectEvent.text:lower( ) == "call") then
+
+			Addinvitees.isVisible = false
+			AppintmentWith.isVisible = false
+
+		elseif y < -140 and (SelectEvent.text:lower( ) == "call") then
+
+			Addinvitees.isVisible = true
+			AppintmentWith.isVisible = true
+
+		end
+
+
+
+	   if  y > -100 and (SelectEvent.text:lower( ) == "party") then 
+
+			Addinvitees.isVisible = false
+			AppintmentWith.isVisible = false
+
+		elseif  y < -100 and (SelectEvent.text:lower( ) == "party") then
+
+			Addinvitees.isVisible = true
+			AppintmentWith.isVisible = true
+		end
+
+
+
+		if  y > -30 and (SelectEvent.text:lower( ) == "task") then 
+
+			AppintmentWith.isVisible = false
+
+		elseif  y < -30 and (SelectEvent.text:lower( ) == "task") then
+
+			AppintmentWith.isVisible = true
+		end
+
+
+
+
+
+
+
 		elseif ( phase == "ended" ) then 
 	end
 
@@ -2468,18 +2602,19 @@ local function addevent_scrollListener(event )
 
 	  	----AllDay----
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+25, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+15, W-20, 28)
 	  	AddeventArray[#AddeventArray].id="allday"
 	  	AddeventArray[#AddeventArray].anchorY=0
 	  	AddeventArray[#AddeventArray].alpha=0.01
 	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+15
 	  	AddeventGroup:insert(AddeventArray[#AddeventArray])
 
-	  	alldayLbl = display.newText(AddeventGroup,AddeventPage.All_Day,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,12 )
+	  	alldayLbl = display.newText(AddeventGroup,AddeventPage.All_Day,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,"Roboto-Regular",14)
 	  	alldayLbl.anchorX=0
-	  	alldayLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+	  	alldayLbl:setFillColor( Utils.convertHexToRGB(color.Black))
+	  	alldayLbl.font=native.newFont("Roboto-Regular",14)
 	  	alldayLbl.x=leftPadding
-	  	alldayLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+	  	alldayLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2+5
 
 	  	local options = {
 	  		frames = {
@@ -2510,31 +2645,32 @@ local function addevent_scrollListener(event )
        onOffOverlayFrame = 4,
        onOffOverlayWidth = 96,
        onOffOverlayHeight = 44
-   }
-   allDay=false
-   allday_onOffSwitch.x=alldayLbl.x+alldayLbl.contentWidth+allday_onOffSwitch.contentWidth/2-55
-   allday_onOffSwitch.y = alldayLbl.y
+	   }
+	   allDay=false
+	   allday_onOffSwitch.x=alldayLbl.x+alldayLbl.contentWidth+allday_onOffSwitch.contentWidth/2-45
+	   allday_onOffSwitch.y = alldayLbl.y
 
-   allday_onOffSwitch.width = 60
-   allday_onOffSwitch.height  = 20
-   AddeventGroup:insert( allday_onOffSwitch )
+	   allday_onOffSwitch.width = 60
+	   allday_onOffSwitch.height  = 20
+	   AddeventGroup:insert( allday_onOffSwitch )
 
 	  	--------------
 
 	  	--------------From---------------
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+10, W-20, 28)
 	  	AddeventArray[#AddeventArray].id="when"
 	  	AddeventArray[#AddeventArray].anchorY=0
 	  	AddeventArray[#AddeventArray].alpha=0.01
-	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+5
+	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+12
 	  	AddeventGroup:insert(AddeventArray[#AddeventArray])
 
-	  	Event_fromLbl = display.newText(AddeventGroup,AddeventPage.When,0,0,0,0,native.systemFont,14)
+	  	Event_fromLbl = display.newText(AddeventGroup,AddeventPage.When,0,0,0,0,"Roboto-Regular",14)
 	  	Event_fromLbl.anchorX=0
+	  	Event_fromLbl.font=native.newFont("Roboto-Regular",14)
+		Event_fromLbl:setFillColor( Utils.convertHexToRGB(color.Gray))
 	  	Event_fromLbl.x=leftPadding
 	  	Event_fromLbl.y = AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
-	  	Event_fromLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 
 	  	Event_from_datebg = display.newRect(AddeventGroup,0,0,W/2,30)
 	  	Event_from_datebg.anchorX=0
@@ -2543,45 +2679,52 @@ local function addevent_scrollListener(event )
 	  	Event_from_datebg.x=Event_fromLbl.x+Event_fromLbl.contentWidth+5
 	  	Event_from_datebg.y= Event_fromLbl.y
 
-	  	Event_from_date = display.newText(AddeventGroup,os.date( "%m/%d/%Y" ,eventTime ),0,0,native.systemFont,14)
+	  	Event_from_date = display.newText(AddeventGroup,os.date( "%m/%d/%Y" ,eventTime ),0,0,"Roboto-Regular",14)
 	  	Event_from_date.anchorX=0
 	  	Event_from_date.id="fromdate"
-	  	Event_from_date:setFillColor( 0 )
-	  	Event_from_date.x= Event_from_datebg.x+5;Event_from_date.y= Event_from_datebg.y
+	  	Event_from_date.font=native.newFont("Roboto-Regular",14)
+		Event_from_date:setFillColor( Utils.convertHexToRGB(color.Black))
+	  	Event_from_date.x= Event_from_datebg.x+Event_from_datebg.contentWidth/2-20;Event_from_date.y= Event_from_datebg.y
 
 
 	  	Event_from_timebg = display.newRect(AddeventGroup,0,0,80,30)
 	  	Event_from_timebg.anchorX=0
 	  	Event_from_timebg.alpha = 0.01
 	  	Event_from_timebg.id="fromTime"
+
 	  	Event_from_timebg.x= Event_from_datebg.x+Event_from_datebg.contentWidth+5;Event_from_timebg.y= Event_from_datebg.y
 
 	  	local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
 
-	  	Event_from_time = display.newText(AddeventGroup,os.date( "%I:%M "..TimeZonevalue , eventTime ),0,0,native.systemFont,14)
+	  	Event_from_time = display.newText(AddeventGroup,os.date( "%I:%M "..TimeZonevalue , eventTime ),0,0,"Roboto-Regular",14)
 	  	Event_from_time.anchorX=0
-	  	Event_from_time:setFillColor( 0 )
+	  	Event_from_time.font=native.newFont("Roboto-Regular",14)
+		Event_from_time:setFillColor( Utils.convertHexToRGB(color.Black))
 	  	Event_from_time.x= Event_from_timebg.x+5;Event_from_time.y= Event_from_timebg.y
 
-	  	BottomImageWhen = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-	  	BottomImageWhen.x=W/2;BottomImageWhen.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-5
+		BottomImageWhen = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomImageWhen.y = Event_fromLbl.y + Event_fromLbl.contentHeight+7
+	    BottomImageWhen:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomImageWhen.strokeWidth = 1
+	    AddeventGroup:insert(BottomImageWhen)
 
 		-----------------------------------
 
 
 	  	--------------To---------------
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+10, W-20, 28)
 	  	AddeventArray[#AddeventArray].id="to"
 	  	AddeventArray[#AddeventArray].anchorY=0
 	  	AddeventArray[#AddeventArray].alpha=0.01
 	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
 	  	AddeventGroup:insert(AddeventArray[#AddeventArray])
 
-	  	Event_toLbl = display.newText(AddeventGroup,AddeventPage.To,0,0,0,0,native.systemFont,14)
+	  	Event_toLbl = display.newText(AddeventGroup,AddeventPage.To,0,0,0,0,"Roboto-Regular",14)
 	  	Event_toLbl.anchorX=0
-	  	Event_toLbl.x=leftPadding;Event_toLbl.y = AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
-	  	Event_toLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+	  	Event_toLbl.font=native.newFont("Roboto-Regular",14)
+		Event_toLbl:setFillColor( Utils.convertHexToRGB(color.Gray))
+	  	Event_toLbl.x=leftPadding;Event_toLbl.y = AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2+7
 
 	  	Event_to_datebg = display.newRect(AddeventGroup,0,0,W/2,30)
 	  	Event_to_datebg.anchorX=0
@@ -2590,11 +2733,12 @@ local function addevent_scrollListener(event )
 	  	Event_to_datebg.x=Event_from_datebg.x
 	  	Event_to_datebg.y= Event_toLbl.y
 
-	  	Event_to_date = display.newText(AddeventGroup,os.date( "%m/%d/%Y" ,eventTime ),0,0,native.systemFont,14)
+	  	Event_to_date = display.newText(AddeventGroup,os.date( "%m/%d/%Y" ,eventTime ),0,0,"Roboto-Regular",14 )
 	  	Event_to_date.anchorX=0
 	  	Event_to_date.id="todate"
-	  	Event_to_date:setFillColor( 0 )
-	  	Event_to_date.x= Event_to_datebg.x+5;Event_to_date.y= Event_to_datebg.y
+	  	Event_to_date.font=native.newFont("Roboto-Regular",14)
+		Event_to_date:setFillColor( Utils.convertHexToRGB(color.Black))
+	  	Event_to_date.x= Event_to_datebg.x+Event_to_datebg.contentWidth/2-20;Event_to_date.y= Event_to_datebg.y
 
 
 	  	Event_to_timebg = display.newRect(AddeventGroup,0,0,80,30)
@@ -2605,10 +2749,11 @@ local function addevent_scrollListener(event )
 
 	  	local TimeZonevalue = Utils.GetWeek(os.date( "%p" , eventTime ))
 
-	  	Event_to_time = display.newText(AddeventGroup,os.date( "%I:%M "..TimeZonevalue , eventTime ),0,0,native.systemFont,14)
+	  	Event_to_time = display.newText(AddeventGroup,os.date( "%I:%M "..TimeZonevalue , eventTime ),0,0,"Roboto-Regular",14 )
 	  	Event_to_time.anchorX=0
 	  	Event_to_time.id="totime"
-	  	Event_to_time:setFillColor( 0 )
+	  	Event_to_time.font=native.newFont("Roboto-Regular",14)
+		Event_to_time:setFillColor( Utils.convertHexToRGB(color.Black))
 	  	Event_to_time.x= Event_to_timebg.x+5;Event_to_time.y= Event_to_timebg.y
 
 
@@ -2621,23 +2766,28 @@ local function addevent_scrollListener(event )
 
 		-----------------------------------
 
+		BottomImageTo = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomImageTo.y = Event_toLbl.y + Event_toLbl.contentHeight+7
+	    BottomImageTo:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomImageTo.strokeWidth = 1
+	    AddeventGroup:insert(BottomImageTo)
+
+
 		timeZone = display.newText(AddeventGroup,"( "..TimeZone.." )",0,0,native.systemFont,12)
 		timeZone.x=leftPadding
 		timeZone.anchorX = 0
 		timeZone:setFillColor( 0.2 )
-		timeZone.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight+15
+		timeZone.y=BottomImageTo.y + 12
 
-		BottomImageTo = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImageTo.x=W/2;BottomImageTo.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-5
-
+	
 		
 	  	----Where----
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+15, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+15, W-20, 28)
 	  	AddeventArray[#AddeventArray].id="where"
 	  	AddeventArray[#AddeventArray].anchorY=0
 	  	AddeventArray[#AddeventArray].alpha=0.01
-	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+35
+	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+46
 	  	whereGroup:insert(AddeventArray[#AddeventArray])
 
 	  	Where = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
@@ -2645,14 +2795,19 @@ local function addevent_scrollListener(event )
 	  	Where.size=14
 	  	Where.anchorY=0
 	  	Where.hasBackground = false
+	  	Where.y = AddeventArray[#AddeventArray].y
+	  	Where.font=native.newFont("Roboto-Regular",14)
+		Where:setTextColor(Utils.convertHexToRGB(color.LtyGray))
 	  	Where:setReturnKey( "next" )
 	  	Where.placeholder=AddeventPage.Where
 	  	Where:addEventListener( "userInput", usertextField )
 	  	whereGroup:insert(Where)
 
-	  	BottomImageWhere = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-	  	BottomImageWhere.x=W/2;BottomImageWhere.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-5
-	  	whereGroup:insert(BottomImageWhere)
+	  	BottomImageWhere = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomImageWhere.y = Where.y + Where.contentHeight+7
+	    BottomImageWhere:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomImageWhere.strokeWidth = 1
+	    whereGroup:insert(BottomImageWhere)
 
 	  	Where.isVisible = true
 
@@ -2663,7 +2818,7 @@ local function addevent_scrollListener(event )
 
 	  	---Phone-----
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+15, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+15, W-20, 28)
 	  	AddeventArray[#AddeventArray].id="phone"
 	  	AddeventArray[#AddeventArray].anchorY=0
 	  	AddeventArray[#AddeventArray].alpha=0.01
@@ -2675,14 +2830,21 @@ local function addevent_scrollListener(event )
 	  	Phone.size=14
 	  	Phone.anchorY=0
 	  	Phone.hasBackground = false
+	  	Phone.y = AddeventArray[#AddeventArray].y
+	  	Phone.font=native.newFont("Roboto-Regular",14)
+		Phone:setTextColor(Utils.convertHexToRGB(color.LtyGray))
 	  	Phone:setReturnKey( "next" )
 	  	Phone.inputType = "number"
 	  	Phone.placeholder=AddeventPage.Phone
 	  	Phone:addEventListener( "userInput", usertextField )
 	  	callGroup:insert(Phone)
 
-	  	BottomImagePhone= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-	  	BottomImagePhone.x=W/2;BottomImagePhone.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
+	  	BottomImagePhone = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomImagePhone.y = Phone.y + Phone.contentHeight+7
+	    BottomImagePhone:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomImagePhone.strokeWidth = 1
+	    callGroup:insert(BottomImagePhone)
+
 	  	callGroup:insert(BottomImagePhone)
 
 
@@ -2691,11 +2853,11 @@ local function addevent_scrollListener(event )
 
 	  	---AccessCode-----
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+15, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+15, W-20, 28)
 	  	AddeventArray[#AddeventArray].id="accesscode"
 	  	AddeventArray[#AddeventArray].anchorY=0
 	  	AddeventArray[#AddeventArray].alpha=0.01
-	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+14
 	  	callGroup:insert(AddeventArray[#AddeventArray])
 
 	  	AccessCode = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
@@ -2703,16 +2865,19 @@ local function addevent_scrollListener(event )
 	  	AccessCode.size=14
 	  	AccessCode.anchorY=0
 	  	AccessCode.hasBackground = false
+	  	AccessCode.y = AddeventArray[#AddeventArray].y
 	  	AccessCode:setReturnKey( "next" )
+	  	AccessCode.font=native.newFont("Roboto-Regular",14)
+		AccessCode:setTextColor(Utils.convertHexToRGB(color.LtyGray))
 	  	AccessCode.placeholder=AddeventPage.Access_Code
 	  	AccessCode:addEventListener( "userInput", usertextField )
 	  	callGroup:insert(AccessCode)
 
-	  	BottomImageAccessCode= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-	  	BottomImageAccessCode.x=W/2;BottomImageAccessCode.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-	  	callGroup:insert(BottomImageAccessCode)
-
-
+	  	BottomImageAccessCode = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomImageAccessCode.y = AccessCode.y + AccessCode.contentHeight+7
+	    BottomImageAccessCode:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomImageAccessCode.strokeWidth = 1
+	    callGroup:insert(BottomImageAccessCode)
 
 	  	Phone.isVisible = false
 
@@ -2723,16 +2888,14 @@ local function addevent_scrollListener(event )
 
 	  	---Bounds-----
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+10, W-20, 28)
 	  	AddeventArray[#AddeventArray].id="bounds"
 	  	AddeventArray[#AddeventArray].anchorY=0
 	  	AddeventArray[#AddeventArray].alpha=0.01
-	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+18
 	  	callGroup:insert(AddeventArray[#AddeventArray])
 
 
-
-	  	
 	  	Out_bound = widget.newSwitch {
 	  		left = 25,
 	  		top = 180,
@@ -2747,7 +2910,7 @@ local function addevent_scrollListener(event )
 	  	Out_bound.anchorX = 0
 	  	Out_bound.y = AddeventArray[#AddeventArray].y+10
 
-	  	Out_bound_txt = display.newText( callGroup,AddeventPage.Out_bound,0,0,native.systemFont,14 )
+	  	Out_bound_txt = display.newText( callGroup,AddeventPage.Out_bound,0,0,"Roboto-Regular",14  )
 	  	Out_bound_txt.x = Out_bound.x+24;Out_bound_txt.y = Out_bound.y
 	  	Out_bound_txt.anchorX = 0
 	  	Out_bound_txt:setFillColor( 0 )
@@ -2768,7 +2931,7 @@ local function addevent_scrollListener(event )
 	  	Inbound.anchorX = 0
 	  	Inbound.y = AddeventArray[#AddeventArray].y+10
 
-	  	In_bound_txt = display.newText( callGroup,AddeventPage.In_bound,0,0,native.systemFont,14 )
+	  	In_bound_txt = display.newText( callGroup,AddeventPage.In_bound,0,0,"Roboto-Regular",14  )
 	  	In_bound_txt.x = Inbound.x+24;In_bound_txt.y = Inbound.y
 	  	In_bound_txt.anchorX = 0
 	  	In_bound_txt:setFillColor( 0 )
@@ -2788,7 +2951,7 @@ local function addevent_scrollListener(event )
 	  	Conference.anchorX = 0
 	  	Conference.y = AddeventArray[#AddeventArray].y+10
 
-	  	Conference_txt = display.newText( callGroup,AddeventPage.Conference,0,0,native.systemFont,14 )
+	  	Conference_txt = display.newText( callGroup,AddeventPage.Conference,0,0,"Roboto-Regular",14  )
 	  	Conference_txt.x = Conference.x+24;Conference_txt.y = Conference.y
 	  	Conference_txt.anchorX = 0
 	  	Conference_txt:setFillColor( 0 )
@@ -2802,7 +2965,7 @@ local function addevent_scrollListener(event )
 
 	  	callGroup.isVisible = false
 	  	whereGroup.isVisible = true
-	  	belowGroup.y=-W/2+85
+	  	belowGroup.y=-W/2+75
 	  end
 
 
@@ -2846,68 +3009,94 @@ function scene:create( event )
 
 end
 
-Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
-Background.x=W/2;Background.y=H/2
-Background.id="bg"
+-- Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+-- Background.x=W/2;Background.y=H/2
+-- Background.id="bg"
 
-tabBar = display.newRect(sceneGroup,W/2,0,W,40)
-tabBar.y=tabBar.contentHeight/2
-tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
+-- tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+-- tabBar.y=tabBar.contentHeight/2
+-- tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
-menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
-menuBtn.anchorX=0
-menuBtn.x=10;menuBtn.y=20;
+-- menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
+-- menuBtn.anchorX=0
+-- menuBtn.x=10;menuBtn.y=20;
 
-BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-BgText.anchorX=0
+-- BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
+-- BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
+-- BgText.anchorX=0
 
-titleBar = display.newRect(sceneGroup,W/2,0,W,30)
-titleBar.y=tabBar.y+tabBar.contentHeight/2
-titleBar.anchorY=0
-titleBar:setFillColor(Utils.convertHexToRGB(color.tabbar))
+-- titleBar = display.newRect(sceneGroup,W/2,0,W,30)
+-- titleBar.y=tabBar.y+tabBar.contentHeight/2
+-- titleBar.anchorY=0
+-- titleBar:setFillColor(Utils.convertHexToRGB(color.tabbar))
 
-titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
-titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+10
-titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
-titleBar_icon.anchorY=0
-titleBar_icon.id="back"
+-- titleBar_icon = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",15/2,30/2)
+-- titleBar_icon.x=titleBar.x-titleBar.contentWidth/2+10
+-- titleBar_icon.y=titleBar.y+titleBar.contentHeight/2-titleBar_icon.contentWidth
+-- titleBar_icon.anchorY=0
+-- titleBar_icon.id="back"
 
-titleBar_text = display.newText(sceneGroup,AddeventPage.New_Event,0,0,native.systemFont,0)
-titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
-titleBar_text.y=titleBar.y+titleBar.contentHeight/2-titleBar_text.contentHeight/2
-titleBar_text.anchorX=0;titleBar_text.anchorY=0
-titleBar_text.id = "back"
-Utils.CssforTextView(titleBar_text,sp_subHeader)
-MainGroup:insert(sceneGroup)
+-- titleBar_text = display.newText(sceneGroup,AddeventPage.New_Event,0,0,native.systemFont,0)
+-- titleBar_text.x=titleBar_icon.x+titleBar_icon.contentWidth+5
+-- titleBar_text.y=titleBar.y+titleBar.contentHeight/2-titleBar_text.contentHeight/2
+-- titleBar_text.anchorX=0;titleBar_text.anchorY=0
+-- titleBar_text.id = "back"
+-- Utils.CssforTextView(titleBar_text,sp_subHeader)
+-- MainGroup:insert(sceneGroup)
 
 
-saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 60, 20 )
-saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
-saveBtn_BG.id = "save"
+-- saveBtn_BG = display.newRect( sceneGroup, titleBar.x+titleBar.contentWidth/2-40, titleBar.y+titleBar.contentHeight/2, 60, 20 )
+-- saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
+-- saveBtn_BG.id = "save"
 
-saveBtn = display.newText( sceneGroup, AddeventPage.Save ,saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
+-- saveBtn = display.newText( sceneGroup, AddeventPage.Save ,saveBtn_BG.x,saveBtn_BG.y,native.systemFont,14 )
 
-if isUpdate == true then
-	saveBtn.text = AddeventPage.Update
-	status="details"
-end
 
-scrollView = widget.newScrollView
-{
-	top = RecentTab_Topvalue,
-	left = 0,
-	width = W,
-	height =H-RecentTab_Topvalue,
-	hideBackground = true,
-	isBounceEnabled=false,
-	horizontalScrollDisabled = true,
-	bottomPadding = 265,
-	friction = .4,
-	listener = addevent_scrollListener,
-}
+		Background = display.newRect(sceneGroup,0,0,W,H)
+		Background.x=W/2;Background.y=H/2
+		Background:setFillColor(1,1,1)
 
-sceneGroup:insert( scrollView )
+		tabBar = display.newImageRect(sceneGroup,"res/assert/mub_banner.jpg",W,110)
+		tabBar.y=tabBar.contentHeight/2
+		tabBar.x=W/2
+
+		menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
+		menuBtn.anchorX=0
+		menuBtn.x=16;menuBtn.y=20;
+
+		menuTouch_s = display.newRect( sceneGroup, 0, menuBtn.y, 135, 50 )
+		menuTouch_s.anchorX=0
+		menuTouch_s.alpha=0.01
+
+		BackIcon = display.newImageRect(sceneGroup,"res/assert/back_icon.png",36/2,30/2)
+		BackIcon.x=16;BackIcon.y=tabBar.y+tabBar.contentHeight/2-25
+		BackIcon.anchorX=0
+		BackIcon.id="back"
+
+		titleBar_text = display.newText(sceneGroup,AddeventPage.New_Event,0,0,"Roboto-Regular",18.5)
+		titleBar_text.anchorX = 0
+		titleBar_text.x=50;titleBar_text.y = tabBar.y+tabBar.contentHeight/2-25
+		titleBar_text:setFillColor(1,1,1)
+		titleBar_text.id = "back"
+
+		MainGroup:insert(sceneGroup)
+
+		scrollView = widget.newScrollView
+		{
+			top = RecentTab_Topvalue+55,
+			left = 0,
+			width = W,
+			height =H-RecentTab_Topvalue-140,
+			hideBackground = true,
+			isBounceEnabled=false,
+			horizontalScrollDisabled = true,
+			bottomPadding = 360,
+			friction = .4,
+			listener = addevent_scrollListener,
+		}
+
+		sceneGroup:insert( scrollView )
+
 
 		--Form Design---
 
@@ -2918,32 +3107,58 @@ sceneGroup:insert( scrollView )
 		AddeventGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
-		SelectEventLbl = display.newText(AddeventGroup,AddeventPage.Event_Type,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		SelectEventLbl = display.newText(AddeventGroup,AddeventPage.Event_Type,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,"Roboto-Regular",14)
 		SelectEventLbl.anchorX=0
 		SelectEventLbl.id="eventtype"
-		SelectEventLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+		SelectEventLbl.font=native.newFont("Roboto-Regular",14)
+		SelectEventLbl:setFillColor( Utils.convertHexToRGB(color.Gray))
 		SelectEventLbl.x=leftPadding
-		SelectEventLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+		SelectEventLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2 - 7
 
-		SelectEvent = display.newText(AddeventGroup,AddeventPage.EventnameArray[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		SelectEvent = display.newText(AddeventGroup,AddeventPage.EventnameArray[1],AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,"Roboto-Regular",14 )
 		SelectEvent.alpha=0.7
 		SelectEvent.anchorX=0
-		SelectEvent:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-		SelectEvent.x=W/2
-		SelectEvent.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+		SelectEvent.font=native.newFont("Roboto-Regular",14)
+		SelectEvent:setFillColor( Utils.convertHexToRGB(color.Black))
+		SelectEvent.x=W/2-45
+		SelectEvent.y=SelectEventLbl.y
 
 		SelectEvent_icon = display.newImageRect(AddeventGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 		SelectEvent_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 		SelectEvent_icon.y=SelectEvent.y
+		SelectEvent_icon:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 
-		BottomImage = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-		BottomImage.x=W/2;BottomImage.y=SelectEvent.y+SelectEvent.contentHeight-5
+		BottomImage = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomImage.y=SelectEventLbl.y+SelectEventLbl.contentHeight+7
+	    BottomImage:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomImage.strokeWidth = 1
+	    AddeventGroup:insert(BottomImage)
 
 		scrollView:insert( AddeventGroup)
+
+
+				---------------------submit button------------------------------------
+		saveBtn_BG = display.newImageRect("res/assert/white_btnbg.png",350/1.8,80/2)
+		saveBtn_BG.x=W/2;saveBtn_BG.y = H-30
+		saveBtn_BG:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
+		sceneGroup:insert(saveBtn_BG)
+		saveBtn_BG.id="save"
+
+		saveBtn = display.newText( sceneGroup,AddeventPage.Save,0,0,"Roboto-Regular",16)
+		saveBtn.y=saveBtn_BG.y
+		saveBtn.x = saveBtn_BG.x
+
+		if isUpdate == true then
+			saveBtn.text = AddeventPage.Update
+			status="details"
+		end
 
 		MainGroup:insert(sceneGroup)
 
 	end
+
+
+
 
 	function scene:show( event )
 
@@ -2957,50 +3172,46 @@ sceneGroup:insert( scrollView )
 
 			eventTime = event.params.details
 
+			if event.params.calendarId ~= nil then
 
+				CalendarId = event.params.calendarId
 
+				CalendarName = event.params.calendarName
 
-	--	print("eventtime value ", eventTime)
-
-	if event.params.calendarId ~= nil then
-
-	CalendarId = event.params.calendarId
-
-	CalendarName = event.params.calendarName
-
-
-end
-
-
-
+			end
 
 
 
 	----What----
 
-	AddeventArray[#AddeventArray+1] = display.newRect( W/2, 0, W-20, 28)
-	AddeventArray[#AddeventArray].id="what"
-	AddeventArray[#AddeventArray].anchorY=0
-	AddeventArray[#AddeventArray].alpha=0.01
-	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
-	AddeventGroup:insert(AddeventArray[#AddeventArray])
+		AddeventArray[#AddeventArray+1] = display.newRect( W/2, 0, W-20, 28)
+		AddeventArray[#AddeventArray].id="what"
+		AddeventArray[#AddeventArray].anchorY=0
+		AddeventArray[#AddeventArray].alpha=0.01
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		AddeventGroup:insert(AddeventArray[#AddeventArray])
 
-	What = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
-	What.id="What"
-	What.size=14
-	What.anchorY=0
-	What.hasBackground = false
-	What:setReturnKey( "next" )
-	What.placeholder=AddeventPage.What
-	What:addEventListener( "userInput", usertextField )
+		What = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
+		What.id="What"
+		What.size=14
+		What.y = AddeventArray[#AddeventArray].y
+		What.font=native.newFont("Roboto-Regular",14)
+		What:setTextColor(Utils.convertHexToRGB(color.LtyGray))
+		What.anchorY=0
+		What.hasBackground = false
+		What:setReturnKey( "next" )
+		What.placeholder=AddeventPage.What
+		What:addEventListener( "userInput", usertextField )
 
+		What_bg = display.newLine(W/2-150, 15, W/2+150, 15)
+		What_bg.y=What.y+What.contentHeight+7
+	    What_bg:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    What_bg.strokeWidth = 1
+	    AddeventGroup:insert(What_bg)
 
-	BottomImageWhat = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-	BottomImageWhat.x=W/2;BottomImageWhat.y= AddeventArray[#AddeventArray].y + AddeventArray[#AddeventArray].contentHeight-5
+		AddeventGroup:insert(What)
 
-	AddeventGroup:insert(What)
-
-	  	----------
+    ----------
 
 	  	ObjectCreation(sceneGroup)
 
@@ -3018,25 +3229,42 @@ end
 		belowGroup:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
+
 		Description = native.newTextBox(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth, AddeventArray[#AddeventArray].contentHeight)
 		Description.id="description"
 		Description.size=14
 		Description.anchorY=0
-		Description.y =AddeventArray[#AddeventArray].y 
+		Description.y =AddeventArray[#AddeventArray].y
+	  	Description.font=native.newFont("Roboto-Regular",14)
+		Description:setTextColor(Utils.convertHexToRGB(color.LtyGray))
 		Description.hasBackground = false
 		Description.placeholder=AddeventPage.Description
 		Description.isEditable = true
 		Description.isVisible = false
+		Description:setReturnKey( "next" )
 		belowGroup:insert(Description)
 		Description:addEventListener( "userInput", usertextField )
 
-		Description_lbl = display.newText(AddeventPage.Description,0,0,Description.contentWidth,Description.contentHeight,native.systemFont,14)
+
+		Description_bg = display.newLine(belowGroup, W/2-150, AddeventArray[#AddeventArray].y+90, W/2+150, AddeventArray[#AddeventArray].y+90)
+		Description_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+		Description_bg.strokeWidth = 1
+		Description_bg.y=Description.y+Description.contentHeight+2
+		Description_bg.id="description"
+		belowGroup:insert(Description_bg)
+
+
+		Description_lbl = display.newText(AddeventPage.Description,0,0,Description.contentWidth,Description.contentHeight,"Roboto-Regular",14 )
 		Description_lbl.x=Description.x+5
 		Description_lbl.y=Description.y
 		Description_lbl.anchorY=0
+		Description_lbl.font=native.newFont("Roboto-Regular",14)
+		Description_lbl:setTextColor(Utils.convertHexToRGB(color.Black))
 		Description_lbl.alpha=0.5
 		belowGroup:insert(Description_lbl)
 		Description_lbl:setFillColor( 0.5 )
+
+
 
 
 
@@ -3044,15 +3272,14 @@ end
 
 	  	--AppintmentWith---
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+10, W-20, 28)
 	  	AddeventArray[#AddeventArray].id="appintmentwith"
 	  	AddeventArray[#AddeventArray].anchorY=0
 	  	AddeventArray[#AddeventArray].alpha=0.01
-	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+16
 	  	belowGroup:insert(AddeventArray[#AddeventArray])
 
 
-	  	
 	  	AppintmentWith = native.newTextField(0, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-30, AddeventArray[#AddeventArray].contentHeight)
 	  	AppintmentWith.id="appintmentwith"
 	  	AppintmentWith.size=14
@@ -3060,16 +3287,23 @@ end
 	  	AppintmentWith.anchorX=0
 	  	AppintmentWith.x=leftPadding
 	  	AppintmentWith.y = AddeventArray[#AddeventArray].y
+	  	AppintmentWith.font=native.newFont("Roboto-Regular",14)
+		AppintmentWith:setTextColor(Utils.convertHexToRGB(color.Black))
 	  	AppintmentWith.hasBackground = false
+	  	AppintmentWith.isVisible = false
 	  	AppintmentWith:setReturnKey( "next" )
 	  	AppintmentWith.placeholder=AddeventPage.AppointmentWithPlace
 	  	belowGroup:insert(AppintmentWith)
 	  	AppintmentWith.contactinfo=""
 	  	AppintmentWith:addEventListener( "userInput", searchfunction )
 
-	  	BottomImageAppintmentWith = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-	  	BottomImageAppintmentWith.x=W/2;BottomImageAppintmentWith.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-	  	belowGroup:insert(BottomImageAppintmentWith)
+
+	  	BottomImageAppintmentWith = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomImageAppintmentWith.y=AppintmentWith.y+AppintmentWith.contentHeight+7
+	    BottomImageAppintmentWith:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomImageAppintmentWith.strokeWidth = 1
+	    belowGroup:insert(BottomImageAppintmentWith)
+
 	  	
 
 	  	--[[ --stage 2
@@ -3083,16 +3317,14 @@ end
 
 	  	--Addinvitees---
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+10, W-20, 28)
 	  	AddeventArray[#AddeventArray].id="Addinvitees"
 	  	AddeventArray[#AddeventArray].anchorY=0
 	  	AppintmentWith:addEventListener( "userInput", searchfunction )
 	  	AddeventArray[#AddeventArray].alpha=0.01
-	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+16
 	  	belowGroup:insert(AddeventArray[#AddeventArray])
 
-
-	  	
 
 	  	Addinvitees = native.newTextField(0, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-30, AddeventArray[#AddeventArray].contentHeight)
 	  	Addinvitees.id="addinvitees"
@@ -3100,16 +3332,25 @@ end
 	  	Addinvitees.anchorY=0
 	  	Addinvitees.anchorX=0
 	  	Addinvitees.x=leftPadding
+	  	Addinvitees.y = AddeventArray[#AddeventArray].y
 	  	Addinvitees.hasBackground = false
+	  	Addinvitees.isVisible = false
+	  	Addinvitees.font=native.newFont("Roboto-Regular",14)
+		Addinvitees:setTextColor(Utils.convertHexToRGB(color.Black))
 	  	Addinvitees.contactinfo=""
 	  	Addinvitees:setReturnKey( "next" )
 	  	Addinvitees.placeholder=AddeventPage.Add_Invitees
 	  	taskGroup:insert(Addinvitees)
 	  	Addinvitees:addEventListener( "userInput", searchfunction )
 
-	  	BottomImageAddinvitees = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-	  	BottomImageAddinvitees.x=W/2;BottomImageAddinvitees.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-	  	taskGroup:insert(BottomImageAddinvitees)
+
+	  	BottomImageAddinvitees = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomImageAddinvitees.y=Addinvitees.y+Addinvitees.contentHeight+7
+	    BottomImageAddinvitees:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomImageAddinvitees.strokeWidth = 1
+	    taskGroup:insert(BottomImageAddinvitees)
+
+	   sceneGroup:insert( taskGroup )
 
 
 	  	
@@ -3123,11 +3364,11 @@ end
 
 	  	--Purpose---
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+10, W-20, 28)
 	  	AddeventArray[#AddeventArray].id="purpose"
 	  	AddeventArray[#AddeventArray].anchorY=0
 	  	AddeventArray[#AddeventArray].alpha=0.01
-	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+13
 	  	taskGroup:insert(AddeventArray[#AddeventArray])
 	  	AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 	  	AddeventArray[#AddeventArray].count = #AddeventArray
@@ -3136,8 +3377,9 @@ end
 	  	Purposetxt = display.newText(taskGroup,AddeventPage.Purpose,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 	  	Purposetxt.anchorX=0
 	  	Purposetxt.value=0
+	  	Purposetxt.font=native.newFont("Roboto-Regular",14)
+		Purposetxt:setTextColor(Utils.convertHexToRGB(color.Gray))
 	  	Purposetxt.count = #AddeventArray
-	  	Purposetxt:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 	  	Purposetxt.x=leftPadding+5
 	  	Purposetxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
@@ -3147,31 +3389,33 @@ end
 	  	--PurposeLbl.value=0
 	  	PurposeLbl.id="purpose"
 	  	PurposeLbl.count = #AddeventArray
-	  	PurposeLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+	  	PurposeLbl.font=native.newFont("Roboto-Regular",14)
+		PurposeLbl:setTextColor(Utils.convertHexToRGB(color.Black))
 	  	PurposeLbl.x=W/2
 	  	PurposeLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 	  	
-
 	  	Purpose_icon = display.newImageRect(taskGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	Purpose_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Purpose_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+	  	Purpose_icon:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 
-	  	BottomImagePurpose = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-	  	BottomImagePurpose.x=W/2;BottomImagePurpose.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-	  	taskGroup:insert(BottomImagePurpose)
-
+	  	BottomImagePurpose = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomImagePurpose.y=Purposetxt.y+Purposetxt.contentHeight+7
+	    BottomImagePurpose:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomImagePurpose.strokeWidth = 1
+	    taskGroup:insert(BottomImagePurpose)
 
 	  	--------
 
 	  	--Other---
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+10, W-20, 28)
 	  	AddeventArray[#AddeventArray].id = "Other"
 	  	AddeventArray[#AddeventArray].anchorY = 0
 	  	AppintmentWith:addEventListener( "userInput", searchfunction )
 	  	AddeventArray[#AddeventArray].alpha = 0.01
-	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+14
 	  	taskGroup:insert(AddeventArray[#AddeventArray])
 
 
@@ -3181,7 +3425,10 @@ end
 	  	Other.anchorY=0
 	  	Other.anchorX=0
 	  	Other.x=leftPadding
+	  	Other.y = AddeventArray[#AddeventArray].y + 7
 	  	Other.hasBackground = false
+	  	Other.font=native.newFont("Roboto-Regular",14)
+		Other:setTextColor(Utils.convertHexToRGB(color.Black))
 	  	Other.contactinfo=""
 	  	Other:setReturnKey( "next" )
 	  	Other.placeholder=AddeventPage.Other
@@ -3189,9 +3436,11 @@ end
 	  	Other.count = #AddeventArray
 	  	Other:addEventListener( "userInput", usertextField )
 
-	  	BottomOther = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-	  	BottomOther.x=W/2;BottomOther.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-	  	taskGroup:insert(BottomOther)
+	  	BottomOther = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomOther.y=Other.y+Other.contentHeight+7
+	    BottomOther:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomOther.strokeWidth = 1
+	    taskGroup:insert(BottomOther)
 
 	  	AddeventArray[#AddeventArray].isVisible = false
 	  	Other.isVisible = false
@@ -3206,30 +3455,33 @@ end
 	  	--Priority---
 
 
-		AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+		AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+10, W-20, 28)
 		AddeventArray[#AddeventArray].id="priority"
 		AddeventArray[#AddeventArray].anchorY=0
 		AddeventArray[#AddeventArray].value = 0
 		AddeventArray[#AddeventArray].alpha=0.01
-		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+		AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+14
 		taskGroupExt:insert(AddeventArray[#AddeventArray])
 		AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
-		Prioritytxt = display.newText(taskGroupExt,AddeventPage.Priority,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Prioritytxt = display.newText(taskGroupExt,AddeventPage.Priority,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,"Roboto-Regular",14)
 		Prioritytxt.anchorX=0
 		Prioritytxt.value=0
 		Prioritytxt.count = #AddeventArray
-		Prioritytxt:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+		Prioritytxt.font=native.newFont("Roboto-Regular",14)
+		Prioritytxt:setTextColor(Utils.convertHexToRGB(color.Gray))
+		Prioritytxt.y = AddeventArray[#AddeventArray].y+7
 		Prioritytxt.x=leftPadding+5
 		Prioritytxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 
-		PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1].value,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1].value,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,"Roboto-Regular",14 )
 		PriorityLbl.anchorX=0
 		--PriorityLbl.value=1
 		PriorityLbl.id="priority"
+	  	PriorityLbl.font=native.newFont("Roboto-Regular",14)
+		PriorityLbl:setTextColor(Utils.convertHexToRGB(color.Black))
 		PriorityLbl.count = #AddeventArray
-		PriorityLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		PriorityLbl.x=W/2
 		PriorityLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
@@ -3237,10 +3489,13 @@ end
 	  	Priority_icon = display.newImageRect(taskGroupExt,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	Priority_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	Priority_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+	  	Priority_icon:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 
-	  	BottomImagePriority = display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-	  	BottomImagePriority.x=W/2;BottomImagePriority.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-	  	taskGroupExt:insert(BottomImagePriority)
+	  	BottomImagePriority = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomImagePriority.y=Prioritytxt.y+Prioritytxt.contentHeight+7
+	    BottomImagePriority:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomImagePriority.strokeWidth = 1
+	    taskGroupExt:insert(BottomImagePriority)
 
 	  	--------
 
@@ -3249,26 +3504,29 @@ end
 
 	  	--Add Attachment---
 
-	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, titleBar.y+titleBar.height+10, W-20, 28)
+	  	AddeventArray[#AddeventArray+1] = display.newRect( W/2, tabBar.y+tabBar.height+10, W-20, 28)
 	  	AddeventArray[#AddeventArray].id="addattachment"
 	  	AddeventArray[#AddeventArray].anchorY=0
 	  	AddeventArray[#AddeventArray].alpha=0.01
-	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+10
+	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight+14
 	  	taskGroupExt:insert(AddeventArray[#AddeventArray])
 	  	AddeventArray[#AddeventArray]:addEventListener( "touch", TouchAction )
 
 
-	  	AddAttachmentLbl = display.newText(taskGroupExt,AddeventPage.Add_Attachment,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+	  	AddAttachmentLbl = display.newText(taskGroupExt,AddeventPage.Add_Attachment,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,"Roboto-Regular",14 )
 	  	AddAttachmentLbl.anchorX=0
-	  	AddAttachmentLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
+	  	AddAttachmentLbl.font=native.newFont("Roboto-Regular",14)
+		AddAttachmentLbl:setTextColor(Utils.convertHexToRGB(color.Black))
 	  	AddAttachmentLbl.x=leftPadding+5
 	  	AddAttachmentLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
 
-	  	AddAttachmentPhotoName = display.newText(taskGroupExt,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+	  	AddAttachmentPhotoName = display.newText(taskGroupExt,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,"Roboto-Regular",14 )
 	  	AddAttachmentPhotoName.anchorX=0
 	  	AddAttachmentPhotoName:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 	  	AddAttachmentPhotoName.x=leftPadding+5
+	  	AddAttachmentPhotoName.font=native.newFont("Roboto-Regular",14)
+		AddAttachmentPhotoName:setTextColor(Utils.convertHexToRGB(color.Black))
 	  	AddAttachmentPhotoName.isVisible = false
 	  	AddAttachmentPhotoName.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 	  	AddAttachmentPhotoName:addEventListener( "touch", photonametouch )
@@ -3278,6 +3536,7 @@ end
 	  	AddAttachment_icon = display.newImageRect(taskGroupExt,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 	  	AddAttachment_icon.x=AddeventArray[#AddeventArray].x+AddeventArray[#AddeventArray].contentWidth/2-15
 	  	AddAttachment_icon.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+	  	AddAttachment_icon:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 
 	  	AddAttachment_close =  display.newImageRect(taskGroupExt,"res/assert/icon-close.png",20,20)
 	  	AddAttachment_close.id = "close image"
@@ -3286,9 +3545,13 @@ end
 	  	AddAttachment_close.isVisible = false
 	  	AddAttachment_close:addEventListener( "touch", photonametouch )
 
-	  	BottomImageAddAttachment= display.newImageRect(AddeventGroup,"res/assert/line-large.png",W-20,5)
-	  	BottomImageAddAttachment.x=W/2;BottomImageAddAttachment.y= AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight-5
-	  	taskGroupExt:insert(BottomImageAddAttachment)
+
+	  	BottomImageAddAttachment = display.newLine(W/2-150, 15, W/2+150, 15)
+		BottomImageAddAttachment.y=AddAttachmentPhotoName.y+AddAttachmentPhotoName.contentHeight+7
+	    BottomImageAddAttachment:setStrokeColor( Utils.convertHexToRGB(color.Gray) )
+	    BottomImageAddAttachment.strokeWidth = 1
+	    taskGroupExt:insert(BottomImageAddAttachment)
+
 
 	  	--------
 
@@ -3426,7 +3689,7 @@ end
 	  	appointmentGroup:insert(Ap_phone)
 
 
-	  	selectcontactGroup_bg = display.newRect( W/2, titleBar.y+titleBar.height+10, W-100,30)
+	  	selectcontactGroup_bg = display.newRect( W/2, tabBar.y+tabBar.height+10, W-100,30)
 	  	selectcontactGroup_bg.anchorY=0
 	  	selectcontactGroup_bg.strokeWidth=1
 	  	selectcontactGroup_bg:setStrokeColor(Utils.convertHexToRGB(color.primaryColor))
@@ -3437,7 +3700,7 @@ end
 		selectcontactGroup_bg:addEventListener( "touch", Ap_scrollAction )
 
 
-		Ap_selectcontactLbl = display.newText(appointmentGroup,AddeventPage.Select_Contact_Group,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Ap_selectcontactLbl = display.newText(appointmentGroup,AddeventPage.Select_Contact_Group,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,"Roboto-Regular",14  )
 		Ap_selectcontactLbl.anchorX=0
 		Ap_selectcontactLbl.value=0
 		Ap_selectcontactLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
@@ -3449,9 +3712,10 @@ end
 		Ap_selectcontactLbl_icon = display.newImageRect(appointmentGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 		Ap_selectcontactLbl_icon.x=selectcontactGroup_bg.x+selectcontactGroup_bg.contentWidth/2-15
 		Ap_selectcontactLbl_icon.y=selectcontactGroup_bg.y+selectcontactGroup_bg.contentHeight/2
+		Ap_selectcontactLbl_icon:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 
 
-		contactGroup_bg = display.newRect( W/2, titleBar.y+titleBar.height+10, W-100,30)
+		contactGroup_bg = display.newRect( W/2, tabBar.y+tabBar.height+10, W-100,30)
 		contactGroup_bg.anchorY=0
 		contactGroup_bg.strokeWidth=1
 		contactGroup_bg:setStrokeColor(Utils.convertHexToRGB(color.primaryColor))
@@ -3462,18 +3726,19 @@ end
 		contactGroup_bg:addEventListener( "touch", Ap_scrollAction )
 
 
-		Ap_contactLbl = display.newText(appointmentGroup,AddeventPage.Contact,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
+		Ap_contactLbl = display.newText(appointmentGroup,AddeventPage.Contact,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,"Roboto-Regular",14  )
 		Ap_contactLbl.anchorX=0
 		Ap_contactLbl.value=0
 		Ap_contactLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
 		Ap_contactLbl.x=contactGroup_bg.x-contactGroup_bg.contentWidth/2+5
 		Ap_contactLbl.y=contactGroup_bg.y+contactGroup_bg.contentHeight/2
 
-		
 
 		Ap_contactLbl_icon = display.newImageRect(appointmentGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
 		Ap_contactLbl_icon.x=contactGroup_bg.x+contactGroup_bg.contentWidth/2-15
 		Ap_contactLbl_icon.y=contactGroup_bg.y+contactGroup_bg.contentHeight/2
+		Ap_contactLbl_icon:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+
 
 		Ap_saveBtn = display.newRect(appointmentGroup,0,0,80,30)
 		Ap_saveBtn.x = W/2-W/3
@@ -3568,6 +3833,17 @@ end
 
 	  			allday_onOffSwitch:setState( { isOn=true, isAnimated=true, onComplete=onSwitchPress } )
 
+	  			-- print("SWITCH ON")
+
+			   --  	if UpdateValue.TicklerType == 2 and UpdateValue.enddate ~= nil or UpdateValue.enddate ~= "" then
+
+			   --  	   print("ETERTERTERTRT "..UpdateValue.enddate)
+
+		    --            timeZone.y=BottomImageWhen.y + 12
+		    --            Phone.y = timeZone.y + timeZone.contentHeight+7
+		    --            BottomImagePhone.y = Phone.y + Phone.contentHeight+7
+
+		    --         end 
 	  		end
 
 	  		if UpdateValue.startdate ~= nil then
@@ -3578,7 +3854,6 @@ end
 	  			Event_from_date.text = os.date( "%m/%d/%Y" ,time )
 	  			Event_from_time.text = os.date( "%I:%M "..TimeZonevalue ,time )
 
-	  		
 	  		end
 
 
@@ -3616,34 +3891,37 @@ end
 
 
 
-	  		if UpdateValue.enddate ~= nil then
+	  	if UpdateValue.enddate ~= nil or UpdateValue.enddate ~= "" then
 
-	  		print( "Start date : "..UpdateValue.startdate.."\n End date : "..UpdateValue.enddate )
+			  		print( "Start date : "..UpdateValue.startdate.."\n End date : "..UpdateValue.enddate )
 
-	  		local endtime = Utils.makeTimeStamp(UpdateValue.enddate)
-	  		local starttime = Utils.makeTimeStamp(UpdateValue.startdate)
+			  		local endtime = Utils.makeTimeStamp(UpdateValue.enddate)
+			  		local starttime = Utils.makeTimeStamp(UpdateValue.startdate)
 
-	  		local time = endtime-starttime
+			  		local time = endtime-starttime
 
-	  		if UpdateValue.TicklerType == 2 then
+			  		if UpdateValue.TicklerType == 2 then
 
-	  			local value = wrap_time(time)
-	  			Event_to_date.text = value.hours.."H"
-	  			Event_to_time.text = value.minutes.."M"
+			  			local value = wrap_time(time)
+			  			Event_to_date.text = value.hours.."H"
+			  			Event_to_time.text = value.minutes.."M"
 
+			  			Event_to_date.value = value.hours
+						Event_to_time.value = value.minutes
 
-	  			Event_to_date.value = value.hours
-				Event_to_time.value = value.minutes
+			  		else
 
-	  		else
+			  			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , endtime ))
+			  			Event_to_date.text = os.date( "%m/%d/%Y" ,endtime )
+			  			Event_to_time.text =  os.date( "%I:%M "..TimeZonevalue ,endtime )
 
-	  			local TimeZonevalue = Utils.GetWeek(os.date( "%p" , endtime ))
-	  			Event_to_date.text = os.date( "%m/%d/%Y" ,endtime )
-	  			Event_to_time.text =  os.date( "%I:%M "..TimeZonevalue ,endtime )
+			  		end
 
-	  		end
 	  		
 	  	end
+
+
+
 
 	  	if UpdateValue.TimeZone ~= nil then
 
@@ -3970,10 +4248,11 @@ end
 	appointmentGroup.isVisible = false
 	
 
-	titleBar_icon:addEventListener("touch",TouchAction)
+	BackIcon:addEventListener("touch",TouchAction)
 	titleBar_text:addEventListener("touch",TouchAction)
 	Background:addEventListener( "touch", TouchAction )
 	menuBtn:addEventListener("touch",menuTouch)
+	menuTouch_s:addEventListener("touch",menuTouch)
 
 	Event_from_timebg:addEventListener("touch",TouchAction)
 	Event_to_timebg:addEventListener("touch",TouchAction)
@@ -4022,6 +4301,8 @@ function scene:hide( event )
 			event.parent:resumeGame(status)
 
 		end
+
+		menuTouch_s:removeEventListener("touch",menuTouch)
 
 		Runtime:removeEventListener( "key", onKeyEventADDevent )
 

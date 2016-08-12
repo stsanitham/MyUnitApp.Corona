@@ -329,7 +329,7 @@ function scene:show( event )
 			profileName = display.newText(Director_Name,0,0,245,0,"Roboto-Regular",17.5)
 			profileName.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+18
 			profileName.anchorX=0
-			profileName.y=profileEmail.y+profileEmail.contentHeight-profileName.contentHeight-15
+			profileName.y=profileEmail.y+profileEmail.contentHeight-profileName.contentHeight-12
 			Utils.CssforTextView(profileName,sp_Flatmenu_labelName)
 			profileName:setFillColor(1)
 			panel:insert( profileName )
@@ -338,7 +338,7 @@ function scene:show( event )
 
 			profilePic = display.newImageRect("res/assert/usericon.png",65,60)
 			profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+15
-			profilePic.y=profileName.y-profilePic.contentHeight-22
+			profilePic.y=profileName.y-profilePic.contentHeight-18
 			profilePic.anchorY=0
 			profilePic.anchorX=0
 			panel:insert( profilePic )
@@ -359,7 +359,7 @@ function scene:show( event )
 								profilePic = display.newImageRect(img_event.response.filename,system.DocumentsDirectory,80,68)
 								--profilePic.width=65;profilePic.height=65
 								profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+15
-								profilePic.y=profileName.y-profilePic.contentHeight-22
+								profilePic.y=profileName.y-profilePic.contentHeight-18
 								profilePic.anchorY=0
 								profilePic.anchorX=0
 
@@ -376,7 +376,7 @@ function scene:show( event )
 				else
 					profilePic = display.newImageRect("res/assert/usericon.png",65,60)
 					profilePic.x=panel.flapTopBg.x-panel.flapTopBg.contentWidth/2+15
-					profilePic.y=profileName.y-profilePic.contentHeight-22
+					profilePic.y=profileName.y-profilePic.contentHeight-18
 					profilePic.anchorY=0
 					profilePic.anchorX=0
 					panel:insert( profilePic )
@@ -405,7 +405,7 @@ function scene:show( event )
 
 				LogoPic = display.newImageRect("res/assert/logoSymbol.png",105,105)
 				LogoPic.x=profilePic.x + profilePic.contentWidth + 45
-				LogoPic.y=profileName.y-LogoPic.contentHeight + 48
+				LogoPic.y=profileName.y-LogoPic.contentHeight + 52
 				LogoPic:rotate(-45)
 				LogoPic.alpha=0.5
 				LogoPic.anchorY=0

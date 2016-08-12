@@ -1261,7 +1261,6 @@ elseif phase == "did" then
 	
 	Background:addEventListener("touch",touchBg)
 
-
 	backBtn_bg:addEventListener("touch",backAction)
 	backBtn:addEventListener("touch",backAction)
 

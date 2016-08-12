@@ -326,7 +326,7 @@ local function careePath_list( list )
 							Image.x=40;Image.y=background.y+background.contentHeight/2- 21
     						--event.row:insert(img_event.target)
 
-    				local mask = graphics.newMask( "res/assert/circleimg.png" )
+    				local mask = graphics.newMask( "res/assert/masknew.png")
     				Image:setMask( mask )
 
     			else
@@ -439,88 +439,79 @@ local function listPosition_change( event )
 end
 
 
+
+
 function get_Activeteammember(response)
 
-
-	for i=1,#List_array do
-		List_array[i]=nil
-		byNameArray[i]=nil
-	end
-
-
-	List_array=response
-
-	if response ~= nil and #response ~= 0 then
+			for i=1,#List_array do
+				List_array[i]=nil
+				byNameArray[i]=nil
+			end
 
 
-		
-		
---NameArray
+			List_array=response
 
-print("size = "..#List_array)
+			if response ~= nil and #response ~= 0 then
+				
+		--NameArray
 
-for i=1,#List_array do
+				print("size = "..#List_array)
 
-	local list_Name = List_array[i].Last_Name
+					for i=1,#List_array do
 
-	
+						local list_Name = List_array[i].Last_Name
 
-	if List_array[i].First_Name then
+						if List_array[i].First_Name then
 
-		list_Name = List_array[i].First_Name.." "..List_array[i].Last_Name
+							list_Name = List_array[i].First_Name.." "..List_array[i].Last_Name
 
-	end
+						end
 
-	
+								print(list_Name)
 
-	print(list_Name)
+								local temp = {}
 
-	local temp = {}
+								if list_Name:sub(1,1) == " " then
+									list_Name = list_Name:sub( 2,list_Name:len())
+								end
 
-	if list_Name:sub(1,1) == " " then
-		list_Name = list_Name:sub( 2,list_Name:len())
-	end
+								temp.Name = list_Name
+								temp.CarrierProgress = List_array[i].CarrierProgress
+								temp.Image_Path = List_array[i].Image_Path
+								temp.Contact_Id = List_array[i].Contact_Id
+								temp.DisplayPosition = List_array[i].DisplayPosition
 
-	temp.Name = list_Name
-	temp.CarrierProgress = List_array[i].CarrierProgress
-	temp.Image_Path = List_array[i].Image_Path
-	temp.Contact_Id = List_array[i].Contact_Id
-	temp.DisplayPosition = List_array[i].DisplayPosition
+								byNameArray[#byNameArray+1] = temp
 
-	byNameArray[#byNameArray+1] = temp
-
-
-end
+					end
 
 
-if viewValue == "position" then
+					if viewValue == "position" then
 
-	function compare(a,b)
-		return a.DisplayPosition < b.DisplayPosition
-	end
+							function compare(a,b)
+								return a.DisplayPosition < b.DisplayPosition
+							end
 
-	table.sort(byNameArray, compare)
+							table.sort(byNameArray, compare)
 
-	careePath_list(byNameArray)
+							careePath_list(byNameArray)
 
-else
+					else
 
-	
-	
-	function compare(a,b)
-		return a.Name:upper( ) < b.Name:upper( )
-	end
+							function compare(a,b)
+								return a.Name:upper( ) < b.Name:upper( )
+							end
 
-	table.sort(byNameArray, compare)
+							table.sort(byNameArray, compare)
 
-	careePath_list(byNameArray)
+							careePath_list(byNameArray)
 
-end
-else
+					end
+		else
 
-	NoEvent.isVisible=true
+			NoEvent.isVisible=true
 
-end
+		end
 end
 
 
@@ -538,7 +529,6 @@ function scene:create( event )
 	tabBar = display.newImageRect(sceneGroup,"res/assert/mub_banner.jpg",W,110)
 	tabBar.y=tabBar.contentHeight/2
 	tabBar.x=W/2
-	--tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -547,14 +537,6 @@ function scene:create( event )
 	menuTouch_s = display.newRect( sceneGroup, 0, menuBtn.y, 135, 50 )
 	menuTouch_s.anchorX=0
 	menuTouch_s.alpha=0.01
-
-	-- BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-	-- BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-	-- BgText.anchorX=0
-
-	-- title_bg = display.newRect(sceneGroup,0,0,W,30)
-	-- title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-	-- title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
 	title = display.newText(sceneGroup,CareerPath.PageTitle,0,0,"Roboto-Regular",18.5)
 	title.anchorX = 0
@@ -566,7 +548,7 @@ function scene:create( event )
 	changeList_order_icon:setFillColor(1,1,1)
 	changeList_order_icon.anchorY=0
 
-	changeList_order_touch = display.newRect(sceneGroup,changeList_order_icon.x,changeList_order_icon.y+15,35,35)
+	changeList_order_touch = display.newRect(sceneGroup,changeList_order_icon.x,changeList_order_icon.y+15,60,55)
 	changeList_order_touch.alpha=0.01
 	changeList_order_touch:addEventListener("touch",changeListmenuTouch)
 
@@ -575,27 +557,23 @@ function scene:create( event )
 	NoEvent.isVisible=false
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
-	
 
 	careerList_scrollview = widget.newScrollView
 	{
 		top = RecentTab_Topvalue+20,
 		left = 0,
 		width = W,
-		height =H-RecentTab_Topvalue+5-20,
+		height =H-RecentTab_Topvalue+5-25,
 		hideBackground = true,
 		isBounceEnabled=false,
 		horizontalScrollingDisabled = false,
 		verticalScrollingDisabled = false,
-
-	   -- listener = scrollListener
 	}
-
-	--spinner_show()
-
 	sceneGroup:insert(careerList_scrollview)
 
-	--changeMenuGroup
+
+------------------------------------------------------------changeMenuGroup--------------------------------------------------------------------
+
 	listTouch_bg = display.newRect( changeMenuGroup, W/2, H/2, W, H )
 	listTouch_bg.alpha=0.01
 	listTouch_bg.id = "hide"
@@ -684,10 +662,8 @@ function scene:show( event )
 
 		Webservice.GET_ACTIVE_TEAMMEMBERS(get_Activeteammember)
 
-
 		menuBtn:addEventListener("touch",menuTouch)
 		menuTouch_s:addEventListener("touch",menuTouch)
-		--BgText:addEventListener("touch",menuTouch)
 
 		Runtime:addEventListener( "key", onKeyEvent )
 
@@ -696,6 +672,8 @@ function scene:show( event )
 	MainGroup:insert(sceneGroup)
 
 end
+
+
 
 function scene:hide( event )
 
@@ -712,15 +690,12 @@ function scene:hide( event )
 			network.cancel(newtworkArray[i])
 		end
 
-		
-
 
 		for j=1,#careerListArray do 
 			if careerListArray[j] then careerListArray[j]:removeSelf();careerListArray[j] = nil	end
 		end
 
 		menuBtn:removeEventListener("touch",menuTouch)
-		--BgText:removeEventListener("touch",menuTouch)
 
 		Runtime:removeEventListener( "key", onKeyEvent )
 
@@ -729,12 +704,14 @@ function scene:hide( event )
 end
 
 
+
+
 function scene:destroy( event )
 	local sceneGroup = self.view
 
-
-
 end
+
+
 
 
 scene:addEventListener( "create", scene )
