@@ -499,7 +499,7 @@ end
 			end
 
 			background.anchorY = 0
-			background.x=W/2;background.y=tempHeight
+			background.x=W/2;background.y=tempHeight+12
 			background.id=list[i].Contact_Id
 			background.alpha=0.01
 			background.value = list[i]
@@ -507,10 +507,10 @@ end
 			print( "Listy : "..json.encode(list[i]) )
 
 			local Image = display.newImageRect(tempGroup,"res/assert/defalutbroadcast.png",38,33)
-			Image.x=30;Image.y=background.y+background.height/2
+			Image.x=30;Image.y=background.y+background.height/2 - 8.5
 
 			local GroupName_txt = display.newText(tempGroup,list[i].MyUnitBuzzGroupName,0,0,native.systemFont,14)
-			GroupName_txt.x=60;GroupName_txt.y=background.y+background.height/2-2
+			GroupName_txt.x=60;GroupName_txt.y=background.y+background.height/2-12
 			GroupName_txt.anchorX=0
 			Utils.CssforTextView(GroupName_txt,sp_labelName)
 			GroupName_txt:setFillColor(Utils.convertHexToRGB(color.primaryColor))
@@ -527,7 +527,7 @@ end
 
 		   local GroupCreated_time = display.newText(tempGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,native.systemFont,11)
 		   GroupCreated_time.x=background.x+background.contentWidth/2-123
-		   GroupCreated_time.y=background.y+background.height/2+15
+		   GroupCreated_time.y=background.y+background.height/2+13
 		   GroupCreated_time.anchorX=0
 		   Utils.CssforTextView(GroupCreated_time,sp_labelName)
 		   GroupCreated_time:setFillColor(0,0,0,0.6)

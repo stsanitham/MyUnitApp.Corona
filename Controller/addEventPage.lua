@@ -818,6 +818,14 @@ local function onRowTouch(event)
 			   end
 
 			print( "value : "..List.textFiled.value )
+
+
+			if SelectEvent.text:lower( ) == "task" then
+
+        		AppintmentWith.isVisible = true
+
+        	end
+
 			
 			--AddeventArray[PriorityLbl.count]
 			Other.isVisible = false
@@ -1249,6 +1257,7 @@ local function TouchAction( event )
         	    AppintmentWith.isVisible = true
 
         	end
+
 
         	if SelectEvent.text:lower( ) == "call" then
 
@@ -2472,6 +2481,17 @@ local function addevent_scrollListener(event )
 		end
 
 
+		if y > - 285 and SelectEvent.text:lower( ) == "call" then
+
+			AccessCode.isVisible = true
+
+		else
+
+			AccessCode.isVisible = false
+
+		end
+
+
 
 		if y > -225 and (SelectEvent.text:lower( ) == "task") then
 
@@ -2564,14 +2584,10 @@ local function addevent_scrollListener(event )
 
 
 
-		if  y > -30 and (SelectEvent.text:lower( ) == "task") then 
+		-- if (SelectEvent.text:lower( ) == "task") then 
 
-			AppintmentWith.isVisible = false
-
-		elseif  y < -30 and (SelectEvent.text:lower( ) == "task") then
-
-			AppintmentWith.isVisible = true
-		end
+		-- 	AppintmentWith.isVisible = true
+		-- end
 
 
 
@@ -3086,7 +3102,7 @@ end
 			top = RecentTab_Topvalue+55,
 			left = 0,
 			width = W,
-			height =H-RecentTab_Topvalue-140,
+			height =H-RecentTab_Topvalue-115,
 			hideBackground = true,
 			isBounceEnabled=false,
 			horizontalScrollDisabled = true,

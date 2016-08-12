@@ -16,6 +16,7 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 
 local ContactDisplay
+
 for row in db:nrows("SELECT * FROM logindetails WHERE id=1") do
 
 	ContactDisplay = row.ContactDisplay
@@ -36,7 +37,6 @@ local careerList_scrollview
 
 openPage="careerPathPage"
 
-
 local newtworkArray = {}
 
 local NameArray = {}
@@ -55,7 +55,6 @@ local changeMenuGroup = display.newGroup();
 
 local byNameArray = {}
 
-
 local byPositionArray = {}
 --------------------------------------------------
 
@@ -71,6 +70,7 @@ local function onTimer ( event )
 	BackFlag = false
 
 end
+
 
 
 local function onKeyEvent( event )
@@ -139,12 +139,13 @@ local function detailPageFun(event)
 
 	return true
 
-
 end
+
+
+
 
 local function BgTouch(event)
 	
-
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 
@@ -171,8 +172,10 @@ local function BgTouch(event)
 
 	return true
 
-
 end
+
+
+
 local function changeListmenuTouch(event)
 	
 
@@ -326,8 +329,10 @@ local function careePath_list( list )
 							Image.x=40;Image.y=background.y+background.contentHeight/2- 21
     						--event.row:insert(img_event.target)
 
-    				local mask = graphics.newMask( "res/assert/masknew.png")
+    				local mask = graphics.newMask( "res/assert/mask1.png")
     				Image:setMask( mask )
+    				Image.maskX=0.1
+    				Image.maskY=0.1
 
     			else
 
@@ -708,9 +713,7 @@ end
 
 function scene:destroy( event )
 	local sceneGroup = self.view
-
 end
-
 
 
 

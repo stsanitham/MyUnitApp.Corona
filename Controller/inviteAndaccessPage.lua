@@ -689,7 +689,7 @@ local function ListmenuTouch( event )
 
 			background.anchorY = 0
 			background.anchorX = 0
-			background.x=5;background.y=Initial_Height
+			background.x=5;background.y=Initial_Height+15
 			background.alpha=0.01
 			background.value = feedArray[i]
 			background.id="listBg"
@@ -717,7 +717,7 @@ local function ListmenuTouch( event )
 
 											  Image = display.newImageRect(tempGroup,feedArray[i].MyUnitBuzzRequestAccessId..".png", system.DocumentsDirectory,35,35)
 								--Image.anchorY=0
-								Image.x=30;Image.y=background.y+background.contentHeight/2
+								Image.x=30;Image.y=background.y+background.contentHeight/2 
 							
 							print( "here" )
 
@@ -761,7 +761,7 @@ local function ListmenuTouch( event )
 											
 											Image.width=35;Image.height=35
 											--Image.anchorY=0
-											Image.x=30;Image.y=background.y+background.contentHeight/2
+											Image.x=30;Image.y=background.y+background.contentHeight/2 
 											
 								    		--event.row:insert(img_event.target)
 
@@ -788,7 +788,7 @@ local function ListmenuTouch( event )
 
           Display_Group[#Display_Group+1] = display.newText(tempGroup,"",0,0,W-20,0,native.systemFont,13)
           Display_Group[#Display_Group].anchorX=0;Display_Group[#Display_Group].anchorY=0
-          Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=background.y+10
+          Display_Group[#Display_Group].x=background.x+55;Display_Group[#Display_Group].y=background.y-2
           Display_Group[#Display_Group]:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 
@@ -998,7 +998,7 @@ local function CreateListUpdate( val,list)
 
 
 
-												 Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
+												   Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
 
 
 												else

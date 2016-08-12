@@ -507,7 +507,6 @@ local function careePath_list( list )
 
 	for i=1,#list do
 		
-
 		if tostring(list[i].Contact_Id) ~= tostring(ContactId) then
 
 			careerListArray[#careerListArray+1] = display.newGroup()
@@ -529,6 +528,7 @@ local function careePath_list( list )
 			background.id=list[i].Contact_Id
 			background.alpha=0.01
 			background.value = list[i]
+
 
 			if parentFlag == true then
 				parentFlag=false
