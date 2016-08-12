@@ -415,7 +415,7 @@ local function EditOption( event )
 		display_details[#display_details+1] = display.newText(EventCalender.When,0,0,"Roboto-Regular",14)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
-		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2-70
+		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2-100
 		display_details[#display_details].anchorX=0
 		scrollView:insert( display_details[#display_details] )
 
@@ -437,7 +437,7 @@ local function EditOption( event )
 		display_details[#display_details] = display.newText(value,0,0,220,0,"Roboto-Regular",14)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.Black))
 
-		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2-70
+		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2-100
 		display_details[#display_details].anchorX=0
 		scrollView:insert( display_details[#display_details] )
 		display_details[#display_details].id="when"
@@ -469,9 +469,6 @@ local function EditOption( event )
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="time"
 		scrollView:insert( display_details[#display_details] )
-
-
-
 
 
 
@@ -614,6 +611,8 @@ local function EditOption( event )
 
 		------------------
 
+
+
 		if Details.TicklerType ~= 4  then
 
 		----Purpose-------
@@ -653,6 +652,8 @@ local function EditOption( event )
 	end
 		------------------
 
+
+
 		----Priority------
 
 		if Details.Priority ~= nil then
@@ -686,6 +687,8 @@ local function EditOption( event )
 			
 		end
 		------------------
+
+		
 
 		----Attachment----
 

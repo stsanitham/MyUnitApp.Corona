@@ -496,7 +496,7 @@ local function TabbarTouch( event )
 			end
 
 			background.anchorY = 0
-			background.x=W/2;background.y=tempHeight
+			background.x=W/2;background.y=tempHeight+12
 			background.id=list[i].Contact_Id
 			background.alpha=0.01
 			background.value = list[i]
@@ -505,8 +505,8 @@ local function TabbarTouch( event )
 
 		if list[i].MyUnitBuzzGroupProfilePicture ~= nil and list[i].MyUnitBuzzGroupProfilePicture ~= "" then
 			local Image
-			Image = display.newImageRect(tempGroup,"res/assert/defalutgroup.png",35,33)
-			Image.x=30;Image.y=background.y+background.height/2
+			Image = display.newImageRect(tempGroup,"res/assert/defalutgroup.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2-8.5
 
 			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].MyUnitBuzzGroupProfilePicture,
 				"GET",
@@ -523,7 +523,7 @@ local function TabbarTouch( event )
 
 							Image = display.newImage(tempGroup,img_event.response.filename,system.DocumentsDirectory)
 							Image.width=45;Image.height=38
-							Image.x=30;Image.y=background.y+background.contentHeight/2
+							Image.x=30;Image.y=background.y+background.contentHeight/2-8.5
 	    				    --event.row:insert(img_event.target)
 
 	    				    local mask = graphics.newMask( "res/assert/masknew.png" )
@@ -539,12 +539,14 @@ local function TabbarTouch( event )
 
 	    		end, list[i].MyUnitBuzzGroupId..".png", system.DocumentsDirectory)
 		else
-			Image = display.newImageRect(tempGroup,"res/assert/defalutgroup.png",38,33)
-			Image.x=30;Image.y=background.y+background.height/2
+			Image = display.newImageRect(tempGroup,"res/assert/defalutgroup.png",35,35)
+			Image.x=30;Image.y=background.y+background.height/2-8.5
 
 		end
+
+
 		local GroupName_txt = display.newText(tempGroup,list[i].MyUnitBuzzGroupName,0,0,native.systemFont,14)
-		GroupName_txt.x=60;GroupName_txt.y=background.y+background.height/2-2
+		GroupName_txt.x=60;GroupName_txt.y=background.y+background.height/2-10
 		GroupName_txt.anchorX=0
 		Utils.CssforTextView(GroupName_txt,sp_labelName)
 		GroupName_txt:setFillColor(Utils.convertHexToRGB(color.primaryColor))
@@ -559,7 +561,7 @@ local function TabbarTouch( event )
 
 		   local GroupCreated_time = display.newText(tempGroup,os.date("%b %d, %Y %I:%M %p",time),0,0,native.systemFont,11)
 		   GroupCreated_time.x=background.x+background.contentWidth/2-123
-		   GroupCreated_time.y=background.y+background.height/2+15
+		   GroupCreated_time.y=background.y+background.height/2+13
 		   GroupCreated_time.anchorX=0
 		   Utils.CssforTextView(GroupCreated_time,sp_labelName)
 		   GroupCreated_time:setFillColor(0,0,0,0.6)
