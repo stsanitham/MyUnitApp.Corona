@@ -428,9 +428,10 @@ local function loginProcess( Request_response )
 			current_textField = event.target;
 
 
-			current_textField.size=14
+			
 
-			if "*" == event.target.text:sub(1,1) then
+			print( event.target.size )
+			if 9 == event.target.size then
 				event.target.text=""
 			end
 
@@ -441,6 +442,8 @@ local function loginProcess( Request_response )
 
 
 			end
+
+			current_textField.size=14
 
 
 			elseif  event.phase == "ended"  then
@@ -712,6 +715,9 @@ function scene:create( event )
 	UnitNumber_drawLeft = display.newImageRect(sceneGroup,"res/assert/signin_img.png",74/2,63/2)
 	UnitNumber_drawLeft.x=UnitNumber_bg.x+UnitNumber_drawLeft.contentWidth/2+15;UnitNumber_drawLeft.y=UnitNumber_bg.y-UnitNumber_drawLeft.contentHeight/2-5
 
+	UnitNumber_mandarory = display.newText(sceneGroup,"*",0,0,"Roboto-Bold",18)
+	UnitNumber_mandarory.x=UnitNumber_drawLeft.x+UnitNumber_drawLeft.contentWidth/2+8;UnitNumber_mandarory.y=UnitNumber_bg.y-UnitNumber_mandarory.contentHeight/2-15
+	UnitNumber_mandarory:setTextColor( 1, 0, 0 )
 
 	UserName_bg = display.newLine(sceneGroup, W/2-120, H/2+20, W/2+120, H/2+20)
 	UserName_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
@@ -734,13 +740,18 @@ function scene:create( event )
 
 
 		Unitnumber_field.hasBackground = false
-		Unitnumber_field.x=UnitNumber_bg.x+60;Unitnumber_field.y=UnitNumber_bg.y-Unitnumber_field.contentHeight/2
+		Unitnumber_field.x=UnitNumber_bg.x+65;Unitnumber_field.y=UnitNumber_bg.y-Unitnumber_field.contentHeight/2-2
 		sceneGroup:insert(Unitnumber_field)
 	end
 
 	
 	UserName_drawLeft = display.newImageRect(sceneGroup,"res/assert/gender_img.png",70/2,63/2)
 	UserName_drawLeft.x=UserName_bg.x+UserName_drawLeft.contentWidth/2+15;UserName_drawLeft.y=UserName_bg.y-UserName_drawLeft.contentHeight/2-5
+
+	UserName_mandarory = display.newText(sceneGroup,"*",0,0,"Roboto-Bold",18)
+	UserName_mandarory.x=UserName_drawLeft.x+UserName_drawLeft.contentWidth/2+8;UserName_mandarory.y=UserName_bg.y-UserName_mandarory.contentHeight/2-15
+	UserName_mandarory:setTextColor( 1, 0, 0 )
+
 
 	UserName =  native.newTextField(0, 0, W-140, EditBoxStyle.height)
 	UserName.id = "User name or Email address"
@@ -752,7 +763,7 @@ function scene:create( event )
 	UserName.hasBackground = false
 	UserName.inputType = "email"
 	sceneGroup:insert(UserName)
-	UserName.x=UserName_bg.x+60;UserName.y=UserName_bg.y-UserName.contentHeight/2
+	UserName.x=UserName_bg.x+65;UserName.y=UserName_bg.y-UserName.contentHeight/2-2
 
 	Password_bg = display.newLine(sceneGroup, W/2-120, H/2+70, W/2+120, H/2+70)
 	Password_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
@@ -762,6 +773,11 @@ function scene:create( event )
 	
 	Password_drawLeft = display.newImageRect(sceneGroup,"res/assert/pass_img.png",62/2,63/2)
 	Password_drawLeft.x=Password_bg.x+Password_drawLeft.contentWidth/2+15;Password_drawLeft.y=Password_bg.y-Password_drawLeft.contentHeight/2-5
+
+
+	Password_mandarory = display.newText(sceneGroup,"*",0,0,"Roboto-Bold",18)
+	Password_mandarory.x=Password_drawLeft.x+Password_drawLeft.contentWidth/2+8;Password_mandarory.y=Password_bg.y-Password_mandarory.contentHeight/2-15
+	Password_mandarory:setTextColor( 1, 0, 0 )
 
 	Password = native.newTextField(0, 0, W-140, EditBoxStyle.height)
 	Password.id = "Password"
@@ -773,7 +789,7 @@ function scene:create( event )
 	--Password.isSecure = true;	
 	Password.hasBackground = false
 	sceneGroup:insert(Password)
-	Password.x=Password_bg.x+60;Password.y=Password_bg.y-Password.contentHeight/2
+	Password.x=Password_bg.x+65;Password.y=Password_bg.y-Password.contentHeight/2-2
 
 	forgettBtn = display.newText(sceneGroup,LoginPage.Forget_Button,0,0,"Roboto-Regular",12)
 	forgettBtn.x=Password_bg.x+Password_bg.contentWidth/2+forgettBtn.contentWidth/2+25
@@ -811,6 +827,7 @@ function scene:create( event )
 	TM_Requesttext:setFillColor(Utils.convertHexToRGB(color.secondaryColor))
 	TM_Requesttext.anchorY=0
 	TM_Requesttext.anchorX=0
+	TM_Requesttext.id="teammember_request"
 
 
 	TM_Requesticon	= display.newImageRect(sceneGroup,"res/assert/setting_icon.png",30,30)
@@ -838,6 +855,7 @@ function scene:create( event )
 	Director_Requesttext.anchorY=0
 	Director_Requesttext:setFillColor(Utils.convertHexToRGB(color.secondaryColor))
 	Director_Requesttext.anchorX=0
+	Director_Requesttext.id="director_request"
 
 
 	Director_Requesticon = display.newImageRect(sceneGroup,"res/assert/file_icon.png",45/2,60/2)
@@ -909,10 +927,17 @@ function scene:show( event )
 			--TM_RequestBtn:addEventListener("touch",touchAction)
 			TM_Requesticon:addEventListener("touch",touchAction)
 			TM_RequestAccesstext:addEventListener("touch",touchAction)
+
+			TM_Requesttext:addEventListener("touch",touchAction)
+
+
 			--Director_RequestBtn:addEventListener("touch",touchAction)
 
 			Director_Requesticon:addEventListener("touch",touchAction)
 			Director_Accounttext:addEventListener("touch",touchAction)
+			Director_Requesttext:addEventListener("touch",touchAction)
+
+
 
 			signinBtn:addEventListener("touch",signinBtnRelease)
 			signinBtn_text:addEventListener("touch",signinBtnRelease)

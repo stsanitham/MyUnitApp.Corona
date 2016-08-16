@@ -87,9 +87,9 @@ end
 
 local function touchBg( event )
 	if event.phase == "began" then
-
+		display.getCurrentStage():setFocus( event.target )
 	elseif event.phase == "ended" then
-
+		display.getCurrentStage():setFocus( nil )
 			native.setKeyboardFocus(nil)
 
 	end
@@ -343,8 +343,6 @@ function HAS_UNITNUMBER_FUNCTION(responseUnitValue,directorname,directoremail)
 	        function getunitnumberresponse(response)
 
 	        	Request_response = response
-
-	        	print("************************Request_response unitnumber initial*************************** ",json.encode(Request_response))
 
 	        	RequestFromStatus = Request_response.RequestAccessStatus
 
@@ -889,7 +887,7 @@ function scene:create( event )
 	tabBar.y=tabBar.height/2
 	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 	
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
+	BgText = display.newImageRect(sceneGroup,"res/assert/logo.png",398/4,81/4)
 	BgText.x=W/2;BgText.y=20
 
 	local tabImage = display.newImageRect( sceneGroup, "res/assert/setting_icon1.png", 111/2,111/2 )
@@ -1049,7 +1047,7 @@ Comment_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 Comment_bg.strokeWidth = 1
 Comment_bg.id="MKrank"
 
-Comment = native.newTextBox(W/2+3, Comment_bg.y-25, W-20, 70 )
+Comment = native.newTextBox(W/2+3, Comment_bg.y-25, W-20, 50 )
 Comment.placeholder=RequestAccess.Comment_placeholder
 Comment.isEditable = true
 Comment.font=native.newFont("Roboto-Light",14)
@@ -1093,8 +1091,9 @@ DirectorEmail = native.newTextField(W/2+3, DirectorName_bg.y+DirectorName_bg.hei
 DirectorEmail.id="Director Email"
 DirectorEmail.font=native.newFont("Roboto-Light",14)
 DirectorEmail.y = DirectorEmail_bg.y-13
+DirectorEmail.hasBackground = false
 DirectorEmail.isVisible = true
-DirectorEmail:setReturnKey( "next" )
+DirectorEmail:setReturnKey( "done" )
 DirectorEmail.placeholder=RequestAccess.DirectorEmail_placeholder
 sceneGroup:insert(DirectorEmail)
 
@@ -1169,11 +1168,13 @@ function scene:show( event )
 
   		---Listview---
 
-  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x+MKRank_bg.contentWidth/2, H/2-10, MKRank_bg.contentWidth, 311 )
+  		rankTop_bg = display.newRect( rankGroup, MKRank_bg.x+MKRank_bg.contentWidth/2, H/2-10, MKRank_bg.contentWidth, 290 )
   		rankTop_bg:setFillColor(Utils.convertHexToRGB(color.primaryColor))
+  		rankTop_bg.anchorY=0
 
   		rankTop = display.newRect(rankGroup,W/2+2,H/2-160,304,30)
   		rankTop:setFillColor(Utils.convertHexToRGB(color.primaryColor))
+  		rankTop_bg.y = rankTop.y+rankTop.contentHeight/2
 
   		rankText = display.newText(rankGroup,RequestAccess.MKRank_placeholder,0,0,native.systemFont,16)
   		rankText.x=rankTop.x;rankText.y=rankTop.y
@@ -1212,7 +1213,7 @@ function scene:show( event )
 
   	rankList.x=MKRank_bg.x+MKRank_bg.contentWidth/2
   	rankList.y=rankTop.y+rankTop.height/2
-  	rankList.height = 290
+  	rankList.height = rankTop_bg.contentHeight-2
   	rankList.width = MKRank_bg.contentWidth
   	rankList.anchorY=0
   	rankGroup.isVisible=false

@@ -316,7 +316,7 @@ if ParentShow == true then
 	ParentShow = false
 
 
-	parentTitle = display.newRect(tempGroup,0,0,W,bgheight/2)
+	parentTitle = display.newRect(tempGroup,0,0,W,bgheight/1.2)
 	if(event_groupArray[#event_groupArray-1]) ~= nil then
 	--here
 	tempHeight = event_groupArray[#event_groupArray-1][1].y + event_groupArray[#event_groupArray-1][1].height-2
@@ -328,22 +328,23 @@ HeaderDetails[#HeaderDetails].Time = timeGMT
 parentPosition[#parentPosition+1] = tempHeight
 parentTitle.anchorY = 0
 parentTitle.x=W/2;parentTitle.y=tempHeight
-parentTitle:setFillColor(Utility.convertHexToRGB(color.primaryColor))		
+parentTitle:setFillColor(Utility.convertHexToRGB(color.lightGray))		
 
-local parent_leftDraw = display.newImageRect(tempGroup,"res/assert/calendar.png",32/2,32/2)
-parent_leftDraw.x=parentTitle.x-parentTitle.contentWidth/2+15;parent_leftDraw.y=parentTitle.y+parentTitle.contentHeight/2
+-- local parent_leftDraw = display.newImageRect(tempGroup,"res/assert/calendar.png",32/2,32/2)
+-- parent_leftDraw.x=parentTitle.x-parentTitle.contentWidth/2+15;parent_leftDraw.y=parentTitle.y+parentTitle.contentHeight/2
 
 
-local parent_leftText = display.newText(tempGroup,Utils.GetWeek(os.date( "%A" , timeGMT )),0,0,native.systemFont,11)
-parent_leftText.x=parent_leftDraw.x+parent_leftDraw.contentWidth/2+2
-parent_leftText.y=parent_leftDraw.y
-Utils.CssforTextView(parent_leftText,sp_fieldValue_small)
+local parent_leftText = display.newText(tempGroup,Utils.GetWeek(os.date( "%A" , timeGMT )),0,0,"Roboto-Regular",11)
+parent_leftText.x=W-parent_leftText.contentWidth-10
+parent_leftText.y=parentTitle.y+parentTitle.contentHeight/2
 parent_leftText.anchorX=0
+parent_leftText:setFillColor( Utils.convertHexToRGB(color.Black) )
+parent_leftText.alpha=0.7
 
-local parent_centerText = display.newText(tempGroup,os.date( "%b %d, %Y" , timeGMT ),0,0,native.systemFont,14)
-parent_centerText.x=W/2
-parent_centerText.y=parent_leftDraw.y
-Utils.CssforTextView(parent_centerText,sp_subHeader)
+local parent_centerText = display.newText(tempGroup,os.date( "%b %d, %Y" , timeGMT ),0,0,"Roboto-Bold",13)
+parent_centerText.x=parent_centerText.contentWidth/2+10
+parent_centerText.y=parentTitle.y+parentTitle.contentHeight/2
+parent_centerText:setFillColor( Utils.convertHexToRGB(color.Black) )
 
 
 local month = Utils.GetMonth(os.date( "%b" , timeGMT ))
@@ -360,32 +361,32 @@ end
 
 
 
-background.y=parentTitle.y+background.contentHeight/2
+background.y=parentTitle.y+parentTitle.contentHeight
 
 
 ---Header----
 
 if tempHeight == 0 then
 
-	Header_parentTitle = display.newRect(headerGroup,0,0,W,bgheight/2)
+	Header_parentTitle = display.newRect(headerGroup,0,0,W,bgheight/1.2)
 	Header_parentTitle.anchorY = 0
 	Header_parentTitle.x=W/2;Header_parentTitle.y=weekView_bg.y+weekView_bg.contentHeight
-	Header_parentTitle:setFillColor(Utility.convertHexToRGB(color.primaryColor))
+	Header_parentTitle:setFillColor(Utility.convertHexToRGB(color.lightGray))
 
-	Header_parent_leftDraw = display.newImageRect(headerGroup,"res/assert/calendar.png",32/2,32/2)
-	Header_parent_leftDraw.x=Header_parentTitle.x-Header_parentTitle.contentWidth/2+15;Header_parent_leftDraw.y=Header_parentTitle.y+Header_parentTitle.contentHeight/2
+	-- Header_parent_leftDraw = display.newImageRect(headerGroup,"res/assert/calendar.png",32/2,32/2)
+	-- Header_parent_leftDraw.x=Header_parentTitle.x-Header_parentTitle.contentWidth/2+15;Header_parent_leftDraw.y=Header_parentTitle.y+Header_parentTitle.contentHeight/2
 
-	Header_parent_leftText = display.newText(headerGroup,Utils.GetWeek(os.date( "%A" , timeGMT )),0,0,native.systemFont,11)
-	Header_parent_leftText.x=Header_parent_leftDraw.x+Header_parent_leftDraw.contentWidth/2+2
-	Header_parent_leftText.y=Header_parent_leftDraw.y
-	Utils.CssforTextView(Header_parent_leftText,sp_fieldValue_small)
+	Header_parent_leftText = display.newText(headerGroup,Utils.GetWeek(os.date( "%A" , timeGMT )),0,0,"Roboto-Regular",11)
+	Header_parent_leftText.x=W-Header_parent_leftText.contentWidth-5
+	Header_parent_leftText.y=Header_parentTitle.y+Header_parentTitle.contentHeight/2
 	Header_parent_leftText.anchorX=0
+	Header_parent_leftText:setTextColor( Utils.convertHexToRGB(color.Black))
+	Header_parent_leftText.alpha=0.7
 
-	Header_parent_centerText = display.newText(headerGroup,os.date( "%b %d, %Y" , timeGMT ),0,0,native.systemFont,14)
-	Header_parent_centerText.x=W/2
-	Header_parent_centerText.y=Header_parent_leftDraw.y
-	Utils.CssforTextView(Header_parent_centerText,sp_subHeader)
-
+	Header_parent_centerText = display.newText(headerGroup,os.date( "%b %d, %Y" , timeGMT ),0,0,"Roboto-Bold",13)
+	Header_parent_centerText.x=Header_parent_centerText.contentWidth/2+10
+	Header_parent_centerText.y=Header_parentTitle.y+Header_parentTitle.contentHeight/2
+	Header_parent_centerText:setTextColor( Utils.convertHexToRGB(color.Black))
 	local month = Utils.GetMonth(os.date( "%b" , timeGMT ))
 	
 	if CommonWords.language == "Canada English" then
@@ -407,26 +408,35 @@ end
 
 end
 
-local title = display.newText( tempGroup,response.title, background.x-60, background.y,180,0, native.systemFont, 11 )
+local title = display.newText( tempGroup,response.title, background.x-60, background.y,180,0, "Roboto-Regular", 11 )
 title.anchorX=0
-Utils.CssforTextView(title,sp_CommonTitle)
+title:setTextColor( Utils.convertHexToRGB(color.Black) )
 
 background.height = background.contentHeight+title.height
 title.y=background.y+background.contentHeight/2
 
 local line = display.newRect(tempGroup,W/2,background.y,W,1)
 line.y=background.y+background.contentHeight-line.contentHeight
-line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+line:setFillColor(Utility.convertHexToRGB(color.lightGray))
 
 
-local leftDraw_line = display.newImageRect(tempGroup,"res/assert/eventSeprator.png",22,63)
-leftDraw_line.anchorY=0
+local leftDraw_line = display.newLine(tempGroup,W/4,background.y,W/4,background.y+background.contentHeight)
+--leftDraw_line.anchorY=0
 leftDraw_line.height = background.height+5
-leftDraw_line.x=W/4;leftDraw_line.y=background.y-5
+--leftDraw_line.x=W/4;leftDraw_line.y=background.y-5
+leftDraw_line:setStrokeColor( Utils.convertHexToRGB(color.lightGray) )
+leftDraw_line.strokeWidth = 1
 
 
-local time = display.newText(tempGroup,os.date( "%I:%M \n  %p",timeGMT ),0,0,80,0,native.systemFontBold,12)
-time.x=W/6
+
+local circel = display.newCircle( tempGroup, leftDraw_line.y, leftDraw_line.y, 9 )
+--local circel = display.newImageRect(tempGroup,"res/assert/whitecircel.png",20,20)
+circel.x=leftDraw_line.x;circel.y=leftDraw_line.y+leftDraw_line.contentHeight/2
+circel:setFillColor(math.random(),math.random(),math.random() )
+
+local time = display.newText(tempGroup,os.date( "%I:%M  %p",timeGMT ),0,0,130,0,"Roboto-Regular",10)
+time.anchorX=0
+time.x=10
 time.y=background.y+background.contentHeight/2
 Utils.CssforTextView(time,sp_Date_Time)
 
@@ -784,7 +794,7 @@ local function creatWeek( weekfirstDay,flagValue )
 
 	weekfirstDay.day = weekfirstDay.day - 1
 	
-	weekStartX = weekView_leftArrow.x
+	weekStartX = 40
 
 	
 
@@ -794,14 +804,15 @@ local function creatWeek( weekfirstDay,flagValue )
 
 		weekfirstDay.day = weekfirstDay.day + 1
 
-		local day = display.newText(Week_Group,Utils.GetWeek(weekLbl[i]),0,0,native.systemFont,12)
-		weekStartX = weekStartX +35
-		day.x = weekStartX;day.y=weekView_bg.y+weekView_bg.contentHeight/2
+		local day = display.newText(Week_Group,Utils.GetWeek(weekLbl[i]),0,0,"Roboto-Regular",12)
+		
+		day.x = weekStartX;day.y=weekView_bg.y+20
+		weekStartX = weekStartX +40
 		Utils.CssforTextView(day,sp_labelName)
 
 
-		local date = display.newText(Week_Group,os.date( "%d" , os.time( weekfirstDay ) ),0,0,native.systemFont,12)
-		date.x = day.x;date.y=day.y+17
+		local date = display.newText(Week_Group,os.date( "%d" , os.time( weekfirstDay ) ),0,0,"Roboto-Regular",12)
+		date.x = day.x;date.y=day.y+30
 		Utils.CssforTextView(date,sp_fieldValue)
 
 		print(os.date( "%m/%d/%Y" , os.time( weekfirstDay )).."   "..os.date( "%m/%d/%Y" ,os.time(os.date( '*t' ))))
@@ -1206,55 +1217,53 @@ function scene:create( event )
 	end
 
 
-	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
+	Background = display.newRect(sceneGroup,0,0,W,H)
 	Background.x=W/2;Background.y=H/2
 
-	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
+	tabBar = display.newImageRect(sceneGroup,"res/assert/download_default.jpg",W,110)
+	tabBar.x=W/2
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
 	menuBtn.x=10;menuBtn.y=20;
 
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-	BgText.anchorX=0
 
-	menuTouch_s = display.newRect( sceneGroup, 0, BgText.y, 135, 40 )
+
+	menuTouch_s = display.newRect( sceneGroup, 0, menuBtn.y, 85, 70 )
 	menuTouch_s.anchorX=0
 	menuTouch_s.alpha=0.01
 
 
 
-	NoEvent = display.newText( sceneGroup, EventCalender.NoEvent , 0,0,0,0,native.systemFontBold,16)
+	NoEvent = display.newText( sceneGroup, EventCalender.NoEvent , 0,0,0,0,"Roboto-Bold",16)
 	NoEvent.x=W/2;NoEvent.y=H/2
 	NoEvent.isVisible=false
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 	
-	topBg = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
-	topBg.anchorY=0
-	topBg:setFillColor(Utils.convertHexToRGB(color.Bggray))
+	-- topBg = display.newRect(sceneGroup,W/2,tabBar.y+tabBar.contentHeight/2,W,30)
+	-- topBg.anchorY=0
+	-- topBg:setFillColor(Utils.convertHexToRGB(color.Bggray))
 
-	topToday_btnBg = display.newRect(sceneGroup,topBg.x-topBg.contentWidth/2+10,topBg.y+topBg.contentHeight/2,80,22)
+	topToday_btnBg = display.newRoundedRect(sceneGroup,menuBtn.x,menuBtn.y+menuBtn.contentHeight+15,80,30,3)
 	topToday_btnBg.anchorX=0
-	topToday_btnBg:setFillColor(Utils.convertHexToRGB(sp_Calender_btn.Background_Color))
+	topToday_btnBg:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
-	topToday_btnlabel = display.newText(sceneGroup,EventCalender.Upcoming,0,0,native.systemFontBold,12)
+	topToday_btnlabel = display.newText(sceneGroup,EventCalender.Upcoming,0,0,"Roboto-Bold",13)
 	topToday_btnlabel.x=topToday_btnBg.x+topToday_btnBg.contentWidth/2;topToday_btnlabel.y=topToday_btnBg.y
 	Utils.CssforTextView(topToday_btnlabel,sp_Calender_btn)
 	MainGroup:insert(sceneGroup)
 
 
 
-	searchhBg = display.newRect(sceneGroup,W/2+25,topToday_btnBg.y,180,22)
+	searchhBg = display.newRoundedRect(sceneGroup,W/2+25,topToday_btnBg.y,180,30,3)
 	searchLeftDraw = display.newImageRect(sceneGroup,"res/assert/search(gray).png",16/1.2,18/1.2)
 	searchLeftDraw.x=searchhBg.x+searchhBg.contentWidth/2-searchLeftDraw.contentWidth
 	searchLeftDraw.y=searchhBg.y
 
 	search =  native.newTextField( searchhBg.x-searchhBg.contentWidth/2, searchhBg.y, searchhBg.contentWidth-25, 24 )
 	search.anchorX=0
-	search.size=14
+	search.font=native.newFont("Roboto-Light",14)
 	--search:resizeFontToFitHeight()
 	search:setReturnKey( "search" )
 	search.placeholder = CommonWords.search
@@ -1263,8 +1272,8 @@ function scene:create( event )
 
 
 
-	calenderView = display.newImageRect(sceneGroup,"res/assert/calender(gray).png",24/1.2,24/1.2)
-	calenderView.x=W-25
+	calenderView = display.newImageRect(sceneGroup,"res/assert/calen.png",30,30)
+	calenderView.x=W-20
 	calenderView.y=searchhBg.y
 
 	calenderView_bg = display.newRect( sceneGroup, calenderView.x, calenderView.y, 35, 35 )
@@ -1283,7 +1292,7 @@ function scene:create( event )
 
 	picker_btnBg = display.newRect( pickerGroup, W/2, pickerWheel.y-pickerWheel.contentHeight/2-15, W, 30 )
 
-	picker_Done = display.newText( pickerGroup, CommonWords.done, 0, 0, native.systemFont, 20 )
+	picker_Done = display.newText( pickerGroup, CommonWords.done, 0, 0, "Roboto-Bold", 20 )
 	picker_Done:setFillColor(Utils.convertHexToRGB(color.today_blue))
 	picker_Done.x=picker_btnBg.x+100;picker_Done.y=picker_btnBg.y
 
@@ -1469,7 +1478,7 @@ elseif phase == "did" then
 		top = 0,
 		left = 0,
 		width = W,
-		height =H-RecentTab_Topvalue-60,
+		height =H-RecentTab_Topvalue-118,
 		hideBackground = true,
 		isBounceEnabled=false,
 		horizontalScrollingDisabled = false,
@@ -1481,7 +1490,7 @@ elseif phase == "did" then
 
 	sceneGroup:insert(scrollView)
 	scrollView.anchorY=0
-	scrollView.y = RecentTab_Topvalue+60
+	scrollView.y = RecentTab_Topvalue+118
 
 	sceneGroup:insert( headerGroup )
 
@@ -1613,40 +1622,39 @@ elseif phase == "did" then
 		sceneGroup:insert( weekViewGroup )
 
 
-		weekView_bg = display.newRect( weekViewGroup,W/2,topBg.y+topBg.contentHeight,W,60)
+		weekView_bg = display.newRect( weekViewGroup,W/2,topToday_btnBg.y+topToday_btnBg.contentHeight+30,W,75)
 		weekView_bg.anchorY=0
-		weekView_bg:setFillColor( 0.9,0.7,0.8 )
 
-		weekView_header = display.newText( weekViewGroup,"", 0, 0, native.systemFont, 14 )
-		weekView_header.x=W/2;weekView_header.y=weekView_bg.y+10
-		Utils.CssforTextView(weekView_header,sp_helpText)
+		weekView_header = display.newText( weekViewGroup,"", 0, 0, "Roboto-Regular", 14 )
+		weekView_header.x=W/2;weekView_header.y=weekView_bg.y-18
 
 
 		weekView_leftArrow_bg = display.newRect( weekViewGroup, 0,0,30,45 )
 		weekView_leftArrow_bg.x= weekView_bg.x-weekView_bg.contentWidth/2+20
-		weekView_leftArrow_bg.y = weekView_bg.y+weekView_bg.contentHeight/2
+		weekView_leftArrow_bg.y =weekView_header.y
 		weekView_leftArrow_bg.alpha=0.01
 		weekView_leftArrow_bg.id = "leftSwipe"
 		weekView_leftArrow_bg:addEventListener( "touch", weekViewSwipe )
 
 
-		weekView_leftArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
-		weekView_leftArrow.xScale=-1
+		weekView_leftArrow = display.newImageRect( weekViewGroup, "res/assert/left-arrow.png",15/1.6,30/1.6 )
+		
 		weekView_leftArrow.alpha=0.5
 		weekView_leftArrow.x=weekView_bg.x-weekView_bg.contentWidth/2+20
-		weekView_leftArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5	
+		weekView_leftArrow.y=weekView_header.y
 
 
 		weekView_rightArrow_bg = display.newRect( weekViewGroup, 0,0,30,45 )
 		weekView_rightArrow_bg.x=weekView_bg.x+weekView_bg.contentWidth/2-20
-		weekView_rightArrow_bg.y=weekView_bg.y+weekView_bg.contentHeight/2
+		weekView_rightArrow_bg.y=weekView_header.y
 		weekView_rightArrow_bg.alpha=0.01
 		weekView_rightArrow_bg.id = "rightSwipe"
 		weekView_rightArrow_bg:addEventListener( "touch", weekViewSwipe )
 
-		weekView_rightArrow = display.newImageRect( weekViewGroup, "res/assert/right-arrow(gray-).png",15,30 )
+		weekView_rightArrow = display.newImageRect( weekViewGroup, "res/assert/left-arrow.png",15/1.6,30/1.6 )
 		weekView_rightArrow.x=weekView_bg.x+weekView_bg.contentWidth/2-20
-		weekView_rightArrow.y=weekView_bg.y+weekView_bg.contentHeight/2+weekView_leftArrow.contentHeight/2-5
+		weekView_rightArrow.y=weekView_header.y
+		weekView_rightArrow.xScale=-1
 
 		addEventBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
 		addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
@@ -1658,7 +1666,7 @@ elseif phase == "did" then
 
 		
 		menuBtn:addEventListener("touch",menuTouch)
-		BgText:addEventListener("touch",menuTouch)
+		--BgText:addEventListener("touch",menuTouch)
 		menuTouch_s:addEventListener("touch",menuTouch)
 		topToday_btnBg:addEventListener("touch",todayAction)
 		topToday_btnlabel:addEventListener("touch",todayAction)
@@ -1699,7 +1707,6 @@ function scene:hide( event )
 
 
 		menuBtn:removeEventListener("touch",menuTouch)
-		BgText:removeEventListener("touch",menuTouch)
 		menuTouch_s:removeEventListener("touch",menuTouch)
 
 		Runtime:removeEventListener( "key", onKeyEvent )

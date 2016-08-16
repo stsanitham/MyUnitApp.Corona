@@ -1908,7 +1908,7 @@ local function listPosition_change( event )
 				menuBtn.anchorX=0
 				menuBtn.x=10;menuBtn.y=20;
 
-				BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
+				BgText = display.newImageRect(sceneGroup,"res/assert/logo.png",398/4,81/4)
 				BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 				BgText.anchorX=0
 

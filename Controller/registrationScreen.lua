@@ -1270,13 +1270,6 @@ local function textfield( event )
 
 
 
-
-
-
-
-
-
-
                               local function addevent_scrollListener(event )
 
                                 local x, y = scrollView:getContentPosition()
@@ -1287,23 +1280,23 @@ local function textfield( event )
 
                                 elseif ( phase == "moved" ) then 
 
-                                  -- if y > -20 then
-                                  --   FirstName.isVisible = true
-                                  --   FirstName_bg.isVisible = true
-                                  -- else
-                                  --   FirstName.isVisible = false
-                                  --   FirstName_bg.isVisible = false
-                                  -- end
+                                  if y > -25 then
+                                    FirstName.isVisible = true
+                                    FirstName_bg.isVisible = true
+                                  else
+                                    FirstName.isVisible = false
+                                    FirstName_bg.isVisible = false
+                                  end
 
 
 
-                                  -- if y > -30 then
-                                  --   Name.isVisible = true
-                                  --   Name_bg.isVisible = true
-                                  -- else
-                                  --   Name.isVisible = false
-                                  --   Name_bg.isVisible = false
-                                  -- end
+                                  if y > -55 then
+                                    Name.isVisible = true
+                                    Name_bg.isVisible = true
+                                  else
+                                    Name.isVisible = false
+                                    Name_bg.isVisible = false
+                                  end
 
 
                                   elseif ( phase == "ended" ) then 
@@ -1342,7 +1335,7 @@ function scene:create( event )
   tabBar.y=tabBar.height/2
   tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
   
-  BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/3,81/3)
+  BgText = display.newImageRect(sceneGroup,"res/assert/logo.png",398/3,81/3)
   BgText.x=W/2;BgText.y=20
 
   local tabImage = display.newImageRect( sceneGroup, "res/assert/file_icon1.png", 111/2,111/2 )
@@ -1360,7 +1353,7 @@ function scene:create( event )
   title = display.newText(sceneGroup,RegistrationScreen.Introduction:upper( ),0,0,"Roboto-Bold",18)
   title.anchorX = 0
   title.id = "cancel"
-  title.x=25/2;title.y = tabBar.y+tabBar.contentHeight+5
+  title.x=4.5;title.y = tabBar.y+tabBar.contentHeight+5
   title:setFillColor(0)
 
 
@@ -1371,48 +1364,22 @@ function scene:create( event )
   Background:addEventListener("touch",touchBg)
 
 
-  local t = "<p><span style=\"color: #bb0444;\"><span style=\"font-size: 24px;\"><strong>MyUnitBuzz</strong></p>\n\n<p>MyUnitBuzz is a complimentary communication app that offers Mary Kay Directors and NSDs a new and innovative way to connect with their Unit and an easier way for them to share exciting news and event details.&nbsp;</p>\n\n<p>With MyUnitBuzz, you can instantly share exciting news, pictures, and even send event invitations and training materials.&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>MyUnitBuzz Features:&nbsp;</strong></p>\n\n<ul>\n\t<li>\n\t<p>Customizable Messages</p>\n\t</li>\n\t<li>\n\t<p>Event Calendar</p>\n\t</li>\n\t<li>\n\t<p>Social Media</p>\n\t</li>\n\t<li>\n\t<p>Unit Career Path</p>\n\t</li>\n\t<li>\n\t<p>Unit Goals</p>\n\t</li>\n\t<li>\n\t<p>Image Library</p>\n\t</li>\n\t<li>\n\t<p>Document Library&nbsp;</p>\n\t</li>\n\t<li>\n\t<p>Chat&nbsp;</p>\n\t</li>\n\t<li>\n\t<p>Invite/Access&nbsp;</p><li>\n\t<p>Special Recognition</p>\n\t</li>\n\t</li>\n</ul>\n\n<p>&nbsp;</p>\n\n<p><strong><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\">Who can use MyUnitBuzz?&nbsp;</strong></p>\n\n<p>MyUnitBuzz is exclusively designed for Mary Kay Directors and NSDs, who are existing UnitWise members, to use to communicate with their Unit. Independent Beauty Consultants are able to join after being granted access to their Director&rsquo;s or NSD&rsquo;s MyUnitBuzz group.&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p><strong><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\">How do I Invite my Unit to MyUnitBuzz?</strong></p>\n\n<p>It&rsquo;s easier than you might think to invite your Unit to MyUnitBuzz!&nbsp;</p>\n\n<p>To let your Unit join you in the MyUnitBuzz app, provide them your Unit number, their user email address, and the temporary password that you&rsquo;ve created.&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p><strong><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\">What can MyUnitBuzz do for my Unit members?&nbsp;</strong></p>\n\n<p>Invite your Unit to your MyUnitBuzz app and start sharing team goals and important information with ease! With features like the event calendar, your Unit members can view details and see their assigned tasks during an event.&nbsp;</p>\n\n<p>You&nbsp;can also keep your Unit members on track by sharing important goals and accomplishments through the app. Plus, you can share training documents to keep them up to date, too!&nbsp;</p>\n\n<p>And you can do all this and more right from the palm of your hand!</p>\n"
-
-    --local t = "<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>MyUnitBuzz</strong></p>\n\n<p>MyUnitBuzz is a complimentary communication app that offers Mary Kay Directors and NSDs a new and innovative way to connect with their Unit and an easier way for them to share exciting news and event details.&nbsp;</p>\n\n<p>With MyUnitBuzz, you can instantly share exciting news, pictures, and even send event invitations and training materials.&nbsp;</p>\n\n<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>MyUnitBuzz Features:&nbsp;</strong></p>\n\n<ul>\n\t<li>\n\t<p>Customizable Messages</p>\n\t</li>\n\t<li>\n\t<p>Event Calendar</p>\n\t</li>\n\t<li>\n\t<p>Social Media</p>\n\t</li>\n\t<li>\n\t<p>Unit Career Path</p>\n\t</li>\n\t<li>\n\t<p>Unit Goals</p>\n\t</li>\n\t<li>\n\t<p>Image Library</p>\n\t</li>\n\t<li>\n\t<p>Document Library&nbsp;</p>\n\t</li>\n</ul>\n\n<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>Who can use MyUnitBuzz?&nbsp;</strong></p>\n\n<p>MyUnitBuzz is exclusively designed for Mary Kay Directors and NSDs, who are existing UnitWise members, to use to communicate with their Unit. Independent Beauty Consultants are able to join after being granted access to their Director&rsquo;s or NSD&rsquo;s MyUnitBuzz group.&nbsp;</p>\n\n<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>How do I Invite my Unit to MyUnitBuzz?</strong></p>\n\n<p>It&rsquo;s easier than you might think to invite your Unit to MyUnitBuzz!&nbsp;</p>\n\n<p>To let your Unit join you in the MyUnitBuzz app, provide them your Unit number, their user email address, and the temporary password that you&rsquo;ve created.&nbsp;</p>\n\n<p><span style=\"color: #bb0444;\"><span style=\"font-size: 18px;\"><strong>What can MyUnitBuzz do for my Unit members?&nbsp;</strong></p>\n\n<p>Invite your Unit to your MyUnitBuzz app and start sharing team goals and important information with ease! With features like the event calendar, your Unit members can view details and see their assigned tasks during an event.&nbsp;</p>\n\n<p>You can also keep your Unit members on track by sharing important goals and accomplishments through the app. Plus, you can share training documents to keep them up to date, too!&nbsp;</p>\n\n<p>And you can do all this and more right from the palm of your hand!</p>\n"
-
-
-    content = t
-
-    local saveData = [[<!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    </head>]]..t..[[</html>]]
-
-    local path = system.pathForFile( "introduction.html", system.DocumentsDirectory )
-
-    local file, errorString = io.open( path, "w" )
-
-    if not file then
-      print( "File error: " .. errorString )
-    else
-      file:write( saveData )
-      io.close( file )
-    end
-
-    file = nil
-
-    webView = native.newWebView( display.contentCenterX, display.contentCenterY+10, display.viewableContentWidth, display.viewableContentHeight-180)
+    webView = native.newWebView( display.contentCenterX, display.contentCenterY+5, display.viewableContentWidth, display.viewableContentHeight-140)
     webView.hasBackground=false
-    webView:request( "introduction.html", system.DocumentsDirectory )
+    webView:request(  "res/assert/introduction.html", system.ResourceDirectory )
     sceneGroup:insert( webView )
 
     
 
-    CreateAccountBtn_bg = display.newRect(sceneGroup,0,0,W,105)
-    CreateAccountBtn_bg.x=W/2;CreateAccountBtn_bg.y = H - 105
+    CreateAccountBtn_bg = display.newRect(sceneGroup,0,0,W,35)
+    CreateAccountBtn_bg.x=W/2;CreateAccountBtn_bg.y = H - 35
     CreateAccountBtn_bg.width = W
     CreateAccountBtn_bg.anchorY = 0
     CreateAccountBtn_bg.id="create_account"
 
+
      CreateAccountBtn = display.newImageRect(sceneGroup,"res/assert/white_btnbg.png",550/2,50)
-    CreateAccountBtn.x=W/2;CreateAccountBtn.y = CreateAccountBtn_bg.y+CreateAccountBtn_bg.contentHeight/2+12
+    CreateAccountBtn.x=W/2;CreateAccountBtn.y =H-35
     CreateAccountBtn:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 
     CreateAccountBtn_text = display.newText(sceneGroup,RegistrationScreen.CreateAccount,0,0,"Roboto-Regular",16)
