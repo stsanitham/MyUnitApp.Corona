@@ -331,7 +331,7 @@ function scene:create( event )
 	signinUser.x = signinBanner.x+80;signinUser.y=signinBanner.y+signinBanner.contentHeight/2
 
 	backBtn_bg = display.newRect(sceneGroup,0,0,40,30)
-	backBtn_bg.x=25;backBtn_bg.y=25
+	backBtn_bg.x=20;backBtn_bg.y=backBtn_bg.y+15
 	backBtn_bg.alpha=0.01
 
 	backBtn = display.newImageRect(sceneGroup,"res/assert/back_icon.png",36/2,30/2)
@@ -345,7 +345,7 @@ function scene:create( event )
 	page_title:setFillColor(Utils.convertHexToRGB(color.Black))
 
 
-	UnitNumber_bg = display.newLine(sceneGroup, W/2-120, H/2-40, W/2+120, H/2-40)
+	UnitNumber_bg = display.newLine(sceneGroup, W/2-120, H/2-20, W/2+120, H/2-20)
 	UnitNumber_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 	UnitNumber_bg.strokeWidth = 1
 	--UnitNumber_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,UnitNumber_bg.contentHeight)
@@ -375,7 +375,7 @@ function scene:create( event )
 		UnitnumberField.placeholder=LoginPage.Unitnumber_placeholder
 		UnitnumberField.value=""
 		UnitnumberField.font=native.newFont("Roboto-Light",14)
-		UnitnumberField.y=UnitNumber_bg.y-12
+		UnitnumberField.y=UnitNumber_bg.y-18
 		UnitnumberField:setReturnKey( "next" )
 		UnitnumberField.hasBackground=false
 		sceneGroup:insert(UnitnumberField)
@@ -394,7 +394,7 @@ function scene:create( event )
 	UserName.value=""
 	UserName.font=native.newFont("Roboto-Light",14)
 	UserName:setReturnKey( "done" )
-	UserName.y=UserName_bg.y-12
+	UserName.y=UserName_bg.y-18
 	UserName.placeholder=LoginPage.UserName_placeholder
 	sceneGroup:insert(UserName)
 
@@ -425,16 +425,16 @@ function scene:create( event )
 
 
 	cancelBtn = display.newImageRect("res/assert/white_btnbg.png",550/5,50/2)
-    cancelBtn.x=W/2;cancelBtn.y = requestBtn.y+25
+    cancelBtn.x=W/2;cancelBtn.y = requestBtn.y+35
     cancelBtn:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
     cancelBtn.alpha=0.2
     sceneGroup:insert(cancelBtn)
-    cancelBtn.id="cancel"
+    cancelBtn.id="request"
 
     cancelBtn_lbl = display.newText( "Click Here",0,0,"Roboto-Regular",13 )
     cancelBtn_lbl.y= cancelBtn.y
     cancelBtn_lbl.x = cancelBtn.x
-    cancelBtn_lbl.id = "cancel"
+    cancelBtn_lbl.id = "request"
     cancelBtn_lbl:setFillColor( Utils.convertHexToRGB(color.Black)  )
     sceneGroup:insert(cancelBtn_lbl)
 
@@ -459,11 +459,11 @@ function scene:show( event )
 		Background:addEventListener("touch",bgTouch)
 		UnitnumberField:addEventListener( "userInput", textfield )
 		UserName:addEventListener( "userInput", textfield )
-		requestBtn:addEventListener("touch",touchAction)
+		cancelBtn:addEventListener("touch",touchAction)
 		signinBtn:addEventListener("touch",signinBtnRelease)
 		signinBtn_text:addEventListener("touch",signinBtnRelease)
+		--cancelBtn:addEventListener("touch",backAction)
 		backBtn_bg:addEventListener("touch",backAction)
-		page_title:addEventListener("touch",backAction)
 
 		Runtime:addEventListener( "key", onKeyEvent )
 

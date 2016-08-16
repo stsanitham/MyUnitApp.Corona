@@ -383,7 +383,7 @@ if tempHeight == 0 then
 	Header_parent_leftText:setTextColor( Utils.convertHexToRGB(color.Black))
 	Header_parent_leftText.alpha=0.7
 
-	Header_parent_centerText = display.newText(headerGroup,os.date( "%b %d, %Y" , timeGMT ),0,0,"Roboto-Regular",13)
+	Header_parent_centerText = display.newText(headerGroup,os.date( "%b %d, %Y" , timeGMT ),0,0,"Roboto-Bold",13)
 	Header_parent_centerText.x=Header_parent_centerText.contentWidth/2+10
 	Header_parent_centerText.y=Header_parentTitle.y+Header_parentTitle.contentHeight/2
 	Header_parent_centerText:setTextColor( Utils.convertHexToRGB(color.Black))
