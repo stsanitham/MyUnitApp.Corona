@@ -923,13 +923,16 @@ local function observableScroll( event )
     if invitedetail_value.UpdateTimeStamp ~= nil and invitedetail_value.UpdateTimeStamp ~= "" then
 
 		local time = Utils.makeTimeStamp(invitedetail_value.UpdateTimeStamp)
-
 		local activity_time = tostring(os.date("%m/%d/%Y %I:%M %p",time))
 
 		display_details[#display_details+1] = display.newText(InviteAccessDetail.ActivityOn,0,0,sp_labelName.Font_Weight,sp_labelName.Font_Size_ios)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(sp_labelName.Text_Color))
 		display_details[#display_details].x=leftAlign
-		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+15
+		if display_details[#display_details-1] ~= nil then
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+15
+		else
+			display_details[#display_details].y=15
+		end
 		display_details[#display_details].anchorX=0
 		scroll_View:insert( display_details[#display_details] )
 
@@ -953,7 +956,6 @@ local function observableScroll( event )
 		display_details[#display_details].y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+10
 		display_details[#display_details]:setFillColor(0,0,0,0.1)
 		scroll_View:insert( display_details[#display_details] )
-
 
 	end
 
@@ -984,14 +986,12 @@ local function observableScroll( event )
 		-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+4
 		-- sceneGroup:insert(display_details[#display_details])
 
-
 		display_details[#display_details+1] = display.newRect(0,0,W,0.8)
 		display_details[#display_details].x = W/2-160;
 		display_details[#display_details].anchorX=0
 		display_details[#display_details].y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+10
 		display_details[#display_details]:setFillColor(0,0,0,0.1)
 		scroll_View:insert( display_details[#display_details] )
-
 
 	end
 
@@ -1015,7 +1015,6 @@ local function observableScroll( event )
 
 	if invite_status == "DENY" then
 
-
 		grantaccess_button = display.newRect(0,0,W,25)
 		grantaccess_button.x=leftAlign + 75
 		grantaccess_button.y = display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+60
@@ -1033,7 +1032,6 @@ local function observableScroll( event )
 		grantaccess_button_text.y=grantaccess_button.y
 		grantaccess_button_text:setFillColor(0,0,0)
 		scroll_View:insert( grantaccess_button_text )
-
 
 		removeaccess_button = display.newRect(0,0,W,25)
 		removeaccess_button.x=leftAlign + 223
@@ -1055,7 +1053,6 @@ local function observableScroll( event )
 
 
 	elseif invite_status == "GRANT" then
-
 
 		blockaccess_button = display.newRect(0,0,W,25)
 		blockaccess_button.x=leftAlign + 150

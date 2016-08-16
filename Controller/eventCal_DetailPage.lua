@@ -11,8 +11,8 @@ local Utility = require( "Utils.Utility" )
 require( "Controller.genericAlert" )
 local Applicationconfig = require("Utils.ApplicationConfig")
 local widget = require( "widget" )
-
 local status = "normal"
+
 --------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
