@@ -161,6 +161,8 @@ local function ChangeParty()
 
 	AppintmentWith.placeholder = EventCalender.Hostess
 
+	Purposetxt.text = AddeventPage.Purpose
+
 	PurposeLbl.text = ""
 
 	TicklerType = "PARTY"
@@ -218,6 +220,8 @@ local function changeAppointment(  )
 	PurposeLbl.text = ""
 
 	TicklerType = "APPT"
+
+	Purposetxt.text = AddeventPage.Purpose
 
 	callGroup.isVisible = false
 
@@ -333,6 +337,8 @@ local function changeCall(  )
 	callGroup.isVisible = true
 
 	Event_toLbl.text = AddeventPage.Duration
+
+	Purposetxt.text = AddeventPage.Purpose
 
 	Event_to_date.x= Event_to_datebg.x+Event_to_datebg.contentWidth/2-20
 
@@ -798,7 +804,6 @@ local function onRowTouch(event)
 
 		else
 
-
 				if SelectEvent.text:lower( ) == "party" then
 
 					for i=1,#AddeventPage.partyArray do
@@ -1189,7 +1194,7 @@ local function SetError( displaystring, object )
 
 	
 	object.text=displaystring
-	object.size=9
+	object.size=10
 	object.alpha=1
 	object:setTextColor(1,0,0)
 
@@ -1242,32 +1247,63 @@ local function TouchAction( event )
 
         	local checkMad = false
 
-        	if PurposeLbl.text == "" or PurposeLbl.text == AddeventPage.SelectPurpose then
-        		PurposeLbl:setFillColor( 1,0,0 )
-        		PurposeLbl.size = 10
-        		PurposeLbl.text = AddeventPage.SelectPurpose
-        		scrollView:scrollToPosition
-        		{
-        			y = -150,
-        			time = 400,
-        		}
-        		checkMad = true
-
-        		Addinvitees.isVisible = true
-        	    AppintmentWith.isVisible = true
-
-        	end
-
+       
 
         	if SelectEvent.text:lower( ) == "call" then
 
-        		if Phone.text == "" or Phone.text == AddeventPage.PhoneNumberMandatory then
+        		if Phone.text == "" or Phone.text == AddeventPage.PhoneNumberMandatory or not Utils.PhoneMasking(tostring(text)) then
         			Phone.text = AddeventPage.PhoneNumberMandatory
         			Phone:setTextColor ( 1,0,0 )
         			Phone.size = 10
 
         			checkMad = true
+
+        			Phone_mandatory.isVisible = true
+
+		        else
+
+		        	Phone_mandatory.isVisible = true
+
         		end
+
+        	end
+
+
+
+        	if SelectEvent.text:lower( ) == "task" then
+
+        		if PurposeLbl.text == "" or PurposeLbl.text == "Select Priority" then
+
+        			    PurposeLbl:setFillColor( 1,0,0 )
+		        		PurposeLbl.size = 10
+		        		PurposeLbl.text = "Select Priority"
+		        		scrollView:scrollToPosition
+		        		{
+		        			y = -150,
+		        			time = 400,
+		        		}
+		        		checkMad = true
+
+
+        		end
+
+        	else
+
+        			if PurposeLbl.text == "" or PurposeLbl.text == AddeventPage.SelectPurpose then
+		        		PurposeLbl:setFillColor( 1,0,0 )
+		        		PurposeLbl.size = 10
+		        		PurposeLbl.text = AddeventPage.SelectPurpose
+		        		scrollView:scrollToPosition
+		        		{
+		        			y = -150,
+		        			time = 400,
+		        		}
+		        		checkMad = true
+
+		        		Addinvitees.isVisible = true
+		        	    AppintmentWith.isVisible = true
+
+		        	end
 
         	end
 
@@ -1339,12 +1375,14 @@ local function TouchAction( event )
 
 					if PurposeLbl.text:lower( ) == "other" then
 
-						if Other.text == "" then
+						Other_mandatory.isVisible = true
+
+						if Other.text == "" or Other.text == AddeventPage.other_purpose then
 
 							SetError(AddeventPage.other_purpose,Other)
 
 						else
-							
+
 							if TicklerType:lower( ) == "call" then
 
 								local time = makeTimeStamp(startdate)
@@ -1357,7 +1395,6 @@ local function TouchAction( event )
 
 								enddate = os.date( "%m/%d/%Y %I:%M %p",time)
 
-								
 								EventTo_time = os.date( "%I:%M %p",time)
 
 							end
@@ -1443,6 +1480,8 @@ local function TouchAction( event )
 						end
 					end
 				else
+
+					Other_mandatory.isVisible = false
 
 
 					Other.text =  ""
@@ -1849,6 +1888,8 @@ local function TouchAction( event )
 
 									if SelectEvent.text:lower( ) == "appointment" or SelectEvent.text:lower( ) == "call" then
 
+										Purpose_mandatory.isVisible = true
+
 											if PurposeLbl.text:lower( ) == "other" then
 
 												List.y = event.target.y+event.target.contentHeight+1.3 + 18
@@ -1860,6 +1901,8 @@ local function TouchAction( event )
 											end
 
 									elseif SelectEvent.text:lower( ) == "party" then
+
+										Purpose_mandatory.isVisible = true
 
 											print("in party")
 
@@ -1874,6 +1917,8 @@ local function TouchAction( event )
 											end
 
 									elseif SelectEvent.text:lower( ) == "task" then
+
+										Purpose_mandatory.isVisible = true
 
 											print("in task")
 
@@ -2279,6 +2324,9 @@ local function scrollTo(position)
 
 end
 
+
+
+
 local function createField()
 	native.setKeyboardFocus(nil)
 	input = native.newTextField(W/2, 240, W-20, 25)
@@ -2307,6 +2355,14 @@ local function usertextField( event )
         	end
 
         end
+
+        if (event.target.id == "Other") then
+
+    		if "E" == event.target.text:sub(1,1) then
+	    		event.target.text=""
+	    	end
+
+	    end
 
         if event.target.text == AddeventPage.PhoneNumberMandatory then
         	event.target:setTextColor ( 0,0,0 )
@@ -2379,9 +2435,26 @@ local function usertextField( event )
 
     	current_textField.size=14
 
-    	if "*" == event.target.text:sub(1,1) then
-    		event.target.text=""
-    	end
+    	if(event.target.id == "phone") then
+
+    		if "P" == event.target.text:sub(1,1) then
+	    		event.target.text=""
+	    	end
+
+	    elseif (event.target.id == "Other") then
+
+    		if "E" == event.target.text:sub(1,1) then
+	    		event.target.text=""
+	    	end
+
+    	else
+
+	    	if "*" == event.target.text:sub(1,1) then
+	    		event.target.text=""
+	    	end
+
+	    end
+
 
     	if(event.target.id == "description") then
 
@@ -2432,7 +2505,7 @@ local function usertextField( event )
 
     	elseif(event.target.id == "phone") then
 
-    		
+    		Phone_mandatory.isVisible = true
 
     		local text = event.target.text
 
@@ -2841,7 +2914,13 @@ local function addevent_scrollListener(event )
 	  	AddeventArray[#AddeventArray].y = AddeventArray[#AddeventArray-1].y+AddeventArray[#AddeventArray-1].contentHeight-25
 	  	callGroup:insert(AddeventArray[#AddeventArray])
 
-	  	Phone = native.newTextField(W/2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
+	  	Phone_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+		Phone_mandatory.x=leftPadding-2
+		Phone_mandatory.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2-13
+		Phone_mandatory:setTextColor( 1, 0, 0 )
+		callGroup:insert(Phone_mandatory)
+
+	  	Phone = native.newTextField(W/2+2, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-4, AddeventArray[#AddeventArray].contentHeight)
 	  	Phone.id="phone"
 	  	Phone.size=14
 	  	Phone.anchorY=0
@@ -3390,6 +3469,14 @@ end
 	  	AddeventArray[#AddeventArray].count = #AddeventArray
 
 
+	  	Purpose_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+		Purpose_mandatory.x=leftPadding
+		Purpose_mandatory.isVisible = true
+		Purpose_mandatory.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2-4
+		Purpose_mandatory:setTextColor( 1, 0, 0 )
+		taskGroup:insert(Purpose_mandatory)
+
+
 	  	Purposetxt = display.newText(taskGroup,AddeventPage.Purpose,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 	  	Purposetxt.anchorX=0
 	  	Purposetxt.value=0
@@ -3402,13 +3489,13 @@ end
 
 	  	PurposeLbl = display.newText(taskGroup,"",AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,native.systemFont,14 )
 	  	PurposeLbl.anchorX=0
-	  	--PurposeLbl.value=0
+	  	PurposeLbl.value=0
 	  	PurposeLbl.id="purpose"
 	  	PurposeLbl.count = #AddeventArray
 	  	PurposeLbl.font=native.newFont("Roboto-Regular",14)
 		PurposeLbl:setTextColor(Utils.convertHexToRGB(color.Black))
-	  	PurposeLbl.x=W/2
-	  	PurposeLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
+	  	PurposeLbl.x=W/2+1
+	  	PurposeLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2+3
 
 	  	
 	  	Purpose_icon = display.newImageRect(taskGroup,"res/assert/right-arrow(gray-).png",15/2,30/2 )
@@ -3435,12 +3522,20 @@ end
 	  	taskGroup:insert(AddeventArray[#AddeventArray])
 
 
+	  	Other_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+		Other_mandatory.x=leftPadding
+		Other_mandatory.isVisible = false
+		Other_mandatory.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2-4
+		Other_mandatory:setTextColor( 1, 0, 0 )
+		taskGroup:insert(Other_mandatory)
+
+
 	  	Other = native.newTextField(0, AddeventArray[#AddeventArray].y, AddeventArray[#AddeventArray].contentWidth-30, AddeventArray[#AddeventArray].contentHeight)
 	  	Other.id="Other"
 	  	Other.size=14
 	  	Other.anchorY=0
 	  	Other.anchorX=0
-	  	Other.x=leftPadding
+	  	Other.x=leftPadding+2
 	  	Other.y = AddeventArray[#AddeventArray].y + 7
 	  	Other.hasBackground = false
 	  	Other.font=native.newFont("Roboto-Regular",14)
@@ -3493,7 +3588,7 @@ end
 
 		PriorityLbl = display.newText(taskGroupExt,AddeventPage.priorityArray[1].value,AddeventArray[#AddeventArray].x-AddeventArray[#AddeventArray].contentWidth/2+15,AddeventArray[#AddeventArray].y,"Roboto-Regular",14 )
 		PriorityLbl.anchorX=0
-		--PriorityLbl.value=1
+		PriorityLbl.value=1
 		PriorityLbl.id="priority"
 	  	PriorityLbl.font=native.newFont("Roboto-Regular",14)
 		PriorityLbl:setTextColor(Utils.convertHexToRGB(color.Black))

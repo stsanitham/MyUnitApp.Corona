@@ -504,9 +504,19 @@ local function textfield( event )
 
 		current_textField.size=14
 
-		if "*" == event.target.text:sub(1,1) then
-			event.target.text=""
-		end
+			if event.target.id == "Phone" or event.target.id == "Password" then
+
+				if "E" == event.target.text:sub(1,1) or "P" == event.target.text:sub(1,1) then
+					event.target.text=""
+				end
+
+			else
+
+				if "E" == event.target.text:sub(1,1) then
+					event.target.text=""
+				end
+
+			end
 
 		if(event.target.id == "Comments") then
 
@@ -596,14 +606,20 @@ local function textfield( event )
 
 							             if Email.text ~= nil and Email.text ~= "" and Utils.emailValidation(Email.text) then
 
+							             	   print("email not null")
+
 							            
 								             	if (Phone.text ~= nil and Phone.text ~= "" and Phone.text:len() == 14 and Utils.PhoneMasking(tostring(text))) then
+
+          print("email not null &&&&  phone not null")
 
 										             		   textnotifytext.isVisible = true
 										             		   textnotifybox.isVisible = true
 
 										             	       emailnotifytext.isVisible = true
 										             	       emailnotifybox.isVisible = true
+
+										             	        Phone_mandatory.y=emailnotifytext.y+Email_mandatory.contentHeight/2+15
 
 									             	            Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
 														 		Phone.y = emailnotifytext.y+emailnotifytext.height+16
@@ -615,6 +631,8 @@ local function textfield( event )
 													 		    Password_bg.y = textnotifytext.y+textnotifytext.height+12
 													 		    Password.y = textnotifytext.y+textnotifytext.height+12
 													 		    Password_bottom.y = Password.y+10
+
+													 		    Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2
 
 													 		    PasswordHelptext.y= Password_bottom.y + 18
 														 		GeneratePasstext.y= PasswordHelptext.y + 20
@@ -649,6 +667,8 @@ local function textfield( event )
 																					Password.y = textnotifytext.y+textnotifytext.height+12
 																					Password_bottom.y = Password.y+10
 
+																					Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2+5
+
 																			 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
 																					Comment.y = Comment_bg.y
 
@@ -657,19 +677,26 @@ local function textfield( event )
 														else
 
 
+															 print("email not null &&&&  phone is null")
+
+
 											             		    textnotifytext.isVisible = false
 											             		    textnotifybox.isVisible = false
 
 											             	        emailnotifytext.isVisible = true
 											             	        emailnotifybox.isVisible = true
 
+											             	        Phone_mandatory.y=emailnotifytext.y+Phone_mandatory.contentHeight/2+15
+
 										             	            Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
 															 		Phone.y = emailnotifytext.y+emailnotifytext.height+16
 															 		Phone_bottom.y= Phone.y+10
 
 														 		    Password_bg.y = Phone_bg.y+Phone_bg.height+12
-														 		    Password.y = Phone_bg.y+Phone_bg.height+12
-														 		    Password_bottom.y = Password.y+10
+														 		    Password.y = Phone_bg.y+Phone_bg.height+14
+														 		    Password_bottom.y = Password.y+14
+
+																	Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2-3
 
 														 		    PasswordHelptext.y= Password_bottom.y + 18
 															 		GeneratePasstext.y= PasswordHelptext.y + 20
@@ -701,8 +728,10 @@ local function textfield( event )
 
 
 																				 		Password_bg.y = Phone_bg.y+Phone_bg.height+12
-																						Password.y = Phone_bg.y+Phone_bg.height+12
-																						Password_bottom.y = Password.y+10
+																						Password.y = Phone_bg.y+Phone_bg.height+14
+																						Password_bottom.y = Password.y+14
+
+																						Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2-3
 
 																				 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
 																						Comment.y = Comment_bg.y
@@ -730,17 +759,24 @@ local function textfield( event )
 
 							             elseif  (Email.text ~= nil and Email.text ~= "" and not Utils.emailValidation(Email.text)) then
 
+							             	 print("email not null &&&&  email validation false")
+
 
 							             	if (Phone.text ~= nil and Phone.text ~= "" and Phone.text:len() == 14 and Utils.PhoneMasking(tostring(text))) then
 
-								             		   SetError("*"..RequestAccess.EmailValidation_error,Email)
+								             		   print("email not null &&&&  email validation false &&& phone number not null")
+
+								             		   SetError(RequestAccess.EmailValidation_error,Email)
 
 								             		   textnotifytext.isVisible = true
 								             		   textnotifybox.isVisible = true
 
 							             	else
 
-									             	    SetError("*"..RequestAccess.EmailValidation_error,Email)
+
+							             		print("email not null &&&&  email validation false &&& phone number is null")
+
+									             	    SetError(RequestAccess.EmailValidation_error,Email)
 
 									             	    emailnotifytext.isVisible = false
 										             	emailnotifybox.isVisible = false
@@ -752,9 +788,13 @@ local function textfield( event )
 														Phone.y = Email_bg.y+Email_bg.height+7
 														Phone_bottom.y= Phone.y+10
 
+														Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-5
+
 											 		    Password_bg.y = Phone_bg.y+Phone_bg.height+9
 														Password.y = Phone_bg.y+Phone_bg.height+9
 														Password_bottom.y = Password.y+10
+
+														Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2-6
 
 											 		    print("RTRTYYT")
 
@@ -786,10 +826,13 @@ local function textfield( event )
 																	 		MKRank.isVisible = false
 																	 		rankText_icon.isVisible = false
 
+																	 		Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-5
 
 																	 		Password_bg.y = Phone_bg.y+Phone_bg.height+12
 																			Password.y = Phone_bg.y+Phone_bg.height+9
 																			Password_bottom.y = Password.y+10
+
+																			Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2 - 6
 
 																	 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
 																			Comment.y = Comment_bg.y
@@ -809,6 +852,9 @@ local function textfield( event )
 
 							    elseif (Email.text == "" or Email.text == Email.id or Email.text == PopupGroup.EmailIdRequired)  then
 
+
+							    	print("email null")
+
 										         	    emailnotifytext.isVisible = false
 										             	emailnotifybox.isVisible = false
 
@@ -817,10 +863,14 @@ local function textfield( event )
 														Phone.y = Email_bg.y+Email_bg.height+7
 														Phone_bottom.y= Phone.y+10
 
+														Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-5
+
 
 											 		    Password_bg.y = Phone_bg.y+Phone_bg.height+9
 														Password.y = Phone_bg.y+Phone_bg.height+9
 														Password_bottom.y = Password.y+10
+
+														Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2-5
 
 											 		    print("RTRTYYT")
 
@@ -857,6 +907,10 @@ local function textfield( event )
 																			Password.y = Phone_bg.y+Phone_bg.height+9
 																			Password_bottom.y = Password.y+10
 
+																			Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-5
+
+																			Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2-5
+
 																	 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
 																			Comment.y = Comment_bg.y
 
@@ -874,15 +928,22 @@ local function textfield( event )
 													 		if (Phone.text ~= nil and Phone.text ~= "" and Phone.text:len() == 14 and Utils.PhoneMasking(tostring(text))) then
 
 
+													 			print("email null , phone not null")
+
+
 																			textnotifybox.isVisible = true
 																			textnotifytext.isVisible = true
 
 																			textnotifybox.y = Phone_bottom.y + 15
 																			textnotifytext.y= Phone_bottom.y + 15
 
+																			Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-5
+
 																			Password_bg.y = textnotifytext.y+textnotifytext.height+12
 																			Password.y = textnotifytext.y+textnotifytext.height+15
 																			Password_bottom.y = Password.y+10
+
+																			Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2-5
 
 																			PasswordHelptext.y= Password_bottom.y + 18
 																			GeneratePasstext.y= PasswordHelptext.y + 20
@@ -935,6 +996,9 @@ local function textfield( event )
 														    else             
 
 
+														    	print("email null , phone null")
+
+
 																			textnotifybox.isVisible = false
 																			textnotifytext.isVisible = false
 
@@ -974,6 +1038,9 @@ local function textfield( event )
 																					Password.y = Phone_bg.y+Phone_bg.height+9
 																					Password_bottom.y = Password.y+10
 
+																					Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-5
+																					Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2-5
+
 																			 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
 																					Comment.y = Comment_bg.y
 
@@ -1006,6 +1073,8 @@ local function textfield( event )
 
                       		if Phone.text ~= nil and Phone.text ~= "" and Phone.text:len() == 14 and Utils.PhoneMasking(tostring(text)) then
 
+                      			print("PHONE NOT NULL")
+
 
 											textnotifybox.isVisible = true
 											textnotifytext.isVisible = true
@@ -1013,9 +1082,13 @@ local function textfield( event )
 											textnotifybox.y = Phone_bottom.y + 15
 											textnotifytext.y= Phone_bottom.y + 15
 
+											--Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2 
+
 											Password_bg.y = textnotifytext.y+textnotifytext.height+12
 											Password.y = textnotifytext.y+textnotifytext.height+15
 											Password_bottom.y = Password.y+10
+
+											Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2
 
 											PasswordHelptext.y= Password_bottom.y + 18
 											GeneratePasstext.y= PasswordHelptext.y + 20
@@ -1050,6 +1123,10 @@ local function textfield( event )
 													Password.y = textnotifytext.y+textnotifytext.height+15
 													Password_bottom.y = Password.y+10
 
+													--Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2
+
+													Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2
+
 											 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
 													Comment.y = Comment_bg.y
 
@@ -1065,15 +1142,26 @@ local function textfield( event )
 
 				elseif Phone.text ~= nil and Phone.text ~= "" and Phone.text:len() < 14 or not Utils.PhoneMasking(tostring(text)) then
 
+					print(" PHONE NOT NULL &&& PHONE VALIDATION FALSE !!!!! ")
 
-						            SetError("*"..AddNewContact.IncorrectPhone,Phone)
+
+						            SetError(AddNewContact.IncorrectPhone,Phone)
 
 									textnotifybox.isVisible = false
 									textnotifytext.isVisible = false
 
+									--Phone_mandatory=Phone_bg.y-Phone_mandatory.contentHeight/2-3
+
+									 -- Password_bg.y = Phone_bg.y+Phone_bg.height+12
+									 -- Password.y = Phone_bg.y+Phone_bg.height+9
+									 -- Password_bottom.y = Password.y+10
+
 									 Password_bg.y = Phone_bg.y+Phone_bg.height+12
-									 Password.y = Phone_bg.y+Phone_bg.height+9
+									 Password.y = Phone_bg.y+Phone_bg.height+14
 									 Password_bottom.y = Password.y+10
+
+
+									 Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2-4
 
 									 PasswordHelptext.y= Password_bottom.y + 18
 									 GeneratePasstext.y= PasswordHelptext.y + 20
@@ -1103,9 +1191,15 @@ local function textfield( event )
 								 		MKRank.isVisible = false
 								 		rankText_icon.isVisible = false
 
-								 		Password_bg.y = Phone_bg.y+Phone_bg.height+12
-										Password.y = Phone_bg.y+Phone_bg.height+9
-										Password_bottom.y = Password.y+10
+								 	-- 	Password_bg.y = Phone_bg.y+Phone_bg.height+12
+										-- Password.y = Phone_bg.y+Phone_bg.height+9
+										-- Password_bottom.y = Password.y+10
+
+										Password_bg.y = Phone_bg.y+Phone_bg.height+12
+										 Password.y = Phone_bg.y+Phone_bg.height+14
+										 Password_bottom.y = Password.y+10
+
+										Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2-4
 
 								 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
 										Comment.y = Comment_bg.y
@@ -1123,12 +1217,19 @@ local function textfield( event )
 
 				elseif Phone.text == nil or Phone.text == "" or Phone.text:len() == 0 then
 
+					print(" PHONE NULL &&& PHONE LENGTH == 0 !!!!! ")
+
+
 	                         textnotifybox.isVisible = false
 	                         textnotifytext.isVisible = false
 
+	                         Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2+1
+
                              Password_bg.y = Phone_bg.y+Phone_bg.height+12
-							 Password.y = Phone_bg.y+Phone_bg.height+12
+							 Password.y = Phone_bg.y+Phone_bg.height+14
 							 Password_bottom.y = Password.y+10
+
+							 Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2 - 3
 
 							 PasswordHelptext.y= Password_bottom.y + 18
 							 GeneratePasstext.y= PasswordHelptext.y + 20
@@ -1161,9 +1262,13 @@ local function textfield( event )
 							 		MKRank.isVisible = false
 							 		rankText_icon.isVisible = false
 
+							 		Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2+1
+
 							 		Password_bg.y = Phone_bg.y+Phone_bg.height+12
-									Password.y = Phone_bg.y+Phone_bg.height+12
-									Password_bottom.y = Password.y+10
+									Password.y = Phone_bg.y+Phone_bg.height+14
+									Password_bottom.y = Password.y+12
+
+									Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2 - 3
 
 							 		Comment_bg.y=teammember_txt.y+teammember_txt.height+Comment_bg.height/2+12
 									Comment.y = Comment_bg.y
@@ -1415,41 +1520,41 @@ local sumbitBtnRelease = function( event )
 
 		if Name.text == "" or Name.text == Name.id or Name.text == PopupGroup.LastNameRequired then
 			validation=false
-			SetError("*"..RequestAccess.Name_error,Name)
+			SetError(RequestAccess.Name_error,Name)
 		end
 
 
 		if Email.text == "" or Email.text == Email.id or Email.text == PopupGroup.EmailIdRequired then
 			validation=false
-			SetError("*"..RequestAccess.Email_error,Email)
+			SetError(RequestAccess.Email_error,Email)
 		else
 			if not Utils.emailValidation(Email.text) then
 				validation=false
-				SetError("*"..RequestAccess.Email_error,Email)
+				SetError(RequestAccess.Email_error,Email)
 			end
 		end
 
 
 		if Phone.text == "" or Phone.text == Phone.id or Phone.text:len() < 14 or Phone.text==PopupGroup.PhoneNumRequired then
 			validation=false
-			SetError("*"..RequestAccess.Phone_error,Phone)
-		elseif Phone.text == "*"..AddNewContact.IncorrectPhone then
+			SetError(RequestAccess.Phone_error,Phone)
+		elseif Phone.text == AddNewContact.IncorrectPhone then
 			validation=false
-			SetError("*"..RequestAccess.Phone_error,Phone)
+			SetError(RequestAccess.Phone_error,Phone)
 		end
 
 
-		if Password.text == "" or Password.text == Password.id or Password.text == "*"..RequestAccess.Password_error then
+		if Password.text == "" or Password.text == Password.id or Password.text == RequestAccess.Password_error then
 			validation=false
-			SetError("*"..RequestAccess.Password_error,Password)
+			SetError(RequestAccess.Password_error,Password)
 			
-		elseif Password.text:len() < 6 or Password.text == "*"..PopupGroup.PasswordHelptext then
+		elseif Password.text:len() < 6 or Password.text == PopupGroup.PasswordHelptext then
 			validation=false
-			SetError("*"..PopupGroup.PasswordHelptext,Password)
+			SetError(PopupGroup.PasswordHelptext,Password)
 
-		elseif Password.text == "*"..PopupGroup.PasswordHelptext then
+		elseif Password.text == PopupGroup.PasswordHelptext then
 			validation=false
-			SetError("*"..RequestAccess.Password_error,Password)
+			SetError(RequestAccess.Password_error,Password)
 			
 		end
 
@@ -1691,7 +1796,7 @@ function scene:create( event )
 		FirstName.size=14	
 		FirstName.anchorX = 0
 		FirstName.y = title.y-title.contentHeight-15
-		FirstName.x = 15
+		FirstName.x = 16
 		FirstName.hasBackground = false
 		FirstName:setReturnKey( "next" )
 		FirstName.placeholder=RequestAccess.FirstName_placeholder
@@ -1706,21 +1811,28 @@ function scene:create( event )
 -------------------------------------Last name ----------------------------------------------
 
 		Name_bg = display.newRect(W/2, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
-		Name_bg.y = FirstName_bg.y+FirstName_bg.height+7
+		Name_bg.y = FirstName_bg.y+FirstName_bg.height+12
 		Name_bg.alpha = 0.01
 		addNewAccess_scrollview:insert(Name_bg)
 
+		Name_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+		Name_mandatory.x=leftPadding
+		Name_mandatory.isVisible = true
+		Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2-5
+		Name_mandatory:setTextColor( 1, 0, 0 )
+		addNewAccess_scrollview:insert(Name_mandatory)
+
 		Name_bottom = display.newImageRect(addNewAccess_scrollview,"res/assert/line-large.png",W-20,5)
 		Name_bottom.x=W/2
-		Name_bottom.y= FirstName_bg.y+FirstName_bg.height+18
+		Name_bottom.y= FirstName_bg.y+FirstName_bg.height+23
 		addNewAccess_scrollview:insert(Name_bottom)
 
 		Name = native.newTextField( W/2+3, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 		Name.id="Last Name"
-		Name.y = FirstName_bg.y+FirstName_bg.height+7
+		Name.y = FirstName_bg.y+FirstName_bg.height+12
 		Name.size=14
 		Name.anchorX = 0
-		Name.x = 15
+		Name.x = 16
 		Name:setReturnKey( "next" )
 		Name.hasBackground = false	
 		Name.placeholder = RequestAccess.LastName_placeholder
@@ -1728,20 +1840,28 @@ function scene:create( event )
 
 
 ----------------------------------Email address---------------------------------
-		Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+7, W-20, 25 )
+		Email_bg = display.newRect(W/2, Name_bg.y+Name_bg.height+12, W-20, 25 )
 		Email_bg.alpha = 0.01
 		addNewAccess_scrollview:insert(Email_bg)
 
+		Email_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+		Email_mandatory.x=leftPadding
+		Email_mandatory.isVisible = true
+		Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2-5
+		Email_mandatory:setTextColor( 1, 0, 0 )
+		addNewAccess_scrollview:insert(Email_mandatory)
+
 		Email_bottom = display.newImageRect(addNewAccess_scrollview,"res/assert/line-large.png",W-20,5)
 		Email_bottom.x=W/2
-		Email_bottom.y= Name_bg.y+Name_bg.height+18
+		Email_bottom.y= Name_bg.y+Name_bg.height+23
 		addNewAccess_scrollview:insert(Email_bottom)
 
-		Email = native.newTextField(W/2+3, Name_bg.y+Name_bg.height+7, W-20, 25 )
+		Email = native.newTextField(W/2+3, Name_bg.y+Name_bg.height+12, W-20, 25 )
 		Email.id="Email"
 		Email.size=14
 		Email.anchorX = 0
-		Email.x = 15	
+		Email.y = Name_bg.y+Name_bg.height+12
+		Email.x = 16	
 		Email:setTextColor(0,0,0)
 		Email:setReturnKey( "next" )
 		Email.hasBackground = false
@@ -1781,12 +1901,20 @@ function scene:create( event )
 		Phone_bg.y = Email_bg.y+Email_bg.height+9
 		addNewAccess_scrollview:insert(Phone_bg)
 
+		Phone_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+		Phone_mandatory.x=leftPadding
+		Phone_mandatory.isVisible = true
+		Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-5
+		Phone_mandatory:setTextColor( 1, 0, 0 )
+		addNewAccess_scrollview:insert(Phone_mandatory)
+
+
 		Phone = native.newTextField(W/2+3, emailnotifytext.y+emailnotifytext.height+15, W-20, 25)
 		Phone.id="Phone"
 		Phone.size=14	
 		Phone.y = Email_bg.y+Email_bg.height+9
 		Phone.anchorX = 0
-		Phone.x = 15
+		Phone.x = 16
 		Phone:setReturnKey( "next" )
 		Phone.hasBackground = false
 		Phone.placeholder=RequestAccess.Phone_placeholder
@@ -1832,11 +1960,18 @@ function scene:create( event )
 		Password_bg.y = Phone_bg.y+Phone_bg.height+9
 		addNewAccess_scrollview:insert(Password_bg)
 
+		Password_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+		Password_mandatory.x=leftPadding
+		Password_mandatory.isVisible = true
+		Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2-5
+		Password_mandatory:setTextColor( 1, 0, 0 )
+		addNewAccess_scrollview:insert(Password_mandatory)
+
 		Password = native.newTextField(W/2+3, textnotifytext.y+textnotifytext.height+15, W-20, 25)
 		Password.id="Password"
 		Password.size=14	
 		Password.anchorX = 0
-		Password.x = 15
+		Password.x = 16
 		Password.y = Phone_bg.y+Phone_bg.height+9
 		Password:setReturnKey( "next" )
 		Password.hasBackground = false

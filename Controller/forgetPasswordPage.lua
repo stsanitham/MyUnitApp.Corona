@@ -61,11 +61,16 @@ local function textfield( event )
 
 		current_textField.size=14	
 
-		if "*" == event.target.text:sub(1,1) then
+		print(event.target.text)
+
+		print(UserName_mandatory.text:sub(1,1))
+
+		if "E" == event.target.text:sub(1,1) then
 			event.target.text=""
 		end
 
-		elseif ( event.phase == "ended" ) then
+
+	elseif ( event.phase == "ended" ) then
 
 
 	elseif (event.phase == "submitted" ) then
@@ -84,6 +89,7 @@ local function textfield( event )
 	elseif ( event.phase == "editing" ) then
 
 		if(current_textField.id == "Unit Number / Director name") then
+
 
 			if event.text:len() > 50 then
 
@@ -128,6 +134,8 @@ local function forgotAction( Request_response )
 	elseif Request_response == "NOUNITNUMBER" then
 
 					--local alert = native.showAlert(  ForgotPassword.PageTitle,LoginPage.ErrorMessage, { "OK" } )
+
+					UnitNumber_mandatory.isVisible = true
 
 					SetError(LoginPage.setError_Unitnumber,UnitnumberField)
 
@@ -216,6 +224,7 @@ local function forgotAction( Request_response )
 
 						if UnitnumberField.text == "" or UnitnumberField.text == nil then
 							validation=false
+							UnitNumber_mandatory.isVisible = true
 							SetError(LoginPage.setError_Unitnumber,UnitnumberField)
 						end
 					end
@@ -223,14 +232,14 @@ local function forgotAction( Request_response )
 
 
 					if UserName.text == "" then
-
-
 						validation=false
+						UserName_mandatory.isVisible = true
 						SetError(LoginPage.setError_UserName,UserName)
 					else
 
 						if not Utils.emailValidation(UserName.text) then
 							validation=false
+							UserName_mandatory.isVisible = true
 							SetError(LoginPage.setError_UserName,UserName)
 
 						end
@@ -354,6 +363,10 @@ function scene:create( event )
 	UnitNumber_drawLeft = display.newImageRect(sceneGroup,"res/assert/signin_img.png",74/2,63/2)
 	UnitNumber_drawLeft.x=UnitNumber_bg.x+22;UnitNumber_drawLeft.y=UnitNumber_bg.y-22
 
+	UnitNumber_mandatory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
+	UnitNumber_mandatory.x=UnitNumber_drawLeft.x+UnitNumber_drawLeft.contentWidth/2+9
+	UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-17
+	UnitNumber_mandatory:setTextColor( 1, 0, 0 )
 
 
 	UserName_bg = display.newLine(sceneGroup, W/2-120, UnitNumber_bg.y+50, W/2+120, UnitNumber_bg.y+50)
@@ -361,21 +374,20 @@ function scene:create( event )
 	UserName_bg.strokeWidth = 1
 
 	if AppName == "DirectorApp" then
+
 		UnitNumber_bg.isVisible=false
 		UnitNumber_seprator.isVisible=false
 		UnitNumber_drawLeft.isVisible=false
 
-
-
 		UserName_bg.x=UnitNumber_bg.x;UserName_bg.y=UnitNumber_bg.y
 	else
 
-		UnitnumberField = native.newTextField(W/2+25, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth-50,  EditBoxStyle.height )
+		UnitnumberField = native.newTextField(W/2+29, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth-50,  EditBoxStyle.height )
 		UnitnumberField.id = "Unit Number / Director name"
 		UnitnumberField.placeholder=LoginPage.Unitnumber_placeholder
 		UnitnumberField.value=""
 		UnitnumberField.font=native.newFont("Roboto-Light",14)
-		UnitnumberField.y=UnitNumber_bg.y-18
+		UnitnumberField.y=UnitNumber_bg.y-14
 		UnitnumberField:setReturnKey( "next" )
 		UnitnumberField.hasBackground=false
 		sceneGroup:insert(UnitnumberField)
@@ -388,13 +400,18 @@ function scene:create( event )
 	UserName_drawLeft = display.newImageRect(sceneGroup,"res/assert/gender_img.png",70/2,63/2)
 	UserName_drawLeft.x=UserName_bg.x+22;UserName_drawLeft.y=UserName_bg.y-22
 
-	UserName = native.newTextField( W/2+25,0, UnitNumber_bg.contentWidth-50, EditBoxStyle.height )
+	UserName_mandatory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
+	UserName_mandatory.x=UserName_drawLeft.x+UserName_drawLeft.contentWidth/2+9
+	UserName_mandatory.y=UserName_bg.y-UserName_mandatory.contentHeight/2-17
+	UserName_mandatory:setTextColor( 1, 0, 0 )
+
+	UserName = native.newTextField( W/2+28,0, UnitNumber_bg.contentWidth-50, EditBoxStyle.height )
 	UserName.id = "Username / Email"
 	UserName.hasBackground=false
 	UserName.value=""
 	UserName.font=native.newFont("Roboto-Light",14)
 	UserName:setReturnKey( "done" )
-	UserName.y=UserName_bg.y-18
+	UserName.y=UserName_bg.y-14
 	UserName.placeholder=LoginPage.UserName_placeholder
 	sceneGroup:insert(UserName)
 
