@@ -2634,16 +2634,25 @@ local function addevent_scrollListener(event )
 
 	  	local options = {
 	  		frames = {
-	  			{ x=0, y=0, width=160, height=44 },
-	  			{ x=0, y=45, width=42, height=42 },
-	  			{ x=44, y=45, width=42, height=42 },
-	  			{ x=88, y=44, width=96, height=44 }
+	  			{ x=0, y=0, width=102, height=34 },
+	  			{ x=0, y=68, width=31, height=31 },
+	  			{ x=0, y=68, width=31, height=31 },
+	  			{ x=34, y=68, width=102-34, height=30 }
 	  		},
-	  		sheetContentWidth = 184,
-	  		sheetContentHeight = 88
+	  		sheetContentWidth = 102,
+	  		sheetContentHeight = 103
 	  	}
-	  	local onOffSwitchSheet = graphics.newImageSheet( "res/assert/onoffswitch.png", options )
 
+	 --  	local options = {
+		--     width = 102,
+		--     height = 108/3,
+		--     numFrames = 3,
+		--     sheetContentWidth = 102,
+		--     sheetContentHeight = 108
+		-- }
+
+
+	  	local onOffSwitchSheet = graphics.newImageSheet( "res/assert/switchicon.png", options )
 	  	allday_onOffSwitch = widget.newSwitch {
 	  		style = "onOff",
 	  		initialSwitchState = false,

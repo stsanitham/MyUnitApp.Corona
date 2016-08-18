@@ -425,7 +425,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].name = "Home"
 				menuArray_display[#menuArray_display].id="LandingPage"
 
-				Event_icon = display.newImageRect("res/assert/calen.png",15,15)
+				Event_icon = display.newImageRect("res/assert/calendarIcon.png",15,15)
 				Event_icon.anchorX = 0
 				Event_icon.x=-panel.width/2+5
 				Event_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2

@@ -429,10 +429,14 @@ leftDraw_line.strokeWidth = 1
 
 
 
-local circel = display.newCircle( tempGroup, leftDraw_line.y, leftDraw_line.y, 9 )
+local circel = display.newRect( tempGroup, 0,0,25,25 )
 --local circel = display.newImageRect(tempGroup,"res/assert/whitecircel.png",20,20)
 circel.x=leftDraw_line.x;circel.y=leftDraw_line.y+leftDraw_line.contentHeight/2
 circel:setFillColor(math.random(),math.random(),math.random() )
+local mask = graphics.newMask( "res/assert/mask.png" )
+circel:setMask( mask )
+circel.maskScaleX = 0.1
+circel.maskScaleY = 0.1
 
 local time = display.newText(tempGroup,os.date( "%I:%M  %p",timeGMT ),0,0,130,0,"Roboto-Regular",10)
 time.anchorX=0
@@ -734,16 +738,20 @@ for i = 1, #DateWise_response do
 			if week[i].Processingdate == os.date( "%Y-%m-%d" ,os.time(os.date( '*t' ))) then
 
 			else
-				Utils.CssforTextView(week[i][1],sp_labelName)
+
+				week[i][3].isVisible=false
+				week[i][4].isVisible=false
+				--Utils.CssforTextView(week[i][1],sp_labelName)
 			end
 
 		end
 
 
-		event.target[1]:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
+		event.target[4].isVisible=true
 
 		if event.target.Processingdate == os.date( "%Y-%m-%d" ,os.time(os.date( '*t' ))) then
-			event.target[1]:setFillColor( 0,0,1 )
+			event.target[3].isVisible=true
+			event.target[4].isVisible=true
 		end
 		
 		startdate = event.target.startdate
@@ -815,11 +823,37 @@ local function creatWeek( weekfirstDay,flagValue )
 		date.x = day.x;date.y=day.y+30
 		Utils.CssforTextView(date,sp_fieldValue)
 
+
+		local circle = display.newRect(Week_Group,0,0,55,55)
+		circle.x=date.x;circle.y=date.y
+		circle:setFillColor( Utils.convertHexToRGB(color.lightGray) )
+		circle.alpha=0.5
+		local mask = graphics.newMask( "res/assert/mask.png" )
+		circle:setMask( mask )
+		circle.maskScaleX = 0.2
+		circle.maskScaleY = 0.2
+		circle.isVisible=false
+
+
+			local smallcircle = display.newRect(Week_Group,0,0,15,15)
+		smallcircle.x=date.x;smallcircle.y=circle.y+circle.contentHeight/2-8
+		smallcircle:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
+		--smallcircle.alpha=0.5
+		smallcircle.id="smallcircle"
+		local mask = graphics.newMask( "res/assert/mask.png" )
+		smallcircle:setMask( mask )
+		smallcircle.maskScaleX = 0.03
+		smallcircle.maskScaleY = 0.03
+		smallcircle.isVisible=false
+
+
 		print(os.date( "%m/%d/%Y" , os.time( weekfirstDay )).."   "..os.date( "%m/%d/%Y" ,os.time(os.date( '*t' ))))
 
 		if os.date( "%m/%d/%Y" , os.time( weekfirstDay )) == os.date( "%m/%d/%Y" ,os.time(os.date( '*t' ))) then
-			day:setFillColor( 0,0,1 )
+			--day:setFillColor( 0,0,1 )
 			addEventBtn.value = os.time(weekfirstDay)
+			circle.isVisible=true
+			smallcircle.isVisible=true
 		end
 
 		Week_Group.id=i
@@ -1272,9 +1306,9 @@ function scene:create( event )
 
 
 
-	calenderView = display.newImageRect(sceneGroup,"res/assert/calen.png",30,30)
+	calenderView = display.newImageRect(sceneGroup,"res/assert/calendarIcon.png",30,30)
 	calenderView.x=W-20
-	calenderView.y=searchhBg.y
+	calenderView.y=searchhBg.y-1
 
 	calenderView_bg = display.newRect( sceneGroup, calenderView.x, calenderView.y, 35, 35 )
 	calenderView_bg.alpha=0.01
@@ -1637,7 +1671,7 @@ elseif phase == "did" then
 		weekView_leftArrow_bg:addEventListener( "touch", weekViewSwipe )
 
 
-		weekView_leftArrow = display.newImageRect( weekViewGroup, "res/assert/left-arrow.png",15/1.6,30/1.6 )
+		weekView_leftArrow = display.newImageRect( weekViewGroup, "res/assert/left-arrow(white).png",15/1.6,30/1.6 )
 		
 		weekView_leftArrow.alpha=0.5
 		weekView_leftArrow.x=weekView_bg.x-weekView_bg.contentWidth/2+20
@@ -1651,7 +1685,7 @@ elseif phase == "did" then
 		weekView_rightArrow_bg.id = "rightSwipe"
 		weekView_rightArrow_bg:addEventListener( "touch", weekViewSwipe )
 
-		weekView_rightArrow = display.newImageRect( weekViewGroup, "res/assert/left-arrow.png",15/1.6,30/1.6 )
+		weekView_rightArrow = display.newImageRect( weekViewGroup, "res/assert/left-arrow(white).png",15/1.6,30/1.6 )
 		weekView_rightArrow.x=weekView_bg.x+weekView_bg.contentWidth/2-20
 		weekView_rightArrow.y=weekView_header.y
 		weekView_rightArrow.xScale=-1
