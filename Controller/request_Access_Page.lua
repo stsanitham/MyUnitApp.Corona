@@ -31,7 +31,7 @@ local Background,BgText,tabBar,backBtn,page_title,MKRank,rankText_icon,sumbitBtn
 local FirstName_bg,Name_bg,Email_bg,Phone_bg,MKRank_bg,Comment_bg,DirectorName_bg,DirectorEmail_bg
 
 --EditText
-local FirstName,Name,Email,Phone,UnitNumber,Comment,DirectorName,DirectorEmail
+local FirstName,Name,Email,Phone,UnitNumber,Comment,DirectorName,DirectorEmail,UnitNumber_mandatory,Name_mandatory,Email_mandatory,Phone_mandatory,DirectorName_mandatory,DirectorEmail_mandatory
 
 --Spinner
 local submit_spinner
@@ -252,7 +252,7 @@ local function RequestProcess()
 
 			elseif Request_response == "NOUNITNUMBER" then
 
-				SetError("*"..RequestAccess.NOUNITNUMBER,UnitNumber)
+				SetError(RequestAccess.NOUNITNUMBER,UnitNumber)
 
 			elseif Request_response == "BLOCK"  then
 
@@ -384,6 +384,18 @@ function HAS_UNITNUMBER_FUNCTION(responseUnitValue,directorname,directoremail)
 						HAS_UNITNUMBER_FUNCTION(RequestFromStatus, directorname, directoremail)
 						unitnumberflag = false
 
+						if DirectorName_mandatory.isVisible == true then
+
+							DirectorName_mandatory.isVisible = false
+
+						end
+
+						if DirectorEmail_mandatory.isVisible == true then
+
+							DirectorEmail_mandatory.isVisible = false
+
+						end
+
 
 				-- if (FirstName.text~=nil or FirstName.text ~="") or (Name.text ~=nil or Name.text ~="")
 
@@ -420,7 +432,7 @@ function HAS_UNITNUMBER_FUNCTION(responseUnitValue,directorname,directoremail)
 
 				current_textField.size=14
 
-				if "*" == event.target.text:sub(1,1) then
+				if "E" == event.target.text:sub(1,1) then
 					event.target.text=""
 				end
 
@@ -493,17 +505,12 @@ function HAS_UNITNUMBER_FUNCTION(responseUnitValue,directorname,directoremail)
 
 					elseif (event.target.id == "Director Name") then
 
-						
-						native.setKeyboardFocus( nil )
-
-						
 						native.setKeyboardFocus( nil )
 
 						native.setKeyboardFocus( DirectorEmail )
 
 
 					elseif (event.target.id == "Director Email") then
-
 
 						native.setKeyboardFocus( nil )
 
@@ -703,9 +710,9 @@ local sumbitBtnRelease = function( event )
 
 		native.setKeyboardFocus(nil)
 
-		if Name.text == "" or Name.text == Name.id then
+		if Name.text=="" or Name.text == Name.id then
 			validation=false
-			SetError("*"..RequestAccess.Name_error,Name)
+			SetError(RequestAccess.Name_error,Name)
 		end
 
 
@@ -713,17 +720,20 @@ local sumbitBtnRelease = function( event )
 
 			if DirectorName.text == "" or DirectorName.text == DirectorName.id then
 				validation=false
-				SetError("*"..RequestAccess.DirectorName_error,DirectorName)
+				DirectorName_mandatory.isVisible = true
+				SetError(RequestAccess.DirectorName_error,DirectorName)
 			end
 
 			if DirectorEmail.text == "" or DirectorEmail.text == DirectorEmail.id then
 				validation=false
-				SetError("*"..RequestAccess.DirectorEmail_error,DirectorEmail)
+				DirectorEmail_mandatory.isVisible = true
+				SetError(RequestAccess.DirectorEmail_error,DirectorEmail)
 			else
 
 				if not Utils.emailValidation(DirectorEmail.text) then
 					validation=false
-					SetError("*"..RequestAccess.DirectorEmailValidation_error,DirectorEmail)
+					DirectorEmail_mandatory.isVisible = true
+					SetError(RequestAccess.DirectorEmailValidation_error,DirectorEmail)
 
 				end
 			end
@@ -731,28 +741,28 @@ local sumbitBtnRelease = function( event )
 		end
 
 
-		if Email.text == "" or Email.text == Email.id then
+		if Email.text:sub(1,1) == "*" or Email.text == Email.id then
 			validation=false
-			SetError("*"..RequestAccess.Email_error,Email)
+			SetError(RequestAccess.Email_error,Email)
 		else
 
 			if not Utils.emailValidation(Email.text) then
 				validation=false
-				SetError("*"..RequestAccess.EmailValidation_error,Email)
+				SetError(RequestAccess.EmailValidation_error,Email)
 
 			end
 
 		end
 
-		if Phone.text == "" or Phone.text == PopupGroup.PhoneNumRequired or Phone.text == Phone.id or Phone.text:len() < 14  then
+		if Phone.text:sub(1,1) == "*" or Phone.text == PopupGroup.PhoneNumRequired or Phone.text == Phone.id or Phone.text:len() < 14  then
 			validation=false
-			SetError("*"..RequestAccess.Phone_error,Phone)
+			SetError(RequestAccess.Phone_error,Phone)
 		end
 
 		if AppName ~= "DirectorApp" then
 			if UnitNumber.text == "" or UnitNumber.text == nil then
 				validation=false
-				SetError("*"..RequestAccess.UnitNumber_error,UnitNumber)
+				SetError(RequestAccess.UnitNumber_error,UnitNumber)
 			end
 		end
 
@@ -892,7 +902,6 @@ function scene:create( event )
 
 	local tabImage = display.newImageRect( sceneGroup, "res/assert/setting_icon1.png", 111/2,111/2 )
 	tabImage.x=W/2+W/3;tabImage.y=tabBar.y+tabBar.contentHeight/2
-
 	--BgText.anchorX=0
 
 	backBtn_bg = display.newRect(sceneGroup,0,0,40,30)
@@ -916,7 +925,15 @@ function scene:create( event )
 		UnitNumber_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 		UnitNumber_bg.strokeWidth = 1
 
-		UnitNumber = native.newTextField(W/2+3, page_title.y+35, W-20, 25 )
+
+		UnitNumber_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+        UnitNumber_mandatory.x=15
+        UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-15
+        UnitNumber_mandatory:setTextColor( 1, 0, 0 )
+        sceneGroup:insert(UnitNumber_mandatory)
+
+
+		UnitNumber = native.newTextField(W/2+7, page_title.y+35, W-20, 25 )
 		UnitNumber.id = "Unit Number / Director name"
 		UnitNumber.value=""
 		UnitNumber.font=native.newFont("Roboto-Light",14)
@@ -932,9 +949,6 @@ function scene:create( event )
 	end
 
 
-
-
-
 -------------------------------------- first name -------------------------------------------
 
 FirstName_bg = display.newLine(sceneGroup, W/2-150, UnitNumber_bg.y+35, W/2+150, UnitNumber_bg.y+35)
@@ -945,10 +959,10 @@ FirstName_bg.strokeWidth = 1
 -- FirstName_bottom.x=W/2
 -- FirstName_bottom.y= UnitNumber_bg.y+UnitNumber_bg.height+16
 
-FirstName = native.newTextField(W/2+3, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
+FirstName = native.newTextField(W/2+7, UnitNumber_bg.y+UnitNumber_bg.height+7, W-20, 25)
 FirstName.id="First Name"
 FirstName.font=native.newFont("Roboto-Light",14)
-FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+20
+FirstName.y = UnitNumber_bg.y+UnitNumber_bg.height+18
 FirstName.hasBackground = false
 FirstName:setReturnKey( "next" )
 FirstName.placeholder=RequestAccess.FirstName_placeholder
@@ -964,9 +978,15 @@ Name_bg.strokeWidth = 1
 -- Name_bottom.x=W/2
 -- Name_bottom.y= FirstName_bg.y+FirstName_bg.height+16
 
-Name = native.newTextField( W/2+3, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
+Name_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+Name_mandatory.x=15
+Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2-15
+Name_mandatory:setTextColor( 1, 0, 0 )
+sceneGroup:insert(Name_mandatory)
+
+Name = native.newTextField( W/2+7, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 Name.id="Last Name"
-Name.y = FirstName_bg.y+FirstName_bg.height+20
+Name.y = FirstName_bg.y+FirstName_bg.height+18
 Name.font=native.newFont("Roboto-Light",14)
 Name:setReturnKey( "next" )
 Name.hasBackground = false	
@@ -975,6 +995,7 @@ sceneGroup:insert(Name)
 
 
 ----------------------------------Email address---------------------------------
+
 Email_bg = display.newLine(sceneGroup, W/2-150, Name_bg.y+35, W/2+150, Name_bg.y+35)
 Email_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 Email_bg.strokeWidth = 1
@@ -983,82 +1004,92 @@ Email_bg.strokeWidth = 1
 -- Email_bottom.x=W/2
 -- Email_bottom.y= Name_bg.y+Name_bg.height+16
 
-Email = native.newTextField(W/2+3, Name_bg.y+Name_bg.height+7, W-20, 25 )
+Email_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+Email_mandatory.x=15
+Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2-15
+Email_mandatory:setTextColor( 1, 0, 0 )
+sceneGroup:insert(Email_mandatory)
+
+Email = native.newTextField(W/2+7, Name_bg.y+Name_bg.height+7, W-20, 25 )
 Email.id="Email"
 Email.font=native.newFont("Roboto-Light",14)
 Email:setReturnKey( "next" )
-Email.y = Name_bg.y+Name_bg.height+20
+Email.y = Name_bg.y+Name_bg.height+18
 Email.hasBackground = false
 Email.placeholder=RequestAccess.EmailAddress_placeholder
 sceneGroup:insert(Email)
 
 
 -----------------------------------phone------------------------------------------
+
 Phone_bg = display.newLine(sceneGroup, W/2-150, Email_bg.y+35, W/2+150, Email_bg.y+35)
 Phone_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 Phone_bg.strokeWidth = 1
+
+Phone_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+Phone_mandatory.x=15
+Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-15
+Phone_mandatory:setTextColor( 1, 0, 0 )
+sceneGroup:insert(Phone_mandatory)
 
 -- Phone_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
 -- Phone_bottom.x=W/2
 -- Phone_bottom.y= Email_bg.y+Email_bg.height+16
 
-
-		Phone = native.newTextField(W/2+3, Email_bg.y+Email_bg.height+7, W-20, 25)
-		Phone.id="Phone"
-		Phone.font=native.newFont("Roboto-Light",14)
-		Phone.y = Email_bg.y+Email_bg.height+20
-	    Phone:setReturnKey( "next" )
-	    Phone.hasBackground = false
-	    Phone.placeholder=RequestAccess.Phone_placeholder
-	    Phone.inputType = "number"
-	    sceneGroup:insert(Phone)
+Phone = native.newTextField(W/2+7, Email_bg.y+Email_bg.height+7, W-20, 25)
+Phone.id="Phone"
+Phone.font=native.newFont("Roboto-Light",14)
+Phone.y = Email_bg.y+Email_bg.height+18
+Phone:setReturnKey( "next" )
+Phone.hasBackground = false
+Phone.placeholder=RequestAccess.Phone_placeholder
+Phone.inputType = "number"
+sceneGroup:insert(Phone)
 
 
 -----------------------------------MK rank----------------------------------------
 
+MKRank_bg = display.newLine(sceneGroup, W/2-150, Phone_bg.y+35, W/2+150, Phone_bg.y+35)
+MKRank_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+MKRank_bg.strokeWidth = 1
+MKRank_bg.id="MKrank"
 
-	MKRank_bg = display.newLine(sceneGroup, W/2-150, Phone_bg.y+35, W/2+150, Phone_bg.y+35)
-	MKRank_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
-	MKRank_bg.strokeWidth = 1
-	MKRank_bg.id="MKrank"
-
-
-
-MKRank = display.newText("",MKRank_bg.x+10,MKRank_bg.y,MKRank_bg.contentWidth,Phone.height,native.systemFont,14 )
+MKRank = display.newText("",MKRank_bg.x+7,MKRank_bg.y,MKRank_bg.contentWidth,Phone.height,native.systemFont,14 )
 MKRank.text = RequestAccess.MKRank_placeholder
 MKRank.value = RequestAccess.MKRank_placeholder
 MKRank.id="MKrank"
 MKRank.alpha=0.3
 MKRank:setFillColor( Utils.convertHexToRGB(color.Black))
 MKRank.y=MKRank_bg.y-10
-MKRank.x=MKRank_bg.x+MKRank_bg.contentWidth/2+5
-	    --MKRank.size=20
-	    sceneGroup:insert(MKRank)
+MKRank.x=MKRank_bg.x+MKRank_bg.contentWidth/2+10
+--MKRank.size=20
+sceneGroup:insert(MKRank)
 
-	    rankText_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
-	    rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth-25
-	    rankText_icon.y=MKRank_bg.y-18
+rankText_icon = display.newImageRect(sceneGroup,"res/assert/arrow2.png",14,9 )
+rankText_icon.x=MKRank_bg.x+MKRank_bg.contentWidth-25
+rankText_icon.y=MKRank_bg.y-18
 
 
 
 ----------------------comments --------------------------------------
+
 Comment_bg = display.newLine(sceneGroup, W/2-150, MKRank_bg.y+75, W/2+150, MKRank_bg.y+75)
 Comment_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 Comment_bg.strokeWidth = 1
 Comment_bg.id="MKrank"
 
-Comment = native.newTextBox(W/2+3, Comment_bg.y-25, W-20, 50 )
+Comment = native.newTextBox(W/2+7, Comment_bg.y-25, W-20, 50 )
 Comment.placeholder=RequestAccess.Comment_placeholder
 Comment.isEditable = true
 Comment.font=native.newFont("Roboto-Light",14)
 Comment.id = "Comments"
 Comment.hasBackground = false
 Comment:setReturnKey( "next" )
-
 sceneGroup:insert(Comment)
 
 
 -------------------------Director name----------------------------------
+
 DirectorName_bg = display.newLine(sceneGroup, W/2-150, Comment_bg.y+35, W/2+150, Comment_bg.y+35)
 DirectorName_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 DirectorName_bg.strokeWidth = 1
@@ -1067,10 +1098,17 @@ DirectorName_bg.strokeWidth = 1
 -- DirectorName_bottom.x=W/2
 -- DirectorName_bottom.y= Comment_bg.y+Comment_bg.height - 5
 
-DirectorName = native.newTextField(W/2+3, Comment_bg.y+Comment_bg.height+7, W-20, 25)
+DirectorName_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+DirectorName_mandatory.x=15
+DirectorName_mandatory.y=DirectorName_bg.y-DirectorName_mandatory.contentHeight/2-14
+DirectorName_mandatory:setTextColor( 1, 0, 0 )
+DirectorName_mandatory.isVisible = false
+sceneGroup:insert(DirectorName_mandatory)
+
+DirectorName = native.newTextField(W/2+7, Comment_bg.y+Comment_bg.height+10, W-20, 25)
 DirectorName.id="Director Name"
 DirectorName.font=native.newFont("Roboto-Light",14)
-DirectorName.y = DirectorName_bg.y-10
+DirectorName.y = DirectorName_bg.y-15
 DirectorName.hasBackground = false
 DirectorName:setReturnKey( "next" )
 DirectorName.isVisible = true
@@ -1079,6 +1117,7 @@ sceneGroup:insert(DirectorName)
 
 
 --------------------------Director email-------------------------------
+
 DirectorEmail_bg = display.newLine(sceneGroup, W/2-150, DirectorName_bg.y+35, W/2+150, DirectorName_bg	.y+35)
 DirectorEmail_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 DirectorEmail_bg.strokeWidth = 1
@@ -1087,10 +1126,17 @@ DirectorEmail_bg.strokeWidth = 1
 -- DirectorEmail_bottom.x=W/2
 -- DirectorEmail_bottom.y= DirectorName_bg.y+DirectorName_bg.height+16
 
-DirectorEmail = native.newTextField(W/2+3, DirectorName_bg.y+DirectorName_bg.height+7, W-20, 25)
+DirectorEmail_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+DirectorEmail_mandatory.x=15
+DirectorEmail_mandatory.y=DirectorEmail_bg.y-DirectorEmail_mandatory.contentHeight/2-14
+DirectorEmail_mandatory:setTextColor( 1, 0, 0 )
+DirectorEmail_mandatory.isVisible = false
+sceneGroup:insert(DirectorEmail_mandatory)
+
+DirectorEmail = native.newTextField(W/2+7, DirectorName_bg.y+DirectorName_bg.height+10, W-20, 25)
 DirectorEmail.id="Director Email"
 DirectorEmail.font=native.newFont("Roboto-Light",14)
-DirectorEmail.y = DirectorEmail_bg.y-13
+DirectorEmail.y = DirectorEmail_bg.y-15
 DirectorEmail.hasBackground = false
 DirectorEmail.isVisible = true
 DirectorEmail:setReturnKey( "done" )
@@ -1099,20 +1145,17 @@ sceneGroup:insert(DirectorEmail)
 
 
 ---------------------submit button------------------------------------
-sumbitBtn = display.newImageRect("res/assert/white_btnbg.png",550/1.8,100/2)
 
+sumbitBtn = display.newImageRect("res/assert/white_btnbg.png",550/1.8,100/2)
 sumbitBtn.x=W/2;sumbitBtn.y = DirectorEmail_bg.y+DirectorEmail_bg.height/2+40
 --sumbitBtn.anchorX=0
 sumbitBtn:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 sceneGroup:insert(sumbitBtn)
 sumbitBtn.id="Submit"
 
-
 sumbitBtn_lbl = display.newText( sceneGroup,CommonWords.submit,0,0,native.systemFont,16 )
 sumbitBtn_lbl.y=sumbitBtn.y
 sumbitBtn_lbl.x = sumbitBtn.x
-
-
 
 local options = {
 	width = 25,

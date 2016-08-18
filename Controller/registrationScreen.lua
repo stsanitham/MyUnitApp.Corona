@@ -693,7 +693,7 @@ renderArray = List.arrayName
 
 if FirstName.text == "" or FirstName.text == FirstName.id or FirstName.text == "*"..RequestAccess.FirstName_error then
   validation=false
-  SetError("*"..RequestAccess.FirstName_error,FirstName)
+  SetError(RequestAccess.FirstName_error,FirstName)
 end
 
 
@@ -701,7 +701,7 @@ end
 
 if Name.text == "" or Name.text == Name.id or Name.text == "*"..RequestAccess.Name_error then
   validation=false
-  SetError("*"..RequestAccess.Name_error,Name)
+  SetError(RequestAccess.Name_error,Name)
 end
 
 
@@ -712,7 +712,7 @@ if Email.text ~= "" and Email.text ~= Email.id and Email.text ~= Email.EmailAddr
   print("in if condition")
   if not Utils.emailValidation(Email.text) then
     validation=false
-    SetError("*"..RequestAccess.EmailValidation_error,Email)
+    SetError(RequestAccess.EmailValidation_error,Email)
   else
 
     local function getEmailValidationStatus(response)
@@ -748,7 +748,7 @@ if Email.text ~= "" and Email.text ~= Email.id and Email.text ~= Email.EmailAddr
 
                                         print("in else condition")
                                         validation=false
-                                        SetError("*"..RequestAccess.Email_error,Email)
+                                        SetError(RequestAccess.Email_error,Email)
 
                                       end
 
@@ -758,7 +758,7 @@ if Email.text ~= "" and Email.text ~= Email.id and Email.text ~= Email.EmailAddr
 
 if Phone.text == "" or Phone.text == "*"..RequestAccess.Phone_error or Phone.text == Phone.id or Phone.text:len() < 14  then
   validation=false
-  SetError("*"..RequestAccess.Phone_error,Phone)
+  SetError(RequestAccess.Phone_error,Phone)
 end
 
 
@@ -770,7 +770,7 @@ if Marykay.text == "" or Marykay.text == Marykay.id or Marykay.text == "*"..Requ
                           --  if not Utils.marykayid_Validation( Marykay.text ) then
 
                           validation=false
-                          SetError("*"..RequestAccess.Marykayidinvalid_error,Marykay)
+                          SetError(RequestAccess.Marykayidinvalid_error,Marykay)
                           
                           --  end
 
@@ -850,8 +850,19 @@ local function textfield( event )
     current_textField = event.target;
     current_textField.size=14
 
-    if "*" == event.target.text:sub(1,1) then
-      event.target.text=""
+
+    if (event.target.id == "First Name") or (event.target.id == "Last Name") or (event.target.id == "Email") or (event.target.id == "Phone") or (event.target.id == "Marykay_Id") then
+
+      if "E" == event.target.text:sub(1,1) then
+        event.target.text=""
+      end
+
+    else 
+
+      if "S" == event.target.text:sub(1,1) then
+        event.target.text=""
+      end
+
     end
 
 
@@ -874,7 +885,7 @@ local function textfield( event )
         if not Utils.emailValidation(Email.text) then
 
           validation=false
-          SetError("*"..RequestAccess.EmailValidation_error,Email)
+          SetError(RequestAccess.EmailValidation_error,Email)
 
           native.setKeyboardFocus(Phone)
 
@@ -882,8 +893,6 @@ local function textfield( event )
 
           local function getEmailValidationStatus(response)
 
-
-        
             if response == false then
 
              native.setKeyboardFocus(Email)
@@ -1435,10 +1444,10 @@ function scene:create( event )
 
             scrollView = widget.newScrollView
             {
-              top = 105,
+              top = 95,
               left = 0,
               width = W,
-              height = H-105,
+              height = H-95,
               hideBackground = true,
               isBounceEnabled=false,
               horizontalScrollDisabled = true,
@@ -1475,12 +1484,12 @@ function scene:create( event )
                                 -------------------------------------- first name -------------------------------------------
 
                                 FirstName_bg = display.newLine(W/2-150, 15, W/2+150, 15)
+                                FirstName_bg.y = 32
                                 FirstName_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
                                 FirstName_bg.strokeWidth = 1
                                 scrollView:insert(FirstName_bg)
 
-
-                                FirstName = native.newTextField(W/2+3, page_title.y+5, W-20, 25)
+                                FirstName = native.newTextField(W/2+7, page_title.y+5, W-20, 25)
                                 FirstName.id="First Name"
                                 FirstName.font=native.newFont("Roboto-Light",14)
                                 FirstName.y = FirstName_bg.y-12
@@ -1488,6 +1497,12 @@ function scene:create( event )
                                 FirstName:setReturnKey( "next" )
                                 FirstName.placeholder=RequestAccess.FirstName_placeholder
                                 scrollView:insert(FirstName)
+
+                                FirstName_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+                                FirstName_mandatory.x=15
+                                FirstName_mandatory.y=FirstName_bg.y-24
+                                FirstName_mandatory:setTextColor( 1, 0, 0 )
+                                scrollView:insert(FirstName_mandatory)
 
                                 -- FirstName_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
                                 -- FirstName_bottom.x=W/2
@@ -1501,8 +1516,13 @@ function scene:create( event )
                                 Name_bg.strokeWidth = 1
                                 scrollView:insert(Name_bg)
 
-                                
-                                Name = native.newTextField( W/2+3, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
+                                Name_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+                                Name_mandatory.x=15
+                                Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2-15
+                                Name_mandatory:setTextColor( 1, 0, 0 )
+                                scrollView:insert(Name_mandatory)
+
+                                Name = native.newTextField( W/2+7, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
                                 Name.id="Last Name"
                                 Name.y = Name_bg.y-12
                                 Name.font=native.newFont("Roboto-Light",14)
@@ -1525,8 +1545,13 @@ function scene:create( event )
                                 Email_bg.strokeWidth = 1
                                 scrollView:insert(Email_bg)
 
+                                Email_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+                                Email_mandatory.x=15
+                                Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2-15
+                                Email_mandatory:setTextColor( 1, 0, 0 )
+                                scrollView:insert(Email_mandatory)
 
-                                Email = native.newTextField(W/2+3, Name_bg.y+Name_bg.height+7, W-20, 25 )
+                                Email = native.newTextField(W/2+7, Name_bg.y+Name_bg.height+7, W-20, 25 )
                                 Email.id="Email"
                                 Email.y = Email_bg.y-12
                                 Email.font=native.newFont("Roboto-Light",14)
@@ -1550,8 +1575,13 @@ function scene:create( event )
                                 Phone_bg.strokeWidth = 1
                                 scrollView:insert(Phone_bg)
 
-                                
-                                Phone = native.newTextField(W/2+3, Email_bg.y+Email_bg.height+7, W-20, 25)
+                                Phone_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+                                Phone_mandatory.x=15
+                                Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-15
+                                Phone_mandatory:setTextColor( 1, 0, 0 )
+                                scrollView:insert(Phone_mandatory)
+
+                                Phone = native.newTextField(W/2+7, Email_bg.y+Email_bg.height+7, W-20, 25)
                                 Phone.id="Phone"
                                 Phone.y = Phone_bg.y-12
                                 Phone.font=native.newFont("Roboto-Light",14)
@@ -1576,20 +1606,24 @@ function scene:create( event )
                                 Marykay_id:setFillColor(Utils.convertHexToRGB(color.Black))
                                 scrollView:insert(Marykay_id)
 
-
                                 Marykay_id_helptext = display.newText(scrollView,"http://www.marykay.com/",0,0,"Roboto-Italic",12)
                                 Marykay_id_helptext.x=16;Marykay_id_helptext.y=Marykay_id.y+20
                                 Marykay_id_helptext.anchorX=0
                                 Marykay_id_helptext:setFillColor(Utils.convertHexToRGB(color.secondaryColor))
                                 scrollView:insert(Marykay_id_helptext)
 
-
                                 Marykay_bg =  display.newLine(W/2-150, Marykay_id_helptext.y+42, W/2+150, Marykay_id_helptext.y+42)
                                 Marykay_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
                                 Marykay_bg.strokeWidth = 1
                                 scrollView:insert(Marykay_bg)
 
-                                Marykay = native.newTextField(W/2+3, Marykay_id_helptext.y+Marykay_id_helptext.height+12, W-20, 25)
+                                Marykay_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+                                Marykay_mandatory.x=15
+                                Marykay_mandatory.y=Marykay_bg.y-Marykay_mandatory.contentHeight/2-15
+                                Marykay_mandatory:setTextColor( 1, 0, 0 )
+                                scrollView:insert(Marykay_mandatory)
+
+                                Marykay = native.newTextField(W/2+7, Marykay_id_helptext.y+Marykay_id_helptext.height+12, W-20, 25)
                                 Marykay.id="Marykay_Id"
                                 Marykay.y = Marykay_bg.y-12
                                 Marykay.font=native.newFont("Roboto-Light",14)
@@ -1635,7 +1669,7 @@ function scene:create( event )
                                 CountryLbl.value=0
                                 CountryLbl.id="country_bg"
                                 CountryLbl:setFillColor( Utils.convertHexToRGB(color.Black))
-                                CountryLbl.x=W/2 - 20
+                                CountryLbl.x=W/2 - 21.5
                                 CountryLbl.y = Country_bg.y-12
                                 scrollView:insert(CountryLbl)
 
@@ -1659,10 +1693,10 @@ function scene:create( event )
 
 
                                  Language_bg = display.newLine(W/2-150, Country_bg.y+42, W/2+150, Country_bg.y+42)
-                                Language_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
-                                Language_bg.strokeWidth = 1
+                                 Language_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
+                                 Language_bg.strokeWidth = 1
                                  Language_bg.id = "language_bg"
-                               
+                                 Language_bg:addEventListener( "touch", TouchSelection )
                                  scrollView:insert(Language_bg)
 
                                  Languagetxt = display.newText(RegistrationScreen.Languagetext,13,Country_bg.y+Country_bg.height+12,"Roboto-Light",14 )
@@ -1679,12 +1713,19 @@ function scene:create( event )
                                  -- scrollView:insert(Language_bottom)
 
 
+                                Language_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+                                Language_mandatory.x= W/2 - 25
+                                Language_mandatory.y=Language_bg.y-Language_mandatory.contentHeight/2-15
+                                Language_mandatory:setTextColor( 1, 0, 0 )
+                                scrollView:insert(Language_mandatory)
+
+
                                  LanguageLbl = display.newText(RegistrationScreen.SelectLanguage,W/2,Country_bg.y+Country_bg.height+12,"Roboto-Light",14 )
                                  LanguageLbl.anchorX=0
                                  LanguageLbl.value=0
                                  LanguageLbl.id="language_bg"
                                  LanguageLbl:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-                                 LanguageLbl.x=W/2 - 20
+                                 LanguageLbl.x=W/2 - 23
                                  scrollView:insert(LanguageLbl)
                                  LanguageLbl.y=Language_bg.y-12
 
@@ -1711,6 +1752,11 @@ function scene:create( event )
                                  Position_bg:addEventListener( "touch", TouchSelection )
                                  scrollView:insert(Position_bg)
 
+                                  Position_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+                                  Position_mandatory.x= W/2 - 25
+                                  Position_mandatory.y=Position_bg.y-Position_mandatory.contentHeight/2-15
+                                  Position_mandatory:setTextColor( 1, 0, 0 )
+                                  scrollView:insert(Position_mandatory)
 
                                  Positiontxt = display.newText(scrollView,RegistrationScreen.Positiontext,13,Language_bg.y+Language_bg.height+12,"Roboto-Light",14 )
                                  Positiontxt.anchorX=0
@@ -1731,7 +1777,7 @@ function scene:create( event )
                                  PositionLbl.value=0
                                  PositionLbl.id = "position_bg"
                                  PositionLbl:setFillColor( Utils.convertHexToRGB(color.Black))
-                                 PositionLbl.x=W/2 - 20
+                                 PositionLbl.x=W/2 - 23
                                  PositionLbl.y=Position_bg.y-12
                                  scrollView:insert(PositionLbl)
 

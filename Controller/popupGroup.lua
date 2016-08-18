@@ -205,7 +205,6 @@ isSentText = true
 
 					if ( event.phase == "began" ) then
 
-
 							event.target:setTextColor(color.black)
 
 							current_textField = nil
@@ -214,36 +213,41 @@ isSentText = true
 
 							current_textField.size=14
 
+							if(current_textField.id =="Email Detail") then
 
-							if "*" == event.target.text:sub(1,1) then
-								event.target.text=""
-								current_textField.text = ""
+									if "E" == event.target.text:sub(1,1) then
+										event.target.text=""
+										current_textField.text = ""
+									end
+
+							elseif (current_textField.id =="Phone Detail") or (current_textField.id == "Password") then
+
+									if "P" == event.target.text:sub(1,1) then
+										event.target.text=""
+										current_textField.text = ""
+									end
+
 							end
+
 
 							if (current_textField.id =="deny") then
-
 								current_textField.text=""
-
  								scrollTo( -120)
-
 							end
-							
-
-
+						
 
 					elseif ( event.phase == "submitted" ) then
 
-						 scrollTo(0)
+						 	scrollTo(0)
 
 							if(current_textField.id =="Password") then
-
-	                               native.setKeyboardFocus(nil)
+	                            native.setKeyboardFocus(nil)
 							end
 
 
 							if (current_textField.id =="deny") then
 
-							print("event.target.id", event.target.id)
+								print("event.target.id", event.target.id)
 
 							--popupList_white:addEventListener("touch",touchPopupBg)
 							--popup_Backgeound:addEventListener("touch",touchPopupBg)
@@ -255,7 +259,7 @@ isSentText = true
 
 							if(current_textField.id =="Email Detail") then
 
-								print("invitedetail_value.MyUnitBuzzRequestAccessId ", Contactid_value)
+								  print("invitedetail_value.MyUnitBuzzRequestAccessId ", Contactid_value)
 
 	                              -- native.setKeyboardFocus(nil)
 
@@ -282,22 +286,19 @@ isSentText = true
 
 						 	local text = event.target.text
 
-							if event.target.text:len() > event.startPosition then
+								if event.target.text:len() > event.startPosition then
 
-								text = event.target.text:sub(1,event.startPosition )
+									text = event.target.text:sub(1,event.startPosition )
 
-							end
+								end
 
+						    local maskingValue =Utils.PhoneMasking(tostring(text))
 
-							local maskingValue =Utils.PhoneMasking(tostring(text))
+							event.target.text=maskingValue
 
-											
-									event.target.text=maskingValue
-
-									 event.target:setSelection(maskingValue:len()+1,maskingValue:len()+1)
-
+							event.target:setSelection(maskingValue:len()+1,maskingValue:len()+1)
 						
-        				end
+        				 end
 
 
 
