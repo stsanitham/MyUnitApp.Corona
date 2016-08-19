@@ -16,9 +16,7 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 local tabBarGroup = display.newGroup( )
 require( "Controller.genericAlert" )
-
---------------- Initialization ----------------------------------------------------
-
+--------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
 
@@ -63,8 +61,6 @@ local AttachmentName,AttachmentPath = "",""
 local selected_Contact = {}
 
 local editId,GroupIcon
-
-local selected_Contact={}
 
 local groupteammemberid = {}
 
@@ -420,8 +416,6 @@ local function onSwitchPress( event )
 
 		checkedstate = checkedstate + 1
 
-		print( #selected_Contact )
-
 		selected_Contact[#selected_Contact+1] = contactid
 
 
@@ -441,7 +435,6 @@ local function onSwitchPress( event )
 
 	end
 
-	print(json.encode(selected_Contact))
 
 
 
@@ -1103,6 +1096,8 @@ end
 
 		AttachmentName = response.FileName
 		AttachmentPath = response.Abspath
+
+		print( AttachmentPath )
 
 
 	if GroupIcon then GroupIcon:removeSelf( );GroupIcon=nil end
@@ -2117,7 +2112,7 @@ function scene:create( event )
 	searchicon_bg:addEventListener( "touch", searchTouch )
 
 
-	searchcontact = display.newImageRect(sceneGroup,"res/assert/search(gray).png",18,18)
+	searchcontact = display.newImageRect(sceneGroup,"res/assert/search_icon.png",46/2,46/2)
 	searchcontact.x = W-35
 	searchcontact:setFillColor(0)
 	searchcontact.alpha = 1
@@ -2180,7 +2175,7 @@ function scene:show( event )
 
 			pageid_value = event.params.page_id
 
-			selected_Contact = event.params.contacts
+			if event.params.contacts then selected_Contact = event.params.contacts end
 
 			if event.params.status ~= nil and event.params.status == "forward" then
 
