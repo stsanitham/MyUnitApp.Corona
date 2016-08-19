@@ -15,12 +15,11 @@ local Utility = require( "Utils.Utility" )
 local widget = require( "widget" )
 require( "Controller.genericAlert" )
 
---------------- Initialization -------------------
+
+----------------------- Initialization -------------------------
 
 local W = display.contentWidth;H= display.contentHeight
-
 local Background,BgText
-
 local menuBtn
 local List_array = {}
 local Category_array = {}
@@ -28,15 +27,14 @@ local position_array = {}
 local imageArray = {}
 local uploadArray = {}
 local ImageUploadGroup = {}
-
-local Category_Id,Category_Name1
+local Category_Id
+local Category_Name1
 
 --local CategoryId_value = "2675"
 
 --local CategoryId_value = "2718"
 
 --local Category_Name = "Uncategorized"
-
 
 local CategoryId_value
 
@@ -433,165 +431,6 @@ local function listTouch( event )
 
 	return true
 end
-
-
-
--- local function onRowRender_ImageLib( event )
-
---  -- Get reference to the row group
---  local row = event.row
-
---     -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
---     local rowHeight = row.contentHeight
---     local rowWidth = row.contentWidth
-
---     --local Lefticon = display.newImageRect(row,"res/assert/image-active.png",25,25)
---     --Lefticon.x=30;Lefticon.y=rowHeight/2
-
---     local Lefticon
-
---     if List_array[row.index].FilePath ~= nil then
-
---     	Lefticon = display.newImageRect(row,"res/assert/image_tump.png",35,35)
---     	Lefticon.x=30;Lefticon.y=rowHeight/2
---     	print( List_array[row.index].ImageFileName )
-
-
--- 			local path = system.pathForFile( List_array[row.index].FilePath:match( "([^/]+)$" ),system.DocumentsDirectory)
--- 			local fhd = io.open( path )
-
-				
--- 				-- Determine if file exists
--- 				if fhd then
-
--- 								if Lefticon then Lefticon:removeSelf();Lefticon=nil end
-
--- 		    				Lefticon = display.newImage(row,List_array[row.index].FilePath:match( "([^/]+)$" ),system.DocumentsDirectory)
--- 		    				Lefticon.width=45;Lefticon.height=38
--- 		    				Lefticon.x=30;Lefticon.y=rowHeight/2
--- 		    				--event.row:insert(img_event.target)
-
--- 		    				local mask = graphics.newMask( "res/assert/masknew.png" )
-
--- 		    				Lefticon:setMask( mask )
-
--- 				else
-
--- 			    		imageArray[#imageArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath,
--- 			    		"GET",
--- 			    		function ( img_event )
--- 			    			if ( img_event.isError ) then
--- 			    				print ( "Network error - download failed" )
--- 			    			else
--- 			    				--if Lefticon then Lefticon:removeSelf();Lefticon=nil end
-
--- 			    				print("response file "..img_event.response.filename)
--- 			    				Lefticon = display.newImage(row,img_event.response.filename,system.DocumentsDirectory)
--- 			    				Lefticon.width=45;Lefticon.height=38
--- 			    				Lefticon.x=30;Lefticon.y=rowHeight/2
--- 			    				--event.row:insert(img_event.target)
-
--- 			    				local mask = graphics.newMask( "res/assert/masknew.png" )
-
--- 			    				Lefticon:setMask( mask )
--- 			    			end
-
--- 			    			end, List_array[row.index].FilePath:match( "([^/]+)$" ), system.DocumentsDirectory)
-
---     		end
---     else
---     	Lefticon = display.newImageRect(row,"res/assert/image_tump.png",35,35)
---     	Lefticon.x=30;Lefticon.y=rowHeight/2
-
---     end
-
-
---     local textname = display.newText(row,List_array[row.index].ImageFileName,0,0,native.systemFont,16)
---     textname.x=Lefticon.x+Lefticon.contentWidth-5;textname.y=rowHeight/2
---     textname.anchorX=0
---     textname:setFillColor(Utils.convertHexToRGB(color.primaryColor))
-
-
--- 	    if isIos then
-
--- 	    	    if textname.text:len() > 20 then
--- 						textname.text = textname.text:sub(1,20).."..."
--- 			   	end
-
--- 	    elseif isAndroid then
-
--- 			    if textname.text:len() > 15 then
--- 						textname.text = textname.text:sub(1,15).."..."
--- 			   	end
-
--- 	    end
-
-
-
---     local seprate_bg = display.newRect(row,0,0,120,rowHeight)
---     seprate_bg.anchorX=0
---     seprate_bg.x=W/2+80;seprate_bg.y=rowHeight/2-1
---     seprate_bg:setFillColor(Utils.convertHexToRGB(color.primaryColor))
-
-
---     local line = display.newRect(row,W/2,rowHeight/2,W,1.1)
---     line.y=rowHeight-1.1
---     line:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-
-
---     local shareImg_bg = display.newRect(row,0,0,35,35)
---     shareImg_bg.x=seprate_bg.x+25;shareImg_bg.y=seprate_bg.y
---     shareImg_bg.id="share"
---     shareImg_bg.alpha=0.01
---     shareImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
---     shareImg_bg.filename = List_array[row.index].ImageFileName
-
---     local shareImg = display.newImageRect(row,"res/assert/upload.png",15,15)
---     shareImg.x=seprate_bg.x+25;shareImg.y=seprate_bg.y
---     shareImg.id="share"
---     shareImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
---     shareImg.filename = List_array[row.index].ImageFileName
-
---     if isAndroid then
-
--- 	    	local downImg_bg = display.newRect(row,0,0,25,25)
--- 	    	downImg_bg.x=shareImg.x+30;downImg_bg.y=seprate_bg.y
--- 	    	downImg_bg.id="download"
--- 	    	downImg_bg.alpha=0.01
--- 	    	downImg_bg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
--- 	    	downImg_bg.filename = List_array[row.index].ImageFileName
-
--- 	    	local downImg = display.newImageRect(row,"res/assert/download.png",15,15)
--- 	    	downImg.x=shareImg.x+30;downImg.y=seprate_bg.y
--- 	    	downImg.id="download"
--- 	    	downImg.value=ApplicationConfig.IMAGE_BASE_URL..""..List_array[row.index].FilePath
-
--- 		    --work
--- 		    downImg.filename = List_array[row.index].ImageFileName
--- 		    downImg:addEventListener("touch",listTouch)
--- 		    downImg_bg:addEventListener("touch",listTouch)
-
--- 	else
-
--- 			seprate_bg.width = seprate_bg.contentWidth/2
--- 			seprate_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
--- 			shareImg_bg.x=seprate_bg.x+seprate_bg.contentWidth/2
--- 			shareImg.x=seprate_bg.x+seprate_bg.contentWidth/2
-
--- 	end
-
-
--- shareImg:addEventListener("touch",listTouch)
-
--- shareImg_bg:addEventListener("touch",listTouch)
-
-
--- row.ImageId = List_array[row.index].ImageId
--- row.FilePath = List_array[row.index].FilePath
--- addImageBg:toFront( );addEventBtn:toFront( );floatingButtonGroup:toFront( );changecategory_icon:toFront()
-
--- end
-
 
 
 
@@ -1095,8 +934,6 @@ end
 
 
 
-
-
 local function GetCategory(value,Category_Name_Value )
 
 	CategoryId_value = value
@@ -1314,7 +1151,7 @@ local function handleSwipe( event )
     if ( event.phase == "moved" ) then
         local dX = event.x - event.xStart
         print( event.x, event.xStart, dX )
-        if ( dX > 10 ) then
+        if ( dX > 3 ) then
             --swipe right
             local spot = RIGHT
             if ( event.target.x == LEFT ) then
@@ -1325,8 +1162,7 @@ local function handleSwipe( event )
             categoryImageBg.alpha = 0.3
             changeCategoryGroup.isVisible = true
             transition.to( changeCategoryGroup, { time=500, x=spot,transition=easing.outQuart } )
-            transition.to( event.target, { time=480, x=spot,transition=easing.outQuart } )
-
+            transition.to( event.target, { time=500, x=spot,transition=easing.outQuart } )
 
         elseif ( dX < -5 ) then
             --swipe left
@@ -1491,6 +1327,8 @@ end
 				       local function getImageLibByCategoryId(response)
 
 							for j=#List_array, 1, -1 do 
+
+								display.remove(List_array[#List_array])
 								List_array[#List_array] = nil
 							end
 
@@ -1986,20 +1824,20 @@ local function listPosition_change( event )
 
 
 				changecategory_icon = display.newImageRect(sceneGroup,"res/assert/semicircle.png",45,55)
-				changecategory_icon.x= -15;changecategory_icon.y=H/2 + 10
+				changecategory_icon.x=-15 ;changecategory_icon.y=H/2 + 10
 				changecategory_icon.anchorX = 0
 				changecategory_icon.anchorY=0
 				changecategory_icon.isVisible = true
-				changecategory_icon:addEventListener("touch",handleSwipe)
-
+				--changecategory_icon:addEventListener("touch",handleSwipe)
 				changecategory_icon:toFront()
+
 
 				changecategory_touch = display.newRect(sceneGroup,changecategory_icon.x,changecategory_icon.y+23,50,55)
 				changecategory_touch.alpha=1
 				changecategory_touch.anchorX = 0
 				changecategory_touch.isVisible = false
 				changecategory_touch.anchorY = 0
-				changecategory_touch:addEventListener("touch",handleSwipe)
+				--changecategory_touch:addEventListener("touch",handleSwipe)
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------
@@ -2188,6 +2026,9 @@ function scene:show( event )
 		    local Category_Name
 
 	      	   	local function getCategoryList( response )
+
+			      	   		changecategory_icon:addEventListener("touch",handleSwipe)
+							changecategory_touch:addEventListener("touch",handleSwipe)
 
 						    Category_array = response
 

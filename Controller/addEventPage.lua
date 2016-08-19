@@ -2705,16 +2705,16 @@ local function addevent_scrollListener(event )
 	  	alldayLbl.x=leftPadding
 	  	alldayLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2+5
 
-	  	local options = {
-	  		frames = {
-	  			{ x=0, y=0, width=102, height=34 },
-	  			{ x=0, y=68, width=31, height=31 },
-	  			{ x=0, y=68, width=31, height=31 },
-	  			{ x=34, y=68, width=102-34, height=30 }
-	  		},
-	  		sheetContentWidth = 102,
-	  		sheetContentHeight = 103
-	  	}
+	  	-- local options = {
+	  	-- 	frames = {
+	  	-- 		{ x=0, y=0, width=102, height=34 },
+	  	-- 		{ x=0, y=68, width=31, height=31 },
+	  	-- 		{ x=0, y=68, width=31, height=31 },
+	  	-- 		{ x=34, y=68, width=102-34, height=30 }
+	  	-- 	},
+	  	-- 	sheetContentWidth = 102,
+	  	-- 	sheetContentHeight = 103
+	  	-- }
 
 	 --  	local options = {
 		--     width = 102,
@@ -2724,8 +2724,19 @@ local function addevent_scrollListener(event )
 		--     sheetContentHeight = 108
 		-- }
 
+		local options = {
+    frames = {
+        { x=0, y=0, width=160, height=44 },
+        { x=0, y=45, width=42, height=42 },
+        { x=44, y=45, width=42, height=42 },
+        { x=88, y=44, width=96, height=44 }
+    },
+    sheetContentWidth = 184,
+    sheetContentHeight = 88
+}
 
-	  	local onOffSwitchSheet = graphics.newImageSheet( "res/assert/switchicon.png", options )
+
+	  	local onOffSwitchSheet = graphics.newImageSheet( "res/assert/onoffswitch.png", options )
 	  	allday_onOffSwitch = widget.newSwitch {
 	  		style = "onOff",
 	  		initialSwitchState = false,
@@ -3160,7 +3171,7 @@ end
 		Background.x=W/2;Background.y=H/2
 		Background:setFillColor(1,1,1)
 
-		tabBar = display.newImageRect(sceneGroup,"res/assert/mub_banner.jpg",W,110)
+		tabBar = display.newImageRect(sceneGroup,"res/assert/banner.png",W,110)
 		tabBar.y=tabBar.contentHeight/2
 		tabBar.x=W/2
 

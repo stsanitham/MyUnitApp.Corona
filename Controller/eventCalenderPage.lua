@@ -528,6 +528,20 @@ local function createEventlist(responevalue,timeValue)
 
 				processCount=0
 
+				
+
+				if ParentShow == true then
+					print("here %%%%%%%%%%%%%%%%%%%%% "..week.numChildren)
+						for i=1,week.numChildren do
+
+							print(Processingdate , week[i].Processingdate)
+							if Processingdate == week[i].Processingdate then
+								
+								week[i][4].isVisible=true
+							end
+						end
+				end
+
 				display_calenderList(DateWise_response[i])
 
 			else
@@ -548,6 +562,7 @@ local function createEventlist(responevalue,timeValue)
 					eventCalen_display_process()
 
 				else
+
 					print("finish")
 					
 				end
@@ -733,25 +748,27 @@ for i = 1, #DateWise_response do
 		NoEvent.text = EventCalender.NoEvent
 		native.setKeyboardFocus( nil )
 
+
+
 		for i=1,week.numChildren do
+
+			week[i][4].isVisible=false
 
 			if week[i].Processingdate == os.date( "%Y-%m-%d" ,os.time(os.date( '*t' ))) then
 
 			else
 
 				week[i][3].isVisible=false
-				week[i][4].isVisible=false
 				--Utils.CssforTextView(week[i][1],sp_labelName)
 			end
 
 		end
 
 
-		event.target[4].isVisible=true
+		event.target[3].isVisible=true
 
 		if event.target.Processingdate == os.date( "%Y-%m-%d" ,os.time(os.date( '*t' ))) then
 			event.target[3].isVisible=true
-			event.target[4].isVisible=true
 		end
 		
 		startdate = event.target.startdate
@@ -853,7 +870,6 @@ local function creatWeek( weekfirstDay,flagValue )
 			--day:setFillColor( 0,0,1 )
 			addEventBtn.value = os.time(weekfirstDay)
 			circle.isVisible=true
-			smallcircle.isVisible=true
 		end
 
 		Week_Group.id=i
@@ -1254,7 +1270,7 @@ function scene:create( event )
 	Background = display.newRect(sceneGroup,0,0,W,H)
 	Background.x=W/2;Background.y=H/2
 
-	tabBar = display.newImageRect(sceneGroup,"res/assert/download_default.jpg",W,110)
+	tabBar = display.newImageRect(sceneGroup,"res/assert/banner.png",W,110)
 	tabBar.x=W/2
 	tabBar.y=tabBar.contentHeight/2
 
@@ -1291,8 +1307,8 @@ function scene:create( event )
 
 
 	searchhBg = display.newRoundedRect(sceneGroup,W/2+25,topToday_btnBg.y,180,30,3)
-	searchLeftDraw = display.newImageRect(sceneGroup,"res/assert/search(gray).png",16/1.2,18/1.2)
-	searchLeftDraw.x=searchhBg.x+searchhBg.contentWidth/2-searchLeftDraw.contentWidth
+	searchLeftDraw = display.newImageRect(sceneGroup,"res/assert/search_icon.png",46/2,46/2)
+	searchLeftDraw.x=searchhBg.x+searchhBg.contentWidth/2-searchLeftDraw.contentWidth+2
 	searchLeftDraw.y=searchhBg.y
 
 	search =  native.newTextField( searchhBg.x-searchhBg.contentWidth/2, searchhBg.y, searchhBg.contentWidth-25, 24 )
@@ -1690,7 +1706,7 @@ elseif phase == "did" then
 		weekView_rightArrow.y=weekView_header.y
 		weekView_rightArrow.xScale=-1
 
-		addEventBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 66/1.5,66/1.7 )
+		addEventBtn = display.newImageRect( sceneGroup, "res/assert/addevent.png", 114/2,114/2 )
 		addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
 
 

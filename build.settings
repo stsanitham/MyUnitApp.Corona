@@ -94,7 +94,6 @@ settings =
                 "Roboto-ThinItalic.ttf"
             },
             
-			UIFileSharingEnabled=true,
 			--UIApplicationExitsOnSuspend = true,
 			CoronaWindowMovesWhenKeyboardAppears = true,
 			UIBackgroundModes = {"remote-notification"},

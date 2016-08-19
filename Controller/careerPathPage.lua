@@ -531,7 +531,7 @@ function scene:create( event )
 	Background.x=W/2;Background.y=H/2
 	Background:setFillColor(1,1,1)
 
-	tabBar = display.newImageRect(sceneGroup,"res/assert/mub_banner.jpg",W,110)
+	tabBar = display.newImageRect(sceneGroup,"res/assert/banner.png",W,110)
 	tabBar.y=tabBar.contentHeight/2
 	tabBar.x=W/2
 
