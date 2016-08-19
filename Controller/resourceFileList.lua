@@ -734,9 +734,9 @@ local workingdir=""
 
 
 		    for i = 1, #file_array do
-		       -- Insert a row into the tableView
-		       Documents_list:insertRow{ rowHeight = 45,rowColor = 
-		       {
+		        -- Insert a row into the tableView
+		        Documents_list:insertRow{ rowHeight = 45,rowColor = 
+		        {
 		    	default = { 1, 1, 1, 0 },
 		    	over={ 1, 0.5, 0, 0 },
 		    	}}
