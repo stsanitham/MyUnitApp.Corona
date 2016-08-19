@@ -21,17 +21,19 @@ local menuBtn
 
 openPage="eventCalenderPage"
 
-
-
 --------------------------------------------------
 
 
 -----------------Function-------------------------
 
 local function closeDetails( event )
+
 	if event.phase == "began" then
+
 		display.getCurrentStage():setFocus( event.target )
-		elseif event.phase == "ended" then
+
+	elseif event.phase == "ended" then
+
 		display.getCurrentStage():setFocus( nil )
 
 	end
@@ -39,6 +41,8 @@ local function closeDetails( event )
 	return true
 
 end
+
+
 
 ------------------------------------------------------
 
@@ -62,10 +66,12 @@ function scene:create( event )
 	BgText.x=menuBtn.x+menuBtn.contentWidth+15;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
-
 	MainGroup:insert(sceneGroup)
 
 end
+
+
+
 
 function scene:show( event )
 
@@ -74,16 +80,16 @@ function scene:show( event )
 	
 	if phase == "will" then
 
-
 	elseif phase == "did" then
 
 		menuBtn:addEventListener("touch",menuTouch)
-		
+	
 	end	
 	
 	MainGroup:insert(sceneGroup)
-
 end
+
+
 
 function scene:hide( event )
 

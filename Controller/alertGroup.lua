@@ -22,12 +22,9 @@ local W = display.contentWidth;H= display.contentHeight
 --        for j=AlertGroup.numChildren, 1, -1 do 
 -- 						display.remove(AlertGroup[AlertGroup.numChildren])
 -- 						AlertGroup[AlertGroup.numChildren] = nil
--- 	 	end
-
+-- 	 	  end
 --     end
-
 --     return true
-
 -- end
 
 
@@ -36,13 +33,15 @@ local function touchBg( event )
 
 	if event.phase == "began" then
 
-		elseif event.phase == "ended" then
+	elseif event.phase == "ended" then
 
 		native.setKeyboardFocus(nil)
 
 	end
+
 	return true
 end
+
 
 
 function GetAlertPopup()
@@ -98,17 +97,16 @@ function GetAlertPopup()
 
 ------------------------------remove or block buttons------------------------------------------
 
-accept_button = display.newImageRect(AlertGroup,"res/assert/positive_alert.png" ,200, EditBoxStyle.height)
-accept_button.x = W/2
-accept_button.id = "accept"
-accept_button.y = AlertContentText.y+AlertContentText.contentHeight+22
+	accept_button = display.newImageRect(AlertGroup,"res/assert/positive_alert.png" ,200, EditBoxStyle.height)
+	accept_button.x = W/2
+	accept_button.id = "accept"
+	accept_button.y = AlertContentText.y+AlertContentText.contentHeight+22
 	--accept_button:addEventListener("touch",onProcessButtonTouch)
 
 	accept_button_text = display.newText(AlertGroup,CareerPath.ToRemove,0,0,native.systemFont,14)
 	accept_button_text.x=accept_button.x
 	accept_button_text.y=accept_button.y
 	accept_button_text:setFillColor(0,0,0)
-
 
 
 	reject_button = display.newImageRect(AlertGroup,"res/assert/negative_alert.png",200, EditBoxStyle.height)
@@ -122,15 +120,9 @@ accept_button.y = AlertContentText.y+AlertContentText.contentHeight+22
 	reject_button_text.y=reject_button.y
 	reject_button_text:setFillColor(0,0,0)
 
-
 	MainGroup:insert(AlertGroup)
 
-
 end
-
-
-
-
 
 
  --  accept_button = display.newImageRect(AlertGroup,"res/assert/positive_alert.png" ,200, EditBoxStyle.height)
@@ -141,9 +133,9 @@ end
  --  	accept_button.id = "accept"
  --  	accept_button.y = AlertContentText.y+AlertContentText.contentHeight+22
  --  	--accept_button.hasBackground = true
-	-- --accept_button.strokeWidth = 1
-	-- --AlertGroup:insert(accept_button)
-	-- --accept_button:addEventListener("touch",onProcessButtonTouch)
+-- --accept_button.strokeWidth = 1
+-- --AlertGroup:insert(accept_button)
+-- --accept_button:addEventListener("touch",onProcessButtonTouch)
 
 
 -- --  reject_button = display.newRect( AlertGroup, 0,0 ,200, EditBoxStyle.height)

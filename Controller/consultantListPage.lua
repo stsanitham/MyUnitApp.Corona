@@ -16,7 +16,9 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 local tabBarGroup = display.newGroup( )
 require( "Controller.genericAlert" )
---------------- Initialization -------------------
+
+--------------- Initialization ----------------------------------------------------
+
 
 local W = display.contentWidth;H= display.contentHeight
 
