@@ -377,7 +377,7 @@ if tempHeight == 0 then
 	-- Header_parent_leftDraw.x=Header_parentTitle.x-Header_parentTitle.contentWidth/2+15;Header_parent_leftDraw.y=Header_parentTitle.y+Header_parentTitle.contentHeight/2
 
 	Header_parent_leftText = display.newText(headerGroup,Utils.GetWeek(os.date( "%A" , timeGMT )),0,0,"Roboto-Regular",11)
-	Header_parent_leftText.x=W-Header_parent_leftText.contentWidth-5
+	Header_parent_leftText.x=W-Header_parent_leftText.contentWidth-10
 	Header_parent_leftText.y=Header_parentTitle.y+Header_parentTitle.contentHeight/2
 	Header_parent_leftText.anchorX=0
 	Header_parent_leftText:setTextColor( Utils.convertHexToRGB(color.Black))
@@ -432,7 +432,7 @@ leftDraw_line.strokeWidth = 1
 local circel = display.newRect( tempGroup, 0,0,25,25 )
 --local circel = display.newImageRect(tempGroup,"res/assert/whitecircel.png",20,20)
 circel.x=leftDraw_line.x;circel.y=leftDraw_line.y+leftDraw_line.contentHeight/2
-circel:setFillColor(math.random(),math.random(),math.random() )
+circel:setFillColor(Utils.convertHexToRGB(response.ColorCode) )
 local mask = graphics.newMask( "res/assert/mask.png" )
 circel:setMask( mask )
 circel.maskScaleX = 0.1
@@ -1195,6 +1195,7 @@ local function weekViewSwipe( event )
 				if -(yView) < tonumber(HeaderDetails[i].Position) then
 
 					Header_parent_leftText.text = Utils.GetWeek(os.date( "%A" , HeaderDetails[i-1].Time ))
+					Header_parent_leftText.x = W-Header_parent_leftText.contentWidth-10
 
 					Header_parent_centerText.text = os.date( "%b %d, %Y" , HeaderDetails[i-1].Time )
 

@@ -51,7 +51,7 @@ function genericAlert.createNew(title,content,values,action)
 	genericAlert_bg:setFillColor(1)
 
 
-	genericAlert_content = display.newText(content,0,0,W-40,0,native.systemFont,14)
+	genericAlert_content = display.newText(content,0,0,W-50,0,native.systemFont,14)
 	genericAlert_content.x = 25
 	genericAlert_content.anchorX= 0	
 	genericAlert_content.anchorY= 0	

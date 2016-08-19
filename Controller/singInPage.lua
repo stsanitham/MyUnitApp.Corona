@@ -726,7 +726,7 @@ function scene:create( event )
 		UnitNumber_drawLeft.isVisible=false
 
 	else
-		Unitnumber_field = native.newTextField(0, 0, W-140, EditBoxStyle.height)
+		Unitnumber_field = native.newTextField(0, 0, W-144, EditBoxStyle.height+3)
 		Unitnumber_field.id = "Unit Number / Director name"
 		Unitnumber_field.placeholder = LoginPage.Unitnumber_placeholder
 		Unitnumber_field.anchorX=0
@@ -737,7 +737,7 @@ function scene:create( event )
 
 
 		Unitnumber_field.hasBackground = false
-		Unitnumber_field.x=UnitNumber_bg.x+63;Unitnumber_field.y=UnitNumber_bg.y-Unitnumber_field.contentHeight/2+2
+		Unitnumber_field.x=UnitNumber_bg.x+63;Unitnumber_field.y=UnitNumber_bg.y-Unitnumber_field.contentHeight/2
 		sceneGroup:insert(Unitnumber_field)
 	end
 
@@ -750,7 +750,7 @@ function scene:create( event )
 	UserName_mandarory:setTextColor( 1, 0, 0 )
 
 
-	UserName =  native.newTextField(0, 0, W-140, EditBoxStyle.height)
+	UserName =  native.newTextField(0, 0, W-140, EditBoxStyle.height+3)
 	UserName.id = "User name or Email address"
 	UserName.placeholder = LoginPage.UserName_placeholder
 	UserName.anchorX=0
@@ -760,7 +760,7 @@ function scene:create( event )
 	UserName.hasBackground = false
 	UserName.inputType = "email"
 	sceneGroup:insert(UserName)
-	UserName.x=UserName_bg.x+63;UserName.y=UserName_bg.y-UserName.contentHeight/2+2
+	UserName.x=UserName_bg.x+63;UserName.y=UserName_bg.y-UserName.contentHeight/2
 
 	Password_bg = display.newLine(sceneGroup, W/2-120, H/2+70, W/2+120, H/2+70)
 	Password_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
@@ -776,7 +776,7 @@ function scene:create( event )
 	Password_mandarory.x=Password_drawLeft.x+Password_drawLeft.contentWidth/2+13;Password_mandarory.y=Password_bg.y-Password_mandarory.contentHeight/2-15
 	Password_mandarory:setTextColor( 1, 0, 0 )
 
-	Password = native.newTextField(0, 0, W-140, EditBoxStyle.height)
+	Password = native.newTextField(0, 0, W-140, EditBoxStyle.height+3)
 	Password.id = "Password"
 	Password.anchorX=0
 	Password.font=native.newFont("Roboto-Light",14)
@@ -786,7 +786,7 @@ function scene:create( event )
 	--Password.isSecure = true;	
 	Password.hasBackground = false
 	sceneGroup:insert(Password)
-	Password.x=Password_bg.x+62;Password.y=Password_bg.y-Password.contentHeight/2+2
+	Password.x=Password_bg.x+62;Password.y=Password_bg.y-Password.contentHeight/2
 
 	forgettBtn = display.newText(sceneGroup,LoginPage.Forget_Button,0,0,"Roboto-Regular",12)
 	forgettBtn.x=Password_bg.x+Password_bg.contentWidth/2+forgettBtn.contentWidth/2+25
