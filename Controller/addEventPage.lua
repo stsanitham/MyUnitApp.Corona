@@ -2766,7 +2766,7 @@ local function addevent_scrollListener(event )
 	  	Event_fromLbl = display.newText(AddeventGroup,AddeventPage.When,0,0,0,0,"Roboto-Regular",14)
 	  	Event_fromLbl.anchorX=0
 	  	Event_fromLbl.font=native.newFont("Roboto-Regular",14)
-		Event_fromLbl:setFillColor( Utils.convertHexToRGB(color.Gray))
+		Event_fromLbl:setFillColor( Utils.convertHexToRGB(color.LtyGray))
 	  	Event_fromLbl.x=leftPadding
 	  	Event_fromLbl.y = AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
 
@@ -2821,7 +2821,7 @@ local function addevent_scrollListener(event )
 	  	Event_toLbl = display.newText(AddeventGroup,AddeventPage.To,0,0,0,0,"Roboto-Regular",14)
 	  	Event_toLbl.anchorX=0
 	  	Event_toLbl.font=native.newFont("Roboto-Regular",14)
-		Event_toLbl:setFillColor( Utils.convertHexToRGB(color.Gray))
+		Event_toLbl:setFillColor( Utils.convertHexToRGB(color.LtyGray))
 	  	Event_toLbl.x=leftPadding;Event_toLbl.y = AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2+7
 
 	  	Event_to_datebg = display.newRect(AddeventGroup,0,0,W/2,30)
@@ -2874,7 +2874,7 @@ local function addevent_scrollListener(event )
 		timeZone = display.newText(AddeventGroup,"( "..TimeZone.." )",0,0,native.systemFont,12)
 		timeZone.x=leftPadding
 		timeZone.anchorX = 0
-		timeZone:setFillColor( 0.2 )
+		timeZone:setFillColor( Utils.convertHexToRGB(color.Black) )
 		timeZone.y=BottomImageTo.y + 12
 
 	
@@ -2895,7 +2895,7 @@ local function addevent_scrollListener(event )
 	  	Where.hasBackground = false
 	  	Where.y = AddeventArray[#AddeventArray].y
 	  	Where.font=native.newFont("Roboto-Regular",14)
-		Where:setTextColor(Utils.convertHexToRGB(color.LtyGray))
+		Where:setTextColor(Utils.convertHexToRGB(color.Black))
 	  	Where:setReturnKey( "next" )
 	  	Where.placeholder=AddeventPage.Where
 	  	Where:addEventListener( "userInput", usertextField )
@@ -3079,8 +3079,6 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-
-
 	print( "!!!!!!!!!!!!!!!!!!!!!" )
 
 	if event.params.Details ~= nil then
@@ -3215,7 +3213,7 @@ end
 		SelectEventLbl.anchorX=0
 		SelectEventLbl.id="eventtype"
 		SelectEventLbl.font=native.newFont("Roboto-Regular",14)
-		SelectEventLbl:setFillColor( Utils.convertHexToRGB(color.Gray))
+		SelectEventLbl:setFillColor( Utils.convertHexToRGB(color.LtyGray))
 		SelectEventLbl.x=leftPadding
 		SelectEventLbl.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2 - 7
 
@@ -3300,7 +3298,7 @@ end
 		What.size=14
 		What.y = AddeventArray[#AddeventArray].y
 		What.font=native.newFont("Roboto-Regular",14)
-		What:setTextColor(Utils.convertHexToRGB(color.LtyGray))
+		What:setTextColor(Utils.convertHexToRGB(color.Black))
 		What.anchorY=0
 		What.hasBackground = false
 		What:setReturnKey( "next" )
@@ -3340,7 +3338,7 @@ end
 		Description.anchorY=0
 		Description.y =AddeventArray[#AddeventArray].y
 	  	Description.font=native.newFont("Roboto-Regular",14)
-		Description:setTextColor(Utils.convertHexToRGB(color.LtyGray))
+		Description:setTextColor(Utils.convertHexToRGB(color.Black))
 		Description.hasBackground = false
 		Description.placeholder=AddeventPage.Description
 		Description.isEditable = true
@@ -3490,7 +3488,7 @@ end
 	  	Purposetxt.anchorX=0
 	  	Purposetxt.value=0
 	  	Purposetxt.font=native.newFont("Roboto-Regular",14)
-		Purposetxt:setTextColor(Utils.convertHexToRGB(color.Gray))
+		Purposetxt:setTextColor(Utils.convertHexToRGB(color.LtyGray))
 	  	Purposetxt.count = #AddeventArray
 	  	Purposetxt.x=leftPadding+5
 	  	Purposetxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2
@@ -3589,7 +3587,7 @@ end
 		Prioritytxt.value=0
 		Prioritytxt.count = #AddeventArray
 		Prioritytxt.font=native.newFont("Roboto-Regular",14)
-		Prioritytxt:setTextColor(Utils.convertHexToRGB(color.Gray))
+		Prioritytxt:setTextColor(Utils.convertHexToRGB(color.LtyGray))
 		Prioritytxt.y = AddeventArray[#AddeventArray].y+7
 		Prioritytxt.x=leftPadding+5
 		Prioritytxt.y=AddeventArray[#AddeventArray].y+AddeventArray[#AddeventArray].contentHeight/2

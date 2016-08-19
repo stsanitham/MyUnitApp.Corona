@@ -1295,7 +1295,8 @@ function scene:create( event )
 	searchLeftDraw.x=searchhBg.x+searchhBg.contentWidth/2-searchLeftDraw.contentWidth
 	searchLeftDraw.y=searchhBg.y
 
-	search =  native.newTextField( searchhBg.x-searchhBg.contentWidth/2, searchhBg.y, searchhBg.contentWidth-25, 24 )
+
+	search =  native.newTextField( searchhBg.x-searchhBg.contentWidth/2+4, searchhBg.y, searchhBg.contentWidth-25, 24 )
 	search.anchorX=0
 	search.font=native.newFont("Roboto-Light",14)
 	--search:resizeFontToFitHeight()

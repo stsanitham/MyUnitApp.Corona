@@ -727,21 +727,22 @@ local workingdir=""
 
 
 
-			-- if #file_array == 0  then
-			-- 	NoEvent = display.newText( sceneGroup, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
-			-- 	NoEvent.x=W/2;NoEvent.y=H/2
-			-- 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-		    -- end
+			if #file_array == 0  then
+				NoEvent = display.newText( sceneGroup, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
+				NoEvent.x=W/2;NoEvent.y=H/2
+				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+		    end
 
 
-		 --    for i = 1, #file_array do
-		 --       -- Insert a row into the tableView
-		 --       Documents_list:insertRow{ rowHeight = 45,rowColor = 
-		 --       {
-		 --    	default = { 1, 1, 1, 0 },
-		 --    	over={ 1, 0.5, 0, 0 },
-		 --    	}}
-		 --    end
+
+		    for i = 1, #file_array do
+		        -- Insert a row into the tableView
+		        Documents_list:insertRow{ rowHeight = 45,rowColor = 
+		        {
+		    	default = { 1, 1, 1, 0 },
+		    	over={ 1, 0.5, 0, 0 },
+		    	}}
+		    end
 
 
 
