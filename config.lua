@@ -1,5 +1,5 @@
 
-AppMode = "Dev"
+AppMode = "Staging"
 AppPlatform="Android"
 AndroidVersion="1.2.7"
 IosVersion="1.2.7"

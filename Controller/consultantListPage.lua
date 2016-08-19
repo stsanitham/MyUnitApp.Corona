@@ -16,7 +16,9 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 local tabBarGroup = display.newGroup( )
 require( "Controller.genericAlert" )
---------------- Initialization -------------------
+
+--------------- Initialization ----------------------------------------------------
+
 
 local W = display.contentWidth;H= display.contentHeight
 
@@ -1989,7 +1991,6 @@ function scene:create( event )
 	subjectBar.anchorY = 0
 	subjectBar.isVisible = false
 	subjectBar:setFillColor(0,0,0,0.1)
->>>>>>> origin/MUB_V1.2.4
 
 		Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 		Background.x=W/2;Background.y=H/2

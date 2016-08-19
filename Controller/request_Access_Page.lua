@@ -12,7 +12,7 @@ require( "Utils.Utility" )
 local style = require("res.value.style")
 local List_array = {}
 local json = require("json")
-local mkRank_id=0
+local mkRank_id = 0
 local current_textField,defalut
 local rankGroup = display.newGroup()
 local RequestFromStatus = ""
