@@ -600,21 +600,18 @@ local workingdir=""
 		        function getFileList()
 
 
-							for j=#file_array, 1, -1 do 
-								file_array[#file_array] = nil
-							end
-
+						for j=#file_array, 1, -1 do 
+							file_array[#file_array] = nil
+						end
 
 
 						if isAndroid then
-
 							workingdir = "/"
-
 						else
-
 							workingdir = system.pathForFile( "" ,system.DocumentsDirectory )
-
+							print("workingdir : "..workingdir)
 						end
+
 
 						local path = workingdir
 						local pathType = ""
@@ -631,7 +628,7 @@ local workingdir=""
 						-- Check if path is a directory
 						if pathType == "directory" then
 
-								  for file in lfs.dir( workingdir ) do
+								  for file in lfs.dir( workingdir ) do 
 
 											if "." ~= file and ".." ~= file and " .png" ~= file then
 
@@ -661,33 +658,36 @@ local workingdir=""
 										    end
 									end
 
+							    if Documents_list ~= nil then Documents_list:deleteAllRows() end
+
+
+							    for i = 1, #file_array do
+
+							        Documents_list:insertRow{ rowHeight = 45,rowColor = 
+							        {
+							    	default = { 1, 1, 1, 0 },
+							    	over={ 1, 0.5, 0, 0 },
+							    	}}
+
+							    end
+
+
 						else
 
 
-															local option ={
-																        {content=CommonWords.ok,positive=true},
-															          }
-															genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
+												local option ={
+													        {content=CommonWords.ok,positive=true},
+												          }
+												genericAlert.createNew(ResourceLibrary.InvalidFile, ResourceLibrary.InvalidFileError ,option)
 
-															title.text = ResourceLibrary.PageTitle
-														    title.type = "outerfile"
-														    back_icon_bg.type = "outerfile"
-														    back_icon.type = "outerfile"
+												title.text = ResourceLibrary.PageTitle
+											    title.type = "outerfile"
+											    back_icon_bg.type = "outerfile"
+											    back_icon.type = "outerfile"
 						end
 
 
 					end
-
-
-
-
-		 
-
-
-		         
-
-		    
-
 
 
 			Documents_list = widget.newTableView
@@ -714,8 +714,7 @@ local workingdir=""
 			if not isAndroid then   
 				  getFileList()
 			else
-
-				createPathlist(FullPath,rowvalues,rowfilemode)
+				  createPathlist(FullPath,rowvalues,rowfilemode)
 			end
 
 
@@ -732,7 +731,6 @@ local workingdir=""
 				NoEvent.x=W/2;NoEvent.y=H/2
 				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 		    end
-
 
 
 		    for i = 1, #file_array do

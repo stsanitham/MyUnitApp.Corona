@@ -50,6 +50,8 @@ local RecentTab_Topvalue = 70
 
 local optionValue = "list" , tabBar , title_bg
 
+local title
+
 local resourceGridArray = {}
 
 local ResourceList_scrollview
@@ -711,25 +713,7 @@ local function onRowRenderCategoryList( event )
 end
 
 
-
-
-
-local function GetCategoryList( CategoryId_value,Category_Name_Value )
-
-			print("Category_Name_Value : "..Category_Name_Value)
-
-			title.text = ResourceLibrary.PageTitle.." - "..Category_Name_Value
-
-
-		    addImageBg.alpha=0
-
-		    changecategory_icon:toFront()
-
-            transition.to( changeCategoryGroup, { time=100, x= -15 } )
-            transition.to( changecategory_icon, { time=100, x= -15 } )
-
-
-       local function getDocumentLibByCategoryId(response)
+ local function getDocumentLibByCategoryId(response)
 
 			-- for j=#List_array, 1, -1 do 
 			-- 	display.remove(List_array[#List_array])
@@ -737,6 +721,10 @@ local function GetCategoryList( CategoryId_value,Category_Name_Value )
 			-- end
 
 			List_array = response
+
+
+										--title.text = ResourceLibrary.PageTitle.." - "..Category_Name_Value
+
 
 			       	if optionValue == "list" then
 
@@ -783,6 +771,21 @@ local function GetCategoryList( CategoryId_value,Category_Name_Value )
 		end
 
 
+
+local function GetCategory( value,Category_Name_Value )
+
+	CategoryId_value = value
+
+		    addImageBg.alpha=0
+
+		    changecategory_icon:toFront()
+
+            transition.to( changeCategoryGroup, { time=100, x= -15 } )
+            transition.to( changecategory_icon, { time=100, x= -15 } )
+
+
+      
+
 		Webservice.GetDocumentibByCategoryId(CategoryId_value,getDocumentLibByCategoryId)
 
 end
@@ -812,9 +815,9 @@ local function onRowTouchCategoryList( event )
 
 		Category_Name_Value = Category_array[row.index].MyDocumentCategoryName
 
-		title.text = ResourceLibrary.PageTitle.." - "..Category_Name_Value
+		title.text = ResourceLibrary.PageTitle.." - "..Category_array[row.index].MyDocumentCategoryName
 
-		GetCategoryList(CategoryId_value,Category_Name_Value)
+		GetCategory(CategoryId_value,Category_Name_Value)
 
 
 	end
@@ -1115,57 +1118,6 @@ function get_documentupload(response)
 					-- Webservice.GET_ALL_MYUNITAPP_DOCUMENT(get_allDocument)
 
 
-
-				       local function getDocumentLibByCategoryId(response)
-
-							-- for j=#List_array, 1, -1 do 
-							-- 	display.remove(List_array[#List_array])
-							-- 	List_array[#List_array] = nil
-							-- end
-
-							List_array = response
-
-							title.text = ResourceLibrary.PageTitle.." - "..Category_Name_Value
-
-
-							       	if optionValue == "list" then
-
-											for j=1,#resourceGridArray do 
-												if resourceGridArray[j] then resourceGridArray[j]:removeSelf();resourceGridArray[j] = nil	end
-											end
-
-
-											Document_Lib_list:deleteAllRows()
-
-											Document_Lib_list:toFront()
-
-											for i = 1, #List_array do
-													    -- Insert a row into the tableView
-													    Document_Lib_list:insertRow{ rowHeight = 40,rowColor = 
-													    {
-													    	default = { 1, 1, 1, 0 },
-													    	over={ 1, 0.5, 0, 0 },
-
-													    	}}
-													    end
-
-									else    
-
-														if careerList_scrollview ~= nil then careerList_scrollview:toFront() end
-
-														addEventBtn:toFront()
-
-														Document_Lib_list:deleteAllRows()
-
-														ResourceGrid_list(List_array)		
-
-									end
-
-
-						end
-
-
-
 						Webservice.GetDocumentibByCategoryId(CategoryId_value,getDocumentLibByCategoryId)
 
 
@@ -1217,7 +1169,7 @@ local function handleSwipe( event )
     if ( event.phase == "moved" ) then
         local dX = event.x - event.xStart
         print( event.x, event.xStart, dX )
-        if ( dX > 10 ) then
+        if ( dX > 3 ) then
             --swipe right
             local spot = RIGHT
             if ( event.target.x == LEFT ) then
@@ -1229,49 +1181,6 @@ local function handleSwipe( event )
             changeCategoryGroup.isVisible = true
             transition.to( changeCategoryGroup, { time=500, x=spot,transition=easing.outQuart } )
             transition.to( event.target, { time=480, x=spot,transition=easing.outQuart } )
-
-
-			      	   	local function getCategoryList( response )
-
-									-- for j=#Category_array, 1, -1 do 
-									-- 	display.remove(Category_array[#Category_array])
-									-- 	Category_array[#Category_array] = nil
-									-- end
-
-								    Category_array = response
-
-									Category_List:deleteAllRows()
-
-									Category_List:toFront()
-
-
-									if #Category_array == 0  then
-										NoEvent = display.newText( scene.view, "No Categories Found", 0,0,0,0,native.systemFontBold,16)
-										NoEvent.x=W/2;NoEvent.y=H/2
-										NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-									end
-
-
-					       			 print(" ************* Category List ************* " ,json.encode(Category_array))
-
-
-									for i = 1, #Category_array do
-								    -- Insert a row into the tableView
-								    Category_List:insertRow{ rowHeight = 36,rowColor = 
-							        {
-							    	default = { 1, 1, 1, 0 },
-							    	over={ 1, 0.5, 0, 0 },
-
-							    	}}
-
-								    end
-
-
-
-					    end
-
-				        Webservice.GetDocumentLibraryCategory(getCategoryList)
-
 
         elseif ( dX < -5 ) then
             --swipe left
@@ -1399,7 +1308,7 @@ function scene:create( event )
 				changecategory_icon.anchorX = 0
 				changecategory_icon.anchorY=0
 				changecategory_icon.isVisible = true
-				changecategory_icon:addEventListener("touch",handleSwipe)
+				--changecategory_icon:addEventListener("touch",handleSwipe)
 
 				changecategory_icon:toFront()
 
@@ -1408,7 +1317,7 @@ function scene:create( event )
 				changecategory_touch.anchorX = 0
 				changecategory_touch.isVisible = false
 				changecategory_touch.anchorY = 0
-				changecategory_touch:addEventListener("touch",handleSwipe)
+				--changecategory_touch:addEventListener("touch",handleSwipe)
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------
@@ -1605,17 +1514,12 @@ function scene:show( event )
 			
 				--Webservice.GET_ALL_MYUNITAPP_DOCUMENT(get_allDocument)
 
-
-			-- local Category_Name = "Uncategorized"
-
-		 --    title.text = ResourceLibrary.PageTitle.." - "..Category_Name
-
-		 --    GetCategoryList(CategoryId_value,Category_Name)
-
-
 		 local Category_Name
 
 	      	   	local function getCategoryList( response )
+
+			      	   		changecategory_icon:addEventListener("touch",handleSwipe)
+							changecategory_touch:addEventListener("touch",handleSwipe)
 
 						    Category_array = response
 
@@ -1651,7 +1555,7 @@ function scene:show( event )
 
 						    title.text = ResourceLibrary.PageTitle.." - "..Category_Name
 
-					        GetCategoryList(Category_array[1].MyDocumentCategoryId, Category_array[1].MyDocumentCategoryName)
+					        GetCategory(Category_array[1].MyDocumentCategoryId, Category_array[1].MyDocumentCategoryName)
 
 
 			    end

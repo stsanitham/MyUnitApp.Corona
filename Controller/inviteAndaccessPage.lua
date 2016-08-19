@@ -1117,7 +1117,6 @@ local function CreateListUpdate( val,list)
 
 	  scrollView:insert(tempGroup)
 
-	  print( "@@@@@@@@@" )
 
 
 end
@@ -1761,8 +1760,17 @@ end
 
 										if response[i].PhoneNumber ~= nil and response[i].PhoneNumber ~= "" then 
 
-												if string.find(response[i].PhoneNumber:lower(),search.text:lower()) ~= nil then
+											local storedvalue 
 
+												storedvalue = string.gsub(response[i].PhoneNumber:lower(),"%(","") 
+												storedvalue = string.gsub(storedvalue:lower(),"%)","") 
+												storedvalue = string.gsub(storedvalue:lower(),"%-","")
+												--storedvalue = string.gsub(storedvalue:lower()," ","",3) 
+
+												print(storedvalue)
+
+
+												if string.find(storedvalue,search.text:lower()) ~= nil then
 
 													if added == false then
 
@@ -2132,7 +2140,16 @@ local function searchListener( event )
 
 										if searchArraytotal[i].PhoneNumber ~= nil and searchArraytotal[i].PhoneNumber ~= "" then 
 
-												if string.find(searchArraytotal[i].PhoneNumber:lower(),event.text:lower()) ~= nil then
+											   local storedvalue 
+
+												storedvalue = string.gsub(searchArraytotal[i].PhoneNumber:lower(),"%(","") 
+												storedvalue = string.gsub(storedvalue:lower(),"%)","") 
+												storedvalue = string.gsub(storedvalue:lower(),"%-","")
+												--storedvalue = string.gsub(storedvalue:lower()," ","",3) 
+
+												print(storedvalue)
+
+												if string.find(storedvalue,event.text:lower()) ~= nil then
 
 												print("Here last phone>>>>>>>>>>")
 
@@ -2646,7 +2663,6 @@ end
 
 		   			AlertGroup.isVisible = false
 
-		   			print( "@@@@@@@@@" )
 		   			ContactIdValue = Details.MyUnitBuzzRequestAccessId
 
 		   			if popUpGroup.numChildren ~= nil then

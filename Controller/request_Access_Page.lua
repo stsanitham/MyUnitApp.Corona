@@ -2,7 +2,7 @@
 --
 -- request access
 --
-----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
 local widget = require( "widget" )
@@ -19,7 +19,7 @@ local RequestFromStatus = ""
 local unitnumberflag = false
 require( "Controller.genericAlert" )
 
---------------- Initialization -------------------
+------------------------------------- Initialization ---------------------------------------------
 
 local W = display.contentWidth;
 local H= display.contentHeight

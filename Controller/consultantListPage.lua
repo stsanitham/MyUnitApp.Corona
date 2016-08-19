@@ -16,9 +16,7 @@ local path = system.pathForFile( "MyUnitBuzz.db", system.DocumentsDirectory )
 local db = sqlite3.open( path )
 local tabBarGroup = display.newGroup( )
 require( "Controller.genericAlert" )
-
---------------- Initialization ----------------------------------------------------
-
+--------------- Initialization -------------------
 
 local W = display.contentWidth;H= display.contentHeight
 
@@ -63,8 +61,6 @@ local AttachmentName,AttachmentPath = "",""
 local selected_Contact = {}
 
 local editId,GroupIcon
-
-local selected_Contact={}
 
 local groupteammemberid = {}
 
@@ -420,8 +416,6 @@ local function onSwitchPress( event )
 
 		checkedstate = checkedstate + 1
 
-		print( #selected_Contact )
-
 		selected_Contact[#selected_Contact+1] = contactid
 
 
@@ -441,7 +435,6 @@ local function onSwitchPress( event )
 
 	end
 
-	print(json.encode(selected_Contact))
 
 
 
@@ -1103,6 +1096,8 @@ end
 
 		AttachmentName = response.FileName
 		AttachmentPath = response.Abspath
+
+		print( AttachmentPath )
 
 
 	if GroupIcon then GroupIcon:removeSelf( );GroupIcon=nil end
@@ -1780,154 +1775,163 @@ function textField( event )
 --------------------------------------------------------------------------------------
 
 
-					if(validation == true) then
+if(validation == true) then
 
-						--GroupSubject.text = groupSubjectname
+	--GroupSubject.text = groupSubjectname
 
-						-- for i=1,#selected_Contact do
+	-- for i=1,#selected_Contact do
 
-						-- 	selected_Contact[i]=nil
+	-- 	selected_Contact[i]=nil
 
-						-- end
+	-- end
 
-						
-						-- for i=1,#careerListArray do
-
-
-						-- 	local tempGroup = careerListArray[i]
-
-						-- 	for j=1,tempGroup.numChildren do
-
-						-- 		if tempGroup[j].id == "email_Checkbox" then
-
-						-- 			if tostring(tempGroup[j].isOn) == "true" then
-
-						-- 				selected_Contact[#selected_Contact+1] = tempGroup[j].value
-
-						-- 						      				--print(selected_Contact[#selected_Contact+1])
-
-						-- 			end
-
-						-- 		end
-
-						-- 	end
-
-						-- end
-
-				      if pageid_value:lower() == "group" then
-
-				      	if #selected_Contact>0 then
-
-				      		if addGroupid_value ~= "editMember" then
-
-				      			groupteammemberids = 0
-
-				      		else
-
-				      			groupteammemberids = selected_Contact
-				      		end
+	
+	-- for i=1,#careerListArray do
 
 
-				      		if addGroupid_value ~= "editMember" then
+	-- 	local tempGroup = careerListArray[i]
 
-				      			Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",0,AttachmentPath,getChatGroupCreation)
+	-- 	for j=1,tempGroup.numChildren do
 
-				      		else
+	-- 		if tempGroup[j].id == "email_Checkbox" then
 
-				      			grouptypevalue = pageid_value:upper()
+	-- 			if tostring(tempGroup[j].isOn) == "true" then
 
-				      			Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,AttachmentPath,getChatGroupCreation)
-				      			
-	 						--Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
+	-- 				selected_Contact[#selected_Contact+1] = tempGroup[j].value
 
-	 					end
-	 					
-	 				else
+	-- 						      				--print(selected_Contact[#selected_Contact+1])
 
-	 					local option ={
-									 {content=CommonWords.ok,positive=true},
-								}
-								genericAlert.createNew(ChatPage.addTeamMember, ChatPage.addLimit,option)
+	-- 			end
 
-	 					--local alert = native.showAlert( ChatPage.addTeamMember, ChatPage.addLimit, { CommonWords.ok }, onComplete )
+	-- 		end
 
-	 				end
+	-- 	end
 
-	 			end
+	-- end
 
 
 
 
-	 			if pageid_value:lower() == "broadcast" then
+							      if pageid_value:lower() == "group" then
 
-	 				if #selected_Contact>0 then
-
-
-	 					if addGroupid_value ~= "editMember" then
-
-	 						groupteammemberids = 0
-
-	 					else
-
-	 						groupteammemberids = selected_Contact
-	 					end
+							      	if #selected_Contact>0 then
 
 
+							      		if addGroupid_value ~= "editMember" then
 
-	 					if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
+							      			groupteammemberids = 0
 
-			                  		 --GroupSubject.text = #selected_Contact.." recipients"
-			                  		 if addGroupid_value ~= "editMember" then
+							      		else
 
-			                  		 	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",0,AttachmentPath,getChatGroupCreation)
-
-			                  		 else
-
-			                  		 	grouptypevalue = pageid_value:upper()
-
-			                  		 	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true",grouptypevalue,editId,AttachmentPath,getChatGroupCreation)
+							      			groupteammemberids = selected_Contact
+							      		end
 
 
-				 					--	Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
-
-				 				end
 
 
-				 			else
+							      		if addGroupid_value ~= "editMember" then
+
+							      			Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","GROUP",0,AttachmentPath,getChatGroupCreation)
+
+							      		else
+
+							      			grouptypevalue = pageid_value:upper()
+
+							      			Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,AttachmentPath,getChatGroupCreation)
+							      			
+				 						--Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
 
 
-				 				if addGroupid_value ~= "editMember" then
-
-				 					Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",0,AttachmentPath,getChatGroupCreation)
-
+				 					end
+				 					
 				 				else
 
-				 					grouptypevalue = pageid_value:upper()
+				 					local option ={
+												 {content=CommonWords.ok,positive=true},
+											}
+											genericAlert.createNew(ChatPage.addTeamMember, ChatPage.addLimit,option)
 
-				 					Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,AttachmentPath,getChatGroupCreation)
-
-
-				 					--	Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
+				 					--local alert = native.showAlert( ChatPage.addTeamMember, ChatPage.addLimit, { CommonWords.ok }, onComplete )
 
 				 				end
 
-
 				 			end
-				 			
-				 		else
 
-				 			local option ={
-								 {content=CommonWords.ok,positive=true},
-							}
-							genericAlert.createNew(ChatPage.addTeamMember , ChatPage.addBroadcastLimit,option)
 
-				 			--local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addBroadcastLimit , { CommonWords.ok }, onComplete )
 
-				 		end
 
-				 	end
+				 			if pageid_value:lower() == "broadcast" then
 
-				end
+				 				if #selected_Contact>0 then
+
+
+				 					if addGroupid_value ~= "editMember" then
+
+				 						groupteammemberids = 0
+
+				 					else
+
+				 						groupteammemberids = selected_Contact
+				 					end
+
+
+
+				 					if GroupSubject.text == "" or GroupSubject.text == GroupSubject.placeholder or GroupSubject.text == GroupSubject.id then
+
+						                  		 --GroupSubject.text = #selected_Contact.." recipients"
+						                  		 if addGroupid_value ~= "editMember" then
+
+						                  		 	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true","BROADCAST",0,AttachmentPath,getChatGroupCreation)
+
+						                  		 else
+
+						                  		 	grouptypevalue = pageid_value:upper()
+
+						                  		 	Webservice.CreateMessageChatGroup(#selected_Contact.." "..ChatPage.BroadcastRecipients,"","true",grouptypevalue,editId,AttachmentPath,getChatGroupCreation)
+
+
+							 					--	Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
+
+							 				end
+
+
+							 			else
+
+
+							 				if addGroupid_value ~= "editMember" then
+
+							 					Webservice.CreateMessageChatGroup(GroupSubject.text,"","true","BROADCAST",0,AttachmentPath,getChatGroupCreation)
+
+							 				else
+
+							 					grouptypevalue = pageid_value:upper()
+
+							 					Webservice.CreateMessageChatGroup(GroupSubject.text,"","true",grouptypevalue,editId,AttachmentPath,getChatGroupCreation)
+
+
+							 					--	Webservice.AddTeamMemberToChatGroup(pageid_value:upper(),editId,selected_Contact,getAddedMembersInGroup)
+
+							 				end
+
+
+							 			end
+							 			
+							 		else
+
+							 			local option ={
+											 {content=CommonWords.ok,positive=true},
+										}
+										genericAlert.createNew(ChatPage.addTeamMember , ChatPage.addBroadcastLimit,option)
+
+							 			--local alert = native.showAlert( ChatPage.addTeamMember , ChatPage.addBroadcastLimit , { CommonWords.ok }, onComplete )
+
+							 		end
+
+							 	end
+
+
+
+							 end
 ---------------------------------------------------------------------------------------
 
 end
@@ -1947,23 +1951,23 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-		if event.params then
-			pageid_value = event.params.page_id
-		end
-
+	if event.params then
+		pageid_value = event.params.page_id
+	end
 
 	Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
 	Background.x=W/2;Background.y=H/2
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
+	tabBar.height = 40
+	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
 	menuBtn.x=10;menuBtn.y=20;
 
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo.png",398/4,81/4)
+	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
 	BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
 	BgText.anchorX=0
 
@@ -1981,7 +1985,7 @@ function scene:create( event )
 	count_details = display.newText(sceneGroup,"",0,0,native.systemFont,18)
 	count_details.anchorX = 0
 	count_details.isVisible = false
-	count_details.x= W-130;count_details.y = title_bg.y
+	count_details.x= W-150;count_details.y = title_bg.y
 	count_details:setFillColor(0)
 
 
@@ -1992,92 +1996,52 @@ function scene:create( event )
 	subjectBar.isVisible = false
 	subjectBar:setFillColor(0,0,0,0.1)
 
-		Background = display.newImageRect(sceneGroup,"res/assert/background.jpg",W,H)
-		Background.x=W/2;Background.y=H/2
-
-		tabBar = display.newRect(sceneGroup,W/2,0,W,40)
-		tabBar.y=tabBar.contentHeight/2
-		tabBar.height = 40
-		tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
-
-		menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
-		menuBtn.anchorX=0
-		menuBtn.x=10;menuBtn.y=20;
-
-		BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",398/4,81/4)
-		BgText.x=menuBtn.x+menuBtn.contentWidth+5;BgText.y=menuBtn.y
-		BgText.anchorX=0
-
-		title_bg = display.newRect(sceneGroup,0,0,W,30)
-		title_bg.x=W/2;title_bg.y = tabBar.y+tabBar.contentHeight-5
-		title_bg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-
-		title = display.newText(sceneGroup,FlapMenu.chatMessageTitle,0,0,native.systemFont,18)
-		title.anchorX = 0
-		title.x=5;title.y = title_bg.y
-		title:setFillColor(0)
-		title.text = ChatPage.Consultant_List
-
-		count_details = display.newText(sceneGroup,"",0,0,native.systemFont,18)
-		count_details.anchorX = 0
-		count_details.isVisible = false
-		count_details.x= W-150;count_details.y = title_bg.y
-		count_details:setFillColor(0)
-
-		subjectBar = display.newRect(sceneGroup,W/2,0,W,40)
-		subjectBar.y=title_bg.y+15
-		subjectBar.height = 40
-		subjectBar.anchorY = 0
-		subjectBar.isVisible = false
-		subjectBar:setFillColor(0,0,0,0.1)
-
-		backbutton = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",20/2,30/2)
-		backbutton.x=15
-		backbutton:setFillColor(0,0,0)
-		backbutton.isVisible = false
-		backbutton.y=subjectBar.y +12
-		backbutton.anchorY=0
+	backbutton = display.newImageRect(sceneGroup,"res/assert/left-arrow(white).png",20/2,30/2)
+	backbutton.x=15
+	backbutton:setFillColor(0,0,0)
+	backbutton.isVisible = false
+	backbutton.y=subjectBar.y +12
+	backbutton.anchorY=0
 
 			--GroupIcon = display.newImageRect( response.FileName,system.DocumentsDirectory, 38, 33 )
 
-		if event.params.contactId then
-			editId = event.params.contactId
+	if event.params.contactId then
+		editId = event.params.contactId
 
-			local filePath = system.pathForFile( editId..".png", system.DocumentsDirectory )
-	            -- Play back the recording
-	            local file = io.open( filePath)
-	            
-	            if file then
-
-	            	io.close( file )
-	            	GroupIcon = display.newImageRect( sceneGroup, editId..".png", system.DocumentsDirectory, 38, 33 )
-	            	GroupIcon.width = 38;GroupIcon.height = 33
-            		local mask = graphics.newMask( "res/assert/masknew.png" )
-					GroupIcon:setMask( mask )
-					GroupIcon.maskScaleX, GroupIcon.maskScaleY = 0.95,0.88
-
-					GroupIcon.x = backbutton.x+backbutton.contentWidth+5
-					GroupIcon.y = subjectBar.y +20
-					GroupIcon.anchorX=0
-					GroupIcon.id = "imgEdit"
-					GroupIcon.isVisible = false
-					GroupIcon:addEventListener( "touch"	, bgTouch )
-
-				    GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
-					GroupIconEdit.x = GroupIcon.x
-					GroupIconEdit.y = GroupIcon.y
-					GroupIconEdit.anchorX=0
-					GroupIconEdit.id = "imgEdit"
-					GroupIconEdit.isVisible = false
-
-	            end
-		end
+				local filePath = system.pathForFile( editId..".png", system.DocumentsDirectory )
+			            -- Play back the recording
+			            local file = io.open( filePath)
+			            
+			            if file then
+			            	io.close( file )
+			            	GroupIcon = display.newImageRect( sceneGroup, editId..".png", system.DocumentsDirectory, 38, 33 )
+			            	GroupIcon.width = 38;GroupIcon.height = 33
+			            		local mask = graphics.newMask( "res/assert/masknew.png" )
+    							GroupIcon:setMask( mask )
+    							GroupIcon.maskScaleX, GroupIcon.maskScaleY = 0.95,0.88
 
 
+    							GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+								GroupIcon.y = subjectBar.y +20
+								GroupIcon.anchorX=0
+								GroupIcon.id = "imgEdit"
+								GroupIcon.isVisible = false
+								GroupIcon:addEventListener( "touch"	, bgTouch )
 
-		if not GroupIcon then 
+							    GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
+								GroupIconEdit.x = GroupIcon.x
+								GroupIconEdit.y = GroupIcon.y
+								GroupIconEdit.anchorX=0
+								GroupIconEdit.id = "imgEdit"
+								GroupIconEdit.isVisible = false
 
-			local imagename=""
+		
+			            end
+	end
+	if not GroupIcon then 
+
+
+				local imagename=""
 
 			if pageid_value ~= nil and pageid_value:lower( ) == "group" then
 				imagename = "res/assert/defalutgroup.png"
@@ -2087,96 +2051,112 @@ function scene:create( event )
 				imagename = "res/assert/career-user.png"
 			end
 
-				GroupIcon = display.newImageRect( sceneGroup,imagename, 38, 33 )
-				GroupIcon.x = backbutton.x + backbutton.contentWidth +5
-				GroupIcon.y = subjectBar.y +20
-				GroupIcon.anchorX=0
-				GroupIcon.id = "imgEdit"
-				GroupIcon.isVisible = false
-				GroupIcon:addEventListener( "touch"	, bgTouch )
+		GroupIcon = display.newImageRect( sceneGroup,imagename, 38, 33 )
+		GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+		GroupIcon.y = subjectBar.y +20
+		GroupIcon.anchorX=0
+		GroupIcon.id = "imgEdit"
+		GroupIcon.isVisible = false
+		GroupIcon:addEventListener( "touch"	, bgTouch )
 
-				GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/add_thumb.png",38,33 )
-				GroupIconEdit.x = GroupIcon.x
-				GroupIconEdit.y = GroupIcon.y
-				GroupIconEdit.anchorX=0
-				GroupIconEdit.id = "imgEdit"
-				GroupIconEdit.isVisible = false
+		GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/add_thumb.png",38,33 )
+		GroupIconEdit.x = GroupIcon.x
+		GroupIconEdit.y = GroupIcon.y
+		GroupIconEdit.anchorX=0
+		GroupIconEdit.id = "imgEdit"
+		GroupIconEdit.isVisible = false
+
 		
-		end
+	end
 
 	
-		GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-130, 25)
-		GroupSubject.id="groupSubject"
-		GroupSubject.y = GroupIcon.y+GroupIcon.contentHeight/2-GroupSubject.contentHeight/2
-		GroupSubject.size=14
-		GroupSubject.anchorX = 0
-		GroupSubject.isVisible = false
-		GroupSubject.x = GroupIcon.x+GroupIcon.contentWidth+10
-		GroupSubject:setReturnKey( "done" )
-		GroupSubject.hasBackground = false	
-		GroupSubject.placeholder = ChatPage.groupSubject
-		sceneGroup:insert(GroupSubject)
 
-		create_groupicon =  display.newImageRect(sceneGroup,"res/assert/tick.png",25,22)
-		create_groupicon.anchorX=0
-		create_groupicon.isVisible = false
-		create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
-		create_groupicon.y=subjectBar.y +20
+		
+	
 
-		searchcontact_bg = display.newRect(sceneGroup,0,0,W,30)
-		searchcontact_bg.y = GroupSubject.y + GroupSubject.contentHeight + 5
-		searchcontact_bg.x = W - 30
-		searchcontact_bg.anchorX = 0
-		searchcontact_bg.id = "searchbg"
-		searchcontact_bg.isVisible=false
-		searchcontact_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
+	GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-130, 25)
+	GroupSubject.id="groupSubject"
+	GroupSubject.y = GroupIcon.y+GroupIcon.contentHeight/2-GroupSubject.contentHeight/2
+	GroupSubject.size=14
+	GroupSubject.anchorX = 0
+	GroupSubject.isVisible = false
+	GroupSubject.x = GroupIcon.x+GroupIcon.contentWidth+10
+	GroupSubject:setReturnKey( "done" )
+	GroupSubject.hasBackground = false	
+	GroupSubject.placeholder = ChatPage.groupSubject
+	sceneGroup:insert(GroupSubject)
 
-		searchicon_bg = display.newRect(sceneGroup,0,0,55,45)
-		searchicon_bg.y = count_details.y
-		searchicon_bg.x = W - 55
-		searchicon_bg.anchorX = 0
-		searchicon_bg.id = "searchbg"
-		searchicon_bg.isVisible=false
-		searchicon_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
-		searchicon_bg:addEventListener( "touch", searchTouch )
+	create_groupicon =  display.newImageRect(sceneGroup,"res/assert/tick.png",25,22)
+	create_groupicon.anchorX=0
+	create_groupicon.isVisible = false
+	create_groupicon.x=GroupSubject.x+GroupSubject.contentWidth+15
+	create_groupicon.y=subjectBar.y +20
 
-		searchcontact = display.newImageRect(sceneGroup,"res/assert/search(gray).png",18,18)
-		searchcontact.x = W-35
-		searchcontact:setFillColor(0)
-		searchcontact.alpha = 1
-		searchcontact.id = "searchbg"
-		searchcontact.anchorX = 0
-		searchcontact.isVisible=true
-		searchcontact.y=count_details.y
-		searchcontact:addEventListener( "touch", searchTouch )
 
-		searchtext_bg = display.newRect(sceneGroup,0,0,W,30)
-		searchtext_bg.y = searchcontact_bg.y
-		searchtext_bg.height = 30
-		searchtext_bg.x = W/2
-		searchtext_bg.isVisible=false
-		searchtext_bg:setFillColor(0,0,0,0.2)
+	searchcontact_bg = display.newRect(sceneGroup,0,0,W,30)
+	searchcontact_bg.y = GroupSubject.y + GroupSubject.contentHeight + 5
+	searchcontact_bg.x = W - 30
+	searchcontact_bg.anchorX = 0
+	searchcontact_bg.id = "searchbg"
+	searchcontact_bg.isVisible=false
+	searchcontact_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
 
-		search =  native.newTextField( searchtext_bg.x-searchtext_bg.contentWidth/2+7, searchtext_bg.y, searchtext_bg.contentWidth-15, 24 )
-		search.anchorX=0
-		search.size=14
-		search.isFontSizeScaled = false
-		search.text = ""
-		search:setReturnKey( "search" )
-		search.placeholder = CommonWords.search
-		search.hasBackground = true
-		search.isVisible = false
-		sceneGroup:insert(search)
-		search:addEventListener( "userInput", searchListener )
 
-		NoEvent = display.newText( sceneGroup, EventCalender.NoEvent , 0,0,0,0,native.systemFontBold,14)
-		NoEvent.x=W/2;NoEvent.y=H/2
-		NoEvent.isVisible=false
-		NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+	searchicon_bg = display.newRect(sceneGroup,0,0,55,45)
+	searchicon_bg.y = count_details.y
+	searchicon_bg.x = W - 55
+	searchicon_bg.anchorX = 0
+	searchicon_bg.id = "searchbg"
+	searchicon_bg.isVisible=false
+	searchicon_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
+	searchicon_bg:addEventListener( "touch", searchTouch )
 
-		Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
-		MainGroup:insert(sceneGroup)
+	searchcontact = display.newImageRect(sceneGroup,"res/assert/search_icon.png",46/2,46/2)
+	searchcontact.x = W-35
+	searchcontact:setFillColor(0)
+	searchcontact.alpha = 1
+	searchcontact.id = "searchbg"
+	searchcontact.anchorX = 0
+	searchcontact.isVisible=true
+	searchcontact.y=count_details.y
+	searchcontact:addEventListener( "touch", searchTouch )
+
+
+	searchtext_bg = display.newRect(sceneGroup,0,0,W,30)
+	searchtext_bg.y = searchcontact_bg.y
+	searchtext_bg.height = 30
+	searchtext_bg.x = W/2
+	searchtext_bg.isVisible=false
+	searchtext_bg:setFillColor(0,0,0,0.2)
+
+
+	search =  native.newTextField( searchtext_bg.x-searchtext_bg.contentWidth/2+7, searchtext_bg.y, searchtext_bg.contentWidth-15, 24 )
+	search.anchorX=0
+	search.size=14
+	search.isFontSizeScaled = false
+	search.text = ""
+	search:setReturnKey( "search" )
+	search.placeholder = CommonWords.search
+	search.hasBackground = true
+	search.isVisible = false
+	sceneGroup:insert(search)
+
+	search:addEventListener( "userInput", searchListener )
+
+
+
+	NoEvent = display.newText( sceneGroup, EventCalender.NoEvent , 0,0,0,0,native.systemFontBold,14)
+	NoEvent.x=W/2;NoEvent.y=H/2
+	NoEvent.isVisible=false
+	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+
+
+
+	Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
+
+
+	MainGroup:insert(sceneGroup)
 
 end
 
@@ -2195,7 +2175,7 @@ function scene:show( event )
 
 			pageid_value = event.params.page_id
 
-			selected_Contact = event.params.contacts
+			if event.params.contacts then selected_Contact = event.params.contacts end
 
 			if event.params.status ~= nil and event.params.status == "forward" then
 
@@ -2203,22 +2183,22 @@ function scene:show( event )
 				forwardDetail = event.params.forwardDetails
 				ChatDetail= event.params.ChatDetails
 
+
 			end
 
-			if status == "forward" then
+					if status == "forward" then
 
-				BackBtn = display.newImageRect( sceneGroup, "res/assert/right-arrow(gray-).png",15,15 )
-				BackBtn.anchorX = 0
-				BackBtn.x=25;BackBtn.y = title_bg.y
-				BackBtn.xScale=-1
-				BackBtn.id="back"
-				title.x = BackBtn.x+BackBtn.contentWidth-5
+			BackBtn = display.newImageRect( sceneGroup, "res/assert/right-arrow(gray-).png",15,15 )
+			BackBtn.anchorX = 0
+			BackBtn.x=25;BackBtn.y = title_bg.y
+			BackBtn.xScale=-1
+			BackBtn.id="back"
+			title.x = BackBtn.x+BackBtn.contentWidth-5
 
-				title.text = "Select Consultant"
+			title.text = "Select Consultant"
 
-				BackBtn:addEventListener( "touch", consultantTounch )
-			
-			end
+			BackBtn:addEventListener( "touch", consultantTounch )
+		end
 
 		end
 
@@ -2280,6 +2260,7 @@ function scene:show( event )
 			tab_Contact_btn.y=tab_Contact.y+tab_Contact_btn.contentHeight/2-8
 			tab_Contact_btn.anchorY=0
 
+			
 
 			tab_Group_txt = display.newText( tabBarGroup, ChatPage.Group ,0,0,native.systemFont,11 )
 			tab_Group_txt.x=tab_Group_btn.x;tab_Group_txt.y=tab_Group_btn.y+tab_Group_btn.contentHeight+5
@@ -2310,11 +2291,15 @@ function scene:show( event )
 
 		if addGroupid_value == "addGroup" and pageid_value == "group" then
 
-				RecentTab_Topvalue = 115
+			print("$%^$%^$%^$%^$%^$$%%%%%%%$^$%^$%^%$^^$%^$%")
+
+			RecentTab_Topvalue = 115
 
 				--GroupSubject.isVisible = false
 
 			elseif addGroupid_value == "addGroup" and pageid_value == "broadcast" then
+
+				print("$%^$%^$%^$%^$%^$$%% design issue %%%%%$^$%^$%^%$^^$%^$%")
 
 				RecentTab_Topvalue = 115
 
@@ -2357,6 +2342,7 @@ function scene:show( event )
 
 	    	if title.text == "Consultants" then
 
+
 		    	consultantList_scrollview = widget.newScrollView
 		    	{
 		    		top = RecentTab_Topvalue,
@@ -2391,15 +2377,18 @@ function scene:show( event )
 		    		verticalScrollingDisabled = false
 		    	}
 
+
 	    		consultantList_scrollview.y = 112
 	    		consultantList_scrollview.height = H - tabBar.height  - 105 + 15
 
 	        end
-
 	    	consultantList_scrollview.anchorY = 0
 
 	    	sceneGroup:insert(consultantList_scrollview)
 	    	
+
+
+
 	    elseif phase == "did" then
 
 	    	Background:addEventListener( "touch", bgTouch )
@@ -2407,6 +2396,8 @@ function scene:show( event )
 	    	BgText:addEventListener("touch",menuTouch)
 	    	backbutton:addEventListener("touch",backactionTouch)
 	    	GroupSubject:addEventListener("userInput",textField)
+	    	
+
 	    	create_groupicon:addEventListener("touch",createGroup)
 
 	    	Runtime:addEventListener( "key", onKeyEvent )
@@ -2431,6 +2422,7 @@ function scene:show( event )
 			network.cancel( newtworkArray[#newtworkArray] )
 
 			if addGroupid_value == "editMember" then
+
 
 				print( "Name : "..editedgroupname )
 				
@@ -2464,15 +2456,16 @@ function scene:show( event )
 		elseif phase == "did" then
 
 
+
 		end	
 
 	end
 
 
-
-
 	function scene:destroy( event )
 		local sceneGroup = self.view
+
+
 
 	end
 

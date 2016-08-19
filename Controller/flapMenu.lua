@@ -689,25 +689,36 @@ function scene:show( event )
 				rect.x = menuArray_display[#menuArray_display].x;
 				rect.anchorX=0
 				--rect:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-				rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
+				rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight;
 				rect:setFillColor(color.Gray)
 				flapScroll:insert( rect )
+				rect.alpha=0
 
 				menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value+5)
 				menuArray_display[#menuArray_display].anchorY=0
 				menuArray_display[#menuArray_display].anchorX=0
 				menuArray_display[#menuArray_display].alpha=1
-				menuArray_display[#menuArray_display]:setFillColor( 0,0,0,0.2)
+				menuArray_display[#menuArray_display]:setFillColor( 1)
 				menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight
 				flapScroll:insert( menuArray_display[#menuArray_display] )
 				menuArray_display[#menuArray_display].name = "SpecialRecognition"
 				menuArray_display[#menuArray_display].id="specialRecognition"
 				menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 
-				specialRecognitionLbl = display.newText(string.upper(CommonWords.SpecialRecognitionText),0,0,panel.contentWidth,0,native.systemFontBold,15.5)
+
+
+				spl_icon = display.newImageRect("res/assert/unitGoals.png",20,20)
+				spl_icon.anchorX = 0
+				spl_icon.x=17.5
+				spl_icon.alpha=0.8
+				spl_icon:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
+				spl_icon.y=menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight/2
+				flapScroll:insert( spl_icon )
+
+				specialRecognitionLbl = display.newText((CommonWords.SpecialRecognitionText),0,0,panel.contentWidth,0,"Roboto-Regular",15.5)
 				specialRecognitionLbl.anchorX = 0
-				specialRecognitionLbl.x=17.5
-				specialRecognitionLbl:setFillColor(Utils.convertHexToRGB(color.secondaryColor))
+				specialRecognitionLbl.x=chat_message_icon.x+chat_message_icon.contentWidth+17
+				specialRecognitionLbl:setFillColor(Utils.convertHexToRGB(color.Black))
 				specialRecognitionLbl.y= rect.y+24
 				flapScroll:insert( specialRecognitionLbl )
 
@@ -728,20 +739,28 @@ function scene:show( event )
 				menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 				menuArray_display[#menuArray_display].anchorY=0
 				menuArray_display[#menuArray_display].anchorX=0
-				menuArray_display[#menuArray_display].alpha=0.01
-				--menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+				--menuArray_display[#menuArray_display].alpha=0.01
+				menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.lightGray ))
 				menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight
 				flapScroll:insert( menuArray_display[#menuArray_display] )
 				menuArray_display[#menuArray_display].name = "Social"
 				menuArray_display[#menuArray_display].id="social"
 
 
-				socilaLbl = display.newText(CommonWords.InviteAccessText,0,0,panel.contentWidth,0,"Roboto-Bold",sp_commonLabel.textSize)
+				socilaLbl = display.newText(CommonWords.InviteAccessText:upper(),0,0,panel.contentWidth,0,"Roboto-Bold",sp_commonLabel.textSize)
 				socilaLbl.anchorX = 0
 				socilaLbl.x=40
-				socilaLbl:setFillColor(0)
+				socilaLbl:setFillColor(Utils.convertHexToRGB(color.secondaryColor))
 				socilaLbl.y= rect.y+21
 				flapScroll:insert( socilaLbl )
+
+					rect = display.newRect(0,0,panel.width,1)
+				rect.x = menuArray_display[#menuArray_display].x;
+				rect.anchorX=0
+				rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight;
+				rect:setFillColor(color.Gray)
+				flapScroll:insert( rect )
+
 
 				--Contacts with Access
 
@@ -750,7 +769,7 @@ function scene:show( event )
 				menuArray_display[#menuArray_display].anchorX=0
 				menuArray_display[#menuArray_display].alpha=0.01
 				--menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
-				menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight-5
+				menuArray_display[#menuArray_display].y=menuArray_display[#menuArray_display-1].y+menuArray_display[#menuArray_display-1].contentHeight+5
 				flapScroll:insert( menuArray_display[#menuArray_display] )
 				menuArray_display[#menuArray_display]:addEventListener("touch",MenuTouchAction)
 				menuArray_display[#menuArray_display].name = "GRANT"
@@ -893,22 +912,23 @@ function scene:show( event )
 				-----
 
 
-				rect = display.newRect(0,0,panel.width,1)
-				rect.x = menuArray_display[#menuArray_display].x;
-				rect.anchorX=0
-				rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
-				rect:setFillColor(color.Gray)
-				flapScroll:insert( rect )
 
 
 				if isGoogle == true or isFacebook == true or isTwitter == true then
 
 
+					rect = display.newRect(0,0,panel.width,1)
+					rect.x = menuArray_display[#menuArray_display].x;
+					rect.anchorX=0
+					rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight+5;
+					rect:setFillColor(color.Gray)
+					flapScroll:insert( rect )
+
 					menuArray_display[#menuArray_display+1] = display.newRect(0,0,panel.width,space_value)
 					menuArray_display[#menuArray_display].anchorY=0
 					menuArray_display[#menuArray_display].anchorX=0
-					menuArray_display[#menuArray_display].alpha=0.01
-					--menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.flap_selected ))
+					--menuArray_display[#menuArray_display].alpha=0.01
+					menuArray_display[#menuArray_display]:setFillColor( Utils.convertHexToRGB(color.lightGray ))
 					menuArray_display[#menuArray_display].y=rect.y+rect.contentHeight
 					flapScroll:insert( menuArray_display[#menuArray_display] )
 					menuArray_display[#menuArray_display].name = "Social"
@@ -916,12 +936,20 @@ function scene:show( event )
 
 
 
-					socilaLbl = display.newText(FlapMenu.Social_Media,0,0,panel.contentWidth,0,"Roboto-Bold",sp_commonLabel.textSize)
+					socilaLbl = display.newText(FlapMenu.Social_Media:upper( ),0,0,panel.contentWidth,0,"Roboto-Bold",sp_commonLabel.textSize)
 					socilaLbl.anchorX = 0
 					socilaLbl.x=40
-					socilaLbl:setFillColor(0)
+					socilaLbl:setFillColor(Utils.convertHexToRGB(color.secondaryColor))
 					socilaLbl.y= rect.y+21
 					flapScroll:insert( socilaLbl )
+
+
+						rect = display.newRect(0,0,panel.width,1)
+						rect.x = menuArray_display[#menuArray_display].x;
+						rect.anchorX=0
+						rect.y = menuArray_display[#menuArray_display].y+menuArray_display[#menuArray_display].contentHeight;
+						rect:setFillColor(color.Gray)
+						flapScroll:insert( rect )
 
 
 				end
