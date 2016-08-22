@@ -499,7 +499,7 @@ end
     		"File": "]]..file_inbytearray..[[",
     		"FileName": "]]..filename..[[",
     		"FileType": "MUB",
-    		"IsOverwrite": true,
+    		"IsOverwrite": true
     	}
     	]]
 

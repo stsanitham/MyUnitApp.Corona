@@ -26,6 +26,7 @@ local menuBtn,tabButtons,chattabBar,pagervalue
 
 openPage="MessagingPage"
 
+
 local searchArraytotal= {}
 
 local TotalArrayValue = {}
@@ -61,6 +62,7 @@ local AttachmentName,AttachmentPath = "",""
 local selected_Contact = {}
 
 local editId,GroupIcon
+
 
 local groupteammemberid = {}
 
@@ -416,6 +418,8 @@ local function onSwitchPress( event )
 
 		checkedstate = checkedstate + 1
 
+		print( #selected_Contact )
+
 		selected_Contact[#selected_Contact+1] = contactid
 
 
@@ -435,6 +439,7 @@ local function onSwitchPress( event )
 
 	end
 
+	print(json.encode(selected_Contact))
 
 
 
@@ -476,12 +481,15 @@ end
 
 
 
+
+
 local function careePath_list( list )
 
 	for j=#careerListArray, 1, -1 do 
 		display.remove(careerListArray[#careerListArray])
 		careerListArray[#careerListArray] = nil
 	end
+
 
 	-- for j=#searchArray_Total, 1, -1 do 
 		-- 	display.remove(searchArray_Total[#searchArray_Total])
@@ -507,7 +515,9 @@ local function careePath_list( list )
 
 			local Image 
 
-		    local tempHeight = 10
+			local tempHeight = 0
+
+
 
 			local background = display.newRect(tempGroup,0,0,W,50)
 
@@ -533,10 +543,9 @@ local function careePath_list( list )
 
 			parentTitle.anchorY = 0
 			parentTitle.x=W/2;parentTitle.y=tempHeight+parentTitle.contentHeight/2
-			parentTitle:setFillColor(Utility.convertHexToRGB(color.tabBarColor))		
+			parentTitle:setFillColor(Utility.convertHexToRGB(color.primaryColor))		
 
 			if viewValue == "position" then
-
 				parent_centerText = display.newText(tempGroup,header_value,0,0,native.systemFontBold,14)
 			else
 				parent_centerText = display.newText(tempGroup,header_value:upper(),0,0,native.systemFontBold,14)
@@ -601,7 +610,7 @@ local function careePath_list( list )
 		Name_txt.x=60;Name_txt.y=background.y+background.height/2-10
 		Name_txt.anchorX=0
 		Utils.CssforTextView(Name_txt,sp_labelName)
-		Name_txt:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+		Name_txt:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 		background.name = list[i].Name
 
@@ -910,6 +919,7 @@ local function searchListener( event )
 
 						local list_Name = searchArray[i].Last_Name
 
+						
 
 						if searchArray[i].First_Name then
 
@@ -933,16 +943,22 @@ local function searchListener( event )
 
 						byNameArray[#byNameArray+1] = temp
 
+
 					end
 
-					    careePath_list(byNameArray)
+					careePath_list(byNameArray)
 
 					else
 
-						NoEvent.isVisible = true
 
-						NoEvent.text = "No Contacts Found"
+
+										NoEvent.isVisible = true
+
+										NoEvent.text = "No Contacts Found"
+
 								
+
+
 			        end
 
 
@@ -953,6 +969,9 @@ end
 end
 
 end
+
+
+
 
 
 
@@ -974,101 +993,63 @@ end
 					        	if searchtext_bg.isVisible == false and search.isVisible == false then
 
 
-					        		if title.text == "Consultants" then
+					        		native.setKeyboardFocus(search)
 
-						        		print("&&&&&&&& true")
+					        		searchtext_bg.isVisible = true
 
-						        		native.setKeyboardFocus(search)
+					        		search.isVisible = true
 
-						        		searchtext_bg.y = 85
-						        		search.y = searchtext_bg.y
-
-						        		searchtext_bg.isVisible = true
-
-						        		search.isVisible = true
-
-						        		consultantList_scrollview.y = searchtext_bg.y +searchtext_bg.contentHeight/2 
-						        		consultantList_scrollview.height = H - tabBar.height - consultantList_scrollview.y 
-						        		consultantList_scrollview.anchorY = 0
-
-						        		searchflag = "true"
-
-						        		consultantList_scrollview:scrollToPosition
-											{
-												y = 0,
-												time = 200,
-											}
+						        if addGroupid_value ~= nil and (addGroupid_value == "editMember" or addGroupid_value == "addGroup") then
 
 
-					        		else
+					        		consultantList_scrollview.y = consultantList_scrollview.y  + 26
+					        		consultantList_scrollview.bottomPadding = 30
 
-						        		print("&&&&&&&& true else condition")
+					        	else
+					        		searchtext_bg.y = searchtext_bg.y - 40
+					        		search.y = searchtext_bg.y 
+					        		consultantList_scrollview.y = consultantList_scrollview.y  + 23
+					        		consultantList_scrollview.bottomPadding = 23
 
-						        		native.setKeyboardFocus(search)
+					        	end
+					        		--careePath_list(byNameArray)
+					        		searchflag = "true"
 
-						        		searchtext_bg.isVisible = true
-
-						        		search.isVisible = true
-
-						        		consultantList_scrollview.y = 130
-						        		consultantList_scrollview.height = H +10 - tabBar.height - 95
-						        		consultantList_scrollview.anchorY = 0
-
-						        		searchflag = "true"
-
-						        		consultantList_scrollview:scrollToPosition
-											{
-												y = 0,
-												time = 200,
-											}
-
-									end
+					        		-- consultantList_scrollview.y = consultantList_scrollview.y+30
+					        		-- consultantList_scrollview.height = consultantList_scrollview.contentHeight
 
 
 						        else
 
+						        	 if addGroupid_value ~= nil and (addGroupid_value == "editMember" or addGroupid_value == "addGroup") then
 
-							        	if title.text == "Consultants" then
+						        			consultantList_scrollview.y = consultantList_scrollview.y  - 26
+						        	else
+						        			searchtext_bg.y = searchtext_bg.y + 40
+					        				search.y = searchtext_bg.y 
+					        		consultantList_scrollview.y = consultantList_scrollview.y  - 23
 
-							        		print("close search function")
-
-							        			searchtext_bg.isVisible = false
-
-								        		search.isVisible = false
-
-								        		consultantList_scrollview.y = 70
-								        		consultantList_scrollview.height =  H - tabBar.height - consultantList_scrollview.y 
-								        		consultantList_scrollview.anchorY = 0
+						        	end
 
 
-							        	else
+						        	consultantList_scrollview.bottomPadding = 0
+						        	print("&&&&&&&& false")
 
+						        	searchtext_bg.isVisible = false
 
-							        	print("&&&&&&&& false")
+						        	native.setKeyboardFocus(nil)
 
-							        	searchtext_bg.isVisible = false
+					        		search.isVisible = false
 
-							        	native.setKeyboardFocus(nil)
+					        		--consultantList_scrollview.y = 112
 
-						        		search.isVisible = false
+					        		searchflag = "false"
 
-						        		consultantList_scrollview.y = 112
-						        		consultantList_scrollview.height = H + 40 + tabBar.height - consultantList_scrollview.y - 105
-						        		consultantList_scrollview.anchorY = 0
-
-
-						        		searchflag = "false"
-
-						        		consultantList_scrollview:scrollToPosition
-											{
-												y = 0,
-												time = 200,
-											}
-
-										end
+					        		
 
 
 						        end
+						        tabBarGroup:toFront( )
 
 				        end
 	     
@@ -1096,8 +1077,6 @@ end
 
 		AttachmentName = response.FileName
 		AttachmentPath = response.Abspath
-
-		print( AttachmentPath )
 
 
 	if GroupIcon then GroupIcon:removeSelf( );GroupIcon=nil end
@@ -1293,17 +1272,17 @@ local function TabbarTouch( event )
 			tab_Message_btn.anchorY=0
 			tab_Message_btn:scale(0.1,0.1)
 
-			tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 
 			local circle = display.newCircle( tabBarGroup, tab_Message_btn.x, tab_Message_btn.y+tab_Message_btn.contentHeight/2, 25 )
 			circle.strokeWidth=4
 			circle:scale(0.1,0.1)
 			circle.alpha=0.3
-			circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-			circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+			circle:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
+			circle:setStrokeColor( Utils.convertHexToRGB(color.primaryColor) )
 
 			tab_Group_txt:setFillColor( 0.3 )
-			tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Message_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 			tab_Contact_txt:setFillColor(  0.3  )
 
 
@@ -1352,9 +1331,9 @@ local function TabbarTouch( event )
 			tab_broadcast_btn.y=tab_Boradcast.y+tab_broadcast_btn.contentHeight/2-8
 			tab_broadcast_btn.anchorY=0
 			tab_broadcast_btn:scale(0.1,0.1)
-			tab_broadcast_btn:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_broadcast_btn:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 
-			tab_Broadcast_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Broadcast_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 			tab_Message_txt:setFillColor( 0.3 )
 			tab_Contact_txt:setFillColor(  0.3  )
 			tab_Group_txt:setFillColor(  0.3  )
@@ -1363,8 +1342,8 @@ local function TabbarTouch( event )
 			circle.strokeWidth=4
 			circle:scale(0.1,0.1)
 			circle.alpha=0.3
-			circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-			circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+			circle:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
+			circle:setStrokeColor( Utils.convertHexToRGB(color.primaryColor) )
 
 			local function listener1( obj )
 
@@ -1413,7 +1392,7 @@ local function TabbarTouch( event )
 			tab_Group_btn.anchorY=0
 			tab_Group_btn:scale(0.1,0.1)
 
-			tab_Group_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Group_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 			tab_Message_txt:setFillColor( 0.3 )
 			tab_Contact_txt:setFillColor(  0.3  )
 
@@ -1421,8 +1400,8 @@ local function TabbarTouch( event )
 			circle.strokeWidth=4
 			circle:scale(0.1,0.1)
 			circle.alpha=0.3
-			circle:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
-			circle:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor) )
+			circle:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
+			circle:setStrokeColor( Utils.convertHexToRGB(color.primaryColor) )
 
 			local function listener1( obj )
 
@@ -1960,8 +1939,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar.height = 40
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -1985,7 +1963,7 @@ function scene:create( event )
 	count_details = display.newText(sceneGroup,"",0,0,native.systemFont,18)
 	count_details.anchorX = 0
 	count_details.isVisible = false
-	count_details.x= W-150;count_details.y = title_bg.y
+	count_details.x= W-130;count_details.y = title_bg.y
 	count_details:setFillColor(0)
 
 
@@ -2021,19 +1999,19 @@ function scene:create( event )
     							GroupIcon.maskScaleX, GroupIcon.maskScaleY = 0.95,0.88
 
 
-    							GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+    									GroupIcon.x = backbutton.x + backbutton.contentWidth +5
 								GroupIcon.y = subjectBar.y +20
 								GroupIcon.anchorX=0
 								GroupIcon.id = "imgEdit"
 								GroupIcon.isVisible = false
 								GroupIcon:addEventListener( "touch"	, bgTouch )
 
-							    GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
+									GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
 								GroupIconEdit.x = GroupIcon.x
 								GroupIconEdit.y = GroupIcon.y
 								GroupIconEdit.anchorX=0
 								GroupIconEdit.id = "imgEdit"
-								GroupIconEdit.isVisible = false
+		GroupIconEdit.isVisible = false
 
 		
 			            end
@@ -2052,14 +2030,14 @@ function scene:create( event )
 			end
 
 		GroupIcon = display.newImageRect( sceneGroup,imagename, 38, 33 )
-		GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+			GroupIcon.x = backbutton.x + backbutton.contentWidth +5
 		GroupIcon.y = subjectBar.y +20
 		GroupIcon.anchorX=0
 		GroupIcon.id = "imgEdit"
 		GroupIcon.isVisible = false
 		GroupIcon:addEventListener( "touch"	, bgTouch )
 
-		GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/add_thumb.png",38,33 )
+			GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/add_thumb.png",38,33 )
 		GroupIconEdit.x = GroupIcon.x
 		GroupIconEdit.y = GroupIcon.y
 		GroupIconEdit.anchorX=0
@@ -2102,17 +2080,7 @@ function scene:create( event )
 	searchcontact_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
 
 
-	searchicon_bg = display.newRect(sceneGroup,0,0,55,45)
-	searchicon_bg.y = count_details.y
-	searchicon_bg.x = W - 55
-	searchicon_bg.anchorX = 0
-	searchicon_bg.id = "searchbg"
-	searchicon_bg.isVisible=false
-	searchicon_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
-	searchicon_bg:addEventListener( "touch", searchTouch )
-
-
-	searchcontact = display.newImageRect(sceneGroup,"res/assert/search_icon.png",46/2,46/2)
+	searchcontact = display.newImageRect(sceneGroup,"res/assert/search(gray).png",18,18)
 	searchcontact.x = W-35
 	searchcontact:setFillColor(0)
 	searchcontact.alpha = 1
@@ -2120,12 +2088,12 @@ function scene:create( event )
 	searchcontact.anchorX = 0
 	searchcontact.isVisible=true
 	searchcontact.y=count_details.y
+
 	searchcontact:addEventListener( "touch", searchTouch )
 
 
 	searchtext_bg = display.newRect(sceneGroup,0,0,W,30)
 	searchtext_bg.y = searchcontact_bg.y
-	searchtext_bg.height = 30
 	searchtext_bg.x = W/2
 	searchtext_bg.isVisible=false
 	searchtext_bg:setFillColor(0,0,0,0.2)
@@ -2152,11 +2120,10 @@ function scene:create( event )
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
 
-
 	Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
-
 	MainGroup:insert(sceneGroup)
+	
 
 end
 
@@ -2186,7 +2153,7 @@ function scene:show( event )
 
 			end
 
-					if status == "forward" then
+		if status == "forward" then
 
 			BackBtn = display.newImageRect( sceneGroup, "res/assert/right-arrow(gray-).png",15,15 )
 			BackBtn.anchorX = 0
@@ -2208,7 +2175,7 @@ function scene:show( event )
 			tabBg = display.newRect( tabBarGroup, W/2, H-40, W, 40 )
 			tabBg.anchorY=0
 			tabBg.strokeWidth = 1
-			tabBg:setStrokeColor( Utils.convertHexToRGB(color.tabBarColor),0.7 )
+			tabBg:setStrokeColor( Utils.convertHexToRGB(color.primaryColor),0.7 )
 
 			tab_Group = display.newRect(tabBarGroup,0,0,70,40)
 			tab_Group.x=W/2-W/3;tab_Group.y=tabBg.y
@@ -2279,7 +2246,7 @@ function scene:show( event )
 
 			tab_Contact_txt = display.newText( tabBarGroup, ChatPage.Consultant_List  ,0,0,native.systemFont,11 )
 			tab_Contact_txt.x=tab_Contact_btn.x;tab_Contact_txt.y=tab_Contact_btn.y+tab_Contact_btn.contentHeight+5
-			tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.tabBarColor) )
+			tab_Contact_txt:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
 			if overlay then overlay:removeSelf( );overlay=nil end
 			overlay = display.newImageRect( tabBarGroup, "res/assert/overlay.png", 55,56/1.4)
 			overlay.y=tabBg.y+6;overlay.x=tab_Contact_btn.x
@@ -2291,7 +2258,7 @@ function scene:show( event )
 
 		if addGroupid_value == "addGroup" and pageid_value == "group" then
 
-			print("$%^$%^$%^$%^$%^$$%%%%%%%$^$%^$%^%$^^$%^$%")
+			print( "first" )
 
 			RecentTab_Topvalue = 115
 
@@ -2299,7 +2266,7 @@ function scene:show( event )
 
 			elseif addGroupid_value == "addGroup" and pageid_value == "broadcast" then
 
-				print("$%^$%^$%^$%^$%^$$%% design issue %%%%%$^$%^$%^%$^^$%^$%")
+				print( "second" )
 
 				RecentTab_Topvalue = 115
 
@@ -2314,6 +2281,8 @@ function scene:show( event )
 	    	    --Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
 	    	elseif addGroupid_value == "editMember" and (pageid_value:lower() == "group" or pageid_value:lower() == "broadcast") then
+
+	    		print( "third" )
 
 	    		RecentTab_Topvalue = 115
 
@@ -2333,55 +2302,29 @@ function scene:show( event )
 
 	    	else
 
-	    		RecentTab_Topvalue = 70
+	    		print( "else" )
+
+	    		RecentTab_Topvalue = 75
 
 	    	end
 
 
 
+	    	consultantList_scrollview = widget.newScrollView
+	    	{
+	    		top = RecentTab_Topvalue-5,
+	    		left = 0,
+	    		width = W,
+	    		height = H-RecentTab_Topvalue-40,
+	    		hideBackground = true,
+	    		backgroundColor = {0,0,0,0.6},
+	    		isBounceEnabled=false,
+	    		bottomPadding = 40,
+	    		horizontalScrollingDisabled = true,
+	    		verticalScrollingDisabled = false
+	    	}
 
-	    	if title.text == "Consultants" then
-
-
-		    	consultantList_scrollview = widget.newScrollView
-		    	{
-		    		top = RecentTab_Topvalue,
-		    		left = 0,
-		    		width = W,
-		    		height = H-RecentTab_Topvalue-40,
-		    		hideBackground = true,
-		    		backgroundColor = {0,0,0,0.6},
-		    		bottomPadding = 40,
-		    		isBounceEnabled=false,
-		    		horizontalScrollingDisabled = true,
-		    		verticalScrollingDisabled = false
-		    	}
-
-	    		consultantList_scrollview.y = 70
-	    		consultantList_scrollview.height = H - tabBar.height - consultantList_scrollview.y
-
-	    	else
-
-
-		    	consultantList_scrollview = widget.newScrollView
-		    	{
-		    		top = RecentTab_Topvalue,
-		    		left = 0,
-		    		width = W,
-		    		height = H-RecentTab_Topvalue,
-		    		hideBackground = true,
-		    		bottomPadding = 40,
-		    		backgroundColor = {0,0,0,0.6},
-		    		isBounceEnabled=false,
-		    		horizontalScrollingDisabled = true,
-		    		verticalScrollingDisabled = false
-		    	}
-
-
-	    		consultantList_scrollview.y = 112
-	    		consultantList_scrollview.height = H - tabBar.height  - 105 + 15
-
-	        end
+	    	consultantList_scrollview.y = RecentTab_Topvalue
 	    	consultantList_scrollview.anchorY = 0
 
 	    	sceneGroup:insert(consultantList_scrollview)

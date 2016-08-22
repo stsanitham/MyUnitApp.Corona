@@ -235,6 +235,7 @@ renderArray = List.arrayName
 
         -- end
 
+
     -----------------------------------------------------------------------------------
 
   end
@@ -250,8 +251,8 @@ renderArray = List.arrayName
 
 
   local function CreateList(event,list,List_bg)
-
-    if event == "country" then
+    
+          if event == "country" then
 
                         --List_bg.height = 72.75
 
@@ -269,13 +270,13 @@ renderArray = List.arrayName
                           --bg.y = event.target.y+event.target.contentHeight
                           List_bg.width =list.width+2
                           List_bg.height =list.height
-                          List_bg.y = Marykay_bg.y+Marykay_bg.height+28 
+                          List_bg.y = Country_bg.y+list.contentHeight+23
                           list.y = List_bg.y
                           list:deleteAllRows()
 
 
 
-                        elseif event == "language" then
+          elseif event == "language" then
 
                             -- if CountryLbl.text == RegistrationScreen.CountryUsaText then
 
@@ -295,7 +296,7 @@ renderArray = List.arrayName
 
 
                             List_bg.x = list.x
-                            List_bg.y = Country_bg.y+Country_bg.height+28 
+                            List_bg.y = Language_bg.y+list.contentHeight+23
                             list.y = List_bg.y
                             --bg.y = event.target.y+event.target.contentHeight
                             List_bg.width =list.width+2
@@ -313,7 +314,7 @@ renderArray = List.arrayName
                           -- list.y = List_bg.y
                           -- list.width = List_bg.width-1.5
 
-                        elseif event == "position" then
+        elseif event == "position" then
 
                           -- List_bg.height = 77
                           -- list.height = List_bg.height+20
@@ -326,9 +327,10 @@ renderArray = List.arrayName
 
                            -- list.y = List_bg.y
 
-                           List_bg.y = Language_bg.y+Language_bg.height+28 
+                           List_bg.y =Position_bg.y+list.contentHeight+23
                            list.y = List_bg.y
                           -- list.width = List_bg.width-1.5
+                         -- list.height = list.contentHeight+30
                           List_bg.x = list.x
                             --bg.y = event.target.y+event.target.contentHeight
                             List_bg.width =list.width+2
@@ -356,108 +358,91 @@ renderArray = List.arrayName
                           end
 
 
-
-                        end
-
-
-
-
-
-
-
-
-                        local function getPositionDetails( response )
+        end
+    local function getPositionDetails( response )
 
                           if response ~= nil then
 
-                            for i=1,#positionArray do
+                              for i=1,#positionArray do
 
-                              positionArray[i] = nil
-
-                            end
-
-
-                            for i=1,#response do
-
-                              if response[i].PositionName ~= nil then
-
-                                positionArray[#positionArray+1] = {name = response[i].PositionName, countrycode = response[i].PositionId}
+                                positionArray[i] = nil
 
                               end
 
-                            end
+
+                              for i=1,#response do
+
+                                if response[i].PositionName ~= nil then
+
+                                  positionArray[#positionArray+1] = {name = response[i].PositionName, countrycode = response[i].PositionId}
+
+                                end
+
+                              end
 
 
-               -- PositionLbl.text = response[1].PositionName
-               PositionLbl.text = RegistrationScreen.SelectPosition
-               PositionLbl.countrycode = response[1].PositionId
-               PositionLabelValue = PositionLbl.text
+                             -- PositionLbl.text = response[1].PositionName
+                             PositionLbl.text = RegistrationScreen.SelectPosition
+                             PositionLbl.countrycode = response[1].PositionId
+                             PositionLabelValue = PositionLbl.text
 
 
-               PositionLbl:setFillColor( 0 )
-               PositionLbl.size = 14
+                             PositionLbl:setFillColor( 0 )
+                             PositionLbl.size = 14
 
 
-             --  if PositionLbl.text:len() > 22 then
+                           --  if PositionLbl.text:len() > 22 then
 
-             --     PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
+                           --     PositionLbl.text =  PositionLbl.text:sub(1,22)..".."
 
-             --  end
+                           --  end
 
 
-           end
+                    end
 
          end
 
 
-
-
-
-
-
-
-
-
          local function getLanguageDetails( response )
 
-          if response ~= nil then
+                if response ~= nil then
 
-            for i=1,#languageArray do
+                    for i=1,#languageArray do
 
-              languageArray[i]=nil
+                      languageArray[i]=nil
 
-            end
-
-
-            for i=1,#response do
-
-              if response[i].LanguageName ~= nil then
-
-                languageArray[#languageArray+1] = {name = response[i].LanguageName,countrycode = response[i].LanguageId}
-
-              end
-
-            end
+                    end
 
 
-              --  LanguageLbl.text = response[1].LanguageName
-                LanguageLbl.text = RegistrationScreen.SelectLanguage
-                LanguageLbl.countrycode = response[1].LanguageId
+                    for i=1,#response do
+
+                      if response[i].LanguageName ~= nil then
+
+                        languageArray[#languageArray+1] = {name = response[i].LanguageName,countrycode = response[i].LanguageId}
+
+                      end
+
+                    end
 
 
-                Webservice.GetPositionbyCountryIdandLanguageId( CountryLbl.countrycode ,response[1].LanguageId,getPositionDetails)
+                      --  LanguageLbl.text = response[1].LanguageName
+                        LanguageLbl.text = RegistrationScreen.SelectLanguage
+                        LanguageLbl.countrycode = response[1].LanguageId
 
-               -- languageArray = languageArray
 
-               -- CreateList("language",List,List_bg)
+                        Webservice.GetPositionbyCountryIdandLanguageId( CountryLbl.countrycode ,response[1].LanguageId,getPositionDetails)
 
-               -- LanguageLbl.text = languagename
-               -- LanguageLbl.languageId = languageId
+                       -- languageArray = languageArray
 
-                LanguageLbl:setFillColor( 0 )
-                LanguageLbl.size = 14
+                       -- CreateList("language",List,List_bg)
 
-             end
+                       -- LanguageLbl.text = languagename
+                       -- LanguageLbl.languageId = languageId
+
+                        LanguageLbl:setFillColor( 0 )
+                        LanguageLbl.size = 14
+
+                   end
 
            end
 
@@ -1184,7 +1169,6 @@ local function textfield( event )
 
                  native.setKeyboardFocus( nil )
 
-                 print("ttttt")
 
                  if event.target.id == "country_bg" then
 
@@ -1798,15 +1782,15 @@ function scene:create( event )
 
 
                                   registerBtn = display.newImageRect("res/assert/white_btnbg.png",550/2,50)
-                                 registerBtn.x=W/2;registerBtn.y = Position_bg.y+45
+                                 registerBtn.x=W/2;registerBtn.y = H-registerBtn.contentHeight-20
                                   registerBtn:setFillColor( Utils.convertHexToRGB(color.primaryColor) )
-                                  scrollView:insert(registerBtn)
+                                  sceneGroup:insert(registerBtn)
                                   registerBtn.id="Register"
 
 
-                                  registerBtn_lbl = display.newText( scrollView,RegistrationScreen.RegisterBtnText,0,0,native.systemFont,16 )
+                                  registerBtn_lbl = display.newText( RegistrationScreen.RegisterBtnText,0,0,native.systemFont,16 )
                                   registerBtn_lbl.y=registerBtn.y
-                                  scrollView:insert(registerBtn_lbl)
+                                  sceneGroup:insert(registerBtn_lbl)
 
                                   registerBtn.x=W/2
                                   registerBtn_lbl.x = registerBtn.x+7.5
@@ -1830,15 +1814,15 @@ function scene:create( event )
                                         cancelBtn.x=W/2;cancelBtn.y = registerBtn.y+45
                                         cancelBtn:setFillColor( Utils.convertHexToRGB(color.LtyGray) )
                                         cancelBtn.alpha=0.2
-                                        scrollView:insert(cancelBtn)
+                                        sceneGroup:insert(cancelBtn)
                                         cancelBtn.id="cancel"
 
-                                        cancelBtn_lbl = display.newText( scrollView,CommonWords.cancel,0,0,"Roboto-Regular",13 )
+                                        cancelBtn_lbl = display.newText( CommonWords.cancel,0,0,"Roboto-Regular",13 )
                                         cancelBtn_lbl.y= cancelBtn.y
                                         cancelBtn_lbl.x = cancelBtn.x
                                         cancelBtn_lbl.id = "cancel"
                                         cancelBtn_lbl:setFillColor( Utils.convertHexToRGB(color.Black)  )
-                                        scrollView:insert(cancelBtn_lbl)
+                                        sceneGroup:insert(cancelBtn_lbl)
 
 
 
@@ -1872,7 +1856,7 @@ function scene:create( event )
                                         List_bg.anchorY = 0
                                         List_bg.isVisible=false
 
-                                        scrollView:insert(List_bg)
+                                        sceneGroup:insert(List_bg)
 
 
 
@@ -1895,7 +1879,7 @@ function scene:create( event )
                                         List.anchorY=0
                                         List.isVisible = false
 
-                                        scrollView:insert(List)
+                                        sceneGroup:insert(List)
 
                                         List_bg.anchorY = 0
                                         List_bg.isVisible = false

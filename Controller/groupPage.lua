@@ -508,6 +508,22 @@ local function TabbarTouch( event )
 			Image = display.newImageRect(tempGroup,"res/assert/defalutgroup.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2-8.5
 
+			local filePath = system.pathForFile( list[i].MyUnitBuzzGroupId..".png", system.DocumentsDirectory )
+ 			local file = io.open( filePath)
+ 			if file then
+
+ 				if Image.y ~= nil then Image:removeSelf() end
+ 				Image = display.newImage(tempGroup,list[i].MyUnitBuzzGroupId..".png",system.DocumentsDirectory)
+							Image.width=45;Image.height=38
+							Image.x=30;Image.y=background.y+background.contentHeight/2-8.5
+	    				    --event.row:insert(img_event.target)
+
+	    				    local mask = graphics.newMask( "res/assert/masknew.png" )
+
+	    				    Image:setMask( mask )
+
+ 			else
+
 			newtworkArray[#newtworkArray+1] = network.download(ApplicationConfig.IMAGE_BASE_URL..list[i].MyUnitBuzzGroupProfilePicture,
 				"GET",
 				function ( img_event )
@@ -538,6 +554,8 @@ local function TabbarTouch( event )
 	    		end
 
 	    		end, list[i].MyUnitBuzzGroupId..".png", system.DocumentsDirectory)
+
+			end
 		else
 			Image = display.newImageRect(tempGroup,"res/assert/defalutgroup.png",35,35)
 			Image.x=30;Image.y=background.y+background.height/2-8.5

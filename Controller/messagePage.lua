@@ -285,7 +285,9 @@ if phase=="began" then
 
       local youtube_textentry = feed_url.text
 
-      if youtube_textentry ~= nil and youtube_textentry ~= "" then
+      print("youtube_textentry : "..youtube_textentry)
+
+      if youtube_textentry ~= nil or youtube_textentry ~= "" then
 
          print("youtube selection  ; "..youtube_textentry)
 
@@ -327,34 +329,34 @@ elseif url_dropdown.text == "Vimeo" then
 
   local youtube_textentry = feed_url.text
 
-  if youtube_textentry ~= nil and youtube_textentry ~= "" then
+  if youtube_textentry ~= nil or youtube_textentry ~= "" then
 
      print("viemo selection  ; "..youtube_textentry)
 
      local Url = "http://vimeo.com/"
      local Url1 = "https://vimeo.com/"
 
-     if string.find(youtube_textentry,Url) or string.find(youtube_textentry,Url1) then
-      
-       print("message")
+       if string.find(youtube_textentry,Url) or string.find(youtube_textentry,Url1) then
+        
+         print("message")
 
-       status = "send"
+         status = "send"
 
-       url = youtube_textentry
+         url = youtube_textentry
 
-       composer.hideOverlay()
+         composer.hideOverlay()
 
-   else
+     else
 
-     print ( "error message")
+       print ( "error message")
 
-     validation = false
+       validation = false
 
-     SetError("*"..Message.VimeoUrlError,feed_url)
+       SetError("*"..Message.VimeoUrlError,feed_url)
 
-     return false
+       return false
 
- end
+   end
 
 else
 

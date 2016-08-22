@@ -2345,6 +2345,10 @@ local function usertextField( event )
 
         	if SelectEvent.text:lower( ) == "call" then
         		scrollTo(-200)
+        	elseif SelectEvent.text:lower( ) == "task" then
+        		scrollTo(-115)
+        		AppintmentWith.isVisible = true
+
         	else
 
         		scrollTo(-115)
@@ -2380,8 +2384,8 @@ local function usertextField( event )
 
         	scrollTo(0)
 
-        	Addinvitees.isVisible = false
-        	AppintmentWith.isVisible = false
+        	-- Addinvitees.isVisible = false
+        	-- AppintmentWith.isVisible = false
 
         	native.setKeyboardFocus( nil )
 

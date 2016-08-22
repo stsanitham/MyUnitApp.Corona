@@ -382,12 +382,12 @@ function scene:create( event )
 		UserName_bg.x=UnitNumber_bg.x;UserName_bg.y=UnitNumber_bg.y
 	else
 
-		UnitnumberField = native.newTextField(W/2+29, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth-50,  EditBoxStyle.height )
+		UnitnumberField = native.newTextField(W/2+29, UnitNumber_bg.y+UnitNumber_bg.contentHeight/2+24, UnitNumber_bg.contentWidth-50,  EditBoxStyle.height+3 )
 		UnitnumberField.id = "Unit Number / Director name"
 		UnitnumberField.placeholder=LoginPage.Unitnumber_placeholder
 		UnitnumberField.value=""
 		UnitnumberField.font=native.newFont("Roboto-Light",14)
-		UnitnumberField.y=UnitNumber_bg.y-14
+		UnitnumberField.y=UnitNumber_bg.y-16
 		UnitnumberField:setReturnKey( "next" )
 		UnitnumberField.hasBackground=false
 		sceneGroup:insert(UnitnumberField)
@@ -405,13 +405,13 @@ function scene:create( event )
 	UserName_mandatory.y=UserName_bg.y-UserName_mandatory.contentHeight/2-17
 	UserName_mandatory:setTextColor( 1, 0, 0 )
 
-	UserName = native.newTextField( W/2+28,0, UnitNumber_bg.contentWidth-50, EditBoxStyle.height )
+	UserName = native.newTextField( W/2+28,0, UnitNumber_bg.contentWidth-50, EditBoxStyle.height+3 )
 	UserName.id = "Username / Email"
 	UserName.hasBackground=false
 	UserName.value=""
 	UserName.font=native.newFont("Roboto-Light",14)
 	UserName:setReturnKey( "done" )
-	UserName.y=UserName_bg.y-14
+	UserName.y=UserName_bg.y-16
 	UserName.placeholder=LoginPage.UserName_placeholder
 	sceneGroup:insert(UserName)
 
