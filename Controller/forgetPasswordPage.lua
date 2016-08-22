@@ -365,7 +365,7 @@ function scene:create( event )
 
 	UnitNumber_mandatory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
 	UnitNumber_mandatory.x=UnitNumber_drawLeft.x+UnitNumber_drawLeft.contentWidth/2+9
-	UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-17
+	UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-9
 	UnitNumber_mandatory:setTextColor( 1, 0, 0 )
 
 
@@ -402,7 +402,7 @@ function scene:create( event )
 
 	UserName_mandatory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
 	UserName_mandatory.x=UserName_drawLeft.x+UserName_drawLeft.contentWidth/2+9
-	UserName_mandatory.y=UserName_bg.y-UserName_mandatory.contentHeight/2-17
+	UserName_mandatory.y=UserName_bg.y-UserName_mandatory.contentHeight/2-9
 	UserName_mandatory:setTextColor( 1, 0, 0 )
 
 	UserName = native.newTextField( W/2+28,0, UnitNumber_bg.contentWidth-50, EditBoxStyle.height+3 )

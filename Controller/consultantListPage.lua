@@ -662,6 +662,7 @@ local function careePath_list( list )
 			GroupIcon.isVisible = true
 			GroupIconEdit.isVisible = true
 
+
 			if addGroupid_value == "editMember" then
 
 				for j=1,#selected_Contact do
@@ -1014,6 +1015,7 @@ end
 					        	end
 					        		--careePath_list(byNameArray)
 					        		searchflag = "true"
+
 
 					        		-- consultantList_scrollview.y = consultantList_scrollview.y+30
 					        		-- consultantList_scrollview.height = consultantList_scrollview.contentHeight
@@ -1924,8 +1926,6 @@ end
 
 
 
-------------------------------------------------------
-
 function scene:create( event )
 
 	local sceneGroup = self.view
@@ -1963,7 +1963,7 @@ function scene:create( event )
 	count_details = display.newText(sceneGroup,"",0,0,native.systemFont,18)
 	count_details.anchorX = 0
 	count_details.isVisible = false
-	count_details.x= W-130;count_details.y = title_bg.y
+	count_details.x= W-140;count_details.y = title_bg.y
 	count_details:setFillColor(0)
 
 
@@ -2050,7 +2050,6 @@ function scene:create( event )
 	
 
 		
-	
 
 	GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-130, 25)
 	GroupSubject.id="groupSubject"
@@ -2063,6 +2062,11 @@ function scene:create( event )
 	GroupSubject.hasBackground = false	
 	GroupSubject.placeholder = ChatPage.groupSubject
 	sceneGroup:insert(GroupSubject)
+
+
+	-- GroupSubject_mandarory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
+	-- GroupSubject_mandarory.x=GroupIcon.x+GroupIcon.contentWidth+10;GroupSubject_mandarory.y=GroupIcon.y+GroupIcon.contentHeight/2-GroupSubject.contentHeight/2 - 12
+	-- GroupSubject_mandarory:setTextColor( 1, 0, 0 )
 
 	create_groupicon =  display.newImageRect(sceneGroup,"res/assert/tick.png",25,22)
 	create_groupicon.anchorX=0
@@ -2126,6 +2130,7 @@ function scene:create( event )
 	
 
 end
+
 
 
 
@@ -2256,6 +2261,12 @@ function scene:show( event )
 		end
 
 
+
+
+	    	
+
+
+
 		if addGroupid_value == "addGroup" and pageid_value == "group" then
 
 			print( "first" )
@@ -2328,7 +2339,6 @@ function scene:show( event )
 	    	consultantList_scrollview.anchorY = 0
 
 	    	sceneGroup:insert(consultantList_scrollview)
-	    	
 
 
 

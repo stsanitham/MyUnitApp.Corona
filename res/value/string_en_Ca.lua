@@ -365,16 +365,6 @@ AddeventPage.Update = "Update"
 
 
 
-AddNewContact = {}
-
-AddNewContact.AddTM = "Add New Team Member"
-AddNewContact.AddTMSuccess = "Team Member added successfully!"
-AddNewContact.AddContactSuccess = "Contact added successfully!"
-AddNewContact.IncorrectPhone = "Phone number you have entered is invalid"
-AddNewContact.MKRank_placeholder = "- Select MK Rank -"
-
-
-
 Facebook = {}
 
 Facebook.PageTitle = "Facebook"
@@ -568,6 +558,18 @@ RegistrationScreen.SuccessMessage = "Your registration is successfully completed
 RegistrationScreen.EmailRegistered = "Email Already Registered"
 RegistrationScreen.EmailRegisteredText = "This email address is already registered with us!"
 RegistrationScreen.Introduction = "Introduction"
+
+
+
+AddNewContact = {}
+
+AddNewContact.AddTM = "Add New Team Member"
+AddNewContact.AddTMSuccess = "Team Member added successfully!"
+AddNewContact.AddContactSuccess = "Contact added successfully!"
+AddNewContact.IncorrectPhone = "Phone number you have entered is invalid"
+AddNewContact.MKRank_placeholder = "- Select MK Rank -"
+AddNewContact.Contact = "Contacts"
+AddNewContact.TeamMember = "Team Member"
 
 
 

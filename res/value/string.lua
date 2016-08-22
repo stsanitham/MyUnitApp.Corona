@@ -569,6 +569,8 @@ AddNewContact.AddTMSuccess = "Team Member added successfully!"
 AddNewContact.AddContactSuccess = "Contact added successfully!"
 AddNewContact.IncorrectPhone = "Phone number you have entered is invalid"
 AddNewContact.MKRank_placeholder = "- Select MK Rank -"
+AddNewContact.Contact = "Contacts"
+AddNewContact.TeamMember = "Team Member"
 
 
 

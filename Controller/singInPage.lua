@@ -713,7 +713,7 @@ function scene:create( event )
 	UnitNumber_drawLeft.x=UnitNumber_bg.x+UnitNumber_drawLeft.contentWidth/2+15;UnitNumber_drawLeft.y=UnitNumber_bg.y-UnitNumber_drawLeft.contentHeight/2-5
 
 	UnitNumber_mandarory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
-	UnitNumber_mandarory.x=UnitNumber_drawLeft.x+UnitNumber_drawLeft.contentWidth/2+9;UnitNumber_mandarory.y=UnitNumber_bg.y-UnitNumber_mandarory.contentHeight/2-15
+	UnitNumber_mandarory.x=UnitNumber_drawLeft.x+UnitNumber_drawLeft.contentWidth/2+9;UnitNumber_mandarory.y=UnitNumber_bg.y-UnitNumber_mandarory.contentHeight/2-8
 	UnitNumber_mandarory:setTextColor( 1, 0, 0 )
 
 	UserName_bg = display.newLine(sceneGroup, W/2-120, H/2+20, W/2+120, H/2+20)
@@ -746,7 +746,7 @@ function scene:create( event )
 	UserName_drawLeft.x=UserName_bg.x+UserName_drawLeft.contentWidth/2+15;UserName_drawLeft.y=UserName_bg.y-UserName_drawLeft.contentHeight/2-5
 
 	UserName_mandarory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
-	UserName_mandarory.x=UserName_drawLeft.x+UserName_drawLeft.contentWidth/2+10;UserName_mandarory.y=UserName_bg.y-UserName_mandarory.contentHeight/2-15
+	UserName_mandarory.x=UserName_drawLeft.x+UserName_drawLeft.contentWidth/2+10;UserName_mandarory.y=UserName_bg.y-UserName_mandarory.contentHeight/2-8
 	UserName_mandarory:setTextColor( 1, 0, 0 )
 
 
@@ -773,7 +773,7 @@ function scene:create( event )
 
 
 	Password_mandarory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
-	Password_mandarory.x=Password_drawLeft.x+Password_drawLeft.contentWidth/2+13;Password_mandarory.y=Password_bg.y-Password_mandarory.contentHeight/2-15
+	Password_mandarory.x=Password_drawLeft.x+Password_drawLeft.contentWidth/2+13;Password_mandarory.y=Password_bg.y-Password_mandarory.contentHeight/2-8
 	Password_mandarory:setTextColor( 1, 0, 0 )
 
 	Password = native.newTextField(0, 0, W-140, EditBoxStyle.height+3)

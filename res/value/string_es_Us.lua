@@ -134,9 +134,9 @@ LoginPage.Forget_Button = "¿Se te olvidó tu contraseña?"
 LoginPage.Request_Button = "¿No tienes una conexión? haga clic aquí"
 LoginPage.ErrorMessage = "Los datos que ha introducido son incorrectos. Compruebe de nuevo y volver a entrar en los detalles válidos"
 LoginPage.ErrorTitle = "Error de inicio de sesion"
-LoginPage.setError_Unitnumber = "*Introduce el número de unidad válida"
-LoginPage.setError_UserName = "*Introduzca la dirección de correo electrónico válida"
-LoginPage.setError_Password = "*Introduzca la contraseña"
+LoginPage.setError_Unitnumber = "Introduce el número de unidad válida"
+LoginPage.setError_UserName = "Introduzca la dirección de correo electrónico válida"
+LoginPage.setError_Password = "Introduzca la contraseña"
 
 
 ForgotPassword = {}
@@ -332,7 +332,7 @@ AddeventPage.taskStatus = {"no se ha iniciado","En progreso","terminado","diferi
 AddeventPage.partyArray = {"Clase","Círculo completo","Espectáculo","Otro"}
 AddeventPage.ImageUploaded="Sube la imagen!"
 AddeventPage.Event_Added="evento Agregado"
-AddeventPage.other_purpose="*Ingrese demás propósito"
+AddeventPage.other_purpose="Ingrese demás propósito"
 AddeventPage.Description="descripción"
 AddeventPage.New_Event="nuevo Evento"
 AddeventPage.Event_Type="Tipo de evento"
@@ -357,8 +357,8 @@ AddeventPage.Select_Contact_Group="Seleccione Grupo de Contacto"
 AddeventPage.Contact="contacto"
 AddeventPage.Save="Guardar"
 AddeventPage.Cancel="cancelar"
-AddeventPage.SelectPurpose = "*Elija un Propósito"
-AddeventPage.PhoneNumberMandatory = "*Número de teléfono es obligatorio"
+AddeventPage.SelectPurpose = "Elija un Propósito"
+AddeventPage.PhoneNumberMandatory = "Número de teléfono es obligatorio"
 AddeventPage.AppointmentWithPlace = "Cita con"
 AddeventPage.NotStarted = "No empezado"
 AddeventPage.Status = "Estado"
@@ -569,6 +569,8 @@ AddNewContact.AddTMSuccess = "Miembro del Equipo ha añadido correctamente!"
 AddNewContact.AddContactSuccess = "Contacto añadido correctamente!"
 AddNewContact.IncorrectPhone = "número de teléfono que ha introducido no es válido"
 AddNewContact.MKRank_placeholder = "- Seleccionar MK Rango -"
+AddNewContact.Contact = "Contactos"
+AddNewContact.TeamMember = "Miembro del equipo"
 
 
 

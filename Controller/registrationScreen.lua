@@ -676,7 +676,7 @@ renderArray = List.arrayName
 
 --------------------- FirstName validation ------------------------
 
-if FirstName.text == "" or FirstName.text == FirstName.id or FirstName.text == "*"..RequestAccess.FirstName_error then
+if FirstName.text == "" or FirstName.text == FirstName.id or FirstName.text == RequestAccess.FirstName_error then
   validation=false
   SetError(RequestAccess.FirstName_error,FirstName)
 end
@@ -684,7 +684,7 @@ end
 
 --------------------- Name validation ------------------------
 
-if Name.text == "" or Name.text == Name.id or Name.text == "*"..RequestAccess.Name_error then
+if Name.text == "" or Name.text == Name.id or Name.text == RequestAccess.Name_error then
   validation=false
   SetError(RequestAccess.Name_error,Name)
 end
@@ -692,7 +692,7 @@ end
 
 --------------------- Email validation ------------------------
 
-if Email.text ~= "" and Email.text ~= Email.id and Email.text ~= Email.EmailAddress_placeholder and Email.text ~= "*"..RequestAccess.Email_error then
+if Email.text ~= "" and Email.text ~= Email.id and Email.text ~= Email.EmailAddress_placeholder and Email.text ~= RequestAccess.Email_error then
 
   print("in if condition")
   if not Utils.emailValidation(Email.text) then
@@ -741,7 +741,7 @@ if Email.text ~= "" and Email.text ~= Email.id and Email.text ~= Email.EmailAddr
 
 --------------------- Phone validation ------------------------
 
-if Phone.text == "" or Phone.text == "*"..RequestAccess.Phone_error or Phone.text == Phone.id or Phone.text:len() < 14  then
+if Phone.text == "" or Phone.text == RequestAccess.Phone_error or Phone.text == Phone.id or Phone.text:len() < 14  then
   validation=false
   SetError(RequestAccess.Phone_error,Phone)
 end
@@ -750,7 +750,7 @@ end
 
 --------------------- Marykay validation ------------------------
 
-if Marykay.text == "" or Marykay.text == Marykay.id or Marykay.text == "*"..RequestAccess.Marykayid_error or Marykay.text == Marykay.placeholder then
+if Marykay.text == "" or Marykay.text == Marykay.id or Marykay.text == RequestAccess.Marykayid_error or Marykay.text == Marykay.placeholder then
 
                           --  if not Utils.marykayid_Validation( Marykay.text ) then
 
@@ -1484,7 +1484,7 @@ function scene:create( event )
 
                                 FirstName_mandatory = display.newText("*",0,0,"Roboto-Light",14)
                                 FirstName_mandatory.x=15
-                                FirstName_mandatory.y=FirstName_bg.y-24
+                                FirstName_mandatory.y=FirstName_bg.y-18
                                 FirstName_mandatory:setTextColor( 1, 0, 0 )
                                 scrollView:insert(FirstName_mandatory)
 
@@ -1502,7 +1502,7 @@ function scene:create( event )
 
                                 Name_mandatory = display.newText("*",0,0,"Roboto-Light",14)
                                 Name_mandatory.x=15
-                                Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2-15
+                                Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2-8
                                 Name_mandatory:setTextColor( 1, 0, 0 )
                                 scrollView:insert(Name_mandatory)
 
@@ -1531,7 +1531,7 @@ function scene:create( event )
 
                                 Email_mandatory = display.newText("*",0,0,"Roboto-Light",14)
                                 Email_mandatory.x=15
-                                Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2-15
+                                Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2-8
                                 Email_mandatory:setTextColor( 1, 0, 0 )
                                 scrollView:insert(Email_mandatory)
 
@@ -1561,7 +1561,7 @@ function scene:create( event )
 
                                 Phone_mandatory = display.newText("*",0,0,"Roboto-Light",14)
                                 Phone_mandatory.x=15
-                                Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-15
+                                Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-8
                                 Phone_mandatory:setTextColor( 1, 0, 0 )
                                 scrollView:insert(Phone_mandatory)
 
@@ -1603,7 +1603,7 @@ function scene:create( event )
 
                                 Marykay_mandatory = display.newText("*",0,0,"Roboto-Light",14)
                                 Marykay_mandatory.x=15
-                                Marykay_mandatory.y=Marykay_bg.y-Marykay_mandatory.contentHeight/2-15
+                                Marykay_mandatory.y=Marykay_bg.y-Marykay_mandatory.contentHeight/2-8
                                 Marykay_mandatory:setTextColor( 1, 0, 0 )
                                 scrollView:insert(Marykay_mandatory)
 
@@ -1698,8 +1698,8 @@ function scene:create( event )
 
 
                                 Language_mandatory = display.newText("*",0,0,"Roboto-Light",14)
-                                Language_mandatory.x= W/2 - 25
-                                Language_mandatory.y=Language_bg.y-Language_mandatory.contentHeight/2-15
+                                Language_mandatory.x= leftPadding -2
+                                Language_mandatory.y=Language_bg.y-Language_mandatory.contentHeight/2-8
                                 Language_mandatory:setTextColor( 1, 0, 0 )
                                 scrollView:insert(Language_mandatory)
 
@@ -1737,8 +1737,8 @@ function scene:create( event )
                                  scrollView:insert(Position_bg)
 
                                   Position_mandatory = display.newText("*",0,0,"Roboto-Light",14)
-                                  Position_mandatory.x= W/2 - 25
-                                  Position_mandatory.y=Position_bg.y-Position_mandatory.contentHeight/2-15
+                                  Position_mandatory.x= leftPadding -2
+                                  Position_mandatory.y=Position_bg.y-Position_mandatory.contentHeight/2-8
                                   Position_mandatory:setTextColor( 1, 0, 0 )
                                   scrollView:insert(Position_mandatory)
 

@@ -121,6 +121,7 @@ local workingdir=""
 		return true
 
     end
+    
 
 
 	local function onRowRender_DocLibList( event )
@@ -128,20 +129,21 @@ local workingdir=""
 			 -- Get reference to the row group
 			 local row = event.row
 
+			 if file_array[row.index] ~= nil then
+
 			    -- Cache the row "contentWidth" and "contentHeight" because the row bounds can change as children objects are added
 			    local rowHeight = row.contentHeight
 			    local rowWidth = row.contentWidth
 
 
-			    if file_array[row.index].filemode == "directory" and file_array[row.index].filemode ~= "file"  then
+			    if file_array[row.index] ~= nil and file_array[row.index].filemode == "directory" and file_array[row.index].filemode ~= "file"  then
 
 					    local rowIcon = display.newImageRect(row,"res/assert/folder-icon.png",25,25 )
 					    rowIcon.x = 20
 					    rowIcon.anchorX = 0 
 					    rowIcon.y = rowHeight * 0.5 - 5
 
-				elseif file_array[row.index].filemode == "file" and file_array[row.index].filemode ~= "directory" then
-
+				elseif file_array[row.index] ~= nil and file_array[row.index].filemode == "file" and file_array[row.index].filemode ~= "directory" then
 
 					    local tempreverse = string.find(string.reverse( file_array[row.index].name ),"%.")
 
@@ -195,6 +197,9 @@ local workingdir=""
 
 				rowvalues = file_array[row.index].name
 
+
+			end
+
 				--print("NAME   :    "..file_array[row.index].name)
 
 	end
@@ -239,8 +244,9 @@ local workingdir=""
 																					          SubFileMode = lfs.attributes(SubFile).mode
 
 																					         -- print("mode +++++++ : "..lfs.attributes(SubFile).mode)
-
+																					         if file ~= nil and SubFileMode ~= nil then
 																					          file_array[#file_array+1] = { name = file , filemode = SubFileMode}
+																					         end
 
 																					else
 
@@ -630,16 +636,20 @@ local workingdir=""
 
 								  for file in lfs.dir( workingdir ) do 
 
-											if "." ~= file and ".." ~= file and " .png" ~= file then
+											if "." ~= file and ".." ~= file and " .png" ~= file and nil ~= file then
 
 										         print("FILE: " .. file)
 
 										         local filevalue
+
 										         if not isAndroid then
 
 										         	filevalue = system.pathForFile( file, system.DocumentsDirectory )
+
 										         else
+
 										         	filevalue=file
+
 										         end
 
 
@@ -649,14 +659,20 @@ local workingdir=""
 
 											   		 	file_attributemode = fileAtr.mode
 
-											   		     print("@@@@@ "..path,file,file_attributemode) 
+											   		     print("@@@@@ "..file,file_attributemode) 
 
 										   		 end
 
-										         file_array[#file_array+1] = { name = file , filemode = file_attributemode }
+
+										   		  if file ~= nil and file_attributemode ~= nil then
+
+										         	file_array[#file_array+1] = { name = file , filemode = file_attributemode }
+										         end
 
 										    end
 									end
+
+									print("Size : "..#file_array)
 
 							    if Documents_list ~= nil then Documents_list:deleteAllRows() end
 
@@ -733,15 +749,7 @@ local workingdir=""
 		    end
 
 
-		    for i = 1, #file_array do
-		        -- Insert a row into the tableView
-		        Documents_list:insertRow{ rowHeight = 45,rowColor = 
-		        {
-		    	default = { 1, 1, 1, 0 },
-		    	over={ 1, 0.5, 0, 0 },
-		    	}}
-		    end
-
+		   
 
 
 			menuBtn:addEventListener("touch",menuTouch)

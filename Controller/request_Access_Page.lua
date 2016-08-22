@@ -710,7 +710,7 @@ local sumbitBtnRelease = function( event )
 
 		native.setKeyboardFocus(nil)
 
-		if Name.text=="" or Name.text == Name.id then
+		if Name.text=="" or Name.text == Name.id or Name.text:sub(1,1) == "E" then
 			validation=false
 			SetError(RequestAccess.Name_error,Name)
 		end
@@ -718,13 +718,13 @@ local sumbitBtnRelease = function( event )
 
 		if unitnumberflag == true then
 
-			if DirectorName.text == "" or DirectorName.text == DirectorName.id then
+			if DirectorName.text == "" or DirectorName.text == DirectorName.id or  DirectorName.text:sub(1,1) == "E" then
 				validation=false
 				DirectorName_mandatory.isVisible = true
 				SetError(RequestAccess.DirectorName_error,DirectorName)
 			end
 
-			if DirectorEmail.text == "" or DirectorEmail.text == DirectorEmail.id then
+			if DirectorEmail.text == "" or DirectorEmail.text == DirectorEmail.id or DirectorEmail.text:sub(1,1) == "E" then
 				validation=false
 				DirectorEmail_mandatory.isVisible = true
 				SetError(RequestAccess.DirectorEmail_error,DirectorEmail)
@@ -741,7 +741,7 @@ local sumbitBtnRelease = function( event )
 		end
 
 
-		if Email.text:sub(1,1) == "*" or Email.text == Email.id then
+		if Email.text:sub(1,1) == "E" or Email.text == Email.id then
 			validation=false
 			SetError(RequestAccess.Email_error,Email)
 		else
@@ -754,13 +754,13 @@ local sumbitBtnRelease = function( event )
 
 		end
 
-		if Phone.text:sub(1,1) == "*" or Phone.text == PopupGroup.PhoneNumRequired or Phone.text == Phone.id or Phone.text:len() < 14  then
+		if Phone.text:sub(1,1) == "E" or Phone.text == PopupGroup.PhoneNumRequired or Phone.text == Phone.id or Phone.text:len() < 14  then
 			validation=false
 			SetError(RequestAccess.Phone_error,Phone)
 		end
 
 		if AppName ~= "DirectorApp" then
-			if UnitNumber.text == "" or UnitNumber.text == nil then
+			if UnitNumber.text == "" or UnitNumber.text == nil or UnitNumber.text:sub(1,1) == "E" then
 				validation=false
 				SetError(RequestAccess.UnitNumber_error,UnitNumber)
 			end
@@ -928,7 +928,7 @@ function scene:create( event )
 
 		UnitNumber_mandatory = display.newText("*",0,0,"Roboto-Light",14)
         UnitNumber_mandatory.x=15
-        UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-15
+        UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-10
         UnitNumber_mandatory:setTextColor( 1, 0, 0 )
         sceneGroup:insert(UnitNumber_mandatory)
 
@@ -980,7 +980,7 @@ Name_bg.strokeWidth = 1
 
 Name_mandatory = display.newText("*",0,0,"Roboto-Light",14)
 Name_mandatory.x=15
-Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2-15
+Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2-10
 Name_mandatory:setTextColor( 1, 0, 0 )
 sceneGroup:insert(Name_mandatory)
 
@@ -1006,7 +1006,7 @@ Email_bg.strokeWidth = 1
 
 Email_mandatory = display.newText("*",0,0,"Roboto-Light",14)
 Email_mandatory.x=15
-Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2-15
+Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2-10
 Email_mandatory:setTextColor( 1, 0, 0 )
 sceneGroup:insert(Email_mandatory)
 
@@ -1028,7 +1028,7 @@ Phone_bg.strokeWidth = 1
 
 Phone_mandatory = display.newText("*",0,0,"Roboto-Light",14)
 Phone_mandatory.x=15
-Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-15
+Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-10
 Phone_mandatory:setTextColor( 1, 0, 0 )
 sceneGroup:insert(Phone_mandatory)
 
@@ -1100,7 +1100,7 @@ DirectorName_bg.strokeWidth = 1
 
 DirectorName_mandatory = display.newText("*",0,0,"Roboto-Light",14)
 DirectorName_mandatory.x=15
-DirectorName_mandatory.y=DirectorName_bg.y-DirectorName_mandatory.contentHeight/2-14
+DirectorName_mandatory.y=DirectorName_bg.y-DirectorName_mandatory.contentHeight/2-10
 DirectorName_mandatory:setTextColor( 1, 0, 0 )
 DirectorName_mandatory.isVisible = false
 sceneGroup:insert(DirectorName_mandatory)
@@ -1128,7 +1128,7 @@ DirectorEmail_bg.strokeWidth = 1
 
 DirectorEmail_mandatory = display.newText("*",0,0,"Roboto-Light",14)
 DirectorEmail_mandatory.x=15
-DirectorEmail_mandatory.y=DirectorEmail_bg.y-DirectorEmail_mandatory.contentHeight/2-14
+DirectorEmail_mandatory.y=DirectorEmail_bg.y-DirectorEmail_mandatory.contentHeight/2-10
 DirectorEmail_mandatory:setTextColor( 1, 0, 0 )
 DirectorEmail_mandatory.isVisible = false
 sceneGroup:insert(DirectorEmail_mandatory)
