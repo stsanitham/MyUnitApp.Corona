@@ -400,9 +400,9 @@ local function addevent_scrollListener(event )
 
 			elseif ( phase == "moved" ) then 
 
-			    local x, y = addNewAccess_scrollview:getContentPosition()
+			     local x, y = addNewAccess_scrollview:getContentPosition()
 
-			    print(y)
+			     print(y)
 
 
 				if y > -15 then
@@ -432,17 +432,20 @@ local function addevent_scrollListener(event )
 					print("yyy "..y)
 
 					if y > -15 then
-
 					FirstName.isVisible = true
 					FirstName_bottom.isVisible = true
+					else
+					FirstName.isVisible = false
+					FirstName_bottom.isVisible = false
 
 					end
 
 					if y > -35 then
-
 					Name.isVisible = true
 					Name_bottom.isVisible = true
-
+					else
+					Name.isVisible = false
+					Name_bottom.isVisible = false
 					end
 
 				end
@@ -492,6 +495,7 @@ end
 
 
 
+
 local function textfield( event )
 
 	if ( event.phase == "began" ) then
@@ -523,6 +527,18 @@ local function textfield( event )
 			if isIos then
 
 				scrollTo(-150)
+
+				-- print("111"..addNewAccess_scrollview.y)
+
+				-- if addNewAccess_scrollview.y > - 30 then
+
+				-- 	Name.isVisible = false
+				-- 	Name_bottom.isVisible = false
+
+				-- 	FirstName.isVisible = false
+				-- 	FirstName_bottom.isVisible = false
+
+				-- end
 
 			else
 
@@ -619,7 +635,9 @@ local function textfield( event )
 										             	       emailnotifytext.isVisible = true
 										             	       emailnotifybox.isVisible = true
 
-										             	        Phone_mandatory.y=emailnotifytext.y+Email_mandatory.contentHeight/2+15
+										             	        Email_mandatory.y = Email_bg.y-Email_mandatory.contentHeight/2-3
+
+										             	        Phone_mandatory.y=emailnotifytext.y+Email_mandatory.contentHeight/2+19
 
 									             	            Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
 														 		Phone.y = emailnotifytext.y+emailnotifytext.height+16
@@ -686,7 +704,7 @@ local function textfield( event )
 											             	        emailnotifytext.isVisible = true
 											             	        emailnotifybox.isVisible = true
 
-											             	        Phone_mandatory.y=emailnotifytext.y+Phone_mandatory.contentHeight/2+15
+											             	        Phone_mandatory.y=emailnotifytext.y+Phone_mandatory.contentHeight/2+17
 
 										             	            Phone_bg.y = emailnotifytext.y+emailnotifytext.height+7
 															 		Phone.y = emailnotifytext.y+emailnotifytext.height+16
@@ -1509,6 +1527,7 @@ end
 
 
 
+
 local sumbitBtnRelease = function( event )
 
 	if event.phase == "began" then
@@ -1802,7 +1821,7 @@ function scene:create( event )
 		FirstName.placeholder=RequestAccess.FirstName_placeholder
 		addNewAccess_scrollview:insert(FirstName)
 
-		FirstName_bottom = display.newImageRect(addNewAccess_scrollview,"res/assert/line-large.png",W-20,5)
+		FirstName_bottom = display.newImageRect("res/assert/line-large.png",W-20,5)
 		FirstName_bottom.x=10
 		FirstName_bottom.anchorX = 0
 		FirstName_bottom.y= FirstName.y+13
@@ -1818,11 +1837,11 @@ function scene:create( event )
 		Name_mandatory = display.newText("*",0,0,"Roboto-Light",14)
 		Name_mandatory.x=leftPadding
 		Name_mandatory.isVisible = true
-		Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2-5
+		Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2+2
 		Name_mandatory:setTextColor( 1, 0, 0 )
 		addNewAccess_scrollview:insert(Name_mandatory)
 
-		Name_bottom = display.newImageRect(addNewAccess_scrollview,"res/assert/line-large.png",W-20,5)
+		Name_bottom = display.newImageRect("res/assert/line-large.png",W-20,5)
 		Name_bottom.x=W/2
 		Name_bottom.y= FirstName_bg.y+FirstName_bg.height+23
 		addNewAccess_scrollview:insert(Name_bottom)
@@ -1847,7 +1866,7 @@ function scene:create( event )
 		Email_mandatory = display.newText("*",0,0,"Roboto-Light",14)
 		Email_mandatory.x=leftPadding
 		Email_mandatory.isVisible = true
-		Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2-5
+		Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2+2
 		Email_mandatory:setTextColor( 1, 0, 0 )
 		addNewAccess_scrollview:insert(Email_mandatory)
 
@@ -1904,7 +1923,7 @@ function scene:create( event )
 		Phone_mandatory = display.newText("*",0,0,"Roboto-Light",14)
 		Phone_mandatory.x=leftPadding
 		Phone_mandatory.isVisible = true
-		Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-5
+		Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2+2
 		Phone_mandatory:setTextColor( 1, 0, 0 )
 		addNewAccess_scrollview:insert(Phone_mandatory)
 
@@ -1963,7 +1982,7 @@ function scene:create( event )
 		Password_mandatory = display.newText("*",0,0,"Roboto-Light",14)
 		Password_mandatory.x=leftPadding
 		Password_mandatory.isVisible = true
-		Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2-5
+		Password_mandatory.y=Password_bg.y-Password_mandatory.contentHeight/2+2
 		Password_mandatory:setTextColor( 1, 0, 0 )
 		addNewAccess_scrollview:insert(Password_mandatory)
 
@@ -2017,7 +2036,7 @@ function scene:create( event )
 	  	contact_switch.anchorX = 0
 	  	contact_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 + 18
 
-	  	contact_txt = display.newText( addNewAccess_scrollview,"Contacts",0,0,native.systemFont,14 )
+	  	contact_txt = display.newText( addNewAccess_scrollview,AddNewContact.Contact,0,0,native.systemFont,14 )
 	  	contact_txt.x = contact_switch.x+24;contact_txt.y = contact_switch.y
 	  	contact_txt.anchorX = 0
 	  	contact_txt:setFillColor( 0 )
@@ -2039,7 +2058,7 @@ function scene:create( event )
 	  	teammember_switch.anchorX = 0
 	  	teammember_switch.y = GeneratePasstext.y+GeneratePasstext.contentHeight/2 +18
 
-	  	teammember_txt = display.newText( addNewAccess_scrollview,"Team Member",0,0,native.systemFont,14 )
+	  	teammember_txt = display.newText( addNewAccess_scrollview,AddNewContact.TeamMember,0,0,native.systemFont,14 )
 	  	teammember_txt.x = teammember_switch.x+24;teammember_txt.y = teammember_switch.y
 	  	teammember_txt.anchorX = 0
 	  	teammember_txt:setFillColor( 0 )

@@ -287,7 +287,12 @@ function FacebookCallback(res,scrollView,flag)
 													event.target.width=200
 													event.target.height=100
 
+
+													if event.target ~= nil then
+
 													event.target.y = rowTitle.y+rowTitle.contentHeight+event.target.contentHeight/2+5
+
+												    end
 
 
 													tempGroup:insert(event.target)

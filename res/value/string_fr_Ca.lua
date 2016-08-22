@@ -130,9 +130,9 @@ LoginPage.Forget_Button = "Mot de passe oublié?"
 LoginPage.Request_Button = "Ne pas avoir un accès? Cliquez ici"
 LoginPage.ErrorMessage = "Les informations que vous avez saisies sont incorrectes. Vérifiez à nouveau et re-saisir les informations valides"
 LoginPage.ErrorTitle = "Échec de la connexion"
-LoginPage.setError_Unitnumber = "*Entrez le numéro de valable Unité "
-LoginPage.setError_UserName = "*Entrez le adresse email valide"
-LoginPage.setError_Password = "*Entrez le mot de passe"
+LoginPage.setError_Unitnumber = "Entrez le numéro de valable Unité "
+LoginPage.setError_UserName = "Entrez le adresse email valide"
+LoginPage.setError_Password = "Entrez le mot de passe"
 
 
 ForgotPassword = {}
@@ -334,7 +334,7 @@ AddeventPage.taskStatus = {"non commencé","En cours","terminé","différée"}
 AddeventPage.partyArray = {"Classe","Cercle complet","Montrer","Autre"}
 AddeventPage.ImageUploaded="Image Télécharger!"
 AddeventPage.Event_Added="événement Ajouté"
-AddeventPage.other_purpose="*Entrez autres fins"
+AddeventPage.other_purpose="Entrez autres fins"
 AddeventPage.Description="La description"
 AddeventPage.New_Event="un nouvel événement"
 AddeventPage.Event_Type="Type d'événement"
@@ -359,8 +359,8 @@ AddeventPage.Select_Contact_Group="Sélectionnez Groupe de contact"
 AddeventPage.Contact="Contact"
 AddeventPage.Save="sauvegarder"
 AddeventPage.Cancel="annuler"
-AddeventPage.SelectPurpose = "*Sélectionner But"
-AddeventPage.PhoneNumberMandatory = "*Numéro de téléphone est obligatoire"
+AddeventPage.SelectPurpose = "Sélectionner But"
+AddeventPage.PhoneNumberMandatory = "Numéro de téléphone est obligatoire"
 AddeventPage.AppointmentWithPlace = "Rendez-vous avec"
 AddeventPage.NotStarted = "Pas commencé"
 AddeventPage.Status = "statut"
@@ -575,6 +575,8 @@ AddNewContact.AddTMSuccess = "Membre de l'équipe a ajouté avec succès!"
 AddNewContact.AddContactSuccess = "Contactez ajouté avec succès!"
 AddNewContact.IncorrectPhone = "numéro de téléphone que vous avez entré est invalide"
 AddNewContact.MKRank_placeholder = "- Sélectionnez MK Rank -"
+AddNewContact.Contact = "Contacts"
+AddNewContact.TeamMember = "membre de l'équipe"
 
 
 

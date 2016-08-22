@@ -121,6 +121,7 @@ local workingdir=""
 		return true
 
     end
+    
 
 
 	local function onRowRender_DocLibList( event )
@@ -133,15 +134,14 @@ local workingdir=""
 			    local rowWidth = row.contentWidth
 
 
-			    if file_array[row.index].filemode == "directory" and file_array[row.index].filemode ~= "file"  then
+			    if file_array[row.index].filemode ~= nil and file_array[row.index].filemode == "directory" and file_array[row.index].filemode ~= "file"  then
 
 					    local rowIcon = display.newImageRect(row,"res/assert/folder-icon.png",25,25 )
 					    rowIcon.x = 20
 					    rowIcon.anchorX = 0 
 					    rowIcon.y = rowHeight * 0.5 - 5
 
-				elseif file_array[row.index].filemode == "file" and file_array[row.index].filemode ~= "directory" then
-
+				elseif file_array[row.index].filemode ~= nil and file_array[row.index].filemode == "file" and file_array[row.index].filemode ~= "directory" then
 
 					    local tempreverse = string.find(string.reverse( file_array[row.index].name ),"%.")
 
@@ -630,16 +630,20 @@ local workingdir=""
 
 								  for file in lfs.dir( workingdir ) do 
 
-											if "." ~= file and ".." ~= file and " .png" ~= file then
+											if "." ~= file and ".." ~= file and " .png" ~= file and nil ~= file then
 
 										         print("FILE: " .. file)
 
 										         local filevalue
+
 										         if not isAndroid then
 
 										         	filevalue = system.pathForFile( file, system.DocumentsDirectory )
+
 										         else
+
 										         	filevalue=file
+
 										         end
 
 
@@ -649,7 +653,7 @@ local workingdir=""
 
 											   		 	file_attributemode = fileAtr.mode
 
-											   		     print("@@@@@ "..path,file,file_attributemode) 
+											   		     print("@@@@@ "..file,file_attributemode) 
 
 										   		 end
 

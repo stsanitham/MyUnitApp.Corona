@@ -653,6 +653,7 @@ local function careePath_list( list )
 			GroupIcon.isVisible = true
 			GroupIconEdit.isVisible = true
 
+
 			if addGroupid_value == "editMember" then
 
 				for j=1,#selected_Contact do
@@ -1011,7 +1012,7 @@ end
 						        		search.isVisible = true
 
 						        		consultantList_scrollview.y = 130
-						        		consultantList_scrollview.height = H +10 - tabBar.height - 95
+						        		consultantList_scrollview.height = H + subjectBar.height-tab_Message.y-tab_Message_btn.contentHeight/2-8 - 95 
 						        		consultantList_scrollview.anchorY = 0
 
 						        		searchflag = "true"
@@ -1945,8 +1946,6 @@ end
 
 
 
-------------------------------------------------------
-
 function scene:create( event )
 
 	local sceneGroup = self.view
@@ -1960,8 +1959,7 @@ function scene:create( event )
 
 	tabBar = display.newRect(sceneGroup,W/2,0,W,40)
 	tabBar.y=tabBar.contentHeight/2
-	tabBar.height = 40
-	tabBar:setFillColor(Utils.convertHexToRGB(color.tabBarColor))
+	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 
 	menuBtn = display.newImageRect(sceneGroup,"res/assert/menu.png",23,17)
 	menuBtn.anchorX=0
@@ -1985,7 +1983,7 @@ function scene:create( event )
 	count_details = display.newText(sceneGroup,"",0,0,native.systemFont,18)
 	count_details.anchorX = 0
 	count_details.isVisible = false
-	count_details.x= W-150;count_details.y = title_bg.y
+	count_details.x= W-130;count_details.y = title_bg.y
 	count_details:setFillColor(0)
 
 
@@ -2021,19 +2019,19 @@ function scene:create( event )
     							GroupIcon.maskScaleX, GroupIcon.maskScaleY = 0.95,0.88
 
 
-    							GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+    									GroupIcon.x = backbutton.x + backbutton.contentWidth +5
 								GroupIcon.y = subjectBar.y +20
 								GroupIcon.anchorX=0
 								GroupIcon.id = "imgEdit"
 								GroupIcon.isVisible = false
 								GroupIcon:addEventListener( "touch"	, bgTouch )
 
-							    GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
+									GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
 								GroupIconEdit.x = GroupIcon.x
 								GroupIconEdit.y = GroupIcon.y
 								GroupIconEdit.anchorX=0
 								GroupIconEdit.id = "imgEdit"
-								GroupIconEdit.isVisible = false
+		GroupIconEdit.isVisible = false
 
 		
 			            end
@@ -2052,14 +2050,14 @@ function scene:create( event )
 			end
 
 		GroupIcon = display.newImageRect( sceneGroup,imagename, 38, 33 )
-		GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+			GroupIcon.x = backbutton.x + backbutton.contentWidth +5
 		GroupIcon.y = subjectBar.y +20
 		GroupIcon.anchorX=0
 		GroupIcon.id = "imgEdit"
 		GroupIcon.isVisible = false
 		GroupIcon:addEventListener( "touch"	, bgTouch )
 
-		GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/add_thumb.png",38,33 )
+			GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/add_thumb.png",38,33 )
 		GroupIconEdit.x = GroupIcon.x
 		GroupIconEdit.y = GroupIcon.y
 		GroupIconEdit.anchorX=0
@@ -2072,7 +2070,6 @@ function scene:create( event )
 	
 
 		
-	
 
 	GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-130, 25)
 	GroupSubject.id="groupSubject"
@@ -2085,6 +2082,11 @@ function scene:create( event )
 	GroupSubject.hasBackground = false	
 	GroupSubject.placeholder = ChatPage.groupSubject
 	sceneGroup:insert(GroupSubject)
+
+
+	-- GroupSubject_mandarory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
+	-- GroupSubject_mandarory.x=GroupIcon.x+GroupIcon.contentWidth+10;GroupSubject_mandarory.y=GroupIcon.y+GroupIcon.contentHeight/2-GroupSubject.contentHeight/2 - 12
+	-- GroupSubject_mandarory:setTextColor( 1, 0, 0 )
 
 	create_groupicon =  display.newImageRect(sceneGroup,"res/assert/tick.png",25,22)
 	create_groupicon.anchorX=0
@@ -2102,17 +2104,7 @@ function scene:create( event )
 	searchcontact_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
 
 
-	searchicon_bg = display.newRect(sceneGroup,0,0,55,45)
-	searchicon_bg.y = count_details.y
-	searchicon_bg.x = W - 55
-	searchicon_bg.anchorX = 0
-	searchicon_bg.id = "searchbg"
-	searchicon_bg.isVisible=false
-	searchicon_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
-	searchicon_bg:addEventListener( "touch", searchTouch )
-
-
-	searchcontact = display.newImageRect(sceneGroup,"res/assert/search_icon.png",46/2,46/2)
+	searchcontact = display.newImageRect(sceneGroup,"res/assert/search(gray).png",18,18)
 	searchcontact.x = W-35
 	searchcontact:setFillColor(0)
 	searchcontact.alpha = 1
@@ -2120,12 +2112,12 @@ function scene:create( event )
 	searchcontact.anchorX = 0
 	searchcontact.isVisible=true
 	searchcontact.y=count_details.y
+
 	searchcontact:addEventListener( "touch", searchTouch )
 
 
 	searchtext_bg = display.newRect(sceneGroup,0,0,W,30)
 	searchtext_bg.y = searchcontact_bg.y
-	searchtext_bg.height = 30
 	searchtext_bg.x = W/2
 	searchtext_bg.isVisible=false
 	searchtext_bg:setFillColor(0,0,0,0.2)
@@ -2152,13 +2144,13 @@ function scene:create( event )
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
 
 
-
 	Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 
-
 	MainGroup:insert(sceneGroup)
+	
 
 end
+
 
 
 
@@ -2289,55 +2281,6 @@ function scene:show( event )
 		end
 
 
-		if addGroupid_value == "addGroup" and pageid_value == "group" then
-
-			print("$%^$%^$%^$%^$%^$$%%%%%%%$^$%^$%^%$^^$%^$%")
-
-			RecentTab_Topvalue = 115
-
-				--GroupSubject.isVisible = false
-
-			elseif addGroupid_value == "addGroup" and pageid_value == "broadcast" then
-
-				print("$%^$%^$%^$%^$%^$$%% design issue %%%%%$^$%^$%^%$^^$%^$%")
-
-				RecentTab_Topvalue = 115
-
-				title.text = ChatPage.Broadcast
-
-				GroupSubject.placeholder = ChatPage.broadcastSubject
-
-				count_details.isVisible = true
-
-	    	    --GroupSubject.isVisible = false
-
-	    	    --Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
-
-	    	elseif addGroupid_value == "editMember" and (pageid_value:lower() == "group" or pageid_value:lower() == "broadcast") then
-
-	    		RecentTab_Topvalue = 115
-
-	    		title.text = "Edit"
-
-	    		GroupSubject.placeholder = ChatPage.broadcastSubject
-
-	    		count_details.isVisible = true
-
-	    		GroupSubject.text =  event.params.name
-
-	    		editedgroupname =  event.params.name
-
-	    		editId = event.params.contactId
-
-	    		count_details.text = #selected_Contact..MessagePage.SelectedNumber
-
-	    	else
-
-	    		RecentTab_Topvalue = 70
-
-	    	end
-
-
 
 
 	    	if title.text == "Consultants" then
@@ -2385,6 +2328,62 @@ function scene:show( event )
 	    	consultantList_scrollview.anchorY = 0
 
 	    	sceneGroup:insert(consultantList_scrollview)
+
+
+
+		if addGroupid_value == "addGroup" and pageid_value == "group" then
+
+			print("$%^$%^$%^$%^$%^$$%%%%%%%$^$%^$%^%$^^$%^$%")
+
+			RecentTab_Topvalue = 115
+			consultantList_scrollview.y = 112
+			consultantList_scrollview.height = H - tabBar.height - consultantList_scrollview.y
+
+				--GroupSubject.isVisible = false
+
+			elseif addGroupid_value == "addGroup" and pageid_value == "broadcast" then
+
+				print("$%^$%^$%^$%^$%^$$%% design issue %%%%%$^$%^$%^%$^^$%^$%")
+
+				RecentTab_Topvalue = 115
+				consultantList_scrollview.y = 112
+				consultantList_scrollview.height = H - tabBar.height - consultantList_scrollview.y
+
+				title.text = ChatPage.Broadcast
+
+				GroupSubject.placeholder = ChatPage.broadcastSubject
+
+				count_details.isVisible = true
+
+	    	    --GroupSubject.isVisible = false
+
+	    	    --Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
+
+	    	elseif addGroupid_value == "editMember" and (pageid_value:lower() == "group" or pageid_value:lower() == "broadcast") then
+
+	    		RecentTab_Topvalue = 115
+
+	    		title.text = "Edit"
+
+	    		GroupSubject.placeholder = ChatPage.broadcastSubject
+
+	    		count_details.isVisible = true
+
+	    		GroupSubject.text =  event.params.name
+
+	    		editedgroupname =  event.params.name
+
+	    		editId = event.params.contactId
+
+	    		count_details.text = #selected_Contact..MessagePage.SelectedNumber
+
+	    	else
+
+	    		RecentTab_Topvalue = 70
+
+	    	end
+
+
 	    	
 
 
