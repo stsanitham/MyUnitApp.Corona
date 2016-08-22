@@ -30,8 +30,8 @@ local words ={}
 
 openPage="resourcePage"
 
-local fileextensions = {".png",".jpg",".jpeg",".gif",".bmp",".tif",".tiff",".doc",".docx",".txt",".xls",".xlsx",".ppt",".pptx",".xps",".pps",".wma",".pub",".js",".swf",
-".xml",".html",".htm",".rtf" ,".pdf",".mpg",".au",".ogg",".aac",".aif",".gsm",".mid",".mp3",".rm",".wav",".mpeg",".avi",".mp4",".wmv",".m4a",'JPG','JPEG','BMP','GIF','PNG','TIF','TIFF'}
+local fileextensions = {".png",".jpeg",".jpg",".gif",".bmp",".tiff",".tif",".docx",".doc",".txt",".xlsx",".xls",".pptx",".ppt",".xps",".pps",".wma",".pub",".js",".swf",
+".xml",".html",".htm",".rtf" ,".pdf",".mpg",".au",".ogg",".aac",".aif",".gsm",".mid",".mp3",".rm",".wav",".mpeg",".avi",".mp4",".wmv",".m4a",'JPEG','JPG','BMP','GIF','PNG','TIFF','TIF'}
 
 local BackFlag = false
 
@@ -733,19 +733,18 @@ local workingdir=""
 			if #file_array == 0  then
 				NoEvent = display.newText( sceneGroup, ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
 				NoEvent.x=W/2;NoEvent.y=H/2
-				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+				NoEvent:setFillColor( Utils.convertHexToRGB(color.Black))
 		    end
 
 
-		    for i = 1, #file_array do
-		        -- Insert a row into the tableView
-		        Documents_list:insertRow{ rowHeight = 45,rowColor = 
-		        {
-		    	default = { 1, 1, 1, 0 },
-		    	over={ 1, 0.5, 0, 0 },
-		    	}}
-		    end
-
+		    -- for i = 1, #file_array do
+		    --     -- Insert a row into the tableView
+		    --     Documents_list:insertRow{ rowHeight = 45,rowColor = 
+		    --     {
+		    -- 	default = { 1, 1, 1, 0 },
+		    -- 	over={ 1, 0.5, 0, 0 },
+		    -- 	}}
+		    -- end
 
 
 			menuBtn:addEventListener("touch",menuTouch)

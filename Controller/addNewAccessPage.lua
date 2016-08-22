@@ -392,86 +392,6 @@ end
 
 
 
-local function addevent_scrollListener(event )
-
-	local phase = event.phase
-
-			if ( phase == "began" ) then 
-
-			elseif ( phase == "moved" ) then 
-
-			     local x, y = addNewAccess_scrollview:getContentPosition()
-
-			     print(y)
-
-
-				if y > -15 then
-
-					FirstName.isVisible = true
-					FirstName_bottom.isVisible = true
-				else
-
-					FirstName.isVisible = false
-					FirstName_bottom.isVisible = false
-				end
-
-
-				if y > -35 then
-
-					Name.isVisible = true
-					Name_bottom.isVisible = true
-				else
-
-					Name.isVisible = false
-					Name_bottom.isVisible = false
-				end
-
-
-				if not rankGroup then
-
-					print("yyy "..y)
-
-					if y > -15 then
-					FirstName.isVisible = true
-					FirstName_bottom.isVisible = true
-					else
-					FirstName.isVisible = false
-					FirstName_bottom.isVisible = false
-
-					end
-
-					if y > -35 then
-					Name.isVisible = true
-					Name_bottom.isVisible = true
-					else
-					Name.isVisible = false
-					Name_bottom.isVisible = false
-					end
-
-				end
-
-
-
-			elseif ( phase == "ended" ) then 
-			
-			end
-
-		    -- In the event a scroll limit is reached...
-		    if ( event.limitReached ) then
-		    	if ( event.direction == "up" ) then print( "Reached bottom limit" )
-		    	elseif ( event.direction == "down" ) then 
-				print( "Reached top limit" )
-		    	elseif ( event.direction == "left" ) then print( "Reached right limit" )
-		    	elseif ( event.direction == "right" ) then print( "Reached left limit" )
-		    	end
-		    end
-
-		    return true
-end
-
-
-
-
 
 function getemailexistresponse(response)
 	
@@ -1462,6 +1382,93 @@ local function textfield( event )
 
 					
 				end
+
+
+
+
+
+
+local function addevent_scrollListener(event )
+
+	local phase = event.phase
+
+			if ( phase == "began" ) then 
+
+			elseif ( phase == "moved" ) then 
+
+			     local x, y = addNewAccess_scrollview:getContentPosition()
+
+			     print(y)
+
+
+				if y > -15 then
+
+					FirstName.isVisible = true
+					FirstName_bottom.isVisible = true
+				else
+
+					FirstName.isVisible = false
+					FirstName_bottom.isVisible = false
+				end
+
+
+				if y > -35 then
+
+					Name.isVisible = true
+					Name_bottom.isVisible = true
+				else
+
+					Name.isVisible = false
+					Name_bottom.isVisible = false
+				end
+
+
+				if not rankGroup then
+
+					print("yyy "..y)
+
+					if y > -15 then
+					FirstName.isVisible = true
+					FirstName_bottom.isVisible = true
+					else
+					FirstName.isVisible = false
+					FirstName_bottom.isVisible = false
+
+					end
+
+					if y > -35 then
+					Name.isVisible = true
+					Name_bottom.isVisible = true
+					else
+					Name.isVisible = false
+					Name_bottom.isVisible = false
+					end
+
+				end
+
+
+
+			elseif ( phase == "ended" ) then 
+			
+			end
+
+		    -- In the event a scroll limit is reached...
+		    if ( event.limitReached ) then
+		    	if ( event.direction == "up" ) then print( "Reached bottom limit" )
+		    	elseif ( event.direction == "down" ) then 
+				print( "Reached top limit" )
+		    	elseif ( event.direction == "left" ) then print( "Reached right limit" )
+		    	elseif ( event.direction == "right" ) then print( "Reached left limit" )
+		    	end
+		    end
+
+		    return true
+end
+
+
+
+
+
 
 
 
