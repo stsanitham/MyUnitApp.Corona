@@ -897,7 +897,7 @@ function scene:create( event )
 	tabBar.y=tabBar.height/2
 	tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
 	
-	BgText = display.newImageRect(sceneGroup,"res/assert/logo.png",398/4,81/4)
+	BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",131,31)
 	BgText.x=W/2;BgText.y=20
 
 	local tabImage = display.newImageRect( sceneGroup, "res/assert/setting_icon1.png", 111/2,111/2 )

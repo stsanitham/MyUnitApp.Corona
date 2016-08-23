@@ -457,6 +457,13 @@ local function ChatTouch( event )
 	        	display.getCurrentStage():setFocus( nil )
 	        	chatScroll:takeFocus( event )
 	        	holdLevel=0
+
+	        	if #selectedForDelete == 0 then
+	        			Deleteicon.isVisible=false
+						Copyicon.isVisible=false
+						Forwardicon.isVisible=false
+
+	        	end
 	        	--Deleteicon.isVisible=false
 	        	chatHoldflag=false
 	        end

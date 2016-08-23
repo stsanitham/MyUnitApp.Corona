@@ -1328,7 +1328,7 @@ function scene:create( event )
   tabBar.y=tabBar.height/2
   tabBar:setFillColor(Utils.convertHexToRGB(color.primaryColor))
   
-  BgText = display.newImageRect(sceneGroup,"res/assert/logo.png",398/3,81/3)
+  BgText = display.newImageRect(sceneGroup,"res/assert/logo-flash-screen.png",131,31)
   BgText.x=W/2;BgText.y=20
 
   local tabImage = display.newImageRect( sceneGroup, "res/assert/file_icon1.png", 111/2,111/2 )
@@ -1431,7 +1431,7 @@ function scene:create( event )
               top = 95,
               left = 0,
               width = W,
-              height = H-95,
+              height = H-195,
               hideBackground = true,
               isBounceEnabled=false,
               horizontalScrollDisabled = true,
@@ -1847,7 +1847,7 @@ function scene:create( event )
                                         -- scrollView:insert(List_bg)
 
 
-                                        List_bg = display.newRect( scrollView, 200, 100, W-20, 85 )
+                                        List_bg = display.newRect(  200, 100, W-20, 85 )
                                         List_bg:setFillColor( 0 )
                                         List_bg.x = W/2
                                         List_bg.width = W-20
@@ -1856,7 +1856,7 @@ function scene:create( event )
                                         List_bg.anchorY = 0
                                         List_bg.isVisible=false
 
-                                        sceneGroup:insert(List_bg)
+                                        scrollView:insert(List_bg)
 
 
 
@@ -1879,7 +1879,7 @@ function scene:create( event )
                                         List.anchorY=0
                                         List.isVisible = false
 
-                                        sceneGroup:insert(List)
+                                        scrollView:insert(List)
 
                                         List_bg.anchorY = 0
                                         List_bg.isVisible = false
