@@ -282,12 +282,12 @@ local function EditOption( event )
 			editEvent_icon.id="edit"
 			editEvent_icon.isVisible = true
 			
-			deleteEvent_icon = display.newImageRect( sceneGroup, "res/assert/delete.png", 27,27 )
-			deleteEvent_icon.x= W/2 - 15
-			deleteEvent_icon.y= Background.y+Background.contentHeight/2 - 45
+			deleteEvent_icon = display.newImageRect( sceneGroup, "res/assert/delete_icon.png", 45,45 )
+			deleteEvent_icon.x= W/2-20
+			deleteEvent_icon.y= Background.y+Background.contentHeight/2 - 55
 			deleteEvent_icon.anchorX = 0
 			deleteEvent_icon.isVisible = true
-			deleteEvent_icon:setFillColor(0,0,0,0.5)
+			--deleteEvent_icon:setFillColor(0,0,0,0.5)
 			deleteEvent_icon.anchorY = 0
 			deleteEvent_icon.id="delete"
 
@@ -322,7 +322,7 @@ local function EditOption( event )
 					top = RecentTab_Topvalue+110,
 					left = 0,
 					width = W,
-					height =H-105-105,
+					height =H-105-110,
 					hideBackground = true,
 					isBounceEnabled=false,
 					horizontalScrollingDisabled = true,
@@ -412,12 +412,20 @@ local function EditOption( event )
 		end
 
 
-		display_details[#display_details+1] = display.newText(EventCalender.When,0,0,"Roboto-Regular",14)
-		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+		-- display_details[#display_details+1] = display.newText(EventCalender.When,0,0,"Roboto-Regular",14)
+		-- display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 
-		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2-100
+		-- display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2-100
+		-- display_details[#display_details].anchorX=0
+		-- scrollView:insert( display_details[#display_details] )
+
+
+		display_details[#display_details+1] = display.newImageRect("res/assert/when_icon.png", 21,21)
+		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+		display_details[#display_details].x=leftAllign+6;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2-90
 		display_details[#display_details].anchorX=0
 		scrollView:insert( display_details[#display_details] )
+
 
 		local monthstart = Utils.GetMonth(os.date( "%b" ,start_timeGMT  ))
 		local monthend = Utils.GetMonth(os.date( "%b" ,end_timeGMT ))
@@ -437,7 +445,7 @@ local function EditOption( event )
 		display_details[#display_details] = display.newText(value,0,0,220,0,"Roboto-Regular",14)
 		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.Black))
 
-		display_details[#display_details].x=W/2-46;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2-100
+		display_details[#display_details].x=W/2-80;display_details[#display_details].y=tabBar.y+tabBar.contentHeight/2-100
 		display_details[#display_details].anchorX=0
 		scrollView:insert( display_details[#display_details] )
 		display_details[#display_details].id="when"
@@ -464,7 +472,9 @@ local function EditOption( event )
 
 		display_details[#display_details+1] = display.newText(time,0,0,210,0,"Roboto-Light",12.5)
 		display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-		display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y+16
+		--display_details[#display_details].x=W/2-46;
+		display_details[#display_details].x=W/2-80;
+		display_details[#display_details].y=display_details[#display_details-1].y+16
 		display_details[#display_details].anchorX=0
 		display_details[#display_details].anchorY=0
 		display_details[#display_details].id="time"
@@ -479,17 +489,24 @@ local function EditOption( event )
 
 			if Details.Location ~= nil or Details.PhoneNumber ~= nil or Details.Location ~= "" then
 
-				display_details[#display_details+1] = display.newText(EventCalender.Where,0,0,"Roboto-Regular",14)
+				-- display_details[#display_details+1] = display.newText(EventCalender.Where,0,0,"Roboto-Regular",14)
+				-- display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+				-- display_details[#display_details].x=leftAllign+6
+				-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+21
+				-- display_details[#display_details].anchorX=0
+				-- scrollView:insert( display_details[#display_details] )
+
+				display_details[#display_details+1] = display.newImageRect("res/assert/whrere_icon.png", 21,21)
 				display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 				display_details[#display_details].x=leftAllign+6
-				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+21
+				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+25
 				display_details[#display_details].anchorX=0
 				scrollView:insert( display_details[#display_details] )
 
 
 				display_details[#display_details+1] = display.newText("",0,0,180,0,"Roboto-Regular",14)
 				display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-				display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y-8
+				display_details[#display_details].x=W/2-80;display_details[#display_details].y=display_details[#display_details-1].y-8
 				display_details[#display_details].anchorX=0
 				display_details[#display_details].anchorY=0
 				display_details[#display_details].id="where"
@@ -500,8 +517,16 @@ local function EditOption( event )
 
 			if Details.TicklerType == 2 then
 
+				display_details[#display_details+1] = display.newImageRect("res/assert/phone_icon.png", 21,21)
+				display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+				display_details[#display_details].x=leftAllign+6
+				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+25
+				display_details[#display_details].anchorX=0
+				scrollView:insert( display_details[#display_details] )
+
 				display_details[#display_details-1].text = EventCalender.Phone
 				display_details[#display_details].text = Details.PhoneNumber
+
 			else
 
 				display_details[#display_details].text = Details.Location
@@ -516,17 +541,26 @@ local function EditOption( event )
 
 		if Details.Description ~= nil and Details.Description ~= "" then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Description,0,0,"Roboto-Regular",14)
+			-- display_details[#display_details+1] = display.newText(EventCalender.Description,0,0,"Roboto-Regular",14)
+			-- display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			-- display_details[#display_details].x=leftAllign+6
+			-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+23
+			-- display_details[#display_details].anchorX=0
+			-- scrollView:insert( display_details[#display_details] )
+
+
+			display_details[#display_details+1] = display.newImageRect("res/assert/whrere_icon.png", 21,21)
 			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 			display_details[#display_details].x=leftAllign+6
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+21
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].contentHeight+25
 			display_details[#display_details].anchorX=0
 			scrollView:insert( display_details[#display_details] )
 
 
-			display_details[#display_details+1] = display.newText(Details.Description,0,0,193,0,"Roboto-Regular",14)
+			--display_details[#display_details+1] = display.newText(Details.Description,0,0,193,0,"Roboto-Regular",14)
+			display_details[#display_details+1] = display.newText(Details.Description,0,0,215,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y-8
+			display_details[#display_details].x=W/2-80;display_details[#display_details].y=display_details[#display_details-1].y-8
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="Description"
@@ -542,18 +576,25 @@ local function EditOption( event )
 
 			local temp = Details.Contact
 
-			display_details[#display_details+1] = display.newText(EventCalender.Appointment_With,0,0,90,0,"Roboto-Regular",14)
-			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-			display_details[#display_details].x=leftAllign+6
-			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
-			display_details[#display_details].anchorX=0
-			display_details[#display_details].anchorY=0
+			-- display_details[#display_details+1] = display.newText(EventCalender.Appointment_With,0,0,90,0,"Roboto-Regular",14)
+			-- display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			-- display_details[#display_details].x=leftAllign+6
+			-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
+			-- display_details[#display_details].anchorX=0
+			-- display_details[#display_details].anchorY=0
+
+			-- display_details[#display_details+1] = display.newImageRect("res/assert/apppointment_icon.png", 21,21)
+			-- display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			-- display_details[#display_details].x=leftAllign+6
+			-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+35
+			-- display_details[#display_details].anchorX=0
+			-- display_details[#display_details].anchorY=0
 
 			if display_details[#display_details-1].id == "Description" then
 
 				if display_details[#display_details-1].height > 60 then
 
-					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height +15
+					display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height +20
 				end
 
 			end
@@ -561,24 +602,60 @@ local function EditOption( event )
 
 			if Details.TicklerType == 1 then
 
+
+				display_details[#display_details+1] = display.newImageRect("res/assert/apppointment_icon.png", 21,21)
+				display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+				display_details[#display_details].x=leftAllign+6
+				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+35
+				display_details[#display_details].anchorX=0
+				display_details[#display_details].anchorY=0
+				scrollView:insert( display_details[#display_details] )
+
 				display_details[#display_details].text = EventCalender.Appointment_With
 
 
 					if display_details[#display_details].text == EventCalender.Appointment_With then
 
-					    display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+5
+					    display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+12
 
 				    end
 
+
 			elseif Details.TicklerType == 2 then
+
+				display_details[#display_details+1] = display.newImageRect("res/assert/cal_icon.png", 21,21)
+				display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+				display_details[#display_details].x=leftAllign+6
+				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+35
+				display_details[#display_details].anchorX=0
+				display_details[#display_details].anchorY=0
+				scrollView:insert( display_details[#display_details] )
 
 				display_details[#display_details].text = EventCalender.Call_With
 
+
 			elseif Details.TicklerType == 3 then
+
+				display_details[#display_details+1] = display.newImageRect("res/assert/host_icon.png", 21,21)
+				display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+				display_details[#display_details].x=leftAllign+6
+				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+35
+				display_details[#display_details].anchorX=0
+				display_details[#display_details].anchorY=0
+				scrollView:insert( display_details[#display_details] )
 
 				display_details[#display_details].text = EventCalender.Hostess
 
+
 			elseif Details.TicklerType == 4 then
+
+				display_details[#display_details+1] = display.newImageRect("res/assert/linked_icon.png", 21,21)
+				display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+				display_details[#display_details].x=leftAllign+6
+				display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+35
+				display_details[#display_details].anchorX=0
+				display_details[#display_details].anchorY=0
+				scrollView:insert( display_details[#display_details] )
 
 				display_details[#display_details].text = EventCalender.Linked_to
 
@@ -598,8 +675,8 @@ local function EditOption( event )
 
 			display_details[#display_details+1] = display.newText(name,0,0,180,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-			display_details[#display_details].x=W/2-46
-			display_details[#display_details].y=display_details[#display_details-1].y
+			display_details[#display_details].x=W/2-80
+			display_details[#display_details].y=display_details[#display_details-1].y+3
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="app_with"
@@ -619,7 +696,15 @@ local function EditOption( event )
 
 		if Details.AppointmentPurpose ~= nil then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Purpose,0,0,"Roboto-Regular",14)
+			-- display_details[#display_details+1] = display.newText(EventCalender.Purpose,0,0,"Roboto-Regular",14)
+			-- display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			-- display_details[#display_details].x=leftAllign+6
+			-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
+			-- display_details[#display_details].anchorX=0
+			-- display_details[#display_details].anchorY=0
+			-- scrollView:insert( display_details[#display_details] )
+
+			display_details[#display_details+1] = display.newImageRect("res/assert/purpose.png", 21,21)
 			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 			display_details[#display_details].x=leftAllign+6
 			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
@@ -640,7 +725,7 @@ local function EditOption( event )
 
 			display_details[#display_details+1] = display.newText(getPurpose(purpose_enum[Details.AppointmentPurpose+1]),0,0,150,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y
+			display_details[#display_details].x=W/2-80;display_details[#display_details].y=display_details[#display_details-1].y
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="Purpose"
@@ -658,7 +743,16 @@ local function EditOption( event )
 
 		if Details.Priority ~= nil then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Priority,0,0,"Roboto-Regular",14)
+			-- display_details[#display_details+1] = display.newText(EventCalender.Priority,0,0,"Roboto-Regular",14)
+			-- display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			-- display_details[#display_details].x=leftAllign+6
+			-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
+			-- display_details[#display_details].anchorX=0
+			-- display_details[#display_details].anchorY=0
+			-- scrollView:insert( display_details[#display_details] )
+
+
+			display_details[#display_details+1] = display.newImageRect("res/assert/priority_icon.png", 21,21)
 			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 			display_details[#display_details].x=leftAllign+6
 			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
@@ -679,7 +773,7 @@ local function EditOption( event )
 
 			display_details[#display_details+1] = display.newText(prority_enum[Details.Priority+1],0,0,180,0,"Roboto-Regular",14)
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.Black))
-			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y
+			display_details[#display_details].x=W/2-80;display_details[#display_details].y=display_details[#display_details-1].y
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].id="Priority"
@@ -694,13 +788,23 @@ local function EditOption( event )
 
 		if Details.AttachmentName ~= nil then
 
-			display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,"Roboto-Regular",14)
+			-- display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,"Roboto-Regular",14)
+			-- display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			-- display_details[#display_details].x=leftAllign+6
+			-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
+			-- display_details[#display_details].anchorX=0
+			-- display_details[#display_details].anchorY=0
+			-- scrollView:insert( display_details[#display_details] )
+
+
+			display_details[#display_details+1] = display.newImageRect("res/assert/attachments.png", 21,21)
 			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
 			display_details[#display_details].x=leftAllign+6
 			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			scrollView:insert( display_details[#display_details] )
+
 
 
 			if display_details[#display_details-1].id == "Description" then
@@ -727,7 +831,7 @@ local function EditOption( event )
 
 			display_details[#display_details].text = AttachName
 			display_details[#display_details]:setFillColor(Utils.convertHexToRGB(color.blue))
-			display_details[#display_details].x=W/2-46;display_details[#display_details].y=display_details[#display_details-1].y
+			display_details[#display_details].x=W/2-80;display_details[#display_details].y=display_details[#display_details-1].y
 			display_details[#display_details].anchorX=0
 			display_details[#display_details].anchorY=0
 			display_details[#display_details].value = Details.MuUnitBuzzAttachmentPath
@@ -750,11 +854,19 @@ local function EditOption( event )
 
 
 
-		display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,"Roboto-Regular",14)
-		display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
-		display_details[#display_details].x=leftAllign+6
-		display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
-		display_details[#display_details].anchorX=0
+		-- display_details[#display_details+1] = display.newText(EventCalender.Attachment,0,0,"Roboto-Regular",14)
+		-- display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+		-- display_details[#display_details].x=leftAllign+6
+		-- display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
+		-- display_details[#display_details].anchorX=0
+
+		    display_details[#display_details+1] = display.newImageRect("res/assert/attachments.png", 21,21)
+			display_details[#display_details]:setFillColor(Utility.convertHexToRGB(color.LtyGray))
+			display_details[#display_details].x=leftAllign+6
+			display_details[#display_details].y=display_details[#display_details-1].y+display_details[#display_details-1].height+21
+			display_details[#display_details].anchorX=0
+			--display_details[#display_details].anchorY=0
+			--scrollView:insert( display_details[#display_details] )
 
 
 		if display_details[#display_details-1].id == "Description" then
