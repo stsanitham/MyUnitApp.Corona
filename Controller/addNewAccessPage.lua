@@ -1667,6 +1667,7 @@ end
 
 
 
+
 local function rankTouch( event )
 	if event.phase == "began" then
 

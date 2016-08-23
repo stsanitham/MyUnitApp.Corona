@@ -1303,16 +1303,15 @@ function scene:create( event )
 	----------------------------------------------     icon for category selection     ----------------------------------------------------
 
 
-				changecategory_icon = display.newImageRect(sceneGroup,"res/assert/semicircle.png",45,55)
-				changecategory_icon.x= -15;changecategory_icon.y=H/2 + 10
+				changecategory_icon = display.newImageRect(changeCategoryGroup,"res/assert/toggle_icon.png",30,50)
+				changecategory_icon.x=-7;changecategory_icon.y=H/2+25
 				changecategory_icon.anchorX = 0
-				changecategory_icon.anchorY=0
 				changecategory_icon.isVisible = true
 				--changecategory_icon:addEventListener("touch",handleSwipe)
-
 				changecategory_icon:toFront()
 
-				changecategory_touch = display.newRect(sceneGroup,changecategory_icon.x,changecategory_icon.y+23,50,55)
+
+				changecategory_touch = display.newRect(changeCategoryGroup,changecategory_icon.x,changecategory_icon.y+23,50,55)
 				changecategory_touch.alpha=1
 				changecategory_touch.anchorX = 0
 				changecategory_touch.isVisible = false
@@ -1326,7 +1325,7 @@ function scene:create( event )
 
 
 			   	Category_bg = display.newRect( changeCategoryGroup, W/2+7,title_bg.y-10+90,185,H-RecentTab_Topvalue )
-			   	Category_bg.x = -170
+			   	Category_bg.x = -185
 			   	Category_bg.anchorX = 0
 			   	Category_bg.y = RecentTab_Topvalue
 			   	Category_bg.anchorY = 0
@@ -1338,7 +1337,7 @@ function scene:create( event )
 				Category_listBg.strokeWidth = 1
 				Category_listBg.width = 185
 				Category_listBg.height = H-RecentTab_Topvalue
-				Category_listBg.x = -170
+				Category_listBg.x = -185
 			   	Category_listBg.anchorX = 0
 			   	Category_listBg.anchorY = 0
 			   	Category_listBg.y = RecentTab_Topvalue+0.5
@@ -1351,7 +1350,7 @@ function scene:create( event )
 
 
 				Category_titlebg = display.newRect( changeCategoryGroup, W/2+7,RecentTab_Topvalue,185,30 )
-			   	Category_titlebg.x = -170
+			   	Category_titlebg.x = -185
 			   	Category_titlebg.anchorX = 0
 			   	Category_titlebg.y = RecentTab_Topvalue
 			   	Category_titlebg.anchorY = 0
@@ -1377,7 +1376,7 @@ function scene:create( event )
 
 			  	Category_List = widget.newTableView(
 			  	{
-					left = -170,
+					left = -185,
   		  			top = RecentTab_Topvalue+30,
   		  			height = H-RecentTab_Topvalue-30,
   		  			width = 185,
@@ -1396,7 +1395,9 @@ function scene:create( event )
 			  	Category_bg.anchorY = 0
 			  	--Category_bg.isVisible = false
 
-			  	changeCategoryGroup.isVisible=false
+			  	sceneGroup:insert(changeCategoryGroup)
+
+			  	changeCategoryGroup.isVisible=true
 
 
 ----------------------------------------------------------------------------------------------------------------------------------

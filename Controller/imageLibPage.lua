@@ -1823,7 +1823,7 @@ local function listPosition_change( event )
 ----------------------------------------------     icon for category selection     ----------------------------------------------------
 
 
-				changecategory_icon = display.newImageRect(sceneGroup,"res/assert/semicircle.png",45,55)
+				changecategory_icon = display.newImageRect(sceneGroup,"res/assert/toggle_icon.png",40,55)
 				changecategory_icon.x=-15 ;changecategory_icon.y=H/2 + 10
 				changecategory_icon.anchorX = 0
 				changecategory_icon.anchorY=0
