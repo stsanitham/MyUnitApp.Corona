@@ -277,6 +277,7 @@ ImageLibrary.UploadImage = "Upload Image"
 ImageLibrary.ImageUploaded = "Image uploaded successfully!"
 ImageLibrary.FileChoose = "Choose File"
 ImageLibrary.Image = "Image"
+ImageLibrary.Categories = "Categories"
 
 
 

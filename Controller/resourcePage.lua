@@ -34,6 +34,8 @@ local changeCategoryGroup = display.newGroup();
 
 local Category_bg,Category_listBg,Category_List
 
+local changecategory_icon,Category_titlebg,Category_title,changeList_order_icon
+
 local List_array = {}
 
 local ResourceList_scrollview
@@ -359,6 +361,13 @@ local function ResourceGrid_list( gridlist)
 
 	local rect_bg
 
+		ResourceList_scrollview:scrollToPosition
+		{
+			y = 0,
+			time = 100,
+		}
+
+
 	for j=1,#resourceGridArray do 
 
 		if resourceGridArray[j] then resourceGridArray[j]:removeSelf();resourceGridArray[j] = nil	
@@ -564,7 +573,7 @@ local function ResourceGrid_list( gridlist)
 
 	addEventBtn:toFront( )
 
-	changecategory_icon:toFront()
+	changeCategoryGroup:toFront()
 
 	addImageBg:toFront( )
 
@@ -583,6 +592,7 @@ local function listPosition_change( event )
 	if event.phase == "began" then
 		display.getCurrentStage():setFocus( event.target )
 
+
 	elseif ( event.phase == "moved" ) then
 		local dy = math.abs( ( event.y - event.yStart ) )
 
@@ -593,52 +603,48 @@ local function listPosition_change( event )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
+			changeCategoryGroup.isVisible = true
 
-		if changeCategoryGroup.isVisible == true then
-
-			changeCategoryGroup.isVisible = false
-
-			transition.to( changecategory_icon, { time=300, x= -15 } )
-
-		end
+			transition.to( changeCategoryGroup, { time=300, x= -2 } )
 
 
 		local function action()
 
 			if optionValue == "list" then
 
-				for j=1,#resourceGridArray do 
+					for j=1,#resourceGridArray do 
 					if resourceGridArray[j] then resourceGridArray[j]:removeSelf();resourceGridArray[j] = nil	end
-				end
-
-				Document_Lib_list:deleteAllRows()
-
-				Document_Lib_list:toFront()
-
-				for i = 1, #List_array do
-						    -- Insert a row into the tableView
-						    Document_Lib_list:insertRow{ rowHeight = 45,rowColor = 
-						    {
-						    	default = { 1, 1, 1, 0 },
-						    	over={ 1, 0.5, 0, 0 },
-
-						    	}}
-						    end
-
-						else    
-
-							if ResourceList_scrollview ~= nil then ResourceList_scrollview:toFront() end
-
-							addEventBtn:toFront()
-
-							changecategory_icon:toFront()
-
-							Document_Lib_list:deleteAllRows()
-
-							ResourceGrid_list(List_array)		
-
-						end
 					end
+
+					Document_Lib_list:deleteAllRows()
+
+					Document_Lib_list:toFront()
+
+					for i = 1, #List_array do
+					-- Insert a row into the tableView
+					Document_Lib_list:insertRow{ rowHeight = 45,rowColor = 
+					{
+					default = { 1, 1, 1, 0 },
+					over={ 1, 0.5, 0, 0 },
+
+					}}
+					end
+
+		    else    
+
+
+					if ResourceList_scrollview ~= nil then ResourceList_scrollview:toFront() end
+
+					addEventBtn:toFront()
+
+					changeCategoryGroup:toFront()
+
+					Document_Lib_list:deleteAllRows()
+
+					ResourceGrid_list(List_array)		
+
+				end
+			end
 
 					if event.target.id == "bg" then
 
@@ -699,7 +705,7 @@ local function onRowRenderCategoryList( event )
 	    end
 
 
-    local line = display.newRect(row,W/2,rowHeight/2,W,1.1)
+    local line = display.newRect(row,12,rowHeight/2,W,1.1)
     line.y=rowHeight-1.1
     line:setFillColor(0,0,0,0.3)
 
@@ -736,7 +742,7 @@ end
 
 							Document_Lib_list:toFront()
 
-							changecategory_icon:toFront()
+							changeCategoryGroup:toFront()
 
 							for i = 1, #List_array do
 						    -- Insert a row into the tableView
@@ -778,10 +784,10 @@ local function GetCategory( value,Category_Name_Value )
 
 		    addImageBg.alpha=0
 
-		    changecategory_icon:toFront()
+		    changeCategoryGroup:toFront()
 
-            transition.to( changeCategoryGroup, { time=100, x= -15 } )
-            transition.to( changecategory_icon, { time=100, x= -15 } )
+            transition.to( changeCategoryGroup, { time=100, x= -2 } )
+            -- transition.to( changecategory_icon, { time=100, x= -7 } )
 
 
       
@@ -804,11 +810,13 @@ local function onRowTouchCategoryList( event )
 
 		print(" &&&&&&&&&&&&&&&&&&&&&& categoryid &&&&&&&&&&&&&&&&&&&&& "..row.categoryid)
 
-		if changeMenuGroup.isVisible == true then
+		-- if changeMenuGroup.isVisible == true then
 
-			changeMenuGroup.isVisible = false
+		-- 	changeMenuGroup.isVisible = false
 
-		end
+		-- end
+
+		changeCategoryGroup.isVisible = true
 
 
 		CategoryId_value = Category_array[row.index].MyDocumentCategoryId
@@ -956,7 +964,7 @@ local function onRowRender_DocLib( event )
 
     addEventBtn:toFront()
 
-    changecategory_icon:toFront()
+    changeCategoryGroup:toFront()
 
     addImageBg:toFront( )
 
@@ -1005,25 +1013,21 @@ local function BgTouch(event)
 		
 		if event.target.id == "hide" then
 
-			if changeMenuGroup.isVisible == true then
+			-- if changeMenuGroup.isVisible == true then
 
-				changeMenuGroup.isVisible=false
-			else
-				changeMenuGroup.isVisible=true
-			end
+			-- 	changeMenuGroup.isVisible=false
+			-- else
+			 	changeMenuGroup.isVisible=true
+			-- end
 
 
 		elseif event.target.id == "addimage" then
 
 					addImageBg.alpha=0
 
-					if changeCategoryGroup.isVisible == true then
-
-						changeCategoryGroup.isVisible = false
-
-						transition.to( changecategory_icon, { time=100, x= -15 } )
-
-					end
+					changeCategoryGroup:toFront()
+		            changeCategoryGroup.isVisible = true
+		            transition.to( changeCategoryGroup, { time=500, x=-2,transition=easing.outQuart } )
 
 
 		end
@@ -1053,13 +1057,13 @@ local function changeListmenuTouch(event)
 
 		changeMenuGroup:toFront()
 		
-		if changeMenuGroup.isVisible == true then
+		-- if changeMenuGroup.isVisible == true then
 
-			changeMenuGroup.isVisible=false
-		else
+		-- 	changeMenuGroup.isVisible=false
+		-- else
 
 			changeMenuGroup.isVisible=true
-		end
+		--end
 	end
 
 	return true
@@ -1169,7 +1173,7 @@ local function handleSwipe( event )
     if ( event.phase == "moved" ) then
         local dX = event.x - event.xStart
         print( event.x, event.xStart, dX )
-        if ( dX > 3 ) then
+        if ( dX > 1 ) then
             --swipe right
             local spot = RIGHT
             if ( event.target.x == LEFT ) then
@@ -1180,19 +1184,19 @@ local function handleSwipe( event )
             addImageBg.alpha=0.3
             changeCategoryGroup.isVisible = true
             transition.to( changeCategoryGroup, { time=500, x=spot,transition=easing.outQuart } )
-            transition.to( event.target, { time=480, x=spot,transition=easing.outQuart } )
 
         elseif ( dX < -5 ) then
+
+        	print("swipe left")
             --swipe left
-            local spot = LEFT - 15
+            local spot = LEFT 
             if ( event.target.x == RIGHT ) then
-                spot = LEFT - 15
+                spot = LEFT 
             end
 
             addImageBg.alpha=0
 
             transition.to( changeCategoryGroup, { time=300, x=spot } )
-            transition.to( event.target, { time=300, x=spot } )
         end
     end
     return true
@@ -1289,13 +1293,15 @@ function scene:create( event )
 	addImageBg.x=W/2;addImageBg.y=H/2
 	addImageBg:addEventListener( "touch", BgTouch )
 
+	addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 66/1.5,66/1.7 )
+	addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addResourceEvent"
+	addEventBtn.isVisible = false
+	addEventBtn:addEventListener("touch",uploadDocumentAction)
 
 
 	if IsOwner == true then
 
-		addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 66/1.5,66/1.7 )
-		addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addResourceEvent"
-		addEventBtn:addEventListener("touch",uploadDocumentAction)
+		addEventBtn.isVisible = true
 
 	end
 
@@ -1303,107 +1309,104 @@ function scene:create( event )
 	----------------------------------------------     icon for category selection     ----------------------------------------------------
 
 
-				changecategory_icon = display.newImageRect(changeCategoryGroup,"res/assert/toggle_icon.png",30,50)
-				changecategory_icon.x=-7;changecategory_icon.y=H/2+25
-				changecategory_icon.anchorX = 0
-				changecategory_icon.isVisible = true
-				--changecategory_icon:addEventListener("touch",handleSwipe)
-				changecategory_icon:toFront()
+	changecategory_icon = display.newImageRect(changeCategoryGroup,"res/assert/toggle_icon.png",25,50)
+	changecategory_icon.x=-2;changecategory_icon.y=H/2+25
+	changecategory_icon.anchorX = 0
+	changecategory_icon.isVisible = true
+	--changecategory_icon:addEventListener("touch",handleSwipe)
+	changecategory_icon:toFront()
 
 
-				changecategory_touch = display.newRect(changeCategoryGroup,changecategory_icon.x,changecategory_icon.y+23,50,55)
-				changecategory_touch.alpha=1
-				changecategory_touch.anchorX = 0
-				changecategory_touch.isVisible = false
-				changecategory_touch.anchorY = 0
-				--changecategory_touch:addEventListener("touch",handleSwipe)
+	changecategory_touch = display.newRect(changeCategoryGroup,changecategory_icon.x,changecategory_icon.y+23,50,55)
+	changecategory_touch.alpha=1
+	changecategory_touch.anchorX = 0
+	changecategory_touch.isVisible = false
+	changecategory_touch.anchorY = 0
+	--changecategory_touch:addEventListener("touch",handleSwipe)
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-				---Category List---
+	---Category List---
 
 
-			   	Category_bg = display.newRect( changeCategoryGroup, W/2+7,title_bg.y-10+90,185,H-RecentTab_Topvalue )
-			   	Category_bg.x = -185
-			   	Category_bg.anchorX = 0
-			   	Category_bg.y = RecentTab_Topvalue
-			   	Category_bg.anchorY = 0
-			  	Category_bg.id = "hide"
-			  	Category_bg:setFillColor( 0 )
+   	Category_bg = display.newRect( changeCategoryGroup, W/2+7,title_bg.y-10+90,186,H-RecentTab_Topvalue )
+   	Category_bg.x = -185
+   	Category_bg.anchorX = 0
+   	Category_bg.y = RecentTab_Topvalue
+   	Category_bg.anchorY = 0
+  	Category_bg.id = "hide"
+  	Category_bg:setFillColor( 0 )
 
 
-			    Category_listBg = display.newRect(changeCategoryGroup,W/2+7,title_bg.y-10+90,185,H-RecentTab_Topvalue)
-				Category_listBg.strokeWidth = 1
-				Category_listBg.width = 185
-				Category_listBg.height = H-RecentTab_Topvalue
-				Category_listBg.x = -185
-			   	Category_listBg.anchorX = 0
-			   	Category_listBg.anchorY = 0
-			   	Category_listBg.y = RecentTab_Topvalue+0.5
-				Category_listBg.id = "hide"
-				--Category_listBg:setFillColor(255/255,182/255,193/255,0.5)
-				--Category_listBg:setFillColor(238/255,77/255,109/255,0.3)
-				Category_listBg:setFillColor(0.9,0.7,0.8)
-				Category_listBg:setStrokeColor( 0, 0, 0 , 0.3)
-
-
-
-				Category_titlebg = display.newRect( changeCategoryGroup, W/2+7,RecentTab_Topvalue,185,30 )
-			   	Category_titlebg.x = -185
-			   	Category_titlebg.anchorX = 0
-			   	Category_titlebg.y = RecentTab_Topvalue
-			   	Category_titlebg.anchorY = 0
-			  	Category_titlebg.id = "hide"
-			  	Category_titlebg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
-
-
-			  	Category_title = display.newText(changeCategoryGroup,"Categories",0,0,native.systemFont,16)
-				Category_title.anchorX = 0
-				Category_title.x=Category_titlebg.x+5;Category_title.y = Category_titlebg.y+Category_titlebg.height/2 - 10
-				Category_title.anchorY = 0
-				Category_title:setFillColor(0)
-
-
-				-- Category_nocontent = display.newText(changeCategoryGroup,"No Categories",0,0,native.systemFont,16)
-				-- Category_nocontent.anchorX = 0
-				-- Category_nocontent.x=Category_listBg.width/2;Category_nocontent.y = Category_listBg.height/2
-				-- Category_nocontent.anchorY = 0
-				-- Category_nocontent.isVisible = true
-				-- Category_nocontent:setFillColor(0)
+    Category_listBg = display.newRect(changeCategoryGroup,W/2+7,title_bg.y-10+90,185,H-RecentTab_Topvalue)
+	Category_listBg.strokeWidth = 1
+	Category_listBg.width = 186
+	Category_listBg.height = H-RecentTab_Topvalue
+	Category_listBg.x = -185
+   	Category_listBg.anchorX = 0
+   	Category_listBg.anchorY = 0
+   	Category_listBg.y = RecentTab_Topvalue+0.5
+	Category_listBg.id = "hide"
+	--Category_listBg:setFillColor(255/255,182/255,193/255,0.5)
+	--Category_listBg:setFillColor(238/255,77/255,109/255,0.3)
+	Category_listBg:setFillColor(0.9,0.7,0.8)
+	Category_listBg:setStrokeColor( 0, 0, 0 , 0.3)
 
 
 
-			  	Category_List = widget.newTableView(
-			  	{
-					left = -185,
-  		  			top = RecentTab_Topvalue+30,
-  		  			height = H-RecentTab_Topvalue-30,
-  		  			width = 185,
-			  		onRowRender = onRowRenderCategoryList,
-			  		onRowTouch = onRowTouchCategoryList,
-			  		hideBackground = true,
-			  		isBounceEnabled = false,
-			  		noLines = true,
-				    -- listener = scrollListener
-				})
+	Category_titlebg = display.newRect( changeCategoryGroup, W/2+7,RecentTab_Topvalue,186,30 )
+   	Category_titlebg.x = -185
+   	Category_titlebg.anchorX = 0
+   	Category_titlebg.y = RecentTab_Topvalue
+   	Category_titlebg.anchorY = 0
+  	Category_titlebg.id = "hide"
+  	Category_titlebg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
+
+
+  	Category_title = display.newText(changeCategoryGroup,ImageLibrary.Categories,0,0,native.systemFont,16)
+	Category_title.anchorX = 0
+	Category_title.x=Category_titlebg.x+20;Category_title.y = Category_titlebg.y+Category_titlebg.height/2 - 10
+	Category_title.anchorY = 0
+	Category_title:setFillColor(0)
+
+
+	-- Category_nocontent = display.newText(changeCategoryGroup,"No Categories",0,0,native.systemFont,16)
+	-- Category_nocontent.anchorX = 0
+	-- Category_nocontent.x=Category_listBg.width/2;Category_nocontent.y = Category_listBg.height/2
+	-- Category_nocontent.anchorY = 0
+	-- Category_nocontent.isVisible = true
+	-- Category_nocontent:setFillColor(0)
 
 
 
-			  	changeCategoryGroup:insert(Category_List)
-			  	Category_List.id = "hide"
-			  	Category_bg.anchorY = 0
-			  	--Category_bg.isVisible = false
+  	Category_List = widget.newTableView(
+  	{
+		left = -170,
+		top = RecentTab_Topvalue+30,
+		height = H-RecentTab_Topvalue-30,
+		width = 185,
+  		onRowRender = onRowRenderCategoryList,
+  		onRowTouch = onRowTouchCategoryList,
+  		hideBackground = true,
+  		isBounceEnabled = false,
+  		noLines = true,
+	    -- listener = scrollListener
+	})
 
-			  	sceneGroup:insert(changeCategoryGroup)
 
-			  	changeCategoryGroup.isVisible=true
+
+  	changeCategoryGroup:insert(Category_List)
+  	Category_List.id = "hide"
+  	Category_bg.anchorY = 0
+  	--Category_bg.isVisible = false
+
+  	sceneGroup:insert(changeCategoryGroup)
+
+  	changeCategoryGroup.isVisible=true
 
 
 ----------------------------------------------------------------------------------------------------------------------------------
-
-
-
 
 
 	changeList_order_icon = display.newImageRect(sceneGroup,"res/assert/list.png",8/2,32/2)
@@ -1519,12 +1522,10 @@ function scene:show( event )
 
 	      	   	local function getCategoryList( response )
 
-			      	   		changecategory_icon:addEventListener("touch",handleSwipe)
-							changecategory_touch:addEventListener("touch",handleSwipe)
 
 						    Category_array = response
 
-						    print(json.encode(Category_array))
+						    print("Category_array : "..json.encode(Category_array))
 
 							Category_List:deleteAllRows()
 
@@ -1534,11 +1535,11 @@ function scene:show( event )
 							if #Category_array == 0  then
 								NoEvent = display.newText( scene.view,ResourceLibrary.NoDocument, 0,0,0,0,native.systemFontBold,16)
 								NoEvent.x=W/2;NoEvent.y=H/2
-								NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
+								NoEvent:setFillColor( Utils.convertHexToRGB(color.Black))
 							end
 
 
-			        print(" ************* Category List in show ************* " ,#Category_array)
+		      			    print(" ************* Category List in show ************* " ,#Category_array)
 
 
 							for i = 1, #Category_array do
@@ -1555,6 +1556,10 @@ function scene:show( event )
 						    Category_Name = Category_array[1].MyDocumentCategoryName
 
 						    title.text = ResourceLibrary.PageTitle.." - "..Category_Name
+
+
+			      	   		changecategory_icon:addEventListener("touch",handleSwipe)
+							changecategory_touch:addEventListener("touch",handleSwipe)
 
 					        GetCategory(Category_array[1].MyDocumentCategoryId, Category_array[1].MyDocumentCategoryName)
 
@@ -1575,6 +1580,7 @@ function scene:show( event )
 	MainGroup:insert(sceneGroup)
 
 end
+
 
 
 

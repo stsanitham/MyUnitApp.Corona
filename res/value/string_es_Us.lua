@@ -288,6 +288,7 @@ ImageLibrary.UploadImage = "Cargar imagen"
 ImageLibrary.ImageUploaded = "Imagen cargada correctamente!"
 ImageLibrary.FileChoose = "Elija el archivo"
 ImageLibrary.Image = "Imagen"
+ImageLibrary.Categories = "Categorías"
 
 
 Message = {}

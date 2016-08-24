@@ -29,6 +29,7 @@ local uploadArray = {}
 local ImageUploadGroup = {}
 local Category_Id
 local Category_Name1
+local changecategory_icon,Category_titlebg,Category_title,changeList_order_icon
 
 --local CategoryId_value = "2675"
 
@@ -616,7 +617,7 @@ shareImg_bg:addEventListener("touch",listTouch)
 
 row.ImageId = List_array[row.index].IId
 row.FilePath = List_array[row.index].FP
-addImageBg:toFront( );addEventBtn:toFront( );floatingButtonGroup:toFront( );changecategory_icon:toFront();categoryImageBg:toFront( )
+addImageBg:toFront( );addEventBtn:toFront( );floatingButtonGroup:toFront( );changeCategoryGroup:toFront();categoryImageBg:toFront( )
 
 end
 
@@ -704,6 +705,13 @@ end
 local function Grid_list( gridlist)
 
 	local rect_bg
+
+		careerList_scrollview:scrollToPosition
+		{
+			y = 0,
+			time = 100,
+		}
+
 
 	for j=1,#gridArray do 
 
@@ -875,7 +883,7 @@ end
 careerList_scrollview:insert(tempGroup)
 
 end
-addImageBg:toFront( );addEventBtn:toFront( );floatingButtonGroup:toFront( );changecategory_icon:toFront();categoryImageBg:toFront( )
+addImageBg:toFront( );addEventBtn:toFront( );floatingButtonGroup:toFront( );changeCategoryGroup:toFront();categoryImageBg:toFront( )
 end
 
 
@@ -918,7 +926,7 @@ local function onRowRenderCategoryList( event )
     end
 
 
-    local line = display.newRect(row,W/2,rowHeight/2,W,1.1)
+    local line = display.newRect(row,12,rowHeight/2,W,1.1)
     line.y=rowHeight-1.1
     line:setFillColor(0,0,0,0.3)
 
@@ -936,14 +944,11 @@ end
 
 local function GetCategory(value,Category_Name_Value )
 
-	CategoryId_value = value
+	        CategoryId_value = value
 
 		    categoryImageBg.alpha = 0
 
-		    changecategory_icon:toFront()
-
-            transition.to( changeCategoryGroup, { time=100, x= -15 } )
-            transition.to( changecategory_icon, { time=100, x= -15 } )
+            transition.to( changeCategoryGroup, { time=100, x= -2 } )
 
 
        local function getImageLibByCategoryId(response)
@@ -953,15 +958,14 @@ local function GetCategory(value,Category_Name_Value )
 			       	if viewValue == "list" then
 
 							for j=1,#gridArray do 
-								if gridArray[j] then gridArray[j]:removeSelf();gridArray[j] = nil	end
+								if gridArray[j] then gridArray[j]:removeSelf();gridArray[j] = nil end
 							end
-
 
 							Image_Lib_list:deleteAllRows()
 
 							Image_Lib_list:toFront()
 
-							changecategory_icon:toFront()
+							changeCategoryGroup:toFront()
 
 								for i = 1, #List_array do
 							    -- Insert a row into the tableView
@@ -1004,11 +1008,7 @@ local function onRowTouchCategoryList( event )
 
 	elseif ( "release" == phase ) then
 
-		if changeMenuGroup.isVisible == true then
-
-			changeMenuGroup.isVisible = false
-
-		end
+		changeCategoryGroup.isVisible = true
 
 		print( "here" ..Category_array[row.index].MyImageCategoryName)
 
@@ -1055,44 +1055,42 @@ local function BgTouch(event)
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 		
-		if event.target.id == "hide" then
+				if event.target.id == "hide" then
 
-			if changeMenuGroup.isVisible == true then
-				changeMenuGroup.isVisible=false
-			else
-				changeMenuGroup.isVisible=true
-			end
+						changeMenuGroup.isVisible=true
+				
 
+				elseif event.target.id == "addimage" then
 
+							local function hide( event )
+								floatingButtonGroup.isVisible=false
+							end
 
-		elseif event.target.id == "addimage" then
+							addImageBg.alpha=0
 
-					local function hide( event )
-						floatingButtonGroup.isVisible=false
-					end
+							 changeCategoryGroup.isVisible = true 
 
-					addImageBg.alpha=0
+							 changeCategoryGroup:toFront()
 
-					transition.to(addEventBtn, {time=200,rotation=0,width = addEventBtn.width + 5} )
+							transition.to(addEventBtn, {time=200,rotation=0,width = addEventBtn.width + 5} )
 
-					transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
+							transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
 
-		elseif event.target.id == "categoryimage" then
+				elseif event.target.id == "categoryimage" then
 
-			         categoryImageBg.alpha = 0
+					         categoryImageBg.alpha = 0
 
-					if changeCategoryGroup.isVisible == true then
+							 changeCategoryGroup.isVisible = true 
 
-						changeCategoryGroup.isVisible = false
+							 changeCategoryGroup:toFront()
 
-						transition.to( changecategory_icon, { time=100, x= -15 } )
+							 transition.to( changeCategoryGroup, { time=100, x= -2,transition=easing.outQuart } )
 
-					end
+				end
 
 
 
 		end
-	end
 
 	return true
 
@@ -1151,7 +1149,7 @@ local function handleSwipe( event )
     if ( event.phase == "moved" ) then
         local dX = event.x - event.xStart
         print( event.x, event.xStart, dX )
-        if ( dX > 3 ) then
+        if ( dX > 1 ) then
             --swipe right
             local spot = RIGHT
             if ( event.target.x == LEFT ) then
@@ -1162,13 +1160,12 @@ local function handleSwipe( event )
             categoryImageBg.alpha = 0.3
             changeCategoryGroup.isVisible = true
             transition.to( changeCategoryGroup, { time=500, x=spot,transition=easing.outQuart } )
-            transition.to( event.target, { time=500, x=spot,transition=easing.outQuart } )
 
         elseif ( dX < -5 ) then
             --swipe left
-            local spot = LEFT - 15
+            local spot = LEFT 
             if ( event.target.x == RIGHT ) then
-                spot = LEFT - 15
+                spot = LEFT 
             end
 
             addImageBg.alpha=0
@@ -1176,7 +1173,6 @@ local function handleSwipe( event )
             categoryImageBg.alpha = 0
 
             transition.to( changeCategoryGroup, { time=300, x=spot } )
-            transition.to( event.target, { time=300, x=spot } )
         end
     end
     return true
@@ -1521,13 +1517,18 @@ end
 
 
 	local function uploadImageAction( event )
-            
+	            
             if event.phase == "ended" then
 			 	
 			 		if event.target.id == "gallery" then
 
 			 			local function hide( event )
+
 								floatingButtonGroup.isVisible=false
+
+								changeCategoryGroup.isVisible = true
+
+								changeCategoryGroup:toFront()
 							end
 
 							addImageBg.alpha=0
@@ -1548,6 +1549,10 @@ end
 
 			 			local function hide( event )
 								floatingButtonGroup.isVisible=false
+
+								changeCategoryGroup.isVisible = true
+
+								changeCategoryGroup:toFront()
 						end
 
 							addImageBg.alpha=0
@@ -1564,26 +1569,43 @@ end
 
 		 		 	elseif event.target.id == "addEvent" then
 
+		 		 		floatingButtonGroup:toFront()
+
+		 		 		changeCategoryGroup:toBack()
+
+		 		 		--changeCategoryGroup.isVisible = true
+
+		 		 		transition.to( changeCategoryGroup, { time=300, x= -2 } )
+
 						--event.target.rotation = 45
 
 						if event.target.rotation >= 45 then
 
+							print("^&*^&*^&*")
+
 							addImageBg.alpha=0
 
+							changeCategoryGroup:toFront()
+
+							changeCategoryGroup.isVisible = true
+
 							local function hide( event )
+
 								floatingButtonGroup.isVisible=false
+
 							end
 
 							transition.to( event.target, {time=200,rotation=0,width = event.target.width+4,height = event.target.height-4} )
 
-
 							transition.to( floatingButtonGroup, {time=100,y=20,onComplete=hide} )
-
-							
 
 						else
 
+							print("^&*^&*^&* 2132312")
+
 							addImageBg.alpha=0.5
+
+							floatingButtonGroup.isVisible=true
 
 							floatingButtonGroup.y=30
 
@@ -1591,7 +1613,8 @@ end
 
 							transition.to( floatingButtonGroup, {time=300,y=0,transition=easing.outBack} )
 
-							floatingButtonGroup.isVisible=true
+							--transition.to( changeCategoryGroup, { time=300, x= -2 } )
+
 
 						end
 					
@@ -1659,15 +1682,9 @@ local function listPosition_change( event )
 		elseif event.phase == "ended" then
 		display.getCurrentStage():setFocus( nil )
 
+		changeCategoryGroup.isVisible = true 
 
-		if changeCategoryGroup.isVisible == true then
-
-			changeCategoryGroup.isVisible = false
-
-			transition.to( changecategory_icon, { time=300, x= -15 } )
-
-		end
-
+		transition.to( changeCategoryGroup, { time=300, x= -2 } )
 
 		local function action()
 
@@ -1699,7 +1716,9 @@ local function listPosition_change( event )
 							addEventBtn:toFront()
 							floatingButtonGroup:toFront( )
 
-							changecategory_icon:toFront();categoryImageBg:toFront( )
+						    categoryImageBg:toFront( )
+
+							changeCategoryGroup:toFront()
 
 							Image_Lib_list:deleteAllRows()
 
@@ -1779,60 +1798,63 @@ local function listPosition_change( event )
 				categoryImageBg:addEventListener( "touch", BgTouch )
 
 
-				if IsOwner == true then
-
 				addEventBtn = display.newImageRect( sceneGroup, "res/assert/add(gray).png", 76/1.6,76/1.9 )
 				addEventBtn.x=W/2+W/3;addEventBtn.y=H-40;addEventBtn.id="addEvent"
+				addEventBtn.isVisible = false
 				addEventBtn:addEventListener("touch",uploadImageAction)
+
+
+				if IsOwner == true then
+
+					    addEventBtn.isVisible = true
+
+						fromGalleryIcon = display.newImageRect( floatingButtonGroup, "res/assert/gallery1.png", 76/1.6,76/2 )
+						fromGalleryIcon.x=addEventBtn.x;fromGalleryIcon.y=addEventBtn.y-45;fromGalleryIcon.id="gallery"
+						fromGalleryIcon:addEventListener("touch",uploadImageAction)
+
+						local fromGalleryIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,80,25,2 )
+						fromGalleryIconTipsRect.anchorX=1
+						fromGalleryIconTipsRect.x=fromGalleryIcon.x-35
+						fromGalleryIconTipsRect.y=fromGalleryIcon.y
+						fromGalleryIconTipsRect:setFillColor( 0,0,0,0.7 )
+
+						local fromGalleryIconTips = display.newText( floatingButtonGroup, "Gallery",0,0,native.systemFont,14 )
+						fromGalleryIconTips.x=fromGalleryIconTipsRect.x-fromGalleryIconTipsRect.contentWidth/2
+						fromGalleryIconTips.y=fromGalleryIconTipsRect.y
+						
+
+						fromCameraIcon = display.newImageRect( floatingButtonGroup, "res/assert/camera1.png", 76/1.6,76/2 )
+						fromCameraIcon.x=fromGalleryIcon.x;fromCameraIcon.y=fromGalleryIcon.y-45;fromCameraIcon.id="camera"
+						fromCameraIcon:addEventListener("touch",uploadImageAction)
+
+						local fromCameraIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,80,25,2 )
+						fromCameraIconTipsRect.anchorX=1
+						fromCameraIconTipsRect.x=fromCameraIcon.x-35
+						fromCameraIconTipsRect.y=fromCameraIcon.y
+						fromCameraIconTipsRect:setFillColor( 0,0,0,0.7 )
+
+						local fromCameraIconTips = display.newText( floatingButtonGroup, "Camera",0,0,native.systemFont,14 )
+						fromCameraIconTips.x=fromCameraIconTipsRect.x-fromCameraIconTipsRect.contentWidth/2
+						fromCameraIconTips.y=fromCameraIconTipsRect.y
+
+						floatingButtonGroup.isVisible=false
 
 			    end
 
-			  
-
-				fromGalleryIcon = display.newImageRect( floatingButtonGroup, "res/assert/gallery1.png", 76/1.6,76/2 )
-				fromGalleryIcon.x=addEventBtn.x;fromGalleryIcon.y=addEventBtn.y-45;fromGalleryIcon.id="gallery"
-				fromGalleryIcon:addEventListener("touch",uploadImageAction)
-
-				local fromGalleryIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,80,25,2 )
-				fromGalleryIconTipsRect.anchorX=1
-				fromGalleryIconTipsRect.x=fromGalleryIcon.x-35
-				fromGalleryIconTipsRect.y=fromGalleryIcon.y
-				fromGalleryIconTipsRect:setFillColor( 0,0,0,0.7 )
-
-				local fromGalleryIconTips = display.newText( floatingButtonGroup, "Gallery",0,0,native.systemFont,14 )
-				fromGalleryIconTips.x=fromGalleryIconTipsRect.x-fromGalleryIconTipsRect.contentWidth/2
-				fromGalleryIconTips.y=fromGalleryIconTipsRect.y
-				
-
-				fromCameraIcon = display.newImageRect( floatingButtonGroup, "res/assert/camera1.png", 76/1.6,76/2 )
-				fromCameraIcon.x=fromGalleryIcon.x;fromCameraIcon.y=fromGalleryIcon.y-45;fromCameraIcon.id="camera"
-				fromCameraIcon:addEventListener("touch",uploadImageAction)
-
-				local fromCameraIconTipsRect = display.newRoundedRect( floatingButtonGroup, 0,0,80,25,2 )
-				fromCameraIconTipsRect.anchorX=1
-				fromCameraIconTipsRect.x=fromCameraIcon.x-35
-				fromCameraIconTipsRect.y=fromCameraIcon.y
-				fromCameraIconTipsRect:setFillColor( 0,0,0,0.7 )
-
-				local fromCameraIconTips = display.newText( floatingButtonGroup, "Camera",0,0,native.systemFont,14 )
-				fromCameraIconTips.x=fromCameraIconTipsRect.x-fromCameraIconTipsRect.contentWidth/2
-				fromCameraIconTips.y=fromCameraIconTipsRect.y
-
-				floatingButtonGroup.isVisible=false
+			 
 
 ----------------------------------------------     icon for category selection     ----------------------------------------------------
 
 
-				changecategory_icon = display.newImageRect(sceneGroup,"res/assert/toggle_icon.png",40,55)
-				changecategory_icon.x=-15 ;changecategory_icon.y=H/2 + 10
+				changecategory_icon = display.newImageRect(changeCategoryGroup,"res/assert/toggle_icon.png",25,50)
+				changecategory_icon.x=-2;changecategory_icon.y=H/2+25
 				changecategory_icon.anchorX = 0
-				changecategory_icon.anchorY=0
 				changecategory_icon.isVisible = true
 				--changecategory_icon:addEventListener("touch",handleSwipe)
 				changecategory_icon:toFront()
 
 
-				changecategory_touch = display.newRect(sceneGroup,changecategory_icon.x,changecategory_icon.y+23,50,55)
+				changecategory_touch = display.newRect(changeCategoryGroup,changecategory_icon.x,changecategory_icon.y+23,50,55)
 				changecategory_touch.alpha=1
 				changecategory_touch.anchorX = 0
 				changecategory_touch.isVisible = false
@@ -1845,8 +1867,8 @@ local function listPosition_change( event )
 				---Category List---
 
 
-			   	Category_bg = display.newRect( changeCategoryGroup, W/2+7,title_bg.y-10+90,185,H-RecentTab_Topvalue )
-			   	Category_bg.x = -170
+			   	Category_bg = display.newRect( changeCategoryGroup, W/2+7,title_bg.y-10+90,186,H-RecentTab_Topvalue )
+			   	Category_bg.x = -185
 			   	Category_bg.anchorX = 0
 			   	Category_bg.y = RecentTab_Topvalue
 			   	Category_bg.anchorY = 0
@@ -1854,9 +1876,11 @@ local function listPosition_change( event )
 			  	Category_bg:setFillColor( 0 )
 
 
-			    Category_listBg = display.newRect(changeCategoryGroup,W/2+7,title_bg.y-10+90,185,H-RecentTab_Topvalue)
+			    Category_listBg = display.newRect(changeCategoryGroup,W/2+7,title_bg.y-10+90,186,H-RecentTab_Topvalue)
 				Category_listBg.strokeWidth = 1
-				Category_listBg.x = -170
+				Category_listBg.width=186
+				Category_listBg.height = H-RecentTab_Topvalue
+				Category_listBg.x = -185
 			   	Category_listBg.anchorX = 0
 			   	Category_listBg.anchorY = 0
 			   	Category_listBg.y = RecentTab_Topvalue+0.5
@@ -1868,8 +1892,8 @@ local function listPosition_change( event )
 
 
 
-				Category_titlebg = display.newRect( changeCategoryGroup, W/2+7,RecentTab_Topvalue,185,30 )
-			   	Category_titlebg.x = -170
+				Category_titlebg = display.newRect( changeCategoryGroup, W/2+7,RecentTab_Topvalue,186,30 )
+			   	Category_titlebg.x = -185
 			   	Category_titlebg.anchorX = 0
 			   	Category_titlebg.y = RecentTab_Topvalue
 			   	Category_titlebg.anchorY = 0
@@ -1877,9 +1901,9 @@ local function listPosition_change( event )
 			  	Category_titlebg:setFillColor( Utils.convertHexToRGB(color.tabbar) )
 
 
-			  	Category_title = display.newText(changeCategoryGroup,"Categories",0,0,native.systemFont,16)
+			  	Category_title = display.newText(changeCategoryGroup,ImageLibrary.Categories,0,0,native.systemFont,16)
 				Category_title.anchorX = 0
-				Category_title.x=Category_titlebg.x+5;Category_title.y = Category_titlebg.y+Category_titlebg.height/2 - 10
+				Category_title.x=Category_titlebg.x+20;Category_title.y = Category_titlebg.y+Category_titlebg.height/2 - 10
 				Category_title.anchorY = 0
 				Category_title:setFillColor(0)
 
@@ -1906,7 +1930,9 @@ local function listPosition_change( event )
 			  	Category_bg.anchorY = 0
 			  	--Category_bg.isVisible = false
 
-			  	changeCategoryGroup.isVisible=false
+			  	sceneGroup:insert(changeCategoryGroup)
+
+			  	changeCategoryGroup.isVisible=true
 
 
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -1979,8 +2005,6 @@ local function listPosition_change( event )
 				listTouch_bg:addEventListener("touch",BgTouch)
 
 				sceneGroup:insert(changeMenuGroup)
-
-				sceneGroup:insert(changeCategoryGroup)
 
 				MainGroup:insert(sceneGroup)
 
