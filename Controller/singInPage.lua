@@ -694,16 +694,14 @@ function scene:create( event )
 	signinBanner_text = display.newImageRect(sceneGroup,"res/assert/signin-page-logo.png",278/1.5,62/1.5)
 	signinBanner_text.x=signinBanner.x;signinBanner_text.y=signinBanner.y
 
-
 	local signinUser = display.newImageRect(sceneGroup,"res/assert/prof_img.png",80,80)
-	signinUser.x = signinBanner.x+80;signinUser.y=signinBanner.y+signinBanner.contentHeight/2
-
+	signinUser.x = signinBanner.x+95;signinUser.y=signinBanner.y+signinBanner.contentHeight/2
 
 	signin_lbl = display.newText(sceneGroup,LoginPage.Signin_Button:upper(),0,0,"Roboto-Bold",sp_commonLabel.textSize)
 	signin_lbl.x=signin_lbl.contentWidth/2+30;signin_lbl.y=signinBanner.y+signinBanner.contentHeight/2+30
 	signin_lbl:setTextColor( Utils.convertHexToRGB(color.Black) )
 
-	UnitNumber_bg = display.newLine(sceneGroup, W/2-120, H/2-30, W/2+120, H/2-30)
+	UnitNumber_bg = display.newLine(sceneGroup, W/2-130, H/2-30, W/2+130, H/2-30)
 	UnitNumber_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 	UnitNumber_bg.strokeWidth = 1
 
@@ -712,11 +710,19 @@ function scene:create( event )
 	UnitNumber_drawLeft = display.newImageRect(sceneGroup,"res/assert/signin_img.png",74/2,63/2)
 	UnitNumber_drawLeft.x=UnitNumber_bg.x+UnitNumber_drawLeft.contentWidth/2+15;UnitNumber_drawLeft.y=UnitNumber_bg.y-UnitNumber_drawLeft.contentHeight/2-5
 
+
 	UnitNumber_mandarory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
-	UnitNumber_mandarory.x=UnitNumber_drawLeft.x+UnitNumber_drawLeft.contentWidth/2+9;UnitNumber_mandarory.y=UnitNumber_bg.y-UnitNumber_mandarory.contentHeight/2-8
+	if isAndroid then
+ 		UnitNumber_mandarory.x=UnitNumber_drawLeft.x+UnitNumber_drawLeft.contentWidth/2+14
+ 		UnitNumber_mandarory.y=UnitNumber_bg.y-UnitNumber_mandarory.contentHeight/2-9
+	else
+	    UnitNumber_mandarory.x=UnitNumber_drawLeft.x+UnitNumber_drawLeft.contentWidth/2+9
+	    UnitNumber_mandarory.y=UnitNumber_bg.y-UnitNumber_mandarory.contentHeight/2-8
+	end
 	UnitNumber_mandarory:setTextColor( 1, 0, 0 )
 
-	UserName_bg = display.newLine(sceneGroup, W/2-120, H/2+20, W/2+120, H/2+20)
+
+	UserName_bg = display.newLine(sceneGroup, W/2-130, H/2+20, W/2+130, H/2+20)
 	UserName_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 	UserName_bg.strokeWidth = 1
 
@@ -724,7 +730,6 @@ function scene:create( event )
 		UnitNumber_bg.isVisible=false
 		--UnitNumber_seprator.isVisible=false
 		UnitNumber_drawLeft.isVisible=false
-
 	else
 		Unitnumber_field = native.newTextField(0, 0, W-144, EditBoxStyle.height+3)
 		Unitnumber_field.id = "Unit Number / Director name"
@@ -734,8 +739,6 @@ function scene:create( event )
 		Unitnumber_field.font=native.newFont("Roboto-Light",14)
 		Unitnumber_field:setReturnKey( "next" )
 		--Utils.CssforTextField(Unitnumber_field,sp_fieldValue)	
-
-
 		Unitnumber_field.hasBackground = false
 		Unitnumber_field.x=UnitNumber_bg.x+63;Unitnumber_field.y=UnitNumber_bg.y-Unitnumber_field.contentHeight/2
 		sceneGroup:insert(Unitnumber_field)
@@ -745,8 +748,15 @@ function scene:create( event )
 	UserName_drawLeft = display.newImageRect(sceneGroup,"res/assert/gender_img.png",70/2,63/2)
 	UserName_drawLeft.x=UserName_bg.x+UserName_drawLeft.contentWidth/2+15;UserName_drawLeft.y=UserName_bg.y-UserName_drawLeft.contentHeight/2-5
 
+
 	UserName_mandarory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
-	UserName_mandarory.x=UserName_drawLeft.x+UserName_drawLeft.contentWidth/2+10;UserName_mandarory.y=UserName_bg.y-UserName_mandarory.contentHeight/2-8
+	if isAndroid then
+ 		UserName_mandarory.x=UserName_drawLeft.x+UserName_drawLeft.contentWidth/2+16
+	    UserName_mandarory.y=UserName_bg.y-UserName_mandarory.contentHeight/2-9
+	else
+	    UserName_mandarory.x=UserName_drawLeft.x+UserName_drawLeft.contentWidth/2+10
+	    UserName_mandarory.y=UserName_bg.y-UserName_mandarory.contentHeight/2-8
+	end
 	UserName_mandarory:setTextColor( 1, 0, 0 )
 
 
@@ -762,18 +772,27 @@ function scene:create( event )
 	sceneGroup:insert(UserName)
 	UserName.x=UserName_bg.x+63;UserName.y=UserName_bg.y-UserName.contentHeight/2
 
-	Password_bg = display.newLine(sceneGroup, W/2-120, H/2+70, W/2+120, H/2+70)
+
+	Password_bg = display.newLine(sceneGroup, W/2-130, H/2+70, W/2+130, H/2+70)
 	Password_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 	Password_bg.strokeWidth = 1
+
+
 	-- Password_seprator = display.newImageRect(sceneGroup,EditBoxStyle.background,8,Password_bg.contentHeight)
 	-- Password_seprator.x=Password_bg.x-Password_bg.contentWidth/2+35;Password_seprator.y=Password_bg.y
-	
 	Password_drawLeft = display.newImageRect(sceneGroup,"res/assert/pass_img.png",62/2,63/2)
 	Password_drawLeft.x=Password_bg.x+Password_drawLeft.contentWidth/2+15;Password_drawLeft.y=Password_bg.y-Password_drawLeft.contentHeight/2-5
 
 
 	Password_mandarory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
-	Password_mandarory.x=Password_drawLeft.x+Password_drawLeft.contentWidth/2+13;Password_mandarory.y=Password_bg.y-Password_mandarory.contentHeight/2-8
+	if isAndroid then
+ 	   Password_mandarory.x=Password_drawLeft.x+Password_drawLeft.contentWidth/2+20
+	   Password_mandarory.y=Password_bg.y-Password_mandarory.contentHeight/2-9
+	else
+	   Password_mandarory.x=Password_drawLeft.x+Password_drawLeft.contentWidth/2+13
+	   Password_mandarory.y=Password_bg.y-Password_mandarory.contentHeight/2-8
+	end
+	
 	Password_mandarory:setTextColor( 1, 0, 0 )
 
 	Password = native.newTextField(0, 0, W-140, EditBoxStyle.height+3)
@@ -844,7 +863,6 @@ function scene:create( event )
 	TM_RequestAccesstext.anchorX=0
 	--Utils.CssforTextView(TM_Requesttext,sp_primarybutton)	
 
-
 	Director_Requesttext = display.newText(sceneGroup,RegistrationScreen.Director:upper( ),0,0,200,0,"Roboto-Bold",14)
 	Director_Requesttext.x=W/2+30
 	Director_Requesttext.width=Director_Requesttext.contentWidth
@@ -854,14 +872,11 @@ function scene:create( event )
 	Director_Requesttext.anchorX=0
 	Director_Requesttext.id="director_request"
 
-
 	Director_Requesticon = display.newImageRect(sceneGroup,"res/assert/file_icon.png",45/2,60/2)
 	Director_Requesticon.x=W/2+25
 	Director_Requesticon.id="director_request"
 	Director_Requesticon:setFillColor(0)
 	Director_Requesticon.y=Director_Requesttext.y+Director_Requesttext.contentHeight+20
-
-
 
 	Director_Accounttext = display.newText(sceneGroup,RegistrationScreen.CreateAccount,0,0,display.contentWidth - 10,0,"Roboto-Regular",11)
 	Director_Accounttext.x=Director_Requesticon.x +25
@@ -872,10 +887,9 @@ function scene:create( event )
 	Director_Accounttext.anchorY=0
 	Director_Accounttext.anchorX=0
 	--Utils.CssforTextView(Director_Requesttext,sp_primarybutton)
-
-
-
 end
+
+
 
 function scene:show( event )
 
@@ -883,66 +897,62 @@ function scene:show( event )
 	local phase = event.phase
 	
 	if phase == "will" then
+			
+			if event.params then
+				list_response_total = event.params.responseValue
+			end
 
-		
-		if event.params then
-			list_response_total = event.params.responseValue
-		end
+			local Version = system.getInfo( "appVersionString" )
 
-		local Version = system.getInfo( "appVersionString" )
-
-		local path = system.pathForFile( "version.txt", system.DocumentsDirectory )
+			local path = system.pathForFile( "version.txt", system.DocumentsDirectory )
 
 
-		local file, errorString = io.open( path, "w" )
+			local file, errorString = io.open( path, "w" )
 
-		if not file then
-		    -- Error occurred; output the cause
-		    print( "File error: " .. errorString )
-		else
-		    -- Write data to file
-		    file:write( Version )
-		    -- Close the file handle
-		    io.close( file )
-		end
+			if not file then
+			    -- Error occurred; output the cause
+			    print( "File error: " .. errorString )
+			else
+			    -- Write data to file
+			    file:write( Version )
+			    -- Close the file handle
+			    io.close( file )
+			end
 
-		file = nil
+			file = nil
 
-		ga.enterScene("SignIn")
+			ga.enterScene("SignIn")
 
 	elseif phase == "did" then
 
-		composer.removeHidden()
+			composer.removeHidden()
 
-		if Unitnumber_field then Unitnumber_field:addEventListener( "userInput", textfield ) end
+			if Unitnumber_field then Unitnumber_field:addEventListener( "userInput", textfield ) end
 
-		UserName:addEventListener( "userInput", textfield )
-		Password:addEventListener( "userInput", textfield )
+				UserName:addEventListener( "userInput", textfield )
+				Password:addEventListener( "userInput", textfield )
 
-		Background:addEventListener("touch",touchBg)
-		forgettBtn:addEventListener("touch",touchAction)
-			--TM_RequestBtn:addEventListener("touch",touchAction)
-			TM_Requesticon:addEventListener("touch",touchAction)
-			TM_RequestAccesstext:addEventListener("touch",touchAction)
+				Background:addEventListener("touch",touchBg)
+				forgettBtn:addEventListener("touch",touchAction)
 
-			TM_Requesttext:addEventListener("touch",touchAction)
+				--TM_RequestBtn:addEventListener("touch",touchAction)
+				TM_Requesticon:addEventListener("touch",touchAction)
+				TM_RequestAccesstext:addEventListener("touch",touchAction)
+				TM_Requesttext:addEventListener("touch",touchAction)
 
+				--Director_RequestBtn:addEventListener("touch",touchAction)
+				Director_Requesticon:addEventListener("touch",touchAction)
+				Director_Accounttext:addEventListener("touch",touchAction)
+				Director_Requesttext:addEventListener("touch",touchAction)
 
-			--Director_RequestBtn:addEventListener("touch",touchAction)
+				signinBtn:addEventListener("touch",signinBtnRelease)
+				signinBtn_text:addEventListener("touch",signinBtnRelease)
 
-			Director_Requesticon:addEventListener("touch",touchAction)
-			Director_Accounttext:addEventListener("touch",touchAction)
-			Director_Requesttext:addEventListener("touch",touchAction)
+				Runtime:addEventListener( "key", onKeyEvent )
 
-
-
-			signinBtn:addEventListener("touch",signinBtnRelease)
-			signinBtn_text:addEventListener("touch",signinBtnRelease)
-
-			Runtime:addEventListener( "key", onKeyEvent )
-
-		end	
+			end	
 	end
+
 
 
 	function scene:hide( event )
@@ -955,13 +965,13 @@ function scene:show( event )
 
 		elseif phase == "did" then
 
-			Runtime:removeEventListener( "key", onKeyEvent )
+				Runtime:removeEventListener( "key", onKeyEvent )
 
-			Background:removeEventListener("touch",touchBg)
-			forgettBtn:removeEventListener("touch",touchAction)
+				Background:removeEventListener("touch",touchBg)
+				forgettBtn:removeEventListener("touch",touchAction)
 
-			TM_Requesticon:removeEventListener("touch",touchAction)
-			TM_RequestAccesstext:removeEventListener("touch",touchAction)
+				TM_Requesticon:removeEventListener("touch",touchAction)
+				TM_RequestAccesstext:removeEventListener("touch",touchAction)
 				--	TM_RequestBtn:removeEventListener("touch",touchAction)
 				--	Director_RequestBtn:removeEventListener("touch",touchAction)
 
@@ -972,22 +982,23 @@ function scene:show( event )
 				signinBtn_text:removeEventListener("touch",signinBtnRelease)
 
 
-			end	
+		end	
 
-		end
-
-
-		function scene:destroy( event )
-			local sceneGroup = self.view
-		end
+    end
 
 
-		scene:addEventListener( "create", scene )
-		scene:addEventListener( "show", scene )
-		scene:addEventListener( "hide", scene )
-		scene:addEventListener( "destroy", scene )
+
+	function scene:destroy( event )
+		local sceneGroup = self.view
+	end
 
 
-		return scene
+	scene:addEventListener( "create", scene )
+	scene:addEventListener( "show", scene )
+	scene:addEventListener( "hide", scene )
+	scene:addEventListener( "destroy", scene )
+
+
+	return scene
 
 

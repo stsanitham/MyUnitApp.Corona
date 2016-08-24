@@ -364,8 +364,13 @@ function scene:create( event )
 	UnitNumber_drawLeft.x=UnitNumber_bg.x+22;UnitNumber_drawLeft.y=UnitNumber_bg.y-22
 
 	UnitNumber_mandatory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
-	UnitNumber_mandatory.x=UnitNumber_drawLeft.x+UnitNumber_drawLeft.contentWidth/2+9
-	UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-9
+	if isAndroid then
+		UnitNumber_mandatory.x=UnitNumber_drawLeft.x+UnitNumber_drawLeft.contentWidth/2+15
+		UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-11
+	elseif isIos then
+		UnitNumber_mandatory.x=UnitNumber_drawLeft.x+UnitNumber_drawLeft.contentWidth/2+9
+		UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-9
+	end
 	UnitNumber_mandatory:setTextColor( 1, 0, 0 )
 
 
@@ -401,8 +406,15 @@ function scene:create( event )
 	UserName_drawLeft.x=UserName_bg.x+22;UserName_drawLeft.y=UserName_bg.y-22
 
 	UserName_mandatory = display.newText(sceneGroup,"*",0,0,"Roboto-Light",14)
-	UserName_mandatory.x=UserName_drawLeft.x+UserName_drawLeft.contentWidth/2+9
-	UserName_mandatory.y=UserName_bg.y-UserName_mandatory.contentHeight/2-9
+
+	if isAndroid then
+		UserName_mandatory.x=UserName_drawLeft.x+UserName_drawLeft.contentWidth/2+15
+		UserName_mandatory.y=UserName_bg.y-UserName_mandatory.contentHeight/2-11
+	elseif isIos then
+		UserName_mandatory.x=UserName_drawLeft.x+UserName_drawLeft.contentWidth/2+9
+		UserName_mandatory.y=UserName_bg.y-UserName_mandatory.contentHeight/2-9
+	end
+
 	UserName_mandatory:setTextColor( 1, 0, 0 )
 
 	UserName = native.newTextField( W/2+28,0, UnitNumber_bg.contentWidth-50, EditBoxStyle.height+3 )

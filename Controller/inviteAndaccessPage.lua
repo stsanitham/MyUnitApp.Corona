@@ -2431,7 +2431,7 @@ function scene:create( event )
 	searchcontact_bg.isVisible=false
 	searchcontact_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
 
-	searchcontact = display.newImageRect(sceneGroup,"res/assert/search(gray).png",18,18)
+	searchcontact = display.newImageRect(sceneGroup,"res/assert/search_icon.png",18,18)
 	searchcontact.x = W - 30
 	searchcontact:setFillColor(0)
 	searchcontact.alpha = 1

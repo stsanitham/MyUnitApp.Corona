@@ -1029,7 +1029,7 @@ end
 						        	else
 						        			searchtext_bg.y = searchtext_bg.y + 40
 					        				search.y = searchtext_bg.y 
-					        		consultantList_scrollview.y = consultantList_scrollview.y  - 23
+					        				consultantList_scrollview.y = consultantList_scrollview.y  - 23
 
 						        	end
 
@@ -1679,7 +1679,6 @@ function textField( event )
 
 		if (current_textField.id == "groupSubject") then
 
-
 			if event.target.text:len() > 25 then
 
 				event.target.text = event.target.text:sub(1,25)
@@ -1688,17 +1687,12 @@ function textField( event )
 
 			end
 
-			groupSubjectname = event.target.text
+				groupSubjectname = event.target.text
 
-
-
-						--print("group subject name ############################ : ",groupSubjectname)
-					end
-				end
+				--print("group subject name ############################ : ",groupSubjectname)
 			end
-
-
-
+	   end
+end
 
 
 
@@ -1998,20 +1992,19 @@ function scene:create( event )
     							GroupIcon:setMask( mask )
     							GroupIcon.maskScaleX, GroupIcon.maskScaleY = 0.95,0.88
 
-
-    									GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+    							GroupIcon.x = backbutton.x + backbutton.contentWidth +5
 								GroupIcon.y = subjectBar.y +20
 								GroupIcon.anchorX=0
 								GroupIcon.id = "imgEdit"
 								GroupIcon.isVisible = false
 								GroupIcon:addEventListener( "touch"	, bgTouch )
 
-									GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
+								GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/circle_thumb.png",38,33 )
 								GroupIconEdit.x = GroupIcon.x
 								GroupIconEdit.y = GroupIcon.y
 								GroupIconEdit.anchorX=0
 								GroupIconEdit.id = "imgEdit"
-		GroupIconEdit.isVisible = false
+								GroupIconEdit.isVisible = false
 
 		
 			            end
@@ -2030,14 +2023,14 @@ function scene:create( event )
 			end
 
 		GroupIcon = display.newImageRect( sceneGroup,imagename, 38, 33 )
-			GroupIcon.x = backbutton.x + backbutton.contentWidth +5
+		GroupIcon.x = backbutton.x + backbutton.contentWidth +5
 		GroupIcon.y = subjectBar.y +20
 		GroupIcon.anchorX=0
 		GroupIcon.id = "imgEdit"
 		GroupIcon.isVisible = false
 		GroupIcon:addEventListener( "touch"	, bgTouch )
 
-			GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/add_thumb.png",38,33 )
+		GroupIconEdit = display.newImageRect( sceneGroup, "res/assert/add_thumb.png",38,33 )
 		GroupIconEdit.x = GroupIcon.x
 		GroupIconEdit.y = GroupIcon.y
 		GroupIconEdit.anchorX=0
@@ -2046,9 +2039,6 @@ function scene:create( event )
 
 		
 	end
-
-	
-
 		
 
 	GroupSubject =  native.newTextField( W/2+3, subjectBar.y + 20, W-130, 25)
@@ -2083,8 +2073,7 @@ function scene:create( event )
 	searchcontact_bg.isVisible=false
 	searchcontact_bg:setFillColor( Utils.convertHexToRGB(color.tabbar))
 
-
-	searchcontact = display.newImageRect(sceneGroup,"res/assert/search(gray).png",18,18)
+	searchcontact = display.newImageRect(sceneGroup,"res/assert/search_icon.png",18,18)
 	searchcontact.x = W-35
 	searchcontact:setFillColor(0)
 	searchcontact.alpha = 1
@@ -2092,16 +2081,13 @@ function scene:create( event )
 	searchcontact.anchorX = 0
 	searchcontact.isVisible=true
 	searchcontact.y=count_details.y
-
 	searchcontact:addEventListener( "touch", searchTouch )
-
 
 	searchtext_bg = display.newRect(sceneGroup,0,0,W,30)
 	searchtext_bg.y = searchcontact_bg.y
 	searchtext_bg.x = W/2
 	searchtext_bg.isVisible=false
 	searchtext_bg:setFillColor(0,0,0,0.2)
-
 
 	search =  native.newTextField( searchtext_bg.x-searchtext_bg.contentWidth/2+7, searchtext_bg.y, searchtext_bg.contentWidth-15, 24 )
 	search.anchorX=0
@@ -2113,16 +2099,12 @@ function scene:create( event )
 	search.hasBackground = true
 	search.isVisible = false
 	sceneGroup:insert(search)
-
 	search:addEventListener( "userInput", searchListener )
-
-
 
 	NoEvent = display.newText( sceneGroup, EventCalender.NoEvent , 0,0,0,0,native.systemFontBold,14)
 	NoEvent.x=W/2;NoEvent.y=H/2
 	NoEvent.isVisible=false
 	NoEvent:setFillColor( Utils.convertHexToRGB(color.Black) )
-
 
 	Webservice.GetActiveChatTeammembersList("GRANT",get_Activeteammember)
 

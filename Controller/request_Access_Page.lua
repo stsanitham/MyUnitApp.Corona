@@ -927,8 +927,13 @@ function scene:create( event )
 
 
 		UnitNumber_mandatory = display.newText("*",0,0,"Roboto-Light",14)
-        UnitNumber_mandatory.x=15
-        UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-10
+		if isAndroid then
+			UnitNumber_mandatory.x=21
+   		    UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-10
+		elseif isIos then
+	        UnitNumber_mandatory.x=15
+	        UnitNumber_mandatory.y=UnitNumber_bg.y-UnitNumber_mandatory.contentHeight/2-10
+	    end
         UnitNumber_mandatory:setTextColor( 1, 0, 0 )
         sceneGroup:insert(UnitNumber_mandatory)
 
@@ -979,10 +984,17 @@ Name_bg.strokeWidth = 1
 -- Name_bottom.y= FirstName_bg.y+FirstName_bg.height+16
 
 Name_mandatory = display.newText("*",0,0,"Roboto-Light",14)
-Name_mandatory.x=15
-Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2-10
+if isAndroid then
+	Name_mandatory.x=21
+	Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2-10
+elseif isIos then
+	Name_mandatory.x=15
+	Name_mandatory.y=Name_bg.y-Name_mandatory.contentHeight/2-10
+end
 Name_mandatory:setTextColor( 1, 0, 0 )
 sceneGroup:insert(Name_mandatory)
+
+
 
 Name = native.newTextField( W/2+7, FirstName_bg.y+FirstName_bg.height+7, W-20, 25)
 Name.id="Last Name"
@@ -1005,10 +1017,17 @@ Email_bg.strokeWidth = 1
 -- Email_bottom.y= Name_bg.y+Name_bg.height+16
 
 Email_mandatory = display.newText("*",0,0,"Roboto-Light",14)
-Email_mandatory.x=15
-Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2-10
+if isAndroid then
+	Email_mandatory.x=21
+	Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2-10
+elseif isIos then	
+	Email_mandatory.x=15
+	Email_mandatory.y=Email_bg.y-Email_mandatory.contentHeight/2-10	
+end
 Email_mandatory:setTextColor( 1, 0, 0 )
 sceneGroup:insert(Email_mandatory)
+
+
 
 Email = native.newTextField(W/2+7, Name_bg.y+Name_bg.height+7, W-20, 25 )
 Email.id="Email"
@@ -1027,9 +1046,15 @@ Phone_bg:setStrokeColor( Utils.convertHexToRGB(color.LtyGray) )
 Phone_bg.strokeWidth = 1
 
 Phone_mandatory = display.newText("*",0,0,"Roboto-Light",14)
-Phone_mandatory.x=15
-Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-10
+if isAndroid then
+	Phone_mandatory.x=21
+	Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-10
+elseif isIos then	
+	Phone_mandatory.x=15
+	Phone_mandatory.y=Phone_bg.y-Phone_mandatory.contentHeight/2-10
+end
 Phone_mandatory:setTextColor( 1, 0, 0 )
+
 sceneGroup:insert(Phone_mandatory)
 
 -- Phone_bottom = display.newImageRect(sceneGroup,"res/assert/line-large.png",W-20,5)
@@ -1099,8 +1124,14 @@ DirectorName_bg.strokeWidth = 1
 -- DirectorName_bottom.y= Comment_bg.y+Comment_bg.height - 5
 
 DirectorName_mandatory = display.newText("*",0,0,"Roboto-Light",14)
-DirectorName_mandatory.x=15
-DirectorName_mandatory.y=DirectorName_bg.y-DirectorName_mandatory.contentHeight/2-10
+if isAndroid then
+	DirectorName_mandatory.x=21
+	DirectorName_mandatory.y=DirectorName_bg.y-DirectorName_mandatory.contentHeight/2-10
+elseif isIos then	
+	DirectorName_mandatory.x=15
+	DirectorName_mandatory.y=DirectorName_bg.y-DirectorName_mandatory.contentHeight/2-10
+end
+
 DirectorName_mandatory:setTextColor( 1, 0, 0 )
 DirectorName_mandatory.isVisible = false
 sceneGroup:insert(DirectorName_mandatory)
@@ -1127,8 +1158,14 @@ DirectorEmail_bg.strokeWidth = 1
 -- DirectorEmail_bottom.y= DirectorName_bg.y+DirectorName_bg.height+16
 
 DirectorEmail_mandatory = display.newText("*",0,0,"Roboto-Light",14)
-DirectorEmail_mandatory.x=15
-DirectorEmail_mandatory.y=DirectorEmail_bg.y-DirectorEmail_mandatory.contentHeight/2-10
+if isAndroid then
+	DirectorEmail_mandatory.x=21
+	DirectorEmail_mandatory.y=DirectorEmail_bg.y-DirectorEmail_mandatory.contentHeight/2-10
+elseif isIos then	
+	DirectorEmail_mandatory.x=15
+	DirectorEmail_mandatory.y=DirectorEmail_bg.y-DirectorEmail_mandatory.contentHeight/2-10
+end
+
 DirectorEmail_mandatory:setTextColor( 1, 0, 0 )
 DirectorEmail_mandatory.isVisible = false
 sceneGroup:insert(DirectorEmail_mandatory)

@@ -732,20 +732,21 @@ function scene:show( event )
 			BackBtn:addEventListener( "touch", groupBackground_Touch )
 		end
 
-		groupList_scrollview = widget.newScrollView
-		{
-			top = RecentTab_Topvalue-5,
-			left = 0,
-			width = W,
-			height =H-RecentTab_Topvalue-50+5,
-			hideBackground = true,
-			isBounceEnabled=false,
-			horizontalScrollingDisabled = true,
-			verticalScrollingDisabled = false,
-			listener = grouplist_scrollListener,
-		}
+			groupList_scrollview = widget.newScrollView
+			{
+				top = RecentTab_Topvalue-5,
+				left = 0,
+				width = W,
+				height =H-RecentTab_Topvalue-50+5,
+				hideBackground = true,
+				isBounceEnabled=false,
+				bottomPadding = 20,
+				horizontalScrollingDisabled = true,
+				verticalScrollingDisabled = false,
+				listener = grouplist_scrollListener,
+			}
 
-		sceneGroup:insert(groupList_scrollview)
+			sceneGroup:insert(groupList_scrollview)
 
 		
 		if IsOwner == true then

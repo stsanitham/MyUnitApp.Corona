@@ -1637,16 +1637,13 @@ function scene:create( event )
                                 Countrytxt.value=0
                                 Countrytxt:setFillColor( Utils.convertHexToRGB(color.Black))
                                 Countrytxt.y = Country_bg.y-12
-
-                                Countrytxt.x=leftPadding
+                                Countrytxt.x=leftPadding+5
                                 scrollView:insert(Countrytxt)
-
 
                                 -- Country_bottom = display.newImageRect(scrollView,"res/assert/line-large.png",W-20,5)
                                 -- Country_bottom.x=W/2
                                 -- Country_bottom.y= Countrytxt.y+13
                                 -- scrollView:insert(Country_bottom)
-
 
                                 CountryLbl = display.newText(scrollView,RegistrationScreen.CountryUsaText,W/2,Country_bg.y+Country_bg.height+12,"Roboto-Light",14 )
                                 CountryLbl.anchorX=0
@@ -1656,8 +1653,6 @@ function scene:create( event )
                                 CountryLbl.x=W/2 - 21.5
                                 CountryLbl.y = Country_bg.y-12
                                 scrollView:insert(CountryLbl)
-
-
 
                                 Country_icon = display.newImageRect(scrollView,"res/assert/right-arrow(gray-).png",15/2,30/2 )
                                 Country_icon.x=W-20
@@ -1687,7 +1682,7 @@ function scene:create( event )
                                  Languagetxt.anchorX=0
                                  Languagetxt.value=0
                                  Languagetxt:setFillColor( Utils.convertHexToRGB(sp_commonLabel.textColor))
-                                 Languagetxt.x=leftPadding
+                                 Languagetxt.x=leftPadding+5
                                  Languagetxt.y=Language_bg.y-12
                                  scrollView:insert(Languagetxt)
 
@@ -1696,12 +1691,11 @@ function scene:create( event )
                                  -- Language_bottom.y= Languagetxt.y+13
                                  -- scrollView:insert(Language_bottom)
 
-
-                                Language_mandatory = display.newText("*",0,0,"Roboto-Light",14)
-                                Language_mandatory.x= leftPadding -2
-                                Language_mandatory.y=Language_bg.y-Language_mandatory.contentHeight/2-8
-                                Language_mandatory:setTextColor( 1, 0, 0 )
-                                scrollView:insert(Language_mandatory)
+                                  Language_mandatory = display.newText("*",0,0,"Roboto-Light",14)
+                                  Language_mandatory.x= leftPadding -2
+                                  Language_mandatory.y=Language_bg.y-Language_mandatory.contentHeight/2-8
+                                  Language_mandatory:setTextColor( 1, 0, 0 )
+                                  scrollView:insert(Language_mandatory)
 
 
                                  LanguageLbl = display.newText(RegistrationScreen.SelectLanguage,W/2,Country_bg.y+Country_bg.height+12,"Roboto-Light",14 )
@@ -1746,7 +1740,7 @@ function scene:create( event )
                                  Positiontxt.anchorX=0
                                  Positiontxt.value=0
                                  Positiontxt:setFillColor( Utils.convertHexToRGB(color.Black))
-                                 Positiontxt.x=leftPadding
+                                 Positiontxt.x=leftPadding+5
                                  Positiontxt.y=Position_bg.y-12
                                  scrollView:insert(Positiontxt)
 

@@ -679,6 +679,7 @@ function scene:show( event )
 			height =H-RecentTab_Topvalue-50+5,
 			hideBackground = true,
 			isBounceEnabled=false,
+			bottomPadding = 20,
 			horizontalScrollingDisabled = true,
 			verticalScrollingDisabled = false,
 			listener = grouplist_scrollListener,
